@@ -30,268 +30,268 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocEnumValue
     public void Normal ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListNormal");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_DropDownListNormal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void DropDownListReadOnly ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListReadOnly");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_DropDownListReadOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void DropDownListReadOnlyWithoutSelectedValue ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListReadOnlyWithoutSelectedValue");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_DropDownListReadOnlyWithoutSelectedValue");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void DropDownListDisabled ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_DropDownListDisabled");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_DropDownListDisabled");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ListBoxNormal ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxNormal");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_ListBoxNormal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ListBoxReadOnly ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxReadOnly");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_ListBoxReadOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ListBoxReadOnlyWithoutSelectedValue ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxReadOnlyWithoutSelectedValue");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_ListBoxReadOnlyWithoutSelectedValue");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ListBoxDisabled ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_ListBoxDisabled");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_ListBoxDisabled");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
       // TODO RM-7332 remove ignore once issue is resolved
-      var violations = result.Violations.IgnoreByRuleIDAndXPath (
+      var violations = result.Violations.IgnoreByRuleIDAndXPath(
           AccessibilityRuleID.ColorContrast,
           "/select[@id='body_DataEditControl_MarriageStatusField_ListBoxDisabled_Value']");
 
-      Assert.That (violations, Is.Empty);
+      Assert.That(violations, Is.Empty);
     }
 
     [Test]
     public void RadioButtonListNormal ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListNormal");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_RadioButtonListNormal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void RadioButtonListReadOnly ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListReadOnly");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_RadioButtonListReadOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void RadioButtonListReadOnlyWithoutSelectedValue ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListReadOnlyWithoutSelectedValue");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_RadioButtonListReadOnlyWithoutSelectedValue");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void RadioButtonListDisabled ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListDisabled");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_RadioButtonListDisabled");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void RadioButtonListMultiColumn ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListMultiColumn");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_RadioButtonListMultiColumn");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void RadioButtonListFlow ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListFlow");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_RadioButtonListFlow");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void RadioButtonListOrderedList ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListOrderedList");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_RadioButtonListOrderedList");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
       // TODO RM-7331 remove ignore once issue is resolved
       var violations = result.Violations
-          .IgnoreByRuleIDAndXPath (
+          .IgnoreByRuleIDAndXPath(
               AccessibilityRuleID.ListItem,
               "/ol[@id='body_DataEditControl_MarriageStatusField_RadioButtonListOrderedList_Value']/li")
-          .IgnoreByRuleIDAndXPath (
+          .IgnoreByRuleIDAndXPath(
               AccessibilityRuleID.ListItem,
               "/ol[@id='body_DataEditControl_MarriageStatusField_RadioButtonListOrderedList_Value']/li[2]")
-          .IgnoreByRuleIDAndXPath (
+          .IgnoreByRuleIDAndXPath(
               AccessibilityRuleID.ListItem,
               "/ol[@id='body_DataEditControl_MarriageStatusField_RadioButtonListOrderedList_Value']/li[3]")
-          .IgnoreByRuleIDAndXPath (
+          .IgnoreByRuleIDAndXPath(
               AccessibilityRuleID.ListItem,
               "/ol[@id='body_DataEditControl_MarriageStatusField_RadioButtonListOrderedList_Value']/li[4]");
-      Assert.That (violations, Is.Empty);
+      Assert.That(violations, Is.Empty);
     }
 
     [Test]
     public void RadioButtonListUnorderedList ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListUnorderedList");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_RadioButtonListUnorderedList");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
       // TODO RM-7331 remove ignore once issue is resolved
       var violations = result.Violations
-          .IgnoreByRuleIDAndXPath (
+          .IgnoreByRuleIDAndXPath(
               AccessibilityRuleID.ListItem,
               "/ul[@id='body_DataEditControl_MarriageStatusField_RadioButtonListUnorderedList_Value']/li")
-          .IgnoreByRuleIDAndXPath (
+          .IgnoreByRuleIDAndXPath(
               AccessibilityRuleID.ListItem,
               "/ul[@id='body_DataEditControl_MarriageStatusField_RadioButtonListUnorderedList_Value']/li[2]")
-          .IgnoreByRuleIDAndXPath (
+          .IgnoreByRuleIDAndXPath(
               AccessibilityRuleID.ListItem,
               "/ul[@id='body_DataEditControl_MarriageStatusField_RadioButtonListUnorderedList_Value']/li[3]")
-          .IgnoreByRuleIDAndXPath (
+          .IgnoreByRuleIDAndXPath(
               AccessibilityRuleID.ListItem,
               "/ul[@id='body_DataEditControl_MarriageStatusField_RadioButtonListUnorderedList_Value']/li[4]");
-      Assert.That (violations, Is.Empty);
+      Assert.That(violations, Is.Empty);
     }
 
     [Test]
     public void RadioButtonListLabelLeft ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListLabelLeft");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_RadioButtonListLabelLeft");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void RadioButtonListNoSelectedValueNoNullValue ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListWithoutSelectedValueAndWithoutVisibleNullValue");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_RadioButtonListWithoutSelectedValueAndWithoutVisibleNullValue");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void RadioButtonListRequiredNoSelectedValue_WithValidationErrors ()
     {
       var home = Start();
-      var bocEnumValue = home.EnumValues().GetByLocalID ("MarriageStatusField_RadioButtonListRequiredWithoutSelectedValue");
+      var bocEnumValue = home.EnumValues().GetByLocalID("MarriageStatusField_RadioButtonListRequiredWithoutSelectedValue");
       var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocEnumValue.Analyze (analyzer);
+      var result = bocEnumValue.Analyze(analyzer);
 
-      Assert.That (bocEnumValue.GetValidationErrors(), Is.Not.Empty);
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(bocEnumValue.GetValidationErrors(), Is.Not.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocEnumValue");
+      return Start("BocEnumValue");
     }
   }
 }

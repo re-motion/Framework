@@ -18,8 +18,8 @@ using System;
 using Remotion.Mixins;
 using Remotion.Mixins.Samples.Tutorial.T01_Configuration.Core.Mix.MixSamples;
 
-[assembly: Mix (typeof (MyClass), typeof (MyMixin))]
-[assembly: Mix (typeof (File), typeof (IdentifiedObjectMixin))]
+[assembly: Mix(typeof(MyClass), typeof(MyMixin))]
+[assembly: Mix(typeof(File), typeof(IdentifiedObjectMixin))]
 
 namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration.Core.Mix
 {
@@ -47,7 +47,7 @@ namespace Remotion.Mixins.Samples.Tutorial.T01_Configuration.Core.Mix
 
     public class IdentifiedObjectMixin : IIdentifiedObject
     {
-      private readonly string _id = Guid.NewGuid ().ToString ();
+      private readonly string _id = Guid.NewGuid().ToString();
 
       public string GetObjectID ()
       {

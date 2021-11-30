@@ -37,9 +37,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
     protected override void OnPreRender (EventArgs e)
     {
-      ErrorsOnPageLabel.Text = GlobalResourcesHelper.GetString (GlobalResources.ErrorMessage);
+      ErrorsOnPageLabel.Text = GlobalResourcesHelper.GetString(GlobalResources.ErrorMessage);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     public void ShowError ()

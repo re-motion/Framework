@@ -31,9 +31,9 @@ namespace Remotion.Validation.RuleCollectors
   {
     public static PropertyMetaValidationRuleCollector Create<TValidatedType, TProperty> (Expression<Func<TValidatedType, TProperty>> expression, Type collectorType)
     {
-      var propertyInfo = MemberInfoFromExpressionUtility.GetProperty (expression);
+      var propertyInfo = MemberInfoFromExpressionUtility.GetProperty(expression);
 
-      return new PropertyMetaValidationRuleCollector (PropertyInfoAdapter.Create (propertyInfo), collectorType);
+      return new PropertyMetaValidationRuleCollector(PropertyInfoAdapter.Create(propertyInfo), collectorType);
     }
 
     public IPropertyInformation Property { get; }
@@ -42,12 +42,12 @@ namespace Remotion.Validation.RuleCollectors
 
     public PropertyMetaValidationRuleCollector (IPropertyInformation property, Type collectorType)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      ArgumentUtility.CheckNotNull ("collectorType", collectorType); // TODO RM-5906: Add type check for IComponentValidationCollector
+      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull("collectorType", collectorType); // TODO RM-5906: Add type check for IComponentValidationCollector
 
       Property = property;
       CollectorType = collectorType;
-      _metaValidationRules = new List<IPropertyMetaValidationRule> ();
+      _metaValidationRules = new List<IPropertyMetaValidationRule>();
     }
 
     public IEnumerable<IPropertyMetaValidationRule> MetaValidationRules
@@ -57,19 +57,19 @@ namespace Remotion.Validation.RuleCollectors
 
     public void RegisterMetaValidationRule (IPropertyMetaValidationRule propertyMetaValidationRule)
     {
-      ArgumentUtility.CheckNotNull ("propertyMetaValidationRule", propertyMetaValidationRule);
+      ArgumentUtility.CheckNotNull("propertyMetaValidationRule", propertyMetaValidationRule);
 
-      _metaValidationRules.Add (propertyMetaValidationRule);
+      _metaValidationRules.Add(propertyMetaValidationRule);
     }
 
     public override string ToString ()
     {
-      var sb = new StringBuilder (GetType ().Name);
-      sb.Append (": ");
-      sb.Append (Property.DeclaringType != null ? Property.DeclaringType.GetFullNameSafe() + "#" : string.Empty);
-      sb.Append (Property.Name);
+      var sb = new StringBuilder(GetType().Name);
+      sb.Append(": ");
+      sb.Append(Property.DeclaringType != null ? Property.DeclaringType.GetFullNameSafe() + "#" : string.Empty);
+      sb.Append(Property.Name);
 
-      return sb.ToString ();
+      return sb.ToString();
     }
 
   }

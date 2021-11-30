@@ -39,11 +39,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     {
       var accessType = _testHelper.CreateAccessTypeCreate(0);
       var securableClassDefinition = SecurableClassDefinition.NewObject();
-      securableClassDefinition.AddAccessType (accessType);
+      securableClassDefinition.AddAccessType(accessType);
 
       var messge = "Access type 'Create|Remotion.Security.GeneralAccessTypes, Remotion.Security' "
                    + "cannot be deleted because it is associated with at least one securable class definition.";
-      Assert.That (() => accessType.Delete(), Throws.InvalidOperationException.And.Message.EqualTo (messge));
+      Assert.That(() => accessType.Delete(), Throws.InvalidOperationException.And.Message.EqualTo(messge));
     }
   }
 }

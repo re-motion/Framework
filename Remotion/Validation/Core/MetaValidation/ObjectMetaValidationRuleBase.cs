@@ -33,9 +33,9 @@ namespace Remotion.Validation.MetaValidation
 
     IEnumerable<MetaValidationRuleValidationResult> IObjectMetaValidationRule.Validate (IEnumerable<IObjectValidator> validationRules)
     {
-      ArgumentUtility.CheckNotNull ("validationRules", validationRules);
+      ArgumentUtility.CheckNotNull("validationRules", validationRules);
 
-      return Validate (validationRules.OfType<TValidator>());
+      return Validate(validationRules.OfType<TValidator>());
     }
   }
 }

@@ -26,16 +26,16 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
   {
     public SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRule ()
     {
-      
+
     }
 
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
-        var validationResult = Validate (endPointDefinition);
+        var validationResult = Validate(endPointDefinition);
         if (!validationResult.IsValid)
           return validationResult;
       }
@@ -45,12 +45,12 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     private MappingValidationResult Validate (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
       if (relationEndPointDefinition is VirtualObjectRelationEndPointDefinition virtualObjectRelationEndPointDefinition
           && virtualObjectRelationEndPointDefinition.HasSortExpression)
       {
-        return MappingValidationResult.CreateInvalidResultForProperty (
+        return MappingValidationResult.CreateInvalidResultForProperty(
             virtualObjectRelationEndPointDefinition.PropertyInfo,
             "Property '{0}' of class '{1}' must not specify a SortExpression, because cardinality is equal to 'one'.",
             virtualObjectRelationEndPointDefinition.PropertyInfo.Name,
@@ -58,6 +58,6 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
       }
       return MappingValidationResult.CreateValidResult();
     }
-    
+
   }
 }

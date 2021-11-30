@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   public class ExtensibleEnumNotDefiningAnyValues : ExtensibleEnum<ExtensibleEnumNotDefiningAnyValues>
   {
     public ExtensibleEnumNotDefiningAnyValues (MethodBase currentMethod)
-        : base (currentMethod)
+        : base(currentMethod)
     {
     }
   }

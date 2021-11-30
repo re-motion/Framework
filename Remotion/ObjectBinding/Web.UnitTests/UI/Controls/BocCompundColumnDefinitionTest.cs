@@ -34,16 +34,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var propertyPath1 = new Mock<IBusinessObjectPropertyPath>();
 
       var column = new BocCompoundColumnDefinition();
-      column.PropertyPathBindings.Add (new PropertyPathBinding (propertyPath0.Object));
-      column.PropertyPathBindings.Add (new PropertyPathBinding (propertyPath1.Object));
+      column.PropertyPathBindings.Add(new PropertyPathBinding(propertyPath0.Object));
+      column.PropertyPathBindings.Add(new PropertyPathBinding(propertyPath1.Object));
 
-      var comparer = ((IBocSortableColumnDefinition) column).CreateCellValueComparer();
-      Assert.That (comparer, Is.InstanceOf<CompoundComparer<BocListRow>>());
+      var comparer = ((IBocSortableColumnDefinition)column).CreateCellValueComparer();
+      Assert.That(comparer, Is.InstanceOf<CompoundComparer<BocListRow>>());
 
-      var comparers = ((CompoundComparer<BocListRow>) comparer).Comparers;
-      Assert.That (comparers.Count, Is.EqualTo (2));
-      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparers[0]).PropertyPath, Is.SameAs (propertyPath0.Object));
-      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparers[1]).PropertyPath, Is.SameAs (propertyPath1.Object));
+      var comparers = ((CompoundComparer<BocListRow>)comparer).Comparers;
+      Assert.That(comparers.Count, Is.EqualTo(2));
+      Assert.That(((BusinessObjectPropertyPathBasedComparer)comparers[0]).PropertyPath, Is.SameAs(propertyPath0.Object));
+      Assert.That(((BusinessObjectPropertyPathBasedComparer)comparers[1]).PropertyPath, Is.SameAs(propertyPath1.Object));
     }
 
     [Test]
@@ -52,16 +52,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var propertyPath1 = new Mock<IBusinessObjectPropertyPath>();
 
       var column = new BocCompoundColumnDefinition();
-      column.PropertyPathBindings.Add (new PropertyPathBinding());
-      column.PropertyPathBindings.Add (new PropertyPathBinding (propertyPath1.Object));
+      column.PropertyPathBindings.Add(new PropertyPathBinding());
+      column.PropertyPathBindings.Add(new PropertyPathBinding(propertyPath1.Object));
 
-      var comparer = ((IBocSortableColumnDefinition) column).CreateCellValueComparer();
-      Assert.That (comparer, Is.InstanceOf<CompoundComparer<BocListRow>>());
+      var comparer = ((IBocSortableColumnDefinition)column).CreateCellValueComparer();
+      Assert.That(comparer, Is.InstanceOf<CompoundComparer<BocListRow>>());
 
-      var comparers = ((CompoundComparer<BocListRow>) comparer).Comparers;
-      Assert.That (comparers.Count, Is.EqualTo (2));
-      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparers[0]).PropertyPath, Is.InstanceOf<NullBusinessObjectPropertyPath>());
-      Assert.That (((BusinessObjectPropertyPathBasedComparer) comparers[1]).PropertyPath, Is.SameAs (propertyPath1.Object));
+      var comparers = ((CompoundComparer<BocListRow>)comparer).Comparers;
+      Assert.That(comparers.Count, Is.EqualTo(2));
+      Assert.That(((BusinessObjectPropertyPathBasedComparer)comparers[0]).PropertyPath, Is.InstanceOf<NullBusinessObjectPropertyPath>());
+      Assert.That(((BusinessObjectPropertyPathBasedComparer)comparers[1]).PropertyPath, Is.SameAs(propertyPath1.Object));
     }
   }
 }

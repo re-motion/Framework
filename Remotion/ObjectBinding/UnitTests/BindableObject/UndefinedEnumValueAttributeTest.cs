@@ -33,27 +33,27 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void Initialize ()
     {
-      UndefinedEnumValueAttribute undefinedValueAttribute = new UndefinedEnumValueAttribute (TestEnum.Undefined);
+      UndefinedEnumValueAttribute undefinedValueAttribute = new UndefinedEnumValueAttribute(TestEnum.Undefined);
 
-      Assert.That (undefinedValueAttribute.GetValue(), Is.EqualTo (TestEnum.Undefined));
+      Assert.That(undefinedValueAttribute.GetValue(), Is.EqualTo(TestEnum.Undefined));
     }
 
     [Test]
     public void InitializeWithInvalidValue ()
     {
-      TestEnum invalidValue = (TestEnum) (-1);
-      Assert.That (
-          () => new UndefinedEnumValueAttribute (invalidValue),
+      TestEnum invalidValue = (TestEnum)(-1);
+      Assert.That(
+          () => new UndefinedEnumValueAttribute(invalidValue),
           Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
     public void InitializeWithObjectOfInvalidType ()
     {
-      Assert.That (
-          () => new UndefinedEnumValueAttribute (this),
+      Assert.That(
+          () => new UndefinedEnumValueAttribute(this),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'value' has type 'Remotion.ObjectBinding.UnitTests.BindableObject.UndefinedEnumValueAttributeTest' "
                   + "when type 'System.Enum' was expected.", "value"));
     }
@@ -61,8 +61,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void InitializeWithNull ()
     {
-      Assert.That (
-          () => new UndefinedEnumValueAttribute (null),
+      Assert.That(
+          () => new UndefinedEnumValueAttribute(null),
           Throws.InstanceOf<ArgumentNullException>());
     }
   }

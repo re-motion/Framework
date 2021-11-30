@@ -31,19 +31,19 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 
     public PreProcessingSubFunctionState (
         IExecutionStateContext executionStateContext, PreProcessingSubFunctionStateParameters parameters, WxeReturnOptions returnOptions)
-        : base (executionStateContext, parameters)
+        : base(executionStateContext, parameters)
     {
-      ArgumentUtility.CheckNotNull ("returnOptions", returnOptions);
+      ArgumentUtility.CheckNotNull("returnOptions", returnOptions);
       _returnOptions = returnOptions;
     }
 
     public override void ExecuteSubFunction (WxeContext context)
     {
       NameValueCollection postBackCollection = BackupPostBackCollection();
-      Parameters.Page.SaveAllState ();
+      Parameters.Page.SaveAllState();
 
-      var parameters = new PreparingRedirectToSubFunctionStateParameters (Parameters.SubFunction, postBackCollection, Parameters.PermaUrlOptions);
-      ExecutionStateContext.SetExecutionState (new PreparingRedirectToSubFunctionState (ExecutionStateContext, parameters, _returnOptions));
+      var parameters = new PreparingRedirectToSubFunctionStateParameters(Parameters.SubFunction, postBackCollection, Parameters.PermaUrlOptions);
+      ExecutionStateContext.SetExecutionState(new PreparingRedirectToSubFunctionState(ExecutionStateContext, parameters, _returnOptions));
     }
 
     public WxeReturnOptions ReturnOptions

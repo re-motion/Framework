@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering table cells of <see cref="BocSimpleColumnDefinition"/> columns.
   /// </summary>
-  [ImplementationFor (typeof (IBocSimpleColumnRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocSimpleColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocSimpleColumnRenderer : BocValueColumnRendererBase<BocSimpleColumnDefinition>, IBocSimpleColumnRenderer
   {
     private readonly IRenderingFeatures _renderingFeatures;
@@ -46,9 +46,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
         BocListCssClassDefinition cssClasses)
-        : base (resourceUrlFactory, renderingFeatures, cssClasses)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses)
     {
-      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 
       _renderingFeatures = renderingFeatures;
     }
@@ -62,11 +62,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     protected override void RenderCellDataForEditMode (
         BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow editableRow)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-      ArgumentUtility.CheckNotNull ("editableRow", editableRow);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("editableRow", editableRow);
 
-      RenderEditModeControl (renderingContext, businessObject, editableRow);
+      RenderEditModeControl(renderingContext, businessObject, editableRow);
     }
 
     /// <summary>
@@ -76,23 +76,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <param name="businessObject">The <see cref="IBusinessObject"/> that acts as a starting point for the property path.</param>
     protected override void RenderOtherIcons (BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
       if (renderingContext.ColumnDefinition.EnableIcon)
       {
         var propertyPath = renderingContext.ColumnDefinition.GetPropertyPath();
 
-        var result = propertyPath.GetResult (
+        var result = propertyPath.GetResult(
             businessObject,
             BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
             BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
 
         if (result.ResultProperty is IBusinessObjectReferenceProperty && !result.ResultProperty.IsList)
         {
-          var value = (IBusinessObject?) result.GetValue();
+          var value = (IBusinessObject?)result.GetValue();
           if (value != null)
-            RenderCellIcon (renderingContext, value);
+            RenderCellIcon(renderingContext, value);
         }
       }
     }
@@ -102,48 +102,48 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </summary>
     protected override void RenderTitleCell (BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, SortingDirection sortingDirection, int orderIndex)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
         var boundPropertyPath = renderingContext.ColumnDefinition.PropertyPathIdentifier;
 
-        if (!string.IsNullOrEmpty (boundPropertyPath))
+        if (!string.IsNullOrEmpty(boundPropertyPath))
         {
-          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
-          renderingContext.Writer.AddAttribute (
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
+          renderingContext.Writer.AddAttribute(
               DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths,
               boundPropertyPath);
         }
         else
         {
-          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
         }
       }
 
-      base.RenderTitleCell (renderingContext, sortingDirection, orderIndex);
+      base.RenderTitleCell(renderingContext, sortingDirection, orderIndex);
     }
 
     private void RenderEditModeControl (
         BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow editableRow)
     {
       if (renderingContext.Control.HasClientScript)
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
 
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
-        var contentString = renderingContext.ColumnDefinition.GetStringValue (businessObject);
-        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, contentString);
+        var contentString = renderingContext.ColumnDefinition.GetStringValue(businessObject);
+        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, contentString);
       }
 
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin span
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin span
 
-      editableRow.RenderSimpleColumnCellEditModeControl (
+      editableRow.RenderSimpleColumnCellEditModeControl(
           renderingContext.Writer,
           renderingContext.ColumnDefinition,
           businessObject,
           renderingContext.ColumnIndex,
-          GetColumnTitleID (renderingContext));
+          GetColumnTitleID(renderingContext));
 
       renderingContext.Writer.RenderEndTag(); // End span
     }

@@ -46,23 +46,23 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
       try
       {
         ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();
-        providers.Add (new RdbmsProviderDefinition ("Development.Data.DomainObjects", new SqlStorageObjectFactory(), "ConnectionString"));
-        StorageConfiguration storageConfiguration = new StorageConfiguration (providers, providers["Development.Data.DomainObjects"]);
+        providers.Add(new RdbmsProviderDefinition("Development.Data.DomainObjects", new SqlStorageObjectFactory(), "ConnectionString"));
+        StorageConfiguration storageConfiguration = new StorageConfiguration(providers, providers["Development.Data.DomainObjects"]);
 
-        DomainObjectsConfiguration.SetCurrent (
-            new FakeDomainObjectsConfiguration (
+        DomainObjectsConfiguration.SetCurrent(
+            new FakeDomainObjectsConfiguration(
                 new MappingLoaderConfiguration(),
                 storageConfiguration,
                 new QueryConfiguration()));
 
-        var rootAssemblyFinder = new FixedRootAssemblyFinder (new RootAssembly (typeof (TestDomainObject).Assembly, true));
-        var assemblyLoader = new FilteringAssemblyLoader (ApplicationAssemblyLoaderFilter.Instance);
-        var assemblyFinder = new CachingAssemblyFinderDecorator (new AssemblyFinder (rootAssemblyFinder, assemblyLoader));
-        ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService (assemblyFinder);
+        var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof(TestDomainObject).Assembly, true));
+        var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
+        var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
+        ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
 
-        MappingConfiguration.SetCurrent (
-            new MappingConfiguration (
-                new MappingReflector (
+        MappingConfiguration.SetCurrent(
+            new MappingConfiguration(
+                new MappingReflector(
                     typeDiscoveryService,
                     new ClassIDProvider(),
                     new ReflectionBasedMemberInformationNameResolver(),
@@ -70,11 +70,11 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
                     new DomainModelConstraintProvider(),
                     new SortExpressionDefinitionProvider(),
                     new ThrowingDomainObjectCreator()),
-                new PersistenceModelLoader (new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage))));
+                new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
       }
       catch (Exception e)
       {
-        Console.WriteLine (e);
+        Console.WriteLine(e);
         throw;
       }
     }

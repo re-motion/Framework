@@ -24,15 +24,15 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
   {
     public static OppositeBidirectionalBindableDomainObject NewObject ()
     {
-      return NewObject<OppositeBidirectionalBindableDomainObject> ();
+      return NewObject<OppositeBidirectionalBindableDomainObject>();
     }
 
-    [DBBidirectionalRelation ("RelatedObjectProperty1", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("RelatedObjectProperty1", ContainsForeignKey = true)]
     public abstract SampleBindableDomainObject OppositeSampleObject { get; set; }
-    [DBBidirectionalRelation ("RelatedObjectProperty2")]
+    [DBBidirectionalRelation("RelatedObjectProperty2")]
     public abstract ObjectList<SampleBindableDomainObject> OppositeSampleObjects { get; set; }
 
-    [DBBidirectionalRelation ("RequiredBidirectionalRelatedObjectsProperty")]
+    [DBBidirectionalRelation("RequiredBidirectionalRelatedObjectsProperty")]
     public abstract BindableDomainObjectWithProperties OppositeRequiredRelatedObject { get; set; }
   }
 }

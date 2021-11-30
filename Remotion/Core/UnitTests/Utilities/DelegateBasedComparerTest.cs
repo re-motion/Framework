@@ -29,15 +29,15 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void Compare ()
     {
-      var comparer = new DelegateBasedComparer<List<int>>((x, y) => x.Count.CompareTo (y.Count));
+      var comparer = new DelegateBasedComparer<List<int>>((x, y) => x.Count.CompareTo(y.Count));
 
       var l1 = new List<int> { 1 };
       var l2 = new List<int> { 1, 2 };
       var l3 = new List<int> { 1, 2 };
 
-      Assert.That (comparer.Compare (l1, l2), Is.EqualTo (-1));
-      Assert.That (comparer.Compare (l2, l1), Is.EqualTo (1));
-      Assert.That (comparer.Compare (l2, l3), Is.EqualTo (0));
+      Assert.That(comparer.Compare(l1, l2), Is.EqualTo(-1));
+      Assert.That(comparer.Compare(l2, l1), Is.EqualTo(1));
+      Assert.That(comparer.Compare(l2, l3), Is.EqualTo(0));
     }
 
     [Test]
@@ -45,16 +45,16 @@ namespace Remotion.UnitTests.Utilities
     {
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var comparer = new DelegateBasedComparer<List<int>> ((x, y) => x.Count.CompareTo (y.Count));
-      var deserializedComparer = Serializer.SerializeAndDeserialize (comparer);
+      var comparer = new DelegateBasedComparer<List<int>>((x, y) => x.Count.CompareTo(y.Count));
+      var deserializedComparer = Serializer.SerializeAndDeserialize(comparer);
 
       var l1 = new List<int> { 1 };
       var l2 = new List<int> { 1, 2 };
       var l3 = new List<int> { 1, 2 };
 
-      Assert.That (deserializedComparer.Compare (l1, l2), Is.EqualTo (-1));
-      Assert.That (deserializedComparer.Compare (l2, l1), Is.EqualTo (1));
-      Assert.That (deserializedComparer.Compare (l2, l3), Is.EqualTo (0));
+      Assert.That(deserializedComparer.Compare(l1, l2), Is.EqualTo(-1));
+      Assert.That(deserializedComparer.Compare(l2, l1), Is.EqualTo(1));
+      Assert.That(deserializedComparer.Compare(l2, l3), Is.EqualTo(0));
     }
   }
 }

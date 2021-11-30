@@ -28,8 +28,8 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     public void FindAllUsersTest ()
     {
       var userFinder = new AclExpanderUserFinder();
-      var users = userFinder.FindUsers ();
-      Assert.That (users.Count, Is.EqualTo (7));
+      var users = userFinder.FindUsers();
+      Assert.That(users.Count, Is.EqualTo(7));
     }
 
 
@@ -37,35 +37,35 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     public void FirstNameFilterTest ()
     {
       const string firstName = "test";
-      var userFinder = new AclExpanderUserFinder (firstName, null, null);
+      var userFinder = new AclExpanderUserFinder(firstName, null, null);
 
       var users = userFinder.FindUsers();
-      Assert.That (users.Count, Is.EqualTo (1));
-      Assert.That (users[0].FirstName, Is.EqualTo (firstName));
+      Assert.That(users.Count, Is.EqualTo(1));
+      Assert.That(users[0].FirstName, Is.EqualTo(firstName));
     }
 
     [Test]
     public void LastNameFilterTest ()
     {
       const string lastName = "user2";
-      var userFinder = new AclExpanderUserFinder (null, lastName, null);
+      var userFinder = new AclExpanderUserFinder(null, lastName, null);
 
-      var users = userFinder.FindUsers ();
+      var users = userFinder.FindUsers();
 
-      Assert.That (users.Count, Is.EqualTo (2));
-      Assert.That (users[0].LastName, Is.EqualTo (lastName));
-      Assert.That (users[1].LastName, Is.EqualTo (lastName));
+      Assert.That(users.Count, Is.EqualTo(2));
+      Assert.That(users[0].LastName, Is.EqualTo(lastName));
+      Assert.That(users[1].LastName, Is.EqualTo(lastName));
     }
 
     [Test]
     public void UserNameFilterTest ()
     {
       const string userName = "group0/user1";
-      var userFinder = new AclExpanderUserFinder (null, null, userName);
+      var userFinder = new AclExpanderUserFinder(null, null, userName);
 
-      var users = userFinder.FindUsers ();
-      Assert.That (users.Count, Is.EqualTo (1));
-      Assert.That (users[0].UserName, Is.EqualTo (userName));
+      var users = userFinder.FindUsers();
+      Assert.That(users.Count, Is.EqualTo(1));
+      Assert.That(users[0].UserName, Is.EqualTo(userName));
     }
 
     [Test]
@@ -74,13 +74,13 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       const string firstName = "User";
       const string lastName = "Tenant 2";
       const string userName = "User.Tenant2";
-      var userFinder = new AclExpanderUserFinder (firstName, lastName, userName);
+      var userFinder = new AclExpanderUserFinder(firstName, lastName, userName);
 
-      var users = userFinder.FindUsers ();
-      Assert.That (users.Count, Is.EqualTo (1));
-      Assert.That (users[0].FirstName, Is.EqualTo (firstName));
-      Assert.That (users[0].LastName, Is.EqualTo (lastName));
-      Assert.That (users[0].UserName, Is.EqualTo (userName));
+      var users = userFinder.FindUsers();
+      Assert.That(users.Count, Is.EqualTo(1));
+      Assert.That(users[0].FirstName, Is.EqualTo(firstName));
+      Assert.That(users[0].LastName, Is.EqualTo(lastName));
+      Assert.That(users[0].UserName, Is.EqualTo(userName));
     }
   }
 }

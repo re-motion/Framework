@@ -35,14 +35,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public override void SetUp ()
     {
       base.SetUp();
-      _definition = DomainObjectIDs.OrderTicket1.ClassDefinition.GetRelationEndPointDefinition (typeof (OrderTicket).FullName + ".Order");
-      _nullEndPoint = new NullObjectEndPoint (TestableClientTransaction, _definition);
+      _definition = DomainObjectIDs.OrderTicket1.ClassDefinition.GetRelationEndPointDefinition(typeof(OrderTicket).FullName + ".Order");
+      _nullEndPoint = new NullObjectEndPoint(TestableClientTransaction, _definition);
     }
 
     [Test]
     public void IsSynchronized ()
     {
-      Assert.That (_nullEndPoint.IsSynchronized, Is.True);
+      Assert.That(_nullEndPoint.IsSynchronized, Is.True);
     }
 
     [Test]
@@ -54,33 +54,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Definition ()
     {
-      Assert.That (_nullEndPoint.Definition, Is.SameAs (_definition));
+      Assert.That(_nullEndPoint.Definition, Is.SameAs(_definition));
     }
 
     [Test]
     public void ObjectID ()
     {
-      Assert.That (_nullEndPoint.ObjectID, Is.Null);
+      Assert.That(_nullEndPoint.ObjectID, Is.Null);
     }
 
     [Test]
     public void ID ()
     {
       var id = _nullEndPoint.ID;
-      Assert.That (id.Definition, Is.SameAs (_definition));
-      Assert.That (id.ObjectID, Is.Null);
+      Assert.That(id.Definition, Is.SameAs(_definition));
+      Assert.That(id.ObjectID, Is.Null);
     }
 
     [Test]
     public void OppositeObjectID_Get ()
     {
-      Assert.That (_nullEndPoint.OppositeObjectID, Is.Null);
+      Assert.That(_nullEndPoint.OppositeObjectID, Is.Null);
     }
 
     [Test]
     public void OriginalOppositeObjectID_Get ()
     {
-      Assert.That (
+      Assert.That(
           () => _nullEndPoint.OriginalOppositeObjectID,
           Throws.InvalidOperationException);
     }
@@ -88,13 +88,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetOppositeObject ()
     {
-      Assert.That (_nullEndPoint.GetOppositeObject (), Is.Null);
+      Assert.That(_nullEndPoint.GetOppositeObject(), Is.Null);
     }
 
     [Test]
     public void GetOriginalOppositeObject ()
     {
-      Assert.That (
+      Assert.That(
           () => _nullEndPoint.GetOriginalOppositeObject(),
           Throws.InvalidOperationException);
     }
@@ -102,74 +102,74 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void IsDataComplete_True ()
     {
-      Assert.That (_nullEndPoint.IsDataComplete, Is.True);
+      Assert.That(_nullEndPoint.IsDataComplete, Is.True);
     }
 
     [Test]
     public void HasChanged ()
     {
-      Assert.That (_nullEndPoint.HasChanged, Is.False);
+      Assert.That(_nullEndPoint.HasChanged, Is.False);
     }
 
     [Test]
     public void HasBeenTouched ()
     {
-      Assert.That (_nullEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_nullEndPoint.HasBeenTouched, Is.False);
     }
 
     [Test]
     public void GetDomainObject_Null ()
     {
-      Assert.That (_nullEndPoint.GetDomainObject(), Is.Null);
+      Assert.That(_nullEndPoint.GetDomainObject(), Is.Null);
     }
 
     [Test]
     public void GetDomainObjectReference_Null ()
     {
-      Assert.That (_nullEndPoint.GetDomainObjectReference (), Is.Null);
+      Assert.That(_nullEndPoint.GetDomainObjectReference(), Is.Null);
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (_nullEndPoint.IsNull, Is.True);
+      Assert.That(_nullEndPoint.IsNull, Is.True);
     }
 
     [Test]
     public void Touch ()
     {
-      Assert.That (_nullEndPoint.HasBeenTouched, Is.False);
-      _nullEndPoint.Touch ();
-      Assert.That (_nullEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_nullEndPoint.HasBeenTouched, Is.False);
+      _nullEndPoint.Touch();
+      Assert.That(_nullEndPoint.HasBeenTouched, Is.False);
     }
 
     [Test]
     public void CreateRemoveCommand ()
     {
-      var removedRelatedObject = DomainObjectIDs.Order4.GetObject<Order> ();
-      var command = (NullEndPointModificationCommand) _nullEndPoint.CreateRemoveCommand (removedRelatedObject);
-      Assert.That (command.AffectedEndPoint, Is.SameAs (_nullEndPoint));
+      var removedRelatedObject = DomainObjectIDs.Order4.GetObject<Order>();
+      var command = (NullEndPointModificationCommand)_nullEndPoint.CreateRemoveCommand(removedRelatedObject);
+      Assert.That(command.AffectedEndPoint, Is.SameAs(_nullEndPoint));
     }
 
     [Test]
     public void CreateDeleteCommand ()
     {
-      var command = (NullEndPointModificationCommand) _nullEndPoint.CreateDeleteCommand();
-      Assert.That (command.AffectedEndPoint, Is.SameAs (_nullEndPoint));
+      var command = (NullEndPointModificationCommand)_nullEndPoint.CreateDeleteCommand();
+      Assert.That(command.AffectedEndPoint, Is.SameAs(_nullEndPoint));
     }
 
     [Test]
     public void CreateSetCommand ()
     {
-      var newRelatedObject = DomainObjectIDs.Order4.GetObject<Order> ();
-      var command = (NullEndPointModificationCommand) _nullEndPoint.CreateSetCommand (newRelatedObject);
-      Assert.That (command.AffectedEndPoint, Is.SameAs (_nullEndPoint));
+      var newRelatedObject = DomainObjectIDs.Order4.GetObject<Order>();
+      var command = (NullEndPointModificationCommand)_nullEndPoint.CreateSetCommand(newRelatedObject);
+      Assert.That(command.AffectedEndPoint, Is.SameAs(_nullEndPoint));
     }
 
     [Test]
     public void ValidateMandatory ()
     {
-      Assert.That (
+      Assert.That(
           () => _nullEndPoint.ValidateMandatory(),
           Throws.InvalidOperationException);
     }
@@ -177,56 +177,56 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetOppositeRelationEndPointIDs ()
     {
-      Assert.That (
-          () => _nullEndPoint.GetOppositeRelationEndPointIDs (),
+      Assert.That(
+          () => _nullEndPoint.GetOppositeRelationEndPointIDs(),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void GetOppositeRelationEndPointID ()
     {
-      Assert.That (
-          () => _nullEndPoint.GetOppositeRelationEndPointID (),
+      Assert.That(
+          () => _nullEndPoint.GetOppositeRelationEndPointID(),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void EnsureDataComplete_DoesNothing ()
     {
-      ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents (TestableClientTransaction);
+      ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents(TestableClientTransaction);
 
-      _nullEndPoint.EnsureDataComplete ();
+      _nullEndPoint.EnsureDataComplete();
     }
 
     [Test]
     public void Commit ()
     {
-      Assert.That (
-          () => _nullEndPoint.Commit (),
+      Assert.That(
+          () => _nullEndPoint.Commit(),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void Rollback ()
     {
-      Assert.That (
-          () => _nullEndPoint.Commit (),
+      Assert.That(
+          () => _nullEndPoint.Commit(),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void SetDataFromSubTransaction ()
     {
-      Assert.That (
-          () => _nullEndPoint.SetDataFromSubTransaction (MockRepository.GenerateStub<IRelationEndPoint>()),
+      Assert.That(
+          () => _nullEndPoint.SetDataFromSubTransaction(MockRepository.GenerateStub<IRelationEndPoint>()),
           Throws.InvalidOperationException);
     }
 
     [Test]
     public void SerializeIntoFlatStructure ()
     {
-      Assert.That (
-          () => _nullEndPoint.SerializeIntoFlatStructure (new FlattenedSerializationInfo()),
+      Assert.That(
+          () => _nullEndPoint.SerializeIntoFlatStructure(new FlattenedSerializationInfo()),
           Throws.InvalidOperationException);
     }
   }

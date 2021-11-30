@@ -27,12 +27,12 @@ namespace Remotion.SecurityManager.Domain
     public static bool IsRelation<TDoaminObject> (this RelationChangedEventArgs args, TDoaminObject domainObject, string shortPropertyName)
         where TDoaminObject : IDomainObject
     {
-      ArgumentUtility.CheckNotNull ("args", args);
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.CheckNotNullOrEmpty ("shortPropertyName", shortPropertyName);
+      ArgumentUtility.CheckNotNull("args", args);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
 
-      var properties = new PropertyIndexer (domainObject);
-      var propertyAccessor = properties[typeof (TDoaminObject), shortPropertyName];
+      var properties = new PropertyIndexer(domainObject);
+      var propertyAccessor = properties[typeof(TDoaminObject), shortPropertyName];
       return args.RelationEndPointDefinition == propertyAccessor.PropertyData.RelationEndPointDefinition;
     }
   }

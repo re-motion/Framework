@@ -28,10 +28,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     //TODO RM-7284: Remove this workaround once the underlying problem is resolved.
     public static WebButtonControlObject GetValidateButton (this PageObject pageObject)
     {
-      Func<WebButtonControlObject> getValidateButtonFunction = () => pageObject.WebButtons().GetByLocalID ("ValidateButton");
+      Func<WebButtonControlObject> getValidateButtonFunction = () => pageObject.WebButtons().GetByLocalID("ValidateButton");
 
       if (pageObject.Scope.Browser.IsFirefox())
-        return Retry (getValidateButtonFunction, 3, TimeSpan.FromMilliseconds (500));
+        return Retry(getValidateButtonFunction, 3, TimeSpan.FromMilliseconds(500));
 
       return getValidateButtonFunction.Invoke();
     }
@@ -39,13 +39,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     private static TReturn Retry<TReturn> (Func<TReturn> func, int retries, TimeSpan interval)
     {
       if (retries < 0)
-        throw new ArgumentOutOfRangeException ("retries", "Retries must be greater than or equal to zero.");
+        throw new ArgumentOutOfRangeException("retries", "Retries must be greater than or equal to zero.");
 
       for (var i = 0; i < retries; i++)
       {
         try
         {
-          Thread.Sleep (interval);
+          Thread.Sleep(interval);
           return func();
         }
         catch (Exception)

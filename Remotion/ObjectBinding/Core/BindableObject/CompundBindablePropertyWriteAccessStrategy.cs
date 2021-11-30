@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// Combines one or more <see cref="IBindablePropertyWriteAccessStrategy"/>-instances and delegates checking if the property can be written to.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IBindablePropertyWriteAccessStrategy), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IBindablePropertyWriteAccessStrategy), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompundBindablePropertyWriteAccessStrategy : IBindablePropertyWriteAccessStrategy
   {
     // Using an array instead of IReadOnlyList to support performance critical loop
@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public CompundBindablePropertyWriteAccessStrategy (IEnumerable<IBindablePropertyWriteAccessStrategy> bindablePropertyWriteAccessStrategies)
     {
-      ArgumentUtility.CheckNotNull ("bindablePropertyWriteAccessStrategies", bindablePropertyWriteAccessStrategies);
+      ArgumentUtility.CheckNotNull("bindablePropertyWriteAccessStrategies", bindablePropertyWriteAccessStrategies);
 
       _bindablePropertyWriteAccessStrategies = bindablePropertyWriteAccessStrategies.ToArray();
     }
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.BindableObject
     public bool CanWrite (IBusinessObject? businessObject, PropertyBase bindableProperty)
     {
       // businessObject can be null
-      ArgumentUtility.DebugCheckNotNull ("bindableProperty", bindableProperty);
+      ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);
 
       // This section is performance critical. No closure should be created, therefor converting this code to Linq is not possible.
       // return _strategies.All (s => s.CanRead (propertyBase, businessObject));
@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding.BindableObject
       // ReSharper disable once ForCanBeConvertedToForeach
       for (int i = 0; i < _bindablePropertyWriteAccessStrategies.Length; i++)
       {
-        if (!_bindablePropertyWriteAccessStrategies[i].CanWrite (businessObject, bindableProperty))
+        if (!_bindablePropertyWriteAccessStrategies[i].CanWrite(businessObject, bindableProperty))
           return false;
       }
       return true;
@@ -67,18 +67,18 @@ namespace Remotion.ObjectBinding.BindableObject
         IBusinessObject businessObject,
         PropertyBase bindableProperty,
         Exception exception,
-        [MaybeNullWhen (false)] out BusinessObjectPropertyAccessException propertyAccessException)
+        [MaybeNullWhen(false)] out BusinessObjectPropertyAccessException propertyAccessException)
     {
-      ArgumentUtility.DebugCheckNotNull ("businessObject", businessObject);
-      ArgumentUtility.DebugCheckNotNull ("bindableProperty", bindableProperty);
-      ArgumentUtility.DebugCheckNotNull ("exception", exception);
+      ArgumentUtility.DebugCheckNotNull("businessObject", businessObject);
+      ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);
+      ArgumentUtility.DebugCheckNotNull("exception", exception);
 
       // This section does represent an inherrent hot-path but the for-loop is chosen for symmetry with the CanRead()-method.
       // ReSharper disable once ForCanBeConvertedToForeach
       for (int i = 0; i < _bindablePropertyWriteAccessStrategies.Length; i++)
       {
         var bindablePropertyReadAccessStrategy = _bindablePropertyWriteAccessStrategies[i];
-        if (bindablePropertyReadAccessStrategy.IsPropertyAccessException (businessObject, bindableProperty, exception, out propertyAccessException))
+        if (bindablePropertyReadAccessStrategy.IsPropertyAccessException(businessObject, bindableProperty, exception, out propertyAccessException))
           return true;
       }
       propertyAccessException = null;

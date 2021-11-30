@@ -27,11 +27,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
   {
     public static ObjectID CreateObjectAndSetRelationInOtherTransaction (RelationEndPointDefinition endPointDefinition, ObjectID relatedID)
     {
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var domainObject = LifetimeService.NewObject (ClientTransaction.Current, endPointDefinition.ClassDefinition.ClassType, ParamList.Empty);
-        SetForeignKeyProperty (domainObject, endPointDefinition, relatedID);
-        ClientTransaction.Current.Commit ();
+        var domainObject = LifetimeService.NewObject(ClientTransaction.Current, endPointDefinition.ClassDefinition.ClassType, ParamList.Empty);
+        SetForeignKeyProperty(domainObject, endPointDefinition, relatedID);
+        ClientTransaction.Current.Commit();
 
         return domainObject.ID;
       }
@@ -39,11 +39,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     public static ObjectID SetRelationInOtherTransaction (RelationEndPointID endPointID, ObjectID relatedID)
     {
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var domainObject = LifetimeService.GetObject (ClientTransaction.Current, endPointID.ObjectID, true);
-        SetForeignKeyProperty (domainObject, (RelationEndPointDefinition) endPointID.Definition, relatedID);
-        ClientTransaction.Current.Commit ();
+        var domainObject = LifetimeService.GetObject(ClientTransaction.Current, endPointID.ObjectID, true);
+        SetForeignKeyProperty(domainObject, (RelationEndPointDefinition)endPointID.Definition, relatedID);
+        ClientTransaction.Current.Commit();
 
         return domainObject.ID;
       }
@@ -51,20 +51,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     public static void SetForeignKeyProperty (IDomainObject domainObject, RelationEndPointDefinition endPointDefinition, ObjectID relatedID)
     {
-      var relatedObject = LifetimeService.GetObjectReference (ClientTransaction.Current, relatedID);
-      var properties = new PropertyIndexer (domainObject);
-      properties[endPointDefinition.PropertyName].SetValue (relatedObject);
+      var relatedObject = LifetimeService.GetObjectReference(ClientTransaction.Current, relatedID);
+      var properties = new PropertyIndexer(domainObject);
+      properties[endPointDefinition.PropertyName].SetValue(relatedObject);
     }
 
     public static ObjectID CreateObjectAndSetRelationInOtherTransaction<TCreated, TRelated> (ObjectID relatedID, Action<TCreated, TRelated> setter)
         where TCreated : DomainObject
         where TRelated : DomainObject
     {
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var domainObject = (TCreated) LifetimeService.NewObject (ClientTransaction.Current, typeof (TCreated), ParamList.Empty);
-        setter (domainObject, relatedID != null ? (TRelated) LifetimeService.GetObject (ClientTransaction.Current, relatedID, true) : null);
-        ClientTransaction.Current.Commit ();
+        var domainObject = (TCreated)LifetimeService.NewObject(ClientTransaction.Current, typeof(TCreated), ParamList.Empty);
+        setter(domainObject, relatedID != null ? (TRelated)LifetimeService.GetObject(ClientTransaction.Current, relatedID, true) : null);
+        ClientTransaction.Current.Commit();
 
         return domainObject.ID;
       }
@@ -74,11 +74,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
         where TOriginating : DomainObject
         where TRelated : DomainObject
     {
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var domainObject = (TOriginating) LifetimeService.GetObject (ClientTransaction.Current, originatingID, true);
-        setter (domainObject, relatedID != null ? (TRelated) LifetimeService.GetObject (ClientTransaction.Current, relatedID, true) : null);
-        ClientTransaction.Current.Commit ();
+        var domainObject = (TOriginating)LifetimeService.GetObject(ClientTransaction.Current, originatingID, true);
+        setter(domainObject, relatedID != null ? (TRelated)LifetimeService.GetObject(ClientTransaction.Current, relatedID, true) : null);
+        ClientTransaction.Current.Commit();
 
         return domainObject.ID;
       }

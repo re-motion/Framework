@@ -22,21 +22,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
   [DBTable]
   [TestDomain]
-  [Uses (typeof (NullMixin))]
-  [Uses (typeof (MixinAddingInterface))]
-  [Uses (typeof (MixinOverridingPropertiesAndMethods))]
+  [Uses(typeof(NullMixin))]
+  [Uses(typeof(MixinAddingInterface))]
+  [Uses(typeof(MixinOverridingPropertiesAndMethods))]
   [Serializable]
   public class TargetClassForBehavioralMixin : DomainObject
   {
     public static TargetClassForBehavioralMixin NewObject ()
     {
-      return NewObject<TargetClassForBehavioralMixin> ();
+      return NewObject<TargetClassForBehavioralMixin>();
     }
 
     public virtual string Property
     {
-      get { return CurrentProperty.GetValue<string> (); }
-      set { CurrentProperty.SetValue (value); }
+      get { return CurrentProperty.GetValue<string>(); }
+      set { CurrentProperty.SetValue(value); }
     }
 
     public virtual string GetSomething ()

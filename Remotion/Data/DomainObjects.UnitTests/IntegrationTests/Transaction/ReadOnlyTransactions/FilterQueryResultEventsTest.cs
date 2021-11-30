@@ -35,103 +35,103 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order1 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      _order3 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Order3.GetObject<Order> ());
-      _order4 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Order4.GetObject<Order> ());
-      _order5 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Order5.GetObject<Order> ());
+      _order1 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Order1.GetObject<Order>());
+      _order3 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Order3.GetObject<Order>());
+      _order4 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Order4.GetObject<Order>());
+      _order5 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Order5.GetObject<Order>());
 
       _queryStub = MockRepository.GenerateStub<IQuery>();
 
-      InstallExtensionMock ();
+      InstallExtensionMock();
     }
 
     [Test]
     public void FilterQueryResult_RaisedInAllHierarchyLevels ()
     {
-      using (ExtensionStrictMock.GetMockRepository ().Ordered ())
+      using (ExtensionStrictMock.GetMockRepository().Ordered())
       {
         ExtensionStrictMock
-            .Expect (
-                mock => mock.FilterQueryResult (
-                    Arg.Is (ReadOnlyRootTransaction),
-                    Arg<QueryResult<DomainObject>>.Matches (qr => qr.ToArray().SequenceEqual (new[] { _order1 }))))
-            .Return (new QueryResult<DomainObject> (_queryStub, new[] { _order3 }))
-            .WhenCalled (mi => Assert.That (ReadOnlyRootTransaction.IsWriteable, Is.False));
+            .Expect(
+                mock => mock.FilterQueryResult(
+                    Arg.Is(ReadOnlyRootTransaction),
+                    Arg<QueryResult<DomainObject>>.Matches(qr => qr.ToArray().SequenceEqual(new[] { _order1 }))))
+            .Return(new QueryResult<DomainObject>(_queryStub, new[] { _order3 }))
+            .WhenCalled(mi => Assert.That(ReadOnlyRootTransaction.IsWriteable, Is.False));
 
         ExtensionStrictMock
-            .Expect (
-                mock => mock.FilterQueryResult (
-                    Arg.Is (ReadOnlyMiddleTransaction),
-                    Arg<QueryResult<DomainObject>>.Matches (qr => qr.ToArray ().SequenceEqual (new[] { _order3 }))))
-            .Return (new QueryResult<DomainObject> (_queryStub, new[] { _order4 }))
-            .WhenCalled (mi => Assert.That (ReadOnlyMiddleTransaction.IsWriteable, Is.False));
+            .Expect(
+                mock => mock.FilterQueryResult(
+                    Arg.Is(ReadOnlyMiddleTransaction),
+                    Arg<QueryResult<DomainObject>>.Matches(qr => qr.ToArray().SequenceEqual(new[] { _order3 }))))
+            .Return(new QueryResult<DomainObject>(_queryStub, new[] { _order4 }))
+            .WhenCalled(mi => Assert.That(ReadOnlyMiddleTransaction.IsWriteable, Is.False));
 
         ExtensionStrictMock
-            .Expect (
-                mock => mock.FilterQueryResult (
-                    Arg.Is (WriteableSubTransaction),
-                    Arg<QueryResult<DomainObject>>.Matches (qr => qr.ToArray ().SequenceEqual (new[] { _order4 }))))
-            .Return (new QueryResult<DomainObject> (_queryStub, new[] { _order5 }))
-            .WhenCalled (mi => Assert.That (WriteableSubTransaction.IsWriteable, Is.True));
+            .Expect(
+                mock => mock.FilterQueryResult(
+                    Arg.Is(WriteableSubTransaction),
+                    Arg<QueryResult<DomainObject>>.Matches(qr => qr.ToArray().SequenceEqual(new[] { _order4 }))))
+            .Return(new QueryResult<DomainObject>(_queryStub, new[] { _order5 }))
+            .WhenCalled(mi => Assert.That(WriteableSubTransaction.IsWriteable, Is.True));
       }
 
-      var result = ExecuteInWriteableSubTransaction (() => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.ID == _order1.ID).ToList());
+      var result = ExecuteInWriteableSubTransaction(() => QueryFactory.CreateLinqQuery<Order>().Where(obj => obj.ID == _order1.ID).ToList());
 
       ExtensionStrictMock.VerifyAllExpectations();
-      Assert.That (result, Is.EqualTo (new[] { _order5 }));
+      Assert.That(result, Is.EqualTo(new[] { _order5 }));
     }
 
     [Test]
     public void FilterCustomQueryResult_RaisedInAllHierarchyLevels ()
     {
-      var query = QueryFactory.CreateCustomQuery (
+      var query = QueryFactory.CreateCustomQuery(
           "CustomQuery",
           TestDomainStorageProviderDefinition,
           "SELECT [OrderNo] FROM [Order] WHERE ID=@1",
           new QueryParameterCollection { { "@1", _order1.ID } });
-      var fakeQueryResultRow1 = MockRepository.GenerateStub<IQueryResultRow> ();
-      var fakeQueryResultRow2 = MockRepository.GenerateStub<IQueryResultRow> ();
-      var fakeQueryResultRow3 = MockRepository.GenerateStub<IQueryResultRow> ();
+      var fakeQueryResultRow1 = MockRepository.GenerateStub<IQueryResultRow>();
+      var fakeQueryResultRow2 = MockRepository.GenerateStub<IQueryResultRow>();
+      var fakeQueryResultRow3 = MockRepository.GenerateStub<IQueryResultRow>();
 
-      using (ListenerDynamicMock.GetMockRepository ().Ordered ())
+      using (ListenerDynamicMock.GetMockRepository().Ordered())
       {
         ListenerDynamicMock
-            .Expect (
-                mock => mock.FilterCustomQueryResult (
-                    Arg.Is (ReadOnlyRootTransaction),
+            .Expect(
+                mock => mock.FilterCustomQueryResult(
+                    Arg.Is(ReadOnlyRootTransaction),
                     Arg<IQuery>.Is.Anything,
-                    Arg<IEnumerable<IQueryResultRow>>.Matches (qrrs => qrrs.Select (qrr => qrr.GetConvertedValue<int>(0)).Single() == 1)))
-            .Return (new[] { fakeQueryResultRow1 })
-            .WhenCalled (mi => Assert.That (ReadOnlyRootTransaction.IsWriteable, Is.False));
+                    Arg<IEnumerable<IQueryResultRow>>.Matches(qrrs => qrrs.Select(qrr => qrr.GetConvertedValue<int>(0)).Single() == 1)))
+            .Return(new[] { fakeQueryResultRow1 })
+            .WhenCalled(mi => Assert.That(ReadOnlyRootTransaction.IsWriteable, Is.False));
 
         ListenerDynamicMock
-            .Expect (
-                mock => mock.FilterCustomQueryResult (
-                    Arg.Is (ReadOnlyMiddleTransaction),
+            .Expect(
+                mock => mock.FilterCustomQueryResult(
+                    Arg.Is(ReadOnlyMiddleTransaction),
                     Arg<IQuery>.Is.Anything,
-                    Arg<IEnumerable<IQueryResultRow>>.List.Equal (new[] { fakeQueryResultRow1 })))
-            .Return (new[] { fakeQueryResultRow2 })
-            .WhenCalled (mi => Assert.That (ReadOnlyMiddleTransaction.IsWriteable, Is.False));
+                    Arg<IEnumerable<IQueryResultRow>>.List.Equal(new[] { fakeQueryResultRow1 })))
+            .Return(new[] { fakeQueryResultRow2 })
+            .WhenCalled(mi => Assert.That(ReadOnlyMiddleTransaction.IsWriteable, Is.False));
 
         ListenerDynamicMock
-            .Expect (
-                mock => mock.FilterCustomQueryResult (
-                    Arg.Is (WriteableSubTransaction),
+            .Expect(
+                mock => mock.FilterCustomQueryResult(
+                    Arg.Is(WriteableSubTransaction),
                     Arg<IQuery>.Is.Anything,
-                    Arg<IEnumerable<IQueryResultRow>>.List.Equal (new[] { fakeQueryResultRow2 })))
-            .Return (new[] { fakeQueryResultRow3 })
-            .WhenCalled (mi => Assert.That (WriteableSubTransaction.IsWriteable, Is.True));
+                    Arg<IEnumerable<IQueryResultRow>>.List.Equal(new[] { fakeQueryResultRow2 })))
+            .Return(new[] { fakeQueryResultRow3 })
+            .WhenCalled(mi => Assert.That(WriteableSubTransaction.IsWriteable, Is.True));
       }
-      ListenerDynamicMock.Replay ();
+      ListenerDynamicMock.Replay();
 
       InstallListenerMock();
 
-      var result = WriteableSubTransaction.QueryManager.GetCustom (query, qrr => qrr).ToList();
+      var result = WriteableSubTransaction.QueryManager.GetCustom(query, qrr => qrr).ToList();
 
-      ListenerDynamicMock.VerifyAllExpectations ();
-      Assert.That (result, Is.EqualTo (new[] { fakeQueryResultRow3 }));
+      ListenerDynamicMock.VerifyAllExpectations();
+      Assert.That(result, Is.EqualTo(new[] { fakeQueryResultRow3 }));
     }
   }
 }

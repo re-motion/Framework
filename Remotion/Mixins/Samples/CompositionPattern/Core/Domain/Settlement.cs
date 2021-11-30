@@ -28,9 +28,9 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Domain
   /// are also present on <see cref="ISettlement"/>. External components can also extend <see cref="Settlement"/> with external concerns. Members
   /// added by such concerns are not present in the composed interface; they are provided via extension methods.
   /// </summary>
-  [Uses (typeof (DocumentMixin))] // introduces IDocument
-  [Uses (typeof (TenantBoundMixin))] // introduces ITenantBoundObject
-  [Uses (typeof (SerialNumberMixin))] // overrides ToString
+  [Uses(typeof(DocumentMixin))] // introduces IDocument
+  [Uses(typeof(TenantBoundMixin))] // introduces ITenantBoundObject
+  [Uses(typeof(SerialNumberMixin))] // overrides ToString
   public class Settlement : ComposedDomainObject<ISettlement>, ISettlementImplementation
   {
     /// <summary>
@@ -40,12 +40,12 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Domain
     /// <returns></returns>
     public static ISettlement NewObject ()
     {
-      return NewObject<Settlement> (ParamList.Empty);
+      return NewObject<Settlement>(ParamList.Empty);
     }
 
     protected override void OnReferenceInitializing ()
     {
-      base.OnReferenceInitializing ();
+      base.OnReferenceInitializing();
       Events.Committing += Committing;
     }
 
@@ -53,12 +53,12 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Domain
 
     public override string ToString ()
     {
-      return string.Format ("Settlement: {0} ({1}); Tenant: {2}", This.Title, This.SettlementKind, This.Tenant);
+      return string.Format("Settlement: {0} ({1}); Tenant: {2}", This.Title, This.SettlementKind, This.Tenant);
     }
 
     private void Committing (object sender, EventArgs e)
     {
-      if (string.IsNullOrEmpty (SettlementKind))
+      if (string.IsNullOrEmpty(SettlementKind))
         SettlementKind = "Ordinary";
     }
   }

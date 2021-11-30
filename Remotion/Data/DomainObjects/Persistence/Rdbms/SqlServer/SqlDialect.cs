@@ -35,9 +35,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
 
     public virtual string GetParameterName (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
-      if (name.StartsWith ("@"))
+      if (name.StartsWith("@"))
         return name;
       else
         return "@" + name;
@@ -45,10 +45,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
 
     public virtual string DelimitIdentifier (string identifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("identifier", identifier);
+      ArgumentUtility.CheckNotNullOrEmpty("identifier", identifier);
 
       return "[" + identifier + "]";
     }
-    
+
   }
 }

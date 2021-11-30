@@ -36,7 +36,7 @@ namespace Remotion.Globalization
   /// </item>
   /// </list>
   /// </remarks>
-  [AttributeUsage (MultiLingualNameAttribute.AttributeTargets, AllowMultiple = true, Inherited = true)]
+  [AttributeUsage(MultiLingualNameAttribute.AttributeTargets, AllowMultiple = true, Inherited = true)]
   public class MultiLingualNameAttribute : Attribute
   {
     protected const AttributeTargets AttributeTargets =
@@ -60,11 +60,11 @@ namespace Remotion.Globalization
     /// </param>
     public MultiLingualNameAttribute ([NotNull] string localizedName, [NotNull] string culture)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("localizedName", localizedName);
-      ArgumentUtility.CheckNotNull ("culture", culture);
+      ArgumentUtility.CheckNotNullOrEmpty("localizedName", localizedName);
+      ArgumentUtility.CheckNotNull("culture", culture);
 
       _localizedName = localizedName;
-      _culture = CultureInfo.GetCultureInfo (culture);
+      _culture = CultureInfo.GetCultureInfo(culture);
     }
 
     [NotNull]

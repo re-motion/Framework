@@ -26,32 +26,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void Remove_WithInvalidObject ()
     {
-      var collection = new DomainObjectCollection ();
-      Customer customer = Customer.NewObject ();
-      collection.Add (customer);
-      customer.Delete ();
-      Assert.That (customer.State.IsInvalid, Is.True);
+      var collection = new DomainObjectCollection();
+      Customer customer = Customer.NewObject();
+      collection.Add(customer);
+      customer.Delete();
+      Assert.That(customer.State.IsInvalid, Is.True);
 
       //The next line does not throw an ObjectInvalidException:
-      collection.Remove (customer);
+      collection.Remove(customer);
 
-      Assert.That (collection, Is.Empty);
+      Assert.That(collection, Is.Empty);
     }
 
     [Test]
     public void Clear_WithInvalidObject ()
     {
-      var collection = new DomainObjectCollection ();
-      Customer customer = Customer.NewObject ();
-      collection.Add (customer);
+      var collection = new DomainObjectCollection();
+      Customer customer = Customer.NewObject();
+      collection.Add(customer);
 
-      customer.Delete ();
-      Assert.That (customer.State.IsInvalid, Is.True);
+      customer.Delete();
+      Assert.That(customer.State.IsInvalid, Is.True);
 
       //The next line does not throw an exception:
-      collection.Clear ();
+      collection.Clear();
 
-      Assert.That (collection, Is.Empty);
+      Assert.That(collection, Is.Empty);
     }
 
 

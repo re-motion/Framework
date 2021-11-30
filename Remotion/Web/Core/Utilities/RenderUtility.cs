@@ -34,9 +34,9 @@ namespace Remotion.Web.Utilities
     /// </summary>
     public static string JoinLinesWithEncoding (IEnumerable<string> lines)
     {
-      ArgumentUtility.CheckNotNull ("lines", lines);
+      ArgumentUtility.CheckNotNull("lines", lines);
 
-      return string.Join ("<br />", lines.Select (HttpUtility.HtmlEncode));
+      return string.Join("<br />", lines.Select(HttpUtility.HtmlEncode));
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ namespace Remotion.Web.Utilities
     /// </summary>
     public static void WriteEncodedLines (this HtmlTextWriter htmlTextWriter, IEnumerable<string> lines)
     {
-      ArgumentUtility.CheckNotNull ("lines", lines);
+      ArgumentUtility.CheckNotNull("lines", lines);
 
       var enumerator = lines.GetEnumerator();
       if (!enumerator.MoveNext())
@@ -52,7 +52,7 @@ namespace Remotion.Web.Utilities
 
       while (true)
       {
-        htmlTextWriter.WriteEncodedText (enumerator.Current);
+        htmlTextWriter.WriteEncodedText(enumerator.Current);
 
         if (enumerator.MoveNext())
           htmlTextWriter.WriteBreak();
@@ -69,48 +69,48 @@ namespace Remotion.Web.Utilities
           IReadOnlyDictionary<string, string?> dictionaryOfStringValues,
           IReadOnlyDictionary<string, IReadOnlyCollection<string>?>? dictionaryOfStringArrays = null)
     {
-      ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
-      ArgumentUtility.CheckNotNull ("dictionaryOfStringValues", dictionaryOfStringValues);
+      ArgumentUtility.CheckNotNull("stringBuilder", stringBuilder);
+      ArgumentUtility.CheckNotNull("dictionaryOfStringValues", dictionaryOfStringValues);
 
-      stringBuilder.Append ('{');
+      stringBuilder.Append('{');
 
       foreach (var dictionaryEntry in dictionaryOfStringValues)
       {
-        stringBuilder.AppendFormattedString (dictionaryEntry.Key);
-        stringBuilder.Append (':');
-        stringBuilder.AppendFormattedString (dictionaryEntry.Value);
-        stringBuilder.Append (',');
+        stringBuilder.AppendFormattedString(dictionaryEntry.Key);
+        stringBuilder.Append(':');
+        stringBuilder.AppendFormattedString(dictionaryEntry.Value);
+        stringBuilder.Append(',');
       }
 
       if (dictionaryOfStringArrays != null)
       {
         foreach (var dictionaryEntry in dictionaryOfStringArrays)
         {
-          stringBuilder.AppendFormattedString (dictionaryEntry.Key);
-          stringBuilder.Append (':');
-          stringBuilder.AppendStringCollection (dictionaryEntry.Value);
-          stringBuilder.Append (',');
+          stringBuilder.AppendFormattedString(dictionaryEntry.Key);
+          stringBuilder.Append(':');
+          stringBuilder.AppendStringCollection(dictionaryEntry.Value);
+          stringBuilder.Append(',');
         }
       }
 
       stringBuilder.RemoveTrailingComma();
 
-      stringBuilder.Append ('}');
+      stringBuilder.Append('}');
     }
 
     private static StringBuilder AppendFormattedString (this StringBuilder stringBuilder, string? value)
     {
       if (value == null)
       {
-        stringBuilder.Append ("null");
+        stringBuilder.Append("null");
       }
       else
       {
-        var hasDoubleQuotes = value.IndexOf ('\"') >= 0;
+        var hasDoubleQuotes = value.IndexOf('\"') >= 0;
         if (hasDoubleQuotes)
-          stringBuilder.Append ('\'').Append (value).Append ('\'');
+          stringBuilder.Append('\'').Append(value).Append('\'');
         else
-          stringBuilder.Append ('\"').Append (value).Append ('\"');
+          stringBuilder.Append('\"').Append(value).Append('\"');
       }
 
       return stringBuilder;
@@ -120,14 +120,14 @@ namespace Remotion.Web.Utilities
     {
       if (value == null)
       {
-        stringBuilder.Append ("null");
+        stringBuilder.Append("null");
       }
       else
       {
-        stringBuilder.Append ('[');
-        value.Aggregate (stringBuilder, (sb, itemID) => sb.AppendFormattedString (itemID).Append (','));
+        stringBuilder.Append('[');
+        value.Aggregate(stringBuilder, (sb, itemID) => sb.AppendFormattedString(itemID).Append(','));
         stringBuilder.RemoveTrailingComma();
-        stringBuilder.Append (']');
+        stringBuilder.Append(']');
       }
 
       return stringBuilder;
@@ -136,7 +136,7 @@ namespace Remotion.Web.Utilities
     private static StringBuilder RemoveTrailingComma (this StringBuilder stringBuilder)
     {
       if (stringBuilder[stringBuilder.Length - 1] == ',')
-        stringBuilder.Remove (stringBuilder.Length - 1, 1);
+        stringBuilder.Remove(stringBuilder.Length - 1, 1);
 
       return stringBuilder;
     }

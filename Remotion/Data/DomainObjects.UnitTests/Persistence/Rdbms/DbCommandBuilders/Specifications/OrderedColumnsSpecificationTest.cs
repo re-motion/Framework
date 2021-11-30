@@ -40,22 +40,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     [SetUp]
     public void SetUp ()
     {
-      _column1 = ColumnDefinitionObjectMother.CreateColumn ("Column1");
-      _column2 = ColumnDefinitionObjectMother.CreateColumn ("Column2");
-      _column3 = ColumnDefinitionObjectMother.CreateColumn ("Column3");
+      _column1 = ColumnDefinitionObjectMother.CreateColumn("Column1");
+      _column2 = ColumnDefinitionObjectMother.CreateColumn("Column2");
+      _column3 = ColumnDefinitionObjectMother.CreateColumn("Column3");
       _specification =
-          new OrderedColumnsSpecification (
+          new OrderedColumnsSpecification(
               new[]
               {
                   new OrderedColumn(_column1, SortOrder.Ascending), new OrderedColumn(_column2, SortOrder.Descending),
                   new OrderedColumn(_column3, SortOrder.Ascending)
               });
       _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect>();
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("Column1")).Return ("[delimited Column1]");
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("Column2")).Return ("[delimited Column2]");
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("Column3")).Return ("[delimited Column3]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Column1")).Return("[delimited Column1]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Column2")).Return("[delimited Column2]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Column3")).Return("[delimited Column3]");
 
-      _specificationWithEmptyColumns = new OrderedColumnsSpecification (new OrderedColumn[0]);
+      _specificationWithEmptyColumns = new OrderedColumnsSpecification(new OrderedColumn[0]);
     }
 
     [Test]
@@ -63,13 +63,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var result = OrderedColumnsSpecification.CreateEmpty();
 
-      Assert.That (result.Columns, Is.Empty);
+      Assert.That(result.Columns, Is.Empty);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_specification.Columns, Is.EqualTo (new[]
+      Assert.That(_specification.Columns, Is.EqualTo(new[]
               {
                   new OrderedColumn(_column1, SortOrder.Ascending), new OrderedColumn(_column2, SortOrder.Descending),
                   new OrderedColumn(_column3, SortOrder.Ascending)
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var result = _specificationWithEmptyColumns.IsEmpty;
 
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
     }
 
     [Test]
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var result = _specification.IsEmpty;
 
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
 
     [Test]
@@ -97,19 +97,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var sb = new StringBuilder();
 
-      _specification.AppendOrderings (sb, _sqlDialectStub);
+      _specification.AppendOrderings(sb, _sqlDialectStub);
 
-      Assert.That (sb.ToString(), Is.EqualTo ("[delimited Column1] ASC, [delimited Column2] DESC, [delimited Column3] ASC"));
+      Assert.That(sb.ToString(), Is.EqualTo("[delimited Column1] ASC, [delimited Column2] DESC, [delimited Column3] ASC"));
     }
 
     [Test]
     public void AppendOrderings_StringBuilderNotEmpty ()
     {
-      var sb = new StringBuilder ("test ");
+      var sb = new StringBuilder("test ");
 
-      _specification.AppendOrderings (sb, _sqlDialectStub);
+      _specification.AppendOrderings(sb, _sqlDialectStub);
 
-      Assert.That (sb.ToString (), Is.EqualTo ("test [delimited Column1] ASC, [delimited Column2] DESC, [delimited Column3] ASC"));
+      Assert.That(sb.ToString(), Is.EqualTo("test [delimited Column1] ASC, [delimited Column2] DESC, [delimited Column3] ASC"));
     }
 
     [Test]
@@ -117,9 +117,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var sb = new StringBuilder();
 
-      _specificationWithEmptyColumns.AppendOrderings (sb, _sqlDialectStub);
+      _specificationWithEmptyColumns.AppendOrderings(sb, _sqlDialectStub);
 
-      Assert.That (sb.ToString(), Is.Empty);
+      Assert.That(sb.ToString(), Is.Empty);
     }
 
     [Test]
@@ -128,27 +128,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       var selectedColumns = MockRepository.GenerateStrictMock<ISelectedColumnsSpecification>();
 
       selectedColumns
-        .Expect (mock => mock.Union (Arg<IEnumerable<ColumnDefinition>>.List.Equal (new[] { _column1, _column2, _column3 })))
-        .Return (selectedColumns);
+        .Expect(mock => mock.Union(Arg<IEnumerable<ColumnDefinition>>.List.Equal(new[] { _column1, _column2, _column3 })))
+        .Return(selectedColumns);
       selectedColumns.Replay();
 
-      var result = _specification.UnionWithSelectedColumns (selectedColumns);
+      var result = _specification.UnionWithSelectedColumns(selectedColumns);
 
-      Assert.That (result, Is.SameAs (selectedColumns));
+      Assert.That(result, Is.SameAs(selectedColumns));
       selectedColumns.VerifyAllExpectations();
     }
 
     [Test]
     public void UnionWithSelectedColumns_NoColumns ()
     {
-      var selectedColumns = MockRepository.GenerateStrictMock<ISelectedColumnsSpecification> ();
+      var selectedColumns = MockRepository.GenerateStrictMock<ISelectedColumnsSpecification>();
 
-      selectedColumns.Replay ();
+      selectedColumns.Replay();
 
-      var result = _specificationWithEmptyColumns.UnionWithSelectedColumns (selectedColumns);
+      var result = _specificationWithEmptyColumns.UnionWithSelectedColumns(selectedColumns);
 
-      Assert.That (result, Is.SameAs (selectedColumns));
-      selectedColumns.VerifyAllExpectations ();
+      Assert.That(result, Is.SameAs(selectedColumns));
+      selectedColumns.VerifyAllExpectations();
     }
   }
 }

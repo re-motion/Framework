@@ -33,38 +33,38 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_NullString ()
     {
       const string value = null;
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrEmpty ("arg", value),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmpty("arg", value),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
     public void Fail_EmptyString ()
     {
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrEmpty ("arg", ""),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmpty("arg", ""),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
     public void Fail_EmptyArray ()
     {
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrEmpty ("arg", new string[0]),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmpty("arg", new string[0]),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
     public void Fail_EmptyCollection ()
     {
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrEmpty ("arg", new ArrayList()),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmpty("arg", new ArrayList()),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
@@ -73,10 +73,10 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       ICollection<object> value = new List<object>();
 
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrEmpty ("arg", value),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmpty("arg", value),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
@@ -85,10 +85,10 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       IReadOnlyCollection<object> value = new List<object>();
 
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrEmpty ("arg", value),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmpty("arg", value),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
@@ -97,55 +97,55 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       IReadOnlyCollection<object> value = new List<object>();
 
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrEmpty ("arg", value),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmpty("arg", value),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
     public void Succeed_String ()
     {
-      string result = ArgumentUtility.CheckNotNullOrEmpty ("arg", "Test");
-      Assert.That (result, Is.EqualTo ("Test"));
+      string result = ArgumentUtility.CheckNotNullOrEmpty("arg", "Test");
+      Assert.That(result, Is.EqualTo("Test"));
     }
 
     [Test]
     public void Succeed_Array ()
     {
       var array = new[] { "test" };
-      string[] result = ArgumentUtility.CheckNotNullOrEmpty ("arg", array);
-      Assert.That (result, Is.SameAs (array));
+      string[] result = ArgumentUtility.CheckNotNullOrEmpty("arg", array);
+      Assert.That(result, Is.SameAs(array));
     }
 
     [Test]
     public void Succeed_Collection ()
     {
       var list = new ArrayList { "test" };
-      ArrayList result = ArgumentUtility.CheckNotNullOrEmpty ("arg", list);
-      Assert.That (result, Is.SameAs (list));
+      ArrayList result = ArgumentUtility.CheckNotNullOrEmpty("arg", list);
+      Assert.That(result, Is.SameAs(list));
     }
 
     [Test]
     public void Succeed_ICollectionOfT ()
     {
       ICollection<string> value = new List<string> { "test" };
-      ArgumentUtility.CheckNotNullOrEmpty ("arg", value);
+      ArgumentUtility.CheckNotNullOrEmpty("arg", value);
     }
 
     [Test]
     public void Succeed_IReadOnlyCollectionOfT ()
     {
       IReadOnlyCollection<string> value = new List<string> { "test" };
-      ArgumentUtility.CheckNotNullOrEmpty ("arg", value);
+      ArgumentUtility.CheckNotNullOrEmpty("arg", value);
     }
 
     [Test]
     public void Succeed_ListOfT ()
     {
       List<string> value = new List<string> { "test" };
-      ArgumentUtility.CheckNotNullOrEmpty ("arg", value);
+      ArgumentUtility.CheckNotNullOrEmpty("arg", value);
     }
   }
 }

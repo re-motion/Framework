@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
   /// that can apply the <see cref="IBusinessObjectValidationResult"/> object to the respective control.
   /// </summary>
   /// <seealso cref="IUserControlBindingValidatorFactory"/>
-  [ImplementationFor (typeof (IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
+  [ImplementationFor(typeof(IUserControlBindingValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class ValidationUserControlBindingValidatorFactory : IUserControlBindingValidatorFactory
   {
     public const int Position = Web.UI.Controls.UserControlBindingValidatorFactory.Position + 1;
@@ -39,17 +39,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
 
     public IEnumerable<BaseValidator> CreateValidators (UserControlBinding control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (isReadOnly)
         yield break;
 
-      yield return CreateBocListValidator (control);
+      yield return CreateBocListValidator(control);
     }
 
     private BaseValidator CreateBocListValidator (UserControlBinding control)
     {
-      Assertion.IsNotNull (control.ID, "control.ID must not be null.");
+      Assertion.IsNotNull(control.ID, "control.ID must not be null.");
 
       var bocValidator = new UserControlBindingValidationResultDispatchingValidator();
       bocValidator.ControlToValidate = control.ID;

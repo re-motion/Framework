@@ -41,95 +41,95 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     {
       _validationRule = new TableNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule();
 
-      _baseOfBaseClass = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (BaseOfBaseValidationDomainObjectClass));
-      _derivedBaseClass1 = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (BaseValidationDomainObjectClass), baseClass: _baseOfBaseClass);
-      _derivedClass = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (DerivedValidationDomainObjectClass), baseClass: _derivedBaseClass1);
+      _baseOfBaseClass = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass));
+      _derivedBaseClass1 = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseValidationDomainObjectClass), baseClass: _baseOfBaseClass);
+      _derivedClass = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(DerivedValidationDomainObjectClass), baseClass: _derivedBaseClass1);
 
-      _baseOfBaseClass.SetDerivedClasses (new[] { _derivedBaseClass1 });
-      _derivedBaseClass1.SetDerivedClasses (new[] { _derivedClass });
-      _derivedClass.SetDerivedClasses (new ClassDefinition[0]);
+      _baseOfBaseClass.SetDerivedClasses(new[] { _derivedBaseClass1 });
+      _derivedBaseClass1.SetDerivedClasses(new[] { _derivedClass });
+      _derivedClass.SetDerivedClasses(new ClassDefinition[0]);
 
-      var storageProviderDefinition = new UnitTestStorageProviderStubDefinition ("DefaultStorageProvider");
-      _tableDefinition1 = TableDefinitionObjectMother.Create (storageProviderDefinition, new EntityNameDefinition (null, "TableName1"));
-      _tableDefinition2 = TableDefinitionObjectMother.Create (storageProviderDefinition, new EntityNameDefinition (null, "TableName2"));
-      _unionViewDefinition = UnionViewDefinitionObjectMother.Create (storageProviderDefinition);
+      var storageProviderDefinition = new UnitTestStorageProviderStubDefinition("DefaultStorageProvider");
+      _tableDefinition1 = TableDefinitionObjectMother.Create(storageProviderDefinition, new EntityNameDefinition(null, "TableName1"));
+      _tableDefinition2 = TableDefinitionObjectMother.Create(storageProviderDefinition, new EntityNameDefinition(null, "TableName2"));
+      _unionViewDefinition = UnionViewDefinitionObjectMother.Create(storageProviderDefinition);
     }
 
     [Test]
     public void NoInheritanceRoot ()
     {
-      var validationResult = _validationRule.Validate (_derivedBaseClass1);
+      var validationResult = _validationRule.Validate(_derivedBaseClass1);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void InheritanceRoot_NoTableDefinition ()
     {
-      _baseOfBaseClass.SetStorageEntity (_unionViewDefinition);
-      _derivedBaseClass1.SetStorageEntity (_unionViewDefinition);
-      _derivedClass.SetStorageEntity (_unionViewDefinition);
+      _baseOfBaseClass.SetStorageEntity(_unionViewDefinition);
+      _derivedBaseClass1.SetStorageEntity(_unionViewDefinition);
+      _derivedClass.SetStorageEntity(_unionViewDefinition);
 
-      var validationResult = _validationRule.Validate (_baseOfBaseClass);
+      var validationResult = _validationRule.Validate(_baseOfBaseClass);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
 
     [Test]
     public void InheritanceRoot_UniqueTableDefinition ()
     {
-      _baseOfBaseClass.SetStorageEntity (_tableDefinition1);
-      _derivedBaseClass1.SetStorageEntity (_unionViewDefinition);
-      _derivedClass.SetStorageEntity (_unionViewDefinition);
+      _baseOfBaseClass.SetStorageEntity(_tableDefinition1);
+      _derivedBaseClass1.SetStorageEntity(_unionViewDefinition);
+      _derivedClass.SetStorageEntity(_unionViewDefinition);
 
-      var validationResult = _validationRule.Validate (_baseOfBaseClass);
+      var validationResult = _validationRule.Validate(_baseOfBaseClass);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void InheritanceRoot_DifferentTableNameInDerivedClass ()
     {
-      _baseOfBaseClass.SetStorageEntity (_tableDefinition1);
-      _derivedBaseClass1.SetStorageEntity (_tableDefinition2);
-      _derivedClass.SetStorageEntity (_unionViewDefinition);
+      _baseOfBaseClass.SetStorageEntity(_tableDefinition1);
+      _derivedBaseClass1.SetStorageEntity(_tableDefinition2);
+      _derivedClass.SetStorageEntity(_unionViewDefinition);
 
-      var validationResult = _validationRule.Validate (_baseOfBaseClass);
+      var validationResult = _validationRule.Validate(_baseOfBaseClass);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void InheritanceRoot_SameTableNameInDerivedClass ()
     {
-      _baseOfBaseClass.SetStorageEntity (_tableDefinition1);
-      _derivedBaseClass1.SetStorageEntity (_tableDefinition1);
-      _derivedClass.SetStorageEntity (_unionViewDefinition);
+      _baseOfBaseClass.SetStorageEntity(_tableDefinition1);
+      _derivedBaseClass1.SetStorageEntity(_tableDefinition1);
+      _derivedClass.SetStorageEntity(_unionViewDefinition);
 
-      var validationResult = _validationRule.Validate (_baseOfBaseClass);
+      var validationResult = _validationRule.Validate(_baseOfBaseClass);
 
       var expectedMessage =
           "At least two classes in different inheritance branches derived from abstract class 'BaseOfBaseValidationDomainObjectClass' "
           + "specify the same entity name 'TableName1', which is not allowed.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.BaseOfBaseValidationDomainObjectClass";
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
 
     [Test]
     public void InheritanceRoot_SameTableNameInDerivedDerivedClass ()
     {
-      _baseOfBaseClass.SetStorageEntity (_tableDefinition1);
-      _derivedBaseClass1.SetStorageEntity (_unionViewDefinition);
-      _derivedClass.SetStorageEntity (_tableDefinition1);
+      _baseOfBaseClass.SetStorageEntity(_tableDefinition1);
+      _derivedBaseClass1.SetStorageEntity(_unionViewDefinition);
+      _derivedClass.SetStorageEntity(_tableDefinition1);
 
-      var validationResult = _validationRule.Validate (_baseOfBaseClass);
+      var validationResult = _validationRule.Validate(_baseOfBaseClass);
 
       var expectedMessage =
           "At least two classes in different inheritance branches derived from abstract class 'BaseOfBaseValidationDomainObjectClass' "
           + "specify the same entity name 'TableName1', which is not allowed.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.BaseOfBaseValidationDomainObjectClass";
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
   }
 }

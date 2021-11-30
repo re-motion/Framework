@@ -38,31 +38,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
       base.SetUp();
 
       _queryMock = MockRepository.GenerateStrictMock<IQuery>();
-      _queryAdapterBase = new TestableQueryAdapterBase<object> (_queryMock);
+      _queryAdapterBase = new TestableQueryAdapterBase<object>(_queryMock);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_queryAdapterBase.Query, Is.SameAs (_queryMock));
+      Assert.That(_queryAdapterBase.Query, Is.SameAs(_queryMock));
     }
 
     [Test]
     public void DelegatedMembers ()
     {
-      var testHelper = new DecoratorTestHelper<IQuery> (_queryAdapterBase, _queryMock);
+      var testHelper = new DecoratorTestHelper<IQuery>(_queryAdapterBase, _queryMock);
 
       var parameterCollection = new QueryParameterCollection { { "p1", 7 } };
-      var eagerFetchQueries = 
-          new EagerFetchQueryCollection { { GetEndPointDefinition (typeof (Order), "OrderTicket"), MockRepository.GenerateStub<IQuery>() } };
-      
-      testHelper.CheckDelegation (q => q.ID, "Some ID");
-      testHelper.CheckDelegation (q => q.Statement, "Some Statement");
-      testHelper.CheckDelegation (q => q.StorageProviderDefinition, TestDomainStorageProviderDefinition);
-      testHelper.CheckDelegation (q => q.CollectionType, typeof (OrderCollection));
-      testHelper.CheckDelegation (q => q.QueryType, QueryType.Collection);
-      testHelper.CheckDelegation (q => q.Parameters, parameterCollection);
-      testHelper.CheckDelegation (q => q.EagerFetchQueries, eagerFetchQueries);
+      var eagerFetchQueries =
+          new EagerFetchQueryCollection { { GetEndPointDefinition(typeof(Order), "OrderTicket"), MockRepository.GenerateStub<IQuery>() } };
+
+      testHelper.CheckDelegation(q => q.ID, "Some ID");
+      testHelper.CheckDelegation(q => q.Statement, "Some Statement");
+      testHelper.CheckDelegation(q => q.StorageProviderDefinition, TestDomainStorageProviderDefinition);
+      testHelper.CheckDelegation(q => q.CollectionType, typeof(OrderCollection));
+      testHelper.CheckDelegation(q => q.QueryType, QueryType.Collection);
+      testHelper.CheckDelegation(q => q.Parameters, parameterCollection);
+      testHelper.CheckDelegation(q => q.EagerFetchQueries, eagerFetchQueries);
     }
   }
 }

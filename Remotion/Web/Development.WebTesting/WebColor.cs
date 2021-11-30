@@ -27,9 +27,9 @@ namespace Remotion.Web.Development.WebTesting
   /// </remarks>
   public struct WebColor : IEquatable<WebColor>
   {
-    public static readonly WebColor Transparent = new WebColor (true);
-    public static readonly WebColor White = new WebColor (255, 255, 255);
-    public static readonly WebColor Black = new WebColor (0, 0, 0);
+    public static readonly WebColor Transparent = new WebColor(true);
+    public static readonly WebColor White = new WebColor(255, 255, 255);
+    public static readonly WebColor Black = new WebColor(0, 0, 0);
 
     private readonly byte _red;
     private readonly byte _green;
@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting
 
     public static WebColor FromRgb (byte r, byte g, byte b)
     {
-      return new WebColor (r, g, b);
+      return new WebColor(r, g, b);
     }
 
     private WebColor (byte r, byte g, byte b)
@@ -84,9 +84,9 @@ namespace Remotion.Web.Development.WebTesting
 
     public override bool Equals (object? obj)
     {
-      if (ReferenceEquals (null, obj))
+      if (ReferenceEquals(null, obj))
         return false;
-      return obj is WebColor && Equals ((WebColor) obj);
+      return obj is WebColor && Equals((WebColor)obj);
     }
 
     public override int GetHashCode ()
@@ -103,12 +103,12 @@ namespace Remotion.Web.Development.WebTesting
 
     public static bool operator == (WebColor left, WebColor right)
     {
-      return left.Equals (right);
+      return left.Equals(right);
     }
 
     public static bool operator != (WebColor left, WebColor right)
     {
-      return !left.Equals (right);
+      return !left.Equals(right);
     }
 
     public override string ToString ()
@@ -116,7 +116,7 @@ namespace Remotion.Web.Development.WebTesting
       if (IsTransparent)
         return "Transparent";
 
-      return string.Format ("RGB=({0},{1},{2})", R, G, B);
+      return string.Format("RGB=({0},{1},{2})", R, G, B);
     }
   }
 }

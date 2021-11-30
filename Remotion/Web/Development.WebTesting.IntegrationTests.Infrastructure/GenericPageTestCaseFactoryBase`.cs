@@ -50,77 +50,77 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// <inheritdoc />
     protected override IEnumerable<TestCaseData> GetTests ()
     {
-      return GetTests<GenericPageTestMethodAttribute> (CreateTestCaseData);
+      return GetTests<GenericPageTestMethodAttribute>(CreateTestCaseData);
     }
 
     protected void PrepareTest ([NotNull] GenericPageTestMethodAttribute attribute, [NotNull] WebTestHelper helper, [NotNull] string control)
     {
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
-      ArgumentUtility.CheckNotNull ("helper", helper);
-      ArgumentUtility.CheckNotNullOrEmpty ("control", control);
+      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentUtility.CheckNotNull("helper", helper);
+      ArgumentUtility.CheckNotNullOrEmpty("control", control);
 
       if (s_webApplicationRoot == null)
       {
-        s_webApplicationRoot = new Lazy<Uri> (
+        s_webApplicationRoot = new Lazy<Uri>(
             () =>
             {
-              var uri = new Uri (helper.TestInfrastructureConfiguration.WebApplicationRoot);
+              var uri = new Uri(helper.TestInfrastructureConfiguration.WebApplicationRoot);
 
               // RM-7401: Edge loads pages slower due to repeated hostname resolution.
               if (helper.BrowserConfiguration.IsEdge())
-                return HostnameResolveHelper.ResolveHostname (uri);
+                return HostnameResolveHelper.ResolveHostname(uri);
 
               return uri;
             });
       }
 
-      var url = string.Concat (
+      var url = string.Concat(
           s_webApplicationRoot.Value.ToString(),
-          string.Format (TestConstants.GenericPageUrlTemplate, control, (int) attribute.PageType));
+          string.Format(TestConstants.GenericPageUrlTemplate, control, (int)attribute.PageType));
 
-      base.PrepareTest (attribute, helper, url);
+      base.PrepareTest(attribute, helper, url);
 
-      var text = Home.Scope.FindId (TestConstants.GenericPageOutputID).Text;
-      if (string.IsNullOrWhiteSpace (text))
-        throw new InvalidOperationException ("The generic test page did not provide any test information.");
+      var text = Home.Scope.FindId(TestConstants.GenericPageOutputID).Text;
+      if (string.IsNullOrWhiteSpace(text))
+        throw new InvalidOperationException("The generic test page did not provide any test information.");
 
       var serializerOptions = new JsonSerializerOptions { Converters = { GenericTestParameterConverter.Instance } };
-      var dto = JsonSerializer.Deserialize<GenericTestPageParameterDto> (text, serializerOptions);
+      var dto = JsonSerializer.Deserialize<GenericTestPageParameterDto>(text, serializerOptions);
       if (dto == null)
-        throw new InvalidOperationException ("The generic test page output is not in a correct format.");
+        throw new InvalidOperationException("The generic test page output is not in a correct format.");
 
       switch (dto.Status)
       {
         case GenericTestPageStatus.Failed:
-          throw new InvalidOperationException (string.Format ("The generic test page does not support the control '{0}'", control));
+          throw new InvalidOperationException(string.Format("The generic test page does not support the control '{0}'", control));
         case GenericTestPageStatus.Ok:
           break;
         case GenericTestPageStatus.Unknown:
-          throw new InvalidOperationException ("The generic web page encountered an unknown error.");
+          throw new InvalidOperationException("The generic web page encountered an unknown error.");
         default:
-          throw new InvalidOperationException ("The generic web page provided an invalid status code.");
+          throw new InvalidOperationException("The generic web page provided an invalid status code.");
       }
 
       var parameter = new TParameter();
       var argumentCount = parameter.Count;
       if (argumentCount > 0)
       {
-        if (!dto.Parameters.TryGetValue (parameter.Name, out var information))
+        if (!dto.Parameters.TryGetValue(parameter.Name, out var information))
         {
-          throw new InvalidOperationException (
-              string.Format ("The generic web page did not provide any arguments, but {0} arguments where expected.", argumentCount));
+          throw new InvalidOperationException(
+              string.Format("The generic web page did not provide any arguments, but {0} arguments where expected.", argumentCount));
         }
 
         if (information.Arguments.Count != argumentCount)
         {
-          throw new InvalidOperationException (
-              string.Format (
+          throw new InvalidOperationException(
+              string.Format(
                   "The generic web page provided {0} arguments, but {1} arguments where expected.",
                   argumentCount,
                   information.Arguments.Count));
         }
 
-        parameter.Apply (information);
+        parameter.Apply(information);
       }
 
       PageType = attribute.PageType;
@@ -129,14 +129,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     private TestCaseData CreateTestCaseData ([NotNull] GenericPageTestMethodAttribute attribute, [NotNull] MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
-      ArgumentUtility.CheckNotNull ("method", method);
+      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentUtility.CheckNotNull("method", method);
 
-      return new TestCaseData (
-          (GenericTestSetupAction) ((helper, control) =>
+      return new TestCaseData(
+          (GenericTestSetupAction)((helper, control) =>
           {
-            PrepareTest (attribute, helper, control);
-            RunTest (method);
+            PrepareTest(attribute, helper, control);
+            RunTest(method);
           }));
     }
   }

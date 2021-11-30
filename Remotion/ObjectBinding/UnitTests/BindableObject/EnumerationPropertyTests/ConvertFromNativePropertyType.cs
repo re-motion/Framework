@@ -31,54 +31,54 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     {
       base.SetUp();
 
-      _businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ();
+      _businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
     }
 
     [Test]
     public void ValidValue ()
     {
-      PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
+      PropertyBase property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
 
-      Assert.That (property.ConvertFromNativePropertyType (TestEnum.Value1), Is.EqualTo (TestEnum.Value1));
+      Assert.That(property.ConvertFromNativePropertyType(TestEnum.Value1), Is.EqualTo(TestEnum.Value1));
     }
 
     [Test]
     public void Null ()
     {
-      PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
+      PropertyBase property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
 
-      Assert.That (property.ConvertFromNativePropertyType (null), Is.Null);
+      Assert.That(property.ConvertFromNativePropertyType(null), Is.Null);
     }
 
     [Test]
     public void UndefinedValue ()
     {
-      PropertyBase property = CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
+      PropertyBase property = CreateProperty(typeof(ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
 
-      Assert.That (property.ConvertFromNativePropertyType (EnumWithUndefinedValue.UndefinedValue), Is.Null);
+      Assert.That(property.ConvertFromNativePropertyType(EnumWithUndefinedValue.UndefinedValue), Is.Null);
     }
 
     [Test]
     public void InvalidEnumValue ()
     {
-      PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
+      PropertyBase property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
 
-      Assert.That (property.ConvertFromNativePropertyType ((TestEnum) (-1)), Is.EqualTo ((TestEnum) (-1)));
+      Assert.That(property.ConvertFromNativePropertyType((TestEnum)(-1)), Is.EqualTo((TestEnum)(-1)));
     }
 
     [Test]
     public void EnumValueFromOtherType ()
     {
-      PropertyBase property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
+      PropertyBase property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
 
-      property.ConvertFromNativePropertyType (EnumWithUndefinedValue.Value1);
-      Assert.That (property.ConvertFromNativePropertyType (EnumWithUndefinedValue.Value1), Is.EqualTo (EnumWithUndefinedValue.Value1));
+      property.ConvertFromNativePropertyType(EnumWithUndefinedValue.Value1);
+      Assert.That(property.ConvertFromNativePropertyType(EnumWithUndefinedValue.Value1), Is.EqualTo(EnumWithUndefinedValue.Value1));
     }
-    
+
     private EnumerationProperty CreateProperty (Type type, string propertyName)
     {
-      return new EnumerationProperty (
-        GetPropertyParameters (GetPropertyInfo (type, propertyName), _businessObjectProvider));
+      return new EnumerationProperty(
+        GetPropertyParameters(GetPropertyInfo(type, propertyName), _businessObjectProvider));
     }
   }
 }

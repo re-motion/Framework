@@ -37,237 +37,237 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
     [Test]
     public void SetLabelReferenceOnControl_WithLabelIDs ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new DefaultRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new DefaultRenderingFeatures());
       var labelControl = new Label();
 
-      labelReferenceRenderer.SetLabelsReferenceOnControl (
+      labelReferenceRenderer.SetLabelsReferenceOnControl(
           labelControl,
           new[] { "Label1", "Label2" },
           new string[0]);
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (1));
-      Assert.That (labelControl.Attributes["aria-labelledby"], Is.EqualTo ("Label1 Label2"));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(1));
+      Assert.That(labelControl.Attributes["aria-labelledby"], Is.EqualTo("Label1 Label2"));
     }
 
     [Test]
     public void SetLabelReferenceOnControl_WithLabelIDs_AndAccessibilityAnnotationIDs ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new DefaultRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new DefaultRenderingFeatures());
       var labelControl = new Label();
 
-      labelReferenceRenderer.SetLabelsReferenceOnControl (
+      labelReferenceRenderer.SetLabelsReferenceOnControl(
           labelControl,
           new[] { "Label1", "Label2" },
           new[] { "AccessibilityAnnotation1", "AccessibilityAnnotation2" });
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (1));
-      Assert.That (labelControl.Attributes["aria-labelledby"], Is.EqualTo ("Label1 Label2 AccessibilityAnnotation1 AccessibilityAnnotation2"));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(1));
+      Assert.That(labelControl.Attributes["aria-labelledby"], Is.EqualTo("Label1 Label2 AccessibilityAnnotation1 AccessibilityAnnotation2"));
     }
 
     [Test]
     public void SetLabelReferenceOnControl_WithAccessibilityAnnotationIDs ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new DefaultRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new DefaultRenderingFeatures());
       var labelControl = new Label();
 
-      labelReferenceRenderer.SetLabelsReferenceOnControl (
+      labelReferenceRenderer.SetLabelsReferenceOnControl(
           labelControl,
-          new string[0], 
+          new string[0],
           new[] { "AccessibilityAnnotation1", "AccessibilityAnnotation2" });
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (1));
-      Assert.That (labelControl.Attributes["aria-labelledby"], Is.EqualTo ("AccessibilityAnnotation1 AccessibilityAnnotation2"));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(1));
+      Assert.That(labelControl.Attributes["aria-labelledby"], Is.EqualTo("AccessibilityAnnotation1 AccessibilityAnnotation2"));
     }
 
     [Test]
     public void SetLabelReferenceOnControl_WithDiagnosticMetadataEnabled ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new WithDiagnosticMetadataRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new WithDiagnosticMetadataRenderingFeatures());
       var labelControl = new Label();
 
-      labelReferenceRenderer.SetLabelsReferenceOnControl (
+      labelReferenceRenderer.SetLabelsReferenceOnControl(
           labelControl,
           new[] { "Label1", "Label2" },
           new string[0]);
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (2));
-      Assert.That (labelControl.Attributes["aria-labelledby"], Is.EqualTo ("Label1 Label2"));
-      Assert.That (labelControl.Attributes[DiagnosticMetadataAttributes.LabelIDIndex], Is.EqualTo ("0 1"));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(2));
+      Assert.That(labelControl.Attributes["aria-labelledby"], Is.EqualTo("Label1 Label2"));
+      Assert.That(labelControl.Attributes[DiagnosticMetadataAttributes.LabelIDIndex], Is.EqualTo("0 1"));
     }
 
     [Test]
     public void SetLabelReferenceOnControl_WithDiagnosticMetadataEnabled_AndAccessibilityAnnotationIDs ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new WithDiagnosticMetadataRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new WithDiagnosticMetadataRenderingFeatures());
       var labelControl = new Label();
 
-      labelReferenceRenderer.SetLabelsReferenceOnControl (
+      labelReferenceRenderer.SetLabelsReferenceOnControl(
           labelControl,
           new[] { "Label1", "Label2" },
           new[] { "AccessibilityAnnotation1", "AccessibilityAnnotation2" });
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (2));
-      Assert.That (labelControl.Attributes["aria-labelledby"], Is.EqualTo ("Label1 Label2 AccessibilityAnnotation1 AccessibilityAnnotation2"));
-      Assert.That (labelControl.Attributes[DiagnosticMetadataAttributes.LabelIDIndex], Is.EqualTo ("0 1"));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(2));
+      Assert.That(labelControl.Attributes["aria-labelledby"], Is.EqualTo("Label1 Label2 AccessibilityAnnotation1 AccessibilityAnnotation2"));
+      Assert.That(labelControl.Attributes[DiagnosticMetadataAttributes.LabelIDIndex], Is.EqualTo("0 1"));
     }
 
     [Test]
     public void SetLabelReferenceOnControl_WithoutLabelIDs ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new DefaultRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new DefaultRenderingFeatures());
       var labelControl = new Label();
 
-      labelReferenceRenderer.SetLabelsReferenceOnControl (
+      labelReferenceRenderer.SetLabelsReferenceOnControl(
           labelControl,
           new string[0],
           new string[0]);
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (0));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void RenderLabelReference_WithLabelIDs ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new DefaultRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new DefaultRenderingFeatures());
 
-      labelReferenceRenderer.AddLabelsReference (_html.Writer, new[] { "Label1", "Label2" }, new string[0]);
-      _html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      labelReferenceRenderer.AddLabelsReference(_html.Writer, new[] { "Label1", "Label2" }, new string[0]);
+      _html.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       _html.Writer.RenderEndTag();
 
       var document = _html.GetResultDocument();
-      var span = _html.GetAssertedChildElement (document, "span", 0);
-      _html.AssertAttribute (span, "aria-labelledby", "Label1 Label2");
-      _html.AssertNoAttribute (span, DiagnosticMetadataAttributes.LabelIDIndex);
+      var span = _html.GetAssertedChildElement(document, "span", 0);
+      _html.AssertAttribute(span, "aria-labelledby", "Label1 Label2");
+      _html.AssertNoAttribute(span, DiagnosticMetadataAttributes.LabelIDIndex);
     }
 
     [Test]
     public void RenderLabelReference_WithAccessibilityAnnotationIDs ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new DefaultRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new DefaultRenderingFeatures());
 
-      labelReferenceRenderer.AddLabelsReference (
+      labelReferenceRenderer.AddLabelsReference(
           _html.Writer,
           new[] { "Label1", "Label2" },
           new[] { "AccessibilityAnnotation1", "AccessibilityAnnotation2" });
 
-      _html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      _html.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       _html.Writer.RenderEndTag();
 
       var document = _html.GetResultDocument();
-      var span = _html.GetAssertedChildElement (document, "span", 0);
-      _html.AssertAttribute (span, "aria-labelledby", "Label1 Label2 AccessibilityAnnotation1 AccessibilityAnnotation2");
-      _html.AssertNoAttribute (span, DiagnosticMetadataAttributes.LabelIDIndex);
+      var span = _html.GetAssertedChildElement(document, "span", 0);
+      _html.AssertAttribute(span, "aria-labelledby", "Label1 Label2 AccessibilityAnnotation1 AccessibilityAnnotation2");
+      _html.AssertNoAttribute(span, DiagnosticMetadataAttributes.LabelIDIndex);
     }
 
     [Test]
     public void RenderLabelReference_WithOnlyAccessibilityAnnotationIDs ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new DefaultRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new DefaultRenderingFeatures());
 
-      labelReferenceRenderer.AddLabelsReference (
+      labelReferenceRenderer.AddLabelsReference(
           _html.Writer,
           new string[0],
           new[] { "AccessibilityAnnotation1", "AccessibilityAnnotation2" });
 
-      _html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      _html.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       _html.Writer.RenderEndTag();
 
       var document = _html.GetResultDocument();
-      var span = _html.GetAssertedChildElement (document, "span", 0);
-      _html.AssertAttribute (span, "aria-labelledby", "AccessibilityAnnotation1 AccessibilityAnnotation2");
-      _html.AssertNoAttribute (span, DiagnosticMetadataAttributes.LabelIDIndex);
+      var span = _html.GetAssertedChildElement(document, "span", 0);
+      _html.AssertAttribute(span, "aria-labelledby", "AccessibilityAnnotation1 AccessibilityAnnotation2");
+      _html.AssertNoAttribute(span, DiagnosticMetadataAttributes.LabelIDIndex);
     }
 
     [Test]
     public void RenderLabelReference_WithDiagnosticMetadataEnabled ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new WithDiagnosticMetadataRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new WithDiagnosticMetadataRenderingFeatures());
 
-      labelReferenceRenderer.AddLabelsReference (
+      labelReferenceRenderer.AddLabelsReference(
           _html.Writer,
           new[] { "Label1", "Label2" },
           new string[0]);
 
-      _html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      _html.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       _html.Writer.RenderEndTag();
 
       var document = _html.GetResultDocument();
-      var span = _html.GetAssertedChildElement (document, "span", 0);
-      _html.AssertAttribute (span, "aria-labelledby", "Label1 Label2");
-      _html.AssertAttribute (span, DiagnosticMetadataAttributes.LabelIDIndex, "0 1");
+      var span = _html.GetAssertedChildElement(document, "span", 0);
+      _html.AssertAttribute(span, "aria-labelledby", "Label1 Label2");
+      _html.AssertAttribute(span, DiagnosticMetadataAttributes.LabelIDIndex, "0 1");
     }
 
     [Test]
     public void SetLabelReferenceOnControl_WithDiagnosticMetadataEnabled_AndOnlyAccessibilityAnnotationIDs ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new WithDiagnosticMetadataRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new WithDiagnosticMetadataRenderingFeatures());
       var labelControl = new Label();
 
-      labelReferenceRenderer.SetLabelsReferenceOnControl (
+      labelReferenceRenderer.SetLabelsReferenceOnControl(
           labelControl,
           new string[0],
           new[] { "AccessibilityAnnotation1", "AccessibilityAnnotation2" });
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (2));
-      Assert.That (labelControl.Attributes["aria-labelledby"], Is.EqualTo ("AccessibilityAnnotation1 AccessibilityAnnotation2"));
-      Assert.That (labelControl.Attributes[DiagnosticMetadataAttributes.LabelIDIndex], Is.EqualTo (""));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(2));
+      Assert.That(labelControl.Attributes["aria-labelledby"], Is.EqualTo("AccessibilityAnnotation1 AccessibilityAnnotation2"));
+      Assert.That(labelControl.Attributes[DiagnosticMetadataAttributes.LabelIDIndex], Is.EqualTo(""));
     }
 
     [Test]
     public void RenderLabelReference_WithDiagnosticMetadataEnabled_AndAccessibilityAnnotationIDs ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new WithDiagnosticMetadataRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new WithDiagnosticMetadataRenderingFeatures());
 
-      labelReferenceRenderer.AddLabelsReference (
+      labelReferenceRenderer.AddLabelsReference(
           _html.Writer,
           new[] { "Label1", "Label2" },
           new[] { "AccessibilityAnnotation1", "AccessibilityAnnotation2" });
 
-      _html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      _html.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       _html.Writer.RenderEndTag();
 
       var document = _html.GetResultDocument();
-      var span = _html.GetAssertedChildElement (document, "span", 0);
-      _html.AssertAttribute (span, "aria-labelledby", "Label1 Label2 AccessibilityAnnotation1 AccessibilityAnnotation2");
-      _html.AssertAttribute (span, DiagnosticMetadataAttributes.LabelIDIndex, "0 1");
+      var span = _html.GetAssertedChildElement(document, "span", 0);
+      _html.AssertAttribute(span, "aria-labelledby", "Label1 Label2 AccessibilityAnnotation1 AccessibilityAnnotation2");
+      _html.AssertAttribute(span, DiagnosticMetadataAttributes.LabelIDIndex, "0 1");
     }
 
     [Test]
     public void RenderLabelReference_WithDiagnosticMetadataEnabled_AndOnlyAccessibilityAnnotationIDs ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new WithDiagnosticMetadataRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new WithDiagnosticMetadataRenderingFeatures());
 
-      labelReferenceRenderer.AddLabelsReference (
+      labelReferenceRenderer.AddLabelsReference(
           _html.Writer,
           new string[0],
           new[] { "AccessibilityAnnotation1", "AccessibilityAnnotation2" });
 
-      _html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      _html.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       _html.Writer.RenderEndTag();
 
       var document = _html.GetResultDocument();
-      var span = _html.GetAssertedChildElement (document, "span", 0);
-      _html.AssertAttribute (span, "aria-labelledby", "AccessibilityAnnotation1 AccessibilityAnnotation2");
-      _html.AssertAttribute (span, DiagnosticMetadataAttributes.LabelIDIndex, "");
+      var span = _html.GetAssertedChildElement(document, "span", 0);
+      _html.AssertAttribute(span, "aria-labelledby", "AccessibilityAnnotation1 AccessibilityAnnotation2");
+      _html.AssertAttribute(span, DiagnosticMetadataAttributes.LabelIDIndex, "");
     }
 
     [Test]
     public void RenderLabelReference_WithoutLabelIDs ()
     {
-      var labelReferenceRenderer = new LabelReferenceRenderer (new DefaultRenderingFeatures());
+      var labelReferenceRenderer = new LabelReferenceRenderer(new DefaultRenderingFeatures());
 
-      labelReferenceRenderer.AddLabelsReference (
+      labelReferenceRenderer.AddLabelsReference(
           _html.Writer,
           new string[0],
           new string[0]);
 
-      _html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      _html.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       _html.Writer.RenderEndTag();
 
       var document = _html.GetResultDocument();
-      var span = _html.GetAssertedChildElement (document, "span", 0);
-      _html.AssertNoAttribute (span, "aria-labelledby");
-      _html.AssertNoAttribute (span, DiagnosticMetadataAttributes.LabelIDIndex);
+      var span = _html.GetAssertedChildElement(document, "span", 0);
+      _html.AssertNoAttribute(span, "aria-labelledby");
+      _html.AssertNoAttribute(span, DiagnosticMetadataAttributes.LabelIDIndex);
     }
   }
 }

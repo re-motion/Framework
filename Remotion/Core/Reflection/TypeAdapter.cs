@@ -31,30 +31,30 @@ namespace Remotion.Reflection
   /// <summary>
   /// Implements the <see cref="ITypeInformation"/> to wrap a <see cref="System.Type"/> instance.
   /// </summary>
-  [TypeConverter (typeof (TypeAdapterConverter))]
+  [TypeConverter(typeof(TypeAdapterConverter))]
   public sealed class TypeAdapter : ITypeInformation
   {
     private static readonly ConcurrentDictionary<Type, TypeAdapter> s_dataStore =
-        new ConcurrentDictionary<Type, TypeAdapter> (ReferenceEqualityComparer<Type>.Instance);
+        new ConcurrentDictionary<Type, TypeAdapter>(ReferenceEqualityComparer<Type>.Instance);
 
     ///<remarks>Optimized for memory allocations</remarks>
-    private static readonly Func<Type, TypeAdapter> s_ctorFunc = t => new TypeAdapter (t);
+    private static readonly Func<Type, TypeAdapter> s_ctorFunc = t => new TypeAdapter(t);
 
     public static TypeAdapter Create (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return s_dataStore.GetOrAdd (type, s_ctorFunc);
+      return s_dataStore.GetOrAdd(type, s_ctorFunc);
     }
 
-    [ContractAnnotation ("null => null; notnull => notnull")]
-    [return: NotNullIfNotNull ("type")]
+    [ContractAnnotation("null => null; notnull => notnull")]
+    [return: NotNullIfNotNull("type")]
     public static TypeAdapter? CreateOrNull (Type? type)
     {
       if (type == null)
         return null;
 
-      return s_dataStore.GetOrAdd (type, s_ctorFunc);
+      return s_dataStore.GetOrAdd(type, s_ctorFunc);
     }
 
     private readonly Type _type;
@@ -64,8 +64,8 @@ namespace Remotion.Reflection
     {
       _type = type;
 
-      _cachedDeclaringType = new Lazy<ITypeInformation?> (
-          () => TypeAdapter.CreateOrNull (_type.DeclaringType),
+      _cachedDeclaringType = new Lazy<ITypeInformation?>(
+          () => TypeAdapter.CreateOrNull(_type.DeclaringType),
           LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
@@ -131,17 +131,17 @@ namespace Remotion.Reflection
 
     public int GetArrayRank ()
     {
-      return _type.GetArrayRank ();
+      return _type.GetArrayRank();
     }
 
     public ITypeInformation MakeArrayType (int rank)
     {
-      return TypeAdapter.Create (_type.MakeArrayType (rank));
+      return TypeAdapter.Create(_type.MakeArrayType(rank));
     }
 
     public ITypeInformation MakeArrayType ()
     {
-      return TypeAdapter.Create (_type.MakeArrayType ());
+      return TypeAdapter.Create(_type.MakeArrayType());
     }
 
     public bool IsEnum
@@ -152,21 +152,21 @@ namespace Remotion.Reflection
     public ITypeInformation GetUnderlyingTypeOfEnum ()
     {
       if (!_type.IsEnum)
-        throw new InvalidOperationException (string.Format ("The type '{0}' is not an enum type.", _type.GetFullNameSafe()));
-      return TypeAdapter.Create (Enum.GetUnderlyingType (_type));
+        throw new InvalidOperationException(string.Format("The type '{0}' is not an enum type.", _type.GetFullNameSafe()));
+      return TypeAdapter.Create(Enum.GetUnderlyingType(_type));
     }
 
     public bool IsNullableValueType
     {
-      get { return Nullable.GetUnderlyingType (_type) != null; }
+      get { return Nullable.GetUnderlyingType(_type) != null; }
     }
 
     public ITypeInformation GetUnderlyingTypeOfNullableValueType ()
     {
-      var underlyingType = Nullable.GetUnderlyingType (_type);
+      var underlyingType = Nullable.GetUnderlyingType(_type);
       if (underlyingType == null)
-        throw new InvalidOperationException (string.Format ("The type '{0}' is not a nullable value type.", _type.GetFullNameSafe()));
-      return TypeAdapter.Create (underlyingType);
+        throw new InvalidOperationException(string.Format("The type '{0}' is not a nullable value type.", _type.GetFullNameSafe()));
+      return TypeAdapter.Create(underlyingType);
     }
 
     public bool IsPointer
@@ -176,7 +176,7 @@ namespace Remotion.Reflection
 
     public ITypeInformation MakePointerType ()
     {
-      return TypeAdapter.Create (_type.MakePointerType ());
+      return TypeAdapter.Create(_type.MakePointerType());
     }
 
     public bool IsByRef
@@ -186,7 +186,7 @@ namespace Remotion.Reflection
 
     public ITypeInformation MakeByRefType ()
     {
-      return TypeAdapter.Create (_type.MakeByRefType ());
+      return TypeAdapter.Create(_type.MakeByRefType());
     }
 
     public bool IsSealed
@@ -216,7 +216,7 @@ namespace Remotion.Reflection
 
     public ITypeInformation? GetElementType ()
     {
-      return TypeAdapter.CreateOrNull (_type.GetElementType());
+      return TypeAdapter.CreateOrNull(_type.GetElementType());
     }
 
     public bool IsGenericType
@@ -231,7 +231,7 @@ namespace Remotion.Reflection
 
     public ITypeInformation GetGenericTypeDefinition ()
     {
-      return TypeAdapter.Create (_type.GetGenericTypeDefinition());
+      return TypeAdapter.Create(_type.GetGenericTypeDefinition());
     }
 
     public bool ContainsGenericParameters
@@ -256,7 +256,7 @@ namespace Remotion.Reflection
 
     public ITypeInformation[] GetGenericParameterConstraints ()
     {
-      return ConvertToTypeAdapters (_type.GetGenericParameterConstraints ());
+      return ConvertToTypeAdapters(_type.GetGenericParameterConstraints());
     }
 
     public GenericParameterAttributes GenericParameterAttributes
@@ -267,38 +267,38 @@ namespace Remotion.Reflection
 
     public T? GetCustomAttribute<T> (bool inherited) where T : class
     {
-      return AttributeUtility.GetCustomAttribute<T> (_type, inherited);
+      return AttributeUtility.GetCustomAttribute<T>(_type, inherited);
     }
 
     public T[] GetCustomAttributes<T> (bool inherited) where T : class
     {
-      return AttributeUtility.GetCustomAttributes<T> (_type, inherited);
+      return AttributeUtility.GetCustomAttributes<T>(_type, inherited);
     }
 
     public bool IsDefined<T> (bool inherited) where T : class
     {
-      return AttributeUtility.IsDefined<T> (_type, inherited);
+      return AttributeUtility.IsDefined<T>(_type, inherited);
     }
 
     public ITypeInformation? BaseType
     {
-      get { return TypeAdapter.CreateOrNull (_type.BaseType); }
+      get { return TypeAdapter.CreateOrNull(_type.BaseType); }
     }
 
     public bool IsInstanceOfType (object? o)
     {
-      return _type.IsInstanceOfType (o);
+      return _type.IsInstanceOfType(o);
     }
 
     public bool IsSubclassOf (ITypeInformation c)
     {
-      ArgumentUtility.CheckNotNull ("c", c);
+      ArgumentUtility.CheckNotNull("c", c);
 
       var otherTypeAsTypeAdapter = c as TypeAdapter;
       if (otherTypeAsTypeAdapter == null)
         return false;
 
-      return _type.IsSubclassOf (otherTypeAsTypeAdapter.Type);
+      return _type.IsSubclassOf(otherTypeAsTypeAdapter.Type);
     }
 
     public bool IsAssignableFrom (ITypeInformation? c)
@@ -306,40 +306,40 @@ namespace Remotion.Reflection
       var otherTypeAsTypeAdapter = c as TypeAdapter;
       if (otherTypeAsTypeAdapter == null)
         return false;
-      return _type.IsAssignableFrom (otherTypeAsTypeAdapter.Type);
+      return _type.IsAssignableFrom(otherTypeAsTypeAdapter.Type);
     }
 
     public bool CanAscribeTo (ITypeInformation c)
     {
-      ArgumentUtility.CheckNotNull ("c", c);
+      ArgumentUtility.CheckNotNull("c", c);
 
       var otherTypeAsTypeAdapter = c as TypeAdapter;
       if (otherTypeAsTypeAdapter == null)
         return false;
 
-      return _type.CanAscribeTo (otherTypeAsTypeAdapter.Type);
+      return _type.CanAscribeTo(otherTypeAsTypeAdapter.Type);
     }
 
     public ITypeInformation[] GetAscribedGenericArgumentsFor (ITypeInformation c)
     {
-      var otherTypeAsTypeAdapter = ArgumentUtility.CheckNotNullAndType<TypeAdapter> ("c", c);
+      var otherTypeAsTypeAdapter = ArgumentUtility.CheckNotNullAndType<TypeAdapter>("c", c);
 
-      return ConvertToTypeAdapters (_type.GetAscribedGenericArguments (otherTypeAsTypeAdapter.Type));
+      return ConvertToTypeAdapters(_type.GetAscribedGenericArguments(otherTypeAsTypeAdapter.Type));
     }
 
     public override bool Equals (object? obj)
     {
-      return ReferenceEquals (this, obj);
+      return ReferenceEquals(this, obj);
     }
 
     public override int GetHashCode ()
     {
-      return RuntimeHelpers.GetHashCode (this);
+      return RuntimeHelpers.GetHashCode(this);
     }
 
     public override string ToString ()
     {
-      return _type.ToString ();
+      return _type.ToString();
     }
 
     bool INullObject.IsNull
@@ -349,7 +349,7 @@ namespace Remotion.Reflection
 
     private ITypeInformation[] ConvertToTypeAdapters (IEnumerable<Type> types)
     {
-      return types.Select (t => (ITypeInformation) TypeAdapter.Create (t)).ToArray();
+      return types.Select(t => (ITypeInformation)TypeAdapter.Create(t)).ToArray();
     }
 
     /*

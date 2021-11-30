@@ -27,14 +27,14 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
   {
     public virtual AclExpansionEntry CreateAclExpansionEntry (UserRoleAclAceCombination userRoleAclAce)
     {
-      var accessTypesResult = GetAccessTypes (userRoleAclAce); 
+      var accessTypesResult = GetAccessTypes(userRoleAclAce);
 
       AclExpansionEntry aclExpansionEntry = null;
 
       // Create an AclExpansionEntry, if the current probe ACE contributed to the result and returned allowed access types.
-      if (accessTypesResult.AccessTypeStatistics.IsInAccessTypesContributingAces (userRoleAclAce.Ace) && accessTypesResult.AccessInformation.AllowedAccessTypes.Length > 0)
+      if (accessTypesResult.AccessTypeStatistics.IsInAccessTypesContributingAces(userRoleAclAce.Ace) && accessTypesResult.AccessInformation.AllowedAccessTypes.Length > 0)
       {
-        aclExpansionEntry = new AclExpansionEntry (userRoleAclAce.User, userRoleAclAce.Role, userRoleAclAce.Acl, accessTypesResult.AclProbe.AccessConditions,
+        aclExpansionEntry = new AclExpansionEntry(userRoleAclAce.User, userRoleAclAce.Role, userRoleAclAce.Acl, accessTypesResult.AclProbe.AccessConditions,
                                                    accessTypesResult.AccessInformation.AllowedAccessTypes, accessTypesResult.AccessInformation.DeniedAccessTypes);
       }
 
@@ -45,9 +45,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     public virtual AclExpansionEntryCreator_GetAccessTypesResult GetAccessTypes (UserRoleAclAceCombination userRoleAclAce)
     {
       if (ClientTransaction.Current == null)
-        throw new InvalidOperationException ("No ClientTransaction has been associated with the current thread.");
+        throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");
 
-      var aclProbe = AclProbe.CreateAclProbe (userRoleAclAce.User, userRoleAclAce.Role, userRoleAclAce.Ace);
+      var aclProbe = AclProbe.CreateAclProbe(userRoleAclAce.User, userRoleAclAce.Role, userRoleAclAce.Ace);
 
       // Note: The aclProbe created above will NOT always match the ACE it was designed to probe; the reason for this
       // is that its SecurityToken created by the AclProbe is only designed to match the non-decideable access conditions
@@ -69,13 +69,13 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       var accessTypeStatistics = new AccessTypeStatistics();
 
       var roles = aclProbe.SecurityToken.Principal.Roles;
-      Assertion.IsTrue (roles.Count == 1);
-      Assertion.IsTrue (object.ReferenceEquals (roles[0].Position.GetObjectReference(), userRoleAclAce.Role.Position));
-      Assertion.IsTrue (object.ReferenceEquals (roles[0].Group.GetObjectReference(), userRoleAclAce.Role.Group));
-      
-      AccessInformation accessInformation = userRoleAclAce.Acl.GetAccessTypes (aclProbe.SecurityToken, accessTypeStatistics);
+      Assertion.IsTrue(roles.Count == 1);
+      Assertion.IsTrue(object.ReferenceEquals(roles[0].Position.GetObjectReference(), userRoleAclAce.Role.Position));
+      Assertion.IsTrue(object.ReferenceEquals(roles[0].Group.GetObjectReference(), userRoleAclAce.Role.Group));
 
-      return new AclExpansionEntryCreator_GetAccessTypesResult (accessInformation, aclProbe, accessTypeStatistics);
+      AccessInformation accessInformation = userRoleAclAce.Acl.GetAccessTypes(aclProbe.SecurityToken, accessTypeStatistics);
+
+      return new AclExpansionEntryCreator_GetAccessTypesResult(accessInformation, aclProbe, accessTypeStatistics);
     }
   }
 }

@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Linq
   public class FluentFetchRequest<TQueried, TFetch> : QueryableBase<TQueried>
   {
     public FluentFetchRequest (IQueryProvider provider, Expression expression)
-        : base (provider, expression)
+        : base(provider, expression)
     {
     }
   }

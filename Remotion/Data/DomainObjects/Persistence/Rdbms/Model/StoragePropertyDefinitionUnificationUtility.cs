@@ -29,34 +29,34 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       T other;
       try
       {
-        other = (T) actual;
+        other = (T)actual;
       }
       catch (InvalidCastException)
       {
-        throw CreateExceptionForNonEquivalentProperties ("type", expected.GetType ().Name, actual.GetType ().Name, paramName);
+        throw CreateExceptionForNonEquivalentProperties("type", expected.GetType().Name, actual.GetType().Name, paramName);
       }
 
       foreach (var checkedPropertyGetter in checkedPropertyGetters)
-        CheckEqual (checkedPropertyGetter (expected).Item1, checkedPropertyGetter (expected).Item2, checkedPropertyGetter (other).Item2, paramName);
+        CheckEqual(checkedPropertyGetter(expected).Item1, checkedPropertyGetter(expected).Item2, checkedPropertyGetter(other).Item2, paramName);
 
       return other;
     }
 
     private static void CheckEqual<T> (string checkedItem, T expected, T actual, string paramName)
     {
-      if (!Equals (actual, expected))
-        throw CreateExceptionForNonEquivalentProperties (checkedItem, expected, actual, paramName);
+      if (!Equals(actual, expected))
+        throw CreateExceptionForNonEquivalentProperties(checkedItem, expected, actual, paramName);
     }
 
     private static ArgumentException CreateExceptionForNonEquivalentProperties (string mismatchingItem, object expected, object actual, string paramName)
     {
       var message =
-          string.Format (
+          string.Format(
               "Only equivalent properties can be combined, but this property has {0} '{1}', and the given property has {0} '{2}'.",
               mismatchingItem,
               expected ?? "null",
               actual ?? "null");
-      return new ArgumentException (message, paramName);
+      return new ArgumentException(message, paramName);
     }
   }
 }

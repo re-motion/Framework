@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   public class OtherBusinessObjectImplementationProviderAttribute : BusinessObjectProviderAttribute
   {
     public OtherBusinessObjectImplementationProviderAttribute ()
-        : base (typeof (OtherBusinessObjectImplementationProvider))
+        : base(typeof(OtherBusinessObjectImplementationProvider))
     {
     }
   }

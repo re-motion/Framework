@@ -17,4 +17,4 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyCulture ("")]
+[assembly: AssemblyCulture("")]

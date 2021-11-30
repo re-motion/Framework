@@ -27,7 +27,7 @@ namespace Remotion.Web.Infrastructure
   /// depending on whether a hosted environment is detected.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IBuildManager), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBuildManager), Lifetime = LifetimeKind.Singleton)]
   public class BuildManagerWrapper : IBuildManager
   {
     private readonly IBuildManager _innerBuildManager;
@@ -42,14 +42,14 @@ namespace Remotion.Web.Infrastructure
 
     public Type? GetType (string typeName, bool throwOnError, bool ignoreCase)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
-      return _innerBuildManager.GetType (typeName, throwOnError, ignoreCase);
+      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
+      return _innerBuildManager.GetType(typeName, throwOnError, ignoreCase);
     }
 
     public Type? GetCompiledType (string virtualPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
-      return _innerBuildManager.GetCompiledType (virtualPath);
+      ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);
+      return _innerBuildManager.GetCompiledType(virtualPath);
     }
 
     public IList? CodeAssemblies

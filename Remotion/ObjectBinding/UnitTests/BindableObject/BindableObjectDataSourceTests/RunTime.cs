@@ -39,57 +39,57 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
       _dataSource = new BindableObjectDataSource();
 
       _provider = new BindableObjectProvider();
-      BusinessObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), _provider);
-      BusinessObjectProvider.SetProvider (typeof (BindableObjectWithIdentityProviderAttribute), _provider);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), _provider);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectWithIdentityProviderAttribute), _provider);
     }
 
     [Test]
     public void GetAndSetBusinessObject ()
     {
       var businessObject = new Mock<IBusinessObject>();
-      ((IBusinessObjectDataSource) _dataSource).BusinessObject = businessObject.Object;
-      Assert.That (((IBusinessObjectDataSource) _dataSource).BusinessObject, Is.SameAs (businessObject.Object));
+      ((IBusinessObjectDataSource)_dataSource).BusinessObject = businessObject.Object;
+      Assert.That(((IBusinessObjectDataSource)_dataSource).BusinessObject, Is.SameAs(businessObject.Object));
     }
 
     [Test]
     public void GetAndSetType ()
     {
-      Assert.That (_dataSource.Type, Is.Null);
-      _dataSource.Type = typeof (SimpleBusinessObjectClass);
-      Assert.That (_dataSource.Type, Is.EqualTo (typeof (SimpleBusinessObjectClass)));
+      Assert.That(_dataSource.Type, Is.Null);
+      _dataSource.Type = typeof(SimpleBusinessObjectClass);
+      Assert.That(_dataSource.Type, Is.EqualTo(typeof(SimpleBusinessObjectClass)));
     }
 
     [Test]
     public void GetAndSetType_WithNull ()
     {
       _dataSource.Type = null;
-      Assert.That (_dataSource.Type, Is.Null);
+      Assert.That(_dataSource.Type, Is.Null);
     }
 
     [Test]
     public void GetBusinessObjectClass_WithoutType ()
     {
-      Assert.That (_dataSource.Type, Is.Null);
-      Assert.That (_dataSource.BusinessObjectClass, Is.Null);
+      Assert.That(_dataSource.Type, Is.Null);
+      Assert.That(_dataSource.BusinessObjectClass, Is.Null);
     }
 
     [Test]
     public void GetBusinessObjectClass_WithValidType ()
     {
-      _dataSource.Type = typeof (SimpleBusinessObjectClass);
-      Type type = typeof (SimpleBusinessObjectClass);
-      ArgumentUtility.CheckNotNull ("type", type);
-      Assert.That (_dataSource.BusinessObjectClass, Is.SameAs (BindableObjectProviderTestHelper.GetBindableObjectClass (type)));
+      _dataSource.Type = typeof(SimpleBusinessObjectClass);
+      Type type = typeof(SimpleBusinessObjectClass);
+      ArgumentUtility.CheckNotNull("type", type);
+      Assert.That(_dataSource.BusinessObjectClass, Is.SameAs(BindableObjectProviderTestHelper.GetBindableObjectClass(type)));
     }
 
     [Test]
     public void GetBusinessObjectClass_WithTypeNotUsingBindableObjectMixin ()
     {
-      _dataSource.Type = typeof (StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass);
-      Assert.That (
+      _dataSource.Type = typeof(StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass);
+      Assert.That(
           () => _dataSource.BusinessObjectClass,
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The type 'Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectWithoutBindableObjectBaseClassAttributeClass' is not a bindable object implementation. "
                   + "It must either have a mixin derived from BindableObjectMixinBase<T> applied "
                   + "or implement the IBusinessObject interface and apply the BindableObjectBaseClassAttribute.", "type"));

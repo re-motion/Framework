@@ -50,10 +50,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull ("validationErrorRenderer", validationErrorRenderer);
+      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
 
       _labelReferenceRenderer = labelReferenceRenderer;
       _validationErrorRenderer = validationErrorRenderer;
@@ -73,47 +73,47 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected virtual void RegisterJavaScriptFiles (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
-      string scriptKey = typeof (BocReferenceValueRendererBase<>).GetFullNameChecked() + "_Script";
-      htmlHeadAppender.RegisterJavaScriptInclude (
+      string scriptKey = typeof(BocReferenceValueRendererBase<>).GetFullNameChecked() + "_Script";
+      htmlHeadAppender.RegisterJavaScriptInclude(
           scriptKey,
-          ResourceUrlFactory.CreateResourceUrl (typeof (BocReferenceValueRendererBase<>), ResourceType.Html, "BocReferenceValueBase.js"));
+          ResourceUrlFactory.CreateResourceUrl(typeof(BocReferenceValueRendererBase<>), ResourceType.Html, "BocReferenceValueBase.js"));
     }
 
-    [Obsolete ("Use Render (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
+    [Obsolete("Use Render (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
     protected void Render (BocRenderingContext<TControl> renderingContext)
     {
-      throw new NotSupportedException ("Use Render (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)");
+      throw new NotSupportedException("Use Render (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)");
     }
 
     protected void Render (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       const string widthCssProperty = "--width";
       var width = Unit.Empty;
       if (!renderingContext.Control.Width.IsEmpty)
         width = renderingContext.Control.Width;
       else if (renderingContext.Control.Style[HtmlTextWriterStyle.Width] != null)
-        width = Unit.Parse (renderingContext.Control.Style[HtmlTextWriterStyle.Width]!);
+        width = Unit.Parse(renderingContext.Control.Style[HtmlTextWriterStyle.Width]!);
       if (!width.IsEmpty)
         renderingContext.Control.Style[widthCssProperty] = width.Type == UnitType.Percentage ? "100%" : width.ToString();
 
-      AddAttributesToRender (renderingContext);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      AddAttributesToRender(renderingContext);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-      RenderContents (renderingContext);
+      RenderContents(renderingContext);
 
       renderingContext.Writer.RenderEndTag();
 
-      RegisterInitializationScript (renderingContext);
+      RegisterInitializationScript(renderingContext);
 
-      if (!string.IsNullOrEmpty (renderingContext.Control.ControlServicePath))
+      if (!string.IsNullOrEmpty(renderingContext.Control.ControlServicePath))
       {
-        CheckScriptManager (
+        CheckScriptManager(
             renderingContext.Control,
             "{0} '{1}' requires that the page contains a ScriptManager because the ControlServicePath is set.",
             renderingContext.Control.GetType().Name,
@@ -126,77 +126,77 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private void RegisterInitializationScript (BocRenderingContext<TControl> renderingContext)
     {
-      string key = typeof (BocReferenceValueRendererBase<>).GetFullNameChecked() + "_InitializeGlobals";
+      string key = typeof(BocReferenceValueRendererBase<>).GetFullNameChecked() + "_InitializeGlobals";
 
-      if (renderingContext.Control.Page!.ClientScript.IsClientScriptBlockRegistered (typeof (BocReferenceValueRendererBase<>), key))
+      if (renderingContext.Control.Page!.ClientScript.IsClientScriptBlockRegistered(typeof(BocReferenceValueRendererBase<>), key))
         return;
 
-      var nullIcon = IconInfo.CreateSpacer (ResourceUrlFactory);
+      var nullIcon = IconInfo.CreateSpacer(ResourceUrlFactory);
 
-      var script = new StringBuilder (1000);
-      script.Append ("BocReferenceValueBase.InitializeGlobals(");
-      script.AppendFormat ("'{0}'", nullIcon.Url);
-      script.Append (");");
+      var script = new StringBuilder(1000);
+      script.Append("BocReferenceValueBase.InitializeGlobals(");
+      script.AppendFormat("'{0}'", nullIcon.Url);
+      script.Append(");");
 
-      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
-          renderingContext.Control, typeof (BocReferenceValueRendererBase<>), key, script.ToString());
+      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(
+          renderingContext.Control, typeof(BocReferenceValueRendererBase<>), key, script.ToString());
     }
 
     protected string? GetControlServicePath (RenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       var controlControlServicePath = renderingContext.Control.ControlServicePath;
 
-      if (string.IsNullOrEmpty (controlControlServicePath))
+      if (string.IsNullOrEmpty(controlControlServicePath))
         return null;
-      return renderingContext.Control.ResolveClientUrl (controlControlServicePath);
+      return renderingContext.Control.ResolveClientUrl(controlControlServicePath);
     }
 
     protected string GetIconContextAsJson (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
     {
-      var jsonBuilder = new StringBuilder (1000);
+      var jsonBuilder = new StringBuilder(1000);
       // See also BocReferenceValueBase.GetBusinessObjectClass
       var businessObjectClass = renderingContext.Control.Property?.ReferenceClass?.Identifier
                                 ?? renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass;
 
-      jsonBuilder.Append ("{ ");
-      jsonBuilder.Append ("businessObjectClass : ");
-      AppendStringValueOrNullToScript (jsonBuilder, businessObjectClass);
-      jsonBuilder.Append (", ");
-      jsonBuilder.Append ("arguments : ");
-      AppendStringValueOrNullToScript (jsonBuilder, renderingContext.BusinessObjectWebServiceContext.Arguments);
-      jsonBuilder.Append (" }");
+      jsonBuilder.Append("{ ");
+      jsonBuilder.Append("businessObjectClass : ");
+      AppendStringValueOrNullToScript(jsonBuilder, businessObjectClass);
+      jsonBuilder.Append(", ");
+      jsonBuilder.Append("arguments : ");
+      AppendStringValueOrNullToScript(jsonBuilder, renderingContext.BusinessObjectWebServiceContext.Arguments);
+      jsonBuilder.Append(" }");
 
       return jsonBuilder.ToString();
     }
 
-    [Obsolete ("Use RenderContents (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
+    [Obsolete("Use RenderContents (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
     protected void RenderContents (BocRenderingContext<TControl> renderingContext)
     {
-      throw new NotSupportedException ("Use RenderContents (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)");
+      throw new NotSupportedException("Use RenderContents (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)");
     }
 
     protected virtual void RenderContents (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassContent);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-      RenderIcon (renderingContext);
+      RenderIcon(renderingContext);
 
       if (renderingContext.Control.IsReadOnly)
       {
-        RenderReadOnlyValue (renderingContext);
+        RenderReadOnlyValue(renderingContext);
       }
       else
       {
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetInnerContentID (renderingContext));
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, GetCssClassInnerContent (renderingContext));
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetInnerContentID(renderingContext));
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, GetCssClassInnerContent(renderingContext));
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-        RenderEditModeValue (renderingContext);
+        RenderEditModeValue(renderingContext);
 
         renderingContext.Writer.RenderEndTag();
       }
@@ -204,29 +204,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       bool hasOptionsMenu = renderingContext.Control.HasOptionsMenu;
       if (hasOptionsMenu)
       {
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassOptionsMenu);
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassOptionsMenu);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-        if (!string.IsNullOrEmpty (renderingContext.Control.ControlServicePath))
+        if (!string.IsNullOrEmpty(renderingContext.Control.ControlServicePath))
         {
           var stringValueParametersDictionary = new Dictionary<string, string?>();
-          stringValueParametersDictionary.Add ("controlID", renderingContext.Control.ID);
-          stringValueParametersDictionary.Add (
+          stringValueParametersDictionary.Add("controlID", renderingContext.Control.ID);
+          stringValueParametersDictionary.Add(
               "controlType",
-              TypeUtility.GetPartialAssemblyQualifiedName (MixinTypeUtility.GetUnderlyingTargetType (renderingContext.Control.GetType())));
-          stringValueParametersDictionary.Add ("businessObjectClass", renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass);
-          stringValueParametersDictionary.Add ("businessObjectProperty", renderingContext.BusinessObjectWebServiceContext.BusinessObjectProperty);
-          stringValueParametersDictionary.Add ("businessObject", renderingContext.BusinessObjectWebServiceContext.BusinessObjectIdentifier);
-          stringValueParametersDictionary.Add ("arguments", renderingContext.BusinessObjectWebServiceContext.Arguments);
+              TypeUtility.GetPartialAssemblyQualifiedName(MixinTypeUtility.GetUnderlyingTargetType(renderingContext.Control.GetType())));
+          stringValueParametersDictionary.Add("businessObjectClass", renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass);
+          stringValueParametersDictionary.Add("businessObjectProperty", renderingContext.BusinessObjectWebServiceContext.BusinessObjectProperty);
+          stringValueParametersDictionary.Add("businessObject", renderingContext.BusinessObjectWebServiceContext.BusinessObjectIdentifier);
+          stringValueParametersDictionary.Add("arguments", renderingContext.BusinessObjectWebServiceContext.Arguments);
 
-          renderingContext.Control.OptionsMenu.SetLoadMenuItemStatus (
+          renderingContext.Control.OptionsMenu.SetLoadMenuItemStatus(
               renderingContext.Control.ControlServicePath,
-              nameof (IBocReferenceValueWebService.GetMenuItemStatusForOptionsMenu),
+              nameof(IBocReferenceValueWebService.GetMenuItemStatusForOptionsMenu),
               stringValueParametersDictionary);
         }
 
         renderingContext.Control.OptionsMenu.Width = renderingContext.Control.OptionsMenuWidth;
-        renderingContext.Control.OptionsMenu.RenderControl (renderingContext.Writer);
+        renderingContext.Control.OptionsMenu.RenderControl(renderingContext.Writer);
 
         renderingContext.Writer.RenderEndTag();
       }
@@ -236,49 +236,49 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private void RenderIcon (BocRenderingContext<TControl> renderingContext)
     {
-      var icon = GetIcon (renderingContext);
+      var icon = GetIcon(renderingContext);
 
       if (icon == null && renderingContext.Control.IsReadOnly)
         return;
 
       if (icon == null)
-        icon = IconInfo.CreateSpacer (ResourceUrlFactory);
+        icon = IconInfo.CreateSpacer(ResourceUrlFactory);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassIcon);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      icon.Render (renderingContext.Writer, renderingContext.Control);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassIcon);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      icon.Render(renderingContext.Writer, renderingContext.Control);
       renderingContext.Writer.RenderEndTag();
     }
 
     private void RenderReadOnlyValue (BocRenderingContext<TControl> renderingContext)
     {
-      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
-      var validationErrorsID = GetValidationErrorsID (renderingContext);
+      var validationErrors = GetValidationErrorsToRender(renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID(renderingContext);
 
-      Label label = GetLabel (renderingContext);
+      Label label = GetLabel(renderingContext);
 
-      renderingContext.Writer.AddAttribute ("tabindex", "0");
+      renderingContext.Writer.AddAttribute("tabindex", "0");
       // Screenreaders (JAWS v18) will not read the contents of a span with role=combobox (at least in browse-mode),
       // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
       //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
       //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
 
       var labelIDs = renderingContext.Control.GetLabelIDs();
-      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs.ToArray(), new[] { label.ClientID });
-      
-      var attributeCollection = new AttributeCollection (new StateBag());
-      ValidationErrorRenderer.AddValidationErrorsReference (attributeCollection, validationErrorsID, validationErrors);
-      attributeCollection.AddAttributes (renderingContext.Writer);
+      LabelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs.ToArray(), new[] { label.ClientID });
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetInnerContentID (renderingContext));
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, GetCssClassInnerContent (renderingContext));
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      var attributeCollection = new AttributeCollection(new StateBag());
+      ValidationErrorRenderer.AddValidationErrorsReference(attributeCollection, validationErrorsID, validationErrors);
+      attributeCollection.AddAttributes(renderingContext.Writer);
 
-      label.RenderControl (renderingContext.Writer);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetInnerContentID(renderingContext));
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, GetCssClassInnerContent(renderingContext));
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+
+      label.RenderControl(renderingContext.Writer);
 
       renderingContext.Writer.RenderEndTag();
 
-      ValidationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
+      ValidationErrorRenderer.RenderValidationErrors(renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
     [CanBeNull]
@@ -304,23 +304,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
                       Height = Unit.Empty,
                       Width = Unit.Empty
                   };
-      label.ApplyStyle (renderingContext.Control.CommonStyle);
-      label.ApplyStyle (renderingContext.Control.LabelStyle);
-      label.Text = HttpUtility.HtmlEncode (renderingContext.Control.GetLabelText());
-      label.Attributes.Add ("data-value", renderingContext.Control.BusinessObjectUniqueIdentifier ?? renderingContext.Control.NullValueString);
+      label.ApplyStyle(renderingContext.Control.CommonStyle);
+      label.ApplyStyle(renderingContext.Control.LabelStyle);
+      label.Text = HttpUtility.HtmlEncode(renderingContext.Control.GetLabelText());
+      label.Attributes.Add("data-value", renderingContext.Control.BusinessObjectUniqueIdentifier ?? renderingContext.Control.NullValueString);
       return label;
     }
 
     protected IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       return renderingContext.Control.GetValidationErrors();
     }
 
     protected string GetValidationErrorsID (BocRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       return renderingContext.Control.ClientID + "_ValidationErrors";
     }
@@ -332,9 +332,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     protected override string GetAdditionalCssClass (TControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
-      var additionalCssClass = base.GetAdditionalCssClass (control);
+      var additionalCssClass = base.GetAdditionalCssClass(control);
       if (control.HasOptionsMenu && control.ReserveOptionsMenuWidth)
         additionalCssClass += " " + CssClassReserveOptionsMenuWidth;
 
@@ -345,7 +345,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       string cssClass = CssClassInnerContent + " " + CssClassThemed;
 
-      if (GetIcon (renderingContext) != null)
+      if (GetIcon(renderingContext) != null)
         cssClass += " " + CssClassHasIcon;
 
       if (!renderingContext.Control.HasOptionsMenu)

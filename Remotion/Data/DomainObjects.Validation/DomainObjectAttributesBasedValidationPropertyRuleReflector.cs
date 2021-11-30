@@ -59,19 +59,19 @@ namespace Remotion.Data.DomainObjects.Validation
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull ("interfaceProperty", interfaceProperty);
-      ArgumentUtility.CheckNotNull ("implementationProperty", implementationProperty);
-      ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull("interfaceProperty", interfaceProperty);
+      ArgumentUtility.CheckNotNull("implementationProperty", implementationProperty);
+      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
-      var interfacePropertyInformation = PropertyInfoAdapter.Create (interfaceProperty);
-      var implementationPropertyInformation = PropertyInfoAdapter.Create (implementationProperty);
-      var isMixinProperty = Mixins.Utilities.ReflectionUtility.IsMixinType (implementationProperty.DeclaringType);
+      var interfacePropertyInformation = PropertyInfoAdapter.Create(interfaceProperty);
+      var implementationPropertyInformation = PropertyInfoAdapter.Create(implementationProperty);
+      var isMixinProperty = Mixins.Utilities.ReflectionUtility.IsMixinType(implementationProperty.DeclaringType);
 
       if (isMixinProperty && !interfacePropertyInformation.DeclaringType.IsInterface)
       {
-        throw new ArgumentException (
-            string.Format (
+        throw new ArgumentException(
+            string.Format(
                 "The property '{0}' was declared on type '{1}' but only interface declarations are supported when using mixin properties.",
                 interfacePropertyInformation.Name,
                 interfacePropertyInformation.DeclaringType.GetFullNameSafe()),
@@ -80,8 +80,8 @@ namespace Remotion.Data.DomainObjects.Validation
 
       if (!implementationPropertyInformation.IsOriginalDeclaration())
       {
-        throw new ArgumentException (
-            string.Format (
+        throw new ArgumentException(
+            string.Format(
                 "The property '{0}' was used from the overridden declaration on type '{1}' but only original declarations are supported.",
                 implementationPropertyInformation.Name,
                 implementationPropertyInformation.DeclaringType.GetFullNameSafe()),
@@ -106,39 +106,39 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public Func<object, object> GetValidatedPropertyFunc (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+      ArgumentUtility.CheckNotNull("validatedType", validatedType);
 
       // TODO RM-5906: Add cache, try to unify with ValidationAttributesBasedPropertyRuleReflector and AddingComponentPropertyRule
 
-      var parameterExpression = Expression.Parameter (typeof (object), "t");
+      var parameterExpression = Expression.Parameter(typeof(object), "t");
 
       // object o => UsePersistentProperty ((DomainObject)o, _interfaceProperty) ? (object) (TheType o).TheProperty : nonEmptyObject;
 
-      var usePersistentPropertyMethod = MemberInfoFromExpressionUtility.GetMethod (() => UsePersistentProperty (null, null));
-      var conditionExpression = Expression.Call (
+      var usePersistentPropertyMethod = MemberInfoFromExpressionUtility.GetMethod(() => UsePersistentProperty(null, null));
+      var conditionExpression = Expression.Call(
           usePersistentPropertyMethod,
-          Expression.Convert (parameterExpression, typeof (DomainObject)),
-          Expression.Constant (_implementationProperty, typeof (PropertyInfo)));
+          Expression.Convert(parameterExpression, typeof(DomainObject)),
+          Expression.Constant(_implementationProperty, typeof(PropertyInfo)));
 
       // object o => (object) (TheType o).TheProperty
-      var domainObjectPropertyAccessExpression = Expression.Convert (
-          Expression.MakeMemberAccess (
-              Expression.Convert (parameterExpression, validatedType),
+      var domainObjectPropertyAccessExpression = Expression.Convert(
+          Expression.MakeMemberAccess(
+              Expression.Convert(parameterExpression, validatedType),
               _interfaceProperty),
-          typeof (object));
+          typeof(object));
 
 
       object nonEmptyDummyValue;
-      if (ReflectionUtility.IsObjectList (_implementationProperty.PropertyType))
+      if (ReflectionUtility.IsObjectList(_implementationProperty.PropertyType))
         nonEmptyDummyValue = FakeDomainObject.CollectionValue;
-      else if (ReflectionUtility.IsIObjectList (_implementationProperty.PropertyType))
+      else if (ReflectionUtility.IsIObjectList(_implementationProperty.PropertyType))
         nonEmptyDummyValue = FakeDomainObject.CollectionValue;
       else
         nonEmptyDummyValue = FakeDomainObject.SingleValue;
-      var nonEmptyDummyValueExpression = Expression.Constant (nonEmptyDummyValue, typeof (object));
+      var nonEmptyDummyValueExpression = Expression.Constant(nonEmptyDummyValue, typeof(object));
 
-      var accessorExpression = Expression.Lambda<Func<object, object>> (
-          Expression.Condition (conditionExpression, domainObjectPropertyAccessExpression, nonEmptyDummyValueExpression),
+      var accessorExpression = Expression.Lambda<Func<object, object>>(
+          Expression.Condition(conditionExpression, domainObjectPropertyAccessExpression, nonEmptyDummyValueExpression),
           parameterExpression);
 
       return accessorExpression.Compile();
@@ -147,56 +147,56 @@ namespace Remotion.Data.DomainObjects.Validation
     [ReflectionAPI]
     private static bool UsePersistentProperty (DomainObject domainObject, PropertyInfo property)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("property", property);
 
-      if (!ReflectionUtility.IsRelationType (property.PropertyType))
+      if (!ReflectionUtility.IsRelationType(property.PropertyType))
         return true;
 
-      var dataManager = DataManagementService.GetDataManager (domainObject.DefaultTransactionContext.ClientTransaction);
-      var endPointID = RelationEndPointID.Create (domainObject.ID, property.DeclaringType, property.Name);
-      var endPoint = dataManager.GetRelationEndPointWithLazyLoad (endPointID);
+      var dataManager = DataManagementService.GetDataManager(domainObject.DefaultTransactionContext.ClientTransaction);
+      var endPointID = RelationEndPointID.Create(domainObject.ID, property.DeclaringType, property.Name);
+      var endPoint = dataManager.GetRelationEndPointWithLazyLoad(endPointID);
       return endPoint.IsDataComplete;
     }
 
     public IEnumerable<IPropertyValidator> GetRemovablePropertyValidators ()
     {
-      var maxLength = _domainModelConstraintProvider.GetMaxLength (_implementationPropertyInformation);
+      var maxLength = _domainModelConstraintProvider.GetMaxLength(_implementationPropertyInformation);
       if (maxLength.HasValue)
       {
-        yield return PropertyValidatorFactory.Create (
+        yield return PropertyValidatorFactory.Create(
             _implementationPropertyInformation,
-            parameters => new MaximumLengthValidator (maxLength.Value, parameters.ValidationMessage),
+            parameters => new MaximumLengthValidator(maxLength.Value, parameters.ValidationMessage),
             _validationMessageFactory);
       }
 
-      if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation) 
-          && typeof (IEnumerable).IsAssignableFrom (_implementationProperty.PropertyType)
-          && !ReflectionUtility.IsObjectList (_implementationProperty.PropertyType)
-          && !ReflectionUtility.IsIObjectList (_implementationProperty.PropertyType))
+      if (!_domainModelConstraintProvider.IsNullable(_implementationPropertyInformation)
+          && typeof(IEnumerable).IsAssignableFrom(_implementationProperty.PropertyType)
+          && !ReflectionUtility.IsObjectList(_implementationProperty.PropertyType)
+          && !ReflectionUtility.IsIObjectList(_implementationProperty.PropertyType))
       {
-        yield return PropertyValidatorFactory.Create (
+        yield return PropertyValidatorFactory.Create(
             _implementationPropertyInformation,
-            parameters => new NotEmptyValidator (parameters.ValidationMessage),
+            parameters => new NotEmptyValidator(parameters.ValidationMessage),
             _validationMessageFactory);
       }
     }
 
     public IEnumerable<IPropertyValidator> GetNonRemovablePropertyValidators ()
     {
-      if (!_domainModelConstraintProvider.IsNullable (_implementationPropertyInformation))
+      if (!_domainModelConstraintProvider.IsNullable(_implementationPropertyInformation))
       {
-        yield return PropertyValidatorFactory.Create (
+        yield return PropertyValidatorFactory.Create(
             _implementationPropertyInformation,
-            parameters => new NotNullValidator (parameters.ValidationMessage),
+            parameters => new NotNullValidator(parameters.ValidationMessage),
             _validationMessageFactory);
 
-        if (ReflectionUtility.IsObjectList (_implementationProperty.PropertyType)
-            || ReflectionUtility.IsIObjectList (_implementationProperty.PropertyType))
+        if (ReflectionUtility.IsObjectList(_implementationProperty.PropertyType)
+            || ReflectionUtility.IsIObjectList(_implementationProperty.PropertyType))
         {
-          yield return PropertyValidatorFactory.Create (
+          yield return PropertyValidatorFactory.Create(
               _implementationPropertyInformation,
-              parameters => new NotEmptyValidator (parameters.ValidationMessage),
+              parameters => new NotEmptyValidator(parameters.ValidationMessage),
               _validationMessageFactory);
         }
       }
@@ -209,9 +209,9 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public IEnumerable<IPropertyMetaValidationRule> GetMetaValidationRules ()
     {
-      var maxLength = _domainModelConstraintProvider.GetMaxLength (_implementationPropertyInformation);
+      var maxLength = _domainModelConstraintProvider.GetMaxLength(_implementationPropertyInformation);
       if (maxLength.HasValue)
-        yield return new RemotionMaxLengthPropertyMetaValidationRule (_implementationProperty, maxLength.Value);
+        yield return new RemotionMaxLengthPropertyMetaValidationRule(_implementationProperty, maxLength.Value);
     }
   }
 }

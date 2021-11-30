@@ -26,7 +26,7 @@ namespace Remotion.Reflection
   /// Default implementation of the <see cref="IMemberInformationNameResolver"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IMemberInformationNameResolver), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IMemberInformationNameResolver), Lifetime = LifetimeKind.Singleton)]
   public class ReflectionBasedMemberInformationNameResolver : IMemberInformationNameResolver
   {
     private readonly ConcurrentDictionary<IPropertyInformation, string> s_propertyNameCache = new ConcurrentDictionary<IPropertyInformation, string>();
@@ -54,9 +54,9 @@ namespace Remotion.Reflection
     /// <returns>The name of the given <paramref name="propertyInformation"/> as used internally by the mapping.</returns>
     public string GetPropertyName (IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
 
-      return s_propertyNameCache.GetOrAdd (propertyInformation, _getPropertyNameInternalFunc);
+      return s_propertyNameCache.GetOrAdd(propertyInformation, _getPropertyNameInternalFunc);
     }
 
     /// <summary>
@@ -66,22 +66,22 @@ namespace Remotion.Reflection
     /// <returns>The name of the given <paramref name="typeInformation"/> as used internally by the mapping.</returns>
     public string GetTypeName (ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
 
-      return s_typeNameCache.GetOrAdd (typeInformation, _getTypeNameInternalFunc);
+      return s_typeNameCache.GetOrAdd(typeInformation, _getTypeNameInternalFunc);
     }
 
     public string GetEnumName (Enum enumValue)
     {
-      ArgumentUtility.CheckNotNull ("enumValue", enumValue);
+      ArgumentUtility.CheckNotNull("enumValue", enumValue);
 
-      return s_enumCache.GetOrAdd (enumValue, _getEnumNameInternalFunc);
+      return s_enumCache.GetOrAdd(enumValue, _getEnumNameInternalFunc);
     }
 
     private string GetPropertyNameInternal (IPropertyInformation propertyInformation)
     {
       //TODO RM-7432: GetOriginalDeclaringType may return null
-      return GetTypeName (propertyInformation.GetOriginalDeclaringType()!) + "." + propertyInformation.Name;
+      return GetTypeName(propertyInformation.GetOriginalDeclaringType()!) + "." + propertyInformation.Name;
     }
 
     private string GetTypeNameInternal (ITypeInformation typeInformation)

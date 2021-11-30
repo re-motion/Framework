@@ -50,7 +50,7 @@ namespace Remotion.Utilities
     /// </returns>
     public static StopwatchScope CreateScope (MeasurementAction action)
     {
-      return new StopwatchScope (action, "end");
+      return new StopwatchScope(action, "end");
     }
 
     /// <summary>
@@ -87,14 +87,14 @@ namespace Remotion.Utilities
     /// <returns>A <see cref="StopwatchScope"/> that measures the time and writes it to a <see cref="TextWriter"/>.</returns>
     public static StopwatchScope CreateScope (TextWriter writer, string formatString)
     {
-      var actualFormatString = ReplacePlaceholders (formatString);
-      return new StopwatchScope ((context, scope) => writer.WriteLine (
+      var actualFormatString = ReplacePlaceholders(formatString);
+      return new StopwatchScope((context, scope) => writer.WriteLine(
           actualFormatString,
           context,
-          scope.ElapsedTotal.ToString (),
-          scope.ElapsedTotal.TotalMilliseconds.ToString (),
-          scope.ElapsedSinceLastCheckpoint.ToString (),
-          scope.ElapsedSinceLastCheckpoint.TotalMilliseconds.ToString ()), "end");
+          scope.ElapsedTotal.ToString(),
+          scope.ElapsedTotal.TotalMilliseconds.ToString(),
+          scope.ElapsedSinceLastCheckpoint.ToString(),
+          scope.ElapsedSinceLastCheckpoint.TotalMilliseconds.ToString()), "end");
     }
 
     /// <summary>
@@ -134,15 +134,15 @@ namespace Remotion.Utilities
     /// </returns>
     public static StopwatchScope CreateScope (ILog log, LogLevel logLevel, string formatString)
     {
-      var actualFormatString = ReplacePlaceholders (formatString);
-      return new StopwatchScope ((context, scope) => log.LogFormat (
+      var actualFormatString = ReplacePlaceholders(formatString);
+      return new StopwatchScope((context, scope) => log.LogFormat(
           logLevel,
           actualFormatString,
           context,
-          scope.ElapsedTotal.ToString (),
-          scope.ElapsedTotal.TotalMilliseconds.ToString (),
-          scope.ElapsedSinceLastCheckpoint.ToString (),
-          scope.ElapsedSinceLastCheckpoint.TotalMilliseconds.ToString ()), "end");
+          scope.ElapsedTotal.ToString(),
+          scope.ElapsedTotal.TotalMilliseconds.ToString(),
+          scope.ElapsedSinceLastCheckpoint.ToString(),
+          scope.ElapsedSinceLastCheckpoint.TotalMilliseconds.ToString()), "end");
     }
 
     /// <summary>
@@ -180,24 +180,24 @@ namespace Remotion.Utilities
     /// </returns>
     public static StopwatchScope CreateScope (string formatString)
     {
-      var actualFormatString = ReplacePlaceholders (formatString);
-      return new StopwatchScope ((context, scope) => Console.WriteLine (
+      var actualFormatString = ReplacePlaceholders(formatString);
+      return new StopwatchScope((context, scope) => Console.WriteLine(
           actualFormatString,
           context,
-          scope.ElapsedTotal.ToString (),
-          scope.ElapsedTotal.TotalMilliseconds.ToString (),
-          scope.ElapsedSinceLastCheckpoint.ToString (),
-          scope.ElapsedSinceLastCheckpoint.TotalMilliseconds.ToString ()), "end");
+          scope.ElapsedTotal.ToString(),
+          scope.ElapsedTotal.TotalMilliseconds.ToString(),
+          scope.ElapsedSinceLastCheckpoint.ToString(),
+          scope.ElapsedSinceLastCheckpoint.TotalMilliseconds.ToString()), "end");
     }
 
     private static string ReplacePlaceholders (string formatString)
     {
       return formatString
-          .Replace ("{context}", "{0}")
-          .Replace ("{elapsed}", "{1}")
-          .Replace ("{elapsed:ms}", "{2}")
-          .Replace ("{elapsedCP}", "{3}")
-          .Replace ("{elapsedCP:ms}", "{4}");
+          .Replace("{context}", "{0}")
+          .Replace("{elapsed}", "{1}")
+          .Replace("{elapsed:ms}", "{2}")
+          .Replace("{elapsedCP}", "{3}")
+          .Replace("{elapsedCP:ms}", "{4}");
     }
 
     private readonly Stopwatch _stopwatch;
@@ -209,12 +209,12 @@ namespace Remotion.Utilities
 
     private StopwatchScope (MeasurementAction action, string scopeEndString)
     {
-      ArgumentUtility.CheckNotNull ("action", action);
+      ArgumentUtility.CheckNotNull("action", action);
 
       _action = action;
       _scopeEndString = scopeEndString;
       _lastCheckpointElapsed = TimeSpan.Zero;
-      _stopwatch = Stopwatch.StartNew ();
+      _stopwatch = Stopwatch.StartNew();
       _disposed = false;
     }
 
@@ -225,8 +225,8 @@ namespace Remotion.Utilities
     {
       if (!_disposed)
       {
-        _stopwatch.Stop ();
-        Checkpoint (_scopeEndString);
+        _stopwatch.Stop();
+        Checkpoint(_scopeEndString);
         _disposed = true;
       }
     }
@@ -258,9 +258,9 @@ namespace Remotion.Utilities
     public void Checkpoint (string context)
     {
       if (_disposed)
-        throw new ObjectDisposedException ("StopwatchScope");
+        throw new ObjectDisposedException("StopwatchScope");
 
-      _action (context, this);
+      _action(context, this);
       _lastCheckpointElapsed = ElapsedTotal;
     }
 
@@ -270,9 +270,9 @@ namespace Remotion.Utilities
     public void Pause ()
     {
       if (_disposed)
-        throw new ObjectDisposedException ("StopwatchScope");
+        throw new ObjectDisposedException("StopwatchScope");
 
-      _stopwatch.Stop ();
+      _stopwatch.Stop();
     }
 
     /// <summary>
@@ -281,9 +281,9 @@ namespace Remotion.Utilities
     public void Resume ()
     {
       if (_disposed)
-        throw new ObjectDisposedException ("StopwatchScope");
+        throw new ObjectDisposedException("StopwatchScope");
 
-      _stopwatch.Start ();
+      _stopwatch.Start();
     }
   }
 }

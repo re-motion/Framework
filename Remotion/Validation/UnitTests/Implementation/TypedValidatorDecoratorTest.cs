@@ -43,25 +43,25 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validationRuleStub1 = new Mock<IValidationRule>();
       _validationRuleStub2 = new Mock<IValidationRule>();
 
-      _validationFailure = new ObjectValidationFailure (_validatedObject, "Error", "ValidationMessage");
+      _validationFailure = new ObjectValidationFailure(_validatedObject, "Error", "ValidationMessage");
 
-      _validator = new Validator (new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }, typeof (Customer));
-      _validatorDecorator = new TypedValidatorDecorator<Customer> (_validator);
+      _validator = new Validator(new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }, typeof(Customer));
+      _validatorDecorator = new TypedValidatorDecorator<Customer>(_validator);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_validatorDecorator.Validator, Is.SameAs (_validator));
+      Assert.That(_validatorDecorator.Validator, Is.SameAs(_validator));
     }
 
     [Test]
     public void Initialization_InvalidType ()
     {
-      Assert.That (
-          () => new TypedValidatorDecorator<Address> (_validator),
+      Assert.That(
+          () => new TypedValidatorDecorator<Address>(_validator),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The validated type 'Address' is not supported by the passed validator.", "validator"));
     }
 
@@ -71,23 +71,23 @@ namespace Remotion.Validation.UnitTests.Implementation
       var customer = _validatedObject;
 
       _validationRuleStub1
-          .Setup (stub => stub.Validate (It.IsNotNull<ValidationContext>()))
-          .Returns (new[] { _validationFailure });
+          .Setup(stub => stub.Validate(It.IsNotNull<ValidationContext>()))
+          .Returns(new[] { _validationFailure });
       _validationRuleStub2
-          .Setup (stub => stub.Validate (It.IsNotNull<ValidationContext>()))
-          .Returns (new ValidationFailure[0]);
+          .Setup(stub => stub.Validate(It.IsNotNull<ValidationContext>()))
+          .Returns(new ValidationFailure[0]);
 
-      var result = _validatorDecorator.Validate (customer);
+      var result = _validatorDecorator.Validate(customer);
 
-      Assert.That (result.Errors, Is.EquivalentTo (new[] { _validationFailure }));
+      Assert.That(result.Errors, Is.EquivalentTo(new[] { _validationFailure }));
     }
 
     [Test]
     public void Validate_InvalidInstance ()
     {
-      Assert.That (
-          () => ((IValidator) _validatorDecorator).Validate ("Invalid"),
-          Throws.InvalidOperationException.And.Message.EqualTo (
+      Assert.That(
+          () => ((IValidator)_validatorDecorator).Validate("Invalid"),
+          Throws.InvalidOperationException.And.Message.EqualTo(
               "Cannot validate instances of type 'String'. This validator can only validate instances of type 'Customer'."));
     }
 
@@ -96,19 +96,19 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var result = _validatorDecorator.CreateDescriptor();
 
-      Assert.That (result.ValidationRules, Is.EquivalentTo (new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }));
+      Assert.That(result.ValidationRules, Is.EquivalentTo(new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }));
     }
 
     [Test]
     public void CanValidateInstancesOfType_Customer_True ()
     {
-      Assert.That (_validatorDecorator.CanValidateInstancesOfType (typeof (Customer)), Is.True);
+      Assert.That(_validatorDecorator.CanValidateInstancesOfType(typeof(Customer)), Is.True);
     }
 
     [Test]
     public void CanValidateInstancesOfType_NoCustomer_False ()
     {
-      Assert.That (_validatorDecorator.CanValidateInstancesOfType (typeof (Address)), Is.False);
+      Assert.That(_validatorDecorator.CanValidateInstancesOfType(typeof(Address)), Is.False);
     }
   }
 }

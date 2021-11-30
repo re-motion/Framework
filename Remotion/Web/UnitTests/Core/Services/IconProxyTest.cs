@@ -34,37 +34,37 @@ namespace Remotion.Web.UnitTests.Core.Services
     {
       _httpContextStub = new Mock<HttpContextBase>();
       var httpRequestStub = new Mock<HttpRequestBase>();
-      httpRequestStub.Setup (_ => _.Url).Returns (new Uri("http://localhost/root/file"));
-      httpRequestStub.Setup (_ => _.ApplicationPath).Returns ("/root");
-      _httpContextStub.Setup (stub => stub.Request).Returns (httpRequestStub.Object);
+      httpRequestStub.Setup(_ => _.Url).Returns(new Uri("http://localhost/root/file"));
+      httpRequestStub.Setup(_ => _.ApplicationPath).Returns("/root");
+      _httpContextStub.Setup(stub => stub.Request).Returns(httpRequestStub.Object);
     }
 
     [Test]
     public void Create_Complete ()
     {
-      var iconInfo = new IconInfo ("~/url") { AlternateText = "Alt", ToolTip = "ToolTip", Width = Unit.Pixel (4), Height = Unit.Percentage(8) };
+      var iconInfo = new IconInfo("~/url") { AlternateText = "Alt", ToolTip = "ToolTip", Width = Unit.Pixel(4), Height = Unit.Percentage(8) };
 
-      var iconProxy = IconProxy.Create (_httpContextStub.Object, iconInfo);
+      var iconProxy = IconProxy.Create(_httpContextStub.Object, iconInfo);
 
-      Assert.That (iconProxy.Url, Is.EqualTo ("/root/url"));
-      Assert.That (iconProxy.AlternateText, Is.EqualTo ("Alt"));
-      Assert.That (iconProxy.ToolTip, Is.EqualTo ("ToolTip"));
-      Assert.That (iconProxy.Width, Is.EqualTo ("4px"));
-      Assert.That (iconProxy.Height, Is.EqualTo ("8%"));
+      Assert.That(iconProxy.Url, Is.EqualTo("/root/url"));
+      Assert.That(iconProxy.AlternateText, Is.EqualTo("Alt"));
+      Assert.That(iconProxy.ToolTip, Is.EqualTo("ToolTip"));
+      Assert.That(iconProxy.Width, Is.EqualTo("4px"));
+      Assert.That(iconProxy.Height, Is.EqualTo("8%"));
     }
 
     [Test]
     public void Create_OnlyUrl ()
     {
-      var iconInfo = new IconInfo ("~/url");
+      var iconInfo = new IconInfo("~/url");
 
-      var iconProxy = IconProxy.Create (_httpContextStub.Object, iconInfo);
+      var iconProxy = IconProxy.Create(_httpContextStub.Object, iconInfo);
 
-      Assert.That (iconProxy.Url, Is.EqualTo ("/root/url"));
-      Assert.That (iconProxy.AlternateText, Is.Null);
-      Assert.That (iconProxy.ToolTip, Is.Null);
-      Assert.That (iconProxy.Width, Is.Null);
-      Assert.That (iconProxy.Height, Is.Null);
+      Assert.That(iconProxy.Url, Is.EqualTo("/root/url"));
+      Assert.That(iconProxy.AlternateText, Is.Null);
+      Assert.That(iconProxy.ToolTip, Is.Null);
+      Assert.That(iconProxy.Width, Is.Null);
+      Assert.That(iconProxy.Height, Is.Null);
     }
 
     [Test]
@@ -72,9 +72,9 @@ namespace Remotion.Web.UnitTests.Core.Services
     {
       var iconInfo = new IconInfo();
 
-      Assert.That (
-          () => IconProxy.Create (_httpContextStub.Object, iconInfo),
-          Throws.ArgumentException.With.Message.StartsWith ("IconProxy does not support IconInfo objects without an empty Url."));
+      Assert.That(
+          () => IconProxy.Create(_httpContextStub.Object, iconInfo),
+          Throws.ArgumentException.With.Message.StartsWith("IconProxy does not support IconInfo objects without an empty Url."));
     }
   }
 }

@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Results
     public void SetUp ()
     {
       var businessObjectProviderStub = new Mock<IBusinessObjectProvider>();
-      businessObjectProviderStub.Setup (_ => _.GetNotAccessiblePropertyStringPlaceHolder()).Returns ("X");
+      businessObjectProviderStub.Setup(_ => _.GetNotAccessiblePropertyStringPlaceHolder()).Returns("X");
 
       _result = new NotAccessibleBusinessObjectPropertyPathResult(businessObjectProviderStub.Object);
     }
@@ -38,31 +38,31 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Results
     [Test]
     public void GetValue ()
     {
-      Assert.That (_result.GetValue(), Is.Null);
+      Assert.That(_result.GetValue(), Is.Null);
     }
 
     [Test]
     public void GetString ()
     {
-      Assert.That (_result.GetString (string.Empty), Is.EqualTo ("X"));
+      Assert.That(_result.GetString(string.Empty), Is.EqualTo("X"));
     }
 
     [Test]
     public void GetResultObject ()
     {
-      Assert.That (_result.ResultObject, Is.Null);
+      Assert.That(_result.ResultObject, Is.Null);
     }
- 
+
     [Test]
     public void GetResulProperty ()
     {
-      Assert.That (_result.ResultProperty, Is.Null);
+      Assert.That(_result.ResultProperty, Is.Null);
     }
 
     [Test]
     public void GetIsNull ()
     {
-      Assert.That (_result.IsNull, Is.True);
+      Assert.That(_result.IsNull, Is.True);
     }
   }
 }

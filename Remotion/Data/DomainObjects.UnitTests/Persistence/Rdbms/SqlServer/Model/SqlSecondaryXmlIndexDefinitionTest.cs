@@ -32,26 +32,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     [SetUp]
     public void SetUp ()
     {
-      _xmlColumn = ColumnDefinitionObjectMother.CreateColumn ("XmlColumn");
-      _indexDefinition = new SqlSecondaryXmlIndexDefinition (
+      _xmlColumn = ColumnDefinitionObjectMother.CreateColumn("XmlColumn");
+      _indexDefinition = new SqlSecondaryXmlIndexDefinition(
           "IndexName", _xmlColumn, "PrimaryIndexName", SqlSecondaryXmlIndexKind.Property, true, 5, true, true, true, true, true, 2);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_indexDefinition.IndexName, Is.EqualTo ("IndexName"));
-      Assert.That (_indexDefinition.PrimaryIndexName, Is.EqualTo ("PrimaryIndexName"));
-      Assert.That (_indexDefinition.XmlColumn, Is.SameAs (_xmlColumn));
-      Assert.That (_indexDefinition.Kind, Is.EqualTo (SqlSecondaryXmlIndexKind.Property));
-      Assert.That (_indexDefinition.PadIndex.Value, Is.True);
-      Assert.That (_indexDefinition.SortInDb.Value, Is.True);
-      Assert.That (_indexDefinition.StatisticsNoReCompute.Value, Is.True);
-      Assert.That (_indexDefinition.AllowPageLocks.Value, Is.True);
-      Assert.That (_indexDefinition.AllowRowLocks.Value, Is.True);
-      Assert.That (_indexDefinition.DropExisiting.Value, Is.True);
-      Assert.That (_indexDefinition.FillFactor.Value, Is.EqualTo (5));
-      Assert.That (_indexDefinition.MaxDop.Value, Is.EqualTo (2));
+      Assert.That(_indexDefinition.IndexName, Is.EqualTo("IndexName"));
+      Assert.That(_indexDefinition.PrimaryIndexName, Is.EqualTo("PrimaryIndexName"));
+      Assert.That(_indexDefinition.XmlColumn, Is.SameAs(_xmlColumn));
+      Assert.That(_indexDefinition.Kind, Is.EqualTo(SqlSecondaryXmlIndexKind.Property));
+      Assert.That(_indexDefinition.PadIndex.Value, Is.True);
+      Assert.That(_indexDefinition.SortInDb.Value, Is.True);
+      Assert.That(_indexDefinition.StatisticsNoReCompute.Value, Is.True);
+      Assert.That(_indexDefinition.AllowPageLocks.Value, Is.True);
+      Assert.That(_indexDefinition.AllowRowLocks.Value, Is.True);
+      Assert.That(_indexDefinition.DropExisiting.Value, Is.True);
+      Assert.That(_indexDefinition.FillFactor.Value, Is.EqualTo(5));
+      Assert.That(_indexDefinition.MaxDop.Value, Is.EqualTo(2));
     }
 
     [Test]
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var visitorMock = MockRepository.GenerateStrictMock<IIndexDefinitionVisitor>();
       visitorMock.Replay();
 
-      _indexDefinition.Accept (visitorMock);
+      _indexDefinition.Accept(visitorMock);
 
       visitorMock.VerifyAllExpectations();
     }
@@ -69,10 +69,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     public void Accept_SqlIndexDefinitionVisitor ()
     {
       var visitorMock = MockRepository.GenerateStrictMock<ISqlIndexDefinitionVisitor>();
-      visitorMock.Expect (mock => mock.VisitSecondaryXmlIndexDefinition (_indexDefinition));
+      visitorMock.Expect(mock => mock.VisitSecondaryXmlIndexDefinition(_indexDefinition));
       visitorMock.Replay();
 
-      _indexDefinition.Accept (visitorMock);
+      _indexDefinition.Accept(visitorMock);
 
       visitorMock.VerifyAllExpectations();
     }

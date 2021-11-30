@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
     [NotNull]
     public abstract string GetStringValue (IBusinessObject obj);
-    
+
     /// <summary>
     /// Creates an implementation of <see cref="IComparer{T}"/> that can be used to comparere two <see cref="BocListRow"/> instances based on the this
     /// column definition.
@@ -56,11 +56,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     <see cref="BocColumnDefinition.Width"/> must not be of type <see cref="UnitType.Percentage"/>, 
     ///     if the width is to be enforced.
     /// </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Layout")]
-    [Description ("Hides overflowing contents in the data rows instead of breaking into a new line.")]
-    [DefaultValue (false)]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Layout")]
+    [Description("Hides overflowing contents in the data rows instead of breaking into a new line.")]
+    [DefaultValue(false)]
+    [NotifyParentProperty(true)]
     public bool EnforceWidth
     {
       get { return _enforceWidth; }
@@ -68,11 +68,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets a flag that determines whether to enable sorting for this columns. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("A flag determining whether to enable sorting for this columns.")]
-    [DefaultValue (true)]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("A flag determining whether to enable sorting for this columns.")]
+    [DefaultValue(true)]
+    [NotifyParentProperty(true)]
     public bool IsSortable
     {
       get { return _isSortable; }

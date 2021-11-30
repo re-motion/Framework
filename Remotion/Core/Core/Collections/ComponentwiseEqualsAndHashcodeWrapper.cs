@@ -49,18 +49,18 @@ namespace Remotion.Collections
     /// </summary>
     public override bool Equals (object? obj)
     {
-      if (ReferenceEquals (null, obj))
+      if (ReferenceEquals(null, obj))
       {
         return false;
       }
-      else if (ReferenceEquals (this, obj))
+      else if (ReferenceEquals(this, obj))
       {
         return true;
       }
       else if (obj is ComponentwiseEqualsAndHashcodeWrapper<TElement>)
       {
-        var enumerableEqualsWrapper = (ComponentwiseEqualsAndHashcodeWrapper<TElement>) obj;
-        return enumerableEqualsWrapper.Enumerable.Cast<object> ().SequenceEqual (Enumerable.Cast<object> ());
+        var enumerableEqualsWrapper = (ComponentwiseEqualsAndHashcodeWrapper<TElement>)obj;
+        return enumerableEqualsWrapper.Enumerable.Cast<object>().SequenceEqual(Enumerable.Cast<object>());
       }
       else
       {
@@ -71,12 +71,12 @@ namespace Remotion.Collections
 
     public IEnumerator<TElement> GetEnumerator ()
     {
-      return _enumerable.GetEnumerator ();
+      return _enumerable.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
-      return GetEnumerator ();
+      return GetEnumerator();
     }
 
     /// <summary>
@@ -84,18 +84,18 @@ namespace Remotion.Collections
     /// </summary>
     public override int GetHashCode ()
     {
-      return EqualityUtility.GetRotatedHashCode (_enumerable);
+      return EqualityUtility.GetRotatedHashCode(_enumerable);
     }
   }
 
   /// <summary>
   /// ComponentwiseEqualsAndHashcodeWrapper-factory: ComponentwiseEqualsAndHashcodeWrapper.New(<see cref="IEnumerable{T}"/>).
   /// </summary>
-  public static class ComponentwiseEqualsAndHashcodeWrapper 
+  public static class ComponentwiseEqualsAndHashcodeWrapper
   {
     public static ComponentwiseEqualsAndHashcodeWrapper<T> New<T> (IEnumerable<T> elements)
     {
-      return new ComponentwiseEqualsAndHashcodeWrapper<T> (elements);
+      return new ComponentwiseEqualsAndHashcodeWrapper<T>(elements);
     }
   }
 }

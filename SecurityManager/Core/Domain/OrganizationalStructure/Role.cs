@@ -24,8 +24,8 @@ using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructu
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Role")]
-  [PermanentGuid ("23C68C62-5B0F-4857-8DF2-C161C0077745")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Role")]
+  [PermanentGuid("23C68C62-5B0F-4857-8DF2-C161C0077745")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -42,44 +42,44 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
     }
 
-    [DBBidirectionalRelation ("Roles")]
+    [DBBidirectionalRelation("Roles")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof (GroupPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(GroupPropertyTypeSearchService))]
     public abstract Group Group { get; set; }
 
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof (RolePropertiesSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(RolePropertiesSearchService))]
     public abstract Position Position { get; set; }
 
-    [DBBidirectionalRelation ("Roles")]
+    [DBBidirectionalRelation("Roles")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof (UserPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(UserPropertyTypeSearchService))]
     public abstract User User { get; set; }
 
-    [DBBidirectionalRelation ("SubstitutedRole")]
+    [DBBidirectionalRelation("SubstitutedRole")]
     public abstract ObjectList<Substitution> SubstitutedBy { get; }
-    
+
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
+      base.OnDeleting(args);
 
-      _deleteHandler = new DomainObjectDeleteHandler (SubstitutedBy);
+      _deleteHandler = new DomainObjectDeleteHandler(SubstitutedBy);
     }
 
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
-      _deleteHandler.Delete ();
+      _deleteHandler.Delete();
     }
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
-      var userProperty = Properties[typeof (Role), "User"];
-      if (userProperty.GetValue<User> () != null)
-        userProperty.GetValue<User> ().RegisterForCommit();
+      var userProperty = Properties[typeof(Role), "User"];
+      if (userProperty.GetValue<User>() != null)
+        userProperty.GetValue<User>().RegisterForCommit();
       else if (userProperty.GetOriginalValue<User>() != null)
         userProperty.GetOriginalValue<User>().RegisterForCommit();
 
@@ -105,7 +105,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
         string positionName = Position != null ? Position.DisplayName : null;
         string groupName = Group != null ? Group.DisplayName : null;
 
-        return string.Format ("{0} / {1}", positionName ?? "?", groupName ?? "?" );
+        return string.Format("{0} / {1}", positionName ?? "?", groupName ?? "?" );
       }
     }
   }

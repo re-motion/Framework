@@ -35,10 +35,10 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
     [Test]
     public void NewModuleBuilderFactory ()
     {
-      var result = _factory.Invoke ("NewModuleBuilderFactory", "ParticipantID");
+      var result = _factory.Invoke("NewModuleBuilderFactory", "ParticipantID");
 
-      Assert.That (result, Is.TypeOf<RemotionModuleBuilderFactoryDecorator>());
-      Assert.That (PrivateInvoke.GetNonPublicField (result, "_moduleBuilderFactory"), Is.TypeOf<ModuleBuilderFactory>());
+      Assert.That(result, Is.TypeOf<RemotionModuleBuilderFactoryDecorator>());
+      Assert.That(PrivateInvoke.GetNonPublicField(result, "_moduleBuilderFactory"), Is.TypeOf<ModuleBuilderFactory>());
     }
   }
 }

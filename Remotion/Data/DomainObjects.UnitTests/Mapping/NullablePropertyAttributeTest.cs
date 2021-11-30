@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   {
     private class StubNullablePropertyAttribute: NullablePropertyAttribute
     {
-      public StubNullablePropertyAttribute()
+      public StubNullablePropertyAttribute ()
       {
       }
     }
@@ -34,25 +34,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private INullablePropertyAttribute _nullable;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _attribute = new StubNullablePropertyAttribute();
       _nullable = _attribute;
     }
 
     [Test]
-    public void GetNullable_FromDefault()
+    public void GetNullable_FromDefault ()
     {
-      Assert.That (_attribute.IsNullable, Is.True);
-      Assert.That (_nullable.IsNullable, Is.True);
+      Assert.That(_attribute.IsNullable, Is.True);
+      Assert.That(_nullable.IsNullable, Is.True);
     }
 
     [Test]
-    public void GetNullable_FromExplicitValue()
+    public void GetNullable_FromExplicitValue ()
     {
       _attribute.IsNullable = false;
-      Assert.That (_attribute.IsNullable, Is.False);
-      Assert.That (_nullable.IsNullable, Is.False);
+      Assert.That(_attribute.IsNullable, Is.False);
+      Assert.That(_nullable.IsNullable, Is.False);
     }
   }
 }

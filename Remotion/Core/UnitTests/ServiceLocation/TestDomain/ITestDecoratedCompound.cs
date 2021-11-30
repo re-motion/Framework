@@ -24,17 +24,17 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ImplementationFor (typeof (IITestDecoratedCompound), RegistrationType = RegistrationType.Multiple, Position = 1)]
+  [ImplementationFor(typeof(IITestDecoratedCompound), RegistrationType = RegistrationType.Multiple, Position = 1)]
   public class ITestDecoratedCompoundObject1 : IITestDecoratedCompound
   {
   }
 
-  [ImplementationFor (typeof (IITestDecoratedCompound), RegistrationType = RegistrationType.Multiple, Position = 2)]
+  [ImplementationFor(typeof(IITestDecoratedCompound), RegistrationType = RegistrationType.Multiple, Position = 2)]
   public class ITestDecoratedCompoundObject2 : IITestDecoratedCompound
   {
   }
 
-  [ImplementationFor (typeof (IITestDecoratedCompound), RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor(typeof(IITestDecoratedCompound), RegistrationType = RegistrationType.Decorator)]
   public class ITestDecoratedCompoundDecorator : IITestDecoratedCompound
   {
     private readonly IITestDecoratedCompound _decoratedObject;
@@ -50,7 +50,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
     }
   }
 
-  [ImplementationFor (typeof (IITestDecoratedCompound), RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IITestDecoratedCompound), RegistrationType = RegistrationType.Compound)]
   public class ITestDecoratedCompoundCompound : IITestDecoratedCompound
   {
     private readonly IEnumerable<IITestDecoratedCompound> _innerObjects;

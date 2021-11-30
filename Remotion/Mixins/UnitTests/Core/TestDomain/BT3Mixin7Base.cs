@@ -22,7 +22,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   public class BT3Mixin7Base : Mixin<IBaseType31, ICBaseType3BT3Mixin4>
   {
     [OverrideTarget]
-    public string IfcMethod()
+    public string IfcMethod ()
     {
       return "BT3Mixin7Base.IfcMethod-" + Next.Foo() + "-" + ((IBaseType31)Next).IfcMethod() + "-" + Next.IfcMethod2();
     }

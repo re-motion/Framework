@@ -35,7 +35,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the user controls using the calling assemby's resource directory.
     /// </summary>
     public WxeResourceUserControlStep (string userControlName)
-        : this (Assembly.GetCallingAssembly(), userControlName)
+        : this(Assembly.GetCallingAssembly(), userControlName)
     {
     }
 
@@ -43,7 +43,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the user controls using the calling assemby's resource directory.
     /// </summary>
     public WxeResourceUserControlStep (WxeVariableReference userControl)
-        : this (Assembly.GetCallingAssembly(), userControl)
+        : this(Assembly.GetCallingAssembly(), userControl)
     {
     }
 
@@ -51,7 +51,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the user controls using the resource directory of the assembly's type.
     /// </summary>
     public WxeResourceUserControlStep (Type resourceType, string userControlName)
-        : this (resourceType.Assembly, userControlName)
+        : this(resourceType.Assembly, userControlName)
     {
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the user controls using the resource directory of the assembly's type.
     /// </summary>
     public WxeResourceUserControlStep (Type resourceType, WxeVariableReference userControl)
-        : this (resourceType.Assembly, userControl)
+        : this(resourceType.Assembly, userControl)
     {
     }
 
@@ -67,7 +67,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the user controls using the assemby's resource directory.
     /// </summary>
     public WxeResourceUserControlStep (Assembly resourceAssembly, string userControlName)
-        : base (new ResourceObject (ResourcePathBuilder, resourceAssembly, userControlName))
+        : base(new ResourceObject(ResourcePathBuilder, resourceAssembly, userControlName))
     {
     }
 
@@ -75,7 +75,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Calls the user controls using the assemby's resource directory.
     /// </summary>
     public WxeResourceUserControlStep (Assembly resourceAssembly, WxeVariableReference userControl)
-        : base (new ResourceObjectWithVarRef (ResourcePathBuilder, resourceAssembly, userControl))
+        : base(new ResourceObjectWithVarRef(ResourcePathBuilder, resourceAssembly, userControl))
     {
     }
 

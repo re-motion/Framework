@@ -27,11 +27,11 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     private bool _includeNamespaces = false;
     private XmlNamespaceManager _namespaceManager;
 
-    public NodeStackToXPathConverter()
+    public NodeStackToXPathConverter ()
     {
-      _xmlnsAttributeHandler = new XmlnsAttributeHandler ();
-      _xmlnsAttributeHandler.XmlnsAttributeFound += new XmlnsAttributeEventHandler (XmlnsAttributeHandler_XmlnsAttributeFound);
-      _namespaceManager = new XmlNamespaceManager (new NameTable ());
+      _xmlnsAttributeHandler = new XmlnsAttributeHandler();
+      _xmlnsAttributeHandler.XmlnsAttributeFound += new XmlnsAttributeEventHandler(XmlnsAttributeHandler_XmlnsAttributeFound);
+      _namespaceManager = new XmlNamespaceManager(new NameTable());
     }
 
     public bool IncludeNamespaces
@@ -53,21 +53,21 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 
     public string GetXPathExpression (Stack<XmlNode> nodeStack)
     {
-      StringBuilder xPathBuilder = new StringBuilder ();
+      StringBuilder xPathBuilder = new StringBuilder();
 
       while (nodeStack.Count > 0)
       {
-        XmlNode currentNode = nodeStack.Pop ();
+        XmlNode currentNode = nodeStack.Pop();
         if (currentNode.NodeType == XmlNodeType.Element)
         {
-          _xmlnsAttributeHandler.Handle (currentNode.Attributes);
-          AppendNode (xPathBuilder, currentNode);
+          _xmlnsAttributeHandler.Handle(currentNode.Attributes);
+          AppendNode(xPathBuilder, currentNode);
           if (currentNode.NodeType == XmlNodeType.Element)
-            AppendAttributes (xPathBuilder, currentNode.Attributes);
+            AppendAttributes(xPathBuilder, currentNode.Attributes);
         }
       }
 
-      return xPathBuilder.ToString ();
+      return xPathBuilder.ToString();
     }
 
     private void AppendAttributes (StringBuilder xPathBuilder, XmlAttributeCollection attributes)
@@ -75,35 +75,35 @@ namespace Remotion.Security.UnitTests.XmlAsserter
       if (attributes.Count == 0)
         return;
 
-      xPathBuilder.Append ("[");
+      xPathBuilder.Append("[");
       bool isFirstAttribute = true;
-      
+
       foreach (XmlAttribute attribute in attributes)
       {
         if (!isFirstAttribute)
-          xPathBuilder.Append (" and ");
+          xPathBuilder.Append(" and ");
 
-        xPathBuilder.Append (GetAttributeExpression (attribute));
+        xPathBuilder.Append(GetAttributeExpression(attribute));
         isFirstAttribute = false;
       }
 
-      xPathBuilder.Append ("]");
+      xPathBuilder.Append("]");
     }
 
     private void AppendNode (StringBuilder xPathBuilder, XmlNode currentNode)
     {
-      xPathBuilder.Append ("/");
+      xPathBuilder.Append("/");
 
       if (IncludeNamespaces)
       {
-        string prefix = _namespaceManager.LookupPrefix (currentNode.NamespaceURI);
-        if (string.IsNullOrEmpty (prefix))
+        string prefix = _namespaceManager.LookupPrefix(currentNode.NamespaceURI);
+        if (string.IsNullOrEmpty(prefix))
           prefix = "default";
 
-        xPathBuilder.Append (prefix + ":");
+        xPathBuilder.Append(prefix + ":");
       }
 
-      xPathBuilder.Append (currentNode.LocalName);
+      xPathBuilder.Append(currentNode.LocalName);
     }
 
     private string GetAttributeExpression (XmlAttribute attribute)
@@ -114,9 +114,9 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     private void XmlnsAttributeHandler_XmlnsAttributeFound (object sender, XmlnsAttributeEventArgs args)
     {
       if (args.IsDefaultNamespace)
-        _namespaceManager.AddNamespace ("default", args.NamespaceUri);
+        _namespaceManager.AddNamespace("default", args.NamespaceUri);
       else
-        _namespaceManager.AddNamespace (args.Prefix, args.NamespaceUri);
+        _namespaceManager.AddNamespace(args.Prefix, args.NamespaceUri);
     }
   }
 }

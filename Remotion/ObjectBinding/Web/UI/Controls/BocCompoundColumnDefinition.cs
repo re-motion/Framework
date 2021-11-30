@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BocCompoundColumnDefinition ()
     {
-      _propertyPathBindings = new PropertyPathBindingCollection (null);
+      _propertyPathBindings = new PropertyPathBindingCollection(null);
     }
 
     /// <summary> Creates a string representation of the data displayed in this column. </summary>
@@ -52,13 +52,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
     public override string GetStringValue (IBusinessObject obj)
     {
-      ArgumentUtility.CheckNotNull ("obj", obj);
+      ArgumentUtility.CheckNotNull("obj", obj);
 
       var formatters = _propertyPathBindings.Cast<PropertyPathBinding>()
-                                            .Select (b => new BusinessObjectPropertyPath.Formatter (obj, b.GetPropertyPath()))
+                                            .Select(b => new BusinessObjectPropertyPath.Formatter(obj, b.GetPropertyPath()))
                                             .ToArray();
 
-      return string.Format (_formatString, formatters);
+      return string.Format(_formatString, formatters);
     }
 
     /// <summary> Passes the new OwnerControl to the <see cref="PropertyPathBindingCollection"/>. </summary>
@@ -77,11 +77,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="BusinessObjectPropertyPath"/> to be displayed. The indices must match the 
     ///   order of the <see cref="BusinessObjectPropertyPath"/> objects to be formatted.
     /// </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Format")]
-    [Description ("A format string describing how the values accessed through the Property Path are merged.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Format")]
+    [Description("A format string describing how the values accessed through the Property Path are merged.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public string FormatString
     {
       get { return _formatString; }
@@ -93,10 +93,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="GetStringValue"/> to access the values of an <see cref="IBusinessObject"/>.
     /// </summary>
     /// <value> A collection of <see cref="PropertyPathBinding"/> objects. </value>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [Category ("Data")]
-    [Description ("The Property Paths used to access the values of Business Object.")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Category("Data")]
+    [Description("The Property Paths used to access the values of Business Object.")]
+    [NotifyParentProperty(true)]
     public PropertyPathBindingCollection PropertyPathBindings
     {
       get { return _propertyPathBindings; }
@@ -104,22 +104,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
-      
-      return serviceLocator.GetInstance<IBocCompoundColumnRenderer> ();
+      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
+
+      return serviceLocator.GetInstance<IBocCompoundColumnRenderer>();
     }
 
     /// <summary> Gets or sets the text displayed in the column title. Must not be empty or <see langword="null"/>. </summary>
     /// <value> A <see cref="string"/> representing the title of this column. </value>
-    [Description ("The assigned value of the column title, must not be empty.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [Description("The assigned value of the column title, must not be empty.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public override string ColumnTitle
     {
       get { return base.ColumnTitle; }
       set
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("ColumnTitle", value);
+        ArgumentUtility.CheckNotNullOrEmpty("ColumnTitle", value);
         base.ColumnTitle = value;
       }
     }
@@ -132,10 +132,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IComparer<BocListRow> CreateCellValueComparer ()
     {
-      return new CompoundComparer<BocListRow> (
+      return new CompoundComparer<BocListRow>(
           _propertyPathBindings
               .Cast<PropertyPathBinding>()
-              .Select (b => b.GetPropertyPath().CreateComparer()));
+              .Select(b => b.GetPropertyPath().CreateComparer()));
     }
   }
 }

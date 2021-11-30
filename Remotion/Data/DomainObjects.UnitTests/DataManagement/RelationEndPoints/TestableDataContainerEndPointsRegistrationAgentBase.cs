@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     protected override IEnumerable<RelationEndPointID> GetOwnedEndPointIDs (DataContainer dataContainer)
     {
-      return MockableGetOwnedEndPointIDs (dataContainer);
+      return MockableGetOwnedEndPointIDs(dataContainer);
     }
 
     public virtual IEnumerable<RelationEndPointID> MockableGetOwnedEndPointIDs (DataContainer dataContainer)
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     protected override string GetUnregisterProblem (IRelationEndPoint endPoint, RelationEndPointMap relationEndPointMap)
     {
-      return MockableGetUnregisterProblem (endPoint, relationEndPointMap);
+      return MockableGetUnregisterProblem(endPoint, relationEndPointMap);
     }
 
     public virtual string MockableGetUnregisterProblem (IRelationEndPoint endPoint, RelationEndPointMap relationEndPointMap)

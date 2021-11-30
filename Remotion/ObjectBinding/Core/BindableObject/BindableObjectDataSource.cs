@@ -50,9 +50,9 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return GetBindableObjectClass(); }
     }
 
-    [Category ("Data")]
-    [DefaultValue (null)]
-    [TypeConverter (typeof (TypeNameConverter))]
+    [Category("Data")]
+    [DefaultValue(null)]
+    [TypeConverter(typeof(TypeNameConverter))]
     public Type? Type
     {
       get
@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.BindableObject
         if (value == null)
           _typeName = null;
         else
-          _typeName = TypeUtility.GetPartialAssemblyQualifiedName (value);
+          _typeName = TypeUtility.GetPartialAssemblyQualifiedName(value);
 
         _bindableObjectClass = null;
       }
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.BindableObject
       if (_typeName == null)
         return null;
 
-      return TypeUtility.GetType (_typeName, true);
+      return TypeUtility.GetType(_typeName, true);
     }
 
     private BindableObjectClass? GetBindableObjectClass ()
@@ -90,8 +90,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
       if (_bindableObjectClass == null)
       {
-        var provider = BindableObjectProvider.GetProviderForBindableObjectType (type);
-        _bindableObjectClass = provider.GetBindableObjectClass (type);
+        var provider = BindableObjectProvider.GetProviderForBindableObjectType(type);
+        _bindableObjectClass = provider.GetBindableObjectClass(type);
       }
 
       return _bindableObjectClass;

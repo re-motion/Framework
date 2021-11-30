@@ -32,43 +32,43 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
       var service = GetGlobalizationService();
       string resourceValue;
 
-      using (new CultureScope (CultureInfo.InvariantCulture, CultureInfo.InvariantCulture))
+      using (new CultureScope(CultureInfo.InvariantCulture, CultureInfo.InvariantCulture))
       {
-        Assert.That (service.TryGetEnumerationValueDisplayName (EnumWithMultiLingualNameAttribute.ValueWithLocalizedName, out resourceValue), Is.True);
-        Assert.That (resourceValue, Is.EqualTo ("The Invariant Name"));
-        Assert.That (service.GetEnumerationValueDisplayName (EnumWithMultiLingualNameAttribute.ValueWithLocalizedName), Is.EqualTo ("The Invariant Name"));
-        Assert.That (service.GetEnumerationValueDisplayNameOrDefault (EnumWithMultiLingualNameAttribute.ValueWithLocalizedName), Is.EqualTo ("The Invariant Name"));
-        Assert.That (service.ContainsEnumerationValueDisplayName (EnumWithMultiLingualNameAttribute.ValueWithLocalizedName), Is.True);
+        Assert.That(service.TryGetEnumerationValueDisplayName(EnumWithMultiLingualNameAttribute.ValueWithLocalizedName, out resourceValue), Is.True);
+        Assert.That(resourceValue, Is.EqualTo("The Invariant Name"));
+        Assert.That(service.GetEnumerationValueDisplayName(EnumWithMultiLingualNameAttribute.ValueWithLocalizedName), Is.EqualTo("The Invariant Name"));
+        Assert.That(service.GetEnumerationValueDisplayNameOrDefault(EnumWithMultiLingualNameAttribute.ValueWithLocalizedName), Is.EqualTo("The Invariant Name"));
+        Assert.That(service.ContainsEnumerationValueDisplayName(EnumWithMultiLingualNameAttribute.ValueWithLocalizedName), Is.True);
 
-        Assert.That (service.TryGetEnumerationValueDisplayName (EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName, out resourceValue), Is.False);
-        Assert.That (service.GetEnumerationValueDisplayName (EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName), Is.EqualTo ("ValueWithoutLocalizedName"));
-        Assert.That (service.GetEnumerationValueDisplayNameOrDefault (EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName), Is.Null);
-        Assert.That (service.ContainsEnumerationValueDisplayName (EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName), Is.False);
+        Assert.That(service.TryGetEnumerationValueDisplayName(EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName, out resourceValue), Is.False);
+        Assert.That(service.GetEnumerationValueDisplayName(EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName), Is.EqualTo("ValueWithoutLocalizedName"));
+        Assert.That(service.GetEnumerationValueDisplayNameOrDefault(EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName), Is.Null);
+        Assert.That(service.ContainsEnumerationValueDisplayName(EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName), Is.False);
 
-        Assert.That (service.TryGetEnumerationValueDisplayName ((EnumWithMultiLingualNameAttribute) 100, out resourceValue), Is.False);
-        Assert.That (service.GetEnumerationValueDisplayName ((EnumWithMultiLingualNameAttribute) 100), Is.EqualTo ("100"));
-        Assert.That (service.GetEnumerationValueDisplayNameOrDefault ((EnumWithMultiLingualNameAttribute) 100), Is.Null);
-        Assert.That (service.ContainsEnumerationValueDisplayName ((EnumWithMultiLingualNameAttribute) 100), Is.False);
+        Assert.That(service.TryGetEnumerationValueDisplayName((EnumWithMultiLingualNameAttribute)100, out resourceValue), Is.False);
+        Assert.That(service.GetEnumerationValueDisplayName((EnumWithMultiLingualNameAttribute)100), Is.EqualTo("100"));
+        Assert.That(service.GetEnumerationValueDisplayNameOrDefault((EnumWithMultiLingualNameAttribute)100), Is.Null);
+        Assert.That(service.ContainsEnumerationValueDisplayName((EnumWithMultiLingualNameAttribute)100), Is.False);
       }
 
-      var culture = new CultureInfo ("en-US");
-      using (new CultureScope (culture, culture))
+      var culture = new CultureInfo("en-US");
+      using (new CultureScope(culture, culture))
       {
-        Assert.That (service.TryGetEnumerationValueDisplayName (EnumWithMultiLingualNameAttribute.ValueWithLocalizedName, out resourceValue), Is.True);
-        Assert.That (resourceValue, Is.EqualTo ("The en-US Name"));
-        Assert.That (service.GetEnumerationValueDisplayName (EnumWithMultiLingualNameAttribute.ValueWithLocalizedName), Is.EqualTo ("The en-US Name"));
-        Assert.That (service.GetEnumerationValueDisplayNameOrDefault (EnumWithMultiLingualNameAttribute.ValueWithLocalizedName), Is.EqualTo ("The en-US Name"));
-        Assert.That (service.ContainsEnumerationValueDisplayName (EnumWithMultiLingualNameAttribute.ValueWithLocalizedName), Is.True);
+        Assert.That(service.TryGetEnumerationValueDisplayName(EnumWithMultiLingualNameAttribute.ValueWithLocalizedName, out resourceValue), Is.True);
+        Assert.That(resourceValue, Is.EqualTo("The en-US Name"));
+        Assert.That(service.GetEnumerationValueDisplayName(EnumWithMultiLingualNameAttribute.ValueWithLocalizedName), Is.EqualTo("The en-US Name"));
+        Assert.That(service.GetEnumerationValueDisplayNameOrDefault(EnumWithMultiLingualNameAttribute.ValueWithLocalizedName), Is.EqualTo("The en-US Name"));
+        Assert.That(service.ContainsEnumerationValueDisplayName(EnumWithMultiLingualNameAttribute.ValueWithLocalizedName), Is.True);
 
-        Assert.That (service.TryGetEnumerationValueDisplayName (EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName, out resourceValue), Is.False);
-        Assert.That (service.GetEnumerationValueDisplayName (EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName), Is.EqualTo ("ValueWithoutLocalizedName"));
-        Assert.That (service.GetEnumerationValueDisplayNameOrDefault (EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName), Is.Null);
-        Assert.That (service.ContainsEnumerationValueDisplayName (EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName), Is.False);
+        Assert.That(service.TryGetEnumerationValueDisplayName(EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName, out resourceValue), Is.False);
+        Assert.That(service.GetEnumerationValueDisplayName(EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName), Is.EqualTo("ValueWithoutLocalizedName"));
+        Assert.That(service.GetEnumerationValueDisplayNameOrDefault(EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName), Is.Null);
+        Assert.That(service.ContainsEnumerationValueDisplayName(EnumWithMultiLingualNameAttribute.ValueWithoutLocalizedName), Is.False);
 
-        Assert.That (service.TryGetEnumerationValueDisplayName ((EnumWithMultiLingualNameAttribute) 100, out resourceValue), Is.False);
-        Assert.That (service.GetEnumerationValueDisplayName ((EnumWithMultiLingualNameAttribute) 100), Is.EqualTo ("100"));
-        Assert.That (service.GetEnumerationValueDisplayNameOrDefault ((EnumWithMultiLingualNameAttribute) 100), Is.Null);
-        Assert.That (service.ContainsEnumerationValueDisplayName ((EnumWithMultiLingualNameAttribute) 100), Is.False);
+        Assert.That(service.TryGetEnumerationValueDisplayName((EnumWithMultiLingualNameAttribute)100, out resourceValue), Is.False);
+        Assert.That(service.GetEnumerationValueDisplayName((EnumWithMultiLingualNameAttribute)100), Is.EqualTo("100"));
+        Assert.That(service.GetEnumerationValueDisplayNameOrDefault((EnumWithMultiLingualNameAttribute)100), Is.Null);
+        Assert.That(service.ContainsEnumerationValueDisplayName((EnumWithMultiLingualNameAttribute)100), Is.False);
       }
     }
 
@@ -77,9 +77,9 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     {
       var service = GetGlobalizationService();
 
-      var result = service.GetAvailableEnumDisplayNames (EnumWithMultiLingualNameAttribute.ValueWithLocalizedName);
+      var result = service.GetAvailableEnumDisplayNames(EnumWithMultiLingualNameAttribute.ValueWithLocalizedName);
 
-      Assert.That (result.Values, Is.EquivalentTo (new [] { "The en-US Name", "The Invariant Name" }));
+      Assert.That(result.Values, Is.EquivalentTo(new [] { "The en-US Name", "The Invariant Name" }));
     }
 
     private MultiLingualNameBasedEnumerationGlobalizationService GetGlobalizationService ()

@@ -27,15 +27,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetEnumerationValueFilter_FromFilterTypeCtor ()
     {
-      var attribute = new DisableExtensibleEnumValuesAttribute (typeof (StubEnumerationValueFilter));
+      var attribute = new DisableExtensibleEnumValuesAttribute(typeof(StubEnumerationValueFilter));
 
-      Assert.That (attribute.GetEnumerationValueFilter (), Is.TypeOf (typeof (StubEnumerationValueFilter)));
+      Assert.That(attribute.GetEnumerationValueFilter(), Is.TypeOf(typeof(StubEnumerationValueFilter)));
     }
 
     [Test]
     public void GetEnumerationValueFilter_FromEnumValueCtorWithArray ()
     {
-      var attribute = new DisableExtensibleEnumValuesAttribute (new[] {"Test1", "Test2", "Test3" });
+      var attribute = new DisableExtensibleEnumValuesAttribute(new[] {"Test1", "Test2", "Test3" });
 
       CheckDisabledIdentifiersFilter(attribute, "Test1", "Test2", "Test3");
     }
@@ -43,46 +43,46 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetEnumerationValueFilter_FromEnumValueCtorWithItems_1 ()
     {
-      var attribute = new DisableExtensibleEnumValuesAttribute ("Test1");
+      var attribute = new DisableExtensibleEnumValuesAttribute("Test1");
 
-      CheckDisabledIdentifiersFilter (attribute, "Test1");
+      CheckDisabledIdentifiersFilter(attribute, "Test1");
     }
 
     [Test]
     public void GetEnumerationValueFilter_FromEnumValueCtorWithItems_2 ()
     {
-      var attribute = new DisableExtensibleEnumValuesAttribute ("Test1", "Test2");
+      var attribute = new DisableExtensibleEnumValuesAttribute("Test1", "Test2");
 
-      CheckDisabledIdentifiersFilter (attribute, "Test1", "Test2");
+      CheckDisabledIdentifiersFilter(attribute, "Test1", "Test2");
     }
     [Test]
     public void GetEnumerationValueFilter_FromEnumValueCtorWithItems_3 ()
     {
-      var attribute = new DisableExtensibleEnumValuesAttribute ("Test1", "Test2", "Test3");
+      var attribute = new DisableExtensibleEnumValuesAttribute("Test1", "Test2", "Test3");
 
-      CheckDisabledIdentifiersFilter (attribute, "Test1", "Test2", "Test3");
+      CheckDisabledIdentifiersFilter(attribute, "Test1", "Test2", "Test3");
     }
     [Test]
     public void GetEnumerationValueFilter_FromEnumValueCtorWithItems_4 ()
     {
-      var attribute = new DisableExtensibleEnumValuesAttribute ("Test1", "Test2", "Test3", "Test4");
+      var attribute = new DisableExtensibleEnumValuesAttribute("Test1", "Test2", "Test3", "Test4");
 
-      CheckDisabledIdentifiersFilter (attribute, "Test1", "Test2", "Test3", "Test4");
+      CheckDisabledIdentifiersFilter(attribute, "Test1", "Test2", "Test3", "Test4");
     }
 
     [Test]
     public void GetEnumerationValueFilter_FromEnumValueCtorWithItems_5 ()
     {
-      var attribute = new DisableExtensibleEnumValuesAttribute ("Test1", "Test2", "Test3", "Test4", "Test5");
+      var attribute = new DisableExtensibleEnumValuesAttribute("Test1", "Test2", "Test3", "Test4", "Test5");
 
-      CheckDisabledIdentifiersFilter (attribute, "Test1", "Test2", "Test3", "Test4", "Test5");
+      CheckDisabledIdentifiersFilter(attribute, "Test1", "Test2", "Test3", "Test4", "Test5");
     }
 
     private void CheckDisabledIdentifiersFilter (DisableExtensibleEnumValuesAttribute attribute, params string[] expectedIDs)
     {
-      var filter = attribute.GetEnumerationValueFilter ();
-      Assert.That (filter, Is.TypeOf (typeof (DisabledIdentifiersEnumerationFilter)));
-      Assert.That (((DisabledIdentifiersEnumerationFilter)filter).DisabledIDs.ToArray(), Is.EqualTo (expectedIDs));
+      var filter = attribute.GetEnumerationValueFilter();
+      Assert.That(filter, Is.TypeOf(typeof(DisabledIdentifiersEnumerationFilter)));
+      Assert.That(((DisabledIdentifiersEnumerationFilter)filter).DisabledIDs.ToArray(), Is.EqualTo(expectedIDs));
     }
   }
 }

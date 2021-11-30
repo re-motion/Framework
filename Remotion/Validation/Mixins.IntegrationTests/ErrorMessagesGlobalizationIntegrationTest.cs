@@ -31,20 +31,20 @@ namespace Remotion.Validation.Mixins.IntegrationTests
     [Test]
     public void BuildCustomerValidator_CustomerMixinTargetValidator ()
     {
-      var customer = ObjectFactory.Create<Customer> (ParamList.Empty);
+      var customer = ObjectFactory.Create<Customer>(ParamList.Empty);
       customer.FirstName = "something";
       customer.LastName = "Mayr";
       customer.UserName = "mm2";
 
-      var validator = ValidationBuilder.BuildValidator<Customer> ();
+      var validator = ValidationBuilder.BuildValidator<Customer>();
 
-      var result = validator.Validate (customer);
+      var result = validator.Validate(customer);
 
-      Assert.That (result.IsValid, Is.False);
-      Assert.That (result.Errors.Count, Is.EqualTo (1));
-      Assert.That (result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
-      Assert.That (result.Errors.Cast<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("FirstName"));
-      Assert.That (result.Errors.First().LocalizedValidationMessage, Is.EqualTo ("Enter a valid value."));
+      Assert.That(result.IsValid, Is.False);
+      Assert.That(result.Errors.Count, Is.EqualTo(1));
+      Assert.That(result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+      Assert.That(result.Errors.Cast<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo("FirstName"));
+      Assert.That(result.Errors.First().LocalizedValidationMessage, Is.EqualTo("Enter a valid value."));
     }
 
     [Test]
@@ -52,55 +52,55 @@ namespace Remotion.Validation.Mixins.IntegrationTests
     {
       //HardConstraintLengthValidator defined in CustomerValidationCollector1 not removed by SpecialCustomerValidationCollector1!
 
-      var specialCustomer = ObjectFactory.Create<SpecialCustomer1> (ParamList.Empty);
+      var specialCustomer = ObjectFactory.Create<SpecialCustomer1>(ParamList.Empty);
       specialCustomer.UserName = "Test123456";
       specialCustomer.LastName = "LastNameTooLong";
-      var validator = ValidationBuilder.BuildValidator<SpecialCustomer1> ();
+      var validator = ValidationBuilder.BuildValidator<SpecialCustomer1>();
 
-      var result = validator.Validate (specialCustomer);
+      var result = validator.Validate(specialCustomer);
 
-      Assert.That (result.IsValid, Is.False);
-      Assert.That (result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
-      Assert.That (result.Errors.Cast<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("LastName"));
-      Assert.That (result.Errors.First().LocalizedValidationMessage, Is.EqualTo ("Enter at least 2 and no more than 8 characters."));
+      Assert.That(result.IsValid, Is.False);
+      Assert.That(result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+      Assert.That(result.Errors.Cast<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo("LastName"));
+      Assert.That(result.Errors.First().LocalizedValidationMessage, Is.EqualTo("Enter at least 2 and no more than 8 characters."));
     }
 
     [Test]
     public void BuildCustomerValidator_InvalidCustomerUserName_EqualsValidatorFailed ()
     {
-      var customer = ObjectFactory.Create<Customer> (ParamList.Empty);
+      var customer = ObjectFactory.Create<Customer>(ParamList.Empty);
       customer.UserName = "Test";
       customer.LastName = "Muster";
 
-      var validator = ValidationBuilder.BuildValidator<Customer> ();
+      var validator = ValidationBuilder.BuildValidator<Customer>();
 
-      var result = validator.Validate (customer);
+      var result = validator.Validate(customer);
 
-      Assert.That (result.IsValid, Is.False);
-      Assert.That (result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
-      Assert.That (
-          result.Errors.Cast<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
-          Is.EquivalentTo (new[] { "FirstName: Enter a value.", "UserName: Enter a valid value." }));
+      Assert.That(result.IsValid, Is.False);
+      Assert.That(result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+      Assert.That(
+          result.Errors.Cast<PropertyValidationFailure>().Select(e => $"{e.ValidatedProperty.Name}: {e.LocalizedValidationMessage}"),
+          Is.EquivalentTo(new[] { "FirstName: Enter a value.", "UserName: Enter a valid value." }));
     }
 
     [Test]
     public void BuildCustomerValidator_CustomerMixinIntroducedValidator_AttributeBaseRuleNotRemoveByRuleWithRemoveFrom ()
     {
-      var customer = ObjectFactory.Create<Customer> (ParamList.Empty);
+      var customer = ObjectFactory.Create<Customer>(ParamList.Empty);
       customer.FirstName = "Ralf";
       customer.LastName = "Mayr";
       customer.UserName = "mm2";
-      ((ICustomerIntroduced) customer).Title = "Chef1";
+      ((ICustomerIntroduced)customer).Title = "Chef1";
 
       var validator = ValidationBuilder.BuildValidator<Customer>();
 
-      var result = validator.Validate (customer);
+      var result = validator.Validate(customer);
 
-      Assert.That (result.IsValid, Is.False);
-      Assert.That (result.Errors.Count, Is.EqualTo (1));
-      Assert.That (result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
-      Assert.That (result.Errors.Cast<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo ("Title"));
-      Assert.That (result.Errors.First().LocalizedValidationMessage, Is.EqualTo ("Enter a valid value."));
+      Assert.That(result.IsValid, Is.False);
+      Assert.That(result.Errors.Count, Is.EqualTo(1));
+      Assert.That(result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+      Assert.That(result.Errors.Cast<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo("Title"));
+      Assert.That(result.Errors.First().LocalizedValidationMessage, Is.EqualTo("Enter a valid value."));
     }
   }
 }

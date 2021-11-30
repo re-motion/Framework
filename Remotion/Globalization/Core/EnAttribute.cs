@@ -24,7 +24,7 @@ namespace Remotion.Globalization
   /// to specify the <see cref="MultiLingualNameAttribute.LocalizedName"/> for the <b>en</b>-culture.
   /// </summary>
   /// <seealso cref="MultiLingualNameAttribute"/>
-  [AttributeUsage (MultiLingualNameAttribute.AttributeTargets, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(MultiLingualNameAttribute.AttributeTargets, AllowMultiple = false, Inherited = true)]
   public sealed class EnAttribute : MultiLingualNameAttribute
   {
     public EnAttribute ([NotNull] string localizedName)

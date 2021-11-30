@@ -28,8 +28,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
   [TestFixture]
   public class FindGroup : GroupTestBase
   {
-    private readonly QueryableComparer _queryableComparer 
-        = new QueryableComparer ((actual, exptected) => Assert.That (actual, Is.EqualTo (exptected)));
+    private readonly QueryableComparer _queryableComparer
+        = new QueryableComparer((actual, exptected) => Assert.That(actual, Is.EqualTo(exptected)));
 
     private DatabaseFixtures _dbFixtures;
     private IDomainObjectHandle<Tenant> _expectedTenantHandle;
@@ -39,24 +39,24 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       base.OneTimeSetUp();
 
       _dbFixtures = new DatabaseFixtures();
-      Tenant tenant = _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.CreateRootTransaction());
+      Tenant tenant = _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.CreateRootTransaction());
       _expectedTenantHandle = tenant.GetHandle();
     }
 
     [Test]
     public void FindByUnqiueIdentifier_ValidGroup ()
     {
-      Group foundGroup = Group.FindByUnqiueIdentifier ("UID: testGroup");
+      Group foundGroup = Group.FindByUnqiueIdentifier("UID: testGroup");
 
-      Assert.That (foundGroup.UniqueIdentifier, Is.EqualTo ("UID: testGroup"));
+      Assert.That(foundGroup.UniqueIdentifier, Is.EqualTo("UID: testGroup"));
     }
 
     [Test]
     public void FindByUnqiueIdentifier_NotExistingGroup ()
     {
-      Group foundGroup = Group.FindByUnqiueIdentifier ("UID: NotExistingGroup");
+      Group foundGroup = Group.FindByUnqiueIdentifier("UID: NotExistingGroup");
 
-      Assert.That (foundGroup, Is.Null);
+      Assert.That(foundGroup, Is.Null);
     }
 
     [Test]
@@ -67,11 +67,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
                      orderby g.Name, g.ShortName
                      select g;
 
-      var actual = Group.FindByTenant (_expectedTenantHandle);
+      var actual = Group.FindByTenant(_expectedTenantHandle);
 
-      _queryableComparer.Compare (expected, actual);
+      _queryableComparer.Compare(expected, actual);
 
-      Assert.That (actual.Count(), Is.EqualTo (9));
+      Assert.That(actual.Count(), Is.EqualTo(9));
     }
   }
 }

@@ -45,16 +45,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.MenuTabTests
       _mainMenuTab.Command.Type = CommandType.None;
       _mainMenuTab.OwnerControl = _mockTabbedMenu.Object;
 
-      _mockSubMenuTab1 = CreateSubMenuTab ("SubMenuTab1", _mockNavigationCommand1.Object);
-      _mainMenuTab.SubMenuTabs.Add (_mockSubMenuTab1);
+      _mockSubMenuTab1 = CreateSubMenuTab("SubMenuTab1", _mockNavigationCommand1.Object);
+      _mainMenuTab.SubMenuTabs.Add(_mockSubMenuTab1);
 
-      _mockSubMenuTab2 = CreateSubMenuTab ("SubMenuTab2", _mockNavigationCommand2.Object);
-      _mainMenuTab.SubMenuTabs.Add (_mockSubMenuTab2);
+      _mockSubMenuTab2 = CreateSubMenuTab("SubMenuTab2", _mockNavigationCommand2.Object);
+      _mainMenuTab.SubMenuTabs.Add(_mockSubMenuTab2);
 
-      Mock.Get (_mockSubMenuTab1).Reset();
-      Mock.Get (_mockSubMenuTab2).Reset();
-      Mock.Get (_mockNavigationCommand1).Reset();
-      Mock.Get (_mockNavigationCommand2).Reset();
+      Mock.Get(_mockSubMenuTab1).Reset();
+      Mock.Get(_mockSubMenuTab2).Reset();
+      Mock.Get(_mockNavigationCommand1).Reset();
+      Mock.Get(_mockNavigationCommand2).Reset();
     }
 
     private SubMenuTab CreateSubMenuTab (string itemID, NavigationCommand command)

@@ -26,10 +26,10 @@ namespace Remotion.SecurityManager.Configuration
   {
     private static readonly DoubleCheckedLockingContainer<SecurityManagerConfiguration> s_current;
 
-    static SecurityManagerConfiguration()
+    static SecurityManagerConfiguration ()
     {
-      s_current = new DoubleCheckedLockingContainer<SecurityManagerConfiguration> (
-          delegate { return (SecurityManagerConfiguration) ConfigurationManager.GetSection ("remotion.securityManager") ?? new SecurityManagerConfiguration (); });
+      s_current = new DoubleCheckedLockingContainer<SecurityManagerConfiguration>(
+          delegate { return (SecurityManagerConfiguration)ConfigurationManager.GetSection("remotion.securityManager") ?? new SecurityManagerConfiguration(); });
     }
 
     public static SecurityManagerConfiguration Current
@@ -47,29 +47,29 @@ namespace Remotion.SecurityManager.Configuration
 
     private readonly ConfigurationProperty _organizationalStructureFactoryProperty;
     private readonly DoubleCheckedLockingContainer<IOrganizationalStructureFactory> _organizationalStructureFactory;
-   
+
     private readonly ConfigurationProperty _accessControlProperty;
 
-    public SecurityManagerConfiguration()
+    public SecurityManagerConfiguration ()
     {
-      _xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
+      _xmlnsProperty = new ConfigurationProperty("xmlns", typeof(string), null, ConfigurationPropertyOptions.None);
 
-      _organizationalStructureFactory = new DoubleCheckedLockingContainer<IOrganizationalStructureFactory> (
+      _organizationalStructureFactory = new DoubleCheckedLockingContainer<IOrganizationalStructureFactory>(
           delegate { return OrganizationalStructureFactoryElement.CreateInstance(); });
-      _organizationalStructureFactoryProperty = new ConfigurationProperty (
+      _organizationalStructureFactoryProperty = new ConfigurationProperty(
           "organizationalStructureFactory",
-          typeof (TypeElement<IOrganizationalStructureFactory, OrganizationalStructureFactory>),
+          typeof(TypeElement<IOrganizationalStructureFactory, OrganizationalStructureFactory>),
           null,
           ConfigurationPropertyOptions.None);
-      _accessControlProperty = new ConfigurationProperty (
+      _accessControlProperty = new ConfigurationProperty(
           "accessControl",
-          typeof (AccessControlElement),
+          typeof(AccessControlElement),
           null,
           ConfigurationPropertyOptions.None);
 
-      _properties.Add (_xmlnsProperty);
-      _properties.Add (_organizationalStructureFactoryProperty);
-      _properties.Add (_accessControlProperty);
+      _properties.Add(_xmlnsProperty);
+      _properties.Add(_organizationalStructureFactoryProperty);
+      _properties.Add(_accessControlProperty);
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -85,12 +85,12 @@ namespace Remotion.SecurityManager.Configuration
 
     protected TypeElement<IOrganizationalStructureFactory> OrganizationalStructureFactoryElement
     {
-      get { return (TypeElement<IOrganizationalStructureFactory>) this[_organizationalStructureFactoryProperty]; }
+      get { return (TypeElement<IOrganizationalStructureFactory>)this[_organizationalStructureFactoryProperty]; }
     }
 
     public AccessControlElement AccessControl
     {
-      get { return (AccessControlElement) this[_accessControlProperty]; }
+      get { return (AccessControlElement)this[_accessControlProperty]; }
     }
   }
 }

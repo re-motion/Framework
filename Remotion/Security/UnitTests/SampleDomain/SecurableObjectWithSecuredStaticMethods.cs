@@ -20,17 +20,17 @@ namespace Remotion.Security.UnitTests.SampleDomain
 {
   public class SecurableObjectWithSecuredStaticMethods : ISecurableObject
   {
-    [DemandPermission (TestAccessTypes.First)]
+    [DemandPermission(TestAccessTypes.First)]
     public static void StaticMethod ()
     {
     }
 
-    [DemandPermission (TestAccessTypes.Second)]
+    [DemandPermission(TestAccessTypes.Second)]
     public static void StaticMethod (string value)
     {
     }
 
-    [DemandPermission (TestAccessTypes.Third)]
+    [DemandPermission(TestAccessTypes.Third)]
     public static void OtherStaticMethod (string value)
     {
     }
@@ -41,12 +41,12 @@ namespace Remotion.Security.UnitTests.SampleDomain
 
     public IObjectSecurityStrategy GetSecurityStrategy ()
     {
-      throw new Exception ("The method or operation is not implemented.");
+      throw new Exception("The method or operation is not implemented.");
     }
 
     public Type GetSecurableType ()
     {
-      throw new Exception ("The method or operation is not implemented.");
+      throw new Exception("The method or operation is not implemented.");
     }
   }
 }

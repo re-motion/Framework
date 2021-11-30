@@ -29,27 +29,27 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [SetUp]
     public void SetUp ()
     {
-      _testHelper = new SecurityClientTestHelper ();
-      _securityClient = _testHelper.CreateSecurityClient ();
+      _testHelper = new SecurityClientTestHelper();
+      _securityClient = _testHelper.CreateSecurityClient();
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessTypes.Create, true);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(GeneralAccessTypes.Create, true);
 
-      _securityClient.CheckConstructorAccess (typeof (SecurableObject));
+      _securityClient.CheckConstructorAccess(typeof(SecurableObject));
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_AccessDenied_ShouldThrowPermissionDeniedException ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessTypes.Create, false);
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(GeneralAccessTypes.Create, false);
 
-      Assert.That (
-          () => _securityClient.CheckConstructorAccess (typeof (SecurableObject)),
+      Assert.That(
+          () => _securityClient.CheckConstructorAccess(typeof(SecurableObject)),
           Throws.InstanceOf<PermissionDeniedException>());
       _testHelper.VerifyAll();
     }
@@ -59,10 +59,10 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckConstructorAccess (typeof (SecurableObject));
+        _securityClient.CheckConstructorAccess(typeof(SecurableObject));
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
   }
 }

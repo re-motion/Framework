@@ -32,14 +32,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
     private readonly IVirtualEndPoint[] _virtualEndPoints;
 
     public UnloadVirtualEndPointsCommand (
-        IEnumerable<IVirtualEndPoint> virtualEndPoints, 
-        IRelationEndPointRegistrationAgent registrationAgent, 
+        IEnumerable<IVirtualEndPoint> virtualEndPoints,
+        IRelationEndPointRegistrationAgent registrationAgent,
         RelationEndPointMap relationEndPointMap)
     {
-      ArgumentUtility.CheckNotNull ("virtualEndPoints", virtualEndPoints);
-      ArgumentUtility.CheckNotNull ("registrationAgent", registrationAgent);
-      ArgumentUtility.CheckNotNull ("relationEndPointMap", relationEndPointMap);
-      
+      ArgumentUtility.CheckNotNull("virtualEndPoints", virtualEndPoints);
+      ArgumentUtility.CheckNotNull("registrationAgent", registrationAgent);
+      ArgumentUtility.CheckNotNull("relationEndPointMap", relationEndPointMap);
+
       _virtualEndPoints = virtualEndPoints.ToArray();
       _registrationAgent = registrationAgent;
       _relationEndPointMap = relationEndPointMap;
@@ -74,10 +74,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
     {
       foreach (var virtualEndPoint in _virtualEndPoints)
       {
-        virtualEndPoint.MarkDataIncomplete ();
+        virtualEndPoint.MarkDataIncomplete();
 
         if (virtualEndPoint.CanBeCollected)
-          _registrationAgent.UnregisterEndPoint (virtualEndPoint, _relationEndPointMap);
+          _registrationAgent.UnregisterEndPoint(virtualEndPoint, _relationEndPointMap);
       }
     }
 
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      return new ExpandedCommand (this);
+      return new ExpandedCommand(this);
     }
   }
 }

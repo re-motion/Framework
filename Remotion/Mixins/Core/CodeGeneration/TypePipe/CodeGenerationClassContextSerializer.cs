@@ -31,43 +31,43 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class CodeGenerationClassContextSerializer : IClassContextSerializer
   {
     private static readonly ConstructorInfo s_constructor =
-        typeof (ClassContext).GetConstructor (new[] { typeof (Type), typeof (IEnumerable<MixinContext>), typeof (IEnumerable<Type>) })!;
+        typeof(ClassContext).GetConstructor(new[] { typeof(Type), typeof(IEnumerable<MixinContext>), typeof(IEnumerable<Type>) })!;
 
     private readonly Expression[] _constructorArguments = new Expression[3];
 
     public Expression GetConstructorInvocationExpression ()
     {
-      Assertion.IsNotNull (s_constructor);
-      return Expression.New (s_constructor, _constructorArguments);
+      Assertion.IsNotNull(s_constructor);
+      return Expression.New(s_constructor, _constructorArguments);
     }
 
     public void AddClassType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      _constructorArguments[0] = Expression.Constant (type);
+      _constructorArguments[0] = Expression.Constant(type);
     }
 
     public void AddMixins (IEnumerable<MixinContext> mixinContexts)
     {
-      ArgumentUtility.CheckNotNull ("mixinContexts", mixinContexts);
+      ArgumentUtility.CheckNotNull("mixinContexts", mixinContexts);
 
-      _constructorArguments[1] = Expression.NewArrayInit (
-          typeof (MixinContext),
-          mixinContexts.Select (
+      _constructorArguments[1] = Expression.NewArrayInit(
+          typeof(MixinContext),
+          mixinContexts.Select(
               mc =>
               {
                 var serializer = new CodeGenerationMixinContextSerializer();
-                mc.Serialize (serializer);
+                mc.Serialize(serializer);
                 return serializer.GetConstructorInvocationExpression();
               }));
     }
 
     public void AddComposedInterfaces (IEnumerable<Type> composedInterfaces)
     {
-      ArgumentUtility.CheckNotNull ("composedInterfaces", composedInterfaces);
+      ArgumentUtility.CheckNotNull("composedInterfaces", composedInterfaces);
 
-      _constructorArguments[2] = Expression.NewArrayInit (typeof (Type), composedInterfaces.Select (ci => (Expression) Expression.Constant (ci)));
+      _constructorArguments[2] = Expression.NewArrayInit(typeof(Type), composedInterfaces.Select(ci => (Expression)Expression.Constant(ci)));
     }
   }
 }

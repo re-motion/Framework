@@ -33,9 +33,9 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public static ElementScope GetRootScope ([NotNull] this BrowserWindow window)
     {
-      ArgumentUtility.CheckNotNull ("window", window);
+      ArgumentUtility.CheckNotNull("window", window);
 
-      return window.FindCss ("html");
+      return window.FindCss("html");
     }
 
     /// <summary>
@@ -43,10 +43,10 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public static void CloseWindow ([NotNull] this PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      context.Window.ExecuteScript (CommonJavaScripts.SelfClose);
-      EnsureParentWindowIsActive (context);
+      context.Window.ExecuteScript(CommonJavaScripts.SelfClose);
+      EnsureParentWindowIsActive(context);
     }
 
     /// <summary>
@@ -63,13 +63,13 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public static IWebDriver GetWebDriver ([NotNull] this BrowserWindow window)
     {
-      ArgumentUtility.CheckNotNull ("window", window);
-      
-      var driverFieldInfo = typeof (BrowserWindow).GetField ("_driver", BindingFlags.NonPublic | BindingFlags.Instance);
-      Assertion.IsNotNull (driverFieldInfo, "Coypu has changed, please update CoypuBrowserWindowExtensions.GetWebDriver() method.");
+      ArgumentUtility.CheckNotNull("window", window);
 
-      var driver = (IDriver) driverFieldInfo.GetValue (window)!;
-      return (IWebDriver) driver.Native;
+      var driverFieldInfo = typeof(BrowserWindow).GetField("_driver", BindingFlags.NonPublic | BindingFlags.Instance);
+      Assertion.IsNotNull(driverFieldInfo, "Coypu has changed, please update CoypuBrowserWindowExtensions.GetWebDriver() method.");
+
+      var driver = (IDriver)driverFieldInfo.GetValue(window)!;
+      return (IWebDriver)driver.Native;
     }
 
     /// <summary>
@@ -78,8 +78,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     private static void EnsureParentWindowIsActive ([NotNull] this PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      Assertion.IsNotNull (context.ParentContext);
+      ArgumentUtility.CheckNotNull("context", context);
+      Assertion.IsNotNull(context.ParentContext);
 
       context.ParentContext.Window.EnsureWindowIsActive();
     }

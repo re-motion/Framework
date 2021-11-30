@@ -32,58 +32,58 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [Test]
     public void GetVerifierPath ()
     {
-      var pathSourceStub = MockRepository.GenerateStub<IPEVerifyPathSource> ();
-      pathSourceStub.Stub (stub => stub.GetPEVerifyPath (PEVerifyVersion.DotNet4)).Return ("test");
-      var verifier = new PEVerifier (pathSourceStub);
+      var pathSourceStub = MockRepository.GenerateStub<IPEVerifyPathSource>();
+      pathSourceStub.Stub(stub => stub.GetPEVerifyPath(PEVerifyVersion.DotNet4)).Return("test");
+      var verifier = new PEVerifier(pathSourceStub);
 
-      var path = verifier.GetVerifierPath (PEVerifyVersion.DotNet4);
+      var path = verifier.GetVerifierPath(PEVerifyVersion.DotNet4);
 
-      Assert.That (path, Is.EqualTo ("test"));
+      Assert.That(path, Is.EqualTo("test"));
     }
 
     [Test]
     public void GetVerifierPath_NotFound ()
     {
-      var pathSourceStub = MockRepository.GenerateStub<IPEVerifyPathSource> ();
-      pathSourceStub.Stub (stub => stub.GetPEVerifyPath (PEVerifyVersion.DotNet4)).Return (null);
-      pathSourceStub.Stub (stub => stub.GetLookupDiagnostics (PEVerifyVersion.DotNet4)).Return ("x");
-      var verifier = new PEVerifier (pathSourceStub);
-      Assert.That (
-          () => verifier.GetVerifierPath (PEVerifyVersion.DotNet4),
+      var pathSourceStub = MockRepository.GenerateStub<IPEVerifyPathSource>();
+      pathSourceStub.Stub(stub => stub.GetPEVerifyPath(PEVerifyVersion.DotNet4)).Return(null);
+      pathSourceStub.Stub(stub => stub.GetLookupDiagnostics(PEVerifyVersion.DotNet4)).Return("x");
+      var verifier = new PEVerifier(pathSourceStub);
+      Assert.That(
+          () => verifier.GetVerifierPath(PEVerifyVersion.DotNet4),
           Throws.InstanceOf<PEVerifyException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "PEVerify for version 'DotNet4' could not be found. Locations searched:\r\nx"));
     }
 
     [Test]
     public void CreateDefault_FindsVerifier ()
     {
-      var verifier = PEVerifier.CreateDefault ();
+      var verifier = PEVerifier.CreateDefault();
 
-      var path = verifier.GetVerifierPath (PEVerifyVersion.DotNet4);
+      var path = verifier.GetVerifierPath(PEVerifyVersion.DotNet4);
 
-      Assert.That (path, Is.Not.Null);
-      Assert.That (File.Exists (path), Is.True);
+      Assert.That(path, Is.Not.Null);
+      Assert.That(File.Exists(path), Is.True);
     }
-    
+
     [Test]
     public void VerifyPEFile_MSCorlib ()
     {
 #if !NETFRAMEWORK
-      Assert.Ignore ("PEVerify is not supported for .NET 5 assemblies.");
+      Assert.Ignore("PEVerify is not supported for .NET 5 assemblies.");
 #endif
-      var verifier = PEVerifier.CreateDefault ();
-      verifier.VerifyPEFile (typeof (object).Assembly);
+      var verifier = PEVerifier.CreateDefault();
+      verifier.VerifyPEFile(typeof(object).Assembly);
     }
 
     [Test]
     public void VerifyPEFile_InvalidPath ()
     {
-      var verifier = PEVerifier.CreateDefault ();
-      Assert.That (
-          () => verifier.VerifyPEFile ("Foobar whatever"),
+      var verifier = PEVerifier.CreateDefault();
+      Assert.That(
+          () => verifier.VerifyPEFile("Foobar whatever"),
           Throws.InstanceOf<PEVerifyException>()
-              .With.Message.Contains ("PEVerify returned 1."));
+              .With.Message.Contains("PEVerify returned 1."));
     }
   }
 }

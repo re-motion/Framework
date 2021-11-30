@@ -30,8 +30,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void ListenerIsSerializable ()
     {
       var listener = new InvalidatedTransactionListener();
-      InvalidatedTransactionListener deserializedListener = Serializer.SerializeAndDeserialize (listener);
-      Assert.That (deserializedListener, Is.Not.Null);
+      InvalidatedTransactionListener deserializedListener = Serializer.SerializeAndDeserialize(listener);
+      Assert.That(deserializedListener, Is.Not.Null);
     }
 
     [Test]
@@ -39,20 +39,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var listener = new InvalidatedTransactionListener();
       MethodInfo[] methods =
-          typeof (InvalidatedTransactionListener).GetMethods (BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
-      Assert.That (methods.Length, Is.EqualTo (38));
+          typeof(InvalidatedTransactionListener).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+      Assert.That(methods.Length, Is.EqualTo(38));
 
       foreach (var method in methods)
       {
-        var concreteMethod = 
-            method.Name == "FilterQueryResult" || method.Name == "FilterCustomQueryResult" 
-            ? method.MakeGenericMethod (typeof (Order)) 
+        var concreteMethod =
+            method.Name == "FilterQueryResult" || method.Name == "FilterCustomQueryResult"
+            ? method.MakeGenericMethod(typeof(Order))
             : method;
 
-        object[] arguments = Array.ConvertAll (concreteMethod.GetParameters(), p => GetDefaultValue (p.ParameterType));
+        object[] arguments = Array.ConvertAll(concreteMethod.GetParameters(), p => GetDefaultValue(p.ParameterType));
 
-        ExpectException (
-            typeof (InvalidOperationException),
+        ExpectException(
+            typeof(InvalidOperationException),
             "The transaction can no longer be used because it has been discarded.",
             listener,
             concreteMethod,
@@ -69,8 +69,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       try
       {
-        method.Invoke (listener, arguments);
-        Assert.Fail (BuildErrorMessage (expectedExceptionType, method, arguments, "the call succeeded."));
+        method.Invoke(listener, arguments);
+        Assert.Fail(BuildErrorMessage(expectedExceptionType, method, arguments, "the call succeeded."));
       }
       catch (TargetInvocationException tex)
       {
@@ -81,33 +81,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
             return;
           else
           {
-            Assert.Fail (
-                BuildErrorMessage (
+            Assert.Fail(
+                BuildErrorMessage(
                     expectedExceptionType,
                     method,
                     arguments,
-                    string.Format ("the message was incorrect.\nExpected: {0}\nWas:      {1}", expectedMessage, ex.Message)));
+                    string.Format("the message was incorrect.\nExpected: {0}\nWas:      {1}", expectedMessage, ex.Message)));
           }
         }
         else
-          Assert.Fail (BuildErrorMessage (expectedExceptionType, method, arguments, "the exception type was " + ex.GetType() + ".\n" + ex));
+          Assert.Fail(BuildErrorMessage(expectedExceptionType, method, arguments, "the exception type was " + ex.GetType() + ".\n" + ex));
       }
     }
 
     private string BuildErrorMessage (Type expectedExceptionType, MethodInfo method, object[] arguments, string problem)
     {
-      return string.Format (
+      return string.Format(
           "Expected {0} when calling {1}({2}), but {3}",
           expectedExceptionType,
           method.Name,
-          ReflectionUtility.GetSignatureForArguments (arguments),
+          ReflectionUtility.GetSignatureForArguments(arguments),
           problem);
     }
 
     private object GetDefaultValue (Type t)
     {
       if (t.IsValueType)
-        return Activator.CreateInstance (t);
+        return Activator.CreateInstance(t);
       else
         return null;
     }

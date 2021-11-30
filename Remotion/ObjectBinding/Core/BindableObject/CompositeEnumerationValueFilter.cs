@@ -30,21 +30,21 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public CompositeEnumerationValueFilter (IEnumerationValueFilter[] filters)
     {
-      ArgumentUtility.CheckNotNull ("filters", filters);
+      ArgumentUtility.CheckNotNull("filters", filters);
       _filters = filters;
     }
 
     public ReadOnlyCollection<IEnumerationValueFilter> Filters
     {
-      get { return new ReadOnlyCollection<IEnumerationValueFilter> (_filters); }
+      get { return new ReadOnlyCollection<IEnumerationValueFilter>(_filters); }
     }
 
     public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject? businessObject, IBusinessObjectEnumerationProperty property)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull("property", property);
 
-      return !_filters.Any (f => !f.IsEnabled (value, businessObject, property));
+      return !_filters.Any(f => !f.IsEnabled(value, businessObject, property));
     }
   }
 }

@@ -39,16 +39,16 @@ namespace Remotion.Web.UnitTests.Core.Compilation
       Action<CodeCompileUnit, CodeTypeDeclaration, CodeTypeDeclaration, CodeMemberMethod, CodeMemberMethod> baseCall =
           (pUnit, pBaseType, pDerivedType, pBuildMethod, pDataBindingMethod) =>
           {
-            Assert.That (pUnit, Is.SameAs (unit));
-            Assert.That (pBaseType, Is.SameAs (baseType));
-            Assert.That (pDerivedType, Is.SameAs (derivedType));
-            Assert.That (pBuildMethod, Is.SameAs (buildMethod));
-            Assert.That (pDataBindingMethod, Is.SameAs (dataBindingMethod));
+            Assert.That(pUnit, Is.SameAs(unit));
+            Assert.That(pBaseType, Is.SameAs(baseType));
+            Assert.That(pDerivedType, Is.SameAs(derivedType));
+            Assert.That(pBuildMethod, Is.SameAs(buildMethod));
+            Assert.That(pDataBindingMethod, Is.SameAs(dataBindingMethod));
             called = true;
           };
 
-      processor.ProcessGeneratedCode (unit, baseType, derivedType, buildMethod, dataBindingMethod, baseCall);
-      Assert.That (called, Is.True);
+      processor.ProcessGeneratedCode(unit, baseType, derivedType, buildMethod, dataBindingMethod, baseCall);
+      Assert.That(called, Is.True);
     }
   }
 }

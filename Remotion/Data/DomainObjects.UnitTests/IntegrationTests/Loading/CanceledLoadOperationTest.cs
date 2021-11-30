@@ -30,30 +30,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Loading
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _listenerDynamicMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
+      _listenerDynamicMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(TestableClientTransaction);
     }
 
     [Test]
     public void ExceptionInOnLoading_StillAllowsSubsequentLoading ()
     {
-      var exception = new Exception ("Test");
+      var exception = new Exception("Test");
 
       // First, load an object and throw in ObjectsLoading.
 
       _listenerDynamicMock
-          .Expect (mock => mock.ObjectsLoading (Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<ObjectID>>.Is.Anything))
-          .Throw (exception).Repeat.Once();
-      
-      var abortedDomainObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObjectReference<ClassWithAllDataTypes> ();
-      Assert.That (() => abortedDomainObject.EnsureDataAvailable(), Throws.Exception.SameAs (exception));
+          .Expect(mock => mock.ObjectsLoading(Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<ObjectID>>.Is.Anything))
+          .Throw(exception).Repeat.Once();
+
+      var abortedDomainObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObjectReference<ClassWithAllDataTypes>();
+      Assert.That(() => abortedDomainObject.EnsureDataAvailable(), Throws.Exception.SameAs(exception));
 
       // Now, try again. It now works.
 
       abortedDomainObject.EnsureDataAvailable();
 
-      Assert.That (abortedDomainObject.State.IsUnchanged, Is.True);
+      Assert.That(abortedDomainObject.State.IsUnchanged, Is.True);
     }
 
   }

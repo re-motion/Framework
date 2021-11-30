@@ -36,10 +36,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       _rdbmsProviderDefinition = rdbmsProviderDefinition;
       _executionListenerStrictMock = MockRepository.GenerateStrictMock<ObservableRdbmsProvider.ICommandExecutionListener>();
-      _provider = RdbmsProviderObjectMother.CreateForIntegrationTest (
+      _provider = RdbmsProviderObjectMother.CreateForIntegrationTest(
           rdbmsProviderDefinition,
           (providerDefinition, persistenceListener, commandFactory) =>
-          new ObservableRdbmsProvider (
+          new ObservableRdbmsProvider(
               providerDefinition,
               NullPersistenceExtension.Instance,
               commandFactory,
@@ -57,12 +57,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       get { return _provider; }
     }
 
-    public void Replay()
+    public void Replay ()
     {
       _executionListenerStrictMock.Replay();
     }
 
-    public void VerifyAllExpectations()
+    public void VerifyAllExpectations ()
     {
       _executionListenerStrictMock.VerifyAllExpectations();
     }
@@ -73,8 +73,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         params Tuple<string, DbType, object>[] expectedParametersData)
     {
       _executionListenerStrictMock
-          .Expect (mock => mock.OnExecuteReader (Arg<IDbCommand>.Is.Anything, Arg.Is (expectedCommandBehavior)))
-          .WhenCalled (mi => CheckCommand ((IDbCommand) mi.Arguments[0], expectedSql, expectedParametersData))
+          .Expect(mock => mock.OnExecuteReader(Arg<IDbCommand>.Is.Anything, Arg.Is(expectedCommandBehavior)))
+          .WhenCalled(mi => CheckCommand((IDbCommand)mi.Arguments[0], expectedSql, expectedParametersData))
           .Repeat.Once();
     }
 
@@ -83,8 +83,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         params Tuple<string, DbType, object>[] expectedParametersData)
     {
       _executionListenerStrictMock
-          .Expect (mock => mock.OnExecuteScalar (Arg<IDbCommand>.Is.Anything))
-          .WhenCalled (mi => CheckCommand ((IDbCommand) mi.Arguments[0], expectedSql, expectedParametersData))
+          .Expect(mock => mock.OnExecuteScalar(Arg<IDbCommand>.Is.Anything))
+          .WhenCalled(mi => CheckCommand((IDbCommand)mi.Arguments[0], expectedSql, expectedParametersData))
           .Repeat.Once();
     }
 
@@ -93,8 +93,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         params Tuple<string, DbType, object>[] expectedParametersData)
     {
       _executionListenerStrictMock
-          .Expect (mock => mock.OnExecuteNonQuery (Arg<IDbCommand>.Is.Anything))
-          .WhenCalled (mi => CheckCommand ((IDbCommand) mi.Arguments[0], expectedSql, expectedParametersData))
+          .Expect(mock => mock.OnExecuteNonQuery(Arg<IDbCommand>.Is.Anything))
+          .WhenCalled(mi => CheckCommand((IDbCommand)mi.Arguments[0], expectedSql, expectedParametersData))
           .Repeat.Once();
     }
 
@@ -102,48 +102,48 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       try
       {
-        Assert.That (
+        Assert.That(
             sqlCommand.CommandText,
-            Is.EqualTo (expectedSql),
+            Is.EqualTo(expectedSql),
             "Command text doesn't match.\r\nActual statement: {0}\r\nExpected statement: {1})",
             sqlCommand.CommandText,
             expectedSql);
-        Assert.That (
+        Assert.That(
             sqlCommand.CommandType,
-            Is.EqualTo (CommandType.Text),
+            Is.EqualTo(CommandType.Text),
             "Command type doesn't match.\r\nExpected statement: {0})");
-        Assert.That (
+        Assert.That(
             sqlCommand.Parameters.Count,
-            Is.EqualTo (expectedParametersData.Length),
+            Is.EqualTo(expectedParametersData.Length),
             "Number of parameters doesn't match.\r\nStatement: {0})",
             expectedSql);
         for (int i = 0; i < expectedParametersData.Length; ++i)
         {
-          var actualParameter = (IDataParameter) sqlCommand.Parameters[i];
+          var actualParameter = (IDataParameter)sqlCommand.Parameters[i];
           var expectedParameterData = expectedParametersData[i];
 
-          Assert.That (
+          Assert.That(
               actualParameter.ParameterName,
-              Is.EqualTo (expectedParameterData.Item1),
+              Is.EqualTo(expectedParameterData.Item1),
               "Name of parameter " + i + " doesn't match.\r\nStatement: {0})",
               expectedSql);
-          Assert.That (
+          Assert.That(
               actualParameter.DbType,
-              Is.EqualTo (expectedParameterData.Item2),
+              Is.EqualTo(expectedParameterData.Item2),
               "DbType of parameter " + i + " doesn't match.\r\nSstatement: {0})",
               expectedSql);
-          Assert.That (
+          Assert.That(
               actualParameter.Value,
-              Is.EqualTo (expectedParameterData.Item3),
+              Is.EqualTo(expectedParameterData.Item3),
               "Value of parameter " + i + " doesn't match.\r\nStatement: {0})",
               expectedSql);
         }
       }
       catch (AssertionException)
       {
-        Console.WriteLine (sqlCommand.CommandText);
-        Console.WriteLine (sqlCommand.CommandType);
-        Console.WriteLine (string.Join ("," + Environment.NewLine, sqlCommand.Parameters.Cast<IDataParameter>().Select (parameter =>
+        Console.WriteLine(sqlCommand.CommandText);
+        Console.WriteLine(sqlCommand.CommandType);
+        Console.WriteLine(string.Join("," + Environment.NewLine, sqlCommand.Parameters.Cast<IDataParameter>().Select(parameter =>
         {
           string valueString;
           if (parameter.Value == DBNull.Value)
@@ -155,7 +155,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           else
             valueString = parameter.Value.ToString();
 
-          return string.Format ("Tuple.Create (\"{0}\", DbType.{1}, (object) {2})", parameter.ParameterName, parameter.DbType, valueString);
+          return string.Format("Tuple.Create (\"{0}\", DbType.{1}, (object) {2})", parameter.ParameterName, parameter.DbType, valueString);
         })));
 
         throw;
@@ -164,9 +164,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public DataContainer LoadDataContainerInSeparateProvider (ObjectID objectID)
     {
-      using (var provider = RdbmsProviderObjectMother.CreateForIntegrationTest (_rdbmsProviderDefinition))
+      using (var provider = RdbmsProviderObjectMother.CreateForIntegrationTest(_rdbmsProviderDefinition))
       {
-        return provider.LoadDataContainer (objectID).LocatedObject;
+        return provider.LoadDataContainer(objectID).LocatedObject;
       }
 
     }

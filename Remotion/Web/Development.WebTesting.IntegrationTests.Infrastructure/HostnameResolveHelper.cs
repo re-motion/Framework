@@ -35,14 +35,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       if (uri.HostNameType != UriHostNameType.Dns)
         return uri;
 
-      var host = new RetryUntilTimeout<IPHostEntry> (() => Dns.GetHostEntry (uri.Host), TimeSpan.FromSeconds (30), TimeSpan.FromSeconds (1)).Run();
-      var address = host.AddressList.FirstOrDefault (a => a.AddressFamily == AddressFamily.InterNetwork);
+      var host = new RetryUntilTimeout<IPHostEntry>(() => Dns.GetHostEntry(uri.Host), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(1)).Run();
+      var address = host.AddressList.FirstOrDefault(a => a.AddressFamily == AddressFamily.InterNetwork);
 
       if (address == null)
-        throw new InvalidOperationException ($"Could not resolve hostname '{uri}' to a matching inter-network address.");
+        throw new InvalidOperationException($"Could not resolve hostname '{uri}' to a matching inter-network address.");
 
       var iPv4 = address.MapToIPv4();
-      var uriBuilder = new UriBuilder (uri) { Host = iPv4.ToString() };
+      var uriBuilder = new UriBuilder(uri) { Host = iPv4.ToString() };
 
       var resolvedUri = uriBuilder.Uri;
 

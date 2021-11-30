@@ -31,19 +31,19 @@ namespace Remotion.Reflection
     private readonly ParameterModifier[]? _parameterModifiers;
 
     public MemberLookupInfo (string memberName, BindingFlags bindingFlags)
-        : this (memberName, bindingFlags, null, CallingConventions.Any, null)
+        : this(memberName, bindingFlags, null, CallingConventions.Any, null)
     {
     }
 
     public MemberLookupInfo (string memberName)
-        : this (memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)
+        : this(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)
     {
     }
 
     public MemberLookupInfo (
         string memberName, BindingFlags bindingFlags, Binder? binder, CallingConventions callingConvention, ParameterModifier[]? parameterModifiers)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("memberName", memberName);
+      ArgumentUtility.CheckNotNullOrEmpty("memberName", memberName);
 
       _memberName = memberName;
       _bindingFlags = bindingFlags;
@@ -79,14 +79,14 @@ namespace Remotion.Reflection
 
     public Type[] GetParameterTypes (Type delegateType)
     {
-      return GetSignature (delegateType).Item1;
+      return GetSignature(delegateType).Item1;
     }
 
     public Tuple<Type[], Type> GetSignature (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
 
-      return DelegateFactory.GetSignature (delegateType);
+      return DelegateFactory.GetSignature(delegateType);
     }
   }
 }

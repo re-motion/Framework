@@ -25,12 +25,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
   {
     public static TypeWithString Create ()
     {
-      return ObjectFactory.Create<TypeWithString> (true, ParamList.Empty);
+      return ObjectFactory.Create<TypeWithString>(true, ParamList.Empty);
     }
 
     public static TypeWithString Create (string firstValue, string secondValue)
     {
-      return ObjectFactory.Create<TypeWithString> (true, ParamList.Create (firstValue, secondValue));
+      return ObjectFactory.Create<TypeWithString>(true, ParamList.Create(firstValue, secondValue));
     }
 
     private string _stringValue;

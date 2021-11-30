@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
   {
     public static SampleBindableMixinDomainObject NewObject ()
     {
-      return NewObject<SampleBindableMixinDomainObject> ();
+      return NewObject<SampleBindableMixinDomainObject>();
     }
 
     public abstract string Name { get; set; }
@@ -37,10 +37,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
       set { Name = value; }
     }
 
-    [DBBidirectionalRelation ("OppositeSampleObjectWithMixin1")]
+    [DBBidirectionalRelation("OppositeSampleObjectWithMixin1")]
     public abstract ObjectList<OppositeBidirectionalBindableDomainObject> List { get; }
 
-    [DBBidirectionalRelation ("OppositeSampleObjectWithMixin2", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("OppositeSampleObjectWithMixin2", ContainsForeignKey = true)]
     public abstract OppositeBidirectionalBindableDomainObject Relation { get; }
   }
 }

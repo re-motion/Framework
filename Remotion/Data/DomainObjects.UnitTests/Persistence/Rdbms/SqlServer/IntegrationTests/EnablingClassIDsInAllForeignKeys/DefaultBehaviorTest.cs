@@ -28,52 +28,52 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   public class DefaultBehaviorTest : CustomStorageObjectFactoryTestBase
   {
     public DefaultBehaviorTest ()
-        : base (CreateEmptyTestDataFileName)
+        : base(CreateEmptyTestDataFileName)
     {
     }
 
     protected override SqlStorageObjectFactory CreateSqlStorageObjectFactory ()
     {
-      return new SqlStorageObjectFactory ();
+      return new SqlStorageObjectFactory();
     }
 
     [Test]
     public void EndPointWithoutInheritanceHierarchy_HasNoClassIDColumn ()
     {
-      var endPointWithoutInheritanceHierarchy = ReleationEndPointTestHelper.GetRelationEndPointDefinition (
+      var endPointWithoutInheritanceHierarchy = ReleationEndPointTestHelper.GetRelationEndPointDefinition(
           MappingConfiguration,
           (ClassWithRelations obj) => obj.RelationWithoutInheritanceHierarchy);
 
-      var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition) endPointWithoutInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
-      Assert.That (storagePropertyDefinition, Is.TypeOf<ObjectIDWithoutClassIDStoragePropertyDefinition>());
+      var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition)endPointWithoutInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
+      Assert.That(storagePropertyDefinition, Is.TypeOf<ObjectIDWithoutClassIDStoragePropertyDefinition>());
       var columnDefinitions = storagePropertyDefinition.GetColumns().ToArray();
-      Assert.That (columnDefinitions, Has.Length.EqualTo (1));
-      Assert.That (columnDefinitions.Any (cd => cd.Name.EndsWith ("ClassID")), Is.False);
+      Assert.That(columnDefinitions, Has.Length.EqualTo(1));
+      Assert.That(columnDefinitions.Any(cd => cd.Name.EndsWith("ClassID")), Is.False);
     }
 
     [Test]
     public void EndPointWithInheritanceHierarchy_HasClassIDColumn ()
     {
-      var endPointWithInheritanceHierarchy = ReleationEndPointTestHelper.GetRelationEndPointDefinition (
+      var endPointWithInheritanceHierarchy = ReleationEndPointTestHelper.GetRelationEndPointDefinition(
           MappingConfiguration,
           (ClassWithRelations obj) => obj.RelationWithInheritanceHierarchy);
 
-      var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition) endPointWithInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
-      Assert.That (storagePropertyDefinition, Is.TypeOf<ObjectIDStoragePropertyDefinition> ());
-      var columnDefinitions = storagePropertyDefinition.GetColumns ().ToArray ();
-      Assert.That (columnDefinitions, Has.Length.EqualTo (2));
-      Assert.That (columnDefinitions.Any (cd => cd.Name.EndsWith ("ClassID")), Is.True);
+      var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition)endPointWithInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
+      Assert.That(storagePropertyDefinition, Is.TypeOf<ObjectIDStoragePropertyDefinition>());
+      var columnDefinitions = storagePropertyDefinition.GetColumns().ToArray();
+      Assert.That(columnDefinitions, Has.Length.EqualTo(2));
+      Assert.That(columnDefinitions.Any(cd => cd.Name.EndsWith("ClassID")), Is.True);
     }
 
     [Test]
     public void SchemaGeneration ()
     {
-      var scriptGenerator = new ScriptGenerator (
-          pd => pd.Factory.CreateSchemaScriptBuilder (pd), 
-          new RdbmsStorageEntityDefinitionProvider(), 
+      var scriptGenerator = new ScriptGenerator(
+          pd => pd.Factory.CreateSchemaScriptBuilder(pd),
+          new RdbmsStorageEntityDefinitionProvider(),
           new ScriptToStringConverter());
 
-      var script = scriptGenerator.GetScripts (MappingConfiguration.GetTypeDefinitions()).Single();
+      var script = scriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions()).Single();
 
       const string expectedSetUpScriptFragment =
           @"CREATE TABLE [dbo].[ClassWithRelations]
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   [RelationWithoutInheritanceHierarchyID] uniqueidentifier NULL,
   [RelationWithInheritanceHierarchyID] uniqueidentifier NULL,
   [RelationWithInheritanceHierarchyIDClassID] varchar (100) NULL,";
-      Assert.That (script.SetUpScript, Does.Contain (expectedSetUpScriptFragment));
+      Assert.That(script.SetUpScript, Does.Contain(expectedSetUpScriptFragment));
     }
   }
 }

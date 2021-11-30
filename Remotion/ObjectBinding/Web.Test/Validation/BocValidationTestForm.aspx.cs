@@ -65,26 +65,26 @@ namespace OBWTest.Validation
 
     protected void Page_Load (object sender, EventArgs e)
     {
-      
+
     }
 
     protected override void OnLoad (EventArgs e)
     {
 
-      base.OnLoad (e);
-      CurrentObject.BusinessObject = (IBusinessObject) ((BocValidationTestWxeFunction)CurrentFunction).Person;
-      CurrentObject.LoadValues (IsPostBack);
-      
-      
+      base.OnLoad(e);
+      CurrentObject.BusinessObject = (IBusinessObject)((BocValidationTestWxeFunction)CurrentFunction).Person;
+      CurrentObject.LoadValues(IsPostBack);
+
+
       if (!IsPostBack)
       {
-        GridBocList.SwitchListIntoEditMode ();
-        IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[]) ArrayUtility.Convert (
-            XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (typeof (Person)),
-            typeof (IBusinessObjectWithIdentity));
-        ReferenceField.SetBusinessObjectList (objects);
+        GridBocList.SwitchListIntoEditMode();
+        IBusinessObjectWithIdentity[] objects = (IBusinessObjectWithIdentity[])ArrayUtility.Convert(
+            XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)),
+            typeof(IBusinessObjectWithIdentity));
+        ReferenceField.SetBusinessObjectList(objects);
       }
-      
+
     }
 
     protected override void OnInit (EventArgs e)
@@ -93,7 +93,7 @@ namespace OBWTest.Validation
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
       //
       InitializeComponent();
-      base.OnInit (e);
+      base.OnInit(e);
     }
 
     #region Web Form Designer generated code
@@ -104,50 +104,50 @@ namespace OBWTest.Validation
     /// </summary>
     private void InitializeComponent ()
     {
-      this.SaveButton.Click += new System.EventHandler (this.SaveButton_Click);
-      this.Load += new System.EventHandler (this.Page_Load);
+      this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+      this.Load += new System.EventHandler(this.Page_Load);
     }
 
     #endregion
 
     private void SaveButton_Click (object sender, EventArgs e)
     {
-      
-      PrepareValidation ();
-      //FormGridManager.Validate ();
-      if (CurrentObject.SaveValues (false))
-      {
-        var person = (Person) CurrentObject.BusinessObject;
-        var validationResult = ValidatorProvider.GetValidator (typeof (Person)).Validate (person);
-        ValidationResult validationResultPartner = new ValidationResult();
-        
-        if (person.Partner != null)
-          validationResultPartner = ValidatorProvider.GetValidator (typeof (Person)).Validate (person.Partner);
-        var validationResultFather = ValidatorProvider.GetValidator (typeof (Person)).Validate (person.Father);
 
-        var jobValidator = ValidatorProvider.GetValidator (typeof (Job));
+      PrepareValidation();
+      //FormGridManager.Validate ();
+      if (CurrentObject.SaveValues(false))
+      {
+        var person = (Person)CurrentObject.BusinessObject;
+        var validationResult = ValidatorProvider.GetValidator(typeof(Person)).Validate(person);
+        ValidationResult validationResultPartner = new ValidationResult();
+
+        if (person.Partner != null)
+          validationResultPartner = ValidatorProvider.GetValidator(typeof(Person)).Validate(person.Partner);
+        var validationResultFather = ValidatorProvider.GetValidator(typeof(Person)).Validate(person.Father);
+
+        var jobValidator = ValidatorProvider.GetValidator(typeof(Job));
         List<ValidationFailure> jobFailures = new List<ValidationFailure>();
         foreach (var job in person.Jobs)
         {
-          var result = jobValidator.Validate (job);
-          jobFailures.AddRange (result.Errors);
+          var result = jobValidator.Validate(job);
+          jobFailures.AddRange(result.Errors);
         }
 
-        var combinedValidationResult = new ValidationResult (
+        var combinedValidationResult = new ValidationResult(
             validationResult.Errors
-                .Concat (validationResultPartner.Errors)
-                .Concat (jobFailures)
-                .Concat (validationResultFather.Errors)
+                .Concat(validationResultPartner.Errors)
+                .Concat(jobFailures)
+                .Concat(validationResultFather.Errors)
                 .ToArray());
 
         if (combinedValidationResult.IsValid)
         {
-          person.SaveObject ();
+          person.SaveObject();
         }
         else
         {
-          var businessObjectValidationResult = BusinessObjectValidationResult.Create (combinedValidationResult);
-          DataSourceControlValidationResultDispatchingValidator.DispatchValidationFailures (businessObjectValidationResult);
+          var businessObjectValidationResult = BusinessObjectValidationResult.Create(combinedValidationResult);
+          DataSourceControlValidationResultDispatchingValidator.DispatchValidationFailures(businessObjectValidationResult);
           DataSourceControlValidationResultDispatchingValidator.Validate();
         }
       }
@@ -156,12 +156,12 @@ namespace OBWTest.Validation
 
     public virtual StringCollection GetHiddenRows (HtmlTable table)
     {
-      return (StringCollection) _listOfHiddenRows[table];
+      return (StringCollection)_listOfHiddenRows[table];
     }
 
     public virtual FormGridRowInfoCollection GetAdditionalRows (HtmlTable table)
     {
-      return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
+      return (FormGridRowInfoCollection)_listOfFormGridRowInfos[table];
     }
 
     public IValidatorProvider ValidatorProvider

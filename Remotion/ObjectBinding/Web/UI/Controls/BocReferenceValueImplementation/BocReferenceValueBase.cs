@@ -46,28 +46,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       where TControlWebService : class, IBocReferenceValueBaseWebService
   {
     protected BocReferenceValueBase ()
-        : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
+        : this(SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
     {
     }
 
     protected BocReferenceValueBase ([NotNull] IWebServiceFactory webServiceFactory)
-        : base (webServiceFactory)
+        : base(webServiceFactory)
     {
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
       CheckControlService();
     }
 
     private void CheckControlService ()
     {
-      if (string.IsNullOrEmpty (ControlServicePath))
+      if (string.IsNullOrEmpty(ControlServicePath))
         return;
 
-      var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, ControlServicePath);
-      WebServiceFactory.CreateJsonService<TControlWebService> (virtualServicePath);
+      var virtualServicePath = VirtualPathUtility.GetVirtualPath(this, ControlServicePath);
+      WebServiceFactory.CreateJsonService<TControlWebService>(virtualServicePath);
     }
   }
 
@@ -83,72 +83,72 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   {
     #region Obsolete
 
-    [Obsolete ("Use ControlServicePath instead. (Version 1.21.3)", true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Obsolete("Use ControlServicePath instead. (Version 1.21.3)", true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string IconServicePath
     {
-      get { throw new NotSupportedException ("Use ControlServicePath instead. (Version 1.21.3)"); }
-      set { throw new NotSupportedException ("Use ControlServicePath instead. (Version 1.21.3)"); }
+      get { throw new NotSupportedException("Use ControlServicePath instead. (Version 1.21.3)"); }
+      set { throw new NotSupportedException("Use ControlServicePath instead. (Version 1.21.3)"); }
     }
 
-    [Obsolete ("Use ControlServiceArguments instead. (Version 1.21.3)", true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Obsolete("Use ControlServiceArguments instead. (Version 1.21.3)", true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public string IconServiceArguments
     {
-      get { throw new NotSupportedException ("Use ControlServiceArguments instead. (Version 1.21.3)"); }
-      set { throw new NotSupportedException ("Use ControlServiceArguments instead. (Version 1.21.3)"); }
+      get { throw new NotSupportedException("Use ControlServiceArguments instead. (Version 1.21.3)"); }
+      set { throw new NotSupportedException("Use ControlServiceArguments instead. (Version 1.21.3)"); }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Obsolete ("This feature has been removed. (Version 3.0.0)", true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Obsolete("This feature has been removed. (Version 3.0.0)", true)]
     public bool? HasValueEmbeddedInsideOptionsMenu
     {
-      get { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
-      set { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
+      get { throw new NotSupportedException("This feature has been removed. (Version 3.0.0)"); }
+      set { throw new NotSupportedException("This feature has been removed. (Version 3.0.0)"); }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Obsolete ("This feature has been removed. (Version 3.0.0)", true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Obsolete("This feature has been removed. (Version 3.0.0)", true)]
     public BocCommand Command
     {
-      get { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
-      set { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
+      get { throw new NotSupportedException("This feature has been removed. (Version 3.0.0)"); }
+      set { throw new NotSupportedException("This feature has been removed. (Version 3.0.0)"); }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Obsolete ("This feature has been removed. (Version 3.0.0)", true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Obsolete("This feature has been removed. (Version 3.0.0)", true)]
     public SingleControlItemCollection PersistedCommand
     {
-      get { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
+      get { throw new NotSupportedException("This feature has been removed. (Version 3.0.0)"); }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Obsolete ("This feature has been removed. (Version 3.0.0)", true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Obsolete("This feature has been removed. (Version 3.0.0)", true)]
     public event BocCommandClickEventHandler CommandClick
     {
-      add { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
-      remove { throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)"); }
+      add { throw new NotSupportedException("This feature has been removed. (Version 3.0.0)"); }
+      remove { throw new NotSupportedException("This feature has been removed. (Version 3.0.0)"); }
     }
 
-    [Obsolete ("This feature has been removed. (Version 3.0.0)", true)]
+    [Obsolete("This feature has been removed. (Version 3.0.0)", true)]
     protected virtual void OnCommandClick (IBusinessObjectWithIdentity? businessObject)
     {
-      throw new NotSupportedException ("This feature has been removed. (Version 3.0.0)");
+      throw new NotSupportedException("This feature has been removed. (Version 3.0.0)");
     }
 
     #endregion
 
     protected const string c_nullIdentifier = "==null==";
-    
+
     /// <summary> The key identifying a options menu item resource entry. </summary>
     private const string c_resourceKeyOptionsMenuItems = "OptionsMenuItems";
 
-    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectReferenceProperty) };
+    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof(IBusinessObjectReferenceProperty) };
 
     private static readonly object SelectionChangedEvent = new object();
     private static readonly object MenuItemClickEvent = new object();
 
-    private static readonly ILog s_log = LogManager.GetLogger (MethodBase.GetCurrentMethod()!.DeclaringType!);
+    private static readonly ILog s_log = LogManager.GetLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
 
     private readonly DropDownMenu _optionsMenu;
 
@@ -168,9 +168,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     internal BocReferenceValueBase ([NotNull] IWebServiceFactory webServiceFactory)
     {
-      ArgumentUtility.CheckNotNull ("webServiceFactory", webServiceFactory);
+      ArgumentUtility.CheckNotNull("webServiceFactory", webServiceFactory);
 
-      _optionsMenu = new DropDownMenu (this);
+      _optionsMenu = new DropDownMenu(this);
 
       _commonStyle = new Style();
       _labelStyle = new Style();
@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     }
 
     protected abstract string ValueContainingControlID { get; }
-        
+
     /// <summary>
     /// Gets the value from the backing field.
     /// </summary>
@@ -240,7 +240,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     protected string? InternalValue
     {
       get { return _internalValue; }
-      set { _internalValue = (string.IsNullOrEmpty (value) || IsNullValue (value)) ? null : value; }
+      set { _internalValue = (string.IsNullOrEmpty(value) || IsNullValue(value)) ? null : value; }
     }
 
     bool IBocMenuItemContainer.IsReadOnly
@@ -255,18 +255,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     /// <summary> Gets or sets the current value. </summary>
     /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValueBase/Value/*' />
-    [Browsable (false)]
+    [Browsable(false)]
     public new IBusinessObjectWithIdentity? Value
     {
       get
       {
-        return GetValue ();
+        return GetValue();
       }
       set
       {
         IsDirty = true;
 
-        SetValue (value);
+        SetValue(value);
       }
     }
 
@@ -275,7 +275,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     protected override sealed object? ValueImplementation
     {
       get { return Value; }
-      set { Value = ArgumentUtility.CheckType<IBusinessObjectWithIdentity> ("value", value); }
+      set { Value = ArgumentUtility.CheckType<IBusinessObjectWithIdentity>("value", value); }
     }
 
     /// <summary> Gets a flag describing whether the <see cref="OptionsMenu"/> is visible. </summary>
@@ -296,11 +296,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     }
 
     /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="OptionsMenu"/>. </summary>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
-    [Category ("Menu")]
-    [Description ("The menu items displayed by options menu.")]
-    [DefaultValue ((string?) null)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
+    [Category("Menu")]
+    [Description("The menu items displayed by options menu.")]
+    [DefaultValue((string?)null)]
     public WebMenuItemCollection OptionsMenuItems
     {
       get { return _optionsMenu.MenuItems; }
@@ -310,9 +310,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <value> 
     ///   The text rendered as the <see cref="OptionsMenu"/>'s label. The default value is an empty <see cref="String"/>. 
     /// </value>
-    [Category ("Menu")]
-    [Description ("The text that is rendered as a label for the options menu.")]
-    [DefaultValue ("")]
+    [Category("Menu")]
+    [Description("The text that is rendered as a label for the options menu.")]
+    [DefaultValue("")]
     public string? OptionsTitle
     {
       get { return _optionsTitle; }
@@ -321,9 +321,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     /// <summary> Gets or sets a flag that determines whether to display the <see cref="OptionsMenu"/>. </summary>
     /// <value> <see langword="true"/> to show the <see cref="OptionsMenu"/>. The default value is <see langword="true"/>. </value>
-    [Category ("Menu")]
-    [Description ("Enables the options menu.")]
-    [DefaultValue (true)]
+    [Category("Menu")]
+    [Description("Enables the options menu.")]
+    [DefaultValue(true)]
     public bool ShowOptionsMenu
     {
       get { return _showOptionsMenu; }
@@ -332,9 +332,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     /// <summary> Gets or sets the width of the options menu. </summary>
     /// <value> The <see cref="Unit"/> value used for the option menu's width. The default value is <b>undefined</b>. </value>
-    [Category ("Menu")]
-    [Description ("The width of the options menu.")]
-    [DefaultValue (typeof (Unit), "")]
+    [Category("Menu")]
+    [Description("The width of the options menu.")]
+    [DefaultValue(typeof(Unit), "")]
     public Unit OptionsMenuWidth
     {
       get { return _optionsMenuWidth; }
@@ -343,9 +343,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     /// <summary> Gets or sets a flag that determines whether to reserve the width of the <see cref="OptionsMenu"/> when calculating the control's width. </summary>
     /// <value> <see langword="true"/> to include the width of the <see cref="OptionsMenu"/> in the calculation. The default value is <see langword="false"/>. </value>
-    [Category ("Menu")]
-    [Description ("Toggles if the option menu's width is including when performing the layout")]
-    [DefaultValue (false)]
+    [Category("Menu")]
+    [Description("Toggles if the option menu's width is including when performing the layout")]
+    [DefaultValue(false)]
     public bool ReserveOptionsMenuWidth
     {
       get { return _reserveOptionsMenuWidth; }
@@ -354,11 +354,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     /// <summary> Gets or sets the list of menu items to be hidden. </summary>
     /// <value> The <see cref="WebMenuItem.ItemID"/> values of the menu items to hide. </value>
-    [Category ("Menu")]
-    [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
-    [DefaultValue ((string?) null)]
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [TypeConverter (typeof (StringArrayConverter))]
+    [Category("Menu")]
+    [Description("The list of menu items to be hidden, identified by their ItemIDs.")]
+    [DefaultValue((string?)null)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [TypeConverter(typeof(StringArrayConverter))]
     public string[] HiddenMenuItems
     {
       get
@@ -375,7 +375,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     ///   <see cref="IBusinessObjectWithIdentity"/>.
     /// </summary>
     /// <value> A string or <see langword="null"/> if no  <see cref="IBusinessObjectWithIdentity"/> is selected. </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public string? BusinessObjectUniqueIdentifier
     {
       get { return InternalValue; }
@@ -383,11 +383,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>
     /// <value> An <see cref="IBusinessObjectReferenceProperty"/> object. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectReferenceProperty? Property
     {
-      get { return (IBusinessObjectReferenceProperty?) base.Property; }
+      get { return (IBusinessObjectReferenceProperty?)base.Property; }
       set { base.Property = value; }
     }
 
@@ -411,10 +411,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     ///   provides an instance of type <see cref="IBusinessObjectWebUIService"/> and 
     ///   <see cref="IBusinessObjectWebUIService.GetIcon"/> returns not <see langword="null"/>.
     /// </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("Flag that determines whether to show the icon in front of the value.")]
-    [DefaultValue (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("Flag that determines whether to show the icon in front of the value.")]
+    [DefaultValue(true)]
     public bool EnableIcon { get; set; }
 
     /// <summary> The <see cref="BocReferenceValue"/> supports only scalar properties. </summary>
@@ -427,18 +427,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     public override bool SupportsProperty (IBusinessObjectProperty property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      if (!base.SupportsProperty (property))
+      ArgumentUtility.CheckNotNull("property", property);
+      if (!base.SupportsProperty(property))
         return false;
-      return ((IBusinessObjectReferenceProperty) property).ReferenceClass is IBusinessObjectClassWithIdentity;
+      return ((IBusinessObjectReferenceProperty)property).ReferenceClass is IBusinessObjectClassWithIdentity;
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
-      Page!.RegisterRequiresPostBack (this);
-      InitializeMenusItems ();
+      Page!.RegisterRequiresPostBack(this);
+      InitializeMenusItems();
     }
 
     /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValue/InitializeMenusItems/*' />
@@ -452,7 +452,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       if (_hiddenMenuItems == null)
         return;
 
-      BocDropDownMenu.HideMenuItems (OptionsMenuItems, _hiddenMenuItems);
+      BocDropDownMenu.HideMenuItems(OptionsMenuItems, _hiddenMenuItems);
     }
 
     /// <remarks>
@@ -462,18 +462,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     protected override void CreateChildControls ()
     {
       _optionsMenu.ID = ID + "_Boc_OptionsMenu";
-      Controls.Add (_optionsMenu);
+      Controls.Add(_optionsMenu);
       _optionsMenu.EventCommandClick += OptionsMenu_EventCommandClick;
       _optionsMenu.WxeFunctionCommandClick += OptionsMenu_WxeFunctionCommandClick;
     }
 
     /// <summary> Is raised when a menu item with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Is raised when a menu item with a command of type Event is clicked.")]
+    [Category("Action")]
+    [Description("Is raised when a menu item with a command of type Event is clicked.")]
     public event WebMenuItemClickEventHandler MenuItemClick
     {
-      add { Events.AddHandler (MenuItemClickEvent, value); }
-      remove { Events.RemoveHandler (MenuItemClickEvent, value); }
+      add { Events.AddHandler(MenuItemClickEvent, value); }
+      remove { Events.RemoveHandler(MenuItemClickEvent, value); }
     }
 
     /// <summary> 
@@ -483,7 +483,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <param name="e"> An <see cref="WebMenuItemClickEventArgs"/> object that contains the event data. </param>
     private void OptionsMenu_EventCommandClick (object sender, WebMenuItemClickEventArgs e)
     {
-      OnMenuItemEventCommandClick (e.Item);
+      OnMenuItemEventCommandClick(e.Item);
     }
 
     /// <summary> 
@@ -494,18 +494,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <remarks> Only called for commands of type <see cref="CommandType.Event"/>. </remarks>
     protected virtual void OnMenuItemEventCommandClick (WebMenuItem menuItem)
     {
-      WebMenuItemClickEventHandler? menuItemClickHandler = (WebMenuItemClickEventHandler?) Events[MenuItemClickEvent];
+      WebMenuItemClickEventHandler? menuItemClickHandler = (WebMenuItemClickEventHandler?)Events[MenuItemClickEvent];
       if (menuItem.Command != null)
       {
         if (menuItem is BocMenuItem)
-          ((BocMenuItemCommand) menuItem.Command).OnClick ((BocMenuItem) menuItem);
+          ((BocMenuItemCommand)menuItem.Command).OnClick((BocMenuItem)menuItem);
         else
-          menuItem.Command.OnClick ();
+          menuItem.Command.OnClick();
       }
       if (menuItemClickHandler != null)
       {
-        WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
-        menuItemClickHandler (this, e);
+        WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs(menuItem);
+        menuItemClickHandler(this, e);
       }
     }
 
@@ -515,7 +515,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <remarks> Only called for commands of type <see cref="CommandType.Event"/>. </remarks>
     private void OptionsMenu_WxeFunctionCommandClick (object sender, WebMenuItemClickEventArgs e)
     {
-      OnMenuItemWxeFunctionCommandClick (e.Item);
+      OnMenuItemWxeFunctionCommandClick(e.Item);
     }
 
     /// <summary> 
@@ -537,9 +537,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           else
             businessObjects = new IBusinessObject[0];
 
-          BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
+          BocMenuItemCommand command = (BocMenuItemCommand)menuItem.Command;
           if (Page is IWxePage)
-            command.ExecuteWxeFunction ((IWxePage) Page, indices, businessObjects);
+            command.ExecuteWxeFunction((IWxePage)Page, indices, businessObjects);
           //else
           //  command.ExecuteWxeFunction (Page, indices, businessObjects);
         }
@@ -547,7 +547,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         {
           Command command = menuItem.Command;
           if (Page is IWxePage)
-            command.ExecuteWxeFunction ((IWxePage) Page, null);
+            command.ExecuteWxeFunction((IWxePage)Page, null);
           //else
           //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
         }
@@ -558,7 +558,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       if (RequiresLoadPostData)
-        return LoadPostData (postDataKey, postCollection);
+        return LoadPostData(postDataKey, postCollection);
       else
         return false;
     }
@@ -579,7 +579,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValueBase/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string? newValue = PageUtility.GetPostBackCollectionItem (Page!, ValueContainingControlID);
+      string? newValue = PageUtility.GetPostBackCollectionItem(Page!, ValueContainingControlID);
       bool isDataChanged = false;
       if (newValue != null)
       {
@@ -595,7 +595,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           InternalValue = null;
         else
           InternalValue = newValue;
-        
+
         IsDirty = true;
       }
       return isDataChanged;
@@ -604,15 +604,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
     protected virtual void OnSelectionChanged ()
     {
-      EventHandler? eventHandler = (EventHandler?) Events[SelectionChangedEvent];
+      EventHandler? eventHandler = (EventHandler?)Events[SelectionChangedEvent];
       if (eventHandler != null)
-        eventHandler (this, EventArgs.Empty);
+        eventHandler(this, EventArgs.Empty);
     }
 
     /// <summary> Calls the <see cref="RaisePostBackEvent"/> method. </summary>
     void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
     {
-      RaisePostBackEvent (eventArgument);
+      RaisePostBackEvent(eventArgument);
     }
 
     /// <summary> Called when the control caused a post back. </summary>
@@ -625,20 +625,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     }
 
     /// <summary> Handles post back events raised by the value's <see cref="Command"/>. </summary>
-    [Obsolete ("This feature has been removed. (Version 1.22.3)", false)]
+    [Obsolete("This feature has been removed. (Version 1.22.3)", false)]
     private void HandleCommand ()
     {
       switch (Command.Type)
       {
         case CommandType.Event:
         {
-          OnCommandClick (Value);
+          OnCommandClick(Value);
           break;
         }
         case CommandType.WxeFunction:
         {
           if (Page is IWxePage)
-            Command.ExecuteWxeFunction ((IWxePage) Page, Value);
+            Command.ExecuteWxeFunction((IWxePage)Page, Value);
           break;
         }
         default:
@@ -655,12 +655,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     void IBocMenuItemContainer.RemoveBusinessObjects (IBusinessObject[] businessObjects)
     {
-      RemoveBusinessObjects (businessObjects);
+      RemoveBusinessObjects(businessObjects);
     }
 
     void IBocMenuItemContainer.InsertBusinessObjects (IBusinessObject[] businessObjects)
     {
-      InsertBusinessObjects (businessObjects);
+      InsertBusinessObjects(businessObjects);
     }
 
     /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
@@ -672,7 +672,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       if (businessObjects.Length > 0 && businessObjects[0] is IBusinessObjectWithIdentity)
       {
-        if (((IBusinessObjectWithIdentity) businessObjects[0]).UniqueIdentifier == Value.UniqueIdentifier)
+        if (((IBusinessObjectWithIdentity)businessObjects[0]).UniqueIdentifier == Value.UniqueIdentifier)
           Value = null;
       }
     }
@@ -682,12 +682,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     protected virtual void InsertBusinessObjects (IBusinessObject[] businessObjects)
     {
       if (businessObjects.Length > 0)
-        Value = (IBusinessObjectWithIdentity) businessObjects[0];
+        Value = (IBusinessObjectWithIdentity)businessObjects[0];
     }
 
     /// <summary> This event is fired when the selection is changed between postbacks. </summary>
-    [Category ("Action")]
-    [Description ("Fires when the value of the control has changed.")]
+    [Category("Action")]
+    [Description("Fires when the value of the control has changed.")]
     public event EventHandler SelectionChanged
     {
       add { Events.AddHandler(SelectionChangedEvent, value); }
@@ -697,16 +697,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     protected override void OnPreRender (EventArgs e)
     {
       EnsureChildControls();
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      LoadResources (GetResourceManager(), GlobalizationService);
+      LoadResources(GetResourceManager(), GlobalizationService);
 
       PreRenderMenuItems();
 
       if (HasOptionsMenu)
       {
         OptionsMenu.Visible = true;
-        PreRenderOptionsMenu ();
+        PreRenderOptionsMenu();
       }
       else
       {
@@ -718,8 +718,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
     void IResourceDispatchTarget.Dispatch (IDictionary values)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
-      Dispatch (values);
+      ArgumentUtility.CheckNotNull("values", values);
+      Dispatch(values);
     }
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
@@ -734,14 +734,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       foreach (DictionaryEntry entry in values)
       {
-        string key = (string) entry.Key;
-        string[] keyParts = key.Split (new[] { ':' }, 3);
+        string key = (string)entry.Key;
+        string[] keyParts = key.Split(new[] { ':' }, 3);
 
         //  Is a property/value entry?
         if (keyParts.Length == 1)
         {
           string property = keyParts[0];
-          propertyValues.Add (property, entry.Value);
+          propertyValues.Add(property, entry.Value);
         }
             //  Is compound element entry
         else if (keyParts.Length == 2)
@@ -756,7 +756,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
             default:
             {
               //  Invalid collection property
-              s_log.Debug (
+              s_log.Debug(
                   GetType().Name + " '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
                   + "' does not contain an element named '" + elementID + "'.");
               break;
@@ -784,7 +784,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
             default:
             {
               //  Invalid collection property
-              s_log.Debug (
+              s_log.Debug(
                   GetType().Name + " '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
                   + "' does not contain a collection property named '" + collectionID + "'.");
               break;
@@ -795,7 +795,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           if (currentCollection != null)
           {
             //  Get the dictonary for the current element
-            IDictionary? elementValues = (IDictionary?) currentCollection[elementID];
+            IDictionary? elementValues = (IDictionary?)currentCollection[elementID];
 
             //  If no dictonary exists, create it and insert it into the elements hashtable.
             if (elementValues == null)
@@ -805,13 +805,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
             }
 
             //  Insert the argument and resource's value into the dictonary for the specified element.
-            elementValues.Add (property, entry.Value);
+            elementValues.Add(property, entry.Value);
           }
         }
         else
         {
           //  Not supported format or invalid property
-          s_log.Debug (
+          s_log.Debug(
               GetType().Name + " '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
               + "' received a resource with an invalid or unknown key '" + key
               + "'. Required format: 'property' or 'collectionID:elementID:property'.");
@@ -819,42 +819,42 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       }
 
       //  Dispatch simple properties
-      ResourceDispatcher.DispatchGeneric (this, propertyValues);
+      ResourceDispatcher.DispatchGeneric(this, propertyValues);
 
       //  Dispatch to collections
-      OptionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
+      OptionsMenuItems.Dispatch(optionsMenuItemValues, this, "OptionsMenuItems");
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      base.LoadResources (resourceManager, globalizationService);
+      base.LoadResources(resourceManager, globalizationService);
 
       //var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage);
       //if (!string.IsNullOrEmpty (key))
       //  NullItemErrorMessage = resourceManager.GetString (key);
-  
-      var key = ResourceManagerUtility.GetGlobalResourceKey (OptionsTitle);
-      if (! string.IsNullOrEmpty (key))
-        OptionsTitle = resourceManager.GetString (key);
 
-      OptionsMenuItems.LoadResources (resourceManager, globalizationService);
+      var key = ResourceManagerUtility.GetGlobalResourceKey(OptionsTitle);
+      if (! string.IsNullOrEmpty(key))
+        OptionsTitle = resourceManager.GetString(key);
+
+      OptionsMenuItems.LoadResources(resourceManager, globalizationService);
     }
 
-    [Obsolete ("For DependDB only.", true)]
+    [Obsolete("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("For DependDB only.");
+      throw new NotImplementedException("For DependDB only.");
     }
 
     protected virtual void PreRenderOptionsMenu ()
     {
       OptionsMenu.Enabled = Enabled;
       OptionsMenu.IsReadOnly = IsReadOnly;
-      if (string.IsNullOrEmpty (OptionsTitle))
+      if (string.IsNullOrEmpty(OptionsTitle))
       {
         OptionsMenu.TitleText = GetOptionsMenuTitle();
       }
@@ -890,7 +890,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// </remarks>
     protected virtual string GetDisplayName (IBusinessObjectWithIdentity businessObject)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
       return businessObject.GetAccessibleDisplayName();
     }
 
@@ -904,9 +904,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       // See also BocReferenceValueRendererBase.GetIconContextAsJson
       IBusinessObjectClassWithIdentity? businessObjectClass = null;
       if (Property != null)
-        businessObjectClass = (IBusinessObjectClassWithIdentity) Property.ReferenceClass;
+        businessObjectClass = (IBusinessObjectClassWithIdentity)Property.ReferenceClass;
       else if (DataSource != null)
-        businessObjectClass = (IBusinessObjectClassWithIdentity?) DataSource.BusinessObjectClass;
+        businessObjectClass = (IBusinessObjectClassWithIdentity?)DataSource.BusinessObjectClass;
       return businessObjectClass;
     }
 
@@ -920,7 +920,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return OptionsMenu; }
     }
 
-    bool IBocReferenceValueBase.IsIconEnabled()
+    bool IBocReferenceValueBase.IsIconEnabled ()
     {
       if (!EnableIcon)
         return false;
@@ -931,16 +931,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     IconInfo? IBocReferenceValueBase.GetIcon ()
     {
-      var businessObjectClass = GetBusinessObjectClass ();
+      var businessObjectClass = GetBusinessObjectClass();
       if (businessObjectClass == null)
         return null;
 
-      return GetIcon (Value, businessObjectClass.BusinessObjectProvider);
+      return GetIcon(Value, businessObjectClass.BusinessObjectProvider);
     }
 
     protected BusinessObjectWebServiceContext CreateBusinessObjectWebServiceContext ()
     {
-      return BusinessObjectWebServiceContext.Create (DataSource, Property, ControlServiceArguments);
+      return BusinessObjectWebServiceContext.Create(DataSource, Property, ControlServiceArguments);
     }
 
     string IBocReferenceValueBase.NullValueString
@@ -965,7 +965,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     IEnumerable<string> IBocReferenceValueBase.GetValidationErrors ()
     {
-      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct();
     }
 
     /// <summary>
@@ -979,11 +979,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     ///   attributes (Bold, Italic etc.) to <see langword="true"/>, this cannot be overridden using 
     ///   edit mode style and <see cref="LabelStyle"/>  properties.
     /// </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the edit mode control (DropDownListStyle or TextBoxStyle) and the Label (read-only mode).")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the edit mode control (DropDownListStyle or TextBoxStyle) and the Label (read-only mode).")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style CommonStyle
     {
       get { return _commonStyle; }
@@ -991,11 +991,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     /// <summary> Gets the style that you want to apply to the <see cref="Label"/> (read-only mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the Label (read-only mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the Label (read-only mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style LabelStyle
     {
       get { return _labelStyle; }
@@ -1008,21 +1008,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return ControlType; }
     }
 
-    [Category ("Behavior")]
-    [DefaultValue ("")]
+    [Category("Behavior")]
+    [DefaultValue("")]
     public string? ControlServicePath
     {
       get { return _controlServicePath; }
       set { _controlServicePath = value ?? string.Empty; }
     }
 
-    [Category ("Behavior")]
-    [DefaultValue ("")]
-    [Description ("Additional arguments passed to the control service.")]
+    [Category("Behavior")]
+    [DefaultValue("")]
+    [Description("Additional arguments passed to the control service.")]
     public string? ControlServiceArguments
     {
       get { return _controlServiceArguments; }
-      set { _controlServiceArguments = StringUtility.EmptyToNull (value); }
+      set { _controlServiceArguments = StringUtility.EmptyToNull(value); }
     }
   }
 }

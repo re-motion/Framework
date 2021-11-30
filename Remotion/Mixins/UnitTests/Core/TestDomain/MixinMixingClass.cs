@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
   [Serializable]
-  [Extends (typeof (ClassWithMixedMixin))]
+  [Extends(typeof(ClassWithMixedMixin))]
   public class MixinMixingClass : Mixin<ClassWithMixedMixin, MixinMixingClass.IRequirements>
   {
     public interface IRequirements
@@ -30,7 +30,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     [OverrideTarget]
     public virtual string StringMethod (int i)
     {
-      return "MixinMixingClass-" + Next.StringMethod (i);
+      return "MixinMixingClass-" + Next.StringMethod(i);
     }
   }
 }

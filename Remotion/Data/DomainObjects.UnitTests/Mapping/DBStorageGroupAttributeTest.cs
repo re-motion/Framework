@@ -11,7 +11,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var attribute = new DBStorageGroupAttribute();
 
-      Assert.That (attribute.DefaultStorageClass, Is.EqualTo (DefaultStorageClass.Persistent));
+      Assert.That(attribute.DefaultStorageClass, Is.EqualTo(DefaultStorageClass.Persistent));
     }
   }
 }

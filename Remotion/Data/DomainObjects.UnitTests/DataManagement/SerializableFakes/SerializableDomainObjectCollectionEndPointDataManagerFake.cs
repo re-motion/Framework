@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     public void SortCurrentData (Comparison<DomainObject> comparison)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public void SortCurrentAndOriginalData (Comparison<DomainObject> comparison)
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-     
+
     }
   }
 }

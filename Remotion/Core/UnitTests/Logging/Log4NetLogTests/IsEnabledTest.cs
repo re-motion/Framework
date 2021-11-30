@@ -28,14 +28,14 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     public void IsEnabled_True ()
     {
       Logger.Repository.Threshold = Level.Debug;
-      Assert.That (Log.IsEnabled (LogLevel.Debug), Is.True);
+      Assert.That(Log.IsEnabled(LogLevel.Debug), Is.True);
     }
 
     [Test]
     public void IsEnabled_False ()
     {
       Logger.Repository.Threshold = Level.Off;
-      Assert.That (Log.IsEnabled (LogLevel.Debug), Is.False);
+      Assert.That(Log.IsEnabled(LogLevel.Debug), Is.False);
     }
   }
 }

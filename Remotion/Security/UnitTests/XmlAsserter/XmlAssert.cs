@@ -26,73 +26,72 @@ namespace Remotion.Security.UnitTests.XmlAsserter
   {
     static public void AreDocumentsEqual (XmlDocument expectedDocument, XmlDocument actualDocument, string message, params object[] args)
     {
-      var constraint = new XmlDocumentEqualConstraint (expectedDocument);
-      Assert.That (actualDocument, constraint);
+      var constraint = new XmlDocumentEqualConstraint(expectedDocument);
+      Assert.That(actualDocument, constraint);
     }
 
     static public void AreDocumentsEqual (XmlDocument expectedDocument, XmlDocument actualDocument, string message)
     {
-      AreDocumentsEqual (expectedDocument, actualDocument, message, null);
+      AreDocumentsEqual(expectedDocument, actualDocument, message, null);
     }
 
     static public void AreDocumentsEqual (XmlDocument expectedDocument, XmlDocument actualDocument)
     {
-      AreDocumentsEqual (expectedDocument, actualDocument, string.Empty, null);
+      AreDocumentsEqual(expectedDocument, actualDocument, string.Empty, null);
     }
 
     static public void AreDocumentsEqual (string expectedXml, XmlDocument actualDocument, string message, params object[] args)
     {
-      XmlDocument expectedDocument = new XmlDocument ();
-      expectedDocument.LoadXml (expectedXml);
+      XmlDocument expectedDocument = new XmlDocument();
+      expectedDocument.LoadXml(expectedXml);
 
-      AreDocumentsEqual (expectedDocument, actualDocument, message, args);
+      AreDocumentsEqual(expectedDocument, actualDocument, message, args);
     }
 
     static public void AreDocumentsEqual (string expectedXml, XmlDocument actualDocument, string message)
     {
-      AreDocumentsEqual (expectedXml, actualDocument, message, null);
+      AreDocumentsEqual(expectedXml, actualDocument, message, null);
     }
 
     static public void AreDocumentsEqual (string expectedXml, XmlDocument actualDocument)
     {
-      AreDocumentsEqual (expectedXml, actualDocument, string.Empty, null);
+      AreDocumentsEqual(expectedXml, actualDocument, string.Empty, null);
     }
 
     static public void AreDocumentsSimilar (XmlDocument expectedDocument, XmlDocument actualDocument, string message, params object[] args)
     {
-      var constraint = new XmlDocumentSimilarConstraint (expectedDocument);
-      Assert.That (actualDocument, constraint);
+      var constraint = new XmlDocumentSimilarConstraint(expectedDocument);
+      Assert.That(actualDocument, constraint);
     }
 
     static public void AreDocumentsSimilar (XmlDocument expectedDocument, XmlDocument actualDocument, string message)
     {
-      AreDocumentsSimilar (expectedDocument, actualDocument, message, null);
+      AreDocumentsSimilar(expectedDocument, actualDocument, message, null);
     }
 
     static public void AreDocumentsSimilar (XmlDocument expectedDocument, XmlDocument actualDocument)
     {
-      AreDocumentsSimilar (expectedDocument, actualDocument, string.Empty, null);
+      AreDocumentsSimilar(expectedDocument, actualDocument, string.Empty, null);
     }
 
     static public void AreDocumentsSimilar (string expectedXml, XmlDocument actualDocument, string message, params object[] args)
     {
-      XmlDocument expectedDocument = new XmlDocument ();
-      expectedDocument.LoadXml (expectedXml);
+      XmlDocument expectedDocument = new XmlDocument();
+      expectedDocument.LoadXml(expectedXml);
 
-      AreDocumentsSimilar (expectedDocument, actualDocument, message, args);
+      AreDocumentsSimilar(expectedDocument, actualDocument, message, args);
     }
 
     static public void AreDocumentsSimilar (string expectedXml, XmlDocument actualDocument, string message)
     {
-      AreDocumentsSimilar (expectedXml, actualDocument, message, null);
+      AreDocumentsSimilar(expectedXml, actualDocument, message, null);
     }
 
     static public void AreDocumentsSimilar (string expectedXml, XmlDocument actualDocument)
     {
-      AreDocumentsSimilar (expectedXml, actualDocument, string.Empty, null);
+      AreDocumentsSimilar(expectedXml, actualDocument, string.Empty, null);
     }
   }
 }
 
 #pragma warning restore 612,618
-

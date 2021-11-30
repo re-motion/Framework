@@ -22,7 +22,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation
 {
-  [ImplementationFor (typeof (IValidatorProvider), Position = Position, RegistrationType = RegistrationType.Single, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IValidatorProvider), Position = Position, RegistrationType = RegistrationType.Single, Lifetime = LifetimeKind.Singleton)]
   public class CachingValidatorProvider : IValidatorProvider
   {
     public const int Position = 0;
@@ -37,11 +37,11 @@ namespace Remotion.Validation
 
     public IValidator GetValidator (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var cachedResult = _cache.GetOrAdd (
+      var cachedResult = _cache.GetOrAdd(
           type,
-          key => new Lazy<IValidator> (() => _validatorBuilder.BuildValidator (key), LazyThreadSafetyMode.ExecutionAndPublication));
+          key => new Lazy<IValidator>(() => _validatorBuilder.BuildValidator(key), LazyThreadSafetyMode.ExecutionAndPublication));
 
       return cachedResult.Value;
     }

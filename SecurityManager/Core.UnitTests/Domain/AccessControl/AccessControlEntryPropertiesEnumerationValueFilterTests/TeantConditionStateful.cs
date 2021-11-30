@@ -32,52 +32,52 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     {
       base.SetUp();
       _ace = CreateAceForStateful();
-      _property = GetPropertyDefinition (_ace, "TenantCondition");
+      _property = GetPropertyDefinition(_ace, "TenantCondition");
     }
 
     [Test]
     public void None ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo (TenantCondition.None), _ace, _property), Is.True);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo(TenantCondition.None), _ace, _property), Is.True);
     }
 
     [Test]
     public void None_Disabled ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo_Disabled (TenantCondition.None), _ace, _property), Is.False);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo_Disabled(TenantCondition.None), _ace, _property), Is.False);
     }
 
     [Test]
     public void OwningTenant ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo (TenantCondition.OwningTenant), _ace, _property), Is.True);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo(TenantCondition.OwningTenant), _ace, _property), Is.True);
     }
 
     [Test]
     public void OwningTenant_Disabled ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo_Disabled (TenantCondition.OwningTenant), _ace, _property), Is.False);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo_Disabled(TenantCondition.OwningTenant), _ace, _property), Is.False);
     }
 
     [Test]
     public void SpecificTenant ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo (TenantCondition.SpecificTenant), _ace, _property), Is.True);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo(TenantCondition.SpecificTenant), _ace, _property), Is.True);
     }
 
     [Test]
     public void SpecificTenant_Disabled ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo_Disabled (TenantCondition.SpecificTenant), _ace, _property), Is.False);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo_Disabled(TenantCondition.SpecificTenant), _ace, _property), Is.False);
     }
 
     [Test]
     public void InvalidValue ()
     {
-      Assert.That (
-          () => Filter.IsEnabled (CreateEnumValueInfo ((TenantCondition) 1000), _ace, _property),
+      Assert.That(
+          () => Filter.IsEnabled(CreateEnumValueInfo((TenantCondition)1000), _ace, _property),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The value '1000' is not a valid value for 'TenantCondition'."));
     }
   }

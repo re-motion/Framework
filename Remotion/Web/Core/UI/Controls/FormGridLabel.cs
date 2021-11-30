@@ -41,8 +41,8 @@ public class FormGridLabel: Label, ISmartControl
   private string? _helpUrl = null;
 
   [Category("Behavior")]
-  [DefaultValue (false)]
-  [Description ("Specifies whether this row will be marked as 'required' in FormGrids.")]
+  [DefaultValue(false)]
+  [Description("Specifies whether this row will be marked as 'required' in FormGrids.")]
   public bool Required
   {
     get { return _required; }
@@ -50,15 +50,15 @@ public class FormGridLabel: Label, ISmartControl
   }
 
   [Category("Behavior")]
-  [DefaultValue (null)]
-  [Description ("Specifies the relative URL to the row's help text.")]
+  [DefaultValue(null)]
+  [Description("Specifies the relative URL to the row's help text.")]
   public string? HelpUrl
   {
     get { return _helpUrl; }
     set { _helpUrl = value ?? string.Empty; }
   }
 
-  [Browsable (false)]
+  [Browsable(false)]
   public bool IsRequired
   {
     get { return _required; }
@@ -66,10 +66,10 @@ public class FormGridLabel: Label, ISmartControl
 
   HelpInfo? ISmartControl.HelpInfo
   {
-    get { return (_helpUrl != null) ? new HelpInfo (_helpUrl) : null; }
+    get { return (_helpUrl != null) ? new HelpInfo(_helpUrl) : null; }
   }
 
-  IEnumerable<BaseValidator> ISmartControl.CreateValidators()
+  IEnumerable<BaseValidator> ISmartControl.CreateValidators ()
   {
     return Enumerable.Empty<BaseValidator>();
   }
@@ -95,14 +95,14 @@ public class FormGridLabel: Label, ISmartControl
 
   IPage? IControl.Page
   {
-    get { return PageWrapper.CastOrCreate (base.Page); }
+    get { return PageWrapper.CastOrCreate(base.Page); }
   }
-  
+
   protected override HtmlTextWriterTag TagKey
   {
     get
     {
-      if (string.IsNullOrEmpty (AssociatedControlID))
+      if (string.IsNullOrEmpty(AssociatedControlID))
         return HtmlTextWriterTag.Span;
       return HtmlTextWriterTag.Label;
     }
@@ -110,19 +110,19 @@ public class FormGridLabel: Label, ISmartControl
 
   protected override void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    var resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
-    LoadResources (resourceManager);
+    var resourceManager = ResourceManagerUtility.GetResourceManager(this, true);
+    LoadResources(resourceManager);
   }
 
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
 
-    string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-    if (!string.IsNullOrEmpty (key))
-      Text = resourceManager.GetString (key);
+    string? key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+    if (!string.IsNullOrEmpty(key))
+      Text = resourceManager.GetString(key);
   }
 
   void ISmartControl.RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -134,7 +134,7 @@ public class FormGridLabel: Label, ISmartControl
     string associatedControlID = AssociatedControlID;
     if (associatedControlID.Length != 0)
     {
-      Control? control = this.FindControl (associatedControlID);
+      Control? control = this.FindControl(associatedControlID);
       if (control == null)
         throw new HttpException(string.Format("Unable to find the control with id '{0}' that is associated with the Label '{1}'.", associatedControlID, ID));
       writer.AddAttribute("for", control.ClientID);
@@ -143,7 +143,7 @@ public class FormGridLabel: Label, ISmartControl
     base.AddAttributesToRender(writer);
     AssociatedControlID = associatedControlID;
   }
- 
+
 
 }
 

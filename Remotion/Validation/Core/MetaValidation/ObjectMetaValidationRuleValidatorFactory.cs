@@ -26,7 +26,7 @@ namespace Remotion.Validation.MetaValidation
   /// <summary>
   /// Default implementation of the <see cref="IObjectMetaValidationRuleValidatorFactory"/> interface.
   /// </summary>
-  [ImplementationFor (typeof (IObjectMetaValidationRuleValidatorFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IObjectMetaValidationRuleValidatorFactory), Lifetime = LifetimeKind.Singleton)]
   public class ObjectMetaValidationRuleValidatorFactory : IObjectMetaValidationRuleValidatorFactory
   {
     public ObjectMetaValidationRuleValidatorFactory ()
@@ -36,9 +36,9 @@ namespace Remotion.Validation.MetaValidation
     public IObjectMetaValidationRuleValidator CreateObjectMetaValidationRuleValidator (
         IEnumerable<IObjectMetaValidationRuleCollector> objectMetaValidationRuleCollectors)
     {
-      ArgumentUtility.CheckNotNull ("objectMetaValidationRuleCollectors", objectMetaValidationRuleCollectors);
+      ArgumentUtility.CheckNotNull("objectMetaValidationRuleCollectors", objectMetaValidationRuleCollectors);
 
-      return new ObjectMetaValidationRuleValidator (objectMetaValidationRuleCollectors.ToArray());
+      return new ObjectMetaValidationRuleValidator(objectMetaValidationRuleCollectors.ToArray());
     }
   }
 }

@@ -20,7 +20,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
 {
   public class ClassWithFinalMethod
   {
-    public sealed override string ToString()
+    public sealed override string ToString ()
     {
       return "";
     }

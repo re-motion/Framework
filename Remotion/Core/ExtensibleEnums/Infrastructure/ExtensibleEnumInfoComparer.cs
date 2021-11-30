@@ -29,7 +29,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   public class ExtensibleEnumInfoComparer<T> : IComparer<T>
       where T : IExtensibleEnumInfo
   {
-    public static readonly ExtensibleEnumInfoComparer<T> Instance = new ExtensibleEnumInfoComparer<T> ();
+    public static readonly ExtensibleEnumInfoComparer<T> Instance = new ExtensibleEnumInfoComparer<T>();
 
     private ExtensibleEnumInfoComparer ()
     {
@@ -37,13 +37,13 @@ namespace Remotion.ExtensibleEnums.Infrastructure
 
     public int Compare (T? x, T? y)
     {
-      ArgumentUtility.CheckNotNull ("x", (T) x!);
-      ArgumentUtility.CheckNotNull ("y", (T) y!);
+      ArgumentUtility.CheckNotNull("x", (T)x!);
+      ArgumentUtility.CheckNotNull("y", (T)y!);
 
       if (x!.PositionalKey != y!.PositionalKey)
-        return x.PositionalKey.CompareTo (y.PositionalKey);
-      else 
-        return x.Value.ID.CompareTo (y.Value.ID);
+        return x.PositionalKey.CompareTo(y.PositionalKey);
+      else
+        return x.Value.ID.CompareTo(y.Value.ID);
     }
   }
 }

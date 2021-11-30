@@ -26,8 +26,8 @@ using Remotion.Security;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
-  [PermanentGuid ("8DBA42FE-ECD9-4b10-8F79-48E7A1119414")]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.OrganizationalStructureObject")]
+  [PermanentGuid("8DBA42FE-ECD9-4b10-8F79-48E7A1119414")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.OrganizationalStructureObject")]
   [Serializable]
   public abstract class OrganizationalStructureObject : BaseSecurityManagerObject, ISecurableObject, IDomainObjectSecurityContextFactory
   {
@@ -95,8 +95,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected virtual IObjectSecurityStrategy CreateSecurityStrategy ()
     {
-      return new DomainObjectSecurityStrategyDecorator (
-          ObjectSecurityStrategy.Create (this, InvalidationToken.Create()),
+      return new DomainObjectSecurityStrategyDecorator(
+          ObjectSecurityStrategy.Create(this, InvalidationToken.Create()),
           this,
           RequiredSecurityForStates.None);
     }

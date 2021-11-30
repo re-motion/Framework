@@ -21,12 +21,12 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
   [Serializable]
   [DBTable]
-  [Uses (typeof (MixinTypeWithDomainObjectAttributes_SomeAnnotatedPropertiesNotPartOfInterface))]
+  [Uses(typeof(MixinTypeWithDomainObjectAttributes_SomeAnnotatedPropertiesNotPartOfInterface))]
   public class MixinTarget_SomeAnnotatedPropertiesNotPartOfInterface : DomainObject
   {
     public static MixinTarget_SomeAnnotatedPropertiesNotPartOfInterface NewObject ()
     {
-      return NewObject<MixinTarget_SomeAnnotatedPropertiesNotPartOfInterface> ();
+      return NewObject<MixinTarget_SomeAnnotatedPropertiesNotPartOfInterface>();
     }
   }
 }

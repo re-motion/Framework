@@ -83,34 +83,34 @@ public class BocCheckBoxUserControl : BaseUserControl
 
   override protected void OnLoad (EventArgs e)
   {
-    base.OnLoad (e);
+    base.OnLoad(e);
 
-    Person person = (Person) CurrentObject.BusinessObject;
+    Person person = (Person)CurrentObject.BusinessObject;
 
     //UnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    UnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
-    DisabledUnboundReadOnlyDeceasedField.LoadUnboundValue (person.Deceased, IsPostBack);
+    UnboundReadOnlyDeceasedField.LoadUnboundValue(person.Deceased, IsPostBack);
+    DisabledUnboundDeceasedField.LoadUnboundValue(person.Deceased, IsPostBack);
+    DisabledUnboundReadOnlyDeceasedField.LoadUnboundValue(person.Deceased, IsPostBack);
 
     if (! IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus (DeceasedField);
+        ((ISmartNavigablePage)Page).SetFocus(DeceasedField);
     }
   }
 
   override protected void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    SetDebugLabel (DeceasedField, DeceasedFieldValueLabel);
-    SetDebugLabel (ReadOnlyDeceasedField, ReadOnlyDeceasedFieldValueLabel);
-    SetDebugLabel (UnboundDeceasedField, UnboundDeceasedFieldValueLabel);
-    SetDebugLabel (UnboundReadOnlyDeceasedField, UnboundReadOnlyDeceasedFieldValueLabel);
-    SetDebugLabel (DisabledDeceasedField, DisabledDeceasedFieldValueLabel);
-    SetDebugLabel (DisabledReadOnlyDeceasedField, DisabledReadOnlyDeceasedFieldValueLabel);
-    SetDebugLabel (DisabledUnboundDeceasedField, DisabledUnboundDeceasedFieldValueLabel);
-    SetDebugLabel (DisabledUnboundReadOnlyDeceasedField, DisabledUnboundReadOnlyDeceasedFieldValueLabel);
+    SetDebugLabel(DeceasedField, DeceasedFieldValueLabel);
+    SetDebugLabel(ReadOnlyDeceasedField, ReadOnlyDeceasedFieldValueLabel);
+    SetDebugLabel(UnboundDeceasedField, UnboundDeceasedFieldValueLabel);
+    SetDebugLabel(UnboundReadOnlyDeceasedField, UnboundReadOnlyDeceasedFieldValueLabel);
+    SetDebugLabel(DisabledDeceasedField, DisabledDeceasedFieldValueLabel);
+    SetDebugLabel(DisabledReadOnlyDeceasedField, DisabledReadOnlyDeceasedFieldValueLabel);
+    SetDebugLabel(DisabledUnboundDeceasedField, DisabledUnboundDeceasedFieldValueLabel);
+    SetDebugLabel(DisabledUnboundReadOnlyDeceasedField, DisabledUnboundReadOnlyDeceasedFieldValueLabel);
   }
 
   private void SetDebugLabel (IBusinessObjectBoundWebControl control, Label label)
@@ -121,33 +121,33 @@ public class BocCheckBoxUserControl : BaseUserControl
       label.Text = "not set";
   }
 
-  private void DeceasedTestSetNullButton_Click(object sender, EventArgs e)
+  private void DeceasedTestSetNullButton_Click (object sender, EventArgs e)
   {
     DeceasedField.Value = null;
   }
 
-  private void DeceasedTestToggleValueButton_Click(object sender, EventArgs e)
+  private void DeceasedTestToggleValueButton_Click (object sender, EventArgs e)
   {
     if (DeceasedField.Value != null)
-      DeceasedField.Value = ! (bool) DeceasedField.Value;
+      DeceasedField.Value = ! (bool)DeceasedField.Value;
     else
       DeceasedField.Value = false;
   }
 
-  private void ReadOnlyDeceasedTestSetNullButton_Click(object sender, EventArgs e)
+  private void ReadOnlyDeceasedTestSetNullButton_Click (object sender, EventArgs e)
   {
     ReadOnlyDeceasedField.Value = null;
   }
 
-  private void ReadOnlyDeceasedTestToggleValueButton_Click(object sender, EventArgs e)
+  private void ReadOnlyDeceasedTestToggleValueButton_Click (object sender, EventArgs e)
   {
     if (ReadOnlyDeceasedField.Value != null)
-      ReadOnlyDeceasedField.Value = ! (bool) ReadOnlyDeceasedField.Value;
+      ReadOnlyDeceasedField.Value = ! (bool)ReadOnlyDeceasedField.Value;
     else
       ReadOnlyDeceasedField.Value = false;
   }
 
-  private void DeceasedField_CheckedChanged(object sender, EventArgs e)
+  private void DeceasedField_CheckedChanged (object sender, EventArgs e)
   {
     if (DeceasedField.Value != null)
       DeceasedFieldCheckedChangedLabel.Text = DeceasedField.Value.ToString();
@@ -158,13 +158,13 @@ public class BocCheckBoxUserControl : BaseUserControl
   private void UnboundDeceasedField_CheckedChanged (object sender, EventArgs e)
   {
     if (UnboundDeceasedField.Value != null)
-      UnboundDeceasedFieldCheckedChangedLabel.Text = UnboundDeceasedField.Value.ToString ();
+      UnboundDeceasedFieldCheckedChangedLabel.Text = UnboundDeceasedField.Value.ToString();
     else
       UnboundDeceasedFieldCheckedChangedLabel.Text = "not set";
   }
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -172,12 +172,12 @@ public class BocCheckBoxUserControl : BaseUserControl
 		InitializeComponent();
 		base.OnInit(e);
 	}
-	
+
 	/// <summary>
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{
 
   }

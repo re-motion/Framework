@@ -29,20 +29,20 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
   /// Responsible for rendering a <see cref="MenuTab"/> in quirks mode.
   /// <seealso cref="IMenuTab"/>
   /// </summary>
-  [ImplementationFor (typeof (IMenuTabRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IMenuTabRenderer), Lifetime = LifetimeKind.Singleton)]
   public class MenuTabRenderer : WebTabRenderer, IMenuTabRenderer
   {
     public MenuTabRenderer (IHotkeyFormatter hotkeyFormatter, IRenderingFeatures renderingFeatures)
-        : base (hotkeyFormatter, renderingFeatures)
+        : base(hotkeyFormatter, renderingFeatures)
     {
     }
 
     protected override Command RenderBeginTagForCommand (WebTabStripRenderingContext renderingContext, IWebTab tab, bool isEnabled, WebTabStyle style)
     {
-      ArgumentUtility.CheckNotNull ("style", style);
+      ArgumentUtility.CheckNotNull("style", style);
 
-      var menuTab = ((IMenuTab) tab).GetActiveTab();
-      var command = GetRenderingCommand (isEnabled, menuTab);
+      var menuTab = ((IMenuTab)tab).GetActiveTab();
+      var command = GetRenderingCommand(isEnabled, menuTab);
 
       var additionalUrlParameters = menuTab.GetUrlParameters();
       var backupID = command.ItemID;
@@ -50,17 +50,17 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 
       try
       {
-        if (string.IsNullOrEmpty (command.ItemID) && !string.IsNullOrEmpty (tab.ItemID))
+        if (string.IsNullOrEmpty(command.ItemID) && !string.IsNullOrEmpty(tab.ItemID))
           command.ItemID = tab.ItemID + "_Command";
 
-        if (string.IsNullOrEmpty (command.AccessKey))
+        if (string.IsNullOrEmpty(command.AccessKey))
         {
-          var textWithHotkey = HotkeyParser.Parse (tab.Text);
+          var textWithHotkey = HotkeyParser.Parse(tab.Text);
           if (textWithHotkey.Hotkey.HasValue)
-            command.AccessKey = HotkeyFormatter.FormatHotkey (textWithHotkey);
+            command.AccessKey = HotkeyFormatter.FormatHotkey(textWithHotkey);
         }
 
-        command.RenderBegin (
+        command.RenderBegin(
             renderingContext.Writer,
             RenderingFeatures,
             tab.GetPostBackClientEvent(),
@@ -69,8 +69,8 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
             null,
             additionalUrlParameters,
             false,
-            style, 
-            new NameValueCollection (0));
+            style,
+            new NameValueCollection(0));
 
         return command;
       }
@@ -83,10 +83,10 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 
     private Command GetRenderingCommand (bool isEnabled, IMenuTab activeTab)
     {
-      if (isEnabled && activeTab.EvaluateEnabled ())
+      if (isEnabled && activeTab.EvaluateEnabled())
         return activeTab.Command!; // TODO RM-8118: not null assertion
 
-      return new Command (CommandType.None) { OwnerControl = activeTab.OwnerControl };
+      return new Command(CommandType.None) { OwnerControl = activeTab.OwnerControl };
     }
   }
 }

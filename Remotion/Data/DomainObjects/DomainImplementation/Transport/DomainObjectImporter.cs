@@ -33,54 +33,54 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
   {
     public static DomainObjectImporter CreateImporterFromStream (Stream stream, IImportStrategy strategy)
     {
-      ArgumentUtility.CheckNotNull ("stream", stream);
-      ArgumentUtility.CheckNotNull ("strategy", strategy);
+      ArgumentUtility.CheckNotNull("stream", stream);
+      ArgumentUtility.CheckNotNull("strategy", strategy);
 
-      var transportItems = strategy.Import (stream).ToArray();
-      return new DomainObjectImporter (transportItems);
+      var transportItems = strategy.Import(stream).ToArray();
+      return new DomainObjectImporter(transportItems);
     }
 
     private readonly TransportItem[] _transportItems;
 
     public DomainObjectImporter (TransportItem[] transportItems)
     {
-      ArgumentUtility.CheckNotNull ("transportItems", transportItems);
+      ArgumentUtility.CheckNotNull("transportItems", transportItems);
       _transportItems = transportItems;
     }
 
     public TransportedDomainObjects GetImportedObjects ()
     {
-      var targetTransaction = ClientTransaction.CreateRootTransaction ();
-      var dataContainerMapping = GetTargetDataContainersForSourceObjects (targetTransaction);
+      var targetTransaction = ClientTransaction.CreateRootTransaction();
+      var dataContainerMapping = GetTargetDataContainersForSourceObjects(targetTransaction);
 
       // grab enlisted objects _before_ properties are synchronized, as synchronizing might load some additional objects
       var transportedObjects = targetTransaction.GetEnlistedDomainObjects().ToList();
-      SynchronizeData (targetTransaction, dataContainerMapping);
+      SynchronizeData(targetTransaction, dataContainerMapping);
 
       foreach (var transportedObject in transportedObjects.OfType<IDomainObjectImporterCallback>())
       {
-        transportedObject.OnDomainObjectImported (targetTransaction);
+        transportedObject.OnDomainObjectImported(targetTransaction);
       }
 
-      return new TransportedDomainObjects (targetTransaction, transportedObjects);
+      return new TransportedDomainObjects(targetTransaction, transportedObjects);
     }
 
     private List<Tuple<TransportItem, DataContainer>> GetTargetDataContainersForSourceObjects (ClientTransaction bindingTargetTransaction)
     {
-      var result = new List<Tuple<TransportItem, DataContainer>> ();
+      var result = new List<Tuple<TransportItem, DataContainer>>();
       if (_transportItems.Length > 0)
       {
         using (bindingTargetTransaction.EnterNonDiscardingScope())
         {
-          var transportedObjectIDs = GetIDs (_transportItems);
+          var transportedObjectIDs = GetIDs(_transportItems);
 
-          var existingObjects = bindingTargetTransaction.TryGetObjects<DomainObject> (transportedObjectIDs);
-          var existingObjectDictionary = existingObjects.Where (obj => obj != null).ToDictionary (obj => obj.ID);
+          var existingObjects = bindingTargetTransaction.TryGetObjects<DomainObject>(transportedObjectIDs);
+          var existingObjectDictionary = existingObjects.Where(obj => obj != null).ToDictionary(obj => obj.ID);
 
           foreach (TransportItem transportItem in _transportItems)
           {
-            DataContainer targetDataContainer = GetTargetDataContainer (transportItem, existingObjectDictionary, bindingTargetTransaction);
-            result.Add (Tuple.Create (transportItem, targetDataContainer));
+            DataContainer targetDataContainer = GetTargetDataContainer(transportItem, existingObjectDictionary, bindingTargetTransaction);
+            result.Add(Tuple.Create(transportItem, targetDataContainer));
           }
         }
       }
@@ -90,20 +90,20 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     private DataContainer GetTargetDataContainer (TransportItem transportItem, Dictionary<ObjectID, DomainObject> existingObjects, ClientTransaction bindingTargetTransaction)
     {
       DomainObject existingObject;
-      if (existingObjects.TryGetValue (transportItem.ID, out existingObject))
+      if (existingObjects.TryGetValue(transportItem.ID, out existingObject))
       {
-        return bindingTargetTransaction.DataManager.GetDataContainerWithLazyLoad (existingObject.ID, throwOnNotFound: true);
+        return bindingTargetTransaction.DataManager.GetDataContainerWithLazyLoad(existingObject.ID, throwOnNotFound: true);
       }
       else
       {
         var id = transportItem.ID;
 
-        var instance = bindingTargetTransaction.GetInvalidObjectReference (id);
-        ResurrectionService.ResurrectInvalidObject (bindingTargetTransaction, id);
+        var instance = bindingTargetTransaction.GetInvalidObjectReference(id);
+        ResurrectionService.ResurrectInvalidObject(bindingTargetTransaction, id);
 
-        var newDataContainer = DataContainer.CreateNew (id);
-        newDataContainer.SetDomainObject (instance);
-        bindingTargetTransaction.DataManager.RegisterDataContainer (newDataContainer);
+        var newDataContainer = DataContainer.CreateNew(id);
+        newDataContainer.SetDomainObject(instance);
+        bindingTargetTransaction.DataManager.RegisterDataContainer(newDataContainer);
 
         return newDataContainer;
       }
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     private ObjectID[] GetIDs (TransportItem[] items)
     {
-      return Array.ConvertAll (items, item => item.ID);
+      return Array.ConvertAll(items, item => item.ID);
     }
 
     private void SynchronizeData (ClientTransaction targetTransaction, IEnumerable<Tuple<TransportItem, DataContainer>> sourceToTargetMapping)
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       {
         TransportItem transportItem = sourceToTargetContainer.Item1;
         DataContainer targetContainer = sourceToTargetContainer.Item2;
-        PropertyIndexer targetProperties = new PropertyIndexer (targetContainer.DomainObject);
+        PropertyIndexer targetProperties = new PropertyIndexer(targetContainer.DomainObject);
 
         foreach (KeyValuePair<string, object> sourceProperty in transportItem.Properties)
         {
@@ -128,14 +128,14 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
           switch (targetProperty.PropertyData.Kind)
           {
             case PropertyKind.PropertyValue:
-              targetProperty.SetValueWithoutTypeCheck (sourceProperty.Value);
+              targetProperty.SetValueWithoutTypeCheck(sourceProperty.Value);
               break;
             case PropertyKind.RelatedObject:
               if (!targetProperty.PropertyData.RelationEndPointDefinition.IsVirtual)
               {
-                var relatedObjectID = (ObjectID) sourceProperty.Value;
-                var targetRelatedObject = relatedObjectID != null ? targetTransaction.GetObject (relatedObjectID, false) : null;
-                targetProperty.SetValueWithoutTypeCheck (targetRelatedObject);
+                var relatedObjectID = (ObjectID)sourceProperty.Value;
+                var targetRelatedObject = relatedObjectID != null ? targetTransaction.GetObject(relatedObjectID, false) : null;
+                targetProperty.SetValueWithoutTypeCheck(targetRelatedObject);
               }
               break;
           }

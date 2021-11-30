@@ -24,7 +24,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       MyListMenu.EventCommandClick += MyListMenuOnCommandClick;
       MyListMenu.WxeFunctionCommandClick += MyListMenuOnCommandClick;
@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void MyListMenuOnCommandClick (object sender, WebMenuItemClickEventArgs webMenuItemClickEventArgs)
     {
-      ((Layout) Master).SetTestOutput (webMenuItemClickEventArgs.Item.ItemID + "|" + webMenuItemClickEventArgs.Command.Type);
+      ((Layout)Master).SetTestOutput(webMenuItemClickEventArgs.Item.ItemID + "|" + webMenuItemClickEventArgs.Command.Type);
     }
   }
 }

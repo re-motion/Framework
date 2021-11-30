@@ -31,39 +31,39 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void Parse_SyncPostbackError ()
     {
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionParser();
-      var home = StartToErrorPageSync ("SyncPostbackError");
+      var home = StartToErrorPageSync("SyncPostbackError");
 
-      var result = aspNetRequestErrorDetectionParser.Parse (home.Scope);
+      var result = aspNetRequestErrorDetectionParser.Parse(home.Scope);
 
-      Assert.That (result.HasError, Is.EqualTo (true));
-      Assert.That (result.Message, Is.EqualTo ("SyncPostbackError"));
-      Assert.That (result.Stacktrace, Does.StartWith ("\r\n[Exception: SyncPostbackError]\r\n"));
+      Assert.That(result.HasError, Is.EqualTo(true));
+      Assert.That(result.Message, Is.EqualTo("SyncPostbackError"));
+      Assert.That(result.Stacktrace, Does.StartWith("\r\n[Exception: SyncPostbackError]\r\n"));
     }
 
     [Test]
     public void Parse_SyncPostbackError_WithSpecialCharacters ()
     {
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionParser();
-      var home = StartToErrorPageSync ("SyncPostbackWithSpecialCharactersInErrorMessage");
+      var home = StartToErrorPageSync("SyncPostbackWithSpecialCharactersInErrorMessage");
 
-      var result = aspNetRequestErrorDetectionParser.Parse (home.Scope);
-      
-      Assert.That (result.HasError, Is.EqualTo (true));
-      Assert.That (result.Message, Is.EqualTo ("ä&<\r\n'\""));
-      Assert.That (result.Stacktrace, Does.StartWith ("\r\n[Exception: ä&<\r\n'\"]\r\n"));
+      var result = aspNetRequestErrorDetectionParser.Parse(home.Scope);
+
+      Assert.That(result.HasError, Is.EqualTo(true));
+      Assert.That(result.Message, Is.EqualTo("ä&<\r\n'\""));
+      Assert.That(result.Stacktrace, Does.StartWith("\r\n[Exception: ä&<\r\n'\"]\r\n"));
     }
 
     [Test]
     public void Parse_AsyncPostbackError ()
     {
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionParser();
-      var home = StartToErrorPageAsync ("AsyncPostbackError");
+      var home = StartToErrorPageAsync("AsyncPostbackError");
 
-      var result = aspNetRequestErrorDetectionParser.Parse (home.Scope);
-      
-      Assert.That (result.HasError, Is.EqualTo (true));
-      Assert.That (result.Message, Is.EqualTo ("AsyncPostbackError"));
-      Assert.That (result.Stacktrace, Does.StartWith ("\r\n[Exception: AsyncPostbackError]\r\n"));
+      var result = aspNetRequestErrorDetectionParser.Parse(home.Scope);
+
+      Assert.That(result.HasError, Is.EqualTo(true));
+      Assert.That(result.Message, Is.EqualTo("AsyncPostbackError"));
+      Assert.That(result.Stacktrace, Does.StartWith("\r\n[Exception: AsyncPostbackError]\r\n"));
     }
 
     [Test]
@@ -72,83 +72,83 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionParser();
 
       var home = Start();
-      
-      Assert.That (
-          () => aspNetRequestErrorDetectionParser.Parse (home.Scope),
+
+      Assert.That(
+          () => aspNetRequestErrorDetectionParser.Parse(home.Scope),
           Throws.Nothing);
 
-      var result = aspNetRequestErrorDetectionParser.Parse (home.Scope);
+      var result = aspNetRequestErrorDetectionParser.Parse(home.Scope);
 
-      Assert.That (result.HasError, Is.EqualTo (false));
+      Assert.That(result.HasError, Is.EqualTo(false));
     }
 
     [Test]
     public void Parse_CustomError ()
     {
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionParser();
-      var home = StartToStaticPage ("AspNetRequestErrorDetectionParserStaticPages/CustomErrorDefaultErrorPage.html");
+      var home = StartToStaticPage("AspNetRequestErrorDetectionParserStaticPages/CustomErrorDefaultErrorPage.html");
 
-      var result = aspNetRequestErrorDetectionParser.Parse (home);
+      var result = aspNetRequestErrorDetectionParser.Parse(home);
 
-      Assert.That (result.HasError, Is.EqualTo (true));
-      Assert.That (result.Message, Is.EqualTo ("Runtime Error"));
-      Assert.That (result.Stacktrace, Is.EqualTo ("TestStacktrace"));
+      Assert.That(result.HasError, Is.EqualTo(true));
+      Assert.That(result.Message, Is.EqualTo("Runtime Error"));
+      Assert.That(result.Stacktrace, Is.EqualTo("TestStacktrace"));
     }
 
     [Test]
     public void Parse_InvalidErrorPageWithStacktraceMissing ()
     {
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionParser();
-      var home = StartToStaticPage ("AspNetRequestErrorDetectionParserStaticPages/InvalidErrorPageWithStacktraceMissing.html");
+      var home = StartToStaticPage("AspNetRequestErrorDetectionParserStaticPages/InvalidErrorPageWithStacktraceMissing.html");
 
-      var result = aspNetRequestErrorDetectionParser.Parse (home);
+      var result = aspNetRequestErrorDetectionParser.Parse(home);
 
-      Assert.That (result.HasError, Is.EqualTo (false));
-      Assert.That (result.Message, Is.EqualTo (""));
-      Assert.That (result.Stacktrace, Is.EqualTo (""));
+      Assert.That(result.HasError, Is.EqualTo(false));
+      Assert.That(result.Message, Is.EqualTo(""));
+      Assert.That(result.Stacktrace, Is.EqualTo(""));
     }
 
     [Test]
     public void Parse_InvalidErrorPageWithMessageMissing ()
     {
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionParser();
-      var home = StartToStaticPage ("AspNetRequestErrorDetectionParserStaticPages/InvalidErrorPageWithMessageMissing.html");
+      var home = StartToStaticPage("AspNetRequestErrorDetectionParserStaticPages/InvalidErrorPageWithMessageMissing.html");
 
-      var result = aspNetRequestErrorDetectionParser.Parse (home);
+      var result = aspNetRequestErrorDetectionParser.Parse(home);
 
-      Assert.That (result.HasError, Is.EqualTo (false));
-      Assert.That (result.Message, Is.EqualTo (""));
-      Assert.That (result.Stacktrace, Is.EqualTo (""));
+      Assert.That(result.HasError, Is.EqualTo(false));
+      Assert.That(result.Message, Is.EqualTo(""));
+      Assert.That(result.Stacktrace, Is.EqualTo(""));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("RequestErrorDetectionStrategyTest.wxe");
+      return Start<WxePageObject>("RequestErrorDetectionStrategyTest.wxe");
     }
 
     private WxePageObject StartToErrorPageSync (string localButtonId)
     {
-      return StartToErrorPage (localButtonId, "body");
+      return StartToErrorPage(localButtonId, "body");
     }
 
     private WxePageObject StartToErrorPageAsync (string localButtonId)
     {
-      return StartToErrorPage (localButtonId, "div.SmartPageErrorBody > div");
+      return StartToErrorPage(localButtonId, "div.SmartPageErrorBody > div");
     }
-    
+
     private WxePageObject StartToErrorPage (string localButtonId, string startSelector)
     {
       var home = Start();
-      var anchor = home.Anchors().GetByLocalID (localButtonId);
+      var anchor = home.Anchors().GetByLocalID(localButtonId);
 
       //Note: Normale completion detection does not work because of the Error Page
-      anchor.Click (new WebTestActionOptions() { CompletionDetectionStrategy = new NullCompletionDetectionStrategy() });
+      anchor.Click(new WebTestActionOptions() { CompletionDetectionStrategy = new NullCompletionDetectionStrategy() });
 
       //Call Exists workaround because scope is not updated properly
-      home.Scope.FindCss (startSelector + " > span > h1").ExistsWorkaround();
-      
+      home.Scope.FindCss(startSelector + " > span > h1").ExistsWorkaround();
+
       //Wait for Message header to exist
-      home.Scope.FindCss (startSelector + " > span > h1").Exists();
+      home.Scope.FindCss(startSelector + " > span > h1").Exists();
 
       return home;
     }
@@ -156,7 +156,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private ElementScope StartToStaticPage (string page)
     {
       var url = Helper.TestInfrastructureConfiguration.WebApplicationRoot + page;
-      Helper.MainBrowserSession.Window.Visit (url);
+      Helper.MainBrowserSession.Window.Visit(url);
 
       return Helper.MainBrowserSession.Window.GetRootScope();
     }

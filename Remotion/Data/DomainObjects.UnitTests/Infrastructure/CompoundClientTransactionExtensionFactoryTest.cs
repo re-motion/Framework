@@ -33,10 +33,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
                                MockRepository.GenerateStub<IClientTransactionExtensionFactory>(),
                                MockRepository.GenerateStub<IClientTransactionExtensionFactory>()
                            };
-      var compoundFactory = new CompoundClientTransactionExtensionFactory (innerFactories);
+      var compoundFactory = new CompoundClientTransactionExtensionFactory(innerFactories);
 
-      Assert.That (compoundFactory.ClientTransactionExtensionFactories, Is.Not.SameAs (innerFactories));
-      Assert.That (compoundFactory.ClientTransactionExtensionFactories, Is.EqualTo (innerFactories));
+      Assert.That(compoundFactory.ClientTransactionExtensionFactories, Is.Not.SameAs(innerFactories));
+      Assert.That(compoundFactory.ClientTransactionExtensionFactories, Is.EqualTo(innerFactories));
     }
 
     [Test]
@@ -59,14 +59,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
                            };
 
       var clientTransaction = ClientTransaction.CreateRootTransaction();
-      innerFactories[0].Stub (_ => _.CreateClientTransactionExtensions (clientTransaction)).Return (firstExtensions);
-      innerFactories[1].Stub (_ => _.CreateClientTransactionExtensions (clientTransaction)).Return (secondExtensions);
+      innerFactories[0].Stub(_ => _.CreateClientTransactionExtensions(clientTransaction)).Return(firstExtensions);
+      innerFactories[1].Stub(_ => _.CreateClientTransactionExtensions(clientTransaction)).Return(secondExtensions);
 
-      var compoundFactory = new CompoundClientTransactionExtensionFactory (innerFactories);
+      var compoundFactory = new CompoundClientTransactionExtensionFactory(innerFactories);
 
-      var extensions = compoundFactory.CreateClientTransactionExtensions (clientTransaction);
+      var extensions = compoundFactory.CreateClientTransactionExtensions(clientTransaction);
 
-      Assert.That (extensions, Is.EqualTo (firstExtensions.Concat (secondExtensions)));
+      Assert.That(extensions, Is.EqualTo(firstExtensions.Concat(secondExtensions)));
     }
   }
 }

@@ -22,7 +22,7 @@ using NUnit.Framework.Constraints;
 namespace Remotion.Security.UnitTests.XmlAsserter
 {
   public class XmlElementConstraint : Constraint  {
-    
+
     private readonly string _expectedNamespace;
     private readonly string _expectedLocalName;
 
@@ -34,18 +34,18 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 
     public override ConstraintResult ApplyTo<TActual> (TActual actual)
     {
-      var isSuccess = Matches (actual);
-      return new XmlElementConstraintResult (this, actual, isSuccess);
+      var isSuccess = Matches(actual);
+      return new XmlElementConstraintResult(this, actual, isSuccess);
     }
 
     private bool Matches (object actual)
     {
       var actualAsXmlNode = actual as XmlNode;
-      
+
       return actualAsXmlNode != null
           && actualAsXmlNode.NodeType == XmlNodeType.Element
-          && actualAsXmlNode.NamespaceURI.Equals (_expectedNamespace)
-          && actualAsXmlNode.LocalName.Equals (_expectedLocalName);
+          && actualAsXmlNode.NamespaceURI.Equals(_expectedNamespace)
+          && actualAsXmlNode.LocalName.Equals(_expectedLocalName);
     }
   }
 }

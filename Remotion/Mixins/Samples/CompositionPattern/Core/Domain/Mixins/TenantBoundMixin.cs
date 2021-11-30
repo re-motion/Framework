@@ -30,14 +30,14 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Domain.Mixins
 
     protected override void OnTargetReferenceInitializing ()
     {
-      base.OnTargetReferenceInitializing ();
+      base.OnTargetReferenceInitializing();
       TargetEvents.Committing += Target_Committing;
     }
 
     private void Target_Committing (object sender, EventArgs e)
     {
-      if (string.IsNullOrEmpty (Tenant))
-        throw new InvalidOperationException ("Cannot commit tenant-bound object " + TargetID + " without a tenant.");
+      if (string.IsNullOrEmpty(Tenant))
+        throw new InvalidOperationException("Cannot commit tenant-bound object " + TargetID + " without a tenant.");
     }
   }
 }

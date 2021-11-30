@@ -21,7 +21,7 @@ using System.Reflection;
 
 namespace Remotion.Reflection
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
   internal static class TypesafeActivator
   {
     public static FuncInvoker<T> CreateInstance<T> ()

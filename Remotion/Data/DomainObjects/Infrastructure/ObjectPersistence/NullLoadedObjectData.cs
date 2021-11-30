@@ -36,8 +36,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void Accept (ILoadedObjectVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.VisitNullLoadedObject (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.VisitNullLoadedObject(this);
     }
 
     bool INullObject.IsNull

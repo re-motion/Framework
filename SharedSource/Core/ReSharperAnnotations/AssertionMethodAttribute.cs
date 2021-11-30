@@ -70,7 +70,7 @@ namespace JetBrains.Annotations
   /// one of the conditions is satisfied. To set the condition, mark one of the parameters with 
   /// <see cref="AssertionConditionAttribute"/> attribute.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Method)]
+  [AttributeUsage(AttributeTargets.Method)]
   sealed partial class AssertionMethodAttribute : Attribute
   {
   }

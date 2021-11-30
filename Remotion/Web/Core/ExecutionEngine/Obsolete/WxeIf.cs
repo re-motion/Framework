@@ -32,41 +32,41 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       Type type = this.GetType();
       if (_stepList == null)
       {
-        MethodInfo? ifMethod = type.GetMethod (
+        MethodInfo? ifMethod = type.GetMethod(
             "If", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, new Type[0], null);
-        if (ifMethod == null || ifMethod.ReturnType != typeof (bool))
-          throw new WxeException ("If-block " + type.FullName + " does not define method \"bool If()\".");
+        if (ifMethod == null || ifMethod.ReturnType != typeof(bool))
+          throw new WxeException("If-block " + type.FullName + " does not define method \"bool If()\".");
 
-        bool result = (bool) ifMethod.Invoke (this, new object[0])!;
+        bool result = (bool)ifMethod.Invoke(this, new object[0])!;
         if (result)
         {
-          _stepList = GetResultList ("Then");
+          _stepList = GetResultList("Then");
           if (_stepList == null)
-            throw new WxeException ("If-block " + type.FullName + " does not define nested class \"Then\".");
+            throw new WxeException("If-block " + type.FullName + " does not define nested class \"Then\".");
         }
         else
         {
-          _stepList = GetResultList ("Else");
+          _stepList = GetResultList("Else");
         }
       }
 
       if (_stepList != null)
       {
-        _stepList.Execute (context);
+        _stepList.Execute(context);
       }
     }
 
     private WxeStepList? GetResultList (string name)
     {
       Type type = this.GetType();
-      Type? stepListType = type.GetNestedType (name, BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
+      Type? stepListType = type.GetNestedType(name, BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
       if (stepListType == null)
         return null;
-      if (! typeof (WxeStepList).IsAssignableFrom (stepListType))
-        throw new WxeException ("Type " + stepListType.FullName + " must be derived from WxeStepList.");
+      if (! typeof(WxeStepList).IsAssignableFrom(stepListType))
+        throw new WxeException("Type " + stepListType.FullName + " must be derived from WxeStepList.");
 
-      WxeStepList resultList = (WxeStepList) System.Activator.CreateInstance (stepListType)!;
-      resultList.SetParentStep (this);
+      WxeStepList resultList = (WxeStepList)System.Activator.CreateInstance(stepListType)!;
+      resultList.SetParentStep(this);
       return resultList;
     }
 
@@ -75,13 +75,13 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       get
       {
         if (_stepList == null)
-          throw new WxeException ("ExecutingStep must not be accessed outside of the WXE execution.");
-        else 
+          throw new WxeException("ExecutingStep must not be accessed outside of the WXE execution.");
+        else
           return _stepList.ExecutingStep;
       }
     }
 
-    protected override void AbortRecursive()
+    protected override void AbortRecursive ()
     {
       base.AbortRecursive();
       if (_stepList != null)

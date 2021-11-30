@@ -34,58 +34,58 @@ namespace Remotion.Reflection.UnitTests
     {
       var memberInfoStub = new Mock<IMemberInformation>();
       var typeInformationStub = new Mock<ITypeInformation>();
-      memberInfoStub.Setup (stub => stub.DeclaringType).Returns (typeInformationStub.Object);
-      memberInfoStub.Setup (stub => stub.GetOriginalDeclaringType()).Returns (typeInformationStub.Object);
-      Assert.That (memberInfoStub.Object.IsOriginalDeclaration(), Is.True);
+      memberInfoStub.Setup(stub => stub.DeclaringType).Returns(typeInformationStub.Object);
+      memberInfoStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns(typeInformationStub.Object);
+      Assert.That(memberInfoStub.Object.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void IsOriginalDeclaration_DeclaringTypeNotEqualToOrignalDeclaringType_False ()
     {
       var memberInfoStub = new Mock<IMemberInformation>();
-      memberInfoStub.Setup (stub => stub.DeclaringType).Returns (new Mock<ITypeInformation>().Object);
-      memberInfoStub.Setup (stub => stub.GetOriginalDeclaringType()).Returns (new Mock<ITypeInformation>().Object);
+      memberInfoStub.Setup(stub => stub.DeclaringType).Returns(new Mock<ITypeInformation>().Object);
+      memberInfoStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns(new Mock<ITypeInformation>().Object);
 
-      Assert.That (memberInfoStub.Object.IsOriginalDeclaration (), Is.False);
+      Assert.That(memberInfoStub.Object.IsOriginalDeclaration(), Is.False);
     }
 
     [Test]
     public void IsOriginalDeclaration_DeclaringTypeIsNull_False ()
     {
       var memberInfoStub = new Mock<IMemberInformation>();
-      memberInfoStub.Setup (stub => stub.DeclaringType).Returns ((ITypeInformation) null);
-      memberInfoStub.Setup (stub => stub.GetOriginalDeclaringType()).Returns (new Mock<ITypeInformation>().Object);
+      memberInfoStub.Setup(stub => stub.DeclaringType).Returns((ITypeInformation)null);
+      memberInfoStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns(new Mock<ITypeInformation>().Object);
 
-      Assert.That (memberInfoStub.Object.IsOriginalDeclaration (), Is.False);
+      Assert.That(memberInfoStub.Object.IsOriginalDeclaration(), Is.False);
     }
 
     [Test]
     public void IsOriginalDeclaration_OrignalDeclaringTypeIsNull_False ()
     {
       var memberInfoStub = new Mock<IMemberInformation>();
-      memberInfoStub.Setup (stub => stub.DeclaringType).Returns (new Mock<ITypeInformation>().Object);
-      memberInfoStub.Setup (stub => stub.GetOriginalDeclaringType ()).Returns ((ITypeInformation) null);
+      memberInfoStub.Setup(stub => stub.DeclaringType).Returns(new Mock<ITypeInformation>().Object);
+      memberInfoStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns((ITypeInformation)null);
 
-      Assert.That (memberInfoStub.Object.IsOriginalDeclaration (), Is.False);
+      Assert.That(memberInfoStub.Object.IsOriginalDeclaration(), Is.False);
     }
 
     [Test]
     public void IsOriginalDeclaration_DeclaringTypeIsNullAndOrignalDeclaringTypeIsNull_True ()
     {
       var memberInfoStub = new Mock<IMemberInformation>();
-      memberInfoStub.Setup (stub => stub.DeclaringType).Returns ((ITypeInformation) null);
-      memberInfoStub.Setup (stub => stub.GetOriginalDeclaringType ()).Returns ((ITypeInformation) null);
+      memberInfoStub.Setup(stub => stub.DeclaringType).Returns((ITypeInformation)null);
+      memberInfoStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns((ITypeInformation)null);
 
-      Assert.That (memberInfoStub.Object.IsOriginalDeclaration (), Is.True);
+      Assert.That(memberInfoStub.Object.IsOriginalDeclaration(), Is.True);
     }
 
     [Test]
     public void AsRuntimeType_WithTypeAdapter_ReturnsRuntimeType ()
     {
-      var expectedType = typeof (TheType);
-      ITypeInformation typeInformation = TypeAdapter.Create (expectedType);
+      var expectedType = typeof(TheType);
+      ITypeInformation typeInformation = TypeAdapter.Create(expectedType);
 
-      Assert.That (typeInformation.AsRuntimeType(), Is.SameAs (expectedType));
+      Assert.That(typeInformation.AsRuntimeType(), Is.SameAs(expectedType));
     }
 
     [Test]
@@ -93,28 +93,28 @@ namespace Remotion.Reflection.UnitTests
     {
       var typeInformation = new Mock<ITypeInformation>();
 
-      Assert.That (typeInformation.Object.AsRuntimeType(), Is.Null);
+      Assert.That(typeInformation.Object.AsRuntimeType(), Is.Null);
     }
 
     [Test]
     public void ConvertToRuntimeType_WithTypeAdapter_ReturnsRuntimeType ()
     {
-      var expectedType = typeof (TheType);
-      ITypeInformation typeInformation = TypeAdapter.Create (expectedType);
+      var expectedType = typeof(TheType);
+      ITypeInformation typeInformation = TypeAdapter.Create(expectedType);
 
-      Assert.That (typeInformation.ConvertToRuntimeType(), Is.SameAs (expectedType));
+      Assert.That(typeInformation.ConvertToRuntimeType(), Is.SameAs(expectedType));
     }
 
     [Test]
     public void ConvertToRuntimeType_WithOtherITypeInformation_ThrowsInvalidOperationException ()
     {
       var typeInformation = new Mock<ITypeInformation>();
-      typeInformation.Setup (_ => _.Name).Returns ("TheName");
+      typeInformation.Setup(_ => _.Name).Returns("TheName");
 
-      Assert.That (
+      Assert.That(
           () => typeInformation.Object.ConvertToRuntimeType(),
-          Throws.InvalidOperationException.And.Message.EqualTo (
-              string.Format (
+          Throws.InvalidOperationException.And.Message.EqualTo(
+              string.Format(
                   "The type 'TheName' cannot be converted to a runtime type because no conversion is registered for '{0}'.",
                   typeInformation.Object.GetType().FullName)));
     }
@@ -122,10 +122,10 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void AsRuntimeProperty_WithPropertyAdapter_ReturnsRuntimeType ()
     {
-      var expectedProperty = MemberInfoFromExpressionUtility.GetProperty ((TheType t) => t.TheProperty);
-      IPropertyInformation propertyInformation = PropertyInfoAdapter.Create (expectedProperty);
+      var expectedProperty = MemberInfoFromExpressionUtility.GetProperty((TheType t) => t.TheProperty);
+      IPropertyInformation propertyInformation = PropertyInfoAdapter.Create(expectedProperty);
 
-      Assert.That (propertyInformation.AsRuntimePropertyInfo(), Is.SameAs (expectedProperty));
+      Assert.That(propertyInformation.AsRuntimePropertyInfo(), Is.SameAs(expectedProperty));
     }
 
     [Test]
@@ -133,28 +133,28 @@ namespace Remotion.Reflection.UnitTests
     {
       var propertyInformation = new Mock<IPropertyInformation>();
 
-      Assert.That (propertyInformation.Object.AsRuntimePropertyInfo(), Is.Null);
+      Assert.That(propertyInformation.Object.AsRuntimePropertyInfo(), Is.Null);
     }
 
     [Test]
     public void ConvertToRuntimeProperty_WithPropertyAdapter_ReturnsRuntimeType ()
     {
-      var expectedProperty = MemberInfoFromExpressionUtility.GetProperty ((TheType t) => t.TheProperty);
-      IPropertyInformation propertyInformation = PropertyInfoAdapter.Create (expectedProperty);
+      var expectedProperty = MemberInfoFromExpressionUtility.GetProperty((TheType t) => t.TheProperty);
+      IPropertyInformation propertyInformation = PropertyInfoAdapter.Create(expectedProperty);
 
-      Assert.That (propertyInformation.ConvertToRuntimePropertyInfo(), Is.SameAs (expectedProperty));
+      Assert.That(propertyInformation.ConvertToRuntimePropertyInfo(), Is.SameAs(expectedProperty));
     }
 
     [Test]
     public void ConvertToRuntimeProperty_WithOtherIPropertyInformation_ThrowsInvalidOperationException ()
     {
       var propertyInformation = new Mock<IPropertyInformation>();
-      propertyInformation.Setup (_ => _.Name).Returns ("TheName");
+      propertyInformation.Setup(_ => _.Name).Returns("TheName");
 
-      Assert.That (
+      Assert.That(
           () => propertyInformation.Object.ConvertToRuntimePropertyInfo(),
-          Throws.InvalidOperationException.And.Message.EqualTo (
-              string.Format (
+          Throws.InvalidOperationException.And.Message.EqualTo(
+              string.Format(
                   "The property 'TheName' cannot be converted to a runtime property because no conversion is registered for '{0}'.",
                   propertyInformation.Object.GetType().Name)));
     }

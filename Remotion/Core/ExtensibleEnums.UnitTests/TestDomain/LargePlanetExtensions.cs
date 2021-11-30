@@ -21,28 +21,28 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
 {
   public static class LargePlanetExtensions
   {
-    [ExtensibleEnumPosition (4.0)]
+    [ExtensibleEnumPosition(4.0)]
     public static Planet Neptune (this ExtensibleEnumDefinition<Planet> definition)
     {
-      return new Planet (MethodBase.GetCurrentMethod ());
+      return new Planet(MethodBase.GetCurrentMethod());
     }
 
-    [ExtensibleEnumPosition (2.0)]
+    [ExtensibleEnumPosition(2.0)]
     public static Planet Jupiter (this ExtensibleEnumDefinition<Planet> definition)
     {
-      return new Planet (MethodBase.GetCurrentMethod ());
+      return new Planet(MethodBase.GetCurrentMethod());
     }
 
-    [ExtensibleEnumPosition (2.0)]
+    [ExtensibleEnumPosition(2.0)]
     public static Planet Saturn (this ExtensibleEnumDefinition<Planet> definition)
     {
-      return new Planet (MethodBase.GetCurrentMethod ());
+      return new Planet(MethodBase.GetCurrentMethod());
     }
 
-    [ExtensibleEnumPosition (3.0)]
+    [ExtensibleEnumPosition(3.0)]
     public static Planet Uranus (this ExtensibleEnumDefinition<Planet> definition)
     {
-      return new Planet (MethodBase.GetCurrentMethod ());
+      return new Planet(MethodBase.GetCurrentMethod());
     }
   }
 }

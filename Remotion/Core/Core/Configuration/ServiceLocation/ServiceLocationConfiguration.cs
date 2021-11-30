@@ -27,7 +27,7 @@ namespace Remotion.Configuration.ServiceLocation
   public sealed class ServiceLocationConfiguration : ConfigurationSection, IServiceLocationConfiguration
   {
     private static readonly DoubleCheckedLockingContainer<IServiceLocationConfiguration> s_current =
-        new DoubleCheckedLockingContainer<IServiceLocationConfiguration> (GetServiceLocationConfiguration);
+        new DoubleCheckedLockingContainer<IServiceLocationConfiguration>(GetServiceLocationConfiguration);
 
     /// <summary>
     /// Gets the current <see cref="IServiceLocationConfiguration"/> instance. This is used by 
@@ -51,8 +51,7 @@ namespace Remotion.Configuration.ServiceLocation
 
     private static ServiceLocationConfiguration GetServiceLocationConfiguration ()
     {
-      return (ServiceLocationConfiguration) 
-             (ConfigurationWrapper.Current.GetSection ("remotion.serviceLocation", false) ?? new ServiceLocationConfiguration());
+      return (ServiceLocationConfiguration)(ConfigurationWrapper.Current.GetSection("remotion.serviceLocation", false) ?? new ServiceLocationConfiguration());
     }
 
     /// <summary>
@@ -61,8 +60,8 @@ namespace Remotion.Configuration.ServiceLocation
     /// </summary>
     public ServiceLocationConfiguration ()
     {
-      var xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
-      Properties.Add (xmlnsProperty);
+      var xmlnsProperty = new ConfigurationProperty("xmlns", typeof(string), null, ConfigurationPropertyOptions.None);
+      Properties.Add(xmlnsProperty);
     }
 
     /// <summary>
@@ -71,10 +70,10 @@ namespace Remotion.Configuration.ServiceLocation
     /// configured using <see cref="ServiceLocator.SetLocatorProvider"/>.
     /// </summary>
     /// <value>A <see cref="TypeElement{TBase}"/> describing the custom <see cref="IServiceLocatorProvider"/> type to be used.</value>
-    [ConfigurationProperty ("serviceLocatorProvider", IsRequired = false)]
+    [ConfigurationProperty("serviceLocatorProvider", IsRequired = false)]
     public TypeElement<IServiceLocatorProvider, DefaultServiceLocatorProvider> ServiceLocatorProvider
     {
-      get { return (TypeElement<IServiceLocatorProvider, DefaultServiceLocatorProvider>) this["serviceLocatorProvider"]; }
+      get { return (TypeElement<IServiceLocatorProvider, DefaultServiceLocatorProvider>)this["serviceLocatorProvider"]; }
     }
 
     /// <summary>

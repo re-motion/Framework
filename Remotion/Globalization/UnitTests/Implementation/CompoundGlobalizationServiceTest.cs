@@ -34,19 +34,19 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _innerService1 = new Mock<IGlobalizationService> (MockBehavior.Strict);
-      _innerService2 = new Mock<IGlobalizationService> (MockBehavior.Strict);
-      _innerService3 = new Mock<IGlobalizationService> (MockBehavior.Strict);
+      _innerService1 = new Mock<IGlobalizationService>(MockBehavior.Strict);
+      _innerService2 = new Mock<IGlobalizationService>(MockBehavior.Strict);
+      _innerService3 = new Mock<IGlobalizationService>(MockBehavior.Strict);
 
       _typeInformationStub = new Mock<ITypeInformation>();
 
-      _service = new CompoundGlobalizationService (new[] { _innerService1.Object, _innerService2.Object, _innerService3.Object });
+      _service = new CompoundGlobalizationService(new[] { _innerService1.Object, _innerService2.Object, _innerService3.Object });
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_service.GlobalizationServices, Is.EqualTo (new[] { _innerService3.Object, _innerService2.Object, _innerService1.Object }));
+      Assert.That(_service.GlobalizationServices, Is.EqualTo(new[] { _innerService3.Object, _innerService2.Object, _innerService1.Object }));
     }
 
     [Test]
@@ -57,14 +57,14 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var resourceManagerStub3 = new Mock<IResourceManager>();
 
       var sequence = new MockSequence();
-      _innerService3.InSequence (sequence).Setup (mock => mock.GetResourceManager (_typeInformationStub.Object)).Returns (resourceManagerStub1.Object).Verifiable();
-      _innerService2.InSequence (sequence).Setup (mock => mock.GetResourceManager (_typeInformationStub.Object)).Returns (resourceManagerStub2.Object).Verifiable();
-      _innerService1.InSequence (sequence).Setup (mock => mock.GetResourceManager (_typeInformationStub.Object)).Returns (resourceManagerStub3.Object).Verifiable();
+      _innerService3.InSequence(sequence).Setup(mock => mock.GetResourceManager(_typeInformationStub.Object)).Returns(resourceManagerStub1.Object).Verifiable();
+      _innerService2.InSequence(sequence).Setup(mock => mock.GetResourceManager(_typeInformationStub.Object)).Returns(resourceManagerStub2.Object).Verifiable();
+      _innerService1.InSequence(sequence).Setup(mock => mock.GetResourceManager(_typeInformationStub.Object)).Returns(resourceManagerStub3.Object).Verifiable();
 
-      var result = _service.GetResourceManager (_typeInformationStub.Object);
+      var result = _service.GetResourceManager(_typeInformationStub.Object);
 
-      Assert.That (result, Is.TypeOf (typeof (ResourceManagerSet)));
-      Assert.That (((ResourceManagerSet) result).ResourceManagers, Is.EqualTo (new[] { resourceManagerStub1.Object, resourceManagerStub2.Object, resourceManagerStub3.Object }));
+      Assert.That(result, Is.TypeOf(typeof(ResourceManagerSet)));
+      Assert.That(((ResourceManagerSet)result).ResourceManagers, Is.EqualTo(new[] { resourceManagerStub1.Object, resourceManagerStub2.Object, resourceManagerStub3.Object }));
 
       _innerService1.Verify();
       _innerService2.Verify();

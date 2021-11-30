@@ -86,7 +86,7 @@ namespace Remotion.ExtensibleEnums
     /// <returns>
     /// <see langword="true" /> if a value with the given <paramref name="id"/> could be found; <see langword="false" /> otherwise.
     /// </returns>
-    bool TryGetValueInfoByID (string id, [MaybeNullWhen (false)] out IExtensibleEnumInfo value);
+    bool TryGetValueInfoByID (string id, [MaybeNullWhen(false)] out IExtensibleEnumInfo value);
 
     /// <summary>
     /// Gets the custom attributes defined by the types declaring the extension methods defining the enum values.

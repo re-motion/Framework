@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     public SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (
         IStorageTypeInformationProvider innerStorageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull ("innerStorageTypeInformationProvider", innerStorageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull("innerStorageTypeInformationProvider", innerStorageTypeInformationProvider);
 
       _innerStorageTypeInformationProvider = innerStorageTypeInformationProvider;
     }
@@ -47,56 +47,56 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
 
     public IStorageTypeInformation GetStorageTypeForID (bool isStorageTypeNullable)
     {
-      return _innerStorageTypeInformationProvider.GetStorageTypeForID (isStorageTypeNullable);
+      return _innerStorageTypeInformationProvider.GetStorageTypeForID(isStorageTypeNullable);
     }
 
     public IStorageTypeInformation GetStorageTypeForSerializedObjectID (bool isStorageTypeNullable)
     {
-      return _innerStorageTypeInformationProvider.GetStorageTypeForSerializedObjectID (isStorageTypeNullable);
+      return _innerStorageTypeInformationProvider.GetStorageTypeForSerializedObjectID(isStorageTypeNullable);
     }
 
     public IStorageTypeInformation GetStorageTypeForClassID (bool isStorageTypeNullable)
     {
-      return _innerStorageTypeInformationProvider.GetStorageTypeForClassID (isStorageTypeNullable);
+      return _innerStorageTypeInformationProvider.GetStorageTypeForClassID(isStorageTypeNullable);
     }
 
     public IStorageTypeInformation GetStorageTypeForTimestamp (bool isStorageTypeNullable)
     {
-      return _innerStorageTypeInformationProvider.GetStorageTypeForTimestamp (isStorageTypeNullable);
+      return _innerStorageTypeInformationProvider.GetStorageTypeForTimestamp(isStorageTypeNullable);
     }
 
     public IStorageTypeInformation GetStorageType (PropertyDefinition propertyDefinition, bool forceNullable)
     {
-      var innerStorageTypeInformation = _innerStorageTypeInformationProvider.GetStorageType (propertyDefinition, forceNullable);
-      return DecorateStringPropertyStorageTypeInformationWithFulltextQueryCompatiblity (innerStorageTypeInformation);
+      var innerStorageTypeInformation = _innerStorageTypeInformationProvider.GetStorageType(propertyDefinition, forceNullable);
+      return DecorateStringPropertyStorageTypeInformationWithFulltextQueryCompatiblity(innerStorageTypeInformation);
     }
 
     public IStorageTypeInformation GetStorageType (Type type)
     {
-      var innerStorageTypeInformation = _innerStorageTypeInformationProvider.GetStorageType (type);
-      return DecorateStringPropertyStorageTypeInformationWithFulltextQueryCompatiblity (innerStorageTypeInformation);
+      var innerStorageTypeInformation = _innerStorageTypeInformationProvider.GetStorageType(type);
+      return DecorateStringPropertyStorageTypeInformationWithFulltextQueryCompatiblity(innerStorageTypeInformation);
     }
 
     public IStorageTypeInformation GetStorageType (object value)
     {
-      var innerStorageTypeInformation = _innerStorageTypeInformationProvider.GetStorageType (value);
-      return DecorateStringPropertyStorageTypeInformationWithFulltextQueryCompatiblity (innerStorageTypeInformation);
+      var innerStorageTypeInformation = _innerStorageTypeInformationProvider.GetStorageType(value);
+      return DecorateStringPropertyStorageTypeInformationWithFulltextQueryCompatiblity(innerStorageTypeInformation);
     }
 
     private IStorageTypeInformation DecorateStringPropertyStorageTypeInformationWithFulltextQueryCompatiblity (
         IStorageTypeInformation storageTypeInformation)
     {
-      ArgumentUtility.CheckNotNull ("storageTypeInformation", storageTypeInformation);
+      ArgumentUtility.CheckNotNull("storageTypeInformation", storageTypeInformation);
 
       var hasMaxLength = storageTypeInformation.StorageTypeLength == SqlStorageTypeInformationProvider.StorageTypeLengthRepresentingMax;
       var isAnsiString = storageTypeInformation.StorageDbType == DbType.AnsiString; //AnsiStringFixedLength represents char(...), which does not support char(max)
       var isUnicodeString = storageTypeInformation.StorageDbType == DbType.String; //StringFixedLength represents char(...), which does not support char(max)
 
       if (hasMaxLength && isAnsiString)
-        return new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator (storageTypeInformation, 8000);
+        return new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(storageTypeInformation, 8000);
 
       if (hasMaxLength && isUnicodeString)
-        return new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator (storageTypeInformation, 4000);
+        return new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(storageTypeInformation, 4000);
 
       return storageTypeInformation;
     }

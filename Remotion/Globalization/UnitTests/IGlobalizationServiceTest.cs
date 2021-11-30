@@ -32,15 +32,15 @@ namespace Remotion.Globalization.UnitTests
     {
       _serviceLocator = DefaultServiceLocator.Create();
     }
-    
+
     [Test]
     public void GetInstance_Once ()
     {
-      var service = _serviceLocator.GetInstance<IGlobalizationService> ();
+      var service = _serviceLocator.GetInstance<IGlobalizationService>();
 
-      Assert.That (service, Is.TypeOf (typeof (CompoundGlobalizationService)));
-      var compoundGlobalizationServices = ((CompoundGlobalizationService) service).GlobalizationServices;
-      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<GlobalizationService>());
+      Assert.That(service, Is.TypeOf(typeof(CompoundGlobalizationService)));
+      var compoundGlobalizationServices = ((CompoundGlobalizationService)service).GlobalizationServices;
+      Assert.That(compoundGlobalizationServices[0], Is.TypeOf<GlobalizationService>());
     }
 
     [Test]
@@ -49,7 +49,7 @@ namespace Remotion.Globalization.UnitTests
       var service1 = _serviceLocator.GetInstance<IGlobalizationService>();
       var service2 = _serviceLocator.GetInstance<IGlobalizationService>();
 
-      Assert.That (service1, Is.SameAs (service2));
+      Assert.That(service1, Is.SameAs(service2));
     }
   }
 }

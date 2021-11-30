@@ -24,11 +24,11 @@ namespace Remotion.Web.Test.Shared.IFrameSupport
   public class MainFunction : WxeFunction
   {
     public MainFunction ()
-        : base (WxeTransactionMode<NullTransactionFactory>.None)
+        : base(WxeTransactionMode<NullTransactionFactory>.None)
     {
     }
 
     [UsedImplicitly]
-    private WxeStep Step1 = new WxeResourcePageStep (typeof (MainForm), "IFrameSupport/MainForm.aspx");
+    private WxeStep Step1 = new WxeResourcePageStep(typeof(MainForm), "IFrameSupport/MainForm.aspx");
   }
 }

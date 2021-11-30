@@ -23,7 +23,7 @@ namespace Remotion
   /// Supplies an identifier that should remain constant even accross refactorings. 
   /// Can be applied to reference types, value types, interfaces, enums, properties, methods, and fields.
   /// </summary>
-  [AttributeUsage (
+  [AttributeUsage(
       AttributeTargets.Class
       | AttributeTargets.Struct
       | AttributeTargets.Interface
@@ -43,9 +43,9 @@ namespace Remotion
     /// <param name="value"> The <see cref="String"/> representation of a <see cref="Guid"/>. </param>
     public PermanentGuidAttribute (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty("value", value);
 
-      _value = new Guid (value);
+      _value = new Guid(value);
     }
 
     /// <summary>

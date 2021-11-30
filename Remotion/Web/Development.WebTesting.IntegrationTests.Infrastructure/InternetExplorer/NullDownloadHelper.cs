@@ -26,10 +26,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
   public class NullDownloadHelper : IDownloadHelper
   {
     public IDownloadedFile HandleDownloadWithExpectedFileName (string fileName, TimeSpan? downloadStartedTimeout = null, TimeSpan? downloadUpdatedTimeout = null)
-      => new DownloadedFile ("", "");
+      => new DownloadedFile("", "");
 
     public IDownloadedFile HandleDownloadWithDetectedFileName (TimeSpan? downloadStartedTimeout = null, TimeSpan? downloadUpdatedTimeout = null)
-      => new DownloadedFile ("", "");
+      => new DownloadedFile("", "");
 
     public void DeleteFiles ()
     {

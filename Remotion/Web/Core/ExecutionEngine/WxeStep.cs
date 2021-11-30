@@ -32,7 +32,7 @@ public abstract class WxeStep
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/GetFunction/*' />
   public static WxeFunction? GetFunction (WxeStep? step)
   {
-    return WxeStep.GetStepByType<WxeFunction> (step);
+    return WxeStep.GetStepByType<WxeFunction>(step);
   }
 
   /// <summary>
@@ -62,7 +62,7 @@ public abstract class WxeStep
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/varref/*' />
   protected static WxeVariableReference varref (string localVariable)
   {
-    return new WxeVariableReference (localVariable);
+    return new WxeVariableReference(localVariable);
   }
 
   private WxeStep? _parentStep = null;
@@ -85,10 +85,10 @@ public abstract class WxeStep
   ///     This method should only be invoked by the WXE infrastructure.
   ///   </note>
   /// </remarks>
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public void Execute ()
   {
-    Execute (WxeContext.Current!); // TODO RM-8118: not null assertion
+    Execute(WxeContext.Current!); // TODO RM-8118: not null assertion
   }
 
   /// <summary> Executes the <see cref="WxeStep"/>. </summary>
@@ -99,7 +99,7 @@ public abstract class WxeStep
   ///     This method should only be invoked by the WXE infrastructure.
   ///   </note>
   /// </remarks>
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public abstract void Execute (WxeContext context);
 
   /// <summary> Gets the scope's variables collection. </summary>
@@ -118,10 +118,10 @@ public abstract class WxeStep
 
   /// <summary> Sets the parent step of this <see cref="WxeStep"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/SetParentStep/*' />
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public void SetParentStep (WxeStep parentStep)
   {
-    ArgumentUtility.CheckNotNull ("parentStep", parentStep);
+    ArgumentUtility.CheckNotNull("parentStep", parentStep);
     _parentStep = parentStep;
   }
 
@@ -149,7 +149,7 @@ public abstract class WxeStep
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/ParentFunction/*' />
   public WxeFunction? ParentFunction
   {
-    get { return WxeStep.GetFunction (ParentStep); }
+    get { return WxeStep.GetFunction(ParentStep); }
   }
 
   /// <summary> 
@@ -159,14 +159,14 @@ public abstract class WxeStep
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/CurrentException/*' />
   protected Exception? CurrentException
   {
-    get 
+    get
     {
       for (WxeStep? step = this;
            step != null;
            step = step.ParentStep)
       {
         if (step is WxeCatchBlock)
-          return ((WxeCatchBlock) step).Exception;
+          return ((WxeCatchBlock)step).Exception;
       }
 
       return null;
@@ -179,11 +179,11 @@ public abstract class WxeStep
   {
     get { return _isAborted; }
   }
-  
+
   /// <summary> Aborts the <b>WxeStep</b> by calling <see cref="AbortRecursive"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Abort/*' />
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public void Abort()
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  public void Abort ()
   {
     if (! _isAborted && ! _isAborting)
     {
@@ -196,7 +196,7 @@ public abstract class WxeStep
 
   /// <summary> Contains the aborting logic for the <see cref="WxeStep"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/AbortRecursive/*' />
-  protected virtual void AbortRecursive()
+  protected virtual void AbortRecursive ()
   {
   }
 }

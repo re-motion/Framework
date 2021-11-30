@@ -19,13 +19,13 @@ using Remotion.ExtensibleEnums;
 
 namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
 {
-  [MultiLingualResources ("Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.Resources.MixedColorExtensions")]
+  [MultiLingualResources("Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.Resources.MixedColorExtensions")]
   public static class MixedColorExtensions
   {
-    [MultiLingualName ("Attribute", "")]
+    [MultiLingualName("Attribute", "")]
     public static Color MixedRed (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color ("MixedColor", "MixedRed");
+      return new Color("MixedColor", "MixedRed");
     }
   }
 }

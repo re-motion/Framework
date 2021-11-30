@@ -22,7 +22,7 @@ namespace Remotion.Validation.UnitTests.TestHelpers
   {
     public TestableValidationRuleCollectorBase ()
     {
-      
+
     }
   }
 }

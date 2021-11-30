@@ -27,26 +27,26 @@ namespace Remotion.Validation.RuleCollectors
         Expression<Func<TValidatedType, TProperty>> expression,
         Type collectorType)
     {
-      var propertyInfo = MemberInfoFromExpressionUtility.GetProperty (expression);
+      var propertyInfo = MemberInfoFromExpressionUtility.GetProperty(expression);
 
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("collectorType", collectorType, typeof (IValidationRuleCollector));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("collectorType", collectorType, typeof(IValidationRuleCollector));
 
       // TODO RM-5906: Replace with IPropertyInformation.GetGetMethod().GetFastInvoker.
       // TODO RM-5906: Add cache, try to unify with ValidationAttributesBasedPropertyRuleReflector and DomainObjectAttributesBasedValidationPropertyRuleReflector
 
-      var parameterExpression = Expression.Parameter (typeof (object), "t");
+      var parameterExpression = Expression.Parameter(typeof(object), "t");
 
       // object o => (object) (TheType o).TheProperty
-      var propertyExpression = Expression.Lambda<Func<object, object>> (
-          Expression.Convert (
-              Expression.MakeMemberAccess (
-                  Expression.Convert (parameterExpression, typeof (TValidatedType)),
+      var propertyExpression = Expression.Lambda<Func<object, object>>(
+          Expression.Convert(
+              Expression.MakeMemberAccess(
+                  Expression.Convert(parameterExpression, typeof(TValidatedType)),
                   propertyInfo),
-              typeof (object)),
+              typeof(object)),
           parameterExpression);
 
-      return new AddingPropertyValidationRuleCollector<TValidatedType, TProperty> (
-          PropertyInfoAdapter.Create (propertyInfo),
+      return new AddingPropertyValidationRuleCollector<TValidatedType, TProperty>(
+          PropertyInfoAdapter.Create(propertyInfo),
           propertyExpression.Compile(),
           collectorType);
     }

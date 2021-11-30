@@ -26,7 +26,7 @@ namespace Remotion.Validation.Merging
   /// <summary>
   /// Default implementation of the <see cref="IPropertyValidatorExtractorFactory"/> interface.
   /// </summary>
-  [ImplementationFor (typeof (IPropertyValidatorExtractorFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IPropertyValidatorExtractorFactory), Lifetime = LifetimeKind.Singleton)]
   public class PropertyValidatorExtractorFactory : IPropertyValidatorExtractorFactory
   {
     public PropertyValidatorExtractorFactory ()
@@ -36,10 +36,10 @@ namespace Remotion.Validation.Merging
     public IPropertyValidatorExtractor Create (
         IEnumerable<RemovingPropertyValidatorRegistration> removingPropertyValidatorRegistrations, ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull ("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
-      ArgumentUtility.CheckNotNull ("logContext", logContext);
-      
-      return new PropertyValidatorExtractor (removingPropertyValidatorRegistrations, logContext);
+      ArgumentUtility.CheckNotNull("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
+      ArgumentUtility.CheckNotNull("logContext", logContext);
+
+      return new PropertyValidatorExtractor(removingPropertyValidatorRegistrations, logContext);
     }
   }
 }

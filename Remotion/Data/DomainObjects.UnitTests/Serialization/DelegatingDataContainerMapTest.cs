@@ -36,10 +36,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DataContainerMapIsNotSerializable ()
     {
-      Assert.That (
-          () => Serializer.SerializeAndDeserialize (new DelegatingDataContainerMap()),
+      Assert.That(
+          () => Serializer.SerializeAndDeserialize(new DelegatingDataContainerMap()),
           Throws.InstanceOf<SerializationException>()
-              .With.Message.Matches (
+              .With.Message.Matches(
                   "Type 'Remotion.Data.DomainObjects.DataManagement.DelegatingDataContainerMap' in Assembly "
                   + ".* is not marked as serializable."));
     }
@@ -47,25 +47,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void DelegatingDataContainerMapIsFlattenedSerializable ()
     {
-      DataContainerMap map = DataManagerTestHelper.GetDataContainerMap (TestableClientTransaction.DataManager);
+      DataContainerMap map = DataManagerTestHelper.GetDataContainerMap(TestableClientTransaction.DataManager);
       DelegatingDataContainerMap delegatingDataContainerMap = new DelegatingDataContainerMap();
       delegatingDataContainerMap.InnerDataContainerMap = map;
 
-      DelegatingDataContainerMap deserializedDelegatingDataContainerMap = FlattenedSerializer.SerializeAndDeserialize (delegatingDataContainerMap);
-      Assert.That (deserializedDelegatingDataContainerMap, Is.Not.Null);
+      DelegatingDataContainerMap deserializedDelegatingDataContainerMap = FlattenedSerializer.SerializeAndDeserialize(delegatingDataContainerMap);
+      Assert.That(deserializedDelegatingDataContainerMap, Is.Not.Null);
     }
 
     [Test]
     public void DelegatingDataContainerMap_InnerDataContainerMapSet ()
     {
-      DataContainerMap map = DataManagerTestHelper.GetDataContainerMap (TestableClientTransaction.DataManager);
+      DataContainerMap map = DataManagerTestHelper.GetDataContainerMap(TestableClientTransaction.DataManager);
       DelegatingDataContainerMap delegatingDataContainerMap = new DelegatingDataContainerMap();
       delegatingDataContainerMap.InnerDataContainerMap = map;
-      DomainObjectIDs.Order1.GetObject<Order> ();
-      Assert.That (map.Count, Is.EqualTo (1));
+      DomainObjectIDs.Order1.GetObject<Order>();
+      Assert.That(map.Count, Is.EqualTo(1));
 
-      DelegatingDataContainerMap deserializedDelegatingDataContainerMap = FlattenedSerializer.SerializeAndDeserialize (delegatingDataContainerMap);
-      Assert.That (deserializedDelegatingDataContainerMap.Count, Is.EqualTo (1));
+      DelegatingDataContainerMap deserializedDelegatingDataContainerMap = FlattenedSerializer.SerializeAndDeserialize(delegatingDataContainerMap);
+      Assert.That(deserializedDelegatingDataContainerMap.Count, Is.EqualTo(1));
     }
 
     [Test]
@@ -74,8 +74,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       DelegatingDataContainerMap delegatingDataContainerMap = new DelegatingDataContainerMap();
       delegatingDataContainerMap.InnerDataContainerMap = null;
 
-      DelegatingDataContainerMap deserializedDelegatingDataContainerMap = FlattenedSerializer.SerializeAndDeserialize (delegatingDataContainerMap);
-      Assert.That (deserializedDelegatingDataContainerMap.InnerDataContainerMap, Is.Null);
+      DelegatingDataContainerMap deserializedDelegatingDataContainerMap = FlattenedSerializer.SerializeAndDeserialize(delegatingDataContainerMap);
+      Assert.That(deserializedDelegatingDataContainerMap.InnerDataContainerMap, Is.Null);
     }
   }
 }

@@ -30,8 +30,8 @@ namespace Remotion.Data.DomainObjects.Queries
 
     public QueryParameterWithType (QueryParameter queryParameter, IStorageTypeInformation storageTypeInformation)
     {
-      ArgumentUtility.CheckNotNull ("queryParameter", queryParameter);
-      ArgumentUtility.CheckNotNull ("storageTypeInformation", storageTypeInformation);
+      ArgumentUtility.CheckNotNull("queryParameter", queryParameter);
+      ArgumentUtility.CheckNotNull("storageTypeInformation", storageTypeInformation);
 
       _queryParameter = queryParameter;
       _storageTypeInformation = storageTypeInformation;

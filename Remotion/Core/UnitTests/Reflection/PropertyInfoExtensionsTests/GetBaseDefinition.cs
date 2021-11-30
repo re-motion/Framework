@@ -28,165 +28,165 @@ namespace Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests
     [Test]
     public void GetBaseDefinition_ForPropertyOnBaseClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<ClassWithDifferentProperties> ("String");
+      PropertyInfo propertyInfo = GetPropertyInfo<ClassWithDifferentProperties>("String");
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (propertyInfo));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(propertyInfo));
     }
 
     [Test]
     public void GetBaseDefinition_ForPropertyOnOpenGenericBaseClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo (typeof (GenericClassWithDifferentProperties<>), "AbstractT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(GenericClassWithDifferentProperties<>), "AbstractT");
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (propertyInfo));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(propertyInfo));
     }
 
     [Test]
     public void GetBaseDefinition_ForPropertyOnClosedGenericBaseClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<GenericClassWithDifferentProperties<int>> ("AbstractT");
+      PropertyInfo propertyInfo = GetPropertyInfo<GenericClassWithDifferentProperties<int>>("AbstractT");
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (propertyInfo));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(propertyInfo));
     }
 
     [Test]
     public void GetBaseDefinition_ForPropertyOnDerivedClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties> ("OtherString");
+      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties>("OtherString");
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (GetPropertyInfo<DerivedClassWithDifferentProperties> ("OtherString")));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(GetPropertyInfo<DerivedClassWithDifferentProperties>("OtherString")));
     }
 
     [Test]
     public void GetBaseDefinition_ForNewPropertyOnDerivedClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties> ("String");
+      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties>("String");
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (GetPropertyInfo<DerivedClassWithDifferentProperties> ("String")));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(GetPropertyInfo<DerivedClassWithDifferentProperties>("String")));
     }
 
     [Test]
     public void GetBaseDefinition_ForOverriddenPropertyOnBaseClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<ClassWithDifferentProperties> ("Int32");
+      PropertyInfo propertyInfo = GetPropertyInfo<ClassWithDifferentProperties>("Int32");
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (GetPropertyInfo<ClassWithDifferentProperties> ("Int32")));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(GetPropertyInfo<ClassWithDifferentProperties>("Int32")));
     }
 
     [Test]
     public void GetBaseDefinition_ForOverriddenPropertyOnDerivedClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties> ("Int32");
+      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties>("Int32");
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (GetPropertyInfo<ClassWithDifferentProperties> ("Int32")));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(GetPropertyInfo<ClassWithDifferentProperties>("Int32")));
     }
 
     [Test]
     public void GetBaseDefinition_ForOverriddenPropertyOnOpenGenericDerivedClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo (typeof (DerivedOpenGenericClassWithDifferentProperties<>), "AbstractT");
+      PropertyInfo propertyInfo = GetPropertyInfo(typeof(DerivedOpenGenericClassWithDifferentProperties<>), "AbstractT");
 
       var baseDefinition = propertyInfo.GetBaseDefinition();
-      Assert.That (baseDefinition.DeclaringType.Name, Is.EqualTo (typeof (GenericClassWithDifferentProperties<>).Name));
-      Assert.That (baseDefinition.Name, Is.EqualTo (propertyInfo.Name));
+      Assert.That(baseDefinition.DeclaringType.Name, Is.EqualTo(typeof(GenericClassWithDifferentProperties<>).Name));
+      Assert.That(baseDefinition.Name, Is.EqualTo(propertyInfo.Name));
     }
 
     [Test]
     public void GetBaseDefinition_ForOverriddenPropertyOnClosedGenericDerivedClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedOpenGenericClassWithDifferentProperties<int>> ("AbstractT");
+      PropertyInfo propertyInfo = GetPropertyInfo<DerivedOpenGenericClassWithDifferentProperties<int>>("AbstractT");
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (GetPropertyInfo (typeof (GenericClassWithDifferentProperties<int>), "AbstractT")));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(GetPropertyInfo(typeof(GenericClassWithDifferentProperties<int>), "AbstractT")));
     }
 
     [Test]
     public void GetBaseDefinition_ForOverriddenPropertyOnDerivedClassWithClosedGenericBaseClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClosedGenericClassWithDifferentProperties> ("AbstractT");
+      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClosedGenericClassWithDifferentProperties>("AbstractT");
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (GetPropertyInfo (typeof (GenericClassWithDifferentProperties<int>), "AbstractT")));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(GetPropertyInfo(typeof(GenericClassWithDifferentProperties<int>), "AbstractT")));
     }
 
     [Test]
     public void GetBaseDefinition_ForOverriddenPropertyOnDerivedOfDerivedClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedOfDerivedClassWithDifferentProperties> ("Int32");
+      PropertyInfo propertyInfo = GetPropertyInfo<DerivedOfDerivedClassWithDifferentProperties>("Int32");
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (GetPropertyInfo<ClassWithDifferentProperties> ("Int32")));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(GetPropertyInfo<ClassWithDifferentProperties>("Int32")));
     }
 
     [Test]
     public void GetBaseDefinition_ForOverriddenNonPublicPropertyOnDerivedOfDerivedClass ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedOfDerivedClassWithDifferentProperties> ("ProtectedInt32");
+      PropertyInfo propertyInfo = GetPropertyInfo<DerivedOfDerivedClassWithDifferentProperties>("ProtectedInt32");
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (GetPropertyInfo<ClassWithDifferentProperties> ("ProtectedInt32")));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(GetPropertyInfo<ClassWithDifferentProperties>("ProtectedInt32")));
     }
 
     [Test]
     public void GetBaseDefinition_ForStaticPublicProperty ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedOfDerivedClassWithDifferentProperties> ("StaticInt32");
+      PropertyInfo propertyInfo = GetPropertyInfo<DerivedOfDerivedClassWithDifferentProperties>("StaticInt32");
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (GetPropertyInfo<DerivedOfDerivedClassWithDifferentProperties> ("StaticInt32")));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(GetPropertyInfo<DerivedOfDerivedClassWithDifferentProperties>("StaticInt32")));
     }
 
     [Test]
     public void GetBaseDefinition_ForStaticNonPublicProperty ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<ClassWithDifferentProperties> ("PrivateStaticInt32");
+      PropertyInfo propertyInfo = GetPropertyInfo<ClassWithDifferentProperties>("PrivateStaticInt32");
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (GetPropertyInfo<ClassWithDifferentProperties> ("PrivateStaticInt32")));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(GetPropertyInfo<ClassWithDifferentProperties>("PrivateStaticInt32")));
     }
 
     [Test]
     public void GetBaseDefinition_ForOverriddenIndexedPropertyOnDerivedOfDerivedClass ()
     {
-      PropertyInfo propertyInfo = typeof (DerivedOfDerivedClassWithDifferentProperties).GetProperty ("Item", new[] { typeof (int) });
+      PropertyInfo propertyInfo = typeof(DerivedOfDerivedClassWithDifferentProperties).GetProperty("Item", new[] { typeof(int) });
 
-      Assert.That (propertyInfo.GetBaseDefinition(), Is.SameAs (typeof (ClassWithDifferentProperties).GetProperty ("Item", new[] { typeof (int) })));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(typeof(ClassWithDifferentProperties).GetProperty("Item", new[] { typeof(int) })));
     }
 
     [Test]
     public void GetBaseDefinition_ForOverriddenPropertyOnDerivedClassWithMissingSetter ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties> ("Object1");
+      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties>("Object1");
 
-      Assert.That (propertyInfo.GetBaseDefinition (), Is.SameAs (GetPropertyInfo<ClassWithDifferentProperties> ("Object1")));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(GetPropertyInfo<ClassWithDifferentProperties>("Object1")));
     }
 
     [Test]
     public void GetBaseDefinition_ForOverriddenPropertyOnDerivedClassWithMissingGetter ()
     {
-      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties> ("Object2");
+      PropertyInfo propertyInfo = GetPropertyInfo<DerivedClassWithDifferentProperties>("Object2");
 
-      Assert.That (propertyInfo.GetBaseDefinition (), Is.SameAs (GetPropertyInfo<ClassWithDifferentProperties> ("Object2")));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(GetPropertyInfo<ClassWithDifferentProperties>("Object2")));
     }
 
     [Test]
     public void GetBaseDefinition_ForOverriddenIndexedPropertyOnDerivedClassWithMissingSetter ()
     {
-      PropertyInfo propertyInfo = typeof (DerivedClassWithDifferentProperties).GetProperty ("Item", new[] { typeof (object) });
+      PropertyInfo propertyInfo = typeof(DerivedClassWithDifferentProperties).GetProperty("Item", new[] { typeof(object) });
 
-      Assert.That (propertyInfo.GetBaseDefinition (), Is.SameAs (typeof (ClassWithDifferentProperties).GetProperty ("Item", new[] { typeof (object) })));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(typeof(ClassWithDifferentProperties).GetProperty("Item", new[] { typeof(object) })));
     }
 
     [Test]
     public void GetBaseDefinition_ForOverriddenIndexedPropertyOnDerivedClassWithMissingGetter ()
     {
-      PropertyInfo propertyInfo = typeof (DerivedOfDerivedClassWithDifferentProperties).GetProperty ("Item", new[] { typeof (object) });
+      PropertyInfo propertyInfo = typeof(DerivedOfDerivedClassWithDifferentProperties).GetProperty("Item", new[] { typeof(object) });
 
-      Assert.That (propertyInfo.GetBaseDefinition (), Is.SameAs (typeof (ClassWithDifferentProperties).GetProperty ("Item", new[] { typeof (object) })));
+      Assert.That(propertyInfo.GetBaseDefinition(), Is.SameAs(typeof(ClassWithDifferentProperties).GetProperty("Item", new[] { typeof(object) })));
     }
 
     private PropertyInfo GetPropertyInfo<T> (string property)
     {
-      return GetPropertyInfo (typeof (T), property);
+      return GetPropertyInfo(typeof(T), property);
     }
 
     private PropertyInfo GetPropertyInfo (Type type, string property)
     {
-      return type.GetProperty (
+      return type.GetProperty(
           property,
           BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
     }

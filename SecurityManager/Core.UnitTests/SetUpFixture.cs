@@ -45,12 +45,12 @@ namespace Remotion.SecurityManager.UnitTests
   {
     public static string TestDomainConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=RemotionSecurityManager"); }
+      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=RemotionSecurityManager"); }
     }
 
     public static string MasterConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=master"); }
+      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=master"); }
     }
 
     [OneTimeSetUp]
@@ -59,25 +59,25 @@ namespace Remotion.SecurityManager.UnitTests
       try
       {
         var serviceLocator = DefaultServiceLocator.Create();
-        serviceLocator.RegisterSingle<ISecurityProvider> (() => new NullSecurityProvider());
-        serviceLocator.RegisterSingle<IPrincipalProvider> (() => new NullPrincipalProvider());
-        ServiceLocator.SetLocatorProvider (() => serviceLocator);
+        serviceLocator.RegisterSingle<ISecurityProvider>(() => new NullSecurityProvider());
+        serviceLocator.RegisterSingle<IPrincipalProvider>(() => new NullPrincipalProvider());
+        ServiceLocator.SetLocatorProvider(() => serviceLocator);
 
         var providers = new ProviderCollection<StorageProviderDefinition>();
-        providers.Add (new RdbmsProviderDefinition ("SecurityManager", new SecurityManagerSqlStorageObjectFactory(), TestDomainConnectionString));
-        var storageConfiguration = new StorageConfiguration (providers, providers["SecurityManager"]);
-        storageConfiguration.StorageGroups.Add (new StorageGroupElement (new SecurityManagerStorageGroupAttribute(), "SecurityManager"));
+        providers.Add(new RdbmsProviderDefinition("SecurityManager", new SecurityManagerSqlStorageObjectFactory(), TestDomainConnectionString));
+        var storageConfiguration = new StorageConfiguration(providers, providers["SecurityManager"]);
+        storageConfiguration.StorageGroups.Add(new StorageGroupElement(new SecurityManagerStorageGroupAttribute(), "SecurityManager"));
 
-        DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (storage: storageConfiguration));
+        DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));
 
-        var rootAssemblyFinder = new FixedRootAssemblyFinder (new RootAssembly (typeof (BaseSecurityManagerObject).Assembly, true));
-        var assemblyLoader = new FilteringAssemblyLoader (ApplicationAssemblyLoaderFilter.Instance);
-        var assemblyFinder = new CachingAssemblyFinderDecorator (new AssemblyFinder (rootAssemblyFinder, assemblyLoader));
-        ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService (assemblyFinder);
+        var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof(BaseSecurityManagerObject).Assembly, true));
+        var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
+        var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
+        ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
 
-        MappingConfiguration.SetCurrent (
-            new MappingConfiguration (
-                new MappingReflector (
+        MappingConfiguration.SetCurrent(
+            new MappingConfiguration(
+                new MappingReflector(
                     typeDiscoveryService,
                     new ClassIDProvider(),
                     new ReflectionBasedMemberInformationNameResolver(),
@@ -85,20 +85,20 @@ namespace Remotion.SecurityManager.UnitTests
                     new DomainModelConstraintProvider(),
                     new SortExpressionDefinitionProvider(),
                     MappingReflector.CreateDomainObjectCreator()),
-                new PersistenceModelLoader (new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage))));
+                new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
 
         SqlConnection.ClearAllPools();
 
-        DatabaseAgent masterAgent = new DatabaseAgent (MasterConnectionString);
-        masterAgent.ExecuteBatchFile ("SecurityManagerCreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
-        DatabaseAgent databaseAgent = new DatabaseAgent (TestDomainConnectionString);
-        databaseAgent.ExecuteBatchFile ("SecurityManagerSetupDB.sql", true, DatabaseConfiguration.GetReplacementDictionary());
-        databaseAgent.ExecuteBatchFile ("SecurityManagerSetupConstraints.sql", true, DatabaseConfiguration.GetReplacementDictionary());
-        databaseAgent.ExecuteBatchFile ("SecurityManagerSetupDBSpecialTables.sql", true, DatabaseConfiguration.GetReplacementDictionary());
+        DatabaseAgent masterAgent = new DatabaseAgent(MasterConnectionString);
+        masterAgent.ExecuteBatchFile("SecurityManagerCreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+        DatabaseAgent databaseAgent = new DatabaseAgent(TestDomainConnectionString);
+        databaseAgent.ExecuteBatchFile("SecurityManagerSetupDB.sql", true, DatabaseConfiguration.GetReplacementDictionary());
+        databaseAgent.ExecuteBatchFile("SecurityManagerSetupConstraints.sql", true, DatabaseConfiguration.GetReplacementDictionary());
+        databaseAgent.ExecuteBatchFile("SecurityManagerSetupDBSpecialTables.sql", true, DatabaseConfiguration.GetReplacementDictionary());
       }
       catch (Exception e)
       {
-        Console.WriteLine (e);
+        Console.WriteLine(e);
       }
     }
 

@@ -32,8 +32,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     /// <returns>Returns the <see cref="BindableObjectClass"/> for the <paramref name="type"/>.</returns>
     public static BindableObjectClass GetBindableObjectClass (Type type)
     {
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType (type);
-      return provider.GetBindableObjectClass (type);
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(type);
+      return provider.GetBindableObjectClass(type);
     }
   }
 }

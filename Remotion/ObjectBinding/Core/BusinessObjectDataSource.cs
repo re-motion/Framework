@@ -44,8 +44,8 @@ namespace Remotion.ObjectBinding
     ///   An <see cref="IBusinessObject"/> or <see langword="null"/>. Must be compatible with
     ///   the <see cref="BusinessObjectClass"/> assigned to this <see cref="BusinessObjectDataSource"/>.
     /// </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public abstract IBusinessObject? BusinessObject { get; set; }
 
     /// <summary> 
@@ -55,14 +55,14 @@ namespace Remotion.ObjectBinding
     /// <remarks>
     ///   Usually set before the <see cref="IBusinessObject"/> is connected to the <see cref="BusinessObjectDataSource"/>. 
     /// </remarks>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public abstract IBusinessObjectClass? BusinessObjectClass { get; }
 
     /// <summary> Gets or sets the current <see cref="DataSourceMode"/>. </summary>
     /// <value> A value of the <see cref="DataSourceMode"/> enumeration. </value>
-    [Category ("Data")]
-    [DefaultValue (DataSourceMode.Edit)]
+    [Category("Data")]
+    [DefaultValue(DataSourceMode.Edit)]
     public abstract DataSourceMode Mode { get; set; }
 
     /// <summary> Loads the values of the <see cref="BusinessObject"/> into all bound controls. </summary>
@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding
     public void LoadValues (bool interim)
     {
       foreach (var control in GetBoundControlsWithValidBinding())
-        control.LoadValue (interim);
+        control.LoadValue(interim);
     }
 
     /// <summary> 
@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding
     {
       bool hasSaved = true;
       foreach (var control in GetBoundControlsWithValidBinding().OfType<IBusinessObjectBoundEditableControl>())
-        hasSaved &= control.SaveValue (interim);
+        hasSaved &= control.SaveValue(interim);
       return hasSaved;
     }
 
@@ -91,8 +91,8 @@ namespace Remotion.ObjectBinding
     ///   <see cref="IBusinessObject"/> and assigned <see cref="IBusinessObjectClass"/>.
     /// </summary>
     /// <value> The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObjectProvider? BusinessObjectProvider
     {
       get { return (BusinessObjectClass == null) ? null : BusinessObjectClass.BusinessObjectProvider; }
@@ -100,8 +100,8 @@ namespace Remotion.ObjectBinding
 
     /// <summary>Gets the <see cref="IBusinessObjectBoundControl"/> objects bound to this <see cref="BusinessObjectDataSource"/>.</summary>
     /// <returns> A read-only collection of <see cref="IBusinessObjectBoundControl"/> objects. </returns>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public ReadOnlyCollection<IBusinessObjectBoundControl> GetAllBoundControls ()
     {
       return _boundControls.AsReadOnly();
@@ -115,11 +115,11 @@ namespace Remotion.ObjectBinding
     ///   A sequence of <see cref="IBusinessObjectBoundControl"/> objects where the <see cref="IBusinessObjectBoundControl.HasValidBinding"/> property 
     ///   evaluates <see langword="true"/>. 
     /// </returns>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IEnumerable<IBusinessObjectBoundControl> GetBoundControlsWithValidBinding ()
     {
-      return _boundControls.Where (c => c.HasValidBinding);
+      return _boundControls.Where(c => c.HasValidBinding);
     }
 
     /// <summary>
@@ -130,9 +130,9 @@ namespace Remotion.ObjectBinding
     /// </param>
     public void Register (IBusinessObjectBoundControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      if (!_boundControls.Contains (control))
-        _boundControls.Add (control);
+      ArgumentUtility.CheckNotNull("control", control);
+      if (!_boundControls.Contains(control))
+        _boundControls.Add(control);
     }
 
     /// <summary>
@@ -143,8 +143,8 @@ namespace Remotion.ObjectBinding
     /// </param>
     public void Unregister (IBusinessObjectBoundControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      _boundControls.Remove (control);
+      ArgumentUtility.CheckNotNull("control", control);
+      _boundControls.Remove(control);
     }
   }
 }

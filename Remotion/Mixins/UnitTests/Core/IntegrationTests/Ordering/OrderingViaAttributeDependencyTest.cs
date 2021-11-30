@@ -25,8 +25,8 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     [Test]
     public void AttributeDependency ()
     {
-      var instance = BuildMixedInstanceWithDeclarativeConfiguration<C> (typeof (MixinA), typeof (MixinB));
-      Assert.That (instance.Method1 (), Is.EqualTo ("MixinB.Method1 - MixinA.Method1 - C.Method1"));
+      var instance = BuildMixedInstanceWithDeclarativeConfiguration<C>(typeof(MixinA), typeof(MixinB));
+      Assert.That(instance.Method1(), Is.EqualTo("MixinB.Method1 - MixinA.Method1 - C.Method1"));
     }
 
     public class C
@@ -39,18 +39,18 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
       string Method1 ();
     }
 
-    [Extends(typeof (C))]
+    [Extends(typeof(C))]
     public class MixinA : Mixin<object, IC>
     {
       [OverrideTarget]
-      public string Method1 () { return "MixinA.Method1 - " + Next.Method1 (); }
+      public string Method1 () { return "MixinA.Method1 - " + Next.Method1(); }
     }
 
-    [Extends (typeof (C), AdditionalDependencies = new[] { typeof (MixinA) })]
+    [Extends(typeof(C), AdditionalDependencies = new[] { typeof(MixinA) })]
     public class MixinB : Mixin<object, IC>
     {
       [OverrideTarget]
-      public string Method1 () { return "MixinB.Method1 - " + Next.Method1 (); }
+      public string Method1 () { return "MixinB.Method1 - " + Next.Method1(); }
     }
   }
 }

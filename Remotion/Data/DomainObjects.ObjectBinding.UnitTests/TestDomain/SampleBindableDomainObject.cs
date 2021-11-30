@@ -28,34 +28,34 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
   {
     public static SampleBindableDomainObject NewObject ()
     {
-      return NewObject<SampleBindableDomainObject> ();
+      return NewObject<SampleBindableDomainObject>();
     }
 
     public static SampleBindableDomainObject NewObject (IBindableDomainObjectImplementation implementation)
     {
-      return NewObject<SampleBindableDomainObject> (ParamList.Create (implementation));
+      return NewObject<SampleBindableDomainObject>(ParamList.Create(implementation));
     }
 
-    protected SampleBindableDomainObject()
+    protected SampleBindableDomainObject ()
     {
     }
 
     protected SampleBindableDomainObject (IBindableDomainObjectImplementation implementation)
     {
-      PrivateInvoke.SetNonPublicField (this, "_implementation", implementation);
+      PrivateInvoke.SetNonPublicField(this, "_implementation", implementation);
     }
-  
+
     public abstract string Name { get; set; }
     public abstract int Int32 { get; set; }
 
     [StorageClassTransaction]
-    [DBBidirectionalRelation ("OppositeSampleObject")]
+    [DBBidirectionalRelation("OppositeSampleObject")]
     public abstract OppositeBidirectionalBindableDomainObject RelatedObjectProperty1 { get; set; }
     [StorageClassTransaction]
-    [DBBidirectionalRelation ("OppositeSampleObjects")]
+    [DBBidirectionalRelation("OppositeSampleObjects")]
     public abstract OppositeBidirectionalBindableDomainObject RelatedObjectProperty2 { get; set; }
 
-    public new void Delete()
+    public new void Delete ()
     {
       base.Delete();
     }

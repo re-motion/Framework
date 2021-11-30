@@ -36,12 +36,12 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     public override void OnClick (BocMenuItem menuItem)
     {
-      base.OnClick (menuItem);
+      base.OnClick(menuItem);
 
-      var bocList = (BocList) OwnerControl;
+      var bocList = (BocList)OwnerControl;
       foreach (TBusinessObject businessObject in bocList.GetSelectedBusinessObjects())
       {
-        bocList.RemoveRow (businessObject);
+        bocList.RemoveRow(businessObject);
         businessObject.Delete();
       }
       bocList.ClearSelectedRows();

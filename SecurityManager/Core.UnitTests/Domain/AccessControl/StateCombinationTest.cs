@@ -44,8 +44,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       StateCombination combination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder();
 
-      Assert.That (combination.AccessControlList.Class, Is.Not.Null);
-      Assert.That (combination.Class, Is.SameAs (combination.AccessControlList.Class));
+      Assert.That(combination.AccessControlList.Class, Is.Not.Null);
+      Assert.That(combination.Class, Is.SameAs(combination.AccessControlList.Class));
     }
 
     [Test]
@@ -54,42 +54,42 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       StateCombination combination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder();
       List<StateDefinition> states = CreateEmptyStateList();
 
-      Assert.That (combination.MatchesStates (states), Is.False);
+      Assert.That(combination.MatchesStates(states), Is.False);
     }
 
     [Test]
     public void MatchesStates_DeliveredAndUnpaid ()
     {
       StateCombination combination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder();
-      StateDefinition[] states = combination.GetStates ();
+      StateDefinition[] states = combination.GetStates();
 
-      Assert.That (combination.MatchesStates (states), Is.True);
+      Assert.That(combination.MatchesStates(states), Is.True);
     }
 
     [Test]
-    [Ignore ("TODO: Implement")]
+    [Ignore("TODO: Implement")]
     public void MatchesStates_StatefulWithWildcard ()
     {
-      StateCombination combination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder ();
-      StateDefinition[] states = combination.GetStates ();
+      StateCombination combination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder();
+      StateDefinition[] states = combination.GetStates();
 
-      Assert.Fail ("TODO: Implement");
-      Assert.That (combination.MatchesStates (states), Is.True);
+      Assert.Fail("TODO: Implement");
+      Assert.That(combination.MatchesStates(states), Is.True);
     }
 
     [Test]
     public void AttachState_NewState ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition();
-      StateCombination combination = _testHelper.CreateStateCombination (classDefinition);
+      StateCombination combination = _testHelper.CreateStateCombination(classDefinition);
       StatePropertyDefinition property = _testHelper.CreateTestProperty();
       using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        combination.AttachState (property["Test1"]);
+        combination.AttachState(property["Test1"]);
 
         var states = combination.GetStates();
-        Assert.That (states.Length, Is.EqualTo (1));
-        Assert.That (states[0], Is.SameAs (property["Test1"]));
+        Assert.That(states.Length, Is.EqualTo(1));
+        Assert.That(states[0], Is.SameAs(property["Test1"]));
       }
     }
 
@@ -99,90 +99,90 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       StateCombination combination = StateCombination.NewObject();
       StatePropertyDefinition property = _testHelper.CreateTestProperty();
 
-      combination.AttachState (property["Test1"]);
+      combination.AttachState(property["Test1"]);
 
-      Assert.That (combination.GetStates().Length, Is.EqualTo (1));
+      Assert.That(combination.GetStates().Length, Is.EqualTo(1));
     }
 
     [Test]
     public void ClearStates ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition();
-      StateCombination combination = _testHelper.CreateStateCombination (classDefinition);
+      StateCombination combination = _testHelper.CreateStateCombination(classDefinition);
       StatePropertyDefinition property = _testHelper.CreateTestProperty();
-      combination.AttachState (property["Test1"]);
-      Assert.That (combination.GetStates(), Is.Not.Empty);
+      combination.AttachState(property["Test1"]);
+      Assert.That(combination.GetStates(), Is.Not.Empty);
 
       combination.ClearStates();
 
-      Assert.That (combination.GetStates(), Is.Empty);
+      Assert.That(combination.GetStates(), Is.Empty);
     }
 
     [Test]
     public void GetStates_Empty ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition();
-      StateCombination combination = _testHelper.CreateStateCombination (classDefinition);
+      StateCombination combination = _testHelper.CreateStateCombination(classDefinition);
 
       StateDefinition[] states = combination.GetStates();
 
-      Assert.That (states.Length, Is.EqualTo (0));
+      Assert.That(states.Length, Is.EqualTo(0));
     }
 
     [Test]
     public void GetStates_OneState ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition();
-      StatePropertyDefinition property = _testHelper.CreatePaymentStateProperty (classDefinition);
+      StatePropertyDefinition property = _testHelper.CreatePaymentStateProperty(classDefinition);
       StateDefinition state = property.DefinedStates[1];
-      StateCombination combination = _testHelper.CreateStateCombination (classDefinition, state);
+      StateCombination combination = _testHelper.CreateStateCombination(classDefinition, state);
 
       StateDefinition[] states = combination.GetStates();
 
-      Assert.That (states.Length, Is.EqualTo (1));
-      Assert.That (states[0], Is.SameAs (state));
+      Assert.That(states.Length, Is.EqualTo(1));
+      Assert.That(states[0], Is.SameAs(state));
     }
 
     [Test]
     public void GetStates_MultipleStates ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition();
-      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (classDefinition);
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty(classDefinition);
       StateDefinition paidState = paymentProperty.DefinedStates[1];
-      StatePropertyDefinition orderStateProperty = _testHelper.CreateOrderStateProperty (classDefinition);
+      StatePropertyDefinition orderStateProperty = _testHelper.CreateOrderStateProperty(classDefinition);
       StateDefinition deliveredState = orderStateProperty.DefinedStates[1];
-      StateCombination combination = _testHelper.CreateStateCombination (classDefinition, paidState, deliveredState);
+      StateCombination combination = _testHelper.CreateStateCombination(classDefinition, paidState, deliveredState);
 
       StateDefinition[] states = combination.GetStates();
 
-      Assert.That (states.Length, Is.EqualTo (2));
-      Assert.That (states, Has.Member (paidState));
-      Assert.That (states, Has.Member (deliveredState));
+      Assert.That(states.Length, Is.EqualTo(2));
+      Assert.That(states, Has.Member(paidState));
+      Assert.That(states, Has.Member(deliveredState));
     }
 
     [Test]
     public void ValidateDuringCommit_ByTouchOnClassForChangedStateUsagesCollection ()
     {
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
-      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
-      StateDefinition paidState = paymentProperty[EnumWrapper.Get (PaymentState.Paid).Name];
-      StateDefinition notPaidState = paymentProperty[EnumWrapper.Get (PaymentState.None).Name];
-      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass, paidState);
-      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, notPaidState);
-      StateCombination combination3 = _testHelper.CreateStateCombination (orderClass);
-      combination1.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject());
-      combination2.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject());
-      combination3.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject());
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty(orderClass);
+      StateDefinition paidState = paymentProperty[EnumWrapper.Get(PaymentState.Paid).Name];
+      StateDefinition notPaidState = paymentProperty[EnumWrapper.Get(PaymentState.None).Name];
+      StateCombination combination1 = _testHelper.CreateStateCombination(orderClass, paidState);
+      StateCombination combination2 = _testHelper.CreateStateCombination(orderClass, notPaidState);
+      StateCombination combination3 = _testHelper.CreateStateCombination(orderClass);
+      combination1.AccessControlList.AccessControlEntries.Add(AccessControlEntry.NewObject());
+      combination2.AccessControlList.AccessControlEntries.Add(AccessControlEntry.NewObject());
+      combination3.AccessControlList.AccessControlEntries.Add(AccessControlEntry.NewObject());
       var dupicateStateCombination = orderClass.CreateStatefulAccessControlList().StateCombinations[0];
 
       using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        dupicateStateCombination.AttachState (paidState);
+        dupicateStateCombination.AttachState(paidState);
 
-        Assert.That (
+        Assert.That(
             () => ClientTransaction.Current.Commit(),
             Throws.InstanceOf<ConstraintViolationException>()
-                .With.Message.EqualTo (
+                .With.Message.EqualTo(
                     "The securable class definition 'Remotion.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination "
                     + "that has been defined twice."));
       }
@@ -195,29 +195,29 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
       {
         orderClass.EnsureDataAvailable();
-        Assert.That (orderClass.State.IsUnchanged, Is.True);
+        Assert.That(orderClass.State.IsUnchanged, Is.True);
 
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
-          StateCombination combination = _testHelper.CreateStateCombination (orderClass, ClientTransaction.Current);
-          combination.AccessControlList.AccessControlEntries.Add (AccessControlEntry.NewObject());
+          StateCombination combination = _testHelper.CreateStateCombination(orderClass, ClientTransaction.Current);
+          combination.AccessControlList.AccessControlEntries.Add(AccessControlEntry.NewObject());
 
           using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
           {
             orderClass.EnsureDataAvailable();
-            Assert.That (orderClass.State.IsUnchanged, Is.True);
+            Assert.That(orderClass.State.IsUnchanged, Is.True);
 
             combination.AccessControlList.Delete();
-            Assert.That (combination.Class, Is.Null);
+            Assert.That(combination.Class, Is.Null);
 
-            Assert.That (orderClass.State.IsChanged, Is.True);
+            Assert.That(orderClass.State.IsChanged, Is.True);
             ClientTransaction.Current.Commit();
           }
 
           ClientTransaction.Current.Commit();
         }
 
-        Assert.That (orderClass.State.IsChanged, Is.True);
+        Assert.That(orderClass.State.IsChanged, Is.True);
       }
     }
 
@@ -227,14 +227,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       StateCombination stateCombination = StateCombination.NewObject();
 
       stateCombination.Index = 1;
-      Assert.That (stateCombination.Index, Is.EqualTo (1));
+      Assert.That(stateCombination.Index, Is.EqualTo(1));
     }
 
     [Test]
     public void OnCommitting_WithChangedStateCombination_RegistersClassForCommit ()
     {
       var classDefinition = _testHelper.CreateOrderClassDefinition();
-      var combination = _testHelper.CreateStateCombination (classDefinition);
+      var combination = _testHelper.CreateStateCombination(classDefinition);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -242,13 +242,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         combination.RegisterForCommit();
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (commitOnClassWasCalled, Is.True);
+        Assert.That(commitOnClassWasCalled, Is.True);
       }
     }
 
@@ -256,7 +256,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     public void OnCommitting_WithDeletedStateCombination_RegistersClassForCommit ()
     {
       var classDefinition = _testHelper.CreateOrderClassDefinition();
-      var combination = _testHelper.CreateStateCombination (classDefinition);
+      var combination = _testHelper.CreateStateCombination(classDefinition);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -264,13 +264,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         combination.Delete();
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (commitOnClassWasCalled, Is.True);
+        Assert.That(commitOnClassWasCalled, Is.True);
       }
     }
 

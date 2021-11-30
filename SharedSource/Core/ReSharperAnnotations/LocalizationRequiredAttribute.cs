@@ -74,11 +74,11 @@ namespace JetBrains.Annotations
   ///   string str = "my string"; // Warning: Localizable string
   /// }
   /// </code></example>
-  [AttributeUsage (AttributeTargets.All)]
+  [AttributeUsage(AttributeTargets.All)]
   sealed partial class LocalizationRequiredAttribute : Attribute
   {
     public LocalizationRequiredAttribute ()
-        : this (true)
+        : this(true)
     {
     }
 

@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
   public class TestDomainObjectCollectionDecorator : DomainObjectCollectionDataDecoratorBase
   {
     public TestDomainObjectCollectionDecorator (IDomainObjectCollectionData wrappedData)
-        : base (wrappedData)
+        : base(wrappedData)
     {
     }
 

@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     public IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
     {
-      return _endPoints.GetValueOrDefault (endPointID);
+      return _endPoints.GetValueOrDefault(endPointID);
     }
 
     public IRelationEndPoint GetRelationEndPointWithMinimumLoading (RelationEndPointID endPointID)

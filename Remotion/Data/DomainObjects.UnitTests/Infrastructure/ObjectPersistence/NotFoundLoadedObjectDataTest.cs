@@ -28,41 +28,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _loadedObjectData = new NotFoundLoadedObjectData (DomainObjectIDs.Order1);
+      _loadedObjectData = new NotFoundLoadedObjectData(DomainObjectIDs.Order1);
     }
 
     [Test]
     public void ObjectID ()
     {
-      Assert.That (_loadedObjectData.ObjectID, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(_loadedObjectData.ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
     }
 
     [Test]
     public void GetDomainObjectReference ()
     {
-      var reference = _loadedObjectData.GetDomainObjectReference ();
+      var reference = _loadedObjectData.GetDomainObjectReference();
 
-      Assert.That (reference, Is.Null);
+      Assert.That(reference, Is.Null);
     }
 
     [Test]
     public void Accept ()
     {
-      var visitorMock = MockRepository.GenerateStrictMock<ILoadedObjectVisitor> ();
-      visitorMock.Expect (mock => mock.VisitNotFoundLoadedObject (_loadedObjectData));
-      visitorMock.Replay ();
+      var visitorMock = MockRepository.GenerateStrictMock<ILoadedObjectVisitor>();
+      visitorMock.Expect(mock => mock.VisitNotFoundLoadedObject(_loadedObjectData));
+      visitorMock.Replay();
 
-      _loadedObjectData.Accept (visitorMock);
+      _loadedObjectData.Accept(visitorMock);
 
-      visitorMock.VerifyAllExpectations ();
+      visitorMock.VerifyAllExpectations();
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (((INullObject) _loadedObjectData).IsNull, Is.True);
+      Assert.That(((INullObject)_loadedObjectData).IsNull, Is.True);
     }
   }
 }

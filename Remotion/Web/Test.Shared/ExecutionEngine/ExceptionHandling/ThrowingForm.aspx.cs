@@ -23,7 +23,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
   {
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
       ThrowInnerExceptionWithNesting();
     }
 
@@ -35,13 +35,13 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
       }
       catch (Exception ex)
       {
-        throw new ApplicationException ("Test inner exception with nesting", ex);
+        throw new ApplicationException("Test inner exception with nesting", ex);
       }
     }
 
     private void ThrowInnerException ()
     {
-      throw new ApplicationException ("Test inner exception");
+      throw new ApplicationException("Test inner exception");
     }
   }
 }

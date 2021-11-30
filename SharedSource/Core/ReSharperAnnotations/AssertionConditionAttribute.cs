@@ -70,7 +70,7 @@ namespace JetBrains.Annotations
   /// marked by <see cref="AssertionMethodAttribute"/> attribute. The mandatory argument of
   /// the attribute is the assertion type.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Parameter)]
+  [AttributeUsage(AttributeTargets.Parameter)]
   sealed partial class AssertionConditionAttribute : Attribute
   {
     public AssertionConditionAttribute (AssertionConditionType conditionType)

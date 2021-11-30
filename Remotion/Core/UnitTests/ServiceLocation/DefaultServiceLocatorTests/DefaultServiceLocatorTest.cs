@@ -30,11 +30,11 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
 
       var serviceLocator = DefaultServiceLocator.Create();
 
-      Assert.That (serviceLocator.GetInstance (typeof (ITestOpenGenericService<int>)), Is.TypeOf (typeof (TestOpenGenericIntImplementation)));
-      Assert.That (serviceLocator.GetInstance (typeof (ITestOpenGenericService<string>)), Is.TypeOf (typeof (TestOpenGenericStringImplementation)));
-      Assert.That (
+      Assert.That(serviceLocator.GetInstance(typeof(ITestOpenGenericService<int>)), Is.TypeOf(typeof(TestOpenGenericIntImplementation)));
+      Assert.That(serviceLocator.GetInstance(typeof(ITestOpenGenericService<string>)), Is.TypeOf(typeof(TestOpenGenericStringImplementation)));
+      Assert.That(
           SafeServiceLocator.Current.GetInstance<ITestOpenGenericService<int>>(),
-          Is.InstanceOf (typeof (TestOpenGenericIntImplementation)));
+          Is.InstanceOf(typeof(TestOpenGenericIntImplementation)));
     }
   }
 }

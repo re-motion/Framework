@@ -232,7 +232,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <param name="key">The key of the client script block to search for.
     /// </param>
-    [Obsolete ("Use IsClientScriptBlockRegistered (Type, string).")]
+    [Obsolete("Use IsClientScriptBlockRegistered (Type, string).")]
     bool IsClientScriptBlockRegistered (string key);
 
     /// <summary>
@@ -256,7 +256,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <param name="key">The key of the client script include to search for. 
     /// </param>
-    [Obsolete ("Use IsClientScriptIncludeRegistered (Type, string).")]
+    [Obsolete("Use IsClientScriptIncludeRegistered (Type, string).")]
     bool IsClientScriptIncludeRegistered (string key);
 
     /// <summary>
@@ -280,7 +280,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <param name="key">The key of the startup script to search for.
     /// </param>
-    [Obsolete ("Use IsStartupScriptRegistered (Type, string).")]
+    [Obsolete("Use IsStartupScriptRegistered (Type, string).")]
     bool IsStartupScriptRegistered (string key);
 
     /// <summary>
@@ -304,7 +304,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <param name="key">The key of the OnSubmit statement to search for.
     /// </param>
-    [Obsolete ("Use IsOnSubmitStatementRegistered (Type, string).")]
+    [Obsolete("Use IsOnSubmitStatementRegistered (Type, string).")]
     bool IsOnSubmitStatementRegistered (string key);
 
     /// <summary>
@@ -337,7 +337,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="attributeName">The name of the custom attribute to register. 
     /// </param><param name="attributeValue">The value of the custom attribute. 
     /// </param>
-    [Obsolete ("Use RegisterExpandoAttribute (IControl, string, string, string, bool) for compatibility with UpdatePanel.")]
+    [Obsolete("Use RegisterExpandoAttribute (IControl, string, string, string, bool) for compatibility with UpdatePanel.")]
     void RegisterExpandoAttribute (string controlId, string attributeName, string attributeValue);
 
     /// <summary>
@@ -348,7 +348,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="attributeValue">The value of the custom attribute.
     /// </param><param name="encode">A Boolean value indicating whether to encode the custom attribute to register.
     /// </param>
-    [Obsolete ("Use RegisterExpandoAttribute (IControl, string, string, string, bool) for compatibility with UpdatePanel.")]
+    [Obsolete("Use RegisterExpandoAttribute (IControl, string, string, string, bool) for compatibility with UpdatePanel.")]
     void RegisterExpandoAttribute (string controlId, string attributeName, string attributeValue, bool encode);
 
     /// <summary>
@@ -370,7 +370,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="hiddenFieldInitialValue">The initial value of the field to register.
     /// </param><exception cref="T:System.ArgumentNullException"><paramref name="hiddenFieldName"/> is null.
     /// </exception>
-    [Obsolete ("Use RegisterHiddenField(IPage, string, string) or RegisterHiddenField(IControl, string, string) for compatibility with UpdatePanel.")]
+    [Obsolete("Use RegisterHiddenField(IPage, string, string) or RegisterHiddenField(IControl, string, string) for compatibility with UpdatePanel.")]
     void RegisterHiddenField (string hiddenFieldName, string hiddenFieldInitialValue);
 
     /// <summary>
@@ -395,7 +395,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="key">The key of the client script to register. 
     /// </param><param name="script">The client script literal to register. 
     /// </param>
-    [Obsolete ("Use RegisterClientScriptBlock (IControl, Type, string, string) for compatibility with UpdatePanel.")]
+    [Obsolete("Use RegisterClientScriptBlock (IControl, Type, string, string) for compatibility with UpdatePanel.")]
     void RegisterClientScriptBlock (Type type, string key, string script);
 
     /// <summary>
@@ -407,7 +407,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="addScriptTags">A Boolean value indicating whether to add script tags.
     /// </param><exception cref="T:System.ArgumentNullException">The client script block type is null.
     /// </exception>
-    [Obsolete ("Use RegisterClientScriptBlock (IControl, Type, string, string) for compatibility with UpdatePanel.")]
+    [Obsolete("Use RegisterClientScriptBlock (IControl, Type, string, string) for compatibility with UpdatePanel.")]
     void RegisterClientScriptBlock (Type type, string key, string script, bool addScriptTags);
 
     /// <summary>
@@ -437,7 +437,7 @@ namespace Remotion.Web.Infrastructure
     /// <param name="key">The key of the client script include to register. 
     /// </param><param name="url">The URL of the client script include to register. 
     /// </param>
-    [Obsolete ("Use RegisterClientScriptInclude (IControl, Type, string, string) for compatibility with UpdatePanel.")]
+    [Obsolete("Use RegisterClientScriptInclude (IControl, Type, string, string) for compatibility with UpdatePanel.")]
     void RegisterClientScriptInclude (string key, string url);
 
     /// <summary>
@@ -451,7 +451,7 @@ namespace Remotion.Web.Infrastructure
     ///     - or -
     ///     The URL is empty.
     /// </exception>
-    [Obsolete ("Use RegisterClientScriptInclude (IControl, Type, string, string) for compatibility with UpdatePanel.")]
+    [Obsolete("Use RegisterClientScriptInclude (IControl, Type, string, string) for compatibility with UpdatePanel.")]
     void RegisterClientScriptInclude (Type type, string key, string url);
 
     /// <summary>
@@ -474,7 +474,7 @@ namespace Remotion.Web.Infrastructure
     ///     - or -
     ///     The client resource name has a length of zero.
     /// </exception>
-    [Obsolete ("Use RegisterClientScriptResource (IControl, Type, string) for compatibility with UpdatePanel.")]
+    [Obsolete("Use RegisterClientScriptResource (IControl, Type, string) for compatibility with UpdatePanel.")]
     void RegisterClientScriptResource (Type type, string resourceName);
 
     /// <summary>
@@ -494,7 +494,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="script">The script literal of the OnSubmit statement to register. 
     /// </param><exception cref="T:System.ArgumentNullException"><paramref name="type"/> is null.
     /// </exception>
-    [Obsolete ("Use RegisterOnSubmitStatement (IControl, Type, string, string) for compatibility with UpdatePanel.")]
+    [Obsolete("Use RegisterOnSubmitStatement (IControl, Type, string, string) for compatibility with UpdatePanel.")]
     void RegisterOnSubmitStatement (Type type, string key, string script);
 
     /// <summary>
@@ -514,7 +514,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="key">The key of the startup script to register. 
     /// </param><param name="script">The startup script literal to register. 
     /// </param>
-    [Obsolete ("Use RegisterStartupScriptBlock (IControl, Type, string, string, bool) for compatibility with UpdatePanel.")]
+    [Obsolete("Use RegisterStartupScriptBlock (IControl, Type, string, string, bool) for compatibility with UpdatePanel.")]
     void RegisterStartupScript (Type type, string key, string script);
 
     /// <summary>
@@ -526,7 +526,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="addScriptTags">A Boolean value indicating whether to add script tags. 
     /// </param><exception cref="T:System.ArgumentNullException"><paramref name="type"/> is null.
     /// </exception>
-    [Obsolete ("Use RegisterStartupScriptBlock (IControl, Type, string, string, bool) for compatibility with UpdatePanel.")]
+    [Obsolete("Use RegisterStartupScriptBlock (IControl, Type, string, string, bool) for compatibility with UpdatePanel.")]
     void RegisterStartupScript (Type type, string key, string script, bool addScriptTags);
 
     /// <summary>

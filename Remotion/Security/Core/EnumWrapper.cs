@@ -43,10 +43,10 @@ namespace Remotion.Security
     /// <param name="typeName">The type name to be integrated into the name.</param>
     public static EnumWrapper Get (string valueName, string typeName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("valueName", valueName);
-      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
+      ArgumentUtility.CheckNotNullOrEmpty("valueName", valueName);
+      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
 
-      return new EnumWrapper (BuildEnumName (valueName, typeName));
+      return new EnumWrapper(BuildEnumName(valueName, typeName));
     }
 
     /// <summary>
@@ -55,9 +55,9 @@ namespace Remotion.Security
     /// <param name="name">The name to be set.</param>
     public static EnumWrapper Get (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
-      return new EnumWrapper (name);
+      return new EnumWrapper(name);
     }
 
     /// <summary>
@@ -66,25 +66,25 @@ namespace Remotion.Security
     /// <param name="enumValue">The enum value.</param>
     public static EnumWrapper Get (Enum enumValue)
     {
-      ArgumentUtility.CheckNotNull ("enumValue", enumValue);
+      ArgumentUtility.CheckNotNull("enumValue", enumValue);
 
-      return s_enumWrapperCache.GetOrAdd (enumValue, s_createEnumWrapperFromEnumValueFunc);
+      return s_enumWrapperCache.GetOrAdd(enumValue, s_createEnumWrapperFromEnumValueFunc);
     }
 
     private static EnumWrapper CreateEnumWrapperFromEnumValue (Enum enumValue)
     {
       Type type = enumValue.GetType();
-      if (Attribute.IsDefined (type, typeof (FlagsAttribute), false))
+      if (Attribute.IsDefined(type, typeof(FlagsAttribute), false))
       {
-        throw new ArgumentException (
-            string.Format (
+        throw new ArgumentException(
+            string.Format(
                 "Enumerated type '{0}' cannot be wrapped. Only enumerated types without the {1} can be wrapped.",
                 type.GetFullNameSafe(),
-                typeof (FlagsAttribute).GetFullNameSafe()),
+                typeof(FlagsAttribute).GetFullNameSafe()),
             "enumValue");
       }
 
-      return Get (BuildEnumName (enumValue.ToString(), TypeUtility.GetPartialAssemblyQualifiedName (enumValue.GetType())));
+      return Get(BuildEnumName(enumValue.ToString(), TypeUtility.GetPartialAssemblyQualifiedName(enumValue.GetType())));
     }
 
     private static string BuildEnumName (string valueName, string typeName)
@@ -96,7 +96,7 @@ namespace Remotion.Security
 
     private EnumWrapper (string name)
     {
-      _name = string.Intern (name);
+      _name = string.Intern(name);
     }
 
     public string Name
@@ -111,16 +111,16 @@ namespace Remotion.Security
 
     public bool Equals (EnumWrapper other)
     {
-      return string.Equals (this._name, other._name);
+      return string.Equals(this._name, other._name);
     }
 
     public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;
-      if (obj.GetType() != typeof (EnumWrapper))
+      if (obj.GetType() != typeof(EnumWrapper))
         return false;
-      return Equals ((EnumWrapper) obj);
+      return Equals((EnumWrapper)obj);
     }
 
     public override int GetHashCode ()

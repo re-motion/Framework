@@ -23,7 +23,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       DownloadTxtReplaceSiteButton.Click += DownloadButtonOnClick;
       DownloadPostbackButton.Click += DownloadPostbackButtonOnClick;
@@ -32,24 +32,24 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     private void DownloadButtonOnClick (object sender, EventArgs eventArgs)
     {
       const string file = "SampleFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.txt";
-      var fullFilePath = Server.MapPath ("~/SampleFile.txt");
+      var fullFilePath = Server.MapPath("~/SampleFile.txt");
 
       Response.Clear();
       Response.ClearHeaders();
       Response.ClearContent();
-      Response.AddHeader ("Content-Disposition", "attachment; filename=" + file);
+      Response.AddHeader("Content-Disposition", "attachment; filename=" + file);
       Response.ContentType = "text/plain";
       Response.Flush();
-      Response.TransmitFile (fullFilePath);
+      Response.TransmitFile(fullFilePath);
       Response.End();
     }
 
     private void DownloadPostbackButtonOnClick (object sender, EventArgs eventArgs)
     {
       string script = "window.open(\'FileDownloadHandler.ashx?testMode=txt\')";
-      
+
       ClientScriptManager clientScriptManager = Page.ClientScript;
-      clientScriptManager.RegisterClientScriptBlock (GetType(), "WindowOpenScript", script, true);
+      clientScriptManager.RegisterClientScriptBlock(GetType(), "WindowOpenScript", script, true);
     }
   }
 }

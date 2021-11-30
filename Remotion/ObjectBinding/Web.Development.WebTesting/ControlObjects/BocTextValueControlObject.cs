@@ -38,14 +38,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           IControlObjectWithText
   {
     public BocTextValueControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
     /// <inheritdoc cref="IFillableControlObject" />
     public string GetText ()
     {
-      var valueScope = Scope.FindChild ("Value");
+      var valueScope = Scope.FindChild("Value");
 
       if (IsReadOnly())
         return valueScope.Text; // do not trim
@@ -56,31 +56,31 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
+      ArgumentUtility.CheckNotNull("text", text);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      return FillWith (text, FinishInput.WithTab, actionOptions);
+      return FillWith(text, FinishInput.WithTab, actionOptions);
     }
 
     /// <inheritdoc/>
     public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
-      ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
+      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      var actualActionOptions = MergeWithDefaultActionOptions (actionOptions, finishInputWith);
-      ExecuteAction (new FillWithAction (this, GetValueScope(), text, finishInputWith), actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(actionOptions, finishInputWith);
+      ExecuteAction(new FillWithAction(this, GetValueScope(), text, finishInputWith), actualActionOptions);
       return UnspecifiedPage();
     }
 
@@ -89,17 +89,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
-      return new[] { string.Format ("{0}_Value", GetHtmlID()) };
+      return new[] { string.Format("{0}_Value", GetHtmlID()) };
     }
 
     public IReadOnlyList<string> GetValidationErrors ()
     {
-      return GetValidationErrors (GetValueScope());
+      return GetValidationErrors(GetValueScope());
     }
 
     public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
     {
-      return GetValidationErrorsForReadOnly (GetValueScope());
+      return GetValidationErrorsForReadOnly(GetValueScope());
     }
 
     protected override ElementScope GetLabeledElementScope ()
@@ -109,7 +109,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private ElementScope GetValueScope ()
     {
-      return Scope.FindChild ("Value");
+      return Scope.FindChild("Value");
     }
 
     private IWebTestActionOptions MergeWithDefaultActionOptions (
@@ -122,7 +122,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         userDefinedActionOptions.CompletionDetectionStrategy = Continue.Immediately;
       }
 
-      return MergeWithDefaultActionOptions (Scope, userDefinedActionOptions);
+      return MergeWithDefaultActionOptions(Scope, userDefinedActionOptions);
     }
   }
 }

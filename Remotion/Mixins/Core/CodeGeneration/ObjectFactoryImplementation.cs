@@ -23,14 +23,14 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration
 {
-  [ImplementationFor (typeof (IObjectFactoryImplementation), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IObjectFactoryImplementation), Lifetime = LifetimeKind.Singleton)]
   public class ObjectFactoryImplementation : IObjectFactoryImplementation
   {
     private readonly IPipelineRegistry _pipelineRegistry;
 
     public ObjectFactoryImplementation (IPipelineRegistry pipelineRegistry)
     {
-      ArgumentUtility.CheckNotNull ("pipelineRegistry", pipelineRegistry);
+      ArgumentUtility.CheckNotNull("pipelineRegistry", pipelineRegistry);
       _pipelineRegistry = pipelineRegistry;
     }
 
@@ -40,20 +40,20 @@ namespace Remotion.Mixins.CodeGeneration
         ParamList constructorParameters,
         params object[] preparedMixins)
     {
-      ArgumentUtility.CheckNotNull ("targetOrConcreteType", targetOrConcreteType);
-      ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
-      ArgumentUtility.CheckNotNull ("preparedMixins", preparedMixins);
+      ArgumentUtility.CheckNotNull("targetOrConcreteType", targetOrConcreteType);
+      ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
+      ArgumentUtility.CheckNotNull("preparedMixins", preparedMixins);
 
       if (targetOrConcreteType.IsInterface)
       {
-        var message = string.Format ("Cannot instantiate type '{0}', it's an interface.", targetOrConcreteType);
-        throw new ArgumentException (message, "targetOrConcreteType");
+        var message = string.Format("Cannot instantiate type '{0}', it's an interface.", targetOrConcreteType);
+        throw new ArgumentException(message, "targetOrConcreteType");
       }
 
-      var classContext = MixinConfiguration.ActiveConfiguration.GetContext (targetOrConcreteType);
+      var classContext = MixinConfiguration.ActiveConfiguration.GetContext(targetOrConcreteType);
       if (classContext == null && preparedMixins.Length > 0)
       {
-          throw new ArgumentException (string.Format ("There is no mixin configuration for type {0}, so no mixin instances must be specified.",
+          throw new ArgumentException(string.Format("There is no mixin configuration for type {0}, so no mixin instances must be specified.",
               targetOrConcreteType.GetFullNameSafe()), "preparedMixins");
       }
 
@@ -62,12 +62,12 @@ namespace Remotion.Mixins.CodeGeneration
         if (classContext != null && classContext.Type != targetOrConcreteType)
         {
           // The ClassContext doesn't match the requested type, so it must already be a concrete type. Just instantiate it.
-          Assertion.DebugAssert (MixinTypeUtility.IsGeneratedConcreteMixedType (targetOrConcreteType));
+          Assertion.DebugAssert(MixinTypeUtility.IsGeneratedConcreteMixedType(targetOrConcreteType));
 
           var reflectionService = _pipelineRegistry.DefaultPipeline.ReflectionService;
-          return reflectionService.InstantiateAssembledType (targetOrConcreteType, constructorParameters, allowNonPublicConstructors);
+          return reflectionService.InstantiateAssembledType(targetOrConcreteType, constructorParameters, allowNonPublicConstructors);
         }
-        return _pipelineRegistry.DefaultPipeline.Create (targetOrConcreteType, constructorParameters, allowNonPublicConstructors);
+        return _pipelineRegistry.DefaultPipeline.Create(targetOrConcreteType, constructorParameters, allowNonPublicConstructors);
       }
     }
   }

@@ -49,33 +49,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _commandExecutionContextStub = MockRepository.GenerateStub<IRdbmsProviderCommandExecutionContext>();
 
       _objectIDLoadCommandStub = MockRepository.GenerateStub<IStorageProviderCommand<IEnumerable<ObjectID>, IRdbmsProviderCommandExecutionContext>>();
-      _objectIDLoadCommandStub.Stub (stub => stub.Execute (_commandExecutionContextStub)).Return (new[] { _objectID1, _objectID2 });
+      _objectIDLoadCommandStub.Stub(stub => stub.Execute(_commandExecutionContextStub)).Return(new[] { _objectID1, _objectID2 });
 
       _dataContainerLoadCommandStub =
           MockRepository.GenerateStub<IStorageProviderCommand<ObjectLookupResult<DataContainer>[], IRdbmsProviderCommandExecutionContext>>();
-      _dataContainerLoadCommandStub.Stub (stub => stub.Execute (_commandExecutionContextStub)).Return (_fakeResult);
+      _dataContainerLoadCommandStub.Stub(stub => stub.Execute(_commandExecutionContextStub)).Return(_fakeResult);
 
       _storageProviderFactoryStub = MockRepository.GenerateStub<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>();
       _storageProviderFactoryStub
-          .Stub (stub => stub.CreateForSortedMultiIDLookup (Arg<ObjectID[]>.List.Equal (new[] { _objectID1, _objectID2 })))
-          .Return (_dataContainerLoadCommandStub);
+          .Stub(stub => stub.CreateForSortedMultiIDLookup(Arg<ObjectID[]>.List.Equal(new[] { _objectID1, _objectID2 })))
+          .Return(_dataContainerLoadCommandStub);
 
-      _loadCommand = new IndirectDataContainerLoadCommand (_objectIDLoadCommandStub, _storageProviderFactoryStub);
+      _loadCommand = new IndirectDataContainerLoadCommand(_objectIDLoadCommandStub, _storageProviderFactoryStub);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_loadCommand.ObjectIDLoadCommand, Is.SameAs (_objectIDLoadCommandStub));
-      Assert.That (_loadCommand.StorageProviderCommandFactory, Is.SameAs (_storageProviderFactoryStub));
+      Assert.That(_loadCommand.ObjectIDLoadCommand, Is.SameAs(_objectIDLoadCommandStub));
+      Assert.That(_loadCommand.StorageProviderCommandFactory, Is.SameAs(_storageProviderFactoryStub));
     }
 
     [Test]
     public void Execute ()
     {
-      var result = _loadCommand.Execute (_commandExecutionContextStub);
+      var result = _loadCommand.Execute(_commandExecutionContextStub);
 
-      Assert.That (result, Is.SameAs (_fakeResult));
+      Assert.That(result, Is.SameAs(_fakeResult));
     }
   }
 }

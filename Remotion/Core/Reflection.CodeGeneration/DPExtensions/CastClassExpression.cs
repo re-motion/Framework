@@ -33,8 +33,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public CastClassExpression (Type targetType, Expression right)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("right", right);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull("right", right);
 
       _targetType = targetType;
       _right = right;
@@ -42,11 +42,11 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      ArgumentUtility.CheckNotNull ("member", member);
-      ArgumentUtility.CheckNotNull ("gen", gen);
+      ArgumentUtility.CheckNotNull("member", member);
+      ArgumentUtility.CheckNotNull("gen", gen);
 
-      _right.Emit (member, gen);
-      gen.Emit (OpCodes.Castclass, _targetType);
+      _right.Emit(member, gen);
+      gen.Emit(OpCodes.Castclass, _targetType);
     }
   }
 }

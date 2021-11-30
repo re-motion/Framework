@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects
   /// </code>
   /// The <see cref="LinqCastMethodAttribute"/> will ensure that those properties or methods can also be used from within a LINQ database query.
   /// </example>
-  [AttributeUsage (AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
   public class LinqCastMethodAttribute : Attribute, AttributeEvaluatingExpressionTransformer.IMethodCallExpressionTransformerAttribute
   {
     /// <summary>
@@ -75,25 +75,25 @@ namespace Remotion.Data.DomainObjects
 
       public Expression Transform (MethodCallExpression methodCallExpression)
       {
-        ArgumentUtility.CheckNotNull ("methodCallExpression", methodCallExpression);
+        ArgumentUtility.CheckNotNull("methodCallExpression", methodCallExpression);
 
         if (methodCallExpression.Method.IsStatic)
         {
           if (methodCallExpression.Arguments.Count != 1)
           {
-            var message = string.Format ("Static LinqCastMethods must have exactly one argument. Expression: '{0}'", methodCallExpression);
-            throw new NotSupportedException (message);
+            var message = string.Format("Static LinqCastMethods must have exactly one argument. Expression: '{0}'", methodCallExpression);
+            throw new NotSupportedException(message);
           }
-          return Expression.Convert (methodCallExpression.Arguments[0], methodCallExpression.Type);
+          return Expression.Convert(methodCallExpression.Arguments[0], methodCallExpression.Type);
         }
         else
         {
           if (methodCallExpression.Arguments.Count != 0)
           {
-            var message = string.Format ("Non-static LinqCastMethods must have no arguments. Expression: '{0}'", methodCallExpression);
-            throw new NotSupportedException (message);
+            var message = string.Format("Non-static LinqCastMethods must have no arguments. Expression: '{0}'", methodCallExpression);
+            throw new NotSupportedException(message);
           }
-          return Expression.Convert (methodCallExpression.Object, methodCallExpression.Type);
+          return Expression.Convert(methodCallExpression.Object, methodCallExpression.Type);
         }
       }
     }

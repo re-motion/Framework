@@ -42,7 +42,7 @@ namespace Remotion.Mixins
   /// </para>
   /// </remarks>
   [MeansImplicitUse]
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
   public class ExtendsAttribute : MixinRelationshipAttribute, IMixinConfigurationAttribute<Type>
   {
     private readonly Type _targetType;
@@ -55,7 +55,7 @@ namespace Remotion.Mixins
     /// <param name="targetType">The target type extended by this mixin.</param>
     public ExtendsAttribute (Type targetType)
     {
-      _targetType = ArgumentUtility.CheckNotNull ("targetType", targetType);
+      _targetType = ArgumentUtility.CheckNotNull("targetType", targetType);
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ namespace Remotion.Mixins
       get { return _mixinTypeArguments; }
       set
       {
-        _mixinTypeArguments = ArgumentUtility.CheckNotNull ("value", value);
+        _mixinTypeArguments = ArgumentUtility.CheckNotNull("value", value);
       }
     }
 
@@ -91,12 +91,12 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder configurationBuilder, Type attributeTarget)
     {
-      ArgumentUtility.CheckNotNull ("configurationBuilder", configurationBuilder);
-      ArgumentUtility.CheckNotNull ("attributeTarget", attributeTarget);
+      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
+      ArgumentUtility.CheckNotNull("attributeTarget", attributeTarget);
 
-      Type mixinType = CloseOverMixinTypeArguments (attributeTarget);
-      var origin = MixinContextOrigin.CreateForCustomAttribute (this, attributeTarget);
-      Apply (configurationBuilder, MixinKind.Extending, TargetType, mixinType, origin);
+      Type mixinType = CloseOverMixinTypeArguments(attributeTarget);
+      var origin = MixinContextOrigin.CreateForCustomAttribute(this, attributeTarget);
+      Apply(configurationBuilder, MixinKind.Extending, TargetType, mixinType, origin);
     }
 
     private Type CloseOverMixinTypeArguments (Type mixinType)
@@ -104,21 +104,21 @@ namespace Remotion.Mixins
       if (MixinTypeArguments.Length == 0)
         return mixinType;
 
-      CheckNumberOfTypeArguments (mixinType);
-      CheckMixinIsOpenGeneric (mixinType);
+      CheckNumberOfTypeArguments(mixinType);
+      CheckMixinIsOpenGeneric(mixinType);
 
       try
       {
-        return mixinType.MakeGenericType (MixinTypeArguments);
+        return mixinType.MakeGenericType(MixinTypeArguments);
       }
       catch (ArgumentException ex)
       {
-        string message = string.Format (
+        string message = string.Format(
             "The ExtendsAttribute for target class '{0}' applied to mixin type '{1}' specified invalid generic type arguments: {2}",
             TargetType,
             mixinType,
             ex.Message);
-        throw new ConfigurationException (message, ex);
+        throw new ConfigurationException(message, ex);
       }
     }
 
@@ -126,27 +126,27 @@ namespace Remotion.Mixins
     {
       if (!mixinType.IsGenericTypeDefinition)
       {
-        string message = string.Format (
+        string message = string.Format(
             "The ExtendsAttribute for target class '{0}' applied to mixin type '{1}' specified generic type arguments, but the mixin type already has "
             + "type arguments specified.",
             TargetType,
             mixinType);
-        throw new ConfigurationException (message);
+        throw new ConfigurationException(message);
       }
     }
 
     private void CheckNumberOfTypeArguments (Type mixinType)
     {
-      int expectedTypeArgumentLength = mixinType.IsGenericType ? mixinType.GetGenericArguments ().Length : 0;
+      int expectedTypeArgumentLength = mixinType.IsGenericType ? mixinType.GetGenericArguments().Length : 0;
       if (MixinTypeArguments.Length != expectedTypeArgumentLength)
       {
-        string message = string.Format (
+        string message = string.Format(
             "The ExtendsAttribute for target class {0} applied to mixin type {1} specified {2} generic type argument(s) when {3} argument(s) were expected.",
             TargetType.GetFullNameSafe(),
             mixinType.GetFullNameSafe(),
             MixinTypeArguments.Length,
             expectedTypeArgumentLength);
-        throw new ConfigurationException (message);
+        throw new ConfigurationException(message);
       }
     }
   }

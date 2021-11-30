@@ -33,7 +33,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     public void SetUp ()
     {
       WxeContextFactory contextFactory = new WxeContextFactory();
-      _context = contextFactory.CreateContext (new TestFunction());
+      _context = contextFactory.CreateContext(new TestFunction());
 
       _executionListener = NullExecutionListener.Null;
     }
@@ -41,37 +41,37 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void OnExecutionPlay ()
     {
-      _executionListener.OnExecutionPlay (_context);
+      _executionListener.OnExecutionPlay(_context);
     }
 
     [Test]
     public void OnExecutionStop ()
     {
-      _executionListener.OnExecutionStop (_context);
+      _executionListener.OnExecutionStop(_context);
     }
 
     [Test]
     public void OnExecutionPause ()
     {
-      _executionListener.OnExecutionPause (_context);
+      _executionListener.OnExecutionPause(_context);
     }
 
     [Test]
     public void OnExecutionFail ()
     {
-      _executionListener.OnExecutionFail (_context, new Exception());
+      _executionListener.OnExecutionFail(_context, new Exception());
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (_executionListener.IsNull);
+      Assert.That(_executionListener.IsNull);
     }
 
     [Test]
     public void IsSerializeable ()
     {
-      Assert.That (Serializer.SerializeAndDeserialize (_executionListener), Is.Not.Null);
+      Assert.That(Serializer.SerializeAndDeserialize(_executionListener), Is.Not.Null);
     }
   }
 }

@@ -18,13 +18,13 @@ using System;
 
 namespace Remotion.Globalization.UnitTests.TestDomain
 {
-  [MultiLingualResources ("Remotion.Globalization.UnitTests.TestDomain.Resources.EnumWithResourcesAndAttribute")]
+  [MultiLingualResources("Remotion.Globalization.UnitTests.TestDomain.Resources.EnumWithResourcesAndAttribute")]
   public enum EnumWithResourcesAndAttribute
   {
-    [MultiLingualName ("Attribute", "")]
+    [MultiLingualName("Attribute", "")]
     ValueWithResourceAndAttribute = 1,
 
-    [MultiLingualName ("Attribute", "")]
+    [MultiLingualName("Attribute", "")]
     ValueWithAttribute = 2,
 
     ValueWithResource = 3,

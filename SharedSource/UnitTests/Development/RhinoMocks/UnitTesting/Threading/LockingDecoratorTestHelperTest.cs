@@ -37,7 +37,7 @@ namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting.Threading
     {
       var lockObject = new object();
 
-      _helperForLockingDecorator = CreateLockingDecoratorTestHelper (
+      _helperForLockingDecorator = CreateLockingDecoratorTestHelper(
           inner =>
           {
             lock (lockObject)
@@ -46,13 +46,13 @@ namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting.Threading
           (inner, s) =>
           {
             lock (lockObject)
-              inner.Do (s);
+              inner.Do(s);
           },
           lockObject);
 
-      _helperForNonLockingDecorator = CreateLockingDecoratorTestHelper (inner => inner.Get(), (inner, s) => inner.Do (s), lockObject);
-      _helperForNonDelegatingDecorator = CreateLockingDecoratorTestHelper (inner => "Abc", (inner, s) => { }, lockObject);
-      _helperForFaultyDecorator = CreateLockingDecoratorTestHelper (
+      _helperForNonLockingDecorator = CreateLockingDecoratorTestHelper(inner => inner.Get(), (inner, s) => inner.Do(s), lockObject);
+      _helperForNonDelegatingDecorator = CreateLockingDecoratorTestHelper(inner => "Abc", (inner, s) => { }, lockObject);
+      _helperForFaultyDecorator = CreateLockingDecoratorTestHelper(
           inner =>
           {
             lock (lockObject)
@@ -62,7 +62,7 @@ namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting.Threading
           (inner, s) =>
           {
             lock (lockObject)
-              inner.Do ("faulty");
+              inner.Do("faulty");
           },
           lockObject);
     }
@@ -70,74 +70,74 @@ namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting.Threading
     [Test]
     public void ExpectSynchronizedDelegation_Func ()
     {
-      Assert.That (() => _helperForLockingDecorator.ExpectSynchronizedDelegation (d => d.Get(), "Abc"), Throws.Nothing);
-      Assert.That (
-          () => _helperForNonLockingDecorator.ExpectSynchronizedDelegation (d => d.Get(), "Abc"),
-          Throws.TypeOf<AssertionException>().And.Message.StartsWith ("  Parallel thread should have been blocked."));
-      Assert.That (
-          () => _helperForNonDelegatingDecorator.ExpectSynchronizedDelegation (d => d.Get(), "Abc"),
-          Throws.TypeOf<ExpectationViolationException>().And.Message.EqualTo ("IMyInterface.Get(); Expected #1, Actual #0."));
-      Assert.That (
-          () => _helperForFaultyDecorator.ExpectSynchronizedDelegation (d => d.Get(), "Abc"),
-          Throws.TypeOf<AssertionException>().And.Message.StartsWith ("  Expected string length 3 but was 6. Strings differ at index 0."));
+      Assert.That(() => _helperForLockingDecorator.ExpectSynchronizedDelegation(d => d.Get(), "Abc"), Throws.Nothing);
+      Assert.That(
+          () => _helperForNonLockingDecorator.ExpectSynchronizedDelegation(d => d.Get(), "Abc"),
+          Throws.TypeOf<AssertionException>().And.Message.StartsWith("  Parallel thread should have been blocked."));
+      Assert.That(
+          () => _helperForNonDelegatingDecorator.ExpectSynchronizedDelegation(d => d.Get(), "Abc"),
+          Throws.TypeOf<ExpectationViolationException>().And.Message.EqualTo("IMyInterface.Get(); Expected #1, Actual #0."));
+      Assert.That(
+          () => _helperForFaultyDecorator.ExpectSynchronizedDelegation(d => d.Get(), "Abc"),
+          Throws.TypeOf<AssertionException>().And.Message.StartsWith("  Expected string length 3 but was 6. Strings differ at index 0."));
     }
 
     [Test]
     public void ExpectSynchronizedDelegation_Func_MultipleCallsForSameMock ()
     {
-      Assert.That (() => _helperForLockingDecorator.ExpectSynchronizedDelegation (d => d.Get (), "Abc"), Throws.Nothing);
-      Assert.That (() => _helperForLockingDecorator.ExpectSynchronizedDelegation (d => d.Get (), "Abc"), Throws.Nothing);
+      Assert.That(() => _helperForLockingDecorator.ExpectSynchronizedDelegation(d => d.Get(), "Abc"), Throws.Nothing);
+      Assert.That(() => _helperForLockingDecorator.ExpectSynchronizedDelegation(d => d.Get(), "Abc"), Throws.Nothing);
     }
 
     [Test]
     public void ExpectSynchronizedDelegation_Func_WithResultChecker ()
     {
-      Assert.That (
-          () => _helperForLockingDecorator.ExpectSynchronizedDelegation (d => d.Get(), "Abc", s => Assert.That (s, Is.EqualTo ("Abc"))),
+      Assert.That(
+          () => _helperForLockingDecorator.ExpectSynchronizedDelegation(d => d.Get(), "Abc", s => Assert.That(s, Is.EqualTo("Abc"))),
           Throws.Nothing);
-      Assert.That (
-          () => _helperForLockingDecorator.ExpectSynchronizedDelegation (d => d.Get (), "Abc", s => Assert.That (s, Is.EqualTo ("Expected"))),
-          Throws.TypeOf<AssertionException> ());
+      Assert.That(
+          () => _helperForLockingDecorator.ExpectSynchronizedDelegation(d => d.Get(), "Abc", s => Assert.That(s, Is.EqualTo("Expected"))),
+          Throws.TypeOf<AssertionException>());
     }
 
     [Test]
     public void ExpectSynchronizedDelegation_Action ()
     {
-      Assert.That (() => _helperForLockingDecorator.ExpectSynchronizedDelegation (d => d.Do ("Abc")), Throws.Nothing);
-      Assert.That (
-          () => _helperForNonLockingDecorator.ExpectSynchronizedDelegation (d => d.Do ("Abc")),
-          Throws.TypeOf<AssertionException>().And.Message.StartsWith ("  Parallel thread should have been blocked."));
-      Assert.That (
-          () => _helperForNonDelegatingDecorator.ExpectSynchronizedDelegation (d => d.Do ("Abc")),
-          Throws.TypeOf<ExpectationViolationException>().And.Message.EqualTo ("IMyInterface.Do(\"Abc\"); Expected #1, Actual #0."));
-      Assert.That (
-          () => _helperForFaultyDecorator.ExpectSynchronizedDelegation (d => d.Do ("Abc")),
-          Throws.TypeOf<ExpectationViolationException>().And.Message.EqualTo (
+      Assert.That(() => _helperForLockingDecorator.ExpectSynchronizedDelegation(d => d.Do("Abc")), Throws.Nothing);
+      Assert.That(
+          () => _helperForNonLockingDecorator.ExpectSynchronizedDelegation(d => d.Do("Abc")),
+          Throws.TypeOf<AssertionException>().And.Message.StartsWith("  Parallel thread should have been blocked."));
+      Assert.That(
+          () => _helperForNonDelegatingDecorator.ExpectSynchronizedDelegation(d => d.Do("Abc")),
+          Throws.TypeOf<ExpectationViolationException>().And.Message.EqualTo("IMyInterface.Do(\"Abc\"); Expected #1, Actual #0."));
+      Assert.That(
+          () => _helperForFaultyDecorator.ExpectSynchronizedDelegation(d => d.Do("Abc")),
+          Throws.TypeOf<ExpectationViolationException>().And.Message.EqualTo(
               "IMyInterface.Do(\"faulty\"); Expected #0, Actual #1.\r\nIMyInterface.Do(\"Abc\"); Expected #1, Actual #0."));
     }
 
     [Test]
     public void ExpectSynchronizedDelegation_Action_MultipleCallsForSameMock ()
     {
-      Assert.That (() => _helperForLockingDecorator.ExpectSynchronizedDelegation (d => d.Do ("Abc")), Throws.Nothing);
-      Assert.That (() => _helperForLockingDecorator.ExpectSynchronizedDelegation (d => d.Do ("Abc")), Throws.Nothing);
-      Assert.That (() => _helperForLockingDecorator.ExpectSynchronizedDelegation (d => d.Do ("Abc")), Throws.Nothing);
+      Assert.That(() => _helperForLockingDecorator.ExpectSynchronizedDelegation(d => d.Do("Abc")), Throws.Nothing);
+      Assert.That(() => _helperForLockingDecorator.ExpectSynchronizedDelegation(d => d.Do("Abc")), Throws.Nothing);
+      Assert.That(() => _helperForLockingDecorator.ExpectSynchronizedDelegation(d => d.Do("Abc")), Throws.Nothing);
     }
 
     [Test]
     public void ExpectSynchronizedDelegation_Mixed_MultipleCallsForSameMock ()
     {
-      Assert.That (() => _helperForLockingDecorator.ExpectSynchronizedDelegation (d => d.Do ("Abc")), Throws.Nothing);
-      Assert.That (() => _helperForLockingDecorator.ExpectSynchronizedDelegation (d => d.Get (), "test"), Throws.Nothing);
+      Assert.That(() => _helperForLockingDecorator.ExpectSynchronizedDelegation(d => d.Do("Abc")), Throws.Nothing);
+      Assert.That(() => _helperForLockingDecorator.ExpectSynchronizedDelegation(d => d.Get(), "test"), Throws.Nothing);
     }
 
     private LockingDecoratorTestHelper<IMyInterface> CreateLockingDecoratorTestHelper (
         Func<IMyInterface, string> getMethod, Action<IMyInterface, string> doMethod, object lockObject)
     {
-      var innerMock = MockRepository.GenerateStrictMock<IMyInterface> ();
-      var decorator = new Decorator (innerMock, getMethod, doMethod);
+      var innerMock = MockRepository.GenerateStrictMock<IMyInterface>();
+      var decorator = new Decorator(innerMock, getMethod, doMethod);
 
-      return new LockingDecoratorTestHelper<IMyInterface> (decorator, lockObject, innerMock);
+      return new LockingDecoratorTestHelper<IMyInterface>(decorator, lockObject, innerMock);
     }
 
     public interface IMyInterface
@@ -161,12 +161,12 @@ namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting.Threading
 
       public string Get ()
       {
-        return _getMethod (_inner);
+        return _getMethod(_inner);
       }
 
       public void Do (string s)
       {
-        _doMethod (_inner, s);
+        _doMethod(_inner, s);
       }
     }
   }

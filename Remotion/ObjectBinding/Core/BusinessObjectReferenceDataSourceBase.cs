@@ -105,10 +105,10 @@ namespace Remotion.ObjectBinding
 
           if (ReferencedDataSource.BusinessObject != null)
           {
-            _businessObject = (IBusinessObject?) ReferencedDataSource.BusinessObject.GetProperty (ReferenceProperty);
+            _businessObject = (IBusinessObject?)ReferencedDataSource.BusinessObject.GetProperty(ReferenceProperty);
             if (_businessObject == null && SupportsDefaultValueSemantics)
             {
-              _businessObject = ReferenceProperty.CreateDefaultValue (ReferencedDataSource.BusinessObject);
+              _businessObject = ReferenceProperty.CreateDefaultValue(ReferencedDataSource.BusinessObject);
               HasBusinessObjectCreated = true;
             }
           }
@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding
       }
 
       // load values into "child" controls
-      LoadValues (interim);
+      LoadValues(interim);
     }
 
     /// <summary> 
@@ -149,7 +149,7 @@ namespace Remotion.ObjectBinding
       }
 
       // save values from "child" controls
-      var hasSavedAllBoundControl = SaveValues (interim);
+      var hasSavedAllBoundControl = SaveValues(interim);
 
       // if required, save value into "parent" data source
 
@@ -158,8 +158,8 @@ namespace Remotion.ObjectBinding
 
       if (IsReadOnlyInDomainModel)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The business object of the {0} could not be saved into the domain model because the property '{1}' is read only.",
                 GetDataSourceIdentifier(),
                 ReferenceProperty.Identifier));
@@ -172,7 +172,7 @@ namespace Remotion.ObjectBinding
       }
       else
       {
-        ReferencedDataSource.BusinessObject.SetProperty (ReferenceProperty, BusinessObject);
+        ReferencedDataSource.BusinessObject.SetProperty(ReferenceProperty, BusinessObject);
         hasSaved = hasSavedAllBoundControl;
       }
       HasBusinessObjectChanged = false;
@@ -202,12 +202,12 @@ namespace Remotion.ObjectBinding
     public bool HasBusinessObjectChanged
     {
       get { return _hasBusinessObjectChanged; }
-      private set 
+      private set
       {
         if (value && HasValidBinding && IsReadOnlyInDomainModel)
         {
-          throw new InvalidOperationException (
-              string.Format (
+          throw new InvalidOperationException(
+              string.Format(
                   "The {0} '{1}' could not be marked as changed because the bound property '{2}' is read only.",
                   GetType().Name,
                   GetDataSourceIdentifier(),
@@ -242,7 +242,7 @@ namespace Remotion.ObjectBinding
     /// <seealso cref="IBusinessObjectBoundControl.SupportsProperty">IBusinessObjectBoundControl.SupportsProperty</seealso>
     public bool SupportsProperty (IBusinessObjectProperty property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("property", property);
       return property is IBusinessObjectReferenceProperty;
     }
 
@@ -286,15 +286,15 @@ namespace Remotion.ObjectBinding
       {
         var objectDataSource = ReferencedDataSource;
         var referenceProperty = ReferenceProperty;
-        Assertion.IsNotNull (objectDataSource, "ReferencedDataSource is null.");
-        Assertion.IsNotNull (referenceProperty, "ReferenceProperty is null.");
+        Assertion.IsNotNull(objectDataSource, "ReferencedDataSource is null.");
+        Assertion.IsNotNull(referenceProperty, "ReferenceProperty is null.");
 
-        return referenceProperty.IsReadOnly (objectDataSource.BusinessObject);
+        return referenceProperty.IsReadOnly(objectDataSource.BusinessObject);
       }
     }
 
-    [MemberNotNullWhen (true, nameof (ReferencedDataSource))]
-    [MemberNotNullWhen (true, nameof (ReferenceProperty))]
+    [MemberNotNullWhen(true, nameof(ReferencedDataSource))]
+    [MemberNotNullWhen(true, nameof(ReferenceProperty))]
     private bool HasValidBinding
     {
       get { return ReferencedDataSource != null && ReferenceProperty != null; }
@@ -314,11 +314,11 @@ namespace Remotion.ObjectBinding
     {
       if (HasValidBinding && BusinessObject != null && ReferenceProperty.SupportsDefaultValue)
       {
-        if (GetBoundControlsWithValidBinding().Any (c => c.HasValue))
+        if (GetBoundControlsWithValidBinding().Any(c => c.HasValue))
           return false;
 
-        var properties = GetBoundControlsWithValidBinding().Select (c => c.Property!).Distinct ().ToArray ();
-        return ReferenceProperty.IsDefaultValue (ReferencedDataSource.BusinessObject, BusinessObject, properties);
+        var properties = GetBoundControlsWithValidBinding().Select(c => c.Property!).Distinct().ToArray();
+        return ReferenceProperty.IsDefaultValue(ReferencedDataSource.BusinessObject, BusinessObject, properties);
       }
       else
       {
@@ -328,11 +328,11 @@ namespace Remotion.ObjectBinding
 
     private void DeleteBusinessObject ()
     {
-      Assertion.IsNotNull (BusinessObject, "The business object of this reference data source cannot be null when invoking DeleteBusinessObject().");
-      Assertion.IsNotNull (ReferenceProperty, "The reference property must not be null.");
-      Assertion.IsNotNull (ReferencedDataSource, "The referenced data source must not be null.");
+      Assertion.IsNotNull(BusinessObject, "The business object of this reference data source cannot be null when invoking DeleteBusinessObject().");
+      Assertion.IsNotNull(ReferenceProperty, "The reference property must not be null.");
+      Assertion.IsNotNull(ReferencedDataSource, "The referenced data source must not be null.");
       if (ReferenceProperty.SupportsDelete)
-        ReferenceProperty.Delete (ReferencedDataSource.BusinessObject, BusinessObject);
+        ReferenceProperty.Delete(ReferencedDataSource.BusinessObject, BusinessObject);
     }
 #pragma warning restore 612,618
   }

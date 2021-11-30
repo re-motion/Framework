@@ -29,9 +29,9 @@ public class StorageProviderManager : IDisposable
 
   public StorageProviderManager (IPersistenceExtension persistenceExtension)
   {
-    ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
+    ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
 
-    _storageProviders = new StorageProviderCollection ();
+    _storageProviders = new StorageProviderCollection();
     _persistenceExtension = persistenceExtension;
   }
 
@@ -42,12 +42,12 @@ public class StorageProviderManager : IDisposable
     if (!_disposed)
     {
       if (_storageProviders != null)
-        _storageProviders.Dispose ();
+        _storageProviders.Dispose();
 
       _storageProviders = null;
-      
+
       _disposed = true;
-      GC.SuppressFinalize (this);
+      GC.SuppressFinalize(this);
     }
   }
 
@@ -55,13 +55,13 @@ public class StorageProviderManager : IDisposable
 
   public StorageProvider GetMandatory (string storageProviderID)
   {
-    CheckDisposed ();
-    ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
+    CheckDisposed();
+    ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
 
     StorageProvider provider = this[storageProviderID];
     if (provider == null)
     {
-      throw CreatePersistenceException (
+      throw CreatePersistenceException(
         "Storage Provider with ID '{0}' could not be created.", storageProviderID);
     }
 
@@ -70,18 +70,18 @@ public class StorageProviderManager : IDisposable
 
   public StorageProvider this [string storageProviderID]
   {
-    get 
+    get
     {
-      CheckDisposed ();
-      ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
+      CheckDisposed();
+      ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
 
-      if (_storageProviders.Contains (storageProviderID))
+      if (_storageProviders.Contains(storageProviderID))
         return _storageProviders[storageProviderID];
 
-      var providerDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory (storageProviderID);
-      var provider = providerDefinition.Factory.CreateStorageProvider (providerDefinition, _persistenceExtension);
+      var providerDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
+      var provider = providerDefinition.Factory.CreateStorageProvider(providerDefinition, _persistenceExtension);
 
-      _storageProviders.Add (provider);
+      _storageProviders.Add(provider);
 
       return provider;
     }
@@ -89,22 +89,22 @@ public class StorageProviderManager : IDisposable
 
   public StorageProviderCollection StorageProviders
   {
-    get 
-    { 
-      CheckDisposed ();
-      return _storageProviders; 
+    get
+    {
+      CheckDisposed();
+      return _storageProviders;
     }
   }
 
   private PersistenceException CreatePersistenceException (string message, params object[] args)
   {
-    return new PersistenceException (string.Format (message, args));
+    return new PersistenceException(string.Format(message, args));
   }
 
   private void CheckDisposed ()
   {
     if (_disposed)
-      throw new ObjectDisposedException ("StorageProviderManager", "A disposed StorageProviderManager cannot be accessed.");
+      throw new ObjectDisposedException("StorageProviderManager", "A disposed StorageProviderManager cannot be accessed.");
   }
 }
 }

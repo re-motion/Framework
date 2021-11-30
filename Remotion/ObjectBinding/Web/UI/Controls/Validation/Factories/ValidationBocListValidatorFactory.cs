@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
   /// that can apply the <see cref="IBusinessObjectValidationResult"/> object to the respective control.
   /// </summary>
   /// <seealso cref="IBocListValidatorFactory"/>
-  [ImplementationFor (typeof (IBocListValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
+  [ImplementationFor(typeof(IBocListValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class ValidationBocListValidatorFactory : IBocListValidatorFactory
   {
     public const int Position = BocListValidatorFactory.Position + 1;
@@ -41,12 +41,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
 
     public IEnumerable<BaseValidator> CreateValidators (IBocList control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (isReadOnly)
         yield break;
 
-      yield return CreateBocListValidator (control);
+      yield return CreateBocListValidator(control);
     }
 
     private BaseValidator CreateBocListValidator (IBocList control)

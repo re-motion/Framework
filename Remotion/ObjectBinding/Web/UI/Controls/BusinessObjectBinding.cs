@@ -62,12 +62,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        EnsureDataSource ();
+        EnsureDataSource();
         return _dataSource;
       }
       set
       {
-        SetDataSource (value);
+        SetDataSource(value);
 
         Control? dataSourceControl = value as Control;
         if (dataSourceControl != null)
@@ -93,36 +93,36 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_dataSourceChanged)
       {
         // set _dataSource from ID in _dataSourceControl
-        if (string.IsNullOrEmpty (_dataSourceControl))
+        if (string.IsNullOrEmpty(_dataSourceControl))
         {
-          SetDataSource (null);
+          SetDataSource(null);
         }
         else
         {
           Control namingContainer = _control.NamingContainer;
           if (namingContainer == null)
-            throw new HttpException (string.Format ("Cannot evaluate data source because control {0} has no naming container.", _control.ID));
+            throw new HttpException(string.Format("Cannot evaluate data source because control {0} has no naming container.", _control.ID));
 
-          Control? control = ControlHelper.FindControl (namingContainer, _dataSourceControl);
+          Control? control = ControlHelper.FindControl(namingContainer, _dataSourceControl);
           if (control == null)
-            throw new HttpException (string.Format ("Unable to find control id '{0}' referenced by the DataSourceControl property of '{1}'.", _dataSourceControl, _control.ID));
+            throw new HttpException(string.Format("Unable to find control id '{0}' referenced by the DataSourceControl property of '{1}'.", _dataSourceControl, _control.ID));
 
           IBusinessObjectDataSourceControl? dataSource = control as IBusinessObjectDataSourceControl;
           if (dataSource == null)
-            throw new HttpException (string.Format ("The control with the id '{0}' referenced by the DataSourceControl property of '{1}' does not identify a control of type '{2}'.", _dataSourceControl, _control.ID, typeof (IBusinessObjectDataSourceControl)));
+            throw new HttpException(string.Format("The control with the id '{0}' referenced by the DataSourceControl property of '{1}' does not identify a control of type '{2}'.", _dataSourceControl, _control.ID, typeof(IBusinessObjectDataSourceControl)));
 
-          SetDataSource (dataSource);
+          SetDataSource(dataSource);
         }
 
         _dataSourceChanged = false;
       }
     }
 
-    public void UnregisterDataSource()
+    public void UnregisterDataSource ()
     {
       if (_dataSource != null)
       {
-        SetDataSource (null);
+        SetDataSource(null);
         _dataSourceChanged = true;
       }
     }
@@ -132,18 +132,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private void SetDataSource (IBusinessObjectDataSource? dataSource)
     {
       if (_control == dataSource && _control is IBusinessObjectReferenceDataSource)
-        throw new ArgumentException ("Assigning a reference data source as its own data source is not allowed.", "value");
+        throw new ArgumentException("Assigning a reference data source as its own data source is not allowed.", "value");
 
       if (_dataSource == dataSource)
         return;
 
       if (_dataSource != null)
-        _dataSource.Unregister (_control);
+        _dataSource.Unregister(_control);
 
       _dataSource = dataSource;
 
       if (dataSource != null)
-        dataSource.Register (_control);
+        dataSource.Register(_control);
       _bindingChanged = true;
     }
 
@@ -157,7 +157,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (_control.ID != null && _control.ID == value && _control is IBusinessObjectReferenceDataSource)
-          throw new ArgumentException ("Assigning a reference data source as its own data source is not allowed.", "value");
+          throw new ArgumentException("Assigning a reference data source as its own data source is not allowed.", "value");
         if (_dataSourceControl != value)
         {
           _dataSourceControl = value;
@@ -183,32 +183,32 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           if (_property == null
               && DataSource != null
               && DataSource.BusinessObjectClass != null
-              && !string.IsNullOrEmpty (_propertyIdentifier))
+              && !string.IsNullOrEmpty(_propertyIdentifier))
           {
             IBusinessObjectProperty? property =
-                DataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier);
+                DataSource.BusinessObjectClass.GetPropertyDefinition(_propertyIdentifier);
             if (property == null)
             {
-              throw new InvalidOperationException (
-                  string.Format ("The business object class '{0}' bound to {1} '{2}' via the DataSource " +
+              throw new InvalidOperationException(
+                  string.Format("The business object class '{0}' bound to {1} '{2}' via the DataSource " +
                           "does not support the business object property '{3}'.",
                       DataSource.BusinessObjectClass.Identifier,
-                      _control.GetType ().Name,
+                      _control.GetType().Name,
                       _control.ID,
                       _propertyIdentifier));
             }
-            if (!_control.SupportsProperty (property))
+            if (!_control.SupportsProperty(property))
             {
-              throw new InvalidOperationException (
-                  string.Format ("{0} '{1}' does not support the business object property '{2}'.",
-                      _control.GetType ().Name, _control.ID, _propertyIdentifier));
+              throw new InvalidOperationException(
+                  string.Format("{0} '{1}' does not support the business object property '{2}'.",
+                      _control.GetType().Name, _control.ID, _propertyIdentifier));
             }
             _property = property;
           }
 
           _bindingChanged = false;
 
-          OnBindingChanged ();
+          OnBindingChanged();
         }
 
         return _property;
@@ -218,11 +218,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (value != null)
         {
-          if (!_control.SupportsProperty (value))
+          if (!_control.SupportsProperty(value))
           {
-            throw new ArgumentException (
-                string.Format ("{0} '{1}' does not support the  business object property '{2}'.",
-                    _control.GetType ().Name, _control.ID, value.Identifier),
+            throw new ArgumentException(
+                string.Format("{0} '{1}' does not support the  business object property '{2}'.",
+                    _control.GetType().Name, _control.ID, value.Identifier),
                 "value");
           }
         }
@@ -254,7 +254,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected void OnBindingChanged ()
     {
       if (BindingChanged != null)
-        BindingChanged (this, EventArgs.Empty);
+        BindingChanged(this, EventArgs.Empty);
     }
 
     /// <summary> Raised when the <see cref="Property"/> is assigned a new value. </summary>
@@ -274,18 +274,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </returns>
     public bool SupportsProperty (IBusinessObjectProperty property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("property", property);
 
       if (_control.SupportedPropertyInterfaces == null)
         return true;
 
       bool isSearchMode = DataSource != null && DataSource.Mode == DataSourceMode.Search;
-      if (!isSearchMode && !_control.SupportsPropertyMultiplicity (property.IsList))
+      if (!isSearchMode && !_control.SupportsPropertyMultiplicity(property.IsList))
       {
         return false;
       }
 
-      return IsPropertyInterfaceSupported (property, _control.SupportedPropertyInterfaces);
+      return IsPropertyInterfaceSupported(property, _control.SupportedPropertyInterfaces);
     }
 
     /// <summary>Tests whether the <paramref name="property"/>'s type is part of the <paramref name="supportedPropertyInterfaces"/> array.</summary>
@@ -299,16 +299,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </returns>
     public bool IsPropertyInterfaceSupported (IBusinessObjectProperty property, Type[] supportedPropertyInterfaces)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("property", property);
       if (supportedPropertyInterfaces == null)
         return true;
-      ArgumentUtility.CheckNotNullOrItemsNull ("supportedPropertyInterfaces", supportedPropertyInterfaces);
+      ArgumentUtility.CheckNotNullOrItemsNull("supportedPropertyInterfaces", supportedPropertyInterfaces);
 
       bool isSupportedPropertyInterface = false;
       for (int i = 0; i < supportedPropertyInterfaces.Length; i++)
       {
         Type supportedInterface = supportedPropertyInterfaces[i];
-        if (supportedInterface.IsAssignableFrom (property.GetType ()))
+        if (supportedInterface.IsAssignableFrom(property.GetType()))
         {
           isSupportedPropertyInterface = true;
           break;
@@ -328,7 +328,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     <item>Otherwise, <see langword="false"/> is returned.</item>
     ///   </list>
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool HasValidBinding
     {
       get
@@ -338,7 +338,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (dataSource == null || property == null)
           return true;
 
-        return property.IsAccessible (dataSource.BusinessObject);
+        return property.IsAccessible(dataSource.BusinessObject);
       }
     }
   }

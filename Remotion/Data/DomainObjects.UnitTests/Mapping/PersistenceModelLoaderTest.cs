@@ -34,37 +34,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [SetUp]
     public void SetUp ()
     {
-      _storageProviderDefinitionStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder> ();
-      _persistenceModelLoader = new PersistenceModelLoader (_storageProviderDefinitionStub);
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order), baseClass: null);
+      _storageProviderDefinitionStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder>();
+      _persistenceModelLoader = new PersistenceModelLoader(_storageProviderDefinitionStub);
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
     }
 
     [Test]
     public void ApplyPersistenceModelToHierarchy ()
     {
-      _classDefinition.SetDerivedClasses (new ClassDefinition[0]);
-      _classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection());
-      _classDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection());
-      Assert.That (_classDefinition.StorageEntityDefinition, Is.Null);
+      _classDefinition.SetDerivedClasses(new ClassDefinition[0]);
+      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
+      _classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+      Assert.That(_classDefinition.StorageEntityDefinition, Is.Null);
 
-      _storageProviderDefinitionStub.Stub (stub => stub.GetStorageProviderDefinition (_classDefinition, null)).Return (
-          new UnitTestStorageProviderStubDefinition ("DefaultStorageProvider"));
+      _storageProviderDefinitionStub.Stub(stub => stub.GetStorageProviderDefinition(_classDefinition, null)).Return(
+          new UnitTestStorageProviderStubDefinition("DefaultStorageProvider"));
 
-      _persistenceModelLoader.ApplyPersistenceModelToHierarchy (_classDefinition);
+      _persistenceModelLoader.ApplyPersistenceModelToHierarchy(_classDefinition);
 
-      Assert.That (_classDefinition.StorageEntityDefinition, Is.Not.Null);
+      Assert.That(_classDefinition.StorageEntityDefinition, Is.Not.Null);
     }
 
     [Test]
     public void CreatePersistenceMappingValidator ()
     {
-      _storageProviderDefinitionStub.Stub (stub => stub.GetStorageProviderDefinition (_classDefinition, null)).Return (
-          new UnitTestStorageProviderStubDefinition ("DefaultStorageProvider"));
+      _storageProviderDefinitionStub.Stub(stub => stub.GetStorageProviderDefinition(_classDefinition, null)).Return(
+          new UnitTestStorageProviderStubDefinition("DefaultStorageProvider"));
 
-      var result = _persistenceModelLoader.CreatePersistenceMappingValidator (_classDefinition);
+      var result = _persistenceModelLoader.CreatePersistenceMappingValidator(_classDefinition);
 
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result, Is.TypeOf (typeof (PersistenceMappingValidator)));
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result, Is.TypeOf(typeof(PersistenceMappingValidator)));
     }
   }
 }

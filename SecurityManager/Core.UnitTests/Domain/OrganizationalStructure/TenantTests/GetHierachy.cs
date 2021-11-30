@@ -34,93 +34,93 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     [Test]
     public void Test_NoChildren ()
     {
-      Tenant root = TestHelper.CreateTenant ("Root", "UID: Root");
+      Tenant root = TestHelper.CreateTenant("Root", "UID: Root");
 
-      Assert.That (root.GetHierachy().ToArray(), Is.EquivalentTo (new[] { root }));
+      Assert.That(root.GetHierachy().ToArray(), Is.EquivalentTo(new[] { root }));
     }
 
     [Test]
     public void Test_NoGrandChildren ()
     {
-      Tenant root = TestHelper.CreateTenant ("Root", "UID: Root");
-      Tenant child1 = TestHelper.CreateTenant ("Child1", "UID: Child1");
+      Tenant root = TestHelper.CreateTenant("Root", "UID: Root");
+      Tenant child1 = TestHelper.CreateTenant("Child1", "UID: Child1");
       child1.Parent = root;
-      Tenant child2 = TestHelper.CreateTenant ("Child2", "UID: Child2");
+      Tenant child2 = TestHelper.CreateTenant("Child2", "UID: Child2");
       child2.Parent = root;
 
-      Assert.That (root.GetHierachy().ToArray(), Is.EquivalentTo (new[] { root, child1, child2 }));
+      Assert.That(root.GetHierachy().ToArray(), Is.EquivalentTo(new[] { root, child1, child2 }));
     }
 
     [Test]
     public void Test_WithGrandChildren ()
     {
-      Tenant root = TestHelper.CreateTenant ("Root", "UID: Root");
-      Tenant child1 = TestHelper.CreateTenant ("Child1", "UID: Child1");
+      Tenant root = TestHelper.CreateTenant("Root", "UID: Root");
+      Tenant child1 = TestHelper.CreateTenant("Child1", "UID: Child1");
       child1.Parent = root;
-      Tenant child2 = TestHelper.CreateTenant ("Child2", "UID: Child2");
+      Tenant child2 = TestHelper.CreateTenant("Child2", "UID: Child2");
       child2.Parent = root;
-      Tenant grandChild1 = TestHelper.CreateTenant ("GrandChild1", "UID: GrandChild1");
+      Tenant grandChild1 = TestHelper.CreateTenant("GrandChild1", "UID: GrandChild1");
       grandChild1.Parent = child1;
 
-      Assert.That (root.GetHierachy().ToArray(), Is.EquivalentTo (new[] { root, child1, child2, grandChild1 }));
+      Assert.That(root.GetHierachy().ToArray(), Is.EquivalentTo(new[] { root, child1, child2, grandChild1 }));
     }
 
     [Test]
     public void Test_WithCircularHierarchy_ThrowsInvalidOperationException ()
     {
-      Tenant root = TestHelper.CreateTenant ("Root", "UID: Root");
-      Tenant child1 = TestHelper.CreateTenant ("Child1", "UID: Child1");
+      Tenant root = TestHelper.CreateTenant("Root", "UID: Root");
+      Tenant child1 = TestHelper.CreateTenant("Child1", "UID: Child1");
       child1.Parent = root;
-      Tenant grandChild1 = TestHelper.CreateTenant ("GrandChild1", "UID: GrandChild1");
+      Tenant grandChild1 = TestHelper.CreateTenant("GrandChild1", "UID: GrandChild1");
       grandChild1.Parent = child1;
-      Tenant grandChild2 = TestHelper.CreateTenant ("GrandChild2", "UID: GrandChild2");
+      Tenant grandChild2 = TestHelper.CreateTenant("GrandChild2", "UID: GrandChild2");
       grandChild2.Parent = grandChild1;
       root.Parent = grandChild2;
 
-      Assert.That (
+      Assert.That(
           () => grandChild1.GetHierachy().ToArray(),
           Throws.InvalidOperationException
-                .With.Message.EqualTo ("The hierarchy for tenant '" + grandChild1 + "' cannot be resolved because a circular reference exists."));
+                .With.Message.EqualTo("The hierarchy for tenant '" + grandChild1 + "' cannot be resolved because a circular reference exists."));
     }
 
     [Test]
     public void Test_WithSecurity_PermissionDeniedOnChild ()
     {
-      Tenant root = TestHelper.CreateTenant ("Root", "UID: Root");
-      Tenant child1 = TestHelper.CreateTenant ("Child1", "UID: Child1");
+      Tenant root = TestHelper.CreateTenant("Root", "UID: Root");
+      Tenant child1 = TestHelper.CreateTenant("Child1", "UID: Child1");
       child1.Parent = root;
 
-      Tenant child2 = TestHelper.CreateTenant ("Child2", "UID: Child2");
+      Tenant child2 = TestHelper.CreateTenant("Child2", "UID: Child2");
       child2.Parent = root;
 
-      Tenant child1_1 = TestHelper.CreateTenant ("Child1.1", "UID: Child1.1");
+      Tenant child1_1 = TestHelper.CreateTenant("Child1.1", "UID: Child1.1");
       child1_1.Parent = child1;
-      
-      Tenant child2_1 = TestHelper.CreateTenant ("Child2.1", "UID: Child2.1");
+
+      Tenant child2_1 = TestHelper.CreateTenant("Child2.1", "UID: Child2.1");
       child2_1.Parent = child2;
 
       var securityProviderStub = new Mock<ISecurityProvider>();
 
-      var childOfChild2SecurityContext = ((ISecurityContextFactory) child2_1).CreateSecurityContext ();
-      securityProviderStub.Setup (
-          stub => stub.GetAccess (
-                      It.Is<ISecurityContext> (_ => !object.Equals (_, childOfChild2SecurityContext)),
-                      It.IsAny<ISecurityPrincipal>())).Returns (new[] { AccessType.Get (GeneralAccessTypes.Read) });
-      securityProviderStub.Setup (
-          stub => stub.GetAccess (
+      var childOfChild2SecurityContext = ((ISecurityContextFactory)child2_1).CreateSecurityContext();
+      securityProviderStub.Setup(
+          stub => stub.GetAccess(
+                      It.Is<ISecurityContext>(_ => !object.Equals(_, childOfChild2SecurityContext)),
+                      It.IsAny<ISecurityPrincipal>())).Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
+      securityProviderStub.Setup(
+          stub => stub.GetAccess(
                       childOfChild2SecurityContext,
-                      It.IsAny<ISecurityPrincipal>())).Returns (new AccessType[0]);
+                      It.IsAny<ISecurityPrincipal>())).Returns(new AccessType[0]);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => securityProviderStub.Object);
-      serviceLocator.RegisterSingle<IPrincipalProvider> (() => new NullPrincipalProvider());
-      using (new ServiceLocatorScope (serviceLocator))
+      serviceLocator.RegisterSingle(() => securityProviderStub.Object);
+      serviceLocator.RegisterSingle<IPrincipalProvider>(() => new NullPrincipalProvider());
+      using (new ServiceLocatorScope(serviceLocator))
       {
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
-          ClientTransaction.Current.Extensions.Add (new SecurityClientTransactionExtension());
+          ClientTransaction.Current.Extensions.Add(new SecurityClientTransactionExtension());
 
-          Assert.That (root.GetHierachy(), Is.EquivalentTo (new[] { root, child1, child2, child1_1 }));
+          Assert.That(root.GetHierachy(), Is.EquivalentTo(new[] { root, child1, child2, child1_1 }));
         }
       }
     }
@@ -128,23 +128,23 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     [Test]
     public void Test_WithSecurity_PermissionDeniedOnRoot ()
     {
-      Tenant root = TestHelper.CreateTenant ("Root", "UID: Root");
+      Tenant root = TestHelper.CreateTenant("Root", "UID: Root");
 
       var securityProviderStub = new Mock<ISecurityProvider>();
 
-      securityProviderStub.Setup (
-          stub => stub.GetAccess (It.IsAny<SecurityContext>(), It.IsAny<ISecurityPrincipal>())).Returns (new AccessType[0]);
+      securityProviderStub.Setup(
+          stub => stub.GetAccess(It.IsAny<SecurityContext>(), It.IsAny<ISecurityPrincipal>())).Returns(new AccessType[0]);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => securityProviderStub.Object);
-      serviceLocator.RegisterSingle<IPrincipalProvider> (() => new NullPrincipalProvider());
-      using (new ServiceLocatorScope (serviceLocator))
+      serviceLocator.RegisterSingle(() => securityProviderStub.Object);
+      serviceLocator.RegisterSingle<IPrincipalProvider>(() => new NullPrincipalProvider());
+      using (new ServiceLocatorScope(serviceLocator))
       {
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
-          ClientTransaction.Current.Extensions.Add (new SecurityClientTransactionExtension());
+          ClientTransaction.Current.Extensions.Add(new SecurityClientTransactionExtension());
 
-          Assert.That (root.GetHierachy(), Is.Empty);
+          Assert.That(root.GetHierachy(), Is.Empty);
         }
       }
     }

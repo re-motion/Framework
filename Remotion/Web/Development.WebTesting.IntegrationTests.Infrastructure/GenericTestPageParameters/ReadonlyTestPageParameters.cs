@@ -36,14 +36,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     public string ReadOnlyHtmlID { get; private set; }
 
     public ReadOnlyTestPageParameters ()
-        : base (TestConstants.ReadOnlyTestsID, c_parameterCount)
+        : base(TestConstants.ReadOnlyTestsID, c_parameterCount)
     {
     }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       EnabledHtmlID = data.Arguments[0];
       ReadOnlyHtmlID = data.Arguments[1];

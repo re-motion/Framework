@@ -30,7 +30,7 @@ namespace Remotion.Mixins.MixerTools
   {
     public static AppDomainSetup CreateAppDomainSetup (MixerParameters parameters)
     {
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       var setup = new AppDomainSetup
                   {
@@ -38,13 +38,13 @@ namespace Remotion.Mixins.MixerTools
                       ApplicationBase = parameters.BaseDirectory
                   };
 
-      if (!string.IsNullOrEmpty (parameters.ConfigFile))
+      if (!string.IsNullOrEmpty(parameters.ConfigFile))
       {
         setup.ConfigurationFile = parameters.ConfigFile;
-        if (!File.Exists (setup.ConfigurationFile))
+        if (!File.Exists(setup.ConfigurationFile))
         {
-          throw new FileNotFoundException (
-              string.Format (
+          throw new FileNotFoundException(
+              string.Format(
                   "The configuration file supplied by the 'config' parameter was not found.\r\nFile: {0}",
                   setup.ConfigurationFile),
               setup.ConfigurationFile);
@@ -56,7 +56,7 @@ namespace Remotion.Mixins.MixerTools
     private readonly MixerParameters _parameters;
 
     public MixerRunner (MixerParameters parameters)
-        : base (CreateAppDomainSetup (ArgumentUtility.CheckNotNull ("parameters", parameters)))
+        : base(CreateAppDomainSetup(ArgumentUtility.CheckNotNull("parameters", parameters)))
     {
       _parameters = parameters;
     }
@@ -69,14 +69,14 @@ namespace Remotion.Mixins.MixerTools
 
       try
       {
-        mixer.PrepareOutputDirectory ();
-        mixer.Execute (MixinConfiguration.ActiveConfiguration);
+        mixer.PrepareOutputDirectory();
+        mixer.Execute(MixinConfiguration.ActiveConfiguration);
       }
       catch (Exception ex)
       {
-        using (ConsoleUtility.EnterColorScope (ConsoleColor.Red, null))
+        using (ConsoleUtility.EnterColorScope(ConsoleColor.Red, null))
         {
-          Console.WriteLine (ex.Message);
+          Console.WriteLine(ex.Message);
         }
       }
     }
@@ -89,19 +89,19 @@ namespace Remotion.Mixins.MixerTools
       }
       else
       {
-        var mixerLoggers = from t in AssemblyTypeCache.GetTypes (typeof (Mixer).Assembly)
-                           where t.Namespace == typeof (Mixer).GetNamespaceChecked()
-                           select LogManager.GetLogger (t);
+        var mixerLoggers = from t in AssemblyTypeCache.GetTypes(typeof(Mixer).Assembly)
+                           where t.Namespace == typeof(Mixer).GetNamespaceChecked()
+                           select LogManager.GetLogger(t);
         var logThresholds = from l in mixerLoggers
-                            select new LogThreshold (l, LogLevel.Info);
-        LogManager.InitializeConsole (LogLevel.Warn, logThresholds.ToArray ());
+                            select new LogThreshold(l, LogLevel.Info);
+        LogManager.InitializeConsole(LogLevel.Warn, logThresholds.ToArray());
       }
     }
 
     private Mixer CreateMixer ()
     {
-      var mixer = Mixer.Create (_parameters.AssemblyName, _parameters.AssemblyOutputDirectory, _parameters.DegreeOfParallelism);
-      
+      var mixer = Mixer.Create(_parameters.AssemblyName, _parameters.AssemblyOutputDirectory, _parameters.DegreeOfParallelism);
+
       mixer.ValidationErrorOccurred += Mixer_ValidationErrorOccurred;
       mixer.ErrorOccurred += Mixer_ErrorOccurred;
       return mixer;
@@ -109,17 +109,17 @@ namespace Remotion.Mixins.MixerTools
 
     private void Mixer_ValidationErrorOccurred (object sender, ValidationErrorEventArgs e)
     {
-      using (ConsoleUtility.EnterColorScope (ConsoleColor.Red, null))
+      using (ConsoleUtility.EnterColorScope(ConsoleColor.Red, null))
       {
-        Console.WriteLine (e.ValidationException.Message);
+        Console.WriteLine(e.ValidationException.Message);
       }
     }
 
     void Mixer_ErrorOccurred (object sender, ErrorEventArgs e)
     {
-      using (ConsoleUtility.EnterColorScope (ConsoleColor.Red, null))
+      using (ConsoleUtility.EnterColorScope(ConsoleColor.Red, null))
       {
-        Console.WriteLine (e.Exception.ToString ());
+        Console.WriteLine(e.Exception.ToString());
       }
     }
   }

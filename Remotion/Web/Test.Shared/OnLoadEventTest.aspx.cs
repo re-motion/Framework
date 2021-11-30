@@ -23,9 +23,9 @@ namespace Remotion.Web.Test.Shared
   {
     protected override void OnPreRender (EventArgs e)
     {
-      RegisterClientSidePageEventHandler (SmartPageEvents.OnLoading, "OnLoading", "Page_OnLoading");
-      RegisterClientSidePageEventHandler (SmartPageEvents.OnLoaded, "OnLoaded", "Page_OnLoaded");
-      base.OnPreRender (e);
+      RegisterClientSidePageEventHandler(SmartPageEvents.OnLoading, "OnLoading", "Page_OnLoading");
+      RegisterClientSidePageEventHandler(SmartPageEvents.OnLoaded, "OnLoaded", "Page_OnLoaded");
+      base.OnPreRender(e);
     }
   }
 }

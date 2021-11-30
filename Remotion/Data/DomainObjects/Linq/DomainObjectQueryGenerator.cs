@@ -50,9 +50,9 @@ namespace Remotion.Data.DomainObjects.Linq
 
       public static GenericCallHelper Create (Type classType)
       {
-        return s_cache.GetOrAdd (
+        return s_cache.GetOrAdd(
             classType,
-            key => (GenericCallHelper) Activator.CreateInstance (typeof (GenericCallHelper<>).MakeGenericType (key)));
+            key => (GenericCallHelper)Activator.CreateInstance(typeof(GenericCallHelper<>).MakeGenericType(key)));
       }
 
       protected GenericCallHelper ()
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.Linq
           QueryModel queryModel,
           IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
       {
-        return domainObjectQueryGenerator.CreateSequenceQuery<T> (id, storageProviderDefinition, queryModel, fetchQueryModelBuilders);
+        return domainObjectQueryGenerator.CreateSequenceQuery<T>(id, storageProviderDefinition, queryModel, fetchQueryModelBuilders);
       }
     }
 
@@ -94,13 +94,13 @@ namespace Remotion.Data.DomainObjects.Linq
     public DomainObjectQueryGenerator (
         ISqlQueryGenerator sqlQueryGenerator,
         ITypeConversionProvider typeConversionProvider,
-        IStorageTypeInformationProvider storageTypeInformationProvider, 
+        IStorageTypeInformationProvider storageTypeInformationProvider,
         IMappingConfiguration mappingConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("sqlQueryGenerator", sqlQueryGenerator);
-      ArgumentUtility.CheckNotNull ("typeConversionProvider", typeConversionProvider);
-      ArgumentUtility.CheckNotNull ("storageTypeInformationProvider", storageTypeInformationProvider);
-      ArgumentUtility.CheckNotNull ("mappingConfiguration", mappingConfiguration);
+      ArgumentUtility.CheckNotNull("sqlQueryGenerator", sqlQueryGenerator);
+      ArgumentUtility.CheckNotNull("typeConversionProvider", typeConversionProvider);
+      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull("mappingConfiguration", mappingConfiguration);
 
       _sqlQueryGenerator = sqlQueryGenerator;
       _typeConversionProvider = typeConversionProvider;
@@ -130,17 +130,17 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public virtual IExecutableQuery<T> CreateScalarQuery<T> (string id, StorageProviderDefinition storageProviderDefinition, QueryModel queryModel)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull ("queryModel", queryModel);
+      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("queryModel", queryModel);
 
-      var sqlQuery = _sqlQueryGenerator.CreateSqlQuery (queryModel);
+      var sqlQuery = _sqlQueryGenerator.CreateSqlQuery(queryModel);
       var sqlCommand = sqlQuery.SqlCommand;
 
-      var query = CreateQuery (id, storageProviderDefinition, sqlCommand.CommandText, sqlCommand.Parameters, QueryType.Scalar, selectedEntityType: null);
+      var query = CreateQuery(id, storageProviderDefinition, sqlCommand.CommandText, sqlCommand.Parameters, QueryType.Scalar, selectedEntityType: null);
 
-      var projection = sqlCommand.GetInMemoryProjection<T> ().Compile ();
-      return new ScalarQueryAdapter<T> (query, o => projection (new ScalarResultRowAdapter (o, _storageTypeInformationProvider)));
+      var projection = sqlCommand.GetInMemoryProjection<T>().Compile();
+      return new ScalarQueryAdapter<T>(query, o => projection(new ScalarResultRowAdapter(o, _storageTypeInformationProvider)));
     }
 
     public virtual IExecutableQuery<IEnumerable<TItem>> CreateSequenceQuery<TItem> (
@@ -149,61 +149,61 @@ namespace Remotion.Data.DomainObjects.Linq
         QueryModel queryModel,
         IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull ("queryModel", queryModel);
-      ArgumentUtility.CheckNotNull ("fetchQueryModelBuilders", fetchQueryModelBuilders);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("queryModel", queryModel);
+      ArgumentUtility.CheckNotNull("fetchQueryModelBuilders", fetchQueryModelBuilders);
 
-      var sqlQuery = _sqlQueryGenerator.CreateSqlQuery (queryModel);
+      var sqlQuery = _sqlQueryGenerator.CreateSqlQuery(queryModel);
       var command = sqlQuery.SqlCommand;
 
       var queryType = sqlQuery.SelectedEntityType != null ? QueryType.Collection : QueryType.Custom;
-      var query = CreateQuery (id, storageProviderDefinition, command.CommandText, command.Parameters, queryType, sqlQuery.SelectedEntityType);
-      
+      var query = CreateQuery(id, storageProviderDefinition, command.CommandText, command.Parameters, queryType, sqlQuery.SelectedEntityType);
+
       if (queryType == QueryType.Collection)
       {
-        var selectedEntityClassDefinition = _mappingConfiguration.GetTypeDefinition (sqlQuery.SelectedEntityType);
-        Assertion.IsNotNull (selectedEntityClassDefinition, "We assume that in a re-store LINQ query, entities always have a mapping.");
+        var selectedEntityClassDefinition = _mappingConfiguration.GetTypeDefinition(sqlQuery.SelectedEntityType);
+        Assertion.IsNotNull(selectedEntityClassDefinition, "We assume that in a re-store LINQ query, entities always have a mapping.");
 
-        var fetchQueries = CreateEagerFetchQueries (selectedEntityClassDefinition, fetchQueryModelBuilders);
+        var fetchQueries = CreateEagerFetchQueries(selectedEntityClassDefinition, fetchQueryModelBuilders);
         foreach (var fetchQuery in fetchQueries)
-          query.EagerFetchQueries.Add (fetchQuery.Item1, fetchQuery.Item2);
+          query.EagerFetchQueries.Add(fetchQuery.Item1, fetchQuery.Item2);
 
-        return new DomainObjectSequenceQueryAdapter<TItem> (query);
+        return new DomainObjectSequenceQueryAdapter<TItem>(query);
       }
       else
       {
-        if (fetchQueryModelBuilders.Any ())
-          throw new NotSupportedException ("Only queries returning DomainObjects can perform eager fetching.");
+        if (fetchQueryModelBuilders.Any())
+          throw new NotSupportedException("Only queries returning DomainObjects can perform eager fetching.");
 
         var projection = sqlQuery.SqlCommand.GetInMemoryProjection<TItem>().Compile();
-        return new CustomSequenceQueryAdapter<TItem> (query, qrr => projection (new QueryResultRowAdapter (qrr)));
+        return new CustomSequenceQueryAdapter<TItem>(query, qrr => projection(new QueryResultRowAdapter(qrr)));
       }
     }
 
     protected virtual IQuery CreateQuery (
-        string id, 
+        string id,
         StorageProviderDefinition storageProviderDefinition,
         string statement,
         CommandParameter[] commandParameters,
         QueryType queryType,
         Type selectedEntityType)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("commandParameters", commandParameters);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("commandParameters", commandParameters);
 
       var queryParameters = new QueryParameterCollection();
       foreach (var commandParameter in commandParameters)
-        queryParameters.Add (commandParameter.Name, commandParameter.Value, QueryParameterType.Value);
+        queryParameters.Add(commandParameter.Name, commandParameter.Value, QueryParameterType.Value);
 
       if (queryType == QueryType.Scalar)
-        return QueryFactory.CreateScalarQuery (id, storageProviderDefinition, statement, queryParameters);
+        return QueryFactory.CreateScalarQuery(id, storageProviderDefinition, statement, queryParameters);
       else if (queryType == QueryType.Collection)
-        return QueryFactory.CreateCollectionQuery (id, storageProviderDefinition, statement, queryParameters, GetCollectionType (selectedEntityType));
+        return QueryFactory.CreateCollectionQuery(id, storageProviderDefinition, statement, queryParameters, GetCollectionType(selectedEntityType));
       else
-        return QueryFactory.CreateCustomQuery (id, storageProviderDefinition, statement, queryParameters);
+        return QueryFactory.CreateCustomQuery(id, storageProviderDefinition, statement, queryParameters);
     }
 
     private IEnumerable<Tuple<IRelationEndPointDefinition, IQuery>> CreateEagerFetchQueries (
@@ -212,7 +212,7 @@ namespace Remotion.Data.DomainObjects.Linq
     {
       foreach (var fetchQueryModelBuilder in fetchQueryModelBuilders)
       {
-        var relationEndPointDefinition = GetEagerFetchRelationEndPointDefinition (fetchQueryModelBuilder.FetchRequest, previousClassDefinition);
+        var relationEndPointDefinition = GetEagerFetchRelationEndPointDefinition(fetchQueryModelBuilder.FetchRequest, previousClassDefinition);
 
         // clone the fetch query model because we don't want to modify the source model of all inner requests
         var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel().Clone();
@@ -220,32 +220,32 @@ namespace Remotion.Data.DomainObjects.Linq
         // for re-store, fetch queries must always be distinct even when the query would return duplicates
         // e.g., for (from o in Orders select o).FetchOne (o => o.Customer)
         // when two orders have the same customer, re-store gives an error, unless we add a DISTINCT clause
-        fetchQueryModel.ResultOperators.Add (new DistinctResultOperator());
+        fetchQueryModel.ResultOperators.Add(new DistinctResultOperator());
 
-        var sortExpression = GetSortExpressionForRelation (relationEndPointDefinition);
+        var sortExpression = GetSortExpressionForRelation(relationEndPointDefinition);
         if (sortExpression != null)
         {
           // If we have a SortExpression, we need to add the ORDER BY clause _after_ the DISTINCT (because re-linq strips out ORDER BY clauses when
           // seeing a DISTINCT operator); therefore, we put the DISTINCT query into a sub-query, then append the ORDER BY clause
-          fetchQueryModel = fetchQueryModel.ConvertToSubQuery ("#fetch");
+          fetchQueryModel = fetchQueryModel.ConvertToSubQuery("#fetch");
 
           var orderByClause = new OrderByClause();
           foreach (var sortedPropertySpecification in sortExpression.SortedProperties)
-            orderByClause.Orderings.Add (GetOrdering (fetchQueryModel, sortedPropertySpecification));
+            orderByClause.Orderings.Add(GetOrdering(fetchQueryModel, sortedPropertySpecification));
 
-          fetchQueryModel.BodyClauses.Add (orderByClause);
+          fetchQueryModel.BodyClauses.Add(orderByClause);
         }
 
         var fetchedClassType = relationEndPointDefinition.GetOppositeClassDefinition().ClassType;
-        var genericCallHelper = GenericCallHelper.Create (fetchedClassType);
-        var fetchQuery = genericCallHelper.CreateSequenceQuery (
+        var genericCallHelper = GenericCallHelper.Create(fetchedClassType);
+        var fetchQuery = genericCallHelper.CreateSequenceQuery(
             this,
             "<fetch query for " + fetchQueryModelBuilder.FetchRequest.RelationMember.Name + ">",
             previousClassDefinition.StorageEntityDefinition.StorageProviderDefinition,
             fetchQueryModel,
             fetchQueryModelBuilder.CreateInnerBuilders());
 
-        yield return Tuple.Create (relationEndPointDefinition, fetchQuery);
+        yield return Tuple.Create(relationEndPointDefinition, fetchQuery);
       }
     }
 
@@ -265,27 +265,27 @@ namespace Remotion.Data.DomainObjects.Linq
       var propertyInfo = fetchRequest.RelationMember as PropertyInfo;
       if (propertyInfo == null)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The member '{0}' is a '{1}', which cannot be fetched by this LINQ provider. Only properties can be fetched.",
             fetchRequest.RelationMember.Name,
             fetchRequest.RelationMember.MemberType);
-        throw new NotSupportedException (message);
+        throw new NotSupportedException(message);
       }
 
-      var propertyInfoAdapter = PropertyInfoAdapter.Create (propertyInfo);
-      var endPoint = classDefinition.ResolveRelationEndPoint (propertyInfoAdapter)
+      var propertyInfoAdapter = PropertyInfoAdapter.Create(propertyInfo);
+      var endPoint = classDefinition.ResolveRelationEndPoint(propertyInfoAdapter)
                      ?? classDefinition.GetAllDerivedClasses()
-                         .Select (cd => cd.ResolveRelationEndPoint (propertyInfoAdapter))
-                         .FirstOrDefault (ep => ep != null);
+                         .Select(cd => cd.ResolveRelationEndPoint(propertyInfoAdapter))
+                         .FirstOrDefault(ep => ep != null);
 
       if (endPoint == null)
       {
-        Assertion.IsNotNull (propertyInfo.DeclaringType);
-        var message = string.Format (
+        Assertion.IsNotNull(propertyInfo.DeclaringType);
+        var message = string.Format(
             "The property '{0}.{1}' is not a relation end point. Fetching it is not supported by this LINQ provider.",
             propertyInfo.DeclaringType.GetFullNameSafe(),
             propertyInfo.Name);
-        throw new NotSupportedException (message);
+        throw new NotSupportedException(message);
       }
 
       return endPoint;
@@ -295,39 +295,39 @@ namespace Remotion.Data.DomainObjects.Linq
     {
       var instanceExpression = queryModel.SelectClause.Selector;
 
-      var normalizedProperty = GetNormalizedProperty (
+      var normalizedProperty = GetNormalizedProperty(
           sortedPropertySpecification.PropertyDefinition.PropertyInfo,
-          TypeAdapter.Create (instanceExpression.Type));
+          TypeAdapter.Create(instanceExpression.Type));
 
-      var memberExpression = Expression.MakeMemberAccess (
-            Expression.Convert (instanceExpression, normalizedProperty.DeclaringType.ConvertToRuntimeType()),
+      var memberExpression = Expression.MakeMemberAccess(
+            Expression.Convert(instanceExpression, normalizedProperty.DeclaringType.ConvertToRuntimeType()),
             normalizedProperty.ConvertToRuntimePropertyInfo());
 
       var orderingDirection = sortedPropertySpecification.Order == SortOrder.Ascending ? OrderingDirection.Asc : OrderingDirection.Desc;
-      return new Ordering (memberExpression, orderingDirection);
+      return new Ordering(memberExpression, orderingDirection);
     }
 
     private IPropertyInformation GetNormalizedProperty (IPropertyInformation propertyInformation, ITypeInformation instanceTypeInformation)
     {
       var originalDeclaringType = propertyInformation.GetOriginalDeclaringType();
       // Support for properties declared on instance type and base types
-      if (originalDeclaringType.IsAssignableFrom (instanceTypeInformation))
+      if (originalDeclaringType.IsAssignableFrom(instanceTypeInformation))
         return propertyInformation;
 
       // Support for properties declared on derived types
-      if (instanceTypeInformation.IsAssignableFrom (originalDeclaringType))
+      if (instanceTypeInformation.IsAssignableFrom(originalDeclaringType))
         return propertyInformation;
 
       // Support for properties declared on mixin
-      if (Mixins.Utilities.ReflectionUtility.IsMixinType (originalDeclaringType.ConvertToRuntimeType()))
+      if (Mixins.Utilities.ReflectionUtility.IsMixinType(originalDeclaringType.ConvertToRuntimeType()))
       {
         var instanceRuntimeType = instanceTypeInformation.ConvertToRuntimeType();
         var interfacePropertyInformation = propertyInformation.FindInterfaceDeclarations()
-            .Where (p => MixinTypeUtility.IsAssignableFrom (p.GetOriginalDeclaringType().ConvertToRuntimeType(), instanceRuntimeType))
-            .First (
+            .Where(p => MixinTypeUtility.IsAssignableFrom(p.GetOriginalDeclaringType().ConvertToRuntimeType(), instanceRuntimeType))
+            .First(
                 () =>
-                    new NotSupportedException (
-                        string.Format (
+                    new NotSupportedException(
+                        string.Format(
                             "The member '{0}.{1}' is not part of any interface introduced onto the target class '{2}'. "
                             + "Only mixed properties that are part of an introduced interface can be used within the sort-expression of a collection property.",
                             propertyInformation.DeclaringType.GetFullNameSafe(),
@@ -339,8 +339,8 @@ namespace Remotion.Data.DomainObjects.Linq
       }
 
       // Unreachable due to mapping validation
-      throw new NotSupportedException (
-          string.Format (
+      throw new NotSupportedException(
+          string.Format(
               "The member '{0}.{1}' is not part of inheritance hierarchy of class '{2}'. "
               + "Only properties that are part of the inheritance hierarhcy can be used within the sort-expression of a collection property.",
               propertyInformation.DeclaringType.GetFullNameSafe(),
@@ -352,12 +352,12 @@ namespace Remotion.Data.DomainObjects.Linq
     private Type GetCollectionType (Type itemType)
     {
       if (itemType == null)
-        return typeof (DomainObjectCollection);
+        return typeof(DomainObjectCollection);
 
-      if (!typeof (DomainObject).IsAssignableFrom (itemType))
-        return typeof (DomainObjectCollection);
+      if (!typeof(DomainObject).IsAssignableFrom(itemType))
+        return typeof(DomainObjectCollection);
 
-      return s_collectionTypeCache.GetOrAdd (itemType, key => typeof (ObjectList<>).MakeGenericType (itemType));
+      return s_collectionTypeCache.GetOrAdd(itemType, key => typeof(ObjectList<>).MakeGenericType(itemType));
     }
   }
 }

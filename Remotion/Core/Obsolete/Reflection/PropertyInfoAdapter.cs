@@ -21,8 +21,8 @@ using System.Reflection;
 
 namespace Remotion.Reflection
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
-  [TypeConverter (typeof (PropertyInfoAdapterConverter))]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
+  [TypeConverter(typeof(PropertyInfoAdapterConverter))]
   internal sealed class PropertyInfoAdapter : IPropertyInformation
   {
     public static PropertyInfoAdapter Create (PropertyInfo propertyInfo)

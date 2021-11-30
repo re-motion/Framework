@@ -33,69 +33,69 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      _loadedObjectData = new FreshlyLoadedObjectData (_dataContainer);
+      _dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
+      _loadedObjectData = new FreshlyLoadedObjectData(_dataContainer);
     }
-    
+
     [Test]
     public void Initialization ()
     {
-      Assert.That (_loadedObjectData.FreshlyLoadedDataContainer, Is.SameAs (_dataContainer));
-      Assert.That (_loadedObjectData.ObjectID, Is.EqualTo (_dataContainer.ID));
+      Assert.That(_loadedObjectData.FreshlyLoadedDataContainer, Is.SameAs(_dataContainer));
+      Assert.That(_loadedObjectData.ObjectID, Is.EqualTo(_dataContainer.ID));
     }
 
     [Test]
     public void Initialization_WithClientTransaction_Throws ()
     {
-      var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      ClientTransactionTestHelper.RegisterDataContainer (ClientTransaction.CreateRootTransaction (), dataContainer);
+      var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
+      ClientTransactionTestHelper.RegisterDataContainer(ClientTransaction.CreateRootTransaction(), dataContainer);
 
-      Assert.That (
-          () => new FreshlyLoadedObjectData (dataContainer),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+      Assert.That(
+          () => new FreshlyLoadedObjectData(dataContainer),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The DataContainer must not have been registered with a ClientTransaction.", "freshlyLoadedDataContainer"));
     }
 
     [Test]
     public void Initialization_WithDomainObject_Throws ()
     {
-      var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      dataContainer.SetDomainObject (DomainObjectMother.CreateFakeObject<Order> (dataContainer.ID));
+      var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
+      dataContainer.SetDomainObject(DomainObjectMother.CreateFakeObject<Order>(dataContainer.ID));
 
-      Assert.That (
-          () => new FreshlyLoadedObjectData (dataContainer),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+      Assert.That(
+          () => new FreshlyLoadedObjectData(dataContainer),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The DataContainer must not have been registered with a DomainObject.", "freshlyLoadedDataContainer"));
     }
 
     [Test]
     public void GetDomainObjectReference_BeforeRegistration ()
     {
-      Assert.That (
-          () => _loadedObjectData.GetDomainObjectReference (), 
-          Throws.InvalidOperationException.With.Message.EqualTo (
+      Assert.That(
+          () => _loadedObjectData.GetDomainObjectReference(),
+          Throws.InvalidOperationException.With.Message.EqualTo(
             "Cannot obtain a DomainObject reference for a freshly loaded object that has not yet been registered."));
     }
 
     [Test]
     public void GetDomainObjectReference_AfterRegistration ()
     {
-      var domainObject = DomainObjectMother.CreateFakeObject<Order> (_dataContainer.ID);
-      _dataContainer.SetDomainObject (domainObject);
+      var domainObject = DomainObjectMother.CreateFakeObject<Order>(_dataContainer.ID);
+      _dataContainer.SetDomainObject(domainObject);
 
-      Assert.That (_loadedObjectData.GetDomainObjectReference (), Is.SameAs (domainObject));
+      Assert.That(_loadedObjectData.GetDomainObjectReference(), Is.SameAs(domainObject));
     }
 
     [Test]
     public void Accept ()
     {
       var visitorMock = MockRepository.GenerateStrictMock<ILoadedObjectVisitor>();
-      visitorMock.Expect (mock => mock.VisitFreshlyLoadedObject (_loadedObjectData));
+      visitorMock.Expect(mock => mock.VisitFreshlyLoadedObject(_loadedObjectData));
       visitorMock.Replay();
 
-      _loadedObjectData.Accept (visitorMock);
+      _loadedObjectData.Accept(visitorMock);
 
       visitorMock.VerifyAllExpectations();
     }
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     [Test]
     public void IsNull ()
     {
-      Assert.That (((INullObject) _loadedObjectData).IsNull, Is.False);
+      Assert.That(((INullObject)_loadedObjectData).IsNull, Is.False);
     }
   }
 }

@@ -33,7 +33,7 @@ namespace Remotion.Collections
   /// </para>
   /// </summary>
   /// <typeparam name="T">Type for which <see cref="Equals(T,T)"/>, <see cref="Equals(T,object)"/> and <see cref="GetHashCode"/> are supplied.</typeparam>
-  public class CompoundValueEqualityComparer<T> : IEqualityComparer<T> where T : class 
+  public class CompoundValueEqualityComparer<T> : IEqualityComparer<T> where T : class
   {
     private readonly Func<T, object[]> _equalityParticipantsProvider;
 
@@ -55,7 +55,7 @@ namespace Remotion.Collections
     public bool Equals (T x, Object? obj)
     {
       var y = obj as T;
-      if (Object.ReferenceEquals (y, null))
+      if (Object.ReferenceEquals(y, null))
       {
         return false;
       }
@@ -77,9 +77,9 @@ namespace Remotion.Collections
         return true;
       }
 
-      var equalityParticipantsX = _equalityParticipantsProvider (x);
-      var equalityParticipantsY = _equalityParticipantsProvider (y);
-      return equalityParticipantsX.SequenceEqual (equalityParticipantsY);
+      var equalityParticipantsX = _equalityParticipantsProvider(x);
+      var equalityParticipantsY = _equalityParticipantsProvider(y);
+      return equalityParticipantsX.SequenceEqual(equalityParticipantsY);
     }
 
     /// <summary>
@@ -90,8 +90,8 @@ namespace Remotion.Collections
     /// </remarks>
     public int GetHashCode (T x)
     {
-      var equalityParticipantsX = _equalityParticipantsProvider (x);
-      return EqualityUtility.GetRotatedHashCode (equalityParticipantsX);
+      var equalityParticipantsX = _equalityParticipantsProvider(x);
+      return EqualityUtility.GetRotatedHashCode(equalityParticipantsX);
     }
 
     /// <summary>
@@ -99,8 +99,8 @@ namespace Remotion.Collections
     /// </summary>
     public ReadOnlyCollection<object> GetEqualityParticipatingObjects (T x)
     {
-      return new ReadOnlyCollection<object>(_equalityParticipantsProvider (x));
+      return new ReadOnlyCollection<object>(_equalityParticipantsProvider(x));
     }
- 
+
   }
 }

@@ -25,17 +25,17 @@ namespace Remotion.Data.DomainObjects.Queries
   public class UnexpectedQueryResultException : DomainObjectException
   {
     public UnexpectedQueryResultException (string message, Exception innerException)
-        : base (message, innerException)
+        : base(message, innerException)
     {
     }
 
     protected UnexpectedQueryResultException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
 
     public UnexpectedQueryResultException (string message)
-        : base (message)
+        : base(message)
     {
     }
   }

@@ -24,7 +24,7 @@ using Remotion.Utilities;
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IConfigurationProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor(typeof(IConfigurationProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class ConfigurationProvider : IConfigurationProvider
   {
     public ConfigurationProvider ()
@@ -36,23 +36,23 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       if (classContext == null)
         return null;
 
-      return TargetClassDefinitionFactory.CreateAndValidate (classContext);
+      return TargetClassDefinitionFactory.CreateAndValidate(classContext);
     }
 
     public TargetClassDefinition? GetTargetClassDefinition (Type requestedType)
     {
-      ArgumentUtility.CheckNotNull ("requestedType", requestedType);
+      ArgumentUtility.CheckNotNull("requestedType", requestedType);
 
-      var classContext = MixinConfiguration.ActiveConfiguration.GetContext (requestedType);
-      return GetTargetClassDefinition (classContext);
+      var classContext = MixinConfiguration.ActiveConfiguration.GetContext(requestedType);
+      return GetTargetClassDefinition(classContext);
     }
 
     public IEnumerable<Type> GetInterfacesToImplement (TargetClassDefinition targetClassDefinition, IEnumerable<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull ("mixinInfos", mixinInfos);
+      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull("mixinInfos", mixinInfos);
 
-      var implementedInterfaceFinder = new ImplementedInterfaceFinder (
+      var implementedInterfaceFinder = new ImplementedInterfaceFinder(
           targetClassDefinition.ImplementedInterfaces,
           targetClassDefinition.ReceivedInterfaces,
           targetClassDefinition.RequiredTargetCallTypes,

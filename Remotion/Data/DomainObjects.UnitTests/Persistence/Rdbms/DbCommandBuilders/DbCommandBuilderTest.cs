@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       base.SetUp();
 
-      _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect> ();
-      _commandBuilder = new TestableDbCommandBuilder (_sqlDialectStub);
+      _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect>();
+      _commandBuilder = new TestableDbCommandBuilder(_sqlDialectStub);
     }
 
     [Test]
@@ -43,20 +43,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var statement = new StringBuilder();
       var command = MockRepository.GenerateStub<IDbCommand>();
-      
+
       var specificationMock = MockRepository.GenerateStrictMock<IComparedColumnsSpecification>();
-      specificationMock.Expect (mock => mock.AddParameters (command, _sqlDialectStub));
+      specificationMock.Expect(mock => mock.AddParameters(command, _sqlDialectStub));
       specificationMock
-          .Expect (mock => mock.AppendComparisons (statement, command, _sqlDialectStub))
-          .WhenCalled (
+          .Expect(mock => mock.AppendComparisons(statement, command, _sqlDialectStub))
+          .WhenCalled(
               mi =>
               {
-                Assert.That (statement.ToString(), Is.EqualTo (" WHERE "));
-                statement.Append ("<conditions>");
+                Assert.That(statement.ToString(), Is.EqualTo(" WHERE "));
+                statement.Append("<conditions>");
               });
       specificationMock.Replay();
 
-      _commandBuilder.AppendWhereClause (statement, command, specificationMock);
+      _commandBuilder.AppendWhereClause(statement, command, specificationMock);
 
       specificationMock.VerifyAllExpectations();
     }
@@ -64,26 +64,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     [Test]
     public void AppendOrderByClause ()
     {
-      var statement = new StringBuilder ();
+      var statement = new StringBuilder();
       var command = MockRepository.GenerateStub<IDbCommand>();
 
-      var specificationMock = MockRepository.GenerateStrictMock<IOrderedColumnsSpecification> ();
-      specificationMock.Expect (mock => mock.IsEmpty).Return (false);
+      var specificationMock = MockRepository.GenerateStrictMock<IOrderedColumnsSpecification>();
+      specificationMock.Expect(mock => mock.IsEmpty).Return(false);
       specificationMock
-          .Expect (mock => mock.AppendOrderings(statement, _sqlDialectStub))
-          .WhenCalled (
+          .Expect(mock => mock.AppendOrderings(statement, _sqlDialectStub))
+          .WhenCalled(
               mi =>
               {
-                Assert.That (statement.ToString (), Is.EqualTo(" ORDER BY "));
-                statement.Append ("orders...");
+                Assert.That(statement.ToString(), Is.EqualTo(" ORDER BY "));
+                statement.Append("orders...");
               });
-      specificationMock.Replay ();
+      specificationMock.Replay();
 
-      _commandBuilder.AppendOrderByClause (statement, command, specificationMock);
+      _commandBuilder.AppendOrderByClause(statement, command, specificationMock);
 
       specificationMock.VerifyAllExpectations();
-      Assert.That (statement.ToString (), Is.EqualTo(" ORDER BY orders..."));
+      Assert.That(statement.ToString(), Is.EqualTo(" ORDER BY orders..."));
     }
-    
+
   }
 }

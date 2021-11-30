@@ -62,7 +62,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     public void Leave ()
     {
       if (_left)
-        throw new InvalidOperationException ("Has already been left.");
+        throw new InvalidOperationException("Has already been left.");
       CurrentScope = _previousScope;
       _left = true;
     }

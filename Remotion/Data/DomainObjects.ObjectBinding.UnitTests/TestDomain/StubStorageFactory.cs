@@ -37,17 +37,17 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
   {
     public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
-      return new StubStorageProvider (storageProviderDefinition, persistenceExtension);
+      return new StubStorageProvider(storageProviderDefinition, persistenceExtension);
     }
 
     public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition, IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
     {
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
-      return new SqlStorageObjectFactory ().CreatePersistenceModelLoader (storageProviderDefinition, storageProviderDefinitionFinder);
+      return new SqlStorageObjectFactory().CreatePersistenceModelLoader(storageProviderDefinition, storageProviderDefinitionFinder);
     }
 
     public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (
@@ -56,14 +56,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
         ResultOperatorHandlerRegistry resultOperatorHandlerRegistry,
         IMappingConfiguration mappingConfiguration)
     {
-      return new StubDomainObjectQueryGenerator ();
+      return new StubDomainObjectQueryGenerator();
     }
 
     public IStorageProviderSerializer CreateStorageProviderSerializer (IEnumSerializer enumSerializer)
     {
       throw new NotImplementedException();
     }
-    
+
     public IEnumSerializer CreateEnumSerializer ()
     {
       throw new NotImplementedException();
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 
     public IScriptBuilder CreateTableBuilder (RdbmsProviderDefinition storageProviderDefinition)
     {
-      return new TableScriptBuilder (new SqlTableScriptElementFactory(), new SqlCommentScriptElementFactory());
+      return new TableScriptBuilder(new SqlTableScriptElementFactory(), new SqlCommentScriptElementFactory());
     }
 
     public IScriptBuilder CreateViewBuilder (RdbmsProviderDefinition storageProviderDefinition)

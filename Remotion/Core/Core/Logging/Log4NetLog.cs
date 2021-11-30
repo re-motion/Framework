@@ -55,7 +55,7 @@ namespace Remotion.Logging
         case LogLevel.Fatal:
           return Level.Fatal;
         default:
-          throw new ArgumentException (string.Format ("LogLevel does not support value {0}.", logLevel), "logLevel");
+          throw new ArgumentException(string.Format("LogLevel does not support value {0}.", logLevel), "logLevel");
       }
     }
 
@@ -68,7 +68,7 @@ namespace Remotion.Logging
     /// <param name="logger">The <see cref="ILogger"/> the log messages are written to.</param>
     public Log4NetLog (ILogger logger)
     {
-      ArgumentUtility.CheckNotNull ("logger", logger);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       _logger = logger;
     }
@@ -85,38 +85,38 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void Log (LogLevel logLevel, int? eventID, object? message, Exception? exceptionObject)
     {
-      var level = Convert (logLevel);
-      if (_logger.IsEnabledFor (level))
-        _logger.Log (CreateLoggingEvent (level, eventID, message, exceptionObject));
+      var level = Convert(logLevel);
+      if (_logger.IsEnabledFor(level))
+        _logger.Log(CreateLoggingEvent(level, eventID, message, exceptionObject));
     }
 
     /// <inheritdoc />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public void LogFormat (LogLevel logLevel, int? eventID, Exception? exceptionObject, string? format, params object?[]? args)
     {
-      var level = Convert (logLevel);
-      if (_logger.IsEnabledFor (level))
-        _logger.Log (CreateLoggingEvent (level, eventID, new SystemStringFormat (CultureInfo.InvariantCulture, format, args), exceptionObject));
+      var level = Convert(logLevel);
+      if (_logger.IsEnabledFor(level))
+        _logger.Log(CreateLoggingEvent(level, eventID, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), exceptionObject));
     }
 
     /// <inheritdoc />
     public bool IsEnabled (LogLevel logLevel)
     {
-      return _logger.IsEnabledFor (Convert (logLevel));
+      return _logger.IsEnabledFor(Convert(logLevel));
     }
 
     private LoggingEvent CreateLoggingEvent (Level level, int? eventID, object? message, Exception? exceptionObject)
     {
-      LoggingEvent loggingEvent = new LoggingEvent (typeof (Log4NetLog), null, _logger.Name, level, message, exceptionObject);
+      LoggingEvent loggingEvent = new LoggingEvent(typeof(Log4NetLog), null, _logger.Name, level, message, exceptionObject);
 
       if (eventID.HasValue)
       {
         if (eventID < 0 || eventID > 0xFFFF)
         {
-          LogLoggingError (eventID.Value, exceptionObject, message);
+          LogLoggingError(eventID.Value, exceptionObject, message);
 
-          throw new ArgumentOutOfRangeException (
-             "eventID", string.Format ("An event id of value {0} is not supported. Valid event ids must be within a range of 0 and 65535.", eventID));
+          throw new ArgumentOutOfRangeException(
+             "eventID", string.Format("An event id of value {0} is not supported. Valid event ids must be within a range of 0 and 65535.", eventID));
         }
 
         loggingEvent.Properties["EventID"] = eventID;
@@ -136,15 +136,15 @@ namespace Remotion.Logging
         safeEventID = eventID;
 
       Level level = Level.Error;
-      if (_logger.IsEnabledFor (level))
+      if (_logger.IsEnabledFor(level))
       {
-        if (_logger.IsEnabledFor (level))
+        if (_logger.IsEnabledFor(level))
         {
-          _logger.Log (
-              CreateLoggingEvent (
+          _logger.Log(
+              CreateLoggingEvent(
                   level,
                   safeEventID,
-                  new SystemStringFormat (
+                  new SystemStringFormat(
                       CultureInfo.InvariantCulture,
                       "Failure during logging of message:\r\n{0}\r\nEvent ID: {1}",
                       // TODO RM-7803: message or the ToString() result being null should result in a fallback value being used.

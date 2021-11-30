@@ -23,10 +23,10 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
   {
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
-      var testFormUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (TestForm), TestResourceType.Root, "MultiplePostbackCatching/TestForm.aspx").GetUrl();
-      TestSuiteGenerator.GenerateTestCases (this, TestSuiteTable.Rows, testFormUrl, "Standard");
+      var testFormUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof(TestForm), TestResourceType.Root, "MultiplePostbackCatching/TestForm.aspx").GetUrl();
+      TestSuiteGenerator.GenerateTestCases(this, TestSuiteTable.Rows, testFormUrl, "Standard");
     }
   }
 }

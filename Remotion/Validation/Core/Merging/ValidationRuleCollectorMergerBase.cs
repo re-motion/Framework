@@ -42,15 +42,15 @@ namespace Remotion.Validation.Merging
 
     public ValidationCollectorMergeResult Merge (IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> validationCollectorInfos)
     {
-      ArgumentUtility.CheckNotNull ("validationCollectorInfos", validationCollectorInfos);
+      ArgumentUtility.CheckNotNull("validationCollectorInfos", validationCollectorInfos);
 
       var logContext = CreateNewLogContext();
       var collectedPropertyValidationRules = new List<IAddingPropertyValidationRuleCollector>();
       var collectedObjectValidationRules = new List<IAddingObjectValidationRuleCollector>();
       foreach (var validationCollectorGroup in validationCollectorInfos)
-        MergeRules (validationCollectorGroup, collectedPropertyValidationRules, collectedObjectValidationRules, logContext);
+        MergeRules(validationCollectorGroup, collectedPropertyValidationRules, collectedObjectValidationRules, logContext);
 
-      return new ValidationCollectorMergeResult (collectedPropertyValidationRules, collectedObjectValidationRules, logContext);
+      return new ValidationCollectorMergeResult(collectedPropertyValidationRules, collectedObjectValidationRules, logContext);
     }
   }
 }

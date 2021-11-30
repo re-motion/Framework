@@ -38,19 +38,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       base.SetUp();
 
-      _endPoint1 = MockRepository.GenerateStub<IRelationEndPoint> ();
-      _endPoint2 = MockRepository.GenerateStub<IRelationEndPoint> ();
+      _endPoint1 = MockRepository.GenerateStub<IRelationEndPoint>();
+      _endPoint2 = MockRepository.GenerateStub<IRelationEndPoint>();
 
       _registrationAgentMock = MockRepository.GenerateStrictMock<IRelationEndPointRegistrationAgent>();
-      _map = new RelationEndPointMap (MockRepository.GenerateStub<IClientTransactionEventSink> ());
+      _map = new RelationEndPointMap(MockRepository.GenerateStub<IClientTransactionEventSink>());
 
-      _command = new UnregisterEndPointsCommand (new[] { _endPoint1, _endPoint2 }, _registrationAgentMock, _map);
+      _command = new UnregisterEndPointsCommand(new[] { _endPoint1, _endPoint2 }, _registrationAgentMock, _map);
     }
 
     [Test]
     public void GetAllExceptions ()
     {
-      Assert.That (_command.GetAllExceptions(), Is.Empty);
+      Assert.That(_command.GetAllExceptions(), Is.Empty);
     }
 
     [Test]
@@ -62,8 +62,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void Perform ()
     {
-      _registrationAgentMock.Expect (mock => mock.UnregisterEndPoint (_endPoint1, _map));
-      _registrationAgentMock.Expect (mock => mock.UnregisterEndPoint (_endPoint2, _map));
+      _registrationAgentMock.Expect(mock => mock.UnregisterEndPoint(_endPoint1, _map));
+      _registrationAgentMock.Expect(mock => mock.UnregisterEndPoint(_endPoint2, _map));
       _registrationAgentMock.Replay();
 
       _command.Perform();
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       var result = _command.ExpandToAllRelatedObjects();
 
-      Assert.That (result.GetNestedCommands(), Is.EqualTo (new[] { _command }));
+      Assert.That(result.GetNestedCommands(), Is.EqualTo(new[] { _command }));
     }
   }
 }

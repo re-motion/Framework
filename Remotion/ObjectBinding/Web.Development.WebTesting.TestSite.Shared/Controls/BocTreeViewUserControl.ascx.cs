@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       Normal.MenuItemProvider = new TestBocTreeViewContextMenu();
       ContextMenu_Delayed.MenuItemProvider = new TestBocTreeViewContextMenu();
       ContextMenu_DelayedLongerThanTimeout.MenuItemProvider = new TestBocTreeViewContextMenu();
@@ -37,26 +37,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
       SetTestOutput();
     }
 
     private void SetTestOutput ()
     {
-      TestOutput.SetNormalSelectedNodeLabel (Normal.SelectedNode != null ? Normal.SelectedNode.ItemID + "|" + Normal.SelectedNode.Text : "");
-      TestOutput.SetNoTopLevelExpanderSelectedNodeLabel (
+      TestOutput.SetNormalSelectedNodeLabel(Normal.SelectedNode != null ? Normal.SelectedNode.ItemID + "|" + Normal.SelectedNode.Text : "");
+      TestOutput.SetNoTopLevelExpanderSelectedNodeLabel(
           NoTopLevelExpander.SelectedNode != null ? NoTopLevelExpander.SelectedNode.ItemID + "|" + NoTopLevelExpander.SelectedNode.Text : "");
-      TestOutput.SetNoLookAheadEvaluationSelectedNodeLabel (
+      TestOutput.SetNoLookAheadEvaluationSelectedNodeLabel(
           NoLookAheadEvaluation.SelectedNode != null
               ? NoLookAheadEvaluation.SelectedNode.ItemID + "|" + NoLookAheadEvaluation.SelectedNode.Text
               : "");
-      TestOutput.SetNoPropertyIdentifierSelectedNodeLabel (
+      TestOutput.SetNoPropertyIdentifierSelectedNodeLabel(
           NoPropertyIdentifier.SelectedNode != null ? NoPropertyIdentifier.SelectedNode.ItemID + "|" + NoPropertyIdentifier.SelectedNode.Text : "");
     }
 
     private BocTreeViewUserControlTestOutput TestOutput
     {
-      get { return (BocTreeViewUserControlTestOutput) ((Layout) Page.Master).GetTestOutputControl(); }
+      get { return (BocTreeViewUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
     }
   }
 }

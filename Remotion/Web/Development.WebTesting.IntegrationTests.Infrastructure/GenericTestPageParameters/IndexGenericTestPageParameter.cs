@@ -42,17 +42,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     public string FoundControlID { get; private set; }
 
     public IndexGenericTestPageParameter ()
-        : base (TestConstants.IndexSelectorID, c_parameterCount)
+        : base(TestConstants.IndexSelectorID, c_parameterCount)
     {
     }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
-      VisibleControlIndex = int.Parse (data.Arguments[0]);
-      HiddenControlIndex = int.Parse (data.Arguments[1]);
+      VisibleControlIndex = int.Parse(data.Arguments[0]);
+      HiddenControlIndex = int.Parse(data.Arguments[1]);
       FoundControlID = data.Arguments[2];
     }
   }

@@ -35,25 +35,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
 
     public InternetExplorerBrowserFactory ([NotNull] InternetExplorerConfiguration internetExplorerConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("internetExplorerConfiguration", internetExplorerConfiguration);
+      ArgumentUtility.CheckNotNull("internetExplorerConfiguration", internetExplorerConfiguration);
 
       _internetExplorerConfiguration = internetExplorerConfiguration;
     }
 
     public IBrowserSession CreateBrowser (DriverConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
+      ArgumentUtility.CheckNotNull("configuration", configuration);
 
-      var sessionConfiguration = CreateSessionConfiguration (configuration);
+      var sessionConfiguration = CreateSessionConfiguration(configuration);
       var commandTimeout = configuration.CommandTimeout;
 
       int driverProcessId;
-      var driver = CreateInternetExplorerDriver (out driverProcessId, commandTimeout);
+      var driver = CreateInternetExplorerDriver(out driverProcessId, commandTimeout);
       driver.Manage().Timeouts().AsynchronousJavaScript = configuration.AsyncJavaScriptTimeout;
 
-      var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.InternetExplorer));
+      var session = new Coypu.BrowserSession(sessionConfiguration, new CustomSeleniumWebDriver(driver, Browser.InternetExplorer));
 
-      return new InternetExplorerBrowserSession (session, _internetExplorerConfiguration, driverProcessId);
+      return new InternetExplorerBrowserSession(session, _internetExplorerConfiguration, driverProcessId);
     }
 
     private SessionConfiguration CreateSessionConfiguration (DriverConfiguration configuration)
@@ -66,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
                  ConsiderInvisibleElements = WebTestingConstants.ShouldConsiderInvisibleElements,
                  Match = WebTestingConstants.DefaultMatchStrategy,
                  TextPrecision = WebTestingConstants.DefaultTextPrecision,
-                 Driver = typeof (CustomSeleniumWebDriver)
+                 Driver = typeof(CustomSeleniumWebDriver)
              };
     }
 
@@ -75,7 +75,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
       var driverService = CreateInternetExplorerDriverService();
       var options = _internetExplorerConfiguration.CreateInternetExplorerOptions();
 
-      var driver = new InternetExplorerDriver (driverService, options, commandTimeout);
+      var driver = new InternetExplorerDriver(driverService, options, commandTimeout);
 
       driverProcessId = driverService.ProcessId;
 
@@ -85,7 +85,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
     private InternetExplorerDriverService CreateInternetExplorerDriverService ()
     {
       var driverService = InternetExplorerDriverService.CreateDefaultService();
-      driverService.LogFile = WebDriverLogUtility.CreateLogFile (
+      driverService.LogFile = WebDriverLogUtility.CreateLogFile(
           _internetExplorerConfiguration.LogsDirectory,
           _internetExplorerConfiguration.BrowserName);
       driverService.LoggingLevel = InternetExplorerDriverLogLevel.Info;

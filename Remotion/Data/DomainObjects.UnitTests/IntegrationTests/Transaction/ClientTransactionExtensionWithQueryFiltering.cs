@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
   public class ClientTransactionExtensionWithQueryFiltering : ClientTransactionExtensionBase
   {
     public ClientTransactionExtensionWithQueryFiltering ()
-        : base(typeof (ClientTransactionExtensionWithQueryFiltering).FullName)
+        : base(typeof(ClientTransactionExtensionWithQueryFiltering).FullName)
     {
     }
 
@@ -31,9 +31,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       if (queryResult.Count > 0)
       {
-        var queryResultList = queryResult.ToObjectList ();
-        queryResultList.RemoveAt (0);
-        return new QueryResult<T> (queryResult.Query, queryResultList.ToArray());
+        var queryResultList = queryResult.ToObjectList();
+        queryResultList.RemoveAt(0);
+        return new QueryResult<T>(queryResult.Query, queryResultList.ToArray());
       }
       return queryResult;
     }

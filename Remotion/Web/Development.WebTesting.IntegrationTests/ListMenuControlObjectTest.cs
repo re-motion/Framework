@@ -32,21 +32,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ListMenuControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (DisabledTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
     public void GenericTests (GenericSelectorTestAction<ListMenuSelector, ListMenuControlObject> testAction)
     {
-      testAction (Helper, e => e.ListMenus(), "listMenu");
+      testAction(Helper, e => e.ListMenus(), "listMenu");
     }
 
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<ListMenuSelector, ListMenuControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<ListMenuSelector, ListMenuControlObject> testAction)
     {
-      testAction (Helper, e => e.ListMenus(), "listMenu");
+      testAction(Helper, e => e.ListMenus(), "listMenu");
     }
 
     [Test]
@@ -54,26 +54,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var disabledControl = home.ListMenus().GetByLocalID ("MyListMenu_Disabled");
-      Assert.That (disabledControl.IsDisabled(), Is.True);
-      Assert.That (
-          () => disabledControl.SelectItem().WithDisplayText ("EventItem"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectItem.WithDisplayText").Message));
-      Assert.That (
-          () => disabledControl.SelectItem().WithDisplayTextContains ("Href"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectItem.WithDisplayTextContains").Message));
-      Assert.That (
-          () => disabledControl.SelectItem().WithIndex (1),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectItem.WithIndex").Message));
-      Assert.That (
-          () => disabledControl.SelectItem().WithHtmlID ("body_MyListMenu_Disabled_3"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectItem.WithHtmlID").Message));
-      Assert.That (
-          () => disabledControl.SelectItem().WithItemID ("ItemID4"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectItem.WithItemID").Message));
-      Assert.That (
-          () => disabledControl.SelectItem ("ItemID4"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectItem(itemID)").Message));
+      var disabledControl = home.ListMenus().GetByLocalID("MyListMenu_Disabled");
+      Assert.That(disabledControl.IsDisabled(), Is.True);
+      Assert.That(
+          () => disabledControl.SelectItem().WithDisplayText("EventItem"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectItem.WithDisplayText").Message));
+      Assert.That(
+          () => disabledControl.SelectItem().WithDisplayTextContains("Href"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectItem.WithDisplayTextContains").Message));
+      Assert.That(
+          () => disabledControl.SelectItem().WithIndex(1),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectItem.WithIndex").Message));
+      Assert.That(
+          () => disabledControl.SelectItem().WithHtmlID("body_MyListMenu_Disabled_3"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectItem.WithHtmlID").Message));
+      Assert.That(
+          () => disabledControl.SelectItem().WithItemID("ItemID4"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectItem.WithItemID").Message));
+      Assert.That(
+          () => disabledControl.SelectItem("ItemID4"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectItem(itemID)").Message));
     }
 
     [Test]
@@ -81,25 +81,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var enabledControl = home.ListMenus().GetByLocalID ("MyListMenu");
-      Assert.That (
-          () => enabledControl.SelectItem ("ItemID3"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem(itemID)").Message));
-      Assert.That (
-          () => enabledControl.SelectItem().WithDisplayText ("NoneItem"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithDisplayText").Message));
-      Assert.That (
-          () => enabledControl.SelectItem().WithDisplayTextContains ("None"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithDisplayTextContains").Message));
-      Assert.That (
-          () => enabledControl.SelectItem ("ItemID6"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem(itemID)").Message));
-      Assert.That (
-          () => enabledControl.SelectItem().WithDisplayText ("DisabledItem"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithDisplayText").Message));
-      Assert.That (
-          () => enabledControl.SelectItem().WithDisplayTextContains ("Disabled"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithDisplayTextContains").Message));
+      var enabledControl = home.ListMenus().GetByLocalID("MyListMenu");
+      Assert.That(
+          () => enabledControl.SelectItem("ItemID3"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem(itemID)").Message));
+      Assert.That(
+          () => enabledControl.SelectItem().WithDisplayText("NoneItem"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithDisplayText").Message));
+      Assert.That(
+          () => enabledControl.SelectItem().WithDisplayTextContains("None"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithDisplayTextContains").Message));
+      Assert.That(
+          () => enabledControl.SelectItem("ItemID6"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem(itemID)").Message));
+      Assert.That(
+          () => enabledControl.SelectItem().WithDisplayText("DisabledItem"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithDisplayText").Message));
+      Assert.That(
+          () => enabledControl.SelectItem().WithDisplayTextContains("Disabled"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithDisplayTextContains").Message));
     }
 
     [Test]
@@ -107,22 +107,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var listMenu = home.ListMenus().GetByLocalID ("MyListMenu");
+      var listMenu = home.ListMenus().GetByLocalID("MyListMenu");
 
       var items = listMenu.GetItemDefinitions();
-      Assert.That (items.Count, Is.EqualTo (6));
-      
-      Assert.That (items[0].ItemID, Is.EqualTo ("ItemID1"));
-      Assert.That (items[0].Index, Is.EqualTo (1));
-      Assert.That (items[0].Text, Is.EqualTo ("EventItem"));
-      Assert.That (items[0].IsDisabled, Is.False);
+      Assert.That(items.Count, Is.EqualTo(6));
 
-      Assert.That (items[2].IsDisabled, Is.True);
+      Assert.That(items[0].ItemID, Is.EqualTo("ItemID1"));
+      Assert.That(items[0].Index, Is.EqualTo(1));
+      Assert.That(items[0].Text, Is.EqualTo("EventItem"));
+      Assert.That(items[0].IsDisabled, Is.False);
 
-      Assert.That (items[4].ItemID, Is.EqualTo ("ItemID5"));
-      Assert.That (items[4].Index, Is.EqualTo (5));
-      Assert.That (items[4].Text, Is.EqualTo (""));
-      Assert.That (items[4].IsDisabled, Is.False);
+      Assert.That(items[2].IsDisabled, Is.True);
+
+      Assert.That(items[4].ItemID, Is.EqualTo("ItemID5"));
+      Assert.That(items[4].Index, Is.EqualTo(5));
+      Assert.That(items[4].Text, Is.EqualTo(""));
+      Assert.That(items[4].IsDisabled, Is.False);
     }
 
     [Test]
@@ -130,33 +130,33 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var listMenu = home.ListMenus().GetByLocalID ("MyListMenu");
-      var completionDetection = new CompletionDetectionStrategyTestHelper (listMenu);
+      var listMenu = home.ListMenus().GetByLocalID("MyListMenu");
+      var completionDetection = new CompletionDetectionStrategyTestHelper(listMenu);
 
-      listMenu.SelectItem ("ItemID5");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID5|Event"));
+      listMenu.SelectItem("ItemID5");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("ItemID5|Event"));
 
-      listMenu.SelectItem().WithIndex (2);
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      listMenu.SelectItem().WithIndex(2);
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.Empty);
 
-      listMenu.SelectItem().WithHtmlID ("body_MyListMenu_3");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID4|WxeFunction"));
+      listMenu.SelectItem().WithHtmlID("body_MyListMenu_3");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("ItemID4|WxeFunction"));
 
-      listMenu.SelectItem().WithDisplayText ("EventItem");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID1|Event"));
+      listMenu.SelectItem().WithDisplayText("EventItem");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("ItemID1|Event"));
 
-      listMenu.SelectItem().WithDisplayTextContains ("xeFun");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID4|WxeFunction"));
+      listMenu.SelectItem().WithDisplayTextContains("xeFun");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("ItemID4|WxeFunction"));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("ListMenuTest.wxe");
+      return Start<WxePageObject>("ListMenuTest.wxe");
     }
   }
 }

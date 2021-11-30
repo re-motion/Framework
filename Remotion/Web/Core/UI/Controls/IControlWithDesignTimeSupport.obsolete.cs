@@ -26,10 +26,10 @@ namespace Remotion.Web.UI.Controls
 /// <remarks>
 ///   The reason for providing this interface is that derived interfaces do not need to be casted to System.Web.UI.Control.
 /// </remarks>
-[Obsolete ("Removed design-time support. (Version: 3.0.0)", true)]
+[Obsolete("Removed design-time support. (Version: 3.0.0)", true)]
 public interface IControlWithDesignTimeSupport
 {
-  void PreRenderForDesignMode();
+  void PreRenderForDesignMode ();
 }
 
 }

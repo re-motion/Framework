@@ -44,27 +44,27 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     [GenericPageTestMethod]
     public void Get_Returns_NotNull ()
     {
-      var control = Selector.GetByTitle (Parameter.VisibleControlTitle);
+      var control = Selector.GetByTitle(Parameter.VisibleControlTitle);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_Throws_WebTestException ()
     {
-      Assert.That (
-          () => Selector.GetByTitle (Parameter.HiddenControlTitle),
+      Assert.That(
+          () => Selector.GetByTitle(Parameter.HiddenControlTitle),
           Throws.InstanceOf<WebTestException>());
     }
 
     [GenericPageTestMethod]
     public void GetOrNull_Returns_NotNull ()
     {
-      var control = Selector.GetByTitleOrNull (Parameter.VisibleControlTitle);
+      var control = Selector.GetByTitleOrNull(Parameter.VisibleControlTitle);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
     [GenericPageTestMethod]
@@ -72,26 +72,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     {
       SwitchToIFrame();
 
-      var control = Selector.GetByTitleOrNull (Parameter.VisibleControlTitle);
+      var control = Selector.GetByTitleOrNull(Parameter.VisibleControlTitle);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
     [GenericPageTestMethod]
     public void GetOrNull_Returns_Null ()
     {
-      var control = Selector.GetByTitleOrNull (Parameter.HiddenControlTitle);
+      var control = Selector.GetByTitleOrNull(Parameter.HiddenControlTitle);
 
-      Assert.That (control, Is.Null);
+      Assert.That(control, Is.Null);
     }
 
     [GenericPageTestMethod]
     public void Exists_Returns_True ()
     {
-      var controlVisible = Selector.ExistsByTitle (Parameter.VisibleControlTitle);
+      var controlVisible = Selector.ExistsByTitle(Parameter.VisibleControlTitle);
 
-      Assert.That (controlVisible, Is.True);
+      Assert.That(controlVisible, Is.True);
     }
 
     [GenericPageTestMethod]
@@ -99,17 +99,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     {
       SwitchToIFrame();
 
-      var controlVisible = Selector.ExistsByTitle (Parameter.VisibleControlTitle);
+      var controlVisible = Selector.ExistsByTitle(Parameter.VisibleControlTitle);
 
-      Assert.That (controlVisible, Is.True);
+      Assert.That(controlVisible, Is.True);
     }
 
     [GenericPageTestMethod]
     public void Exists_Returns_False ()
     {
-      var controlVisible = Selector.ExistsByTitle (Parameter.HiddenControlTitle);
+      var controlVisible = Selector.ExistsByTitle(Parameter.HiddenControlTitle);
 
-      Assert.That (controlVisible, Is.False);
+      Assert.That(controlVisible, Is.False);
     }
   }
 }

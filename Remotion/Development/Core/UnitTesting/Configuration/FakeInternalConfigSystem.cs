@@ -29,23 +29,23 @@ namespace Remotion.Development.UnitTesting.Configuration
   {
     private Dictionary<string, object> _sections = new Dictionary<string, object>();
 
-    public FakeInternalConfigSystem()
+    public FakeInternalConfigSystem ()
     {
     }
 
     public object? GetSection (string configKey)
     {
-      if (_sections.TryGetValue (configKey, out var value))
+      if (_sections.TryGetValue(configKey, out var value))
         return value;
       return null;
     }
 
     public void AddSection (string configKey, object section)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("configKey", configKey);
-      ArgumentUtility.CheckNotNull ("section", section);
+      ArgumentUtility.CheckNotNullOrEmpty("configKey", configKey);
+      ArgumentUtility.CheckNotNull("section", section);
 
-      _sections.Add (configKey, section);
+      _sections.Add(configKey, section);
     }
 
     public void RefreshConfig (string sectionName)

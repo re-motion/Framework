@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   /// <summary>
   /// Implementation of the <see cref="IBindablePropertyWriteAccessStrategy"/> interface for <see cref="DomainObject"/>.
   /// </summary>
-  [ImplementationFor (typeof (IBindablePropertyWriteAccessStrategy),
+  [ImplementationFor(typeof(IBindablePropertyWriteAccessStrategy),
       Lifetime = LifetimeKind.Singleton,
       RegistrationType = RegistrationType.Multiple,
       Position = Position)]
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     public bool CanWrite (IBusinessObject businessObject, PropertyBase bindableProperty)
     {
       // businessObject can be null
-      ArgumentUtility.DebugCheckNotNull ("bindableProperty", bindableProperty);
+      ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);
 
       var domainObject = businessObject as DomainObject;
       if (domainObject == null)
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       else if (domainObjectState.IsNotLoadedYet)
         return domainObject.TryEnsureDataAvailable();
       else
-        throw new NotSupportedException (string.Format ("The {0} is not supported.", domainObjectState));
+        throw new NotSupportedException(string.Format("The {0} is not supported.", domainObjectState));
     }
 
     public bool IsPropertyAccessException (
@@ -68,9 +68,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         Exception exception,
         out BusinessObjectPropertyAccessException propertyAccessException)
     {
-      ArgumentUtility.DebugCheckNotNull ("businessObject", businessObject);
-      ArgumentUtility.DebugCheckNotNull ("bindableProperty", bindableProperty);
-      ArgumentUtility.DebugCheckNotNull ("exception", exception);
+      ArgumentUtility.DebugCheckNotNull("businessObject", businessObject);
+      ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);
+      ArgumentUtility.DebugCheckNotNull("exception", exception);
 
       var isPropertyAccessException = exception is ObjectInvalidException
                                       || exception is ObjectDeletedException
@@ -78,14 +78,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
       if (isPropertyAccessException && businessObject is DomainObject)
       {
-        ArgumentUtility.CheckNotNull ("bindableProperty", bindableProperty);
+        ArgumentUtility.CheckNotNull("bindableProperty", bindableProperty);
 
-        var message = string.Format (
+        var message = string.Format(
             "An {0} occured while setting the value of property '{1}' for business object with ID '{2}'.",
             exception.GetType().Name,
             bindableProperty.Identifier,
-            ((DomainObject) businessObject).ID);
-        propertyAccessException = new BusinessObjectPropertyAccessException (message, exception);
+            ((DomainObject)businessObject).ID);
+        propertyAccessException = new BusinessObjectPropertyAccessException(message, exception);
         return true;
       }
       propertyAccessException = null;

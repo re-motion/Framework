@@ -22,8 +22,8 @@ using Remotion.ObjectBinding.UnitTests.TestDomain;
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.TestDomain
 {
   [BindableObject]
-  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.Globalization.ClassWithMixedPropertyAndResources")]
-  [Uses (typeof (MixinAddingProperty))]
+  [MultiLingualResources("Remotion.ObjectBinding.UnitTests.Globalization.ClassWithMixedPropertyAndResources")]
+  [Uses(typeof(MixinAddingProperty))]
   public class ClassWithMixedPropertyAndResources
   {
     public string Value1 { get; set; }

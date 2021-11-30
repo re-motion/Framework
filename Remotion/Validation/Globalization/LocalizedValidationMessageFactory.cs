@@ -26,13 +26,13 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Globalization
 {
-  [ImplementationFor (typeof (IValidationMessageFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IValidationMessageFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class LocalizedValidationMessageFactory : IValidationMessageFactory
   {
     public const int Position = 0;
 
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.Validation.Globalization.Globalization.LocalizedValidationMessageFactory")]
+    [MultiLingualResources("Remotion.Validation.Globalization.Globalization.LocalizedValidationMessageFactory")]
     public enum ResourceIdentifier
     {
       ValueMustBeEqualValidationMessage,
@@ -71,29 +71,29 @@ namespace Remotion.Validation.Globalization
     public LocalizedValidationMessageFactory (
         IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      _resourceManager = new Lazy<IResourceManager> (
-          () => globalizationService.GetResourceManager (TypeAdapter.Create (typeof (ResourceIdentifier))),
+      _resourceManager = new Lazy<IResourceManager>(
+          () => globalizationService.GetResourceManager(TypeAdapter.Create(typeof(ResourceIdentifier))),
           LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
     public ValidationMessage? CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
-      ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
+      ArgumentUtility.CheckNotNull("validator", validator);
+      ArgumentUtility.CheckNotNull("validatedProperty", validatedProperty);
 
-      var resourceIdentifier = GetResourceIdentifierOrNull (validator, validatedProperty);
+      var resourceIdentifier = GetResourceIdentifierOrNull(validator, validatedProperty);
       if (!resourceIdentifier.HasValue)
         return null;
 
-      return new ResourceManagerBasedValidationMessage (_resourceManager.Value, resourceIdentifier);
+      return new ResourceManagerBasedValidationMessage(_resourceManager.Value, resourceIdentifier);
     }
 
     public ValidationMessage? CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
-      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+      ArgumentUtility.CheckNotNull("validator", validator);
+      ArgumentUtility.CheckNotNull("validatedType", validatedType);
 
       return null;
     }
@@ -101,7 +101,7 @@ namespace Remotion.Validation.Globalization
     private ResourceIdentifier? GetResourceIdentifierOrNull (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
       var propertyType = validatedProperty.PropertyType;
-      var dataType = NullableTypeUtility.GetBasicType (propertyType);
+      var dataType = NullableTypeUtility.GetBasicType(propertyType);
 
       if (validator is EqualValidator)
         return ResourceIdentifier.ValueMustBeEqualValidationMessage;
@@ -125,16 +125,16 @@ namespace Remotion.Validation.Globalization
         return ResourceIdentifier.ValueMustBeLessThanValidationMessage;
 
       if (validator is LengthValidator lengthValidator)
-        return GetResourceIdentifierForLengthValidator (lengthValidator);
+        return GetResourceIdentifierForLengthValidator(lengthValidator);
 
       if (validator is NotEmptyValidator)
-        return GetResourceIdentifierForNotEmptyValidator (dataType);
+        return GetResourceIdentifierForNotEmptyValidator(dataType);
 
       if (validator is NotEqualValidator)
         return ResourceIdentifier.ValueMustNotBeEqualValidationMessage;
 
       if (validator is NotNullValidator)
-        return GetResourceIdentifierForNotNullValidator (dataType);
+        return GetResourceIdentifierForNotNullValidator(dataType);
 
       if (validator is PredicateValidator)
         return ResourceIdentifier.ValueMustMatchPredicateValidationMessage;
@@ -182,7 +182,7 @@ namespace Remotion.Validation.Globalization
       if (dataType.IsEnum)
         return ResourceIdentifier.ValueMustNotBeNullEnumValidationMessage;
 
-      var typeCode = Type.GetTypeCode (dataType);
+      var typeCode = Type.GetTypeCode(dataType);
       switch (typeCode)
       {
         case TypeCode.Boolean:
@@ -213,10 +213,10 @@ namespace Remotion.Validation.Globalization
           break;
       }
 
-      if (dataType == typeof (Guid))
+      if (dataType == typeof(Guid))
         return ResourceIdentifier.ValueMustNotBeNullStringValidationMessage;
 
-      if (typeof (IEnumerable).IsAssignableFrom (dataType))
+      if (typeof(IEnumerable).IsAssignableFrom(dataType))
         return ResourceIdentifier.ValueMustNotBeNullCollectionValidationMessage;
 
       return ResourceIdentifier.ValueMustNotBeNullReferenceValidationMessage;
@@ -224,10 +224,10 @@ namespace Remotion.Validation.Globalization
 
     private ResourceIdentifier? GetResourceIdentifierForNotEmptyValidator (Type dataType)
     {
-      if (dataType == typeof (String))
+      if (dataType == typeof(String))
         return ResourceIdentifier.ValueMustNotBeEmptyStringValidationMessage;
 
-      if (typeof (IEnumerable).IsAssignableFrom (dataType))
+      if (typeof(IEnumerable).IsAssignableFrom(dataType))
         return ResourceIdentifier.ValueMustNotBeEmptyCollectionValidationMessage;
 
       return null;

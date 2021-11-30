@@ -71,12 +71,12 @@ public class ValidatableControlInitializer
       if (validator == null)
         continue;
 
-      Control? validatedControl = validator.NamingContainer.FindControl (validator.ControlToValidate);
+      Control? validatedControl = validator.NamingContainer.FindControl(validator.ControlToValidate);
 
       if (validatedControl is IValidatableControl)
       {
         // register validator with parent
-        ((IValidatableControl)validatedControl).RegisterValidator (validator);
+        ((IValidatableControl)validatedControl).RegisterValidator(validator);
       }
       else
       {
@@ -86,11 +86,11 @@ public class ValidatableControlInitializer
             parentControl != null;
             parentControl = parentControl.Parent)
         {
-          if (   parentControl is IValidatableControl 
-              && parentControl is ISmartControl 
+          if (   parentControl is IValidatableControl
+              && parentControl is ISmartControl
               && ((ISmartControl)parentControl).TargetControl == validatedControl)
           {
-            ((IValidatableControl)parentControl).RegisterValidator (validator);
+            ((IValidatableControl)parentControl).RegisterValidator(validator);
           }
           continue;
         }
@@ -117,7 +117,7 @@ public class ValidatableControlInitializer
   {
     if (! _initialized)
     {
-      ValidatableControlInitializer.InitializeValidatableControls (_page);
+      ValidatableControlInitializer.InitializeValidatableControls(_page);
       _initialized = true;
     }
   }

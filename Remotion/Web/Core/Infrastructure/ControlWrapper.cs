@@ -33,7 +33,7 @@ namespace Remotion.Web.Infrastructure
 
     public ControlWrapper (Control control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       _control = control;
     }
@@ -54,7 +54,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     void IParserAccessor.AddParsedSubObject (object obj)
     {
-      ((IParserAccessor) _control).AddParsedSubObject (obj);
+      ((IParserAccessor)_control).AddParsedSubObject(obj);
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     DataBindingCollection IDataBindingsAccessor.DataBindings
     {
-      get { return ((IDataBindingsAccessor) _control).DataBindings; }
+      get { return ((IDataBindingsAccessor)_control).DataBindings; }
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     bool IDataBindingsAccessor.HasDataBindings
     {
-      get { return ((IDataBindingsAccessor) _control).HasDataBindings; }
+      get { return ((IDataBindingsAccessor)_control).HasDataBindings; }
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     ControlBuilder IControlBuilderAccessor.ControlBuilder
     {
-      get { return ((IControlBuilderAccessor) _control).ControlBuilder; }
+      get { return ((IControlBuilderAccessor)_control).ControlBuilder; }
     }
 
     /// <summary>
@@ -98,7 +98,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     IDictionary IControlDesignerAccessor.GetDesignModeState ()
     {
-      return ((IControlDesignerAccessor) _control).GetDesignModeState();
+      return ((IControlDesignerAccessor)_control).GetDesignModeState();
     }
 
     /// <summary>
@@ -108,7 +108,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     void IControlDesignerAccessor.SetDesignModeState (IDictionary data)
     {
-      ((IControlDesignerAccessor) _control).SetDesignModeState (data);
+      ((IControlDesignerAccessor)_control).SetDesignModeState(data);
     }
 
     /// <summary>
@@ -118,7 +118,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     void IControlDesignerAccessor.SetOwnerControl (Control owner)
     {
-      ((IControlDesignerAccessor) _control).SetOwnerControl (owner);
+      ((IControlDesignerAccessor)_control).SetOwnerControl(owner);
     }
 
     /// <summary>
@@ -129,7 +129,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     IDictionary IControlDesignerAccessor.UserData
     {
-      get { return ((IControlDesignerAccessor) _control).UserData; }
+      get { return ((IControlDesignerAccessor)_control).UserData; }
     }
 
     /// <summary>
@@ -140,7 +140,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     bool IExpressionsAccessor.HasExpressions
     {
-      get { return ((IExpressionsAccessor) _control).HasExpressions; }
+      get { return ((IExpressionsAccessor)_control).HasExpressions; }
     }
 
     /// <summary>
@@ -151,7 +151,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     ExpressionBindingCollection IExpressionsAccessor.Expressions
     {
-      get { return ((IExpressionsAccessor) _control).Expressions; }
+      get { return ((IExpressionsAccessor)_control).Expressions; }
     }
 
     /// <summary>
@@ -163,7 +163,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void ApplyStyleSheetSkin (Page page)
     {
-      _control.ApplyStyleSheetSkin (page);
+      _control.ApplyStyleSheetSkin(page);
     }
 
     /// <summary>
@@ -189,7 +189,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void RenderControl (HtmlTextWriter writer)
     {
-      _control.RenderControl (writer);
+      _control.RenderControl(writer);
     }
 
     /// <summary>
@@ -212,7 +212,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public string ResolveUrl (string relativeUrl)
     {
-      return _control.ResolveUrl (relativeUrl);
+      return _control.ResolveUrl(relativeUrl);
     }
 
     /// <summary>
@@ -227,7 +227,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public string ResolveClientUrl (string relativeUrl)
     {
-      return _control.ResolveClientUrl (relativeUrl);
+      return _control.ResolveClientUrl(relativeUrl);
     }
 
     /// <summary>
@@ -240,7 +240,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public Control? FindControl (string id)
     {
-      return _control.FindControl (id);
+      return _control.FindControl(id);
     }
 
     /// <summary>
@@ -261,7 +261,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void SetRenderMethodDelegate (RenderMethod renderMethod)
     {
-      _control.SetRenderMethodDelegate (renderMethod);
+      _control.SetRenderMethodDelegate(renderMethod);
     }
 
     /// <summary>
@@ -365,7 +365,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public virtual IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (_control.Page); }
+      get { return PageWrapper.CastOrCreate(_control.Page); }
     }
 
     /// <summary>
@@ -500,7 +500,7 @@ namespace Remotion.Web.Infrastructure
 
     public override string? ToString ()
     {
-      return _control.ToString ();
+      return _control.ToString();
     }
   }
 }

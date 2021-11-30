@@ -34,49 +34,49 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   {
     public static BindableDomainObjectMetadataFactory Create ()
     {
-      return ObjectFactory.Create<BindableDomainObjectMetadataFactory> (true, ParamList.Empty);
+      return ObjectFactory.Create<BindableDomainObjectMetadataFactory>(true, ParamList.Empty);
     }
 
     private readonly BindableObjectGlobalizationService _bindableObjectGlobalizationService;
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
 
     protected BindableDomainObjectMetadataFactory ()
-      : this (SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+      : this(SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
               SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>())
     {
     }
 
     public BindableDomainObjectMetadataFactory (BindableObjectGlobalizationService bindableObjectGlobalizationService, IDomainModelConstraintProvider domainModelConstraintProvider)
     {
-      ArgumentUtility.CheckNotNull ("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
-      ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
-      
+      ArgumentUtility.CheckNotNull("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
+      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
+
       _bindableObjectGlobalizationService = bindableObjectGlobalizationService;
       _domainModelConstraintProvider = domainModelConstraintProvider;
     }
 
     public virtual IClassReflector CreateClassReflector (Type targetType, BindableObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
 
-      return new ClassReflector (targetType, businessObjectProvider, this, _bindableObjectGlobalizationService);
+      return new ClassReflector(targetType, businessObjectProvider, this, _bindableObjectGlobalizationService);
     }
 
     public virtual IPropertyFinder CreatePropertyFinder (Type concreteType)
     {
-      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
-      return new BindableDomainObjectPropertyFinder (concreteType);
+      ArgumentUtility.CheckNotNull("concreteType", concreteType);
+      return new BindableDomainObjectPropertyFinder(concreteType);
     }
 
     public virtual PropertyReflector CreatePropertyReflector (
         Type concreteType, IPropertyInformation propertyInfo, BindableObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
+      ArgumentUtility.CheckNotNull("concreteType", concreteType);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
 
-      return BindableDomainObjectPropertyReflector.Create (
+      return BindableDomainObjectPropertyReflector.Create(
           propertyInfo,
           businessObjectProvider,
           _domainModelConstraintProvider,

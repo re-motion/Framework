@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateAmbiguous ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.AmbiguousControlID,
           TestConstants.AmbiguousControlHtmlID,
           DataSourceID,
@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateFormGrid ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.ControlInFormGridID,
           TestConstants.ControlInFormGridHtmlID,
           DataSourceID,
@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateFormGridWithReadOnly ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.ReadOnlyControlInFormGridID,
           TestConstants.ReadonlyControlInFormGridHtmlID,
           DataSourceID,
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateOneControlOverMultipleRows ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.OneControlOverMultipleRowsFormGridID,
           TestConstants.OneControlOverMultipleRowsFormGridHtmlID,
           DataSourceID,
@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateShiftedColumnsFormGrid ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.ColumnsShiftedControlFormGridID,
           TestConstants.ColumnsShiftedControlFormGridHtmlID,
           DataSourceID,
@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateFormGridMulti1 ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.ControlInMultiFormGridID1,
           TestConstants.ControlInMultiFormGridHtmlID1,
           DataSourceID,
@@ -96,7 +96,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateFormGridMulti2 ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.ControlInMultiFormGridID2,
           TestConstants.ControlInMultiFormGridHtmlID2,
           DataSourceID,
@@ -106,7 +106,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateDisabled ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.DisabledControlID,
           TestConstants.DisabledHtmlID,
           DataSourceID,
@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateReadOnly ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.ReadOnlyControlID,
           TestConstants.ReadOnlyControlHtmlID,
           DataSourceID,
@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateHidden ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.HiddenControlID,
           TestConstants.HiddenHtmlID,
           DataSourceID,
@@ -139,7 +139,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateVisible ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.VisibleControlID,
           TestConstants.VisibleHtmlID,
           DataSourceID,
@@ -149,7 +149,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateCustomValidated ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.CustomValidatedControlInFormGridID,
           TestConstants.CustomValidatedControlInFormGridHtmlID,
           DataSourceID,
@@ -159,7 +159,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateMultipleValidated ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.MultipleValidatedControlInFormGridID,
           TestConstants.MultipleValidatedControlInFormGridHtmlID,
           DataSourceID,
@@ -169,7 +169,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions CreateCustomValidatedReadOnly ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.CustomValidatedReadOnlyControlInFormGridID,
           TestConstants.CustomValidatedReadOnlyControlInFormGridHtmlID,
           DataSourceID,

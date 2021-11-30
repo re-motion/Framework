@@ -27,9 +27,9 @@ namespace Remotion.ObjectBinding
 
     public ListInfo (Type propertyType, Type itemType)
     {
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
-      ArgumentUtility.CheckNotNull ("itemType", itemType);
-    
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull("itemType", itemType);
+
       _propertyType = propertyType;
       _itemType = itemType;
     }
@@ -51,7 +51,7 @@ namespace Remotion.ObjectBinding
 
     public IList CreateList (int count)
     {
-      return Array.CreateInstance (_itemType, count);
+      return Array.CreateInstance(_itemType, count);
     }
 
     public IList InsertItem (IList list, object item, int index)

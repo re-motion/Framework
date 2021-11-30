@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
   public abstract class NumericPropertyBase : PropertyBase, IBusinessObjectNumericProperty
   {
     protected NumericPropertyBase (Parameters parameters)
-        : base (parameters)
+        : base(parameters)
     {
     }
 

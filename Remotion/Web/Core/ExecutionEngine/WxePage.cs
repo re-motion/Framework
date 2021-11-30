@@ -37,7 +37,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> End this page step and continue with the WXE function. </summary>
     public void ExecuteNextStep ()
     {
-      _wxePageInfo.ExecuteNextStep ();
+      _wxePageInfo.ExecuteNextStep();
     }
 
     /// <summary>Executes the <paramref name="function"/> using the specified <paramref name="callArguments"/>.</summary>
@@ -45,21 +45,21 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="callArguments">The <see cref="IWxeCallArguments"/> used to control the function invocation. Must not be <see langword="null" />.</param>
     public void ExecuteFunction (WxeFunction function, IWxeCallArguments callArguments)
     {
-      ArgumentUtility.CheckNotNull ("function", function);
-      ArgumentUtility.CheckNotNull ("callArguments", callArguments);
+      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentUtility.CheckNotNull("callArguments", callArguments);
 
-      callArguments.Dispatch (_wxePageInfo.Executor, function);
+      callArguments.Dispatch(_wxePageInfo.Executor, function);
     }
 
     /// <summary> Gets a flag describing whether this post-back has been triggered by returning from a WXE function. </summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool IsReturningPostBack
     {
       get { return _wxePageInfo.IsReturningPostBack; }
     }
 
     /// <summary> Gets the WXE function that has been executed in the current page. </summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public WxeFunction? ReturningFunction
     {
       get { return _wxePageInfo.ReturningFunction; }
@@ -68,20 +68,20 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> Gets the permanent URL parameters the current page. </summary>
     public NameValueCollection GetPermanentUrlParameters ()
     {
-      return _wxePageInfo.GetPermanentUrlParameters ();
+      return _wxePageInfo.GetPermanentUrlParameters();
     }
 
     /// <summary> Gets the permanent URL for the current page. </summary>
     public string GetPermanentUrl ()
     {
-      return _wxePageInfo.GetPermanentUrl ();
+      return _wxePageInfo.GetPermanentUrl();
     }
 
     /// <summary> Gets the permanent URL for the current page using the specified <paramref name="queryString"/>. </summary>
     /// <include file='..\doc\include\ExecutionEngine\WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="queryString"]' />
     public string GetPermanentUrl (NameValueCollection queryString)
     {
-      return _wxePageInfo.GetPermanentUrl (queryString);
+      return _wxePageInfo.GetPermanentUrl(queryString);
     }
 
     /// <summary> 
@@ -91,7 +91,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='..\doc\include\ExecutionEngine\WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
     public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
     {
-      return _wxePageInfo.GetPermanentUrl (functionType, queryString);
+      return _wxePageInfo.GetPermanentUrl(functionType, queryString);
     }
 
     /// <summary> 
@@ -100,9 +100,9 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
     /// </remarks>
-    [Description ("The message displayed when the user attempts to submit while the page is already aborting.")]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
+    [Description("The message displayed when the user attempts to submit while the page is already aborting.")]
+    [Category("Appearance")]
+    [DefaultValue("")]
     public virtual string StatusIsAbortingMessage
     {
       get { return _wxePageInfo.StatusIsAbortingMessage; }
@@ -116,9 +116,9 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
     /// </remarks>
-    [Description ("The message displayed when the user returnes to a cached page that has already been submitted or aborted.")]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
+    [Description("The message displayed when the user returnes to a cached page that has already been submitted or aborted.")]
+    [Category("Appearance")]
+    [DefaultValue("")]
     public virtual string StatusIsCachedMessage
     {
       get { return _wxePageInfo.StatusIsCachedMessage; }
@@ -137,12 +137,12 @@ namespace Remotion.Web.ExecutionEngine
 
     object? IWindowStateManager.GetData (string key)
     {
-      return _wxePageInfo.GetData (key);
+      return _wxePageInfo.GetData(key);
     }
 
     void IWindowStateManager.SetData (string key, object? value)
     {
-      _wxePageInfo.SetData (key, value);
+      _wxePageInfo.SetData(key, value);
     }
 
     #endregion
@@ -155,16 +155,16 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxePage ()
     {
-      _wxePageInfo = new WxePageInfo (this);
+      _wxePageInfo = new WxePageInfo(this);
       _disposed = false;
     }
 
     public override Control? FindControl (string id)
     {
       bool callBaseMethod;
-      Control? control = _wxePageInfo.FindControl (id, out callBaseMethod);
+      Control? control = _wxePageInfo.FindControl(id, out callBaseMethod);
       if (callBaseMethod)
-        return base.FindControl (id);
+        return base.FindControl(id);
       else
         return control;
     }
@@ -173,7 +173,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks> Uses <see cref="WxePageInfo.EnsurePostBackModeDetermined"/> determine the postback mode. </remarks>
     protected override NameValueCollection? DeterminePostBackMode ()
     {
-      NameValueCollection? result = _wxePageInfo.EnsurePostBackModeDetermined (Context);
+      NameValueCollection? result = _wxePageInfo.EnsurePostBackModeDetermined(Context);
 
       return result;
     }
@@ -182,13 +182,13 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks> Application developers should only rely on this collection for accessing the post-back data. </remarks>
     protected override NameValueCollection? GetPostBackCollection ()
     {
-      return _wxePageInfo.EnsurePostBackModeDetermined (Context);
+      return _wxePageInfo.EnsurePostBackModeDetermined(Context);
     }
 
     /// <remarks> Uses <see cref="WxePageInfo.SavePageStateToPersistenceMedium"/> to save the viewstate. </remarks>
     protected override void SavePageStateToPersistenceMedium (object viewState)
     {
-      _wxePageInfo.SavePageStateToPersistenceMedium (viewState);
+      _wxePageInfo.SavePageStateToPersistenceMedium(viewState);
     }
 
     /// <remarks> Uses <see cref="WxePageInfo.LoadPageStateFromPersistenceMedium"/> to load the viewstate. </remarks>
@@ -198,7 +198,7 @@ namespace Remotion.Web.ExecutionEngine
       PageStatePersister persister = this.PageStatePersister;
       if (state is Pair)
       {
-        Pair pair = (Pair) state;
+        Pair pair = (Pair)state;
         persister.ControlState = pair.First!;
         persister.ViewState = pair.Second!;
       }
@@ -216,13 +216,13 @@ namespace Remotion.Web.ExecutionEngine
     {
       // wxeInfo.OnPreRenderComplete() must be called before base.OnPreRenderComplete (EventArgs)
       // Base-Implementation uses SmartPageInfo, which also overrides OnPreRenderComplete 
-      _wxePageInfo.OnPreRenderComplete ();
+      _wxePageInfo.OnPreRenderComplete();
 
-      base.OnPreRenderComplete (e);
+      base.OnPreRenderComplete(e);
     }
 
     /// <summary> Gets the <see cref="WxePageStep"/> that called this <see cref="WxePage"/>. </summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public WxePageStep CurrentPageStep
     {
       get { return _wxePageInfo.CurrentPageStep; }
@@ -238,7 +238,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   A <see cref="WxeFunction"/> or <see langwrpd="null"/> if the <see cref="CurrentPageStep"/> is not part of a
     ///   <see cref="WxeFunction"/>.
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public WxeFunction CurrentFunction
     {
       get { return _wxePageInfo.CurrentPageFunction; }
@@ -249,7 +249,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   A <see cref="NameObjectCollection"/> or <see langword="null"/> if the step is not part of a 
     ///   <see cref="WxeFunction"/>
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public NameObjectCollection Variables
     {
       get { return _wxePageInfo.PageVariables; }
@@ -274,12 +274,12 @@ namespace Remotion.Web.ExecutionEngine
     /// </remarks>
     public override void Dispose ()
     {
-      base.Dispose ();
+      base.Dispose();
       if (!_disposed)
       {
-        Dispose (true);
+        Dispose(true);
         _disposed = true;
-        _wxePageInfo.Dispose ();
+        _wxePageInfo.Dispose();
       }
     }
 
@@ -292,11 +292,11 @@ namespace Remotion.Web.ExecutionEngine
     {
       try
       {
-        base.ProcessRequestImplementation (httpContext);
+        base.ProcessRequestImplementation(httpContext);
       }
       catch (HttpException ex)
       {
-        throw _wxePageInfo.WrapProcessRequestException (ex);
+        throw _wxePageInfo.WrapProcessRequestException(ex);
       }
     }
 
@@ -307,9 +307,9 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks>
     ///   Use <see cref="IsAbortEnabled"/> to evaluate this property.
     /// </remarks>
-    [Description ("The flag that determines whether to abort the session when the window is closed. Undefined is interpreted as true.")]
-    [Category ("Behavior")]
-    [DefaultValue (null)]
+    [Description("The flag that determines whether to abort the session when the window is closed. Undefined is interpreted as true.")]
+    [Category("Behavior")]
+    [DefaultValue(null)]
     public virtual bool? EnableAbort
     {
       get { return _enableAbort; }
@@ -345,10 +345,10 @@ namespace Remotion.Web.ExecutionEngine
     ///     Setting this flag disables the function abort and the abort confirmation message.
     ///   </para>
     /// </remarks>
-    [Description ("The flag that determines whether to allow out-of-sequence postbacks (i.e. post-backs from an already "
+    [Description("The flag that determines whether to allow out-of-sequence postbacks (i.e. post-backs from an already "
                   + "submitted page because of the cache). Undefined is interpreted as false.")]
-    [Category ("Behavior")]
-    [DefaultValue (null)]
+    [Category("Behavior")]
+    [DefaultValue(null)]
     public virtual bool? EnableOutOfSequencePostBacks
     {
       get { return _enableOutOfSequencePostBacks; }
@@ -410,11 +410,11 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks>
     ///   Use <see cref="AreStatusMessagesEnabled"/> to evaluate this property.
     /// </remarks>
-    [Description ("The flag that determines whether to display a status message when the user attempts to start a "
+    [Description("The flag that determines whether to display a status message when the user attempts to start a "
                   + "second request or returns to a page that has already been submitted (i.e. a cached page). "
                   + "Undefined is interpreted as true.")]
-    [Category ("Behavior")]
-    [DefaultValue (null)]
+    [Category("Behavior")]
+    [DefaultValue(null)]
     public virtual bool? EnableStatusMessages
     {
       get { return _enableStatusMessages; }
@@ -437,9 +437,9 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <exclude/>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public override bool? EnableStatusIsSubmittingMessage
     {
       get
@@ -453,7 +453,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Overridden to return the value of <see cref="AreStatusMessagesEnabled"/>. </summary>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     protected override bool IsStatusIsSubmittingMessageEnabled
     {
       get { return AreStatusMessagesEnabled; }

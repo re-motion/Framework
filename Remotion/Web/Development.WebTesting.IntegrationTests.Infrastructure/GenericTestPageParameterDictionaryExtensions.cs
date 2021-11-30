@@ -32,12 +32,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// </summary>
     public static void Add ([NotNull] this Dictionary<string, GenericTestPageParameter> dictionary, [NotNull] GenericTestPageParameter parameter)
     {
-      ArgumentUtility.CheckNotNull ("dictionary", dictionary);
-      ArgumentUtility.CheckNotNull ("parameter", parameter);
+      ArgumentUtility.CheckNotNull("dictionary", dictionary);
+      ArgumentUtility.CheckNotNull("parameter", parameter);
 
-      if (!dictionary.ContainsKey (parameter.Name))
+      if (!dictionary.ContainsKey(parameter.Name))
       {
-        dictionary.Add (parameter.Name, parameter);
+        dictionary.Add(parameter.Name, parameter);
       }
     }
 
@@ -49,12 +49,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
         [NotNull] string name,
         [NotNull] params string[] arguments)
     {
-      ArgumentUtility.CheckNotNull ("dictionary", dictionary);
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      ArgumentUtility.CheckNotNullOrItemsNull ("arguments", arguments);
+      ArgumentUtility.CheckNotNull("dictionary", dictionary);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrItemsNull("arguments", arguments);
 
-      var parameter = new GenericTestPageParameter (name, arguments);
-      dictionary.Add (parameter);
+      var parameter = new GenericTestPageParameter(name, arguments);
+      dictionary.Add(parameter);
     }
   }
 }

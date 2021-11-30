@@ -26,13 +26,13 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     private readonly PropertyInfo _property;
 
     public PropertyReference (PropertyInfo property)
-        : base (SelfReference.Self, property.PropertyType)
+        : base(SelfReference.Self, property.PropertyType)
     {
       _property = property;
     }
 
-    public PropertyReference(Reference? owner, PropertyInfo property)
-        : base (owner, property.PropertyType)
+    public PropertyReference (Reference? owner, PropertyInfo property)
+        : base(owner, property.PropertyType)
     {
       _property = property;
     }
@@ -44,7 +44,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void LoadAddressOfReference (ILGenerator gen)
     {
-      throw new NotSupportedException ("A property's address cannot be loaded.");
+      throw new NotSupportedException("A property's address cannot be loaded.");
     }
 
     public override void LoadReference (ILGenerator gen)
@@ -53,33 +53,33 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
       if (getMethod == null)
       {
         string message = string.Format("The property {0}.{1} cannot be loaded, it has no getter.", Reference.DeclaringType!.GetFullNameSafe(), Reference.Name);
-        throw new InvalidOperationException (message);
+        throw new InvalidOperationException(message);
       }
       if (getMethod.IsStatic)
       {
-        gen.EmitCall (OpCodes.Call, getMethod, null);
+        gen.EmitCall(OpCodes.Call, getMethod, null);
       }
       else
       {
-        gen.EmitCall (OpCodes.Callvirt, getMethod, null);
+        gen.EmitCall(OpCodes.Callvirt, getMethod, null);
       }
     }
 
     public override void StoreReference (ILGenerator gen)
     {
-      MethodInfo? setMethod = Reference.GetSetMethod (true);
+      MethodInfo? setMethod = Reference.GetSetMethod(true);
       if (setMethod == null)
       {
-        string message = string.Format ("The property {0}.{1} cannot be stored, it has no setter.", Reference.DeclaringType!.GetFullNameSafe(), Reference.Name);
-        throw new InvalidOperationException (message);
+        string message = string.Format("The property {0}.{1} cannot be stored, it has no setter.", Reference.DeclaringType!.GetFullNameSafe(), Reference.Name);
+        throw new InvalidOperationException(message);
       }
       if (setMethod.IsStatic)
       {
-        gen.EmitCall (OpCodes.Call, setMethod, null);
+        gen.EmitCall(OpCodes.Call, setMethod, null);
       }
       else
       {
-        gen.EmitCall (OpCodes.Callvirt, setMethod, null);
+        gen.EmitCall(OpCodes.Callvirt, setMethod, null);
       }
     }
   }

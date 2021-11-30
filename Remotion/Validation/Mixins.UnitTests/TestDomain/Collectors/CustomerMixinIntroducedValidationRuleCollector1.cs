@@ -25,9 +25,9 @@ namespace Remotion.Validation.Mixins.UnitTests.TestDomain.Collectors
   {
     public CustomerMixinIntroducedValidationRuleCollector1 ()
     {
-      RemoveRule (cm => cm.Title).Validator<NotEqualValidator, CustomerMixinIntroducedValidationRuleCollector2>();
+      RemoveRule(cm => cm.Title).Validator<NotEqualValidator, CustomerMixinIntroducedValidationRuleCollector2>();
 
-      AddRule (cm => cm.Title).Length (0, 10);
+      AddRule(cm => cm.Title).Length(0, 10);
     }
   }
 }

@@ -35,16 +35,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly BocListRowFunctionality _impl;
 
     public BocListRowControlObject (IBocListRowControlObjectHostAccessor accessor, [NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
-      _impl = new BocListRowFunctionality (accessor, context);
-      ((IControlObjectNotifier) _impl).ActionExecute += OnActionExecute;
+      _impl = new BocListRowFunctionality(accessor, context);
+      ((IControlObjectNotifier)_impl).ActionExecute += OnActionExecute;
     }
 
     /// <inheritdoc/>
     public IStyleInformation StyleInfo
     {
-      get { return new DefaultStyleInformation (this, Scope); }
+      get { return new DefaultStyleInformation(this, Scope); }
     }
 
     /// <summary>
@@ -88,53 +88,53 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public BocListCellControlObject GetCell (string columnItemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("columnItemID", columnItemID);
+      ArgumentUtility.CheckNotNullOrEmpty("columnItemID", columnItemID);
 
-      return GetCell().WithColumnItemID (columnItemID);
+      return GetCell().WithColumnItemID(columnItemID);
     }
 
     /// <inheritdoc/>
     public BocListCellControlObject GetCell (int oneBasedIndex)
     {
-      return GetCell().WithIndex (oneBasedIndex);
+      return GetCell().WithIndex(oneBasedIndex);
     }
 
     /// <inheritdoc/>
     BocListCellControlObject IFluentControlObjectWithCells<BocListCellControlObject>.WithColumnItemID (string columnItemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("columnItemID", columnItemID);
+      ArgumentUtility.CheckNotNullOrEmpty("columnItemID", columnItemID);
 
-      return _impl.GetCellWithColumnItemID<BocListCellControlObject> (columnItemID);
+      return _impl.GetCellWithColumnItemID<BocListCellControlObject>(columnItemID);
     }
 
     /// <inheritdoc/>
     BocListCellControlObject IFluentControlObjectWithCells<BocListCellControlObject>.WithIndex (int oneBasedIndex)
     {
-      return _impl.GetCellWithColumnIndex<BocListCellControlObject> (oneBasedIndex);
+      return _impl.GetCellWithColumnIndex<BocListCellControlObject>(oneBasedIndex);
     }
 
     /// <inheritdoc/>
     BocListCellControlObject IFluentControlObjectWithCells<BocListCellControlObject>.WithColumnTitle (string columnTitle)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
+      ArgumentUtility.CheckNotNullOrEmpty("columnTitle", columnTitle);
 
-      return _impl.GetCellWithColumnTitle<BocListCellControlObject> (columnTitle);
+      return _impl.GetCellWithColumnTitle<BocListCellControlObject>(columnTitle);
     }
 
     /// <inheritdoc/>
     BocListCellControlObject IFluentControlObjectWithCells<BocListCellControlObject>.WithColumnTitleContains (string columnTitleContains)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("columnTitleContains", columnTitleContains);
+      ArgumentUtility.CheckNotNullOrEmpty("columnTitleContains", columnTitleContains);
 
-      return _impl.GetCellWithColumnTitleContains<BocListCellControlObject> (columnTitleContains);
+      return _impl.GetCellWithColumnTitleContains<BocListCellControlObject>(columnTitleContains);
     }
 
     /// <inheritdoc />
     BocListCellControlObject IFluentBocListRowControlObject<BocListCellControlObject>.WithDomainPropertyPaths (string[] domainPropertyPaths)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("domainPropertyPaths", domainPropertyPaths);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("domainPropertyPaths", domainPropertyPaths);
 
-      return _impl.GetCellWithColumnDomainPropertyPaths<BocListCellControlObject> (domainPropertyPaths);
+      return _impl.GetCellWithColumnDomainPropertyPaths<BocListCellControlObject>(domainPropertyPaths);
     }
 
     /// <inheritdoc/>

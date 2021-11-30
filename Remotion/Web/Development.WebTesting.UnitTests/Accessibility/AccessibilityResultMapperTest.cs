@@ -33,66 +33,66 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     {
       var mapper = new AccessibilityResultMapper();
 
-      var axeResult = CreateAxeResult (tags: new[] { "wcag2aa", "wcag111", "section508.22.a" });
+      var axeResult = CreateAxeResult(tags: new[] { "wcag2aa", "wcag111", "section508.22.a" });
 
-      var finalResult = mapper.Map (axeResult);
+      var finalResult = mapper.Map(axeResult);
 
-      Assert.That (finalResult.ConformanceLevel, Is.EqualTo (AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA));
-      Assert.That (finalResult.Violations.Single().Rule.SuccessCriteria.Contains (AccessibilityTestSuccessCriteria.Wcag_1_1_1));
-      Assert.That (finalResult.Violations.Single().Rule.SuccessCriteria.Contains (AccessibilityTestSuccessCriteria.Section508_22_a));
+      Assert.That(finalResult.ConformanceLevel, Is.EqualTo(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA));
+      Assert.That(finalResult.Violations.Single().Rule.SuccessCriteria.Contains(AccessibilityTestSuccessCriteria.Wcag_1_1_1));
+      Assert.That(finalResult.Violations.Single().Rule.SuccessCriteria.Contains(AccessibilityTestSuccessCriteria.Section508_22_a));
     }
 
     [Test]
     public void Map_InvalidTimeStamp_ThrowsFormatException ()
     {
       var mapper = new AccessibilityResultMapper();
-      var testResult = CreateAxeResult (timestamp: "invalidTimestamp");
+      var testResult = CreateAxeResult(timestamp: "invalidTimestamp");
 
-      Assert.That (() => mapper.Map (testResult), Throws.TypeOf<FormatException>());
+      Assert.That(() => mapper.Map(testResult), Throws.TypeOf<FormatException>());
     }
 
     [Test]
     public void Map_WellKnownSuccessCriteriaToIgnore_ThrowsNothing ()
     {
       var mapper = new AccessibilityResultMapper();
-      var testResult = CreateAxeResult (tags: new[] { "wcag2aa", "wcag111", "cat.sensory-and-visual-cues" });
+      var testResult = CreateAxeResult(tags: new[] { "wcag2aa", "wcag111", "cat.sensory-and-visual-cues" });
 
-      Assert.That (() => mapper.Map (testResult), Throws.Nothing);
+      Assert.That(() => mapper.Map(testResult), Throws.Nothing);
     }
 
     [Test]
     public void Map_ParseUnknownRuleID ()
     {
-      var axeResult = CreateAxeResult (ruleId: "SomeUnknownRuleID");
+      var axeResult = CreateAxeResult(ruleId: "SomeUnknownRuleID");
       var mapper = new AccessibilityResultMapper();
 
-      var finalResult = mapper.Map (axeResult);
+      var finalResult = mapper.Map(axeResult);
 
-      Assert.That (finalResult.Violations.Single().Rule.ID, Is.EqualTo (AccessibilityRuleID.Unknown));
+      Assert.That(finalResult.Violations.Single().Rule.ID, Is.EqualTo(AccessibilityRuleID.Unknown));
     }
 
     [Test]
     public void Map_ParseUnknownCheckID ()
     {
-      var axeResult = CreateAxeResult (ruleId: "SomeUnknownRuleID");
+      var axeResult = CreateAxeResult(ruleId: "SomeUnknownRuleID");
       var mapper = new AccessibilityResultMapper();
 
-      var finalResult = mapper.Map (axeResult);
+      var finalResult = mapper.Map(axeResult);
 
-      Assert.That (finalResult.Violations.Single().Any.Single().ID, Is.EqualTo (AccessibilityRequirementID.Unknown));
+      Assert.That(finalResult.Violations.Single().Any.Single().ID, Is.EqualTo(AccessibilityRequirementID.Unknown));
     }
 
     [Test]
     public void Map_StringRepresentation ()
     {
       var mapper = new AccessibilityResultMapper();
-      var axeResult = CreateAxeResult (tags: new[] { "wcag2a", "wcag111" }, ruleId: "accesskeys", xPath: new[] { "TargetTest" }, cssTargets: new[] { "TargetTest" });
+      var axeResult = CreateAxeResult(tags: new[] { "wcag2a", "wcag111" }, ruleId: "accesskeys", xPath: new[] { "TargetTest" }, cssTargets: new[] { "TargetTest" });
 
-      var finalResult = mapper.Map (axeResult);
+      var finalResult = mapper.Map(axeResult);
 
-      Assert.That (
+      Assert.That(
           finalResult.ToString(),
-          Is.EqualTo (
+          Is.EqualTo(
               "Tag: <Wcag20_ConformanceLevelA>, Violations: <<Rule: AccessKeys, XPath: [\"TargetTest\"]>>"));
     }
 
@@ -102,7 +102,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
       var mapper = new AccessibilityResultMapper();
       var includeIframes = BooleanObjectMother.GetRandomBoolean();
       const string timestamp = "2018-06-04T07:37:53.055Z";
-      var testResult = CreateAxeResult (
+      var testResult = CreateAxeResult(
           axeVersion: "3.2.2",
           userAgent: "Firefox",
           url: "MyOwnTestingUrl",
@@ -114,20 +114,20 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
           timestamp: timestamp,
           includeIFrames: includeIframes);
 
-      var finalResult = mapper.Map (testResult);
+      var finalResult = mapper.Map(testResult);
 
-      Assert.That (finalResult.AxeVersion, Is.EqualTo ("3.2.2"));
-      Assert.That (finalResult.UserAgent, Is.EqualTo ("Firefox"));
-      Assert.That (finalResult.Url, Is.EqualTo ("MyOwnTestingUrl"));
-      Assert.That (finalResult.OrientationType, Is.EqualTo ("landscape"));
-      Assert.That (finalResult.OrientationAngle, Is.EqualTo (1));
-      Assert.That (finalResult.WindowWidth, Is.EqualTo (2));
-      Assert.That (finalResult.WindowHeight, Is.EqualTo (3));
-      Assert.That (finalResult.ConformanceLevel, Is.EqualTo (AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA));
-      Assert.That (
-          finalResult.Timestamp.ToUniversalTime().ToString ("yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.CreateSpecificCulture ("de-AT")),
-          Is.EqualTo (timestamp));
-      Assert.That (finalResult.IncludeIFrames, Is.EqualTo (includeIframes));
+      Assert.That(finalResult.AxeVersion, Is.EqualTo("3.2.2"));
+      Assert.That(finalResult.UserAgent, Is.EqualTo("Firefox"));
+      Assert.That(finalResult.Url, Is.EqualTo("MyOwnTestingUrl"));
+      Assert.That(finalResult.OrientationType, Is.EqualTo("landscape"));
+      Assert.That(finalResult.OrientationAngle, Is.EqualTo(1));
+      Assert.That(finalResult.WindowWidth, Is.EqualTo(2));
+      Assert.That(finalResult.WindowHeight, Is.EqualTo(3));
+      Assert.That(finalResult.ConformanceLevel, Is.EqualTo(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA));
+      Assert.That(
+          finalResult.Timestamp.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ", CultureInfo.CreateSpecificCulture("de-AT")),
+          Is.EqualTo(timestamp));
+      Assert.That(finalResult.IncludeIFrames, Is.EqualTo(includeIframes));
     }
 
     [Test]
@@ -135,9 +135,9 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
     {
       var mapper = new AccessibilityResultMapper();
 
-      var testResult = CreateAxeResult (xPath: new[] { "XPath1", "XPath2", "XPath3" }, cssTargets: new[] { "Target1", "Target2" });
+      var testResult = CreateAxeResult(xPath: new[] { "XPath1", "XPath2", "XPath3" }, cssTargets: new[] { "Target1", "Target2" });
 
-      Assert.That (() => mapper.Map (testResult), Throws.TypeOf<InvalidOperationException>());
+      Assert.That(() => mapper.Map(testResult), Throws.TypeOf<InvalidOperationException>());
     }
 
     private AxeResult CreateAxeResult (
@@ -176,7 +176,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Accessibility
                      ID = ruleId,
                      Tags = tags,
                      Description = "Rule Description",
-                     Nodes = new[] { CreateRuleNode (ruleId, impact, xPath, cssTargets) },
+                     Nodes = new[] { CreateRuleNode(ruleId, impact, xPath, cssTargets) },
                      Impact = impact,
                  };
 

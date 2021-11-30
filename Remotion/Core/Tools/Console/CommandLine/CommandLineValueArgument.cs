@@ -24,12 +24,12 @@ namespace Remotion.Tools.Console.CommandLine
 public abstract class CommandLineValueArgument: CommandLineArgument
 {
   public CommandLineValueArgument (string? name, bool isOptional)
-    : base (name, isOptional)
+    : base(name, isOptional)
   {
   }
 
   public CommandLineValueArgument (bool isOptional)
-    : base (isOptional)
+    : base(isOptional)
   {
   }
 
@@ -37,24 +37,24 @@ public abstract class CommandLineValueArgument: CommandLineArgument
   {
     if (! IsPositional)
     {
-      sb.Append (Parser!.ArgumentDeclarationPrefix);
-      sb.Append (Name);
+      sb.Append(Parser!.ArgumentDeclarationPrefix);
+      sb.Append(Name);
       if (Placeholder != null)
-        sb.Append (Parser.Separator);
+        sb.Append(Parser.Separator);
     }
-    sb.Append (Placeholder);
+    sb.Append(Placeholder);
   }
 }
 
 public class CommandLineStringArgument: CommandLineValueArgument
 {
   public CommandLineStringArgument (string name, bool isOptional)
-    : base (name, isOptional)
+    : base(name, isOptional)
   {
   }
 
   public CommandLineStringArgument (bool isOptional)
-    : base (isOptional)
+    : base(isOptional)
   {
   }
 
@@ -62,7 +62,7 @@ public class CommandLineStringArgument: CommandLineValueArgument
   {
     get { return Value; }
   }
-  
+
   public string? Value
   {
     get { return StringValue; }
@@ -74,12 +74,12 @@ public class CommandLineInt32Argument: CommandLineValueArgument
   private int? _value;
 
   public CommandLineInt32Argument (string name, bool isOptional)
-    : base (name, isOptional)
+    : base(name, isOptional)
   {
   }
 
   public CommandLineInt32Argument (bool isOptional)
-    : base (isOptional)
+    : base(isOptional)
   {
   }
 
@@ -95,7 +95,7 @@ public class CommandLineInt32Argument: CommandLineValueArgument
 
   protected internal override void SetStringValue (string value)
   {
-    if (value == null) throw new ArgumentNullException ("value");
+    if (value == null) throw new ArgumentNullException("value");
     string strValue = value.Trim();
     if (strValue.Length == 0)
     {
@@ -104,12 +104,12 @@ public class CommandLineInt32Argument: CommandLineValueArgument
     else
     {
       double result;
-      if (! double.TryParse (value, NumberStyles.Integer, null, out result))
-        throw new InvalidCommandLineArgumentValueException (this, "Specify a valid integer number.");
-      _value = (int) result;
+      if (! double.TryParse(value, NumberStyles.Integer, null, out result))
+        throw new InvalidCommandLineArgumentValueException(this, "Specify a valid integer number.");
+      _value = (int)result;
     }
 
-    base.SetStringValue (value);
+    base.SetStringValue(value);
   }
 
 }

@@ -33,7 +33,7 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     public static CommandInfo CreateForNone (bool enableFocus)
     {
-      return new CommandInfo (null, null, null, null, null, enableFocus ? 0 : default(int?));
+      return new CommandInfo(null, null, null, null, null, enableFocus ? 0 : default(int?));
     }
 
     /// <summary>
@@ -46,12 +46,12 @@ namespace Remotion.Web.UI.Controls
     /// <param name="onClick">An optional javascript hooked up to the click event. The script is only allowed to do housekeeping. Must not be empty.</param>
     public static CommandInfo CreateForLink (string? title, string? accessKey, string href, string? target, string? onClick)
     {
-      ArgumentUtility.CheckNotEmpty ("title", title);
-      ArgumentUtility.CheckNotNullOrEmpty ("href", href);
-      ArgumentUtility.CheckNotEmpty ("target", target);
-      ArgumentUtility.CheckNotEmpty ("onClick", onClick);
+      ArgumentUtility.CheckNotEmpty("title", title);
+      ArgumentUtility.CheckNotNullOrEmpty("href", href);
+      ArgumentUtility.CheckNotEmpty("target", target);
+      ArgumentUtility.CheckNotEmpty("onClick", onClick);
 
-      return new CommandInfo (title, accessKey, href, target, onClick, null);
+      return new CommandInfo(title, accessKey, href, target, onClick, null);
     }
 
     /// <summary>
@@ -62,10 +62,10 @@ namespace Remotion.Web.UI.Controls
     /// <param name="onClick">The javascript hooked up to the click event. Must not be <see langword="null" /> or empty.</param>
     public static CommandInfo CreateForPostBack (string? title, string? accessKey, string onClick)
     {
-      ArgumentUtility.CheckNotEmpty ("title", title);
-      ArgumentUtility.CheckNotNullOrEmpty ("onClick", onClick);
+      ArgumentUtility.CheckNotEmpty("title", title);
+      ArgumentUtility.CheckNotNullOrEmpty("onClick", onClick);
 
-      return new CommandInfo (title, accessKey, "#", null, onClick, null);
+      return new CommandInfo(title, accessKey, "#", null, onClick, null);
     }
 
     private readonly string? _title;
@@ -117,42 +117,42 @@ namespace Remotion.Web.UI.Controls
 
     public void AddAttributesToRender ([NotNull] HtmlTextWriter writer, [NotNull] IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
-      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 
-      if (!string.IsNullOrEmpty (_href))
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, _href);
+      if (!string.IsNullOrEmpty(_href))
+        writer.AddAttribute(HtmlTextWriterAttribute.Href, _href);
 
-      if (!string.IsNullOrEmpty (_target))
-        writer.AddAttribute (HtmlTextWriterAttribute.Target, _target);
+      if (!string.IsNullOrEmpty(_target))
+        writer.AddAttribute(HtmlTextWriterAttribute.Target, _target);
 
-      if (!string.IsNullOrEmpty (_onClick))
-        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, _onClick);
+      if (!string.IsNullOrEmpty(_onClick))
+        writer.AddAttribute(HtmlTextWriterAttribute.Onclick, _onClick);
 
-      if (!string.IsNullOrEmpty (_accessKey))
-        writer.AddAttribute (HtmlTextWriterAttribute.Accesskey, _accessKey);
+      if (!string.IsNullOrEmpty(_accessKey))
+        writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, _accessKey);
 
-      if (!string.IsNullOrEmpty (_title))
-        writer.AddAttribute (HtmlTextWriterAttribute.Title, _title);
+      if (!string.IsNullOrEmpty(_title))
+        writer.AddAttribute(HtmlTextWriterAttribute.Title, _title);
 
       if (_tabIndex.HasValue)
-        writer.AddAttribute (HtmlTextWriterAttribute.Tabindex, _tabIndex.Value.ToString());
+        writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, _tabIndex.Value.ToString());
 
       if (renderingFeatures.EnableDiagnosticMetadata)
-        AddDiagnosticMetadataAttributes (writer);
+        AddDiagnosticMetadataAttributes(writer);
     }
 
     private void AddDiagnosticMetadataAttributes (HtmlTextWriter writer)
     {
-      writer.AddAttribute (DiagnosticMetadataAttributes.ControlType, "Command");
+      writer.AddAttribute(DiagnosticMetadataAttributes.ControlType, "Command");
       if (_href == null)
       {
-        writer.AddAttribute (DiagnosticMetadataAttributes.IsDisabled, "true");
+        writer.AddAttribute(DiagnosticMetadataAttributes.IsDisabled, "true");
         return;
       }
 
-      writer.AddAttribute (DiagnosticMetadataAttributes.TriggersNavigation, IsTriggeringNavigation().ToString().ToLower());
-      writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, IsTriggeringPostBack().ToString().ToLower());
+      writer.AddAttribute(DiagnosticMetadataAttributes.TriggersNavigation, IsTriggeringNavigation().ToString().ToLower());
+      writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, IsTriggeringPostBack().ToString().ToLower());
     }
 
     private bool IsTriggeringNavigation ()
@@ -160,9 +160,9 @@ namespace Remotion.Web.UI.Controls
       return _href != "#";
     }
 
-    private bool IsTriggeringPostBack()
+    private bool IsTriggeringPostBack ()
     {
-      return !IsTriggeringNavigation() && _onClick!.Contains ("__doPostBack"); // TODO RM-8104: Guard _onClick
+      return !IsTriggeringNavigation() && _onClick!.Contains("__doPostBack"); // TODO RM-8104: Guard _onClick
     }
   }
 }

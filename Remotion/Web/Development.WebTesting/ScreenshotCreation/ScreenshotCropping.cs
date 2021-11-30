@@ -67,16 +67,16 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public Rectangle ApplyOnElement (Rectangle screenshotBounds, ResolvedScreenshotElement screenshotElement)
     {
-      ArgumentUtility.CheckNotNull ("screenshotElement", screenshotElement);
+      ArgumentUtility.CheckNotNull("screenshotElement", screenshotElement);
 
-      var area = _padding.Apply (screenshotElement.ElementBounds);
+      var area = _padding.Apply(screenshotElement.ElementBounds);
 
       if (_isRestrictedByImageBounds)
-        area = Rectangle.Intersect (area, screenshotBounds);
+        area = Rectangle.Intersect(area, screenshotBounds);
 
       if (_isRestrictedByParent && screenshotElement.ParentBounds.HasValue)
-        return Rectangle.Intersect (area, screenshotElement.ParentBounds.Value);
-      
+        return Rectangle.Intersect(area, screenshotElement.ParentBounds.Value);
+
       return area;
     }
   }

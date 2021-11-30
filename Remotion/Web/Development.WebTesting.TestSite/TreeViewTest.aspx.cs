@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       MyTreeView.SelectedNodeChanged += MyTreeViewOnSelectedNodeChanged;
       MyTreeView.TreeNodeCollapsed += MyTreeViewOnTreeNodeCollapsed;
@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       if (!IsPostBack)
         InitializeTreeView();
@@ -42,19 +42,19 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void MyTreeViewOnSelectedNodeChanged (object sender, EventArgs eventArgs)
     {
-      ((Layout) Master).SetTestOutput (
+      ((Layout)Master).SetTestOutput(
           "Selected: " + MyTreeView.SelectedNode.Text + "|" + MyTreeView.SelectedNode.Value + " (" + GetCheckedNodes() + ")");
     }
 
     private void MyTreeViewOnTreeNodeExpanded (object sender, TreeNodeEventArgs treeNodeEventArgs)
     {
-      ((Layout) Master).SetTestOutput (
+      ((Layout)Master).SetTestOutput(
           "Expanded: " + treeNodeEventArgs.Node.Text + "|" + treeNodeEventArgs.Node.Value + " (" + GetCheckedNodes() + ")");
     }
 
     private void MyTreeViewOnTreeNodeCollapsed (object sender, TreeNodeEventArgs treeNodeEventArgs)
     {
-      ((Layout) Master).SetTestOutput (
+      ((Layout)Master).SetTestOutput(
           "Collapsed: " + treeNodeEventArgs.Node.Text + "|" + treeNodeEventArgs.Node.Value + " (" + GetCheckedNodes() + ")");
     }
 
@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       if (MyTreeView.CheckedNodes.Count == 0)
         return "None";
 
-      return string.Join (",", MyTreeView.CheckedNodes.Cast<TreeNode>().Select (cn => cn.Text + "|" + cn.Value));
+      return string.Join(",", MyTreeView.CheckedNodes.Cast<TreeNode>().Select(cn => cn.Text + "|" + cn.Value));
     }
 
     private void InitializeTreeView ()
@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       InitializeMyTreeView();
 
       InitializeMyTreeViewWithSpecialChildren();
-      
+
       InitializeTreeViewWithOnlyRootWithSingleQuote();
 
       InitializeTreeViewWithOnlyRootWithDoubleQuote();
@@ -79,53 +79,53 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void InitializeMyTreeView ()
     {
-      var root = new TreeNode ("Root node", "RootValue", "~/Images/SampleIcon.gif");
-      var child1 = new TreeNode ("Child node 1", "Child1Value");
-      var child2 = new TreeNode ("Child node 2", "Child2Value");
-      var child11 = new TreeNode ("Child node 11", "Child11Value");
-      var child12 = new TreeNode ("Child node 12", "Child12Value");
-      var child21 = new TreeNode ("Child node 21", "Child21Value");
-      var child22 = new TreeNode ("Child node 22", "Child22Value");
-      var child23 = new TreeNode ("Child node 23", "Child23Value");
+      var root = new TreeNode("Root node", "RootValue", "~/Images/SampleIcon.gif");
+      var child1 = new TreeNode("Child node 1", "Child1Value");
+      var child2 = new TreeNode("Child node 2", "Child2Value");
+      var child11 = new TreeNode("Child node 11", "Child11Value");
+      var child12 = new TreeNode("Child node 12", "Child12Value");
+      var child21 = new TreeNode("Child node 21", "Child21Value");
+      var child22 = new TreeNode("Child node 22", "Child22Value");
+      var child23 = new TreeNode("Child node 23", "Child23Value");
 
-      child1.ChildNodes.Add (child11);
-      child1.ChildNodes.Add (child12);
-      child2.ChildNodes.Add (child21);
-      child2.ChildNodes.Add (child22);
-      child2.ChildNodes.Add (child23);
+      child1.ChildNodes.Add(child11);
+      child1.ChildNodes.Add(child12);
+      child2.ChildNodes.Add(child21);
+      child2.ChildNodes.Add(child22);
+      child2.ChildNodes.Add(child23);
 
-      root.ChildNodes.Add (child1);
-      root.ChildNodes.Add (child2);
+      root.ChildNodes.Add(child1);
+      root.ChildNodes.Add(child2);
 
-      MyTreeView.Nodes.Add (root);
+      MyTreeView.Nodes.Add(root);
 
       MyTreeView.CollapseAll();
       MyTreeView.ShowCheckBoxes = TreeNodeTypes.Leaf;
       MyTreeView.ShowLines = true;
     }
 
-    private void InitializeMyTreeViewWithSpecialChildren()
+    private void InitializeMyTreeViewWithSpecialChildren ()
     {
-      var root = new TreeNode ("Root node 2", "RootValue2", "~/Images/SampleIcon.gif");
+      var root = new TreeNode("Root node 2", "RootValue2", "~/Images/SampleIcon.gif");
 
-      var child1 = new TreeNode ("With'SingleQuote", "Child1Value");
-      var child2 = new TreeNode ("With'SingleQuoteAndDouble\"Quote", "Child2Value");
+      var child1 = new TreeNode("With'SingleQuote", "Child1Value");
+      var child2 = new TreeNode("With'SingleQuoteAndDouble\"Quote", "Child2Value");
 
-      root.ChildNodes.Add (child1);
-      root.ChildNodes.Add (child2);
+      root.ChildNodes.Add(child1);
+      root.ChildNodes.Add(child2);
 
-      MyTreeViewWithSpecialChildren.Nodes.Add (root);
+      MyTreeViewWithSpecialChildren.Nodes.Add(root);
     }
     private void InitializeTreeViewWithOnlyRootWithSingleQuote ()
     {
-      var root = new TreeNode ("With'SingleQuote", "RootValue", "~/Images/SampleIcon.gif");
-      TreeViewWithOnlyRootWithSingleQuote.Nodes.Add (root);
+      var root = new TreeNode("With'SingleQuote", "RootValue", "~/Images/SampleIcon.gif");
+      TreeViewWithOnlyRootWithSingleQuote.Nodes.Add(root);
     }
 
     private void InitializeTreeViewWithOnlyRootWithDoubleQuote ()
     {
-      var root = new TreeNode ("With'SingleQuoteAndDouble\"Quote", "~/Images/SampleIcon.gif");
-      TreeViewWithOnlyRootWithDoubleQuote.Nodes.Add (root);
+      var root = new TreeNode("With'SingleQuoteAndDouble\"Quote", "~/Images/SampleIcon.gif");
+      TreeViewWithOnlyRootWithDoubleQuote.Nodes.Add(root);
     }
   }
 }

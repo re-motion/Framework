@@ -47,39 +47,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       public static DomainObjectWithSpecialConstructor NewObject (object o)
       {
-        return NewObject<DomainObjectWithSpecialConstructor> (ParamList.CreateDynamic (o));
+        return NewObject<DomainObjectWithSpecialConstructor>(ParamList.CreateDynamic(o));
       }
     }
 
     [Test]
     public void ConstructorSelection ()
     {
-      DomainObjectWithSpecialConstructor d1 = DomainObjectWithSpecialConstructor.NewObject ("string");
-      Assert.That (d1.S, Is.EqualTo ("string"));
-      Assert.That (d1.O, Is.Null);
+      DomainObjectWithSpecialConstructor d1 = DomainObjectWithSpecialConstructor.NewObject("string");
+      Assert.That(d1.S, Is.EqualTo("string"));
+      Assert.That(d1.O, Is.Null);
 
-      object obj = new object ();
-      DomainObjectWithSpecialConstructor d2 = DomainObjectWithSpecialConstructor.NewObject (obj);
-      Assert.That (d2.S, Is.Null);
-      Assert.That (d2.O, Is.SameAs (obj));
+      object obj = new object();
+      DomainObjectWithSpecialConstructor d2 = DomainObjectWithSpecialConstructor.NewObject(obj);
+      Assert.That(d2.S, Is.Null);
+      Assert.That(d2.O, Is.SameAs(obj));
     }
 
     [Test]
     public void ConstructorThrowsIfCalledDirectly ()
     {
-      Assert.That (
-          () => new DomainObjectWithSpecialConstructor ("string"),
+      Assert.That(
+          () => new DomainObjectWithSpecialConstructor("string"),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
-                  "DomainObject constructors must not be called directly. Use " 
+              .With.Message.EqualTo(
+                  "DomainObject constructors must not be called directly. Use "
                   + "DomainObject.NewObject to create DomainObject instances."));
     }
 
     [Test]
     public void ConstructorWorksIfCalledIndirectly ()
     {
-      var instance = DomainObjectWithSpecialConstructor.NewObject ("string");
-      Assert.That (instance, Is.Not.Null);
+      var instance = DomainObjectWithSpecialConstructor.NewObject("string");
+      Assert.That(instance, Is.Not.Null);
     }
   }
 }

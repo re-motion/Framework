@@ -32,64 +32,64 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     {
       base.SetUp();
       _ace = CreateAceForStateful();
-      _property = GetPropertyDefinition (_ace, "UserCondition");
+      _property = GetPropertyDefinition(_ace, "UserCondition");
     }
 
     [Test]
     public void None ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo (UserCondition.None), _ace, _property), Is.True);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo(UserCondition.None), _ace, _property), Is.True);
     }
 
     [Test]
     public void None_Disabled ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo_Disabled (UserCondition.None), _ace, _property), Is.False);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo_Disabled(UserCondition.None), _ace, _property), Is.False);
     }
 
     [Test]
     public void Owner ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo (UserCondition.Owner), _ace, _property), Is.True);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo(UserCondition.Owner), _ace, _property), Is.True);
     }
 
     [Test]
     public void Owner_Disabled ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo_Disabled (UserCondition.Owner), _ace, _property), Is.False);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo_Disabled(UserCondition.Owner), _ace, _property), Is.False);
     }
 
     [Test]
     public void SpecificUser ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo (UserCondition.SpecificUser), _ace, _property), Is.True);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo(UserCondition.SpecificUser), _ace, _property), Is.True);
     }
 
     [Test]
     public void SpecificUser_Disabled ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo_Disabled (UserCondition.SpecificUser), _ace, _property), Is.False);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo_Disabled(UserCondition.SpecificUser), _ace, _property), Is.False);
     }
 
     [Test]
     public void SpecificPosition ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo (UserCondition.SpecificPosition), _ace, _property), Is.True);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo(UserCondition.SpecificPosition), _ace, _property), Is.True);
     }
 
     [Test]
     public void SpecificPosition_Disabled ()
     {
-      Assert.That (Filter.IsEnabled (CreateEnumValueInfo_Disabled (UserCondition.SpecificPosition), _ace, _property), Is.False);
+      Assert.That(Filter.IsEnabled(CreateEnumValueInfo_Disabled(UserCondition.SpecificPosition), _ace, _property), Is.False);
     }
 
     [Test]
     public void InvalidValue ()
     {
-      Assert.That (
-          () => Filter.IsEnabled (CreateEnumValueInfo ((UserCondition) 1000), _ace, _property),
+      Assert.That(
+          () => Filter.IsEnabled(CreateEnumValueInfo((UserCondition)1000), _ace, _property),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The value '1000' is not a valid value for 'UserCondition'."));
     }
   }

@@ -20,16 +20,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Re
 {
   [DBStorageGroup]
   [DBTable]
-  [ClassID ("RelationEndPointTypesAreConsistentValidationRule_RelationEndPointPropertyClass2")]
+  [ClassID("RelationEndPointTypesAreConsistentValidationRule_RelationEndPointPropertyClass2")]
   public class BaseRelationEndPointPropertyClass2 : DomainObject
   {
-    [DBBidirectionalRelation ("RelationProperty1")]
+    [DBBidirectionalRelation("RelationProperty1")]
     public BaseRelationEndPointPropertyClass1 RelationProperty1 { get; set; }
 
-    [DBBidirectionalRelation ("RelationProperty3")]
+    [DBBidirectionalRelation("RelationProperty3")]
     public DerivedRelationEndPointPropertyClass1 RelationProperty3 { get; set; }
 
-    [DBBidirectionalRelation ("RelationProperty4")]
+    [DBBidirectionalRelation("RelationProperty4")]
     public DerivedRelationEndPointPropertyClass1 RelationProperty4 { get; set; }
 
   }

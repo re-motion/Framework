@@ -28,7 +28,7 @@ namespace Remotion.Validation
 
     public ValidatorDescriptor (IReadOnlyCollection<IValidationRule> validationRules)
     {
-      ArgumentUtility.CheckNotNull ("validationRules", validationRules);
+      ArgumentUtility.CheckNotNull("validationRules", validationRules);
 
       ValidationRules = validationRules;
     }

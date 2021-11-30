@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public InitializedEventDomainObjectTransactionContextDecorator (IDomainObjectTransactionContext actualContext)
     {
-      ArgumentUtility.CheckNotNull ("actualContext", actualContext);
+      ArgumentUtility.CheckNotNull("actualContext", actualContext);
 
       _actualContext = actualContext;
     }
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     private InvalidOperationException CreateInvalidOperationException ()
     {
-      return new InvalidOperationException ("While the OnReferenceInitializing event is executing, this member cannot be used.");
+      return new InvalidOperationException("While the OnReferenceInitializing event is executing, this member cannot be used.");
     }
   }
 }

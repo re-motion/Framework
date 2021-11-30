@@ -21,6 +21,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
   [DBTable]
   public class ClassWithoutClassIDAttribute : DomainObject
   {
-    
+
   }
 }

@@ -34,18 +34,18 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IMemberInformationNameResolver nameResolver,
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider)
-        : base (type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
+        : base(type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
     {
     }
 
     protected override bool FindPropertiesFilter (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      if (!base.FindPropertiesFilter (propertyInfo))
+      if (!base.FindPropertiesFilter(propertyInfo))
         return false;
 
-      return ReflectionUtility.IsRelationType (propertyInfo.PropertyType);
+      return ReflectionUtility.IsRelationType(propertyInfo.PropertyType);
     }
 
     protected override PropertyFinderBase CreateNewFinder (
@@ -56,12 +56,12 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull ("persistentMixinFinder", persistentMixinFinder);
-      ArgumentUtility.CheckNotNull ("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
+      ArgumentUtility.CheckNotNull("persistentMixinFinder", persistentMixinFinder);
+      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
 
-      return new RelationPropertyFinder (
+      return new RelationPropertyFinder(
           type,
           includeBaseProperties,
           includeMixinProperties,

@@ -31,263 +31,263 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     [SetUp]
     public void SetUp ()
     {
-      _testDirectory = Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString());
-      Directory.CreateDirectory (_testDirectory);
+      _testDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+      Directory.CreateDirectory(_testDirectory);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      Directory.Delete (_testDirectory, true);
+      Directory.Delete(_testDirectory, true);
     }
 
     [Test]
     public void IsMappedPath ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
 
-      Assert.That (provider.IsMappedPath ("~/res/test"));
+      Assert.That(provider.IsMappedPath("~/res/test"));
     }
 
     [Test]
     public void IsMappedPath_WithTrailingSlash ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
 
-      Assert.That (provider.IsMappedPath ("~/res/test/"));
+      Assert.That(provider.IsMappedPath("~/res/test/"));
     }
 
     [Test]
     public void IsMappedPath_IsCaseInsensitive ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
 
-      Assert.That (provider.IsMappedPath ("~/res/tEsT/"));
+      Assert.That(provider.IsMappedPath("~/res/tEsT/"));
     }
 
     [Test]
     public void IsMappedPath_WithSubPath ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
 
-      Assert.That (provider.IsMappedPath ("~/res/test/subdirectory"));
+      Assert.That(provider.IsMappedPath("~/res/test/subdirectory"));
     }
 
     [Test]
     public void IsMappedPath_WithSubDirectoryMapping ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test/subdirectory", "testResourceFolder") }, _testDirectory);
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test/subdirectory", "testResourceFolder") }, _testDirectory);
 
-      Assert.That (provider.IsMappedPath ("~/res/test/subdirectory/file.txt"));
+      Assert.That(provider.IsMappedPath("~/res/test/subdirectory/file.txt"));
     }
 
     [Test]
     public void IsMappedPath_ResourceFolderRoot ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
 
-      Assert.That (provider.IsMappedPath ("~/res/"));
+      Assert.That(provider.IsMappedPath("~/res/"));
     }
 
     [Test]
     public void IsMappedPath_UnknownResourceDirectory ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
 
-      Assert.That (provider.IsMappedPath ("~/res/unknown/subdirectory"), Is.False);
+      Assert.That(provider.IsMappedPath("~/res/unknown/subdirectory"), Is.False);
     }
 
     [Test]
     public void FileExists ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
-      provider.SetMakeRelativeVirtualPathOverride ((a, b) => "testfile.txt");
-      provider.SetCombineVirtualPathOverride ((a, b) => "~/res/test/");
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
+      provider.SetMakeRelativeVirtualPathOverride((a, b) => "testfile.txt");
+      provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");
 
-      Directory.CreateDirectory (Path.Combine (_testDirectory, "testResourceFolder"));
-      File.WriteAllText (Path.Combine (_testDirectory, "testResourceFolder\\testfile.txt"), "hello");
+      Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder"));
+      File.WriteAllText(Path.Combine(_testDirectory, "testResourceFolder\\testfile.txt"), "hello");
 
-      Assert.That (provider.FileExists ("~/res/test/testfile.txt"));
+      Assert.That(provider.FileExists("~/res/test/testfile.txt"));
     }
 
     [Test]
     public void FileExists_PhysicalFileDoesNotExist ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
-      provider.SetMakeRelativeVirtualPathOverride ((a, b) => "testfile.txt");
-      provider.SetCombineVirtualPathOverride ((a, b) => "~/res/test/");
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
+      provider.SetMakeRelativeVirtualPathOverride((a, b) => "testfile.txt");
+      provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");
 
-      Directory.CreateDirectory (Path.Combine (_testDirectory, "testResourceFolder"));
+      Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder"));
 
-      Assert.That (provider.FileExists ("~/res/test/testfile.txt"), Is.False);
+      Assert.That(provider.FileExists("~/res/test/testfile.txt"), Is.False);
     }
 
     [Test]
     public void FileExists_NotMappedDirectory_FallsBackToPreviousProvider ()
     {
       var previousProviderStub = MockRepository.GenerateStub<VirtualPathProvider>();
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
-      provider.SetPrevious (previousProviderStub);
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
+      provider.SetPrevious(previousProviderStub);
 
-      previousProviderStub.Stub (_ => _.FileExists ("~/res/UnknownDirectory/testfile.txt")).Return (true);
+      previousProviderStub.Stub(_ => _.FileExists("~/res/UnknownDirectory/testfile.txt")).Return(true);
 
-      Assert.That (provider.FileExists ("~/res/UnknownDirectory/testfile.txt"), Is.True);
+      Assert.That(provider.FileExists("~/res/UnknownDirectory/testfile.txt"), Is.True);
     }
 
     [Test]
     public void GetFile ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
-      provider.SetMakeRelativeVirtualPathOverride ((a, b) => "testfile.txt");
-      provider.SetCombineVirtualPathOverride ((a, b) => "~/res/test/");
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
+      provider.SetMakeRelativeVirtualPathOverride((a, b) => "testfile.txt");
+      provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");
 
-      var expectedFilePath = Path.Combine (_testDirectory, "testResourceFolder\\testfile.txt");
-      Directory.CreateDirectory (Path.Combine (_testDirectory, "testResourceFolder"));
-      File.WriteAllText (expectedFilePath, "hello");
+      var expectedFilePath = Path.Combine(_testDirectory, "testResourceFolder\\testfile.txt");
+      Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder"));
+      File.WriteAllText(expectedFilePath, "hello");
 
-      var actual = (ResourceVirtualFile) provider.GetFile ("~/res/test/testfile.txt");
+      var actual = (ResourceVirtualFile)provider.GetFile("~/res/test/testfile.txt");
 
-      Assert.That (actual.PhysicalPath, Is.EqualTo (expectedFilePath));
-      Assert.That (actual.Exists);
+      Assert.That(actual.PhysicalPath, Is.EqualTo(expectedFilePath));
+      Assert.That(actual.Exists);
     }
 
     [Test]
     public void GetFile_FileInsideMappedSubdirectory ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test/subdirectory", "testResourceFolder") }, _testDirectory);
-      provider.SetMakeRelativeVirtualPathOverride ((a, b) => "testfile.txt");
-      provider.SetCombineVirtualPathOverride ((a, b) => "~/res/test/subdirectory");
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test/subdirectory", "testResourceFolder") }, _testDirectory);
+      provider.SetMakeRelativeVirtualPathOverride((a, b) => "testfile.txt");
+      provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/subdirectory");
 
-      var expectedFilePath = Path.Combine (_testDirectory, "testResourceFolder\\testfile.txt");
-      Directory.CreateDirectory (Path.Combine (_testDirectory, "testResourceFolder"));
-      File.WriteAllText (expectedFilePath, "hello");
+      var expectedFilePath = Path.Combine(_testDirectory, "testResourceFolder\\testfile.txt");
+      Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder"));
+      File.WriteAllText(expectedFilePath, "hello");
 
-      var actual = (ResourceVirtualFile) provider.GetFile ("~/res/test/subdirectory/testfile.txt");
+      var actual = (ResourceVirtualFile)provider.GetFile("~/res/test/subdirectory/testfile.txt");
 
-      Assert.That (actual.PhysicalPath, Is.EqualTo (expectedFilePath));
-      Assert.That (actual.Exists);
+      Assert.That(actual.PhysicalPath, Is.EqualTo(expectedFilePath));
+      Assert.That(actual.Exists);
     }
 
     [Test]
     public void GetFile_NotMappedPath_FallsBackToPreviousProvider ()
     {
       var previousProviderStub = MockRepository.GenerateStub<VirtualPathProvider>();
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
-      provider.SetPrevious (previousProviderStub);
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
+      provider.SetPrevious(previousProviderStub);
 
-      var expectedFile = new ResourceVirtualFile ("test", new FileInfo (Path.Combine (_testDirectory, "file.txt")));
-      previousProviderStub.Stub (_ => _.GetFile ("~/res/UnknownDirectory/testfile.txt")).Return (expectedFile);
+      var expectedFile = new ResourceVirtualFile("test", new FileInfo(Path.Combine(_testDirectory, "file.txt")));
+      previousProviderStub.Stub(_ => _.GetFile("~/res/UnknownDirectory/testfile.txt")).Return(expectedFile);
 
-      var actual = (ResourceVirtualFile) provider.GetFile ("~/res/UnknownDirectory/testfile.txt");
+      var actual = (ResourceVirtualFile)provider.GetFile("~/res/UnknownDirectory/testfile.txt");
 
-      Assert.That (actual, Is.SameAs (expectedFile));
+      Assert.That(actual, Is.SameAs(expectedFile));
     }
 
     [Test]
     public void GetCacheDependency_ReturnsNullForMappedPaths ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
 
-      var actual = provider.GetCacheDependency ("~/res/test/testfile.txt", new string[0], DateTime.UtcNow);
+      var actual = provider.GetCacheDependency("~/res/test/testfile.txt", new string[0], DateTime.UtcNow);
 
-      Assert.That (actual, Is.Null);
+      Assert.That(actual, Is.Null);
     }
 
     [Test]
     public void DirectoryExists ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
-      provider.SetMakeRelativeVirtualPathOverride ((a, b) => "subfolder");
-      provider.SetCombineVirtualPathOverride ((a, b) => "~/res/test/");
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
+      provider.SetMakeRelativeVirtualPathOverride((a, b) => "subfolder");
+      provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");
 
-      Directory.CreateDirectory (Path.Combine (_testDirectory, "testResourceFolder\\subfolder"));
+      Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder\\subfolder"));
 
-      Assert.That (provider.DirectoryExists ("~/res/test/subfolder"));
+      Assert.That(provider.DirectoryExists("~/res/test/subfolder"));
     }
 
     [Test]
     public void DirectoryExists_ResourceRootDirectory ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
-      provider.SetMakeRelativeVirtualPathOverride ((a, b) => "subfolder");
-      provider.SetCombineVirtualPathOverride ((a, b) => "~/res/test/");
-      provider.SetMapPathOverride ((a) => "c:\\temp");
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
+      provider.SetMakeRelativeVirtualPathOverride((a, b) => "subfolder");
+      provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");
+      provider.SetMapPathOverride((a) => "c:\\temp");
 
-      Directory.CreateDirectory (Path.Combine (_testDirectory, "testResourceFolder\\subfolder"));
+      Directory.CreateDirectory(Path.Combine(_testDirectory, "testResourceFolder\\subfolder"));
 
-      Assert.That (provider.DirectoryExists ("~/res/"));
+      Assert.That(provider.DirectoryExists("~/res/"));
     }
 
     [Test]
     public void DirectoryExists_PhysicalDirectoryDoesNotExist ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
-      provider.SetMakeRelativeVirtualPathOverride ((a, b) => "testDirectory");
-      provider.SetCombineVirtualPathOverride ((a, b) => "~/res/test/");
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
+      provider.SetMakeRelativeVirtualPathOverride((a, b) => "testDirectory");
+      provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");
 
-      Assert.That (provider.DirectoryExists ("~/res/test/testDirectory"), Is.False);
+      Assert.That(provider.DirectoryExists("~/res/test/testDirectory"), Is.False);
     }
 
     [Test]
     public void DirectoryExists_NotMappedDirectory_FallsBackToPreviousProvider ()
     {
       var previousProviderStub = MockRepository.GenerateStub<VirtualPathProvider>();
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
-      provider.SetPrevious (previousProviderStub);
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
+      provider.SetPrevious(previousProviderStub);
 
-      previousProviderStub.Stub (_ => _.DirectoryExists ("~/res/UnknownDirectory/test")).Return (true);
+      previousProviderStub.Stub(_ => _.DirectoryExists("~/res/UnknownDirectory/test")).Return(true);
 
-      Assert.That (provider.DirectoryExists ("~/res/UnknownDirectory/test"), Is.True);
+      Assert.That(provider.DirectoryExists("~/res/UnknownDirectory/test"), Is.True);
     }
-    
+
     [Test]
     public void GetDirectory ()
     {
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
-      provider.SetMakeRelativeVirtualPathOverride ((a, b) => "testDirectory");
-      provider.SetCombineVirtualPathOverride ((a, b) => "~/res/test/");
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
+      provider.SetMakeRelativeVirtualPathOverride((a, b) => "testDirectory");
+      provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");
 
-      var expectedDirectoryPath = Path.Combine (_testDirectory, "testResourceFolder\\testDirectory");
-      Directory.CreateDirectory (expectedDirectoryPath);
+      var expectedDirectoryPath = Path.Combine(_testDirectory, "testResourceFolder\\testDirectory");
+      Directory.CreateDirectory(expectedDirectoryPath);
 
-      var actual = (ResourceVirtualDirectory) provider.GetDirectory ("~/res/test/testDirectory");
+      var actual = (ResourceVirtualDirectory)provider.GetDirectory("~/res/test/testDirectory");
 
-      Assert.That (actual.PhysicalPath, Is.EqualTo (expectedDirectoryPath));
-      Assert.That (actual.Exists);
+      Assert.That(actual.PhysicalPath, Is.EqualTo(expectedDirectoryPath));
+      Assert.That(actual.Exists);
     }
 
     [Test]
     public void GetDirectory_ResourceRootDirectory ()
     {
       var expectedDirectoryPath = "c:\\temp";
-     
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
-      provider.SetMakeRelativeVirtualPathOverride ((a, b) => "testDirectory");
-      provider.SetCombineVirtualPathOverride ((a, b) => "~/res/test/");
-      provider.SetMapPathOverride ((a) => expectedDirectoryPath);
 
-      Directory.CreateDirectory (expectedDirectoryPath);
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
+      provider.SetMakeRelativeVirtualPathOverride((a, b) => "testDirectory");
+      provider.SetCombineVirtualPathOverride((a, b) => "~/res/test/");
+      provider.SetMapPathOverride((a) => expectedDirectoryPath);
 
-      var actual = (ResourceVirtualDirectory) provider.GetDirectory ("~/res/");
+      Directory.CreateDirectory(expectedDirectoryPath);
 
-      Assert.That (actual.PhysicalPath, Is.EqualTo (expectedDirectoryPath));
-      Assert.That (actual.Exists);
-      Assert.That (actual, Is.InstanceOf<RootMappingVirtualDirectory>());
+      var actual = (ResourceVirtualDirectory)provider.GetDirectory("~/res/");
+
+      Assert.That(actual.PhysicalPath, Is.EqualTo(expectedDirectoryPath));
+      Assert.That(actual.Exists);
+      Assert.That(actual, Is.InstanceOf<RootMappingVirtualDirectory>());
     }
 
     [Test]
     public void GetDirectory_NotMappedPath_FallsBackToPreviousProvider ()
     {
       var previousProviderStub = MockRepository.GenerateStub<VirtualPathProvider>();
-      var provider = new TestableResourceVirtualPathProvider (new[] { new ResourcePathMapping ("test", "testResourceFolder") }, _testDirectory);
-      provider.SetPrevious (previousProviderStub);
+      var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
+      provider.SetPrevious(previousProviderStub);
 
-      var expectedDirectory = new ResourceVirtualDirectory ("test", new DirectoryInfo (Path.Combine (_testDirectory, "Directory.txt")));
-      previousProviderStub.Stub (_ => _.GetDirectory ("~/res/UnknownDirectory/testDirectory")).Return (expectedDirectory);
+      var expectedDirectory = new ResourceVirtualDirectory("test", new DirectoryInfo(Path.Combine(_testDirectory, "Directory.txt")));
+      previousProviderStub.Stub(_ => _.GetDirectory("~/res/UnknownDirectory/testDirectory")).Return(expectedDirectory);
 
-      var actual = (ResourceVirtualDirectory) provider.GetDirectory ("~/res/UnknownDirectory/testDirectory");
+      var actual = (ResourceVirtualDirectory)provider.GetDirectory("~/res/UnknownDirectory/testDirectory");
 
-      Assert.That (actual, Is.SameAs (expectedDirectory));
+      Assert.That(actual, Is.SameAs(expectedDirectory));
     }
   }
 }

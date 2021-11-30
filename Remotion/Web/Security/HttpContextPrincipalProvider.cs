@@ -22,7 +22,7 @@ using Remotion.Web.Infrastructure;
 
 namespace Remotion.Web.Security
 {
-  [ImplementationFor (typeof (IPrincipalProvider),
+  [ImplementationFor(typeof(IPrincipalProvider),
       Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
   public sealed class HttpContextPrincipalProvider : IPrincipalProvider
   {
@@ -34,7 +34,7 @@ namespace Remotion.Web.Security
 
     public HttpContextPrincipalProvider (IHttpContextProvider httpContextProvider)
     {
-      ArgumentUtility.CheckNotNull ("httpContextProvider", httpContextProvider);
+      ArgumentUtility.CheckNotNull("httpContextProvider", httpContextProvider);
 
       _httpContextProvider = httpContextProvider;
     }
@@ -42,14 +42,14 @@ namespace Remotion.Web.Security
     public ISecurityPrincipal GetPrincipal ()
     {
       var httpContext = _httpContextProvider.GetCurrentHttpContext();
-      Assertion.IsNotNull (httpContext, "IHttpContextProvider.GetCurrentHttpContext() evaludated and returned null.");
+      Assertion.IsNotNull(httpContext, "IHttpContextProvider.GetCurrentHttpContext() evaludated and returned null.");
 
-      var identity = Assertion.IsNotNull (httpContext.User.Identity, "Current principal has no identity.");
+      var identity = Assertion.IsNotNull(httpContext.User.Identity, "Current principal has no identity.");
       if (!identity.IsAuthenticated)
         return s_nullSecurityPrincipal;
 
-      Assertion.IsNotNull (identity.Name, "Current user has no name.");
-      return new SecurityPrincipal (identity.Name, null, null, null);
+      Assertion.IsNotNull(identity.Name, "Current user has no name.");
+      return new SecurityPrincipal(identity.Name, null, null, null);
     }
 
     bool INullObject.IsNull

@@ -23,13 +23,13 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
     public virtual string Method (T t)
     {
       if (Event != null)
-        Event ();
-      return t.ToString ();
+        Event();
+      return t.ToString();
     }
 
     public virtual T Property
     {
-      get { return default (T); }
+      get { return default(T); }
     }
 
     public virtual event Func<T> Event;

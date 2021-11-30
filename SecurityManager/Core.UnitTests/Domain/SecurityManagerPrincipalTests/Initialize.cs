@@ -44,44 +44,44 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     [Test]
     public void Initialize_SetsMembers ()
     {
-      User user = User.FindByUserName ("substituting.user");
+      User user = User.FindByUserName("substituting.user");
       Tenant tenant = user.Tenant;
       Substitution substitution = user.GetActiveSubstitutions().First();
 
-      SecurityManagerPrincipal principal = CreateSecurityManagerPrincipal (tenant, user, null, substitution);
+      SecurityManagerPrincipal principal = CreateSecurityManagerPrincipal(tenant, user, null, substitution);
 
-      Assert.That (principal.Tenant.ID, Is.EqualTo (tenant.ID));
-      Assert.That (principal.Tenant, Is.Not.SameAs (tenant));
+      Assert.That(principal.Tenant.ID, Is.EqualTo(tenant.ID));
+      Assert.That(principal.Tenant, Is.Not.SameAs(tenant));
 
-      Assert.That (principal.User.ID, Is.EqualTo (user.ID));
-      Assert.That (principal.User, Is.Not.SameAs (user));
+      Assert.That(principal.User.ID, Is.EqualTo(user.ID));
+      Assert.That(principal.User, Is.Not.SameAs(user));
 
-      Assert.That (principal.Substitution.ID, Is.EqualTo (substitution.ID));
-      Assert.That (principal.Substitution, Is.Not.SameAs (substitution));
+      Assert.That(principal.Substitution.ID, Is.EqualTo(substitution.ID));
+      Assert.That(principal.Substitution, Is.Not.SameAs(substitution));
     }
 
     [Test]
     public void Initialize_WithInconsistentSubstitutionData1_ThrowsArgumentException ()
     {
-      User user = User.FindByUserName ("substituting.user");
+      User user = User.FindByUserName("substituting.user");
       Tenant tenant = user.Tenant;
       Substitution substitution = user.GetActiveSubstitutions().First();
 
-      Assert.That (
-          () => CreateSecurityManagerPrincipal (tenant, user, null, null, substitution.SubstitutedUser),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+      Assert.That(
+          () => CreateSecurityManagerPrincipal(tenant, user, null, null, substitution.SubstitutedUser),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "When the 'substitutedUserHandle' or the 'substitutedRoleHandles' are set, the 'substitutionHandle' must also be specified.", "substitutionHandle"));
     }
 
     [Test]
     public void Initialize_WithInconsistentSubstitutionData2_ThrowsArgumentException ()
     {
-      User user = User.FindByUserName ("substituting.user");
+      User user = User.FindByUserName("substituting.user");
       Tenant tenant = user.Tenant;
 
-      Assert.That (
-          () => CreateSecurityManagerPrincipal (tenant, user, null, null, null, new Role[0]),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+      Assert.That(
+          () => CreateSecurityManagerPrincipal(tenant, user, null, null, null, new Role[0]),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "When the 'substitutedUserHandle' or the 'substitutedRoleHandles' are set, the 'substitutionHandle' must also be specified.", "substitutionHandle"));
     }
   }

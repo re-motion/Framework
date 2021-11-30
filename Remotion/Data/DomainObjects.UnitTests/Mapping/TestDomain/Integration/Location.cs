@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
   [Instantiable]
   public abstract class Location : TestDomainBase
   {
-    protected Location()
+    protected Location ()
     {
     }
 

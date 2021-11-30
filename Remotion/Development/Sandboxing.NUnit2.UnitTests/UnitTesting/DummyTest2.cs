@@ -25,8 +25,8 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [Test]
     public void Test1 ()
     {
-      var value = Math.Abs (-5);
-      Assert.That (value, Is.EqualTo (5));
+      var value = Math.Abs(-5);
+      Assert.That(value, Is.EqualTo(5));
     }
   }
 }

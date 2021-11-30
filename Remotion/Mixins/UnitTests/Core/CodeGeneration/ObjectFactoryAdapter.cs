@@ -38,27 +38,27 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
     public T Create<T> ()
     {
-      return Create<T> (ParamList.Empty);
+      return Create<T>(ParamList.Empty);
     }
 
     public T Create<T> (ParamList constructorParameters, params object[] preparedMixins)
     {
-      return Create<T> (false, constructorParameters, preparedMixins);
+      return Create<T>(false, constructorParameters, preparedMixins);
     }
 
     public object Create (Type targetOrConcreteType)
     {
-      return Create (false, targetOrConcreteType, ParamList.Empty);
+      return Create(false, targetOrConcreteType, ParamList.Empty);
     }
 
     public object Create (Type targetOrConcreteType, ParamList constructorParameters, params object[] preparedMixins)
     {
-      return Create (false, targetOrConcreteType, constructorParameters, preparedMixins);
+      return Create(false, targetOrConcreteType, constructorParameters, preparedMixins);
     }
 
     public T Create<T> (bool allowNonPublicConstructors, ParamList constructorParameters, params object[] preparedMixins)
     {
-      return (T) Create (allowNonPublicConstructors, typeof (T), constructorParameters, preparedMixins);
+      return (T)Create(allowNonPublicConstructors, typeof(T), constructorParameters, preparedMixins);
     }
 
     public object Create (
@@ -67,7 +67,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
         ParamList constructorParameters,
         params object[] preparedMixins)
     {
-      return _objectFactoryImplementation.CreateInstance (
+      return _objectFactoryImplementation.CreateInstance(
           allowNonPublicConstructors,
           targetOrConcreteType,
           constructorParameters,

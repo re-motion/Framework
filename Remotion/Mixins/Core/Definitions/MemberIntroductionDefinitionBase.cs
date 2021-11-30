@@ -21,7 +21,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{InterfaceMember}")]
+  [DebuggerDisplay("{InterfaceMember}")]
   public abstract class MemberIntroductionDefinitionBase<TMemberInfo, TMemberDefinition>: IMemberIntroductionDefinition where TMemberInfo : MemberInfo
       where TMemberDefinition : MemberDefinitionBase
   {
@@ -33,9 +33,9 @@ namespace Remotion.Mixins.Definitions
     protected MemberIntroductionDefinitionBase (
         InterfaceIntroductionDefinition declaringInterface, TMemberInfo interfaceMember, TMemberDefinition implementingMember, MemberVisibility visibility)
     {
-      ArgumentUtility.CheckNotNull ("interfaceMember", interfaceMember);
-      ArgumentUtility.CheckNotNull ("declaringInterface", declaringInterface);
-      ArgumentUtility.CheckNotNull ("implementingMember", implementingMember);
+      ArgumentUtility.CheckNotNull("interfaceMember", interfaceMember);
+      ArgumentUtility.CheckNotNull("declaringInterface", declaringInterface);
+      ArgumentUtility.CheckNotNull("implementingMember", implementingMember);
 
       _declaringInterface = declaringInterface;
       _implementingMember = implementingMember;

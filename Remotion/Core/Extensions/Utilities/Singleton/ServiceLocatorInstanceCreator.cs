@@ -31,7 +31,7 @@ namespace Remotion.Utilities.Singleton
   /// </remarks>
   public class ServiceLocatorInstanceCreator<T> : IInstanceCreator<T>
   {
-    public T CreateInstance()
+    public T CreateInstance ()
     {
       return SafeServiceLocator.Current.GetInstance<T>();
     }

@@ -23,13 +23,13 @@ namespace Remotion.Validation.UnitTests.Implementation
   public class FallbackValidationMessageFactoryTest
   {
     [Test]
-    [Ignore ("RM-5906")]
+    [Ignore("RM-5906")]
     public void CreateValidationMessageForPropertyValidator ()
     {
     }
 
     [Test]
-    [Ignore ("RM-5906")]
+    [Ignore("RM-5906")]
     public void CreateValidationMessageForObjectValidator ()
     {
     }

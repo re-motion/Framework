@@ -37,23 +37,23 @@ namespace Remotion.SecurityManager.AclTools.Expansion
   public class AclExpander
   {
     private readonly IUserRoleAclAceCombinationFinder _userRoleAclAceCombinationFinder;
-    private readonly AclExpansionEntryCreator _aclExpansionEntryCreator = new AclExpansionEntryCreator ();
+    private readonly AclExpansionEntryCreator _aclExpansionEntryCreator = new AclExpansionEntryCreator();
 
     // IEqualityComparer for value based comparison of AclExpansionEntry|s.
     private static readonly CompoundValueEqualityComparer<AclExpansionEntry> _aclExpansionEntryEqualityComparer =
-      new CompoundValueEqualityComparer<AclExpansionEntry> (a => new object[] {
-          a.User, 
-          a.Role, 
-          a.Class, 
-          a.AccessControlList is StatefulAccessControlList ? ComponentwiseEqualsAndHashcodeWrapper.New (a.GetStateCombinations()) : null,
+      new CompoundValueEqualityComparer<AclExpansionEntry>(a => new object[] {
+          a.User,
+          a.Role,
+          a.Class,
+          a.AccessControlList is StatefulAccessControlList ? ComponentwiseEqualsAndHashcodeWrapper.New(a.GetStateCombinations()) : null,
           a.AccessConditions.AbstractRole,
           a.AccessConditions.GroupHierarchyCondition,
           a.AccessConditions.IsOwningUserRequired,
           a.AccessConditions.OwningGroup,
           a.AccessConditions.OwningTenant,
           a.AccessConditions.TenantHierarchyCondition,
-          ComponentwiseEqualsAndHashcodeWrapper.New (a.AllowedAccessTypes),
-          ComponentwiseEqualsAndHashcodeWrapper.New (a.DeniedAccessTypes)
+          ComponentwiseEqualsAndHashcodeWrapper.New(a.AllowedAccessTypes),
+          ComponentwiseEqualsAndHashcodeWrapper.New(a.DeniedAccessTypes)
       }
     );
 
@@ -64,7 +64,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     /// <param name="userRoleAclAceCombinationFinder"></param>
     public AclExpander (IUserRoleAclAceCombinationFinder userRoleAclAceCombinationFinder)
     {
-      ArgumentUtility.CheckNotNull ("userRoleAclAceCombinationFinder", userRoleAclAceCombinationFinder);
+      ArgumentUtility.CheckNotNull("userRoleAclAceCombinationFinder", userRoleAclAceCombinationFinder);
       _userRoleAclAceCombinationFinder = userRoleAclAceCombinationFinder;
     }
 
@@ -75,13 +75,13 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     /// <param name="userFinder"></param>
     /// <param name="accessControlListFinder"></param>
     public AclExpander (IAclExpanderUserFinder userFinder, IAclExpanderAclFinder accessControlListFinder)
-      : this (new UserRoleAclAceCombinationFinder (userFinder, accessControlListFinder))
+      : this(new UserRoleAclAceCombinationFinder(userFinder, accessControlListFinder))
     {}
 
     /// <summary>
     /// Default behavior is to use all <see cref="User"/>|s and all <see cref="AccessControlList"/>|s.
     /// </summary>
-    public AclExpander () : this (new AclExpanderUserFinder (), new AclExpanderAclFinder ()) {}
+    public AclExpander () : this(new AclExpanderUserFinder(), new AclExpanderAclFinder()) {}
 
     public AclExpansionEntryCreator AclExpansionEntryCreator
     {
@@ -93,9 +93,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     /// </summary>
     virtual public List<AclExpansionEntry> GetAclExpansionEntryListSortedAndDistinct ()
     {
-      return (from AclExpansionEntry aclExpansionEntry in GetAclExpansionEntryList ()
+      return (from AclExpansionEntry aclExpansionEntry in GetAclExpansionEntryList()
               orderby aclExpansionEntry.User.LastName, aclExpansionEntry.User.FirstName
-              select aclExpansionEntry).Distinct (_aclExpansionEntryEqualityComparer).ToList ();
+              select aclExpansionEntry).Distinct(_aclExpansionEntryEqualityComparer).ToList();
     }
 
 
@@ -108,7 +108,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     {
       foreach (UserRoleAclAceCombination userRoleAclAce in _userRoleAclAceCombinationFinder)
       {
-        AclExpansionEntry aclExpansionEntry = AclExpansionEntryCreator.CreateAclExpansionEntry (userRoleAclAce);
+        AclExpansionEntry aclExpansionEntry = AclExpansionEntryCreator.CreateAclExpansionEntry(userRoleAclAce);
         if (aclExpansionEntry != null)
         {
           yield return aclExpansionEntry;

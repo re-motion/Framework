@@ -30,29 +30,29 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     public void CtorTest ()
     {
       var accessConditions = new AclExpansionAccessConditions();
-      var aclExpansionEntry = new AclExpansionEntry (User, Role, Acl, accessConditions, AccessTypeDefinitions, AccessTypeDefinitions2);
-      Assert.That (aclExpansionEntry.User, Is.EqualTo (User));
-      Assert.That (aclExpansionEntry.Role, Is.EqualTo (Role));
-      Assert.That (aclExpansionEntry.Class, Is.EqualTo (Acl.Class));
-      Assert.That (aclExpansionEntry.GetStateCombinations(), Is.EqualTo (Acl.StateCombinations));
-      Assert.That (aclExpansionEntry.AccessConditions, Is.EqualTo (accessConditions));
-      Assert.That (aclExpansionEntry.AllowedAccessTypes, Is.EqualTo (AccessTypeDefinitions));
-      Assert.That (aclExpansionEntry.DeniedAccessTypes, Is.EqualTo (AccessTypeDefinitions2));
+      var aclExpansionEntry = new AclExpansionEntry(User, Role, Acl, accessConditions, AccessTypeDefinitions, AccessTypeDefinitions2);
+      Assert.That(aclExpansionEntry.User, Is.EqualTo(User));
+      Assert.That(aclExpansionEntry.Role, Is.EqualTo(Role));
+      Assert.That(aclExpansionEntry.Class, Is.EqualTo(Acl.Class));
+      Assert.That(aclExpansionEntry.GetStateCombinations(), Is.EqualTo(Acl.StateCombinations));
+      Assert.That(aclExpansionEntry.AccessConditions, Is.EqualTo(accessConditions));
+      Assert.That(aclExpansionEntry.AllowedAccessTypes, Is.EqualTo(AccessTypeDefinitions));
+      Assert.That(aclExpansionEntry.DeniedAccessTypes, Is.EqualTo(AccessTypeDefinitions2));
     }
 
-      
+
     [Test]
     public void StateCombinationsForStatelessAclThrowsTest ()
     {
-      SecurableClassDefinition classDefinition = TestHelper.CreateOrderClassDefinition ();
-      var statlessAcl = TestHelper.CreateStatelessAcl (classDefinition);
+      SecurableClassDefinition classDefinition = TestHelper.CreateOrderClassDefinition();
+      var statlessAcl = TestHelper.CreateStatelessAcl(classDefinition);
 
-      var accessConditions = new AclExpansionAccessConditions ();
-      var aclExpansionEntry = new AclExpansionEntry (User, Role, statlessAcl, accessConditions, AccessTypeDefinitions, AccessTypeDefinitions2);
-      Assert.That (
+      var accessConditions = new AclExpansionAccessConditions();
+      var aclExpansionEntry = new AclExpansionEntry(User, Role, statlessAcl, accessConditions, AccessTypeDefinitions, AccessTypeDefinitions2);
+      Assert.That(
           () => aclExpansionEntry.GetStateCombinations(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   @"StateCombinations not defined for StatelessAccessControlList. Test for ""is StatefulAccessControlList"" in calling code."));
     }
 
@@ -60,10 +60,10 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     [Test]
     public void GetStateCombinationsTest ()
     {
-      SecurableClassDefinition classDefinition = TestHelper.CreateOrderClassDefinition ();
-      var aclExpansionEntry = new AclExpansionEntry (User, Role, Acl, new AclExpansionAccessConditions (), AccessTypeDefinitions, AccessTypeDefinitions2);
-      var result = aclExpansionEntry.GetStateCombinations ();
-      Assert.That (result, Is.EqualTo(Acl.StateCombinations));
+      SecurableClassDefinition classDefinition = TestHelper.CreateOrderClassDefinition();
+      var aclExpansionEntry = new AclExpansionEntry(User, Role, Acl, new AclExpansionAccessConditions(), AccessTypeDefinitions, AccessTypeDefinitions2);
+      var result = aclExpansionEntry.GetStateCombinations();
+      Assert.That(result, Is.EqualTo(Acl.StateCombinations));
     }
   }
 }

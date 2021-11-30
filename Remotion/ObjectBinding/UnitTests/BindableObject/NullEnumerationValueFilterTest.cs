@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void IsEnabled ()
     {
       var filter = new NullEnumerationValueFilter();
-      Assert.That (filter.IsEnabled (null, null, null), Is.True);
+      Assert.That(filter.IsEnabled(null, null, null), Is.True);
     }
   }
 }

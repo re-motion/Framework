@@ -22,17 +22,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
   public static class ColumnDefinitionObjectMother
   {
     public static readonly ColumnDefinition IDColumn =
-        new ColumnDefinition ("ID", StorageTypeInformationObjectMother.CreateUniqueIdentifierStorageTypeInformation (false), true);
+        new ColumnDefinition("ID", StorageTypeInformationObjectMother.CreateUniqueIdentifierStorageTypeInformation(false), true);
 
     public static readonly ColumnDefinition ClassIDColumn =
-        new ColumnDefinition ("ClassID", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation (true), false);
+        new ColumnDefinition("ClassID", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation(true), false);
 
     public static readonly ColumnDefinition TimestampColumn =
-        new ColumnDefinition ("Timestamp", StorageTypeInformationObjectMother.CreateDateTimeStorageTypeInformation (true), false);
+        new ColumnDefinition("Timestamp", StorageTypeInformationObjectMother.CreateDateTimeStorageTypeInformation(true), false);
 
     public static ColumnDefinition CreateColumn (string columnName = null, IStorageTypeInformation storageTypeInformation = null, bool isPartOfPrimaryKey = false)
     {
-      return new ColumnDefinition (
+      return new ColumnDefinition(
           columnName ?? GetUniqueColumnName(),
           storageTypeInformation ?? StorageTypeInformationObjectMother.CreateStorageTypeInformation(),
           isPartOfPrimaryKey);
@@ -40,17 +40,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public static ColumnDefinition CreateColumn (IStorageTypeInformation storageTypeInformation)
     {
-      return new ColumnDefinition (GetUniqueColumnName(), storageTypeInformation, false);
+      return new ColumnDefinition(GetUniqueColumnName(), storageTypeInformation, false);
     }
 
     public static ColumnDefinition CreateStringColumn (string columnName)
     {
-      return CreateColumn (columnName, StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation());
+      return CreateColumn(columnName, StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation());
     }
 
     public static ColumnDefinition CreateGuidColumn (string columnName)
     {
-      return CreateColumn (columnName, StorageTypeInformationObjectMother.CreateUniqueIdentifierStorageTypeInformation());
+      return CreateColumn(columnName, StorageTypeInformationObjectMother.CreateUniqueIdentifierStorageTypeInformation());
     }
 
     private static string GetUniqueColumnName ()

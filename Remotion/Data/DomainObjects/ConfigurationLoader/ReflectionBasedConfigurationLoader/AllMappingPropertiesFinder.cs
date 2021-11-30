@@ -34,15 +34,15 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IMemberInformationNameResolver nameResolver,
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider)
-        : base (type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
+        : base(type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
     {
-    
+
     }
 
     protected override bool FindPropertiesFilter (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      return propertyInfo.GetCustomAttributes<IMappingAttribute> (false).Any();
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      return propertyInfo.GetCustomAttributes<IMappingAttribute>(false).Any();
     }
 
     protected override PropertyFinderBase CreateNewFinder (
@@ -53,12 +53,12 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull ("persistentMixinFinder", persistentMixinFinder);
-      ArgumentUtility.CheckNotNull ("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
+      ArgumentUtility.CheckNotNull("persistentMixinFinder", persistentMixinFinder);
+      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
 
-      return new AllMappingPropertiesFinder (
+      return new AllMappingPropertiesFinder(
           type,
           includeBaseProperties,
           includeMixinProperties,

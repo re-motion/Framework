@@ -32,37 +32,37 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
     [Test]
     public void GetResourceManager_WithSameArguments_ReturnsSameInstance ()
     {
-      var resourceType = typeof (string);
+      var resourceType = typeof(string);
       var resourceManager = new FakeResourceManager();
-      var renderer = new TestableRendererBase (Mock.Of<IResourceUrlFactory>(), GlobalizationService, Mock.Of<IRenderingFeatures>());
+      var renderer = new TestableRendererBase(Mock.Of<IResourceUrlFactory>(), GlobalizationService, Mock.Of<IRenderingFeatures>());
 
-      var instance1 = renderer.GetResourceManager (resourceType, resourceManager);
-      var instance2 = renderer.GetResourceManager (resourceType, resourceManager);
+      var instance1 = renderer.GetResourceManager(resourceType, resourceManager);
+      var instance2 = renderer.GetResourceManager(resourceType, resourceManager);
 
-      Assert.That (instance1, Is.Not.Null);
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.Not.Null);
+      Assert.That(instance1, Is.SameAs(instance2));
     }
 
     [Test]
     public void GetResourceManager_DoesNotKeepResourceManagerAlive ()
     {
-      var renderer = new TestableRendererBase (Mock.Of<IResourceUrlFactory>(), GlobalizationService, Mock.Of<IRenderingFeatures>());
+      var renderer = new TestableRendererBase(Mock.Of<IResourceUrlFactory>(), GlobalizationService, Mock.Of<IRenderingFeatures>());
 
-      var resourceManagerWeakReference = CallGetResourceManagerWithManagerAndReturnItsWeakReference (renderer);
+      var resourceManagerWeakReference = CallGetResourceManagerWithManagerAndReturnItsWeakReference(renderer);
 
       GC.Collect();
       GC.WaitForPendingFinalizers();
       GC.Collect();
 
-      Assert.That (resourceManagerWeakReference.IsAlive, Is.False);
+      Assert.That(resourceManagerWeakReference.IsAlive, Is.False);
     }
 
     private static WeakReference CallGetResourceManagerWithManagerAndReturnItsWeakReference (TestableRendererBase renderer)
     {
       var resourceManager = new FakeResourceManager();
-      var resourceManagerReference = new WeakReference (resourceManager);
+      var resourceManagerReference = new WeakReference(resourceManager);
 
-      _ = renderer.GetResourceManager (typeof (string), resourceManager);
+      _ = renderer.GetResourceManager(typeof(string), resourceManager);
 
       return resourceManagerReference;
     }
@@ -71,7 +71,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
     {
       public bool IsNull => false;
 
-      public string Name => nameof (FakeResourceManager);
+      public string Name => nameof(FakeResourceManager);
 
       public IReadOnlyDictionary<string, string> GetAllStrings (string prefix) => new Dictionary<string, string>();
 
@@ -94,13 +94,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
           [NotNull] IResourceUrlFactory resourceUrlFactory,
           [NotNull] IGlobalizationService globalizationService,
           [NotNull] IRenderingFeatures renderingFeatures)
-          : base (resourceUrlFactory, globalizationService, renderingFeatures)
+          : base(resourceUrlFactory, globalizationService, renderingFeatures)
       {
       }
 
       public new IResourceManager GetResourceManager (Type localResourcesType, IResourceManager controlResourceManager)
       {
-        return base.GetResourceManager (localResourcesType, controlResourceManager);
+        return base.GetResourceManager(localResourcesType, controlResourceManager);
       }
     }
   }

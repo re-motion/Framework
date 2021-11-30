@@ -25,30 +25,30 @@ namespace Remotion.Data.DomainObjects.Validation
     private readonly DomainObject _domainObject;
     private readonly string _propertyName;
 
-    public MandatoryRelationNotSetException (DomainObject domainObject, string propertyName, string message) 
-        : this (domainObject, propertyName, message, null) 
-    { 
+    public MandatoryRelationNotSetException (DomainObject domainObject, string propertyName, string message)
+        : this(domainObject, propertyName, message, null)
+    {
     }
 
-    public MandatoryRelationNotSetException (DomainObject domainObject, string propertyName, string message, Exception inner) 
-        : base (message, inner) 
+    public MandatoryRelationNotSetException (DomainObject domainObject, string propertyName, string message, Exception inner)
+        : base(message, inner)
     {
       _domainObject = domainObject;
       _propertyName = propertyName;
     }
-    
-    protected MandatoryRelationNotSetException (SerializationInfo info, StreamingContext context) : base (info, context)
+
+    protected MandatoryRelationNotSetException (SerializationInfo info, StreamingContext context) : base(info, context)
     {
-      _domainObject = (DomainObject) info.GetValue ("_domainObject", typeof (DomainObject));
-      _propertyName = info.GetString ("_propertyName");
+      _domainObject = (DomainObject)info.GetValue("_domainObject", typeof(DomainObject));
+      _propertyName = info.GetString("_propertyName");
     }
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      base.GetObjectData (info, context);
+      base.GetObjectData(info, context);
 
-      info.AddValue ("_domainObject", _domainObject);
-      info.AddValue ("_propertyName", _propertyName);
+      info.AddValue("_domainObject", _domainObject);
+      info.AddValue("_propertyName", _propertyName);
     }
 
     public DomainObject DomainObject

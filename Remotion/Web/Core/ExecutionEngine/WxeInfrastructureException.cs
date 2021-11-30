@@ -30,13 +30,13 @@ namespace Remotion.Web.ExecutionEngine
   {
     protected WxeInfrastructureException (string message)
 #pragma warning disable 612,618
-        : base (message)
+        : base(message)
 #pragma warning restore 612,618
     {
     }
 
     protected WxeInfrastructureException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
   }

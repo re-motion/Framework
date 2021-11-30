@@ -29,35 +29,35 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _parameters = new MixerParameters ();
+      _parameters = new MixerParameters();
     }
 
     [Test]
     public void ParameterDefaults ()
     {
-      Assert.That (_parameters.AssemblyOutputDirectory, Is.EqualTo (Environment.CurrentDirectory));
-      Assert.That (_parameters.BaseDirectory, Is.EqualTo (Environment.CurrentDirectory));
-      Assert.That (_parameters.ConfigFile, Is.EqualTo (""));
-      Assert.That (_parameters.AssemblyName, Is.EqualTo ("Remotion.Mixins.Persistent.{counter}"));
+      Assert.That(_parameters.AssemblyOutputDirectory, Is.EqualTo(Environment.CurrentDirectory));
+      Assert.That(_parameters.BaseDirectory, Is.EqualTo(Environment.CurrentDirectory));
+      Assert.That(_parameters.ConfigFile, Is.EqualTo(""));
+      Assert.That(_parameters.AssemblyName, Is.EqualTo("Remotion.Mixins.Persistent.{counter}"));
     }
 
     [Test]
     public void CreateAppDomainSetup_Default ()
     {
-      var setup = MixerRunner.CreateAppDomainSetup (_parameters);
+      var setup = MixerRunner.CreateAppDomainSetup(_parameters);
 
-      Assert.That (setup.ApplicationName, Is.EqualTo ("Mixer"));
-      Assert.That (setup.ApplicationBase, Is.EqualTo (_parameters.BaseDirectory));
+      Assert.That(setup.ApplicationName, Is.EqualTo("Mixer"));
+      Assert.That(setup.ApplicationBase, Is.EqualTo(_parameters.BaseDirectory));
     }
 
     [Test]
     public void CreateMixer_Default ()
     {
-      var runner = new MixerRunner (_parameters);
-      var mixer = CallCreateMixer (runner);
+      var runner = new MixerRunner(_parameters);
+      var mixer = CallCreateMixer(runner);
 
-      Assert.That (((MixerPipelineFactory) mixer.MixerPipelineFactory).AssemblyName, Is.EqualTo (_parameters.AssemblyName));
-      Assert.That (mixer.AssemblyOutputDirectory, Is.EqualTo (_parameters.AssemblyOutputDirectory));
+      Assert.That(((MixerPipelineFactory)mixer.MixerPipelineFactory).AssemblyName, Is.EqualTo(_parameters.AssemblyName));
+      Assert.That(mixer.AssemblyOutputDirectory, Is.EqualTo(_parameters.AssemblyOutputDirectory));
     }
 
     [Test]
@@ -67,42 +67,42 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     public void RunDefault ()
     {
       _parameters.AssemblyOutputDirectory = "MixerRunnerTest";
-      _parameters.BaseDirectory = Path.Combine (TestContext.CurrentContext.TestDirectory, "MixerRunnerTest_Input");
-      var assemblyPath = Path.Combine (_parameters.AssemblyOutputDirectory, "Remotion.Mixins.Persistent.1.dll");
-      
-      Assert.That (Directory.Exists (_parameters.AssemblyOutputDirectory), Is.False);
-      Assert.That (File.Exists (assemblyPath), Is.False);
+      _parameters.BaseDirectory = Path.Combine(TestContext.CurrentContext.TestDirectory, "MixerRunnerTest_Input");
+      var assemblyPath = Path.Combine(_parameters.AssemblyOutputDirectory, "Remotion.Mixins.Persistent.1.dll");
 
-      Assert.That (Directory.Exists (_parameters.BaseDirectory), Is.False);
+      Assert.That(Directory.Exists(_parameters.AssemblyOutputDirectory), Is.False);
+      Assert.That(File.Exists(assemblyPath), Is.False);
+
+      Assert.That(Directory.Exists(_parameters.BaseDirectory), Is.False);
 
       try
       {
-        Directory.CreateDirectory (_parameters.BaseDirectory);
+        Directory.CreateDirectory(_parameters.BaseDirectory);
 
-        var compiler = new AssemblyCompiler (
-            Path.Combine (TestContext.CurrentContext.TestDirectory, @"SampleAssembly"),
-            Path.Combine (_parameters.BaseDirectory, "SampleAssembly.dll"), 
-            typeof (Mixin).Assembly.Location);
+        var compiler = new AssemblyCompiler(
+            Path.Combine(TestContext.CurrentContext.TestDirectory, @"SampleAssembly"),
+            Path.Combine(_parameters.BaseDirectory, "SampleAssembly.dll"),
+            typeof(Mixin).Assembly.Location);
         compiler.Compile();
 
-        var runner = new MixerRunner (_parameters);
-        runner.Run ();
-        Assert.That (Directory.Exists (_parameters.AssemblyOutputDirectory), Is.True);
-        Assert.That (File.Exists (assemblyPath), Is.True);
+        var runner = new MixerRunner(_parameters);
+        runner.Run();
+        Assert.That(Directory.Exists(_parameters.AssemblyOutputDirectory), Is.True);
+        Assert.That(File.Exists(assemblyPath), Is.True);
       }
       finally
       {
-        if (Directory.Exists (_parameters.BaseDirectory))
-          Directory.Delete (_parameters.BaseDirectory, true);
-        if (Directory.Exists (_parameters.AssemblyOutputDirectory))
-          Directory.Delete (_parameters.AssemblyOutputDirectory, true);
+        if (Directory.Exists(_parameters.BaseDirectory))
+          Directory.Delete(_parameters.BaseDirectory, true);
+        if (Directory.Exists(_parameters.AssemblyOutputDirectory))
+          Directory.Delete(_parameters.AssemblyOutputDirectory, true);
       }
     }
 
 
     private Mixer CallCreateMixer (MixerRunner runner)
     {
-      return (Mixer) PrivateInvoke.InvokeNonPublicMethod (runner, "CreateMixer");
+      return (Mixer)PrivateInvoke.InvokeNonPublicMethod(runner, "CreateMixer");
     }
   }
 }

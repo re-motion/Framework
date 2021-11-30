@@ -23,19 +23,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 public class BocListViewCollection: BusinessObjectControlItemCollection
 {
   public BocListViewCollection (IBusinessObjectBoundWebControl ownerControl)
-    : base (ownerControl, new Type[] {typeof (BocListView)})
+    : base(ownerControl, new Type[] {typeof(BocListView)})
   {
   }
 
-  public new BocListView[] ToArray()
+  public new BocListView[] ToArray ()
   {
-    return (BocListView[]) InnerList.ToArray (typeof (BocListView));
+    return (BocListView[])InnerList.ToArray(typeof(BocListView));
   }
 
   //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
   protected internal new BocListView this[int index]
   {
-    get { return (BocListView) List[index]!; }
+    get { return (BocListView)List[index]!; }
     set { List[index] = value; }
   }
 }

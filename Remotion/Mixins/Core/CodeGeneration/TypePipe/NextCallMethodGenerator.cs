@@ -66,11 +66,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         Expression depthField,
         IList<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull ("targetTypeForNextCall", targetTypeForNextCall);
-      ArgumentUtility.CheckNotNull ("thisField", thisField);
-      ArgumentUtility.CheckNotNull ("depthField", depthField);
-      ArgumentUtility.CheckNotNull ("mixinInfos", mixinInfos);
+      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull("targetTypeForNextCall", targetTypeForNextCall);
+      ArgumentUtility.CheckNotNull("thisField", thisField);
+      ArgumentUtility.CheckNotNull("depthField", depthField);
+      ArgumentUtility.CheckNotNull("mixinInfos", mixinInfos);
 
       _targetClassDefinition = targetClassDefinition;
       _targetTypeForNextCall = targetTypeForNextCall;
@@ -81,83 +81,83 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public Expression CreateBaseCallToNextInChain (MethodBodyContextBase ctx, MethodDefinition methodDefinitionOnTarget)
     {
-      Assertion.IsTrue (methodDefinitionOnTarget.DeclaringClass == _targetClassDefinition);
+      Assertion.IsTrue(methodDefinitionOnTarget.DeclaringClass == _targetClassDefinition);
 
       var expressions = new List<Expression>();
 
-      var returnLabel = Expression.Label (ctx.ReturnType);
+      var returnLabel = Expression.Label(ctx.ReturnType);
 
       for (int potentialDepth = 0; potentialDepth < _targetClassDefinition.Mixins.Count; ++potentialDepth)
       {
-        var nextInChain = GetNextInChain (methodDefinitionOnTarget, potentialDepth);
-        var baseCallIfDepthMatches = AddBaseCallToTargetIfDepthMatches (ctx, nextInChain, potentialDepth, returnLabel);
-        expressions.Add (baseCallIfDepthMatches);
+        var nextInChain = GetNextInChain(methodDefinitionOnTarget, potentialDepth);
+        var baseCallIfDepthMatches = AddBaseCallToTargetIfDepthMatches(ctx, nextInChain, potentialDepth, returnLabel);
+        expressions.Add(baseCallIfDepthMatches);
       }
 
-      var baseCall = CreateBaseCallToTarget (ctx, methodDefinitionOnTarget);
-      expressions.Add (Expression.Label (returnLabel, baseCall));
-      return Expression.Block (expressions);
+      var baseCall = CreateBaseCallToTarget(ctx, methodDefinitionOnTarget);
+      expressions.Add(Expression.Label(returnLabel, baseCall));
+      return Expression.Block(expressions);
     }
 
     private MethodDefinition GetNextInChain (MethodDefinition methodDefinitionOnTarget, int potentialDepth)
     {
-      Assertion.IsTrue (methodDefinitionOnTarget.DeclaringClass == _targetClassDefinition);
+      Assertion.IsTrue(methodDefinitionOnTarget.DeclaringClass == _targetClassDefinition);
 
       for (int i = potentialDepth; i < _targetClassDefinition.Mixins.Count; ++i)
-        if (methodDefinitionOnTarget.Overrides.ContainsKey (_targetClassDefinition.Mixins[i].Type))
+        if (methodDefinitionOnTarget.Overrides.ContainsKey(_targetClassDefinition.Mixins[i].Type))
           return methodDefinitionOnTarget.Overrides[_targetClassDefinition.Mixins[i].Type];
       return methodDefinitionOnTarget;
     }
 
     private Expression AddBaseCallToTargetIfDepthMatches (MethodBodyContextBase ctx, MethodDefinition target, int requestedDepth, LabelTarget returnLabel)
     {
-      return Expression.IfThen (
-              Expression.Equal (_depthField, Expression.Constant (requestedDepth)),
-              Expression.Return (returnLabel, CreateBaseCallStatement (ctx, target)));
+      return Expression.IfThen(
+              Expression.Equal(_depthField, Expression.Constant(requestedDepth)),
+              Expression.Return(returnLabel, CreateBaseCallStatement(ctx, target)));
     }
 
     public Expression CreateBaseCallToTarget (MethodBodyContextBase ctx, MethodDefinition target)
     {
-      return CreateBaseCallStatement (ctx, target);
+      return CreateBaseCallStatement(ctx, target);
     }
 
     private Expression CreateBaseCallStatement (MethodBodyContextBase ctx, MethodDefinition target)
     {
       if (target.DeclaringClass == _targetClassDefinition)
-        return CreateBaseCallToTargetClassStatement (ctx, target);
+        return CreateBaseCallToTargetClassStatement(ctx, target);
       else
-        return CreateBaseCallToMixinStatement (ctx, target);
+        return CreateBaseCallToMixinStatement(ctx, target);
     }
 
     private Expression CreateBaseCallToTargetClassStatement (MethodBodyContextBase ctx, MethodDefinition target)
     {
-      var baseCallMethod = _targetTypeForNextCall.GetBaseCallMethod (target.MethodInfo);
+      var baseCallMethod = _targetTypeForNextCall.GetBaseCallMethod(target.MethodInfo);
 
-      return ctx.DelegateTo (_thisField, baseCallMethod);
+      return ctx.DelegateTo(_thisField, baseCallMethod);
     }
 
     private Expression CreateBaseCallToMixinStatement (MethodBodyContextBase ctx, MethodDefinition target)
     {
-      var mixin = (MixinDefinition) target.DeclaringClass;
-      var baseCallMethod = GetMixinMethodToCall (mixin.MixinIndex, target);
-      var mixinReference = GetMixinReference (mixin, baseCallMethod.DeclaringType!);
+      var mixin = (MixinDefinition)target.DeclaringClass;
+      var baseCallMethod = GetMixinMethodToCall(mixin.MixinIndex, target);
+      var mixinReference = GetMixinReference(mixin, baseCallMethod.DeclaringType!);
 
-      return ctx.DelegateTo (mixinReference, baseCallMethod);
+      return ctx.DelegateTo(mixinReference, baseCallMethod);
     }
 
     private MethodInfo GetMixinMethodToCall (int mixinIndex, MethodDefinition mixinMethod)
     {
-      return _mixinInfos[mixinIndex].GetPubliclyCallableMixinMethod (mixinMethod.MethodInfo);
+      return _mixinInfos[mixinIndex].GetPubliclyCallableMixinMethod(mixinMethod.MethodInfo);
     }
 
     private Expression GetMixinReference (MixinDefinition mixin, Type concreteMixinType)
     {
       // (ConcreteMixinType) __this.__extensions[mixin.MixinIndex]
 
-      return Expression.Convert (
-          Expression.ArrayAccess (
-              Expression.Field (_thisField, _targetTypeForNextCall.ExtensionsField),
-              Expression.Constant (mixin.MixinIndex)),
+      return Expression.Convert(
+          Expression.ArrayAccess(
+              Expression.Field(_thisField, _targetTypeForNextCall.ExtensionsField),
+              Expression.Constant(mixin.MixinIndex)),
           concreteMixinType);
     }
   }

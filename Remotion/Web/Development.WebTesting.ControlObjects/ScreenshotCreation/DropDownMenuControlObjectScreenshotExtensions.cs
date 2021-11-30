@@ -32,11 +32,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static FluentScreenshotElement<ElementScope> GetMenu ([NotNull] this IFluentScreenshotElementWithCovariance<DropDownMenuControlObject> fluentDropDownMenu)
     {
-      ArgumentUtility.CheckNotNull ("fluentDropDownMenu", fluentDropDownMenu);
+      ArgumentUtility.CheckNotNull("fluentDropDownMenu", fluentDropDownMenu);
 
-      var menu = fluentDropDownMenu.Target.Context.RootScope.FindCss ("div.DropDownMenuOptions", Options.NoWait);
-      if (!menu.Exists (Options.NoWait))
-        throw new InvalidOperationException ("Could not find the drop-down-menu.");
+      var menu = fluentDropDownMenu.Target.Context.RootScope.FindCss("div.DropDownMenuOptions", Options.NoWait);
+      if (!menu.Exists(Options.NoWait))
+        throw new InvalidOperationException("Could not find the drop-down-menu.");
 
       return menu.ForElementScopeScreenshot();
     }
@@ -46,10 +46,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static void OpenMenu ([NotNull] this IFluentScreenshotElementWithCovariance<DropDownMenuControlObject> fluentDropDownMenu)
     {
-      ArgumentUtility.CheckNotNull ("fluentDropDownMenu", fluentDropDownMenu);
+      ArgumentUtility.CheckNotNull("fluentDropDownMenu", fluentDropDownMenu);
 
       if (!fluentDropDownMenu.Target.ExistsDropDownScope())
-        fluentDropDownMenu.Target.Scope.FindCss ("a.DropDownMenuButton").Click();
+        fluentDropDownMenu.Target.Scope.FindCss("a.DropDownMenuButton").Click();
     }
 
     /// <summary>
@@ -57,14 +57,14 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static ScreenshotDropDownMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<DropDownMenuControlObject> fluentDropDownMenu)
     {
-      ArgumentUtility.CheckNotNull ("fluentDropDownMenu", fluentDropDownMenu);
+      ArgumentUtility.CheckNotNull("fluentDropDownMenu", fluentDropDownMenu);
 
-      return new ScreenshotDropDownMenuSelector (fluentDropDownMenu.Target);
+      return new ScreenshotDropDownMenuSelector(fluentDropDownMenu.Target);
     }
 
     private static bool ExistsDropDownScope (this DropDownMenuControlObject controlObject)
     {
-      return controlObject.Context.RootScope.FindCss ("ul.DropDownMenuOptions", Options.NoWait).Exists (Options.NoWait);
+      return controlObject.Context.RootScope.FindCss("ul.DropDownMenuOptions", Options.NoWait).Exists(Options.NoWait);
     }
   }
 }

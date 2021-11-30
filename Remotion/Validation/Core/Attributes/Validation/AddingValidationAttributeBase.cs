@@ -26,7 +26,7 @@ namespace Remotion.Validation.Attributes.Validation
   /// <summary>
   /// Base class for validation attributes used to substitute the API-based <see cref="ValidationRuleCollectorBase{TValidatedType}"/>.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Property)]
+  [AttributeUsage(AttributeTargets.Property)]
   public abstract class AddingValidationAttributeBase : Attribute
   {
     /// <summary>
@@ -39,14 +39,14 @@ namespace Remotion.Validation.Attributes.Validation
     /// </summary>
     public string? ErrorMessage { get; set; }
 
-    protected abstract IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory); 
+    protected abstract IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory);
 
     public IEnumerable<IPropertyValidator> GetPropertyValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
-      return GetValidators (property, validationMessageFactory);
+      return GetValidators(property, validationMessageFactory);
     }
   }
 }

@@ -30,19 +30,19 @@ namespace Remotion.Web.IntegrationTests.WebTreeView
     public void WebTreeView ()
     {
       var home = Start();
-      var webTreeView = home.WebTreeViews().GetByLocalID ("MyWebTreeView");
+      var webTreeView = home.WebTreeViews().GetByLocalID("MyWebTreeView");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (webTreeView);
+      var result = analyzer.Analyze(webTreeView);
       // TODO RM-7340 remove ignore once issue is resolved
-      var violations = result.Violations.IgnoreByRuleIDAndXPath (AccessibilityRuleID.AriaRequiredChildren, "/div[@id='body_MyWebTreeView']/ul");
+      var violations = result.Violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.AriaRequiredChildren, "/div[@id='body_MyWebTreeView']/ul");
 
-      Assert.That (violations, Is.Empty);
+      Assert.That(violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("WebTreeViewTest.aspx");
+      return Start<WxePageObject>("WebTreeViewTest.aspx");
     }
   }
 }

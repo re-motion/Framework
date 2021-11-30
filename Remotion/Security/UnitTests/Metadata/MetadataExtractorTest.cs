@@ -33,40 +33,40 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _xmlTempFilename = Path.GetTempFileName ();
-      _extractor = new MetadataExtractor (new MetadataToXmlConverter ());
+      _xmlTempFilename = Path.GetTempFileName();
+      _extractor = new MetadataExtractor(new MetadataToXmlConverter());
     }
 
     [TearDown]
     public void TearDown ()
     {
-      File.Delete (_xmlTempFilename);
+      File.Delete(_xmlTempFilename);
     }
 
     [Test]
     public void NoAssemblies ()
     {
-      _extractor.Save (_xmlTempFilename);
+      _extractor.Save(_xmlTempFilename);
 
-      XmlDocument xmlDocument = new XmlDocument ();
-      xmlDocument.Load (_xmlTempFilename);
+      XmlDocument xmlDocument = new XmlDocument();
+      xmlDocument.Load(_xmlTempFilename);
 
       string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"" />";
 
-      XmlAssert.AreDocumentsEqual (expectedXml, xmlDocument);
+      XmlAssert.AreDocumentsEqual(expectedXml, xmlDocument);
     }
 
     [Test]
     public void OneAssembly ()
     {
-      Assembly testDomainAssembly = typeof (Remotion.Security.UnitTests.TestDomain.File).Assembly;
-      _extractor.AddAssembly (testDomainAssembly);
+      Assembly testDomainAssembly = typeof(Remotion.Security.UnitTests.TestDomain.File).Assembly;
+      _extractor.AddAssembly(testDomainAssembly);
 
-      _extractor.Save (_xmlTempFilename);
+      _extractor.Save(_xmlTempFilename);
 
-      XmlDocument xmlDocument = new XmlDocument ();
-      xmlDocument.Load (_xmlTempFilename);
+      XmlDocument xmlDocument = new XmlDocument();
+      xmlDocument.Load(_xmlTempFilename);
 
       string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
@@ -137,18 +137,18 @@ namespace Remotion.Security.UnitTests.Metadata
             </abstractRoles>
           </securityMetadata>";
 
-      XmlAssert.AreDocumentsSimilar (expectedXml, xmlDocument);
+      XmlAssert.AreDocumentsSimilar(expectedXml, xmlDocument);
     }
 
     [Test]
     public void OneAssemblyByPathName ()
     {
-      _extractor.AddAssembly (Path.Combine (TestContext.CurrentContext.TestDirectory, "Remotion.Security.UnitTests.TestDomain"));
+      _extractor.AddAssembly(Path.Combine(TestContext.CurrentContext.TestDirectory, "Remotion.Security.UnitTests.TestDomain"));
 
-      _extractor.Save (_xmlTempFilename);
+      _extractor.Save(_xmlTempFilename);
 
-      XmlDocument xmlDocument = new XmlDocument ();
-      xmlDocument.Load (_xmlTempFilename);
+      XmlDocument xmlDocument = new XmlDocument();
+      xmlDocument.Load(_xmlTempFilename);
 
       string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.re-motion.org/Security/Metadata/1.0"">
@@ -219,7 +219,7 @@ namespace Remotion.Security.UnitTests.Metadata
             </abstractRoles>
           </securityMetadata>";
 
-      XmlAssert.AreDocumentsSimilar (expectedXml, xmlDocument);
+      XmlAssert.AreDocumentsSimilar(expectedXml, xmlDocument);
     }
   }
 }

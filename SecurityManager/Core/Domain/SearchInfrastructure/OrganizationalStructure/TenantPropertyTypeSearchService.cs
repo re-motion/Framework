@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
         TenantConstraint tenantConstraint,
         DisplayNameConstraint displayNameConstraint)
     {
-      return Tenant.FindAll().Apply (displayNameConstraint).Cast<IBusinessObject>();
+      return Tenant.FindAll().Apply(displayNameConstraint).Cast<IBusinessObject>();
     }
   }
 }

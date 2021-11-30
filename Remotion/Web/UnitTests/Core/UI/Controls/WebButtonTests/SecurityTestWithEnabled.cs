@@ -36,13 +36,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     [SetUp]
     public void Setup ()
     {
-      _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter> (MockBehavior.Strict);
-      _mockSecurableObject = new Mock<ISecurableObject> (MockBehavior.Strict);
+      _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter>(MockBehavior.Strict);
+      _mockSecurableObject = new Mock<ISecurableObject>(MockBehavior.Strict);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterMultiple<IWebSecurityAdapter> (() => _mockWebSecurityAdapter.Object);
+      serviceLocator.RegisterMultiple<IWebSecurityAdapter>(() => _mockWebSecurityAdapter.Object);
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
     public override void TearDown ()
@@ -54,7 +54,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithMissingPermissionBehaviorSetToInvisible ()
     {
-      WebButton button = CreateButtonWithClickEventHandler ();
+      WebButton button = CreateButtonWithClickEventHandler();
       button.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
       button.Enabled = true;
 
@@ -62,13 +62,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 
       _mockWebSecurityAdapter.Verify();
       _mockSecurableObject.Verify();
-      Assert.That (enabled, Is.True);
+      Assert.That(enabled, Is.True);
     }
 
     [Test]
     public void EvaluateFalse_FromFalseAndWithMissingPermissionBehaviorSetToInvisible ()
     {
-      WebButton button = CreateButtonWithClickEventHandler ();
+      WebButton button = CreateButtonWithClickEventHandler();
       button.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
       button.Enabled = false;
 
@@ -76,7 +76,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 
       _mockWebSecurityAdapter.Verify();
       _mockSecurableObject.Verify();
-      Assert.That (enabled, Is.False);
+      Assert.That(enabled, Is.False);
     }
 
     [Test]
@@ -85,7 +85,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
-      using (new ServiceLocatorScope (serviceLocator))
+      using (new ServiceLocatorScope(serviceLocator))
       {
         WebButton button = CreateButtonWithClickEventHandler();
         button.Enabled = true;
@@ -94,7 +94,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 
         _mockWebSecurityAdapter.Verify();
         _mockSecurableObject.Verify();
-        Assert.That (enabled, Is.True);
+        Assert.That(enabled, Is.True);
       }
     }
 
@@ -104,7 +104,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
-      using (new ServiceLocatorScope (serviceLocator))
+      using (new ServiceLocatorScope(serviceLocator))
       {
         WebButton button = CreateButtonWithClickEventHandler();
         button.Enabled = false;
@@ -113,75 +113,75 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 
         _mockWebSecurityAdapter.Verify();
         _mockSecurableObject.Verify();
-        Assert.That (enabled, Is.False);
+        Assert.That(enabled, Is.False);
       }
     }
 
     [Test]
     public void EvaluateTrue_FromTrueAndWithoutClickEventHandler ()
     {
-      WebButton button = CreateButtonWithoutClickEventHandler ();
+      WebButton button = CreateButtonWithoutClickEventHandler();
       button.Enabled = true;
 
       bool enabled = button.Enabled;
 
       _mockWebSecurityAdapter.Verify();
       _mockSecurableObject.Verify();
-      Assert.That (enabled, Is.True);
+      Assert.That(enabled, Is.True);
     }
 
     [Test]
     public void EvaluateFalse_FromFalseAndWithoutClickEventHandler ()
     {
-      WebButton button = CreateButtonWithoutClickEventHandler ();
+      WebButton button = CreateButtonWithoutClickEventHandler();
       button.Enabled = false;
 
       bool enabled = button.Enabled;
 
       _mockWebSecurityAdapter.Verify();
       _mockSecurableObject.Verify();
-      Assert.That (enabled, Is.False);
+      Assert.That(enabled, Is.False);
     }
 
     [Test]
     public void EvaluateTrue_FromTrueAndAccessGranted ()
     {
-      _mockWebSecurityAdapter.Setup (_ => _.HasAccess (_mockSecurableObject.Object, new EventHandler (TestHandler))).Returns (true).Verifiable();
-      WebButton button = CreateButtonWithClickEventHandler ();
+      _mockWebSecurityAdapter.Setup(_ => _.HasAccess(_mockSecurableObject.Object, new EventHandler(TestHandler))).Returns(true).Verifiable();
+      WebButton button = CreateButtonWithClickEventHandler();
       button.Enabled = true;
 
       bool enabled = button.Enabled;
 
       _mockWebSecurityAdapter.Verify();
       _mockSecurableObject.Verify();
-      Assert.That (enabled, Is.True);
+      Assert.That(enabled, Is.True);
     }
 
     [Test]
     public void EvaluateFalse_FromTrueAndAccessDenied ()
     {
-      _mockWebSecurityAdapter.Setup (_ => _.HasAccess (_mockSecurableObject.Object, new EventHandler (TestHandler))).Returns (false).Verifiable();
-      WebButton button = CreateButtonWithClickEventHandler ();
+      _mockWebSecurityAdapter.Setup(_ => _.HasAccess(_mockSecurableObject.Object, new EventHandler(TestHandler))).Returns(false).Verifiable();
+      WebButton button = CreateButtonWithClickEventHandler();
       button.Enabled = true;
 
       bool enabled = button.Enabled;
 
       _mockWebSecurityAdapter.Verify();
       _mockSecurableObject.Verify();
-      Assert.That (enabled, Is.False);
+      Assert.That(enabled, Is.False);
     }
 
     [Test]
     public void EvaluateFalse_FromFalse ()
     {
-      WebButton button = CreateButtonWithClickEventHandler ();
+      WebButton button = CreateButtonWithClickEventHandler();
       button.Enabled = false;
 
       bool enabled = button.Enabled;
 
       _mockWebSecurityAdapter.Verify();
       _mockSecurableObject.Verify();
-      Assert.That (enabled, Is.False);
+      Assert.That(enabled, Is.False);
     }
 
     private void TestHandler (object sender, EventArgs e)
@@ -190,7 +190,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 
     private WebButton CreateButtonWithClickEventHandler ()
     {
-      WebButton button = new WebButton ();
+      WebButton button = new WebButton();
       button.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
       button.SecurableObject = _mockSecurableObject.Object;
       button.Click += TestHandler;
@@ -200,7 +200,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 
     private WebButton CreateButtonWithoutClickEventHandler ()
     {
-      WebButton button = new WebButton ();
+      WebButton button = new WebButton();
       button.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
       button.SecurableObject = _mockSecurableObject.Object;
 

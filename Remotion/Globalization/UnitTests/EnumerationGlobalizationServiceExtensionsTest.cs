@@ -43,18 +43,18 @@ namespace Remotion.Globalization.UnitTests
       _memoryAppender = new MemoryAppender();
 
       LoggerMatchFilter acceptFilter = new LoggerMatchFilter();
-      acceptFilter.LoggerToMatch = typeof (ResourceLogger).FullName;
+      acceptFilter.LoggerToMatch = typeof(ResourceLogger).FullName;
       acceptFilter.AcceptOnMatch = true;
-      _memoryAppender.AddFilter (acceptFilter);
+      _memoryAppender.AddFilter(acceptFilter);
 
       DenyAllFilter denyFilter = new DenyAllFilter();
-      _memoryAppender.AddFilter (denyFilter);
+      _memoryAppender.AddFilter(denyFilter);
 
-      BasicConfigurator.Configure (_memoryAppender);
+      BasicConfigurator.Configure(_memoryAppender);
     }
 
     [TearDown]
-    public void TearDown()
+    public void TearDown ()
     {
       LogManager.ResetConfiguration();
     }
@@ -65,10 +65,10 @@ namespace Remotion.Globalization.UnitTests
       var outValue = "expected";
 
       _serviceStub
-          .Setup (_ => _.TryGetEnumerationValueDisplayName (_value, out outValue))
-          .Returns (true);
+          .Setup(_ => _.TryGetEnumerationValueDisplayName(_value, out outValue))
+          .Returns(true);
 
-      Assert.That (_serviceStub.Object.GetEnumerationValueDisplayName (_value), Is.EqualTo ("expected"));
+      Assert.That(_serviceStub.Object.GetEnumerationValueDisplayName(_value), Is.EqualTo("expected"));
     }
 
     [Test]
@@ -77,10 +77,10 @@ namespace Remotion.Globalization.UnitTests
       var outValue = "expected";
 
       _serviceStub
-          .Setup (_ => _.TryGetEnumerationValueDisplayName (_value, out outValue))
-          .Returns (true);
+          .Setup(_ => _.TryGetEnumerationValueDisplayName(_value, out outValue))
+          .Returns(true);
 
-      Assert.That (_serviceStub.Object.GetEnumerationValueDisplayNameOrDefault (_value), Is.EqualTo ("expected"));
+      Assert.That(_serviceStub.Object.GetEnumerationValueDisplayNameOrDefault(_value), Is.EqualTo("expected"));
     }
 
     [Test]
@@ -89,10 +89,10 @@ namespace Remotion.Globalization.UnitTests
       var outValue = "expected";
 
       _serviceStub
-          .Setup (_ => _.TryGetEnumerationValueDisplayName (_value, out outValue))
-          .Returns (true);
+          .Setup(_ => _.TryGetEnumerationValueDisplayName(_value, out outValue))
+          .Returns(true);
 
-      Assert.That (_serviceStub.Object.ContainsEnumerationValueDisplayName (_value), Is.True);
+      Assert.That(_serviceStub.Object.ContainsEnumerationValueDisplayName(_value), Is.True);
     }
 
     [Test]
@@ -101,17 +101,17 @@ namespace Remotion.Globalization.UnitTests
       string outValue = null;
 
       _serviceStub
-          .Setup (_ => _.TryGetEnumerationValueDisplayName (_value, out outValue))
-          .Returns (false);
+          .Setup(_ => _.TryGetEnumerationValueDisplayName(_value, out outValue))
+          .Returns(false);
 
-      Assert.That (_serviceStub.Object.GetEnumerationValueDisplayName (_value), Is.EqualTo ("Value1"));
+      Assert.That(_serviceStub.Object.GetEnumerationValueDisplayName(_value), Is.EqualTo("Value1"));
 
       LoggingEvent[] events = _memoryAppender.GetEvents();
-      Assert.That (events.Length, Is.EqualTo (1));
-      Assert.That (events[0].Level, Is.EqualTo (Level.Debug));
-      Assert.That (
+      Assert.That(events.Length, Is.EqualTo(1));
+      Assert.That(events[0].Level, Is.EqualTo(Level.Debug));
+      Assert.That(
           events[0].RenderedMessage,
-          Is.EqualTo (
+          Is.EqualTo(
               "No resource entry exists for the following element: Enum value: 'Value1' (Type: 'Remotion.Globalization.UnitTests.TestDomain.EnumWithResources')"));
     }
 
@@ -121,10 +121,10 @@ namespace Remotion.Globalization.UnitTests
       string outValue = null;
 
       _serviceStub
-          .Setup (_ => _.TryGetEnumerationValueDisplayName (_value, out outValue))
-          .Returns (false);
+          .Setup(_ => _.TryGetEnumerationValueDisplayName(_value, out outValue))
+          .Returns(false);
 
-      Assert.That (_serviceStub.Object.GetEnumerationValueDisplayNameOrDefault (_value), Is.Null);
+      Assert.That(_serviceStub.Object.GetEnumerationValueDisplayNameOrDefault(_value), Is.Null);
     }
 
     [Test]
@@ -133,10 +133,10 @@ namespace Remotion.Globalization.UnitTests
       string outValue = null;
 
       _serviceStub
-          .Setup (_ => _.TryGetEnumerationValueDisplayName (_value, out outValue))
-          .Returns (false);
+          .Setup(_ => _.TryGetEnumerationValueDisplayName(_value, out outValue))
+          .Returns(false);
 
-      Assert.That (_serviceStub.Object.ContainsEnumerationValueDisplayName (_value), Is.False);
+      Assert.That(_serviceStub.Object.ContainsEnumerationValueDisplayName(_value), Is.False);
     }
   }
 }

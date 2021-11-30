@@ -20,7 +20,7 @@ using Remotion.Mixins;
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.SingleInheritance
 {
   [Instantiable]
-  [Uses (typeof (SingleInheritancePersistentMixin))]
+  [Uses(typeof(SingleInheritancePersistentMixin))]
   public abstract class SingleInheritanceFirstDerivedClass : SingleInheritanceBaseClass
   {
     public static SingleInheritanceFirstDerivedClass NewObject ()

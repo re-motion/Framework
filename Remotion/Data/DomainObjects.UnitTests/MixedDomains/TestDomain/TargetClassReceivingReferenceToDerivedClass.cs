@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [DBTable ("MixedDomains_TargetClassReceivingReferenceToDerivedClass")]
+  [DBTable("MixedDomains_TargetClassReceivingReferenceToDerivedClass")]
   public class TargetClassReceivingReferenceToDerivedClass : DomainObject
   {
     public static TargetClassReceivingReferenceToDerivedClass NewObject ()

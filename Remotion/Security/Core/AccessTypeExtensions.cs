@@ -35,8 +35,8 @@ namespace Remotion.Security
     /// </returns>
     public static bool IsSubsetOf ([NotNull] this IReadOnlyList<AccessType> subSet, [NotNull] IReadOnlyList<AccessType> otherSet)
     {
-      ArgumentUtility.CheckNotNull ("subSet", subSet);
-      ArgumentUtility.CheckNotNull ("otherSet", otherSet);
+      ArgumentUtility.CheckNotNull("subSet", subSet);
+      ArgumentUtility.CheckNotNull("otherSet", otherSet);
 
       // This section is performance critical. No closure should be created, therefor converting this code to Linq is not possible.
       // return subSet.All (accessType => otherSet.Contains (accessType));
@@ -44,7 +44,7 @@ namespace Remotion.Security
       // ReSharper disable ForCanBeConvertedToForeach
       for (int i = 0; i < subSet.Count; i++)
       {
-        if (!otherSet.Contains (subSet[i]))
+        if (!otherSet.Contains(subSet[i]))
           return false;
       }
       return true;
@@ -60,7 +60,7 @@ namespace Remotion.Security
     /// </returns>
     public static bool Contains (this IReadOnlyList<AccessType> set, AccessType item)
     {
-      ArgumentUtility.CheckNotNull ("set", set);
+      ArgumentUtility.CheckNotNull("set", set);
 
       // This section is performance critical. No closure should be created, therefor converting this code to Linq is not possible.
       // return set.Any (t => accessType.Equals (t));
@@ -68,7 +68,7 @@ namespace Remotion.Security
       // ReSharper disable ForCanBeConvertedToForeach
       for (int i = 0; i < set.Count; i++)
       {
-        if (item.Equals (set[i]))
+        if (item.Equals(set[i]))
           return true;
       }
       return false;

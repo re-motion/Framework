@@ -34,14 +34,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IDomainObjectCollectionEndPoint modifiedEndPoint,
         IDomainObjectCollectionData collectionData,
         IClientTransactionEventSink transactionEventSink)
-        : base (
-            ArgumentUtility.CheckNotNull ("modifiedEndPoint", modifiedEndPoint),
+        : base(
+            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
             null,
             null,
-            ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink))
+            ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
     {
       if (modifiedEndPoint.IsNull)
-        throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
+        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _modifiedCollectionData = collectionData;
       _modifiedCollectionEventRaiser = modifiedEndPoint.GetCollectionEventRaiser();
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public override void Perform ()
     {
       ModifiedCollectionData.Clear();
-      ModifiedEndPoint.Touch ();
+      ModifiedEndPoint.Touch();
     }
 
     public override void End ()
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      return new ExpandedCommand (this);
+      return new ExpandedCommand(this);
     }
   }
 }

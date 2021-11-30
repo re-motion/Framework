@@ -26,158 +26,158 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void FullEventChain_WithReiterationDueToRegisterForAdditionalCommittingEvents_InExtension ()
     {
-      using (MockRepository.Ordered ())
+      using (MockRepository.Ordered())
       {
-        ExpectCommittingEventsWithCustomOptions (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock))
+        ExpectCommittingEventsWithCustomOptions(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(NewObject, NewObjectEventReceiverMock),
+            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock))
              // This triggers _one_ (not two) additional run for _changedObject
-            .ExtensionOptions.WhenCalled (mi => Transaction.ExecuteInScope (() =>
+            .ExtensionOptions.WhenCalled(mi => Transaction.ExecuteInScope(() =>
             {
-              ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (ChangedObject);
-              ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (ChangedObject);
+              ((ICommittingEventRegistrar)mi.Arguments[2]).RegisterForAdditionalCommittingEvents(ChangedObject);
+              ((ICommittingEventRegistrar)mi.Arguments[2]).RegisterForAdditionalCommittingEvents(ChangedObject);
             }));
 
-        ExpectCommittingEventsWithCustomOptions (Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock))
+        ExpectCommittingEventsWithCustomOptions(Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock))
             .ExtensionOptions
             // This triggers one additional run for _newObject
-            .WhenCalled (
-                mi => Transaction.ExecuteInScope (() => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (NewObject)));
+            .WhenCalled(
+                mi => Transaction.ExecuteInScope(() => ((ICommittingEventRegistrar)mi.Arguments[2]).RegisterForAdditionalCommittingEvents(NewObject)));
 
-        ExpectCommittingEventsWithCustomOptions (Tuple.Create (NewObject, NewObjectEventReceiverMock))
+        ExpectCommittingEventsWithCustomOptions(Tuple.Create(NewObject, NewObjectEventReceiverMock))
             .ExtensionOptions
             // This triggers one additional run for _newObject
-            .WhenCalled (
-                mi => Transaction.ExecuteInScope (() => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (NewObject)));
+            .WhenCalled(
+                mi => Transaction.ExecuteInScope(() => ((ICommittingEventRegistrar)mi.Arguments[2]).RegisterForAdditionalCommittingEvents(NewObject)));
 
         // No more additional runs
-        ExpectCommittingEvents (Tuple.Create (NewObject, NewObjectEventReceiverMock));
+        ExpectCommittingEvents(Tuple.Create(NewObject, NewObjectEventReceiverMock));
 
-        ExpectCommitValidateEvents (ChangedObject, NewObject, DeletedObject);
+        ExpectCommitValidateEvents(ChangedObject, NewObject, DeletedObject);
 
-        ExpectCommittedEvents (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock));
+        ExpectCommittedEvents(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(NewObject, NewObjectEventReceiverMock));
       }
-      MockRepository.ReplayAll ();
+      MockRepository.ReplayAll();
 
-      Transaction.Commit ();
+      Transaction.Commit();
 
-      MockRepository.VerifyAll ();
+      MockRepository.VerifyAll();
     }
 
     [Test]
     public void FullEventChain_WithReiterationDueToRegisterForAdditionalCommittingEvents_InClientTransaction ()
     {
-      using (MockRepository.Ordered ())
+      using (MockRepository.Ordered())
       {
-        ExpectCommittingEventsWithCustomOptions (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock))
+        ExpectCommittingEventsWithCustomOptions(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(NewObject, NewObjectEventReceiverMock),
+            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock))
             .TransactionOptions
           // This triggers an additional run for _changedObject
-            .WhenCalled (
+            .WhenCalled(
                 mi =>
                 {
-                  var args = ((ClientTransactionCommittingEventArgs) mi.Arguments[1]);
-                  Transaction.ExecuteInScope (() => args.EventRegistrar.RegisterForAdditionalCommittingEvents (ChangedObject));
+                  var args = ((ClientTransactionCommittingEventArgs)mi.Arguments[1]);
+                  Transaction.ExecuteInScope(() => args.EventRegistrar.RegisterForAdditionalCommittingEvents(ChangedObject));
                 });
 
         // No more additional runs
-        ExpectCommittingEvents (Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock));
+        ExpectCommittingEvents(Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock));
 
-        ExpectCommitValidateEvents (ChangedObject, NewObject, DeletedObject);
+        ExpectCommitValidateEvents(ChangedObject, NewObject, DeletedObject);
 
-        ExpectCommittedEvents (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock));
+        ExpectCommittedEvents(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(NewObject, NewObjectEventReceiverMock));
       }
-      MockRepository.ReplayAll ();
+      MockRepository.ReplayAll();
 
-      Transaction.Commit ();
+      Transaction.Commit();
 
-      MockRepository.VerifyAll ();
+      MockRepository.VerifyAll();
     }
 
     [Test]
     public void FullEventChain_WithReiterationDueToRegisterForAdditionalCommittingEvents_InDomainObject ()
     {
-      using (MockRepository.Ordered ())
+      using (MockRepository.Ordered())
       {
-        ExpectCommittingEventsWithCustomOptions (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock))
+        ExpectCommittingEventsWithCustomOptions(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(NewObject, NewObjectEventReceiverMock),
+            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock))
             .DomainObjectOptions[1]
           // This triggers an additional run for _deletedObject
-            .WhenCalled (
+            .WhenCalled(
                 mi =>
                 {
-                  var args = ((DomainObjectCommittingEventArgs) mi.Arguments[1]);
-                  Transaction.ExecuteInScope (() => args.EventRegistrar.RegisterForAdditionalCommittingEvents (DeletedObject));
+                  var args = ((DomainObjectCommittingEventArgs)mi.Arguments[1]);
+                  Transaction.ExecuteInScope(() => args.EventRegistrar.RegisterForAdditionalCommittingEvents(DeletedObject));
                 });
 
         // No more additional runs
-        ExpectCommittingEvents (Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock));
+        ExpectCommittingEvents(Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock));
 
-        ExpectCommitValidateEvents (ChangedObject, NewObject, DeletedObject);
+        ExpectCommitValidateEvents(ChangedObject, NewObject, DeletedObject);
 
-        ExpectCommittedEvents (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock));
+        ExpectCommittedEvents(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(NewObject, NewObjectEventReceiverMock));
       }
-      MockRepository.ReplayAll ();
+      MockRepository.ReplayAll();
 
-      Transaction.Commit ();
+      Transaction.Commit();
 
-      MockRepository.VerifyAll ();
+      MockRepository.VerifyAll();
     }
-    
+
     [Test]
     public void FullEventChain_WithReiterationDueToAddedObjectAndRegisterForAdditionalCommittingEvents ()
     {
-      using (MockRepository.Ordered ())
+      using (MockRepository.Ordered())
       {
-        ExpectCommittingEventsWithCustomOptions (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock),
-            Tuple.Create (DeletedObject, DeletedObjectEventReceiverMock))
+        ExpectCommittingEventsWithCustomOptions(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(NewObject, NewObjectEventReceiverMock),
+            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock))
             .ExtensionOptions
             // This triggers _one_ (not two) additional run for _unchangedObject
-            .WhenCalled (
-                mi => Transaction.ExecuteInScope (
+            .WhenCalled(
+                mi => Transaction.ExecuteInScope(
                     () =>
                     {
-                      Assert.That (
-                          () => ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (UnchangedObject),
-                          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
-                              string.Format (
+                      Assert.That(
+                          () => ((ICommittingEventRegistrar)mi.Arguments[2]).RegisterForAdditionalCommittingEvents(UnchangedObject),
+                          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+                              string.Format(
                                   "The given DomainObject '{0}' cannot be registered due to its DomainObjectState (Unchanged). "
                                   + "Only objects that are part of the commit set can be registered. Use RegisterForCommit to add an unchanged "
                                   + "object to the commit set.",
                                   UnchangedObject.ID),
                               "domainObjects"));
                       UnchangedObject.RegisterForCommit();
-                      ((ICommittingEventRegistrar) mi.Arguments[2]).RegisterForAdditionalCommittingEvents (UnchangedObject);
+                      ((ICommittingEventRegistrar)mi.Arguments[2]).RegisterForAdditionalCommittingEvents(UnchangedObject);
                     }));
 
         // No more additional runs
-        ExpectCommittingEvents (Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock));
-        
-        ExpectCommitValidateEvents (ChangedObject, NewObject, DeletedObject, UnchangedObject);
+        ExpectCommittingEvents(Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock));
 
-        ExpectCommittedEvents (
-            Tuple.Create (ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create (NewObject, NewObjectEventReceiverMock),
-            Tuple.Create (UnchangedObject, UnchangedObjectEventReceiverMock));
+        ExpectCommitValidateEvents(ChangedObject, NewObject, DeletedObject, UnchangedObject);
+
+        ExpectCommittedEvents(
+            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
+            Tuple.Create(NewObject, NewObjectEventReceiverMock),
+            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock));
       }
-      MockRepository.ReplayAll ();
+      MockRepository.ReplayAll();
 
-      Transaction.Commit ();
+      Transaction.Commit();
 
-      MockRepository.VerifyAll ();
+      MockRepository.VerifyAll();
     }
   }
 }

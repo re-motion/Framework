@@ -30,10 +30,10 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
         if (classDefinition.StorageGroupType != classDefinition.BaseClass.StorageGroupType)
         {
           var message = "Class '{0}' must have the same storage group type as its base class '{1}'.";
-          return MappingValidationResult.CreateInvalidResultForType (
-              classDefinition.ClassType, 
-              message, 
-              classDefinition.ClassType.Name, 
+          return MappingValidationResult.CreateInvalidResultForType(
+              classDefinition.ClassType,
+              message,
+              classDefinition.ClassType.Name,
               classDefinition.BaseClass.ClassType.Name);
         }
       }

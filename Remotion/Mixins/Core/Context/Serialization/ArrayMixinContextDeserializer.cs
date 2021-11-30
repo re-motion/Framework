@@ -27,34 +27,34 @@ namespace Remotion.Mixins.Context.Serialization
     protected abstract ArrayMixinContextOriginDeserializer CreateMixinContextOriginDeserializer (object[] values);
 
     protected ArrayMixinContextDeserializer (object[] values)
-        : base (values, 5)
+        : base(values, 5)
     {
     }
 
-    public Type GetMixinType()
+    public Type GetMixinType ()
     {
-      return GetValue<Type> (0);
+      return GetValue<Type>(0);
     }
 
-    public MixinKind GetMixinKind()
+    public MixinKind GetMixinKind ()
     {
-      return GetValue<MixinKind> (1);
+      return GetValue<MixinKind>(1);
     }
 
-    public MemberVisibility GetIntroducedMemberVisibility()
+    public MemberVisibility GetIntroducedMemberVisibility ()
     {
-      return GetValue<MemberVisibility> (2);
+      return GetValue<MemberVisibility>(2);
     }
 
-    public IEnumerable<Type> GetExplicitDependencies()
+    public IEnumerable<Type> GetExplicitDependencies ()
     {
-      return GetValue<Type[]> (3);
+      return GetValue<Type[]>(3);
     }
 
     public MixinContextOrigin GetOrigin ()
     {
-      var originDeserializer = CreateMixinContextOriginDeserializer (GetValue<object[]> (4));
-      return MixinContextOrigin.Deserialize (originDeserializer);
+      var originDeserializer = CreateMixinContextOriginDeserializer(GetValue<object[]>(4));
+      return MixinContextOrigin.Deserialize(originDeserializer);
     }
   }
 }

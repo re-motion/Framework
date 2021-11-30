@@ -40,17 +40,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IDomainObjectCollectionData collectionData,
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
-        : base (
-            ArgumentUtility.CheckNotNull ("modifiedEndPoint", modifiedEndPoint),
+        : base(
+            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
             null,
-            ArgumentUtility.CheckNotNull ("insertedObject", insertedObject),
-            ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink))
+            ArgumentUtility.CheckNotNull("insertedObject", insertedObject),
+            ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
     {
-      ArgumentUtility.CheckNotNull ("collectionData", collectionData);
-      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull("collectionData", collectionData);
+      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
 
       if (modifiedEndPoint.IsNull)
-        throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
+        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _index = index;
       _modifiedCollectionData = collectionData;
@@ -82,23 +82,23 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     {
       using (EnterTransactionScope())
       {
-        ModifiedCollectionEventRaiser.BeginAdd (Index, NewRelatedObject);
+        ModifiedCollectionEventRaiser.BeginAdd(Index, NewRelatedObject);
       }
-      base.Begin ();
+      base.Begin();
     }
 
     public override void Perform ()
     {
-      ModifiedCollectionData.Insert (Index, NewRelatedObject);
+      ModifiedCollectionData.Insert(Index, NewRelatedObject);
       ModifiedEndPoint.Touch();
     }
 
     public override void End ()
     {
-      base.End ();
+      base.End();
       using (EnterTransactionScope())
       {
-        ModifiedCollectionEventRaiser.EndAdd (Index, NewRelatedObject);
+        ModifiedCollectionEventRaiser.EndAdd(Index, NewRelatedObject);
       }
     }
 
@@ -116,19 +116,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
       // the end point that will be linked to the collection end point after the operation
-      var insertedObjectEndPoint = (IRealObjectEndPoint) GetOppositeEndPoint (ModifiedEndPoint, NewRelatedObject, _endPointProvider);
+      var insertedObjectEndPoint = (IRealObjectEndPoint)GetOppositeEndPoint(ModifiedEndPoint, NewRelatedObject, _endPointProvider);
       // the object that was linked to the new related object before the operation
-      var oldRelatedObjectOfInsertedObject = insertedObjectEndPoint.GetOppositeObject ();
+      var oldRelatedObjectOfInsertedObject = insertedObjectEndPoint.GetOppositeObject();
       // the end point that was linked to the new related object before the operation
-      var oldRelatedEndPointOfInsertedObject = GetOppositeEndPoint (insertedObjectEndPoint, oldRelatedObjectOfInsertedObject, _endPointProvider);
+      var oldRelatedEndPointOfInsertedObject = GetOppositeEndPoint(insertedObjectEndPoint, oldRelatedObjectOfInsertedObject, _endPointProvider);
 
-      return new ExpandedCommand (
+      return new ExpandedCommand(
           // insertedOrder.Customer = customer (previously oldCustomer)
-          insertedObjectEndPoint.CreateSetCommand (ModifiedEndPoint.GetDomainObject ()),
+          insertedObjectEndPoint.CreateSetCommand(ModifiedEndPoint.GetDomainObject()),
           // customer.Orders.Insert (insertedOrder, index)
           this,
           // oldCustomer.Orders.Remove (insertedOrder)
-          oldRelatedEndPointOfInsertedObject.CreateRemoveCommand (NewRelatedObject));
+          oldRelatedEndPointOfInsertedObject.CreateRemoveCommand(NewRelatedObject));
     }
   }
 }

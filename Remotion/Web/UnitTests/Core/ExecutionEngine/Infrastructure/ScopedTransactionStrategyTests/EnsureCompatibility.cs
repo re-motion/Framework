@@ -32,7 +32,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     public override void SetUp ()
     {
       base.SetUp();
-      _strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null).Object;
+      _strategy = CreateScopedTransactionStrategy(true, NullTransactionStrategy.Null).Object;
     }
 
     [Test]
@@ -42,10 +42,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var object2 = new object();
 
       var sequence = new MockSequence();
-      ExecutionContextMock.InSequence (sequence).Setup (mock => mock.GetInParameters()).Returns (new[] { object1, object2 }).Verifiable();
-      TransactionMock.InSequence (sequence).Setup (mock => mock.EnsureCompatibility (It.Is<IEnumerable<object>> (_ => new[] { object1, object2 }.All (_.Contains)))).Verifiable();
+      ExecutionContextMock.InSequence(sequence).Setup(mock => mock.GetInParameters()).Returns(new[] { object1, object2 }).Verifiable();
+      TransactionMock.InSequence(sequence).Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2 }.All(_.Contains)))).Verifiable();
 
-      new RootTransactionStrategy (false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object);
+      new RootTransactionStrategy(false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object);
 
       VerifyAll();
     }
@@ -54,20 +54,20 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     public void Test_WithIncompatibleInParameters ()
     {
       var object1 = new object();
-      var invalidOperationException = new InvalidOperationException ("Objects no good!");
+      var invalidOperationException = new InvalidOperationException("Objects no good!");
 
-      ExecutionContextMock.Setup (mock => mock.GetInParameters()).Returns (new[] { object1 });
+      ExecutionContextMock.Setup(mock => mock.GetInParameters()).Returns(new[] { object1 });
       TransactionMock
-          .Setup (mock => mock.EnsureCompatibility (It.Is<IEnumerable<object>> (_ => new[] { object1 }.All (_.Contains))))
-          .Throws (invalidOperationException);
+          .Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1 }.All(_.Contains))))
+          .Throws(invalidOperationException);
 
-      Assert.That (
-          () => new RootTransactionStrategy (false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object),
+      Assert.That(
+          () => new RootTransactionStrategy(false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object),
           Throws
               .TypeOf<WxeException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "One or more of the input parameters passed to the WxeFunction are incompatible with the function's transaction. Objects no good!")
-              .And.InnerException.SameAs (invalidOperationException));
+              .And.InnerException.SameAs(invalidOperationException));
     }
 
     [Test]
@@ -77,10 +77,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var object2 = new object();
 
       var sequence = new MockSequence();
-      ExecutionContextMock.InSequence (sequence).Setup (mock => mock.GetInParameters()).Returns (new[] { object1, null, object2 }).Verifiable();
-      TransactionMock.InSequence (sequence).Setup (mock => mock.EnsureCompatibility (It.Is<IEnumerable<object>> (_ => new[] { object1, object2 }.All (_.Contains)))).Verifiable();
+      ExecutionContextMock.InSequence(sequence).Setup(mock => mock.GetInParameters()).Returns(new[] { object1, null, object2 }).Verifiable();
+      TransactionMock.InSequence(sequence).Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2 }.All(_.Contains)))).Verifiable();
 
-      new RootTransactionStrategy (false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object);
+      new RootTransactionStrategy(false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object);
 
       VerifyAll();
     }
@@ -95,15 +95,15 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var sequence = new MockSequence();
       ExecutionContextMock
           .InSequence(sequence)
-          .Setup (mock => mock.GetInParameters())
-          .Returns (new[] { object1, new[] { object2, object3 } })
+          .Setup(mock => mock.GetInParameters())
+          .Returns(new[] { object1, new[] { object2, object3 } })
           .Verifiable();
       TransactionMock
           .InSequence(sequence)
-          .Setup (mock => mock.EnsureCompatibility (It.Is<IEnumerable<object>> (_ => new[] { object1, object2, object3 }.All (_.Contains))))
+          .Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2, object3 }.All(_.Contains))))
           .Verifiable();
 
-      new RootTransactionStrategy (false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object);
+      new RootTransactionStrategy(false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object);
 
       VerifyAll();
     }
@@ -116,10 +116,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var object3 = new object();
 
       var sequence = new MockSequence();
-      ExecutionContextMock.InSequence (sequence).Setup (mock => mock.GetInParameters()).Returns (new[] { object1, new[] { object2, null, object3 } }).Verifiable();
-      TransactionMock.InSequence (sequence).Setup (mock => mock.EnsureCompatibility (It.Is<IEnumerable<object>> (_ => new[] { object1, object2, object3 }.All (_.Contains)))).Verifiable();
+      ExecutionContextMock.InSequence(sequence).Setup(mock => mock.GetInParameters()).Returns(new[] { object1, new[] { object2, null, object3 } }).Verifiable();
+      TransactionMock.InSequence(sequence).Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2, object3 }.All(_.Contains)))).Verifiable();
 
-      new RootTransactionStrategy (false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object);
+      new RootTransactionStrategy(false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object);
 
       VerifyAll();
     }

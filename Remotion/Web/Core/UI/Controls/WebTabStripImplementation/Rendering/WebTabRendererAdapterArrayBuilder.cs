@@ -27,12 +27,12 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
   public class WebTabRendererAdapterArrayBuilder
   {
     private readonly IWebTab[] _webTabs;
-    
+
     public WebTabRendererAdapterArrayBuilder (IWebTab[] webTabs, WebTabStyle tabStyle, WebTabStyle selectedTabStyle)
     {
-      ArgumentUtility.CheckNotNull ("webTabs", webTabs);
-      ArgumentUtility.CheckNotNull ("tabStyle", tabStyle);
-      ArgumentUtility.CheckNotNull ("selectedTabStyle", selectedTabStyle);
+      ArgumentUtility.CheckNotNull("webTabs", webTabs);
+      ArgumentUtility.CheckNotNull("tabStyle", tabStyle);
+      ArgumentUtility.CheckNotNull("selectedTabStyle", selectedTabStyle);
 
       _webTabs = webTabs;
       TabStyle = tabStyle;
@@ -53,10 +53,10 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
         var isEnabled = !_webTabs[i].IsSelected || EnableSelectedTab;
         var style = _webTabs[i].IsSelected ? SelectedTabStyle! : TabStyle!; // TODO RM-8118: not null assertion
 
-        rendererAdapters.Add (new WebTabRendererAdapter (webTab.GetRenderer(), webTab, isLast, isEnabled, style));
+        rendererAdapters.Add(new WebTabRendererAdapter(webTab.GetRenderer(), webTab, isLast, isEnabled, style));
       }
       return rendererAdapters.ToArray();
     }
-    
+
   }
 }

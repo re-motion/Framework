@@ -41,11 +41,11 @@ namespace Remotion.Validation.Validators
         [NotNull] IPropertyInformation property,
         [CanBeNull] object? propertyValue)
     {
-      ArgumentUtility.CheckNotNull ("parentContext", parentContext);
-      ArgumentUtility.CheckNotNull ("instance", instance);
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("parentContext", parentContext);
+      ArgumentUtility.CheckNotNull("instance", instance);
+      ArgumentUtility.CheckNotNull("property", property);
       if (parentContext.InstanceToValidate != instance)
-        throw new ArgumentException ("parentContext.Instance does not match instance parameter.", "instance");
+        throw new ArgumentException("parentContext.Instance does not match instance parameter.", "instance");
 
       ParentContext = parentContext;
       Instance = instance;

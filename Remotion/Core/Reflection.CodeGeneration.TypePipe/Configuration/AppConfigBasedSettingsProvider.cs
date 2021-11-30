@@ -46,7 +46,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
 
     public AppConfigBasedSettingsProvider ()
     {
-      _section = (TypePipeConfigurationSection) ConfigurationManager.GetSection ("remotion.reflection.codeGeneration.typePipe") ?? new TypePipeConfigurationSection();
+      _section = (TypePipeConfigurationSection)ConfigurationManager.GetSection("remotion.reflection.codeGeneration.typePipe") ?? new TypePipeConfigurationSection();
     }
 
     public bool ForceStrongNaming
@@ -68,9 +68,9 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
     {
       return PipelineSettings
           .New()
-          .SetForceStrongNaming (ForceStrongNaming)
-          .SetKeyFilePath (KeyFilePath)
-          .SetEnableSerializationWithoutAssemblySaving (EnableSerializationWithoutAssemblySaving)
+          .SetForceStrongNaming(ForceStrongNaming)
+          .SetKeyFilePath(KeyFilePath)
+          .SetEnableSerializationWithoutAssemblySaving(EnableSerializationWithoutAssemblySaving)
           .Build();
     }
   }

@@ -28,94 +28,94 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void GetLocalizationFileNames_NoLocalizationFiles ()
     {
-      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy ();
-      string metadataFileName = Path.Combine (TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\notexisting.xml");
+      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy();
+      string metadataFileName = Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\notexisting.xml");
 
-      string[] localizationFileNames = nameStrategy.GetLocalizationFileNames (metadataFileName);
+      string[] localizationFileNames = nameStrategy.GetLocalizationFileNames(metadataFileName);
 
-      Assert.That (localizationFileNames, Is.Not.Null);
-      Assert.That (localizationFileNames.Length, Is.EqualTo (0));
+      Assert.That(localizationFileNames, Is.Not.Null);
+      Assert.That(localizationFileNames.Length, Is.EqualTo(0));
     }
 
     [Test]
     public void GetLocalizationFileNames_OneLocalizationFile ()
     {
-      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy ();
-      string metadataFileName = Path.Combine (TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\OneLocalizationFile.xml");
+      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy();
+      string metadataFileName = Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\OneLocalizationFile.xml");
 
-      string[] localizationFileNames = nameStrategy.GetLocalizationFileNames (metadataFileName);
+      string[] localizationFileNames = nameStrategy.GetLocalizationFileNames(metadataFileName);
 
-      Assert.That (localizationFileNames, Is.Not.Null);
-      Assert.That (localizationFileNames.Length, Is.EqualTo (1));
-      Assert.That (localizationFileNames, Has.Member (Path.Combine (TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\OneLocalizationFile.Localization.de.xml")));
+      Assert.That(localizationFileNames, Is.Not.Null);
+      Assert.That(localizationFileNames.Length, Is.EqualTo(1));
+      Assert.That(localizationFileNames, Has.Member(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\OneLocalizationFile.Localization.de.xml")));
     }
 
     [Test]
     public void GetLocalizationFileNames_TwoLocalizationFiles ()
     {
-      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy ();
-      string metadataFileName = Path.Combine (TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFiles.xml");
+      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy();
+      string metadataFileName = Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFiles.xml");
 
-      string[] localizationFileNames = nameStrategy.GetLocalizationFileNames (metadataFileName);
+      string[] localizationFileNames = nameStrategy.GetLocalizationFileNames(metadataFileName);
 
-      Assert.That (localizationFileNames, Is.Not.Null);
-      Assert.That (localizationFileNames.Length, Is.EqualTo (2));
-      Assert.That (localizationFileNames, Has.Member (Path.Combine (TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.de.xml")));
-      Assert.That (localizationFileNames, Has.Member (Path.Combine (TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.en.xml")));
+      Assert.That(localizationFileNames, Is.Not.Null);
+      Assert.That(localizationFileNames.Length, Is.EqualTo(2));
+      Assert.That(localizationFileNames, Has.Member(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.de.xml")));
+      Assert.That(localizationFileNames, Has.Member(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.en.xml")));
     }
 
     [Test]
     public void GetLocalizationFileNames_TwoLocalizationFilesIncludingInvariantCulture ()
     {
-      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy ();
-      string metadataFileName = Path.Combine (TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.xml");
+      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy();
+      string metadataFileName = Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.xml");
 
-      string[] localizationFileNames = nameStrategy.GetLocalizationFileNames (metadataFileName);
+      string[] localizationFileNames = nameStrategy.GetLocalizationFileNames(metadataFileName);
 
-      Assert.That (localizationFileNames, Is.Not.Null);
-      Assert.That (localizationFileNames.Length, Is.EqualTo (2));
-      Assert.That (localizationFileNames, Has.Member (Path.Combine (TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml")));
-      Assert.That (localizationFileNames, Has.Member (Path.Combine (TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml")));
+      Assert.That(localizationFileNames, Is.Not.Null);
+      Assert.That(localizationFileNames.Length, Is.EqualTo(2));
+      Assert.That(localizationFileNames, Has.Member(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml")));
+      Assert.That(localizationFileNames, Has.Member(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml")));
     }
 
     [Test]
     public void GetLocalizationFileNames_WithoutBaseDirectory ()
     {
-      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy ();
-      string wd = Directory.GetCurrentDirectory ();
-      Directory.SetCurrentDirectory (Path.Combine (TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles"));
+      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy();
+      string wd = Directory.GetCurrentDirectory();
+      Directory.SetCurrentDirectory(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Metadata\LocalizationFiles"));
       string metadataFileName = "TwoLocalizationFilesIncludingInvariantCulture.xml";
 
-      string[] localizationFileNames = nameStrategy.GetLocalizationFileNames (metadataFileName);
+      string[] localizationFileNames = nameStrategy.GetLocalizationFileNames(metadataFileName);
 
-      Directory.SetCurrentDirectory (wd);
+      Directory.SetCurrentDirectory(wd);
 
-      Assert.That (localizationFileNames, Is.Not.Null);
-      Assert.That (localizationFileNames.Length, Is.EqualTo (2));
-      Assert.That (localizationFileNames, Has.Member (@".\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml"));
-      Assert.That (localizationFileNames, Has.Member (@".\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml"));
+      Assert.That(localizationFileNames, Is.Not.Null);
+      Assert.That(localizationFileNames.Length, Is.EqualTo(2));
+      Assert.That(localizationFileNames, Has.Member(@".\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml"));
+      Assert.That(localizationFileNames, Has.Member(@".\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml"));
     }
 
     [Test]
     public void GetLocalizationFileName_GermanLanguage ()
     {
-      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy ();
+      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy();
       string filename = "metadata.xml";
 
-      string localizationFilename = nameStrategy.GetLocalizationFileName (filename, new CultureInfo ("de"));
+      string localizationFilename = nameStrategy.GetLocalizationFileName(filename, new CultureInfo("de"));
 
-      Assert.That (localizationFilename, Is.EqualTo ("metadata.Localization.de.xml"));
+      Assert.That(localizationFilename, Is.EqualTo("metadata.Localization.de.xml"));
     }
 
     [Test]
     public void GetLocalizationFileName_InvariantCulture ()
     {
-      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy ();
+      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy();
       string filename = "metadata.xml";
 
-      string localizationFilename = nameStrategy.GetLocalizationFileName (filename, CultureInfo.InvariantCulture);
+      string localizationFilename = nameStrategy.GetLocalizationFileName(filename, CultureInfo.InvariantCulture);
 
-      Assert.That (localizationFilename, Is.EqualTo ("metadata.Localization.xml"));
+      Assert.That(localizationFilename, Is.EqualTo("metadata.Localization.xml"));
     }
   }
 }

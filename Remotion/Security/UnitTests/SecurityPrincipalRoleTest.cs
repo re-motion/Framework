@@ -27,163 +27,163 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Initialize_WithGroup ()
     {
-      SecurityPrincipalRole role = new SecurityPrincipalRole ("TheGroup", null);
+      SecurityPrincipalRole role = new SecurityPrincipalRole("TheGroup", null);
 
-      Assert.That (role.Group, Is.EqualTo ("TheGroup"));
-      Assert.That (role.Position, Is.Null);
+      Assert.That(role.Group, Is.EqualTo("TheGroup"));
+      Assert.That(role.Position, Is.Null);
     }
 
     [Test]
     public void Initialize_WithGroupAndPosition ()
     {
-      SecurityPrincipalRole role = new SecurityPrincipalRole ("TheGroup", "ThePosition");
+      SecurityPrincipalRole role = new SecurityPrincipalRole("TheGroup", "ThePosition");
 
-      Assert.That (role.Group, Is.EqualTo ("TheGroup"));
-      Assert.That (role.Position, Is.EqualTo ("ThePosition"));
+      Assert.That(role.Group, Is.EqualTo("TheGroup"));
+      Assert.That(role.Position, Is.EqualTo("ThePosition"));
     }
 
     [Test]
     public void Initialize_WithoutGroup ()
     {
-      Assert.That (
-          () => new SecurityPrincipalRole (null, null),
+      Assert.That(
+          () => new SecurityPrincipalRole(null, null),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Value cannot be null.", "group"));
     }
 
     [Test]
     public void Initialize_WithGroupEmpty ()
     {
-      Assert.That (
-          () => new SecurityPrincipalRole (string.Empty, null),
+      Assert.That(
+          () => new SecurityPrincipalRole(string.Empty, null),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'group' cannot be empty.", "group"));
     }
 
     [Test]
     public void Initialize_WithPositionEmpty ()
     {
-      Assert.That (
-          () => new SecurityPrincipalRole ("TheGroup", string.Empty),
+      Assert.That(
+          () => new SecurityPrincipalRole("TheGroup", string.Empty),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'position' cannot be empty.", "position"));
     }
 
     [Test]
     public void Equals_WithEqualGroupAndNoPosition ()
     {
-      var left = new SecurityPrincipalRole ("TheGroup", null);
-      var right = new SecurityPrincipalRole ("TheGroup", null);
+      var left = new SecurityPrincipalRole("TheGroup", null);
+      var right = new SecurityPrincipalRole("TheGroup", null);
 
-      Assert.That (left.Equals (right), Is.True);
-      Assert.That (right.Equals (left), Is.True);
+      Assert.That(left.Equals(right), Is.True);
+      Assert.That(right.Equals(left), Is.True);
     }
 
     [Test]
     public void Equals_WithEqualGroupAndEqualPosition ()
     {
-      var left = new SecurityPrincipalRole ("TheGroup", "ThePosition");
-      var right = new SecurityPrincipalRole ("TheGroup", "ThePosition");
+      var left = new SecurityPrincipalRole("TheGroup", "ThePosition");
+      var right = new SecurityPrincipalRole("TheGroup", "ThePosition");
 
-      Assert.That (left.Equals (right), Is.True);
-      Assert.That (right.Equals (left), Is.True);
+      Assert.That(left.Equals(right), Is.True);
+      Assert.That(right.Equals(left), Is.True);
     }
 
     [Test]
     public void Equals_WithEqualGroupAndNotEqualPosition ()
     {
-      var left = new SecurityPrincipalRole ("TheGroup", "ThePosition");
-      var right = new SecurityPrincipalRole ("TheGroup", "OtherPosition");
+      var left = new SecurityPrincipalRole("TheGroup", "ThePosition");
+      var right = new SecurityPrincipalRole("TheGroup", "OtherPosition");
 
-      Assert.That (left.Equals (right), Is.False);
-      Assert.That (right.Equals (left), Is.False);
+      Assert.That(left.Equals(right), Is.False);
+      Assert.That(right.Equals(left), Is.False);
     }
 
     [Test]
     public void Equals_WithEqualGroupAndNotEqualPosition_ThisPositionNull ()
     {
-      var left = new SecurityPrincipalRole ("TheGroup", null);
-      var right = new SecurityPrincipalRole ("TheGroup", "ThePosition");
+      var left = new SecurityPrincipalRole("TheGroup", null);
+      var right = new SecurityPrincipalRole("TheGroup", "ThePosition");
 
-      Assert.That (left.Equals (right), Is.False);
-      Assert.That (right.Equals (left), Is.False);
+      Assert.That(left.Equals(right), Is.False);
+      Assert.That(right.Equals(left), Is.False);
     }
 
     [Test]
     public void Equals_WithEqualGroupAndNotEqualPosition_OtherPositionNull ()
     {
-      var left = new SecurityPrincipalRole ("TheGroup", "ThePosition");
-      var right = new SecurityPrincipalRole ("TheGroup", null);
+      var left = new SecurityPrincipalRole("TheGroup", "ThePosition");
+      var right = new SecurityPrincipalRole("TheGroup", null);
 
-      Assert.That (left.Equals (right), Is.False);
-      Assert.That (right.Equals (left), Is.False);
+      Assert.That(left.Equals(right), Is.False);
+      Assert.That(right.Equals(left), Is.False);
     }
 
     [Test]
     public void Equals_WithNotEqualGroupAndEqualPosition ()
     {
-      var left = new SecurityPrincipalRole ("TheGroup", "ThePosition");
-      var right = new SecurityPrincipalRole ("OtherGroup", "ThePosition");
+      var left = new SecurityPrincipalRole("TheGroup", "ThePosition");
+      var right = new SecurityPrincipalRole("OtherGroup", "ThePosition");
 
-      Assert.That (left.Equals (right), Is.False);
-      Assert.That (right.Equals (left), Is.False);
+      Assert.That(left.Equals(right), Is.False);
+      Assert.That(right.Equals(left), Is.False);
     }
 
     [Test]
     public void Equals_WithNull ()
     {
-      var left = new SecurityPrincipalRole ("TheGroup", "ThePosition");
+      var left = new SecurityPrincipalRole("TheGroup", "ThePosition");
       var right = (SecurityPrincipalRole)null;
 
-      Assert.That (left.Equals (right), Is.False);
+      Assert.That(left.Equals(right), Is.False);
     }
 
     [Test]
     public void EqualsObject_WithEqual ()
     {
-      var left = new SecurityPrincipalRole ("TheGroup", "ThePosition");
-      var right = new SecurityPrincipalRole ("TheGroup", "ThePosition");
+      var left = new SecurityPrincipalRole("TheGroup", "ThePosition");
+      var right = new SecurityPrincipalRole("TheGroup", "ThePosition");
 
-      Assert.That (left.Equals ((object) right), Is.True);
+      Assert.That(left.Equals((object)right), Is.True);
     }
 
     [Test]
     public void EqualsObject_WithNull ()
     {
-      var role = new SecurityPrincipalRole ("TheGroup", "ThePosition");
+      var role = new SecurityPrincipalRole("TheGroup", "ThePosition");
 
-      Assert.That (role.Equals ((object) null), Is.False);
+      Assert.That(role.Equals((object)null), Is.False);
     }
 
     [Test]
     public void EqualsObject_WithObject ()
     {
-      var role = new SecurityPrincipalRole ("TheGroup", "ThePosition");
+      var role = new SecurityPrincipalRole("TheGroup", "ThePosition");
 
-      Assert.That (role.Equals (new object ()), Is.False);
+      Assert.That(role.Equals(new object()), Is.False);
     }
 
     [Test]
     public void TestGetHashCode ()
     {
-      var left = new SecurityPrincipalRole ("TheGroup", "ThePosition");
-      var right = new SecurityPrincipalRole ("TheGroup", "ThePosition");
+      var left = new SecurityPrincipalRole("TheGroup", "ThePosition");
+      var right = new SecurityPrincipalRole("TheGroup", "ThePosition");
 
-      Assert.That (left.GetHashCode(), Is.EqualTo (right.GetHashCode()));
+      Assert.That(left.GetHashCode(), Is.EqualTo(right.GetHashCode()));
     }
 
     [Test]
     public void Serialization ()
     {
-      var role = new SecurityPrincipalRole ("TheGroup", "ThePosition");
+      var role = new SecurityPrincipalRole("TheGroup", "ThePosition");
 
-      var deserializedRole = Serializer.SerializeAndDeserialize (role);
+      var deserializedRole = Serializer.SerializeAndDeserialize(role);
 
-      Assert.That (deserializedRole, Is.Not.SameAs (role));
-      Assert.That (deserializedRole, Is.EqualTo (role));
+      Assert.That(deserializedRole, Is.Not.SameAs(role));
+      Assert.That(deserializedRole, Is.EqualTo(role));
     }
   }
 }

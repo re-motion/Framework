@@ -75,17 +75,17 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void name ()
     {
-      Type[] types = typeof (InheritanceHierarchyFilterTest).GetNestedTypes (BindingFlags.NonPublic);
-      InheritanceHierarchyFilter typeFilter = new InheritanceHierarchyFilter (types);
+      Type[] types = typeof(InheritanceHierarchyFilterTest).GetNestedTypes(BindingFlags.NonPublic);
+      InheritanceHierarchyFilter typeFilter = new InheritanceHierarchyFilter(types);
 
-      Assert.That (
+      Assert.That(
           typeFilter.GetLeafTypes(),
-          Is.EqualTo (
+          Is.EqualTo(
               new Type[]
                   {
-                      typeof (Leaf111Class), typeof (Leaf112Class),
-                      typeof (Leaf211Class), typeof (Leaf221Class),
-                      typeof (Leaf31Class), typeof (Leaf32Class<>)
+                      typeof(Leaf111Class), typeof(Leaf112Class),
+                      typeof(Leaf211Class), typeof(Leaf221Class),
+                      typeof(Leaf31Class), typeof(Leaf32Class<>)
                   }));
     }
   }

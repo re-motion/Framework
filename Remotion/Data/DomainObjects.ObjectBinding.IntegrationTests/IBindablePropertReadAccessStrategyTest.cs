@@ -40,24 +40,24 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     {
       var strategy = _serviceLocator.GetInstance<IBindablePropertyReadAccessStrategy>();
 
-      Assert.That (strategy, Is.TypeOf (typeof (CompundBindablePropertyReadAccessStrategy)));
-      var compoundStrategies = ((CompundBindablePropertyReadAccessStrategy) strategy).BindablePropertyReadAccessStrategies;
-      Assert.That (compoundStrategies.Select (s=>s.GetType()), Has.Member (typeof (BindableDomainObjectPropertyReadAccessStrategy)));
-      Assert.That (compoundStrategies.Select (s=>s.GetType()), Has.Member (typeof (SecurityBasedBindablePropertyReadAccessStrategy)));
+      Assert.That(strategy, Is.TypeOf(typeof(CompundBindablePropertyReadAccessStrategy)));
+      var compoundStrategies = ((CompundBindablePropertyReadAccessStrategy)strategy).BindablePropertyReadAccessStrategies;
+      Assert.That(compoundStrategies.Select(s=>s.GetType()), Has.Member(typeof(BindableDomainObjectPropertyReadAccessStrategy)));
+      Assert.That(compoundStrategies.Select(s=>s.GetType()), Has.Member(typeof(SecurityBasedBindablePropertyReadAccessStrategy)));
 
       var indexOfDomainObjectsStrategy =
-          compoundStrategies.Select ((s, i) => new { Strategy = s, Index = i })
-              .Where (o => o.Strategy is BindableDomainObjectPropertyReadAccessStrategy)
-              .Select (o => o.Index)
+          compoundStrategies.Select((s, i) => new { Strategy = s, Index = i })
+              .Where(o => o.Strategy is BindableDomainObjectPropertyReadAccessStrategy)
+              .Select(o => o.Index)
               .Single();
 
       var indexOfSecurityStrategy =
-          compoundStrategies.Select ((s, i) => new { Strategy = s, Index = i })
-              .Where (o => o.Strategy is SecurityBasedBindablePropertyReadAccessStrategy)
-              .Select (o => o.Index)
+          compoundStrategies.Select((s, i) => new { Strategy = s, Index = i })
+              .Where(o => o.Strategy is SecurityBasedBindablePropertyReadAccessStrategy)
+              .Select(o => o.Index)
               .Single();
 
-      Assert.That (indexOfDomainObjectsStrategy, Is.LessThan (indexOfSecurityStrategy));
+      Assert.That(indexOfDomainObjectsStrategy, Is.LessThan(indexOfSecurityStrategy));
     }
 
     [Test]
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       var strategy1 = _serviceLocator.GetInstance<IBindablePropertyReadAccessStrategy>();
       var strategy2 = _serviceLocator.GetInstance<IBindablePropertyReadAccessStrategy>();
 
-      Assert.That (strategy1, Is.SameAs (strategy2));
+      Assert.That(strategy1, Is.SameAs(strategy2));
     }
   }
 }

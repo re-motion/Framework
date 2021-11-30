@@ -37,17 +37,17 @@ namespace Remotion.Globalization.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _innerService1 = new Mock<IMemberInformationGlobalizationService> (MockBehavior.Strict);
-      _innerService2 = new Mock<IMemberInformationGlobalizationService> (MockBehavior.Strict);
-      _innerService3 = new Mock<IMemberInformationGlobalizationService> (MockBehavior.Strict);
+      _innerService1 = new Mock<IMemberInformationGlobalizationService>(MockBehavior.Strict);
+      _innerService2 = new Mock<IMemberInformationGlobalizationService>(MockBehavior.Strict);
+      _innerService3 = new Mock<IMemberInformationGlobalizationService>(MockBehavior.Strict);
 
-      _service = new CompoundMemberInformationGlobalizationService (new[] { _innerService1.Object, _innerService2.Object, _innerService3.Object });
+      _service = new CompoundMemberInformationGlobalizationService(new[] { _innerService1.Object, _innerService2.Object, _innerService3.Object });
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_service.MemberInformationGlobalizationServices, Is.EqualTo (new[] { _innerService1.Object, _innerService2.Object, _innerService3.Object }));
+      Assert.That(_service.MemberInformationGlobalizationServices, Is.EqualTo(new[] { _innerService1.Object, _innerService2.Object, _innerService3.Object }));
     }
 
     [Test]
@@ -60,42 +60,42 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
       var sequence = new MockSequence();
       _innerService1
-          .InSequence (sequence)
-          .Setup (
-            mock => mock.TryGetTypeDisplayName (
+          .InSequence(sequence)
+          .Setup(
+            mock => mock.TryGetTypeDisplayName(
                 typeInformationStub.Object,
                 typeInformationForResourceResolutionStub.Object,
                 out nullOutValue))
-          .Returns (false)
+          .Returns(false)
           .Verifiable();
       _innerService2
-          .InSequence (sequence)
-          .Setup (
-            mock => mock.TryGetTypeDisplayName (
+          .InSequence(sequence)
+          .Setup(
+            mock => mock.TryGetTypeDisplayName(
                 typeInformationStub.Object,
                 typeInformationForResourceResolutionStub.Object,
                 out theNameOutValue))
-          .Returns (true)
+          .Returns(true)
           .Verifiable();
       _innerService3
-          .InSequence (sequence)
-          .Setup (
-            mock => mock.TryGetTypeDisplayName (
+          .InSequence(sequence)
+          .Setup(
+            mock => mock.TryGetTypeDisplayName(
                 It.IsAny<ITypeInformation>(),
                 It.IsAny<ITypeInformation>(),
                 out nullOutValue))
           .Verifiable();
 
       string value;
-      var result = _service.TryGetTypeDisplayName (typeInformationStub.Object, typeInformationForResourceResolutionStub.Object, out value);
+      var result = _service.TryGetTypeDisplayName(typeInformationStub.Object, typeInformationForResourceResolutionStub.Object, out value);
 
-      Assert.That (result, Is.True);
-      Assert.That (value, Is.EqualTo ("The Name"));
+      Assert.That(result, Is.True);
+      Assert.That(value, Is.EqualTo("The Name"));
 
       _innerService1.Verify();
       _innerService2.Verify();
-      _innerService3.Verify (
-          mock => mock.TryGetTypeDisplayName (
+      _innerService3.Verify(
+          mock => mock.TryGetTypeDisplayName(
                 It.IsAny<ITypeInformation>(),
                 It.IsAny<ITypeInformation>(),
                 out nullOutValue),
@@ -111,38 +111,38 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
       var sequence = new MockSequence();
       _innerService1
-          .InSequence (sequence)
-          .Setup (
-            mock => mock.TryGetTypeDisplayName (
+          .InSequence(sequence)
+          .Setup(
+            mock => mock.TryGetTypeDisplayName(
                 typeInformationStub.Object,
                 typeInformationForResourceResolutionStub.Object,
                 out nullOutValue))
-          .Returns (false)
+          .Returns(false)
           .Verifiable();
       _innerService2
-          .InSequence (sequence)
-          .Setup (
-            mock => mock.TryGetTypeDisplayName (
+          .InSequence(sequence)
+          .Setup(
+            mock => mock.TryGetTypeDisplayName(
                 typeInformationStub.Object,
                 typeInformationForResourceResolutionStub.Object,
                 out nullOutValue))
-          .Returns (false)
+          .Returns(false)
           .Verifiable();
       _innerService3
-          .InSequence (sequence)
-          .Setup (
-            mock => mock.TryGetTypeDisplayName (
+          .InSequence(sequence)
+          .Setup(
+            mock => mock.TryGetTypeDisplayName(
                 typeInformationStub.Object,
                 typeInformationForResourceResolutionStub.Object,
                 out nullOutValue))
-          .Returns (false)
+          .Returns(false)
           .Verifiable();
 
       string value;
-      var result = _service.TryGetTypeDisplayName (typeInformationStub.Object, typeInformationForResourceResolutionStub.Object, out value);
+      var result = _service.TryGetTypeDisplayName(typeInformationStub.Object, typeInformationForResourceResolutionStub.Object, out value);
 
-      Assert.That (result, Is.False);
-      Assert.That (value, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(value, Is.Null);
 
       _innerService1.Verify();
       _innerService2.Verify();
@@ -159,43 +159,43 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
       var sequence = new MockSequence();
       _innerService1
-          .InSequence (sequence)
-          .Setup (
-            mock => mock.TryGetPropertyDisplayName (
+          .InSequence(sequence)
+          .Setup(
+            mock => mock.TryGetPropertyDisplayName(
                 propertyInformationStub.Object,
                 typeInformationForResourceResolutionStub.Object,
                 out nullOutValue))
-          .Returns (false)
+          .Returns(false)
           .Verifiable();
 
       _innerService2
-          .InSequence (sequence)
-          .Setup (
-            mock => mock.TryGetPropertyDisplayName (
+          .InSequence(sequence)
+          .Setup(
+            mock => mock.TryGetPropertyDisplayName(
                 propertyInformationStub.Object,
                 typeInformationForResourceResolutionStub.Object,
                 out theNameOutValue))
-          .Returns (true)
+          .Returns(true)
           .Verifiable();
       _innerService3
-          .InSequence (sequence)
-          .Setup (
-            mock => mock.TryGetPropertyDisplayName (
+          .InSequence(sequence)
+          .Setup(
+            mock => mock.TryGetPropertyDisplayName(
                 It.IsAny<IPropertyInformation>(),
                 It.IsAny<ITypeInformation>(),
                 out nullOutValue))
           .Verifiable();
 
       string value;
-      var result = _service.TryGetPropertyDisplayName (propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object, out value);
+      var result = _service.TryGetPropertyDisplayName(propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object, out value);
 
-      Assert.That (result, Is.True);
-      Assert.That (value, Is.EqualTo ("The Name"));
+      Assert.That(result, Is.True);
+      Assert.That(value, Is.EqualTo("The Name"));
 
       _innerService1.Verify();
       _innerService2.Verify();
-      _innerService3.Verify (
-          mock => mock.TryGetPropertyDisplayName (
+      _innerService3.Verify(
+          mock => mock.TryGetPropertyDisplayName(
                 It.IsAny<IPropertyInformation>(),
                 It.IsAny<ITypeInformation>(),
                 out nullOutValue),
@@ -211,38 +211,38 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
       var sequence = new MockSequence();
       _innerService1
-          .InSequence (sequence)
-          .Setup (
-            mock => mock.TryGetPropertyDisplayName (
+          .InSequence(sequence)
+          .Setup(
+            mock => mock.TryGetPropertyDisplayName(
                 propertyInformationStub.Object,
                 typeInformationForResourceResolutionStub.Object,
                 out nullOutValue))
-          .Returns (false)
+          .Returns(false)
           .Verifiable();
       _innerService2
-          .InSequence (sequence)
-          .Setup (
-            mock => mock.TryGetPropertyDisplayName (
+          .InSequence(sequence)
+          .Setup(
+            mock => mock.TryGetPropertyDisplayName(
                 propertyInformationStub.Object,
                 typeInformationForResourceResolutionStub.Object,
                 out nullOutValue))
-          .Returns (false)
+          .Returns(false)
           .Verifiable();
       _innerService3
-          .InSequence (sequence)
-          .Setup (
-            mock => mock.TryGetPropertyDisplayName (
+          .InSequence(sequence)
+          .Setup(
+            mock => mock.TryGetPropertyDisplayName(
                 propertyInformationStub.Object,
                 typeInformationForResourceResolutionStub.Object,
                 out nullOutValue))
-          .Returns (false)
+          .Returns(false)
           .Verifiable();
 
       string value;
-      var result = _service.TryGetPropertyDisplayName (propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object, out value);
+      var result = _service.TryGetPropertyDisplayName(propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object, out value);
 
-      Assert.That (result, Is.False);
-      Assert.That (value, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(value, Is.Null);
 
       _innerService1.Verify();
       _innerService2.Verify();
@@ -256,54 +256,54 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var typeInformationForResourceResolutionStub = new Mock<ITypeInformation>();
 
       var dictionary1 = new Dictionary<CultureInfo, string>();
-      dictionary1.Add (new CultureInfo ("de-AT"), "AT_Wert1");
+      dictionary1.Add(new CultureInfo("de-AT"), "AT_Wert1");
 
       var dictionary2 = new Dictionary<CultureInfo, string>();
-      dictionary2.Add (new CultureInfo ("de-AT"), "AT_Wert2");
+      dictionary2.Add(new CultureInfo("de-AT"), "AT_Wert2");
 
       var dictionary3 = new Dictionary<CultureInfo, string>();
-      dictionary3.Add (new CultureInfo ("de-DE"), "DE_Wert1");
-      dictionary3.Add (new CultureInfo ("en-US"), "EN_Wert1");
-      dictionary3.Add (new CultureInfo ("de-AT"), "AT_Wert3");
+      dictionary3.Add(new CultureInfo("de-DE"), "DE_Wert1");
+      dictionary3.Add(new CultureInfo("en-US"), "EN_Wert1");
+      dictionary3.Add(new CultureInfo("de-AT"), "AT_Wert3");
 
       var expected = new List<KeyValuePair<CultureInfo, string>>();
-      expected.Add (new KeyValuePair<CultureInfo, string> (new CultureInfo ("de-AT"), "AT_Wert1"));
-      expected.Add (new KeyValuePair<CultureInfo, string> (new CultureInfo ("de-DE"), "DE_Wert1"));
-      expected.Add (new KeyValuePair<CultureInfo, string> (new CultureInfo ("en-US"), "EN_Wert1"));
+      expected.Add(new KeyValuePair<CultureInfo, string>(new CultureInfo("de-AT"), "AT_Wert1"));
+      expected.Add(new KeyValuePair<CultureInfo, string>(new CultureInfo("de-DE"), "DE_Wert1"));
+      expected.Add(new KeyValuePair<CultureInfo, string>(new CultureInfo("en-US"), "EN_Wert1"));
 
       List<KeyValuePair<CultureInfo, string>> result;
       var sequence = new MockSequence();
       var innerService1 = new Mock<IMemberInformationGlobalizationService>();
       var innerService2 = new Mock<IMemberInformationGlobalizationService>();
       var innerService3 = new Mock<IMemberInformationGlobalizationService>();
-      var service = new CompoundMemberInformationGlobalizationService (new[] { innerService1.Object, innerService2.Object, innerService3.Object });
+      var service = new CompoundMemberInformationGlobalizationService(new[] { innerService1.Object, innerService2.Object, innerService3.Object });
 
       innerService1
-            .InSequence (sequence)
-            .Setup (s => s.GetAvailablePropertyDisplayNames (propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object))
-            .Returns (dictionary1)
+            .InSequence(sequence)
+            .Setup(s => s.GetAvailablePropertyDisplayNames(propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object))
+            .Returns(dictionary1)
             .Verifiable();
       innerService2
-            .InSequence (sequence)
-            .Setup (s => s.GetAvailablePropertyDisplayNames (propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object))
-            .Returns (dictionary2.AsReadOnly())
+            .InSequence(sequence)
+            .Setup(s => s.GetAvailablePropertyDisplayNames(propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object))
+            .Returns(dictionary2.AsReadOnly())
             .Verifiable();
       innerService3
-            .InSequence (sequence)
-            .Setup (s => s.GetAvailablePropertyDisplayNames (propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object))
-            .Returns (dictionary3.AsReadOnly())
+            .InSequence(sequence)
+            .Setup(s => s.GetAvailablePropertyDisplayNames(propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object))
+            .Returns(dictionary3.AsReadOnly())
             .Verifiable();
 
-      result = service.GetAvailablePropertyDisplayNames (propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object).ToList();
+      result = service.GetAvailablePropertyDisplayNames(propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object).ToList();
 
-      innerService1.Verify (s => s.GetAvailablePropertyDisplayNames (propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object), Times.AtLeastOnce());
-      innerService2.Verify (s => s.GetAvailablePropertyDisplayNames (propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object), Times.AtLeastOnce());
-      innerService3.Verify (s => s.GetAvailablePropertyDisplayNames (propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object), Times.AtLeastOnce());
+      innerService1.Verify(s => s.GetAvailablePropertyDisplayNames(propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object), Times.AtLeastOnce());
+      innerService2.Verify(s => s.GetAvailablePropertyDisplayNames(propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object), Times.AtLeastOnce());
+      innerService3.Verify(s => s.GetAvailablePropertyDisplayNames(propertyInformationStub.Object, typeInformationForResourceResolutionStub.Object), Times.AtLeastOnce());
 
-      Assert.That (expected.Count, Is.EqualTo (result.Count));
-      Assert.That (expected[0], Is.EqualTo (result[0]));
-      Assert.That (expected[1], Is.EqualTo (result[1]));
-      Assert.That (expected[2], Is.EqualTo (result[2]));
+      Assert.That(expected.Count, Is.EqualTo(result.Count));
+      Assert.That(expected[0], Is.EqualTo(result[0]));
+      Assert.That(expected[1], Is.EqualTo(result[1]));
+      Assert.That(expected[2], Is.EqualTo(result[2]));
     }
   }
 }

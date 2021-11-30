@@ -24,7 +24,7 @@ namespace Remotion.Diagnostics
   /// Provides an interface to the debugger. This functionality is also provided by the <see cref="Debugger"/> class, but 
   /// <see cref="DebuggerInterface"/> implements <see cref="IDebuggerInterface"/>.
   /// </summary>
-  [ImplementationFor (typeof (IDebuggerInterface))]
+  [ImplementationFor(typeof(IDebuggerInterface))]
   public class DebuggerInterface : IDebuggerInterface
   {
     public bool IsAttached
@@ -49,7 +49,7 @@ namespace Remotion.Diagnostics
 
     public void Log (int level, string category, string message)
     {
-      Debugger.Log (level, category, message);
+      Debugger.Log(level, category, message);
     }
 
     public bool IsLogging ()

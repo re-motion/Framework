@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  [DisableEnumValues (TestEnum.Value5)]
+  [DisableEnumValues(TestEnum.Value5)]
   public enum TestEnum
   {
     Value1 = 1,

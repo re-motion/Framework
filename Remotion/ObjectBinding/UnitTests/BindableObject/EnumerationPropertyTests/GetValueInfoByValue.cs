@@ -37,64 +37,64 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
 
       _businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
 
-      _mockBusinessObject = new Mock<IBusinessObject> (MockBehavior.Strict);
+      _mockBusinessObject = new Mock<IBusinessObject>(MockBehavior.Strict);
     }
 
     [Test]
     public void ValidEnumValue ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
 
-      CheckEnumerationValueInfo (
-          new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
-          property.GetValueInfoByValue (TestEnum.Value1, null));
+      CheckEnumerationValueInfo(
+          new EnumerationValueInfo(TestEnum.Value1, "Value1", "Value1", true),
+          property.GetValueInfoByValue(TestEnum.Value1, null));
     }
 
     [Test]
     public void Null ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
 
-      Assert.That (property.GetValueInfoByValue (null, null), Is.Null);
+      Assert.That(property.GetValueInfoByValue(null, null), Is.Null);
     }
 
     [Test]
     public void UndefinedEnumValue ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<EnumWithUndefinedValue>), "Scalar");
 
-      Assert.That (property.GetValueInfoByValue (EnumWithUndefinedValue.UndefinedValue, null), Is.Null);
+      Assert.That(property.GetValueInfoByValue(EnumWithUndefinedValue.UndefinedValue, null), Is.Null);
     }
 
     [Test]
     public void InvalidEnumValue ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
 
-      CheckEnumerationValueInfo (
-          new EnumerationValueInfo ((TestEnum) (-1), "-1", "-1", false),
-          property.GetValueInfoByValue ((TestEnum) (-1), null));
+      CheckEnumerationValueInfo(
+          new EnumerationValueInfo((TestEnum)(-1), "-1", "-1", false),
+          property.GetValueInfoByValue((TestEnum)(-1), null));
     }
 
     [Test]
     public void DisabledEnumValue ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithDisabledEnumValue), "DisabledFromProperty");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithDisabledEnumValue), "DisabledFromProperty");
 
-      IEnumerationValueInfo actual = property.GetValueInfoByValue (TestEnum.Value1, _mockBusinessObject.Object);
+      IEnumerationValueInfo actual = property.GetValueInfoByValue(TestEnum.Value1, _mockBusinessObject.Object);
 
       _mockBusinessObject.Verify();
-      CheckEnumerationValueInfo (new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", false), actual);
+      CheckEnumerationValueInfo(new EnumerationValueInfo(TestEnum.Value1, "Value1", "Value1", false), actual);
     }
 
     [Test]
     public void EnumValueFromOtherType ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithValueType<TestEnum>), "Scalar");
-      Assert.That (
-          () => property.GetValueInfoByValue (EnumWithUndefinedValue.Value1, null),
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithValueType<TestEnum>), "Scalar");
+      Assert.That(
+          () => property.GetValueInfoByValue(EnumWithUndefinedValue.Value1, null),
           Throws.ArgumentException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Object must be the same type as the enum. The type passed in was 'Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValue'; "
                   + "the enum type was 'Remotion.ObjectBinding.UnitTests.TestDomain.TestEnum'."));
     }
@@ -103,25 +103,25 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
     public void GetDisplayNameFromGlobalizationSerivce ()
     {
       var outValue = "MockValue1";
-      var mockEnumerationGlobalizationService = new Mock<IEnumerationGlobalizationService> (MockBehavior.Strict);
-      IBusinessObjectEnumerationProperty property = CreateProperty (
-          typeof (ClassWithValueType<TestEnum>),
+      var mockEnumerationGlobalizationService = new Mock<IEnumerationGlobalizationService>(MockBehavior.Strict);
+      IBusinessObjectEnumerationProperty property = CreateProperty(
+          typeof(ClassWithValueType<TestEnum>),
           "Scalar",
-          bindableObjectGlobalizationService: new BindableObjectGlobalizationService (
+          bindableObjectGlobalizationService: new BindableObjectGlobalizationService(
               new Mock<IGlobalizationService>().Object,
               new Mock<IMemberInformationGlobalizationService>().Object,
               mockEnumerationGlobalizationService.Object,
               new Mock<IExtensibleEnumGlobalizationService>().Object));
 
-      mockEnumerationGlobalizationService.Setup (_ => _.TryGetEnumerationValueDisplayName (TestEnum.Value1, out outValue))
-          .Returns (true)
+      mockEnumerationGlobalizationService.Setup(_ => _.TryGetEnumerationValueDisplayName(TestEnum.Value1, out outValue))
+          .Returns(true)
           .Verifiable();
 
-      IEnumerationValueInfo actual = property.GetValueInfoByValue (TestEnum.Value1, null);
+      IEnumerationValueInfo actual = property.GetValueInfoByValue(TestEnum.Value1, null);
 
       _mockBusinessObject.Verify();
       mockEnumerationGlobalizationService.Verify();
-      CheckEnumerationValueInfo (new EnumerationValueInfo (TestEnum.Value1, "Value1", "MockValue1", true), actual);
+      CheckEnumerationValueInfo(new EnumerationValueInfo(TestEnum.Value1, "Value1", "MockValue1", true), actual);
     }
 
     private EnumerationProperty CreateProperty (
@@ -129,9 +129,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
         string propertyName,
         BindableObjectGlobalizationService bindableObjectGlobalizationService = null)
     {
-      return new EnumerationProperty (
-          GetPropertyParameters (
-              GetPropertyInfo (type, propertyName),
+      return new EnumerationProperty(
+          GetPropertyParameters(
+              GetPropertyInfo(type, propertyName),
               _businessObjectProvider,
               bindableObjectGlobalizationService: bindableObjectGlobalizationService));
     }

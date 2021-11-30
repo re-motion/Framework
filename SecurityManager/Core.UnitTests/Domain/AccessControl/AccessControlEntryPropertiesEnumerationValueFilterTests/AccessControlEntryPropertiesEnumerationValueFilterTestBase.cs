@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
     private IEnumerationValueFilter _filter;
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
 
@@ -43,34 +43,34 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessControlE
 
     protected IEnumerationValueInfo CreateEnumValueInfo (Enum enumValue)
     {
-      return new EnumerationValueInfo (enumValue, "ID", "Name", true);
+      return new EnumerationValueInfo(enumValue, "ID", "Name", true);
     }
 
     protected IEnumerationValueInfo CreateEnumValueInfo_Disabled (Enum enumValue)
     {
-      return new EnumerationValueInfo (enumValue, "ID", "Name", false);
+      return new EnumerationValueInfo(enumValue, "ID", "Name", false);
     }
 
     protected AccessControlEntry CreateAceForStateless ()
     {
-      var ace = AccessControlEntry.NewObject ();
-      ace.AccessControlList = StatelessAccessControlList.NewObject ();
+      var ace = AccessControlEntry.NewObject();
+      ace.AccessControlList = StatelessAccessControlList.NewObject();
 
       return ace;
     }
 
     protected AccessControlEntry CreateAceForStateful ()
     {
-      var ace = AccessControlEntry.NewObject ();
-      ace.AccessControlList = StatefulAccessControlList.NewObject ();
+      var ace = AccessControlEntry.NewObject();
+      ace.AccessControlList = StatefulAccessControlList.NewObject();
 
       return ace;
     }
 
     protected IBusinessObjectEnumerationProperty GetPropertyDefinition (AccessControlEntry ace, string propertyName)
     {
-      var property = (IBusinessObjectEnumerationProperty) ((IBusinessObject) ace).BusinessObjectClass.GetPropertyDefinition (propertyName);
-      Assert.That (property, Is.Not.Null, propertyName);
+      var property = (IBusinessObjectEnumerationProperty)((IBusinessObject)ace).BusinessObjectClass.GetPropertyDefinition(propertyName);
+      Assert.That(property, Is.Not.Null, propertyName);
       return property;
     }
   }

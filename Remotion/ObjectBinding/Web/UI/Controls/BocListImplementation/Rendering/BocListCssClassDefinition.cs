@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Contains all the CSS class definitions needed throughout <see cref="BocList"/> rendering.
   /// </summary>
-  [ImplementationFor (typeof(BocListCssClassDefinition), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(BocListCssClassDefinition), Lifetime = LifetimeKind.Singleton)]
   public class BocListCssClassDefinition
   {
     /// <summary> Gets the CSS-Class applied to the <see cref="IBocRenderableControl"/> itself. </summary>
@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       get { return "odd"; }
     }
-    
+
     /// <summary> Gets the CSS-Class additionally applied to the <see cref="BocList"/>'s even data rows. </summary>
     /// <remarks> Class: <c>even</c> </remarks>
     public string DataRowEven
@@ -256,7 +256,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public string GetTableBlock (bool hasMenuBlock, bool hasNavigator)
     {
       string cssClass = TableBlock;
-      
+
       if (hasMenuBlock)
         cssClass = cssClass + " " + HasMenuBlock;
 

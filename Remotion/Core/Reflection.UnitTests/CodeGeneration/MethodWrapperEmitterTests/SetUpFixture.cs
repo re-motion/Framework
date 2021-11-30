@@ -35,7 +35,7 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
       get
       {
         if (s_moduleBuilder == null)
-          throw new InvalidOperationException ("SetUp must be called before the scope is accessed.");
+          throw new InvalidOperationException("SetUp must be called before the scope is accessed.");
         return s_moduleBuilder;
       }
     }
@@ -43,45 +43,45 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
     [OneTimeSetUp]
     public virtual void OneTimeSetUp ()
     {
-      Console.WriteLine ("Setting up MethodWrapperEmitterTests");
+      Console.WriteLine("Setting up MethodWrapperEmitterTests");
 
-      var assemblyName = new AssemblyName ("Remotion.Reflection.CodeGeneration.MethodWrapperEmitterTests.Generated.Unsigned");
+      var assemblyName = new AssemblyName("Remotion.Reflection.CodeGeneration.MethodWrapperEmitterTests.Generated.Unsigned");
       var moduleName = assemblyName + ".dll";
 #if NETFRAMEWORK && !NO_PEVERIFY
-      s_assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (
+      s_assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(
                 assemblyName,
                 AssemblyBuilderAccess.RunAndSave,
                 TestContext.CurrentContext.TestDirectory);
-      s_moduleBuilder = s_assemblyBuilder.DefineDynamicModule (moduleName, emitSymbolInfo: false);
+      s_moduleBuilder = s_assemblyBuilder.DefineDynamicModule(moduleName, emitSymbolInfo: false);
 #else
-      s_assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly (assemblyName, AssemblyBuilderAccess.Run);
-      s_moduleBuilder = s_assemblyBuilder.DefineDynamicModule (moduleName);
+      s_assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run);
+      s_moduleBuilder = s_assemblyBuilder.DefineDynamicModule(moduleName);
 #endif
 
-      DeleteIfExists (s_moduleBuilder.FullyQualifiedName);
+      DeleteIfExists(s_moduleBuilder.FullyQualifiedName);
     }
 
     [OneTimeTearDown]
     public virtual void OneTimeTearDown ()
     {
-      Console.WriteLine ("Tearing down MethodWrapperEmitterTests");
+      Console.WriteLine("Tearing down MethodWrapperEmitterTests");
 #if NETFRAMEWORK && !NO_PEVERIFY
 
-      s_assemblyBuilder.Save (s_moduleBuilder.ScopeName);
+      s_assemblyBuilder.Save(s_moduleBuilder.ScopeName);
       var path = s_moduleBuilder.FullyQualifiedName;
-      
+
       s_assemblyBuilder = null;
       s_moduleBuilder = null;
 
-      PEVerifier.CreateDefault().VerifyPEFile (path);
-      FileUtility.DeleteAndWaitForCompletion (path);
+      PEVerifier.CreateDefault().VerifyPEFile(path);
+      FileUtility.DeleteAndWaitForCompletion(path);
 #endif
     }
 
     private void DeleteIfExists (string path)
     {
-      if (File.Exists (path))
-        FileUtility.DeleteAndWaitForCompletion (path);
+      if (File.Exists(path))
+        FileUtility.DeleteAndWaitForCompletion(path);
     }
   }
 }

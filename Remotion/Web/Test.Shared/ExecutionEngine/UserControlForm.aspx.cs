@@ -26,19 +26,19 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
   {
     protected void PageButton_Click (object sender, EventArgs e)
     {
-      PageLabel.Text = DateTime.Now.ToString ("HH:mm:ss");
+      PageLabel.Text = DateTime.Now.ToString("HH:mm:ss");
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       ViewStateLabel.Text = "#";
       ControlStateLabel.Text = "#";
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       //var control = Page.LoadControl ("FirstControl.ascx");
       //control.ID = "FirstControl";
@@ -52,49 +52,49 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
       StringBuilder stringBuilder = new StringBuilder();
       for (WxeStep step = CurrentPageStep; step != null; step = step.ParentStep)
-        stringBuilder.AppendFormat ("{0}<br>", step);
+        stringBuilder.AppendFormat("{0}<br>", step);
       StackLabel.Text = stringBuilder.ToString();
 
       if (!IsPostBack)
       {
-        Assertion.IsNull (SubControlWithState.ValueInViewState);
-        SubControlWithState.ValueInViewState = 1.ToString ();
+        Assertion.IsNull(SubControlWithState.ValueInViewState);
+        SubControlWithState.ValueInViewState = 1.ToString();
 
-        Assertion.IsNull (SubControlWithState.ValueInControlState);
-        SubControlWithState.ValueInControlState = 1.ToString ();
+        Assertion.IsNull(SubControlWithState.ValueInControlState);
+        SubControlWithState.ValueInControlState = 1.ToString();
       }
       else
       {
-        Assertion.IsNotNull (SubControlWithState.ValueInViewState);
-        SubControlWithState.ValueInViewState = (int.Parse (SubControlWithState.ValueInViewState) + 1).ToString ();
+        Assertion.IsNotNull(SubControlWithState.ValueInViewState);
+        SubControlWithState.ValueInViewState = (int.Parse(SubControlWithState.ValueInViewState) + 1).ToString();
 
-        Assertion.IsNotNull (SubControlWithState.ValueInControlState);
-        SubControlWithState.ValueInControlState = (int.Parse (SubControlWithState.ValueInControlState) + 1).ToString ();
+        Assertion.IsNotNull(SubControlWithState.ValueInControlState);
+        SubControlWithState.ValueInControlState = (int.Parse(SubControlWithState.ValueInControlState) + 1).ToString();
       }
     }
 
     protected override void OnLoadComplete (EventArgs e)
     {
-      base.OnLoadComplete (e);
-      
+      base.OnLoadComplete(e);
+
       //if (!IsPostBack && CurrentPageStep.UserControlExecutor.IsNull)
       //  TheUserControl.ExecuteFunction (new ShowFirstUserControlFormFunction (), this, true);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       if (!IsPostBack)
       {
-        Assertion.IsTrue (string.IsNullOrEmpty (SubControlWithFormElement.Text));
-        SubControlWithFormElement.Text = 1.ToString ();
+        Assertion.IsTrue(string.IsNullOrEmpty(SubControlWithFormElement.Text));
+        SubControlWithFormElement.Text = 1.ToString();
       }
       else
       {
 
-        Assertion.IsFalse (string.IsNullOrEmpty (SubControlWithFormElement.Text));
-        SubControlWithFormElement.Text = (int.Parse (SubControlWithFormElement.Text) + 1).ToString ();
+        Assertion.IsFalse(string.IsNullOrEmpty(SubControlWithFormElement.Text));
+        SubControlWithFormElement.Text = (int.Parse(SubControlWithFormElement.Text) + 1).ToString();
       }
     }
 
@@ -102,7 +102,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     {
       try
       {
-        SecondControl.Call (this, TheUserControl, (Control) sender);
+        SecondControl.Call(this, TheUserControl, (Control)sender);
       }
       catch (WxeUserCancelException)
       {
@@ -111,19 +111,19 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     protected override void LoadControlState (object savedState)
     {
-      var controlState = (Tuple<object, int>) savedState;
-      base.LoadControlState (controlState.Item1);
+      var controlState = (Tuple<object, int>)savedState;
+      base.LoadControlState(controlState.Item1);
       ControlStateValue = controlState.Item2;
     }
 
     protected override object SaveControlState ()
     {
-      return new Tuple<object, int> (base.SaveControlState(), ControlStateValue);
+      return new Tuple<object, int>(base.SaveControlState(), ControlStateValue);
     }
 
     private int ViewStateValue
     {
-      get { return (int?) ViewState["Value"] ?? 0; }
+      get { return (int?)ViewState["Value"] ?? 0; }
       set { ViewState["Value"] = value; }
     }
 

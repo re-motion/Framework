@@ -43,10 +43,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
         EnabledState enabledState = EnabledState.Enabled,
         ReadOnlyState readOnlyState = ReadOnlyState.Editable)
     {
-      ArgumentUtility.CheckNotNull ("localID", localID);
-      ArgumentUtility.CheckNotNull ("htmlID", htmlID);
-      ArgumentUtility.CheckNotNull ("correctDomainProperty", correctDomainProperty);
-      ArgumentUtility.CheckNotNull ("incorrectDomainProperty", incorrectDomainProperty);
+      ArgumentUtility.CheckNotNull("localID", localID);
+      ArgumentUtility.CheckNotNull("htmlID", htmlID);
+      ArgumentUtility.CheckNotNull("correctDomainProperty", correctDomainProperty);
+      ArgumentUtility.CheckNotNull("incorrectDomainProperty", incorrectDomainProperty);
 
       _localID = localID;
       _htmlID = htmlID;

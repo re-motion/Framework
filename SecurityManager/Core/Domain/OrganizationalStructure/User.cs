@@ -32,8 +32,8 @@ using Remotion.Utilities;
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.User")]
-  [PermanentGuid ("759DA370-E2C4-4221-B878-BE378C916042")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.User")]
+  [PermanentGuid("759DA370-E2C4-4221-B878-BE378C916042")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -52,12 +52,12 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     internal static User NewObject ()
     {
-      return NewObject<User> ();
+      return NewObject<User>();
     }
 
     public static User FindByUserName (string userName)
     {
-      ArgumentUtility.CheckNotNull ("userName", userName);
+      ArgumentUtility.CheckNotNull("userName", userName);
 
       var result = from u in QueryFactory.CreateLinqQuery<User>()
                    where u.UserName == userName
@@ -68,7 +68,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static IQueryable<User> FindByTenant (IDomainObjectHandle<Tenant> tenantHandle)
     {
-      ArgumentUtility.CheckNotNull ("tenantHandle", tenantHandle);
+      ArgumentUtility.CheckNotNull("tenantHandle", tenantHandle);
 
       return from u in QueryFactory.CreateLinqQuery<User>()
              where u.Tenant.ID == tenantHandle.ObjectID
@@ -82,11 +82,11 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateUser ();
     //}
 
-    [DemandPermission (GeneralAccessTypes.Search)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DemandPermission(GeneralAccessTypes.Search)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static void Search ()
     {
-      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+      throw new NotImplementedException("This method is only intended for framework support and should never be called.");
     }
 
     private DomainObjectDeleteHandler _deleteHandler;
@@ -95,75 +95,75 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
     }
 
-    [StringProperty (MaximumLength = 100)]
+    [StringProperty(MaximumLength = 100)]
     public abstract string Title { get; set; }
 
-    [StringProperty (MaximumLength = 100)]
+    [StringProperty(MaximumLength = 100)]
     public abstract string FirstName { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string LastName { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string UserName { get; set; }
 
-    [DBBidirectionalRelation ("User")]
-    public abstract ObjectList<Role> Roles { get; [DemandPermission (SecurityManagerAccessTypes.AssignRole)] protected set; }
+    [DBBidirectionalRelation("User")]
+    public abstract ObjectList<Role> Roles { get; [DemandPermission(SecurityManagerAccessTypes.AssignRole)] protected set; }
 
     [Mandatory]
     public abstract Tenant Tenant { get; set; }
 
     [Mandatory]
-    [SearchAvailableObjectsServiceType(typeof (GroupPropertyTypeSearchService))]
+    [SearchAvailableObjectsServiceType(typeof(GroupPropertyTypeSearchService))]
     public abstract Group OwningGroup { get; set; }
 
-    [DBBidirectionalRelation ("SubstitutingUser")]
+    [DBBidirectionalRelation("SubstitutingUser")]
     protected abstract ObjectList<Substitution> SubstitutingFor { get; }
 
-    [DBBidirectionalRelation ("SubstitutedUser")]
-    public abstract ObjectList<Substitution> SubstitutedBy { get; [DemandPermission (SecurityManagerAccessTypes.AssignSubstitute)] protected set; }
+    [DBBidirectionalRelation("SubstitutedUser")]
+    public abstract ObjectList<Substitution> SubstitutedBy { get; [DemandPermission(SecurityManagerAccessTypes.AssignSubstitute)] protected set; }
 
     public IEnumerable<Substitution> GetActiveSubstitutions ()
     {
-      var securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      if (!securityClient.HasAccess (this, AccessType.Get (GeneralAccessTypes.Read)))
+      var securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
+      if (!securityClient.HasAccess(this, AccessType.Get(GeneralAccessTypes.Read)))
         return new Substitution[0];
 
-      return SubstitutingFor.Where (s => s.IsActive);
+      return SubstitutingFor.Where(s => s.IsActive);
     }
 
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
+      base.OnDeleting(args);
 
       using (DefaultTransactionContext.ClientTransaction.EnterNonDiscardingScope())
       {
-        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry>().Where (ace => ace.SpecificUser == this);
+        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry>().Where(ace => ace.SpecificUser == this);
 
-        _deleteHandler = new DomainObjectDeleteHandler (aces, Roles, SubstitutingFor, SubstitutedBy);
+        _deleteHandler = new DomainObjectDeleteHandler(aces, Roles, SubstitutingFor, SubstitutedBy);
       }
     }
 
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
       _deleteHandler.Delete();
     }
 
     public override string DisplayName
     {
-      get { return GetFormattedName (); }
+      get { return GetFormattedName(); }
     }
 
     private string GetFormattedName ()
     {
       string formattedName = LastName;
 
-      if (!string.IsNullOrEmpty (FirstName))
+      if (!string.IsNullOrEmpty(FirstName))
         formattedName += " " + FirstName;
 
-      if (!string.IsNullOrEmpty (Title))
+      if (!string.IsNullOrEmpty(Title))
         formattedName += ", " + Title;
 
       return formattedName;

@@ -25,11 +25,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class RequestErrorDetectionStrategyTest : IntegrationTest
   {
     private DiagnosticInformationCollectioningRequestErrorDetectionStrategy _requestErrorDetectionStrategy;
-    
+
     [SetUp]
     public void SetUp ()
     {
-      _requestErrorDetectionStrategy = (DiagnosticInformationCollectioningRequestErrorDetectionStrategy) Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
+      _requestErrorDetectionStrategy = (DiagnosticInformationCollectioningRequestErrorDetectionStrategy)Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
     }
 
     [Test]
@@ -47,14 +47,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       try
       {
-        button.Context.CloneForControl (home.Scope.FindId ("NotExistent"));
+        button.Context.CloneForControl(home.Scope.FindId("NotExistent"));
       }
       catch (WebTestException)
       {
       }
 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount + 1));
+      Assert.That(_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo(rootScope.InnerHTML));
     }
 
     [Test]
@@ -67,10 +67,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var button = home.Anchors().First();
 
 
-      button.Context.CloneForNewPage ();
+      button.Context.CloneForNewPage();
 
       // Note: Does not call requestErrorDetection
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount));
     }
 
     [Test]
@@ -83,10 +83,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var button = home.Anchors().First();
 
 
-      button.Context.CloneForNewWindow (home.Context.Window.Title);
+      button.Context.CloneForNewWindow(home.Context.Window.Title);
 
       // Note: Does not call requestErrorDetection
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount));
     }
 
     [Test]
@@ -99,10 +99,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var button = home.Anchors().First();
 
 
-      button.Context.CloneForNewPopupWindow (home.Context.Window.Title);
+      button.Context.CloneForNewPopupWindow(home.Context.Window.Title);
 
       // Note: Does not call requestErrorDetection
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount));
     }
 
     [Test]
@@ -115,9 +115,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var button = home.Anchors().First();
 
       button.Context.CloneForControlSelection();
-      
+
       // Note: Does not call requestErrorDetection
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount));
     }
 
     [Test]
@@ -126,10 +126,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
 
 
-      PageObjectContext.New (Helper.MainBrowserSession, _requestErrorDetectionStrategy);
+      PageObjectContext.New(Helper.MainBrowserSession, _requestErrorDetectionStrategy);
 
       // Note: Does not call requestErrorDetection
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount));
     }
 
     [Test]
@@ -139,37 +139,37 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
 
 
-      home.Context.CloneForSession (Helper.MainBrowserSession);
+      home.Context.CloneForSession(Helper.MainBrowserSession);
 
       // Note: Does not call requestErrorDetection
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount));
     }
 
     [Test]
     public void PageObjectContext_CloneForFrame_CallsRequestErrorDetectionStrategyWithCorrectScope ()
     {
       var home = Start();
-      var frameScope = home.Scope.FindFrame ("frame");
-      
+      var frameScope = home.Scope.FindFrame("frame");
+
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
-      
+
       //Navigate to error page
       var url = Helper.TestInfrastructureConfiguration.WebApplicationRoot + "AspNetRequestErrorDetectionParserStaticPages/CustomErrorDefaultErrorPage.html";
-      Helper.MainBrowserSession.Window.Visit (url);
+      Helper.MainBrowserSession.Window.Visit(url);
 
       //Use small Timeout so we dont have to wait for exception. With TimeSpan.Zero, an ElementStaleException gets triggered.
-      frameScope.ElementFinder.Options.Timeout = TimeSpan.FromSeconds (1);
+      frameScope.ElementFinder.Options.Timeout = TimeSpan.FromSeconds(1);
 
       try
       {
-        home.Context.CloneForFrame (frameScope);
+        home.Context.CloneForFrame(frameScope);
       }
       catch (WebTestException)
       {
       }
 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (home.Context.Window.GetRootScope().InnerHTML));
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount + 1));
+      Assert.That(_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo(home.Context.Window.GetRootScope().InnerHTML));
     }
 
     [Test]
@@ -184,14 +184,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       try
       {
-        home.Context.CloneForControl (home, home.Scope.FindId ("NotExistent"));
+        home.Context.CloneForControl(home, home.Scope.FindId("NotExistent"));
       }
       catch (WebTestException)
       {
       }
 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount + 1));
+      Assert.That(_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo(rootScope.InnerHTML));
     }
 
     [Test]
@@ -199,17 +199,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
-      
-      
-      home.Context.CloneForControlSelection (home);
-      
+
+
+      home.Context.CloneForControlSelection(home);
+
       // Note: Does not call requestErrorDetection
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount));
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("MultiWindowTest/Main.wxe");
+      return Start<WxePageObject>("MultiWindowTest/Main.wxe");
     }
   }
 }

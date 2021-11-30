@@ -25,18 +25,18 @@ namespace Remotion.Security.UnitTests.Metadata
   {
     public static void Contains (string expectedName, IList<EnumValueInfo> list, string message, params object[] args)
     {
-      var constraint = new EnumValueInfoListContentsConstraint (expectedName);
-      Assert.That (list, constraint);
+      var constraint = new EnumValueInfoListContentsConstraint(expectedName);
+      Assert.That(list, constraint);
     }
 
     public static void Contains (string expectedName, IList<EnumValueInfo> list, string message)
     {
-      Contains (expectedName, list, message, null);
+      Contains(expectedName, list, message, null);
     }
 
     public static void Contains (string expectedName, IList<EnumValueInfo> list)
     {
-      Contains (expectedName, list, string.Empty, null);
+      Contains(expectedName, list, string.Empty, null);
     }
   }
 }

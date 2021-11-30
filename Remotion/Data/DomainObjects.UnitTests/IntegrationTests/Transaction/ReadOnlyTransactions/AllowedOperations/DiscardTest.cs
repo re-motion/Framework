@@ -26,83 +26,83 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void DiscardReadOnlyRootTransaction_IsAllowed ()
     {
-      Assert.That (ReadOnlyRootTransaction.IsDiscarded, Is.False);
-      Assert.That (ReadOnlyMiddleTransaction.IsDiscarded, Is.False);
-      Assert.That (WriteableSubTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyRootTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyMiddleTransaction.IsDiscarded, Is.False);
+      Assert.That(WriteableSubTransaction.IsDiscarded, Is.False);
 
       var extensionMock = CreateAndAddExtensionMock();
       using (extensionMock.GetMockRepository().Ordered())
       {
         extensionMock
-            .Expect (mock => mock.TransactionDiscard (ReadOnlyRootTransaction))
-            .WhenCalled (mi => CheckTransactionHierarchy ());
+            .Expect(mock => mock.TransactionDiscard(ReadOnlyRootTransaction))
+            .WhenCalled(mi => CheckTransactionHierarchy());
         extensionMock
-            .Expect (mock => mock.TransactionDiscard (ReadOnlyMiddleTransaction))
-            .WhenCalled (mi => CheckTransactionHierarchy ());
+            .Expect(mock => mock.TransactionDiscard(ReadOnlyMiddleTransaction))
+            .WhenCalled(mi => CheckTransactionHierarchy());
         extensionMock
-            .Expect (mock => mock.TransactionDiscard (WriteableSubTransaction))
-            .WhenCalled (mi => CheckTransactionHierarchy());
+            .Expect(mock => mock.TransactionDiscard(WriteableSubTransaction))
+            .WhenCalled(mi => CheckTransactionHierarchy());
       }
 
       ReadOnlyRootTransaction.Discard();
 
       extensionMock.VerifyAllExpectations();
-      Assert.That (ReadOnlyRootTransaction.IsDiscarded, Is.True);
-      Assert.That (ReadOnlyMiddleTransaction.IsDiscarded, Is.True);
-      Assert.That (WriteableSubTransaction.IsDiscarded, Is.True);
+      Assert.That(ReadOnlyRootTransaction.IsDiscarded, Is.True);
+      Assert.That(ReadOnlyMiddleTransaction.IsDiscarded, Is.True);
+      Assert.That(WriteableSubTransaction.IsDiscarded, Is.True);
     }
 
     [Test]
     public void DiscardReadOnlyMiddleTransaction_IsAllowed ()
     {
-      Assert.That (ReadOnlyRootTransaction.IsDiscarded, Is.False);
-      Assert.That (ReadOnlyMiddleTransaction.IsDiscarded, Is.False);
-      Assert.That (WriteableSubTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyRootTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyMiddleTransaction.IsDiscarded, Is.False);
+      Assert.That(WriteableSubTransaction.IsDiscarded, Is.False);
 
-      var extensionMock = CreateAndAddExtensionMock ();
-      using (extensionMock.GetMockRepository ().Ordered ())
+      var extensionMock = CreateAndAddExtensionMock();
+      using (extensionMock.GetMockRepository().Ordered())
       {
         extensionMock
-            .Expect (mock => mock.TransactionDiscard (ReadOnlyMiddleTransaction))
-            .WhenCalled (mi => CheckTransactionHierarchy ());
+            .Expect(mock => mock.TransactionDiscard(ReadOnlyMiddleTransaction))
+            .WhenCalled(mi => CheckTransactionHierarchy());
         extensionMock
-            .Expect (mock => mock.TransactionDiscard (WriteableSubTransaction))
-            .WhenCalled (mi => CheckTransactionHierarchy ());
+            .Expect(mock => mock.TransactionDiscard(WriteableSubTransaction))
+            .WhenCalled(mi => CheckTransactionHierarchy());
       }
 
-      ReadOnlyMiddleTransaction.Discard ();
+      ReadOnlyMiddleTransaction.Discard();
 
-      Assert.That (ReadOnlyRootTransaction.IsDiscarded, Is.False);
-      Assert.That (ReadOnlyMiddleTransaction.IsDiscarded, Is.True);
-      Assert.That (WriteableSubTransaction.IsDiscarded, Is.True);
+      Assert.That(ReadOnlyRootTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyMiddleTransaction.IsDiscarded, Is.True);
+      Assert.That(WriteableSubTransaction.IsDiscarded, Is.True);
 
-      Assert.That (ReadOnlyRootTransaction.SubTransaction, Is.Null);
-      Assert.That (ReadOnlyRootTransaction.IsWriteable, Is.True);
+      Assert.That(ReadOnlyRootTransaction.SubTransaction, Is.Null);
+      Assert.That(ReadOnlyRootTransaction.IsWriteable, Is.True);
     }
 
     private void CheckTransactionHierarchy ()
     {
-      Assert.That (WriteableSubTransaction.ParentTransaction, Is.SameAs (ReadOnlyMiddleTransaction));
-      Assert.That (ReadOnlyMiddleTransaction.SubTransaction, Is.SameAs (WriteableSubTransaction));
-      Assert.That (ReadOnlyMiddleTransaction.ParentTransaction, Is.SameAs (ReadOnlyRootTransaction));
-      Assert.That (ReadOnlyRootTransaction.SubTransaction, Is.SameAs (ReadOnlyMiddleTransaction));
+      Assert.That(WriteableSubTransaction.ParentTransaction, Is.SameAs(ReadOnlyMiddleTransaction));
+      Assert.That(ReadOnlyMiddleTransaction.SubTransaction, Is.SameAs(WriteableSubTransaction));
+      Assert.That(ReadOnlyMiddleTransaction.ParentTransaction, Is.SameAs(ReadOnlyRootTransaction));
+      Assert.That(ReadOnlyRootTransaction.SubTransaction, Is.SameAs(ReadOnlyMiddleTransaction));
 
-      Assert.That (WriteableSubTransaction.IsDiscarded, Is.False);
-      Assert.That (ReadOnlyMiddleTransaction.IsDiscarded, Is.False);
-      Assert.That (ReadOnlyRootTransaction.IsDiscarded, Is.False);
+      Assert.That(WriteableSubTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyMiddleTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyRootTransaction.IsDiscarded, Is.False);
 
-      Assert.That (WriteableSubTransaction.IsWriteable, Is.True);
-      Assert.That (ReadOnlyMiddleTransaction.IsWriteable, Is.False);
-      Assert.That (ReadOnlyRootTransaction.IsWriteable, Is.False);
+      Assert.That(WriteableSubTransaction.IsWriteable, Is.True);
+      Assert.That(ReadOnlyMiddleTransaction.IsWriteable, Is.False);
+      Assert.That(ReadOnlyRootTransaction.IsWriteable, Is.False);
     }
 
     private IClientTransactionExtension CreateAndAddExtensionMock ()
     {
       var extensionMock = MockRepository.GenerateStrictMock<IClientTransactionExtension>();
-      extensionMock.Stub (stub => stub.Key).Return ("Test");
-      ReadOnlyRootTransaction.Extensions.Add (extensionMock);
-      ReadOnlyMiddleTransaction.Extensions.Add (extensionMock);
-      WriteableSubTransaction.Extensions.Add (extensionMock);
+      extensionMock.Stub(stub => stub.Key).Return("Test");
+      ReadOnlyRootTransaction.Extensions.Add(extensionMock);
+      ReadOnlyMiddleTransaction.Extensions.Add(extensionMock);
+      WriteableSubTransaction.Extensions.Add(extensionMock);
       return extensionMock;
     }
   }

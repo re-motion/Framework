@@ -34,37 +34,37 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [SetUp]
     public void SetUp ()
     {
-      _testHelper = NullSecurityClientTestHelper.CreateForStatelessSecurity ();
-      _securityClient = _testHelper.CreateSecurityClient ();
-      _methodInfo = typeof (SecurableObject).GetMethod ("Show");
+      _testHelper = NullSecurityClientTestHelper.CreateForStatelessSecurity();
+      _securityClient = _testHelper.CreateSecurityClient();
+      _methodInfo = typeof(SecurableObject).GetMethod("Show");
       _methodInformation = new Mock<IMethodInformation>();
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      bool hasAccess = _securityClient.HasMethodAccess (_testHelper.SecurableObject, "Show");
+      bool hasAccess = _securityClient.HasMethodAccess(_testHelper.SecurableObject, "Show");
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_AccessGranted_WithMethodInfo ()
     {
-      bool hasAccess = _securityClient.HasMethodAccess (_testHelper.SecurableObject, _methodInfo);
+      bool hasAccess = _securityClient.HasMethodAccess(_testHelper.SecurableObject, _methodInfo);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_AccessGranted_WithMethodInformation ()
     {
-      bool hasAccess = _securityClient.HasMethodAccess (_testHelper.SecurableObject, _methodInformation.Object);
+      bool hasAccess = _securityClient.HasMethodAccess(_testHelper.SecurableObject, _methodInformation.Object);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
@@ -73,11 +73,11 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasMethodAccess (_testHelper.SecurableObject, "Show");
+        hasAccess = _securityClient.HasMethodAccess(_testHelper.SecurableObject, "Show");
       }
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
@@ -86,11 +86,11 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasMethodAccess (_testHelper.SecurableObject, _methodInfo);
+        hasAccess = _securityClient.HasMethodAccess(_testHelper.SecurableObject, _methodInfo);
       }
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
@@ -99,38 +99,38 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasMethodAccess (_testHelper.SecurableObject, _methodInformation.Object);
+        hasAccess = _securityClient.HasMethodAccess(_testHelper.SecurableObject, _methodInformation.Object);
       }
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull ()
     {
-      bool hasAccess = _securityClient.HasMethodAccess (new SecurableObject (null), "Show");
-    
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      bool hasAccess = _securityClient.HasMethodAccess(new SecurableObject(null), "Show");
+
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull_WithMethodInfo ()
     {
-      bool hasAccess = _securityClient.HasMethodAccess (new SecurableObject (null), _methodInfo);
+      bool hasAccess = _securityClient.HasMethodAccess(new SecurableObject(null), _methodInfo);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull_WithMethodInformation ()
     {
-      bool hasAccess = _securityClient.HasMethodAccess (new SecurableObject (null), _methodInformation.Object);
+      bool hasAccess = _securityClient.HasMethodAccess(new SecurableObject(null), _methodInformation.Object);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
   }
 }

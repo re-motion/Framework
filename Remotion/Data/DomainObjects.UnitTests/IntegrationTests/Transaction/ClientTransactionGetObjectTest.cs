@@ -36,26 +36,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _eventReceiver = new ClientTransactionEventReceiver (TestableClientTransaction);
+      _eventReceiver = new ClientTransactionEventReceiver(TestableClientTransaction);
     }
 
     [Test]
     public void GetObject_Twice ()
     {
-      DomainObject domainObject1 = LifetimeService.GetObject (TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1, false);
-      Assert.That (_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo (1));
+      DomainObject domainObject1 = LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1, false);
+      Assert.That(_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(1));
 
       var domainObjects = _eventReceiver.LoadedDomainObjectLists[0];
-      Assert.That (domainObjects.Count, Is.EqualTo (1));
-      Assert.That (domainObjects[0], Is.SameAs (domainObject1));
-      _eventReceiver.Clear ();
+      Assert.That(domainObjects.Count, Is.EqualTo(1));
+      Assert.That(domainObjects[0], Is.SameAs(domainObject1));
+      _eventReceiver.Clear();
 
-      DomainObject domainObject2 = LifetimeService.GetObject (TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1, false);
-      Assert.That (_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo (0));
+      DomainObject domainObject2 = LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1, false);
+      Assert.That(_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(0));
 
-      Assert.That (domainObject2, Is.SameAs (domainObject1));
+      Assert.That(domainObject2, Is.SameAs(domainObject1));
     }
 
     [Test]
@@ -64,53 +64,53 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       ObjectID id1 = DomainObjectIDs.ClassWithAllDataTypes1;
       ObjectID id2 = DomainObjectIDs.ClassWithAllDataTypes2;
 
-      DomainObject domainObject1 = LifetimeService.GetObject (TestableClientTransaction, id1, false);
-      Assert.That (_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo (1));
+      DomainObject domainObject1 = LifetimeService.GetObject(TestableClientTransaction, id1, false);
+      Assert.That(_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(1));
 
       var domainObjects = _eventReceiver.LoadedDomainObjectLists[0];
-      Assert.That (domainObjects.Count, Is.EqualTo (1));
-      Assert.That (domainObjects[0], Is.SameAs (domainObject1));
-      _eventReceiver.Clear ();
+      Assert.That(domainObjects.Count, Is.EqualTo(1));
+      Assert.That(domainObjects[0], Is.SameAs(domainObject1));
+      _eventReceiver.Clear();
 
-      DomainObject domainObject2 = LifetimeService.GetObject (TestableClientTransaction, id2, false);
-      Assert.That (_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo (1));
+      DomainObject domainObject2 = LifetimeService.GetObject(TestableClientTransaction, id2, false);
+      Assert.That(_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(1));
 
       domainObjects = _eventReceiver.LoadedDomainObjectLists[0];
-      Assert.That (domainObjects.Count, Is.EqualTo (1));
-      Assert.That (domainObjects[0], Is.SameAs (domainObject2));
+      Assert.That(domainObjects.Count, Is.EqualTo(1));
+      Assert.That(domainObjects[0], Is.SameAs(domainObject2));
 
-      Assert.That (ReferenceEquals (domainObject1, domainObject2), Is.False);
+      Assert.That(ReferenceEquals(domainObject1, domainObject2), Is.False);
     }
 
     [Test]
     public void GetObject_NotFound_True ()
     {
-      var notFoundID = new ObjectID (typeof (Order), Guid.NewGuid());
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
 
-      Assert.That (
-          () => LifetimeService.GetObject (TestableClientTransaction, notFoundID, true), 
-          Throws.TypeOf<ObjectsNotFoundException> ().With.Property ("IDs").EqualTo (new[] { notFoundID }));
+      Assert.That(
+          () => LifetimeService.GetObject(TestableClientTransaction, notFoundID, true),
+          Throws.TypeOf<ObjectsNotFoundException>().With.Property("IDs").EqualTo(new[] { notFoundID }));
     }
 
     [Test]
     public void GetObject_NotFound_False ()
     {
-      var notFoundID = new ObjectID (typeof (Order), Guid.NewGuid ());
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
 
-      Assert.That (() => LifetimeService.GetObject (TestableClientTransaction, notFoundID, false), Throws.TypeOf<ObjectsNotFoundException> ());
+      Assert.That(() => LifetimeService.GetObject(TestableClientTransaction, notFoundID, false), Throws.TypeOf<ObjectsNotFoundException>());
     }
 
     [Test]
     public void GetObject_Deleted ()
     {
-      var domainObject = LifetimeService.GetObject (TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1, false);
-      LifetimeService.DeleteObject (TestableClientTransaction, domainObject);
+      var domainObject = LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1, false);
+      LifetimeService.DeleteObject(TestableClientTransaction, domainObject);
 
-      Assert.That (
-          () => LifetimeService.GetObject (TestableClientTransaction, domainObject.ID, false),
-          Throws.TypeOf<ObjectDeletedException> ().With.Message.EqualTo (
+      Assert.That(
+          () => LifetimeService.GetObject(TestableClientTransaction, domainObject.ID, false),
+          Throws.TypeOf<ObjectDeletedException>().With.Message.EqualTo(
               "Object 'ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid' is already deleted."));
-      Assert.That (LifetimeService.GetObject (TestableClientTransaction, domainObject.ID, true), Is.SameAs (domainObject));
+      Assert.That(LifetimeService.GetObject(TestableClientTransaction, domainObject.ID, true), Is.SameAs(domainObject));
     }
 
     [Test]
@@ -119,135 +119,135 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var domainObject = ClassWithAllDataTypes.NewObject();
       domainObject.Delete();
 
-      var expectedMessage = string.Format ("Object '{0}' is invalid in this transaction.", domainObject.ID);
-      Assert.That (
-          () => LifetimeService.GetObject (TestableClientTransaction, domainObject.ID, true),
-          Throws.TypeOf<ObjectInvalidException> ().With.Message.EqualTo (expectedMessage));
-      Assert.That (
-          () => LifetimeService.GetObject (TestableClientTransaction, domainObject.ID, false), 
-          Throws.TypeOf<ObjectInvalidException> ().With.Message.EqualTo (expectedMessage));
+      var expectedMessage = string.Format("Object '{0}' is invalid in this transaction.", domainObject.ID);
+      Assert.That(
+          () => LifetimeService.GetObject(TestableClientTransaction, domainObject.ID, true),
+          Throws.TypeOf<ObjectInvalidException>().With.Message.EqualTo(expectedMessage));
+      Assert.That(
+          () => LifetimeService.GetObject(TestableClientTransaction, domainObject.ID, false),
+          Throws.TypeOf<ObjectInvalidException>().With.Message.EqualTo(expectedMessage));
     }
 
     [Test]
     public void TryGetObject_Twice ()
     {
-      DomainObject domainObject1 = LifetimeService.TryGetObject (TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1);
-      Assert.That (_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo (1));
+      DomainObject domainObject1 = LifetimeService.TryGetObject(TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1);
+      Assert.That(_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(1));
 
       var domainObjects = _eventReceiver.LoadedDomainObjectLists[0];
-      Assert.That (domainObjects.Count, Is.EqualTo (1));
-      Assert.That (domainObjects[0], Is.SameAs (domainObject1));
-      _eventReceiver.Clear ();
+      Assert.That(domainObjects.Count, Is.EqualTo(1));
+      Assert.That(domainObjects[0], Is.SameAs(domainObject1));
+      _eventReceiver.Clear();
 
-      DomainObject domainObject2 = LifetimeService.TryGetObject (TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1);
-      Assert.That (_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo (0));
+      DomainObject domainObject2 = LifetimeService.TryGetObject(TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1);
+      Assert.That(_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(0));
 
-      Assert.That (domainObject2, Is.SameAs (domainObject1));
+      Assert.That(domainObject2, Is.SameAs(domainObject1));
     }
 
     [Test]
     public void TryGetObject_NotFound ()
     {
-      var notFoundID = new ObjectID (typeof (Order), Guid.NewGuid ());
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
 
-      var domainObject = LifetimeService.TryGetObject (TestableClientTransaction, notFoundID);
-      Assert.That (domainObject, Is.Null);
+      var domainObject = LifetimeService.TryGetObject(TestableClientTransaction, notFoundID);
+      Assert.That(domainObject, Is.Null);
 
-      domainObject = LifetimeService.TryGetObject (TestableClientTransaction, notFoundID);
-      Assert.That (domainObject, Is.Not.Null);
-      Assert.That (domainObject.State.IsInvalid, Is.True);
+      domainObject = LifetimeService.TryGetObject(TestableClientTransaction, notFoundID);
+      Assert.That(domainObject, Is.Not.Null);
+      Assert.That(domainObject.State.IsInvalid, Is.True);
     }
 
     [Test]
     public void TryGetObject_Deleted ()
     {
-      var domainObject = LifetimeService.GetObject (TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1, false);
-      LifetimeService.DeleteObject (TestableClientTransaction, domainObject);
+      var domainObject = LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1, false);
+      LifetimeService.DeleteObject(TestableClientTransaction, domainObject);
 
-      Assert.That (LifetimeService.TryGetObject (TestableClientTransaction, domainObject.ID), Is.SameAs (domainObject));
+      Assert.That(LifetimeService.TryGetObject(TestableClientTransaction, domainObject.ID), Is.SameAs(domainObject));
     }
 
     [Test]
     public void TryGetObject_Invalid ()
     {
-      var domainObject = ClassWithAllDataTypes.NewObject ();
-      domainObject.Delete ();
-      Assert.That (domainObject.State.IsInvalid, Is.True);
+      var domainObject = ClassWithAllDataTypes.NewObject();
+      domainObject.Delete();
+      Assert.That(domainObject.State.IsInvalid, Is.True);
 
-      Assert.That (LifetimeService.TryGetObject (TestableClientTransaction, domainObject.ID), Is.SameAs (domainObject));
+      Assert.That(LifetimeService.TryGetObject(TestableClientTransaction, domainObject.ID), Is.SameAs(domainObject));
     }
 
     [Test]
     public void GetObjects_UnloadedObjects ()
     {
-      DomainObject[] objects = LifetimeService.GetObjects<DomainObject> (
+      DomainObject[] objects = LifetimeService.GetObjects<DomainObject>(
           TestableClientTransaction,
           DomainObjectIDs.Order1,
           DomainObjectIDs.Order3,
           DomainObjectIDs.OrderItem1);
 
       var expectedObjects = new object[] {
-          DomainObjectIDs.Order1.GetObject<Order> (), 
-          DomainObjectIDs.Order3.GetObject<Order> (),
+          DomainObjectIDs.Order1.GetObject<Order>(),
+          DomainObjectIDs.Order3.GetObject<Order>(),
           DomainObjectIDs.OrderItem1.GetObject<OrderItem>()};
-      Assert.That (objects, Is.EqualTo (expectedObjects));
+      Assert.That(objects, Is.EqualTo(expectedObjects));
     }
 
     [Test]
     public void GetObjects_UnloadedObjects_Events ()
     {
-      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener> ();
-      TestableClientTransaction.AddListener (listenerMock);
+      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
+      TestableClientTransaction.AddListener(listenerMock);
 
-      DomainObject[] objects = LifetimeService.GetObjects<DomainObject> (
+      DomainObject[] objects = LifetimeService.GetObjects<DomainObject>(
           TestableClientTransaction,
           DomainObjectIDs.Order1,
           DomainObjectIDs.Order3,
           DomainObjectIDs.OrderItem1);
-      Assert.That (_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo (1));
-      Assert.That (_eventReceiver.LoadedDomainObjectLists[0], Is.EqualTo (objects));
+      Assert.That(_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(1));
+      Assert.That(_eventReceiver.LoadedDomainObjectLists[0], Is.EqualTo(objects));
 
-      listenerMock.AssertWasCalled (mock => mock.ObjectsLoading (
-          Arg.Is (TestableClientTransaction),
-          Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 })));
+      listenerMock.AssertWasCalled(mock => mock.ObjectsLoading(
+          Arg.Is(TestableClientTransaction),
+          Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 })));
 
-      listenerMock.AssertWasCalled (mock => mock.ObjectsLoaded (
-          Arg.Is (TestableClientTransaction),
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equal (objects)));
+      listenerMock.AssertWasCalled(mock => mock.ObjectsLoaded(
+          Arg.Is(TestableClientTransaction),
+          Arg<ReadOnlyCollection<DomainObject>>.List.Equal(objects)));
     }
 
     [Test]
     public void GetObjects_LoadedObjects ()
     {
-      var expectedObjects = new object[] {DomainObjectIDs.Order1.GetObject<Order> (), DomainObjectIDs.Order3.GetObject<Order> (),
+      var expectedObjects = new object[] {DomainObjectIDs.Order1.GetObject<Order>(), DomainObjectIDs.Order3.GetObject<Order>(),
           DomainObjectIDs.OrderItem1.GetObject<OrderItem>()};
-      DomainObject[] objects = LifetimeService.GetObjects<DomainObject> (
+      DomainObject[] objects = LifetimeService.GetObjects<DomainObject>(
           TestableClientTransaction,
           DomainObjectIDs.Order1,
           DomainObjectIDs.Order3,
           DomainObjectIDs.OrderItem1);
-      Assert.That (objects, Is.EqualTo (expectedObjects));
+      Assert.That(objects, Is.EqualTo(expectedObjects));
     }
 
     [Test]
     public void GetObjects_LoadedObjects_Events ()
     {
-      DomainObjectIDs.Order1.GetObject<Order> ();
-      DomainObjectIDs.Order3.GetObject<Order> ();
+      DomainObjectIDs.Order1.GetObject<Order>();
+      DomainObjectIDs.Order3.GetObject<Order>();
       DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
 
-      _eventReceiver.Clear ();
+      _eventReceiver.Clear();
 
-      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener> ();
-      TestableClientTransaction.AddListener (listenerMock);
+      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
+      TestableClientTransaction.AddListener(listenerMock);
 
-      LifetimeService.GetObjects<DomainObject> (TestableClientTransaction, DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1);
-      Assert.That (_eventReceiver.LoadedDomainObjectLists, Is.Empty);
+      LifetimeService.GetObjects<DomainObject>(TestableClientTransaction, DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1);
+      Assert.That(_eventReceiver.LoadedDomainObjectLists, Is.Empty);
 
-      listenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (
+      listenerMock.AssertWasNotCalled(mock => mock.ObjectsLoading(
           Arg<ClientTransaction>.Is.Anything,
           Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
-      listenerMock.AssertWasNotCalled (mock => mock.ObjectsLoaded (
+      listenerMock.AssertWasNotCalled(mock => mock.ObjectsLoaded(
           Arg<ClientTransaction>.Is.Anything,
           Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));
     }
@@ -255,27 +255,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void GetObjects_NewObjects ()
     {
-      var expectedObjects = new DomainObject[] { Order.NewObject (), OrderItem.NewObject () };
-      DomainObject[] objects = LifetimeService.GetObjects<DomainObject> (TestableClientTransaction, expectedObjects[0].ID, expectedObjects[1].ID);
-      Assert.That (objects, Is.EqualTo (expectedObjects));
+      var expectedObjects = new DomainObject[] { Order.NewObject(), OrderItem.NewObject() };
+      DomainObject[] objects = LifetimeService.GetObjects<DomainObject>(TestableClientTransaction, expectedObjects[0].ID, expectedObjects[1].ID);
+      Assert.That(objects, Is.EqualTo(expectedObjects));
     }
 
     [Test]
     public void GetObjects_NewObjects_Events ()
     {
-      var expectedObjects = new DomainObject[] { Order.NewObject (), OrderItem.NewObject () };
-      _eventReceiver.Clear ();
+      var expectedObjects = new DomainObject[] { Order.NewObject(), OrderItem.NewObject() };
+      _eventReceiver.Clear();
 
-      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener> ();
-      TestableClientTransaction.AddListener (listenerMock);
+      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
+      TestableClientTransaction.AddListener(listenerMock);
 
-      LifetimeService.GetObjects<DomainObject> (TestableClientTransaction, expectedObjects[0].ID, expectedObjects[1].ID);
-      Assert.That (_eventReceiver.LoadedDomainObjectLists, Is.Empty);
+      LifetimeService.GetObjects<DomainObject>(TestableClientTransaction, expectedObjects[0].ID, expectedObjects[1].ID);
+      Assert.That(_eventReceiver.LoadedDomainObjectLists, Is.Empty);
 
-      listenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (
+      listenerMock.AssertWasNotCalled(mock => mock.ObjectsLoading(
           Arg<ClientTransaction>.Is.Anything,
           Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
-      listenerMock.AssertWasNotCalled (mock => mock.ObjectsLoaded (
+      listenerMock.AssertWasNotCalled(mock => mock.ObjectsLoaded(
           Arg<ClientTransaction>.Is.Anything,
           Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));
     }
@@ -283,141 +283,141 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void GetObjects_NotFound ()
     {
-      var guid = new Guid ("33333333333333333333333333333333");
-      Assert.That (
-          () => LifetimeService.GetObjects<DomainObject> (TestableClientTransaction, new ObjectID (typeof (Order), guid)),
+      var guid = new Guid("33333333333333333333333333333333");
+      Assert.That(
+          () => LifetimeService.GetObjects<DomainObject>(TestableClientTransaction, new ObjectID(typeof(Order), guid)),
           Throws.InstanceOf<ObjectsNotFoundException>()
-              .With.Message.EqualTo ("Object(s) could not be found: 'Order|33333333-3333-3333-3333-333333333333|System.Guid'."));
+              .With.Message.EqualTo("Object(s) could not be found: 'Order|33333333-3333-3333-3333-333333333333|System.Guid'."));
     }
 
     [Test]
     public void TryGetObjects_NotFound ()
     {
-      Order newObject = Order.NewObject ();
-      var guid = new Guid ("33333333333333333333333333333333");
-      Order[] objects = LifetimeService.TryGetObjects<Order> (
-          TestableClientTransaction, 
+      Order newObject = Order.NewObject();
+      var guid = new Guid("33333333333333333333333333333333");
+      Order[] objects = LifetimeService.TryGetObjects<Order>(
+          TestableClientTransaction,
           DomainObjectIDs.Order1,
           newObject.ID,
-          new ObjectID (typeof (Order), guid),
+          new ObjectID(typeof(Order), guid),
           DomainObjectIDs.Order3);
-      var expectedObjects = new DomainObject[] { 
-          DomainObjectIDs.Order1.GetObject<Order> (), 
-          newObject, 
+      var expectedObjects = new DomainObject[] {
+          DomainObjectIDs.Order1.GetObject<Order>(),
+          newObject,
           null,
-          DomainObjectIDs.Order3.GetObject<Order> () };
-      Assert.That (objects, Is.EqualTo (expectedObjects));
+          DomainObjectIDs.Order3.GetObject<Order>() };
+      Assert.That(objects, Is.EqualTo(expectedObjects));
     }
 
     [Test]
     public void GetObjects_InvalidType ()
     {
-      Assert.That (
-          () => LifetimeService.GetObjects<OrderItem> (TestableClientTransaction, DomainObjectIDs.Order1),
+      Assert.That(
+          () => LifetimeService.GetObjects<OrderItem>(TestableClientTransaction, DomainObjectIDs.Order1),
           Throws.InstanceOf<InvalidCastException>());
     }
 
     [Test]
     public void GetObjects_Deleted ()
     {
-      var order = DomainObjectIDs.Order1.GetObject<Order> ();
-      order.Delete ();
+      var order = DomainObjectIDs.Order1.GetObject<Order>();
+      order.Delete();
 
-      var result = LifetimeService.GetObjects<Order> (TestableClientTransaction, DomainObjectIDs.Order1);
+      var result = LifetimeService.GetObjects<Order>(TestableClientTransaction, DomainObjectIDs.Order1);
 
-      Assert.That (result[0], Is.SameAs (order));
+      Assert.That(result[0], Is.SameAs(order));
     }
 
     [Test]
     public void GetObjects_Discarded ()
     {
-      SetDatabaseModifyable ();
-      DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ().Delete ();
-      TestableClientTransaction.Commit ();
-      Assert.That (
-          () => LifetimeService.GetObjects<ClassWithAllDataTypes> (TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1),
+      SetDatabaseModifyable();
+      DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>().Delete();
+      TestableClientTransaction.Commit();
+      Assert.That(
+          () => LifetimeService.GetObjects<ClassWithAllDataTypes>(TestableClientTransaction, DomainObjectIDs.ClassWithAllDataTypes1),
           Throws.InstanceOf<ObjectInvalidException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Object 'ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid' is invalid in this transaction."));
     }
 
     [Test]
     public void GetObjectByNewIndependentTransaction ()
     {
-      ClientTransaction clientTransaction = ClientTransaction.CreateRootTransaction ();
-      using (clientTransaction.EnterDiscardingScope ())
+      ClientTransaction clientTransaction = ClientTransaction.CreateRootTransaction();
+      using (clientTransaction.EnterDiscardingScope())
       {
-        Order order = DomainObjectIDs.Order1.GetObject<Order> ();
+        Order order = DomainObjectIDs.Order1.GetObject<Order>();
 
-        Assert.That (order.InternalDataContainer.ClientTransaction, Is.SameAs (clientTransaction));
-        Assert.That (clientTransaction.IsEnlisted (order), Is.True);
+        Assert.That(order.InternalDataContainer.ClientTransaction, Is.SameAs(clientTransaction));
+        Assert.That(clientTransaction.IsEnlisted(order), Is.True);
       }
     }
 
     [Test]
     public void GetDeletedObjectByNewIndependentTransaction ()
     {
-      ClientTransaction clientTransaction = ClientTransaction.CreateRootTransaction ();
-      using (clientTransaction.EnterDiscardingScope ())
+      ClientTransaction clientTransaction = ClientTransaction.CreateRootTransaction();
+      using (clientTransaction.EnterDiscardingScope())
       {
-        Order order = DomainObjectIDs.Order1.GetObject<Order> ();
+        Order order = DomainObjectIDs.Order1.GetObject<Order>();
 
-        order.Delete ();
+        order.Delete();
 
-        order = DomainObjectIDs.Order1.GetObject<Order> (includeDeleted: true);
-        Assert.That (order.State.IsDeleted, Is.True);
-        Assert.That (order.InternalDataContainer.ClientTransaction, Is.SameAs (clientTransaction));
-        Assert.That (clientTransaction.IsEnlisted (order), Is.True);
+        order = DomainObjectIDs.Order1.GetObject<Order>(includeDeleted: true);
+        Assert.That(order.State.IsDeleted, Is.True);
+        Assert.That(order.InternalDataContainer.ClientTransaction, Is.SameAs(clientTransaction));
+        Assert.That(clientTransaction.IsEnlisted(order), Is.True);
       }
     }
 
     [Test]
     public void ClientTransactionGetObjectIsIndependentOfCurrentTransaction ()
     {
-      var clientTransactionMock = new TestableClientTransaction ();
-      var order = (Order) clientTransactionMock.GetObject (DomainObjectIDs.Order1, false);
-      Assert.That (ClientTransactionScope.CurrentTransaction.IsEnlisted (order), Is.False);
-      Assert.That (clientTransactionMock.IsEnlisted (order), Is.True);
+      var clientTransactionMock = new TestableClientTransaction();
+      var order = (Order)clientTransactionMock.GetObject(DomainObjectIDs.Order1, false);
+      Assert.That(ClientTransactionScope.CurrentTransaction.IsEnlisted(order), Is.False);
+      Assert.That(clientTransactionMock.IsEnlisted(order), Is.True);
 
-      using (clientTransactionMock.EnterDiscardingScope ())
+      using (clientTransactionMock.EnterDiscardingScope())
       {
-        Assert.That (clientTransactionMock.IsEnlisted (order.OrderTicket), Is.True);
-        Assert.That (clientTransactionMock.IsEnlisted (order.Official), Is.True);
-        Assert.That (clientTransactionMock.IsEnlisted (order.OrderItems[0]), Is.True);
+        Assert.That(clientTransactionMock.IsEnlisted(order.OrderTicket), Is.True);
+        Assert.That(clientTransactionMock.IsEnlisted(order.Official), Is.True);
+        Assert.That(clientTransactionMock.IsEnlisted(order.OrderItems[0]), Is.True);
       }
     }
 
     [Test]
     public void GetObjects_WithInvalidObject_Throws ()
     {
-      var order = Order.NewObject ();
-      order.Delete ();
-      Assert.That (order.State.IsInvalid, Is.True);
+      var order = Order.NewObject();
+      order.Delete();
+      Assert.That(order.State.IsInvalid, Is.True);
 
-      Assert.That (() => LifetimeService.GetObjects<Order> (TestableClientTransaction, order.ID), Throws.TypeOf<ObjectInvalidException> ());
+      Assert.That(() => LifetimeService.GetObjects<Order>(TestableClientTransaction, order.ID), Throws.TypeOf<ObjectInvalidException>());
     }
 
     [Test]
     public void TryGetObjects_WithInvalidObject_Works ()
     {
-      var order = Order.NewObject ();
-      order.Delete ();
-      Assert.That (order.State.IsInvalid, Is.True);
+      var order = Order.NewObject();
+      order.Delete();
+      Assert.That(order.State.IsInvalid, Is.True);
 
-      Assert.That (LifetimeService.TryGetObjects<Order> (TestableClientTransaction, order.ID), Is.EqualTo (new[] { order }));
+      Assert.That(LifetimeService.TryGetObjects<Order>(TestableClientTransaction, order.ID), Is.EqualTo(new[] { order }));
     }
 
     [Test]
     public void TryGetObjects_WithMoreThan2100IDs ()
     {
-      var ids = new List<ObjectID> ();
-      ids.Add (DomainObjectIDs.Order1);
-      ids.Add (DomainObjectIDs.Order3);
-      ids.AddRange (Enumerable.Range (0, 4000).Select (i => new ObjectID (DomainObjectIDs.Order1.ClassDefinition, Guid.NewGuid ())));
+      var ids = new List<ObjectID>();
+      ids.Add(DomainObjectIDs.Order1);
+      ids.Add(DomainObjectIDs.Order3);
+      ids.AddRange(Enumerable.Range(0, 4000).Select(i => new ObjectID(DomainObjectIDs.Order1.ClassDefinition, Guid.NewGuid())));
 
-      var result = LifetimeService.TryGetObjects<Order> (TestableClientTransaction, ids.ToArray ());
-      Assert.That (result.Length, Is.EqualTo (4002));
-      Assert.That (result.Distinct ().ToArray (), Is.EqualTo (new[] { DomainObjectIDs.Order1.GetObject<Order> (), DomainObjectIDs.Order3.GetObject<Order> (), null }));
+      var result = LifetimeService.TryGetObjects<Order>(TestableClientTransaction, ids.ToArray());
+      Assert.That(result.Length, Is.EqualTo(4002));
+      Assert.That(result.Distinct().ToArray(), Is.EqualTo(new[] { DomainObjectIDs.Order1.GetObject<Order>(), DomainObjectIDs.Order3.GetObject<Order>(), null }));
     }
 
   }

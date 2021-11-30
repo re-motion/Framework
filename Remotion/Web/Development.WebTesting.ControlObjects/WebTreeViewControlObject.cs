@@ -30,18 +30,18 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     private readonly WebTreeViewNodeControlObject _metaRootNode;
 
     public WebTreeViewControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
-      _metaRootNode = new WebTreeViewNodeControlObject (context);
+      _metaRootNode = new WebTreeViewNodeControlObject(context);
     }
 
     /// <summary>
     /// Returns the tree's first root node.
     /// </summary>
-    [Obsolete ("This method is equivalent to .GetNode().WithIndex (1), which should be used instead. (Version 3.0.0-alpha.14)", false)]
+    [Obsolete("This method is equivalent to .GetNode().WithIndex (1), which should be used instead. (Version 3.0.0-alpha.14)", false)]
     public WebTreeViewNodeControlObject GetRootNode ()
     {
-      return _metaRootNode.GetNode().WithIndex (1);
+      return _metaRootNode.GetNode().WithIndex(1);
     }
 
     /// <inheritdoc/>
@@ -53,15 +53,15 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public WebTreeViewNodeControlObject GetNode (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return GetNode().WithItemID (itemID);
+      return GetNode().WithItemID(itemID);
     }
 
     /// <inheritdoc/>
     public WebTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
-      return GetNode().WithIndex (oneBasedIndex);
+      return GetNode().WithIndex(oneBasedIndex);
     }
 
     /// <inheritdoc/>
@@ -73,15 +73,15 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public WebTreeViewNodeControlObject GetNodeInHierarchy (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return GetNodeInHierarchy().WithItemID (itemID);
+      return GetNodeInHierarchy().WithItemID(itemID);
     }
 
     /// <inheritdoc/>
     public WebTreeViewNodeControlObject GetNodeInHierarchy (int oneBasedIndex)
     {
-      return GetNodeInHierarchy().WithIndex (oneBasedIndex);
+      return GetNodeInHierarchy().WithIndex(oneBasedIndex);
     }
   }
 }

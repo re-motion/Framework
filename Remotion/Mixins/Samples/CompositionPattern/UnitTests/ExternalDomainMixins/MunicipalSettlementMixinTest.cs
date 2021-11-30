@@ -31,13 +31,13 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.ExternalDomainMix
     [SetUp]
     public void SetUp ()
     {
-      _mixin = MixinInstanceFactory.CreateDomainObjectMixinWithTargetStub<MunicipalSettlementMixin, ISettlement> (out _targetStub);
+      _mixin = MixinInstanceFactory.CreateDomainObjectMixinWithTargetStub<MunicipalSettlementMixin, ISettlement>(out _targetStub);
     }
 
     [Test]
     public void OnTargetReferenceInitializing ()
     {
-      Assert.That (_mixin.MunicipalityID, Is.EqualTo (12));
+      Assert.That(_mixin.MunicipalityID, Is.EqualTo(12));
     }
 
     [Test]
@@ -48,7 +48,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.ExternalDomainMix
 
       var result = _mixin.GetDescriptionForMayors();
 
-      Assert.That (result, Is.EqualTo ("MunicipalSettlement: Title (Kind), 12"));
+      Assert.That(result, Is.EqualTo("MunicipalSettlement: Title (Kind), 12"));
     }
   }
 }

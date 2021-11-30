@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     public GenericTestOptions CreateAmbiguous ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.AmbiguousControlID,
           TestConstants.AmbiguousTextContentID,
           TestConstants.AmbiguousTitleID,
@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     public GenericTestOptions CreateDisabled ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.DisabledControlID,
           TestConstants.DisabledTextContentID,
           TestConstants.DisabledTitleID,
@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     public GenericTestOptions CreateHidden ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.HiddenControlID,
           TestConstants.HiddenTextContentID,
           TestConstants.HiddenTitleID,
@@ -52,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     public GenericTestOptions CreateVisible ()
     {
-      return new GenericTestOptions (
+      return new GenericTestOptions(
           TestConstants.VisibleControlID,
           TestConstants.VisibleTextContentID,
           TestConstants.VisibleTitleID,

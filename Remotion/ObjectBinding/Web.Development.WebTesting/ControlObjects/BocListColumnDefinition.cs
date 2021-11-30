@@ -37,9 +37,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     public BocListColumnDefinition (string itemID, int oneBasedIndex, string title, bool hasDomainPropertyPaths, string[] domainPropertyPaths, bool hasDiagnosticMetadata)
     {
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
-      ArgumentUtility.CheckNotNull ("title", title);
-      ArgumentUtility.CheckNotNull ("domainPropertyPaths", domainPropertyPaths);
+      ArgumentUtility.CheckNotNull("itemID", itemID);
+      ArgumentUtility.CheckNotNull("title", title);
+      ArgumentUtility.CheckNotNull("domainPropertyPaths", domainPropertyPaths);
 
       _itemID = itemID;
       _oneBasedIndex = oneBasedIndex;

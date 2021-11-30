@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class CommandControlObject : WebFormsControlObjectWithDiagnosticMetadata, IClickableControlObject, ISupportsDisabledState
   {
     public CommandControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -36,10 +36,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public UnspecifiedPageObject Click (IWebTestActionOptions? actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateCommandDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver);
 
-      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      ExecuteAction (new ClickAction (this, Scope), actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
+      ExecuteAction(new ClickAction(this, Scope), actualActionOptions);
       return UnspecifiedPage();
     }
 

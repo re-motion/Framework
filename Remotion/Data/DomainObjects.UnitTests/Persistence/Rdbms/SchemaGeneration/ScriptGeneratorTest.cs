@@ -54,42 +54,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
       base.SetUp();
 
-      _classDefinitionForFirstStorageProvider1 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (Order));
-      _classDefinitionForFirstStorageProvider2 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (OrderItem));
-      _classDefinitionForSecondStorageProvider = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (Order));
-      _classDefinitionForThirdStorageProvider = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (Customer));
+      _classDefinitionForFirstStorageProvider1 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order));
+      _classDefinitionForFirstStorageProvider2 = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(OrderItem));
+      _classDefinitionForSecondStorageProvider = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order));
+      _classDefinitionForThirdStorageProvider = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Customer));
 
       _firstProviderStorageEntityDefinitionStub = MockRepository.GenerateStub<IRdbmsStorageEntityDefinition>();
-      _firstProviderStorageEntityDefinitionStub.Stub (stub => stub.StorageProviderDefinition).Return (SchemaGenerationFirstStorageProviderDefinition);
+      _firstProviderStorageEntityDefinitionStub.Stub(stub => stub.StorageProviderDefinition).Return(SchemaGenerationFirstStorageProviderDefinition);
 
       _secondProviderStorageEntityDefinitionStub = MockRepository.GenerateStub<IRdbmsStorageEntityDefinition>();
-      _secondProviderStorageEntityDefinitionStub.Stub (stub => stub.StorageProviderDefinition).Return (
+      _secondProviderStorageEntityDefinitionStub.Stub(stub => stub.StorageProviderDefinition).Return(
           SchemaGenerationSecondStorageProviderDefinition);
 
       _thirdProviderStorageEntityDefinitionStub = MockRepository.GenerateStub<IRdbmsStorageEntityDefinition>();
-      _thirdProviderStorageEntityDefinitionStub.Stub (stub => stub.StorageProviderDefinition).Return (
-          new NoRdbmsUnitTestStorageProviderStubDefinition ("Test"));
+      _thirdProviderStorageEntityDefinitionStub.Stub(stub => stub.StorageProviderDefinition).Return(
+          new NoRdbmsUnitTestStorageProviderStubDefinition("Test"));
 
-      _classDefinitionForFirstStorageProvider1.SetStorageEntity (_firstProviderStorageEntityDefinitionStub);
-      _classDefinitionForFirstStorageProvider2.SetStorageEntity (_firstProviderStorageEntityDefinitionStub);
-      _classDefinitionForSecondStorageProvider.SetStorageEntity (_secondProviderStorageEntityDefinitionStub);
-      _classDefinitionForThirdStorageProvider.SetStorageEntity (_thirdProviderStorageEntityDefinitionStub);
+      _classDefinitionForFirstStorageProvider1.SetStorageEntity(_firstProviderStorageEntityDefinitionStub);
+      _classDefinitionForFirstStorageProvider2.SetStorageEntity(_firstProviderStorageEntityDefinitionStub);
+      _classDefinitionForSecondStorageProvider.SetStorageEntity(_secondProviderStorageEntityDefinitionStub);
+      _classDefinitionForThirdStorageProvider.SetStorageEntity(_thirdProviderStorageEntityDefinitionStub);
 
-      _fakeScriptResult1 = new ScriptPair ("CreateScript1", "DropScript1");
-      _fakeScriptResult2 = new ScriptPair ("CreateScript2", "DropScript2");
-      _fakeScriptResult3 = new ScriptPair ("CreateScript3", "DropScript3");
+      _fakeScriptResult1 = new ScriptPair("CreateScript1", "DropScript1");
+      _fakeScriptResult2 = new ScriptPair("CreateScript2", "DropScript2");
+      _fakeScriptResult3 = new ScriptPair("CreateScript3", "DropScript3");
       _entityDefininitionProviderMock = MockRepository.GenerateStrictMock<IRdbmsStorageEntityDefinitionProvider>();
       _scriptBuilderForFirstStorageProviderMock = MockRepository.GenerateStrictMock<IScriptBuilder>();
       _scriptBuilderForSecondStorageProviderMock = MockRepository.GenerateStrictMock<IScriptBuilder>();
       _scriptBuilderForThirdStorageProviderMock = MockRepository.GenerateStrictMock<IScriptBuilder>();
 
       _scriptToStringConverterStub = MockRepository.GenerateStub<IScriptToStringConverter>();
-      _scriptToStringConverterStub.Stub (stub => stub.Convert (_scriptBuilderForFirstStorageProviderMock)).Return (_fakeScriptResult1);
-      _scriptToStringConverterStub.Stub (stub => stub.Convert (_scriptBuilderForSecondStorageProviderMock)).Return (_fakeScriptResult2);
-      _scriptToStringConverterStub.Stub (stub => stub.Convert (_scriptBuilderForThirdStorageProviderMock)).Return (_fakeScriptResult3);
+      _scriptToStringConverterStub.Stub(stub => stub.Convert(_scriptBuilderForFirstStorageProviderMock)).Return(_fakeScriptResult1);
+      _scriptToStringConverterStub.Stub(stub => stub.Convert(_scriptBuilderForSecondStorageProviderMock)).Return(_fakeScriptResult2);
+      _scriptToStringConverterStub.Stub(stub => stub.Convert(_scriptBuilderForThirdStorageProviderMock)).Return(_fakeScriptResult3);
 
 
-      _scriptGenerator = new ScriptGenerator (
+      _scriptGenerator = new ScriptGenerator(
           pd =>
           {
             switch (pd.Name)
@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
               case "SchemaGenerationThirdStorageProvider":
                 return _scriptBuilderForThirdStorageProviderMock;
             }
-            throw new InvalidOperationException ("Invalid storage provider!");
+            throw new InvalidOperationException("Invalid storage provider!");
           },
           _entityDefininitionProviderMock,
           _scriptToStringConverterStub);
@@ -114,99 +114,99 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     [Test]
     public void GetScripts_NoClassDefinitions ()
     {
-      var result = _scriptGenerator.GetScripts (new ClassDefinition[0]);
+      var result = _scriptGenerator.GetScripts(new ClassDefinition[0]);
 
-      Assert.That (result, Is.Empty);
+      Assert.That(result, Is.Empty);
     }
 
     [Test]
     public void GetScript_ClassDefinitionWithoutRdbmsStorageProviderDefinition ()
     {
-      var result = _scriptGenerator.GetScripts (new[] { _classDefinitionForThirdStorageProvider });
+      var result = _scriptGenerator.GetScripts(new[] { _classDefinitionForThirdStorageProvider });
 
-      Assert.That (result, Is.Empty);
+      Assert.That(result, Is.Empty);
     }
 
     [Test]
     public void GetScripts_OneClassDefinitionWithRdbmsStorageProviderDefinition ()
     {
       _entityDefininitionProviderMock
-          .Expect (
-              mock => mock.GetEntityDefinitions (Arg<IEnumerable<ClassDefinition>>.List.Equal (new[] { _classDefinitionForSecondStorageProvider })))
-          .Return (new[] { _fakeEntityDefinition1 });
+          .Expect(
+              mock => mock.GetEntityDefinitions(Arg<IEnumerable<ClassDefinition>>.List.Equal(new[] { _classDefinitionForSecondStorageProvider })))
+          .Return(new[] { _fakeEntityDefinition1 });
       _entityDefininitionProviderMock.Replay();
 
-      _scriptBuilderForSecondStorageProviderMock.Expect (mock => mock.AddEntityDefinition (_fakeEntityDefinition1));
+      _scriptBuilderForSecondStorageProviderMock.Expect(mock => mock.AddEntityDefinition(_fakeEntityDefinition1));
       _scriptBuilderForSecondStorageProviderMock.Replay();
 
-      var result = _scriptGenerator.GetScripts (new[] { _classDefinitionForSecondStorageProvider }).ToList();
+      var result = _scriptGenerator.GetScripts(new[] { _classDefinitionForSecondStorageProvider }).ToList();
 
       _entityDefininitionProviderMock.VerifyAllExpectations();
       _scriptBuilderForSecondStorageProviderMock.VerifyAllExpectations();
-      Assert.That (result.Count, Is.EqualTo (1));
-      Assert.That (result[0].StorageProviderDefinition, Is.SameAs (SchemaGenerationSecondStorageProviderDefinition));
-      Assert.That (result[0].SetUpScript, Is.EqualTo ("CreateScript2"));
-      Assert.That (result[0].TearDownScript, Is.EqualTo ("DropScript2"));
+      Assert.That(result.Count, Is.EqualTo(1));
+      Assert.That(result[0].StorageProviderDefinition, Is.SameAs(SchemaGenerationSecondStorageProviderDefinition));
+      Assert.That(result[0].SetUpScript, Is.EqualTo("CreateScript2"));
+      Assert.That(result[0].TearDownScript, Is.EqualTo("DropScript2"));
     }
 
     [Test]
     public void GetScripts_SeveralClassDefinitionWithSameRdbmsStorageProviderDefinitions ()
     {
       _entityDefininitionProviderMock
-          .Expect (
+          .Expect(
               mock =>
-              mock.GetEntityDefinitions (
-                  Arg<IEnumerable<ClassDefinition>>.List.Equal (
+              mock.GetEntityDefinitions(
+                  Arg<IEnumerable<ClassDefinition>>.List.Equal(
                       new[] { _classDefinitionForFirstStorageProvider1, _classDefinitionForFirstStorageProvider2 })))
-          .Return (new[] { _fakeEntityDefinition1, _fakeEntityDefinition2 });
+          .Return(new[] { _fakeEntityDefinition1, _fakeEntityDefinition2 });
       _entityDefininitionProviderMock.Replay();
 
-      _scriptBuilderForFirstStorageProviderMock.Expect (mock => mock.AddEntityDefinition (_fakeEntityDefinition1));
-      _scriptBuilderForFirstStorageProviderMock.Expect (mock => mock.AddEntityDefinition (_fakeEntityDefinition2));
+      _scriptBuilderForFirstStorageProviderMock.Expect(mock => mock.AddEntityDefinition(_fakeEntityDefinition1));
+      _scriptBuilderForFirstStorageProviderMock.Expect(mock => mock.AddEntityDefinition(_fakeEntityDefinition2));
       _scriptBuilderForFirstStorageProviderMock.Replay();
 
-      var result = _scriptGenerator.GetScripts (new[] { _classDefinitionForFirstStorageProvider1, _classDefinitionForFirstStorageProvider2 }).ToList();
+      var result = _scriptGenerator.GetScripts(new[] { _classDefinitionForFirstStorageProvider1, _classDefinitionForFirstStorageProvider2 }).ToList();
 
       _entityDefininitionProviderMock.VerifyAllExpectations();
       _scriptBuilderForFirstStorageProviderMock.VerifyAllExpectations();
-      Assert.That (result.Count, Is.EqualTo (1));
-      Assert.That (result[0].StorageProviderDefinition, Is.SameAs (SchemaGenerationFirstStorageProviderDefinition));
-      Assert.That (result[0].SetUpScript, Is.EqualTo ("CreateScript1"));
-      Assert.That (result[0].TearDownScript, Is.EqualTo ("DropScript1"));
+      Assert.That(result.Count, Is.EqualTo(1));
+      Assert.That(result[0].StorageProviderDefinition, Is.SameAs(SchemaGenerationFirstStorageProviderDefinition));
+      Assert.That(result[0].SetUpScript, Is.EqualTo("CreateScript1"));
+      Assert.That(result[0].TearDownScript, Is.EqualTo("DropScript1"));
     }
 
     [Test]
     public void GetScripts_SeveralClassDefinitionWithDifferentRdbmsStorageProviderDefinitions ()
     {
       _entityDefininitionProviderMock
-          .Expect (
+          .Expect(
               mock =>
-              mock.GetEntityDefinitions (
-                  Arg<IEnumerable<ClassDefinition>>.List.Equal (
+              mock.GetEntityDefinitions(
+                  Arg<IEnumerable<ClassDefinition>>.List.Equal(
                       new[] { _classDefinitionForFirstStorageProvider1, _classDefinitionForFirstStorageProvider2 })))
-          .Return (new[] { _fakeEntityDefinition1, _fakeEntityDefinition2 });
+          .Return(new[] { _fakeEntityDefinition1, _fakeEntityDefinition2 });
       _entityDefininitionProviderMock
-          .Expect (
+          .Expect(
               mock =>
-              mock.GetEntityDefinitions (
-                  Arg<IEnumerable<ClassDefinition>>.List.Equal (
+              mock.GetEntityDefinitions(
+                  Arg<IEnumerable<ClassDefinition>>.List.Equal(
                       new[] { _classDefinitionForSecondStorageProvider })))
-          .Return (new[] { _fakeEntityDefinition3 });
+          .Return(new[] { _fakeEntityDefinition3 });
       _entityDefininitionProviderMock.Replay();
 
-      _scriptBuilderForFirstStorageProviderMock.Expect (mock => mock.AddEntityDefinition (_fakeEntityDefinition1));
-      _scriptBuilderForFirstStorageProviderMock.Expect (mock => mock.AddEntityDefinition (_fakeEntityDefinition2));
+      _scriptBuilderForFirstStorageProviderMock.Expect(mock => mock.AddEntityDefinition(_fakeEntityDefinition1));
+      _scriptBuilderForFirstStorageProviderMock.Expect(mock => mock.AddEntityDefinition(_fakeEntityDefinition2));
       _scriptBuilderForFirstStorageProviderMock.Replay();
 
-      _scriptBuilderForSecondStorageProviderMock.Expect (mock => mock.AddEntityDefinition (_fakeEntityDefinition3));
+      _scriptBuilderForSecondStorageProviderMock.Expect(mock => mock.AddEntityDefinition(_fakeEntityDefinition3));
       _scriptBuilderForSecondStorageProviderMock.Replay();
 
       var result =
-          _scriptGenerator.GetScripts (
+          _scriptGenerator.GetScripts(
               new[]
               {
-                  _classDefinitionForFirstStorageProvider1, 
-                  _classDefinitionForFirstStorageProvider2, 
+                  _classDefinitionForFirstStorageProvider1,
+                  _classDefinitionForFirstStorageProvider2,
                   _classDefinitionForSecondStorageProvider,
                   _classDefinitionForThirdStorageProvider
               }).ToList();
@@ -214,13 +214,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _entityDefininitionProviderMock.VerifyAllExpectations();
       _scriptBuilderForFirstStorageProviderMock.VerifyAllExpectations();
       _scriptBuilderForSecondStorageProviderMock.VerifyAllExpectations();
-      Assert.That (result.Count, Is.EqualTo (2));
-      Assert.That (result[0].StorageProviderDefinition, Is.SameAs (SchemaGenerationFirstStorageProviderDefinition));
-      Assert.That (result[0].SetUpScript, Is.EqualTo ("CreateScript1"));
-      Assert.That (result[0].TearDownScript, Is.EqualTo ("DropScript1"));
-      Assert.That (result[1].StorageProviderDefinition, Is.SameAs (SchemaGenerationSecondStorageProviderDefinition));
-      Assert.That (result[1].SetUpScript, Is.EqualTo ("CreateScript2"));
-      Assert.That (result[1].TearDownScript, Is.EqualTo ("DropScript2"));
+      Assert.That(result.Count, Is.EqualTo(2));
+      Assert.That(result[0].StorageProviderDefinition, Is.SameAs(SchemaGenerationFirstStorageProviderDefinition));
+      Assert.That(result[0].SetUpScript, Is.EqualTo("CreateScript1"));
+      Assert.That(result[0].TearDownScript, Is.EqualTo("DropScript1"));
+      Assert.That(result[1].StorageProviderDefinition, Is.SameAs(SchemaGenerationSecondStorageProviderDefinition));
+      Assert.That(result[1].SetUpScript, Is.EqualTo("CreateScript2"));
+      Assert.That(result[1].TearDownScript, Is.EqualTo("DropScript2"));
     }
   }
 }

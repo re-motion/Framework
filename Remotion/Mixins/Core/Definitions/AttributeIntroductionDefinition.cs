@@ -20,7 +20,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{FullName} introduced via {Attribute.DeclaringDefinition.FullName}")]
+  [DebuggerDisplay("{FullName} introduced via {Attribute.DeclaringDefinition.FullName}")]
   public class AttributeIntroductionDefinition : IVisitableDefinition
   {
     private readonly IAttributeIntroductionTarget _target;
@@ -28,8 +28,8 @@ namespace Remotion.Mixins.Definitions
 
     public AttributeIntroductionDefinition (IAttributeIntroductionTarget target, AttributeDefinition attribute)
     {
-      ArgumentUtility.CheckNotNull ("target", target);
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
+      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull("attribute", attribute);
 
       _target = target;
       _attribute = attribute;
@@ -62,9 +62,9 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
 
-      visitor.Visit (this);
+      visitor.Visit(this);
     }
   }
 }

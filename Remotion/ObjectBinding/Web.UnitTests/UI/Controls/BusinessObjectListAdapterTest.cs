@@ -33,42 +33,42 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void SetUp ()
     {
       _listMock = new Mock<IList>();
-      _adapter = new BusinessObjectListAdapter<IBusinessObject> (_listMock.Object);
+      _adapter = new BusinessObjectListAdapter<IBusinessObject>(_listMock.Object);
     }
 
     [Test]
     public void Count ()
     {
-      _listMock.Setup (_ => _.Count).Returns (17);
+      _listMock.Setup(_ => _.Count).Returns(17);
 
-      Assert.That (_adapter.Count, Is.EqualTo (17));
+      Assert.That(_adapter.Count, Is.EqualTo(17));
     }
 
     [Test]
     public void GetIndexer ()
     {
       var expected = new Mock<IBusinessObject>();
-      _listMock.Setup (_ => _[17]).Returns (expected.Object);
+      _listMock.Setup(_ => _[17]).Returns(expected.Object);
 
-      Assert.That (_adapter[17], Is.EqualTo (expected.Object));
+      Assert.That(_adapter[17], Is.EqualTo(expected.Object));
     }
 
     [Test]
     public void GetEnumerator ()
     {
       var expected = new[] { new Mock<IBusinessObject>().Object, new Mock<IBusinessObject>().Object };
-      _listMock.Setup (_ => _.GetEnumerator()).Returns (expected.GetEnumerator());
+      _listMock.Setup(_ => _.GetEnumerator()).Returns(expected.GetEnumerator());
 
-      Assert.That (_adapter, Is.EqualTo (expected));
+      Assert.That(_adapter, Is.EqualTo(expected));
     }
 
     [Test]
     public void GetEnumeratorForIList ()
     {
       var expected = new Mock<IEnumerator>();
-      _listMock.Setup (_ => _.GetEnumerator()).Returns (expected.Object);
+      _listMock.Setup(_ => _.GetEnumerator()).Returns(expected.Object);
 
-      Assert.That (((IList) _adapter).GetEnumerator(), Is.EqualTo (expected.Object));
+      Assert.That(((IList)_adapter).GetEnumerator(), Is.EqualTo(expected.Object));
     }
 
     [Test]
@@ -76,44 +76,44 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       Array array = new object[3];
 
-      ((IList) _adapter).CopyTo (array, 13);
+      ((IList)_adapter).CopyTo(array, 13);
 
-      _listMock.Verify (_ => _.CopyTo (array, 13));
+      _listMock.Verify(_ => _.CopyTo(array, 13));
     }
 
     [Test]
     public void IsSynchronized ()
     {
       var expected = BooleanObjectMother.GetRandomBoolean();
-      _listMock.Setup (_ => _.IsSynchronized).Returns (expected);
+      _listMock.Setup(_ => _.IsSynchronized).Returns(expected);
 
-      Assert.That (((IList) _adapter).IsSynchronized, Is.EqualTo (expected));
+      Assert.That(((IList)_adapter).IsSynchronized, Is.EqualTo(expected));
     }
 
     [Test]
     public void SyncRoot ()
     {
       var expected = new object();
-      _listMock.Setup (_ => _.SyncRoot).Returns (expected);
+      _listMock.Setup(_ => _.SyncRoot).Returns(expected);
 
-      Assert.That (((IList) _adapter).SyncRoot, Is.EqualTo (expected));
+      Assert.That(((IList)_adapter).SyncRoot, Is.EqualTo(expected));
     }
 
     [Test]
     public void Add ()
     {
       var expected = new object();
-      _listMock.Setup (_ => _.Add (expected)).Returns (23);
+      _listMock.Setup(_ => _.Add(expected)).Returns(23);
 
-      Assert.That (((IList) _adapter).Add (expected), Is.EqualTo (23));
+      Assert.That(((IList)_adapter).Add(expected), Is.EqualTo(23));
     }
 
     [Test]
     public void Clear ()
     {
-      ((IList) _adapter).Clear();
+      ((IList)_adapter).Clear();
 
-      _listMock.Verify (_ => _.Clear());
+      _listMock.Verify(_ => _.Clear());
     }
 
     [Test]
@@ -121,18 +121,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       var expectedParameter = new object();
       var expectedResult = BooleanObjectMother.GetRandomBoolean();
-      _listMock.Setup (_ => _.Contains (expectedParameter)).Returns (expectedResult);
+      _listMock.Setup(_ => _.Contains(expectedParameter)).Returns(expectedResult);
 
-      Assert.That (((IList) _adapter).Contains (expectedParameter), Is.EqualTo (expectedResult));
+      Assert.That(((IList)_adapter).Contains(expectedParameter), Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void IndexOf ()
     {
       var expected = new object();
-      _listMock.Setup (_ => _.IndexOf (expected)).Returns (7);
+      _listMock.Setup(_ => _.IndexOf(expected)).Returns(7);
 
-      Assert.That (((IList) _adapter).IndexOf (expected), Is.EqualTo (7));
+      Assert.That(((IList)_adapter).IndexOf(expected), Is.EqualTo(7));
     }
 
     [Test]
@@ -140,9 +140,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       var expected = new object();
 
-      ((IList) _adapter).Insert (3, expected);
+      ((IList)_adapter).Insert(3, expected);
 
-      _listMock.Verify (_ => _.Insert (3, expected));
+      _listMock.Verify(_ => _.Insert(3, expected));
     }
 
     [Test]
@@ -150,44 +150,44 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       var expected = new object();
 
-      ((IList) _adapter).Remove (expected);
+      ((IList)_adapter).Remove(expected);
 
-      _listMock.Verify (_ => _.Remove (expected));
+      _listMock.Verify(_ => _.Remove(expected));
     }
 
     [Test]
     public void RemoveAt ()
     {
-      ((IList) _adapter).Remove (17);
+      ((IList)_adapter).Remove(17);
 
-      _listMock.Verify (_ => _.Remove (17));
+      _listMock.Verify(_ => _.Remove(17));
     }
 
     [Test]
     public void IsFixedSize ()
     {
       var expected = BooleanObjectMother.GetRandomBoolean();
-      _listMock.Setup (_ => _.IsFixedSize).Returns (expected);
+      _listMock.Setup(_ => _.IsFixedSize).Returns(expected);
 
-      Assert.That (((IList) _adapter).IsFixedSize, Is.EqualTo (expected));
+      Assert.That(((IList)_adapter).IsFixedSize, Is.EqualTo(expected));
     }
 
     [Test]
     public void IsReadOnly ()
     {
       var expected = BooleanObjectMother.GetRandomBoolean();
-      _listMock.Setup (_ => _.IsReadOnly).Returns (expected);
+      _listMock.Setup(_ => _.IsReadOnly).Returns(expected);
 
-      Assert.That (((IList) _adapter).IsReadOnly, Is.EqualTo (expected));
+      Assert.That(((IList)_adapter).IsReadOnly, Is.EqualTo(expected));
     }
 
     [Test]
     public void GetIndexerForIList ()
     {
       var expected = BooleanObjectMother.GetRandomBoolean();
-      _listMock.Setup (_ => _[17]).Returns (expected);
+      _listMock.Setup(_ => _[17]).Returns(expected);
 
-      Assert.That (((IList) _adapter)[17], Is.EqualTo (expected));
+      Assert.That(((IList)_adapter)[17], Is.EqualTo(expected));
     }
 
     [Test]
@@ -195,9 +195,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       var expected = BooleanObjectMother.GetRandomBoolean();
 
-      ((IList) _adapter)[17] = expected;
+      ((IList)_adapter)[17] = expected;
 
-      _listMock.VerifySet (_ => _[17] = expected);
+      _listMock.VerifySet(_ => _[17] = expected);
     }
   }
 }

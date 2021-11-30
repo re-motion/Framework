@@ -26,26 +26,26 @@ using Remotion.Security;
 
 namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
-  [MultiLingualResources ("Remotion.Data.DomainObjects.Web.Test.Globalization.ClassForRelationTest")]
+  [MultiLingualResources("Remotion.Data.DomainObjects.Web.Test.Globalization.ClassForRelationTest")]
   [Serializable]
-  [DBTable ("TableForRelationTest")]
+  [DBTable("TableForRelationTest")]
   [Instantiable]
   [DBStorageGroup]
   public abstract class ClassForRelationTest : BindableDomainObject, ISecurableObject, IDomainObjectSecurityContextFactory
   {
     private SecurityContext _securityContext;
-    
+
     public static ClassForRelationTest NewObject ()
     {
-      return DomainObject.NewObject<ClassForRelationTest> ();
+      return DomainObject.NewObject<ClassForRelationTest>();
     }
 
 
-    public ClassForRelationTest()
+    public ClassForRelationTest ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
     public override string DisplayName
@@ -59,43 +59,43 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
       get { return ClassWithAllDataTypes.EnumType.Value3; }
     }
 
-    [ItemType (typeof (ClassWithAllDataTypes))]
-    [ObjectBinding (ReadOnly = true)]
+    [ItemType(typeof(ClassWithAllDataTypes))]
+    [ObjectBinding(ReadOnly = true)]
     [StorageClassNone]
     public DomainObjectCollection ComputedList
     {
       get { return new DomainObjectCollection(); }
     }
 
-    [DBColumn ("TableWithAllDataTypesMandatory")]
-    [DBBidirectionalRelation ("ClassesForRelationTestMandatoryNavigateOnly")]
+    [DBColumn("TableWithAllDataTypesMandatory")]
+    [DBBidirectionalRelation("ClassesForRelationTestMandatoryNavigateOnly")]
     [Mandatory]
     public abstract ClassWithAllDataTypes ClassWithAllDataTypesMandatory {get; set;}
 
-    [DBColumn ("TableWithAllDataTypesOptional")]
-    [DBBidirectionalRelation ("ClassesForRelationTestOptionalNavigateOnly")]
+    [DBColumn("TableWithAllDataTypesOptional")]
+    [DBBidirectionalRelation("ClassesForRelationTestOptionalNavigateOnly")]
     public abstract ClassWithAllDataTypes ClassWithAllDataTypesOptional { get; set;}
 
-    [DBBidirectionalRelation ("ClassForRelationTestMandatory")]
+    [DBBidirectionalRelation("ClassForRelationTestMandatory")]
     [Mandatory]
-    [ObjectBinding (ReadOnly = true)]
+    [ObjectBinding(ReadOnly = true)]
     public abstract ObjectList<ClassWithAllDataTypes> ClassesWithAllDataTypesMandatoryNavigateOnly { get; }
 
-    [DBBidirectionalRelation ("ClassForRelationTestOptional")]
-    [ObjectBinding (ReadOnly = true)]
+    [DBBidirectionalRelation("ClassForRelationTestOptional")]
+    [ObjectBinding(ReadOnly = true)]
     public abstract ObjectList<ClassWithAllDataTypes> ClassesWithAllDataTypesOptionalNavigateOnly { get; }
 
     IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()
     {
-      return new DomainObjectSecurityStrategyDecorator (
-          ObjectSecurityStrategy.Create (this, InvalidationToken.Create()),
+      return new DomainObjectSecurityStrategyDecorator(
+          ObjectSecurityStrategy.Create(this, InvalidationToken.Create()),
           this,
           RequiredSecurityForStates.NewAndDeleted);
     }
 
     Type ISecurableObject.GetSecurableType ()
     {
-      return GetPublicDomainObjectType ();
+      return GetPublicDomainObjectType();
     }
 
     ISecurityContext ISecurityContextFactory.CreateSecurityContext ()
@@ -103,11 +103,11 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
       if (_securityContext == null)
       {
         _securityContext =
-            SecurityContext.Create (
+            SecurityContext.Create(
                 GetPublicDomainObjectType(),
                 null,
                 null,
-                Name.Substring (0, Name.Length - 1),
+                Name.Substring(0, Name.Length - 1),
                 new Dictionary<string, EnumWrapper>(),
                 new EnumWrapper[0]);
       }

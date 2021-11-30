@@ -26,13 +26,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
 
     public abstract ClassWithVirtualRelationEndPoints BaseUnidirectional { get; set; }
 
-    [DBBidirectionalRelation ("BaseBidirectionalOneToOne", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("BaseBidirectionalOneToOne", ContainsForeignKey = true)]
     public abstract ClassWithVirtualRelationEndPoints BaseBidirectionalOneToOne { get; set; }
 
-    [DBBidirectionalRelation ("BaseBidirectionalOneToManyForDomainObjectCollection")]
+    [DBBidirectionalRelation("BaseBidirectionalOneToManyForDomainObjectCollection")]
     public abstract ClassWithVirtualRelationEndPoints BaseBidirectionalOneToManyForDomainObjectCollection { get; set; }
 
-    [DBBidirectionalRelation ("BaseBidirectionalOneToManyForVirtualCollection")]
+    [DBBidirectionalRelation("BaseBidirectionalOneToManyForVirtualCollection")]
     public abstract ClassWithVirtualRelationEndPoints BaseBidirectionalOneToManyForVirtualCollection { get; set; }
 
     private ClassWithVirtualRelationEndPoints BasePrivateUnidirectional
@@ -41,25 +41,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
       set { throw new NotImplementedException(); }
     }
 
-    [DBBidirectionalRelation ("BasePrivateBidirectionalOneToOne", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("BasePrivateBidirectionalOneToOne", ContainsForeignKey = true)]
     private ClassWithVirtualRelationEndPoints BasePrivateBidirectionalOneToOne
     {
       get { throw new NotImplementedException(); }
       set { throw new NotImplementedException(); }
     }
 
-    [DBBidirectionalRelation ("BasePrivateBidirectionalOneToManyForDomainObjectCollection")]
+    [DBBidirectionalRelation("BasePrivateBidirectionalOneToManyForDomainObjectCollection")]
     private ClassWithVirtualRelationEndPoints BasePrivateBidirectionalOneToManyForDomainObjectCollection
     {
-      get { throw new NotImplementedException (); }
-      set { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
+      set { throw new NotImplementedException(); }
     }
 
-    [DBBidirectionalRelation ("BasePrivateBidirectionalOneToManyForVirtualCollection")]
+    [DBBidirectionalRelation("BasePrivateBidirectionalOneToManyForVirtualCollection")]
     private ClassWithVirtualRelationEndPoints BasePrivateBidirectionalOneToManyForVirtualCollection
     {
-      get { throw new NotImplementedException (); }
-      set { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
+      set { throw new NotImplementedException(); }
     }
   }
 }

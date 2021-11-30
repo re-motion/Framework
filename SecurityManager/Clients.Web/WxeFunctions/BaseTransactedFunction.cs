@@ -27,12 +27,12 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
   public abstract class BaseTransactedFunction : WxeFunction
   {
     protected BaseTransactedFunction ()
-        : this (WxeTransactionMode.CreateRootWithAutoCommit)
+        : this(WxeTransactionMode.CreateRootWithAutoCommit)
     {
     }
 
     protected BaseTransactedFunction (ITransactionMode transactionMode, params object[] args)
-        : base (transactionMode, args)
+        : base(transactionMode, args)
     {
       Initialize();
     }
@@ -43,19 +43,19 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
       {
         var securityManagerPrincipal = SecurityManagerPrincipal.Current;
         if (securityManagerPrincipal.IsNull)
-          throw new InvalidOperationException ("The Seucrity Manager principal is not set. Possible reason: session timeout");
+          throw new InvalidOperationException("The Seucrity Manager principal is not set. Possible reason: session timeout");
         return securityManagerPrincipal.Tenant.Handle;
       }
     }
 
     public bool HasUserCancelled
     {
-      get { return (ExceptionHandler.Exception != null && ExceptionHandler.Exception.GetType() == typeof (WxeUserCancelException)); }
+      get { return (ExceptionHandler.Exception != null && ExceptionHandler.Exception.GetType() == typeof(WxeUserCancelException)); }
     }
 
     protected virtual void Initialize ()
     {
-      ExceptionHandler.SetCatchExceptionTypes (typeof (WxeUserCancelException));
+      ExceptionHandler.SetCatchExceptionTypes(typeof(WxeUserCancelException));
     }
   }
 }

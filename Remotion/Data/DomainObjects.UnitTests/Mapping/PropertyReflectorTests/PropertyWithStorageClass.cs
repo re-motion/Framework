@@ -29,89 +29,89 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void StorageClass_WithNoAttribute ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute> (
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "NoAttribute", DomainModelConstraintProviderStub);
-      Assert.That (propertyReflector.GetStorageClass(), Is.EqualTo (StorageClass.Persistent));
+      Assert.That(propertyReflector.GetStorageClass(), Is.EqualTo(StorageClass.Persistent));
     }
 
     [Test]
     public void StorageClass_WithPersistentAttribute ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute> (
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "Persistent", DomainModelConstraintProviderStub);
-      Assert.That (propertyReflector.GetStorageClass(), Is.EqualTo (StorageClass.Persistent));
+      Assert.That(propertyReflector.GetStorageClass(), Is.EqualTo(StorageClass.Persistent));
     }
 
     [Test]
     public void StorageClass_WithTransactionAttribute ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute> (
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "Transaction", DomainModelConstraintProviderStub);
-      Assert.That (propertyReflector.GetStorageClass(), Is.EqualTo (StorageClass.Transaction));
+      Assert.That(propertyReflector.GetStorageClass(), Is.EqualTo(StorageClass.Transaction));
     }
 
     [Test]
     public void StorageClass_WithNoneAttribute ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute> (
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "None", DomainModelConstraintProviderStub);
-      Assert.That (propertyReflector.GetStorageClass(), Is.EqualTo (StorageClass.None));
+      Assert.That(propertyReflector.GetStorageClass(), Is.EqualTo(StorageClass.None));
     }
 
     [Test]
     public void GetMetadata_WithNoAttribute ()
     {
-      var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute> (
+      var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "NoAttribute", DomainModelConstraintProviderStub);
 
       var actual = propertyReflector.GetMetadata();
-      actual.SetStorageProperty (SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("NoAttribute"));
+      actual.SetStorageProperty(SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("NoAttribute"));
 
-      Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithPropertiesHavingStorageClassAttribute.NoAttribute"));
-      Assert.That (actual.StorageClass, Is.EqualTo (StorageClass.Persistent));
+      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithPropertiesHavingStorageClassAttribute.NoAttribute"));
+      Assert.That(actual.StorageClass, Is.EqualTo(StorageClass.Persistent));
     }
 
     [Test]
     public void GetMetadata_WithStorageClassPersistent ()
     {
-      var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute> (
+      var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "Persistent", DomainModelConstraintProviderStub);
 
       var actual = propertyReflector.GetMetadata();
-      actual.SetStorageProperty (SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Persistent"));
+      actual.SetStorageProperty(SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Persistent"));
 
-      Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithPropertiesHavingStorageClassAttribute.Persistent"));
-      Assert.That (actual.StorageClass, Is.EqualTo (StorageClass.Persistent));
+      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithPropertiesHavingStorageClassAttribute.Persistent"));
+      Assert.That(actual.StorageClass, Is.EqualTo(StorageClass.Persistent));
     }
 
     [Test]
     public void GetMetadata_WithStorageClassTransaction_DoesntThrow ()
     {
-      var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute> (
+      var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "Transaction", DomainModelConstraintProviderStub);
-      
+
       propertyReflector.GetMetadata();
     }
 
     [Test]
     public void GetMetadata_WithStorageClassTransaction_SetsStorageClass ()
     {
-      var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute> (
+      var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "Transaction", DomainModelConstraintProviderStub);
 
       var propertyDefinition = propertyReflector.GetMetadata();
-      Assert.That (propertyDefinition.StorageClass, Is.EqualTo (StorageClass.Transaction));
+      Assert.That(propertyDefinition.StorageClass, Is.EqualTo(StorageClass.Transaction));
     }
 
     [Test]
     public void GetMetadata_WithStorageClassTransaction_NonPersistableDataType ()
     {
-      var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute> (
+      var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "TransactionWithDateTimeDataType", DomainModelConstraintProviderStub);
 
       var propertyDefinition = propertyReflector.GetMetadata();
-      Assert.That (propertyDefinition.StorageClass, Is.EqualTo (StorageClass.Transaction));
-      Assert.That (propertyDefinition.PropertyType, Is.EqualTo (typeof (DateTime)));
+      Assert.That(propertyDefinition.StorageClass, Is.EqualTo(StorageClass.Transaction));
+      Assert.That(propertyDefinition.PropertyType, Is.EqualTo(typeof(DateTime)));
     }
   }
 }

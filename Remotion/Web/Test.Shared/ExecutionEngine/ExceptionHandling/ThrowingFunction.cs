@@ -24,10 +24,10 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
   public class ThrowingFunction : WxeFunction
   {
     public ThrowingFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
-    private WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (ThrowingForm), "ExecutionEngine/ExceptionHandling/ThrowingForm.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof(ThrowingForm), "ExecutionEngine/ExceptionHandling/ThrowingForm.aspx");
   }
 }

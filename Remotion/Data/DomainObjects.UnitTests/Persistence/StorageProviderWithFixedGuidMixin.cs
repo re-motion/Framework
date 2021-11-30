@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
   public class StorageProviderWithFixedGuidMixin : IStorageProviderWithFixedGuid
   {
-    private Guid _fixedGuid = Guid.NewGuid ();
+    private Guid _fixedGuid = Guid.NewGuid();
 
     [OverrideTarget]
     public ObjectID CreateNewObjectID (ClassDefinition classDefinition)

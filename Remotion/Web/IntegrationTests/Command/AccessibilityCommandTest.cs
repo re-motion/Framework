@@ -29,41 +29,41 @@ namespace Remotion.Web.IntegrationTests.Command
     public void Event ()
     {
       var home = Start();
-      var command = home.Commands().GetByLocalID ("Command1");
+      var command = home.Commands().GetByLocalID("Command1");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (command);
+      var result = analyzer.Analyze(command);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Href ()
     {
       var home = Start();
-      var command = home.Commands().GetByLocalID ("Command2");
+      var command = home.Commands().GetByLocalID("Command2");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (command);
+      var result = analyzer.Analyze(command);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void None ()
     {
       var home = Start();
-      var command = home.Commands().GetByLocalID ("TestCommand3");
+      var command = home.Commands().GetByLocalID("TestCommand3");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (command);
+      var result = analyzer.Analyze(command);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("CommandTest.wxe");
+      return Start<WxePageObject>("CommandTest.wxe");
     }
   }
 }

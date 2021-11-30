@@ -35,42 +35,42 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public override void SetUp ()
     {
       base.SetUp();
-      _executionState = new ExecutingSubFunctionWithPermaUrlState (
-          ExecutionStateContextMock.Object, new RedirectingToSubFunctionStateParameters (SubFunction.Object, PostBackCollection, "dummy", "/resumeUrl.wxe"));
+      _executionState = new ExecutingSubFunctionWithPermaUrlState(
+          ExecutionStateContextMock.Object, new RedirectingToSubFunctionStateParameters(SubFunction.Object, PostBackCollection, "dummy", "/resumeUrl.wxe"));
     }
 
     protected override Mock<OtherTestFunction> CreateSubFunction ()
     {
-      return new Mock<OtherTestFunction> (MockBehavior.Strict);
+      return new Mock<OtherTestFunction>(MockBehavior.Strict);
     }
 
     [Test]
     public void IsExecuting ()
     {
-      Assert.That (_executionState.IsExecuting, Is.True);
+      Assert.That(_executionState.IsExecuting, Is.True);
     }
 
     [Test]
     public void ExecuteSubFunction_GoesToReturningFromSubFunction ()
     {
       var sequence = new MockSequence();
-      SubFunction.InSequence (sequence).Setup (mock => mock.Execute (WxeContext)).Verifiable();
+      SubFunction.InSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Verifiable();
       ExecutionStateContextMock
-          .InSequence (sequence)
-          .Setup (
-              mock => mock.SetExecutionState (It.IsNotNull<IExecutionState>()))
-          .Callback (
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.SetExecutionState(It.IsNotNull<IExecutionState>()))
+          .Callback(
               (IExecutionState executionState) =>
               {
-                Assert.That (executionState, Is.InstanceOf (typeof (ReturningFromSubFunctionState)));
-                var nextState = (ReturningFromSubFunctionState) executionState;
-                Assert.That (nextState.ExecutionStateContext, Is.SameAs (ExecutionStateContextMock.Object));
-                Assert.That (nextState.Parameters.SubFunction, Is.SameAs (SubFunction.Object));
-                Assert.That (nextState.Parameters.ResumeUrl, Is.EqualTo ("/resumeUrl.wxe"));
+                Assert.That(executionState, Is.InstanceOf(typeof(ReturningFromSubFunctionState)));
+                var nextState = (ReturningFromSubFunctionState)executionState;
+                Assert.That(nextState.ExecutionStateContext, Is.SameAs(ExecutionStateContextMock.Object));
+                Assert.That(nextState.Parameters.SubFunction, Is.SameAs(SubFunction.Object));
+                Assert.That(nextState.Parameters.ResumeUrl, Is.EqualTo("/resumeUrl.wxe"));
               })
           .Verifiable();
 
-      _executionState.ExecuteSubFunction (WxeContext);
+      _executionState.ExecuteSubFunction(WxeContext);
 
       VerifyAll();
     }
@@ -79,13 +79,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public void ExecuteSubFunction_ReEntrancy_GoesToReturningFromSubFunction ()
     {
       var sequence = new MockSequence();
-      SubFunction.InSequence (sequence).Setup (mock => mock.Execute (WxeContext)).Callback ((WxeContext context) => WxeThreadAbortHelper.Abort ()).Verifiable();
-      SubFunction.InSequence (sequence).Setup (mock => mock.Execute (WxeContext)).Verifiable();
-      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetExecutionState (It.IsNotNull<IExecutionState>())).Verifiable();
+      SubFunction.InSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Callback((WxeContext context) => WxeThreadAbortHelper.Abort()).Verifiable();
+      SubFunction.InSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Verifiable();
+      ExecutionStateContextMock.InSequence(sequence).Setup(mock => mock.SetExecutionState(It.IsNotNull<IExecutionState>())).Verifiable();
 
       try
       {
-        _executionState.ExecuteSubFunction (WxeContext);
+        _executionState.ExecuteSubFunction(WxeContext);
         Assert.Fail();
       }
       catch (ThreadAbortException)
@@ -93,7 +93,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
         WxeThreadAbortHelper.ResetAbort();
       }
 
-      _executionState.ExecuteSubFunction (WxeContext);
+      _executionState.ExecuteSubFunction(WxeContext);
 
       VerifyAll();
     }

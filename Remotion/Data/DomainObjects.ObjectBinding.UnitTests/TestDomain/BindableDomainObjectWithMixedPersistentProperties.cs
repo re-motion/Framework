@@ -20,7 +20,7 @@ using Remotion.Mixins;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
   [DBTable]
-  [Uses (typeof (MixinAddingPersistentProperties))]
+  [Uses(typeof(MixinAddingPersistentProperties))]
   public class BindableDomainObjectWithMixedPersistentProperties : BindableDomainObject
   {
     public static BindableDomainObjectWithMixedPersistentProperties NewObject ()

@@ -31,8 +31,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       get
       {
-        return new CompoundGlobalizationService (
-            new[] { new GlobalizationService (new ResourceManagerResolver (new ResourceAttributeBasedResourceManagerFactory())) });
+        return new CompoundGlobalizationService(
+            new[] { new GlobalizationService(new ResourceManagerResolver(new ResourceAttributeBasedResourceManagerFactory())) });
       }
     }
 

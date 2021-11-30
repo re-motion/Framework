@@ -38,26 +38,26 @@ namespace Remotion.Validation.UnitTests.Providers
     {
       var factory = _serviceLocator.GetInstance<IValidationRuleCollectorProvider>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (AggregatingValidationRuleCollectorProvider)));
-      Assert.That (((AggregatingValidationRuleCollectorProvider) factory).InvolvedTypeProvider, Is.TypeOf (typeof (InvolvedTypeProvider)));
-      var validationCollectorProviders = ((AggregatingValidationRuleCollectorProvider) factory).ValidationCollectorProviders;
-      Assert.That (validationCollectorProviders[0], Is.TypeOf (typeof (ValidationAttributesBasedValidationRuleCollectorProvider)));
-      Assert.That (validationCollectorProviders[1], Is.TypeOf (typeof (ApiBasedValidationRuleCollectorProvider)));
-      var validationCollectorReflector = ((ApiBasedValidationRuleCollectorProvider) validationCollectorProviders[1]).ValidationRuleCollectorReflector;
-      Assert.That (validationCollectorReflector, Is.TypeOf (typeof (DiscoveryServiceBasedValidationRuleCollectorReflector)));
-      Assert.That (
-          ((DiscoveryServiceBasedValidationRuleCollectorReflector) validationCollectorReflector).ValidatedTypeResolver,
-          Is.TypeOf (typeof (ClassTypeAwareValidatedTypeResolverDecorator)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(AggregatingValidationRuleCollectorProvider)));
+      Assert.That(((AggregatingValidationRuleCollectorProvider)factory).InvolvedTypeProvider, Is.TypeOf(typeof(InvolvedTypeProvider)));
+      var validationCollectorProviders = ((AggregatingValidationRuleCollectorProvider)factory).ValidationCollectorProviders;
+      Assert.That(validationCollectorProviders[0], Is.TypeOf(typeof(ValidationAttributesBasedValidationRuleCollectorProvider)));
+      Assert.That(validationCollectorProviders[1], Is.TypeOf(typeof(ApiBasedValidationRuleCollectorProvider)));
+      var validationCollectorReflector = ((ApiBasedValidationRuleCollectorProvider)validationCollectorProviders[1]).ValidationRuleCollectorReflector;
+      Assert.That(validationCollectorReflector, Is.TypeOf(typeof(DiscoveryServiceBasedValidationRuleCollectorReflector)));
+      Assert.That(
+          ((DiscoveryServiceBasedValidationRuleCollectorReflector)validationCollectorReflector).ValidatedTypeResolver,
+          Is.TypeOf(typeof(ClassTypeAwareValidatedTypeResolverDecorator)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IValidationRuleCollectorProvider> ();
-      var factory2 = _serviceLocator.GetInstance<IValidationRuleCollectorProvider> ();
+      var factory1 = _serviceLocator.GetInstance<IValidationRuleCollectorProvider>();
+      var factory2 = _serviceLocator.GetInstance<IValidationRuleCollectorProvider>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
-    } 
+      Assert.That(factory1, Is.SameAs(factory2));
+    }
   }
 }

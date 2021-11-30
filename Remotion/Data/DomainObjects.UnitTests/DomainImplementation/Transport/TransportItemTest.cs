@@ -30,36 +30,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void Initialization ()
     {
       TransportItem item = new TransportItem(DomainObjectIDs.Order1);
-      Assert.That (item.ID, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(item.ID, Is.EqualTo(DomainObjectIDs.Order1));
     }
 
     [Test]
     public void PackageDataContainer ()
     {
-      DataContainer container = DomainObjectIDs.Computer1.GetObject<Computer> ().InternalDataContainer;
-      TransportItem item = TransportItem.PackageDataContainer (container);
+      DataContainer container = DomainObjectIDs.Computer1.GetObject<Computer>().InternalDataContainer;
+      TransportItem item = TransportItem.PackageDataContainer(container);
 
       CheckEqualData(container, item);
     }
 
     [Test]
-    public void PackageDataContainers()
+    public void PackageDataContainers ()
     {
-      DataContainer container1 = DomainObjectIDs.Computer1.GetObject<Computer> ().InternalDataContainer;
-      DataContainer container2 = DomainObjectIDs.Computer1.GetObject<Computer> ().InternalDataContainer;
-      TransportItem[] items = TransportItem.PackageDataContainers (new DataContainer[] { container1, container2 }).ToArray ();
+      DataContainer container1 = DomainObjectIDs.Computer1.GetObject<Computer>().InternalDataContainer;
+      DataContainer container2 = DomainObjectIDs.Computer1.GetObject<Computer>().InternalDataContainer;
+      TransportItem[] items = TransportItem.PackageDataContainers(new DataContainer[] { container1, container2 }).ToArray();
 
-      CheckEqualData (container1, items[0]);
-      CheckEqualData (container2, items[1]);
+      CheckEqualData(container1, items[0]);
+      CheckEqualData(container2, items[1]);
     }
 
     public static void CheckEqualData (DataContainer expectedData, TransportItem item)
     {
-      Assert.That (item.ID, Is.EqualTo (expectedData.ID));
+      Assert.That(item.ID, Is.EqualTo(expectedData.ID));
       foreach (var propertyDefinition in expectedData.ClassDefinition.GetPropertyDefinitions())
       {
-        Assert.That (item.Properties.ContainsKey (propertyDefinition.PropertyName), Is.True);
-        Assert.That (item.Properties[propertyDefinition.PropertyName], Is.EqualTo (expectedData.GetValue (propertyDefinition)));
+        Assert.That(item.Properties.ContainsKey(propertyDefinition.PropertyName), Is.True);
+        Assert.That(item.Properties[propertyDefinition.PropertyName], Is.EqualTo(expectedData.GetValue(propertyDefinition)));
       }
     }
 

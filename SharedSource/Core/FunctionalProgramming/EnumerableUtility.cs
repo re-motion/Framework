@@ -68,9 +68,9 @@ namespace Remotion.FunctionalProgramming
     public static IEnumerable<T> SelectRecursiveDepthFirst<T> (T start, Func<T, IEnumerable<T>> childrenSelector)
     {
       if (childrenSelector == null)
-        throw new ArgumentNullException ("childrenSelector");
+        throw new ArgumentNullException("childrenSelector");
 
-      return Singleton (start).Concat (childrenSelector (start).SelectMany (child => SelectRecursiveDepthFirst (child, childrenSelector)));
+      return Singleton(start).Concat(childrenSelector(start).SelectMany(child => SelectRecursiveDepthFirst(child, childrenSelector)));
     }
   }
 }

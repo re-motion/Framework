@@ -41,21 +41,21 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     // methods and properties
 
-    [SetUp] 
-    public virtual void SetUp()
+    [SetUp]
+    public virtual void SetUp ()
     {
-      _value = (IBusinessObject) TypeWithString.Create();
+      _value = (IBusinessObject)TypeWithString.Create();
 
-      _factory = new EditableRowDataSourceFactory ();
+      _factory = new EditableRowDataSourceFactory();
     }
 
     [Test]
     public void Create ()
     {
-      IBusinessObjectReferenceDataSource dataSource = _factory.Create (_value);
+      IBusinessObjectReferenceDataSource dataSource = _factory.Create(_value);
 
-      Assert.That (dataSource, Is.Not.Null);
-      Assert.That (dataSource.BusinessObject, Is.SameAs (_value));
+      Assert.That(dataSource, Is.Not.Null);
+      Assert.That(dataSource.BusinessObject, Is.SameAs(_value));
     }
   }
 }

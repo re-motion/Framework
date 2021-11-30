@@ -45,7 +45,7 @@ namespace Remotion.Web.UI.Controls
         Command command = menuItem.Command;
         Page? page = node.TreeView!.Page; // TODO RM-8118: not null assertion
         if (page is IWxePage)
-          command.ExecuteWxeFunction ((IWxePage) page, null);
+          command.ExecuteWxeFunction((IWxePage)page, null);
         //else
         //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
       }

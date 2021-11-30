@@ -29,7 +29,7 @@ namespace Remotion.Validation.Implementation
   /// When calling the factory method, the first result that is not <see langword="null" /> will be used.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IValidationMessageFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IValidationMessageFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
 
   public class CompoundValidationMessageFactory : IValidationMessageFactory
   {
@@ -42,22 +42,22 @@ namespace Remotion.Validation.Implementation
 
     public ValidationMessage? CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
-      ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
+      ArgumentUtility.CheckNotNull("validator", validator);
+      ArgumentUtility.CheckNotNull("validatedProperty", validatedProperty);
 
       return ValidationMessageFactories
-          .Select (f => f.CreateValidationMessageForPropertyValidator (validator, validatedProperty))
-          .FirstOrDefault (m => m != null);
+          .Select(f => f.CreateValidationMessageForPropertyValidator(validator, validatedProperty))
+          .FirstOrDefault(m => m != null);
     }
 
     public ValidationMessage? CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
-      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+      ArgumentUtility.CheckNotNull("validator", validator);
+      ArgumentUtility.CheckNotNull("validatedType", validatedType);
 
       return ValidationMessageFactories
-          .Select (f => f.CreateValidationMessageForObjectValidator (validator, validatedType))
-          .FirstOrDefault (m => m != null);
+          .Select(f => f.CreateValidationMessageForObjectValidator(validator, validatedType))
+          .FirstOrDefault(m => m != null);
     }
   }
 }

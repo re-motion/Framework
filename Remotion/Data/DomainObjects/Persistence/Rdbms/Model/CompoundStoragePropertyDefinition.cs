@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
       public NestedPropertyInfo (IRdbmsStoragePropertyDefinition storagePropertyDefinition, Func<object, object> valueAccessor)
       {
-        ArgumentUtility.CheckNotNull ("storagePropertyDefinition", storagePropertyDefinition);
-        ArgumentUtility.CheckNotNull ("valueAccessor", valueAccessor);
+        ArgumentUtility.CheckNotNull("storagePropertyDefinition", storagePropertyDefinition);
+        ArgumentUtility.CheckNotNull("valueAccessor", valueAccessor);
 
         _storagePropertyDefinition = storagePropertyDefinition;
         _valueAccessor = valueAccessor;
@@ -58,12 +58,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public CompoundStoragePropertyDefinition (Type propertyType, IEnumerable<NestedPropertyInfo> properties, Func<object[], object> valueCombinator)
     {
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
-      ArgumentUtility.CheckNotNull ("properties", properties);
-      ArgumentUtility.CheckNotNull ("valueCombinator", valueCombinator);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull("properties", properties);
+      ArgumentUtility.CheckNotNull("valueCombinator", valueCombinator);
 
       _propertyType = propertyType;
-      _properties = properties.ToArray ();
+      _properties = properties.ToArray();
       _valueCombinator = valueCombinator;
     }
 
@@ -79,63 +79,63 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ReadOnlyCollection<NestedPropertyInfo> Properties
     {
-      get { return Array.AsReadOnly (_properties); }
+      get { return Array.AsReadOnly(_properties); }
     }
 
     public IEnumerable<ColumnDefinition> GetColumns ()
     {
-      return _properties.SelectMany (p => p.StoragePropertyDefinition.GetColumns());
+      return _properties.SelectMany(p => p.StoragePropertyDefinition.GetColumns());
     }
 
     public IEnumerable<ColumnDefinition> GetColumnsForComparison ()
     {
-      return _properties.SelectMany (p => p.StoragePropertyDefinition.GetColumnsForComparison());
+      return _properties.SelectMany(p => p.StoragePropertyDefinition.GetColumnsForComparison());
     }
 
     public IEnumerable<ColumnValue> SplitValue (object value)
     {
-      return _properties.SelectMany (p => p.StoragePropertyDefinition.SplitValue (p.ValueAccessor (value)));
+      return _properties.SelectMany(p => p.StoragePropertyDefinition.SplitValue(p.ValueAccessor(value)));
     }
 
     public IEnumerable<ColumnValue> SplitValueForComparison (object value)
     {
-      return _properties.SelectMany (p => p.StoragePropertyDefinition.SplitValueForComparison (p.ValueAccessor (value)));
+      return _properties.SelectMany(p => p.StoragePropertyDefinition.SplitValueForComparison(p.ValueAccessor(value)));
     }
 
     public ColumnValueTable SplitValuesForComparison (IEnumerable<object> values)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
+      ArgumentUtility.CheckNotNull("values", values);
 
       var valueList = values.ToList();
-      return ColumnValueTable.Combine (
-          _properties.Select (p => p.StoragePropertyDefinition.SplitValuesForComparison (valueList.Select (v => p.ValueAccessor (v)))));
+      return ColumnValueTable.Combine(
+          _properties.Select(p => p.StoragePropertyDefinition.SplitValuesForComparison(valueList.Select(v => p.ValueAccessor(v)))));
     }
 
     public object CombineValue (IColumnValueProvider columnValueProvider)
     {
-      ArgumentUtility.CheckNotNull ("columnValueProvider", columnValueProvider);
-      var values = _properties.Select (p => p.StoragePropertyDefinition.CombineValue (columnValueProvider)).ToArray ();
-      return _valueCombinator (values);
+      ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
+      var values = _properties.Select(p => p.StoragePropertyDefinition.CombineValue(columnValueProvider)).ToArray();
+      return _valueCombinator(values);
     }
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull ("equivalentProperties", equivalentProperties);
-      var checkedProperties = equivalentProperties.Select (property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
+      ArgumentUtility.CheckNotNull("equivalentProperties", equivalentProperties);
+      var checkedProperties = equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
           this,
           property,
           "equivalentProperties",
-          prop => Tuple.Create<string, object> ("property type", prop.PropertyType),
-          prop => Tuple.Create<string, object> ("nested property count", prop._properties.Length)
-          )).ToArray ();
+          prop => Tuple.Create<string, object>("property type", prop.PropertyType),
+          prop => Tuple.Create<string, object>("nested property count", prop._properties.Length)
+          )).ToArray();
 
-      return new CompoundStoragePropertyDefinition (
+      return new CompoundStoragePropertyDefinition(
           _propertyType,
-          _properties.Select (
+          _properties.Select(
               (p, i) =>
-              new NestedPropertyInfo (
-                  p.StoragePropertyDefinition.UnifyWithEquivalentProperties (
-                      checkedProperties.Select (other => other._properties[i].StoragePropertyDefinition)),
+              new NestedPropertyInfo(
+                  p.StoragePropertyDefinition.UnifyWithEquivalentProperties(
+                      checkedProperties.Select(other => other._properties[i].StoragePropertyDefinition)),
                   p.ValueAccessor)),
           _valueCombinator);
     }

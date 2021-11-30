@@ -30,132 +30,132 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void EnsureDataAvailable_AlreadyLoaded ()
     {
-      CheckLoaded (LoadedObject1);
+      CheckLoaded(LoadedObject1);
 
-      TestableClientTransaction.EnsureDataAvailable (LoadedObject1.ID);
+      TestableClientTransaction.EnsureDataAvailable(LoadedObject1.ID);
 
-      ListenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (
+      ListenerMock.AssertWasNotCalled(mock => mock.ObjectsLoading(
           Arg<ClientTransaction>.Is.Anything,
           Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
-      CheckLoaded (LoadedObject1);
+      CheckLoaded(LoadedObject1);
     }
 
     [Test]
     public void EnsureDataAvailable_NotLoadedYet ()
     {
-      CheckNotLoaded (NotLoadedObject1);
+      CheckNotLoaded(NotLoadedObject1);
 
-      TestableClientTransaction.EnsureDataAvailable (NotLoadedObject1.ID);
+      TestableClientTransaction.EnsureDataAvailable(NotLoadedObject1.ID);
 
-      ListenerMock.AssertWasCalled (mock => mock.ObjectsLoading (
-          Arg.Is (TestableClientTransaction),
-          Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll (new[] { NotLoadedObject1.ID })));
-      ListenerMock.AssertWasCalled (mock => mock.ObjectsLoaded (
-          Arg.Is (TestableClientTransaction),
-          Arg<ReadOnlyCollection<DomainObject>>.List.ContainsAll (new[] { NotLoadedObject1 })));
-      CheckLoaded (NotLoadedObject1);
+      ListenerMock.AssertWasCalled(mock => mock.ObjectsLoading(
+          Arg.Is(TestableClientTransaction),
+          Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll(new[] { NotLoadedObject1.ID })));
+      ListenerMock.AssertWasCalled(mock => mock.ObjectsLoaded(
+          Arg.Is(TestableClientTransaction),
+          Arg<ReadOnlyCollection<DomainObject>>.List.ContainsAll(new[] { NotLoadedObject1 })));
+      CheckLoaded(NotLoadedObject1);
     }
 
     [Test]
     public void EnsureDataAvailable_Invalid ()
     {
-      Assert.That (
-          () => TestableClientTransaction.EnsureDataAvailable (InvalidObject.ID),
+      Assert.That(
+          () => TestableClientTransaction.EnsureDataAvailable(InvalidObject.ID),
           Throws.InstanceOf<ObjectInvalidException>()
-              .With.Message.Matches (@"Object '.*\|.*\|.*' is invalid in this transaction\."));
+              .With.Message.Matches(@"Object '.*\|.*\|.*' is invalid in this transaction\."));
     }
 
     [Test]
     public void EnsureDataAvailable_NotFound ()
     {
-      CheckNotLoaded (NotLoadedNonExistingObject);
+      CheckNotLoaded(NotLoadedNonExistingObject);
 
-      Assert.That (
-          () => TestableClientTransaction.EnsureDataAvailable (NotLoadedNonExistingObject.ID),
-          Throws.TypeOf<ObjectsNotFoundException> ().With.Message.EqualTo ("Object(s) could not be found: '" + NotLoadedNonExistingObject.ID + "'."));
+      Assert.That(
+          () => TestableClientTransaction.EnsureDataAvailable(NotLoadedNonExistingObject.ID),
+          Throws.TypeOf<ObjectsNotFoundException>().With.Message.EqualTo("Object(s) could not be found: '" + NotLoadedNonExistingObject.ID + "'."));
 
-      CheckInvalid (NotLoadedNonExistingObject);
+      CheckInvalid(NotLoadedNonExistingObject);
       // Note: More elaborate tests for not found objects are in NotFoundObjectTest
     }
 
     [Test]
     public void EnsureDataAvailable_NotEnlisted ()
     {
-      Assert.That (TestableClientTransaction.GetEnlistedDomainObject (DomainObjectIDs.OrderTicket1), Is.Null);
+      Assert.That(TestableClientTransaction.GetEnlistedDomainObject(DomainObjectIDs.OrderTicket1), Is.Null);
 
-      TestableClientTransaction.EnsureDataAvailable (DomainObjectIDs.OrderTicket1);
+      TestableClientTransaction.EnsureDataAvailable(DomainObjectIDs.OrderTicket1);
 
-      Assert.That (TestableClientTransaction.GetEnlistedDomainObject (DomainObjectIDs.OrderTicket1), Is.Not.Null);
+      Assert.That(TestableClientTransaction.GetEnlistedDomainObject(DomainObjectIDs.OrderTicket1), Is.Not.Null);
     }
 
     [Test]
     public void EnsureDataAvailable_Many_AlreadyLoaded ()
     {
-      CheckLoaded (LoadedObject1);
-      CheckLoaded (LoadedObject2);
+      CheckLoaded(LoadedObject1);
+      CheckLoaded(LoadedObject2);
 
-      TestableClientTransaction.EnsureDataAvailable (new[] { LoadedObject1.ID, LoadedObject2.ID });
+      TestableClientTransaction.EnsureDataAvailable(new[] { LoadedObject1.ID, LoadedObject2.ID });
 
-      ListenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
+      ListenerMock.AssertWasNotCalled(mock => mock.ObjectsLoading(Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
     }
 
     [Test]
     public void EnsureDataAvailable_Many_NotLoadedYet ()
     {
-      TestableClientTransaction.EnsureDataAvailable (new[] { NotLoadedObject1.ID, NotLoadedObject2.ID });
+      TestableClientTransaction.EnsureDataAvailable(new[] { NotLoadedObject1.ID, NotLoadedObject2.ID });
 
-      ListenerMock.AssertWasCalled (mock => mock.ObjectsLoading (
-          Arg.Is (TestableClientTransaction),
-          Arg<ReadOnlyCollection<ObjectID>>.List.Equivalent (new[] { NotLoadedObject1.ID, NotLoadedObject2.ID })));
+      ListenerMock.AssertWasCalled(mock => mock.ObjectsLoading(
+          Arg.Is(TestableClientTransaction),
+          Arg<ReadOnlyCollection<ObjectID>>.List.Equivalent(new[] { NotLoadedObject1.ID, NotLoadedObject2.ID })));
     }
 
     [Test]
     public void EnsureDataAvailable_Many_SomeLoadedSomeNot ()
     {
-      TestableClientTransaction.EnsureDataAvailable (new[] { NotLoadedObject1.ID, NotLoadedObject2.ID, LoadedObject1.ID });
+      TestableClientTransaction.EnsureDataAvailable(new[] { NotLoadedObject1.ID, NotLoadedObject2.ID, LoadedObject1.ID });
 
-      ListenerMock.AssertWasCalled (mock => mock.ObjectsLoading (
-          Arg.Is (TestableClientTransaction),
-          Arg<ReadOnlyCollection<ObjectID>>.List.Equivalent (new[] { NotLoadedObject1.ID, NotLoadedObject2.ID })));
-      ListenerMock.AssertWasCalled (mock => mock.ObjectsLoaded (
-          Arg.Is (TestableClientTransaction),
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (new[] { NotLoadedObject1, NotLoadedObject2 })));
+      ListenerMock.AssertWasCalled(mock => mock.ObjectsLoading(
+          Arg.Is(TestableClientTransaction),
+          Arg<ReadOnlyCollection<ObjectID>>.List.Equivalent(new[] { NotLoadedObject1.ID, NotLoadedObject2.ID })));
+      ListenerMock.AssertWasCalled(mock => mock.ObjectsLoaded(
+          Arg.Is(TestableClientTransaction),
+          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent(new[] { NotLoadedObject1, NotLoadedObject2 })));
 
-      ListenerMock.AssertWasNotCalled (mock => mock.ObjectsLoading (
+      ListenerMock.AssertWasNotCalled(mock => mock.ObjectsLoading(
           Arg<ClientTransaction>.Is.Anything,
-          Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll (new[] { LoadedObject1.ID })));
+          Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll(new[] { LoadedObject1.ID })));
     }
 
     [Test]
     public void EnsureDataAvailable_Many_Invalid ()
     {
-      Assert.That (
-          () => TestableClientTransaction.EnsureDataAvailable (new[] { InvalidObject.ID }),
+      Assert.That(
+          () => TestableClientTransaction.EnsureDataAvailable(new[] { InvalidObject.ID }),
           Throws.InstanceOf<ObjectInvalidException>()
-              .With.Message.Matches (@"Object '.*\|.*\|.*' is invalid in this transaction\."));
+              .With.Message.Matches(@"Object '.*\|.*\|.*' is invalid in this transaction\."));
     }
 
     [Test]
     public void EnsureDataAvailable_Many_NotFound ()
     {
-      CheckNotLoaded (NotLoadedNonExistingObject);
+      CheckNotLoaded(NotLoadedNonExistingObject);
 
-      Assert.That (
-          () => TestableClientTransaction.EnsureDataAvailable (new[] { NotLoadedNonExistingObject.ID }),
-          Throws.TypeOf<ObjectsNotFoundException>().With.Message.EqualTo ("Object(s) could not be found: '" + NotLoadedNonExistingObject.ID + "'."));
+      Assert.That(
+          () => TestableClientTransaction.EnsureDataAvailable(new[] { NotLoadedNonExistingObject.ID }),
+          Throws.TypeOf<ObjectsNotFoundException>().With.Message.EqualTo("Object(s) could not be found: '" + NotLoadedNonExistingObject.ID + "'."));
 
-      CheckInvalid (NotLoadedNonExistingObject);
+      CheckInvalid(NotLoadedNonExistingObject);
       // Note: More elaborate tests for not found objects are in NotFoundObjectTest
     }
 
     [Test]
     public void EnsureDataAvailable_Many_NotEnlisted ()
     {
-      Assert.That (TestableClientTransaction.GetEnlistedDomainObject (DomainObjectIDs.OrderTicket1), Is.Null);
+      Assert.That(TestableClientTransaction.GetEnlistedDomainObject(DomainObjectIDs.OrderTicket1), Is.Null);
 
-      TestableClientTransaction.EnsureDataAvailable (new[] { DomainObjectIDs.OrderTicket1 });
+      TestableClientTransaction.EnsureDataAvailable(new[] { DomainObjectIDs.OrderTicket1 });
 
-      Assert.That (TestableClientTransaction.GetEnlistedDomainObject (DomainObjectIDs.OrderTicket1), Is.Not.Null);
+      Assert.That(TestableClientTransaction.GetEnlistedDomainObject(DomainObjectIDs.OrderTicket1), Is.Not.Null);
     }
   }
 }

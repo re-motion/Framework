@@ -33,22 +33,22 @@ namespace Remotion.Web.UI
     /// </summary>
     public static void RegisterUtilitiesJavaScriptInclude (this HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string utilitiesKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_Utilities";
-      var utilitiesScripFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Utilities.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (utilitiesKey, utilitiesScripFileUrl);
+      string utilitiesKey = typeof(HtmlHeadContents).GetFullNameChecked() + "_Utilities";
+      var utilitiesScripFileUrl = ResourceUrlFactory.CreateResourceUrl(typeof(HtmlHeadContents), ResourceType.Html, "Utilities.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(utilitiesKey, utilitiesScripFileUrl);
     }
 
     /// <summary>
     /// Registers jquery.IFrameShim.js in non-themed HTML folder of Remotion.Web.dll.
     /// </summary>
-    [Obsolete ("JQuery iFrame shim was only needed for IE, which is no longer supported. (Version 3.0.0-alpha.12)", true)]
+    [Obsolete("JQuery iFrame shim was only needed for IE, which is no longer supported. (Version 3.0.0-alpha.12)", true)]
     public static void RegisterJQueryIFrameShimJavaScriptInclude (this HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      throw new NotSupportedException ("JQuery iFrame shim was only needed for IE, which is no longer supported. (Version 3.0.0-alpha.12)");
+      throw new NotSupportedException("JQuery iFrame shim was only needed for IE, which is no longer supported. (Version 3.0.0-alpha.12)");
     }
 
     /// <summary>
@@ -56,11 +56,11 @@ namespace Remotion.Web.UI
     /// </summary>
     public static void RegisterPageStylesheetLink (this HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (HtmlHeadContents).GetFullNameChecked() + "_Style";
-      var url = InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Html, "Style.css");
-      htmlHeadAppender.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Page);
+      string key = typeof(HtmlHeadContents).GetFullNameChecked() + "_Style";
+      var url = InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Html, "Style.css");
+      htmlHeadAppender.RegisterStylesheetLink(key, url, HtmlHeadAppender.Priority.Page);
     }
 
     /// <summary>
@@ -68,22 +68,22 @@ namespace Remotion.Web.UI
     /// </summary>
     public static void RegisterCommonStyleSheet (this HtmlHeadAppender htmlHeadAppender)
     {
-      var key = typeof (HtmlHeadContents).GetFullNameChecked() + "_CommonStyle";
-      var url = ResourceUrlFactory.CreateThemedResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Common.css");
+      var key = typeof(HtmlHeadContents).GetFullNameChecked() + "_CommonStyle";
+      var url = ResourceUrlFactory.CreateThemedResourceUrl(typeof(HtmlHeadContents), ResourceType.Html, "Common.css");
 
-      htmlHeadAppender.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Library);
+      htmlHeadAppender.RegisterStylesheetLink(key, url, HtmlHeadAppender.Priority.Library);
 
-      var robotoRegularKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_RobotoRegular";
-      var robotoRegularUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Roboto-Regular.ttf");
-      htmlHeadAppender.RegisterHeadElement (robotoRegularKey, new FontPreloadLink (robotoRegularUrl, "font/ttf"), HtmlHeadAppender.Priority.Script);
+      var robotoRegularKey = typeof(HtmlHeadContents).GetFullNameChecked() + "_RobotoRegular";
+      var robotoRegularUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(HtmlHeadContents), ResourceType.Html, "Roboto-Regular.ttf");
+      htmlHeadAppender.RegisterHeadElement(robotoRegularKey, new FontPreloadLink(robotoRegularUrl, "font/ttf"), HtmlHeadAppender.Priority.Script);
 
-      var robotoMediumKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_RobotoMedium";
-      var robotoMediumUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Roboto-Medium.ttf");
-      htmlHeadAppender.RegisterHeadElement (robotoMediumKey, new FontPreloadLink (robotoMediumUrl, "font/ttf"), HtmlHeadAppender.Priority.Script);
+      var robotoMediumKey = typeof(HtmlHeadContents).GetFullNameChecked() + "_RobotoMedium";
+      var robotoMediumUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(HtmlHeadContents), ResourceType.Html, "Roboto-Medium.ttf");
+      htmlHeadAppender.RegisterHeadElement(robotoMediumKey, new FontPreloadLink(robotoMediumUrl, "font/ttf"), HtmlHeadAppender.Priority.Script);
 
-      var robotoBoldKey = typeof (HtmlHeadContents).GetFullNameChecked() + "_RobotoBold";
-      var robotoBoldUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Roboto-Bold.ttf");
-      htmlHeadAppender.RegisterHeadElement (robotoBoldKey, new FontPreloadLink (robotoBoldUrl, "font/ttf"), HtmlHeadAppender.Priority.Script);
+      var robotoBoldKey = typeof(HtmlHeadContents).GetFullNameChecked() + "_RobotoBold";
+      var robotoBoldUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(HtmlHeadContents), ResourceType.Html, "Roboto-Bold.ttf");
+      htmlHeadAppender.RegisterHeadElement(robotoBoldKey, new FontPreloadLink(robotoBoldUrl, "font/ttf"), HtmlHeadAppender.Priority.Script);
     }
 
     private static IResourceUrlFactory ResourceUrlFactory

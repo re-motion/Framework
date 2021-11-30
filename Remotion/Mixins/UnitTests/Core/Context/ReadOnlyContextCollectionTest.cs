@@ -32,36 +32,36 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [SetUp]
     public void SetUp ()
     {
-      _collection = new ReadOnlyContextCollection<string, int> (
+      _collection = new ReadOnlyContextCollection<string, int>(
           delegate (int i)
           {
-            return i.ToString ();
+            return i.ToString();
           }, new int[] { 1, 2, 3 });
     }
 
     [Test]
     public void NewCollection ()
     {
-      Assert.That (_collection.Count, Is.EqualTo (3));
+      Assert.That(_collection.Count, Is.EqualTo(3));
     }
 
     [Test]
     public void NewCollection_Duplicates ()
     {
-      ReadOnlyContextCollection<string, int> collection = new ReadOnlyContextCollection<string, int> (
+      ReadOnlyContextCollection<string, int> collection = new ReadOnlyContextCollection<string, int>(
           delegate (int i) { return i.ToString(); },
           new int[] {1, 2, 3, 3, 2, 1, 2, 1, 3, 2});
 
-      Assert.That (collection, Is.EquivalentTo (new int[] {1, 2, 3}));
+      Assert.That(collection, Is.EquivalentTo(new int[] {1, 2, 3}));
     }
 
     [Test]
     public void NewCollection_DuplicateKeys_DifferentValues ()
     {
-      Assert.That (
-          () => new ReadOnlyContextCollection<string, int> (delegate { return "1"; }, new int[] { 1, 2 }),
+      Assert.That(
+          () => new ReadOnlyContextCollection<string, int>(delegate { return "1"; }, new int[] { 1, 2 }),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The items 1 and 2 are identified by the same key 1 and cannot both be added "
                   + "to the collection.", "values"));
     }
@@ -69,121 +69,121 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void NewCollection_NullValue ()
     {
-      Assert.That (
-          () => new ReadOnlyContextCollection<string, string> ( delegate { return ""; }, new string[] { null }),
+      Assert.That(
+          () => new ReadOnlyContextCollection<string, string>( delegate { return ""; }, new string[] { null }),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Value cannot be null.", "values[0]"));
     }
 
     [Test]
     public void Contains_Key ()
     {
-      Assert.That (_collection.ContainsKey ("1"), Is.True);
-      Assert.That (_collection.ContainsKey ("2"), Is.True);
-      Assert.That (_collection.ContainsKey ("3"), Is.True);
-      Assert.That (_collection.ContainsKey ("4"), Is.False);
-      Assert.That (_collection.ContainsKey ("§"), Is.False);
+      Assert.That(_collection.ContainsKey("1"), Is.True);
+      Assert.That(_collection.ContainsKey("2"), Is.True);
+      Assert.That(_collection.ContainsKey("3"), Is.True);
+      Assert.That(_collection.ContainsKey("4"), Is.False);
+      Assert.That(_collection.ContainsKey("§"), Is.False);
     }
 
     [Test]
     public void Contains_Value ()
     {
-      ReadOnlyContextCollection<string, int> collection = new ReadOnlyContextCollection<string, int> (
+      ReadOnlyContextCollection<string, int> collection = new ReadOnlyContextCollection<string, int>(
           delegate (int i)
           {
             if (i > 2)
               return ">2";
             else
-              return i.ToString ();
+              return i.ToString();
           }, new int[] { 1, 2, 3 });
 
-      Assert.That (collection.Contains (1), Is.True);
-      Assert.That (collection.Contains (2), Is.True);
-      Assert.That (collection.Contains (3), Is.True);
-      Assert.That (collection.Contains (4), Is.False);
+      Assert.That(collection.Contains(1), Is.True);
+      Assert.That(collection.Contains(2), Is.True);
+      Assert.That(collection.Contains(3), Is.True);
+      Assert.That(collection.Contains(4), Is.False);
     }
 
     [Test]
     public void Get ()
     {
-      Assert.That (_collection["1"], Is.EqualTo (1));
-      Assert.That (_collection["2"], Is.EqualTo (2));
-      Assert.That (_collection["3"], Is.EqualTo (3));
-      Assert.That (_collection["4"], Is.EqualTo (0));
-      Assert.That (_collection["soigfusolh"], Is.EqualTo (0));
+      Assert.That(_collection["1"], Is.EqualTo(1));
+      Assert.That(_collection["2"], Is.EqualTo(2));
+      Assert.That(_collection["3"], Is.EqualTo(3));
+      Assert.That(_collection["4"], Is.EqualTo(0));
+      Assert.That(_collection["soigfusolh"], Is.EqualTo(0));
     }
 
     [Test]
     public void GetEnumerator ()
     {
-      List<int> values = new List<int> (_collection);
-      Assert.That (values, Is.EqualTo (new int[] {1, 2, 3}));
+      List<int> values = new List<int>(_collection);
+      Assert.That(values, Is.EqualTo(new int[] {1, 2, 3}));
     }
 
     [Test]
     public void GetEnumerator_NonGeneric ()
     {
       IEnumerable collectionAsEnumerable = _collection;
-      Assert.That (collectionAsEnumerable.Cast<object> ().ToArray (), Is.EqualTo (new[] { 1, 2, 3 }));
+      Assert.That(collectionAsEnumerable.Cast<object>().ToArray(), Is.EqualTo(new[] { 1, 2, 3 }));
     }
 
     [Test]
     public void CopyTo ()
     {
       int[] values = new int[5];
-      _collection.CopyTo (values, 1);
-      Assert.That (values, Is.EqualTo (new int[] {0, 1, 2, 3, 0}));
+      _collection.CopyTo(values, 1);
+      Assert.That(values, Is.EqualTo(new int[] {0, 1, 2, 3, 0}));
     }
 
     [Test]
     public void Add ()
     {
-      Assert.That (
-          () => ((ICollection<int>) _collection).Add (0),
+      Assert.That(
+          () => ((ICollection<int>)_collection).Add(0),
           Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
     public void Clear ()
     {
-      Assert.That (
-          () => ((ICollection<int>) _collection).Clear (),
+      Assert.That(
+          () => ((ICollection<int>)_collection).Clear(),
           Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
     public void Remove ()
     {
-      Assert.That (
-          () => ((ICollection<int>) _collection).Remove (1),
+      Assert.That(
+          () => ((ICollection<int>)_collection).Remove(1),
           Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
     public void IsReadOnly ()
     {
-      Assert.That (((ICollection<int>) _collection).IsReadOnly, Is.True);
+      Assert.That(((ICollection<int>)_collection).IsReadOnly, Is.True);
     }
 
     [Test]
     public void CopyTo_NonGeneric ()
     {
       object[] values = new object[5];
-      ((ICollection) _collection).CopyTo (values, 1);
-      Assert.That (values, Is.EqualTo (new object[] { null, 1, 2, 3, null }));
+      ((ICollection)_collection).CopyTo(values, 1);
+      Assert.That(values, Is.EqualTo(new object[] { null, 1, 2, 3, null }));
     }
 
     [Test]
     public void IsSynchronized ()
     {
-      Assert.That (((ICollection) _collection).IsSynchronized, Is.False);
+      Assert.That(((ICollection)_collection).IsSynchronized, Is.False);
     }
 
     [Test]
     public void SyncRoot ()
     {
-      Assert.That (((ICollection) _collection).SyncRoot, Is.Not.Null);
+      Assert.That(((ICollection)_collection).SyncRoot, Is.Not.Null);
     }
   }
 }

@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
   {
     public static EditableRowControlFactory CreateEditableRowControlFactory ()
     {
-      return ObjectFactory.Create<EditableRowControlFactory> (true, ParamList.Empty);
+      return ObjectFactory.Create<EditableRowControlFactory>(true, ParamList.Empty);
     }
 
     protected EditableRowControlFactory ()
@@ -36,46 +36,46 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     public virtual IBusinessObjectBoundEditableWebControl? Create (BocSimpleColumnDefinition column, int columnIndex)
     {
-      ArgumentUtility.CheckNotNull ("column", column);
+      ArgumentUtility.CheckNotNull("column", column);
       if (columnIndex < 0)
-        throw new ArgumentOutOfRangeException ("columnIndex");
+        throw new ArgumentOutOfRangeException("columnIndex");
 
       IBusinessObjectBoundEditableWebControl? control = column.CreateEditModeControl();
 
       if (control == null)
-        control = CreateFromPropertyPath (column.GetPropertyPath());
+        control = CreateFromPropertyPath(column.GetPropertyPath());
 
       return control;
     }
 
     protected virtual IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
-      return (IBusinessObjectBoundEditableWebControl?) ControlFactory.CreateControl (propertyPath.Properties.Last(), ControlFactory.EditMode.InlineEdit);
+      return (IBusinessObjectBoundEditableWebControl?)ControlFactory.CreateControl(propertyPath.Properties.Last(), ControlFactory.EditMode.InlineEdit);
     }
 
     public virtual void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       var bocBooleanValue = new Controls.BocBooleanValue();
-      bocBooleanValue.RegisterHtmlHeadContents (htmlHeadAppender);
+      bocBooleanValue.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var bocDateTimeValue = new Controls.BocDateTimeValue();
-      bocDateTimeValue.RegisterHtmlHeadContents (htmlHeadAppender);
+      bocDateTimeValue.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var bocEnumValue = new BocEnumValue();
-      bocEnumValue.RegisterHtmlHeadContents (htmlHeadAppender);
+      bocEnumValue.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var bocMultilineTextValue = new BocMultilineTextValue();
-      bocMultilineTextValue.RegisterHtmlHeadContents (htmlHeadAppender);
+      bocMultilineTextValue.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var bocReferenceValue = new BocReferenceValue();
-      bocReferenceValue.RegisterHtmlHeadContents (htmlHeadAppender);
+      bocReferenceValue.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var bocTextValue = new BocTextValue();
-      bocTextValue.RegisterHtmlHeadContents (htmlHeadAppender);
+      bocTextValue.RegisterHtmlHeadContents(htmlHeadAppender);
     }
   }
 }

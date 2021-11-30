@@ -27,38 +27,38 @@ namespace Remotion.Extensions.UnitTests.Logging.LogExtensionsTests
     [Test]
     public void Test_FormatWithEnumAndException ()
     {
-      Exception exception = new Exception ();
-      SetLoggingThreshold (Level.Fatal);
+      Exception exception = new Exception();
+      SetLoggingThreshold(Level.Fatal);
 
-      Log.FatalFormat (LogMessages.TheMessage, exception, "First", "Second");
+      Log.FatalFormat(LogMessages.TheMessage, exception, "First", "Second");
 
-      LoggingEvent[] events = GetLoggingEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That (loggingEvent.Level, Is.EqualTo (Level.Fatal));
-      Assert.That (loggingEvent.MessageObject.ToString (), Is.EqualTo ("The message with First and Second."));
-      Assert.That (loggingEvent.Properties["EventID"], Is.EqualTo ((int) LogMessages.TheMessage));
-      Assert.That (loggingEvent.ExceptionObject, Is.SameAs (exception));
-      Assert.That (loggingEvent.Repository, Is.SameAs (Logger.Repository));
-      Assert.That (loggingEvent.LoggerName, Is.EqualTo (Logger.Name));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Fatal));
+      Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo("The message with First and Second."));
+      Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo((int)LogMessages.TheMessage));
+      Assert.That(loggingEvent.ExceptionObject, Is.SameAs(exception));
+      Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
+      Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));
     }
 
     [Test]
     public void Test_FormatWithEnum ()
     {
-      SetLoggingThreshold (Level.Fatal);
+      SetLoggingThreshold(Level.Fatal);
 
-      Log.FatalFormat (LogMessages.TheMessage, "First", "Second");
+      Log.FatalFormat(LogMessages.TheMessage, "First", "Second");
 
-      LoggingEvent[] events = GetLoggingEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That (loggingEvent.Level, Is.EqualTo (Level.Fatal));
-      Assert.That (loggingEvent.MessageObject.ToString (), Is.EqualTo ("The message with First and Second."));
-      Assert.That (loggingEvent.Properties["EventID"], Is.EqualTo ((int) LogMessages.TheMessage));
-      Assert.That (loggingEvent.ExceptionObject, Is.Null);
-      Assert.That (loggingEvent.Repository, Is.SameAs (Logger.Repository));
-      Assert.That (loggingEvent.LoggerName, Is.EqualTo (Logger.Name));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Fatal));
+      Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo("The message with First and Second."));
+      Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo((int)LogMessages.TheMessage));
+      Assert.That(loggingEvent.ExceptionObject, Is.Null);
+      Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
+      Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));
     }
   }
 }

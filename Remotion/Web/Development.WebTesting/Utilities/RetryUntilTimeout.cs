@@ -33,15 +33,15 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   /// </remarks>
   public class RetryUntilTimeout
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (RetryUntilTimeout));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(RetryUntilTimeout));
 
     private readonly RetryUntilTimeout<object?> _retryUntilTimeout;
 
     public RetryUntilTimeout ([NotNull] Action action, TimeSpan timeout, TimeSpan retryInterval)
     {
-      ArgumentUtility.CheckNotNull ("action", action);
+      ArgumentUtility.CheckNotNull("action", action);
 
-      _retryUntilTimeout = new RetryUntilTimeout<object?> (
+      _retryUntilTimeout = new RetryUntilTimeout<object?>(
           () =>
           {
             action();
@@ -71,10 +71,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </param>
     public static void Run ([NotNull] Action action, TimeSpan? timeout = null, TimeSpan? retryInterval = null)
     {
-      ArgumentUtility.CheckNotNull ("action", action);
-      var configuration = new WebTestConfigurationFactory ().CreateDriverConfiguration();
+      ArgumentUtility.CheckNotNull("action", action);
+      var configuration = new WebTestConfigurationFactory().CreateDriverConfiguration();
 
-      var retryUntilTimeout = new RetryUntilTimeout (
+      var retryUntilTimeout = new RetryUntilTimeout(
           action,
           timeout ?? configuration.SearchTimeout,
           retryInterval ?? configuration.RetryInterval);
@@ -97,10 +97,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <returns>Returns the <typeparamref name="TReturnType"/> object returned by <paramref name="func"/>.</returns>
     public static TReturnType Run<TReturnType> ([NotNull] Func<TReturnType> func, TimeSpan? timeout = null, TimeSpan? retryInterval = null)
     {
-      ArgumentUtility.CheckNotNull ("func", func);
-      var configuration = new WebTestConfigurationFactory ().CreateDriverConfiguration();
+      ArgumentUtility.CheckNotNull("func", func);
+      var configuration = new WebTestConfigurationFactory().CreateDriverConfiguration();
 
-      var retryUntilTimeout = new RetryUntilTimeout<TReturnType> (
+      var retryUntilTimeout = new RetryUntilTimeout<TReturnType>(
           func,
           timeout ?? configuration.SearchTimeout,
           retryInterval ?? configuration.RetryInterval);
@@ -119,7 +119,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   {
     // Todo RM-6337: Find out why DriverScope.RetryUntilTimeout is so slow.
 
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (RetryUntilTimeout<TReturnType>));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(RetryUntilTimeout<TReturnType>));
 
     private readonly Func<TReturnType> _func;
     private readonly TimeSpan _timeout;
@@ -127,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public RetryUntilTimeout ([NotNull] Func<TReturnType> func, TimeSpan timeout, TimeSpan retryInterval)
     {
-      ArgumentUtility.CheckNotNull ("func", func);
+      ArgumentUtility.CheckNotNull("func", func);
 
       _func = func;
       _timeout = timeout;
@@ -148,12 +148,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         {
           if (stopwatch.ElapsedMilliseconds < _timeout.TotalMilliseconds)
           {
-            s_log.Debug ("RetryUntilTimeout failed with " + ex.GetType().Name + " - trying again.");
-            Thread.Sleep (_retryInterval);
+            s_log.Debug("RetryUntilTimeout failed with " + ex.GetType().Name + " - trying again.");
+            Thread.Sleep(_retryInterval);
           }
           else
           {
-            s_log.Warn ("RetryUntilTimeout failed with " + ex.GetType().Name + " - timeout elapsed, failing.");
+            s_log.Warn("RetryUntilTimeout failed with " + ex.GetType().Name + " - timeout elapsed, failing.");
             throw;
           }
         }

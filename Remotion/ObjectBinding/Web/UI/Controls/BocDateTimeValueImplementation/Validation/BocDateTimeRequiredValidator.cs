@@ -40,21 +40,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
     protected override bool EvaluateIsValid ()
     {
-      Control? control = NamingContainer.FindControl (ControlToValidate);
+      Control? control = NamingContainer.FindControl(ControlToValidate);
 
       BocDateTimeValue? dateTimeValueControl = control as BocDateTimeValue;
 
       if (dateTimeValueControl == null)
-        throw new InvalidOperationException ("BocDateTimeValueValidatorBase may only be applied to controls of type BocDateTimeValue");
+        throw new InvalidOperationException("BocDateTimeValueValidatorBase may only be applied to controls of type BocDateTimeValue");
 
-      var validationErrorForRequired = EvaluateIsRequiredValid (dateTimeValueControl);
+      var validationErrorForRequired = EvaluateIsRequiredValid(dateTimeValueControl);
       if (validationErrorForRequired != ValidationError.None)
       {
         Error = validationErrorForRequired;
         return false;
       }
 
-      var validationErrorForComplete = EvaluateIsCompleteValid (dateTimeValueControl);
+      var validationErrorForComplete = EvaluateIsCompleteValid(dateTimeValueControl);
       if (validationErrorForComplete != ValidationError.None)
       {
         Error = validationErrorForComplete;
@@ -76,8 +76,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
       bool isTimeRequired = control.ActualValueType == BocDateTimeValueType.DateTime;
 
-      bool hasDate = !string.IsNullOrWhiteSpace (control.DateString);
-      bool hasTime = !string.IsNullOrWhiteSpace (control.TimeString);
+      bool hasDate = !string.IsNullOrWhiteSpace(control.DateString);
+      bool hasTime = !string.IsNullOrWhiteSpace(control.TimeString);
 
       var isDateMissing = isDateRequired && !hasDate;
       var isTimeMissing = isTimeRequired && !hasTime;
@@ -105,8 +105,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       if (!isDateRequired)
         return ValidationError.None;
 
-      bool hasDate = !string.IsNullOrWhiteSpace (control.DateString);
-      bool hasTime = !string.IsNullOrWhiteSpace (control.TimeString);
+      bool hasDate = !string.IsNullOrWhiteSpace(control.DateString);
+      bool hasTime = !string.IsNullOrWhiteSpace(control.TimeString);
 
       if (hasTime && !hasDate)
         return ValidationError.MissingDate;
@@ -120,25 +120,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       {
         case ValidationError.MissingDateAndTime:
         {
-          if (!string.IsNullOrEmpty (MissingDateAndTimeErrorMessage))
+          if (!string.IsNullOrEmpty(MissingDateAndTimeErrorMessage))
             ErrorMessage = MissingDateAndTimeErrorMessage;
           break;
         }
         case ValidationError.MissingDateOrTime:
         {
-          if (!string.IsNullOrEmpty (MissingDateOrTimeErrorMessage))
+          if (!string.IsNullOrEmpty(MissingDateOrTimeErrorMessage))
             ErrorMessage = MissingDateOrTimeErrorMessage;
           break;
         }
         case ValidationError.MissingDate:
         {
-          if (!string.IsNullOrEmpty (MissingDateErrorMessage))
+          if (!string.IsNullOrEmpty(MissingDateErrorMessage))
             ErrorMessage = MissingDateErrorMessage;
           break;
         }
         case ValidationError.MissingTime:
         {
-          if (!string.IsNullOrEmpty (MissingTimeErrorMessage))
+          if (!string.IsNullOrEmpty(MissingTimeErrorMessage))
             ErrorMessage = MissingTimeErrorMessage;
           break;
         }

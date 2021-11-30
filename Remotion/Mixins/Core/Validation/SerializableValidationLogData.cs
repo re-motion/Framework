@@ -33,7 +33,7 @@ namespace Remotion.Mixins.Validation
 
     public SerializableValidationLogData (ValidationLogData validationLogData)
     {
-      ArgumentUtility.CheckNotNull ("validationLogData", validationLogData);
+      ArgumentUtility.CheckNotNull("validationLogData", validationLogData);
 
       _NumberOfFailures = validationLogData.GetNumberOfFailures();
       _numberOfRulesExecuted = validationLogData.GetNumberOfRulesExecuted();

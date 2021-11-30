@@ -14,7 +14,7 @@ namespace Remotion.Security.UnitTests.XmlAsserter
         object actualValue,
         bool isSuccess,
         IReadOnlyCollection<string> messages)
-        : base (constraint, actualValue, isSuccess)
+        : base(constraint, actualValue, isSuccess)
     {
       _messages = messages;
     }
@@ -22,7 +22,7 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 
     public override void WriteMessageTo (MessageWriter writer)
     {
-      writer.Write (String.Join ("\n", _messages));
+      writer.Write(String.Join("\n", _messages));
     }
   }
 }

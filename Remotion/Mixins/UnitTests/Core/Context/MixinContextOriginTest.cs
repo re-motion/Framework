@@ -34,74 +34,74 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [SetUp]
     public void SetUp ()
     {
-      _someAssembly = GetType ().Assembly;
+      _someAssembly = GetType().Assembly;
     }
 
     [Test]
     public void CreateForCustomAttribute_OnMemberInfo ()
     {
-      var origin = MixinContextOrigin.CreateForCustomAttribute (new UsesAttribute (typeof (NullMixin)), typeof (MixinContextOriginTest));
+      var origin = MixinContextOrigin.CreateForCustomAttribute(new UsesAttribute(typeof(NullMixin)), typeof(MixinContextOriginTest));
 
-      Assert.That (origin.Kind, Is.EqualTo ("UsesAttribute"));
-      Assert.That (origin.Assembly, Is.EqualTo (typeof (MixinContextOriginTest).Assembly));
-      Assert.That (origin.Location, Is.EqualTo ("Remotion.Mixins.UnitTests.Core.Context.MixinContextOriginTest"));
+      Assert.That(origin.Kind, Is.EqualTo("UsesAttribute"));
+      Assert.That(origin.Assembly, Is.EqualTo(typeof(MixinContextOriginTest).Assembly));
+      Assert.That(origin.Location, Is.EqualTo("Remotion.Mixins.UnitTests.Core.Context.MixinContextOriginTest"));
     }
 
     [Test]
     public void CreateForCustomAttribute_OnAssembly ()
     {
-      var origin = MixinContextOrigin.CreateForCustomAttribute (new MixAttribute (typeof (object), typeof (NullMixin)), _someAssembly);
+      var origin = MixinContextOrigin.CreateForCustomAttribute(new MixAttribute(typeof(object), typeof(NullMixin)), _someAssembly);
 
-      Assert.That (origin.Kind, Is.EqualTo ("MixAttribute"));
-      Assert.That (origin.Assembly, Is.EqualTo (_someAssembly));
-      Assert.That (origin.Location, Is.EqualTo ("assembly"));
+      Assert.That(origin.Kind, Is.EqualTo("MixAttribute"));
+      Assert.That(origin.Assembly, Is.EqualTo(_someAssembly));
+      Assert.That(origin.Location, Is.EqualTo("assembly"));
     }
 
     [Test]
     public void CreateForMethod ()
     {
-      var origin = MixinContextOrigin.CreateForMethod (MethodBase.GetCurrentMethod());
+      var origin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      Assert.That (origin.Kind, Is.EqualTo ("Method"));
-      Assert.That (origin.Assembly, Is.EqualTo (GetType().Assembly));
-      Assert.That (origin.Location, Is.EqualTo ("Void CreateForMethod(), declaring type: Remotion.Mixins.UnitTests.Core.Context.MixinContextOriginTest"));
+      Assert.That(origin.Kind, Is.EqualTo("Method"));
+      Assert.That(origin.Assembly, Is.EqualTo(GetType().Assembly));
+      Assert.That(origin.Location, Is.EqualTo("Void CreateForMethod(), declaring type: Remotion.Mixins.UnitTests.Core.Context.MixinContextOriginTest"));
     }
 
     [Test]
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void CreateForStackFrame ()
     {
       var stackFrame = GetCallerStackFrame();
-      var origin = MixinContextOrigin.CreateForStackFrame (stackFrame);
+      var origin = MixinContextOrigin.CreateForStackFrame(stackFrame);
 
-      Assert.That (origin.Kind, Is.EqualTo ("Method"));
-      Assert.That (origin.Assembly, Is.EqualTo (GetType ().Assembly));
-      Assert.That (origin.Location, Is.EqualTo ("Void CreateForStackFrame(), declaring type: Remotion.Mixins.UnitTests.Core.Context.MixinContextOriginTest"));
+      Assert.That(origin.Kind, Is.EqualTo("Method"));
+      Assert.That(origin.Assembly, Is.EqualTo(GetType().Assembly));
+      Assert.That(origin.Location, Is.EqualTo("Void CreateForStackFrame(), declaring type: Remotion.Mixins.UnitTests.Core.Context.MixinContextOriginTest"));
     }
 
     [Test]
     public new void ToString ()
     {
-      var origin = new MixinContextOrigin ("SomeKind", _someAssembly, "some location");
+      var origin = new MixinContextOrigin("SomeKind", _someAssembly, "some location");
 
       var expectedCodeBase = _someAssembly.GetName().CodeBase;
-      var expected = string.Format (
-          "SomeKind, Location: 'some location' (Assembly: 'Remotion.Mixins.UnitTests', code base: {0})", 
+      var expected = string.Format(
+          "SomeKind, Location: 'some location' (Assembly: 'Remotion.Mixins.UnitTests', code base: {0})",
           expectedCodeBase);
-      Assert.That (origin.ToString(), Is.EqualTo (expected));
+      Assert.That(origin.ToString(), Is.EqualTo(expected));
     }
 
     [Test]
     public void Serialize ()
     {
-      var origin = new MixinContextOrigin ("SomeKind", _someAssembly, "some location");
+      var origin = new MixinContextOrigin("SomeKind", _someAssembly, "some location");
 
       var serializerMock = MockRepository.GenerateStrictMock<IMixinContextOriginSerializer>();
-      serializerMock.Expect (mock => mock.AddKind (origin.Kind));
-      serializerMock.Expect (mock => mock.AddAssembly (origin.Assembly));
-      serializerMock.Expect (mock => mock.AddLocation (origin.Location));
+      serializerMock.Expect(mock => mock.AddKind(origin.Kind));
+      serializerMock.Expect(mock => mock.AddAssembly(origin.Assembly));
+      serializerMock.Expect(mock => mock.AddLocation(origin.Location));
 
-      origin.Serialize (serializerMock);
+      origin.Serialize(serializerMock);
 
       serializerMock.VerifyAllExpectations();
     }
@@ -109,61 +109,61 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void Deserialize ()
     {
-      var deserializerStub = MockRepository.GenerateStub<IMixinContextOriginDeserializer> ();
-      deserializerStub.Stub (stub => stub.GetKind ()).Return ("SomeKind");
-      deserializerStub.Stub (stub => stub.GetAssembly ()).Return (_someAssembly);
-      deserializerStub.Stub (stub => stub.GetLocation ()).Return ("some location");
+      var deserializerStub = MockRepository.GenerateStub<IMixinContextOriginDeserializer>();
+      deserializerStub.Stub(stub => stub.GetKind()).Return("SomeKind");
+      deserializerStub.Stub(stub => stub.GetAssembly()).Return(_someAssembly);
+      deserializerStub.Stub(stub => stub.GetLocation()).Return("some location");
 
-      var origin = MixinContextOrigin.Deserialize (deserializerStub);
+      var origin = MixinContextOrigin.Deserialize(deserializerStub);
 
-      Assert.That (origin.Kind, Is.EqualTo ("SomeKind"));
-      Assert.That (origin.Assembly, Is.EqualTo (_someAssembly));
-      Assert.That (origin.Location, Is.EqualTo ("some location"));
+      Assert.That(origin.Kind, Is.EqualTo("SomeKind"));
+      Assert.That(origin.Assembly, Is.EqualTo(_someAssembly));
+      Assert.That(origin.Location, Is.EqualTo("some location"));
     }
 
     [Test]
     public void Equals_True ()
     {
-      var origin1 = new MixinContextOrigin ("some kind", GetType ().Assembly, "some location");
-      var origin2 = new MixinContextOrigin ("some kind", GetType ().Assembly, "some location");
+      var origin1 = new MixinContextOrigin("some kind", GetType().Assembly, "some location");
+      var origin2 = new MixinContextOrigin("some kind", GetType().Assembly, "some location");
 
-      Assert.That (origin1.Equals (origin2), Is.True);
-      Assert.That (origin1.Equals ((object) origin2), Is.True);
+      Assert.That(origin1.Equals(origin2), Is.True);
+      Assert.That(origin1.Equals((object)origin2), Is.True);
     }
 
     [Test]
     public void Equals_False ()
     {
-      var origin = new MixinContextOrigin ("some kind", GetType ().Assembly, "some location");
-      var originWithDifferentKind = new MixinContextOrigin ("some other kind", GetType ().Assembly, "some location");
-      var originWithDifferentAssembly = new MixinContextOrigin ("some kind", typeof (object).Assembly, "some location");
-      var originWithDifferentLocation = new MixinContextOrigin ("some kind", GetType ().Assembly, "some other location");
+      var origin = new MixinContextOrigin("some kind", GetType().Assembly, "some location");
+      var originWithDifferentKind = new MixinContextOrigin("some other kind", GetType().Assembly, "some location");
+      var originWithDifferentAssembly = new MixinContextOrigin("some kind", typeof(object).Assembly, "some location");
+      var originWithDifferentLocation = new MixinContextOrigin("some kind", GetType().Assembly, "some other location");
 
-      Assert.That (origin.Equals (originWithDifferentKind), Is.False);
-      Assert.That (origin.Equals (originWithDifferentAssembly), Is.False);
-      Assert.That (origin.Equals (originWithDifferentLocation), Is.False);
-      Assert.That (origin.Equals (null), Is.False);
+      Assert.That(origin.Equals(originWithDifferentKind), Is.False);
+      Assert.That(origin.Equals(originWithDifferentAssembly), Is.False);
+      Assert.That(origin.Equals(originWithDifferentLocation), Is.False);
+      Assert.That(origin.Equals(null), Is.False);
 
-      Assert.That (origin.Equals ((object) originWithDifferentKind), Is.False);
-      Assert.That (origin.Equals ((object) originWithDifferentAssembly), Is.False);
-      Assert.That (origin.Equals ((object) originWithDifferentLocation), Is.False);
-      Assert.That (origin.Equals ((object) null), Is.False);
-      Assert.That (origin.Equals ("some other object"), Is.False);
+      Assert.That(origin.Equals((object)originWithDifferentKind), Is.False);
+      Assert.That(origin.Equals((object)originWithDifferentAssembly), Is.False);
+      Assert.That(origin.Equals((object)originWithDifferentLocation), Is.False);
+      Assert.That(origin.Equals((object)null), Is.False);
+      Assert.That(origin.Equals("some other object"), Is.False);
     }
 
     [Test]
     public void GetHashCode_EqualObjects ()
     {
-      var origin1 = new MixinContextOrigin ("some kind", GetType ().Assembly, "some location");
-      var origin2 = new MixinContextOrigin ("some kind", GetType ().Assembly, "some location");
+      var origin1 = new MixinContextOrigin("some kind", GetType().Assembly, "some location");
+      var origin2 = new MixinContextOrigin("some kind", GetType().Assembly, "some location");
 
-      Assert.That (origin1.GetHashCode(), Is.EqualTo (origin2.GetHashCode()));
+      Assert.That(origin1.GetHashCode(), Is.EqualTo(origin2.GetHashCode()));
     }
 
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     private StackFrame GetCallerStackFrame ()
     {
-      return new StackFrame (1);
+      return new StackFrame(1);
     }
   }
 }

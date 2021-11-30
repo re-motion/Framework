@@ -28,7 +28,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
     [Test]
     public void GetTypeDiscoverySerivce ()
     {
-      Assert.That (ContextAwareTypeDiscoveryUtility.GetTypeDiscoveryService(), Is.SameAs (ContextAwareTypeUtility.GetTypeDiscoveryService()));
+      Assert.That(ContextAwareTypeDiscoveryUtility.GetTypeDiscoveryService(), Is.SameAs(ContextAwareTypeUtility.GetTypeDiscoveryService()));
     }
   }
 }

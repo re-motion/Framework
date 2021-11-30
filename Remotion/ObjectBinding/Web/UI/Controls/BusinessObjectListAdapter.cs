@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BusinessObjectListAdapter (IList list)
     {
-      ArgumentUtility.CheckNotNull ("list", list);
+      ArgumentUtility.CheckNotNull("list", list);
 
       _list = list;
     }
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public T this [int index]
     {
-      get { return (T) _list[index]!; }
+      get { return (T)_list[index]!; }
     }
 
     public IEnumerator<T> GetEnumerator ()
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     void ICollection.CopyTo (Array array, int index)
     {
-      _list.CopyTo (array, index);
+      _list.CopyTo(array, index);
     }
 
     bool ICollection.IsSynchronized
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     int IList.Add (object? value)
     {
-      return _list.Add (value);
+      return _list.Add(value);
     }
 
     void IList.Clear ()
@@ -89,27 +89,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     bool IList.Contains (object? value)
     {
-      return _list.Contains (value);
+      return _list.Contains(value);
     }
 
     int IList.IndexOf (object? value)
     {
-      return _list.IndexOf (value);
+      return _list.IndexOf(value);
     }
 
     void IList.Insert (int index, object? value)
     {
-      _list.Insert (index, value);
+      _list.Insert(index, value);
     }
 
     void IList.Remove (object? value)
     {
-      _list.Remove (value);
+      _list.Remove(value);
     }
 
     void IList.RemoveAt (int index)
     {
-      _list.RemoveAt (index);
+      _list.RemoveAt(index);
     }
 
     bool IList.IsFixedSize

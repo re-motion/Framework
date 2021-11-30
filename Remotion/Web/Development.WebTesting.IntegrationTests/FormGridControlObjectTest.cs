@@ -28,15 +28,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class FormGridControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
-    [TestCaseSource (typeof (TitleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [TestCaseSource(typeof(TitleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<FormGridSelector, FormGridControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<FormGridSelector, FormGridControlObject> testAction)
     {
-      testAction (Helper, e => e.FormGrids(), "formGrid");
+      testAction(Helper, e => e.FormGrids(), "formGrid");
     }
 
     [Test]
@@ -44,9 +44,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var formGrid = home.FormGrids().GetByTitle ("With'SingleQuote");
+      var formGrid = home.FormGrids().GetByTitle("With'SingleQuote");
 
-      Assert.That (formGrid.GetHtmlID(), Is.EqualTo ("body_My3FormGrid"));
+      Assert.That(formGrid.GetHtmlID(), Is.EqualTo("body_My3FormGrid"));
     }
 
     [Test]
@@ -54,9 +54,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var formGrid = home.FormGrids().GetByTitle ("With'SingleQuoteAndDouble\"Quote");
+      var formGrid = home.FormGrids().GetByTitle("With'SingleQuoteAndDouble\"Quote");
 
-      Assert.That (formGrid.GetHtmlID(), Is.EqualTo ("body_My4FormGrid"));
+      Assert.That(formGrid.GetHtmlID(), Is.EqualTo("body_My4FormGrid"));
     }
 
 
@@ -65,9 +65,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var formGrid = home.FormGrids().GetByTitleOrNull ("With'SingleQuote");
+      var formGrid = home.FormGrids().GetByTitleOrNull("With'SingleQuote");
 
-      Assert.That (formGrid.GetHtmlID(), Is.EqualTo ("body_My3FormGrid"));
+      Assert.That(formGrid.GetHtmlID(), Is.EqualTo("body_My3FormGrid"));
     }
 
     [Test]
@@ -75,14 +75,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var formGrid = home.FormGrids().GetByTitleOrNull ("With'SingleQuoteAndDouble\"Quote");
+      var formGrid = home.FormGrids().GetByTitleOrNull("With'SingleQuoteAndDouble\"Quote");
 
-      Assert.That (formGrid.GetHtmlID(), Is.EqualTo ("body_My4FormGrid"));
+      Assert.That(formGrid.GetHtmlID(), Is.EqualTo("body_My4FormGrid"));
     }
 
     private WebFormsTestPageObject Start ()
     {
-      return Start<WebFormsTestPageObject> ("FormGridTest.aspx");
+      return Start<WebFormsTestPageObject>("FormGridTest.aspx");
     }
   }
 }

@@ -30,13 +30,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [OverrideTarget]
     public virtual void Add (string columnName, object value)
     {
-      Target.Builder.Append ("Mixed!");
+      Target.Builder.Append("Mixed!");
     }
 
     [OverrideTarget]
     public virtual void SetInExpression (string columnName, string columnType, object[] values)
     {
-      Target.Builder.Append ("Mixed!");
+      Target.Builder.Append("Mixed!");
     }
   }
 }

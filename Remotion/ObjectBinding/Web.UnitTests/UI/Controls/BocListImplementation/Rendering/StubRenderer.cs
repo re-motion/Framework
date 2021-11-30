@@ -31,23 +31,23 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     public void Render (HtmlTextWriter writer)
     {
-      writer.RenderBeginTag (_tagName);
+      writer.RenderBeginTag(_tagName);
       writer.RenderEndTag();
     }
 
     void IBocListTableBlockRenderer.Render (BocListRenderingContext renderingContext)
     {
-      Render (renderingContext.Writer);
+      Render(renderingContext.Writer);
     }
 
     void IBocListNavigationBlockRenderer.Render (BocListRenderingContext renderingContext)
     {
-      Render (renderingContext.Writer);
+      Render(renderingContext.Writer);
     }
 
     void IBocListMenuBlockRenderer.Render (BocListRenderingContext renderingContext)
     {
-      Render (renderingContext.Writer);
+      Render(renderingContext.Writer);
     }
   }
 }

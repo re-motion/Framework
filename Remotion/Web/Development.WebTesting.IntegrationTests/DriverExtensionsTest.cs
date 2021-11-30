@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void GetBrowserName_ReturnsCorrectName ()
     {
-      Assert.That (Driver.GetBrowserName(), Is.EqualTo (Helper.BrowserConfiguration.BrowserName));
+      Assert.That(Driver.GetBrowserName(), Is.EqualTo(Helper.BrowserConfiguration.BrowserName));
     }
 
     [Test]
@@ -38,11 +38,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       if (Helper.BrowserConfiguration.IsInternetExplorer())
       {
-        Assert.That (Driver.GetBrowserVersion(), Is.EqualTo (c_unknown));
+        Assert.That(Driver.GetBrowserVersion(), Is.EqualTo(c_unknown));
       }
       else
       {
-        Assert.That (Driver.GetBrowserVersion(), Does.Match (c_versionPattern));
+        Assert.That(Driver.GetBrowserVersion(), Does.Match(c_versionPattern));
       }
     }
 
@@ -51,11 +51,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       if (Helper.BrowserConfiguration.IsInternetExplorer())
       {
-        Assert.That (Driver.GetWebDriverVersion(), Is.EqualTo (c_unknown));
+        Assert.That(Driver.GetWebDriverVersion(), Is.EqualTo(c_unknown));
       }
       else
       {
-        Assert.That (Driver.GetWebDriverVersion(), Does.Match (c_versionPattern));
+        Assert.That(Driver.GetWebDriverVersion(), Does.Match(c_versionPattern));
       }
     }
   }

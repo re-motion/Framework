@@ -32,29 +32,29 @@ namespace Remotion.Validation.MetaValidation
 
     public ObjectMetaValidationRuleValidator (IObjectMetaValidationRuleCollector[] objectMetaValidationRuleCollectors)
     {
-      ArgumentUtility.CheckNotNull ("objectMetaValidationRuleCollectors", objectMetaValidationRuleCollectors);
+      ArgumentUtility.CheckNotNull("objectMetaValidationRuleCollectors", objectMetaValidationRuleCollectors);
 
       _addedObjectMetaValidationRuleCollectors = objectMetaValidationRuleCollectors;
     }
 
     public IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingObjectValidationRuleCollector[] addingObjectValidationRulesCollectors)
     {
-      ArgumentUtility.CheckNotNull ("addingObjectValidationRulesCollectors", addingObjectValidationRulesCollectors);
+      ArgumentUtility.CheckNotNull("addingObjectValidationRulesCollectors", addingObjectValidationRulesCollectors);
 
-      var objectValidatorsByValidatedType = addingObjectValidationRulesCollectors.ToLookup (c => c.ValidatedType, c => c.Validators);
+      var objectValidatorsByValidatedType = addingObjectValidationRulesCollectors.ToLookup(c => c.ValidatedType, c => c.Validators);
 
-      return from metaValidationRulesByValidatedType in _addedObjectMetaValidationRuleCollectors.ToLookup (c => c.ValidatedType)
+      return from metaValidationRulesByValidatedType in _addedObjectMetaValidationRuleCollectors.ToLookup(c => c.ValidatedType)
           let validatedType = metaValidationRulesByValidatedType.Key
-          let metaValidationRules = GetAllMetaValidationRules (metaValidationRulesByValidatedType)
+          let metaValidationRules = GetAllMetaValidationRules(metaValidationRulesByValidatedType)
           from metaValidationRule in metaValidationRules
-              .SelectMany (mvr => mvr.Validate (objectValidatorsByValidatedType[validatedType].SelectMany (v => v)))
+              .SelectMany(mvr => mvr.Validate(objectValidatorsByValidatedType[validatedType].SelectMany(v => v)))
           select metaValidationRule;
     }
 
     private IEnumerable<IObjectMetaValidationRule> GetAllMetaValidationRules (
         IGrouping<ITypeInformation, IObjectMetaValidationRuleCollector> metaValidationRules)
     {
-      return metaValidationRules.SelectMany (g => g.MetaValidationRules);
+      return metaValidationRules.SelectMany(g => g.MetaValidationRules);
     }
   }
 }

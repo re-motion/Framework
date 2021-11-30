@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       dbFixtures.CreateEmptyDomain();
 
-      Assert.That (ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetGetRevisionQuery(new RevisionKey())), Is.Null);
+      Assert.That(ClientTransaction.CreateRootTransaction().QueryManager.GetScalar(Revision.GetGetRevisionQuery(new RevisionKey())), Is.Null);
     }
 
     [Test]
@@ -40,12 +40,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       dbFixtures.CreateEmptyDomain();
 
-      var oldValue = ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetGetRevisionQuery (new RevisionKey()));
+      var oldValue = ClientTransaction.CreateRootTransaction().QueryManager.GetScalar(Revision.GetGetRevisionQuery(new RevisionKey()));
 
-      ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetIncrementRevisionQuery (new RevisionKey()));
+      ClientTransaction.CreateRootTransaction().QueryManager.GetScalar(Revision.GetIncrementRevisionQuery(new RevisionKey()));
 
-      var newValue = ClientTransaction.CreateRootTransaction().QueryManager.GetScalar (Revision.GetGetRevisionQuery (new RevisionKey()));
-      Assert.That (oldValue, Is.Not.EqualTo (newValue));
+      var newValue = ClientTransaction.CreateRootTransaction().QueryManager.GetScalar(Revision.GetGetRevisionQuery(new RevisionKey()));
+      Assert.That(oldValue, Is.Not.EqualTo(newValue));
     }
   }
 }

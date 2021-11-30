@@ -21,31 +21,31 @@ using System.Xml.Serialization;
 
 namespace Remotion.Xml.UnitTests
 {
-  [XmlType (ElementName, Namespace = SchemaUri)]
+  [XmlType(ElementName, Namespace = SchemaUri)]
   public class SampleClass
   {
     public const string ElementName = "sampleClass";
     public const string SchemaUri = "http://www.re-motion.org/core/unitTests";
-  
+
     public static XmlReader GetSchemaReader ()
     {
-      return new XmlTextReader (Assembly.GetExecutingAssembly ().GetManifestResourceStream (typeof (SampleClass), "SampleClass.xsd"));
+      return new XmlTextReader(Assembly.GetExecutingAssembly().GetManifestResourceStream(typeof(SampleClass), "SampleClass.xsd"));
     }
 
     private int _value;
 
-    public SampleClass()
+    public SampleClass ()
     {
     }
 
-    [XmlElement ("value")]
+    [XmlElement("value")]
     public int Value
     {
       get { return _value; }
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException ("Value", value, "Only positive integer values are allowed.");
+          throw new ArgumentOutOfRangeException("Value", value, "Only positive integer values are allowed.");
          _value = value;
       }
     }

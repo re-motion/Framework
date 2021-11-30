@@ -38,11 +38,11 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         bool? absolutePaths = null)
     {
       if (iframeTimeout < TimeSpan.Zero)
-        throw new ArgumentOutOfRangeException ("iframeTimeout", "The iframe timeout must be greater than or equal to zero.");
+        throw new ArgumentOutOfRangeException("iframeTimeout", "The iframe timeout must be greater than or equal to zero.");
 
       ConformanceLevel = conformanceLevel;
       IncludeIFrames = includeIframes ?? true;
-      IFrameTimeout = iframeTimeout ?? TimeSpan.FromSeconds (5);
+      IFrameTimeout = iframeTimeout ?? TimeSpan.FromSeconds(5);
       EnableScrollToInitialPosition = scrollToInitialPosition ?? true;
       EnableAbsolutePaths = absolutePaths ?? true;
       EnableXPath = true;

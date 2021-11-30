@@ -29,16 +29,16 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [SetUp]
     public void SetUp ()
     {
-      _testHelper = NullSecurityClientTestHelper.CreateForStatelessSecurity ();
-      _securityClient = _testHelper.CreateSecurityClient ();
+      _testHelper = NullSecurityClientTestHelper.CreateForStatelessSecurity();
+      _securityClient = _testHelper.CreateSecurityClient();
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "IsValid");
+      _securityClient.CheckStaticMethodAccess(typeof(SecurableObject), "IsValid");
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
@@ -46,10 +46,10 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     {
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "IsValid");
+        _securityClient.CheckStaticMethodAccess(typeof(SecurableObject), "IsValid");
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
   }
 }

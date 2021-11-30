@@ -41,29 +41,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _endPointFactoryStub = MockRepository.GenerateStub<IRelationEndPointFactory> ();
-      _registrationAgentStub = MockRepository.GenerateStub<IRelationEndPointRegistrationAgent> ();
-      _map = new RelationEndPointMap (MockRepository.GenerateStub<IClientTransactionEventSink> ());
+      _endPointFactoryStub = MockRepository.GenerateStub<IRelationEndPointFactory>();
+      _registrationAgentStub = MockRepository.GenerateStub<IRelationEndPointRegistrationAgent>();
+      _map = new RelationEndPointMap(MockRepository.GenerateStub<IClientTransactionEventSink>());
 
-      _agent = new NonExistingDataContainerEndPointsRegistrationAgent (_endPointFactoryStub, _registrationAgentStub);
+      _agent = new NonExistingDataContainerEndPointsRegistrationAgent(_endPointFactoryStub, _registrationAgentStub);
     }
 
     [Test]
     public void GetOwnedEndPointIDs ()
     {
-      var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
+      var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
 
-      var result = (IEnumerable<RelationEndPointID>) PrivateInvoke.InvokeNonPublicMethod (_agent, "GetOwnedEndPointIDs", dataContainer);
+      var result = (IEnumerable<RelationEndPointID>)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetOwnedEndPointIDs", dataContainer);
 
-      Assert.That (
+      Assert.That(
           result,
-          Is.EquivalentTo (
+          Is.EquivalentTo(
               new[]
               {
-                  RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderTicket"),
-                  RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderItems"),
-                  RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Official"),
-                  RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer")
+                  RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket"),
+                  RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems"),
+                  RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Official"),
+                  RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer")
               }));
     }
 
@@ -71,13 +71,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetUnregisterProblem_ObjectEndPoint_CurrentReferencesNonNull ()
     {
       var endPointStub = MockRepository.GenerateStub<IObjectEndPoint>();
-      endPointStub.Stub (stub => stub.OppositeObjectID).Return (DomainObjectIDs.Customer1);
-      endPointStub.Stub (stub => stub.OriginalOppositeObjectID).Return (null);
-      endPointStub.Stub (stub => stub.ID).Return (RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer"));
+      endPointStub.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.Customer1);
+      endPointStub.Stub(stub => stub.OriginalOppositeObjectID).Return(null);
+      endPointStub.Stub(stub => stub.ID).Return(RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer"));
 
-      var result = (string) PrivateInvoke.InvokeNonPublicMethod (_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
 
-      Assert.That (result, Is.EqualTo (
+      Assert.That(result, Is.EqualTo(
           "Relation end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' "
           + "would leave a dangling reference."));
     }
@@ -85,14 +85,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetUnregisterProblem_ObjectEndPoint_OriginalReferencesNonNull ()
     {
-      var endPointStub = MockRepository.GenerateStub<IObjectEndPoint> ();
-      endPointStub.Stub (stub => stub.OppositeObjectID).Return (null);
-      endPointStub.Stub (stub => stub.OriginalOppositeObjectID).Return (DomainObjectIDs.Customer1);
-      endPointStub.Stub (stub => stub.ID).Return (RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer"));
+      var endPointStub = MockRepository.GenerateStub<IObjectEndPoint>();
+      endPointStub.Stub(stub => stub.OppositeObjectID).Return(null);
+      endPointStub.Stub(stub => stub.OriginalOppositeObjectID).Return(DomainObjectIDs.Customer1);
+      endPointStub.Stub(stub => stub.ID).Return(RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer"));
 
-      var result = (string) PrivateInvoke.InvokeNonPublicMethod (_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
 
-      Assert.That (result, Is.EqualTo (
+      Assert.That(result, Is.EqualTo(
           "Relation end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' "
           + "would leave a dangling reference."));
     }
@@ -100,14 +100,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetUnregisterProblem_ObjectEndPoint_NonDangling ()
     {
-      var endPointStub = MockRepository.GenerateStub<IObjectEndPoint> ();
-      endPointStub.Stub (stub => stub.OppositeObjectID).Return (null);
-      endPointStub.Stub (stub => stub.OriginalOppositeObjectID).Return (null);
-      endPointStub.Stub (stub => stub.ID).Return (RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer"));
+      var endPointStub = MockRepository.GenerateStub<IObjectEndPoint>();
+      endPointStub.Stub(stub => stub.OppositeObjectID).Return(null);
+      endPointStub.Stub(stub => stub.OriginalOppositeObjectID).Return(null);
+      endPointStub.Stub(stub => stub.ID).Return(RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer"));
 
-      var result = (string) PrivateInvoke.InvokeNonPublicMethod (_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
@@ -115,13 +115,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var item = DomainObjectMother.CreateFakeObject<Customer>();
       var endPointStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint>();
-      endPointStub.Stub (stub => stub.GetData ()).Return (new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData (new[] { item })));
-      endPointStub.Stub (stub => stub.GetOriginalData ()).Return (new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData ()));
-      endPointStub.Stub (stub => stub.ID).Return (RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer"));
+      endPointStub.Stub(stub => stub.GetData()).Return(new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData(new[] { item })));
+      endPointStub.Stub(stub => stub.GetOriginalData()).Return(new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData()));
+      endPointStub.Stub(stub => stub.ID).Return(RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer"));
 
-      var result = (string) PrivateInvoke.InvokeNonPublicMethod (_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
 
-      Assert.That (result, Is.EqualTo (
+      Assert.That(result, Is.EqualTo(
           "Relation end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' "
           + "would leave a dangling reference."));
     }
@@ -129,15 +129,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetUnregisterProblem_DomainObjectCollectionEndPoint_OriginalReferencesNonNull ()
     {
-      var item = DomainObjectMother.CreateFakeObject<Customer> ();
+      var item = DomainObjectMother.CreateFakeObject<Customer>();
       var endPointStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint>();
-      endPointStub.Stub (stub => stub.GetData ()).Return (new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData ()));
-      endPointStub.Stub (stub => stub.GetOriginalData ()).Return (new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData (new[] { item })));
-      endPointStub.Stub (stub => stub.ID).Return (RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer"));
+      endPointStub.Stub(stub => stub.GetData()).Return(new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData()));
+      endPointStub.Stub(stub => stub.GetOriginalData()).Return(new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData(new[] { item })));
+      endPointStub.Stub(stub => stub.ID).Return(RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer"));
 
-      var result = (string) PrivateInvoke.InvokeNonPublicMethod (_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
 
-      Assert.That (result, Is.EqualTo (
+      Assert.That(result, Is.EqualTo(
           "Relation end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' "
           + "would leave a dangling reference."));
     }
@@ -146,25 +146,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetUnregisterProblem_DomainObjectCollectionEndPoint_NonDangling ()
     {
       var endPointStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint>();
-      endPointStub.Stub (stub => stub.GetData ()).Return (new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData ()));
-      endPointStub.Stub (stub => stub.GetOriginalData ()).Return (new ReadOnlyDomainObjectCollectionDataDecorator (new DomainObjectCollectionData ()));
-      endPointStub.Stub (stub => stub.ID).Return (RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer"));
+      endPointStub.Stub(stub => stub.GetData()).Return(new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData()));
+      endPointStub.Stub(stub => stub.GetOriginalData()).Return(new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData()));
+      endPointStub.Stub(stub => stub.ID).Return(RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer"));
 
-      var result = (string) PrivateInvoke.InvokeNonPublicMethod (_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void GetUnregisterProblem_VirtualCollectionEndPoint ()
     {
-      var endPointStub = MockRepository.GenerateStub<IVirtualCollectionEndPoint> ();
-      endPointStub.Stub (stub => stub.GetData ()).Throw (new AssertionException ("GetData() should not be called."));
-      endPointStub.Stub (stub => stub.GetOriginalData ()).Throw (new AssertionException ("GetOriginalData() should not be called."));
+      var endPointStub = MockRepository.GenerateStub<IVirtualCollectionEndPoint>();
+      endPointStub.Stub(stub => stub.GetData()).Throw(new AssertionException("GetData() should not be called."));
+      endPointStub.Stub(stub => stub.GetOriginalData()).Throw(new AssertionException("GetOriginalData() should not be called."));
 
-      var result = (string) PrivateInvoke.InvokeNonPublicMethod (_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
   }
 }

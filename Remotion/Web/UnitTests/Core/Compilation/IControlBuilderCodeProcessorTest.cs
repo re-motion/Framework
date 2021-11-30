@@ -35,19 +35,19 @@ namespace Remotion.Web.UnitTests.Core.Compilation
     [Test]
     public void GetInstance_Once ()
     {
-      var instance = _serviceLocator.GetInstance<IControlBuilderCodeProcessor> ();
+      var instance = _serviceLocator.GetInstance<IControlBuilderCodeProcessor>();
 
-      Assert.That (instance, Is.Not.Null);
-      Assert.That (instance, Is.TypeOf (typeof (DefaultControlBuilderCodeProcessor)));
+      Assert.That(instance, Is.Not.Null);
+      Assert.That(instance, Is.TypeOf(typeof(DefaultControlBuilderCodeProcessor)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var instance1 = _serviceLocator.GetInstance<IControlBuilderCodeProcessor> ();
-      var instance2 = _serviceLocator.GetInstance<IControlBuilderCodeProcessor> ();
+      var instance1 = _serviceLocator.GetInstance<IControlBuilderCodeProcessor>();
+      var instance2 = _serviceLocator.GetInstance<IControlBuilderCodeProcessor>();
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

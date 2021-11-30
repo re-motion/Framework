@@ -25,16 +25,16 @@ namespace Remotion.UnitTests.Reflection.TestDomain.MethodInfoExtensions
       return 0;
     }
 
-    private static int GetPrivateStaticInt32()
+    private static int GetPrivateStaticInt32 ()
     {
       return 0;
     }
 
     public abstract int GetInt32 ();
 
-    protected abstract int GetProtectedInt32();
+    protected abstract int GetProtectedInt32 ();
 
-    public virtual string GetString()
+    public virtual string GetString ()
     {
       return "";
     }

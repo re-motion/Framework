@@ -29,40 +29,40 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
     public void Ctor_CopiesPropertiesFromValidationLogData ()
     {
       var log = new DefaultValidationLog();
-      var rule = new DelegateValidationRule<TargetClassDefinition> (DummyRule);
-      var definition = DefinitionObjectMother.CreateTargetClassDefinition (typeof (object));
-      log.ValidationStartsFor (definition);
-      log.Succeed (rule);
-      log.ValidationEndsFor (definition);
+      var rule = new DelegateValidationRule<TargetClassDefinition>(DummyRule);
+      var definition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(object));
+      log.ValidationStartsFor(definition);
+      log.Succeed(rule);
+      log.ValidationEndsFor(definition);
 
       var expected = log.GetData();
       var actual = expected.MakeSerializable();
 
-      Assert.That (actual.NumberOfFailures, Is.EqualTo (expected.GetNumberOfFailures()));
-      Assert.That (actual.NumberOfRulesExecuted, Is.EqualTo (expected.GetNumberOfRulesExecuted()));
-      Assert.That (actual.NumberOfSuccesses, Is.EqualTo (expected.GetNumberOfSuccesses()));
-      Assert.That (actual.NumberOfUnexpectedExceptions, Is.EqualTo (expected.GetNumberOfUnexpectedExceptions()));
-      Assert.That (actual.NumberOfWarnings, Is.EqualTo (expected.GetNumberOfWarnings()));
+      Assert.That(actual.NumberOfFailures, Is.EqualTo(expected.GetNumberOfFailures()));
+      Assert.That(actual.NumberOfRulesExecuted, Is.EqualTo(expected.GetNumberOfRulesExecuted()));
+      Assert.That(actual.NumberOfSuccesses, Is.EqualTo(expected.GetNumberOfSuccesses()));
+      Assert.That(actual.NumberOfUnexpectedExceptions, Is.EqualTo(expected.GetNumberOfUnexpectedExceptions()));
+      Assert.That(actual.NumberOfWarnings, Is.EqualTo(expected.GetNumberOfWarnings()));
     }
 
     [Test]
     public void Serializable ()
     {
       var log = new DefaultValidationLog();
-      var rule = new DelegateValidationRule<TargetClassDefinition> (DummyRule);
-      var definition = DefinitionObjectMother.CreateTargetClassDefinition (typeof (object));
-      log.ValidationStartsFor (definition);
-      log.Succeed (rule);
-      log.ValidationEndsFor (definition);
+      var rule = new DelegateValidationRule<TargetClassDefinition>(DummyRule);
+      var definition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(object));
+      log.ValidationStartsFor(definition);
+      log.Succeed(rule);
+      log.ValidationEndsFor(definition);
 
       var serializableValidationLogData = log.GetData().MakeSerializable();
 
-      var deserialized = Serializer.SerializeAndDeserialize (serializableValidationLogData);
-      Assert.That (deserialized.NumberOfFailures, Is.EqualTo (serializableValidationLogData.NumberOfFailures));
-      Assert.That (deserialized.NumberOfRulesExecuted, Is.EqualTo (serializableValidationLogData.NumberOfRulesExecuted));
-      Assert.That (deserialized.NumberOfSuccesses, Is.EqualTo (serializableValidationLogData.NumberOfSuccesses));
-      Assert.That (deserialized.NumberOfUnexpectedExceptions, Is.EqualTo (serializableValidationLogData.NumberOfUnexpectedExceptions));
-      Assert.That (deserialized.NumberOfWarnings, Is.EqualTo (serializableValidationLogData.NumberOfWarnings));
+      var deserialized = Serializer.SerializeAndDeserialize(serializableValidationLogData);
+      Assert.That(deserialized.NumberOfFailures, Is.EqualTo(serializableValidationLogData.NumberOfFailures));
+      Assert.That(deserialized.NumberOfRulesExecuted, Is.EqualTo(serializableValidationLogData.NumberOfRulesExecuted));
+      Assert.That(deserialized.NumberOfSuccesses, Is.EqualTo(serializableValidationLogData.NumberOfSuccesses));
+      Assert.That(deserialized.NumberOfUnexpectedExceptions, Is.EqualTo(serializableValidationLogData.NumberOfUnexpectedExceptions));
+      Assert.That(deserialized.NumberOfWarnings, Is.EqualTo(serializableValidationLogData.NumberOfWarnings));
     }
 
     private void DummyRule (DelegateValidationRule<TargetClassDefinition>.Args args)

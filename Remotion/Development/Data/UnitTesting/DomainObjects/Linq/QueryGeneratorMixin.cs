@@ -39,18 +39,18 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Linq
     public IQuery CreateQuery (
         string id, StorageProviderDefinition storageProviderDefinition, string statement, CommandParameter[] commandParameters, QueryType queryType)
     {
-      IQuery query = Next.CreateQuery (id, storageProviderDefinition, statement, commandParameters, queryType);
-      QueryConstructed (query);
+      IQuery query = Next.CreateQuery(id, storageProviderDefinition, statement, commandParameters, queryType);
+      QueryConstructed(query);
       return query;
     }
 
     private void QueryConstructed (IQuery query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
-      Console.WriteLine (query.Statement);
+      Console.WriteLine(query.Statement);
       foreach (QueryParameter parameter in query.Parameters)
-        Console.WriteLine ("{0} = {1}", parameter.Name, parameter.Value);
+        Console.WriteLine("{0} = {1}", parameter.Name, parameter.Value);
     }
   }
 }

@@ -29,7 +29,7 @@ namespace Remotion.Web.Test.Shared.UpdatePanelTests
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       AsyncPostBackInsideUpdatePanelButton.Click += HandlePostBack;
       AsyncPostBackOutsideUpdatePanelButton.Click += HandlePostBack;
       SyncPostBackInsideUpdatePanelButton.Click += HandlePostBack;
@@ -45,56 +45,56 @@ namespace Remotion.Web.Test.Shared.UpdatePanelTests
       DropDownMenuInsideUpdatePanel.EventCommandClick += HandlePostBack;
       ListMenuInsideUpdatePanel.EventCommandClick += HandlePostBack;
 
-      _postBackEventHandler = new PostBackEventHandler ();
+      _postBackEventHandler = new PostBackEventHandler();
       _postBackEventHandler.ID = "PostBackEventHandler";
       _postBackEventHandler.PostBack += HandlePostBack;
-      Controls.Add (_postBackEventHandler);
+      Controls.Add(_postBackEventHandler);
 
       string asyncPostBackCommandInsideUpdatePanelID = "AsyncPostBackCommandInsideUpdatePanel";
       AsyncCommandInsideUpdatePanelHyperLink.NavigateUrl = "#";
       AsyncCommandInsideUpdatePanelHyperLink.Attributes["onclick"] =
-          Page.ClientScript.GetPostBackEventReference (_postBackEventHandler, asyncPostBackCommandInsideUpdatePanelID) + ";return false;";
+          Page.ClientScript.GetPostBackEventReference(_postBackEventHandler, asyncPostBackCommandInsideUpdatePanelID) + ";return false;";
 
       string syncPostBackCommandInsideUpdatePanelID = "SyncPostBackCommandInsideUpdatePanel";
-      ((ISmartPage) Page).RegisterCommandForSynchronousPostBack (_postBackEventHandler, syncPostBackCommandInsideUpdatePanelID);
+      ((ISmartPage)Page).RegisterCommandForSynchronousPostBack(_postBackEventHandler, syncPostBackCommandInsideUpdatePanelID);
       SyncCommandInsideUpdatePanelHyperLink.NavigateUrl = "#";
       SyncCommandInsideUpdatePanelHyperLink.Attributes["onclick"] =
-          Page.ClientScript.GetPostBackEventReference (_postBackEventHandler, syncPostBackCommandInsideUpdatePanelID) + ";return false;";
+          Page.ClientScript.GetPostBackEventReference(_postBackEventHandler, syncPostBackCommandInsideUpdatePanelID) + ";return false;";
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
-      UpdateStatus (null);
+      UpdateStatus(null);
 
-      WebMenuItem menuItem = new WebMenuItem ();
+      WebMenuItem menuItem = new WebMenuItem();
       menuItem.ItemID = "Item" + PostBackCount;
       menuItem.Text = "Item " + PostBackCount;
-      DropDownMenuInsideUpdatePanel.MenuItems.Add (menuItem);
+      DropDownMenuInsideUpdatePanel.MenuItems.Add(menuItem);
     }
 
     protected int PostBackCount
     {
-      get { return (int?) ViewState["PostBackCount"] ?? 0; }
+      get { return (int?)ViewState["PostBackCount"] ?? 0; }
       set { ViewState["PostBackCount"] = value; }
     }
 
     private void HandlePostBack (object sender, EventArgs e)
     {
-      Thread.Sleep (1000);
+      Thread.Sleep(1000);
       PostBackCount++;
-      UpdateStatus (sender);
+      UpdateStatus(sender);
     }
 
     private void UpdateStatus (object sender)
     {
-      PostBackCountInsideUpdatePanelLabel.Text = PostBackCount.ToString ();
-      PostBackCountOutsideUpdatePanelLabel.Text = PostBackCount.ToString ();
+      PostBackCountInsideUpdatePanelLabel.Text = PostBackCount.ToString();
+      PostBackCountOutsideUpdatePanelLabel.Text = PostBackCount.ToString();
 
       string lastPostBack = "undefined";
       if (sender != null)
-        lastPostBack = ((Control) sender).ID;
+        lastPostBack = ((Control)sender).ID;
       LastPostBackInsideUpdatePanelLabel.Text = lastPostBack;
       LastPostBackOutsideUpdatePanelLabel.Text = lastPostBack;
     }

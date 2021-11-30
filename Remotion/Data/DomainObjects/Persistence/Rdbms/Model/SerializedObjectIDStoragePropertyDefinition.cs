@@ -30,14 +30,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public SerializedObjectIDStoragePropertyDefinition (IRdbmsStoragePropertyDefinition serializedIDProperty)
     {
-      ArgumentUtility.CheckNotNull ("serializedIDProperty", serializedIDProperty);
+      ArgumentUtility.CheckNotNull("serializedIDProperty", serializedIDProperty);
 
       _serializedIDProperty = serializedIDProperty;
     }
 
     public Type PropertyType
     {
-      get { return typeof (ObjectID); }
+      get { return typeof(ObjectID); }
     }
 
     public IRdbmsStoragePropertyDefinition SerializedIDProperty
@@ -62,61 +62,61 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnValue> SplitValue (object value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID> ("value", value);
+      var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
 
-      return _serializedIDProperty.SplitValue (GetStringOrNull (objectID));
+      return _serializedIDProperty.SplitValue(GetStringOrNull(objectID));
     }
 
     public IEnumerable<ColumnValue> SplitValueForComparison (object value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID> ("value", value);
+      var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
 
-      return _serializedIDProperty.SplitValueForComparison (GetStringOrNull (objectID));
+      return _serializedIDProperty.SplitValueForComparison(GetStringOrNull(objectID));
     }
 
     public ColumnValueTable SplitValuesForComparison (IEnumerable<object> values)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
+      ArgumentUtility.CheckNotNull("values", values);
 
-      return _serializedIDProperty.SplitValuesForComparison (values.Select (v => (object) GetStringOrNull ((ObjectID) v)));
+      return _serializedIDProperty.SplitValuesForComparison(values.Select(v => (object)GetStringOrNull((ObjectID)v)));
     }
 
     public object CombineValue (IColumnValueProvider columnValueProvider)
     {
-      ArgumentUtility.CheckNotNull ("columnValueProvider", columnValueProvider);
+      ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
 
-      var value = _serializedIDProperty.CombineValue (columnValueProvider);
+      var value = _serializedIDProperty.CombineValue(columnValueProvider);
       if (value == null)
         return null;
-      return ObjectID.Parse ((string) value);
+      return ObjectID.Parse((string)value);
     }
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull ("equivalentProperties", equivalentProperties);
-      var checkedProperties = equivalentProperties.Select (property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
+      ArgumentUtility.CheckNotNull("equivalentProperties", equivalentProperties);
+      var checkedProperties = equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
           this,
           property,
           "equivalentProperties",
-          prop => Tuple.Create<string, object> ("property type", prop.PropertyType)
-          )).ToArray ();
+          prop => Tuple.Create<string, object>("property type", prop.PropertyType)
+          )).ToArray();
 
-      var unifiedSerializedIDProperty = _serializedIDProperty.UnifyWithEquivalentProperties (checkedProperties.Select (p => p.SerializedIDProperty));
-      return new SerializedObjectIDStoragePropertyDefinition (unifiedSerializedIDProperty);
+      var unifiedSerializedIDProperty = _serializedIDProperty.UnifyWithEquivalentProperties(checkedProperties.Select(p => p.SerializedIDProperty));
+      return new SerializedObjectIDStoragePropertyDefinition(unifiedSerializedIDProperty);
     }
 
     public ForeignKeyConstraintDefinition CreateForeignKeyConstraint (Func<IEnumerable<ColumnDefinition>, string> nameProvider, EntityNameDefinition referencedTableName, ObjectIDStoragePropertyDefinition referencedObjectIDProperty)
     {
-      ArgumentUtility.CheckNotNull ("nameProvider", nameProvider);
-      ArgumentUtility.CheckNotNull ("referencedTableName", referencedTableName);
-      ArgumentUtility.CheckNotNull ("referencedObjectIDProperty", referencedObjectIDProperty);
+      ArgumentUtility.CheckNotNull("nameProvider", nameProvider);
+      ArgumentUtility.CheckNotNull("referencedTableName", referencedTableName);
+      ArgumentUtility.CheckNotNull("referencedObjectIDProperty", referencedObjectIDProperty);
 
-      throw new NotSupportedException ("String-serialized ObjectID values cannot be used as foreign keys.");
+      throw new NotSupportedException("String-serialized ObjectID values cannot be used as foreign keys.");
     }
 
     private string GetStringOrNull (ObjectID objectID)
     {
-      return objectID == null ? null : objectID.ToString ();
+      return objectID == null ? null : objectID.ToString();
     }
   }
 }

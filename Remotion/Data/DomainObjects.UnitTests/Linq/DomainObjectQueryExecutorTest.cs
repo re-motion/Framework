@@ -49,65 +49,65 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _queryGeneratorMock = MockRepository.GenerateStrictMock<IDomainObjectQueryGenerator>();
-      _queryExecutor = new DomainObjectQueryExecutor (TestDomainStorageProviderDefinition, _queryGeneratorMock);
+      _queryExecutor = new DomainObjectQueryExecutor(TestDomainStorageProviderDefinition, _queryGeneratorMock);
 
-      _queryManagerMock = MockRepository.GenerateStrictMock<IQueryManager> ();
-      var transaction = ClientTransactionObjectMother.CreateTransactionWithQueryManager<ClientTransaction> (_queryManagerMock);
-      _transactionScope = transaction.EnterDiscardingScope ();
+      _queryManagerMock = MockRepository.GenerateStrictMock<IQueryManager>();
+      var transaction = ClientTransactionObjectMother.CreateTransactionWithQueryManager<ClientTransaction>(_queryManagerMock);
+      _transactionScope = transaction.EnterDiscardingScope();
 
       _someQueryModel = QueryModelObjectMother.Create();
       MockRepository.GenerateStub<IQuery>();
       _someOrder = DomainObjectMother.CreateFakeObject<Order>();
 
       _scalarExecutableQueryMock = MockRepository.GenerateStrictMock<IExecutableQuery<int>>();
-      _collectionExecutableQueryMock = MockRepository.GenerateStrictMock<IExecutableQuery<IEnumerable<Order>>> ();
+      _collectionExecutableQueryMock = MockRepository.GenerateStrictMock<IExecutableQuery<IEnumerable<Order>>>();
     }
 
     public override void TearDown ()
     {
       _transactionScope.Leave();
-      base.TearDown ();
+      base.TearDown();
     }
 
     [Test]
     public void ExecuteScalar ()
     {
       _queryGeneratorMock
-          .Expect (mock => mock.CreateScalarQuery<int> ("<dynamic query>", TestDomainStorageProviderDefinition, _someQueryModel))
-          .Return (_scalarExecutableQueryMock);
+          .Expect(mock => mock.CreateScalarQuery<int>("<dynamic query>", TestDomainStorageProviderDefinition, _someQueryModel))
+          .Return(_scalarExecutableQueryMock);
 
       var fakeResult = 7;
-      _scalarExecutableQueryMock.Expect (mock => mock.Execute (_queryManagerMock)).Return (fakeResult);
+      _scalarExecutableQueryMock.Expect(mock => mock.Execute(_queryManagerMock)).Return(fakeResult);
 
-      var result = _queryExecutor.ExecuteScalar<int> (_someQueryModel);
+      var result = _queryExecutor.ExecuteScalar<int>(_someQueryModel);
 
       _queryGeneratorMock.VerifyAllExpectations();
       _scalarExecutableQueryMock.VerifyAllExpectations();
-      Assert.That (result, Is.EqualTo (fakeResult));
+      Assert.That(result, Is.EqualTo(fakeResult));
     }
 
     [Test]
     public void ExecuteScalar_WithFetchRequests ()
     {
-      AddFetchRequest (_someQueryModel);
-      Assert.That (
-          () => _queryExecutor.ExecuteScalar<int> (_someQueryModel),
+      AddFetchRequest(_someQueryModel);
+      Assert.That(
+          () => _queryExecutor.ExecuteScalar<int>(_someQueryModel),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo ("Scalar queries cannot perform eager fetching."));
+              .With.Message.EqualTo("Scalar queries cannot perform eager fetching."));
     }
 
     [Test]
     public void ExecuteScalar_NoActiveClientTransaction ()
     {
-      using (ClientTransactionScope.EnterNullScope ())
+      using (ClientTransactionScope.EnterNullScope())
       {
-        Assert.That (
-            () => _queryExecutor.ExecuteScalar<int> (_someQueryModel),
+        Assert.That(
+            () => _queryExecutor.ExecuteScalar<int>(_someQueryModel),
             Throws.InvalidOperationException
-                .With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+                .With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
       }
     }
 
@@ -115,190 +115,190 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     public void ExecuteCollection ()
     {
       _queryGeneratorMock
-          .Expect (mock => mock.CreateSequenceQuery<Order> (
-              Arg.Is ("<dynamic query>"),
-              Arg.Is (TestDomainStorageProviderDefinition),
-              Arg.Is (_someQueryModel),
-              Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal (Enumerable.Empty<FetchQueryModelBuilder>())))
-          .Return (_collectionExecutableQueryMock);
+          .Expect(mock => mock.CreateSequenceQuery<Order>(
+              Arg.Is("<dynamic query>"),
+              Arg.Is(TestDomainStorageProviderDefinition),
+              Arg.Is(_someQueryModel),
+              Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal(Enumerable.Empty<FetchQueryModelBuilder>())))
+          .Return(_collectionExecutableQueryMock);
 
       var fakeResult = new[] { _someOrder };
-      _collectionExecutableQueryMock.Expect (mock => mock.Execute (_queryManagerMock)).Return(fakeResult);
+      _collectionExecutableQueryMock.Expect(mock => mock.Execute(_queryManagerMock)).Return(fakeResult);
 
-      var result = _queryExecutor.ExecuteCollection<Order> (_someQueryModel);
+      var result = _queryExecutor.ExecuteCollection<Order>(_someQueryModel);
 
-      _queryGeneratorMock.VerifyAllExpectations ();
+      _queryGeneratorMock.VerifyAllExpectations();
       _collectionExecutableQueryMock.VerifyAllExpectations();
-      Assert.That (result, Is.SameAs(fakeResult));
+      Assert.That(result, Is.SameAs(fakeResult));
     }
 
     [Test]
     public void ExecuteCollection_WithFetchRequests ()
     {
-      ExpectCreateQueryWithFetchQueryModelBuilders (_someQueryModel, _collectionExecutableQueryMock);
+      ExpectCreateQueryWithFetchQueryModelBuilders(_someQueryModel, _collectionExecutableQueryMock);
 
       var fakeResult = new[] { _someOrder };
-      _collectionExecutableQueryMock.Expect (mock => mock.Execute (_queryManagerMock)).Return (fakeResult);
+      _collectionExecutableQueryMock.Expect(mock => mock.Execute(_queryManagerMock)).Return(fakeResult);
 
-      var result = _queryExecutor.ExecuteCollection<Order> (_someQueryModel);
+      var result = _queryExecutor.ExecuteCollection<Order>(_someQueryModel);
 
-      _queryGeneratorMock.VerifyAllExpectations ();
+      _queryGeneratorMock.VerifyAllExpectations();
       _collectionExecutableQueryMock.VerifyAllExpectations();
-      Assert.That (result, Is.SameAs(fakeResult));
+      Assert.That(result, Is.SameAs(fakeResult));
     }
 
     [Test]
     public void ExecuteCollection_NoActiveClientTransaction ()
     {
-      using (ClientTransactionScope.EnterNullScope ())
+      using (ClientTransactionScope.EnterNullScope())
       {
-        Assert.That (
-            () => _queryExecutor.ExecuteCollection<Order> (_someQueryModel),
+        Assert.That(
+            () => _queryExecutor.ExecuteCollection<Order>(_someQueryModel),
             Throws.InvalidOperationException
-                .With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+                .With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
       }
     }
 
     [Test]
-    public void ExecuteSingle()
+    public void ExecuteSingle ()
     {
       _queryGeneratorMock
-          .Expect (
-              mock => mock.CreateSequenceQuery<Order> (
-                  Arg.Is ("<dynamic query>"),
-                  Arg.Is (TestDomainStorageProviderDefinition),
-                  Arg.Is (_someQueryModel),
-                  Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal (Enumerable.Empty<FetchQueryModelBuilder>())))
-          .Return (_collectionExecutableQueryMock);
+          .Expect(
+              mock => mock.CreateSequenceQuery<Order>(
+                  Arg.Is("<dynamic query>"),
+                  Arg.Is(TestDomainStorageProviderDefinition),
+                  Arg.Is(_someQueryModel),
+                  Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal(Enumerable.Empty<FetchQueryModelBuilder>())))
+          .Return(_collectionExecutableQueryMock);
 
       var fakeResult = new[] { _someOrder };
-      _collectionExecutableQueryMock.Expect (mock => mock.Execute (_queryManagerMock)).Return (fakeResult);
+      _collectionExecutableQueryMock.Expect(mock => mock.Execute(_queryManagerMock)).Return(fakeResult);
 
-      var result = _queryExecutor.ExecuteSingle<Order> (_someQueryModel, false);
+      var result = _queryExecutor.ExecuteSingle<Order>(_someQueryModel, false);
 
-      _queryGeneratorMock.VerifyAllExpectations ();
+      _queryGeneratorMock.VerifyAllExpectations();
       _collectionExecutableQueryMock.VerifyAllExpectations();
-      Assert.That (result, Is.SameAs (_someOrder));
+      Assert.That(result, Is.SameAs(_someOrder));
     }
 
     [Test]
     public void ExecuteSingle_MoreThanOneItem ()
     {
       _queryGeneratorMock
-          .Expect (mock => mock.CreateSequenceQuery<Order> (
-              Arg.Is ("<dynamic query>"),
-              Arg.Is (TestDomainStorageProviderDefinition),
-              Arg.Is (_someQueryModel),
-              Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal (Enumerable.Empty<FetchQueryModelBuilder>())))
-          .Return (_collectionExecutableQueryMock);
+          .Expect(mock => mock.CreateSequenceQuery<Order>(
+              Arg.Is("<dynamic query>"),
+              Arg.Is(TestDomainStorageProviderDefinition),
+              Arg.Is(_someQueryModel),
+              Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal(Enumerable.Empty<FetchQueryModelBuilder>())))
+          .Return(_collectionExecutableQueryMock);
 
       var fakeResult = new[] { _someOrder, DomainObjectMother.CreateFakeObject<Order>() };
-      _collectionExecutableQueryMock.Expect (mock => mock.Execute (_queryManagerMock)).Return (fakeResult);
-      Assert.That (
-          () => _queryExecutor.ExecuteSingle<Order> (_someQueryModel, false),
+      _collectionExecutableQueryMock.Expect(mock => mock.Execute(_queryManagerMock)).Return(fakeResult);
+      Assert.That(
+          () => _queryExecutor.ExecuteSingle<Order>(_someQueryModel, false),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("Sequence contains more than one element"));
+              .With.Message.EqualTo("Sequence contains more than one element"));
     }
 
     [Test]
     public void ExecuteSingle_ZeroItems_ReturnDefaultTrue ()
     {
       _queryGeneratorMock
-          .Expect (mock => mock.CreateSequenceQuery<Order> (
-              Arg.Is ("<dynamic query>"),
-              Arg.Is (TestDomainStorageProviderDefinition),
-              Arg.Is (_someQueryModel),
-              Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal (Enumerable.Empty<FetchQueryModelBuilder>())))
-          .Return (_collectionExecutableQueryMock);
+          .Expect(mock => mock.CreateSequenceQuery<Order>(
+              Arg.Is("<dynamic query>"),
+              Arg.Is(TestDomainStorageProviderDefinition),
+              Arg.Is(_someQueryModel),
+              Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal(Enumerable.Empty<FetchQueryModelBuilder>())))
+          .Return(_collectionExecutableQueryMock);
 
       var fakeResult = new Order[0];
-      _collectionExecutableQueryMock.Expect (mock => mock.Execute (_queryManagerMock)).Return (fakeResult);
+      _collectionExecutableQueryMock.Expect(mock => mock.Execute(_queryManagerMock)).Return(fakeResult);
 
-      var result = _queryExecutor.ExecuteSingle<Order> (_someQueryModel, true);
+      var result = _queryExecutor.ExecuteSingle<Order>(_someQueryModel, true);
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void ExecuteSingle_ZeroItems_ReturnDefaultFalse ()
     {
        _queryGeneratorMock
-          .Expect (mock => mock.CreateSequenceQuery<Order> (
-              Arg.Is ("<dynamic query>"),
-              Arg.Is (TestDomainStorageProviderDefinition),
-              Arg.Is (_someQueryModel),
-              Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal (Enumerable.Empty<FetchQueryModelBuilder>())))
-          .Return (_collectionExecutableQueryMock);
+          .Expect(mock => mock.CreateSequenceQuery<Order>(
+              Arg.Is("<dynamic query>"),
+              Arg.Is(TestDomainStorageProviderDefinition),
+              Arg.Is(_someQueryModel),
+              Arg<IEnumerable<FetchQueryModelBuilder>>.List.Equal(Enumerable.Empty<FetchQueryModelBuilder>())))
+          .Return(_collectionExecutableQueryMock);
 
       var fakeResult = new Order[0];
-      _collectionExecutableQueryMock.Expect (mock => mock.Execute (_queryManagerMock)).Return (fakeResult);
-      Assert.That (
-          () => _queryExecutor.ExecuteSingle<Order> (_someQueryModel, false),
+      _collectionExecutableQueryMock.Expect(mock => mock.Execute(_queryManagerMock)).Return(fakeResult);
+      Assert.That(
+          () => _queryExecutor.ExecuteSingle<Order>(_someQueryModel, false),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("Sequence contains no elements"));
+              .With.Message.EqualTo("Sequence contains no elements"));
     }
 
     [Test]
     public void ExecuteSingle_NoActiveClientTransaction ()
     {
-      using (ClientTransactionScope.EnterNullScope ())
+      using (ClientTransactionScope.EnterNullScope())
       {
-        Assert.That (
-            () => _queryExecutor.ExecuteSingle<Order> (_someQueryModel, false),
+        Assert.That(
+            () => _queryExecutor.ExecuteSingle<Order>(_someQueryModel, false),
             Throws.InvalidOperationException
-                .With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+                .With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
       }
     }
 
     private void ExpectCreateQueryWithFetchQueryModelBuilders<T> (QueryModel queryModel, IExecutableQuery<IEnumerable<T>> fakeResult)
     {
-      var nonTrailingFetchRequest = AddFetchRequest (queryModel);
-      var someResultOperator = AddSomeResultOperator (queryModel);
-      var trailingFetchRequest1 = AddFetchRequest (queryModel);
-      var trailingFetchRequest2 = AddFetchRequest (queryModel);
-      Assert.That (
+      var nonTrailingFetchRequest = AddFetchRequest(queryModel);
+      var someResultOperator = AddSomeResultOperator(queryModel);
+      var trailingFetchRequest1 = AddFetchRequest(queryModel);
+      var trailingFetchRequest2 = AddFetchRequest(queryModel);
+      Assert.That(
           queryModel.ResultOperators,
-          Is.EqualTo (new[] { nonTrailingFetchRequest, someResultOperator, trailingFetchRequest1, trailingFetchRequest2 }));
+          Is.EqualTo(new[] { nonTrailingFetchRequest, someResultOperator, trailingFetchRequest1, trailingFetchRequest2 }));
 
       _queryGeneratorMock
-          .Expect (
-              mock => mock.CreateSequenceQuery<T> (
+          .Expect(
+              mock => mock.CreateSequenceQuery<T>(
                   Arg<string>.Is.Anything,
                   Arg<StorageProviderDefinition>.Is.Anything,
-                  Arg.Is (queryModel),
+                  Arg.Is(queryModel),
                   Arg<IEnumerable<FetchQueryModelBuilder>>.Is.Anything))
-          .Return (fakeResult)
-          .WhenCalled (mi =>
+          .Return(fakeResult)
+          .WhenCalled(mi =>
           {
-            Assert.That (queryModel.ResultOperators, Is.EqualTo (new[] { nonTrailingFetchRequest, someResultOperator }));
+            Assert.That(queryModel.ResultOperators, Is.EqualTo(new[] { nonTrailingFetchRequest, someResultOperator }));
 
-            var builders = ((IEnumerable<FetchQueryModelBuilder>) mi.Arguments[3]).ToArray ();
-            Assert.That (builders, Has.Length.EqualTo (2));
-            CheckFetchQueryModelBuilder (builders[0], trailingFetchRequest2, queryModel, 3);
-            CheckFetchQueryModelBuilder (builders[1], trailingFetchRequest1, queryModel, 2);
+            var builders = ((IEnumerable<FetchQueryModelBuilder>)mi.Arguments[3]).ToArray();
+            Assert.That(builders, Has.Length.EqualTo(2));
+            CheckFetchQueryModelBuilder(builders[0], trailingFetchRequest2, queryModel, 3);
+            CheckFetchQueryModelBuilder(builders[1], trailingFetchRequest1, queryModel, 2);
           });
     }
 
     private void CheckFetchQueryModelBuilder (
         FetchQueryModelBuilder builder, FetchRequestBase expectedFetchRequest, QueryModel expectedQueryModel, int expectedResultOperatorPosition)
     {
-      Assert.That (builder.FetchRequest, Is.SameAs (expectedFetchRequest));
-      Assert.That (builder.SourceItemQueryModel, Is.SameAs (expectedQueryModel));
-      Assert.That (builder.ResultOperatorPosition, Is.EqualTo (expectedResultOperatorPosition));
+      Assert.That(builder.FetchRequest, Is.SameAs(expectedFetchRequest));
+      Assert.That(builder.SourceItemQueryModel, Is.SameAs(expectedQueryModel));
+      Assert.That(builder.ResultOperatorPosition, Is.EqualTo(expectedResultOperatorPosition));
     }
 
     private FetchRequestBase AddFetchRequest (QueryModel queryModel)
     {
-      var relationMember = NormalizingMemberInfoFromExpressionUtility.GetProperty ((Order o) => o.OrderTicket);
-      var fetchRequest = new FetchOneRequest (relationMember);
-      queryModel.ResultOperators.Add (fetchRequest);
+      var relationMember = NormalizingMemberInfoFromExpressionUtility.GetProperty((Order o) => o.OrderTicket);
+      var fetchRequest = new FetchOneRequest(relationMember);
+      queryModel.ResultOperators.Add(fetchRequest);
       return fetchRequest;
     }
 
     private ResultOperatorBase AddSomeResultOperator (QueryModel queryModel)
     {
-      var someResultOperator = new DistinctResultOperator ();
-      queryModel.ResultOperators.Add (someResultOperator);
+      var someResultOperator = new DistinctResultOperator();
+      queryModel.ResultOperators.Add(someResultOperator);
       return someResultOperator;
     }
   }

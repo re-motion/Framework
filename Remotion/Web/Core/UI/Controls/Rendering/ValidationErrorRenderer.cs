@@ -29,7 +29,7 @@ namespace Remotion.Web.UI.Controls.Rendering
   /// Default implementation of the <see cref="IValidationErrorRenderer" /> interface.
   /// </summary>
   /// <seealso cref="IValidationErrorRenderer"/>
-  [ImplementationFor (typeof (IValidationErrorRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IValidationErrorRenderer), Lifetime = LifetimeKind.Singleton)]
   public class ValidationErrorRenderer : IValidationErrorRenderer
   {
     private struct ValidationErrorsAttributeData
@@ -42,7 +42,7 @@ namespace Remotion.Web.UI.Controls.Rendering
 
     public ValidationErrorRenderer ([NotNull] IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 
       _renderingFeatures = renderingFeatures;
     }
@@ -52,36 +52,36 @@ namespace Remotion.Web.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<string> validationErrors)
     {
-      ArgumentUtility.CheckNotNull ("attributeAccessor", attributeAccessor);
-      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull("attributeAccessor", attributeAccessor);
+      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
 
       if (!validationErrors.Any())
         return;
 
       var describedByAttribute = HtmlTextWriterAttribute2.AriaDescribedBy;
 
-      var describedByAttributeValue = GetValidationErrorsAttributeData (attributeAccessor.GetAttribute (describedByAttribute), validationErrorID);
+      var describedByAttributeValue = GetValidationErrorsAttributeData(attributeAccessor.GetAttribute(describedByAttribute), validationErrorID);
 
-      attributeAccessor.SetAttribute (describedByAttribute, describedByAttributeValue.DescribedByAttributeValue);
+      attributeAccessor.SetAttribute(describedByAttribute, describedByAttributeValue.DescribedByAttributeValue);
 
       if (_renderingFeatures.EnableDiagnosticMetadata)
-        attributeAccessor.SetAttribute (DiagnosticMetadataAttributes.ValidationErrorIDIndex, describedByAttributeValue.ValidationErrorsIDIndex);
+        attributeAccessor.SetAttribute(DiagnosticMetadataAttributes.ValidationErrorIDIndex, describedByAttributeValue.ValidationErrorsIDIndex);
 
-      attributeAccessor.SetAttribute (HtmlTextWriterAttribute2.AriaInvalid, HtmlAriaInvalidAttributeValue.True);
+      attributeAccessor.SetAttribute(HtmlTextWriterAttribute2.AriaInvalid, HtmlAriaInvalidAttributeValue.True);
     }
 
     public void AddValidationErrorsReference (AttributeCollection attributeCollection, string validationErrorID, IReadOnlyCollection<string> validationErrors)
     {
-      ArgumentUtility.CheckNotNull ("attributeCollection", attributeCollection);
-      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull("attributeCollection", attributeCollection);
+      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
 
       if (!validationErrors.Any())
         return;
 
       var describedByAttributeName = HtmlTextWriterAttribute2.AriaDescribedBy;
-      var describedByAttributeValue = GetValidationErrorsAttributeData (attributeCollection[describedByAttributeName], validationErrorID);
+      var describedByAttributeValue = GetValidationErrorsAttributeData(attributeCollection[describedByAttributeName], validationErrorID);
 
       attributeCollection[describedByAttributeName] = describedByAttributeValue.DescribedByAttributeValue;
 
@@ -93,20 +93,20 @@ namespace Remotion.Web.UI.Controls.Rendering
 
     public void RenderValidationErrors (HtmlTextWriter htmlTextWriter, string validationErrorID, IReadOnlyCollection<string> validationErrors)
     {
-      ArgumentUtility.CheckNotNull ("htmlTextWriter", htmlTextWriter);
-      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull("htmlTextWriter", htmlTextWriter);
+      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
 
       if (!validationErrors.Any())
         return;
 
-      htmlTextWriter.AddAttribute (HtmlTextWriterAttribute.Id, validationErrorID);
-      htmlTextWriter.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
-      htmlTextWriter.RenderBeginTag (HtmlTextWriterTag.Span);
+      htmlTextWriter.AddAttribute(HtmlTextWriterAttribute.Id, validationErrorID);
+      htmlTextWriter.AddAttribute(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+      htmlTextWriter.RenderBeginTag(HtmlTextWriterTag.Span);
 
       foreach (var validationError in validationErrors)
       {
-        htmlTextWriter.Write (validationError);
+        htmlTextWriter.Write(validationError);
         htmlTextWriter.WriteBreak();
       }
 
@@ -115,16 +115,16 @@ namespace Remotion.Web.UI.Controls.Rendering
 
     private ValidationErrorsAttributeData GetValidationErrorsAttributeData (string? attributeValue, string validationErrorsID)
     {
-      if (string.IsNullOrEmpty (attributeValue))
+      if (string.IsNullOrEmpty(attributeValue))
       {
         return new ValidationErrorsAttributeData { DescribedByAttributeValue = validationErrorsID, ValidationErrorsIDIndex = "0" };
       }
       else
       {
-        var attributeValueSplit = attributeValue.Split (new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        var attributeValueSplit = attributeValue.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
         var validationErrorsIDIndex = attributeValueSplit.Length;
 
-        var describedByValue = string.Concat (attributeValue, " ", validationErrorsID);
+        var describedByValue = string.Concat(attributeValue, " ", validationErrorsID);
 
         return new ValidationErrorsAttributeData { DescribedByAttributeValue = describedByValue, ValidationErrorsIDIndex = validationErrorsIDIndex.ToString() };
       }

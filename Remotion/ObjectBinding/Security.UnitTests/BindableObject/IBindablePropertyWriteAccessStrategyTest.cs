@@ -39,9 +39,9 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
     {
       var strategy = _serviceLocator.GetInstance<IBindablePropertyWriteAccessStrategy>();
 
-      Assert.That (strategy, Is.TypeOf (typeof (CompundBindablePropertyWriteAccessStrategy)));
-      var compoundStrategies = ((CompundBindablePropertyWriteAccessStrategy) strategy).BindablePropertyWriteAccessStrategies;
-      Assert.That (compoundStrategies.Select (s => s.GetType()), Has.Member (typeof (SecurityBasedBindablePropertyWriteAccessStrategy)));
+      Assert.That(strategy, Is.TypeOf(typeof(CompundBindablePropertyWriteAccessStrategy)));
+      var compoundStrategies = ((CompundBindablePropertyWriteAccessStrategy)strategy).BindablePropertyWriteAccessStrategies;
+      Assert.That(compoundStrategies.Select(s => s.GetType()), Has.Member(typeof(SecurityBasedBindablePropertyWriteAccessStrategy)));
     }
 
     [Test]
@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.BindableObject
       var strategy1 = _serviceLocator.GetInstance<IBindablePropertyWriteAccessStrategy>();
       var strategy2 = _serviceLocator.GetInstance<IBindablePropertyWriteAccessStrategy>();
 
-      Assert.That (strategy1, Is.SameAs (strategy2));
+      Assert.That(strategy1, Is.SameAs(strategy2));
     }
   }
 }

@@ -38,44 +38,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       base.SetUp();
 
       _eventSinkWithWock = MockRepository.GenerateMock<IClientTransactionEventSink>();
-      _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
+      _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderItems");
 
-      _stateUpdateListener = new VirtualEndPointStateUpdateListener (_eventSinkWithWock);
+      _stateUpdateListener = new VirtualEndPointStateUpdateListener(_eventSinkWithWock);
     }
 
     [Test]
     public void StateUpdates_RoutedToTransactionEventSink_Null ()
     {
-      _stateUpdateListener.VirtualEndPointStateUpdated (_endPointID, null);
+      _stateUpdateListener.VirtualEndPointStateUpdated(_endPointID, null);
 
-      _eventSinkWithWock.AssertWasCalled (mock => mock.RaiseVirtualRelationEndPointStateUpdatedEvent ( _endPointID, null));
+      _eventSinkWithWock.AssertWasCalled(mock => mock.RaiseVirtualRelationEndPointStateUpdatedEvent( _endPointID, null));
     }
 
     [Test]
     public void StateUpdates_RoutedToTransactionEventSink_True ()
     {
-      _stateUpdateListener.VirtualEndPointStateUpdated (_endPointID, true);
+      _stateUpdateListener.VirtualEndPointStateUpdated(_endPointID, true);
 
-      _eventSinkWithWock.AssertWasCalled (mock => mock.RaiseVirtualRelationEndPointStateUpdatedEvent ( _endPointID, true));
+      _eventSinkWithWock.AssertWasCalled(mock => mock.RaiseVirtualRelationEndPointStateUpdatedEvent( _endPointID, true));
     }
 
     [Test]
     public void StateUpdates_RoutedToTransactionEventSink_False ()
     {
-      _stateUpdateListener.VirtualEndPointStateUpdated (_endPointID, false);
+      _stateUpdateListener.VirtualEndPointStateUpdated(_endPointID, false);
 
-      _eventSinkWithWock.AssertWasCalled (mock => mock.RaiseVirtualRelationEndPointStateUpdatedEvent ( _endPointID, false));
+      _eventSinkWithWock.AssertWasCalled(mock => mock.RaiseVirtualRelationEndPointStateUpdatedEvent( _endPointID, false));
     }
 
     [Test]
     public void Serializable ()
     {
       var eventSink = new SerializableClientTransactionEventSinkFake();
-      var stateUpdateListener = new VirtualEndPointStateUpdateListener (eventSink);
+      var stateUpdateListener = new VirtualEndPointStateUpdateListener(eventSink);
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (stateUpdateListener);
+      var deserializedInstance = Serializer.SerializeAndDeserialize(stateUpdateListener);
 
-      Assert.That (deserializedInstance.TransactionEventSink, Is.Not.Null);
+      Assert.That(deserializedInstance.TransactionEventSink, Is.Not.Null);
     }
   }
 }

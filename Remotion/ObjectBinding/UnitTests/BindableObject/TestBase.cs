@@ -34,54 +34,54 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [SetUp]
     public virtual void SetUp ()
     {
-      BusinessObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), null);
-      BusinessObjectProvider.SetProvider (typeof (BindableObjectWithIdentityProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectWithIdentityProviderAttribute), null);
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      BusinessObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), null);
-      BusinessObjectProvider.SetProvider (typeof (BindableObjectWithIdentityProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectWithIdentityProviderAttribute), null);
     }
 
     protected IPropertyInformation GetPropertyInfo (Type type, string propertyName)
     {
-      PropertyInfo propertyInfo = type.GetProperty (propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-      Assert.IsNotNull (propertyInfo, "Property '{0}' was not found on type '{1}'.", propertyName, type);
+      PropertyInfo propertyInfo = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+      Assert.IsNotNull(propertyInfo, "Property '{0}' was not found on type '{1}'.", propertyName, type);
 
       return PropertyInfoAdapter.Create(propertyInfo);
     }
 
     protected IPropertyInformation GetPropertyInfo (Type type, Type interfaceType, string propertyName)
     {
-      PropertyInfo interfacePropertyInfo = interfaceType.GetProperty (propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-      Assert.IsNotNull (interfacePropertyInfo, "Property '{0}' was not found on type '{1}'.", propertyName, interfaceType);
-      PropertyInfo propertyInfo = type.GetProperty (propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+      PropertyInfo interfacePropertyInfo = interfaceType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+      Assert.IsNotNull(interfacePropertyInfo, "Property '{0}' was not found on type '{1}'.", propertyName, interfaceType);
+      PropertyInfo propertyInfo = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
       if (propertyInfo == null)
       {
         Type interfaceTypeDefinition = interfaceType.IsGenericType ? interfaceType.GetGenericTypeDefinition() : interfaceType;
-        string explicitName = interfaceTypeDefinition.FullName.Replace ("`1", "<T>") + "." + interfacePropertyInfo.Name;
-        propertyInfo = type.GetProperty (explicitName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-        Assert.IsNotNull (propertyInfo, "Property '{0}' (or '{1}') was not found on type '{2}'.", propertyName, explicitName, type);
+        string explicitName = interfaceTypeDefinition.FullName.Replace("`1", "<T>") + "." + interfacePropertyInfo.Name;
+        propertyInfo = type.GetProperty(explicitName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        Assert.IsNotNull(propertyInfo, "Property '{0}' (or '{1}') was not found on type '{2}'.", propertyName, explicitName, type);
       }
-      
-      var introducedMemberAttributes = propertyInfo.GetCustomAttributes (typeof (IntroducedMemberAttribute), true);
+
+      var introducedMemberAttributes = propertyInfo.GetCustomAttributes(typeof(IntroducedMemberAttribute), true);
       if (introducedMemberAttributes.Length > 0)
       {
         var introducedMemberAttribute = introducedMemberAttributes[0] as IntroducedMemberAttribute;
-        var interfaceProperty = PropertyInfoAdapter.Create(introducedMemberAttribute.IntroducedInterface.GetProperty (introducedMemberAttribute.InterfaceMemberName));
-        var mixinProperty = interfaceProperty.FindInterfaceImplementation (introducedMemberAttribute.Mixin);
-        var interfaceImplementation = new InterfaceImplementationPropertyInformation (mixinProperty, interfaceProperty);
+        var interfaceProperty = PropertyInfoAdapter.Create(introducedMemberAttribute.IntroducedInterface.GetProperty(introducedMemberAttribute.InterfaceMemberName));
+        var mixinProperty = interfaceProperty.FindInterfaceImplementation(introducedMemberAttribute.Mixin);
+        var interfaceImplementation = new InterfaceImplementationPropertyInformation(mixinProperty, interfaceProperty);
 
-        return new MixinIntroducedPropertyInformation (interfaceImplementation);
+        return new MixinIntroducedPropertyInformation(interfaceImplementation);
       }
       else
       {
         var propertyInfoAdapter = PropertyInfoAdapter.Create(propertyInfo);
         var interfaceDeclaration = propertyInfoAdapter.FindInterfaceDeclarations().SingleOrDefault();
         if (interfaceDeclaration != null)
-          return new InterfaceImplementationPropertyInformation (propertyInfoAdapter, interfaceDeclaration);
+          return new InterfaceImplementationPropertyInformation(propertyInfoAdapter, interfaceDeclaration);
         else
           return propertyInfoAdapter;
       }
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     protected Type GetUnderlyingType (PropertyReflector reflector)
     {
-      return (Type) PrivateInvoke.InvokeNonPublicMethod (reflector, typeof (PropertyReflector), "GetUnderlyingType");
+      return (Type)PrivateInvoke.InvokeNonPublicMethod(reflector, typeof(PropertyReflector), "GetUnderlyingType");
     }
 
     protected PropertyBase.Parameters GetPropertyParameters (
@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
         BindableObjectGlobalizationService bindableObjectGlobalizationService = null,
         IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider = null)
     {
-      var reflector = new PropertyReflector (
+      var reflector = new PropertyReflector(
           property,
           provider,
           new Mock<IDefaultValueStrategy>().Object,
@@ -109,11 +109,11 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           bindableObjectGlobalizationService ?? SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
           businessObjectPropertyConstraintProvider ?? SafeServiceLocator.Current.GetInstance<IBusinessObjectPropertyConstraintProvider>());
 
-      return (PropertyBase.Parameters) PrivateInvoke.InvokeNonPublicMethod (
+      return (PropertyBase.Parameters)PrivateInvoke.InvokeNonPublicMethod(
           reflector,
-          typeof (PropertyReflector),
+          typeof(PropertyReflector),
           "CreateParameters",
-          GetUnderlyingType (reflector));
+          GetUnderlyingType(reflector));
     }
 
     protected BindableObjectProvider CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ()
@@ -135,11 +135,11 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
         BindableObjectGlobalizationService bindableObjectGlobalizationService = null,
         IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider = null)
     {
-      return new PropertyBase.Parameters (
+      return new PropertyBase.Parameters(
           businessObjectProvider,
           propertyInfo,
           underlyingType,
-          new Lazy<Type> (() => concreteType),
+          new Lazy<Type>(() => concreteType),
           listInfo,
           isNullable,
           isRequired,

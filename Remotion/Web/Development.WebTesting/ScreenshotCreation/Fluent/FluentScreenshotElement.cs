@@ -45,8 +45,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] IScreenshotElementResolver<T> resolver,
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
     {
-      ArgumentUtility.CheckNotNull ("target", target);
-      ArgumentUtility.CheckNotNull ("resolver", resolver);
+      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull("resolver", resolver);
 
       _target = target;
       _resolver = resolver;
@@ -90,15 +90,15 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     /// <inheritdoc />
     ResolvedScreenshotElement IFluentScreenshotElement.ResolveBrowserCoordinates ()
     {
-      return _resolver.ResolveBrowserCoordinates (_target);
+      return _resolver.ResolveBrowserCoordinates(_target);
     }
 
     /// <inheritdoc />
     ResolvedScreenshotElement IFluentScreenshotElement.ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
-      return _resolver.ResolveDesktopCoordinates (_target, locator);
+      return _resolver.ResolveDesktopCoordinates(_target, locator);
     }
   }
 }

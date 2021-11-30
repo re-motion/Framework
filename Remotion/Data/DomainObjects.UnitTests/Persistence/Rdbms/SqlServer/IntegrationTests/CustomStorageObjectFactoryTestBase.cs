@@ -44,36 +44,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     private MappingConfiguration _mappingConfiguration;
 
     protected CustomStorageObjectFactoryTestBase (string createTestDataFileName)
-        : base (new DatabaseAgent (TestDomainConnectionString), createTestDataFileName)
+        : base(new DatabaseAgent(TestDomainConnectionString), createTestDataFileName)
     {
     }
 
     public override void SetUp ()
     {
       base.SetUp();
-      var mappingLoader = new MappingReflector (
-          new FixedTypeDiscoveryService (GetReflectedTypes()),
+      var mappingLoader = new MappingReflector(
+          new FixedTypeDiscoveryService(GetReflectedTypes()),
           new ClassIDProvider(),
           new ReflectionBasedMemberInformationNameResolver(),
           new PropertyMetadataReflector(),
           new DomainModelConstraintProvider(),
           new SortExpressionDefinitionProvider(),
           SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
-      _storageObjectFactory = CreateSqlStorageObjectFactory ();
+      _storageObjectFactory = CreateSqlStorageObjectFactory();
       var storageProviderDefinitionFinderStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder>();
-      _storageProviderDefinition = new RdbmsProviderDefinition ("test", _storageObjectFactory, DatabaseTest.TestDomainConnectionString);
+      _storageProviderDefinition = new RdbmsProviderDefinition("test", _storageObjectFactory, DatabaseTest.TestDomainConnectionString);
       storageProviderDefinitionFinderStub
-          .Stub (stub => stub.GetStorageProviderDefinition (Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
-          .Return (_storageProviderDefinition);
-      var persistenceModelLoader = _storageObjectFactory.CreatePersistenceModelLoader (_storageProviderDefinition, storageProviderDefinitionFinderStub);
-      _mappingConfiguration = new MappingConfiguration (mappingLoader, persistenceModelLoader);
+          .Stub(stub => stub.GetStorageProviderDefinition(Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
+          .Return(_storageProviderDefinition);
+      var persistenceModelLoader = _storageObjectFactory.CreatePersistenceModelLoader(_storageProviderDefinition, storageProviderDefinitionFinderStub);
+      _mappingConfiguration = new MappingConfiguration(mappingLoader, persistenceModelLoader);
 
-      MappingConfiguration.SetCurrent (_mappingConfiguration);
+      MappingConfiguration.SetCurrent(_mappingConfiguration);
 
-      DomainObjectsConfiguration.SetCurrent (
-          new FakeDomainObjectsConfiguration (
+      DomainObjectsConfiguration.SetCurrent(
+          new FakeDomainObjectsConfiguration(
               null,
-              new StorageConfiguration (
+              new StorageConfiguration(
                   new ProviderCollection<StorageProviderDefinition> { _storageProviderDefinition },
                   _storageProviderDefinition),
               null));
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public override void TearDown ()
     {
-      MappingConfiguration.SetCurrent (null);
+      MappingConfiguration.SetCurrent(null);
       base.TearDown();
     }
 
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       var thisType = GetType();
       var testDomainNamespace = thisType.Namespace + ".TestDomain";
-      return thisType.Assembly.GetTypes().Where (t => t.Namespace != null && t.Namespace.StartsWith (testDomainNamespace)).ToArray();
+      return thisType.Assembly.GetTypes().Where(t => t.Namespace != null && t.Namespace.StartsWith(testDomainNamespace)).ToArray();
     }
   }
 }

@@ -21,6 +21,6 @@ namespace Remotion.Globalization.Mixins.UnitTests.TestDomain
   [MultiLingualResources(NamedResources.OnInherited)]
   public class InheritedClassWithMultiLingualResourcesAttributes : ClassWithMultiLingualResourcesAttributes
   {
-    
+
   }
 }

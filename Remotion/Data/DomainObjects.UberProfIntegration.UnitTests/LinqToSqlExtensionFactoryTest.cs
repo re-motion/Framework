@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _factory = new LinqToSqlExtensionFactory();
     }
@@ -37,23 +37,23 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
     {
       var clientTransaction = ClientTransaction.CreateRootTransaction();
 
-      var result = _factory.CreateClientTransactionExtensions (clientTransaction).ToArray();
+      var result = _factory.CreateClientTransactionExtensions(clientTransaction).ToArray();
 
-      Assert.That (result, Has.Length.EqualTo (1));
+      Assert.That(result, Has.Length.EqualTo(1));
       var clientTransactionExtension = result.Single();
-      Assert.That (clientTransactionExtension, Is.TypeOf<LinqToSqlExtension> ());
-      Assert.That (((LinqToSqlExtension) clientTransactionExtension).ClientTransactionID, Is.EqualTo (clientTransaction.ID));
-      Assert.That (((LinqToSqlExtension) clientTransactionExtension).AppenderProxy, Is.SameAs (AppenderProxy));
+      Assert.That(clientTransactionExtension, Is.TypeOf<LinqToSqlExtension>());
+      Assert.That(((LinqToSqlExtension)clientTransactionExtension).ClientTransactionID, Is.EqualTo(clientTransaction.ID));
+      Assert.That(((LinqToSqlExtension)clientTransactionExtension).AppenderProxy, Is.SameAs(AppenderProxy));
     }
 
     [Test]
     public void CreateClientTransactionExtensions_SubTransaction ()
     {
-      var clientTransaction = ClientTransaction.CreateRootTransaction ().CreateSubTransaction();
+      var clientTransaction = ClientTransaction.CreateRootTransaction().CreateSubTransaction();
 
-      var result = _factory.CreateClientTransactionExtensions (clientTransaction);
+      var result = _factory.CreateClientTransactionExtensions(clientTransaction);
 
-      Assert.That (result, Is.Empty);
+      Assert.That(result, Is.Empty);
     }
   }
 }

@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       public override IBusinessObjectReferenceProperty? ReferenceProperty
       {
-        get { return (IBusinessObjectReferenceProperty?) _owner.Property; }
+        get { return (IBusinessObjectReferenceProperty?)_owner.Property; }
       }
 
       public override IBusinessObjectDataSource? ReferencedDataSource
@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       protected override string GetDataSourceIdentifier ()
       {
-        return string.Format ("{0} '{1}'", _owner.GetType(), _owner.ID);
+        return string.Format("{0} '{1}'", _owner.GetType(), _owner.ID);
       }
     }
 
@@ -83,13 +83,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </summary>
     protected override Type[] SupportedPropertyInterfaces
     {
-      get { return new[] { typeof (IBusinessObjectReferenceProperty) }; }
+      get { return new[] { typeof(IBusinessObjectReferenceProperty) }; }
     }
 
     // Default summary will be created.
     public BusinessObjectReferenceDataSourceControl ()
     {
-      _internalDataSource = new InternalBusinessObjectReferenceDataSource (this);
+      _internalDataSource = new InternalBusinessObjectReferenceDataSource(this);
     }
 
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
@@ -97,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override sealed object? ValueImplementation
     {
       get { return _internalDataSource.BusinessObject; }
-      set { _internalDataSource.BusinessObject = (IBusinessObject?) value; }
+      set { _internalDataSource.BusinessObject = (IBusinessObject?)value; }
     }
 
     public override bool HasValue
@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (_internalDataSource.HasBusinessObjectChanged)
           return true;
 
-        return _internalDataSource.GetBoundControlsWithValidBinding().OfType<IBusinessObjectBoundEditableWebControl>().Any (
+        return _internalDataSource.GetBoundControlsWithValidBinding().OfType<IBusinessObjectBoundEditableWebControl>().Any(
             control => control.IsDirty);
       }
       set { base.IsDirty = value; }
@@ -155,14 +155,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     public override void LoadValue (bool interim) // inherited from control interface
     {
-      _internalDataSource.LoadValue (interim);
+      _internalDataSource.LoadValue(interim);
     }
 
     /// <summary> Loads the values of the <see cref="BusinessObject"/> into all bound controls. </summary>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     public virtual void LoadValues (bool interim) // inherited from data source interface
     {
-      _internalDataSource.LoadValues (interim);
+      _internalDataSource.LoadValues(interim);
     }
 
     /// <summary> 
@@ -181,7 +181,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       // Do not include check for IsDirty.
       // The wrapped reference data source has its own mechanism to prevent unnecessary write-backs.
       // The bound controls also have their own IsDirty-checks and do not concern the DataSourceControl's write-back semantics.
-      return _internalDataSource.SaveValue (interim);
+      return _internalDataSource.SaveValue(interim);
     }
 
     /// <summary> 
@@ -195,7 +195,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </returns>
     public virtual bool SaveValues (bool interim) // inherited data source interface
     {
-      return _internalDataSource.SaveValues (interim);
+      return _internalDataSource.SaveValues(interim);
     }
 
     /// <summary>
@@ -206,11 +206,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   An <see cref="IBusinessObjectReferenceProperty"/> that is part of the <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>.
     /// </value>
     /// <remarks> Identical to <see cref="BusinessObjectBoundWebControl.Property"/>. </remarks>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObjectReferenceProperty? ReferenceProperty
     {
-      get { return (IBusinessObjectReferenceProperty?) Property; }
+      get { return (IBusinessObjectReferenceProperty?)Property; }
     }
 
     /// <summary>
@@ -222,8 +222,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="BusinessObjectReferenceDataSourceControl"/> connects.
     ///  </value>
     /// <remarks> Identical to <see cref="BusinessObjectBoundWebControl.DataSource"/>. </remarks>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObjectDataSource? ReferencedDataSource
     {
       get { return _internalDataSource.ReferencedDataSource; }
@@ -234,8 +234,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets the <see cref="IBusinessObject"/> accessed through the <see cref="ReferenceProperty"/>.
     /// </summary>
     /// <value> An <see cref="IBusinessObject"/> or <see langword="null"/>. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObject? BusinessObject
     {
       get { return _internalDataSource.BusinessObject; }
@@ -248,8 +248,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> 
     ///   An <see cref="IBusinessObjectClass"/> or <see langword="null"/> if no <see cref="ReferenceProperty"/> is set.
     /// </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObjectClass? BusinessObjectClass
     {
       get { return _internalDataSource.BusinessObjectClass; }
@@ -259,8 +259,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets the <see cref="IBusinessObjectProvider"/> of this <see cref="BusinessObjectReferenceDataSourceControl"/>.
     /// </summary>
     /// <value> The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IBusinessObjectProvider? BusinessObjectProvider
     {
       get { return _internalDataSource.BusinessObjectProvider; }
@@ -274,7 +274,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void Register (IBusinessObjectBoundControl control)
     {
-      _internalDataSource.Register (control);
+      _internalDataSource.Register(control);
     }
 
     /// <summary>
@@ -285,7 +285,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void Unregister (IBusinessObjectBoundControl control)
     {
-      _internalDataSource.Unregister (control);
+      _internalDataSource.Unregister(control);
     }
 
     /// <summary>
@@ -293,8 +293,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="BusinessObjectReferenceDataSourceControl"/>.
     /// </summary>
     /// <value> A value of the <see cref="DataSourceMode"/> enumeration. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public virtual DataSourceMode Mode
     {
       get
@@ -315,8 +315,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary>Gets the <see cref="IBusinessObjectBoundControl"/> objects bound to this <see cref="BusinessObjectReferenceDataSourceControl"/>.</summary>
     /// <returns> A read-only collection of <see cref="IBusinessObjectBoundControl"/> objects. </returns>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public ReadOnlyCollection<IBusinessObjectBoundControl> GetAllBoundControls ()
     {
       return _internalDataSource.GetAllBoundControls();
@@ -330,8 +330,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   A sequence of <see cref="IBusinessObjectBoundControl"/> objects where the <see cref="IBusinessObjectBoundControl.HasValidBinding"/> property 
     ///   evaluates <see langword="true"/>. 
     /// </returns>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IEnumerable<IBusinessObjectBoundControl> GetBoundControlsWithValidBinding ()
     {
       return _internalDataSource.GetBoundControlsWithValidBinding();
@@ -362,7 +362,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = ServiceLocator.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>();
-      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+      _validators = validatorFactory.CreateValidators(this, isReadOnly).ToList().AsReadOnly();
       return _validators;
     }
 
@@ -382,18 +382,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       //  No output, control is invisible
     }
-    
+
     protected override void OnUnload (EventArgs e)
     {
       foreach (var control in _internalDataSource.GetAllBoundControls().ToArray())
-        _internalDataSource.Unregister (control);
+        _internalDataSource.Unregister(control);
 
-      base.OnUnload (e);
+      base.OnUnload(e);
     }
 
     public IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (BusinessObjectReferenceDataSourceControl));
+      return GetResourceManager(typeof(BusinessObjectReferenceDataSourceControl));
     }
   }
 }

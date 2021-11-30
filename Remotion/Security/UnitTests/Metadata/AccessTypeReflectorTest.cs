@@ -47,129 +47,129 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _enumeratedTypeReflector = new EnumerationReflector ();
-      _accessTypeReflector = new AccessTypeReflector (_enumeratedTypeReflector);
-      _cache = new MetadataCache ();
+      _enumeratedTypeReflector = new EnumerationReflector();
+      _accessTypeReflector = new AccessTypeReflector(_enumeratedTypeReflector);
+      _cache = new MetadataCache();
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf (typeof (IAccessTypeReflector), _accessTypeReflector);
-      Assert.That (_accessTypeReflector.EnumerationTypeReflector, Is.SameAs (_enumeratedTypeReflector));
+      Assert.IsInstanceOf(typeof(IAccessTypeReflector), _accessTypeReflector);
+      Assert.That(_accessTypeReflector.EnumerationTypeReflector, Is.SameAs(_enumeratedTypeReflector));
     }
 
     [Test]
     public void GetAccessTypesFromAssembly ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromAssembly (typeof (PaperFile).Assembly, _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromAssembly(typeof(PaperFile).Assembly, _cache);
 
-      Assert.That (actualAccessTypes, Is.Not.Null);
-      Assert.That (actualAccessTypes.Count, Is.EqualTo (2));
-      EnumValueInfoAssert.Contains ("Journalize", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Archive", actualAccessTypes);
+      Assert.That(actualAccessTypes, Is.Not.Null);
+      Assert.That(actualAccessTypes.Count, Is.EqualTo(2));
+      EnumValueInfoAssert.Contains("Journalize", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Archive", actualAccessTypes);
     }
 
     [Test]
     public void GetAccessTypesFromInstanceMethods ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (SecurableObjectWithSecuredInstanceMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof(SecurableObjectWithSecuredInstanceMethods), _cache);
 
-      Assert.That (actualAccessTypes, Is.Not.Null);
-      Assert.That (actualAccessTypes.Count, Is.EqualTo (9));
-      EnumValueInfoAssert.Contains ("Create", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Read", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Edit", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Delete", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Search", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Find", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("First", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Second", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Third", actualAccessTypes);
+      Assert.That(actualAccessTypes, Is.Not.Null);
+      Assert.That(actualAccessTypes.Count, Is.EqualTo(9));
+      EnumValueInfoAssert.Contains("Create", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Read", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Edit", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Delete", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Search", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Find", actualAccessTypes);
+      EnumValueInfoAssert.Contains("First", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Second", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Third", actualAccessTypes);
     }
 
     [Test]
     public void GetAccessTypesFromStaticMethods ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (SecurableObjectWithSecuredStaticMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof(SecurableObjectWithSecuredStaticMethods), _cache);
 
-      Assert.That (actualAccessTypes, Is.Not.Null);
-      Assert.That (actualAccessTypes.Count, Is.EqualTo (9));
-      EnumValueInfoAssert.Contains ("Create", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Read", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Edit", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Delete", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Search", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Find", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("First", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Second", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Third", actualAccessTypes);
+      Assert.That(actualAccessTypes, Is.Not.Null);
+      Assert.That(actualAccessTypes.Count, Is.EqualTo(9));
+      EnumValueInfoAssert.Contains("Create", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Read", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Edit", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Delete", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Search", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Find", actualAccessTypes);
+      EnumValueInfoAssert.Contains("First", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Second", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Third", actualAccessTypes);
     }
 
     [Test]
     public void GetAccessTypesDerivedClassFromInstanceMethods ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (DerivedSecurableObjectWithSecuredInstanceMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof(DerivedSecurableObjectWithSecuredInstanceMethods), _cache);
 
-      Assert.That (actualAccessTypes, Is.Not.Null);
-      Assert.That (actualAccessTypes.Count, Is.EqualTo (10));
-      EnumValueInfoAssert.Contains ("Create", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Read", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Edit", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Delete", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Search", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Find", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("First", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Second", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Third", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Fourth", actualAccessTypes);
+      Assert.That(actualAccessTypes, Is.Not.Null);
+      Assert.That(actualAccessTypes.Count, Is.EqualTo(10));
+      EnumValueInfoAssert.Contains("Create", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Read", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Edit", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Delete", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Search", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Find", actualAccessTypes);
+      EnumValueInfoAssert.Contains("First", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Second", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Third", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Fourth", actualAccessTypes);
     }
 
     [Test]
     public void GetAccessTypesDerivedClassFromStaticMethods ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (DerivedSecurableObjectWithSecuredStaticMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof(DerivedSecurableObjectWithSecuredStaticMethods), _cache);
 
-      Assert.That (actualAccessTypes, Is.Not.Null);
-      Assert.That (actualAccessTypes.Count, Is.EqualTo (10));
-      EnumValueInfoAssert.Contains ("Create", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Read", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Edit", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Delete", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Find", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Search", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("First", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Second", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Third", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Fourth", actualAccessTypes);
+      Assert.That(actualAccessTypes, Is.Not.Null);
+      Assert.That(actualAccessTypes.Count, Is.EqualTo(10));
+      EnumValueInfoAssert.Contains("Create", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Read", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Edit", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Delete", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Find", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Search", actualAccessTypes);
+      EnumValueInfoAssert.Contains("First", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Second", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Third", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Fourth", actualAccessTypes);
     }
 
     [Test]
     public void GetAccessTypesFromCache ()
     {
-      List<EnumValueInfo> expectedAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (PaperFile), _cache);
-      List<EnumValueInfo> actualAccessTypes = _cache.GetAccessTypes ();
+      List<EnumValueInfo> expectedAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof(PaperFile), _cache);
+      List<EnumValueInfo> actualAccessTypes = _cache.GetAccessTypes();
 
-      Assert.That (expectedAccessTypes.Count, Is.EqualTo (7));
+      Assert.That(expectedAccessTypes.Count, Is.EqualTo(7));
       foreach (EnumValueInfo expected in expectedAccessTypes)
-        Assert.That (actualAccessTypes, Has.Member (expected));
+        Assert.That(actualAccessTypes, Has.Member(expected));
     }
 
     [Test]
     public void GetAccessTypesFromType_SecuredProperties ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (SecurableObjectWithSecuredProperties), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType(typeof(SecurableObjectWithSecuredProperties), _cache);
 
-      Assert.That (actualAccessTypes, Is.Not.Null);
-      Assert.That (actualAccessTypes.Count, Is.EqualTo (8));
-      EnumValueInfoAssert.Contains ("Create", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Read", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Edit", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Delete", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Search", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Find", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("ReadSecret", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("WriteSecret", actualAccessTypes);
+      Assert.That(actualAccessTypes, Is.Not.Null);
+      Assert.That(actualAccessTypes.Count, Is.EqualTo(8));
+      EnumValueInfoAssert.Contains("Create", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Read", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Edit", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Delete", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Search", actualAccessTypes);
+      EnumValueInfoAssert.Contains("Find", actualAccessTypes);
+      EnumValueInfoAssert.Contains("ReadSecret", actualAccessTypes);
+      EnumValueInfoAssert.Contains("WriteSecret", actualAccessTypes);
     }
   }
 }

@@ -20,7 +20,7 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [NonIntroduced (typeof (IDomainObjectMixin))]
+  [NonIntroduced(typeof(IDomainObjectMixin))]
   public class HookedDomainObjectMixin : Mixin<HookedTargetClass>, IDomainObjectMixin
   {
     public event EventHandler InitializationHandler;
@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
     public int OnLoadedCount;
     public LoadMode OnLoadedLoadMode;
     public bool OnCreatedCalled;
-    
+
     public bool OnDomainObjectReferenceInitializingCalled;
     public int OnDomainObjectReferenceInitializingCount;
 
@@ -38,14 +38,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
       OnLoadedCalled = true;
       OnLoadedLoadMode = loadMode;
       ++OnLoadedCount;
-      Assert.That (Target.ID, Is.Not.Null);
+      Assert.That(Target.ID, Is.Not.Null);
       ++Target.Property;
     }
 
     public void OnDomainObjectCreated ()
     {
       OnCreatedCalled = true;
-      Assert.That (Target.ID, Is.Not.Null);
+      Assert.That(Target.ID, Is.Not.Null);
       Target.Property += 2;
     }
 
@@ -53,14 +53,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
     {
       OnDomainObjectReferenceInitializingCalled = true;
       ++OnDomainObjectReferenceInitializingCount;
-      Assert.That (Target.ID, Is.Not.Null);
+      Assert.That(Target.ID, Is.Not.Null);
       if (InitializationHandler != null)
-        InitializationHandler (this, EventArgs.Empty);
+        InitializationHandler(this, EventArgs.Empty);
     }
 
-    public new HookedTargetClass Target 
-    { 
-      get { return base.Target; } 
+    public new HookedTargetClass Target
+    {
+      get { return base.Target; }
     }
   }
 }

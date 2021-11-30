@@ -32,7 +32,7 @@ public class MenuTabClickEventArgs: WebTabClickEventArgs
 
   /// <summary> Initializes an instance. </summary>
   public MenuTabClickEventArgs (MenuTab tab)
-    : base (tab)
+    : base(tab)
   {
   }
 
@@ -45,7 +45,7 @@ public class MenuTabClickEventArgs: WebTabClickEventArgs
   /// <summary> The <see cref="MenuTab"/> that was clicked. </summary>
   public new MenuTab Tab
   {
-    get { return (MenuTab) base.Tab; }
+    get { return (MenuTab)base.Tab; }
   }
 }
 

@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   [Serializable]
   public class DomainObjectCollectionData : IDomainObjectCollectionData
   {
-    private readonly List<ObjectID> _orderedObjectIDs = new List<ObjectID> ();
-    private readonly Dictionary<ObjectID, DomainObject> _objectsByID = new Dictionary<ObjectID, DomainObject> ();
+    private readonly List<ObjectID> _orderedObjectIDs = new List<ObjectID>();
+    private readonly Dictionary<ObjectID, DomainObject> _objectsByID = new Dictionary<ObjectID, DomainObject>();
 
     public DomainObjectCollectionData ()
     {
@@ -41,10 +41,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public DomainObjectCollectionData (IEnumerable<DomainObject> domainObjects)
     {
-      ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+      ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
 
       foreach (var domainObject in domainObjects)
-        Insert (Count, domainObject);
+        Insert(Count, domainObject);
     }
 
     public long Version { get; private set; }
@@ -76,13 +76,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     void IDomainObjectCollectionData.EnsureDataComplete ()
     {
-      Assertion.IsTrue (((IDomainObjectCollectionData) this).IsDataComplete);
+      Assertion.IsTrue(((IDomainObjectCollectionData)this).IsDataComplete);
     }
 
     public bool ContainsObjectID (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      return _objectsByID.ContainsKey (objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      return _objectsByID.ContainsKey(objectID);
     }
 
     public DomainObject GetObject (int index)
@@ -92,61 +92,61 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public DomainObject GetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
       DomainObject result;
-      _objectsByID.TryGetValue (objectID, out result);
+      _objectsByID.TryGetValue(objectID, out result);
       return result;
     }
 
     public int IndexOf (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      return _orderedObjectIDs.IndexOf (objectID);
+      return _orderedObjectIDs.IndexOf(objectID);
     }
 
     public void Clear ()
     {
       // the following two lines won't throw => corruption impossible
-      _orderedObjectIDs.Clear ();
-      _objectsByID.Clear ();
+      _orderedObjectIDs.Clear();
+      _objectsByID.Clear();
 
-      IncrementVersion ();
+      IncrementVersion();
     }
 
     public void Insert (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       if (index < 0 || index > Count)
-        throw new ArgumentOutOfRangeException ("index");
+        throw new ArgumentOutOfRangeException("index");
 
       // the first line can throw an ArgumentException, but the second cannot => corruption impossible
-      _objectsByID.Add (domainObject.ID, domainObject);
-      _orderedObjectIDs.Insert (index, domainObject.ID);
+      _objectsByID.Add(domainObject.ID, domainObject);
+      _orderedObjectIDs.Insert(index, domainObject.ID);
 
-      IncrementVersion ();
+      IncrementVersion();
     }
 
     public bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      return Remove (domainObject.ID);
+      return Remove(domainObject.ID);
     }
 
     public bool Remove (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      var index = IndexOf (objectID);
+      var index = IndexOf(objectID);
       if (index == -1)
         return false;
 
       // if we got in here, the following two lines must succeed => corruption impossible
-      _orderedObjectIDs.RemoveAt (index);
-      _objectsByID.Remove (objectID);
+      _orderedObjectIDs.RemoveAt(index);
+      _objectsByID.Remove(objectID);
 
       IncrementVersion();
       return true;
@@ -154,32 +154,32 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public void Replace (int index, DomainObject value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      var oldDomainObject = GetObject (index);
+      var oldDomainObject = GetObject(index);
       if (oldDomainObject != value)
       {
-        Assertion.IsTrue (_orderedObjectIDs[index] == oldDomainObject.ID);
-        Assertion.IsTrue (_objectsByID.ContainsKey (oldDomainObject.ID));
+        Assertion.IsTrue(_orderedObjectIDs[index] == oldDomainObject.ID);
+        Assertion.IsTrue(_objectsByID.ContainsKey(oldDomainObject.ID));
 
         // only the first line can fail => corruption impossible
 
-        _objectsByID.Add (value.ID, value); // this can fail
-        _orderedObjectIDs.Insert (index + 1, value.ID);  // this must succeed, see assertion above
+        _objectsByID.Add(value.ID, value); // this can fail
+        _orderedObjectIDs.Insert(index + 1, value.ID);  // this must succeed, see assertion above
 
-        _orderedObjectIDs.RemoveAt (index); // this must succeed, see assertion above
-        _objectsByID.Remove (oldDomainObject.ID); // this must succeed, see assertion above
+        _orderedObjectIDs.RemoveAt(index); // this must succeed, see assertion above
+        _objectsByID.Remove(oldDomainObject.ID); // this must succeed, see assertion above
 
-        IncrementVersion ();
+        IncrementVersion();
       }
     }
 
     public void Sort (Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull ("comparison", comparison);
+      ArgumentUtility.CheckNotNull("comparison", comparison);
 
-      _orderedObjectIDs.Sort ((one, two) => comparison (GetObject (one), GetObject (two)));
-      IncrementVersion ();
+      _orderedObjectIDs.Sort((one, two) => comparison(GetObject(one), GetObject(two)));
+      IncrementVersion();
     }
 
     public IEnumerator<DomainObject> GetEnumerator ()
@@ -188,19 +188,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       for (int i = 0; i < Count; i++)
       {
         if (Version != enumeratedVersion)
-          throw new InvalidOperationException ("Collection was modified during enumeration.");
+          throw new InvalidOperationException("Collection was modified during enumeration.");
 
-        yield return GetObject (i);
+        yield return GetObject(i);
       }
 
       // Need to check again, in case Count was decreased while enumerating
       if (Version != enumeratedVersion)
-        throw new InvalidOperationException ("Collection was modified during enumeration.");
+        throw new InvalidOperationException("Collection was modified during enumeration.");
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
-      return GetEnumerator ();
+      return GetEnumerator();
     }
 
     private void IncrementVersion ()

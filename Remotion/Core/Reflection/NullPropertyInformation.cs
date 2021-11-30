@@ -27,7 +27,7 @@ namespace Remotion.Reflection
   {
     public string Name
     {
-      get 
+      get
       {
         //TODO RM-7432: Implementation doesn’t match nullability of IMethodInformation
         return null!;
@@ -61,7 +61,7 @@ namespace Remotion.Reflection
 
     public Type PropertyType
     {
-      get { return typeof (INullObject); }
+      get { return typeof(INullObject); }
     }
 
     public bool CanBeSetFromOutside
@@ -85,7 +85,7 @@ namespace Remotion.Reflection
 
     public IMethodInformation GetSetMethod (bool nonPublic)
     {
-      return new NullMethodInformation ();
+      return new NullMethodInformation();
     }
 
     public IPropertyInformation FindInterfaceImplementation (Type implementationType)

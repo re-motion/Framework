@@ -31,120 +31,120 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocTextValue
     public void Normal ()
     {
       var home = Start();
-      var bocTextValue = home.TextValues().GetByLocalID ("LastNameField_Normal");
+      var bocTextValue = home.TextValues().GetByLocalID("LastNameField_Normal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocTextValue.Analyze (analyzer);
+      var result = bocTextValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ReadOnly ()
     {
       var home = Start();
-      var bocTextValue = home.TextValues().GetByLocalID ("LastNameField_ReadOnly");
+      var bocTextValue = home.TextValues().GetByLocalID("LastNameField_ReadOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocTextValue.Analyze (analyzer);
+      var result = bocTextValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Disabled ()
     {
       var home = Start();
-      var bocTextValue = home.TextValues().GetByLocalID ("LastNameField_Disabled");
+      var bocTextValue = home.TextValues().GetByLocalID("LastNameField_Disabled");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocTextValue.Analyze (analyzer);
+      var result = bocTextValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void PasswordRenderMasked ()
     {
       var home = Start();
-      var bocTextValue = home.TextValues().GetByLocalID ("LastNameField_PasswordRenderMasked");
+      var bocTextValue = home.TextValues().GetByLocalID("LastNameField_PasswordRenderMasked");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocTextValue.Analyze (analyzer);
+      var result = bocTextValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void PasswordNoRender ()
     {
       var home = Start();
-      var bocTextValue = home.TextValues().GetByLocalID ("LastNameField_PasswordNoRender");
+      var bocTextValue = home.TextValues().GetByLocalID("LastNameField_PasswordNoRender");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocTextValue.Analyze (analyzer);
+      var result = bocTextValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void CVStringNormal ()
     {
       var home = Start();
-      var bocTextValue = home.TextValues().GetByLocalID ("CVString_Normal");
+      var bocTextValue = home.TextValues().GetByLocalID("CVString_Normal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocTextValue.Analyze (analyzer);
+      var result = bocTextValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void CVStringReadOnly ()
     {
       var home = Start();
-      var bocTextValue = home.TextValues().GetByLocalID ("CVString_ReadOnly");
+      var bocTextValue = home.TextValues().GetByLocalID("CVString_ReadOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocTextValue.Analyze (analyzer);
+      var result = bocTextValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void CVStringDisabled ()
     {
       var home = Start();
-      var bocTextValue = home.TextValues().GetByLocalID ("CVString_Disabled");
+      var bocTextValue = home.TextValues().GetByLocalID("CVString_Disabled");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocTextValue.Analyze (analyzer);
+      var result = bocTextValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void NormalRequired_WithValidationErrors ()
     {
       if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("RM-7412 This test currently does not work in Internet Explorer.");
+        Assert.Ignore("RM-7412 This test currently does not work in Internet Explorer.");
 
       var home = Start();
-      var bocTextValue = home.TextValues().GetByLocalID ("LastNameField_Normal_Required");
-      bocTextValue.FillWith ("");
+      var bocTextValue = home.TextValues().GetByLocalID("LastNameField_Normal_Required");
+      bocTextValue.FillWith("");
       var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocTextValue.Analyze (analyzer);
+      var result = bocTextValue.Analyze(analyzer);
 
-      Assert.That (bocTextValue.GetValidationErrors(), Is.Not.Empty);
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(bocTextValue.GetValidationErrors(), Is.Not.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocTextValue");
+      return Start("BocTextValue");
     }
   }
 }

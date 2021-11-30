@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _finder = new StorageEntityBasedStorageProviderDefinitionFinder();
     }
@@ -37,24 +37,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void GetStorageProviderDefinition ()
     {
-      var classDefinition = Configuration.GetTypeDefinition (typeof (Order));
+      var classDefinition = Configuration.GetTypeDefinition(typeof(Order));
 
-      var provider = _finder.GetStorageProviderDefinition (classDefinition, null);
+      var provider = _finder.GetStorageProviderDefinition(classDefinition, null);
 
-      Assert.That (provider, Is.SameAs (TestDomainStorageProviderDefinition));
+      Assert.That(provider, Is.SameAs(TestDomainStorageProviderDefinition));
     }
 
     [Test]
     public void GetStorageProviderDefinition_NoStorageEntity ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order), baseClass: null);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
 
-      Assert.That (
-          () => _finder.GetStorageProviderDefinition (classDefinition, null),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Cannot obtain storage provider for ClassDefinitions without storage entities. "));
-      Assert.That (
-          () => _finder.GetStorageProviderDefinition (classDefinition, "Context"),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Cannot obtain storage provider for ClassDefinitions without storage entities. Context"));
+      Assert.That(
+          () => _finder.GetStorageProviderDefinition(classDefinition, null),
+          Throws.InvalidOperationException.With.Message.EqualTo("Cannot obtain storage provider for ClassDefinitions without storage entities. "));
+      Assert.That(
+          () => _finder.GetStorageProviderDefinition(classDefinition, "Context"),
+          Throws.InvalidOperationException.With.Message.EqualTo("Cannot obtain storage provider for ClassDefinitions without storage entities. Context"));
     }
   }
 }

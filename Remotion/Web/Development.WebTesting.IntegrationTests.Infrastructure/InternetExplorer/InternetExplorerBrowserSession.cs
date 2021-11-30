@@ -28,14 +28,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
   public class InternetExplorerBrowserSession : BrowserSessionBase<InternetExplorerConfiguration>
   {
     public InternetExplorerBrowserSession ([NotNull] Coypu.BrowserSession value, InternetExplorerConfiguration configuration, int driverProcessId)
-        : base (value, configuration, driverProcessId)
+        : base(value, configuration, driverProcessId)
     {
     }
 
     /// <inheritdoc />
     public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
     {
-      return new[] { new BrowserLogEntry (LogLevel.Info, "Internet Explorer does not support getting browser logs.", DateTime.Now) };
+      return new[] { new BrowserLogEntry(LogLevel.Info, "Internet Explorer does not support getting browser logs.", DateTime.Now) };
     }
   }
 }

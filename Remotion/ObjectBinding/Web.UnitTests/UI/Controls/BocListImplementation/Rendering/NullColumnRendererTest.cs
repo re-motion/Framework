@@ -42,15 +42,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       _nullColumnRenderer = new NullColumnRenderer();
       _columnDefinition = new StubColumnDefinition();
-      _htmlTextWriterMock = new Mock<HtmlTextWriter> (MockBehavior.Strict, TextWriter.Null);
+      _htmlTextWriterMock = new Mock<HtmlTextWriter>(MockBehavior.Strict, TextWriter.Null);
       _httpContextStub = new Mock<HttpContextBase>();
       _bocListStub = new Mock<IBocList>();
-      _renderingContext = new BocColumnRenderingContext<StubColumnDefinition> (
-          new BocColumnRenderingContext (
+      _renderingContext = new BocColumnRenderingContext<StubColumnDefinition>(
+          new BocColumnRenderingContext(
               _httpContextStub.Object,
               _htmlTextWriterMock.Object,
               _bocListStub.Object,
-              BusinessObjectWebServiceContext.Create (null, null, null),
+              BusinessObjectWebServiceContext.Create(null, null, null),
               _columnDefinition,
               0,
               0));
@@ -59,14 +59,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void Initialization ()
     {
-      Assert.That (_nullColumnRenderer.IsNull, Is.True);
-      Assert.That (_nullColumnRenderer.Column, Is.Null);
+      Assert.That(_nullColumnRenderer.IsNull, Is.True);
+      Assert.That(_nullColumnRenderer.Column, Is.Null);
     }
 
     [Test]
     public void RenderTitleCell ()
     {
-      _nullColumnRenderer.RenderTitleCell (_renderingContext, SortingDirection.None, 0);
+      _nullColumnRenderer.RenderTitleCell(_renderingContext, SortingDirection.None, 0);
 
       _htmlTextWriterMock.Verify();
     }
@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderDataCell ()
     {
-      _nullColumnRenderer.RenderDataCell (_renderingContext, 0, true, null);
+      _nullColumnRenderer.RenderDataCell(_renderingContext, 0, true, null);
 
       _htmlTextWriterMock.Verify();
     }
@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderDataColumnDeclaration ()
     {
-      _nullColumnRenderer.RenderDataColumnDeclaration (_renderingContext, false);
+      _nullColumnRenderer.RenderDataColumnDeclaration(_renderingContext, false);
 
       _htmlTextWriterMock.Verify();
     }

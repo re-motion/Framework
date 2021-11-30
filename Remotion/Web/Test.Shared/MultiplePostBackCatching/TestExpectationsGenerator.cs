@@ -37,8 +37,8 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public static void GenerateExpectations (Page testPage, TableRowCollection rows, string sutPage)
     {
-      TestExpectationsGenerator testExpectationsGenerator = new TestExpectationsGenerator (testPage, sutPage);
-      rows.AddRange (testExpectationsGenerator.CreateExpectations (TestExpectationsGenerator.GetTestCaseUrlParameter (testPage)));
+      TestExpectationsGenerator testExpectationsGenerator = new TestExpectationsGenerator(testPage, sutPage);
+      rows.AddRange(testExpectationsGenerator.CreateExpectations(TestExpectationsGenerator.GetTestCaseUrlParameter(testPage)));
     }
 
     private readonly Page _testPage;
@@ -47,8 +47,8 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public TestExpectationsGenerator (Page testPage, string sutPage)
     {
-      ArgumentUtility.CheckNotNull ("testPage", testPage);
-      ArgumentUtility.CheckNotNullOrEmpty ("sutPage", sutPage);
+      ArgumentUtility.CheckNotNull("testPage", testPage);
+      ArgumentUtility.CheckNotNullOrEmpty("sutPage", sutPage);
 
       _testPage = testPage;
       _sutPage = sutPage;
@@ -57,20 +57,20 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     public TableRow[] CreateExpectations (string testCase)
     {
       testCase = testCase ?? AllTests;
-      _testControlGenerator = new TestControlGenerator (_testPage, new PostBackEventHandler());
+      _testControlGenerator = new TestControlGenerator(_testPage, new PostBackEventHandler());
 
       List<TableRow> rows = new List<TableRow>();
-      rows.Add (Expect ("open", UrlUtility.AddParameter (_testPage.ResolveClientUrl (_sutPage), SutGenerator.ServerDelayParameter, "500"), null));
+      rows.Add(Expect("open", UrlUtility.AddParameter(_testPage.ResolveClientUrl(_sutPage), SutGenerator.ServerDelayParameter, "500"), null));
 
-      foreach (Control control in _testControlGenerator.GetTestControls (null))
-        rows.AddRange (ExpectControlAttributes (control));
+      foreach (Control control in _testControlGenerator.GetTestControls(null))
+        rows.AddRange(ExpectControlAttributes(control));
 
-      foreach (Control initialControl in _testControlGenerator.GetTestControls (null))
+      foreach (Control initialControl in _testControlGenerator.GetTestControls(null))
       {
         if (testCase == AllTests || testCase == initialControl.ID)
         {
-          foreach (Control followUpControl in _testControlGenerator.GetTestControls (initialControl.ID))
-            rows.AddRange (ExpectPostbackForControl (initialControl, followUpControl));
+          foreach (Control followUpControl in _testControlGenerator.GetTestControls(initialControl.ID))
+            rows.AddRange(ExpectPostbackForControl(initialControl, followUpControl));
         }
       }
 
@@ -81,40 +81,40 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     {
       List<TableRow> rows = new List<TableRow>();
 
-      if (_testControlGenerator.IsEnabled (initialControl) && _testControlGenerator.IsEnabled (followUpControl))
+      if (_testControlGenerator.IsEnabled(initialControl) && _testControlGenerator.IsEnabled(followUpControl))
       {
-        rows.Add (ExpectControlClick (initialControl));
-        if (_testControlGenerator.IsAlertHyperLink (initialControl))
-          rows.Add (Expect ("waitForAlert", "*", null));
-        rows.Add (ExpectControlClick (followUpControl));
-        if (_testControlGenerator.IsAlertHyperLink (followUpControl))
-          rows.Add (Expect ("waitForAlert", "*", null));
-        if (_testControlGenerator.IsAlertHyperLink (initialControl) || _testControlGenerator.IsAlertHyperLink (followUpControl))
-          rows.Add (Expect ("assertElementNotPresent", "SmartPageStatusIsSubmittingMessage", null));
-        if (!_testControlGenerator.IsAlertHyperLink (initialControl) && !_testControlGenerator.IsAlertHyperLink (followUpControl))
-          rows.Add (Expect ("waitForVisible", "SmartPageStatusIsSubmittingMessage", null));
-        if (!_testControlGenerator.IsAlertHyperLink (initialControl) || !_testControlGenerator.IsAlertHyperLink (followUpControl))
-          rows.Add (Expect ("waitForPageToLoad", "1000", null));
-        if (!_testControlGenerator.IsAlertHyperLink (initialControl)  && _testControlGenerator.IsAlertHyperLink (followUpControl))
-          rows.Add (Expect ("assertValue", SutGenerator.LastClickFieldID, initialControl.ID));
-        if (_testControlGenerator.IsAlertHyperLink (initialControl) && !_testControlGenerator.IsAlertHyperLink (followUpControl))
-          rows.Add (Expect ("assertValue", SutGenerator.LastClickFieldID, followUpControl.ID));
+        rows.Add(ExpectControlClick(initialControl));
+        if (_testControlGenerator.IsAlertHyperLink(initialControl))
+          rows.Add(Expect("waitForAlert", "*", null));
+        rows.Add(ExpectControlClick(followUpControl));
+        if (_testControlGenerator.IsAlertHyperLink(followUpControl))
+          rows.Add(Expect("waitForAlert", "*", null));
+        if (_testControlGenerator.IsAlertHyperLink(initialControl) || _testControlGenerator.IsAlertHyperLink(followUpControl))
+          rows.Add(Expect("assertElementNotPresent", "SmartPageStatusIsSubmittingMessage", null));
+        if (!_testControlGenerator.IsAlertHyperLink(initialControl) && !_testControlGenerator.IsAlertHyperLink(followUpControl))
+          rows.Add(Expect("waitForVisible", "SmartPageStatusIsSubmittingMessage", null));
+        if (!_testControlGenerator.IsAlertHyperLink(initialControl) || !_testControlGenerator.IsAlertHyperLink(followUpControl))
+          rows.Add(Expect("waitForPageToLoad", "1000", null));
+        if (!_testControlGenerator.IsAlertHyperLink(initialControl)  && _testControlGenerator.IsAlertHyperLink(followUpControl))
+          rows.Add(Expect("assertValue", SutGenerator.LastClickFieldID, initialControl.ID));
+        if (_testControlGenerator.IsAlertHyperLink(initialControl) && !_testControlGenerator.IsAlertHyperLink(followUpControl))
+          rows.Add(Expect("assertValue", SutGenerator.LastClickFieldID, followUpControl.ID));
       }
       return rows.ToArray();
     }
 
     private TableRow[] ExpectControlAttributes (Control control)
     {
-      if (_testControlGenerator.IsEnabled (control))
+      if (_testControlGenerator.IsEnabled(control))
       {
-        if (control.GetType() == typeof (Button))
-          return ExpectButtonAttributes ((Button) control);
-        if (control.GetType() == typeof (WebButton))
-          return ExpectWebButtonAttributes ((WebButton) control);
-        if (control.GetType() == typeof (LinkButton))
-          return ExpectLinkButtonAttributes ((LinkButton) control);
-        if (control.GetType() == typeof (HyperLink))
-          return ExpectHyperLinkAttributes ((HyperLink) control);
+        if (control.GetType() == typeof(Button))
+          return ExpectButtonAttributes((Button)control);
+        if (control.GetType() == typeof(WebButton))
+          return ExpectWebButtonAttributes((WebButton)control);
+        if (control.GetType() == typeof(LinkButton))
+          return ExpectLinkButtonAttributes((LinkButton)control);
+        if (control.GetType() == typeof(HyperLink))
+          return ExpectHyperLinkAttributes((HyperLink)control);
       }
       return new TableRow[0];
     }
@@ -123,8 +123,8 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     {
       List<TableRow> rows = new List<TableRow>();
 
-      rows.Add (ExpectElementTag (button, "INPUT"));
-      rows.Add (ExpectAttribute (button, "type", button.UseSubmitBehavior ? "submit" : "button"));
+      rows.Add(ExpectElementTag(button, "INPUT"));
+      rows.Add(ExpectAttribute(button, "type", button.UseSubmitBehavior ? "submit" : "button"));
 
       return rows.ToArray();
     }
@@ -133,8 +133,8 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     {
       List<TableRow> rows = new List<TableRow>();
 
-      rows.Add (ExpectElementTag (button, "BUTTON"));
-      rows.Add (ExpectAttribute (button, "type", button.UseSubmitBehavior ? "submit" : "button"));
+      rows.Add(ExpectElementTag(button, "BUTTON"));
+      rows.Add(ExpectAttribute(button, "type", button.UseSubmitBehavior ? "submit" : "button"));
 
       return rows.ToArray();
     }
@@ -143,7 +143,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     {
       List<TableRow> rows = new List<TableRow>();
 
-      rows.Add (ExpectAttribute (linkButton, "href", "javascript:__doPostBack*"));
+      rows.Add(ExpectAttribute(linkButton, "href", "javascript:__doPostBack*"));
 
       return rows.ToArray();
     }
@@ -152,10 +152,10 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     {
       List<TableRow> rows = new List<TableRow>();
 
-      if (!_testControlGenerator.IsAlertHyperLink (hyperLink))
+      if (!_testControlGenerator.IsAlertHyperLink(hyperLink))
       {
-        rows.Add (ExpectAttribute (hyperLink, "href", "*#"));
-        rows.Add (ExpectAttribute (hyperLink, "onclick", "*__doPostBack*"));
+        rows.Add(ExpectAttribute(hyperLink, "href", "*#"));
+        rows.Add(ExpectAttribute(hyperLink, "onclick", "*__doPostBack*"));
       }
 
       return rows.ToArray();
@@ -164,17 +164,17 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     private TableRow ExpectControlClick (Control control)
     {
       Control targetControl = (control.Controls.Count == 0) ? control : control.Controls[0];
-      return Expect ("click", targetControl.ID, null);
+      return Expect("click", targetControl.ID, null);
     }
 
     private TableRow ExpectElementTag (Control control, string tagName)
     {
-      return Expect ("assertElementPresent", string.Format ("xpath=//{1}[contains(@id,'{0}')]", control.ID, tagName), null);
+      return Expect("assertElementPresent", string.Format("xpath=//{1}[contains(@id,'{0}')]", control.ID, tagName), null);
     }
 
     private TableRow ExpectAttribute (Control control, string name, string value)
     {
-      return Expect ("assertAttribute", control.ID + "@" + name, value);
+      return Expect("assertAttribute", control.ID + "@" + name, value);
     }
 
     private TableRow Expect (string command, string target, string value)
@@ -183,15 +183,15 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
       TableCell commandCell = new TableCell();
       commandCell.Text = command;
-      row.Cells.Add (commandCell);
+      row.Cells.Add(commandCell);
 
       TableCell targetCell = new TableCell();
       targetCell.Text = target;
-      row.Cells.Add (targetCell);
+      row.Cells.Add(targetCell);
 
       TableCell valueCell = new TableCell();
       valueCell.Text = value;
-      row.Cells.Add (valueCell);
+      row.Cells.Add(valueCell);
 
       return row;
     }

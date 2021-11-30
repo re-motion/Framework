@@ -26,7 +26,7 @@ namespace Remotion.Mixins.Validation
   /// </summary>
   public class ValidationLogData
   {
-    private readonly List<ValidationResult> _results = new List<ValidationResult> ();
+    private readonly List<ValidationResult> _results = new List<ValidationResult>();
 
     private int _failures = 0;
     private int _warnings = 0;
@@ -40,7 +40,7 @@ namespace Remotion.Mixins.Validation
 
     public void Add (ValidationResult result)
     {
-       _results.Add (result);
+       _results.Add(result);
       _failures += result.Failures.Count;
       _warnings += result.Warnings.Count;
       _exceptions += result.Exceptions.Count;
@@ -49,44 +49,44 @@ namespace Remotion.Mixins.Validation
 
     public void Add (ValidationLogData data)
     {
-      foreach (ValidationResult mergedResult in data.GetResults ())
+      foreach (ValidationResult mergedResult in data.GetResults())
       {
-        ValidationResult? activeResult = FindMatchingResult (mergedResult.ValidatedDefinition);
+        ValidationResult? activeResult = FindMatchingResult(mergedResult.ValidatedDefinition);
         if (activeResult == null)
         {
-          activeResult = new ValidationResult (mergedResult.ValidatedDefinition);
-          Add (activeResult.Value);
+          activeResult = new ValidationResult(mergedResult.ValidatedDefinition);
+          Add(activeResult.Value);
         }
 
         foreach (ValidationResultItem resultItem in mergedResult.Successes)
         {
-          activeResult.Value.Successes.Add (resultItem);
+          activeResult.Value.Successes.Add(resultItem);
           ++_successes;
         }
         foreach (ValidationResultItem resultItem in mergedResult.Failures)
         {
-          activeResult.Value.Failures.Add (resultItem);
+          activeResult.Value.Failures.Add(resultItem);
           ++_failures;
         }
         foreach (ValidationResultItem resultItem in mergedResult.Warnings)
         {
-          activeResult.Value.Warnings.Add (resultItem);
+          activeResult.Value.Warnings.Add(resultItem);
           ++_warnings;
         }
         foreach (ValidationExceptionResultItem resultItem in mergedResult.Exceptions)
         {
-          activeResult.Value.Exceptions.Add (resultItem);
+          activeResult.Value.Exceptions.Add(resultItem);
           ++_exceptions;
         }
       }
     }
 
-    public ReadOnlyCollection<ValidationResult> GetResults()
+    public ReadOnlyCollection<ValidationResult> GetResults ()
     {
       return _results.AsReadOnly();
     }
 
-    public int GetNumberOfFailures()
+    public int GetNumberOfFailures ()
     {
       return _failures;
     }
@@ -113,12 +113,12 @@ namespace Remotion.Mixins.Validation
 
     public SerializableValidationLogData MakeSerializable ()
     {
-      return new SerializableValidationLogData (this);
+      return new SerializableValidationLogData(this);
     }
 
     private ValidationResult? FindMatchingResult (IVisitableDefinition validatedDefinition)
     {
-      foreach (var result in GetResults ())
+      foreach (var result in GetResults())
       {
         if (result.ValidatedDefinition == validatedDefinition)
           return result;

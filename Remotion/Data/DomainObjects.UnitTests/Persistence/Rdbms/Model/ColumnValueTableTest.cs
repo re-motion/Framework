@@ -27,12 +27,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void Row_Concat ()
     {
-      var row1 = new ColumnValueTable.Row (new[] { "a", "b" });
-      var row2 = new ColumnValueTable.Row (new[] { "c", "d" });
+      var row1 = new ColumnValueTable.Row(new[] { "a", "b" });
+      var row2 = new ColumnValueTable.Row(new[] { "c", "d" });
 
-      var result = row1.Concat (row2);
+      var result = row1.Concat(row2);
 
-      Assert.That (result.Values, Is.EqualTo (new[] { "a", "b", "c", "d" }));
+      Assert.That(result.Values, Is.EqualTo(new[] { "a", "b", "c", "d" }));
     }
 
     [Test]
@@ -43,76 +43,76 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var column3 = ColumnDefinitionObjectMother.CreateColumn("3");
       var column4 = ColumnDefinitionObjectMother.CreateColumn("4");
 
-      var one = new ColumnValueTable (
+      var one = new ColumnValueTable(
           new[] { column1, column2 },
           new[]
           {
-              new ColumnValueTable.Row (new[] { "a", "b" }), 
-              new ColumnValueTable.Row (new[] { "c", "d" })
+              new ColumnValueTable.Row(new[] { "a", "b" }),
+              new ColumnValueTable.Row(new[] { "c", "d" })
           });
-      var two = new ColumnValueTable (
+      var two = new ColumnValueTable(
         new[] { column3, column4 },
         new[]
           {
-              new ColumnValueTable.Row (new[] { "e", "f" }), 
-              new ColumnValueTable.Row (new[] { "g", "h" })
+              new ColumnValueTable.Row(new[] { "e", "f" }),
+              new ColumnValueTable.Row(new[] { "g", "h" })
           });
 
-      var result = ColumnValueTable.Combine (one, two);
+      var result = ColumnValueTable.Combine(one, two);
 
       var expected = new ColumnValueTable(
         new[] { column1, column2, column3, column4 },
           new[]
           {
-              new ColumnValueTable.Row (new[] { "a", "b", "e", "f" }), 
-              new ColumnValueTable.Row (new[] { "c", "d", "g", "h" })
+              new ColumnValueTable.Row(new[] { "a", "b", "e", "f" }),
+              new ColumnValueTable.Row(new[] { "c", "d", "g", "h" })
           });
-      ColumnValueTableTestHelper.CheckTable (expected, result);
+      ColumnValueTableTestHelper.CheckTable(expected, result);
     }
 
     [Test]
     public void Combine_Many ()
     {
-      var column1 = ColumnDefinitionObjectMother.CreateColumn ("1");
-      var column2 = ColumnDefinitionObjectMother.CreateColumn ("2");
-      var column3 = ColumnDefinitionObjectMother.CreateColumn ("3");
-      var column4 = ColumnDefinitionObjectMother.CreateColumn ("4");
-      var column5 = ColumnDefinitionObjectMother.CreateColumn ("5");
-      var column6 = ColumnDefinitionObjectMother.CreateColumn ("6");
+      var column1 = ColumnDefinitionObjectMother.CreateColumn("1");
+      var column2 = ColumnDefinitionObjectMother.CreateColumn("2");
+      var column3 = ColumnDefinitionObjectMother.CreateColumn("3");
+      var column4 = ColumnDefinitionObjectMother.CreateColumn("4");
+      var column5 = ColumnDefinitionObjectMother.CreateColumn("5");
+      var column6 = ColumnDefinitionObjectMother.CreateColumn("6");
 
-      var one = new ColumnValueTable (
+      var one = new ColumnValueTable(
           new[] { column1, column2 },
           new[]
           {
-              new ColumnValueTable.Row (new[] { "a", "b" }), 
-              new ColumnValueTable.Row (new[] { "c", "d" })
+              new ColumnValueTable.Row(new[] { "a", "b" }),
+              new ColumnValueTable.Row(new[] { "c", "d" })
           });
-      var two = new ColumnValueTable (
+      var two = new ColumnValueTable(
         new[] { column3, column4 },
         new[]
           {
-              new ColumnValueTable.Row (new[] { "e", "f" }), 
-              new ColumnValueTable.Row (new[] { "g", "h" })
+              new ColumnValueTable.Row(new[] { "e", "f" }),
+              new ColumnValueTable.Row(new[] { "g", "h" })
           });
 
-      var three = new ColumnValueTable (
+      var three = new ColumnValueTable(
         new[] { column5, column6 },
         new[]
           {
-              new ColumnValueTable.Row (new[] { "i", "j" }), 
-              new ColumnValueTable.Row (new[] { "k", "l" })
+              new ColumnValueTable.Row(new[] { "i", "j" }),
+              new ColumnValueTable.Row(new[] { "k", "l" })
           });
 
-      var result = ColumnValueTable.Combine (new[] { one, two, three });
+      var result = ColumnValueTable.Combine(new[] { one, two, three });
 
-      var expected = new ColumnValueTable (
+      var expected = new ColumnValueTable(
         new[] { column1, column2, column3, column4, column5, column6 },
           new[]
           {
-              new ColumnValueTable.Row (new[] { "a", "b", "e", "f", "i", "j" }), 
-              new ColumnValueTable.Row (new[] { "c", "d", "g", "h", "k", "l" })
+              new ColumnValueTable.Row(new[] { "a", "b", "e", "f", "i", "j" }),
+              new ColumnValueTable.Row(new[] { "c", "d", "g", "h", "k", "l" })
           });
-      ColumnValueTableTestHelper.CheckTable (expected, result);
+      ColumnValueTableTestHelper.CheckTable(expected, result);
     }
   }
 }

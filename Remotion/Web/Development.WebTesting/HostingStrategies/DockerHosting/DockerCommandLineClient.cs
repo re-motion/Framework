@@ -30,11 +30,11 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
   /// </summary>
   public class DockerCommandLineClient : IDockerClient
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (DockerCommandLineClient));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(DockerCommandLineClient));
 
     private readonly string _dockerExeFullPath;
     private readonly TimeSpan _pullTimeout;
-    private readonly TimeSpan _commandTimeout = TimeSpan.FromSeconds (15);
+    private readonly TimeSpan _commandTimeout = TimeSpan.FromSeconds(15);
 
     public DockerCommandLineClient (TimeSpan pullTimeout)
     {
@@ -45,9 +45,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <inheritdoc />
     public void Pull (string imageName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("imageName", imageName);
+      ArgumentUtility.CheckNotNullOrEmpty("imageName", imageName);
 
-      RunDockerCommand ($"pull {imageName}", timeout: _pullTimeout);
+      RunDockerCommand($"pull {imageName}", timeout: _pullTimeout);
     }
 
     /// <inheritdoc />
@@ -60,56 +60,56 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         string? entryPoint,
         string? args)
     {
-      ArgumentUtility.CheckNotNull ("ports", ports);
-      ArgumentUtility.CheckNotNull ("mounts", mounts);
-      ArgumentUtility.CheckNotNullOrEmpty ("imageName", imageName);
-      ArgumentUtility.CheckNotEmpty ("hostname", hostname);
-      ArgumentUtility.CheckNotEmpty ("entryPoint", entryPoint);
-      ArgumentUtility.CheckNotEmpty ("args", args);
+      ArgumentUtility.CheckNotNull("ports", ports);
+      ArgumentUtility.CheckNotNull("mounts", mounts);
+      ArgumentUtility.CheckNotNullOrEmpty("imageName", imageName);
+      ArgumentUtility.CheckNotEmpty("hostname", hostname);
+      ArgumentUtility.CheckNotEmpty("entryPoint", entryPoint);
+      ArgumentUtility.CheckNotEmpty("args", args);
 
       var commandBuilder = new StringBuilder()
-          .Append ("run").Append (' ')
-          .Append ("-d").Append (' ');
+          .Append("run").Append(' ')
+          .Append("-d").Append(' ');
 
       if (remove)
-        commandBuilder.Append ("--rm").Append (' ');
+        commandBuilder.Append("--rm").Append(' ');
 
       if (ports.Any())
       {
-        var portFlags = string.Join (" ", ports.Select (kvp => $"-p {kvp.Key}:{kvp.Value}"));
-        commandBuilder.Append (portFlags).Append (' ');
+        var portFlags = string.Join(" ", ports.Select(kvp => $"-p {kvp.Key}:{kvp.Value}"));
+        commandBuilder.Append(portFlags).Append(' ');
       }
 
       if (mounts.Any())
       {
-        var mountFlags = string.Join (" ", mounts.Select (kvp => $@"-v ""{kvp.Key}"":""{kvp.Value}"""));
-        commandBuilder.Append (mountFlags).Append (' ');
+        var mountFlags = string.Join(" ", mounts.Select(kvp => $@"-v ""{kvp.Key}"":""{kvp.Value}"""));
+        commandBuilder.Append(mountFlags).Append(' ');
       }
 
       if (entryPoint != null)
-        commandBuilder.Append ($@"--entrypoint=""{entryPoint}""").Append (' ');
+        commandBuilder.Append($@"--entrypoint=""{entryPoint}""").Append(' ');
 
       if (hostname != null)
-        commandBuilder.Append ($@"--hostname ""{hostname}""").Append (' ');
+        commandBuilder.Append($@"--hostname ""{hostname}""").Append(' ');
 
-      commandBuilder.Append (imageName).Append (' ');
+      commandBuilder.Append(imageName).Append(' ');
 
       if (args != null)
-        commandBuilder.Append (args);
+        commandBuilder.Append(args);
 
       var command = commandBuilder.ToString();
 
-      return RunDockerCommand (command).TrimEnd ('\r', '\n');
+      return RunDockerCommand(command).TrimEnd('\r', '\n');
     }
 
     /// <inheritdoc />
     public bool ContainerExists (string containerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("containerName", containerName);
+      ArgumentUtility.CheckNotNullOrEmpty("containerName", containerName);
 
-      using (var p = Process.Start (_dockerExeFullPath, $"inspect {containerName}"))
+      using (var p = Process.Start(_dockerExeFullPath, $"inspect {containerName}"))
       {
-        p.WaitForExit ((int) _commandTimeout.TotalMilliseconds);
+        p.WaitForExit((int)_commandTimeout.TotalMilliseconds);
 
         return p.ExitCode == 0;
       }
@@ -118,38 +118,38 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <inheritdoc />
     public void Remove (string containerName, bool force = false)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("containerName", containerName);
+      ArgumentUtility.CheckNotNullOrEmpty("containerName", containerName);
 
       var commandBuilder = new StringBuilder()
-          .Append ("rm").Append (' ');
+          .Append("rm").Append(' ');
 
       if (force)
-        commandBuilder.Append ("-f").Append (' ');
+        commandBuilder.Append("-f").Append(' ');
 
-      commandBuilder.Append (containerName);
+      commandBuilder.Append(containerName);
 
       var command = commandBuilder.ToString();
 
-      RunDockerCommand (command);
+      RunDockerCommand(command);
     }
 
     /// <inheritdoc />
     public void Stop (string containerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("containerName", containerName);
+      ArgumentUtility.CheckNotNullOrEmpty("containerName", containerName);
 
       var commandBuilder = new StringBuilder()
-          .Append ("stop").Append (' ')
-          .Append (containerName);
+          .Append("stop").Append(' ')
+          .Append(containerName);
 
       var command = commandBuilder.ToString();
 
-      RunDockerCommand (command);
+      RunDockerCommand(command);
     }
 
     private string RunDockerCommand (string dockerCommand, string? workingDirectory = null, TimeSpan? timeout = null)
     {
-      s_log.Info ($"Running: 'docker {dockerCommand}'");
+      s_log.Info($"Running: 'docker {dockerCommand}'");
 
       var startInfo = new ProcessStartInfo
                       {
@@ -162,7 +162,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
                           RedirectStandardError = true
                       };
 
-      if (!string.IsNullOrEmpty (workingDirectory))
+      if (!string.IsNullOrEmpty(workingDirectory))
         startInfo.WorkingDirectory = workingDirectory;
 
       startInfo.FileName = _dockerExeFullPath;
@@ -175,20 +175,20 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         dockerProcess.OutputDataReceived += (sender, outputLine) =>
         {
           if (outputLine.Data != null)
-            s_log.Info (outputLine.Data);
+            s_log.Info(outputLine.Data);
         };
 
         var error = dockerProcess.StandardError.ReadToEnd();
         var output = dockerProcess.StandardOutput.ReadToEnd();
 
-        WaitForExit (dockerProcess, dockerCommand, timeout ?? _commandTimeout);
+        WaitForExit(dockerProcess, dockerCommand, timeout ?? _commandTimeout);
 
         if (dockerProcess.ExitCode != 0)
         {
           var errorMessage = $"Docker command '{dockerCommand}' failed: {error}";
 
-          s_log.Error (errorMessage);
-          throw new DockerOperationException (errorMessage, dockerProcess.ExitCode);
+          s_log.Error(errorMessage);
+          throw new DockerOperationException(errorMessage, dockerProcess.ExitCode);
         }
 
         return output;
@@ -201,35 +201,35 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
 
       while (!dockerProcess.HasExited)
       {
-        dockerProcess.WaitForExit (timeout.Milliseconds);
+        dockerProcess.WaitForExit(timeout.Milliseconds);
 
         if (stopwatch.ElapsedMilliseconds > timeout.TotalMilliseconds)
-          throw new TimeoutException ($"Docker command '{dockerCommand}' ran longer than the configured timeout of '{timeout}'.");
+          throw new TimeoutException($"Docker command '{dockerCommand}' ran longer than the configured timeout of '{timeout}'.");
       }
     }
 
     private static string GetDockerExeFullPath ()
     {
-      var programFiles = Environment.GetEnvironmentVariable ("ProgramW6432");
-      if (string.IsNullOrEmpty (programFiles))
-        programFiles = Environment.GetFolderPath (Environment.SpecialFolder.ProgramFiles);
+      var programFiles = Environment.GetEnvironmentVariable("ProgramW6432");
+      if (string.IsNullOrEmpty(programFiles))
+        programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
 
       var listOfKnownDockerLocations = new List<string>
                                        {
-                                           Path.Combine (programFiles, "Docker", "docker.exe"),
-                                           Path.Combine (programFiles, "Docker", "Docker", "Resources", "bin", "docker.exe")
+                                           Path.Combine(programFiles, "Docker", "docker.exe"),
+                                           Path.Combine(programFiles, "Docker", "Docker", "Resources", "bin", "docker.exe")
                                        };
 
-      var foundDockers = listOfKnownDockerLocations.Where (File.Exists).ToList();
+      var foundDockers = listOfKnownDockerLocations.Where(File.Exists).ToList();
 
       if (!foundDockers.Any())
       {
         var errorMessage = "Could not find Docker installed on this system. Checked paths:" +
                            Environment.NewLine +
-                           string.Join (Environment.NewLine, listOfKnownDockerLocations.ToArray());
+                           string.Join(Environment.NewLine, listOfKnownDockerLocations.ToArray());
 
-        s_log.Fatal (errorMessage);
-        throw new FileNotFoundException (errorMessage);
+        s_log.Fatal(errorMessage);
+        throw new FileNotFoundException(errorMessage);
       }
 
       return foundDockers.First();

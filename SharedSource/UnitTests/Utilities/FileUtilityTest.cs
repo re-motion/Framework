@@ -32,36 +32,36 @@ namespace Remotion.UnitTests.Utilities
     [SetUp]
     public void SetUp ()
     {
-      File.WriteAllText (c_testFileName, "File content");
+      File.WriteAllText(c_testFileName, "File content");
     }
 
     [TearDown]
     public void TearDown ()
     {
-      if (File.Exists (c_testFileName))
-        File.Delete (c_testFileName);
+      if (File.Exists(c_testFileName))
+        File.Delete(c_testFileName);
     }
 
     [Test]
     public void MoveAndWaitForCompletionWithSameFileName ()
     {
-      Assert.That (File.Exists (c_testFileName), Is.True);
+      Assert.That(File.Exists(c_testFileName), Is.True);
 
-      FileUtility.MoveAndWaitForCompletion (c_testFileName, c_testFileName);
+      FileUtility.MoveAndWaitForCompletion(c_testFileName, c_testFileName);
 
-      Assert.That (File.Exists (c_testFileName), Is.True);
+      Assert.That(File.Exists(c_testFileName), Is.True);
     }
 
     [Test]
     public void MoveAndWaitForCompletionWithSameFile ()
     {
-      Assert.That (File.Exists (c_testFileName), Is.True);
-      Assert.That (File.Exists (Path.GetFullPath (c_testFileName)), Is.True);
+      Assert.That(File.Exists(c_testFileName), Is.True);
+      Assert.That(File.Exists(Path.GetFullPath(c_testFileName)), Is.True);
 
-      FileUtility.MoveAndWaitForCompletion (c_testFileName, Path.GetFullPath (c_testFileName));
+      FileUtility.MoveAndWaitForCompletion(c_testFileName, Path.GetFullPath(c_testFileName));
 
-      Assert.That (File.Exists (c_testFileName), Is.True);
-      Assert.That (File.Exists (Path.GetFullPath (c_testFileName)), Is.True);
+      Assert.That(File.Exists(c_testFileName), Is.True);
+      Assert.That(File.Exists(Path.GetFullPath(c_testFileName)), Is.True);
     }
   }
 }

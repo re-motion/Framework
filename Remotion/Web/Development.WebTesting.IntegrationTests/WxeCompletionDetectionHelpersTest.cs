@@ -31,58 +31,58 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class WxeCompletionDetectionHelpersTest : IntegrationTest
   {
     private DiagnosticInformationCollectioningRequestErrorDetectionStrategy _requestErrorDetectionStrategy;
-    
+
     [SetUp]
     public void SetUp ()
     {
-      _requestErrorDetectionStrategy = (DiagnosticInformationCollectioningRequestErrorDetectionStrategy) Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
+      _requestErrorDetectionStrategy = (DiagnosticInformationCollectioningRequestErrorDetectionStrategy)Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
     }
 
     [Test]
-    [Category ("LongRunning")]
+    [Category("LongRunning")]
     public void WxeCompletionDetectionHelpers_GetWxePostBackSequenceNumber_CallsRequestErrorDetectionStrategyWithCorrectScope ()
     {
       var home = Start();
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
       var rootScope = home.Context.Window.GetRootScope();
       var completionDetection = new WxePostBackCompletionDetectionStrategy(1);
- 
+
       try
       {
-        completionDetection.WaitForCompletion (home.Context, 2);
+        completionDetection.WaitForCompletion(home.Context, 2);
       }
       catch (WebTestException)
       {
       }
- 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
+
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount + 1));
+      Assert.That(_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo(rootScope.InnerHTML));
     }
 
     [Test]
-    [Category ("LongRunning")]
+    [Category("LongRunning")]
     public void WxeCompletionDetectionHelpers_GetWxeFunctionToken_CallsRequestErrorDetectionStrategyWithCorrectScope ()
     {
       var home = Start();
       var currentCallCount = _requestErrorDetectionStrategy.GetCallCounter();
       var rootScope = home.Context.Window.GetRootScope();
       var completionDetection = new WxeResetCompletionDetectionStrategy();
- 
+
       try
       {
-        completionDetection.WaitForCompletion (home.Context, "wxeFunctionToken");
+        completionDetection.WaitForCompletion(home.Context, "wxeFunctionToken");
       }
       catch (WebTestException)
       {
       }
- 
-      Assert.That (_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo (currentCallCount + 1));
-      Assert.That (_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo (rootScope.InnerHTML));
+
+      Assert.That(_requestErrorDetectionStrategy.GetCallCounter(), Is.EqualTo(currentCallCount + 1));
+      Assert.That(_requestErrorDetectionStrategy.GetLastPassedScope().InnerHTML, Is.EqualTo(rootScope.InnerHTML));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("AspNetRequestErrorDetectionParserStaticPages/CustomErrorDefaultErrorPage.html");
+      return Start<WxePageObject>("AspNetRequestErrorDetectionParserStaticPages/CustomErrorDefaultErrorPage.html");
     }
   }
 }

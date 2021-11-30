@@ -54,11 +54,11 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
       public static T Create<T> (ParamList constructorParameters)
       {
         var objectFactoryImplementation = SafeServiceLocator.Current.GetInstance<IObjectFactoryImplementation>();
-        return (T) objectFactoryImplementation.CreateInstance (false, typeof (T), constructorParameters);
+        return (T)objectFactoryImplementation.CreateInstance(false, typeof(T), constructorParameters);
       }
     }
 
-    private readonly List<Tuple<object, MethodInfo, object[], object>> _calls = new List<Tuple<object, MethodInfo, object[], object>> ();
+    private readonly List<Tuple<object, MethodInfo, object[], object>> _calls = new List<Tuple<object, MethodInfo, object[], object>>();
     private MethodInvocationHandler _invocationHandler;
     private DynamicMixinBuilder _builder;
     private ServiceLocatorScope _serviceLocatorScope;
@@ -75,22 +75,22 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
       var pipelineRegistry = CreatePipelineRegistry();
       var serviceLocator = DefaultServiceLocator.Create();
       // ReSharper disable once RedundantTypeArgumentsOfMethod
-      serviceLocator.RegisterSingle<IPipelineRegistry> (() => pipelineRegistry);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle<IPipelineRegistry>(() => pipelineRegistry);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
-      DynamicMixinBuilder.Scope = new ModuleScope (true, false, "DynamicMixinBuilder.Signed", Path.Combine (directory, "DynamicMixinBuilder.Signed.dll"),
-        "DynamicMixinBuilder.Unsigned", Path.Combine (directory, "DynamicMixinBuilder.Unsigned.dll"));
+      DynamicMixinBuilder.Scope = new ModuleScope(true, false, "DynamicMixinBuilder.Signed", Path.Combine(directory, "DynamicMixinBuilder.Signed.dll"),
+        "DynamicMixinBuilder.Unsigned", Path.Combine(directory, "DynamicMixinBuilder.Unsigned.dll"));
 
       _invocationHandler = delegate (object instance, MethodInfo method, object[] args, BaseMethodInvoker baseMethod)
       {
-        object result = baseMethod (args);
-        _calls.Add (Tuple.Create (instance, method, args, result));
+        object result = baseMethod(args);
+        _calls.Add(Tuple.Create(instance, method, args, result));
         return "Intercepted: " + result;
       };
-      
-      _calls.Clear ();
 
-      _builder = new DynamicMixinBuilder (typeof (SampleTarget));
+      _calls.Clear();
+
+      _builder = new DynamicMixinBuilder(typeof(SampleTarget));
     }
 
     private IPipelineRegistry CreatePipelineRegistry ()
@@ -99,30 +99,30 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
       var pipelineFactory = SafeServiceLocator.Current.GetInstance<IPipelineFactory>();
       var previousPipeline = pipelineRegistry.DefaultPipeline;
 
-      var pipeline = pipelineFactory.Create (
+      var pipeline = pipelineFactory.Create(
           previousPipeline.ParticipantConfigurationID,
           previousPipeline.Settings,
           previousPipeline.Participants.ToArray());
 
-      return new DefaultPipelineRegistry (pipeline);
+      return new DefaultPipelineRegistry(pipeline);
     }
 
     private string PrepareDirectory ()
     {
-      string directory = Path.Combine (Environment.CurrentDirectory, "DynamicMixinBuilder.Generated");
-      if (Directory.Exists (directory))
-        Directory.Delete (directory, true);
-      Directory.CreateDirectory (directory);
+      string directory = Path.Combine(Environment.CurrentDirectory, "DynamicMixinBuilder.Generated");
+      if (Directory.Exists(directory))
+        Directory.Delete(directory, true);
+      Directory.CreateDirectory(directory);
 
-      CopyFile (typeof (Mixin<,>).Assembly.ManifestModule.FullyQualifiedName, directory); // Core/Mixins assembly
-      CopyFile (typeof (MethodInvocationHandler).Assembly.ManifestModule.FullyQualifiedName, directory); // Samples assembly
+      CopyFile(typeof(Mixin<,>).Assembly.ManifestModule.FullyQualifiedName, directory); // Core/Mixins assembly
+      CopyFile(typeof(MethodInvocationHandler).Assembly.ManifestModule.FullyQualifiedName, directory); // Samples assembly
       return directory;
     }
 
     private void CopyFile (string sourcePath, string targetDirectory)
     {
-      Assert.That (Directory.Exists (targetDirectory), Is.True);
-      File.Copy (sourcePath, Path.Combine (targetDirectory, Path.GetFileName (sourcePath)));
+      Assert.That(Directory.Exists(targetDirectory), Is.True);
+      File.Copy(sourcePath, Path.Combine(targetDirectory, Path.GetFileName(sourcePath)));
     }
 
     [TearDown]
@@ -131,13 +131,13 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
 #if FEATURE_ASSEMBLYBUILDER_SAVE
       if (DynamicMixinBuilder.Scope.StrongNamedModule != null)
       {
-        DynamicMixinBuilder.Scope.SaveAssembly (true);
-        PEVerifier.CreateDefault().VerifyPEFile (DynamicMixinBuilder.Scope.StrongNamedModule.FullyQualifiedName);
+        DynamicMixinBuilder.Scope.SaveAssembly(true);
+        PEVerifier.CreateDefault().VerifyPEFile(DynamicMixinBuilder.Scope.StrongNamedModule.FullyQualifiedName);
       }
       if (DynamicMixinBuilder.Scope.WeakNamedModule != null)
       {
-        DynamicMixinBuilder.Scope.SaveAssembly (false);
-        PEVerifier.CreateDefault ().VerifyPEFile (DynamicMixinBuilder.Scope.WeakNamedModule.FullyQualifiedName);
+        DynamicMixinBuilder.Scope.SaveAssembly(false);
+        PEVerifier.CreateDefault().VerifyPEFile(DynamicMixinBuilder.Scope.WeakNamedModule.FullyQualifiedName);
       }
 #endif
       _serviceLocatorScope.Dispose();
@@ -146,35 +146,35 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
     [Test]
     public void BuildMixinType_CreatesType ()
     {
-      Type t = new DynamicMixinBuilder (typeof (object)).BuildMixinType (_invocationHandler);
-      Assert.That (t, Is.Not.Null);
+      Type t = new DynamicMixinBuilder(typeof(object)).BuildMixinType(_invocationHandler);
+      Assert.That(t, Is.Not.Null);
     }
 
     [Test]
     public void BuildMixinType_CreatesTypeDerivedFromMixin ()
     {
-      Type t = new DynamicMixinBuilder (typeof (object)).BuildMixinType (_invocationHandler);
-      Assert.That (Reflection.TypeExtensions.CanAscribeTo (t, typeof (Mixin<,>)), Is.True);
+      Type t = new DynamicMixinBuilder(typeof(object)).BuildMixinType(_invocationHandler);
+      Assert.That(Reflection.TypeExtensions.CanAscribeTo(t, typeof(Mixin<,>)), Is.True);
     }
 
     [Test]
     public void BuildMixinType_AddsMethodsWithOverrideAttribute ()
     {
-      _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));
-      Type t = _builder.BuildMixinType (_invocationHandler);
+      _builder.OverrideMethod(typeof(SampleTarget).GetMethod("StringMethod"));
+      Type t = _builder.BuildMixinType(_invocationHandler);
 
-      MethodInfo overriderMethod = t.GetMethod ("StringMethod");
-      Assert.That (overriderMethod, Is.Not.Null);
-      Assert.That (overriderMethod.IsDefined (typeof (OverrideTargetAttribute), false), Is.True);
+      MethodInfo overriderMethod = t.GetMethod("StringMethod");
+      Assert.That(overriderMethod, Is.Not.Null);
+      Assert.That(overriderMethod.IsDefined(typeof(OverrideTargetAttribute), false), Is.True);
     }
 
     [Test]
     public void BuildMixinType_OverrideMethod_FromWrongType ()
     {
-      Assert.That (
-          () => _builder.OverrideMethod (typeof (object).GetMethod ("ToString")),
+      Assert.That(
+          () => _builder.OverrideMethod(typeof(object).GetMethod("ToString")),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The declaring type of the method must be the "
                   + "target type.", "method"));
     }
@@ -182,88 +182,88 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
     [Test]
     public void GeneratedTypeHoldsHandler ()
     {
-      Type t = _builder.BuildMixinType (_invocationHandler);
-      FieldInfo handlerField = t.GetField ("InvocationHandler");
-      Assert.That (handlerField, Is.Not.Null);
-      Assert.That (handlerField.GetValue (null), Is.SameAs (_invocationHandler));
+      Type t = _builder.BuildMixinType(_invocationHandler);
+      FieldInfo handlerField = t.GetField("InvocationHandler");
+      Assert.That(handlerField, Is.Not.Null);
+      Assert.That(handlerField.GetValue(null), Is.SameAs(_invocationHandler));
     }
 
     [Test]
     public void GeneratedMethodIsIntercepted ()
     {
-      _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));
-      Type t = _builder.BuildMixinType (_invocationHandler);
+      _builder.OverrideMethod(typeof(SampleTarget).GetMethod("StringMethod"));
+      Type t = _builder.BuildMixinType(_invocationHandler);
 
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (SampleTarget)).Clear().AddMixins (t).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(SampleTarget)).Clear().AddMixins(t).EnterScope())
       {
-        SampleTarget target = ObjectFactory.Create<SampleTarget> (ParamList.Empty);
-        target.StringMethod (4);
-        Assert.That (_calls.Count == 1, Is.True);
+        SampleTarget target = ObjectFactory.Create<SampleTarget>(ParamList.Empty);
+        target.StringMethod(4);
+        Assert.That(_calls.Count == 1, Is.True);
       }
     }
 
     [Test]
     public void GeneratedMethodIsIntercepted_WithRightParameters ()
     {
-      _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));
-      Type t = _builder.BuildMixinType (_invocationHandler);
+      _builder.OverrideMethod(typeof(SampleTarget).GetMethod("StringMethod"));
+      Type t = _builder.BuildMixinType(_invocationHandler);
 
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (SampleTarget)).Clear().AddMixins (t).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(SampleTarget)).Clear().AddMixins(t).EnterScope())
       {
-        SampleTarget target = ObjectFactory.Create<SampleTarget> (ParamList.Empty);
-        target.StringMethod (4);
+        SampleTarget target = ObjectFactory.Create<SampleTarget>(ParamList.Empty);
+        target.StringMethod(4);
 
         Tuple<object, MethodInfo, object[], object> callInfo = _calls[0];
-        Assert.That (callInfo.Item1, Is.SameAs (target));
-        Assert.That (callInfo.Item2, Is.EqualTo (typeof (SampleTarget).GetMethod ("StringMethod")));
-        Assert.That (callInfo.Item3, Is.EquivalentTo (new object[] { 4 } ));
+        Assert.That(callInfo.Item1, Is.SameAs(target));
+        Assert.That(callInfo.Item2, Is.EqualTo(typeof(SampleTarget).GetMethod("StringMethod")));
+        Assert.That(callInfo.Item3, Is.EquivalentTo(new object[] { 4 } ));
       }
     }
 
     [Test]
     public void GeneratedMethodIsIntercepted_WithRightReturnValue ()
     {
-      _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));
-      Type t = _builder.BuildMixinType (_invocationHandler);
+      _builder.OverrideMethod(typeof(SampleTarget).GetMethod("StringMethod"));
+      Type t = _builder.BuildMixinType(_invocationHandler);
 
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (SampleTarget)).Clear().AddMixins (t).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(SampleTarget)).Clear().AddMixins(t).EnterScope())
       {
-        SampleTarget target = ObjectFactory.Create<SampleTarget> (ParamList.Empty);
-        target.StringMethod (4);
+        SampleTarget target = ObjectFactory.Create<SampleTarget>(ParamList.Empty);
+        target.StringMethod(4);
 
         Tuple<object, MethodInfo, object[], object> callInfo = _calls[0];
-        Assert.That (callInfo.Item4, Is.EqualTo ("SampleTarget.StringMethod (4)"));
+        Assert.That(callInfo.Item4, Is.EqualTo("SampleTarget.StringMethod (4)"));
       }
     }
 
     [Test]
     public void GeneratedMethodIsIntercepted_WithCorrectBase ()
     {
-      _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("StringMethod"));
-      Type t = _builder.BuildMixinType (_invocationHandler);
+      _builder.OverrideMethod(typeof(SampleTarget).GetMethod("StringMethod"));
+      Type t = _builder.BuildMixinType(_invocationHandler);
 
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (SampleTarget)).Clear().AddMixins (t).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(SampleTarget)).Clear().AddMixins(t).EnterScope())
       {
-        SampleTarget target = ObjectFactory.Create<SampleTarget> (ParamList.Empty);
-        string result = target.StringMethod (4);
-        Assert.That (result, Is.EqualTo ("Intercepted: SampleTarget.StringMethod (4)"));
+        SampleTarget target = ObjectFactory.Create<SampleTarget>(ParamList.Empty);
+        string result = target.StringMethod(4);
+        Assert.That(result, Is.EqualTo("Intercepted: SampleTarget.StringMethod (4)"));
       }
     }
 
     [Test]
     public void InterceptVoidMethod ()
     {
-      _builder.OverrideMethod (typeof (SampleTarget).GetMethod ("VoidMethod"));
-      Type t = _builder.BuildMixinType (_invocationHandler);
+      _builder.OverrideMethod(typeof(SampleTarget).GetMethod("VoidMethod"));
+      Type t = _builder.BuildMixinType(_invocationHandler);
 
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (SampleTarget)).Clear().AddMixins (t).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(SampleTarget)).Clear().AddMixins(t).EnterScope())
       {
-        SampleTarget target = ObjectFactory.Create<SampleTarget> (ParamList.Empty);
-        target.VoidMethod ();
-        Assert.That (target.VoidMethodCalled, Is.True);
+        SampleTarget target = ObjectFactory.Create<SampleTarget>(ParamList.Empty);
+        target.VoidMethod();
+        Assert.That(target.VoidMethodCalled, Is.True);
 
         Tuple<object, MethodInfo, object[], object> callInfo = _calls[0];
-        Assert.That (callInfo.Item4, Is.EqualTo (null));
+        Assert.That(callInfo.Item4, Is.EqualTo(null));
       }
     }
   }

@@ -22,7 +22,7 @@ using Remotion.Collections;
 
 namespace Remotion.Mixins.Utilities
 {
-  [DebuggerDisplay ("Count = {_items.Count}")]
+  [DebuggerDisplay("Count = {_items.Count}")]
   internal class MultiSet<T> : IEnumerable<T>
       where T : notnull
   {
@@ -35,18 +35,18 @@ namespace Remotion.Mixins.Utilities
 
     public MultiSet (IEqualityComparer<T> comparer)
     {
-      _items = new MultiDictionary<T, T> (comparer);
+      _items = new MultiDictionary<T, T>(comparer);
     }
 
-    public void Add(T item)
+    public void Add (T item)
     {
-      _items.Add (item, item);
+      _items.Add(item, item);
     }
 
     public void AddRange (IEnumerable<T> items)
     {
       foreach (T t in items)
-        Add (t);
+        Add(t);
     }
 
     public IEnumerable<T> this [T item]
@@ -59,20 +59,20 @@ namespace Remotion.Mixins.Utilities
       return _items[item].Count;
     }
 
-    public IEnumerable<T> GetUniqueItems()
+    public IEnumerable<T> GetUniqueItems ()
     {
       foreach (T firstItem in _items.Keys)
         yield return firstItem;
     }
 
-    public IEnumerator<T> GetEnumerator()
+    public IEnumerator<T> GetEnumerator ()
     {
       foreach (T firstItem in _items.Keys)
         foreach (T item in _items[firstItem])
           yield return item;
     }
 
-    IEnumerator IEnumerable.GetEnumerator()
+    IEnumerator IEnumerable.GetEnumerator ()
     {
       return GetEnumerator();
     }

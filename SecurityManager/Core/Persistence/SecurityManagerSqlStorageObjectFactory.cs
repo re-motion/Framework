@@ -35,16 +35,16 @@ namespace Remotion.SecurityManager.Persistence
         RdbmsProviderDefinition storageProviderDefinition,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
     {
-      ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull ("commandFactory", commandFactory);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("commandFactory", commandFactory);
 
-      return ObjectFactory.Create<SecurityManagerRdbmsProvider> (
-          ParamList.Create (
+      return ObjectFactory.Create<SecurityManagerRdbmsProvider>(
+          ParamList.Create(
               storageProviderDefinition,
               persistenceExtension,
               commandFactory,
-              (Func<IDbConnection>) (() => new SqlConnection())));
+              (Func<IDbConnection>)(() => new SqlConnection())));
     }
   }
 }

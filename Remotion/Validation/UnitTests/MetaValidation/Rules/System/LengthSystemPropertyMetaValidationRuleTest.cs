@@ -37,43 +37,43 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.System
     [SetUp]
     public void SetUp ()
     {
-      _maxLengthValidator1 = new MaximumLengthValidator (50, new InvariantValidationMessage ("Fake Message"));
-      _maxLengthValidator2 = new MaximumLengthValidator (60, new InvariantValidationMessage ("Fake Message"));
+      _maxLengthValidator1 = new MaximumLengthValidator(50, new InvariantValidationMessage("Fake Message"));
+      _maxLengthValidator2 = new MaximumLengthValidator(60, new InvariantValidationMessage("Fake Message"));
 
-      _minLengthValidator1 = new MinimumLengthValidator (10, new InvariantValidationMessage ("Fake Message"));
-      _minLengthValidator2 = new MinimumLengthValidator (20, new InvariantValidationMessage ("Fake Message"));
+      _minLengthValidator1 = new MinimumLengthValidator(10, new InvariantValidationMessage("Fake Message"));
+      _minLengthValidator2 = new MinimumLengthValidator(20, new InvariantValidationMessage("Fake Message"));
 
-      _rule = new LengthSystemPropertyMetaValidationRule (PropertyInfoAdapter.Create(typeof (Customer).GetProperty ("UserName")));
+      _rule = new LengthSystemPropertyMetaValidationRule(PropertyInfoAdapter.Create(typeof(Customer).GetProperty("UserName")));
     }
 
     [Test]
     public void Validate_NoRules ()
     {
-      var result = _rule.Validate (new LengthValidator[0]).ToArray().Single();
+      var result = _rule.Validate(new LengthValidator[0]).ToArray().Single();
 
-      Assert.That (result.IsValid, Is.True);
+      Assert.That(result.IsValid, Is.True);
     }
 
     [Test]
     public void Validate_ValidRules ()
     {
-      var result = _rule.Validate (new LengthValidator[] { _minLengthValidator1, _maxLengthValidator2 }).ToArray().Single();
+      var result = _rule.Validate(new LengthValidator[] { _minLengthValidator1, _maxLengthValidator2 }).ToArray().Single();
 
-      Assert.That (result.IsValid, Is.True);
+      Assert.That(result.IsValid, Is.True);
     }
 
     [Test]
     public void Validate_VInvalidRules ()
     {
       var result =
-          _rule.Validate (new LengthValidator[] { _minLengthValidator1, _minLengthValidator2, _maxLengthValidator1, _maxLengthValidator2 })
+          _rule.Validate(new LengthValidator[] { _minLengthValidator1, _minLengthValidator2, _maxLengthValidator1, _maxLengthValidator2 })
               .ToArray()
               .Single();
 
-      Assert.That (result.IsValid, Is.False);
-      Assert.That (
+      Assert.That(result.IsValid, Is.False);
+      Assert.That(
           result.Message,
-          Is.EqualTo (
+          Is.EqualTo(
               "'LengthSystemPropertyMetaValidationRule' failed for member 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName'."));
     }
   }

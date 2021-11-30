@@ -38,17 +38,17 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static AbstractRoleDefinition NewObject (Guid metadataItemID, string name, int value)
     {
-      return NewObject<AbstractRoleDefinition>(ParamList.Create (metadataItemID, name, value));
+      return NewObject<AbstractRoleDefinition>(ParamList.Create(metadataItemID, name, value));
     }
 
     public static ObjectList<AbstractRoleDefinition> Find (IEnumerable<EnumWrapper> abstractRoles)
     {
-      ArgumentUtility.CheckNotNull ("abstractRoles", abstractRoles);
+      ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
 
       var abstractRoleNames = (from abstractRole in abstractRoles select abstractRole.Name).ToArray();
 
       var result = from ar in QueryFactory.CreateLinqQuery<AbstractRoleDefinition>()
-                   where abstractRoleNames.Contains (ar.Name)
+                   where abstractRoleNames.Contains(ar.Name)
                    orderby ar.Index
                    select ar;
 
@@ -70,7 +70,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     protected AbstractRoleDefinition (Guid metadataItemID, string name, int value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
       MetadataItemID = metadataItemID;
       Name = name;

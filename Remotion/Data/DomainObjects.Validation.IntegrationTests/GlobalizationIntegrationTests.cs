@@ -38,37 +38,37 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var customer = Customer.NewObject();
-        ((ICustomerIntroduced) customer).Address = Address.NewObject();
-        ((ICustomerIntroduced) customer).Title = "Chef1";
+        ((ICustomerIntroduced)customer).Address = Address.NewObject();
+        ((ICustomerIntroduced)customer).Title = "Chef1";
 
-        var validator = ValidationProvider.GetValidator (typeof (Customer));
+        var validator = ValidationProvider.GetValidator(typeof(Customer));
 
-        var result1 = validator.Validate (customer);
-        Assert.That (result1.IsValid, Is.False);
-        Assert.That (result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
-        Assert.That (
-            result1.Errors.OfType<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.ErrorMessage}"),
-            Is.EquivalentTo (new[] { "Title: The value must not be equal to 'Chef1'." }));
+        var result1 = validator.Validate(customer);
+        Assert.That(result1.IsValid, Is.False);
+        Assert.That(result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+        Assert.That(
+            result1.Errors.OfType<PropertyValidationFailure>().Select(e => $"{e.ValidatedProperty.Name}: {e.ErrorMessage}"),
+            Is.EquivalentTo(new[] { "Title: The value must not be equal to 'Chef1'." }));
       }
     }
 
     [Test]
     public void BuildOrderValidator_ValidationFailuresAreLocalizedThroughDomainObjectResource ()
     {
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var order = Order.NewObject ();
+        var order = Order.NewObject();
         order.Number = "er";
-        order.OrderItems.Add (OrderItem.NewObject());
+        order.OrderItems.Add(OrderItem.NewObject());
 
-        var validator = ValidationProvider.GetValidator (typeof (Order));
+        var validator = ValidationProvider.GetValidator(typeof(Order));
 
-        var result1 = validator.Validate (order);
-        Assert.That (result1.IsValid, Is.False);
-        Assert.That (result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
-        Assert.That (
-            result1.Errors.OfType<PropertyValidationFailure>().Select (e => $"{e.ValidatedProperty.Name}: {e.ErrorMessage}"),
-            Is.EquivalentTo (new[] { "Number: The value must have between 3 and 8 characters." }));
+        var result1 = validator.Validate(order);
+        Assert.That(result1.IsValid, Is.False);
+        Assert.That(result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+        Assert.That(
+            result1.Errors.OfType<PropertyValidationFailure>().Select(e => $"{e.ValidatedProperty.Name}: {e.ErrorMessage}"),
+            Is.EquivalentTo(new[] { "Number: The value must have between 3 and 8 characters." }));
       }
     }
   }

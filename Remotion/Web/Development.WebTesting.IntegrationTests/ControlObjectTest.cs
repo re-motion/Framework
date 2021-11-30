@@ -30,12 +30,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var webButton = home.WebButtons().First();
-      Assert.That (webButton.GetHtmlID(), Is.EqualTo ("body_MyWebButton1Sync"));
+      Assert.That(webButton.GetHtmlID(), Is.EqualTo("body_MyWebButton1Sync"));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("WebButtonTest.wxe");
+      return Start<WxePageObject>("WebButtonTest.wxe");
     }
   }
 }

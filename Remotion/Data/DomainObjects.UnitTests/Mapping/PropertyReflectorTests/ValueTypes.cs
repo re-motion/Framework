@@ -29,77 +29,77 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithBasicType ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes> ("BooleanProperty", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("BooleanProperty", DomainModelConstraintProviderStub);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithAllDataTypes.BooleanProperty"));
-      Assert.That (actual.PropertyType, Is.SameAs (typeof (bool)));
-      Assert.That (actual.IsNullable, Is.False);
-      Assert.That (actual.MaxLength, Is.Null);
-      Assert.That (actual.DefaultValue, Is.EqualTo (false));
+      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithAllDataTypes.BooleanProperty"));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(bool)));
+      Assert.That(actual.IsNullable, Is.False);
+      Assert.That(actual.MaxLength, Is.Null);
+      Assert.That(actual.DefaultValue, Is.EqualTo(false));
     }
 
     [Test]
     public void GetMetadata_WithNullableBasicType ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes> ("NaBooleanProperty", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("NaBooleanProperty", DomainModelConstraintProviderStub);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithAllDataTypes.NaBooleanProperty"));
-      Assert.That (actual.PropertyType, Is.SameAs (typeof (bool?)));
-      Assert.That (actual.IsNullable, Is.True);
-      Assert.That (actual.MaxLength, Is.Null);
-      Assert.That (actual.DefaultValue, Is.Null);
+      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithAllDataTypes.NaBooleanProperty"));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(bool?)));
+      Assert.That(actual.IsNullable, Is.True);
+      Assert.That(actual.MaxLength, Is.Null);
+      Assert.That(actual.DefaultValue, Is.Null);
     }
 
     [Test]
     public void GetMetadata_WithEnumProperty ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes> ("EnumProperty", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("EnumProperty", DomainModelConstraintProviderStub);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithAllDataTypes.EnumProperty"));
-      Assert.That (actual.PropertyType, Is.SameAs (typeof (ClassWithAllDataTypes.EnumType)));
-      Assert.That (actual.IsNullable, Is.False);
-      Assert.That (actual.MaxLength, Is.Null);
-      Assert.That (actual.DefaultValue, Is.EqualTo (ClassWithAllDataTypes.EnumType.Value0));
+      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithAllDataTypes.EnumProperty"));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(ClassWithAllDataTypes.EnumType)));
+      Assert.That(actual.IsNullable, Is.False);
+      Assert.That(actual.MaxLength, Is.Null);
+      Assert.That(actual.DefaultValue, Is.EqualTo(ClassWithAllDataTypes.EnumType.Value0));
     }
 
     [Test]
     public void GetMetadata_WithExtensibleEnumProperty ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes> (
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>(
           "ExtensibleEnumProperty", DomainModelConstraintProviderStub);
 
       DomainModelConstraintProviderStub
-          .Stub (stub => stub.IsNullable (propertyReflector.PropertyInfo))
-          .Return (false);
+          .Stub(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+          .Return(false);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithAllDataTypes.ExtensibleEnumProperty"));
-      Assert.That (actual.PropertyType, Is.SameAs (typeof (Color)));
-      Assert.That (actual.IsNullable, Is.False);
-      Assert.That (actual.MaxLength, Is.Null);
-      Assert.That (actual.DefaultValue, Is.EqualTo (Color.Values.Blue()));
+      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithAllDataTypes.ExtensibleEnumProperty"));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(Color)));
+      Assert.That(actual.IsNullable, Is.False);
+      Assert.That(actual.MaxLength, Is.Null);
+      Assert.That(actual.DefaultValue, Is.EqualTo(Color.Values.Blue()));
     }
 
     [Test]
     public void GetMetadata_WithOptionalRelationProperty ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithGuidKey> (
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithGuidKey>(
           "ClassWithValidRelationsOptional", DomainModelConstraintProviderStub);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithGuidKey.ClassWithValidRelationsOptional"));
-      Assert.That (actual.PropertyType, Is.SameAs (typeof (ObjectID)));
-      Assert.That (actual.IsNullable, Is.True);
-      Assert.That (actual.MaxLength, Is.Null);
-      Assert.That (actual.DefaultValue, Is.EqualTo (null));
+      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ClassWithGuidKey.ClassWithValidRelationsOptional"));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(ObjectID)));
+      Assert.That(actual.IsNullable, Is.True);
+      Assert.That(actual.MaxLength, Is.Null);
+      Assert.That(actual.DefaultValue, Is.EqualTo(null));
     }
 
     public object ObjectProperty

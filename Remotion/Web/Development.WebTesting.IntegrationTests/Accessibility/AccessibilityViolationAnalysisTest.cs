@@ -35,157 +35,157 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
     [Test]
     public void AccessibilityFormElementWithoutLabel ()
     {
-      Start<WxePageObject> ("Accessibility/FormElementWithoutLabel.html");
+      Start<WxePageObject>("Accessibility/FormElementWithoutLabel.html");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
       var result = analyzer.Analyze();
       var violation = result.Violations.Single();
 
-      Assert.That (violation.All, Has.Length.EqualTo (0));
-      Assert.That (violation.Any, Has.Length.EqualTo (5));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.AriaLabel).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.AriaLabeledBy).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.ImplicitLabel).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.NonEmptyTitle).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.None, Has.Length.EqualTo (0));
-      Assert.That (violation.TargetPath.Single().CssSelector, Is.EqualTo ("html > body > #labels > #input"));
-      Assert.That (violation.Html, Contains.Substring ("id=\"input\""));
-      Assert.That (violation.Html, Contains.Substring ("name=\"test\""));
-      Assert.That (violation.Html, Contains.Substring ("type=\"text\">"));
-      Assert.That (violation.Rule.ID, Is.EqualTo (AccessibilityRuleID.Label));
-      Assert.That (violation.Rule.Description, Is.EqualTo ("Ensures every form element has a label"));
-      Assert.That (violation.Rule.Impact, Is.EqualTo (AccessibilityTestImpact.Critical));
-      Assert.That (violation.Rule.SuccessCriteria, Has.Length.EqualTo (3));
-      Assert.That (violation.Rule.SuccessCriteria, Contains.Item (AccessibilityTestSuccessCriteria.Wcag_3_3_2));
-      Assert.That (violation.Rule.SuccessCriteria, Contains.Item (AccessibilityTestSuccessCriteria.Wcag_1_3_1));
-      Assert.That (violation.Rule.SuccessCriteria, Contains.Item (AccessibilityTestSuccessCriteria.Section508_22_n));
-      Assert.That (violation.TargetPath.Single().XPath, Is.EqualTo ("/input[@id='input']"));
+      Assert.That(violation.All, Has.Length.EqualTo(0));
+      Assert.That(violation.Any, Has.Length.EqualTo(5));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.AriaLabel).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.AriaLabeledBy).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.ImplicitLabel).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.NonEmptyTitle).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.None, Has.Length.EqualTo(0));
+      Assert.That(violation.TargetPath.Single().CssSelector, Is.EqualTo("html > body > #labels > #input"));
+      Assert.That(violation.Html, Contains.Substring("id=\"input\""));
+      Assert.That(violation.Html, Contains.Substring("name=\"test\""));
+      Assert.That(violation.Html, Contains.Substring("type=\"text\">"));
+      Assert.That(violation.Rule.ID, Is.EqualTo(AccessibilityRuleID.Label));
+      Assert.That(violation.Rule.Description, Is.EqualTo("Ensures every form element has a label"));
+      Assert.That(violation.Rule.Impact, Is.EqualTo(AccessibilityTestImpact.Critical));
+      Assert.That(violation.Rule.SuccessCriteria, Has.Length.EqualTo(3));
+      Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Wcag_3_3_2));
+      Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Wcag_1_3_1));
+      Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Section508_22_n));
+      Assert.That(violation.TargetPath.Single().XPath, Is.EqualTo("/input[@id='input']"));
     }
 
     [Test]
     public void AccessibilityImageWithoutAlt ()
     {
-      Start<HtmlPageObject> ("Accessibility/ImageWithoutAlt.html");
+      Start<HtmlPageObject>("Accessibility/ImageWithoutAlt.html");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
       var result = analyzer.Analyze();
       var violation = result.Violations.Single();
 
-      Assert.That (violation.All, Has.Length.EqualTo (0));
-      Assert.That (violation.Any, Has.Length.EqualTo (6));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.HasAlt).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.AriaLabel).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.AriaLabeledBy).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.NonEmptyTitle).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.RolePresentation).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.RoleNone).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.None, Has.Length.EqualTo (0));
-      Assert.That (violation.TargetPath.Single().CssSelector, Is.EqualTo ("html > body > #testImage"));
-      Assert.That (violation.Html, Is.EqualTo ("<img id=\"testImage\" src=\"/Images/SampleIcon.gif\">"));
-      Assert.That (violation.Rule.ID, Is.EqualTo (AccessibilityRuleID.ImageAlt));
-      Assert.That (violation.Rule.Impact, Is.EqualTo (AccessibilityTestImpact.Critical));
-      Assert.That (violation.Rule.Description, Is.EqualTo ("Ensures <img> elements have alternate text or a role of none or presentation"));
-      Assert.That (violation.Rule.Impact, Is.EqualTo (AccessibilityTestImpact.Critical));
-      Assert.That (violation.Rule.SuccessCriteria, Has.Length.EqualTo (2));
-      Assert.That (violation.Rule.SuccessCriteria, Contains.Item (AccessibilityTestSuccessCriteria.Wcag_1_1_1));
-      Assert.That (violation.Rule.SuccessCriteria, Contains.Item (AccessibilityTestSuccessCriteria.Section508_22_a));
-      Assert.That (violation.TargetPath.Single().XPath, Is.EqualTo ("/img[@id='testImage']"));
+      Assert.That(violation.All, Has.Length.EqualTo(0));
+      Assert.That(violation.Any, Has.Length.EqualTo(6));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.HasAlt).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.AriaLabel).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.AriaLabeledBy).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.NonEmptyTitle).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.RolePresentation).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.RoleNone).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.None, Has.Length.EqualTo(0));
+      Assert.That(violation.TargetPath.Single().CssSelector, Is.EqualTo("html > body > #testImage"));
+      Assert.That(violation.Html, Is.EqualTo("<img id=\"testImage\" src=\"/Images/SampleIcon.gif\">"));
+      Assert.That(violation.Rule.ID, Is.EqualTo(AccessibilityRuleID.ImageAlt));
+      Assert.That(violation.Rule.Impact, Is.EqualTo(AccessibilityTestImpact.Critical));
+      Assert.That(violation.Rule.Description, Is.EqualTo("Ensures <img> elements have alternate text or a role of none or presentation"));
+      Assert.That(violation.Rule.Impact, Is.EqualTo(AccessibilityTestImpact.Critical));
+      Assert.That(violation.Rule.SuccessCriteria, Has.Length.EqualTo(2));
+      Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Wcag_1_1_1));
+      Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Section508_22_a));
+      Assert.That(violation.TargetPath.Single().XPath, Is.EqualTo("/img[@id='testImage']"));
     }
 
     [Test]
     public void AccessibilityButtonWithoutInnerHTML ()
     {
-      Start<HtmlPageObject> ("Accessibility/ButtonWithoutInnerHTML.html");
+      Start<HtmlPageObject>("Accessibility/ButtonWithoutInnerHTML.html");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
       var result = analyzer.Analyze();
       var violation = result.Violations.Single();
 
-      Assert.That (violation.All, Is.Empty);
-      Assert.That (violation.Any, Has.Length.EqualTo (8));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.NonEmptyIfPresent).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.NonEmptyValue).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.ButtonHasVisibleText).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.AriaLabel).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.AriaLabeledBy).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.RolePresentation).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.RoleNone).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.NonEmptyTitle).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.None, Has.Length.EqualTo (1));
-      Assert.That (violation.None.Where (x => x.ID == AccessibilityRequirementID.FocusableNoName).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.TargetPath.Single().CssSelector, Is.EqualTo ("html > body > #coolButton"));
-      Assert.That (violation.Html, Is.EqualTo ("<button id=\"coolButton\"></button>"));
-      Assert.That (violation.Rule.ID, Is.EqualTo (AccessibilityRuleID.ButtonName));
-      Assert.That (violation.Rule.Impact, Is.EqualTo (AccessibilityTestImpact.Critical));
-      Assert.That (violation.Rule.Description, Is.EqualTo ("Ensures buttons have discernible text"));
-      Assert.That (violation.Rule.Impact, Is.EqualTo (AccessibilityTestImpact.Critical));
-      Assert.That (violation.Rule.SuccessCriteria, Has.Length.EqualTo (2));
-      Assert.That (violation.Rule.SuccessCriteria, Contains.Item (AccessibilityTestSuccessCriteria.Wcag_4_1_2));
-      Assert.That (violation.Rule.SuccessCriteria, Contains.Item (AccessibilityTestSuccessCriteria.Section508_22_a));
-      Assert.That (violation.TargetPath.Single().XPath, Is.EqualTo ("/button[@id='coolButton']"));
+      Assert.That(violation.All, Is.Empty);
+      Assert.That(violation.Any, Has.Length.EqualTo(8));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.NonEmptyIfPresent).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.NonEmptyValue).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.ButtonHasVisibleText).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.AriaLabel).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.AriaLabeledBy).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.RolePresentation).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.RoleNone).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.NonEmptyTitle).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.None, Has.Length.EqualTo(1));
+      Assert.That(violation.None.Where(x => x.ID == AccessibilityRequirementID.FocusableNoName).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.TargetPath.Single().CssSelector, Is.EqualTo("html > body > #coolButton"));
+      Assert.That(violation.Html, Is.EqualTo("<button id=\"coolButton\"></button>"));
+      Assert.That(violation.Rule.ID, Is.EqualTo(AccessibilityRuleID.ButtonName));
+      Assert.That(violation.Rule.Impact, Is.EqualTo(AccessibilityTestImpact.Critical));
+      Assert.That(violation.Rule.Description, Is.EqualTo("Ensures buttons have discernible text"));
+      Assert.That(violation.Rule.Impact, Is.EqualTo(AccessibilityTestImpact.Critical));
+      Assert.That(violation.Rule.SuccessCriteria, Has.Length.EqualTo(2));
+      Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Wcag_4_1_2));
+      Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Section508_22_a));
+      Assert.That(violation.TargetPath.Single().XPath, Is.EqualTo("/button[@id='coolButton']"));
     }
 
     [Test]
     public void AccessibilityContrast ()
     {
       if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("Internet Explorer cannot detect this violation.");
+        Assert.Ignore("Internet Explorer cannot detect this violation.");
 
-      Start<HtmlPageObject> ("Accessibility/Contrast.html");
-      var config = new AccessibilityConfiguration (AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
-      var analyzer = CreateAnalyzer (config);
+      Start<HtmlPageObject>("Accessibility/Contrast.html");
+      var config = new AccessibilityConfiguration(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
+      var analyzer = CreateAnalyzer(config);
 
       var result = analyzer.Analyze();
       var violation = result.Violations.Single();
 
-      Assert.That (violation.All, Has.Length.EqualTo (0));
-      Assert.That (violation.Any, Has.Length.EqualTo (1));
-      Assert.That (violation.Any.Where (x => x.ID == AccessibilityRequirementID.ColorContrast).ToArray(), Has.Length.EqualTo (1));
-      Assert.That (violation.None, Has.Length.EqualTo (0));
-      Assert.That (violation.TargetPath.Single().CssSelector, Is.EqualTo ("html > body > h1"));
-      Assert.That (violation.Html, Is.EqualTo ("<h1 style=\"color: #000080\">Hello World!</h1>"));
-      Assert.That (violation.Rule.ID, Is.EqualTo (AccessibilityRuleID.ColorContrast));
-      Assert.That (violation.Rule.Impact, Is.EqualTo (AccessibilityTestImpact.Serious));
-      Assert.That (violation.Rule.Description, Is.EqualTo ("Ensures the contrast between foreground and background colors meets WCAG 2 AA contrast ratio thresholds"));
-      Assert.That (violation.Rule.Impact, Is.EqualTo (AccessibilityTestImpact.Serious));
-      Assert.That (violation.Rule.SuccessCriteria, Has.Length.EqualTo (1));
-      Assert.That (violation.Rule.SuccessCriteria, Contains.Item (AccessibilityTestSuccessCriteria.Wcag_1_4_3));
-      Assert.That (violation.TargetPath.Single().XPath, Is.EqualTo ("/html/body/h1"));
+      Assert.That(violation.All, Has.Length.EqualTo(0));
+      Assert.That(violation.Any, Has.Length.EqualTo(1));
+      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.ColorContrast).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(violation.None, Has.Length.EqualTo(0));
+      Assert.That(violation.TargetPath.Single().CssSelector, Is.EqualTo("html > body > h1"));
+      Assert.That(violation.Html, Is.EqualTo("<h1 style=\"color: #000080\">Hello World!</h1>"));
+      Assert.That(violation.Rule.ID, Is.EqualTo(AccessibilityRuleID.ColorContrast));
+      Assert.That(violation.Rule.Impact, Is.EqualTo(AccessibilityTestImpact.Serious));
+      Assert.That(violation.Rule.Description, Is.EqualTo("Ensures the contrast between foreground and background colors meets WCAG 2 AA contrast ratio thresholds"));
+      Assert.That(violation.Rule.Impact, Is.EqualTo(AccessibilityTestImpact.Serious));
+      Assert.That(violation.Rule.SuccessCriteria, Has.Length.EqualTo(1));
+      Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Wcag_1_4_3));
+      Assert.That(violation.TargetPath.Single().XPath, Is.EqualTo("/html/body/h1"));
     }
 
     [Test]
     public void AccessibilityContrastWCAG2A_Pass ()
     {
-      Start<HtmlPageObject> ("Accessibility/Contrast.html");
-      var config = new AccessibilityConfiguration (AccessibilityConformanceLevel.Wcag20_ConformanceLevelA);
-      var analyzer = CreateAnalyzer (config);
+      Start<HtmlPageObject>("Accessibility/Contrast.html");
+      var config = new AccessibilityConfiguration(AccessibilityConformanceLevel.Wcag20_ConformanceLevelA);
+      var analyzer = CreateAnalyzer(config);
 
       var result = analyzer.Analyze();
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ConformanceLevel_WCAG_20A ()
     {
-      Start<HtmlPageObject> ("Accessibility/ViolationsWithDifferentConformanceLevels.html");
+      Start<HtmlPageObject>("Accessibility/ViolationsWithDifferentConformanceLevels.html");
 
-      var config = new AccessibilityConfiguration (AccessibilityConformanceLevel.Wcag20_ConformanceLevelA);
-      var analyzer = CreateAnalyzer (config);
+      var config = new AccessibilityConfiguration(AccessibilityConformanceLevel.Wcag20_ConformanceLevelA);
+      var analyzer = CreateAnalyzer(config);
 
       var result = analyzer.Analyze();
 
-      Assert.That (result.ConformanceLevel, Is.EqualTo (AccessibilityConformanceLevel.Wcag20_ConformanceLevelA));
-      Assert.That (result.Violations.Single().Rule.ID, Is.EqualTo (AccessibilityRuleID.ImageAlt));
+      Assert.That(result.ConformanceLevel, Is.EqualTo(AccessibilityConformanceLevel.Wcag20_ConformanceLevelA));
+      Assert.That(result.Violations.Single().Rule.ID, Is.EqualTo(AccessibilityRuleID.ImageAlt));
     }
 
     [Test]
     public void ConformanceLevel_WCAG_20AA ()
     {
-      Start<HtmlPageObject> ("Accessibility/ViolationsWithDifferentConformanceLevels.html");
+      Start<HtmlPageObject>("Accessibility/ViolationsWithDifferentConformanceLevels.html");
 
-      var config = new AccessibilityConfiguration (AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
-      var analyzer = CreateAnalyzer (config);
+      var config = new AccessibilityConfiguration(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
+      var analyzer = CreateAnalyzer(config);
 
       var result = analyzer.Analyze();
 
@@ -193,35 +193,35 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
           ? new[] { AccessibilityRuleID.ImageAlt }
           : new[] { AccessibilityRuleID.ColorContrast, AccessibilityRuleID.ImageAlt };
 
-      Assert.That (result.ConformanceLevel, Is.EqualTo (AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA));
-      Assert.That (
-          result.Violations.Select (v => v.Rule.ID),
-          Is.EquivalentTo (expectedRules));
+      Assert.That(result.ConformanceLevel, Is.EqualTo(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA));
+      Assert.That(
+          result.Violations.Select(v => v.Rule.ID),
+          Is.EquivalentTo(expectedRules));
     }
 
     [Test]
     public void ConformanceLevel_WCAG_21A ()
     {
-      Start<HtmlPageObject> ("Accessibility/ViolationsWithDifferentConformanceLevels.html");
+      Start<HtmlPageObject>("Accessibility/ViolationsWithDifferentConformanceLevels.html");
 
-      var config = new AccessibilityConfiguration (AccessibilityConformanceLevel.Wcag21_ConformanceLevelA);
-      var analyzer = CreateAnalyzer (config);
+      var config = new AccessibilityConfiguration(AccessibilityConformanceLevel.Wcag21_ConformanceLevelA);
+      var analyzer = CreateAnalyzer(config);
 
       var result = analyzer.Analyze();
 
-      Assert.That (result.ConformanceLevel, Is.EqualTo (AccessibilityConformanceLevel.Wcag21_ConformanceLevelA));
-      Assert.That (
-          result.Violations.Select (v => v.Rule.ID),
-          Is.EquivalentTo (new[] { AccessibilityRuleID.ImageAlt, AccessibilityRuleID.LabelContentNameMismatch }));
+      Assert.That(result.ConformanceLevel, Is.EqualTo(AccessibilityConformanceLevel.Wcag21_ConformanceLevelA));
+      Assert.That(
+          result.Violations.Select(v => v.Rule.ID),
+          Is.EquivalentTo(new[] { AccessibilityRuleID.ImageAlt, AccessibilityRuleID.LabelContentNameMismatch }));
     }
 
     [Test]
     public void ConformanceLevel_WCAG_21AA ()
     {
-      Start<HtmlPageObject> ("Accessibility/ViolationsWithDifferentConformanceLevels.html");
+      Start<HtmlPageObject>("Accessibility/ViolationsWithDifferentConformanceLevels.html");
 
-      var config = new AccessibilityConfiguration (AccessibilityConformanceLevel.Wcag21_ConformanceLevelDoubleA);
-      var analyzer = CreateAnalyzer (config);
+      var config = new AccessibilityConfiguration(AccessibilityConformanceLevel.Wcag21_ConformanceLevelDoubleA);
+      var analyzer = CreateAnalyzer(config);
 
       var result = analyzer.Analyze();
 
@@ -234,19 +234,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
                           };
 
       if (Helper.BrowserConfiguration.IsInternetExplorer())
-        expectedRules.Remove (AccessibilityRuleID.ColorContrast);
+        expectedRules.Remove(AccessibilityRuleID.ColorContrast);
 
-      Assert.That (result.ConformanceLevel, Is.EqualTo (AccessibilityConformanceLevel.Wcag21_ConformanceLevelDoubleA));
-      Assert.That (result.Violations.Select (v => v.Rule.ID), Is.EquivalentTo (expectedRules));
+      Assert.That(result.ConformanceLevel, Is.EqualTo(AccessibilityConformanceLevel.Wcag21_ConformanceLevelDoubleA));
+      Assert.That(result.Violations.Select(v => v.Rule.ID), Is.EquivalentTo(expectedRules));
     }
 
     [Test]
     public void ConformanceLevel_Section508 ()
     {
-      Start<HtmlPageObject> ("Accessibility/ViolationsWithDifferentConformanceLevels.html");
+      Start<HtmlPageObject>("Accessibility/ViolationsWithDifferentConformanceLevels.html");
 
-      var config = new AccessibilityConfiguration (AccessibilityConformanceLevel.Section508);
-      var analyzer = CreateAnalyzer (config);
+      var config = new AccessibilityConfiguration(AccessibilityConformanceLevel.Section508);
+      var analyzer = CreateAnalyzer(config);
 
       var result = analyzer.Analyze();
 
@@ -255,19 +255,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
                               AccessibilityRuleID.ImageAlt
                           };
 
-      Assert.That (result.ConformanceLevel, Is.EqualTo (AccessibilityConformanceLevel.Section508));
-      Assert.That (result.Violations.Select (v => v.Rule.ID), Is.EquivalentTo (expectedRules));
+      Assert.That(result.ConformanceLevel, Is.EqualTo(AccessibilityConformanceLevel.Section508));
+      Assert.That(result.Violations.Select(v => v.Rule.ID), Is.EquivalentTo(expectedRules));
     }
 
     private AccessibilityAnalyzer CreateAnalyzer (IAccessibilityConfiguration config)
     {
-      return AccessibilityAnalyzer.CreateForRemoteWebDriver (
-          (RemoteWebDriver) Helper.MainBrowserSession.Driver.Native,
+      return AccessibilityAnalyzer.CreateForRemoteWebDriver(
+          (RemoteWebDriver)Helper.MainBrowserSession.Driver.Native,
           new AxeResultParser(),
           config,
           new AxeSourceProvider(),
           new AccessibilityResultMapper(),
-          LogManager.GetLogger (typeof (AccessibilityAnalyzer)));
+          LogManager.GetLogger(typeof(AccessibilityAnalyzer)));
     }
   }
 }

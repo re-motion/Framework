@@ -25,10 +25,10 @@ namespace Remotion.Configuration.TypeDiscovery
   /// </summary>
   public class ByFileIncludeRootAssemblyElement : ByFileRootAssemblyElementBase
   {
-    [ConfigurationProperty ("includeReferencedAssemblies", DefaultValue = "false", IsRequired = false)]
+    [ConfigurationProperty("includeReferencedAssemblies", DefaultValue = "false", IsRequired = false)]
     public bool IncludeReferencedAssemblies
     {
-      get { return (bool) this["includeReferencedAssemblies"]; }
+      get { return (bool)this["includeReferencedAssemblies"]; }
       set { this["includeReferencedAssemblies"] = value; }
     }
 
@@ -39,8 +39,8 @@ namespace Remotion.Configuration.TypeDiscovery
 
     public override FilePatternSpecification CreateSpecification ()
     {
-      return new FilePatternSpecification (
-          FilePattern, 
+      return new FilePatternSpecification(
+          FilePattern,
           IncludeReferencedAssemblies ? FilePatternSpecificationKind.IncludeFollowReferences : FilePatternSpecificationKind.IncludeNoFollow);
     }
   }

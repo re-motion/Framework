@@ -25,32 +25,32 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
   {
     public override TextWriter CreateTextWriter (string directory, string name, string extension)
     {
-      ArgumentUtility.CheckNotNull ("directory", directory);
-      ArgumentUtility.CheckNotNull ("name", name); 
+      ArgumentUtility.CheckNotNull("directory", directory);
+      ArgumentUtility.CheckNotNull("name", name);
 
-      if (!System.IO.Directory.Exists (directory))
+      if (!System.IO.Directory.Exists(directory))
       {
-        System.IO.Directory.CreateDirectory (directory);
+        System.IO.Directory.CreateDirectory(directory);
       }
 
-      if (NameToTextWriterData.ContainsKey (name))
-        throw new ArgumentException (string.Format ("TextWriter with name \"{0}\" already exists.", name));
+      if (NameToTextWriterData.ContainsKey(name))
+        throw new ArgumentException(string.Format("TextWriter with name \"{0}\" already exists.", name));
 
-      string nameWithExtension = AppendExtension (name, extension);
+      string nameWithExtension = AppendExtension(name, extension);
 
-      var textWriterData = new TextWriterData (new StreamWriter (Path.Combine (directory, nameWithExtension)), directory, extension);
+      var textWriterData = new TextWriterData(new StreamWriter(Path.Combine(directory, nameWithExtension)), directory, extension);
       NameToTextWriterData[name] = textWriterData;
       return textWriterData.TextWriter;
     }
 
     public override TextWriter CreateTextWriter (string name)
     {
-      ArgumentUtility.CheckNotNull ("name", name); 
+      ArgumentUtility.CheckNotNull("name", name);
       if (Directory == null)
       {
-        throw new InvalidOperationException ("Directory must not be null. Set using \"Directory\"-property before calling \"CreateTextWriter\"");
+        throw new InvalidOperationException("Directory must not be null. Set using \"Directory\"-property before calling \"CreateTextWriter\"");
       }
-      return CreateTextWriter (Directory, name, Extension);
+      return CreateTextWriter(Directory, name, Extension);
     }
   }
 }

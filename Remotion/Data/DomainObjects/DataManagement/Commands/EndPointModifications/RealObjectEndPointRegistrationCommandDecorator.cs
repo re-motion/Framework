@@ -35,11 +35,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IRealObjectEndPoint realObjectEndPoint,
         IVirtualEndPoint oldRelatedEndPoint,
         IVirtualEndPoint newRelatedEndPoint)
-      : base (decoratedCommand)
+      : base(decoratedCommand)
     {
-      ArgumentUtility.CheckNotNull ("realObjectEndPoint", realObjectEndPoint);
-      ArgumentUtility.CheckNotNull ("oldRelatedEndPoint", oldRelatedEndPoint);
-      ArgumentUtility.CheckNotNull ("newRelatedEndPoint", newRelatedEndPoint);
+      ArgumentUtility.CheckNotNull("realObjectEndPoint", realObjectEndPoint);
+      ArgumentUtility.CheckNotNull("oldRelatedEndPoint", oldRelatedEndPoint);
+      ArgumentUtility.CheckNotNull("newRelatedEndPoint", newRelatedEndPoint);
 
       _realObjectEndPoint = realObjectEndPoint;
       _oldRelatedEndPoint = oldRelatedEndPoint;
@@ -65,16 +65,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     {
       this.EnsureCanExecute();
 
-      _oldRelatedEndPoint.UnregisterCurrentOppositeEndPoint (_realObjectEndPoint);
+      _oldRelatedEndPoint.UnregisterCurrentOppositeEndPoint(_realObjectEndPoint);
       base.Perform();
-      _newRelatedEndPoint.RegisterCurrentOppositeEndPoint (_realObjectEndPoint);
+      _newRelatedEndPoint.RegisterCurrentOppositeEndPoint(_realObjectEndPoint);
     }
 
     protected override IDataManagementCommand Decorate (IDataManagementCommand decoratedCommand)
     {
-      ArgumentUtility.CheckNotNull ("decoratedCommand", decoratedCommand);
+      ArgumentUtility.CheckNotNull("decoratedCommand", decoratedCommand);
 
-      return new RealObjectEndPointRegistrationCommandDecorator (
+      return new RealObjectEndPointRegistrationCommandDecorator(
           decoratedCommand,
           _realObjectEndPoint,
           _oldRelatedEndPoint,

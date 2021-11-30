@@ -24,10 +24,10 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
   public class MissingPageFunction : WxeFunction
   {
     public MissingPageFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
-    private WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (MissingPageFunction), "ExecutionEngine/ExceptionHandling/MissingForm.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof(MissingPageFunction), "ExecutionEngine/ExceptionHandling/MissingForm.aspx");
   }
 }

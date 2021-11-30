@@ -6,13 +6,13 @@ namespace Remotion.Validation.UnitTests.Rules
   public class ObjectValidationRuleTest
   {
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void Validate ()
     {
     }
 
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void IsActive ()
     {
       // consider better name than "IsActive"

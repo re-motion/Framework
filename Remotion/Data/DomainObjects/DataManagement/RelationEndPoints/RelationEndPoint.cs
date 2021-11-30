@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     protected RelationEndPoint (ClientTransaction clientTransaction, RelationEndPointID id)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("id", id);
 
       _clientTransaction = clientTransaction;
       _id = id;
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public abstract void SetDataFromSubTransaction (IRelationEndPoint source);
 
     public abstract void ValidateMandatory ();
-    
+
     public abstract IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject);
     public abstract IDataManagementCommand CreateDeleteCommand ();
 
@@ -105,10 +105,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (ObjectID == null)
         return null;
 
-      if (ClientTransaction.IsInvalid (ObjectID))
-        return ClientTransaction.GetInvalidObjectReference (ObjectID);
+      if (ClientTransaction.IsInvalid(ObjectID))
+        return ClientTransaction.GetInvalidObjectReference(ObjectID);
 
-      return ClientTransaction.GetObject (ObjectID, true);
+      return ClientTransaction.GetObject(ObjectID, true);
     }
 
     public DomainObject GetDomainObjectReference ()
@@ -116,10 +116,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (ObjectID == null)
         return null;
 
-      if (ClientTransaction.IsInvalid (ObjectID))
-        return ClientTransaction.GetInvalidObjectReference (ObjectID);
+      if (ClientTransaction.IsInvalid(ObjectID))
+        return ClientTransaction.GetInvalidObjectReference(ObjectID);
 
-      return ClientTransaction.GetObjectReference (ObjectID);
+      return ClientTransaction.GetObjectReference(ObjectID);
     }
 
     public override string ToString ()
@@ -139,10 +139,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddHandle (_clientTransaction);
-      info.AddValue (_id);
+      info.AddHandle(_clientTransaction);
+      info.AddValue(_id);
 
-      SerializeIntoFlatStructure (info);
+      SerializeIntoFlatStructure(info);
     }
 
     #endregion

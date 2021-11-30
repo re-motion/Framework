@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     protected ClientTransactionMockEventReceiver (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
       _clientTransaction = clientTransaction;
 
@@ -48,27 +48,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Loaded (params DomainObject[] domainObjects)
     {
-      Loaded (Arg.Is (_clientTransaction), Arg<ClientTransactionEventArgs>.Matches (args => args.DomainObjects.SetEquals (domainObjects)));
+      Loaded(Arg.Is(_clientTransaction), Arg<ClientTransactionEventArgs>.Matches(args => args.DomainObjects.SetEquals(domainObjects)));
     }
 
     public void RollingBack (params DomainObject[] domainObjects)
     {
-      RollingBack (Arg.Is (_clientTransaction), Arg<ClientTransactionEventArgs>.Matches (args => args.DomainObjects.SetEquals (domainObjects)));
+      RollingBack(Arg.Is(_clientTransaction), Arg<ClientTransactionEventArgs>.Matches(args => args.DomainObjects.SetEquals(domainObjects)));
     }
 
     public void RolledBack (params DomainObject[] domainObjects)
     {
-      RolledBack (Arg.Is (_clientTransaction), Arg<ClientTransactionEventArgs>.Matches (args => args.DomainObjects.SetEquals (domainObjects)));
+      RolledBack(Arg.Is(_clientTransaction), Arg<ClientTransactionEventArgs>.Matches(args => args.DomainObjects.SetEquals(domainObjects)));
     }
 
     public void Committing (params DomainObject[] domainObjects)
     {
-      Committing (Arg.Is (_clientTransaction), Arg<ClientTransactionCommittingEventArgs>.Matches (args => args.DomainObjects.SetEquals (domainObjects)));
+      Committing(Arg.Is(_clientTransaction), Arg<ClientTransactionCommittingEventArgs>.Matches(args => args.DomainObjects.SetEquals(domainObjects)));
     }
 
     public void Committed (params DomainObject[] domainObjects)
     {
-      Committed (Arg.Is (_clientTransaction), Arg<ClientTransactionEventArgs>.Matches (args => args.DomainObjects.SetEquals (domainObjects)));
+      Committed(Arg.Is(_clientTransaction), Arg<ClientTransactionEventArgs>.Matches(args => args.DomainObjects.SetEquals(domainObjects)));
     }
   }
 }

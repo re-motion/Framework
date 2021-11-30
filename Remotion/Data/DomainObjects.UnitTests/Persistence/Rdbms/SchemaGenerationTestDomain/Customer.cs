@@ -21,26 +21,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 {
   [DBTable]
   [Instantiable]
-  [Uses (typeof (ProductLicenseMixin))]
+  [Uses(typeof(ProductLicenseMixin))]
   public abstract class Customer : Company
   {
-    public new static Customer NewObject()
+    public new static Customer NewObject ()
     {
-      return DomainObject.NewObject<Customer> ();
+      return DomainObject.NewObject<Customer>();
     }
 
-    protected Customer()
+    protected Customer ()
     {
     }
 
-    [DBColumn ("CustomerType")]
+    [DBColumn("CustomerType")]
     public abstract CustomerType Type { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
-    [DBColumn ("CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches")]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
+    [DBColumn("CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches")]
     public abstract string PropertyWithIdenticalNameInDifferentInheritanceBranches { get; set; }
 
-    [DBBidirectionalRelation ("Customer", SortExpression = "Number ASC")]
+    [DBBidirectionalRelation("Customer", SortExpression = "Number ASC")]
     public abstract ObjectList<Order> Orders { get; }
 
     [Mandatory]

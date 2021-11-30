@@ -30,21 +30,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     private string _executionOrder = string.Empty;
 
     public TestFunction ()
-      : base (new NoneTransactionMode ())
+      : base(new NoneTransactionMode())
     {
       ReturnUrl = TestFunction.ReturnUrlValue;
     }
 
     public TestFunction (params object[] args)
-        : base (new NoneTransactionMode (), args)
+        : base(new NoneTransactionMode(), args)
     {
       ReturnUrl = TestFunction.ReturnUrlValue;
     }
 
-    [WxeParameter (1, false, WxeParameterDirection.In)]
+    [WxeParameter(1, false, WxeParameterDirection.In)]
     public string Parameter1
     {
-      get { return (string) Variables["Parameter1"]; }
+      get { return (string)Variables["Parameter1"]; }
       set { Variables["Parameter1"] = value; }
     }
 
@@ -73,7 +73,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 
     public void PublicStepMethodWithContext (WxeContext context)
     {
-      Step2 (context);
+      Step2(context);
     }
 
     public string LastExecutedStepID

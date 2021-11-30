@@ -76,7 +76,7 @@ namespace JetBrains.Annotations
   ///     throw new ArgumentNullException("par"); // Warning: Cannot resolve symbol
   /// }
   /// </code></example>
-  [AttributeUsage (AttributeTargets.Parameter)]
+  [AttributeUsage(AttributeTargets.Parameter)]
   sealed partial class InvokerParameterNameAttribute : Attribute
   {
   }

@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _eventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
     }

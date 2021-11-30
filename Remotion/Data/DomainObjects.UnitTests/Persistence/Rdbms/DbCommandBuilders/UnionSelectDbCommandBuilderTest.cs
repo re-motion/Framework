@@ -45,153 +45,153 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       base.SetUp();
 
-      _originalSelectedColumnsStub = MockRepository.GenerateStub<ISelectedColumnsSpecification> ();
+      _originalSelectedColumnsStub = MockRepository.GenerateStub<ISelectedColumnsSpecification>();
       _comparedColumnsStrictMock = MockRepository.GenerateStrictMock<IComparedColumnsSpecification>();
-      _fullSelectedColumnsStub = MockRepository.GenerateStub<ISelectedColumnsSpecification> ();
-      _orderedColumnsStub = MockRepository.GenerateStub<IOrderedColumnsSpecification> ();
-      
+      _fullSelectedColumnsStub = MockRepository.GenerateStub<ISelectedColumnsSpecification>();
+      _orderedColumnsStub = MockRepository.GenerateStub<IOrderedColumnsSpecification>();
+
       _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect>();
-      _sqlDialectStub.Stub (stub => stub.StatementDelimiter).Return (";");
+      _sqlDialectStub.Stub(stub => stub.StatementDelimiter).Return(";");
 
       _dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      
+
       _commandExecutionContextStub = MockRepository.GenerateStub<IRdbmsProviderCommandExecutionContext>();
-      _commandExecutionContextStub.Stub (stub => stub.CreateDbCommand()).Return (_dbCommandStub);
+      _commandExecutionContextStub.Stub(stub => stub.CreateDbCommand()).Return(_dbCommandStub);
 
       Guid.NewGuid();
 
-      _table1 = TableDefinitionObjectMother.Create (TestDomainStorageProviderDefinition, new EntityNameDefinition (null, "Table1"));
-      _table2 = TableDefinitionObjectMother.Create (TestDomainStorageProviderDefinition, new EntityNameDefinition (null, "Table2"));
-      _table3 = TableDefinitionObjectMother.Create (TestDomainStorageProviderDefinition, new EntityNameDefinition ("customSchema", "Table3"));
+      _table1 = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table1"));
+      _table2 = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table2"));
+      _table3 = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition("customSchema", "Table3"));
     }
 
     [Test]
     public void Create_WithOneUnionedTable ()
     {
-      var unionViewDefinition = UnionViewDefinitionObjectMother.Create (TestDomainStorageProviderDefinition, null, _table1);
+      var unionViewDefinition = UnionViewDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, null, _table1);
 
-      var builder = new UnionSelectDbCommandBuilder (
+      var builder = new UnionSelectDbCommandBuilder(
           unionViewDefinition,
           _originalSelectedColumnsStub,
           _comparedColumnsStrictMock,
           _orderedColumnsStub,
           _sqlDialectStub);
 
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("customSchema")).Return ("[delimited customSchema]");
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("Table1")).Return ("[delimited Table1]");
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("FKID")).Return ("[delimited FKID]");
-      _sqlDialectStub.Stub (stub => stub.GetParameterName ("FKID")).Return ("pFKID");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("customSchema")).Return("[delimited customSchema]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Table1")).Return("[delimited Table1]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("FKID")).Return("[delimited FKID]");
+      _sqlDialectStub.Stub(stub => stub.GetParameterName("FKID")).Return("pFKID");
 
-      _orderedColumnsStub.Stub (stub => stub.UnionWithSelectedColumns (_originalSelectedColumnsStub)).Return (_fullSelectedColumnsStub);
-      _orderedColumnsStub.Stub (stub => stub.IsEmpty).Return (false);
+      _orderedColumnsStub.Stub(stub => stub.UnionWithSelectedColumns(_originalSelectedColumnsStub)).Return(_fullSelectedColumnsStub);
+      _orderedColumnsStub.Stub(stub => stub.IsEmpty).Return(false);
       _orderedColumnsStub
-          .Stub (stub => stub.AppendOrderings (Arg<StringBuilder>.Is.Anything, Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[Column1] ASC, [Column2] DESC"));
+          .Stub(stub => stub.AppendOrderings(Arg<StringBuilder>.Is.Anything, Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1] ASC, [Column2] DESC"));
 
       var adjustedSelectedColumnsStub = MockRepository.GenerateStub<ISelectedColumnsSpecification>();
       adjustedSelectedColumnsStub
-          .Stub (stub => stub.AppendProjection (Arg<StringBuilder>.Is.Anything, Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[Column1], [Column2], [Column3]"));
+          .Stub(stub => stub.AppendProjection(Arg<StringBuilder>.Is.Anything, Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1], [Column2], [Column3]"));
       _fullSelectedColumnsStub
-          .Stub (stub => stub.AdjustForTable (_table1))
-          .Return (adjustedSelectedColumnsStub);
+          .Stub(stub => stub.AdjustForTable(_table1))
+          .Return(adjustedSelectedColumnsStub);
 
       _comparedColumnsStrictMock
-          .Expect (stub => stub.AddParameters (_dbCommandStub, _sqlDialectStub))
+          .Expect(stub => stub.AddParameters(_dbCommandStub, _sqlDialectStub))
           .Repeat.Once();
       _comparedColumnsStrictMock
-          .Expect (stub => stub.AppendComparisons (
+          .Expect(stub => stub.AppendComparisons(
               Arg<StringBuilder>.Is.Anything,
-              Arg.Is (_dbCommandStub),
-              Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[delimited FKID] = pFKID"))
+              Arg.Is(_dbCommandStub),
+              Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[delimited FKID] = pFKID"))
           .Repeat.Once();
       _comparedColumnsStrictMock.Replay();
-      
-      var result = builder.Create (_commandExecutionContextStub);
 
-      Assert.That (
+      var result = builder.Create(_commandExecutionContextStub);
+
+      Assert.That(
           result.CommandText,
-          Is.EqualTo ("SELECT [Column1], [Column2], [Column3] FROM [delimited Table1] WHERE [delimited FKID] = pFKID ORDER BY [Column1] ASC, [Column2] DESC;"));
-      _sqlDialectStub.VerifyAllExpectations ();
+          Is.EqualTo("SELECT [Column1], [Column2], [Column3] FROM [delimited Table1] WHERE [delimited FKID] = pFKID ORDER BY [Column1] ASC, [Column2] DESC;"));
+      _sqlDialectStub.VerifyAllExpectations();
       _comparedColumnsStrictMock.VerifyAllExpectations();
     }
 
     [Test]
     public void Create_WithSeveralUnionedTables ()
     {
-      var unionViewDefinition = UnionViewDefinitionObjectMother.Create (
+      var unionViewDefinition = UnionViewDefinitionObjectMother.Create(
           TestDomainStorageProviderDefinition,
           null,
           _table1,
           _table2,
           _table3);
 
-      var builder = new UnionSelectDbCommandBuilder (
+      var builder = new UnionSelectDbCommandBuilder(
           unionViewDefinition,
           _originalSelectedColumnsStub,
           _comparedColumnsStrictMock,
           _orderedColumnsStub,
           _sqlDialectStub);
 
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("customSchema")).Return ("[delimited customSchema]");
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("Table1")).Return ("[delimited Table1]");
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("Table2")).Return ("[delimited Table2]");
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("Table3")).Return ("[delimited Table3]");
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("FKID")).Return ("[delimited FKID]");
-      _sqlDialectStub.Stub (stub => stub.GetParameterName ("FKID")).Return ("pFKID");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("customSchema")).Return("[delimited customSchema]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Table1")).Return("[delimited Table1]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Table2")).Return("[delimited Table2]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Table3")).Return("[delimited Table3]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("FKID")).Return("[delimited FKID]");
+      _sqlDialectStub.Stub(stub => stub.GetParameterName("FKID")).Return("pFKID");
 
-      _orderedColumnsStub.Stub (stub => stub.UnionWithSelectedColumns (_originalSelectedColumnsStub)).Return (_fullSelectedColumnsStub);
-      _orderedColumnsStub.Stub (stub => stub.IsEmpty).Return (false);
+      _orderedColumnsStub.Stub(stub => stub.UnionWithSelectedColumns(_originalSelectedColumnsStub)).Return(_fullSelectedColumnsStub);
+      _orderedColumnsStub.Stub(stub => stub.IsEmpty).Return(false);
       _orderedColumnsStub
-          .Stub (stub => stub.AppendOrderings (Arg<StringBuilder>.Is.Anything, Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[Column1] ASC, [Column2] DESC"));
+          .Stub(stub => stub.AppendOrderings(Arg<StringBuilder>.Is.Anything, Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1] ASC, [Column2] DESC"));
 
 
       var adjustedSelectedColumnsStub1 = MockRepository.GenerateStub<ISelectedColumnsSpecification>();
       adjustedSelectedColumnsStub1
-          .Stub (stub => stub.AppendProjection (Arg<StringBuilder>.Is.Anything, Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[Column1], [Column2], [Column3]"));
+          .Stub(stub => stub.AppendProjection(Arg<StringBuilder>.Is.Anything, Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1], [Column2], [Column3]"));
       var adjustedSelectedColumnsStub2 = MockRepository.GenerateStub<ISelectedColumnsSpecification>();
       adjustedSelectedColumnsStub2
-          .Stub (stub => stub.AppendProjection (Arg<StringBuilder>.Is.Anything, Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[Column1], NULL, [Column3]"));
+          .Stub(stub => stub.AppendProjection(Arg<StringBuilder>.Is.Anything, Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1], NULL, [Column3]"));
       var adjustedSelectedColumnsStub3 = MockRepository.GenerateStub<ISelectedColumnsSpecification>();
       adjustedSelectedColumnsStub3
-          .Stub (stub => stub.AppendProjection (Arg<StringBuilder>.Is.Anything, Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("NULL, [Column2], [Column3]"));
+          .Stub(stub => stub.AppendProjection(Arg<StringBuilder>.Is.Anything, Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("NULL, [Column2], [Column3]"));
       _fullSelectedColumnsStub
-          .Stub (stub => stub.AdjustForTable (_table1))
-          .Return (adjustedSelectedColumnsStub1);
+          .Stub(stub => stub.AdjustForTable(_table1))
+          .Return(adjustedSelectedColumnsStub1);
       _fullSelectedColumnsStub
-          .Stub (stub => stub.AdjustForTable (_table2))
-          .Return (adjustedSelectedColumnsStub2);
+          .Stub(stub => stub.AdjustForTable(_table2))
+          .Return(adjustedSelectedColumnsStub2);
       _fullSelectedColumnsStub
-          .Stub (stub => stub.AdjustForTable (_table3))
-          .Return (adjustedSelectedColumnsStub3);
+          .Stub(stub => stub.AdjustForTable(_table3))
+          .Return(adjustedSelectedColumnsStub3);
 
 
       _fullSelectedColumnsStub
-          .Stub (stub => stub.AppendProjection (Arg<StringBuilder>.Is.Anything, Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[Column1], [Column2], [Column3]"));
+          .Stub(stub => stub.AppendProjection(Arg<StringBuilder>.Is.Anything, Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1], [Column2], [Column3]"));
 
       _comparedColumnsStrictMock
-          .Expect (stub => stub.AddParameters (_dbCommandStub, _sqlDialectStub))
-          .Repeat.Once ();
+          .Expect(stub => stub.AddParameters(_dbCommandStub, _sqlDialectStub))
+          .Repeat.Once();
       _comparedColumnsStrictMock
-          .Expect (stub => stub.AppendComparisons (
+          .Expect(stub => stub.AppendComparisons(
               Arg<StringBuilder>.Is.Anything,
-              Arg.Is (_dbCommandStub),
-              Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[delimited FKID] = pFKID"))
-          .Repeat.Times (3);
-      _comparedColumnsStrictMock.Replay ();
+              Arg.Is(_dbCommandStub),
+              Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[delimited FKID] = pFKID"))
+          .Repeat.Times(3);
+      _comparedColumnsStrictMock.Replay();
 
-      var result = builder.Create (_commandExecutionContextStub);
+      var result = builder.Create(_commandExecutionContextStub);
 
-      Assert.That (
+      Assert.That(
           result.CommandText,
-          Is.EqualTo (
+          Is.EqualTo(
               "SELECT [Column1], [Column2], [Column3] FROM [delimited Table1] WHERE [delimited FKID] = pFKID UNION ALL "
               + "SELECT [Column1], NULL, [Column3] FROM [delimited Table2] WHERE [delimited FKID] = pFKID UNION ALL "
               + "SELECT NULL, [Column2], [Column3] FROM [delimited customSchema].[delimited Table3] WHERE [delimited FKID] = pFKID "

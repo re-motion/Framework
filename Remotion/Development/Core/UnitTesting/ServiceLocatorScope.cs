@@ -30,11 +30,11 @@ namespace Remotion.Development.UnitTesting
   {
     private static DefaultServiceLocator CreateServiceLocator (IEnumerable<ServiceConfigurationEntry> configuration)
     {
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
+      ArgumentUtility.CheckNotNull("configuration", configuration);
 
       var defaultServiceLocator = DefaultServiceLocator.Create();
       foreach (var stubbedRegistration in configuration)
-        defaultServiceLocator.Register (stubbedRegistration);
+        defaultServiceLocator.Register(stubbedRegistration);
       return defaultServiceLocator;
     }
 
@@ -52,17 +52,17 @@ namespace Remotion.Development.UnitTesting
         _previousLocatorProvider = null;
       }
 
-      ServiceLocator.SetLocatorProvider (() => temporaryServiceLocator);
+      ServiceLocator.SetLocatorProvider(() => temporaryServiceLocator);
     }
 
     public ServiceLocatorScope (params ServiceConfigurationEntry[] temporaryConfiguration)
-      : this (CreateServiceLocator (temporaryConfiguration))
+      : this(CreateServiceLocator(temporaryConfiguration))
     {
     }
 
     public void Dispose ()
     {
-      ServiceLocator.SetLocatorProvider (_previousLocatorProvider);
+      ServiceLocator.SetLocatorProvider(_previousLocatorProvider);
     }
   }
 }

@@ -33,24 +33,24 @@ namespace Remotion.Web.ExecutionEngine
     private readonly bool _returningPostback;
 
     public WxeCallOptionsExternal (string target)
-        : this (target, null, true, WxePermaUrlOptions.Null)
+        : this(target, null, true, WxePermaUrlOptions.Null)
     {
     }
 
     public WxeCallOptionsExternal (string target, string features)
-        : this (target, features, true, WxePermaUrlOptions.Null)
+        : this(target, features, true, WxePermaUrlOptions.Null)
     {
     }
 
     public WxeCallOptionsExternal (string target, string? features, bool returningPostback)
-        : this (target, features, returningPostback, WxePermaUrlOptions.Null)
+        : this(target, features, returningPostback, WxePermaUrlOptions.Null)
     {
     }
 
     public WxeCallOptionsExternal (string target, string? features, bool returningPostback, WxePermaUrlOptions permaUrlOptions)
-        : base (permaUrlOptions)
+        : base(permaUrlOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("target", target);
+      ArgumentUtility.CheckNotNullOrEmpty("target", target);
 
       _target = target;
       _features = features;
@@ -59,11 +59,11 @@ namespace Remotion.Web.ExecutionEngine
 
     public override void Dispatch (IWxeExecutor executor, WxeFunction function, Control sender)
     {
-      ArgumentUtility.CheckNotNull ("executor", executor);
-      ArgumentUtility.CheckNotNull ("function", function);
-      ArgumentUtility.CheckNotNull ("sender", sender);
+      ArgumentUtility.CheckNotNull("executor", executor);
+      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentUtility.CheckNotNull("sender", sender);
 
-      executor.ExecuteFunctionExternal (function, sender, this);
+      executor.ExecuteFunctionExternal(function, sender, this);
 
       throw new WxeCallExternalException();
     }

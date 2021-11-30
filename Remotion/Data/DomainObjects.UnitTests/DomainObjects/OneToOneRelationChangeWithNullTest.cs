@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void OldRelatedObjectOfNewRelatedObjectIsNull ()
     {
-      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
-      Computer newComputerWithoutEmployee = DomainObjectIDs.Computer4.GetObject<Computer> ();
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
+      Computer newComputerWithoutEmployee = DomainObjectIDs.Computer4.GetObject<Computer>();
 
       employee.Computer = newComputerWithoutEmployee;
 
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void NewRelatedObjectIsNull ()
     {
-      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       employee.Computer = null;
 
       // expectation: no exception
@@ -47,8 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void OldRelatedObjectIsNull ()
     {
-      Employee employeeWithoutComputer = DomainObjectIDs.Employee1.GetObject<Employee> ();
-      Computer computerWithoutEmployee = DomainObjectIDs.Computer4.GetObject<Computer> ();
+      Employee employeeWithoutComputer = DomainObjectIDs.Employee1.GetObject<Employee>();
+      Computer computerWithoutEmployee = DomainObjectIDs.Computer4.GetObject<Computer>();
       employeeWithoutComputer.Computer = computerWithoutEmployee;
 
       // expectation: no exception
@@ -57,104 +57,104 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetRelatedObjectAndOldRelatedObjectIsNull ()
     {
-      Computer computerWithoutEmployee = DomainObjectIDs.Computer4.GetObject<Computer> ();
-      Employee employee = DomainObjectIDs.Employee1.GetObject<Employee> ();
+      Computer computerWithoutEmployee = DomainObjectIDs.Computer4.GetObject<Computer>();
+      Employee employee = DomainObjectIDs.Employee1.GetObject<Employee>();
       computerWithoutEmployee.Employee = employee;
 
-      Assert.That (computerWithoutEmployee.Properties[typeof (Computer), "Employee"].GetRelatedObjectID (), Is.EqualTo (employee.ID));
+      Assert.That(computerWithoutEmployee.Properties[typeof(Computer), "Employee"].GetRelatedObjectID(), Is.EqualTo(employee.ID));
 
-      Assert.That (computerWithoutEmployee.Employee, Is.SameAs (employee));
-      Assert.That (employee.Computer, Is.SameAs (computerWithoutEmployee));
+      Assert.That(computerWithoutEmployee.Employee, Is.SameAs(employee));
+      Assert.That(employee.Computer, Is.SameAs(computerWithoutEmployee));
     }
 
     [Test]
     public void SetRelatedObjectOverVirtualEndPointAndOldRelatedObjectIsNull ()
     {
-      Employee employeeWithoutComputer = DomainObjectIDs.Employee1.GetObject<Employee> ();
-      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer> ();
+      Employee employeeWithoutComputer = DomainObjectIDs.Employee1.GetObject<Employee>();
+      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer>();
       employeeWithoutComputer.Computer = computer;
 
-      Assert.That (computer.Properties[typeof (Computer), "Employee"].GetRelatedObjectID (), Is.EqualTo (employeeWithoutComputer.ID));
+      Assert.That(computer.Properties[typeof(Computer), "Employee"].GetRelatedObjectID(), Is.EqualTo(employeeWithoutComputer.ID));
 
-      Assert.That (employeeWithoutComputer.Computer, Is.SameAs (computer));
-      Assert.That (computer.Employee, Is.SameAs (employeeWithoutComputer));
+      Assert.That(employeeWithoutComputer.Computer, Is.SameAs(computer));
+      Assert.That(computer.Employee, Is.SameAs(employeeWithoutComputer));
     }
 
     [Test]
     public void SetNewRelatedObjectNull ()
     {
-      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       Computer computer = employee.Computer;
       computer.Employee = null;
 
-      Assert.That (computer.Properties[typeof (Computer), "Employee"].GetRelatedObjectID (), Is.Null);
+      Assert.That(computer.Properties[typeof(Computer), "Employee"].GetRelatedObjectID(), Is.Null);
 
-      Assert.That (computer.Employee, Is.Null);
-      Assert.That (employee.Computer, Is.Null);
+      Assert.That(computer.Employee, Is.Null);
+      Assert.That(employee.Computer, Is.Null);
     }
 
     [Test]
     public void SetNewRelatedObjectNullOverVirtualEndPoint ()
     {
-      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       Computer computer = employee.Computer;
       employee.Computer = null;
 
-      Assert.That (computer.Properties[typeof (Computer), "Employee"].GetRelatedObjectID(), Is.Null);
+      Assert.That(computer.Properties[typeof(Computer), "Employee"].GetRelatedObjectID(), Is.Null);
 
-      Assert.That (employee.Computer, Is.Null);
-      Assert.That (computer.Employee, Is.Null);
+      Assert.That(employee.Computer, Is.Null);
+      Assert.That(computer.Employee, Is.Null);
     }
 
     [Test]
     public void HasBeenTouchedWithNull_RealSide ()
     {
-      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       Computer computer = employee.Computer;
 
-      CheckTouching (delegate { computer.Employee = null; }, computer, "Employee",
-          RelationEndPointID.Create(employee.ID, typeof (Employee).FullName + ".Computer"),
-          RelationEndPointID.Create(computer.ID, typeof (Computer).FullName + ".Employee"));
+      CheckTouching(delegate { computer.Employee = null; }, computer, "Employee",
+          RelationEndPointID.Create(employee.ID, typeof(Employee).FullName + ".Computer"),
+          RelationEndPointID.Create(computer.ID, typeof(Computer).FullName + ".Employee"));
     }
 
     [Test]
     public void HasBeenTouchedWithNullTwice_RealSide ()
     {
-      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       Computer computer = employee.Computer;
 
       computer.Employee = null;
-      
-      SetDatabaseModifyable ();
-      TestableClientTransaction.Commit ();
 
-      CheckTouching (delegate { computer.Employee = null; }, computer, "Employee",
-          RelationEndPointID.Create(computer.ID, typeof (Computer).FullName + ".Employee"));
+      SetDatabaseModifyable();
+      TestableClientTransaction.Commit();
+
+      CheckTouching(delegate { computer.Employee = null; }, computer, "Employee",
+          RelationEndPointID.Create(computer.ID, typeof(Computer).FullName + ".Employee"));
     }
 
     [Test]
     public void HasBeenTouchedWithNull_VirtualSide ()
     {
-      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       Computer computer = employee.Computer;
 
-      CheckTouching (delegate { employee.Computer = null; }, computer, "Employee",
-          RelationEndPointID.Create(employee.ID, typeof (Employee).FullName + ".Computer"),
-          RelationEndPointID.Create(computer.ID, typeof (Computer).FullName + ".Employee"));
+      CheckTouching(delegate { employee.Computer = null; }, computer, "Employee",
+          RelationEndPointID.Create(employee.ID, typeof(Employee).FullName + ".Computer"),
+          RelationEndPointID.Create(computer.ID, typeof(Computer).FullName + ".Employee"));
     }
 
     [Test]
     public void HasBeenTouchedWithNullTwice_VirtualSide ()
     {
-      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
 
       employee.Computer = null;
 
-      SetDatabaseModifyable ();
-      TestableClientTransaction.Commit ();
+      SetDatabaseModifyable();
+      TestableClientTransaction.Commit();
 
-      CheckTouching (delegate { employee.Computer = null; }, null, null,
-          RelationEndPointID.Create(employee.ID, typeof (Employee).FullName + ".Computer"));
+      CheckTouching(delegate { employee.Computer = null; }, null, null,
+          RelationEndPointID.Create(employee.ID, typeof(Employee).FullName + ".Computer"));
     }
   }
 }

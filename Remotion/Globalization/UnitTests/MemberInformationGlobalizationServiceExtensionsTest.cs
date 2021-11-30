@@ -40,11 +40,11 @@ namespace Remotion.Globalization.UnitTests
     public void SetUp ()
     {
       _typeInformationStub = new Mock<ITypeInformation>();
-      _typeInformationStub.Setup (stub => stub.Name).Returns ("TypeName");
-      _typeInformationStub.Setup (stub => stub.FullName).Returns ("FullTypeName");
+      _typeInformationStub.Setup(stub => stub.Name).Returns("TypeName");
+      _typeInformationStub.Setup(stub => stub.FullName).Returns("FullTypeName");
 
       _propertyInformationStub = new Mock<IPropertyInformation>();
-      _propertyInformationStub.Setup (stub => stub.Name).Returns ("PropertyName");
+      _propertyInformationStub.Setup(stub => stub.Name).Returns("PropertyName");
 
       _typeInformationForResourceResolutionStub = new Mock<ITypeInformation>();
 
@@ -53,18 +53,18 @@ namespace Remotion.Globalization.UnitTests
       _memoryAppender = new MemoryAppender();
 
       LoggerMatchFilter acceptFilter = new LoggerMatchFilter();
-      acceptFilter.LoggerToMatch = typeof (ResourceLogger).FullName;
+      acceptFilter.LoggerToMatch = typeof(ResourceLogger).FullName;
       acceptFilter.AcceptOnMatch = true;
-      _memoryAppender.AddFilter (acceptFilter);
+      _memoryAppender.AddFilter(acceptFilter);
 
       DenyAllFilter denyFilter = new DenyAllFilter();
-      _memoryAppender.AddFilter (denyFilter);
+      _memoryAppender.AddFilter(denyFilter);
 
-      BasicConfigurator.Configure (_memoryAppender);
+      BasicConfigurator.Configure(_memoryAppender);
     }
 
     [TearDown]
-    public void TearDown()
+    public void TearDown ()
     {
       LogManager.ResetConfiguration();
     }
@@ -75,16 +75,16 @@ namespace Remotion.Globalization.UnitTests
       string outValue = null;
 
       _serviceStub
-          .Setup (
-              _ => _.TryGetPropertyDisplayName (
+          .Setup(
+              _ => _.TryGetPropertyDisplayName(
                   _propertyInformationStub.Object,
                   _typeInformationForResourceResolutionStub.Object,
                   out outValue))
-          .Returns (false);
+          .Returns(false);
 
-      var result = _serviceStub.Object.ContainsPropertyDisplayName (_propertyInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
+      var result = _serviceStub.Object.ContainsPropertyDisplayName(_propertyInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
 
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
 
     [Test]
@@ -93,16 +93,16 @@ namespace Remotion.Globalization.UnitTests
       var outValue = "expected";
 
       _serviceStub
-          .Setup (
-              _ => _.TryGetPropertyDisplayName (
+          .Setup(
+              _ => _.TryGetPropertyDisplayName(
                   _propertyInformationStub.Object,
                   _typeInformationForResourceResolutionStub.Object,
                   out outValue))
-          .Returns (true);
+          .Returns(true);
 
-      var result = _serviceStub.Object.ContainsPropertyDisplayName (_propertyInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
+      var result = _serviceStub.Object.ContainsPropertyDisplayName(_propertyInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
 
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
     }
 
     [Test]
@@ -111,25 +111,25 @@ namespace Remotion.Globalization.UnitTests
       string outValue = null;
 
       _serviceStub
-          .Setup (
-              _ => _.TryGetPropertyDisplayName (
+          .Setup(
+              _ => _.TryGetPropertyDisplayName(
                   _propertyInformationStub.Object,
                   _typeInformationForResourceResolutionStub.Object,
                   out outValue))
-          .Returns (false);
+          .Returns(false);
 
-      _propertyInformationStub.Setup (_ => _.DeclaringType).Returns (_typeInformationStub.Object);
+      _propertyInformationStub.Setup(_ => _.DeclaringType).Returns(_typeInformationStub.Object);
 
-      var result = _serviceStub.Object.GetPropertyDisplayName (_propertyInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
+      var result = _serviceStub.Object.GetPropertyDisplayName(_propertyInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
 
-      Assert.That (result, Is.EqualTo ("PropertyName"));
+      Assert.That(result, Is.EqualTo("PropertyName"));
 
       LoggingEvent[] events = _memoryAppender.GetEvents();
-      Assert.That (events.Length, Is.EqualTo (1));
-      Assert.That (events[0].Level, Is.EqualTo (Level.Debug));
-      Assert.That (
+      Assert.That(events.Length, Is.EqualTo(1));
+      Assert.That(events[0].Level, Is.EqualTo(Level.Debug));
+      Assert.That(
           events[0].RenderedMessage,
-          Is.EqualTo ("No resource entry exists for the following element: Property: 'PropertyName' (Type: 'FullTypeName')"));
+          Is.EqualTo("No resource entry exists for the following element: Property: 'PropertyName' (Type: 'FullTypeName')"));
     }
 
     [Test]
@@ -138,16 +138,16 @@ namespace Remotion.Globalization.UnitTests
       var outValue = "expected";
 
       _serviceStub
-          .Setup (
-              _ => _.TryGetPropertyDisplayName (
+          .Setup(
+              _ => _.TryGetPropertyDisplayName(
                   _propertyInformationStub.Object,
                   _typeInformationForResourceResolutionStub.Object,
                   out outValue))
-          .Returns (true);
+          .Returns(true);
 
-      var result = _serviceStub.Object.GetPropertyDisplayName (_propertyInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
+      var result = _serviceStub.Object.GetPropertyDisplayName(_propertyInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
 
-      Assert.That (result, Is.EqualTo ("expected"));
+      Assert.That(result, Is.EqualTo("expected"));
     }
 
     [Test]
@@ -156,34 +156,34 @@ namespace Remotion.Globalization.UnitTests
       string outValue = null;
 
       _serviceStub
-          .Setup (
-              _ => _.TryGetPropertyDisplayName (
+          .Setup(
+              _ => _.TryGetPropertyDisplayName(
                   _propertyInformationStub.Object,
                   _typeInformationForResourceResolutionStub.Object,
                   out outValue))
-          .Returns (false);
+          .Returns(false);
 
-      var result = _serviceStub.Object.GetPropertyDisplayNameOrDefault (_propertyInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
+      var result = _serviceStub.Object.GetPropertyDisplayNameOrDefault(_propertyInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void GetPropertyDisplayNameOrDefault_ResourceFound_ReturnsLocalizedValue ()
     {
       var outValue = "expected";
-      
+
       _serviceStub
-          .Setup (
-              _ => _.TryGetPropertyDisplayName (
+          .Setup(
+              _ => _.TryGetPropertyDisplayName(
                   _propertyInformationStub.Object,
                   _typeInformationForResourceResolutionStub.Object,
                   out outValue))
-          .Returns (true);
+          .Returns(true);
 
-      var result = _serviceStub.Object.GetPropertyDisplayNameOrDefault (_propertyInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
+      var result = _serviceStub.Object.GetPropertyDisplayNameOrDefault(_propertyInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
 
-      Assert.That (result, Is.EqualTo ("expected"));
+      Assert.That(result, Is.EqualTo("expected"));
     }
 
 
@@ -193,16 +193,16 @@ namespace Remotion.Globalization.UnitTests
       string outValue = null;
 
       _serviceStub
-          .Setup (
-              _ => _.TryGetTypeDisplayName (
+          .Setup(
+              _ => _.TryGetTypeDisplayName(
                   _typeInformationStub.Object,
                   _typeInformationForResourceResolutionStub.Object,
                   out outValue))
-          .Returns (false);
+          .Returns(false);
 
-      var result = _serviceStub.Object.ContainsTypeDisplayName (_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
+      var result = _serviceStub.Object.ContainsTypeDisplayName(_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
 
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
 
     [Test]
@@ -211,16 +211,16 @@ namespace Remotion.Globalization.UnitTests
       var outValue = "expected";
 
       _serviceStub
-          .Setup (
-              _ => _.TryGetTypeDisplayName (
+          .Setup(
+              _ => _.TryGetTypeDisplayName(
                   _typeInformationStub.Object,
                   _typeInformationForResourceResolutionStub.Object,
                   out outValue))
-          .Returns (true);
+          .Returns(true);
 
-      var result = _serviceStub.Object.ContainsTypeDisplayName (_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
+      var result = _serviceStub.Object.ContainsTypeDisplayName(_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
 
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
     }
 
     [Test]
@@ -229,23 +229,23 @@ namespace Remotion.Globalization.UnitTests
       string outValue = null;
 
       _serviceStub
-          .Setup (
-              _ => _.TryGetTypeDisplayName (
+          .Setup(
+              _ => _.TryGetTypeDisplayName(
                   _typeInformationStub.Object,
                   _typeInformationForResourceResolutionStub.Object,
                   out outValue))
-          .Returns (false);
+          .Returns(false);
 
-      var result = _serviceStub.Object.GetTypeDisplayName (_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
+      var result = _serviceStub.Object.GetTypeDisplayName(_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
 
-      Assert.That (result, Is.EqualTo ("TypeName"));
+      Assert.That(result, Is.EqualTo("TypeName"));
 
       LoggingEvent[] events = _memoryAppender.GetEvents();
-      Assert.That (events.Length, Is.EqualTo (1));
-      Assert.That (events[0].Level, Is.EqualTo (Level.Debug));
-      Assert.That (
+      Assert.That(events.Length, Is.EqualTo(1));
+      Assert.That(events[0].Level, Is.EqualTo(Level.Debug));
+      Assert.That(
           events[0].RenderedMessage,
-          Is.EqualTo ("No resource entry exists for the following element: Type: 'FullTypeName'"));
+          Is.EqualTo("No resource entry exists for the following element: Type: 'FullTypeName'"));
     }
 
     [Test]
@@ -254,16 +254,16 @@ namespace Remotion.Globalization.UnitTests
       var outValue = "expected";
 
       _serviceStub
-          .Setup (
-              _ => _.TryGetTypeDisplayName (
+          .Setup(
+              _ => _.TryGetTypeDisplayName(
                   _typeInformationStub.Object,
                   _typeInformationForResourceResolutionStub.Object,
                   out outValue))
-          .Returns (true);
+          .Returns(true);
 
-      var result = _serviceStub.Object.GetTypeDisplayName (_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
+      var result = _serviceStub.Object.GetTypeDisplayName(_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
 
-      Assert.That (result, Is.EqualTo ("expected"));
+      Assert.That(result, Is.EqualTo("expected"));
     }
 
     [Test]
@@ -272,16 +272,16 @@ namespace Remotion.Globalization.UnitTests
       string outValue = null;
 
       _serviceStub
-          .Setup (
-              _ => _.TryGetTypeDisplayName (
+          .Setup(
+              _ => _.TryGetTypeDisplayName(
                   _typeInformationStub.Object,
                   _typeInformationForResourceResolutionStub.Object,
                   out outValue))
-          .Returns (false);
+          .Returns(false);
 
-      var result = _serviceStub.Object.GetTypeDisplayNameOrDefault (_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
+      var result = _serviceStub.Object.GetTypeDisplayNameOrDefault(_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
@@ -290,16 +290,16 @@ namespace Remotion.Globalization.UnitTests
       var outValue = "expected";
 
       _serviceStub
-          .Setup (
-              _ => _.TryGetTypeDisplayName (
+          .Setup(
+              _ => _.TryGetTypeDisplayName(
                   _typeInformationStub.Object,
                   _typeInformationForResourceResolutionStub.Object,
                   out outValue))
-          .Returns (true);
+          .Returns(true);
 
-      var result = _serviceStub.Object.GetTypeDisplayNameOrDefault (_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
+      var result = _serviceStub.Object.GetTypeDisplayNameOrDefault(_typeInformationStub.Object, _typeInformationForResourceResolutionStub.Object);
 
-      Assert.That (result, Is.EqualTo ("expected"));
+      Assert.That(result, Is.EqualTo("expected"));
     }
   }
 }

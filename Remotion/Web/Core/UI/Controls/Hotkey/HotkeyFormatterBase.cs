@@ -53,60 +53,60 @@ namespace Remotion.Web.UI.Controls.Hotkey
 
     public string? FormatHotkey (TextWithHotkey textWithHotkey)
     {
-      ArgumentUtility.CheckNotNull ("textWithHotkey", textWithHotkey);
+      ArgumentUtility.CheckNotNull("textWithHotkey", textWithHotkey);
 
       if (!textWithHotkey.Hotkey.HasValue)
         return null;
 
-      return char.ToString (char.ToUpper (textWithHotkey.Hotkey.Value));
+      return char.ToString(char.ToUpper(textWithHotkey.Hotkey.Value));
     }
 
     public string FormatText (TextWithHotkey textWithHotkey, bool encode)
     {
-      ArgumentUtility.CheckNotNull ("textWithHotkey", textWithHotkey);
+      ArgumentUtility.CheckNotNull("textWithHotkey", textWithHotkey);
 
-      var textParts = GetTextParts (textWithHotkey.Text, textWithHotkey.HotkeyIndex);
+      var textParts = GetTextParts(textWithHotkey.Text, textWithHotkey.HotkeyIndex);
       if (encode)
-        textParts = GetHtmlEncodedTextParts (textParts);
+        textParts = GetHtmlEncodedTextParts(textParts);
 
-      return GetFormattedString (textParts);
+      return GetFormattedString(textParts);
     }
 
     private TextParts GetTextParts (string text, int? hotkeyIndex)
     {
       if (!hotkeyIndex.HasValue)
-        return new TextParts (text, null, null);
+        return new TextParts(text, null, null);
 
-      return new TextParts (
-          text.Substring (0, hotkeyIndex.Value),
-          text.Substring (hotkeyIndex.Value, 1),
-          text.Substring (hotkeyIndex.Value + 1));
+      return new TextParts(
+          text.Substring(0, hotkeyIndex.Value),
+          text.Substring(hotkeyIndex.Value, 1),
+          text.Substring(hotkeyIndex.Value + 1));
     }
 
     private TextParts GetHtmlEncodedTextParts (TextParts textParts)
     {
-      return new TextParts (
-          HttpUtility.HtmlEncode (textParts.BeforeHotkey),
-          HttpUtility.HtmlEncode (textParts.Hotkey),
-          HttpUtility.HtmlEncode (textParts.AfterHotkey));
+      return new TextParts(
+          HttpUtility.HtmlEncode(textParts.BeforeHotkey),
+          HttpUtility.HtmlEncode(textParts.Hotkey),
+          HttpUtility.HtmlEncode(textParts.AfterHotkey));
     }
 
     private string GetFormattedString (TextParts textParts)
     {
-      var stringBuilder = new StringBuilder (100);
+      var stringBuilder = new StringBuilder(100);
 
-      if (!string.IsNullOrEmpty (textParts.BeforeHotkey))
-        stringBuilder.Append (textParts.BeforeHotkey);
+      if (!string.IsNullOrEmpty(textParts.BeforeHotkey))
+        stringBuilder.Append(textParts.BeforeHotkey);
 
-      if (!string.IsNullOrEmpty (textParts.Hotkey))
+      if (!string.IsNullOrEmpty(textParts.Hotkey))
       {
-        AppendHotkeyBeginTag (stringBuilder, textParts.Hotkey);
-        stringBuilder.Append (textParts.Hotkey);
-        AppendHotkeyEndTag (stringBuilder);
+        AppendHotkeyBeginTag(stringBuilder, textParts.Hotkey);
+        stringBuilder.Append(textParts.Hotkey);
+        AppendHotkeyEndTag(stringBuilder);
       }
 
-      if (!string.IsNullOrEmpty (textParts.AfterHotkey))
-        stringBuilder.Append (textParts.AfterHotkey);
+      if (!string.IsNullOrEmpty(textParts.AfterHotkey))
+        stringBuilder.Append(textParts.AfterHotkey);
 
       return stringBuilder.ToString();
     }

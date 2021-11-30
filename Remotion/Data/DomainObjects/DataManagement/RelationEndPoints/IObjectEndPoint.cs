@@ -32,6 +32,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject);
 
-    RelationEndPointID GetOppositeRelationEndPointID();
+    RelationEndPointID GetOppositeRelationEndPointID ();
   }
 }

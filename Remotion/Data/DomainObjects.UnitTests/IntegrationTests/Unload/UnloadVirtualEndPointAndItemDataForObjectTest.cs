@@ -33,111 +33,111 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var order = DomainObjectIDs.Order1.GetObject<Order>();
       var orderTicket = order.OrderTicket;
 
-      UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, RelationEndPointID.Resolve (order, o => o.OrderTicket));
+      UnloadService.UnloadVirtualEndPointAndItemData(TestableClientTransaction, RelationEndPointID.Resolve(order, o => o.OrderTicket));
 
-      CheckDataContainerExists (order, true);
-      CheckDataContainerExists (orderTicket, false);
+      CheckDataContainerExists(order, true);
+      CheckDataContainerExists(orderTicket, false);
 
-      CheckEndPointExists (order, "OrderTicket", false);
+      CheckEndPointExists(order, "OrderTicket", false);
 
-      Assert.That (order.State.IsUnchanged, Is.True);
-      Assert.That (orderTicket.State.IsNotLoadedYet, Is.True);
+      Assert.That(order.State.IsUnchanged, Is.True);
+      Assert.That(orderTicket.State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
     public void UnloadVirtualEndPointAndItemData_Object_Null ()
     {
-      var employee = DomainObjectIDs.Employee1.GetObject<Employee> ();
-      Assert.That (employee.Computer, Is.Null);
+      var employee = DomainObjectIDs.Employee1.GetObject<Employee>();
+      Assert.That(employee.Computer, Is.Null);
 
-      CheckDataContainerExists (employee, true);
-      CheckEndPointExists (employee, "Computer", true);
+      CheckDataContainerExists(employee, true);
+      CheckEndPointExists(employee, "Computer", true);
 
-      UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, RelationEndPointID.Resolve (employee, e => e.Computer));
+      UnloadService.UnloadVirtualEndPointAndItemData(TestableClientTransaction, RelationEndPointID.Resolve(employee, e => e.Computer));
 
-      CheckDataContainerExists (employee, true);
-      CheckEndPointExists (employee, "Computer", false);
+      CheckDataContainerExists(employee, true);
+      CheckEndPointExists(employee, "Computer", false);
 
-      Assert.That (employee.State.IsUnchanged, Is.True);
+      Assert.That(employee.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void UnloadVirtualEndPointAndItemData_Object_Reload ()
     {
-      SetDatabaseModifyable ();
+      SetDatabaseModifyable();
 
-      var employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      var employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       var computer = employee.Computer;
 
       ObjectID newComputerID;
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var employeeInOtherTx = employee.ID.GetObject<Employee> ();
-        var newComputer = Computer.NewObject ();
+        var employeeInOtherTx = employee.ID.GetObject<Employee>();
+        var newComputer = Computer.NewObject();
         newComputerID = newComputer.ID;
         employeeInOtherTx.Computer = newComputer;
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
       }
 
-      Assert.That (employee.Computer, Is.SameAs (computer));
+      Assert.That(employee.Computer, Is.SameAs(computer));
 
-      UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, RelationEndPointID.Resolve (employee, e => e.Computer));
+      UnloadService.UnloadVirtualEndPointAndItemData(TestableClientTransaction, RelationEndPointID.Resolve(employee, e => e.Computer));
 
-      Assert.That (employee.Computer, Is.Not.SameAs (computer));
-      Assert.That (employee.Computer.ID, Is.EqualTo (newComputerID));
-      Assert.That (computer.Employee, Is.Null);
+      Assert.That(employee.Computer, Is.Not.SameAs(computer));
+      Assert.That(employee.Computer.ID, Is.EqualTo(newComputerID));
+      Assert.That(computer.Employee, Is.Null);
     }
 
     [Test]
     public void UnloadVirtualEndPointAndItemData_Object_Events ()
     {
-      var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
+      var order1 = DomainObjectIDs.Order1.GetObject<Order>();
       var orderTicket = order1.OrderTicket;
 
-      var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
-      using (listenerMock.GetMockRepository ().Ordered ())
+      var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(TestableClientTransaction);
+      using (listenerMock.GetMockRepository().Ordered())
       {
         listenerMock
-            .Expect (mock => mock.ObjectsUnloading (
-                Arg.Is (TestableClientTransaction),
-                Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { orderTicket })))
-            .WhenCalled (
+            .Expect(mock => mock.ObjectsUnloading(
+                Arg.Is(TestableClientTransaction),
+                Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { orderTicket })))
+            .WhenCalled(
             mi =>
             {
-              Assert.That (orderTicket.OnUnloadingCalled, Is.False, "items unloaded after this method is called");
-              Assert.That (orderTicket.OnUnloadedCalled, Is.False, "items unloaded after this method is called");
+              Assert.That(orderTicket.OnUnloadingCalled, Is.False, "items unloaded after this method is called");
+              Assert.That(orderTicket.OnUnloadedCalled, Is.False, "items unloaded after this method is called");
 
-              Assert.That (orderTicket.State.IsUnchanged, Is.True);
+              Assert.That(orderTicket.State.IsUnchanged, Is.True);
             });
         listenerMock
-            .Expect (mock => mock.ObjectsUnloaded (
-                Arg.Is (TestableClientTransaction),
-                Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { orderTicket })))
-            .WhenCalled (
+            .Expect(mock => mock.ObjectsUnloaded(
+                Arg.Is(TestableClientTransaction),
+                Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { orderTicket })))
+            .WhenCalled(
             mi =>
             {
-              Assert.That (orderTicket.OnUnloadingCalled, Is.True, "items unloaded before this method is called");
-              Assert.That (orderTicket.OnUnloadedCalled, Is.True, "items unloaded before this method is called");
+              Assert.That(orderTicket.OnUnloadingCalled, Is.True, "items unloaded before this method is called");
+              Assert.That(orderTicket.OnUnloadedCalled, Is.True, "items unloaded before this method is called");
 
-              Assert.That (orderTicket.State.IsNotLoadedYet, Is.True);
+              Assert.That(orderTicket.State.IsNotLoadedYet, Is.True);
             });
       }
 
-      listenerMock.Replay ();
+      listenerMock.Replay();
       try
       {
-        UnloadService.UnloadVirtualEndPointAndItemData (TestableClientTransaction, RelationEndPointID.Resolve (order1, o => o.OrderTicket));
+        UnloadService.UnloadVirtualEndPointAndItemData(TestableClientTransaction, RelationEndPointID.Resolve(order1, o => o.OrderTicket));
 
-        listenerMock.VerifyAllExpectations ();
+        listenerMock.VerifyAllExpectations();
       }
       finally
       {
-        listenerMock.BackToRecord (); // For Discarding
+        listenerMock.BackToRecord(); // For Discarding
       }
 
-      Assert.That (orderTicket.UnloadingState.IsUnchanged, Is.True, "OnUnloading before state change");
-      Assert.That (orderTicket.UnloadedState.IsNotLoadedYet, Is.True, "OnUnloaded after state change");
+      Assert.That(orderTicket.UnloadingState.IsUnchanged, Is.True, "OnUnloading before state change");
+      Assert.That(orderTicket.UnloadedState.IsNotLoadedYet, Is.True, "OnUnloaded after state change");
     }
   }
 }

@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     private readonly ObservableDomainObjectCollectionDataDecorator _copiedData;
 
     public CopyOnWriteDomainObjectDomainObjectCollectionData (ObservableDomainObjectCollectionDataDecorator copiedData)
-      : base (ArgumentUtility.CheckNotNull ("copiedData", copiedData))
+      : base(ArgumentUtility.CheckNotNull("copiedData", copiedData))
     {
       _copiedData = copiedData;
       _copiedData.CollectionChanging += delegate { CopyOnWrite(); };
@@ -55,9 +55,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     public void CopyOnWrite ()
     {
       if (!IsContentsCopied)
-        WrappedData = new DomainObjectCollectionData (WrappedData);
+        WrappedData = new DomainObjectCollectionData(WrappedData);
     }
-    
+
     public void RevertToCopiedData ()
     {
       WrappedData = _copiedData;
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     protected override void OnDataChanging (OperationKind operation, DomainObject affectedObject, int index)
     {
-      CopyOnWrite ();
+      CopyOnWrite();
     }
 
     protected override void OnDataChanged (OperationKind operation, DomainObject affectedObject, int index)

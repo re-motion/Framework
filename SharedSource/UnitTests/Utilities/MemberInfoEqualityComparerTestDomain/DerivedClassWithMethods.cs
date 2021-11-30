@@ -26,7 +26,7 @@ namespace Remotion.UnitTests.Utilities.MemberInfoEqualityComparerTestDomain
   {
     public override void OverriddenMethod ()
     {
-      base.OverriddenMethod ();
+      base.OverriddenMethod();
     }
   }
 }

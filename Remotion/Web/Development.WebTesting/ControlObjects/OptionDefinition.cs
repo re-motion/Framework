@@ -32,8 +32,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     public OptionDefinition ([NotNull] string itemID, int oneBasedIndex, [NotNull] string text, bool isSelected)
     {
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
-      ArgumentUtility.CheckNotNull ("text", text);
+      ArgumentUtility.CheckNotNull("itemID", itemID);
+      ArgumentUtility.CheckNotNull("text", text);
 
       _itemID = itemID;
       _oneBasedIndex = oneBasedIndex;

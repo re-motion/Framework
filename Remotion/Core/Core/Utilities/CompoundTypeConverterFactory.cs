@@ -25,14 +25,14 @@ namespace Remotion.Utilities
   /// <summary>
   /// Creates a <see cref="TypeConverter"/> from the list of <see cref="ITypeConverterFactory"/> implementations passed during initialization.
   /// </summary>
-  [ImplementationFor (typeof (ITypeConverterFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(ITypeConverterFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundTypeConverterFactory : ITypeConverterFactory
   {
     private readonly IReadOnlyCollection<ITypeConverterFactory> _typeConverterFactories;
 
     public CompoundTypeConverterFactory (IEnumerable<ITypeConverterFactory> typeConverterFactories)
     {
-      ArgumentUtility.CheckNotNull ("typeConverterFactories", typeConverterFactories);
+      ArgumentUtility.CheckNotNull("typeConverterFactories", typeConverterFactories);
 
       _typeConverterFactories = typeConverterFactories.ToList().AsReadOnly();
     }
@@ -44,9 +44,9 @@ namespace Remotion.Utilities
 
     public TypeConverter? CreateTypeConverterOrDefault (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return _typeConverterFactories.Select (f => f.CreateTypeConverterOrDefault (type)).FirstOrDefault (c => c != null);
+      return _typeConverterFactories.Select(f => f.CreateTypeConverterOrDefault(type)).FirstOrDefault(c => c != null);
     }
   }
 }

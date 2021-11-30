@@ -24,7 +24,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
   [TestFixture]
   public class MethodCallerTest
   {
-    private delegate void NoOpOutInt(A a, out int i);
+    private delegate void NoOpOutInt (A a, out int i);
 
     private class A
     {
@@ -40,12 +40,12 @@ namespace Remotion.Extensions.UnitTests.Reflection
         return msg + " " + Name + " from A";
       }
 
-      public string GetString()
+      public string GetString ()
       {
         return "string";
       }
 
-      public void NoOp()
+      public void NoOp ()
       {
       }
 
@@ -72,7 +72,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     private class B : A
     {
       public B (string name)
-          : base (name)
+          : base(name)
       {
       }
 
@@ -85,7 +85,7 @@ namespace Remotion.Extensions.UnitTests.Reflection
     private class C : B
     {
       public C (string name)
-          : base (name)
+          : base(name)
       {
       }
 
@@ -120,50 +120,50 @@ namespace Remotion.Extensions.UnitTests.Reflection
     //}
 
     [Test]
-    public void CallFunc()
+    public void CallFunc ()
     {
-      A foo = new A ("foo");
-      A bar = new A ("bar");
-      B b = new B ("B");
+      A foo = new A("foo");
+      A bar = new A("bar");
+      B b = new B("B");
       A b_as_a = b;
-      C c = new C ("C");
+      C c = new C("C");
       A c_as_a = c;
       B c_as_b = c;
 
-      Func<A, string, string> f = MethodCaller.CallFunc<string> ("Say").GetDelegateWith<A, string> ();
-      Assert.That (f (foo, "Hi"), Is.EqualTo ("Hi foo from A"));
-      Assert.That (f (bar, "Hi"), Is.EqualTo ("Hi bar from A"));
-      Assert.That (f (b, "Hi"), Is.EqualTo ("Hi B from B"));
+      Func<A, string, string> f = MethodCaller.CallFunc<string>("Say").GetDelegateWith<A, string>();
+      Assert.That(f(foo, "Hi"), Is.EqualTo("Hi foo from A"));
+      Assert.That(f(bar, "Hi"), Is.EqualTo("Hi bar from A"));
+      Assert.That(f(b, "Hi"), Is.EqualTo("Hi B from B"));
 
-      Assert.That (MethodCaller.CallFunc<string> ("Say").With (foo, "Hi"), Is.EqualTo ("Hi foo from A"));
-      Assert.That (MethodCaller.CallFunc<string> ("Say").With (bar, "Hi"), Is.EqualTo ("Hi bar from A"));
-      Assert.That (MethodCaller.CallFunc<string> ("Say").With (b, "Hi"), Is.EqualTo ("Hi B from B"));
-      Assert.That (MethodCaller.CallFunc<string> ("Say").With (b_as_a, "Hi"), Is.EqualTo ("Hi B from B"));
-      Assert.That (MethodCaller.CallFunc<string> ("Say").With (c, "Hi"), Is.EqualTo ("Hi C from C"));
-      Assert.That (MethodCaller.CallFunc<string> ("Say").With (c_as_b, "Hi"), Is.EqualTo ("Hi C from B"));
-      Assert.That (MethodCaller.CallFunc<string> ("Say").With (c_as_a, "Hi"), Is.EqualTo ("Hi C from B"));
-      Assert.That (MethodCaller.CallFunc<int> ("get_PrivateProperty", BindingFlags.NonPublic | BindingFlags.Instance).With (foo), Is.EqualTo (-1));
+      Assert.That(MethodCaller.CallFunc<string>("Say").With(foo, "Hi"), Is.EqualTo("Hi foo from A"));
+      Assert.That(MethodCaller.CallFunc<string>("Say").With(bar, "Hi"), Is.EqualTo("Hi bar from A"));
+      Assert.That(MethodCaller.CallFunc<string>("Say").With(b, "Hi"), Is.EqualTo("Hi B from B"));
+      Assert.That(MethodCaller.CallFunc<string>("Say").With(b_as_a, "Hi"), Is.EqualTo("Hi B from B"));
+      Assert.That(MethodCaller.CallFunc<string>("Say").With(c, "Hi"), Is.EqualTo("Hi C from C"));
+      Assert.That(MethodCaller.CallFunc<string>("Say").With(c_as_b, "Hi"), Is.EqualTo("Hi C from B"));
+      Assert.That(MethodCaller.CallFunc<string>("Say").With(c_as_a, "Hi"), Is.EqualTo("Hi C from B"));
+      Assert.That(MethodCaller.CallFunc<int>("get_PrivateProperty", BindingFlags.NonPublic | BindingFlags.Instance).With(foo), Is.EqualTo(-1));
     }
-    
+
     [Test]
-    public void CallAction()
+    public void CallAction ()
     {
-      A foo = new A ("foo");
-      MethodCaller.CallAction ("NoOp").With (foo);
-      MethodCaller.CallAction ("NoOp").With (foo, 0);
-      MethodCaller.CallAction ("PrivateNoOp", BindingFlags.NonPublic | BindingFlags.Instance).With (foo, 0);
-      MethodCaller.CallAction ("set_PrivateProperty", BindingFlags.NonPublic | BindingFlags.Instance).With (foo, 0);
+      A foo = new A("foo");
+      MethodCaller.CallAction("NoOp").With(foo);
+      MethodCaller.CallAction("NoOp").With(foo, 0);
+      MethodCaller.CallAction("PrivateNoOp", BindingFlags.NonPublic | BindingFlags.Instance).With(foo, 0);
+      MethodCaller.CallAction("set_PrivateProperty", BindingFlags.NonPublic | BindingFlags.Instance).With(foo, 0);
       int i;
-      NoOpOutInt noop = MethodCaller.CallAction ("NoOp").GetDelegate<NoOpOutInt>();
-      noop (foo, out i);
-      Assert.That (i, Is.EqualTo (1));
+      NoOpOutInt noop = MethodCaller.CallAction("NoOp").GetDelegate<NoOpOutInt>();
+      noop(foo, out i);
+      Assert.That(i, Is.EqualTo(1));
     }
 
     [Test]
-    public void NoThisArgument()
+    public void NoThisArgument ()
     {
-      Assert.That (
-          () => MethodCaller.CallFunc<string> ("GetString").With(),
+      Assert.That(
+          () => MethodCaller.CallFunc<string>("GetString").With(),
           Throws.InvalidOperationException);
     }
   }

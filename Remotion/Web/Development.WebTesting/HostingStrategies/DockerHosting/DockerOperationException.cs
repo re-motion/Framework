@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     public int ExitCode { get; }
 
     public DockerOperationException (string message, int exitCode)
-        : base (message)
+        : base(message)
     {
       ExitCode = exitCode;
     }

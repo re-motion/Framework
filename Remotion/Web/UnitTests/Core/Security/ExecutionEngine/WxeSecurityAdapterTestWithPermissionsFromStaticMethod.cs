@@ -56,20 +56,20 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     {
       _securityAdapter = new WxeSecurityAdapter();
 
-      _mockSecurityProvider = new Mock<ISecurityProvider> (MockBehavior.Strict);
-      _mockSecurityProvider.Setup (_ => _.IsNull).Returns (false).Verifiable();
+      _mockSecurityProvider = new Mock<ISecurityProvider>(MockBehavior.Strict);
+      _mockSecurityProvider.Setup(_ => _.IsNull).Returns(false).Verifiable();
       _stubUser = new Mock<ISecurityPrincipal>();
-      _stubUser.Setup (_ => _.User).Returns ("user");
-      _mockPrincipalProvider = new Mock<IPrincipalProvider> (MockBehavior.Strict);
-      _mockPrincipalProvider.Setup (_ => _.GetPrincipal()).Returns (_stubUser.Object).Verifiable();
+      _stubUser.Setup(_ => _.User).Returns("user");
+      _mockPrincipalProvider = new Mock<IPrincipalProvider>(MockBehavior.Strict);
+      _mockPrincipalProvider.Setup(_ => _.GetPrincipal()).Returns(_stubUser.Object).Verifiable();
 
-      _mockFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy> (MockBehavior.Strict);
+      _mockFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy>(MockBehavior.Strict);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => _mockSecurityProvider.Object);
-      serviceLocator.RegisterSingle (() => _mockPrincipalProvider.Object);
-      serviceLocator.RegisterSingle (() => _mockFunctionalSecurityStrategy.Object);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle(() => _mockSecurityProvider.Object);
+      serviceLocator.RegisterSingle(() => _mockPrincipalProvider.Object);
+      serviceLocator.RegisterSingle(() => _mockFunctionalSecurityStrategy.Object);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
     [TearDown]
@@ -81,9 +81,9 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void CheckAccess_AccessGranted ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Search, true);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Search, true);
 
-      _securityAdapter.CheckAccess (new TestFunctionWithPermissionsFromStaticMethod());
+      _securityAdapter.CheckAccess(new TestFunctionWithPermissionsFromStaticMethod());
 
       _mockSecurityProvider.Verify();
       _stubUser.Verify();
@@ -94,9 +94,9 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void CheckAccess_AccessDenied ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Search, false);
-      Assert.That (
-          () => _securityAdapter.CheckAccess (new TestFunctionWithPermissionsFromStaticMethod()),
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Search, false);
+      Assert.That(
+          () => _securityAdapter.CheckAccess(new TestFunctionWithPermissionsFromStaticMethod()),
           Throws.InstanceOf<PermissionDeniedException>());
     }
 
@@ -104,26 +104,26 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     public void CheckAccess_WithinSecurityFreeSection_AccessGranted ()
     {
       using (SecurityFreeSection.Activate())
-        _securityAdapter.CheckAccess (new TestFunctionWithPermissionsFromStaticMethod());
+        _securityAdapter.CheckAccess(new TestFunctionWithPermissionsFromStaticMethod());
 
-      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
+      _mockSecurityProvider.Verify(_ => _.IsNull, Times.Never);
       _stubUser.Verify();
-      _mockPrincipalProvider.Verify (_ => _.GetPrincipal(), Times.Never);
+      _mockPrincipalProvider.Verify(_ => _.GetPrincipal(), Times.Never);
       _mockFunctionalSecurityStrategy.Verify();
     }
 
     [Test]
     public void HasAccess_AccessGranted ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Search, true);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Search, true);
 
-      bool hasAccess = _securityAdapter.HasAccess (new TestFunctionWithPermissionsFromStaticMethod());
+      bool hasAccess = _securityAdapter.HasAccess(new TestFunctionWithPermissionsFromStaticMethod());
 
       _mockSecurityProvider.Verify();
       _stubUser.Verify();
       _mockPrincipalProvider.Verify();
       _mockFunctionalSecurityStrategy.Verify();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
@@ -131,41 +131,41 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     {
       bool hasAccess;
       using (SecurityFreeSection.Activate())
-        hasAccess = _securityAdapter.HasAccess (new TestFunctionWithPermissionsFromStaticMethod());
+        hasAccess = _securityAdapter.HasAccess(new TestFunctionWithPermissionsFromStaticMethod());
 
-      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
+      _mockSecurityProvider.Verify(_ => _.IsNull, Times.Never);
       _stubUser.Verify();
-      _mockPrincipalProvider.Verify (_ => _.GetPrincipal(), Times.Never);
+      _mockPrincipalProvider.Verify(_ => _.GetPrincipal(), Times.Never);
       _mockFunctionalSecurityStrategy.Verify();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void HasAccess_AccessDenied ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Search, false);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Search, false);
 
-      bool hasAccess = _securityAdapter.HasAccess (new TestFunctionWithPermissionsFromStaticMethod());
+      bool hasAccess = _securityAdapter.HasAccess(new TestFunctionWithPermissionsFromStaticMethod());
 
       _mockSecurityProvider.Verify();
       _stubUser.Verify();
       _mockPrincipalProvider.Verify();
       _mockFunctionalSecurityStrategy.Verify();
-      Assert.That (hasAccess, Is.False);
+      Assert.That(hasAccess, Is.False);
     }
 
     [Test]
     public void HasStatelessAccess_AccessGranted ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Search, true);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Search, true);
 
-      bool hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromStaticMethod));
+      bool hasAccess = _securityAdapter.HasStatelessAccess(typeof(TestFunctionWithPermissionsFromStaticMethod));
 
       _mockSecurityProvider.Verify();
       _stubUser.Verify();
       _mockPrincipalProvider.Verify();
       _mockFunctionalSecurityStrategy.Verify();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
@@ -173,39 +173,39 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     {
       bool hasAccess;
       using (SecurityFreeSection.Activate())
-        hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromStaticMethod));
+        hasAccess = _securityAdapter.HasStatelessAccess(typeof(TestFunctionWithPermissionsFromStaticMethod));
 
-      _mockSecurityProvider.Verify (_ => _.IsNull, Times.Never);
+      _mockSecurityProvider.Verify(_ => _.IsNull, Times.Never);
       _stubUser.Verify();
-      _mockPrincipalProvider.Verify (_ => _.GetPrincipal(), Times.Never);
+      _mockPrincipalProvider.Verify(_ => _.GetPrincipal(), Times.Never);
       _mockFunctionalSecurityStrategy.Verify();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void HasStatelessAccess_AccessDenied ()
     {
-      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (GeneralAccessTypes.Search, false);
+      ExpectFunctionalSecurityStrategyHasAccessForSecurableObject(GeneralAccessTypes.Search, false);
 
-      bool hasAccess = _securityAdapter.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromStaticMethod));
+      bool hasAccess = _securityAdapter.HasStatelessAccess(typeof(TestFunctionWithPermissionsFromStaticMethod));
 
       _mockSecurityProvider.Verify();
       _stubUser.Verify();
       _mockPrincipalProvider.Verify();
       _mockFunctionalSecurityStrategy.Verify();
-      Assert.That (hasAccess, Is.False);
+      Assert.That(hasAccess, Is.False);
     }
 
     private void ExpectFunctionalSecurityStrategyHasAccessForSecurableObject (Enum accessTypeEnum, bool returnValue)
     {
       _mockFunctionalSecurityStrategy
-          .Setup (
-              _ => _.HasAccess (
-                  typeof (SecurableObject),
+          .Setup(
+              _ => _.HasAccess(
+                  typeof(SecurableObject),
                   _mockSecurityProvider.Object,
                   _stubUser.Object,
-                  new[] { AccessType.Get (accessTypeEnum) }))
-          .Returns (returnValue)
+                  new[] { AccessType.Get(accessTypeEnum) }))
+          .Returns(returnValue)
           .Verifiable();
     }
   }

@@ -35,71 +35,71 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void NonAbstractType_WithoutLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (NonAbstractClassWithoutLegacyConstructor));
-      
-      var validationResult = _validationRule.Validate (classDefinition);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(NonAbstractClassWithoutLegacyConstructor));
 
-      AssertMappingValidationResult (validationResult, true, null);
+      var validationResult = _validationRule.Validate(classDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
-    public void NonAbstractType_WithLegacyConstructor()
+    public void NonAbstractType_WithLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (NonAbstractClassWithLegacyConstructor));
-      
-      var validationResult = _validationRule.Validate (classDefinition);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(NonAbstractClassWithLegacyConstructor));
 
-      var expectedMessage = 
+      var validationResult = _validationRule.Validate(classDefinition);
+
+      var expectedMessage =
         "The domain object type has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer argument). "
         +"The reflection-based mapping does not use this constructor any longer and requires it to be removed.\r\n\r\n"
         +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
         +"DomainObjectTypeDoesNotHaveLegacyInfrastructureConcstructorValidationRule.NonAbstractClassWithLegacyConstructor";
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
 
     [Test]
     public void AbstractType_WithoutInstantiableAttribute_And_WithoutLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (AbstractClassWithoutAttributeAndLegacyCtor));
-      
-      var validationResult = _validationRule.Validate (classDefinition);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithoutAttributeAndLegacyCtor));
 
-      AssertMappingValidationResult (validationResult, true, null);
+      var validationResult = _validationRule.Validate(classDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void AbstractType_WithoutInstantiableAttribute_And_WithLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (AbstractClassWithoutAttributeAndWithLegacyCtor));
-      
-      var validationResult = _validationRule.Validate (classDefinition);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithoutAttributeAndWithLegacyCtor));
 
-      AssertMappingValidationResult (validationResult, true, null);
+      var validationResult = _validationRule.Validate(classDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void AbstractType_WithInstantiableAttribute_And_WithoutLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (AbstractClassWithAttributeAndWithoutLegacyCtor));
-      
-      var validationResult = _validationRule.Validate (classDefinition);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithAttributeAndWithoutLegacyCtor));
 
-      AssertMappingValidationResult (validationResult, true, null);
+      var validationResult = _validationRule.Validate(classDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void AbstractType_WithInstantiableAttribute_And_WithLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (AbstractClassWithAttributeAndWithLegacyCtor));
-      
-      var validationResult = _validationRule.Validate (classDefinition);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithAttributeAndWithLegacyCtor));
+
+      var validationResult = _validationRule.Validate(classDefinition);
 
       var expectedMessage =
         "The domain object type has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer argument). "
         +"The reflection-based mapping does not use this constructor any longer and requires it to be removed.\r\n\r\n"
         +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
         +"DomainObjectTypeDoesNotHaveLegacyInfrastructureConcstructorValidationRule.AbstractClassWithAttributeAndWithLegacyCtor";
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
 
   }

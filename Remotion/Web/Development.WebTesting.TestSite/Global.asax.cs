@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     protected void Application_Start (object sender, EventArgs e)
     {
       RegisterResourceVirtualPathProvider();
-      SetRenderingFeatures (RenderingFeatures.WithDiagnosticMetadata, new ResourceTheme.NovaGray());
+      SetRenderingFeatures(RenderingFeatures.WithDiagnosticMetadata, new ResourceTheme.NovaGray());
     }
 
     protected void Application_BeginRequest (Object sender, EventArgs e)
@@ -46,13 +46,13 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       const string configuration = "Release";
 #endif
 
-      _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
+      _resourceVirtualPathProvider = new ResourceVirtualPathProvider(
           new[]
           {
-              new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
-              new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
-              new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI")
+              new ResourcePathMapping("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
+              new ResourcePathMapping("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
+              new ResourcePathMapping("Remotion.Web/UI", @"..\..\Web\Core\res\UI")
           },
           FileExtensionHandlerMapping.Default);
       _resourceVirtualPathProvider.Register();
@@ -61,9 +61,9 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     private void SetRenderingFeatures (IRenderingFeatures renderingFeatures, ResourceTheme resourceTheme)
     {
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => renderingFeatures);
-      serviceLocator.RegisterSingle (() => resourceTheme);
-      ServiceLocator.SetLocatorProvider (() => serviceLocator);
+      serviceLocator.RegisterSingle(() => renderingFeatures);
+      serviceLocator.RegisterSingle(() => resourceTheme);
+      ServiceLocator.SetLocatorProvider(() => serviceLocator);
     }
   }
 }

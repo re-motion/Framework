@@ -27,10 +27,10 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
     private SimpleReferenceType[] _array;
     private SimpleReferenceType[] _readOnlyArray = new SimpleReferenceType[0];
     private SimpleReferenceType[] _readOnlyAttributeArray;
-    private List<SimpleReferenceType> _listOfT = new List<SimpleReferenceType> ();
-    private List<SimpleReferenceType> _readOnlyListOfT = new List<SimpleReferenceType> ();
-    private ArrayList _arrayList = new ArrayList ();
-    private ArrayList _readOnlyArrayList = new ArrayList ();
+    private List<SimpleReferenceType> _listOfT = new List<SimpleReferenceType>();
+    private List<SimpleReferenceType> _readOnlyListOfT = new List<SimpleReferenceType>();
+    private ArrayList _arrayList = new ArrayList();
+    private ArrayList _readOnlyArrayList = new ArrayList();
     private List<SimpleValueType> _listOfTForValueType = new List<SimpleValueType>();
 
     public ClassWithListProperties ()
@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       get { return _readOnlyArray; }
     }
 
-    [ObjectBinding (ReadOnly = true)]
+    [ObjectBinding(ReadOnly = true)]
     public SimpleReferenceType[] ReadOnlyAttributeArray
     {
       get { return _readOnlyAttributeArray; }
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       get { return _listOfTForValueType; }
     }
 
-    [ObjectBinding (ReadOnly = true)]
+    [ObjectBinding(ReadOnly = true)]
     public List<SimpleReferenceType> ReadOnlyListOfT
     {
       get { return _readOnlyListOfT; }
@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
 
     public ReadOnlyCollection<SimpleReferenceType> ReadOnlyCollectionOfTWithSetter
     {
-      get { return _listOfT.AsReadOnly (); }
+      get { return _listOfT.AsReadOnly(); }
       set { ; }
     }
 
@@ -92,14 +92,14 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       get { return _listOfTForValueType.AsReadOnly(); }
     }
 
-    [ItemType (typeof (SimpleReferenceType))]
+    [ItemType(typeof(SimpleReferenceType))]
     public ArrayList ArrayList
     {
       get { return _arrayList; }
     }
 
-    [ObjectBinding (ReadOnly = true)]
-    [ItemType (typeof (SimpleReferenceType))]
+    [ObjectBinding(ReadOnly = true)]
+    [ItemType(typeof(SimpleReferenceType))]
     public ArrayList ReadOnlyArrayList
     {
       get { return _readOnlyArrayList; }

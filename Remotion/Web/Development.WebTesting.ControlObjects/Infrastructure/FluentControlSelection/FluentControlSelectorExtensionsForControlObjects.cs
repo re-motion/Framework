@@ -43,10 +43,10 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IItemIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return fluentControlSelector.GetControl (new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject> (itemID));
+      return fluentControlSelector.GetControl(new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(itemID));
     }
 
     /// <summary>
@@ -63,10 +63,10 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IItemIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return fluentControlSelector.GetControlOrNull (new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject> (itemID));
+      return fluentControlSelector.GetControlOrNull(new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(itemID));
     }
 
     /// <summary>
@@ -82,10 +82,10 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IItemIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return fluentControlSelector.HasControl (new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject> (itemID));
+      return fluentControlSelector.HasControl(new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(itemID));
     }
   }
 }

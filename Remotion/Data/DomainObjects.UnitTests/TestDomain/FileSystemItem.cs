@@ -26,17 +26,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static FileSystemItem NewObject ()
     {
-      return NewObject<FileSystemItem> ();
+      return NewObject<FileSystemItem>();
     }
 
-    protected FileSystemItem()
+    protected FileSystemItem ()
     {
     }
 
-    [DBBidirectionalRelation ("FileSystemItems")]
+    [DBBidirectionalRelation("FileSystemItems")]
     public abstract Folder ParentFolder { get; set; }
 
-    [DBColumn ("ParentFolderRelation")]
+    [DBColumn("ParentFolderRelation")]
     public abstract Folder ParentFolder2 { get; set; }
   }
 }

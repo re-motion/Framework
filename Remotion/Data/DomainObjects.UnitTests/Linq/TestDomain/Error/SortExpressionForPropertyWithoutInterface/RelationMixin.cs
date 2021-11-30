@@ -19,8 +19,8 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Error.SortExpressionForPropertyWithoutInterface
 {
-  [Extends (typeof (MixinTarget))]
-  [NonIntroduced (typeof (INonIntroducedInterface))]
+  [Extends(typeof(MixinTarget))]
+  [NonIntroduced(typeof(INonIntroducedInterface))]
   public class RelationMixin : DomainObjectMixin<MixinTarget>, INonIntroducedInterface
   {
     public int SortProperty
@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Error.SortExpres
       get { return 0; }
     }
 
-    [DBBidirectionalRelation ("CollectionProperty")]
+    [DBBidirectionalRelation("CollectionProperty")]
     public RelationTarget ScalarProperty
     {
       get { return null; }

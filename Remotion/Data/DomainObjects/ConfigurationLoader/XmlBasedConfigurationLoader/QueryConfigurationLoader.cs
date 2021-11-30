@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
     {
       try
       {
-        Initialize (
+        Initialize(
             configurationFile,
             SchemaLoader.Queries,
             true,
@@ -50,18 +50,18 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
       }
       catch (ConfigurationException e)
       {
-        throw CreateQueryConfigurationException (
-            e, "Error while reading query configuration: {0} File: '{1}'.", e.Message, Path.GetFullPath (configurationFile));
+        throw CreateQueryConfigurationException(
+            e, "Error while reading query configuration: {0} File: '{1}'.", e.Message, Path.GetFullPath(configurationFile));
       }
       catch (XmlSchemaException e)
       {
-        throw CreateQueryConfigurationException (
-            e, "Error while reading query configuration: {0} File: '{1}'.", e.Message, Path.GetFullPath (configurationFile));
+        throw CreateQueryConfigurationException(
+            e, "Error while reading query configuration: {0} File: '{1}'.", e.Message, Path.GetFullPath(configurationFile));
       }
       catch (XmlException e)
       {
-        throw CreateQueryConfigurationException (
-            e, "Error while reading query configuration: {0} File: '{1}'.", e.Message, Path.GetFullPath (configurationFile));
+        throw CreateQueryConfigurationException(
+            e, "Error while reading query configuration: {0} File: '{1}'.", e.Message, Path.GetFullPath(configurationFile));
       }
       _storageProviderDefinitionFinder = storageProviderDefinitionFinder;
     }
@@ -71,60 +71,60 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
     public QueryDefinitionCollection GetQueryDefinitions ()
     {
       QueryDefinitionCollection queries = new QueryDefinitionCollection();
-      FillQueryDefinitions (queries);
+      FillQueryDefinitions(queries);
       return queries;
     }
 
     private void FillQueryDefinitions (QueryDefinitionCollection queries)
     {
-      XmlNodeList queryNodeList = Document.SelectNodes (FormatXPath ("{0}:queries/{0}:query"), NamespaceManager);
+      XmlNodeList queryNodeList = Document.SelectNodes(FormatXPath("{0}:queries/{0}:query"), NamespaceManager);
 
       foreach (XmlNode queryNode in queryNodeList)
-        queries.Add (GetQueryDefinition (queryNode));
+        queries.Add(GetQueryDefinition(queryNode));
     }
 
     private QueryDefinition GetQueryDefinition (XmlNode queryNode)
     {
-      string queryID = queryNode.SelectSingleNode ("@id", NamespaceManager).InnerText;
-      string queryTypeAsString = queryNode.SelectSingleNode ("@type", NamespaceManager).InnerText;
-      QueryType queryType = (QueryType) Enum.Parse (typeof (QueryType), queryTypeAsString, true);
+      string queryID = queryNode.SelectSingleNode("@id", NamespaceManager).InnerText;
+      string queryTypeAsString = queryNode.SelectSingleNode("@type", NamespaceManager).InnerText;
+      QueryType queryType = (QueryType)Enum.Parse(typeof(QueryType), queryTypeAsString, true);
 
-      XmlNode node = queryNode.SelectSingleNode (FormatXPath ("{0}:storageGroupType"), NamespaceManager);
+      XmlNode node = queryNode.SelectSingleNode(FormatXPath("{0}:storageGroupType"), NamespaceManager);
       StorageProviderDefinition storageProviderDefinition;
       if (node != null)
-        storageProviderDefinition = GetStorageProviderDefinition (node.InnerText);
+        storageProviderDefinition = GetStorageProviderDefinition(node.InnerText);
       else
-        storageProviderDefinition = GetStorageProviderDefinition (null);
+        storageProviderDefinition = GetStorageProviderDefinition(null);
 
-      string statement = queryNode.SelectSingleNode (FormatXPath ("{0}:statement"), NamespaceManager).InnerText;
+      string statement = queryNode.SelectSingleNode(FormatXPath("{0}:statement"), NamespaceManager).InnerText;
 
-      Type collectionType = LoaderUtility.GetOptionalType (queryNode, FormatXPath ("{0}:collectionType"), NamespaceManager);
+      Type collectionType = LoaderUtility.GetOptionalType(queryNode, FormatXPath("{0}:collectionType"), NamespaceManager);
 
       if (queryType == QueryType.Scalar && collectionType != null)
-        throw CreateQueryConfigurationException ("A scalar query '{0}' must not specify a collectionType.", queryID);
+        throw CreateQueryConfigurationException("A scalar query '{0}' must not specify a collectionType.", queryID);
 
-      return new QueryDefinition (queryID, storageProviderDefinition, statement, queryType, collectionType);
+      return new QueryDefinition(queryID, storageProviderDefinition, statement, queryType, collectionType);
     }
 
     private string FormatXPath (string xPath)
     {
-      return NamespaceManager.FormatXPath (xPath, PrefixNamespace.QueryConfigurationNamespace.Uri);
+      return NamespaceManager.FormatXPath(xPath, PrefixNamespace.QueryConfigurationNamespace.Uri);
     }
 
     private StorageProviderDefinition GetStorageProviderDefinition (string storageGroupName)
     {
-      Type storageGroupType = storageGroupName == null ? null : TypeUtility.GetType (storageGroupName, true);
-      return _storageProviderDefinitionFinder.GetStorageProviderDefinition (storageGroupType, "File: " + ConfigurationFile);
+      Type storageGroupType = storageGroupName == null ? null : TypeUtility.GetType(storageGroupName, true);
+      return _storageProviderDefinitionFinder.GetStorageProviderDefinition(storageGroupType, "File: " + ConfigurationFile);
     }
 
     private QueryConfigurationException CreateQueryConfigurationException (string message, params object[] args)
     {
-      return CreateQueryConfigurationException (null, message, args);
+      return CreateQueryConfigurationException(null, message, args);
     }
 
     private QueryConfigurationException CreateQueryConfigurationException (Exception inner, string message, params object[] args)
     {
-      return new QueryConfigurationException (string.Format (message, args), inner);
+      return new QueryConfigurationException(string.Format(message, args), inner);
     }
   }
 }

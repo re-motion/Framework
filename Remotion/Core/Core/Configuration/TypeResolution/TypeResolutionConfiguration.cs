@@ -31,7 +31,7 @@ namespace Remotion.Configuration.TypeResolution
   public sealed class TypeResolutionConfiguration : ConfigurationSection
   {
     private static readonly DoubleCheckedLockingContainer<TypeResolutionConfiguration> s_current =
-        new DoubleCheckedLockingContainer<TypeResolutionConfiguration> (GetTypeResolutionConfiguration);
+        new DoubleCheckedLockingContainer<TypeResolutionConfiguration>(GetTypeResolutionConfiguration);
 
     /// <summary>
     /// Gets the current <see cref="TypeResolutionConfiguration"/> instance. This is used by 
@@ -56,15 +56,15 @@ namespace Remotion.Configuration.TypeResolution
     private static TypeResolutionConfiguration GetTypeResolutionConfiguration ()
     {
       // return (TypeResolutionConfiguration) ConfigurationWrapper.Current.GetSection ("remotion.typeResolution", false) ?? new TypeResolutionConfiguration();
-      return new TypeResolutionConfiguration (new DefaultTypeResolutionService());
+      return new TypeResolutionConfiguration(new DefaultTypeResolutionService());
     }
 
     private readonly ITypeResolutionService _typeResolutionService;
 
     public TypeResolutionConfiguration (ITypeResolutionService typeResolutionService)
     {
-      ArgumentUtility.CheckNotNull ("typeResolutionService", typeResolutionService);
-      
+      ArgumentUtility.CheckNotNull("typeResolutionService", typeResolutionService);
+
       _typeResolutionService = typeResolutionService;
     }
 

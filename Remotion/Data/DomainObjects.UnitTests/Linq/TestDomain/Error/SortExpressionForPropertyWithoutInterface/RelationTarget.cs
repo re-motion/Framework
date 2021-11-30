@@ -19,10 +19,10 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Error.SortExpressionForPropertyWithoutInterface
 {
   [DBTable]
-  [ClassID ("Error_SortExpressionForPropertyWithoutInterface_RelationTarget")]
+  [ClassID("Error_SortExpressionForPropertyWithoutInterface_RelationTarget")]
   public class RelationTarget : DomainObject
   {
-    [DBBidirectionalRelation ("ScalarProperty", SortExpression =
+    [DBBidirectionalRelation("ScalarProperty", SortExpression =
         "Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Error.SortExpressionForPropertyWithoutInterface.RelationMixin.SortProperty ASC")]
     public virtual ObjectList<MixinTarget> CollectionProperty { get; set; }
   }

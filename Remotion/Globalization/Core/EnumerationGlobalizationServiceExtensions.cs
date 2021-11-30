@@ -47,15 +47,15 @@ namespace Remotion.Globalization
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
-      ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("enumerationGlobalizationService", enumerationGlobalizationService);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out var result))
+      if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName(value, out var result))
         return result;
 
       if (ResourceLogger.IsEnabled)
       {
-        ResourceLogger.LogResourceEntryNotFound ("Enum value: '{0}' (Type: '{1}')", value, value.GetType().GetFullNameSafe());
+        ResourceLogger.LogResourceEntryNotFound("Enum value: '{0}' (Type: '{1}')", value, value.GetType().GetFullNameSafe());
       }
 
       return value.ToString();
@@ -79,10 +79,10 @@ namespace Remotion.Globalization
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
-      ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("enumerationGlobalizationService", enumerationGlobalizationService);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out var result))
+      if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName(value, out var result))
         return result;
 
       return null;
@@ -102,10 +102,10 @@ namespace Remotion.Globalization
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
-      ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("enumerationGlobalizationService", enumerationGlobalizationService);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      return enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out var result);
+      return enumerationGlobalizationService.TryGetEnumerationValueDisplayName(value, out var result);
     }
   }
 }

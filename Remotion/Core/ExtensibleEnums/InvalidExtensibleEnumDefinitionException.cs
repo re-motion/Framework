@@ -31,12 +31,12 @@ namespace Remotion.ExtensibleEnums
     }
 
     public InvalidExtensibleEnumDefinitionException (string message, Exception innerException)
-        : base (message, innerException)
+        : base(message, innerException)
     {
     }
 
     protected InvalidExtensibleEnumDefinitionException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
   }

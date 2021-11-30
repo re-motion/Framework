@@ -30,43 +30,43 @@ namespace Remotion.Web.IntegrationTests.ListMenu
     public void ListMenu ()
     {
       var home = Start();
-      var listMenu = home.Commands().GetByLocalID ("MyListMenu");
+      var listMenu = home.Commands().GetByLocalID("MyListMenu");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (listMenu);
+      var result = analyzer.Analyze(listMenu);
       // TODO RM-7342 remove ignore once issue is resolved
-      var violations = result.Violations.IgnoreByRuleIDAndXPath (AccessibilityRuleID.LinkName, "/a[@id='body_MyListMenu_MenuItem_4_Command']");
+      var violations = result.Violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.LinkName, "/a[@id='body_MyListMenu_MenuItem_4_Command']");
 
-      Assert.That (violations, Is.Empty);
+      Assert.That(violations, Is.Empty);
     }
 
     [Test]
     public void ListMenu2 ()
     {
       var home = Start();
-      var listMenu = home.Commands().GetByLocalID ("MyListMenu2");
+      var listMenu = home.Commands().GetByLocalID("MyListMenu2");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (listMenu);
+      var result = analyzer.Analyze(listMenu);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Disabled ()
     {
       var home = Start();
-      var listMenu = home.Commands().GetByLocalID ("MyListMenu_Disabled");
+      var listMenu = home.Commands().GetByLocalID("MyListMenu_Disabled");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (listMenu);
+      var result = analyzer.Analyze(listMenu);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("ListMenuTest.wxe");
+      return Start<WxePageObject>("ListMenuTest.wxe");
     }
   }
 }

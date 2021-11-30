@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   public class AnchorControlObject : WebFormsControlObject, IClickableControlObject, IControlObjectWithText
   {
     public AnchorControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -45,23 +45,23 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject Click (IWebTestActionOptions? actionOptions = null)
     {
-      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      ExecuteAction (new ClickAction (this, Scope), actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
+      ExecuteAction(new ClickAction(this, Scope), actualActionOptions);
       return UnspecifiedPage();
     }
 
     /// <inheritdoc/>
     protected override ICompletionDetectionStrategy GetDefaultCompletionDetectionStrategy (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      if (IsPostBackLink (scope))
-        return ((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy;
+      if (IsPostBackLink(scope))
+        return ((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy;
 
-      if (IsSimpleJavaScriptLink (scope))
+      if (IsSimpleJavaScriptLink(scope))
         return Continue.Immediately;
 
-      return ((IWebFormsPageObject) Context.PageObject).NavigationCompletionDetectionStrategy;
+      return ((IWebFormsPageObject)Context.PageObject).NavigationCompletionDetectionStrategy;
     }
 
     private bool IsPostBackLink (ElementScope scope)
@@ -69,14 +69,14 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       const string doPostBackScript = "__doPostBack";
       const string doPostBackWithOptionsScript = "DoPostBackWithOptions";
 
-      return scope["href"].Contains (doPostBackScript) ||
-             scope["href"].Contains (doPostBackWithOptionsScript) ||
-             (TargetsCurrentPage (scope["href"]) && scope["onclick"] != null && scope["onclick"].Contains (doPostBackScript));
+      return scope["href"].Contains(doPostBackScript) ||
+             scope["href"].Contains(doPostBackWithOptionsScript) ||
+             (TargetsCurrentPage(scope["href"]) && scope["onclick"] != null && scope["onclick"].Contains(doPostBackScript));
     }
 
     private bool IsSimpleJavaScriptLink (ElementScope scope)
     {
-      return TargetsCurrentPage (scope["href"]) && scope["onclick"] != null && scope["onclick"].Contains ("javascript:");
+      return TargetsCurrentPage(scope["href"]) && scope["onclick"] != null && scope["onclick"].Contains("javascript:");
     }
 
     private bool TargetsCurrentPage (string href)
@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       // Note: unfortunately, Selenium sometimes reports wrong href contents, therefore we have to check for the window location as well.
       // See https://code.google.com/p/selenium/issues/detail?id=1824 for why GetAttribute("href") returns an absolute URL.
       var windowLocation = Context.RootScope.Location.ToString();
-      return href.Equals ("#") || href.Equals (windowLocation) || href.Equals (windowLocation + "#");
+      return href.Equals("#") || href.Equals(windowLocation) || href.Equals(windowLocation + "#");
     }
   }
 }

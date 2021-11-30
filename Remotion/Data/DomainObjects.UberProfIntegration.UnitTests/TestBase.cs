@@ -31,16 +31,15 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
     [SetUp]
     public virtual void SetUp ()
     {
-      _appenderProxy = (LinqToSqlAppenderProxy) PrivateInvoke.CreateInstanceNonPublicCtor (
-          typeof (LinqToSqlAppenderProxy),
+      _appenderProxy = (LinqToSqlAppenderProxy)PrivateInvoke.CreateInstanceNonPublicCtor(
+          typeof(LinqToSqlAppenderProxy),
           "Test",
-          typeof (FakeLinqToSqlProfiler),
-          typeof (MockableLinqToSqlAppender));
-      _mockableAppender = (MockableLinqToSqlAppender) _appenderProxy.LinqToSqlAppender;
+          typeof(FakeLinqToSqlProfiler),
+          typeof(MockableLinqToSqlAppender));
+      _mockableAppender = (MockableLinqToSqlAppender)_appenderProxy.LinqToSqlAppender;
 
-      _container = (DoubleCheckedLockingContainer<LinqToSqlAppenderProxy>)
-                   PrivateInvoke.GetNonPublicStaticField (typeof (LinqToSqlAppenderProxy), "s_instance");
-      Assertion.IsNotNull (_container);
+      _container = (DoubleCheckedLockingContainer<LinqToSqlAppenderProxy>)PrivateInvoke.GetNonPublicStaticField(typeof(LinqToSqlAppenderProxy), "s_instance");
+      Assertion.IsNotNull(_container);
 
       if (_container.HasValue)
         _originalAppender = _container.Value;
@@ -51,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
     }
 
     [TearDown]
-    public virtual void TearDown()
+    public virtual void TearDown ()
     {
       _container.Value = _originalAppender;
     }

@@ -22,7 +22,7 @@ namespace Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter
       where T: class
   {
     private T _explicitInterfaceScalar;
-    private readonly T _readOnlyScalar = default (T);
+    private readonly T _readOnlyScalar = default(T);
 
     public ClassWithReferenceType ()
     {
@@ -49,7 +49,7 @@ namespace Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter
     public virtual T ImplicitInterfaceScalar { get; set; }
 
     public virtual T ImplicitInterfaceReadOnlyScalar
-    { 
+    {
       get { return ImplicitInterfaceScalar; }
     }
 
@@ -89,7 +89,7 @@ namespace Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter
 
     public T ImplicitInterfaceMethod ()
     {
-      return null; 
+      return null;
     }
 
     public void TestMethod ()
@@ -117,6 +117,6 @@ namespace Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter
     public T[] Array { get; set; }
 
     private T PrivateProperty { get; set; }
-    
+
   }
 }

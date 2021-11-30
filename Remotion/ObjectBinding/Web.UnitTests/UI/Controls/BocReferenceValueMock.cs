@@ -23,17 +23,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 /// <summary> Exposes non-public members of the <see cref="BocReferenceValue"/> type. </summary>
-[ToolboxItem (false)]
+[ToolboxItem(false)]
 public class BocReferenceValueMock: BocReferenceValue
 {
   public BocReferenceValueMock (IWebServiceFactory webServiceFactory)
-      : base (webServiceFactory)
+      : base(webServiceFactory)
   {
   }
 
   public new void EvaluateWaiConformity ()
   {
-    base.EvaluateWaiConformity ();
+    base.EvaluateWaiConformity();
   }
 
   public new string InternalValue

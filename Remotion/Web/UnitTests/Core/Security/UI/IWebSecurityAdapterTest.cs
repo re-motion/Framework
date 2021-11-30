@@ -39,8 +39,8 @@ namespace Remotion.Web.UnitTests.Core.Security.UI
     {
       var factory = _serviceLocator.GetAllInstances<IWebSecurityAdapter>().SingleOrDefault();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (WebSecurityAdapter)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(WebSecurityAdapter)));
     }
 
     [Test]
@@ -49,7 +49,7 @@ namespace Remotion.Web.UnitTests.Core.Security.UI
       var factory1 = _serviceLocator.GetAllInstances<IWebSecurityAdapter>().SingleOrDefault();
       var factory2 = _serviceLocator.GetAllInstances<IWebSecurityAdapter>().SingleOrDefault();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

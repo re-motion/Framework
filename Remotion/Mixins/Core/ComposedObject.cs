@@ -67,7 +67,7 @@ namespace Remotion.Mixins
     protected static TComposedInterface NewObject<TComposite> (ParamList ctorArgs)
         where TComposite: ComposedObject<TComposedInterface>
     {
-      return ObjectFactory.Create<TComposite> (ctorArgs).This;
+      return ObjectFactory.Create<TComposite>(ctorArgs).This;
     }
 
     /// <summary>
@@ -81,12 +81,12 @@ namespace Remotion.Mixins
     {
       if (!(this is TComposedInterface))
       {
-        var message = string.Format (
+        var message = string.Format(
             "Type '{0}' is not associated with the composed interface '{1}'. You should instantiate the class via the ObjectFactory class or the "
             + "NewObject method. If you manually created a mixin configuration, don't forget to add the composed interface.",
             GetType(),
-            typeof (TComposedInterface).Name);
-        throw new InvalidOperationException (message);
+            typeof(TComposedInterface).Name);
+        throw new InvalidOperationException(message);
       }
     }
 
@@ -97,7 +97,7 @@ namespace Remotion.Mixins
     /// <value>This instance, accessed via the <typeparamref name="TComposedInterface"/>.</value>
     public TComposedInterface This
     {
-      get { return (TComposedInterface) (object) this; }
+      get { return (TComposedInterface)(object)this; }
     }
   }
 }

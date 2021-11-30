@@ -51,13 +51,13 @@ namespace Remotion.Tools.Console.ConsoleApplication
   /// Needs to derive from <see cref="ConsoleApplicationSettings"/>.
   /// </typeparam>
 
-  public class ConsoleApplication<TApplication, TApplicationSettings> 
+  public class ConsoleApplication<TApplication, TApplicationSettings>
       where TApplication: IApplicationRunner<TApplicationSettings>, new()
       where TApplicationSettings : ConsoleApplicationSettings, new()
   {
     private readonly TextWriter _errorWriter;
     private readonly TextWriter _logWriter;
-    private readonly CommandLineClassParser<TApplicationSettings> _parser = new CommandLineClassParser<TApplicationSettings> ();
+    private readonly CommandLineClassParser<TApplicationSettings> _parser = new CommandLineClassParser<TApplicationSettings>();
     private readonly int _bufferWidth;
     private readonly IWaiter _waitAtEnd;
     private string _synopsis = "(Application synopsis not yet retrieved)";
@@ -70,17 +70,17 @@ namespace Remotion.Tools.Console.ConsoleApplication
       _waitAtEnd = waitAtEnd;
     }
 
-    public ConsoleApplication () : this (System.Console.Error, System.Console.Out, 80, new ConsoleKeypressWaiter()) {}
+    public ConsoleApplication () : this(System.Console.Error, System.Console.Out, 80, new ConsoleKeypressWaiter()) {}
 
     public TApplicationSettings Settings { get; set; } = null!;
 
 
     public int Main (string[] args)
     {
-      ParseSynopsis (args);
-      int result = ParseCommandLineArguments (args);
+      ParseSynopsis(args);
+      int result = ParseCommandLineArguments(args);
       if (result == 0) {
-        result = ConsoleApplicationMain ();
+        result = ConsoleApplicationMain();
       }
       WaitForKeypress();
       return result;
@@ -95,7 +95,7 @@ namespace Remotion.Tools.Console.ConsoleApplication
       }
       else
       {
-        result = RunApplication (Settings);
+        result = RunApplication(Settings);
       }
       return result;
     }
@@ -106,7 +106,7 @@ namespace Remotion.Tools.Console.ConsoleApplication
       get { return _synopsis; }
     }
 
- 
+
     public int BufferWidth
     {
       get { return _bufferWidth; }
@@ -116,20 +116,20 @@ namespace Remotion.Tools.Console.ConsoleApplication
     private void OutputApplicationUsage ()
     {
       _logWriter.WriteLine();
-      _logWriter.WriteLine ();
-      _logWriter.WriteLine ("Application Usage: ");
-      _logWriter.WriteLine ();
-      _logWriter.WriteLine (Synopsis);
-      _logWriter.WriteLine ();
+      _logWriter.WriteLine();
+      _logWriter.WriteLine("Application Usage: ");
+      _logWriter.WriteLine();
+      _logWriter.WriteLine(Synopsis);
+      _logWriter.WriteLine();
     }
 
     private void WaitForKeypress ()
     {
       if (Settings.WaitForKeypress)
       {
-        _logWriter.WriteLine ();
-        _logWriter.WriteLine ();
-        _logWriter.WriteLine ("Press any-key...");
+        _logWriter.WriteLine();
+        _logWriter.WriteLine();
+        _logWriter.WriteLine("Press any-key...");
         _waitAtEnd.Wait();
       }
     }
@@ -139,20 +139,20 @@ namespace Remotion.Tools.Console.ConsoleApplication
       try
       {
         var application = CreateApplication();
-        application.Run (settings, _errorWriter, _logWriter);
+        application.Run(settings, _errorWriter, _logWriter);
       }
       catch (Exception? e) // TODO RM-7762: e should not be reassigned.
       {
         //_result = 1;
-        using (ConsoleUtility.EnterColorScope (ConsoleColor.White, ConsoleColor.DarkRed))
+        using (ConsoleUtility.EnterColorScope(ConsoleColor.White, ConsoleColor.DarkRed))
         {
-          _errorWriter.WriteLine ("Execution aborted. Exception stack:");
+          _errorWriter.WriteLine("Execution aborted. Exception stack:");
           for (; e != null; e = e.InnerException)
           {
-            _errorWriter.Write (e.GetType ().GetFullNameSafe());
-            _errorWriter.Write (": ");
-            _errorWriter.WriteLine (e.Message);
-            _errorWriter.WriteLine (e.StackTrace);
+            _errorWriter.Write(e.GetType().GetFullNameSafe());
+            _errorWriter.Write(": ");
+            _errorWriter.WriteLine(e.Message);
+            _errorWriter.WriteLine(e.StackTrace);
             _errorWriter.WriteLine();
           }
         }
@@ -172,14 +172,14 @@ namespace Remotion.Tools.Console.ConsoleApplication
     {
       try
       {
-        Settings = _parser.Parse (args);
+        Settings = _parser.Parse(args);
       }
       catch (CommandLineArgumentException e)
       {
-        _errorWriter.WriteLine ();
-        _errorWriter.Write ("An error occured: ");
-        _errorWriter.WriteLine (e.Message);
-        OutputApplicationUsage ();
+        _errorWriter.WriteLine();
+        _errorWriter.Write("An error occured: ");
+        _errorWriter.WriteLine(e.Message);
+        OutputApplicationUsage();
         Settings = new TApplicationSettings(); // Use default settings
         return 1;
       }
@@ -190,12 +190,12 @@ namespace Remotion.Tools.Console.ConsoleApplication
     {
       try
       {
-        string applicationName = Path.GetFileName (Process.GetCurrentProcess().MainModule!.FileName)!;
-        _synopsis = _parser.GetAsciiSynopsis (applicationName, _bufferWidth);
+        string applicationName = Path.GetFileName(Process.GetCurrentProcess().MainModule!.FileName)!;
+        _synopsis = _parser.GetAsciiSynopsis(applicationName, _bufferWidth);
       }
       catch (Exception e)
       {
-        _synopsis = "(An error occured while retrieving the application usage synopsis: " + e.Message + ")";  
+        _synopsis = "(An error occured while retrieving the application usage synopsis: " + e.Message + ")";
       }
     }
   }

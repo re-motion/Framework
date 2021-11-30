@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       : WebFormsControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsDisabledState, IControlObjectWithText
   {
     public TextBoxControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -52,15 +52,15 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
+      ArgumentUtility.CheckNotNull("text", text);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      return FillWith (text, FinishInput.WithTab, actionOptions);
+      return FillWith(text, FinishInput.WithTab, actionOptions);
     }
 
     /// <inheritdoc/>
@@ -69,17 +69,17 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// </remarks>
     public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
-      ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
+      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      var actualActionOptions = MergeWithDefaultActionOptions (actionOptions, finishInputWith);
-      ExecuteAction (new FillWithAction (this, Scope, text, finishInputWith), actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(actionOptions, finishInputWith);
+      ExecuteAction(new FillWithAction(this, Scope, text, finishInputWith), actualActionOptions);
       return UnspecifiedPage();
     }
 
@@ -105,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
         userDefinedActionOptions.CompletionDetectionStrategy = Continue.Immediately;
       }
 
-      return MergeWithDefaultActionOptions (Scope, userDefinedActionOptions);
+      return MergeWithDefaultActionOptions(Scope, userDefinedActionOptions);
     }
   }
 }

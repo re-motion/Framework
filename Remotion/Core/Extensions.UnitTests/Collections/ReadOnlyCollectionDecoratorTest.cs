@@ -29,47 +29,47 @@ namespace Remotion.UnitTests.Collections
     [SetUp]
     public void SetUp ()
     {
-      _collection = new ReadOnlyCollectionDecorator<string> (new List<string>(new[]{"test1", "test2"}));
+      _collection = new ReadOnlyCollectionDecorator<string>(new List<string>(new[]{"test1", "test2"}));
     }
 
     [Test]
     public void Count ()
     {
-      Assert.That (_collection.Count, Is.EqualTo (2));
+      Assert.That(_collection.Count, Is.EqualTo(2));
     }
 
     [Test]
     public void IsReadOnly ()
     {
-      Assert.That (_collection.IsReadOnly, Is.True);
+      Assert.That(_collection.IsReadOnly, Is.True);
     }
 
     [Test]
     public void Contains_True ()
     {
-      Assert.That (_collection.Contains ("test1"), Is.True);
+      Assert.That(_collection.Contains("test1"), Is.True);
     }
 
     [Test]
     public void Contains_False ()
     {
-      Assert.That (_collection.Contains ("dummy"), Is.False);
+      Assert.That(_collection.Contains("dummy"), Is.False);
     }
 
     [Test]
     public void Contains_NullIsSupported ()
     {
-      Assert.That (_collection.Contains (null), Is.False);
+      Assert.That(_collection.Contains(null), Is.False);
     }
 
     [Test]
     public void CopyTo ()
     {
       var array = new string[2];
-      _collection.CopyTo (array, 0);
+      _collection.CopyTo(array, 0);
 
-      Assert.That (array[0], Is.EqualTo ("test1"));
-      Assert.That (array[1], Is.EqualTo ("test2"));
+      Assert.That(array[0], Is.EqualTo("test1"));
+      Assert.That(array[1], Is.EqualTo("test2"));
     }
 
     [Test]
@@ -77,46 +77,46 @@ namespace Remotion.UnitTests.Collections
     {
       var enumerator = _collection.GetEnumerator();
       enumerator.MoveNext();
-      Assert.That (enumerator.Current, Is.EqualTo ("test1"));
+      Assert.That(enumerator.Current, Is.EqualTo("test1"));
       enumerator.MoveNext();
-      Assert.That (enumerator.Current, Is.EqualTo ("test2"));
-      Assert.That (enumerator.MoveNext(), Is.False);
+      Assert.That(enumerator.Current, Is.EqualTo("test2"));
+      Assert.That(enumerator.MoveNext(), Is.False);
     }
 
     [Test]
     public void Add ()
     {
-      Assert.That (
-          () => ((ICollection<string>) _collection).Add ("test"),
+      Assert.That(
+          () => ((ICollection<string>)_collection).Add("test"),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "'Add' ist not supported for read-only collections."));
     }
 
     [Test]
     public void Remove ()
     {
-      Assert.That (
-          () => ((ICollection<string>) _collection).Remove("test"),
+      Assert.That(
+          () => ((ICollection<string>)_collection).Remove("test"),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "'Remove' ist not supported for read-only collections."));
     }
 
     [Test]
     public void Clear ()
     {
-      Assert.That (
-          () => ((ICollection<string>) _collection).Clear(),
+      Assert.That(
+          () => ((ICollection<string>)_collection).Clear(),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "'Clear' ist not supported for read-only collections."));
     }
 
     [Test]
     public void Serialization ()
     {
-      Assert.That (_collection, Is.BinarySerializable);
+      Assert.That(_collection, Is.BinarySerializable);
     }
 
   }

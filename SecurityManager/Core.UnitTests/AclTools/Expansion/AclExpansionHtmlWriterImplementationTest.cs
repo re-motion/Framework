@@ -29,26 +29,26 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     [Test]
     public void WriteTableDataForBooleanConditionTest ()
     {
-      AssertAclExpansionHtmlWriterImplementationResult (x => x.WriteTableDataForBooleanCondition (true), "<td>X</td>");
-      AssertAclExpansionHtmlWriterImplementationResult (x => x.WriteTableDataForBooleanCondition (false), "<td></td>");
+      AssertAclExpansionHtmlWriterImplementationResult(x => x.WriteTableDataForBooleanCondition(true), "<td>X</td>");
+      AssertAclExpansionHtmlWriterImplementationResult(x => x.WriteTableDataForBooleanCondition(false), "<td></td>");
     }
 
 
     public void AssertAclExpansionHtmlWriterImplementationResult (Action<AclExpansionHtmlWriterImplementation> testFunc, string resultingXmlExpected)
     {
-      var stringWriter = new StringWriter ();
-      var implementation = new AclExpansionHtmlWriterImplementation (stringWriter, false, new AclExpansionHtmlWriterSettings ());
-      testFunc (implementation);
-      implementation.HtmlTagWriter.Close ();
-      var result = stringWriter.ToString ();
-      Assert.That (result, Is.EqualTo (resultingXmlExpected));
+      var stringWriter = new StringWriter();
+      var implementation = new AclExpansionHtmlWriterImplementation(stringWriter, false, new AclExpansionHtmlWriterSettings());
+      testFunc(implementation);
+      implementation.HtmlTagWriter.Close();
+      var result = stringWriter.ToString();
+      Assert.That(result, Is.EqualTo(resultingXmlExpected));
     }
 
     [Test]
     public void WriteTableDataForAbstractRoleConditionNoAbstractRoleTest ()
     {
       AclExpansionAccessConditions accessConditions = new AclExpansionAccessConditions { AbstractRole = null };
-      AssertAclExpansionHtmlWriterImplementationResult (x => x.WriteTableDataForAbstractRoleCondition (accessConditions), "<td></td>");
+      AssertAclExpansionHtmlWriterImplementationResult(x => x.WriteTableDataForAbstractRoleCondition(accessConditions), "<td></td>");
     }
 
     [Test]
@@ -56,7 +56,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     {
       var abstractRole = TestHelper.CreateTestAbstractRole();
       AclExpansionAccessConditions accessConditions = new AclExpansionAccessConditions { AbstractRole = abstractRole };
-      AssertAclExpansionHtmlWriterImplementationResult (x => x.WriteTableDataForAbstractRoleCondition (accessConditions), "<td>Test</td>");
+      AssertAclExpansionHtmlWriterImplementationResult(x => x.WriteTableDataForAbstractRoleCondition(accessConditions), "<td>Test</td>");
     }
   }
 }

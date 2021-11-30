@@ -43,9 +43,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <summary> This control can be used to display or select references as the value of a property using a drop-down list. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
   // TODO: see "Doc\Bugs and ToDos.txt"
-  [ValidationProperty ("ValidationValue")]
-  [DefaultEvent ("SelectionChanged")]
-  [ToolboxItemFilter ("System.Web.UI")]
+  [ValidationProperty("ValidationValue")]
+  [DefaultEvent("SelectionChanged")]
+  [ToolboxItemFilter("System.Web.UI")]
   public class BocReferenceValue
       :
           BocReferenceValueBase<IBocReferenceValueWebService>,
@@ -65,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocReferenceValue")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocReferenceValue")]
     public enum ResourceIdentifier
     {
       /// <summary> The text rendered for the null item in the list. </summary>
@@ -105,12 +105,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // construction and disposing
 
     public BocReferenceValue ()
-        : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
+        : this(SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
     {
     }
 
     protected BocReferenceValue ([NotNull] IWebServiceFactory webServiceFactory)
-        : base (webServiceFactory)
+        : base(webServiceFactory)
     {
       _listItems = new ListItemCollection();
       _dropDownListStyle = new DropDownListStyle();
@@ -123,9 +123,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The text displayed for <see langword="null"/>. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("The description displayed for the undefined item.")]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
+    [Description("The description displayed for the undefined item.")]
+    [Category("Appearance")]
+    [DefaultValue("")]
     public string NullItemText
     {
       get { return _nullItemText; }
@@ -137,27 +137,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if the value is not set but the control is required.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
+    [Description("Validation message displayed if the value is not set but the control is required.")]
+    [Category("Validator")]
+    [DefaultValue("")]
     public string? NullItemErrorMessage
     {
       get { return _nullItemErrorMessage; }
       set
       {
         _nullItemErrorMessage = value;
-        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_nullItemErrorMessage);
+        UpdateValidtaorErrorMessages<RequiredFieldValidator>(_nullItemErrorMessage);
       }
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      base.RegisterHtmlHeadContents (htmlHeadAppender);
+      base.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
     protected virtual IBocReferenceValueRenderer CreateRenderer ()
@@ -167,11 +167,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual BocReferenceValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      Assertion.IsNotNull (Context, "Context must not be null.");
+      Assertion.IsNotNull(Context, "Context must not be null.");
 
-      return new BocReferenceValueRenderingContext (Context, writer, this, CreateBusinessObjectWebServiceContext());
+      return new BocReferenceValueRenderingContext(Context, writer, this, CreateBusinessObjectWebServiceContext());
     }
 
     /// <remarks>
@@ -181,13 +181,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void CreateChildControls ()
     {
       base.CreateChildControls();
-      ((IStateManager) _listItems).TrackViewState();
+      ((IStateManager)_listItems).TrackViewState();
     }
 
     /// <remarks> Populates the list. </remarks>
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (!ControlExistedInPreviousRequest)
         EnsureBusinessObjectListPopulated();
@@ -215,9 +215,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _displayName = null;
       else
       {
-        ListItem selectedItem = _listItems.FindByValue (InternalValue);
+        ListItem selectedItem = _listItems.FindByValue(InternalValue);
         if (selectedItem == null)
-          throw new InvalidOperationException (string.Format ("The key '{0}' does not correspond to a known element.", InternalValue));
+          throw new InvalidOperationException(string.Format("The key '{0}' does not correspond to a known element.", InternalValue));
         _displayName = selectedItem.Text;
       }
 
@@ -228,22 +228,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      base.LoadResources (resourceManager, globalizationService);
+      base.LoadResources(resourceManager, globalizationService);
 
-      var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemText);
-      if (! string.IsNullOrEmpty (key))
-        NullItemText = resourceManager.GetString (key);
+      var key = ResourceManagerUtility.GetGlobalResourceKey(NullItemText);
+      if (! string.IsNullOrEmpty(key))
+        NullItemText = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage);
-      if (!string.IsNullOrEmpty (key))
-        NullItemErrorMessage = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(NullItemErrorMessage);
+      if (!string.IsNullOrEmpty(key))
+        NullItemErrorMessage = resourceManager.GetString(key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (Select);
-      if (!string.IsNullOrEmpty (key))
-        Select = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(Select);
+      if (!string.IsNullOrEmpty(key))
+        Select = resourceManager.GetString(key);
     }
 
     /// <summary> Checks whether the control conforms to the required WAI level. </summary>
@@ -253,10 +253,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
       {
         if (ShowOptionsMenu)
-          WcagHelper.Instance.HandleError (1, this, "ShowOptionsMenu");
+          WcagHelper.Instance.HandleError(1, this, "ShowOptionsMenu");
 
         if (DropDownListStyle.AutoPostBack == true)
-          WcagHelper.Instance.HandleWarning (1, this, "DropDownListStyle.AutoPostBack");
+          WcagHelper.Instance.HandleWarning(1, this, "DropDownListStyle.AutoPostBack");
       }
     }
 
@@ -276,7 +276,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = ServiceLocator.GetInstance<IBocReferenceValueValidatorFactory>();
-      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+      _validators = validatorFactory.CreateValidators(this, isReadOnly).ToList().AsReadOnly();
 
       OverrideValidatorErrorMessages();
 
@@ -285,10 +285,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OverrideValidatorErrorMessages ()
     {
-      if (string.IsNullOrEmpty (NullItemErrorMessage))
+      if (string.IsNullOrEmpty(NullItemErrorMessage))
         return;
-      
-      UpdateValidtaorErrorMessages<RequiredFieldValidator> (NullItemErrorMessage);
+
+      UpdateValidtaorErrorMessages<RequiredFieldValidator>(NullItemErrorMessage);
     }
 
     private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
@@ -300,28 +300,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
     {
-      return new BocReferenceValueConstraintVisitor (this);
+      return new BocReferenceValueConstraintVisitor(this);
     }
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       EvaluateWaiConformity();
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext (writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[]) savedState!;
+      object?[] values = (object?[])savedState!;
 
-      base.LoadControlState (values[0]);
+      base.LoadControlState(values[0]);
       if (values[1] != null)
-        InternalValue = (string?) values[1];
-      _displayName = (string?) values[2];
-      ((IStateManager) _listItems).LoadViewState (values[3]);
+        InternalValue = (string?)values[1];
+      _displayName = (string?)values[2];
+      ((IStateManager)_listItems).LoadViewState(values[3]);
     }
 
     protected override object SaveControlState ()
@@ -331,7 +331,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       values[0] = base.SaveControlState();
       values[1] = InternalValue;
       values[2] = _displayName;
-      values[3] = ((IStateManager) _listItems).SaveViewState();
+      values[3] = ((IStateManager)_listItems).SaveViewState();
 
       return values;
     }
@@ -353,16 +353,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       IBusinessObjectWithIdentity? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (IBusinessObjectWithIdentity?) DataSource.BusinessObject.GetProperty (Property);
+        value = (IBusinessObjectWithIdentity?)DataSource.BusinessObject.GetProperty(Property);
 
-      LoadValueInternal (value, false);
+      LoadValueInternal(value, false);
     }
 
     /// <summary> Populates the <see cref="BocReferenceValueBase.Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (IBusinessObjectWithIdentity value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
@@ -371,7 +371,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (interim)
         return;
 
-      SetValue (value);
+      SetValue(value);
       IsDirty = false;
     }
 
@@ -400,17 +400,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     protected override IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     protected override sealed string GetNullItemErrorMessage ()
     {
-      return GetResourceManager().GetString (ResourceIdentifier.NullItemErrorMessage);
+      return GetResourceManager().GetString(ResourceIdentifier.NullItemErrorMessage);
     }
 
     protected override sealed string GetOptionsMenuTitle ()
     {
-      return GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
+      return GetResourceManager().GetString(ResourceIdentifier.OptionsTitle);
     }
 
     protected override sealed string GetSelectionCountScript ()
@@ -429,8 +429,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void SetBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
     {
-      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
-      RefreshBusinessObjectList (businessObjects);
+      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
+      RefreshBusinessObjectList(businessObjects);
     }
 
     /// <summary> Sets the <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode. </summary>
@@ -444,16 +444,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void SetBusinessObjectList (IList businessObjects)
     {
-      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
-      ArgumentUtility.CheckItemsNotNullAndType ("businessObjects", businessObjects, typeof (IBusinessObjectWithIdentity));
-      RefreshBusinessObjectList (businessObjects);
+      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
+      ArgumentUtility.CheckItemsNotNullAndType("businessObjects", businessObjects, typeof(IBusinessObjectWithIdentity));
+      RefreshBusinessObjectList(businessObjects);
     }
 
     /// <summary> Clears the list of <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode. </summary>
     /// <remarks> If the value is not required, the null item will displayed anyway. </remarks>
     public void ClearBusinessObjectList ()
     {
-      RefreshBusinessObjectList (null);
+      RefreshBusinessObjectList(null);
     }
 
     /// <summary> Calls <see cref="PopulateBusinessObjectList"/> if the list has not yet been populated. </summary>
@@ -491,9 +491,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       //  Get all matching business objects
       if (DataSource != null)
-        businessObjects = Property.SearchAvailableObjects (DataSource.BusinessObject, new DefaultSearchArguments (_select));
+        businessObjects = Property.SearchAvailableObjects(DataSource.BusinessObject, new DefaultSearchArguments(_select));
 
-      RefreshBusinessObjectList (ArrayUtility.Convert<IBusinessObject, IBusinessObjectWithIdentity> (businessObjects));
+      RefreshBusinessObjectList(ArrayUtility.Convert<IBusinessObject, IBusinessObjectWithIdentity>(businessObjects));
     }
 
     /// <summary> Populates the <see cref="DropDownList"/> with the items passed in <paramref name="businessObjects"/>. </summary>
@@ -511,8 +511,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         foreach (IBusinessObjectWithIdentity businessObject in businessObjects)
         {
-          ListItem item = new ListItem (GetDisplayName (businessObject), businessObject.UniqueIdentifier);
-          _listItems.Add (item);
+          ListItem item = new ListItem(GetDisplayName(businessObject), businessObject.UniqueIdentifier);
+          _listItems.Add(item);
         }
       }
     }
@@ -536,7 +536,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         var businessObjectClass = GetBusinessObjectClass();
         if (businessObjectClass != null)
-          _value = businessObjectClass.GetObject (InternalValue);
+          _value = businessObjectClass.GetObject(InternalValue);
       }
 
       return _value;
@@ -549,7 +549,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (value != null)
       {
         InternalValue = value.UniqueIdentifier;
-        _displayName = GetDisplayName (value);
+        _displayName = GetDisplayName(value);
       }
       else
       {
@@ -582,8 +582,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Returns the <see cref="Control.ClientID"/> of the <see cref="DropDownList"/> if the control is in edit mode, 
     ///   otherwise <see langword="null"/>. 
     /// </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public string? FocusID
     {
       get { return IsReadOnly ? null : GetValueName(); }
@@ -591,11 +591,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the style that you want to apply to the <see cref="DropDownList"/> (edit mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="BocReferenceValueBase.CommonStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the DropDownList (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the DropDownList (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public DropDownListStyle DropDownListStyle
     {
       get { return _dropDownListStyle; }
@@ -604,9 +604,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> The search expression used to populate the selection list in edit mode. </summary>
     /// <value> A <see cref="String"/> with a valid search expression. The default value is an empty <see cref="String"/>. </value>
     /// <remarks> A valid <see cref="BocReferenceValueBase.Property"/> is required in order to populate the list using the search statement. </remarks>
-    [Category ("Data")]
-    [Description ("Set the search expression for populating the selection list.")]
-    [DefaultValue ("")]
+    [Category("Data")]
+    [Description("Set the search expression for populating the selection list.")]
+    [DefaultValue("")]
     public string? Select
     {
       get { return _select; }
@@ -627,9 +627,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     ///   Use <see cref="IsSelectStatementEnabled"/> to evaluate this property.
     /// </remarks>
-    [Description ("The flag that determines whether to evaluate the Select statement. Undefined is interpreted as true.")]
-    [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
+    [Description("The flag that determines whether to evaluate the Select statement. Undefined is interpreted as true.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
     public bool? EnableSelectStatement
     {
       get { return _enableSelectStatement; }
@@ -654,31 +654,31 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       // PopulateDropDownList should be moved to the renderer, the BocReferenceValue should only provide a list of items, see also BocEnumValue.
 
-      ArgumentUtility.CheckNotNull ("dropDownList", dropDownList);
+      ArgumentUtility.CheckNotNull("dropDownList", dropDownList);
       dropDownList.Items.Clear();
 
       bool isNullItem = (InternalValue == null);
 
       if (isNullItem || !IsRequired)
-        dropDownList.Items.Add (CreateNullItem());
+        dropDownList.Items.Add(CreateNullItem());
 
       foreach (ListItem listItem in _listItems)
-        dropDownList.Items.Add (new ListItem (listItem.Text, listItem.Value));
+        dropDownList.Items.Add(new ListItem(listItem.Text, listItem.Value));
 
       //  Check if null item is to be selected
       if (isNullItem)
         dropDownList.SelectedValue = c_nullIdentifier;
       else
       {
-        if (dropDownList.Items.FindByValue (InternalValue!) != null)
+        if (dropDownList.Items.FindByValue(InternalValue!) != null)
           dropDownList.SelectedValue = InternalValue!;
         else if (Value != null)
         {
           //  Item not yet in the list but is a valid item.
           var businessObject = Value;
 
-          var item = new ListItem (GetDisplayName (businessObject), businessObject.UniqueIdentifier);
-          dropDownList.Items.Add (item);
+          var item = new ListItem(GetDisplayName(businessObject), businessObject.UniqueIdentifier);
+          dropDownList.Items.Add(item);
 
           dropDownList.SelectedValue = InternalValue!;
         }
@@ -689,7 +689,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns> A <see cref="ListItem"/>. </returns>
     private ListItem CreateNullItem ()
     {
-      var nullItem = new ListItem (GetNullItemText(), c_nullIdentifier);
+      var nullItem = new ListItem(GetNullItemText(), c_nullIdentifier);
       if (!DropDownListStyle.NullValueTextVisible)
       {
         nullItem.Attributes[HtmlTextWriterAttribute2.AriaLabel] = nullItem.Text;
@@ -705,8 +705,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string GetNullItemText ()
     {
       string nullDisplayName = _nullItemText;
-      if (string.IsNullOrEmpty (nullDisplayName))
-        nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.NullItemText);
+      if (string.IsNullOrEmpty(nullDisplayName))
+        nullDisplayName = GetResourceManager().GetString(ResourceIdentifier.NullItemText);
       return nullDisplayName;
     }
 

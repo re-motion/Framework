@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <exception cref="WebTestException">If the control cannot be found.</exception>
     [NotNull]
     TControlObject SelectPerHtmlID ([NotNull] ControlSelectionContext context, [NotNull] string htmlID);
-    
+
     /// <summary>
     /// Selects the control, if it exists, within the given <paramref name="context"/> using the given <paramref name="htmlID"/>.
     /// </summary>

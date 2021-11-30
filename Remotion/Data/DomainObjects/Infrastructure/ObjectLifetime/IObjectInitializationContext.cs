@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     ObjectID ObjectID { get; }
     ClientTransaction RootTransaction { get; }
     DomainObject RegisteredObject { get; }
-    
+
     void RegisterObject (DomainObject domainObject);
   }
 }

@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   public class ClassWithReferenceType<T> : IInterfaceWithReferenceType<T>
   {
     private T _explicitInterfaceScalar;
-    private readonly T _readOnlyScalar = default (T);
+    private readonly T _readOnlyScalar = default(T);
     private Exception _exception;
 
     protected string NonPublicProperty { get; set; }
@@ -73,12 +73,12 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
 
     public T ReadOnlyNonPublicSetterScalar { get; protected set; }
 
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public T NotVisibleAttributeScalar { get; set; }
 
     public T NotVisibleNonPublicGetterScalar { protected get; set; }
 
-    [ObjectBinding (ReadOnly = true)]
+    [ObjectBinding(ReadOnly = true)]
     public T ReadOnlyAttributeScalar { get; set; }
 
     public T[] Array { get; set; }
@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       {
         if (_exception != null)
           throw _exception;
-        return default (T);
+        return default(T);
       }
       set
       {

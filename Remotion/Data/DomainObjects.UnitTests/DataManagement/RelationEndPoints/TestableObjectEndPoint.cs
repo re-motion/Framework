@@ -24,23 +24,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   public class TestableObjectEndPoint : ObjectEndPoint
   {
     public TestableObjectEndPoint (ClientTransaction clientTransaction, RelationEndPointID id)
-        : base (clientTransaction, id)
+        : base(clientTransaction, id)
     {
     }
 
     public TestableObjectEndPoint (FlattenedDeserializationInfo info)
-        : base (info)
+        : base(info)
     {
     }
 
     public override bool HasChanged
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
     }
 
     public override bool HasBeenTouched
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
     }
 
     public override bool IsDataComplete
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public override void EnsureDataComplete ()
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public override void Synchronize ()
@@ -85,37 +85,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public override ObjectID OppositeObjectID
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
     }
 
     public override ObjectID OriginalOppositeObjectID
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
     }
 
     public override DomainObject GetOppositeObject ()
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public override DomainObject GetOriginalOppositeObject ()
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public override IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public void CallSetOppositeObjectDataFromSubTransaction (IObjectEndPoint sourceObjectEndPoint)
     {
-      SetOppositeObjectDataFromSubTransaction (sourceObjectEndPoint);
+      SetOppositeObjectDataFromSubTransaction(sourceObjectEndPoint);
     }
 
     protected override void SetOppositeObjectDataFromSubTransaction (IObjectEndPoint sourceObjectEndPoint)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
   }
 }

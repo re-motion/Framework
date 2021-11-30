@@ -45,85 +45,85 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       base.SetUp();
 
-      EventArgs = new BocListDataRowRenderEventArgs (EventArgs.ListIndex, EventArgs.BusinessObject, true, EventArgs.IsOddRow);
+      EventArgs = new BocListDataRowRenderEventArgs(EventArgs.ListIndex, EventArgs.BusinessObject, true, EventArgs.IsOddRow);
 
-      List.Setup (mock => mock.EnableClientScript).Returns (true);
-      List.Setup (mock => mock.IsReadOnly).Returns (false);
+      List.Setup(mock => mock.EnableClientScript).Returns(true);
+      List.Setup(mock => mock.IsReadOnly).Returns(false);
       List.Object.DataSource.Mode = DataSourceMode.Edit;
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
 
-      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
-      _renderingContext = new BocColumnRenderingContext<BocRowEditModeColumnDefinition> (
-          new BocColumnRenderingContext (HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      _renderingContext = new BocColumnRenderingContext<BocRowEditModeColumnDefinition>(
+          new BocColumnRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
     }
 
     [Test]
     public void RenderEditable ()
     {
-      IBocColumnRenderer renderer = new BocRowEditModeColumnRenderer (
+      IBocColumnRenderer renderer = new BocRowEditModeColumnRenderer(
           new FakeResourceUrlFactory(),
           RenderingFeatures.Default,
           _bocListCssClassDefinition);
 
-      EventArgs = new BocListDataRowRenderEventArgs (EventArgs.ListIndex, EventArgs.BusinessObject, true, EventArgs.IsOddRow);
+      EventArgs = new BocListDataRowRenderEventArgs(EventArgs.ListIndex, EventArgs.BusinessObject, true, EventArgs.IsOddRow);
 
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
 
       var document = Html.GetResultDocument();
 
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
 
-      var a = Html.GetAssertedChildElement (td, "a", 0);
-      Html.AssertAttribute (a, "id", List.Object.ClientID + "_Column_0_RowEditCommand_Edit_Row_10");
-      Html.AssertAttribute (a, "href", "#");
-      Html.AssertAttribute (a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
-      Html.AssertTextNode (a, "Bearbeiten", 0);
+      var a = Html.GetAssertedChildElement(td, "a", 0);
+      Html.AssertAttribute(a, "id", List.Object.ClientID + "_Column_0_RowEditCommand_Edit_Row_10");
+      Html.AssertAttribute(a, "href", "#");
+      Html.AssertAttribute(a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
+      Html.AssertTextNode(a, "Bearbeiten", 0);
     }
 
     [Test]
     public void RenderEditing ()
     {
-      Mock.Get (List.Object.EditModeController).Setup (mock => mock.GetEditableRow (10)).Returns (new Mock<IEditableRow>().Object);
+      Mock.Get(List.Object.EditModeController).Setup(mock => mock.GetEditableRow(10)).Returns(new Mock<IEditableRow>().Object);
 
-      IBocColumnRenderer renderer = new BocRowEditModeColumnRenderer (
+      IBocColumnRenderer renderer = new BocRowEditModeColumnRenderer(
           new FakeResourceUrlFactory(),
           RenderingFeatures.Default,
           _bocListCssClassDefinition);
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
 
       var document = Html.GetResultDocument();
 
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
 
-      var save = Html.GetAssertedChildElement (td, "a", 0);
-      Html.AssertAttribute (save, "id", List.Object.ClientID + "_Column_0_RowEditCommand_Save_Row_10");
-      Html.AssertAttribute (save, "href", "#");
-      Html.AssertAttribute (save, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
-      Html.AssertTextNode (save, "Speichern", 0);
+      var save = Html.GetAssertedChildElement(td, "a", 0);
+      Html.AssertAttribute(save, "id", List.Object.ClientID + "_Column_0_RowEditCommand_Save_Row_10");
+      Html.AssertAttribute(save, "href", "#");
+      Html.AssertAttribute(save, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
+      Html.AssertTextNode(save, "Speichern", 0);
 
-      var cancel = Html.GetAssertedChildElement (td, "a", 1);
-      Html.AssertAttribute (cancel, "id", List.Object.ClientID + "_Column_0_RowEditCommand_Cancel_Row_10");
-      Html.AssertAttribute (cancel, "href", "#");
-      Html.AssertAttribute (cancel, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
-      Html.AssertTextNode (cancel, "Abbrechen", 0);
+      var cancel = Html.GetAssertedChildElement(td, "a", 1);
+      Html.AssertAttribute(cancel, "id", List.Object.ClientID + "_Column_0_RowEditCommand_Cancel_Row_10");
+      Html.AssertAttribute(cancel, "href", "#");
+      Html.AssertAttribute(cancel, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
+      Html.AssertTextNode(cancel, "Abbrechen", 0);
     }
 
     [Test]
     public void TestDiagnosticMetadataRendering ()
     {
-      IBocColumnRenderer renderer = new BocRowEditModeColumnRenderer (
+      IBocColumnRenderer renderer = new BocRowEditModeColumnRenderer(
           new FakeResourceUrlFactory(),
           RenderingFeatures.WithDiagnosticMetadata,
           _bocListCssClassDefinition);
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
 
       var document = Html.GetResultDocument();
 
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownEditCell, "true");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownEditCell, "true");
     }
   }
 }

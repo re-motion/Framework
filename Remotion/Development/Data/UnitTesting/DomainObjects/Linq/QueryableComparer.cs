@@ -35,7 +35,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Linq
 
     public QueryableComparer (AssertThatActualIsEqualToExpected thatActualIsEqualToExpected)
     {
-      ArgumentUtility.CheckNotNull ("thatActualIsEqualToExpected", thatActualIsEqualToExpected);
+      ArgumentUtility.CheckNotNull("thatActualIsEqualToExpected", thatActualIsEqualToExpected);
 
       _assertThatActualIsEqualToExpected = thatActualIsEqualToExpected;
     }
@@ -43,19 +43,19 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Linq
     public void Compare<T> (IQueryable<T> expected, IQueryable<T> actual)
         where T: DomainObject
     {
-      ArgumentUtility.CheckNotNull ("expected", expected);
-      ArgumentUtility.CheckNotNull ("actual", actual);
+      ArgumentUtility.CheckNotNull("expected", expected);
+      ArgumentUtility.CheckNotNull("actual", actual);
 
-      IQuery expectedQuery = GetQuery (expected);
-      IQuery actualQuery = GetQuery (actual);
+      IQuery expectedQuery = GetQuery(expected);
+      IQuery actualQuery = GetQuery(actual);
 
-      _assertThatActualIsEqualToExpected (expectedQuery.Statement, actualQuery.Statement);
-      _assertThatActualIsEqualToExpected (expectedQuery.Parameters, actualQuery.Parameters);
+      _assertThatActualIsEqualToExpected(expectedQuery.Statement, actualQuery.Statement);
+      _assertThatActualIsEqualToExpected(expectedQuery.Parameters, actualQuery.Parameters);
     }
 
     private IQuery GetQuery<T> (IQueryable<T> queryable)
     {
-      return QueryFactory.CreateQuery<T> ("<dynamic data>", queryable);
+      return QueryFactory.CreateQuery<T>("<dynamic data>", queryable);
     }
   }
 }

@@ -18,7 +18,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public ReadOnlyVirtualCollectionDataDecorator (IVirtualCollectionData collectionData)
     {
-      ArgumentUtility.CheckNotNull ("collectionData", collectionData);
+      ArgumentUtility.CheckNotNull("collectionData", collectionData);
 
       _collectionData = collectionData;
     }
@@ -39,18 +39,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public void EnsureDataComplete () => _collectionData.EnsureDataComplete();
 
-    public bool ContainsObjectID (ObjectID objectID) => _collectionData.ContainsObjectID (objectID);
+    public bool ContainsObjectID (ObjectID objectID) => _collectionData.ContainsObjectID(objectID);
 
-    public DomainObject GetObject (int index) => _collectionData.GetObject (index);
+    public DomainObject GetObject (int index) => _collectionData.GetObject(index);
 
-    public DomainObject GetObject (ObjectID objectID) => _collectionData.GetObject (objectID);
+    public DomainObject GetObject (ObjectID objectID) => _collectionData.GetObject(objectID);
 
-    public int IndexOf (ObjectID objectID) => _collectionData.IndexOf (objectID);
+    public int IndexOf (ObjectID objectID) => _collectionData.IndexOf(objectID);
 
-    void IVirtualCollectionData.Clear () => throw new NotSupportedException ("Cannot clear a read-only collection.");
+    void IVirtualCollectionData.Clear () => throw new NotSupportedException("Cannot clear a read-only collection.");
 
-    void IVirtualCollectionData.Add (DomainObject domainObject) => throw new NotSupportedException ("Cannot add an item to a read-only collection.");
+    void IVirtualCollectionData.Add (DomainObject domainObject) => throw new NotSupportedException("Cannot add an item to a read-only collection.");
 
-    bool IVirtualCollectionData.Remove (DomainObject domainObject) => throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
+    bool IVirtualCollectionData.Remove (DomainObject domainObject) => throw new NotSupportedException("Cannot remove an item from a read-only collection.");
   }
 }

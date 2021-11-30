@@ -28,72 +28,72 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   {
     public override void OneTimeSetUp ()
     {
-      base.OneTimeSetUp ();
-      SetDatabaseModifyable ();
+      base.OneTimeSetUp();
+      SetDatabaseModifyable();
     }
 
     [Test]
     public void ScalarQueryWithoutParameter ()
     {
-      Assert.That (Provider.ExecuteScalarQuery (QueryFactory.CreateQueryFromConfiguration ("QueryWithoutParameter")), Is.EqualTo (42));
+      Assert.That(Provider.ExecuteScalarQuery(QueryFactory.CreateQueryFromConfiguration("QueryWithoutParameter")), Is.EqualTo(42));
     }
 
     [Test]
     public void InvalidScalarQuery ()
     {
-      QueryDefinition definition = new QueryDefinition ("InvalidQuery", TestDomainStorageProviderDefinition, "This is not T-SQL", QueryType.Scalar);
-      Assert.That (
-          () => Provider.ExecuteScalarQuery (QueryFactory.CreateQuery (definition)),
+      QueryDefinition definition = new QueryDefinition("InvalidQuery", TestDomainStorageProviderDefinition, "This is not T-SQL", QueryType.Scalar);
+      Assert.That(
+          () => Provider.ExecuteScalarQuery(QueryFactory.CreateQuery(definition)),
           Throws.InstanceOf<RdbmsProviderException>());
     }
 
     [Test]
     public void ScalarQueryWithParameter ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration ("OrderNoSumByCustomerNameQuery");
-      query.Parameters.Add ("@customerName", "Kunde 1");
+      var query = QueryFactory.CreateQueryFromConfiguration("OrderNoSumByCustomerNameQuery");
+      query.Parameters.Add("@customerName", "Kunde 1");
 
-      Assert.That (Provider.ExecuteScalarQuery (query), Is.EqualTo (3));
+      Assert.That(Provider.ExecuteScalarQuery(query), Is.EqualTo(3));
     }
 
     [Test]
     public void ParameterWithTextReplacement ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration ("OrderNoSumForMultipleCustomers");
-      query.Parameters.Add ("{companyNames}", "'Kunde 1', 'Kunde 3'", QueryParameterType.Text);
+      var query = QueryFactory.CreateQueryFromConfiguration("OrderNoSumForMultipleCustomers");
+      query.Parameters.Add("{companyNames}", "'Kunde 1', 'Kunde 3'", QueryParameterType.Text);
 
-      Assert.That (Provider.ExecuteScalarQuery (query), Is.EqualTo (6));
+      Assert.That(Provider.ExecuteScalarQuery(query), Is.EqualTo(6));
     }
 
     [Test]
     public void CollectionQuery ()
     {
-      Assert.That (
-          () => Provider.ExecuteScalarQuery (QueryFactory.CreateQueryFromConfiguration ("OrderQuery")),
+      Assert.That(
+          () => Provider.ExecuteScalarQuery(QueryFactory.CreateQueryFromConfiguration("OrderQuery")),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Expected query type is 'Scalar', but was 'Collection'.", "query"));
     }
 
     [Test]
     public void BulkUpdateQuery ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration ("BulkUpdateQuery");
-      query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1.Value);
+      var query = QueryFactory.CreateQueryFromConfiguration("BulkUpdateQuery");
+      query.Parameters.Add("@customerID", DomainObjectIDs.Customer1.Value);
 
-      Assert.That (Provider.ExecuteScalarQuery (query), Is.EqualTo (2));
+      Assert.That(Provider.ExecuteScalarQuery(query), Is.EqualTo(2));
     }
 
     [Test]
     public void DifferentStorageProviderID ()
     {
-      QueryDefinition definition = new QueryDefinition (
+      QueryDefinition definition = new QueryDefinition(
           "QueryWithDifferentStorageProviderID",
           UnitTestStorageProviderDefinition,
           "select 42",
           QueryType.Scalar);
-      Assert.That (
-          () => Provider.ExecuteScalarQuery (QueryFactory.CreateQuery (definition)),
+      Assert.That(
+          () => Provider.ExecuteScalarQuery(QueryFactory.CreateQuery(definition)),
           Throws.ArgumentException);
     }
   }

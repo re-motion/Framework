@@ -51,7 +51,7 @@ namespace Remotion.ServiceLocation
     private readonly ConcurrentDictionary<Type, IReadOnlyCollection<ImplementationForAttribute>> _implementationForAttributesCache =
         new ConcurrentDictionary<Type, IReadOnlyCollection<ImplementationForAttribute>>();
 
-    private readonly bool _excludeGlobalTypesForDefaultConfiguration = !AssemblyTypeCache.IsGacAssembly (typeof (ImplementationForAttribute).Assembly);
+    private readonly bool _excludeGlobalTypesForDefaultConfiguration = !AssemblyTypeCache.IsGacAssembly(typeof(ImplementationForAttribute).Assembly);
 
     public static DefaultServiceConfigurationDiscoveryService Create ()
     {
@@ -60,7 +60,7 @@ namespace Remotion.ServiceLocation
 
     public DefaultServiceConfigurationDiscoveryService (ITypeDiscoveryService typeDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
+      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
 
       _typeDiscoveryService = typeDiscoveryService;
     }
@@ -74,10 +74,10 @@ namespace Remotion.ServiceLocation
     {
 #if !FEATURE_GAC
       if (!_excludeGlobalTypesForDefaultConfiguration)
-        throw new PlatformNotSupportedException ("The default service configuration cannot be part of the GAC on this platform.");
+        throw new PlatformNotSupportedException("The default service configuration cannot be part of the GAC on this platform.");
 #endif
 
-      return GetDefaultConfiguration (_typeDiscoveryService.GetTypes (null, excludeGlobalTypes: _excludeGlobalTypesForDefaultConfiguration).Cast<Type>());
+      return GetDefaultConfiguration(_typeDiscoveryService.GetTypes(null, excludeGlobalTypes: _excludeGlobalTypesForDefaultConfiguration).Cast<Type>());
     }
 
     /// <summary>
@@ -88,9 +88,9 @@ namespace Remotion.ServiceLocation
     /// Types without the attribute are ignored.</returns>
     public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Type> serviceTypes)
     {
-      ArgumentUtility.CheckNotNull ("serviceTypes", serviceTypes);
+      ArgumentUtility.CheckNotNull("serviceTypes", serviceTypes);
 
-      return serviceTypes.Select (GetDefaultConfiguration).Where (configuration => configuration.ImplementationInfos.Any());
+      return serviceTypes.Select(GetDefaultConfiguration).Where(configuration => configuration.ImplementationInfos.Any());
     }
 
     /// <summary>
@@ -101,32 +101,32 @@ namespace Remotion.ServiceLocation
     /// Types without the attribute are ignored.</returns>
     public ServiceConfigurationEntry GetDefaultConfiguration (Type serviceType)
     {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
+      ArgumentUtility.CheckNotNull("serviceType", serviceType);
 
       try
       {
-        var implementingTypes = GetImplementingTypes (serviceType);
+        var implementingTypes = GetImplementingTypes(serviceType);
 
         var attributes = implementingTypes
-            .SelectMany (
-                implementingType => GetImplementationForAttributesFromCache (implementingType)
-                    .Where (attribute => attribute.ServiceType == serviceType)
-                    .Select (CloneAttribute)
-                    .Select (attribute => Tuple.Create (implementingType, attribute)))
-            .ToLookup (a => a.Item2.RegistrationType);
+            .SelectMany(
+                implementingType => GetImplementationForAttributesFromCache(implementingType)
+                    .Where(attribute => attribute.ServiceType == serviceType)
+                    .Select(CloneAttribute)
+                    .Select(attribute => Tuple.Create(implementingType, attribute)))
+            .ToLookup(a => a.Item2.RegistrationType);
 
-        if (attributes.Contains (RegistrationType.Compound) && attributes.Contains (RegistrationType.Single))
-          throw new InvalidOperationException ("Registration types 'Compound' and 'Single' cannot be used together.");
+        if (attributes.Contains(RegistrationType.Compound) && attributes.Contains(RegistrationType.Single))
+          throw new InvalidOperationException("Registration types 'Compound' and 'Single' cannot be used together.");
 
-        if (attributes.Contains (RegistrationType.Single) && attributes.Contains (RegistrationType.Multiple))
-          throw new InvalidOperationException ("Registration types 'Single' and 'Multiple' cannot be used together.");
+        if (attributes.Contains(RegistrationType.Single) && attributes.Contains(RegistrationType.Multiple))
+          throw new InvalidOperationException("Registration types 'Single' and 'Multiple' cannot be used together.");
 
-        return ServiceConfigurationEntry.CreateFromAttributes (serviceType, FilterAttributes (attributes));
+        return ServiceConfigurationEntry.CreateFromAttributes(serviceType, FilterAttributes(attributes));
       }
       catch (Exception ex)
       {
-        var message = string.Format ("Invalid configuration of service type '{0}'. {1}", serviceType, ex.Message);
-        throw new InvalidOperationException (message, ex);
+        var message = string.Format("Invalid configuration of service type '{0}'. {1}", serviceType, ex.Message);
+        throw new InvalidOperationException(message, ex);
       }
     }
 
@@ -138,9 +138,9 @@ namespace Remotion.ServiceLocation
     /// Types without the attribute are ignored.</returns>
     public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Assembly> assemblies)
     {
-      ArgumentUtility.CheckNotNull ("assemblies", assemblies);
+      ArgumentUtility.CheckNotNull("assemblies", assemblies);
 
-      return assemblies.SelectMany (a => GetDefaultConfiguration (AssemblyTypeCache.GetTypes (a)));
+      return assemblies.SelectMany(a => GetDefaultConfiguration(AssemblyTypeCache.GetTypes(a)));
     }
 
     private IEnumerable<Type> GetImplementingTypes (Type serviceType)
@@ -151,18 +151,18 @@ namespace Remotion.ServiceLocation
       else
         normalizedServiceType = serviceType;
 
-      var derivedTypes = _typeDiscoveryService.GetTypes (normalizedServiceType, excludeGlobalTypes: false);
-      Assertion.IsNotNull (derivedTypes, "TypeDiscoveryService evaluated for serviceType '{0}' and returned null.", serviceType);
+      var derivedTypes = _typeDiscoveryService.GetTypes(normalizedServiceType, excludeGlobalTypes: false);
+      Assertion.IsNotNull(derivedTypes, "TypeDiscoveryService evaluated for serviceType '{0}' and returned null.", serviceType);
 
-      return derivedTypes.Cast<Type>().Where (serviceType.IsAssignableFrom);
+      return derivedTypes.Cast<Type>().Where(serviceType.IsAssignableFrom);
     }
 
     private IReadOnlyCollection<ImplementationForAttribute> GetImplementationForAttributesFromCache (Type type)
     {
       // C# compiler 7.2 already provides caching for anonymous method.
-      return _implementationForAttributesCache.GetOrAdd (
+      return _implementationForAttributesCache.GetOrAdd(
           type,
-          key => AttributeUtility.GetCustomAttributes<ImplementationForAttribute> (key, false).ToArray());
+          key => AttributeUtility.GetCustomAttributes<ImplementationForAttribute>(key, false).ToArray());
     }
 
     private List<Tuple<Type, ImplementationForAttribute>> FilterAttributes (ILookup<RegistrationType, Tuple<Type, ImplementationForAttribute>> attributes)
@@ -171,36 +171,36 @@ namespace Remotion.ServiceLocation
 
       foreach (var registrationTypeGroup in attributes)
       {
-        EnsureUniqueProperty ("Implementation type", registrationTypeGroup.Select (r => r.Item1));
-        EnsureUniqueProperty (
-            string.Format ("Position for registration type '{0}'", registrationTypeGroup.Key),
-            registrationTypeGroup.Select (r => r.Item2.Position));
+        EnsureUniqueProperty("Implementation type", registrationTypeGroup.Select(r => r.Item1));
+        EnsureUniqueProperty(
+            string.Format("Position for registration type '{0}'", registrationTypeGroup.Key),
+            registrationTypeGroup.Select(r => r.Item2.Position));
       }
 
-      filteredAttributes.AddRange (attributes[RegistrationType.Single].OrderBy (a => a.Item2.Position).Take (1));
-      filteredAttributes.AddRange (attributes[RegistrationType.Multiple].OrderBy (a => a.Item2.Position));
-      filteredAttributes.AddRange (attributes[RegistrationType.Compound].OrderBy (a => a.Item2.Position).Take (1));
-      filteredAttributes.AddRange (attributes[RegistrationType.Decorator].OrderBy (a => a.Item2.Position));
+      filteredAttributes.AddRange(attributes[RegistrationType.Single].OrderBy(a => a.Item2.Position).Take(1));
+      filteredAttributes.AddRange(attributes[RegistrationType.Multiple].OrderBy(a => a.Item2.Position));
+      filteredAttributes.AddRange(attributes[RegistrationType.Compound].OrderBy(a => a.Item2.Position).Take(1));
+      filteredAttributes.AddRange(attributes[RegistrationType.Decorator].OrderBy(a => a.Item2.Position));
       return filteredAttributes;
     }
 
     private void EnsureUniqueProperty<T> (string propertyDescription, IEnumerable<T> propertyValues)
     {
-      var visitedValues = new HashSet<T> ();
+      var visitedValues = new HashSet<T>();
       foreach (var value in propertyValues)
       {
-        if (visitedValues.Contains (value))
+        if (visitedValues.Contains(value))
         {
-          var message = string.Format ("Ambiguous {0}: {1} must be unique.", typeof (ImplementationForAttribute).Name, propertyDescription);
-          throw new InvalidOperationException (message);
+          var message = string.Format("Ambiguous {0}: {1} must be unique.", typeof(ImplementationForAttribute).Name, propertyDescription);
+          throw new InvalidOperationException(message);
         }
-        visitedValues.Add (value);
+        visitedValues.Add(value);
       }
     }
 
     private ImplementationForAttribute CloneAttribute (ImplementationForAttribute attribute)
     {
-      return new ImplementationForAttribute (attribute.ServiceType)
+      return new ImplementationForAttribute(attribute.ServiceType)
              {
                  Lifetime = attribute.Lifetime,
                  RegistrationType = attribute.RegistrationType,

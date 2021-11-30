@@ -33,11 +33,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public void DispatchValidationFailures (IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull ("validationResult", validationResult);
+      ArgumentUtility.CheckNotNull("validationResult", validationResult);
 
       var control = GetControlToValidate();
 
-      BusinessObjectDataSourceValidationResultDispatcher.DispatchValidationResultForBoundControls (control, validationResult);
+      BusinessObjectDataSourceValidationResultDispatcher.DispatchValidationResultForBoundControls(control, validationResult);
     }
 
     protected override bool EvaluateIsValid ()
@@ -55,12 +55,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
     [NotNull]
     private BindableObjectDataSourceControl GetControlToValidate ()
     {
-      var control = NamingContainer.FindControl (ControlToValidate);
+      var control = NamingContainer.FindControl(ControlToValidate);
       var dataSourceControl = control as BindableObjectDataSourceControl;
       if (dataSourceControl == null)
       {
-        throw new InvalidOperationException (
-            $"'{nameof (BindableObjectDataSourceControlValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof (BindableObjectDataSourceControl)}'.");
+        throw new InvalidOperationException(
+            $"'{nameof(BindableObjectDataSourceControlValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof(BindableObjectDataSourceControl)}'.");
       }
 
       return dataSourceControl;

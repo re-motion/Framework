@@ -38,15 +38,15 @@ namespace Remotion.Collections.Caching
     {
     }
 
-    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      value = default (TValue)!;
+      value = default(TValue)!;
       return false;
     }
 
     public TValue GetOrCreateValue (TKey key, Func<TKey,TValue> valueFactory)
     {
-      ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
+      ArgumentUtility.CheckNotNull("valueFactory", valueFactory);
       return valueFactory(key);
     }
 

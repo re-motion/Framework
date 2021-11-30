@@ -30,9 +30,9 @@ public class RdbmsProviderException : StorageProviderException
 
   // construction and disposing
 
-  public RdbmsProviderException (string message) : base (message) {}
-  public RdbmsProviderException (string message, Exception inner) : base (message, inner) {}
-  protected RdbmsProviderException (SerializationInfo info, StreamingContext context) : base (info, context) {}
+  public RdbmsProviderException (string message) : base(message) {}
+  public RdbmsProviderException (string message, Exception inner) : base(message, inner) {}
+  protected RdbmsProviderException (SerializationInfo info, StreamingContext context) : base(info, context) {}
 
   // methods and properties
 

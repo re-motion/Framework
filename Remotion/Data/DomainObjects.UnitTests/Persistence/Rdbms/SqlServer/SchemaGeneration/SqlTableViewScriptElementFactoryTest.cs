@@ -33,44 +33,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _factory = new SqlTableViewScriptElementFactory();
 
-      _tableDefinitionWithCustomSchema = TableDefinitionObjectMother.Create (
+      _tableDefinitionWithCustomSchema = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition ("SchemaName", "Table1"),
-          new EntityNameDefinition ("SchemaName", "View1"),
+          new EntityNameDefinition("SchemaName", "Table1"),
+          new EntityNameDefinition("SchemaName", "View1"),
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
-          SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column1"));
-      _tableDefinitionWithDefaultSchema = TableDefinitionObjectMother.Create (
+          SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column1"));
+      _tableDefinitionWithDefaultSchema = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition (null, "Table2"),
-          new EntityNameDefinition (null, "View2"),
+          new EntityNameDefinition(null, "Table2"),
+          new EntityNameDefinition(null, "View2"),
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
-          SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column1"));
+          SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column1"));
     }
 
     [Test]
     public void GetCreateElement_CustomSchema_WithSchemaBinding ()
     {
-      var result = _factory.GetCreateElement (_tableDefinitionWithCustomSchema);
+      var result = _factory.GetCreateElement(_tableDefinitionWithCustomSchema);
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptElementCollection)));
-      var elements = ((ScriptElementCollection) result).Elements;
-      Assert.That (elements.Count, Is.EqualTo (3));
-      Assert.That (elements[0], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[2], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[1], Is.TypeOf (typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptElementCollection)));
+      var elements = ((ScriptElementCollection)result).Elements;
+      Assert.That(elements.Count, Is.EqualTo(3));
+      Assert.That(elements[0], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
           "CREATE VIEW [SchemaName].[View1] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
          + "  WITH SCHEMABINDING AS\r\n"
          + "  SELECT [ID], [ClassID], [Timestamp], [Column1]\r\n"
          + "    FROM [SchemaName].[Table1]\r\n"
          + "  WITH CHECK OPTION";
-      Assert.That (((ScriptStatement) elements[1]).Statement, Is.EqualTo (expectedResult));
+      Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -78,47 +78,47 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     {
       var factory = new ExtendedSqlTableViewScriptElementFactory();
 
-      var result = factory.GetCreateElement (_tableDefinitionWithDefaultSchema);
+      var result = factory.GetCreateElement(_tableDefinitionWithDefaultSchema);
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptElementCollection)));
-      var elements = ((ScriptElementCollection) result).Elements;
-      Assert.That (elements.Count, Is.EqualTo (3));
-      Assert.That (elements[0], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[2], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[1], Is.TypeOf (typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptElementCollection)));
+      var elements = ((ScriptElementCollection)result).Elements;
+      Assert.That(elements.Count, Is.EqualTo(3));
+      Assert.That(elements[0], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
           "CREATE VIEW [dbo].[View2] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
           + "  AS\r\n"
           + "  SELECT [ID], [ClassID], [Timestamp], [Column1]\r\n"
           + "    FROM [dbo].[Table2]\r\n"
           + "  WITH CHECK OPTION";
-      Assert.That (((ScriptStatement) elements[1]).Statement, Is.EqualTo (expectedResult));
+      Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_CustomSchema ()
     {
-      var result = _factory.GetDropElement (_tableDefinitionWithCustomSchema);
+      var result = _factory.GetDropElement(_tableDefinitionWithCustomSchema);
 
       var expectedResult =
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'View1' AND TABLE_SCHEMA = 'SchemaName')\r\n"
           + "  DROP VIEW [SchemaName].[View1]";
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_DefaultSchema ()
     {
-      var result = _factory.GetDropElement (_tableDefinitionWithDefaultSchema);
+      var result = _factory.GetDropElement(_tableDefinitionWithDefaultSchema);
 
       var expectedResult =
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'View2' AND TABLE_SCHEMA = 'dbo')\r\n"
           + "  DROP VIEW [dbo].[View2]";
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
   }
 }

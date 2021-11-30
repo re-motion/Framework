@@ -39,23 +39,23 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject businessObject, IBusinessObjectEnumerationProperty property)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNullAndType<AccessControlEntry> ("businessObject", businessObject);
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNullAndType<AccessControlEntry>("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("property", property);
 
-      AccessControlEntry ace = (AccessControlEntry) businessObject;
+      AccessControlEntry ace = (AccessControlEntry)businessObject;
       bool isStateful = ace.AccessControlList is StatefulAccessControlList;
 
       switch (property.Identifier)
       {
         case "TenantCondition":
-          return value.IsEnabled && IsTenantConditionEnabled ((TenantCondition) value.Value, isStateful);
+          return value.IsEnabled && IsTenantConditionEnabled((TenantCondition)value.Value, isStateful);
         case "GroupCondition":
-          return value.IsEnabled && IsGroupConditionEnabled ((GroupCondition) value.Value, isStateful);
+          return value.IsEnabled && IsGroupConditionEnabled((GroupCondition)value.Value, isStateful);
         case "UserCondition":
-          return value.IsEnabled && IsUserConditionEnabled ((UserCondition) value.Value, isStateful);
+          return value.IsEnabled && IsUserConditionEnabled((UserCondition)value.Value, isStateful);
         default:
-          throw CreateInvalidOperationException ("The property '{0}' is not supported by the '{1}'.", property.Identifier, typeof (AccessControlEntryPropertiesEnumerationValueFilter).GetFullNameChecked());
+          throw CreateInvalidOperationException("The property '{0}' is not supported by the '{1}'.", property.Identifier, typeof(AccessControlEntryPropertiesEnumerationValueFilter).GetFullNameChecked());
       }
     }
 
@@ -70,7 +70,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
         case TenantCondition.SpecificTenant:
           return true;
         default:
-          throw CreateInvalidOperationException ("The value '{0}' is not a valid value for 'TenantCondition'.", value);
+          throw CreateInvalidOperationException("The value '{0}' is not a valid value for 'TenantCondition'.", value);
       }
     }
 
@@ -89,7 +89,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
         case GroupCondition.BranchOfOwningGroup:
           return isStateful;
         default:
-          throw CreateInvalidOperationException ("The value '{0}' is not a valid value for 'GroupCondition'.", value);
+          throw CreateInvalidOperationException("The value '{0}' is not a valid value for 'GroupCondition'.", value);
       }
     }
 
@@ -106,13 +106,13 @@ namespace Remotion.SecurityManager.Domain.AccessControl
         case UserCondition.SpecificPosition:
           return true;
         default:
-          throw CreateInvalidOperationException ("The value '{0}' is not a valid value for 'UserCondition'.", value);
+          throw CreateInvalidOperationException("The value '{0}' is not a valid value for 'UserCondition'.", value);
       }
     }
 
     private InvalidOperationException CreateInvalidOperationException (string message, params object[] args)
     {
-      return new InvalidOperationException (string.Format (message, args));
+      return new InvalidOperationException(string.Format(message, args));
     }
   }
 }

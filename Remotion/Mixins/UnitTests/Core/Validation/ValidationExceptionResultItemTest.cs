@@ -27,12 +27,12 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
     [Test]
     public void Serialization ()
     {
-      var item = new ValidationExceptionResultItem ("special rule", new Exception ("Test"));
+      var item = new ValidationExceptionResultItem("special rule", new Exception("Test"));
 
-      var deserializedItem = Serializer.SerializeAndDeserialize (item);
+      var deserializedItem = Serializer.SerializeAndDeserialize(item);
 
-      Assert.That (deserializedItem.RuleName, Is.EqualTo (item.RuleName));
-      Assert.That (deserializedItem.Exception.Message, Is.EqualTo ("Test"));
+      Assert.That(deserializedItem.RuleName, Is.EqualTo(item.RuleName));
+      Assert.That(deserializedItem.Exception.Message, Is.EqualTo("Test"));
     }
   }
 }

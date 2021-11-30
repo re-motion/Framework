@@ -25,26 +25,26 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
   public class RedirectedSubWxeFunction : WxeFunction
   {
     public RedirectedSubWxeFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     private void Step1 (WxeContext context)
     {
-      var redirectUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (Start), TestResourceType.Root, "Start.aspx?Redirected").GetUrl();
-      context.HttpContext.Response.Redirect (redirectUrl);
+      var redirectUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof(Start), TestResourceType.Root, "Start.aspx?Redirected").GetUrl();
+      context.HttpContext.Response.Redirect(redirectUrl);
     }
   }
 
   public class RedirectedWxeFunction : WxeFunction
   {
     public RedirectedWxeFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     public RedirectedWxeFunction (params object[] args)
-        : base (new NoneTransactionMode(), args)
+        : base(new NoneTransactionMode(), args)
     {
     }
 
@@ -52,6 +52,6 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private WxeStep Step1 = new RedirectedSubWxeFunction();
 
-    private WxeStep Step2 = new WxeResourcePageStep (typeof (SessionForm), "ExecutionEngine/SessionForm.aspx");
+    private WxeStep Step2 = new WxeResourcePageStep(typeof(SessionForm), "ExecutionEngine/SessionForm.aspx");
   }
 }

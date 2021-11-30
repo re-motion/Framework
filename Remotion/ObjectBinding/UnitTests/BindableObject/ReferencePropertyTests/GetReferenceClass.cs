@@ -41,19 +41,19 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       _bindableObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
       _bindableObjectWithIdentityProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
 
-      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute> (_bindableObjectProvider);
-      BusinessObjectProvider.SetProvider<BindableObjectWithIdentityProviderAttribute> (_bindableObjectWithIdentityProvider);
+      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute>(_bindableObjectProvider);
+      BusinessObjectProvider.SetProvider<BindableObjectWithIdentityProviderAttribute>(_bindableObjectWithIdentityProvider);
     }
 
     [Test]
     public void UseBindableObjectProvider ()
     {
-      IBusinessObjectReferenceProperty property = new ReferenceProperty (
-          new PropertyBase.Parameters (
+      IBusinessObjectReferenceProperty property = new ReferenceProperty(
+          new PropertyBase.Parameters(
               _bindableObjectProvider,
-              GetPropertyInfo (typeof (ClassWithReferenceType<ClassWithIdentity>), "Scalar"),
-              typeof (ClassWithIdentity),
-              new Lazy<Type> (() => TypeFactory.GetConcreteType (typeof (ClassWithIdentity))),
+              GetPropertyInfo(typeof(ClassWithReferenceType<ClassWithIdentity>), "Scalar"),
+              typeof(ClassWithIdentity),
+              new Lazy<Type>(() => TypeFactory.GetConcreteType(typeof(ClassWithIdentity))),
               null,
               true,
               false,
@@ -64,71 +64,71 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
               SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
               new Mock<IBusinessObjectPropertyConstraintProvider>().Object));
 
-      Assert.That (property.ReferenceClass, Is.SameAs (BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithIdentity))));
-      Assert.That (
+      Assert.That(property.ReferenceClass, Is.SameAs(BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(ClassWithIdentity))));
+      Assert.That(
           property.BusinessObjectProvider,
-          Is.SameAs (BindableObjectProvider.GetProviderForBindableObjectType(typeof (ClassWithReferenceType<ClassWithIdentity>))));
-      Assert.That (
+          Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof(ClassWithReferenceType<ClassWithIdentity>))));
+      Assert.That(
           property.ReferenceClass.BusinessObjectProvider,
-          Is.SameAs (BindableObjectProvider.GetProviderForBindableObjectType (typeof (ClassWithIdentity))));
-      Assert.That (property.ReferenceClass.BusinessObjectProvider, Is.Not.SameAs (property.BusinessObjectProvider));
+          Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof(ClassWithIdentity))));
+      Assert.That(property.ReferenceClass.BusinessObjectProvider, Is.Not.SameAs(property.BusinessObjectProvider));
     }
 
     [Test]
     public void UseBindableObjectProvider_WithBaseClass ()
     {
-      IBusinessObjectReferenceProperty property = new ReferenceProperty (
-          new PropertyBase.Parameters (
+      IBusinessObjectReferenceProperty property = new ReferenceProperty(
+          new PropertyBase.Parameters(
               _bindableObjectProvider,
-              GetPropertyInfo (typeof (ClassWithReferenceToClassDerivedFromBindableObjectBase), "ScalarReference"),
-              typeof (ClassDerivedFromBindableObjectBase),
-              new Lazy<Type> (() => typeof (ClassDerivedFromBindableObjectBase)),
+              GetPropertyInfo(typeof(ClassWithReferenceToClassDerivedFromBindableObjectBase), "ScalarReference"),
+              typeof(ClassDerivedFromBindableObjectBase),
+              new Lazy<Type>(() => typeof(ClassDerivedFromBindableObjectBase)),
               null,
               true,
               false,
               false,
-              new BindableObjectDefaultValueStrategy (),
+              new BindableObjectDefaultValueStrategy(),
               new Mock<IBindablePropertyReadAccessStrategy>().Object,
               new Mock<IBindablePropertyWriteAccessStrategy>().Object,
               SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
               new Mock<IBusinessObjectPropertyConstraintProvider>().Object));
 
-      Assert.That (property.ReferenceClass, Is.SameAs (BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassDerivedFromBindableObjectBase))));
-      Assert.That (
+      Assert.That(property.ReferenceClass, Is.SameAs(BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(ClassDerivedFromBindableObjectBase))));
+      Assert.That(
           property.BusinessObjectProvider,
-          Is.SameAs (BindableObjectProvider.GetProviderForBindableObjectType (typeof (ClassWithReferenceToClassDerivedFromBindableObjectBase))));
-      Assert.That (
+          Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof(ClassWithReferenceToClassDerivedFromBindableObjectBase))));
+      Assert.That(
           property.ReferenceClass.BusinessObjectProvider,
-          Is.SameAs (BindableObjectProvider.GetProviderForBindableObjectType (typeof (ClassDerivedFromBindableObjectBase))));
-      Assert.That (property.ReferenceClass.BusinessObjectProvider, Is.SameAs (property.BusinessObjectProvider));
+          Is.SameAs(BindableObjectProvider.GetProviderForBindableObjectType(typeof(ClassDerivedFromBindableObjectBase))));
+      Assert.That(property.ReferenceClass.BusinessObjectProvider, Is.SameAs(property.BusinessObjectProvider));
     }
 
     [Test]
     public void UseBusinessObjectClassService ()
     {
-      var mockService = new Mock<IBusinessObjectClassService> (MockBehavior.Strict);
+      var mockService = new Mock<IBusinessObjectClassService>(MockBehavior.Strict);
       var expectedClass = new Mock<IBusinessObjectClass>();
       var businessObjectFromOtherBusinessObjectProvider = new Mock<IBusinessObject>();
       Type typeFromOtherBusinessObjectProvider = businessObjectFromOtherBusinessObjectProvider.Object.GetType();
-      IBusinessObjectReferenceProperty property = CreateProperty ("Scalar", typeFromOtherBusinessObjectProvider);
+      IBusinessObjectReferenceProperty property = CreateProperty("Scalar", typeFromOtherBusinessObjectProvider);
 
-      mockService.Setup (_ => _.GetBusinessObjectClass (typeFromOtherBusinessObjectProvider)).Returns (expectedClass.Object).Verifiable();
+      mockService.Setup(_ => _.GetBusinessObjectClass(typeFromOtherBusinessObjectProvider)).Returns(expectedClass.Object).Verifiable();
 
-      _bindableObjectProvider.AddService (typeof (IBusinessObjectClassService), mockService.Object);
+      _bindableObjectProvider.AddService(typeof(IBusinessObjectClassService), mockService.Object);
       IBusinessObjectClass actualClass = property.ReferenceClass;
 
       mockService.Verify();
-      Assert.That (actualClass, Is.SameAs (expectedClass.Object));
+      Assert.That(actualClass, Is.SameAs(expectedClass.Object));
     }
 
     [Test]
     public void UseBusinessObjectClassService_WithoutService ()
     {
-      IBusinessObjectReferenceProperty property = CreateProperty ("Scalar", typeof (ClassFromOtherBusinessObjectImplementation));
-      Assert.That (
+      IBusinessObjectReferenceProperty property = CreateProperty("Scalar", typeof(ClassFromOtherBusinessObjectImplementation));
+      Assert.That(
           () => property.ReferenceClass,
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The 'Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain.ClassFromOtherBusinessObjectImplementation' "
                   + "type does not use the 'Remotion.ObjectBinding.BindableObject' implementation of 'Remotion.ObjectBinding.IBusinessObject' and there is no "
                   + "'Remotion.ObjectBinding.IBusinessObjectClassService' registered with the 'Remotion.ObjectBinding.BusinessObjectProvider' associated with this type."));
@@ -137,13 +137,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     [Test]
     public void UseBusinessObjectClassService_WithServiceReturningNull ()
     {
-      IBusinessObjectReferenceProperty property = CreateProperty ("Scalar", typeof (ClassFromOtherBusinessObjectImplementation));
+      IBusinessObjectReferenceProperty property = CreateProperty("Scalar", typeof(ClassFromOtherBusinessObjectImplementation));
 
-      _bindableObjectProvider.AddService (typeof (IBusinessObjectClassService), new StubBusinessObjectClassService());
-      Assert.That (
+      _bindableObjectProvider.AddService(typeof(IBusinessObjectClassService), new StubBusinessObjectClassService());
+      Assert.That(
           () => property.ReferenceClass,
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The GetBusinessObjectClass method of 'Remotion.ObjectBinding.UnitTests.TestDomain.StubBusinessObjectClassService', registered "
                   + "with the 'Remotion.ObjectBinding.BindableObject.BindableObjectProvider', failed to return an 'Remotion.ObjectBinding.IBusinessObjectClass' "
                   + "for type 'Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain.ClassFromOtherBusinessObjectImplementation'."));
@@ -151,9 +151,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 
     private ReferenceProperty CreateProperty (string propertyName, Type propertyType)
     {
-      return new ReferenceProperty (
-          GetPropertyParameters (
-              GetPropertyInfo (typeof (ClassWithReferenceType<>).MakeGenericType (propertyType), propertyName), _bindableObjectProvider));
+      return new ReferenceProperty(
+          GetPropertyParameters(
+              GetPropertyInfo(typeof(ClassWithReferenceType<>).MakeGenericType(propertyType), propertyName), _bindableObjectProvider));
     }
   }
 }

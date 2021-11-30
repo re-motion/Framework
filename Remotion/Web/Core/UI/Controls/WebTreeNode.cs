@@ -25,7 +25,7 @@ using Remotion.Web.UI.Globalization;
 namespace Remotion.Web.UI.Controls
 {
   /// <summary> A node for the <see cref="WebTreeView"/>. </summary>
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   public class WebTreeNode : IControlItem
   {
     /// <summary> The control to which this object belongs. </summary>
@@ -50,41 +50,41 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Initalizes a new instance. </summary>
     public WebTreeNode (string itemID, string? text, string? toolTip, IconInfo icon)
     {
-      ValidateItemId (itemID);
+      ValidateItemId(itemID);
       _itemID = itemID;
       _text = text ?? string.Empty;
       _toolTip = toolTip ?? string.Empty;
       _icon = icon;
-      _children = new WebTreeNodeCollection (null);
-      _children.SetParent (null, this);
+      _children = new WebTreeNodeCollection(null);
+      _children.SetParent(null, this);
     }
 
     /// <summary> Initalizes a new instance. </summary>
     public WebTreeNode (string itemID, string text, IconInfo icon)
-        : this (itemID, text, string.Empty, icon)
+        : this(itemID, text, string.Empty, icon)
     {
     }
 
     /// <summary> Initalizes a new instance. </summary>
     public WebTreeNode (string itemID, string text, string iconUrl)
-        : this (itemID, text, new IconInfo (iconUrl, Unit.Empty, Unit.Empty))
+        : this(itemID, text, new IconInfo(iconUrl, Unit.Empty, Unit.Empty))
     {
     }
 
     /// <summary> Initalizes a new instance. </summary>
     public WebTreeNode (string itemID, string text)
-        : this (itemID, text, string.Empty)
+        : this(itemID, text, string.Empty)
     {
     }
 
 #nullable disable
     /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
     /// <exclude/>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public WebTreeNode ()
     {
-      _children = new WebTreeNodeCollection (null);
-      _children.SetParent (null, this);
+      _children = new WebTreeNodeCollection(null);
+      _children.SetParent(null, this);
     }
 #nullable restore
 
@@ -118,7 +118,7 @@ namespace Remotion.Web.UI.Controls
     public void Evaluate ()
     {
       if (_treeView != null)
-        _treeView.EvaluateTreeNodeInternal (this);
+        _treeView.EvaluateTreeNodeInternal(this);
     }
 
     /// <summary> Evaluates the current node's children. </summary>
@@ -155,10 +155,10 @@ namespace Remotion.Web.UI.Controls
         IsSelected = false;
       }
       _parentNode = parentNode;
-      _children.SetParent (_treeView, this);
+      _children.SetParent(_treeView, this);
 
       if (_treeView != null)
-        _treeView.EnsureTreeNodeMenuInitialized (this);
+        _treeView.EnsureTreeNodeMenuInitialized(this);
     }
 
     /// <summary> Sets the node's selection state. </summary>
@@ -172,21 +172,21 @@ namespace Remotion.Web.UI.Controls
     public override string ToString ()
     {
       string displayName = ItemID;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         displayName = Text;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         return DisplayedTypeName;
       else
-        return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+        return string.Format("{0}: {1}", displayName, DisplayedTypeName);
     }
 
     /// <summary> Gets or sets the ID of this node. </summary>
     /// <remarks> Must be unique within the collection of tree nodes. Must not be <see langword="null"/> or emtpy. </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Description ("The ID of this node.")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Description("The ID of this node.")]
     //No Default value
-    [NotifyParentProperty (true)]
-    [ParenthesizePropertyName (true)]
+    [NotifyParentProperty(true)]
+    [ParenthesizePropertyName(true)]
     public virtual string ItemID
     {
       get { return _itemID; }
@@ -199,8 +199,8 @@ namespace Remotion.Web.UI.Controls
 
     private void ValidateItemId (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-      if (! string.IsNullOrEmpty (value))
+      ArgumentUtility.CheckNotNullOrEmpty("value", value);
+      if (! string.IsNullOrEmpty(value))
       {
         WebTreeNodeCollection? nodes = null;
         if (ParentNode != null)
@@ -209,18 +209,18 @@ namespace Remotion.Web.UI.Controls
           nodes = TreeView.Nodes;
         if (nodes != null)
         {
-          if (nodes.Find (value) != null)
-            throw new ArgumentException ("The collection already contains a node with ItemID '" + value + "'.", "value");
+          if (nodes.Find(value) != null)
+            throw new ArgumentException("The collection already contains a node with ItemID '" + value + "'.", "value");
         }
       }
     }
 
     /// <summary> Gets or sets the text displayed in this node. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The text displayed in this node.")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The text displayed in this node.")]
     //No Default value
-    [NotifyParentProperty (true)]
+    [NotifyParentProperty(true)]
     public virtual string Text
     {
       get { return _text; }
@@ -231,11 +231,11 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the tool-tip displayed in this node. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The tool-tip displayed in this node.")]
-    [NotifyParentProperty (true)]
-    [DefaultValue ("")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The tool-tip displayed in this node.")]
+    [NotifyParentProperty(true)]
+    [DefaultValue("")]
     public string ToolTip
     {
       get { return _toolTip; }
@@ -246,11 +246,11 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the icon displayed in this tree node. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Category ("Appearance")]
-    [Description ("The icon displayed in this tree node.")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Category("Appearance")]
+    [Description("The icon displayed in this tree node.")]
+    [NotifyParentProperty(true)]
     public virtual IconInfo Icon
     {
       get { return _icon; }
@@ -258,11 +258,11 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the badge displayed besides this tree node. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Category ("Appearance")]
-    [Description ("The badge displayed besides this tree node.")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Category("Appearance")]
+    [Description("The badge displayed besides this tree node.")]
+    [NotifyParentProperty(true)]
     public virtual Badge? Badge
     {
       get { return _badge; }
@@ -271,7 +271,7 @@ namespace Remotion.Web.UI.Controls
 
     private bool ShouldSerializeIcon ()
     {
-      return IconInfo.ShouldSerialize (_icon);
+      return IconInfo.ShouldSerialize(_icon);
     }
 
     private void ResetIcon ()
@@ -279,19 +279,19 @@ namespace Remotion.Web.UI.Controls
       _icon.Reset();
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public string MenuID
     {
       get { return _menuID; }
       set { _menuID = value; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The category to which this node belongs. Root nodes of the same category can be grouped in the UI.")]
-    [NotifyParentProperty (true)]
-    [DefaultValue ("")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The category to which this node belongs. Root nodes of the same category can be grouped in the UI.")]
+    [NotifyParentProperty(true)]
+    [DefaultValue("")]
     public string Category
     {
       get { return _category; }
@@ -301,36 +301,36 @@ namespace Remotion.Web.UI.Controls
     /// <summary> 
     ///   Gets the child nodes of for node. The node has to be evaluated before the actual child nodes can be accessed.
     /// </summary>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
-    [MergableProperty (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
+    [MergableProperty(false)]
     //  Default category
-    [Description ("The child nodes contained in this tree node.")]
-    [DefaultValue ((string?) null)]
+    [Description("The child nodes contained in this tree node.")]
+    [DefaultValue((string?)null)]
     public virtual WebTreeNodeCollection Children
     {
       get { return _children; }
     }
 
     /// <summary> Gets the <see cref="WebTreeView"/> to which this node belongs. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public WebTreeView? TreeView
     {
       get { return _treeView; }
     }
 
     /// <summary> Gets the parent <see cref="WebTreeNode"/> of this node. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public WebTreeNode? ParentNode
     {
       get { return _parentNode; }
     }
 
     /// <summary> Gets or sets a flag that determines whether this node is expanded. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public bool IsExpanded
     {
       get { return _isExpanded; }
@@ -339,8 +339,8 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Gets or sets a flag that determines whether this node's child collection has been populated. </summary>
     /// <remarks> Does not evaluate the tree node. </remarks>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public bool IsEvaluated
     {
       get { return _isEvaluated; }
@@ -348,20 +348,20 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets a flag that determines whether this node is the selected node of the tree view. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public bool IsSelected
     {
       get { return _isSelected; }
       set
       {
-        SetSelected (value);
+        SetSelected(value);
         if (_treeView != null)
         {
           if (value)
-            _treeView.SetSelectedNode (this);
+            _treeView.SetSelectedNode(this);
           else if (this == _treeView.SelectedNode)
-            _treeView.SetSelectedNode (null);
+            _treeView.SetSelectedNode(null);
         }
       }
     }
@@ -373,8 +373,8 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the control to which this object belongs. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public IControl? OwnerControl
     {
       get { return OwnerControlImplementation; }
@@ -398,15 +398,15 @@ namespace Remotion.Web.UI.Controls
 
     public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-      if (! string.IsNullOrEmpty (key))
-        Text = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+      if (! string.IsNullOrEmpty(key))
+        Text = resourceManager.GetString(key);
 
       if (Icon != null)
-        Icon.LoadResources (resourceManager);
+        Icon.LoadResources(resourceManager);
     }
   }
 }

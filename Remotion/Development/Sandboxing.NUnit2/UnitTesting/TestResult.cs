@@ -33,43 +33,43 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
     public static TestResult CreateSucceeded (MethodInfo methodInfo)
     {
       if (methodInfo == null)
-        throw new ArgumentNullException ("methodInfo"); // avoid ArgumentUtility, it doesn't support partial trust ATM
-      return new TestResult (methodInfo, SandboxTestStatus.Succeeded, null);
+        throw new ArgumentNullException("methodInfo"); // avoid ArgumentUtility, it doesn't support partial trust ATM
+      return new TestResult(methodInfo, SandboxTestStatus.Succeeded, null);
     }
 
     public static TestResult CreateIgnored (MethodInfo methodInfo)
     {
       if (methodInfo == null)
-        throw new ArgumentNullException ("methodInfo"); // avoid ArgumentUtility, it doesn't support partial trust ATM
-      return new TestResult (methodInfo, SandboxTestStatus.Ignored, null);
+        throw new ArgumentNullException("methodInfo"); // avoid ArgumentUtility, it doesn't support partial trust ATM
+      return new TestResult(methodInfo, SandboxTestStatus.Ignored, null);
     }
 
     public static TestResult CreateFailed (MethodInfo methodInfo, Exception exception)
     {
       if (methodInfo == null)
-        throw new ArgumentNullException ("methodInfo"); // avoid ArgumentUtility, it doesn't support partial trust ATM
-      
-      return new TestResult (methodInfo, SandboxTestStatus.Failed, exception);
+        throw new ArgumentNullException("methodInfo"); // avoid ArgumentUtility, it doesn't support partial trust ATM
+
+      return new TestResult(methodInfo, SandboxTestStatus.Failed, exception);
     }
 
     public static TestResult CreateFailedInSetUp (MethodInfo methodInfo, Exception exception)
     {
       if (methodInfo == null)
-        throw new ArgumentNullException ("methodInfo"); // avoid ArgumentUtility, it doesn't support partial trust ATM
+        throw new ArgumentNullException("methodInfo"); // avoid ArgumentUtility, it doesn't support partial trust ATM
       if (exception == null)
-        throw new ArgumentNullException ("exception"); // avoid ArgumentUtility, it doesn't support partial trust ATM
+        throw new ArgumentNullException("exception"); // avoid ArgumentUtility, it doesn't support partial trust ATM
 
-      return new TestResult (methodInfo, SandboxTestStatus.FailedInSetUp, exception);
+      return new TestResult(methodInfo, SandboxTestStatus.FailedInSetUp, exception);
     }
 
     public static TestResult CreateFailedInTearDown (MethodInfo methodInfo, Exception exception)
     {
       if (methodInfo == null)
-        throw new ArgumentNullException ("methodInfo"); // avoid ArgumentUtility, it doesn't support partial trust ATM
+        throw new ArgumentNullException("methodInfo"); // avoid ArgumentUtility, it doesn't support partial trust ATM
       if (exception == null)
-        throw new ArgumentNullException ("exception"); // avoid ArgumentUtility, it doesn't support partial trust ATM
+        throw new ArgumentNullException("exception"); // avoid ArgumentUtility, it doesn't support partial trust ATM
 
-      return new TestResult (methodInfo, SandboxTestStatus.FailedInTearDown, exception);
+      return new TestResult(methodInfo, SandboxTestStatus.FailedInTearDown, exception);
     }
 
     public readonly MethodInfo MethodInfo;
@@ -79,7 +79,7 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
     private TestResult (MethodInfo methodInfo, SandboxTestStatus status, Exception exception)
     {
       if (methodInfo == null)
-        throw new ArgumentNullException ("methodInfo"); // avoid ArgumentUtility, it doesn't support partial trust ATM
+        throw new ArgumentNullException("methodInfo"); // avoid ArgumentUtility, it doesn't support partial trust ATM
 
       MethodInfo = methodInfo;
       Status = status;
@@ -89,7 +89,7 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
     public void EnsureNotFailed ()
     {
       if (Status > SandboxTestStatus.Ignored)
-        throw new TestFailedException (MethodInfo.DeclaringType, MethodInfo.Name, Status, Exception);
+        throw new TestFailedException(MethodInfo.DeclaringType, MethodInfo.Name, Status, Exception);
     }
   }
 }

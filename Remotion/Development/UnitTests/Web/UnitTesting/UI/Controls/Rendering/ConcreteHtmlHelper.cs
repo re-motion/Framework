@@ -22,7 +22,7 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
   public class ConcreteHtmlHelper : HtmlHelperBase
   {
     public ConcreteHtmlHelper (IAsserter asserter)
-        : base (asserter.AreEqual, asserter.GreaterThan, asserter.NotNull, asserter.IsNull, asserter.IsTrue)
+        : base(asserter.AreEqual, asserter.GreaterThan, asserter.NotNull, asserter.IsNull, asserter.IsTrue)
     {
     }
   }

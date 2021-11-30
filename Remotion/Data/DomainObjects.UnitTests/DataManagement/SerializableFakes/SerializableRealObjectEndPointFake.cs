@@ -47,8 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddValue (_owningObject);
-      info.AddValue (_id);
+      info.AddValue(_owningObject);
+      info.AddValue(_id);
     }
 
     public RelationEndPointID ID

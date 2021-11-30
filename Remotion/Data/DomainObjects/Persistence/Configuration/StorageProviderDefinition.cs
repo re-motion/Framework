@@ -35,20 +35,20 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     private readonly IStorageObjectFactory _factory;
 
     protected StorageProviderDefinition (string name, NameValueCollection config)
-        : base (name, config)
+        : base(name, config)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      ArgumentUtility.CheckNotNull ("config", config);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNull("config", config);
 
-      var factoryTypeName = GetAndRemoveNonEmptyStringAttribute (config, "factoryType", name, true);
-      var configuredFactoryType = TypeUtility.GetType (factoryTypeName, true);
-      _factory = CreateStorageObjectFactory (configuredFactoryType);
+      var factoryTypeName = GetAndRemoveNonEmptyStringAttribute(config, "factoryType", name, true);
+      var configuredFactoryType = TypeUtility.GetType(factoryTypeName, true);
+      _factory = CreateStorageObjectFactory(configuredFactoryType);
     }
 
     protected StorageProviderDefinition (string name, IStorageObjectFactory factory)
-        : base (name, new NameValueCollection())
+        : base(name, new NameValueCollection())
     {
-      ArgumentUtility.CheckNotNull ("factory", factory);
+      ArgumentUtility.CheckNotNull("factory", factory);
 
       _factory = factory;
     }
@@ -57,8 +57,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     public void CheckIdentityType (Type identityType)
     {
-      if (!IsIdentityTypeSupported (identityType))
-        throw new IdentityTypeNotSupportedException (GetType(), identityType);
+      if (!IsIdentityTypeSupported(identityType))
+        throw new IdentityTypeNotSupportedException(GetType(), identityType);
     }
 
     public IStorageObjectFactory Factory
@@ -68,50 +68,50 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     public override string ToString ()
     {
-      return string.Format ("{0}: '{1}'", GetType().Name, Name);
+      return string.Format("{0}: '{1}'", GetType().Name, Name);
     }
 
     private IStorageObjectFactory CreateStorageObjectFactory (Type configuredFactoryType)
     {
       try
       {
-        var registeredService = (IStorageObjectFactory) SafeServiceLocator.Current.GetService (configuredFactoryType);
+        var registeredService = (IStorageObjectFactory)SafeServiceLocator.Current.GetService(configuredFactoryType);
         if (registeredService != null)
           return registeredService;
       }
       catch (ActivationException ex)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The factory type '{0}' specified in the configuration of the '{1}' StorageProvider definition cannot be resolved: {2}",
             configuredFactoryType,
             Name,
             ex.Message);
-        throw new ConfigurationErrorsException (message, ex);
+        throw new ConfigurationErrorsException(message, ex);
       }
 
       if (configuredFactoryType.IsAbstract)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The factory type '{0}' specified in the configuration of the '{1}' StorageProvider definition cannot be instantiated because it is "
             + "abstract. Either register an implementation of '{2}' in the configured service locator, or specify a non-abstract type.",
             configuredFactoryType,
             Name,
             configuredFactoryType.Name);
-        throw new ConfigurationErrorsException (message);
+        throw new ConfigurationErrorsException(message);
       }
 
       try
       {
-        return (IStorageObjectFactory) ObjectFactory.Create (configuredFactoryType);
+        return (IStorageObjectFactory)ObjectFactory.Create(configuredFactoryType);
       }
       catch (Exception ex)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The factory type '{0}' specified in the configuration of the '{1}' StorageProvider definition cannot be instantiated: {2}",
             configuredFactoryType,
             Name,
             ex.Message);
-        throw new ConfigurationErrorsException (message, ex);
+        throw new ConfigurationErrorsException(message, ex);
       }
     }
   }

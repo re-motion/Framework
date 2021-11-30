@@ -36,18 +36,18 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
     public void KeyFilePath ()
     {
       var xmlFragment = @"<forceStrongNaming keyFilePath=""C:\key.snk""/>";
-      ConfigurationHelper.DeserializeElement (_element, xmlFragment);
+      ConfigurationHelper.DeserializeElement(_element, xmlFragment);
 
-      Assert.That (_element.KeyFilePath, Is.EqualTo (@"C:\key.snk"));
+      Assert.That(_element.KeyFilePath, Is.EqualTo(@"C:\key.snk"));
     }
 
     [Test]
     public void KeyFilePath_Missing ()
     {
       var xmlFragment = @"<forceStrongNaming />";
-      ConfigurationHelper.DeserializeElement (_element, xmlFragment);
+      ConfigurationHelper.DeserializeElement(_element, xmlFragment);
 
-      Assert.That (_element.KeyFilePath, Is.Empty);
+      Assert.That(_element.KeyFilePath, Is.Empty);
     }
   }
 }

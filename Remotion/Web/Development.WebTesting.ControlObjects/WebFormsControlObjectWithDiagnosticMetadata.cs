@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public abstract class WebFormsControlObjectWithDiagnosticMetadata : ControlObject
   {
     protected WebFormsControlObjectWithDiagnosticMetadata ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -36,16 +36,16 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       if (scope[DiagnosticMetadataAttributes.TriggersPostBack] != null)
       {
-        var hasAutoPostBack = bool.Parse (scope[DiagnosticMetadataAttributes.TriggersPostBack]);
+        var hasAutoPostBack = bool.Parse(scope[DiagnosticMetadataAttributes.TriggersPostBack]);
         if (hasAutoPostBack)
-          return ((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy;
+          return ((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy;
       }
 
       if (scope[DiagnosticMetadataAttributes.TriggersNavigation] != null)
       {
-        var triggersNavigation = bool.Parse (scope[DiagnosticMetadataAttributes.TriggersNavigation]);
+        var triggersNavigation = bool.Parse(scope[DiagnosticMetadataAttributes.TriggersNavigation]);
         if (triggersNavigation)
-          return ((IWebFormsPageObject) Context.PageObject).NavigationCompletionDetectionStrategy;
+          return ((IWebFormsPageObject)Context.PageObject).NavigationCompletionDetectionStrategy;
       }
 
       return Continue.Immediately;

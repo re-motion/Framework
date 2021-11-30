@@ -20,10 +20,10 @@ namespace Remotion.Web
 {
   public class ResourceType
   {
-    public static readonly ResourceType Image = new ResourceType ("Image");
-    public static readonly ResourceType Html = new ResourceType ("Html");
-    public static readonly ResourceType UI = new ResourceType ("UI");
-    public static readonly ResourceType HelpPage = new ResourceType ("HelpPage");
+    public static readonly ResourceType Image = new ResourceType("Image");
+    public static readonly ResourceType Html = new ResourceType("Html");
+    public static readonly ResourceType UI = new ResourceType("UI");
+    public static readonly ResourceType HelpPage = new ResourceType("HelpPage");
 
     private readonly string _name;
 

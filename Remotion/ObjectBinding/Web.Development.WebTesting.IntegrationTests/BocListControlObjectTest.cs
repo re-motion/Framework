@@ -44,53 +44,53 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocListControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (DisabledTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (ReadOnlyTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (LabelTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource(typeof(ReadOnlyTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource(typeof(LabelTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource(typeof(ValidationErrorTestCaseFactory<BocListSelector, BocListControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocListSelector, BocListControlObject> testAction)
     {
-      testAction (Helper, e => e.Lists(), "list");
+      testAction(Helper, e => e.Lists(), "list");
     }
 
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
-    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource(typeof(DomainPropertyControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
+    [TestCaseSource(typeof(DisplayNameControlSelectorTestCaseFactory<BocListSelector, BocListControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocListSelector, BocListControlObject> testAction)
     {
-      testAction (Helper, e => e.Lists(), "list");
+      testAction(Helper, e => e.Lists(), "list");
     }
 
     /// <summary>
     /// Annotates the three different container of an BocList: the MenuBlock on the right (red),
     /// the Navigator on the bottom left (blue) and the table container on the top left (green).
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest ()
     {
       var home = Start();
 
-      var control = home.Lists().GetByLocalID ("JobList_Normal");
+      var control = home.Lists().GetByLocalID("JobList_Normal");
       var fluentControl = control.ForScreenshot();
 
       Helper.RunScreenshotTestExact<FluentScreenshotElement<ScreenshotBocList<BocListControlObject, BocListRowControlObject, BocListCellControlObject>>,
-          BocListControlObjectTest> (
+          BocListControlObjectTest>(
               fluentControl,
               ScreenshotTestingType.Both,
               (builder, target) =>
               {
-                builder.AnnotateBox (target, Pens.Black, WebPadding.Inner);
+                builder.AnnotateBox(target, Pens.Black, WebPadding.Inner);
 
-                builder.AnnotateBox (target.GetMenuBlock(), Pens.Red, WebPadding.Inner);
-                builder.AnnotateBox (target.GetNavigator(), Pens.Blue, WebPadding.Inner);
-                builder.AnnotateBox (target.GetTableContainer(), Pens.Green, WebPadding.Inner);
+                builder.AnnotateBox(target.GetMenuBlock(), Pens.Red, WebPadding.Inner);
+                builder.AnnotateBox(target.GetNavigator(), Pens.Blue, WebPadding.Inner);
+                builder.AnnotateBox(target.GetTableContainer(), Pens.Green, WebPadding.Inner);
 
-                builder.Crop (target, new WebPadding (1));
+                builder.Crop(target, new WebPadding(1));
               });
     }
 
@@ -98,39 +98,39 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     /// Tests that the navigator can be correctly annotated
     /// and that the fluent API works as intended.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_Navigator ()
     {
       var home = Start();
 
       // List with a navigator
-      var control = home.Lists().GetByLocalID ("JobList_Normal");
+      var control = home.Lists().GetByLocalID("JobList_Normal");
       var fluentControl = control.ForScreenshot();
 
       // List without a navigator
-      var fluentControlWithoutNavigator = home.Lists().GetByLocalID ("JobList_WithRadioButtons").ForScreenshot();
-      Assert.That (() => fluentControlWithoutNavigator.GetNavigator(), Throws.InvalidOperationException);
+      var fluentControlWithoutNavigator = home.Lists().GetByLocalID("JobList_WithRadioButtons").ForScreenshot();
+      Assert.That(() => fluentControlWithoutNavigator.GetNavigator(), Throws.InvalidOperationException);
 
       Helper
           .RunScreenshotTestExact
           <FluentScreenshotElement<ScreenshotBocListNavigator<BocListControlObject, BocListRowControlObject, BocListCellControlObject>>,
-              BocListControlObjectTest> (
+              BocListControlObjectTest>(
                   fluentControl.GetNavigator(),
                   ScreenshotTestingType.Both,
                   (builder, target) =>
                   {
-                    builder.AnnotateBox (target, Pens.Black, WebPadding.Inner);
+                    builder.AnnotateBox(target, Pens.Black, WebPadding.Inner);
 
-                    builder.AnnotateBox (target.GetFirstPageButton(), Pens.Orange, WebPadding.Inner);
-                    builder.AnnotateBox (target.GetPreviousPageButton(), Pens.Red, WebPadding.Inner);
-                    builder.AnnotateBox (target.GetNextPageButton(), Pens.Violet, WebPadding.Inner);
-                    builder.AnnotateBox (target.GetLastPageButton(), Pens.Aquamarine, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetFirstPageButton(), Pens.Orange, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetPreviousPageButton(), Pens.Red, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetNextPageButton(), Pens.Violet, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetLastPageButton(), Pens.Aquamarine, WebPadding.Inner);
 
-                    builder.AnnotateBox (target.GetPageInformationText(), Pens.Blue, WebPadding.Inner);
-                    builder.AnnotateBox (target.GetPageNumberInput(), Pens.Green, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetPageInformationText(), Pens.Blue, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetPageNumberInput(), Pens.Green, WebPadding.Inner);
 
-                    builder.Crop (target, new WebPadding (1));
+                    builder.Crop(target, new WebPadding(1));
                   });
     }
 
@@ -138,39 +138,39 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     /// Tests that the menu-block can be correctly annotated
     /// and that the fluent API works as intended.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_MenuBlock ()
     {
       var home = Start();
 
       // List with a menu-block
-      var control = home.Lists().GetByLocalID ("JobList_Normal");
+      var control = home.Lists().GetByLocalID("JobList_Normal");
       var fluentControl = control.ForScreenshot();
 
       // List without a menu-block
-      var fluentControlWithoutMenuBlock = home.Lists().GetByLocalID ("JobList_Special").ForScreenshot();
-      Assert.That (() => fluentControlWithoutMenuBlock.GetMenuBlock(), Throws.InvalidOperationException);
+      var fluentControlWithoutMenuBlock = home.Lists().GetByLocalID("JobList_Special").ForScreenshot();
+      Assert.That(() => fluentControlWithoutMenuBlock.GetMenuBlock(), Throws.InvalidOperationException);
 
       Helper
           .RunScreenshotTestExact
           <FluentScreenshotElement<ScreenshotBocListMenuBlock<BocListControlObject, BocListRowControlObject, BocListCellControlObject>>,
-              BocListControlObjectTest> (
+              BocListControlObjectTest>(
                   fluentControl.GetMenuBlock(),
                   ScreenshotTestingType.Both,
                   (builder, target) =>
                   {
-                    builder.AnnotateBox (target, Pens.Black, WebPadding.Inner);
+                    builder.AnnotateBox(target, Pens.Black, WebPadding.Inner);
 
-                    builder.AnnotateBox (target.GetDropDownMenu(), Pens.Red, WebPadding.Inner);
-                    builder.AnnotateBox (target.GetViewsMenu(), Pens.Green, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetDropDownMenu(), Pens.Red, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetViewsMenu(), Pens.Green, WebPadding.Inner);
 
                     // The list menu is bigger than the surrounding div which can result in a cut off element
                     builder.MinimumVisibility = ElementVisibility.PartiallyVisible;
-                    builder.AnnotateBox (target.GetListMenu(), Pens.Blue, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetListMenu(), Pens.Blue, WebPadding.Inner);
                     builder.MinimumVisibility = ElementVisibility.FullyVisible;
 
-                    builder.Crop (target);
+                    builder.Crop(target);
                   });
     }
 
@@ -178,198 +178,198 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     /// Tests that the table-container can be correctly annotated
     /// and that the fluent API works as intended.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_TableContainer ()
     {
       var home = Start();
 
-      var control = home.Lists().GetByLocalID ("JobList_Normal");
+      var control = home.Lists().GetByLocalID("JobList_Normal");
       var fluentControl = control.ForScreenshot();
 
       Helper
           .RunScreenshotTestExact
           <FluentScreenshotElement<ScreenshotBocListTableContainer<BocListControlObject, BocListRowControlObject, BocListCellControlObject>>,
-              BocListControlObjectTest> (
+              BocListControlObjectTest>(
                   fluentControl.GetTableContainer(),
                   ScreenshotTestingType.Both,
                   (builder, target) =>
                   {
-                    builder.AnnotateBox (target, Pens.Black, WebPadding.Inner);
+                    builder.AnnotateBox(target, Pens.Black, WebPadding.Inner);
 
-                    builder.AnnotateBox (target.GetHeaderRow(), Pens.Red, WebPadding.Inner);
-                    builder.AnnotateBox (target.GetRow (2), Pens.Blue, WebPadding.Inner);
-                    builder.AnnotateBox (target.GetColumn (2), Pens.Green, WebPadding.Inner);
-                    builder.AnnotateBox (target.GetColumn (4, false), Pens.Violet, WebPadding.Inner);
-                    builder.AnnotateBox (target.GetHeaderRow().GetCell (5), Pens.Orange, WebPadding.Inner);
-                    builder.AnnotateBox (target.GetColumn (3).GetCell (1), Pens.Aquamarine, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetHeaderRow(), Pens.Red, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetRow(2), Pens.Blue, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetColumn(2), Pens.Green, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetColumn(4, false), Pens.Violet, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetHeaderRow().GetCell(5), Pens.Orange, WebPadding.Inner);
+                    builder.AnnotateBox(target.GetColumn(3).GetCell(1), Pens.Aquamarine, WebPadding.Inner);
 
-                    builder.Crop (target);
+                    builder.Crop(target);
                   });
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_DerivedType ()
     {
       var home = Start();
-      var controlObjectContext = home.Lists().GetByLocalID ("JobList_Normal").Context;
-      var controlObject = new DerivedBocListControlObject (controlObjectContext);
+      var controlObjectContext = home.Lists().GetByLocalID("JobList_Normal").Context;
+      var controlObject = new DerivedBocListControlObject(controlObjectContext);
       var fluentControlObject = controlObject.ForScreenshot();
-      var derivedControlObject = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocList<BocListControlObject, BocListRowControlObject, BocListCellControlObject> (
+      var derivedControlObject = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocList<BocListControlObject, BocListRowControlObject, BocListCellControlObject>(
               fluentControlObject.GetTarget().FluentList, fluentControlObject.GetTarget().FluentElement));
 
       var fluentTableContainer = derivedControlObject.GetTableContainer();
-      Assert.That (fluentTableContainer, Is.Not.Null);
-      var derivedTableContainer = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListTableContainer<BocListControlObject, BocListRowControlObject, BocListCellControlObject> (
+      Assert.That(fluentTableContainer, Is.Not.Null);
+      var derivedTableContainer = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListTableContainer<BocListControlObject, BocListRowControlObject, BocListCellControlObject>(
               fluentTableContainer.GetTarget().FluentList, fluentTableContainer.GetTarget().FluentElement));
       var fluentHeaderRow = derivedTableContainer.GetHeaderRow();
-      Assert.That (fluentHeaderRow, Is.Not.Null);
-      var derivedHeaderRow = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListHeaderRow<BocListControlObject, BocListRowControlObject, BocListCellControlObject> (
+      Assert.That(fluentHeaderRow, Is.Not.Null);
+      var derivedHeaderRow = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListHeaderRow<BocListControlObject, BocListRowControlObject, BocListCellControlObject>(
               fluentHeaderRow.GetTarget().FluentList,
               fluentHeaderRow.GetTarget().FluentElement),
-          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
-      Assert.That (derivedHeaderRow.GetCell(), Is.Not.Null);
-      Assert.That (derivedHeaderRow.GetCell (1), Is.Not.Null);
-      Assert.That (derivedHeaderRow.GetCell ("RowCmd"), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRowCount(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRow(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRow ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
-      var fluentRow = derivedTableContainer.GetRow (1);
-      Assert.That (fluentRow, Is.Not.Null);
-      var derivedRow = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListRow<BocListControlObject, BocListRowControlObject, BocListCellControlObject> (
+          minimumElementVisibility: ((IFluentScreenshotElement)fluentHeaderRow).MinimumElementVisibility);
+      Assert.That(derivedHeaderRow.GetCell(), Is.Not.Null);
+      Assert.That(derivedHeaderRow.GetCell(1), Is.Not.Null);
+      Assert.That(derivedHeaderRow.GetCell("RowCmd"), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetRowCount(), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetRow(), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetRow("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
+      var fluentRow = derivedTableContainer.GetRow(1);
+      Assert.That(fluentRow, Is.Not.Null);
+      var derivedRow = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListRow<BocListControlObject, BocListRowControlObject, BocListCellControlObject>(
               fluentRow.GetTarget().FluentList,
               fluentRow.GetTarget().FluentRow),
-          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
-      Assert.That (derivedRow.GetCell(), Is.Not.Null);
-      Assert.That (derivedRow.GetCell (1), Is.Not.Null);
-      Assert.That (derivedRow.GetCell ("RowCmd"), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn ("RowCmd"), Is.Not.Null);
-      var fluentColumn = derivedTableContainer.GetColumn (1);
-      Assert.That (fluentColumn, Is.Not.Null);
-      var derivedColumn = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListColumn<BocListControlObject, BocListRowControlObject, BocListCellControlObject> (
+          minimumElementVisibility: ((IFluentScreenshotElement)fluentHeaderRow).MinimumElementVisibility);
+      Assert.That(derivedRow.GetCell(), Is.Not.Null);
+      Assert.That(derivedRow.GetCell(1), Is.Not.Null);
+      Assert.That(derivedRow.GetCell("RowCmd"), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetColumn(), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetColumn("RowCmd"), Is.Not.Null);
+      var fluentColumn = derivedTableContainer.GetColumn(1);
+      Assert.That(fluentColumn, Is.Not.Null);
+      var derivedColumn = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListColumn<BocListControlObject, BocListRowControlObject, BocListCellControlObject>(
               fluentColumn.GetTarget().FluentList,
               includeHeader : false,
               columnIndex : 1),
-          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
-      Assert.That (derivedColumn.GetCell(), Is.Not.Null);
-      Assert.That (derivedColumn.GetCell (1), Is.Not.Null);
-      Assert.That (derivedColumn.GetCell ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
+          minimumElementVisibility: ((IFluentScreenshotElement)fluentHeaderRow).MinimumElementVisibility);
+      Assert.That(derivedColumn.GetCell(), Is.Not.Null);
+      Assert.That(derivedColumn.GetCell(1), Is.Not.Null);
+      Assert.That(derivedColumn.GetCell("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
 
       var fluentNavigator = derivedControlObject.GetNavigator();
-      Assert.That (fluentNavigator, Is.Not.Null);
-      var derivedNavigator = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListNavigator<BocListControlObject, BocListRowControlObject, BocListCellControlObject> (
+      Assert.That(fluentNavigator, Is.Not.Null);
+      var derivedNavigator = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListNavigator<BocListControlObject, BocListRowControlObject, BocListCellControlObject>(
               fluentNavigator.GetTarget().FluentList, fluentNavigator.GetTarget().FluentElement));
-      Assert.That (derivedNavigator.GetFirstPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetLastPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetNextPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetPreviousPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetPageInformationText(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetPageNumberInput(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetFirstPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetLastPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetNextPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetPreviousPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetPageInformationText(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetPageNumberInput(), Is.Not.Null);
 
       var fluentMenuBlock = derivedControlObject.GetMenuBlock();
-      Assert.That (fluentMenuBlock, Is.Not.Null);
-      var derivedMenuBlock = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListMenuBlock<BocListControlObject, BocListRowControlObject, BocListCellControlObject> (
+      Assert.That(fluentMenuBlock, Is.Not.Null);
+      var derivedMenuBlock = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListMenuBlock<BocListControlObject, BocListRowControlObject, BocListCellControlObject>(
               fluentMenuBlock.GetTarget().FluentList, fluentMenuBlock.GetTarget().FluentElement));
-      Assert.That (derivedMenuBlock.GetDropDownMenu(), Is.Not.Null);
-      Assert.That (derivedMenuBlock.GetListMenu(), Is.Not.Null);
+      Assert.That(derivedMenuBlock.GetDropDownMenu(), Is.Not.Null);
+      Assert.That(derivedMenuBlock.GetListMenu(), Is.Not.Null);
 
       var fluentDropDown = derivedMenuBlock.GetViewsMenu();
-      Assert.That (fluentDropDown, Is.Not.Null);
-      var derivedDropDown = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListDropDown<BocListControlObject, BocListRowControlObject, BocListCellControlObject> (
+      Assert.That(fluentDropDown, Is.Not.Null);
+      var derivedDropDown = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListDropDown<BocListControlObject, BocListRowControlObject, BocListCellControlObject>(
               fluentDropDown.GetTarget().FluentList, fluentDropDown.GetTarget().FluentElement));
-      Assert.That (() => derivedDropDown.Open(), Throws.Nothing);
+      Assert.That(() => derivedDropDown.Open(), Throws.Nothing);
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_DerivedTypeGeneric ()
     {
       var home = Start();
-      var controlObjectContext = home.Lists().GetByLocalID ("JobList_Normal").Context;
-      var controlObject = new DerivedBocListControlObject<DerivedBocListRowControlObject> (controlObjectContext);
+      var controlObjectContext = home.Lists().GetByLocalID("JobList_Normal").Context;
+      var controlObject = new DerivedBocListControlObject<DerivedBocListRowControlObject>(controlObjectContext);
       var fluentControlObject = controlObject.ForBocListScreenshot<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject>();
-      var derivedControlObject = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocList<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject> (
+      var derivedControlObject = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocList<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject>(
               fluentControlObject.GetTarget().FluentList, fluentControlObject.GetTarget().FluentElement));
 
       var fluentTableContainer = derivedControlObject.GetTableContainer();
-      Assert.That (fluentTableContainer, Is.Not.Null);
-      var derivedTableContainer = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListTableContainer<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject> (
+      Assert.That(fluentTableContainer, Is.Not.Null);
+      var derivedTableContainer = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListTableContainer<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject>(
               fluentTableContainer.GetTarget().FluentList, fluentTableContainer.GetTarget().FluentElement));
       var fluentHeaderRow = derivedTableContainer.GetHeaderRow();
-      Assert.That (fluentHeaderRow, Is.Not.Null);
-      var derivedHeaderRow = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListHeaderRow<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject> (
+      Assert.That(fluentHeaderRow, Is.Not.Null);
+      var derivedHeaderRow = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListHeaderRow<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject>(
               fluentTableContainer.GetTarget().FluentList,
               fluentHeaderRow.GetTarget().FluentElement),
-          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
-      Assert.That (derivedHeaderRow.GetCell(), Is.Not.Null);
-      Assert.That (derivedHeaderRow.GetCell (1), Is.Not.Null);
-      Assert.That (derivedHeaderRow.GetCell ("RowCmd"), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRowCount(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRow(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetRow ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
-      var fluentRow = derivedTableContainer.GetRow (1);
-      Assert.That (fluentRow, Is.Not.Null);
-      var derivedRow = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListRow<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject> (
+          minimumElementVisibility: ((IFluentScreenshotElement)fluentHeaderRow).MinimumElementVisibility);
+      Assert.That(derivedHeaderRow.GetCell(), Is.Not.Null);
+      Assert.That(derivedHeaderRow.GetCell(1), Is.Not.Null);
+      Assert.That(derivedHeaderRow.GetCell("RowCmd"), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetRowCount(), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetRow(), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetRow("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
+      var fluentRow = derivedTableContainer.GetRow(1);
+      Assert.That(fluentRow, Is.Not.Null);
+      var derivedRow = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListRow<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject>(
               fluentRow.GetTarget().FluentList,
               fluentRow.GetTarget().FluentRow),
-          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
-      Assert.That (derivedRow.GetCell(), Is.Not.Null);
-      Assert.That (derivedRow.GetCell (1), Is.Not.Null);
-      Assert.That (derivedRow.GetCell ("RowCmd"), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn(), Is.Not.Null);
-      Assert.That (derivedTableContainer.GetColumn ("RowCmd"), Is.Not.Null);
-      var fluentColumn = derivedTableContainer.GetColumn (1);
-      Assert.That (fluentColumn, Is.Not.Null);
-      var derivedColumn = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListColumn<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject> (
+          minimumElementVisibility: ((IFluentScreenshotElement)fluentHeaderRow).MinimumElementVisibility);
+      Assert.That(derivedRow.GetCell(), Is.Not.Null);
+      Assert.That(derivedRow.GetCell(1), Is.Not.Null);
+      Assert.That(derivedRow.GetCell("RowCmd"), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetColumn(), Is.Not.Null);
+      Assert.That(derivedTableContainer.GetColumn("RowCmd"), Is.Not.Null);
+      var fluentColumn = derivedTableContainer.GetColumn(1);
+      Assert.That(fluentColumn, Is.Not.Null);
+      var derivedColumn = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListColumn<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject>(
               fluentTableContainer.GetTarget().FluentList,
               includeHeader : false,
               columnIndex : 1),
-          minimumElementVisibility: ((IFluentScreenshotElement) fluentHeaderRow).MinimumElementVisibility);
-      Assert.That (derivedColumn.GetCell(), Is.Not.Null);
-      Assert.That (derivedColumn.GetCell (1), Is.Not.Null);
-      Assert.That (derivedColumn.GetCell ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
+          minimumElementVisibility: ((IFluentScreenshotElement)fluentHeaderRow).MinimumElementVisibility);
+      Assert.That(derivedColumn.GetCell(), Is.Not.Null);
+      Assert.That(derivedColumn.GetCell(1), Is.Not.Null);
+      Assert.That(derivedColumn.GetCell("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98"), Is.Not.Null);
 
       var fluentNavigator = derivedControlObject.GetNavigator();
-      Assert.That (fluentNavigator, Is.Not.Null);
-      var derivedNavigator = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListNavigator<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject> (
+      Assert.That(fluentNavigator, Is.Not.Null);
+      var derivedNavigator = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListNavigator<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject>(
               fluentNavigator.GetTarget().FluentList, fluentNavigator.GetTarget().FluentElement));
-      Assert.That (derivedNavigator.GetFirstPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetLastPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetNextPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetPreviousPageButton(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetPageInformationText(), Is.Not.Null);
-      Assert.That (derivedNavigator.GetPageNumberInput(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetFirstPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetLastPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetNextPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetPreviousPageButton(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetPageInformationText(), Is.Not.Null);
+      Assert.That(derivedNavigator.GetPageNumberInput(), Is.Not.Null);
 
       var fluentMenuBlock = derivedControlObject.GetMenuBlock();
-      Assert.That (fluentMenuBlock, Is.Not.Null);
-      var derivedMenuBlock = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListMenuBlock<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject> (
+      Assert.That(fluentMenuBlock, Is.Not.Null);
+      var derivedMenuBlock = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListMenuBlock<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject>(
               fluentMenuBlock.GetTarget().FluentList, fluentMenuBlock.GetTarget().FluentElement));
-      Assert.That (derivedMenuBlock.GetDropDownMenu(), Is.Not.Null);
-      Assert.That (derivedMenuBlock.GetListMenu(), Is.Not.Null);
+      Assert.That(derivedMenuBlock.GetDropDownMenu(), Is.Not.Null);
+      Assert.That(derivedMenuBlock.GetListMenu(), Is.Not.Null);
 
       var fluentDropDown = derivedMenuBlock.GetViewsMenu();
-      Assert.That (fluentDropDown, Is.Not.Null);
-      var derivedDropDown = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocListDropDown<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject> (
+      Assert.That(fluentDropDown, Is.Not.Null);
+      var derivedDropDown = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocListDropDown<DerivedBocListControlObject<DerivedBocListRowControlObject>, DerivedBocListRowControlObject, BocListCellControlObject>(
               fluentDropDown.GetTarget().FluentList, fluentDropDown.GetTarget().FluentElement));
-      Assert.That (() => derivedDropDown.Open(), Throws.Nothing);
+      Assert.That(() => derivedDropDown.Open(), Throws.Nothing);
     }
 
     [Test]
@@ -377,16 +377,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocListWithCheckboxes = home.Lists().GetByLocalID ("JobList_Normal");
-      var completionDetection = new CompletionDetectionStrategyTestHelper (bocListWithCheckboxes);
+      var bocListWithCheckboxes = home.Lists().GetByLocalID("JobList_Normal");
+      var completionDetection = new CompletionDetectionStrategyTestHelper(bocListWithCheckboxes);
 
-      bocListWithCheckboxes.ClickOnSortColumn ("StartDate");
-      bocListWithCheckboxes.ClickOnSortColumn ("Title");
+      bocListWithCheckboxes.ClickOnSortColumn("StartDate");
+      bocListWithCheckboxes.ClickOnSortColumn("Title");
 
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (bocListWithCheckboxes.GetRow (2).GetCell (6).GetText(), Is.EqualTo ("Programmer"));
-      Assert.That (() => bocListWithCheckboxes.GetRow (2).Select(), Throws.Nothing);
-      Assert.That (bocListWithCheckboxes.GetRow (2).IsSelected, Is.True);
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(bocListWithCheckboxes.GetRow(2).GetCell(6).GetText(), Is.EqualTo("Programmer"));
+      Assert.That(() => bocListWithCheckboxes.GetRow(2).Select(), Throws.Nothing);
+      Assert.That(bocListWithCheckboxes.GetRow(2).IsSelected, Is.True);
     }
 
     [Test]
@@ -394,16 +394,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocListWithRadiobuttons = home.Lists().GetByLocalID ("JobList_WithRadioButtons");
-      var completionDetection = new CompletionDetectionStrategyTestHelper (bocListWithRadiobuttons);
+      var bocListWithRadiobuttons = home.Lists().GetByLocalID("JobList_WithRadioButtons");
+      var completionDetection = new CompletionDetectionStrategyTestHelper(bocListWithRadiobuttons);
 
-      bocListWithRadiobuttons.ClickOnSortColumn ("StartDate");
-      bocListWithRadiobuttons.ClickOnSortColumn ("Title");
+      bocListWithRadiobuttons.ClickOnSortColumn("StartDate");
+      bocListWithRadiobuttons.ClickOnSortColumn("Title");
 
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (bocListWithRadiobuttons.GetRow (2).GetCell (2).GetText(), Is.EqualTo ("Programmer"));
-      Assert.That (() => bocListWithRadiobuttons.GetRow (2).Select(), Throws.Nothing);
-      Assert.That (bocListWithRadiobuttons.GetRow (2).IsSelected, Is.True);
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(bocListWithRadiobuttons.GetRow(2).GetCell(2).GetText(), Is.EqualTo("Programmer"));
+      Assert.That(() => bocListWithRadiobuttons.GetRow(2).Select(), Throws.Nothing);
+      Assert.That(bocListWithRadiobuttons.GetRow(2).IsSelected, Is.True);
     }
 
     [Test]
@@ -411,10 +411,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      Assert.That (
-          bocList.GetColumnDefinitions().Select (cd => cd.Title),
-          Is.EquivalentTo (new[] { "I_ndex", "", "", "Command", "Menu", "Title", "StartDate", "EndDate", "DisplayName", "TitleWithCmd" }));
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      Assert.That(
+          bocList.GetColumnDefinitions().Select(cd => cd.Title),
+          Is.EquivalentTo(new[] { "I_ndex", "", "", "Command", "Menu", "Title", "StartDate", "EndDate", "DisplayName", "TitleWithCmd" }));
     }
 
     [Test]
@@ -422,10 +422,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
       var rows = bocList.GetDisplayedRows();
-      Assert.That (rows.Count, Is.EqualTo (2));
-      Assert.That (rows[1].GetCell ("Title").GetText(), Is.EqualTo ("CEO"));
+      Assert.That(rows.Count, Is.EqualTo(2));
+      Assert.That(rows[1].GetCell("Title").GetText(), Is.EqualTo("CEO"));
     }
 
     [Test]
@@ -433,11 +433,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
       var rows = bocList.GetDisplayedRows();
-      var result = rows[1].GetCell().WithDomainPropertyPath ("StartDate");
+      var result = rows[1].GetCell().WithDomainPropertyPath("StartDate");
 
-      Assert.That (result.GetText(), Is.EqualTo ("01.01.2005"));
+      Assert.That(result.GetText(), Is.EqualTo("01.01.2005"));
     }
 
     [Test]
@@ -445,11 +445,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("NestedPropertyPathIdentifier");
+      var bocList = home.Lists().GetByLocalID("NestedPropertyPathIdentifier");
       var rows = bocList.GetDisplayedRows();
-      var result = rows[0].GetCell().WithDomainPropertyPath ("Partner.FirstName");
+      var result = rows[0].GetCell().WithDomainPropertyPath("Partner.FirstName");
 
-      Assert.That (result.GetText(), Is.EqualTo ("A"));
+      Assert.That(result.GetText(), Is.EqualTo("A"));
     }
 
     [Test]
@@ -457,11 +457,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var editableRow = bocList.GetRow (2).Edit();
-      var editableCell = editableRow.GetCell().WithDomainPropertyPath ("StartDate");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var editableRow = bocList.GetRow(2).Edit();
+      var editableCell = editableRow.GetCell().WithDomainPropertyPath("StartDate");
 
-      Assert.That (editableCell.DateTimeValues().First().GetDateTimeAsString(), Is.EqualTo ("01.01.2005"));
+      Assert.That(editableCell.DateTimeValues().First().GetDateTimeAsString(), Is.EqualTo("01.01.2005"));
     }
 
     [Test]
@@ -469,11 +469,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Special");
+      var bocList = home.Lists().GetByLocalID("JobList_Special");
       var rows = bocList.GetDisplayedRows();
-      var cell = rows[0].GetCell().WithDomainPropertyPaths ("StartDate", "EndDate");
+      var cell = rows[0].GetCell().WithDomainPropertyPaths("StartDate", "EndDate");
 
-      Assert.That (cell.GetText(), Is.EqualTo ("01.01.2000 until 31.12.2004"));
+      Assert.That(cell.GetText(), Is.EqualTo("01.01.2000 until 31.12.2004"));
     }
 
     [Test]
@@ -481,8 +481,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      Assert.That (bocList.GetNumberOfRows(), Is.EqualTo (2));
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      Assert.That(bocList.GetNumberOfRows(), Is.EqualTo(2));
     }
 
     [Test]
@@ -490,10 +490,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Empty");
-      Assert.That (bocList.GetNumberOfRows(), Is.EqualTo (0));
-      Assert.That (bocList.IsEmpty(), Is.True);
-      Assert.That (bocList.GetEmptyMessage(), Is.EqualTo ("A wonderful empty list."));
+      var bocList = home.Lists().GetByLocalID("JobList_Empty");
+      Assert.That(bocList.GetNumberOfRows(), Is.EqualTo(0));
+      Assert.That(bocList.IsEmpty(), Is.True);
+      Assert.That(bocList.GetEmptyMessage(), Is.EqualTo("A wonderful empty list."));
     }
 
     [Test]
@@ -501,31 +501,31 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var completionDetection = new CompletionDetectionStrategyTestHelper (bocList);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var completionDetection = new CompletionDetectionStrategyTestHelper(bocList);
 
-      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (4));
+      Assert.That(bocList.GetNumberOfPages(), Is.EqualTo(4));
 
       bocList.GoToNextPage();
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (2));
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(2));
 
       bocList.GoToPreviousPage();
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(1));
 
       bocList.GoToLastPage();
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (4));
-      Assert.That (bocList.GetNumberOfRows(), Is.EqualTo (2));
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(4));
+      Assert.That(bocList.GetNumberOfRows(), Is.EqualTo(2));
 
       bocList.GoToFirstPage();
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(1));
 
-      bocList.GoToSpecificPage (3);
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (3));
+      bocList.GoToSpecificPage(3);
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(3));
     }
 
     [Test]
@@ -533,31 +533,31 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var firstRow = bocList.GetRow (1);
-      var lastRow = bocList.GetRow (bocList.GetNumberOfRows());
-      var completionDetection = new CompletionDetectionStrategyTestHelper (bocList);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var firstRow = bocList.GetRow(1);
+      var lastRow = bocList.GetRow(bocList.GetNumberOfRows());
+      var completionDetection = new CompletionDetectionStrategyTestHelper(bocList);
 
-      Assert.That (firstRow.IsSelected, Is.False);
-      Assert.That (lastRow.IsSelected, Is.False);
-
-      bocList.SelectAll();
-
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (firstRow.IsSelected, Is.True);
-      Assert.That (lastRow.IsSelected, Is.True);
+      Assert.That(firstRow.IsSelected, Is.False);
+      Assert.That(lastRow.IsSelected, Is.False);
 
       bocList.SelectAll();
 
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (firstRow.IsSelected, Is.True);
-      Assert.That (lastRow.IsSelected, Is.True);
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(firstRow.IsSelected, Is.True);
+      Assert.That(lastRow.IsSelected, Is.True);
+
+      bocList.SelectAll();
+
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(firstRow.IsSelected, Is.True);
+      Assert.That(lastRow.IsSelected, Is.True);
 
       bocList.DeselectAll();
 
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (firstRow.IsSelected, Is.False);
-      Assert.That (lastRow.IsSelected, Is.False);
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(firstRow.IsSelected, Is.False);
+      Assert.That(lastRow.IsSelected, Is.False);
     }
 
     [Test]
@@ -565,13 +565,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
-      var row = bocList.GetRow ("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98");
-      Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("CEO"));
+      var row = bocList.GetRow("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("CEO"));
 
-      row = bocList.GetRow (1);
-      Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("Programmer"));
+      row = bocList.GetRow(1);
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("Programmer"));
     }
 
     [Test]
@@ -579,28 +579,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
-      var row = bocList.GetRowWhere ("Title", "CEO");
-      Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("CEO"));
+      var row = bocList.GetRowWhere("Title", "CEO");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("CEO"));
 
-      row = bocList.GetRowWhere().ColumnWithItemIDContainsExactly ("Title", "Programmer");
-      Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("Programmer"));
+      row = bocList.GetRowWhere().ColumnWithItemIDContainsExactly("Title", "Programmer");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("Programmer"));
 
-      row = bocList.GetRowWhere().ColumnWithItemIDContains ("Title", "gra");
-      Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("Programmer"));
+      row = bocList.GetRowWhere().ColumnWithItemIDContains("Title", "gra");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("Programmer"));
 
-      row = bocList.GetRowWhere().ColumnWithIndexContainsExactly (6, "CEO");
-      Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("CEO"));
+      row = bocList.GetRowWhere().ColumnWithIndexContainsExactly(6, "CEO");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("CEO"));
 
-      row = bocList.GetRowWhere().ColumnWithIndexContains (6, "EO");
-      Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("CEO"));
+      row = bocList.GetRowWhere().ColumnWithIndexContains(6, "EO");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("CEO"));
 
-      row = bocList.GetRowWhere().ColumnWithTitleContainsExactly ("Title", "CEO");
-      Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("CEO"));
+      row = bocList.GetRowWhere().ColumnWithTitleContainsExactly("Title", "CEO");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("CEO"));
 
-      row = bocList.GetRowWhere().ColumnWithTitleContains ("Title", "EO");
-      Assert.That (row.GetCell (6).GetText(), Is.EqualTo ("CEO"));
+      row = bocList.GetRowWhere().ColumnWithTitleContains("Title", "EO");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("CEO"));
     }
 
     [Test]
@@ -611,16 +611,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Special");
+      var bocList = home.Lists().GetByLocalID("JobList_Special");
 
-      var row = bocList.GetRowWhere().ColumnWithItemIDContains ("CustomCell", customFourX);
-      Assert.That (row.GetCell (2).GetText(), Is.EqualTo (customFiveX));
+      var row = bocList.GetRowWhere().ColumnWithItemIDContains("CustomCell", customFourX);
+      Assert.That(row.GetCell(2).GetText(), Is.EqualTo(customFiveX));
 
-      row = bocList.GetRowWhere().ColumnWithIndexContains (2, customFourX);
-      Assert.That (row.GetCell (2).GetText(), Is.EqualTo (customFiveX));
+      row = bocList.GetRowWhere().ColumnWithIndexContains(2, customFourX);
+      Assert.That(row.GetCell(2).GetText(), Is.EqualTo(customFiveX));
 
-      row = bocList.GetRowWhere().ColumnWithTitleContains ("Custom cell", customFourX);
-      Assert.That (row.GetCell (2).GetText(), Is.EqualTo (customFiveX));
+      row = bocList.GetRowWhere().ColumnWithTitleContains("Custom cell", customFourX);
+      Assert.That(row.GetCell(2).GetText(), Is.EqualTo(customFiveX));
     }
 
     [Test]
@@ -628,16 +628,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
       // Set Timeout to Zero so we don't have to wait the full timeout for the exception
       bocList.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
 
-      Assert.That (
-          () => bocList.GetRowWhere ("Title", "EO"),
+      Assert.That(
+          () => bocList.GetRowWhere("Title", "EO"),
           Throws.Exception.InstanceOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateControlMissingException (Driver, "Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='6'] span[data-boclist-cell-contents='EO']").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateControlMissingException(Driver, "Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='6'] span[data-boclist-cell-contents='EO']").Message));
     }
 
     [Test]
@@ -645,28 +645,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
-      var cell = bocList.GetCellWhere ("Title", "CEO");
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      var cell = bocList.GetCellWhere("Title", "CEO");
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("Title", "Programmer");
-      Assert.That (cell.GetText(), Is.EqualTo ("Programmer"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly("Title", "Programmer");
+      Assert.That(cell.GetText(), Is.EqualTo("Programmer"));
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("Title", "gra");
-      Assert.That (cell.GetText(), Is.EqualTo ("Programmer"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains("Title", "gra");
+      Assert.That(cell.GetText(), Is.EqualTo("Programmer"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (6, "CEO");
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly(6, "CEO");
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContains (6, "gra");
-      Assert.That (cell.GetText(), Is.EqualTo ("Programmer"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContains(6, "gra");
+      Assert.That(cell.GetText(), Is.EqualTo("Programmer"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Title", "CEO");
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly("Title", "CEO");
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Title", "EO");
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      cell = bocList.GetCellWhere().ColumnWithTitleContains("Title", "EO");
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
     }
 
     [Test]
@@ -674,57 +674,57 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
 
-      var cell = bocList.GetCellWhere ("Title", "With'SingleQuote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      var cell = bocList.GetCellWhere("Title", "With'SingleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("Title", "With'SingleQuote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly("Title", "With'SingleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("Title", "ith'SingleQuot");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains("Title", "ith'SingleQuot");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (1, "With'SingleQuote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly(1, "With'SingleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContains (1, "ith'SingleQuot");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContains(1, "ith'SingleQuot");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Title", "With'SingleQuote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly("Title", "With'SingleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Title", "ith'SingleQuot");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithTitleContains("Title", "ith'SingleQuot");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
     }
-    
+
     [Test]
     public void TestGetCellWhere_WithDoubleQuote ()
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
 
-      var cell = bocList.GetCellWhere ("Title", "With\"DoubleQuote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+      var cell = bocList.GetCellWhere("Title", "With\"DoubleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With\"DoubleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("Title", "With\"DoubleQuote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly("Title", "With\"DoubleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With\"DoubleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("Title", "ith\"DoubleQuot");
-      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains("Title", "ith\"DoubleQuot");
+      Assert.That(cell.GetText(), Is.EqualTo("With\"DoubleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (1, "With\"DoubleQuote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly(1, "With\"DoubleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With\"DoubleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContains (1, "ith\"DoubleQuot");
-      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContains(1, "ith\"DoubleQuot");
+      Assert.That(cell.GetText(), Is.EqualTo("With\"DoubleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Title", "With\"DoubleQuote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly("Title", "With\"DoubleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With\"DoubleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Title", "ith\"DoubleQuot");
-      Assert.That (cell.GetText(), Is.EqualTo ("With\"DoubleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithTitleContains("Title", "ith\"DoubleQuot");
+      Assert.That(cell.GetText(), Is.EqualTo("With\"DoubleQuote"));
     }
 
     [Test]
@@ -732,28 +732,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
 
-      var cell = bocList.GetCellWhere ("Title", "With'SingleQuoteAndWith\"Double1Quote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+      var cell = bocList.GetCellWhere("Title", "With'SingleQuoteAndWith\"Double1Quote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("Title", "With'SingleQuoteAndWith\"Double1Quote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly("Title", "With'SingleQuoteAndWith\"Double1Quote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("Title", "ith'SingleQuoteAndWith\"Double1Quot");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains("Title", "ith'SingleQuoteAndWith\"Double1Quot");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (1, "With'SingleQuoteAndWith\"Double1Quote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly(1, "With'SingleQuoteAndWith\"Double1Quote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContains (1, "ith'SingleQuoteAndWith\"Double1Quote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContains(1, "ith'SingleQuoteAndWith\"Double1Quote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Title", "With'SingleQuoteAndWith\"Double1Quote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly("Title", "With'SingleQuoteAndWith\"Double1Quote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Title", "ith'SingleQuoteAndWith\"Double1Quot");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndWith\"Double1Quote"));
+      cell = bocList.GetCellWhere().ColumnWithTitleContains("Title", "ith'SingleQuoteAndWith\"Double1Quot");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
     }
 
     [Test]
@@ -761,28 +761,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
-      var cell = bocList.GetCellWhere ("RowCmd", "Row command");
-      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+      var cell = bocList.GetCellWhere("RowCmd", "Row command");
+      Assert.That(cell.GetText(), Is.EqualTo("Row command"));
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("RowCmd", "Row command");
-      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly("RowCmd", "Row command");
+      Assert.That(cell.GetText(), Is.EqualTo("Row command"));
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("RowCmd", "ow comman");
-      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains("RowCmd", "ow comman");
+      Assert.That(cell.GetText(), Is.EqualTo("Row command"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (4, "Row command");
-      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly(4, "Row command");
+      Assert.That(cell.GetText(), Is.EqualTo("Row command"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContains (4, "ow comman");
-      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContains(4, "ow comman");
+      Assert.That(cell.GetText(), Is.EqualTo("Row command"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Command", "Row command");
-      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly("Command", "Row command");
+      Assert.That(cell.GetText(), Is.EqualTo("Row command"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Command", "ow comman");
-      Assert.That (cell.GetText(), Is.EqualTo ("Row command"));
+      cell = bocList.GetCellWhere().ColumnWithTitleContains("Command", "ow comman");
+      Assert.That(cell.GetText(), Is.EqualTo("Row command"));
     }
 
     [Test]
@@ -790,28 +790,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_ColumnsWithoutDiagnosticMetadata");
+      var bocList = home.Lists().GetByLocalID("JobList_ColumnsWithoutDiagnosticMetadata");
 
-      var cell = bocList.GetCellWhere ("EditRow", "With'SingleQuote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      var cell = bocList.GetCellWhere("EditRow", "With'SingleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("EditRow", "With'SingleQuote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly("EditRow", "With'SingleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("EditRow", "ith'SingleQuot");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains("EditRow", "ith'SingleQuot");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (1, "With'SingleQuote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly(1, "With'SingleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContains (1, "ith'SingleQuot");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContains(1, "ith'SingleQuot");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Edit", "With'SingleQuote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly("Edit", "With'SingleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Edit", "ith'SingleQuot");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuote"));
+      cell = bocList.GetCellWhere().ColumnWithTitleContains("Edit", "ith'SingleQuot");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
     }
 
     [Test]
@@ -819,28 +819,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_ColumnsWithoutDiagnosticMetadata");
-      
-      var cell = bocList.GetCellWhere ("RowCmd", "With'SingleQuoteAndDouble\"Quote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+      var bocList = home.Lists().GetByLocalID("JobList_ColumnsWithoutDiagnosticMetadata");
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly ("RowCmd", "With'SingleQuoteAndDouble\"Quote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+      var cell = bocList.GetCellWhere("RowCmd", "With'SingleQuoteAndDouble\"Quote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndDouble\"Quote"));
 
-      cell = bocList.GetCellWhere().ColumnWithItemIDContains ("RowCmd", "ith'SingleQuoteAndDouble\"Quote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly("RowCmd", "With'SingleQuoteAndDouble\"Quote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndDouble\"Quote"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly (2, "With'SingleQuoteAndDouble\"Quote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains("RowCmd", "ith'SingleQuoteAndDouble\"Quote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndDouble\"Quote"));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContains (2, "ith'SingleQuoteAndDouble\"Quot");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly(2, "With'SingleQuoteAndDouble\"Quote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndDouble\"Quote"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly ("Command", "With'SingleQuoteAndDouble\"Quote");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+      cell = bocList.GetCellWhere().ColumnWithIndexContains(2, "ith'SingleQuoteAndDouble\"Quot");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndDouble\"Quote"));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Command", "ith'SingleQuoteAndDouble\"Quot");
-      Assert.That (cell.GetText(), Is.EqualTo ("With'SingleQuoteAndDouble\"Quote"));
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly("Command", "With'SingleQuoteAndDouble\"Quote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndDouble\"Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContains("Command", "ith'SingleQuoteAndDouble\"Quot");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndDouble\"Quote"));
     }
 
     [Test]
@@ -851,16 +851,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Special");
+      var bocList = home.Lists().GetByLocalID("JobList_Special");
 
-      var cell = bocList.GetCellWhere().ColumnWithItemIDContains ("CustomCell", customFourX);
-      Assert.That (cell.GetText(), Is.EqualTo (customFiveX));
+      var cell = bocList.GetCellWhere().ColumnWithItemIDContains("CustomCell", customFourX);
+      Assert.That(cell.GetText(), Is.EqualTo(customFiveX));
 
-      cell = bocList.GetCellWhere().ColumnWithIndexContains (2, customFourX);
-      Assert.That (cell.GetText(), Is.EqualTo (customFiveX));
+      cell = bocList.GetCellWhere().ColumnWithIndexContains(2, customFourX);
+      Assert.That(cell.GetText(), Is.EqualTo(customFiveX));
 
-      cell = bocList.GetCellWhere().ColumnWithTitleContains ("Custom cell", customFourX);
-      Assert.That (cell.GetText(), Is.EqualTo (customFiveX));
+      cell = bocList.GetCellWhere().ColumnWithTitleContains("Custom cell", customFourX);
+      Assert.That(cell.GetText(), Is.EqualTo(customFiveX));
     }
 
     [Test]
@@ -868,16 +868,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
       // Set Timeout to Zero so we don't have to wait the full timeout for the exception
       bocList.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
 
-      Assert.That (
-          () => bocList.GetCellWhere ("Title", "EO"),
+      Assert.That(
+          () => bocList.GetCellWhere("Title", "EO"),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateControlMissingException (Driver,"Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='6'] span[data-boclist-cell-contents='EO']").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateControlMissingException(Driver,"Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='6'] span[data-boclist-cell-contents='EO']").Message));
     }
 
     [Test]
@@ -885,13 +885,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Special");
+      var bocList = home.Lists().GetByLocalID("JobList_Special");
 
-      var cell = bocList.GetCellWhere ("DateRange", "01.01.2000 until 31.12.2004");
-      Assert.That (cell.GetText(), Is.EqualTo ("01.01.2000 until 31.12.2004"));
+      var cell = bocList.GetCellWhere("DateRange", "01.01.2000 until 31.12.2004");
+      Assert.That(cell.GetText(), Is.EqualTo("01.01.2000 until 31.12.2004"));
 
-      cell = bocList.GetCellWhere ("CustomCell", "Custom XXXX");
-      Assert.That (cell.GetText(), Is.EqualTo ("Custom XXXX"));
+      cell = bocList.GetCellWhere("CustomCell", "Custom XXXX");
+      Assert.That(cell.GetText(), Is.EqualTo("Custom XXXX"));
     }
 
     [Test]
@@ -899,20 +899,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
 
-      bocList.ClickOnSortColumn ("EndDate");
-      Assert.That (bocList.GetRow (1).GetCell (1).GetText(), Is.EqualTo ("CEO"));
+      bocList.ClickOnSortColumn("EndDate");
+      Assert.That(bocList.GetRow(1).GetCell(1).GetText(), Is.EqualTo("CEO"));
 
-      bocList.ClickOnSortColumn ("EndDate");
-      bocList.ClickOnSortColumn ("EndDate");
-      Assert.That (bocList.GetRow (1).GetCell (1).GetText(), Is.EqualTo ("Programmer"));
+      bocList.ClickOnSortColumn("EndDate");
+      bocList.ClickOnSortColumn("EndDate");
+      Assert.That(bocList.GetRow(1).GetCell(1).GetText(), Is.EqualTo("Programmer"));
 
-      var row = bocList.GetRowWhere ("Title", "Developer");
-      Assert.That (row.GetCell ("DisplayName").GetText(), Is.EqualTo ("Developer"));
+      var row = bocList.GetRowWhere("Title", "Developer");
+      Assert.That(row.GetCell("DisplayName").GetText(), Is.EqualTo("Developer"));
 
-      var columnTitles = bocList.GetColumnDefinitions().Select (cd => cd.Title);
-      Assert.That (columnTitles, Is.EquivalentTo (new[] { "Title", "StartDate", "EndDate", "DisplayName" }));
+      var columnTitles = bocList.GetColumnDefinitions().Select(cd => cd.Title);
+      Assert.That(columnTitles, Is.EquivalentTo(new[] { "Title", "StartDate", "EndDate", "DisplayName" }));
     }
 
     [Test]
@@ -920,22 +920,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var completionDetection = new CompletionDetectionStrategyTestHelper (bocList);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var completionDetection = new CompletionDetectionStrategyTestHelper(bocList);
 
-      bocList.ClickOnSortColumn ("StartDate");
-      bocList.ClickOnSortColumn ("Title");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (bocList.GetRow (2).GetCell (6).GetText(), Is.EqualTo ("Programmer"));
+      bocList.ClickOnSortColumn("StartDate");
+      bocList.ClickOnSortColumn("Title");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(bocList.GetRow(2).GetCell(6).GetText(), Is.EqualTo("Programmer"));
 
-      bocList.ClickOnSortColumn (6);
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (bocList.GetRow (2).GetCell (6).GetText(), Is.EqualTo ("Clerk"));
+      bocList.ClickOnSortColumn(6);
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(bocList.GetRow(2).GetCell(6).GetText(), Is.EqualTo("Clerk"));
 
-      bocList.ClickOnSortColumnByTitle ("Title");
-      bocList.ClickOnSortColumnByTitle ("StartDate");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (bocList.GetRow (2).GetCell (6).GetText(), Is.EqualTo ("Developer"));
+      bocList.ClickOnSortColumnByTitle("Title");
+      bocList.ClickOnSortColumnByTitle("StartDate");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(bocList.GetRow(2).GetCell(6).GetText(), Is.EqualTo("Developer"));
     }
 
     [Test]
@@ -943,20 +943,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var completionDetection = new CompletionDetectionStrategyTestHelper (bocList);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var completionDetection = new CompletionDetectionStrategyTestHelper(bocList);
 
-      bocList.ChangeViewToByLabel ("View 1");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindIdEndingWith ("SelectedViewLabel").Text, Is.EqualTo ("ViewCmd1"));
+      bocList.ChangeViewToByLabel("View 1");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindIdEndingWith("SelectedViewLabel").Text, Is.EqualTo("ViewCmd1"));
 
-      bocList.ChangeViewTo (2);
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindIdEndingWith ("SelectedViewLabel").Text, Is.EqualTo ("ViewCmd2"));
+      bocList.ChangeViewTo(2);
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindIdEndingWith("SelectedViewLabel").Text, Is.EqualTo("ViewCmd2"));
 
-      bocList.ChangeViewTo ("ViewCmd1");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindIdEndingWith ("SelectedViewLabel").Text, Is.EqualTo ("ViewCmd1"));
+      bocList.ChangeViewTo("ViewCmd1");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindIdEndingWith("SelectedViewLabel").Text, Is.EqualTo("ViewCmd1"));
     }
 
     [Test]
@@ -964,14 +964,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
       var dropDownMenu = bocList.GetDropDownMenu();
-      dropDownMenu.SelectItem ("OptCmd2");
+      dropDownMenu.SelectItem("OptCmd2");
 
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("JobList_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderRowLabel").Text, Is.EqualTo ("-1"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("ListMenuOrOptionsClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("OptCmd2|Option command 2"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("JobList_Normal"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderRowLabel").Text, Is.EqualTo("-1"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("ListMenuOrOptionsClick"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("OptCmd2|Option command 2"));
     }
 
     [Test]
@@ -979,27 +979,27 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
       var dropDownMenu = bocList.GetDropDownMenu();
 
       dropDownMenu.Open();
       var menuItem = GetDropDownMenuItem3();
-      Assert.That (menuItem.IsDisabled, Is.True);
+      Assert.That(menuItem.IsDisabled, Is.True);
 
-      var row1 = bocList.GetRow (1);
+      var row1 = bocList.GetRow(1);
       row1.Select();
       menuItem = GetDropDownMenuItem3();
 
-      Assert.That (menuItem.IsDisabled, Is.False);
+      Assert.That(menuItem.IsDisabled, Is.False);
 
-      var row2 = bocList.GetRow (2);
+      var row2 = bocList.GetRow(2);
       row2.Select();
       menuItem = GetDropDownMenuItem3();
 
-      Assert.That (menuItem.IsDisabled, Is.True);
+      Assert.That(menuItem.IsDisabled, Is.True);
 
-      ItemDefinition GetDropDownMenuItem3 () => dropDownMenu.GetItemDefinitions().Single (x => x.ItemID == "OptCmd3");
+      ItemDefinition GetDropDownMenuItem3 () => dropDownMenu.GetItemDefinitions().Single(x => x.ItemID == "OptCmd3");
     }
 
     [Test]
@@ -1007,26 +1007,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
       var listMenu = bocList.GetListMenu();
 
       var menuItem = GetListMenuItem2();
-      Assert.That (menuItem.IsDisabled, Is.True);
+      Assert.That(menuItem.IsDisabled, Is.True);
 
-      var row1 = bocList.GetRow (1);
+      var row1 = bocList.GetRow(1);
       row1.Select();
       menuItem = GetListMenuItem2();
 
-      Assert.That (menuItem.IsDisabled, Is.False);
+      Assert.That(menuItem.IsDisabled, Is.False);
 
-      var row2 = bocList.GetRow (2);
+      var row2 = bocList.GetRow(2);
       row2.Select();
       menuItem = GetListMenuItem2();
 
-      Assert.That (menuItem.IsDisabled, Is.True);
+      Assert.That(menuItem.IsDisabled, Is.True);
 
-      ItemDefinition GetListMenuItem2 () => listMenu.GetItemDefinitions().Single (x => x.ItemID == "ListMenuCmd2");
+      ItemDefinition GetListMenuItem2 () => listMenu.GetItemDefinitions().Single(x => x.ItemID == "ListMenuCmd2");
     }
 
     [Test]
@@ -1034,14 +1034,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
       var listMenu = bocList.GetListMenu();
-      listMenu.SelectItem ("ListMenuCmd3");
+      listMenu.SelectItem("ListMenuCmd3");
 
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("JobList_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderRowLabel").Text, Is.EqualTo ("-1"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("ListMenuOrOptionsClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("ListMenuCmd3|LM cmd 3"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("JobList_Normal"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderRowLabel").Text, Is.EqualTo("-1"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("ListMenuOrOptionsClick"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("ListMenuCmd3|LM cmd 3"));
     }
 
     [Test]
@@ -1049,20 +1049,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var row = bocList.GetRow (2);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var row = bocList.GetRow(2);
 
-      var cell = row.GetCell ("Title");
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      var cell = row.GetCell("Title");
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
 
-      cell = row.GetCell (6);
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      cell = row.GetCell(6);
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
 
-      cell = row.GetCell().WithColumnTitle ("Title");
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      cell = row.GetCell().WithColumnTitle("Title");
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
 
-      cell = row.GetCell().WithColumnTitleContains ("ithCm");
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      cell = row.GetCell().WithColumnTitleContains("ithCm");
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
     }
 
     [Test]
@@ -1070,24 +1070,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var row = bocList.GetRow (2);
-      var completionDetection = new CompletionDetectionStrategyTestHelper (row);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var row = bocList.GetRow(2);
+      var completionDetection = new CompletionDetectionStrategyTestHelper(row);
 
       row.Select();
-      row.GetCell (4).ExecuteCommand();
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("1"));
+      row.GetCell(4).ExecuteCommand();
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindIdEndingWith("SelectedIndicesLabel").Text, Is.EqualTo("1"));
 
       row.Select();
-      row.GetCell (4).ExecuteCommand();
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("1"));
+      row.GetCell(4).ExecuteCommand();
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindIdEndingWith("SelectedIndicesLabel").Text, Is.EqualTo("1"));
 
       row.Deselect();
-      row.GetCell (4).ExecuteCommand();
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("NoneSelected"));
+      row.GetCell(4).ExecuteCommand();
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindIdEndingWith("SelectedIndicesLabel").Text, Is.EqualTo("NoneSelected"));
     }
 
     [Test]
@@ -1095,24 +1095,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_WithRadioButtons");
-      var row = bocList.GetRow (2);
-      var completionDetection = new CompletionDetectionStrategyTestHelper (row);
+      var bocList = home.Lists().GetByLocalID("JobList_WithRadioButtons");
+      var row = bocList.GetRow(2);
+      var completionDetection = new CompletionDetectionStrategyTestHelper(row);
 
       row.Select();
-      bocList.GetListMenu().SelectItem ("ListMenuCmd1");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo ("1"));
+      bocList.GetListMenu().SelectItem("ListMenuCmd1");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindIdEndingWith("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo("1"));
 
       row.Select();
-      bocList.GetListMenu().SelectItem ("ListMenuCmd1");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo ("1"));
+      bocList.GetListMenu().SelectItem("ListMenuCmd1");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindIdEndingWith("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo("1"));
 
       row.Deselect();
-      bocList.GetListMenu().SelectItem ("ListMenuCmd1");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo ("NoneSelected"));
+      bocList.GetListMenu().SelectItem("ListMenuCmd1");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindIdEndingWith("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo("NoneSelected"));
     }
 
     [Test]
@@ -1120,12 +1120,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      bocList.GoToSpecificPage (3);
-      bocList.GetRow (1).Select();
-      bocList.GetRow (1).GetCell (4).ExecuteCommand(); // trigger postback
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      bocList.GoToSpecificPage(3);
+      bocList.GetRow(1).Select();
+      bocList.GetRow(1).GetCell(4).ExecuteCommand(); // trigger postback
 
-      Assert.That (home.Scope.FindIdEndingWith ("SelectedIndicesLabel").Text, Is.EqualTo ("4"));
+      Assert.That(home.Scope.FindIdEndingWith("SelectedIndicesLabel").Text, Is.EqualTo("4"));
     }
 
     [Test]
@@ -1133,15 +1133,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var row = bocList.GetRow (2);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var row = bocList.GetRow(2);
       var dropDownMenu = row.GetDropDownMenu();
-      dropDownMenu.SelectItem ("RowMenuItemCmd2");
+      dropDownMenu.SelectItem("RowMenuItemCmd2");
 
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("JobList_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderRowLabel").Text, Is.EqualTo ("1"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("RowContextMenuClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("RowMenuItemCmd2|Row menu 2"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("JobList_Normal"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderRowLabel").Text, Is.EqualTo("1"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("RowContextMenuClick"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("RowMenuItemCmd2|Row menu 2"));
     }
 
     [Test]
@@ -1149,13 +1149,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var row = bocList.GetRow (2);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var row = bocList.GetRow(2);
 
-      Assert.That (home.Scope.FindIdEndingWith ("EditModeLabel").Text, Is.EqualTo ("False"));
+      Assert.That(home.Scope.FindIdEndingWith("EditModeLabel").Text, Is.EqualTo("False"));
 
       row.Edit();
-      Assert.That (home.Scope.FindIdEndingWith ("EditModeLabel").Text, Is.EqualTo ("True"));
+      Assert.That(home.Scope.FindIdEndingWith("EditModeLabel").Text, Is.EqualTo("True"));
     }
 
     [Test]
@@ -1163,15 +1163,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_ReadOnly");
-      Assert.That (bocList.IsReadOnly(), Is.True);
+      var bocList = home.Lists().GetByLocalID("JobList_ReadOnly");
+      Assert.That(bocList.IsReadOnly(), Is.True);
 
-      var row = bocList.GetRow (2);
-      Assert.That (
+      var row = bocList.GetRow(2);
+      Assert.That(
           () => row.Edit(),
           Throws.InstanceOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "The control is currently in a read-only state. Therefore, the operation is not possible.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "The control is currently in a read-only state. Therefore, the operation is not possible.").Message));
     }
 
     [Test]
@@ -1179,17 +1179,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
-      var row1 = bocList.GetRow (1);
-      Assert.That (row1.StyleInfo.HasCssClass ("bocListDataRow"), Is.True);
-      Assert.That (row1.StyleInfo.HasCssClass ("odd"), Is.True);
-      Assert.That (row1.StyleInfo.HasCssClass ("oddDoesNotHaveThisClass"), Is.False);
+      var row1 = bocList.GetRow(1);
+      Assert.That(row1.StyleInfo.HasCssClass("bocListDataRow"), Is.True);
+      Assert.That(row1.StyleInfo.HasCssClass("odd"), Is.True);
+      Assert.That(row1.StyleInfo.HasCssClass("oddDoesNotHaveThisClass"), Is.False);
 
-      var row2 = bocList.GetRow (2);
-      Assert.That (row2.StyleInfo.HasCssClass ("bocListDataRow"), Is.True);
-      Assert.That (row2.StyleInfo.HasCssClass ("even"), Is.True);
-      Assert.That (row2.StyleInfo.HasCssClass ("evenDoesNotHaveThisClass"), Is.False);
+      var row2 = bocList.GetRow(2);
+      Assert.That(row2.StyleInfo.HasCssClass("bocListDataRow"), Is.True);
+      Assert.That(row2.StyleInfo.HasCssClass("even"), Is.True);
+      Assert.That(row2.StyleInfo.HasCssClass("evenDoesNotHaveThisClass"), Is.False);
     }
 
     [Test]
@@ -1197,10 +1197,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
-      var row1 = bocList.GetRow (1);
-      Assert.That (row1.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.Transparent)); // yep, style information is on the cells only!
+      var row1 = bocList.GetRow(1);
+      Assert.That(row1.StyleInfo.GetBackgroundColor(), Is.EqualTo(WebColor.Transparent)); // yep, style information is on the cells only!
     }
 
     [Test]
@@ -1208,9 +1208,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var row = bocList.GetRow (1);
-      Assert.That (row.StyleInfo.GetTextColor(), Is.EqualTo (WebColor.Black));
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var row = bocList.GetRow(1);
+      Assert.That(row.StyleInfo.GetTextColor(), Is.EqualTo(WebColor.Black));
     }
 
     [Test]
@@ -1218,14 +1218,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var editableRow = bocList.GetRow (2).Edit();
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var editableRow = bocList.GetRow(2).Edit();
 
       editableRow.Save();
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("JobList_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderRowLabel").Text, Is.EqualTo ("1"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("InLineEdit"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("Saved"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("JobList_Normal"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderRowLabel").Text, Is.EqualTo("1"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("InLineEdit"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("Saved"));
     }
 
     [Test]
@@ -1233,14 +1233,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var editableRow = bocList.GetRow (2).Edit();
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var editableRow = bocList.GetRow(2).Edit();
 
       editableRow.Cancel();
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("JobList_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderRowLabel").Text, Is.EqualTo ("1"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("InLineEdit"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("Canceled"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("JobList_Normal"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderRowLabel").Text, Is.EqualTo("1"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("InLineEdit"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("Canceled"));
     }
 
     [Test]
@@ -1248,14 +1248,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var editableRow = bocList.GetRow (2).Edit();
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var editableRow = bocList.GetRow(2).Edit();
 
-      var cell = editableRow.GetCell ("Title");
-      Assert.That (cell.TextValues().First().GetText(), Is.EqualTo ("CEO"));
+      var cell = editableRow.GetCell("Title");
+      Assert.That(cell.TextValues().First().GetText(), Is.EqualTo("CEO"));
 
-      cell = editableRow.GetCell (6);
-      Assert.That (cell.TextValues().First().GetText(), Is.EqualTo ("CEO"));
+      cell = editableRow.GetCell(6);
+      Assert.That(cell.TextValues().First().GetText(), Is.EqualTo("CEO"));
     }
 
     [Test]
@@ -1263,10 +1263,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var cell = bocList.GetRow (2).GetCell (9);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var cell = bocList.GetRow(2).GetCell(9);
 
-      Assert.That (cell.GetText(), Is.EqualTo ("CEO"));
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
     }
 
     [Test]
@@ -1274,15 +1274,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var cell = bocList.GetRow (2).GetCell (4);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var cell = bocList.GetRow(2).GetCell(4);
 
       cell.ExecuteCommand();
 
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("JobList_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderRowLabel").Text, Is.EqualTo ("1"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("CellCommandClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("RowCmd"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("JobList_Normal"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderRowLabel").Text, Is.EqualTo("1"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("CellCommandClick"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("RowCmd"));
     }
 
     [Test]
@@ -1290,11 +1290,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var cell = bocList.GetRow (1).GetCell (1);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var cell = bocList.GetRow(1).GetCell(1);
 
-      Assert.That (cell.StyleInfo.HasCssClass ("bocListDataCell"), Is.True);
-      Assert.That (cell.StyleInfo.HasCssClass ("doesNotHaveThisClass"), Is.False);
+      Assert.That(cell.StyleInfo.HasCssClass("bocListDataCell"), Is.True);
+      Assert.That(cell.StyleInfo.HasCssClass("doesNotHaveThisClass"), Is.False);
     }
 
     [Test]
@@ -1302,13 +1302,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
-      var cell1 = bocList.GetRow (1).GetCell (1);
-      Assert.That (cell1.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.White));
+      var cell1 = bocList.GetRow(1).GetCell(1);
+      Assert.That(cell1.StyleInfo.GetBackgroundColor(), Is.EqualTo(WebColor.White));
 
-      var cell2 = bocList.GetRow (2).GetCell (1);
-      Assert.That (cell2.StyleInfo.GetBackgroundColor(), Is.EqualTo (WebColor.FromRgb (240, 240, 240)));
+      var cell2 = bocList.GetRow(2).GetCell(1);
+      Assert.That(cell2.StyleInfo.GetBackgroundColor(), Is.EqualTo(WebColor.FromRgb(240, 240, 240)));
     }
 
     [Test]
@@ -1316,9 +1316,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var cell = bocList.GetRow (1).GetCell (1);
-      Assert.That (cell.StyleInfo.GetTextColor(), Is.EqualTo (WebColor.Black));
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var cell = bocList.GetRow(1).GetCell(1);
+      Assert.That(cell.StyleInfo.GetTextColor(), Is.EqualTo(WebColor.Black));
     }
 
     [Test]
@@ -1326,15 +1326,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      var editableRow = bocList.GetRow (2).Edit();
-      var editableCell = editableRow.GetCell (6);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      var editableRow = bocList.GetRow(2).Edit();
+      var editableCell = editableRow.GetCell(6);
 
       var bocText = editableCell.TextValues().First();
-      bocText.FillWith ("NewTitle");
+      bocText.FillWith("NewTitle");
 
       editableRow.Save();
-      Assert.That (bocList.GetCellWhere ("Title", "NewTitle").GetText(), Is.EqualTo ("NewTitle"));
+      Assert.That(bocList.GetCellWhere("Title", "NewTitle").GetText(), Is.EqualTo("NewTitle"));
     }
 
     [Test]
@@ -1342,9 +1342,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(1));
     }
 
     [Test]
@@ -1352,8 +1352,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(1));
     }
 
     [Test]
@@ -1361,12 +1361,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
       //Enter edit mode
-      bocList.GetRow (2).Edit();
+      bocList.GetRow(2).Edit();
 
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(1));
     }
 
     [Test]
@@ -1374,9 +1374,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
-      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (4));
+      Assert.That(bocList.GetNumberOfPages(), Is.EqualTo(4));
     }
 
     [Test]
@@ -1384,8 +1384,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
-      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (1));
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
+      Assert.That(bocList.GetNumberOfPages(), Is.EqualTo(1));
     }
 
     [Test]
@@ -1393,27 +1393,27 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
       //Enter edit mode
-      bocList.GetRow (2).Edit();
+      bocList.GetRow(2).Edit();
 
-      Assert.That (bocList.GetNumberOfPages(), Is.EqualTo (4));
+      Assert.That(bocList.GetNumberOfPages(), Is.EqualTo(4));
     }
 
-    
+
     [Test]
     public void TestGoToSpecificPage_FirstPage ()
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
       //Navigate to next Page to be able to Test GoToSpecificPage (1)
       bocList.GoToNextPage();
 
-      bocList.GoToSpecificPage (1);
+      bocList.GoToSpecificPage(1);
 
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(1));
     }
 
     [Test]
@@ -1421,11 +1421,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
-      bocList.GoToSpecificPage (3);
+      bocList.GoToSpecificPage(3);
 
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (3));
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(3));
     }
 
     [Test]
@@ -1433,12 +1433,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
-      Assert.That (
-          () => bocList.GoToSpecificPage (1),
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
+      Assert.That(
+          () => bocList.GoToSpecificPage(1),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List only has one page.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List only has one page.").Message));
     }
 
     [Test]
@@ -1446,16 +1446,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
       //Enter edit mode
-      bocList.GetRow (2).Edit();
+      bocList.GetRow(2).Edit();
 
-      Assert.That (
-          () => bocList.GoToSpecificPage (3),
+      Assert.That(
+          () => bocList.GoToSpecificPage(3),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     [Test]
@@ -1463,12 +1463,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
-      Assert.That (
-          () => bocList.GoToSpecificPage (1),
+      Assert.That(
+          () => bocList.GoToSpecificPage(1),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "List is already on page '1'.").Message));
+              .With.Message.EqualTo(AssertionExceptionUtility.CreateExpectationException(Driver, "List is already on page '1'.").Message));
     }
 
     [Test]
@@ -1476,15 +1476,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
       var pageNumberGreaterThanNumberOfPages = 5000;
 
 
-      Assert.That (
-          () => bocList.GoToSpecificPage (pageNumberGreaterThanNumberOfPages),
+      Assert.That(
+          () => bocList.GoToSpecificPage(pageNumberGreaterThanNumberOfPages),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, $"Unable to change page number to '{pageNumberGreaterThanNumberOfPages}'. Page number must be between '1' and '4'.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, $"Unable to change page number to '{pageNumberGreaterThanNumberOfPages}'. Page number must be between '1' and '4'.").Message));
     }
 
     [Test]
@@ -1492,15 +1492,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
       var pageNumberLesserThanNumberOfPages = 0;
 
 
-      Assert.That (
-          () => bocList.GoToSpecificPage (pageNumberLesserThanNumberOfPages),
+      Assert.That(
+          () => bocList.GoToSpecificPage(pageNumberLesserThanNumberOfPages),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, $"Unable to change page number to '{pageNumberLesserThanNumberOfPages}'. Page number must be between '1' and '4'.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, $"Unable to change page number to '{pageNumberLesserThanNumberOfPages}'. Page number must be between '1' and '4'.").Message));
     }
 
     [Test]
@@ -1508,12 +1508,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      bocList.GoToSpecificPage (2);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      bocList.GoToSpecificPage(2);
 
       bocList.GoToFirstPage();
 
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(1));
     }
 
     [Test]
@@ -1521,12 +1521,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
-      Assert.That (
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
+      Assert.That(
           () => bocList.GoToFirstPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List only has one page.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List only has one page.").Message));
     }
 
     [Test]
@@ -1534,16 +1534,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
       //Enter edit mode
-      bocList.GetRow (2).Edit();
+      bocList.GetRow(2).Edit();
 
-      Assert.That (
+      Assert.That(
           () => bocList.GoToFirstPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     [Test]
@@ -1551,13 +1551,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
-      Assert.That (
+      Assert.That(
           () => bocList.GoToFirstPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change page number to the first page, as the list is already on the first page.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change page number to the first page, as the list is already on the first page.").Message));
     }
 
     [Test]
@@ -1565,12 +1565,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      bocList.GoToSpecificPage (2);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      bocList.GoToSpecificPage(2);
 
       bocList.GoToPreviousPage();
 
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (1));
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(1));
     }
 
     [Test]
@@ -1578,12 +1578,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
-      Assert.That (
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
+      Assert.That(
           () => bocList.GoToPreviousPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List only has one page.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List only has one page.").Message));
     }
 
     [Test]
@@ -1591,16 +1591,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
       //Enter edit mode
-      bocList.GetRow (2).Edit();
+      bocList.GetRow(2).Edit();
 
-      Assert.That (
+      Assert.That(
           () => bocList.GoToPreviousPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     [Test]
@@ -1608,13 +1608,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
-      Assert.That (
+      Assert.That(
           () => bocList.GoToPreviousPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change page number to the previous page, as the list is already on the first page.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change page number to the previous page, as the list is already on the first page.").Message));
     }
 
     [Test]
@@ -1622,10 +1622,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
       bocList.GoToNextPage();
 
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (2));
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(2));
     }
 
     [Test]
@@ -1633,12 +1633,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
-      Assert.That (
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
+      Assert.That(
           () => bocList.GoToNextPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List only has one page.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List only has one page.").Message));
     }
 
     [Test]
@@ -1646,16 +1646,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
       //Enter edit mode
-      bocList.GetRow (2).Edit();
+      bocList.GetRow(2).Edit();
 
-      Assert.That (
+      Assert.That(
           () => bocList.GoToNextPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     [Test]
@@ -1663,14 +1663,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
       bocList.GoToLastPage();
 
-      Assert.That (
+      Assert.That(
           () => bocList.GoToNextPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change page number to the next page, as the list is already on the last page.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change page number to the next page, as the list is already on the last page.").Message));
     }
 
     [Test]
@@ -1678,11 +1678,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
       bocList.GoToLastPage();
 
-      Assert.That (bocList.GetCurrentPage(), Is.EqualTo (4));
+      Assert.That(bocList.GetCurrentPage(), Is.EqualTo(4));
     }
 
     [Test]
@@ -1690,12 +1690,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_NoFakeTableHeader");
-      Assert.That (
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
+      Assert.That(
           () => bocList.GoToLastPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List only has one page.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List only has one page.").Message));
     }
 
     [Test]
@@ -1703,16 +1703,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
 
       //Enter edit mode
-      bocList.GetRow (2).Edit();
+      bocList.GetRow(2).Edit();
 
-      Assert.That (
+      Assert.That(
           () => bocList.GoToLastPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List is currently in edit mode.").Message));
     }
 
     [Test]
@@ -1720,39 +1720,39 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocList = home.Lists().GetByLocalID ("JobList_Normal");
-      bocList.GoToSpecificPage (4);
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+      bocList.GoToSpecificPage(4);
 
-      Assert.That (
+      Assert.That(
           () => bocList.GoToLastPage(),
           Throws.Exception.TypeOf<WebTestException>()
-              .With.Message.EqualTo (
-                  AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to change page number to the last page, as the list is already on the last page.").Message));
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change page number to the last page, as the list is already on the last page.").Message));
     }
 
     [Test]
     public void GetColumnDefinitions_ShouldAlwaysFetchTheColumnsAnew ()
     {
       var home = Start();
-      var bocList = home.Lists().GetByLocalID ("JobList_Empty_VariableColumns");
+      var bocList = home.Lists().GetByLocalID("JobList_Empty_VariableColumns");
 
       var view1Columns = bocList.GetColumnDefinitions();
-      bocList.ChangeViewTo (2);
+      bocList.ChangeViewTo(2);
       var view2Columns = bocList.GetColumnDefinitions();
 
-      Assert.That (view1Columns.Count, Is.EqualTo (2));
-      Assert.That (view2Columns.Count, Is.EqualTo (3));
+      Assert.That(view1Columns.Count, Is.EqualTo(2));
+      Assert.That(view2Columns.Count, Is.EqualTo(3));
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocList");
+      return Start("BocList");
     }
 
     private class DerivedBocListControlObject : BocListControlObject
     {
       public DerivedBocListControlObject (ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
     }
@@ -1761,7 +1761,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
         where TBocListRowControlObject : BocListRowControlObject
     {
       public DerivedBocListControlObject (ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
     }
@@ -1769,7 +1769,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     private class DerivedBocListRowControlObject : BocListRowControlObject
     {
       public DerivedBocListRowControlObject (IBocListRowControlObjectHostAccessor accessor, ControlObjectContext context)
-          : base (accessor, context)
+          : base(accessor, context)
       {
       }
     }
@@ -1782,7 +1782,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocList (
           IFluentScreenshotElementWithCovariance<TList> fluentList,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentList, fluentElement)
+          : base(fluentList, fluentElement)
       {
       }
     }
@@ -1795,7 +1795,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocListTableContainer (
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentList, fluentElement)
+          : base(fluentList, fluentElement)
       {
       }
     }
@@ -1808,7 +1808,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocListHeaderRow (
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentList, fluentElement)
+          : base(fluentList, fluentElement)
       {
       }
     }
@@ -1821,7 +1821,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocListRow (
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           IFluentScreenshotElement<TRow> fluentRow)
-          : base (fluentList, fluentRow)
+          : base(fluentList, fluentRow)
       {
       }
     }
@@ -1835,7 +1835,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           int columnIndex,
           bool includeHeader)
-          : base (fluentList, columnIndex, includeHeader)
+          : base(fluentList, columnIndex, includeHeader)
       {
       }
     }
@@ -1848,7 +1848,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocListNavigator (
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentList, fluentElement)
+          : base(fluentList, fluentElement)
       {
       }
     }
@@ -1861,7 +1861,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocListMenuBlock (
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentList, fluentElement)
+          : base(fluentList, fluentElement)
       {
       }
     }
@@ -1874,7 +1874,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       public DerivedScreenshotBocListDropDown (
           IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
           IFluentScreenshotElement<ElementScope> fluentElement)
-          : base (fluentList, fluentElement)
+          : base(fluentList, fluentElement)
       {
       }
     }

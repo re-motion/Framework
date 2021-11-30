@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     IStorageProviderCommand<object, IRdbmsProviderCommandExecutionContext> CreateForScalarQuery (IQuery query);
 
     IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>, TExecutionContext> CreateForMultiTimestampLookup (
-        IEnumerable<ObjectID> objectIDs); 
+        IEnumerable<ObjectID> objectIDs);
 
     IStorageProviderCommand<TExecutionContext> CreateForSave (IEnumerable<DataContainer> dataContainers);
   }

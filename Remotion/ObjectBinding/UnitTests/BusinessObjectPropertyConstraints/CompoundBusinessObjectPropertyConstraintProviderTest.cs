@@ -7,7 +7,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyConstraints
   public class CompoundBusinessObjectPropertyConstraintProviderTest
   {
     [Test]
-    [Ignore ("TODO RM-5906")]
+    [Ignore("TODO RM-5906")]
     public void GetPropertyConstraints ()
     {
     }

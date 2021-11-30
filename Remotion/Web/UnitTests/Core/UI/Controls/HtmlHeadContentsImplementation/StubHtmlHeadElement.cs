@@ -27,16 +27,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.HtmlHeadContentsImplementation
 
     public StubHtmlHeadElement (string content)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("content", content);
+      ArgumentUtility.CheckNotNullOrEmpty("content", content);
 
       _content = content;
     }
 
     public override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      writer.WriteLine (_content);
+      writer.WriteLine(_content);
     }
   }
 }

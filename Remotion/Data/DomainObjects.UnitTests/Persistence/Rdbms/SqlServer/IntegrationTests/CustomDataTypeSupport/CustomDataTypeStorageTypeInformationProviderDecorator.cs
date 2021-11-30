@@ -30,56 +30,56 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public CustomDataTypeStorageTypeInformationProviderDecorator (IStorageTypeInformationProvider innerStorageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull ("innerStorageTypeInformationProvider", innerStorageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull("innerStorageTypeInformationProvider", innerStorageTypeInformationProvider);
 
       _innerStorageTypeInformationProvider = innerStorageTypeInformationProvider;
     }
 
     public IStorageTypeInformation GetStorageTypeForID (bool isStorageTypeNullable)
     {
-      return _innerStorageTypeInformationProvider.GetStorageTypeForID (isStorageTypeNullable);
+      return _innerStorageTypeInformationProvider.GetStorageTypeForID(isStorageTypeNullable);
     }
 
     public IStorageTypeInformation GetStorageTypeForSerializedObjectID (bool isStorageTypeNullable)
     {
-      return _innerStorageTypeInformationProvider.GetStorageTypeForSerializedObjectID (isStorageTypeNullable);
+      return _innerStorageTypeInformationProvider.GetStorageTypeForSerializedObjectID(isStorageTypeNullable);
     }
 
     public IStorageTypeInformation GetStorageTypeForClassID (bool isStorageTypeNullable)
     {
-      return _innerStorageTypeInformationProvider.GetStorageTypeForClassID (isStorageTypeNullable);
+      return _innerStorageTypeInformationProvider.GetStorageTypeForClassID(isStorageTypeNullable);
     }
 
     public IStorageTypeInformation GetStorageTypeForTimestamp (bool isStorageTypeNullable)
     {
-      return _innerStorageTypeInformationProvider.GetStorageTypeForTimestamp (isStorageTypeNullable);
+      return _innerStorageTypeInformationProvider.GetStorageTypeForTimestamp(isStorageTypeNullable);
     }
 
     public IStorageTypeInformation GetStorageType (PropertyDefinition propertyDefinition, bool forceNullable)
     {
-      if (typeof (SimpleDataType).IsAssignableFrom (propertyDefinition.PropertyType))
-        return CreateSimpleDataTypeStorageTypeInformation (propertyDefinition.IsNullable, propertyDefinition.MaxLength);
-      return _innerStorageTypeInformationProvider.GetStorageType (propertyDefinition, forceNullable);
+      if (typeof(SimpleDataType).IsAssignableFrom(propertyDefinition.PropertyType))
+        return CreateSimpleDataTypeStorageTypeInformation(propertyDefinition.IsNullable, propertyDefinition.MaxLength);
+      return _innerStorageTypeInformationProvider.GetStorageType(propertyDefinition, forceNullable);
     }
 
     public IStorageTypeInformation GetStorageType (Type type)
     {
-      if (typeof (SimpleDataType).IsAssignableFrom (type))
-        return CreateSimpleDataTypeStorageTypeInformation (isStorageTypeNullable: true, maxLength: null);
-      return _innerStorageTypeInformationProvider.GetStorageType (type);
+      if (typeof(SimpleDataType).IsAssignableFrom(type))
+        return CreateSimpleDataTypeStorageTypeInformation(isStorageTypeNullable: true, maxLength: null);
+      return _innerStorageTypeInformationProvider.GetStorageType(type);
     }
 
     public IStorageTypeInformation GetStorageType (object value)
     {
       if (value is SimpleDataType)
-        return CreateSimpleDataTypeStorageTypeInformation (isStorageTypeNullable: true, maxLength: null);
-      return _innerStorageTypeInformationProvider.GetStorageType (value);
+        return CreateSimpleDataTypeStorageTypeInformation(isStorageTypeNullable: true, maxLength: null);
+      return _innerStorageTypeInformationProvider.GetStorageType(value);
     }
 
     private IStorageTypeInformation CreateSimpleDataTypeStorageTypeInformation (bool isStorageTypeNullable, int? maxLength)
     {
-      return new SimpleDataTypeStorageTypeInformation (
-          maxLength.HasValue ? string.Format ("nvarchar ({0})", maxLength.Value) : "nvarchar (max)",
+      return new SimpleDataTypeStorageTypeInformation(
+          maxLength.HasValue ? string.Format("nvarchar ({0})", maxLength.Value) : "nvarchar (max)",
           DbType.String,
           isStorageTypeNullable,
           maxLength);

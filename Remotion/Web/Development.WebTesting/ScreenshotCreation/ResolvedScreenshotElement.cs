@@ -95,14 +95,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         CoordinateSystem? coordinateSystem = null,
         Rectangle? elementBounds = null,
         Rectangle? unresolvedBounds = null,
-        OptionalParameter<Rectangle?> parentBounds = default (OptionalParameter<Rectangle?>),
+        OptionalParameter<Rectangle?> parentBounds = default(OptionalParameter<Rectangle?>),
         ElementVisibility? elementVisibility = null)
     {
-      return new ResolvedScreenshotElement (
+      return new ResolvedScreenshotElement(
           coordinateSystem ?? _coordinateSystem,
           elementBounds ?? _elementBounds,
           elementVisibility ?? _elementVisibility,
-          parentBounds.GetValueOrDefault (_parentBounds),
+          parentBounds.GetValueOrDefault(_parentBounds),
           unresolvedBounds ?? _unresolvedBounds);
     }
   }

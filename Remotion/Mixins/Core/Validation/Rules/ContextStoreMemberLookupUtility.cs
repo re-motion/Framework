@@ -30,24 +30,24 @@ namespace Remotion.Mixins.Validation.Rules
     public IEnumerable<TMemberDefinition> GetCachedMembersByName (IDictionary<object, object> contextStore, TargetClassDefinition targetClass, string name)
     {
       Tuple<string, TargetClassDefinition> cacheKey =
-          Tuple.Create (typeof (ContextStoreMemberLookupUtility<TMemberDefinition>).GetFullNameChecked() + ".GetCachedMembersByName", targetClass);
+          Tuple.Create(typeof(ContextStoreMemberLookupUtility<TMemberDefinition>).GetFullNameChecked() + ".GetCachedMembersByName", targetClass);
 
       // Optimized for memory allocations
       if (_contextStoreValueFactory == null)
-        _contextStoreValueFactory = key => GetUncachedMethodDefinitions (((Tuple<string, TargetClassDefinition>) key).Item2);
+        _contextStoreValueFactory = key => GetUncachedMethodDefinitions(((Tuple<string, TargetClassDefinition>)key).Item2);
 
-      var methodDefinitions = (MultiDictionary<string, TMemberDefinition>) contextStore.GetOrCreateValue (cacheKey, _contextStoreValueFactory);
+      var methodDefinitions = (MultiDictionary<string, TMemberDefinition>)contextStore.GetOrCreateValue(cacheKey, _contextStoreValueFactory);
       return methodDefinitions[name];
     }
 
     private MultiDictionary<string, TMemberDefinition> GetUncachedMethodDefinitions (TargetClassDefinition targetClass)
     {
-      var memberDefinitions = new MultiDictionary<string, TMemberDefinition> ();
-      foreach (MemberDefinitionBase memberDefinition in targetClass.GetAllMembers ())
+      var memberDefinitions = new MultiDictionary<string, TMemberDefinition>();
+      foreach (MemberDefinitionBase memberDefinition in targetClass.GetAllMembers())
       {
         var castMemberDefinition = memberDefinition as TMemberDefinition;
         if (castMemberDefinition != null)
-          memberDefinitions.Add (memberDefinition.Name, castMemberDefinition);
+          memberDefinitions.Add(memberDefinition.Name, castMemberDefinition);
       }
       return memberDefinitions;
     }

@@ -31,20 +31,20 @@ namespace Remotion.Web.Development.WebTesting
   /// </summary>
   public static class CoypuElementScopeFillInWithAndSendKeysExtensions
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (CoypuElementScopeFillInWithAndSendKeysExtensions));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(CoypuElementScopeFillInWithAndSendKeysExtensions));
 
     /// <summary>
     /// ASP.NET WebForms-ready &amp; IE-compatible version for Coypu's <see cref="ElementScope.SendKeys"/> method.
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
     /// <param name="value">The value to fill in.</param>
-    [Obsolete ("Use scope.SendKeys (string) instead to send OpenQA.Selenium.Keys or individual characters. (Version 1.21.3)", false)]
+    [Obsolete("Use scope.SendKeys (string) instead to send OpenQA.Selenium.Keys or individual characters. (Version 1.21.3)", false)]
     public static void SendKeysFixed ([NotNull] this ElementScope scope, [NotNull] string value)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      scope.SendKeys (value);
+      scope.SendKeys(value);
     }
 
     /// <summary>
@@ -58,21 +58,21 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string value,
         [NotNull] FinishInputWithAction finishInputWithAction)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNull ("finishInputWithAction", finishInputWithAction);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull("finishInputWithAction", finishInputWithAction);
 
-      if (ContainsKeysAndChars (value))
-        throw new ArgumentException ("Value may not contain both text and keys at the same time.", "value");
+      if (ContainsKeysAndChars(value))
+        throw new ArgumentException("Value may not contain both text and keys at the same time.", "value");
 
 #pragma warning disable 618
-      if (scope.Browser.IsInternetExplorer() && ContainsNonEmptyText (value))
+      if (scope.Browser.IsInternetExplorer() && ContainsNonEmptyText(value))
 #pragma warning restore 618
-        scope.SetValueUsingJavaScriptAndSendKeys (value);
+        scope.SetValueUsingJavaScriptAndSendKeys(value);
       else
-        scope.SetValueUsingSendKeys (value);
+        scope.SetValueUsingSendKeys(value);
 
-      finishInputWithAction (scope);
+      finishInputWithAction(scope);
     }
 
     /// <summary>
@@ -80,24 +80,24 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     private static void SetValueUsingJavaScriptAndSendKeys ([NotNull] this ElementScope scope, [NotNull] string value)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("value", value);
 
       if (scope.Value == value)
         return;
 
       var driver = scope.GetDriver();
       var id = scope.Id;
-      var valueWithoutLastCharacter = GetStringWithoutLastCharacter (value);
-      var lastCharacter = GetLastCharacter (value);
+      var valueWithoutLastCharacter = GetStringWithoutLastCharacter(value);
+      var lastCharacter = GetLastCharacter(value);
 
-      var command = GetFillInJavaScriptCommand (id);
+      var command = GetFillInJavaScriptCommand(id);
 
-      s_log.DebugFormat ("FillInWith using JavaScript: '{0}'.", value);
+      s_log.DebugFormat("FillInWith using JavaScript: '{0}'.", value);
 
-      driver.ExecuteScript (command, scope, valueWithoutLastCharacter);
-      scope.SendKeys (Keys.End);
-      scope.SendKeys (lastCharacter);
+      driver.ExecuteScript(command, scope, valueWithoutLastCharacter);
+      scope.SendKeys(Keys.End);
+      scope.SendKeys(lastCharacter);
     }
 
     /// <summary>
@@ -107,34 +107,34 @@ namespace Remotion.Web.Development.WebTesting
     private static void SetValueUsingSendKeys ([NotNull] this ElementScope scope, [NotNull] string value)
     {
       // GeckoDriver treats \r as its own newline character, which causes double newlines inserts. Since all browsers can deal with \n, we can simply remove \r.
-      value = value.Replace ("\r", "");
+      value = value.Replace("\r", "");
 
       var clearTextBoxWithoutTriggeringPostBack = Keys.Control + "a" + Keys.Control + Keys.Delete;
       value = clearTextBoxWithoutTriggeringPostBack + value;
 
-      s_log.DebugFormat ("FillInWith without triggering PostBack on clear: '{0}'.", value);
+      s_log.DebugFormat("FillInWith without triggering PostBack on clear: '{0}'.", value);
 
-      scope.SendKeys (value);
+      scope.SendKeys(value);
     }
 
     private static string GetFillInJavaScriptCommand ([NotNull] string id)
     {
       const string javascriptFormat = "document.getElementById('{0}').value = arguments[0]";
-      return string.Format (javascriptFormat, id);
+      return string.Format(javascriptFormat, id);
     }
 
     private static string GetStringWithoutLastCharacter ([NotNull] string value)
     {
-      if (SingleCharacterOrEmpty (value))
+      if (SingleCharacterOrEmpty(value))
         return "";
 
       var lastCharacterIndex = value.Length - 1;
-      return value.Remove (lastCharacterIndex);
+      return value.Remove(lastCharacterIndex);
     }
 
     private static string GetLastCharacter ([NotNull] string value)
     {
-      if (SingleCharacterOrEmpty (value))
+      if (SingleCharacterOrEmpty(value))
         return value;
 
       var lastCharacterIndex = value.Length - 1;
@@ -148,22 +148,22 @@ namespace Remotion.Web.Development.WebTesting
 
     private static bool ContainsKeys ([NotNull] string value)
     {
-      return value.Any (c => c >= Keys.Null[0]);
+      return value.Any(c => c >= Keys.Null[0]);
     }
 
     private static bool ContainsChars ([NotNull] string value)
     {
-      return value.Any (c => c < Keys.Null[0]);
+      return value.Any(c => c < Keys.Null[0]);
     }
 
     private static bool ContainsKeysAndChars ([NotNull] string value)
     {
-      return ContainsKeys (value) && ContainsChars (value);
+      return ContainsKeys(value) && ContainsChars(value);
     }
 
     private static bool ContainsNonEmptyText (string value)
     {
-      return ContainsChars (value) && value != "";
+      return ContainsChars(value) && value != "";
     }
   }
 }

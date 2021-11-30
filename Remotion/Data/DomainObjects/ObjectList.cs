@@ -28,20 +28,20 @@ namespace Remotion.Data.DomainObjects
   {
     private static IDomainObjectCollectionData CheckStrategy (IDomainObjectCollectionData dataStrategy)
     {
-      ArgumentUtility.CheckNotNull ("dataStrategy", dataStrategy);
+      ArgumentUtility.CheckNotNull("dataStrategy", dataStrategy);
 
-      if (!typeof (T).IsAssignableFrom (dataStrategy.RequiredItemType) && !dataStrategy.IsReadOnly)
+      if (!typeof(T).IsAssignableFrom(dataStrategy.RequiredItemType) && !dataStrategy.IsReadOnly)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The given data strategy must have a required item type of '{0}' in order to be used with this collection type.",
-            typeof (T));
-        throw new ArgumentException (message, "dataStrategy");
+            typeof(T));
+        throw new ArgumentException(message, "dataStrategy");
       }
       return dataStrategy;
     }
 
-    public ObjectList()
-        : base (typeof (T))
+    public ObjectList ()
+        : base(typeof(T))
     {
     }
 
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects
     /// </para>
     /// </remarks>
     public ObjectList (IDomainObjectCollectionData dataStrategy)
-        : base (CheckStrategy (dataStrategy))
+        : base(CheckStrategy(dataStrategy))
     {
     }
 
@@ -70,77 +70,77 @@ namespace Remotion.Data.DomainObjects
     /// </summary>
     /// <param name="domainObjects">The domain objects to use as the initial contents of the <see cref="ObjectList{T}"/>.</param>
     public ObjectList (IEnumerable<T> domainObjects)
-        : base (domainObjects.Cast<DomainObject>(), typeof (T))
+        : base(domainObjects.Cast<DomainObject>(), typeof(T))
     {
     }
 
     public int IndexOf (T item)
     {
-      return base.IndexOf (item);
+      return base.IndexOf(item);
     }
 
     public void Insert (int index, T item)
     {
-      base.Insert (index, item);
+      base.Insert(index, item);
     }
 
     public new T this [int index]
     {
-      get { return (T) base[index]; }
+      get { return (T)base[index]; }
       set { base[index] = value; }
     }
 
     public new T this [ObjectID id]
     {
-      get { return (T) base[id]; }
+      get { return (T)base[id]; }
     }
 
     public new ObjectList<T> Clone ()
     {
-      return (ObjectList<T>) base.Clone();
+      return (ObjectList<T>)base.Clone();
     }
 
     public new ObjectList<T> Clone (bool makeCloneReadOnly)
     {
-      return (ObjectList<T>) base.Clone (makeCloneReadOnly);
+      return (ObjectList<T>)base.Clone(makeCloneReadOnly);
     }
 
     public void Add (T item)
     {
-      base.Add (item);
+      base.Add(item);
     }
 
     public void AddRange (IEnumerable<T> items)
     {
-      base.AddRange (items);
+      base.AddRange(items);
     }
 
     bool ICollection<T>.Contains (T item)
     {
-      return ContainsObject (item);
+      return ContainsObject(item);
     }
 
     public void CopyTo (T[] array, int arrayIndex)
     {
-      base.CopyTo (array, arrayIndex);
+      base.CopyTo(array, arrayIndex);
     }
 
     public bool Remove (T item)
     {
-      bool result = ContainsObject (item);
-      base.Remove (item);
+      bool result = ContainsObject(item);
+      base.Remove(item);
       return result;
     }
 
     public new IEnumerator<T> GetEnumerator ()
     {
-      foreach (T t in (IEnumerable) this)
+      foreach (T t in (IEnumerable)this)
         yield return t;
     }
 
-    public T[] ToArray()
+    public T[] ToArray ()
     {
-      return ArrayUtility.Convert (this);
+      return ArrayUtility.Convert(this);
     }
   }
 }

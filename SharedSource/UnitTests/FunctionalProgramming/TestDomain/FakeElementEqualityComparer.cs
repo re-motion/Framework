@@ -33,7 +33,7 @@ namespace Remotion.UnitTests.FunctionalProgramming.TestDomain
 
     public bool Equals (Element? x, Element? y)
     {
-      return _equals (x, y);
+      return _equals(x, y);
     }
 
     public int GetHashCode (Element obj)

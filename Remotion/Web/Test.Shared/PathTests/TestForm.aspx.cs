@@ -27,7 +27,7 @@ namespace Remotion.Web.Test.Shared.PathTests
   {
     protected new HttpContextBase Context
     {
-      get { return new HttpContextWrapper (base.Context); }
+      get { return new HttpContextWrapper(base.Context); }
     }
   }
 }

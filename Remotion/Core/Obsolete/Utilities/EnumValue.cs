@@ -19,7 +19,7 @@ using System;
 // ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Globalization.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Globalization.dll", true)]
   internal struct EnumValue
   {
     public readonly Enum Value;
@@ -28,7 +28,7 @@ namespace Remotion.Utilities
 
     public long NumericValue
     {
-      get { return Convert.ToInt64 (Value); }
+      get { return Convert.ToInt64(Value); }
     }
 
     public EnumValue (Enum value, string description)

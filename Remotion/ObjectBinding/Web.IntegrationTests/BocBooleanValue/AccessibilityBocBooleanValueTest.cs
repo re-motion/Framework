@@ -30,84 +30,84 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocBooleanValue
     public void Normal ()
     {
       var home = Start();
-      var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_Normal");
+      var bocBooleanValue = home.BooleanValues().GetByLocalID("DeceasedField_Normal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocBooleanValue.Analyze (analyzer);
+      var result = bocBooleanValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void NormalAndUnitialized_WithValidationErrors ()
     {
       var home = Start();
-      var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_NormalAndUnitialized");
+      var bocBooleanValue = home.BooleanValues().GetByLocalID("DeceasedField_NormalAndUnitialized");
       var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocBooleanValue.Analyze (analyzer);
+      var result = bocBooleanValue.Analyze(analyzer);
 
-      Assert.That (bocBooleanValue.GetValidationErrors(), Is.Not.Empty);
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(bocBooleanValue.GetValidationErrors(), Is.Not.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void NormalAndUninitialized ()
     {
       var home = Start();
-      var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_NormalAndUnitialized");
+      var bocBooleanValue = home.BooleanValues().GetByLocalID("DeceasedField_NormalAndUnitialized");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocBooleanValue.Analyze (analyzer);
+      var result = bocBooleanValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ReadOnly ()
     {
       var home = Start();
-      var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_ReadOnly");
+      var bocBooleanValue = home.BooleanValues().GetByLocalID("DeceasedField_ReadOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocBooleanValue.Analyze (analyzer);
+      var result = bocBooleanValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Disabled ()
     {
       var home = Start();
-      var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_Disabled");
+      var bocBooleanValue = home.BooleanValues().GetByLocalID("DeceasedField_Disabled");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocBooleanValue.Analyze (analyzer);
+      var result = bocBooleanValue.Analyze(analyzer);
       // TODO RM-7330 remove ignore once issue is resolved
-      var violations = result.Violations.IgnoreByRuleIDAndXPath (
+      var violations = result.Violations.IgnoreByRuleIDAndXPath(
           AccessibilityRuleID.ColorContrast,
           "/span[@id='body_DataEditControl_DeceasedField_Disabled_Description']");
 
-      Assert.That (violations, Is.Empty);
+      Assert.That(violations, Is.Empty);
     }
 
     [Test]
     public void Normal_NoDescription ()
     {
       var home = Start();
-      var bocBooleanValue = home.BooleanValues().GetByLocalID ("DeceasedField_Normal_NoDescription");
+      var bocBooleanValue = home.BooleanValues().GetByLocalID("DeceasedField_Normal_NoDescription");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocBooleanValue.Analyze (analyzer);
+      var result = bocBooleanValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocBooleanValue");
+      return Start("BocBooleanValue");
     }
   }
 }

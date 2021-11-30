@@ -38,10 +38,10 @@ namespace Remotion.UnitTests.Utilities
     {
       var instance = _serviceLocator.GetInstance<ITypeConverterFactory>();
 
-      Assert.That (instance, Is.TypeOf<CompoundTypeConverterFactory>());
-      Assert.That (
-          ((CompoundTypeConverterFactory) instance).TypeConverterFactories.Select (i => i.GetType()),
-          Is.EqualTo (new[] { typeof (AttributeBasedTypeConverterFactory), typeof (EnumTypeConverterFactory) }));
+      Assert.That(instance, Is.TypeOf<CompoundTypeConverterFactory>());
+      Assert.That(
+          ((CompoundTypeConverterFactory)instance).TypeConverterFactories.Select(i => i.GetType()),
+          Is.EqualTo(new[] { typeof(AttributeBasedTypeConverterFactory), typeof(EnumTypeConverterFactory) }));
     }
 
     [Test]
@@ -50,7 +50,7 @@ namespace Remotion.UnitTests.Utilities
       var instance1 = _serviceLocator.GetInstance<ITypeConverterFactory>();
       var instance2 = _serviceLocator.GetInstance<ITypeConverterFactory>();
 
-      Assert.That (instance1, Is.EqualTo (instance2));
+      Assert.That(instance1, Is.EqualTo(instance2));
     }
   }
 }

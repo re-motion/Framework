@@ -33,19 +33,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
     private readonly ISelectedColumnsSpecification _selectedColumns;
     private readonly IComparedColumnsSpecification _comparedColumns;
     private readonly IOrderedColumnsSpecification _orderedColumns;
-    
+
     public UnionSelectDbCommandBuilder (
         UnionViewDefinition unionViewDefinition,
         ISelectedColumnsSpecification selectedColumns,
         IComparedColumnsSpecification comparedColumns,
         IOrderedColumnsSpecification orderedColumns,
         ISqlDialect sqlDialect)
-        : base (sqlDialect)
+        : base(sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("unionViewDefinition", unionViewDefinition);
-      ArgumentUtility.CheckNotNull ("selectedColumns", selectedColumns);
-      ArgumentUtility.CheckNotNull ("comparedColumns", comparedColumns);
-      ArgumentUtility.CheckNotNull ("orderedColumns", orderedColumns);
+      ArgumentUtility.CheckNotNull("unionViewDefinition", unionViewDefinition);
+      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
+      ArgumentUtility.CheckNotNull("comparedColumns", comparedColumns);
+      ArgumentUtility.CheckNotNull("orderedColumns", orderedColumns);
 
       _unionViewDefinition = unionViewDefinition;
       _selectedColumns = selectedColumns;
@@ -75,34 +75,34 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     public override IDbCommand Create (IRdbmsProviderCommandExecutionContext commandExecutionContext)
     {
-      ArgumentUtility.CheckNotNull ("commandExecutionContext", commandExecutionContext);
+      ArgumentUtility.CheckNotNull("commandExecutionContext", commandExecutionContext);
 
-      var command = commandExecutionContext.CreateDbCommand ();
+      var command = commandExecutionContext.CreateDbCommand();
 
-      var fullProjection = _orderedColumns.UnionWithSelectedColumns (_selectedColumns);
+      var fullProjection = _orderedColumns.UnionWithSelectedColumns(_selectedColumns);
 
       var statement = new StringBuilder();
       bool first = true;
-      _comparedColumns.AddParameters (command, SqlDialect);
+      _comparedColumns.AddParameters(command, SqlDialect);
 
       foreach (var table in _unionViewDefinition.GetAllTables())
       {
         if (!first)
-          statement.Append (" UNION ALL ");
+          statement.Append(" UNION ALL ");
 
-        var adjustedProjection = fullProjection.AdjustForTable (table);
-        AppendSelectClause (statement, command, adjustedProjection);
-        AppendFromClause (statement, command, table);
+        var adjustedProjection = fullProjection.AdjustForTable(table);
+        AppendSelectClause(statement, command, adjustedProjection);
+        AppendFromClause(statement, command, table);
 
-        statement.Append (" WHERE ");
-        _comparedColumns.AppendComparisons (statement, command, SqlDialect);
+        statement.Append(" WHERE ");
+        _comparedColumns.AppendComparisons(statement, command, SqlDialect);
 
         first = false;
       }
 
-      AppendOrderByClause (statement, command, _orderedColumns);
+      AppendOrderByClause(statement, command, _orderedColumns);
 
-      statement.Append (SqlDialect.StatementDelimiter);
+      statement.Append(SqlDialect.StatementDelimiter);
 
       command.CommandText = statement.ToString();
 

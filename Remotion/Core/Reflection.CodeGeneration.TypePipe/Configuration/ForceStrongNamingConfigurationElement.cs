@@ -21,10 +21,10 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
 {
   public class ForceStrongNamingConfigurationElement : ConfigurationElement
   {
-    [ConfigurationProperty ("keyFilePath")]
+    [ConfigurationProperty("keyFilePath")]
     public string KeyFilePath
     {
-      get { return (string) this["keyFilePath"]; }
+      get { return (string)this["keyFilePath"]; }
     }
   }
 }

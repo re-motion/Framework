@@ -33,8 +33,8 @@ namespace Remotion.Web.IntegrationTests
     {
       var screenshotDirectory = _setUpFixtureHelper.ScreenshotDirectory;
 
-      if (Directory.Exists (screenshotDirectory))
-        Directory.Delete (screenshotDirectory, true);
+      if (Directory.Exists(screenshotDirectory))
+        Directory.Delete(screenshotDirectory, true);
 
       _setUpFixtureHelper.OnSetUp();
     }

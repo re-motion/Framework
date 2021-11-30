@@ -26,7 +26,7 @@ namespace Remotion.Validation.Merging
   /// <summary>
   /// Default implementation of the <see cref="IObjectValidatorExtractorFactory"/> interface.
   /// </summary>
-  [ImplementationFor (typeof (IObjectValidatorExtractorFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IObjectValidatorExtractorFactory), Lifetime = LifetimeKind.Singleton)]
   public class ObjectValidatorExtractorFactory : IObjectValidatorExtractorFactory
   {
     public ObjectValidatorExtractorFactory ()
@@ -36,10 +36,10 @@ namespace Remotion.Validation.Merging
     public IObjectValidatorExtractor Create (
         IEnumerable<RemovingObjectValidatorRegistration> removingObjectValidatorRegistrations, ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull ("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
-      ArgumentUtility.CheckNotNull ("logContext", logContext);
-      
-      return new ObjectValidatorExtractor (removingObjectValidatorRegistrations, logContext);
+      ArgumentUtility.CheckNotNull("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
+      ArgumentUtility.CheckNotNull("logContext", logContext);
+
+      return new ObjectValidatorExtractor(removingObjectValidatorRegistrations, logContext);
     }
   }
 }

@@ -18,13 +18,13 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Extends (typeof (TargetClassWithAdditionalDependencies), AdditionalDependencies = new Type[] { typeof ( IMixinWithAdditionalClassDependency ) })]
+  [Extends(typeof(TargetClassWithAdditionalDependencies), AdditionalDependencies = new Type[] { typeof( IMixinWithAdditionalClassDependency ) })]
   public class MixinWithAdditionalInterfaceDependency : Mixin<object, ITargetClassWithAdditionalDependencies>
   {
     [OverrideTarget]
     public string GetString ()
     {
-      return "MixinWithAdditionalInterfaceDependency-" + Next.GetString ();
+      return "MixinWithAdditionalInterfaceDependency-" + Next.GetString();
     }
   }
 }

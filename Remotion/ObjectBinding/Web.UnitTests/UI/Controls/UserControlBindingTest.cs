@@ -18,10 +18,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var control = new UserControlBinding();
       var serviceLocatorMock = new Mock<IServiceLocator>();
       var factoryMock = new Mock<IUserControlBindingValidatorFactory>();
-      serviceLocatorMock.Setup (m => m.GetInstance<IUserControlBindingValidatorFactory>()).Returns (factoryMock.Object).Verifiable();
-      factoryMock.Setup (f => f.CreateValidators (control, false)).Returns (new List<BaseValidator>()).Verifiable();
+      serviceLocatorMock.Setup(m => m.GetInstance<IUserControlBindingValidatorFactory>()).Returns(factoryMock.Object).Verifiable();
+      factoryMock.Setup(f => f.CreateValidators(control, false)).Returns(new List<BaseValidator>()).Verifiable();
 
-      using (new ServiceLocatorScope (serviceLocatorMock.Object))
+      using (new ServiceLocatorScope(serviceLocatorMock.Object))
       {
         control.CreateValidators();
       }

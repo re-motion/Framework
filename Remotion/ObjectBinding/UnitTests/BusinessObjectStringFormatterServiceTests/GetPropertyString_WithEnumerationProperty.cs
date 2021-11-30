@@ -31,52 +31,52 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
     [SetUp]
     public void SetUp ()
     {
-      _stringFormatterService = new BusinessObjectStringFormatterService ();
-      _mockBusinessObject = new Mock<IBusinessObject> (MockBehavior.Strict);
-      _mockProperty = new Mock<IBusinessObjectEnumerationProperty> (MockBehavior.Strict);
+      _stringFormatterService = new BusinessObjectStringFormatterService();
+      _mockBusinessObject = new Mock<IBusinessObject>(MockBehavior.Strict);
+      _mockProperty = new Mock<IBusinessObjectEnumerationProperty>(MockBehavior.Strict);
     }
 
     [Test]
     public void Scalar_WithValue ()
     {
-      IEnumerationValueInfo enumValueInfo = new EnumerationValueInfo (TestEnum.Value5, "Value5", "ExpectedStringValue", true);
-      _mockProperty.Setup (_ => _.IsList).Returns (false).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (TestEnum.Value5).Verifiable();
-      _mockProperty.Setup (_ => _.GetValueInfoByValue (TestEnum.Value5, _mockBusinessObject.Object)).Returns (enumValueInfo).Verifiable();
+      IEnumerationValueInfo enumValueInfo = new EnumerationValueInfo(TestEnum.Value5, "Value5", "ExpectedStringValue", true);
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(TestEnum.Value5).Verifiable();
+      _mockProperty.Setup(_ => _.GetValueInfoByValue(TestEnum.Value5, _mockBusinessObject.Object)).Returns(enumValueInfo).Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, null);
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
       _mockBusinessObject.Verify();
       _mockProperty.Verify();
-      Assert.That (actual, Is.EqualTo ("ExpectedStringValue"));
+      Assert.That(actual, Is.EqualTo("ExpectedStringValue"));
     }
 
     [Test]
     public void Scalar_WithNull ()
     {
-      _mockProperty.Setup (_ => _.IsList).Returns (false).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns ((object) null).Verifiable();
-      _mockProperty.Setup (_ => _.GetValueInfoByValue (null, _mockBusinessObject.Object)).Returns ((IEnumerationValueInfo) null).Verifiable();
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns((object)null).Verifiable();
+      _mockProperty.Setup(_ => _.GetValueInfoByValue(null, _mockBusinessObject.Object)).Returns((IEnumerationValueInfo)null).Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, null);
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
       _mockBusinessObject.Verify();
       _mockProperty.Verify();
-      Assert.That (actual, Is.Empty);
+      Assert.That(actual, Is.Empty);
     }
 
     [Test]
     public void Scalar_WithUndefinedValue ()
     {
-      _mockProperty.Setup (_ => _.IsList).Returns (false).Verifiable();
-      _mockBusinessObject.Setup (_ => _.GetProperty (_mockProperty.Object)).Returns (TestEnum.Value5).Verifiable();
-      _mockProperty.Setup (_ => _.GetValueInfoByValue (TestEnum.Value5, _mockBusinessObject.Object)).Returns ((IEnumerationValueInfo) null).Verifiable();
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(TestEnum.Value5).Verifiable();
+      _mockProperty.Setup(_ => _.GetValueInfoByValue(TestEnum.Value5, _mockBusinessObject.Object)).Returns((IEnumerationValueInfo)null).Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject.Object, _mockProperty.Object, null);
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
       _mockBusinessObject.Verify();
       _mockProperty.Verify();
-      Assert.That (actual, Is.Empty);
+      Assert.That(actual, Is.Empty);
     }
   }
 }

@@ -21,10 +21,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain
 {
   [DBTable]
   [Instantiable]
-  [Uses (typeof (MixinA))]
-  [Uses (typeof (MixinC))]
-  [Uses (typeof (MixinD))]
-  [Uses (typeof (NonDomainObjectMixin))]
+  [Uses(typeof(MixinA))]
+  [Uses(typeof(MixinC))]
+  [Uses(typeof(MixinD))]
+  [Uses(typeof(NonDomainObjectMixin))]
   public abstract class TargetClassA : TargetClassBase
   {
     public abstract int P1 { get; }

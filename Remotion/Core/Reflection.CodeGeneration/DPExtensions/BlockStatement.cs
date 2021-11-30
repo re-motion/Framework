@@ -32,14 +32,14 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public BlockStatement (params Statement[] statements)
     {
-      ArgumentUtility.CheckNotNull ("statements", statements);
+      ArgumentUtility.CheckNotNull("statements", statements);
       _statements = statements;
     }
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
       foreach (var statement in _statements)
-        statement.Emit (member, gen);
+        statement.Emit(member, gen);
     }
   }
 }

@@ -27,24 +27,24 @@ namespace Remotion.Mixins.Context.Serialization
   {
     protected abstract ArrayMixinContextDeserializer CreateMixinContextDeserializer (object[] values);
 
-    protected ArrayClassContextDeserializer (object[] values) : base (values, 3)
+    protected ArrayClassContextDeserializer (object[] values) : base(values, 3)
     {
     }
 
     public Type GetClassType ()
     {
-      return GetValue<Type> (0);
+      return GetValue<Type>(0);
     }
 
-    public IEnumerable<MixinContext> GetMixins()
+    public IEnumerable<MixinContext> GetMixins ()
     {
-      var mixins = GetValue<object[]> (1);
-      return mixins.Select (oa => MixinContext.Deserialize (CreateMixinContextDeserializer ((object[]) oa)));
+      var mixins = GetValue<object[]>(1);
+      return mixins.Select(oa => MixinContext.Deserialize(CreateMixinContextDeserializer((object[])oa)));
     }
 
-    public IEnumerable<Type> GetComposedInterfaces()
+    public IEnumerable<Type> GetComposedInterfaces ()
     {
-      return GetValue<Type[]> (2);
+      return GetValue<Type[]>(2);
     }
   }
 }

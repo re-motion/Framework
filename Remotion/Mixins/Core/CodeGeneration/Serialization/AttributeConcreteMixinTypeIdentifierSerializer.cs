@@ -40,25 +40,25 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
 
     public void AddOverriders (HashSet<MethodInfo> overriders)
     {
-      _values[1] = GetStorableMethodTriplets (overriders);
+      _values[1] = GetStorableMethodTriplets(overriders);
     }
 
     public void AddOverridden (HashSet<MethodInfo> overridden)
     {
-      _values[2] = GetStorableMethodTriplets (overridden);
+      _values[2] = GetStorableMethodTriplets(overridden);
     }
 
     private object[] GetStorableMethodTriplets (HashSet<MethodInfo> methodInfos)
     {
       var triples = from methodInfo in methodInfos
-                    select (object) new object[] { CheckNotClosedGeneric (methodInfo).DeclaringType!, methodInfo.Name, methodInfo.ToString ()! };
-      return triples.ToArray ();
+                    select (object)new object[] { CheckNotClosedGeneric(methodInfo).DeclaringType!, methodInfo.Name, methodInfo.ToString()! };
+      return triples.ToArray();
     }
 
     private MethodInfo CheckNotClosedGeneric (MethodInfo methodInfo)
     {
       if (methodInfo.IsGenericMethod && !methodInfo.IsGenericMethodDefinition)
-        throw new NotSupportedException ("Cannot create an attribute representation of a closed generic method. This is not supported.");
+        throw new NotSupportedException("Cannot create an attribute representation of a closed generic method. This is not supported.");
 
       return methodInfo;
     }

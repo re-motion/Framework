@@ -25,8 +25,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
   {
     public TextWriterData (TextWriter textWriter, string directory, string extension)
     {
-      ArgumentUtility.CheckNotNull ("textWriter", textWriter);
-      ArgumentUtility.CheckNotNull ("directory", directory); // directory empty OK
+      ArgumentUtility.CheckNotNull("textWriter", textWriter);
+      ArgumentUtility.CheckNotNull("directory", directory); // directory empty OK
       // extension NULL OK
       TextWriter = textWriter;
       Directory = directory;

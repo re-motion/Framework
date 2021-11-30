@@ -32,10 +32,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
       var analyzer = Helper.CreateAccessibilityAnalyzer();
       var result = analyzer.Analyze();
 
-      var violations = result.Violations.IgnoreByCssSelector ("html");
+      var violations = result.Violations.IgnoreByCssSelector("html");
 
-      Assert.That (result.Violations.Where (x => x.TargetPath.Select (p => p.CssSelector).Contains ("html")), Is.Not.Empty);
-      Assert.That (violations.Where (x => x.TargetPath.Select (p => p.CssSelector).Contains ("html")), Is.Empty);
+      Assert.That(result.Violations.Where(x => x.TargetPath.Select(p => p.CssSelector).Contains("html")), Is.Not.Empty);
+      Assert.That(violations.Where(x => x.TargetPath.Select(p => p.CssSelector).Contains("html")), Is.Empty);
     }
 
     [Test]
@@ -45,10 +45,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
       var analyzer = Helper.CreateAccessibilityAnalyzer();
       var result = analyzer.Analyze();
 
-      var violations = result.Violations.IgnoreByImpact (AccessibilityTestImpact.Serious);
+      var violations = result.Violations.IgnoreByImpact(AccessibilityTestImpact.Serious);
 
-      Assert.That (result.Violations.Where (x => x.Rule.Impact == AccessibilityTestImpact.Serious), Is.Not.Empty);
-      Assert.That (violations.Where (x => x.Rule.Impact == AccessibilityTestImpact.Serious), Is.Empty);
+      Assert.That(result.Violations.Where(x => x.Rule.Impact == AccessibilityTestImpact.Serious), Is.Not.Empty);
+      Assert.That(violations.Where(x => x.Rule.Impact == AccessibilityTestImpact.Serious), Is.Empty);
     }
 
     [Test]
@@ -59,11 +59,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
       var result = analyzer.Analyze();
 
       var filter = new AccessibilityResultFilter();
-      filter.IgnoreRuleID.Add (AccessibilityRuleID.HtmlHasLang);
-      var violations = result.Violations.Filter (filter);
+      filter.IgnoreRuleID.Add(AccessibilityRuleID.HtmlHasLang);
+      var violations = result.Violations.Filter(filter);
 
-      Assert.That (result.Violations.Where (x => x.Rule.ID == AccessibilityRuleID.HtmlHasLang), Is.Not.Empty);
-      Assert.That (violations.Where (x => x.Rule.ID == AccessibilityRuleID.HtmlHasLang), Is.Empty);
+      Assert.That(result.Violations.Where(x => x.Rule.ID == AccessibilityRuleID.HtmlHasLang), Is.Not.Empty);
+      Assert.That(violations.Where(x => x.Rule.ID == AccessibilityRuleID.HtmlHasLang), Is.Empty);
     }
 
     [Test]
@@ -73,10 +73,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
       var analyzer = Helper.CreateAccessibilityAnalyzer();
       var result = analyzer.Analyze();
 
-      var violations = result.Violations.IgnoreBySuccessCriteria (AccessibilityTestSuccessCriteria.Wcag_4_1_2);
+      var violations = result.Violations.IgnoreBySuccessCriteria(AccessibilityTestSuccessCriteria.Wcag_4_1_2);
 
-      Assert.That (result.Violations.Where (x => x.Rule.SuccessCriteria.Contains (AccessibilityTestSuccessCriteria.Wcag_4_1_2)), Is.Not.Empty);
-      Assert.That (violations.Where (x => x.Rule.SuccessCriteria.Contains (AccessibilityTestSuccessCriteria.Wcag_4_1_2)), Is.Empty);
+      Assert.That(result.Violations.Where(x => x.Rule.SuccessCriteria.Contains(AccessibilityTestSuccessCriteria.Wcag_4_1_2)), Is.Not.Empty);
+      Assert.That(violations.Where(x => x.Rule.SuccessCriteria.Contains(AccessibilityTestSuccessCriteria.Wcag_4_1_2)), Is.Empty);
     }
 
     [Test]
@@ -87,23 +87,23 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
       var result = analyzer.Analyze();
 
       var filter = new AccessibilityResultFilter();
-      filter.IgnoreSuccessCriteria.Add (AccessibilityTestSuccessCriteria.Wcag_4_1_2);
+      filter.IgnoreSuccessCriteria.Add(AccessibilityTestSuccessCriteria.Wcag_4_1_2);
       filter.IncludeImpact = AccessibilityTestImpact.Serious;
 
-      var violations = result.Violations.Filter (filter);
+      var violations = result.Violations.Filter(filter);
 
-      Assert.That (result.Violations.Where (x => x.Rule.SuccessCriteria.Contains (AccessibilityTestSuccessCriteria.Wcag_4_1_2)), Is.Not.Empty);
-      Assert.That (result.Violations.Where (x => x.Rule.Impact == AccessibilityTestImpact.Critical), Is.Not.Empty);
-      Assert.That (
-          violations.Where (
+      Assert.That(result.Violations.Where(x => x.Rule.SuccessCriteria.Contains(AccessibilityTestSuccessCriteria.Wcag_4_1_2)), Is.Not.Empty);
+      Assert.That(result.Violations.Where(x => x.Rule.Impact == AccessibilityTestImpact.Critical), Is.Not.Empty);
+      Assert.That(
+          violations.Where(
               x => x.Rule.Impact == AccessibilityTestImpact.Critical ||
-                   x.Rule.SuccessCriteria.Contains (AccessibilityTestSuccessCriteria.Wcag_4_1_2)),
+                   x.Rule.SuccessCriteria.Contains(AccessibilityTestSuccessCriteria.Wcag_4_1_2)),
           Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("Accessibility/IncludeExclude.html");
+      return Start<WxePageObject>("Accessibility/IncludeExclude.html");
     }
   }
 }

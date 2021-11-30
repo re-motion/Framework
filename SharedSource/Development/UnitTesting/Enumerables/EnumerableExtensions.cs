@@ -37,9 +37,9 @@ namespace Remotion.Development.UnitTesting.Enumerables
     /// <returns>An instance of <see cref="OneTimeEnumerable{T}"/> decorating the <paramref name="source"/>.</returns>
     public static OneTimeEnumerable<T> AsOneTime<T> (this IEnumerable<T> source)
     {
-      ArgumentUtility.CheckNotNull ("source", source);
+      ArgumentUtility.CheckNotNull("source", source);
 
-      return new OneTimeEnumerable<T> (source);
+      return new OneTimeEnumerable<T>(source);
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ namespace Remotion.Development.UnitTesting.Enumerables
     /// <returns>An array containing all values computed by <paramref name="source"/>.</returns>
     public static T[] ForceEnumeration<T> (this IEnumerable<T> source)
     {
-      ArgumentUtility.CheckNotNull ("source", source);
+      ArgumentUtility.CheckNotNull("source", source);
 
       return source.ToArray();
     }

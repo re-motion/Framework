@@ -36,8 +36,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         RelationEndPointID endPointID,
         IVirtualCollectionEndPointCollectionProvider collectionProvider)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      ArgumentUtility.CheckNotNull ("collectionProvider", collectionProvider);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("collectionProvider", collectionProvider);
 
       _endPointID = endPointID;
       _collectionProvider = collectionProvider;
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public IObjectList<IDomainObject> GetOriginalCollectionReference ()
     {
       if (_originalCollectionReference == null)
-        _originalCollectionReference = _collectionProvider.GetCollection (_endPointID);
+        _originalCollectionReference = _collectionProvider.GetCollection(_endPointID);
 
       return _originalCollectionReference;
     }

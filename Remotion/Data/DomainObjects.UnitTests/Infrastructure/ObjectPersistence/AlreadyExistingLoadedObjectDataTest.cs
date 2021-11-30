@@ -33,31 +33,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _dataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      _dataContainer.SetDomainObject (DomainObjectMother.CreateFakeObject<Order> (_dataContainer.ID));
-      ClientTransactionTestHelper.RegisterDataContainer (ClientTransaction.CreateRootTransaction (), _dataContainer);
+      _dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
+      _dataContainer.SetDomainObject(DomainObjectMother.CreateFakeObject<Order>(_dataContainer.ID));
+      ClientTransactionTestHelper.RegisterDataContainer(ClientTransaction.CreateRootTransaction(), _dataContainer);
 
-      _loadedObjectData = new AlreadyExistingLoadedObjectData (_dataContainer);
+      _loadedObjectData = new AlreadyExistingLoadedObjectData(_dataContainer);
     }
-    
+
     [Test]
     public void Initialization ()
     {
-      Assert.That (_loadedObjectData.ExistingDataContainer, Is.SameAs (_dataContainer));
-      Assert.That (_loadedObjectData.ObjectID, Is.EqualTo (_dataContainer.ID));
+      Assert.That(_loadedObjectData.ExistingDataContainer, Is.SameAs(_dataContainer));
+      Assert.That(_loadedObjectData.ObjectID, Is.EqualTo(_dataContainer.ID));
     }
 
     [Test]
     public void Initialization_WithoutClientTransaction_Throws ()
     {
-      var existingDataContainer = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      existingDataContainer.SetDomainObject (DomainObjectMother.CreateFakeObject<Order> (existingDataContainer.ID));
-      
-      Assert.That (
-          () => new AlreadyExistingLoadedObjectData (existingDataContainer),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+      var existingDataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
+      existingDataContainer.SetDomainObject(DomainObjectMother.CreateFakeObject<Order>(existingDataContainer.ID));
+
+      Assert.That(
+          () => new AlreadyExistingLoadedObjectData(existingDataContainer),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The DataContainer must have been registered with a ClientTransaction.", "existingDataContainer"));
     }
 
@@ -66,17 +66,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     {
       var reference = _loadedObjectData.GetDomainObjectReference();
 
-      Assert.That (reference, Is.SameAs (_dataContainer.DomainObject));
+      Assert.That(reference, Is.SameAs(_dataContainer.DomainObject));
     }
-    
+
     [Test]
     public void Accept ()
     {
       var visitorMock = MockRepository.GenerateStrictMock<ILoadedObjectVisitor>();
-      visitorMock.Expect (mock => mock.VisitAlreadyExistingLoadedObject (_loadedObjectData));
+      visitorMock.Expect(mock => mock.VisitAlreadyExistingLoadedObject(_loadedObjectData));
       visitorMock.Replay();
 
-      _loadedObjectData.Accept (visitorMock);
+      _loadedObjectData.Accept(visitorMock);
 
       visitorMock.VerifyAllExpectations();
     }
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     [Test]
     public void IsNull ()
     {
-      Assert.That (((INullObject) _loadedObjectData).IsNull, Is.False);
+      Assert.That(((INullObject)_loadedObjectData).IsNull, Is.False);
     }
   }
 }

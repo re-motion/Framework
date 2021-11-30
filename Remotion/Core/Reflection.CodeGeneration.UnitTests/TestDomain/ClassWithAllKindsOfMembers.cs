@@ -24,12 +24,12 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests.TestDomain
     public virtual void Method ()
     {
       if (Event != null)
-        Event (null, null);
+        Event(null, null);
     }
 
     public virtual void MethodWithOutRef (out string outP, ref int refP)
     {
-      outP = refP.ToString ();
+      outP = refP.ToString();
       ++refP;
     }
 

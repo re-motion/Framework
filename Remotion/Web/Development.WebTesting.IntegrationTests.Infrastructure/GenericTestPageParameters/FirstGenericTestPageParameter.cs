@@ -32,14 +32,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     public string FoundControlID { get; private set; }
 
     public FirstGenericTestPageParameter ()
-        : base (TestConstants.FirstSelectorID, c_parameterCount)
+        : base(TestConstants.FirstSelectorID, c_parameterCount)
     {
     }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       FoundControlID = data.Arguments[0];
     }

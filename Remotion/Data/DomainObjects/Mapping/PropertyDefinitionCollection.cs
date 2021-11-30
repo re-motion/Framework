@@ -28,9 +28,9 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     public static PropertyDefinitionCollection CreateForAllProperties (ClassDefinition classDefinition, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      return new PropertyDefinitionCollection (
-          classDefinition.CreateSequence (cd => cd.BaseClass).SelectMany (cd => cd.MyPropertyDefinitions), makeCollectionReadOnly);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      return new PropertyDefinitionCollection(
+          classDefinition.CreateSequence(cd => cd.BaseClass).SelectMany(cd => cd.MyPropertyDefinitions), makeCollectionReadOnly);
     }
 
     public PropertyDefinitionCollection ()
@@ -39,28 +39,28 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PropertyDefinitionCollection (IEnumerable<PropertyDefinition> collection, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("collection", collection);
+      ArgumentUtility.CheckNotNull("collection", collection);
 
       foreach (var propertyDefinition in collection)
-        Add (propertyDefinition);
+        Add(propertyDefinition);
 
-      SetIsReadOnly (makeCollectionReadOnly);
+      SetIsReadOnly(makeCollectionReadOnly);
     }
 
     public void SetReadOnly ()
     {
-      SetIsReadOnly (true);
+      SetIsReadOnly(true);
     }
 
     public IEnumerable<PropertyDefinition> GetAllPersistent ()
     {
-      return this.Where (propertyDefinition => propertyDefinition.StorageClass == StorageClass.Persistent);
+      return this.Where(propertyDefinition => propertyDefinition.StorageClass == StorageClass.Persistent);
     }
 
     public new IEnumerator<PropertyDefinition> GetEnumerator ()
     {
       // ReSharper disable LoopCanBeConvertedToQuery
-      foreach (PropertyDefinition propertyDefinition in (IEnumerable) this) // use base implementation
+      foreach (PropertyDefinition propertyDefinition in (IEnumerable)this) // use base implementation
           // ReSharper restore LoopCanBeConvertedToQuery
         yield return propertyDefinition;
     }
@@ -69,36 +69,36 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool Contains (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
-      return BaseContains (propertyDefinition.PropertyName, propertyDefinition);
+      return BaseContains(propertyDefinition.PropertyName, propertyDefinition);
     }
 
     public bool Contains (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      return BaseContainsKey (propertyName);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      return BaseContainsKey(propertyName);
     }
 
     public PropertyDefinition this [int index]
     {
-      get { return (PropertyDefinition) BaseGetObject (index); }
+      get { return (PropertyDefinition)BaseGetObject(index); }
     }
 
     public PropertyDefinition this [string propertyName]
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-        return (PropertyDefinition) BaseGetObject (propertyName);
+        ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+        return (PropertyDefinition)BaseGetObject(propertyName);
       }
     }
 
     public int Add (PropertyDefinition value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      int position = BaseAdd (value.PropertyName, value);
+      int position = BaseAdd(value.PropertyName, value);
 
       return position;
     }

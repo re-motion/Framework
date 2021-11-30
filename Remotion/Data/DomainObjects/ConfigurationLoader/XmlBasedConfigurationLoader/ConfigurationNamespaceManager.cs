@@ -33,16 +33,16 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
     // construction and disposing
 
     public ConfigurationNamespaceManager (
-        XmlDocument document, 
+        XmlDocument document,
         PrefixNamespace[] configurationNamespaces)
-        : base (document.NameTable)
+        : base(document.NameTable)
     {
-      ArgumentUtility.CheckNotNull ("document", document);
-      ArgumentUtility.CheckNotNull ("configurationNamespaces", configurationNamespaces);
+      ArgumentUtility.CheckNotNull("document", document);
+      ArgumentUtility.CheckNotNull("configurationNamespaces", configurationNamespaces);
 
       foreach (PrefixNamespace configurationNamespace in configurationNamespaces)
       {
-        base.AddNamespace (configurationNamespace.Prefix, configurationNamespace.Uri);
+        base.AddNamespace(configurationNamespace.Prefix, configurationNamespace.Uri);
       }
 
       _configurationNamespaces = configurationNamespaces;
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("uri", uri);
+        ArgumentUtility.CheckNotNullOrEmpty("uri", uri);
 
         foreach (PrefixNamespace configurationNamespace in _configurationNamespaces)
         {
@@ -67,18 +67,18 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
             return configurationNamespace;
         }
 
-        throw new IndexOutOfRangeException (string.Format ("Uri '{0}' could not be found.", uri));
+        throw new IndexOutOfRangeException(string.Format("Uri '{0}' could not be found.", uri));
       }
     }
 
     public string FormatXPath (string xPath, params string[] uris)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("xPath", xPath);
+      ArgumentUtility.CheckNotNullOrEmpty("xPath", xPath);
 
       string formattedXPath = xPath;
       for (int i = 0; i < uris.Length; i++)
       {
-        formattedXPath = formattedXPath.Replace ("{" + i.ToString () + "}", this[uris[i]].Prefix);   
+        formattedXPath = formattedXPath.Replace("{" + i.ToString() + "}", this[uris[i]].Prefix);
       }
 
       return formattedXPath;

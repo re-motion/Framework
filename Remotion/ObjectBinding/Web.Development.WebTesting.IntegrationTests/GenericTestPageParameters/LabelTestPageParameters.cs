@@ -69,14 +69,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     public string ControlNotInFormGridHtmlId { get; private set; }
 
     public LabelTestPageParameters ()
-        : base (TestConstants.LabelTestsID, c_parameterCount)
+        : base(TestConstants.LabelTestsID, c_parameterCount)
     {
     }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       FormGridControlHtmlId = data.Arguments[0];
       ReadonlyFormGridControlHtmlId = data.Arguments[1];

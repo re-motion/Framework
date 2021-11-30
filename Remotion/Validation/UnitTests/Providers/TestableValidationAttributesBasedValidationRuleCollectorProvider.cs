@@ -26,21 +26,21 @@ namespace Remotion.Validation.UnitTests.Providers
   public class TestableValidationAttributesBasedValidationRuleCollectorProvider : ValidationAttributesBasedValidationRuleCollectorProvider
   {
     public TestableValidationAttributesBasedValidationRuleCollectorProvider (IValidationMessageFactory validationMessageFactory)
-        : base (validationMessageFactory)
+        : base(validationMessageFactory)
     {
     }
 
     public new ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)
     {
       return
-          types.SelectMany (t => t.GetProperties (BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
-              .Select (p => new { Type = p.DeclaringType, Property = p })
-              .Select (
+          types.SelectMany(t => t.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+              .Select(p => new { Type = p.DeclaringType, Property = p })
+              .Select(
                   t =>
-                      new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector> (
+                      new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector>(
                           t.Type,
-                          new ValidationAttributesBasedPropertyRuleReflector (t.Property, ValidationMessageFactory)))
-              .ToLookup (c => c.Item1, c => c.Item2);
+                          new ValidationAttributesBasedPropertyRuleReflector(t.Property, ValidationMessageFactory)))
+              .ToLookup(c => c.Item1, c => c.Item2);
     }
   }
 }

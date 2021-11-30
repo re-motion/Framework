@@ -29,11 +29,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 public class BocMenuItemCommand: BocCommand
 {
   /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   public class MenuItemHrefCommandInfo: BocCommand.BocHrefCommandInfo
   {
     /// <summary> Initalizes a new instance </summary>
-    public MenuItemHrefCommandInfo()
+    public MenuItemHrefCommandInfo ()
     {
     }
 
@@ -41,8 +41,8 @@ public class BocMenuItemCommand: BocCommand
     /// <value> 
     ///   The URL to link to when the rendered command is clicked. The default value is an empty <see cref="String"/>. 
     /// </value>
-    [Description ("The hyperlink reference of the command.")]
-    public override string Href 
+    [Description("The hyperlink reference of the command.")]
+    public override string Href
     {
       get { return base.Href; }
       set { base.Href = value; }
@@ -50,11 +50,11 @@ public class BocMenuItemCommand: BocCommand
   }
 
   /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   public class MenuItemWxeFunctionCommandInfo: BocCommand.BocWxeFunctionCommandInfo
   {
     /// <summary> Create a new instance. </summary>
-    public MenuItemWxeFunctionCommandInfo()
+    public MenuItemWxeFunctionCommandInfo ()
     {
     }
 
@@ -95,7 +95,7 @@ public class BocMenuItemCommand: BocCommand
     ///   The comma separated list of parameters passed to the WxeFunction when the rendered 
     ///   command is clicked. The default value is an empty <see cref="String"/>. 
     /// </value>
-    [Description ("A comma separated list of parameters for the command. The following reference parameters are available: indices, ids, objects, parent, parentproperty.")]
+    [Description("A comma separated list of parameters for the command. The following reference parameters are available: indices, ids, objects, parent, parentproperty.")]
     public override string Parameters
     {
       get { return base.Parameters; }
@@ -107,16 +107,16 @@ public class BocMenuItemCommand: BocCommand
   private MenuItemHrefCommandInfo _hrefCommand;
   private MenuItemWxeFunctionCommandInfo _wxeFunctionCommand;
 
-  [Browsable (false)]
+  [Browsable(false)]
   public new WebMenuItemClickEventHandler? Click;
 
   public BocMenuItemCommand ()
-      : this (CommandType.Event, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+      : this(CommandType.Event, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
   {
   }
 
   public BocMenuItemCommand (CommandType defaultType)
-      : this (defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+      : this(defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
   {
   }
 
@@ -124,7 +124,7 @@ public class BocMenuItemCommand: BocCommand
       CommandType defaultType,
       [CanBeNull] IWebSecurityAdapter? webSecurityAdapter,
       [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
-      : base (defaultType, webSecurityAdapter, wxeSecurityAdapter)
+      : base(defaultType, webSecurityAdapter, wxeSecurityAdapter)
   {
     _hrefCommand = new MenuItemHrefCommandInfo();
     _wxeFunctionCommand = new MenuItemWxeFunctionCommandInfo();
@@ -133,15 +133,15 @@ public class BocMenuItemCommand: BocCommand
   /// <summary> Fires the <see cref="Click"/> event. </summary>
   public virtual void OnClick (BocMenuItem menuItem)
   {
-    base.OnClick (null);
+    base.OnClick(null);
     if (_hasClickFired)
       return;
     _hasClickFired = true;
     if (Click != null)
     {
-      Assertion.IsNotNull (OwnerControl, "OwnerControl must not be null.");
-      WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
-      Click (OwnerControl, e);
+      Assertion.IsNotNull(OwnerControl, "OwnerControl must not be null.");
+      WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs(menuItem);
+      Click(OwnerControl, e);
     }
   }
 
@@ -158,25 +158,25 @@ public class BocMenuItemCommand: BocCommand
   /// </param>
   public void ExecuteWxeFunction (IWxePage wxePage, int[] listIndices, IBusinessObject[] businessObjects)
   {
-    ArgumentUtility.CheckNotNull ("wxePage", wxePage);
+    ArgumentUtility.CheckNotNull("wxePage", wxePage);
     if (!wxePage.IsReturningPostBack)
     {
-      NameObjectCollection parameters = PrepareWxeFunctionParameters (listIndices, businessObjects);
-      ExecuteWxeFunction (wxePage, parameters);
+      NameObjectCollection parameters = PrepareWxeFunctionParameters(listIndices, businessObjects);
+      ExecuteWxeFunction(wxePage, parameters);
     }
   }
 
   private NameObjectCollection PrepareWxeFunctionParameters (int[] listIndices, IBusinessObject[] businessObjects)
   {
     NameObjectCollection parameters = new NameObjectCollection();
-    
+
     parameters["indices"] = listIndices;
     parameters["objects"] = businessObjects;
     if (businessObjects.Length > 0 && businessObjects[0] is IBusinessObjectWithIdentity)
     {
       string[] ids = new string[businessObjects.Length];
       for (int i = 0; i < businessObjects.Length; i++)
-        ids[i] = ((IBusinessObjectWithIdentity) businessObjects[i]).UniqueIdentifier;
+        ids[i] = ((IBusinessObjectWithIdentity)businessObjects[i]).UniqueIdentifier;
       parameters["ids"] = ids;
     }
     if (OwnerControl != null)
@@ -198,7 +198,7 @@ public class BocMenuItemCommand: BocCommand
   public override HrefCommandInfo HrefCommand
   {
     get { return _hrefCommand; }
-    set { _hrefCommand = (MenuItemHrefCommandInfo) value; }
+    set { _hrefCommand = (MenuItemHrefCommandInfo)value; }
   }
 
   /// <summary>
@@ -209,7 +209,7 @@ public class BocMenuItemCommand: BocCommand
   public override WxeFunctionCommandInfo WxeFunctionCommand
   {
     get { return _wxeFunctionCommand; }
-    set { _wxeFunctionCommand = (MenuItemWxeFunctionCommandInfo) value; }
+    set { _wxeFunctionCommand = (MenuItemWxeFunctionCommandInfo)value; }
   }
 }
 

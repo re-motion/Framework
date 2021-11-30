@@ -38,53 +38,53 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       internal Data (
           GuidRevisionValue revision,
           IReadOnlyDictionary<string, IDomainObjectHandle<User>> users)
-          : base (revision)
+          : base(revision)
       {
         Users = users;
       }
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger (MethodInfo.GetCurrentMethod().DeclaringType);
+    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod().DeclaringType);
 
     public SecurityContextUserNamesRevisionBasedCache (IUserNamesRevisionProvider revisionProvider)
-        : base (revisionProvider)
+        : base(revisionProvider)
     {
     }
 
     public Data GetData ()
     {
-      return GetCachedData (UserNamesRevisionKey.Global, Revision.Stale);
+      return GetCachedData(UserNamesRevisionKey.Global, Revision.Stale);
     }
 
     public Data GetDataWithRefresh ()
     {
-      return GetCachedData (UserNamesRevisionKey.Global, Revision.Invalidate);
+      return GetCachedData(UserNamesRevisionKey.Global, Revision.Invalidate);
     }
 
     protected override Data LoadData (GuidRevisionValue revision)
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        s_log.Info ("Reset SecurityContextUserRevisionBasedCache cache.");
-        using (StopwatchScope.CreateScope (s_log, LogLevel.Info, "Refreshed data in SecurityContextUserRevisionBasedCache. Time taken: {elapsed:ms}ms"))
+        s_log.Info("Reset SecurityContextUserRevisionBasedCache cache.");
+        using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Refreshed data in SecurityContextUserRevisionBasedCache. Time taken: {elapsed:ms}ms"))
         {
           var users = LoadUsers();
 
-          return new Data (revision, users);
+          return new Data(revision, users);
         }
       }
     }
 
     private IReadOnlyDictionary<string, IDomainObjectHandle<User>> LoadUsers ()
     {
-      var result = GetOrCreateQuery (
+      var result = GetOrCreateQuery(
           MethodInfo.GetCurrentMethod(),
           () => from u in QueryFactory.CreateLinqQuery<User>()
                 select new { Key = u.UserName, Value = u.ID.GetHandle<User>() });
 
-      using (CreateStopwatchScopeForQueryExecution ("users"))
+      using (CreateStopwatchScopeForQueryExecution("users"))
       {
-        return result.ToDictionary (u => u.Key, u => u.Value).AsReadOnly();
+        return result.ToDictionary(u => u.Key, u => u.Value).AsReadOnly();
       }
     }
   }

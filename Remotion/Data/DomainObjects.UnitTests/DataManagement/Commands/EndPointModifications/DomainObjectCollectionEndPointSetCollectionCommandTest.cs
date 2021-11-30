@@ -45,21 +45,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       base.SetUp();
 
-      _order1 = DomainObjectIDs.Order1.GetObject<Order> (Transaction);
-      _order2 = DomainObjectIDs.Order2.GetObject<Order> (Transaction);
-      _order3 = DomainObjectIDs.Order3.GetObject<Order> (Transaction);
+      _order1 = DomainObjectIDs.Order1.GetObject<Order>(Transaction);
+      _order2 = DomainObjectIDs.Order2.GetObject<Order>(Transaction);
+      _order3 = DomainObjectIDs.Order3.GetObject<Order>(Transaction);
 
       // Collection currently contains _order1, _order2
-      _modifiedCollectionData = new DomainObjectCollectionData (new[] { _order1, _order2 });
+      _modifiedCollectionData = new DomainObjectCollectionData(new[] { _order1, _order2 });
 
       // _order1 will stay, _order2 will be removed, _order3 will be added
       _newCollection = new OrderCollection { _order1, _order3 };
 
-      _mockRepository = new MockRepository ();
-      _collectionManagerMock = _mockRepository.StrictMock<IDomainObjectCollectionEndPointCollectionManager> ();
+      _mockRepository = new MockRepository();
+      _collectionManagerMock = _mockRepository.StrictMock<IDomainObjectCollectionEndPointCollectionManager>();
 
-      _command = new DomainObjectCollectionEndPointSetCollectionCommand (
-          CollectionEndPoint, 
+      _command = new DomainObjectCollectionEndPointSetCollectionCommand(
+          CollectionEndPoint,
           _newCollection,
           _modifiedCollectionData,
           _collectionManagerMock,
@@ -68,29 +68,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
     public override void TearDown ()
     {
-      _mockRepository.BackToRecordAll (); // For Discard
-      base.TearDown ();
+      _mockRepository.BackToRecordAll(); // For Discard
+      base.TearDown();
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_command.ModifiedEndPoint, Is.SameAs (CollectionEndPoint));
-      Assert.That (_command.OldRelatedObject, Is.Null);
-      Assert.That (_command.NewRelatedObject, Is.Null);
-      Assert.That (_command.NewCollection, Is.SameAs (_newCollection));
-      Assert.That (_command.CollectionEndPointCollectionManager, Is.SameAs (_collectionManagerMock));
+      Assert.That(_command.ModifiedEndPoint, Is.SameAs(CollectionEndPoint));
+      Assert.That(_command.OldRelatedObject, Is.Null);
+      Assert.That(_command.NewRelatedObject, Is.Null);
+      Assert.That(_command.NewCollection, Is.SameAs(_newCollection));
+      Assert.That(_command.CollectionEndPointCollectionManager, Is.SameAs(_collectionManagerMock));
     }
 
     [Test]
     public void Initialization_FromNullEndPoint ()
     {
-      var endPoint = new NullDomainObjectCollectionEndPoint (Transaction, RelationEndPointID.Definition);
-      Assert.That (
-          () => new DomainObjectCollectionEndPointSetCollectionCommand (
+      var endPoint = new NullDomainObjectCollectionEndPoint(Transaction, RelationEndPointID.Definition);
+      Assert.That(
+          () => new DomainObjectCollectionEndPointSetCollectionCommand(
           endPoint, _newCollection, CollectionDataMock, _collectionManagerMock, TransactionEventSinkMock),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Modified end point is null, a NullEndPointModificationCommand is needed.",
                   "modifiedEndPoint"));
     }
@@ -98,14 +98,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Begin ()
     {
-      using (TransactionEventSinkMock.GetMockRepository ().Ordered ())
+      using (TransactionEventSinkMock.GetMockRepository().Ordered())
       {
-        TransactionEventSinkMock.Expect (mock => mock.RaiseRelationChangingEvent (
+        TransactionEventSinkMock.Expect(mock => mock.RaiseRelationChangingEvent(
             DomainObject,
             CollectionEndPoint.Definition,
             _order2,
             null));
-        TransactionEventSinkMock.Expect (mock => mock.RaiseRelationChangingEvent (
+        TransactionEventSinkMock.Expect(mock => mock.RaiseRelationChangingEvent(
             DomainObject,
             CollectionEndPoint.Definition,
             null,
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       }
       TransactionEventSinkMock.Replay();
 
-      _command.Begin ();
+      _command.Begin();
 
       TransactionEventSinkMock.VerifyAllExpectations();
     }
@@ -121,14 +121,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void End ()
     {
-      using (TransactionEventSinkMock.GetMockRepository ().Ordered ())
+      using (TransactionEventSinkMock.GetMockRepository().Ordered())
       {
-        TransactionEventSinkMock.Expect (mock => mock.RaiseRelationChangedEvent (
+        TransactionEventSinkMock.Expect(mock => mock.RaiseRelationChangedEvent(
             DomainObject,
             CollectionEndPoint.Definition,
             null,
             _order3));
-        TransactionEventSinkMock.Expect (mock => mock.RaiseRelationChangedEvent (
+        TransactionEventSinkMock.Expect(mock => mock.RaiseRelationChangedEvent(
             DomainObject,
             CollectionEndPoint.Definition,
             _order2,
@@ -152,37 +152,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       DomainObject.RelationChanged += (sender, args) => relationChangedCalled = true;
 
       _collectionManagerMock
-          .Expect (mock => mock.AssociateCollectionWithEndPoint (_newCollection))
-          .Return (new DomainObjectCollectionData (new[] { _order1, _order3 }))
-          .WhenCalled (mi => Assert.That (_modifiedCollectionData, Is.EqualTo (new[] { _order1, _order2 })));
-      _mockRepository.ReplayAll ();
-      
-      _command.Perform ();
+          .Expect(mock => mock.AssociateCollectionWithEndPoint(_newCollection))
+          .Return(new DomainObjectCollectionData(new[] { _order1, _order3 }))
+          .WhenCalled(mi => Assert.That(_modifiedCollectionData, Is.EqualTo(new[] { _order1, _order2 })));
+      _mockRepository.ReplayAll();
 
-      _mockRepository.VerifyAll ();
+      _command.Perform();
 
-      Assert.That (_modifiedCollectionData, Is.EqualTo (new[] { _order1, _order3 }));
-      Assert.That (relationChangingCalled, Is.False); // operation was not started
-      Assert.That (relationChangedCalled, Is.False); // operation was not finished
+      _mockRepository.VerifyAll();
 
-      Assert.That (CollectionEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_modifiedCollectionData, Is.EqualTo(new[] { _order1, _order3 }));
+      Assert.That(relationChangingCalled, Is.False); // operation was not started
+      Assert.That(relationChangedCalled, Is.False); // operation was not finished
+
+      Assert.That(CollectionEndPoint.HasBeenTouched, Is.True);
     }
 
     [Test]
     public void ExpandToAllRelatedObjects ()
     {
-      Assert.That (_order1.Customer, Is.SameAs (CollectionEndPoint.GetDomainObject ()));
-      Assert.That (_order2.Customer, Is.SameAs (CollectionEndPoint.GetDomainObject ()));
+      Assert.That(_order1.Customer, Is.SameAs(CollectionEndPoint.GetDomainObject()));
+      Assert.That(_order2.Customer, Is.SameAs(CollectionEndPoint.GetDomainObject()));
 
-      var customer3 = DomainObjectIDs.Customer3.GetObject<Customer> (Transaction);
-      Assert.That (_order3.Customer, Is.SameAs (customer3));
+      var customer3 = DomainObjectIDs.Customer3.GetObject<Customer>(Transaction);
+      Assert.That(_order3.Customer, Is.SameAs(customer3));
 
-      var bidirectionalModification = _command.ExpandToAllRelatedObjects ();
+      var bidirectionalModification = _command.ExpandToAllRelatedObjects();
 
       // DomainObject.Orders = _newCollection
 
       var steps = bidirectionalModification.GetNestedCommands();
-      Assert.That (steps.Count, Is.EqualTo (4));
+      Assert.That(steps.Count, Is.EqualTo(4));
 
       // order2.Customer = null;
       // order3.Customer.Orders.Remove (order3);
@@ -190,31 +190,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       // DomainObject.Orders = _newCollection
 
       // order2.Customer = null;
-      Assert.That (steps[0], Is.InstanceOf (typeof (RealObjectEndPointRegistrationCommandDecorator)));
-      var setOrder5CustomerCommand = ((ObjectEndPointSetCommand) ((RealObjectEndPointRegistrationCommandDecorator) steps[0]).DecoratedCommand);
-      Assert.That (setOrder5CustomerCommand.ModifiedEndPoint.ID.Definition.PropertyName, Is.EqualTo (typeof (Order).FullName + ".Customer"));
-      Assert.That (setOrder5CustomerCommand.ModifiedEndPoint.ID.ObjectID, Is.EqualTo (_order2.ID));
-      Assert.That (setOrder5CustomerCommand.OldRelatedObject, Is.SameAs (DomainObject));
-      Assert.That (setOrder5CustomerCommand.NewRelatedObject, Is.Null);
+      Assert.That(steps[0], Is.InstanceOf(typeof(RealObjectEndPointRegistrationCommandDecorator)));
+      var setOrder5CustomerCommand = ((ObjectEndPointSetCommand)((RealObjectEndPointRegistrationCommandDecorator)steps[0]).DecoratedCommand);
+      Assert.That(setOrder5CustomerCommand.ModifiedEndPoint.ID.Definition.PropertyName, Is.EqualTo(typeof(Order).FullName + ".Customer"));
+      Assert.That(setOrder5CustomerCommand.ModifiedEndPoint.ID.ObjectID, Is.EqualTo(_order2.ID));
+      Assert.That(setOrder5CustomerCommand.OldRelatedObject, Is.SameAs(DomainObject));
+      Assert.That(setOrder5CustomerCommand.NewRelatedObject, Is.Null);
 
       // order3.Customer.Orders.Remove (order3);
-      Assert.That (steps[1], Is.TypeOf<VirtualEndPointStateUpdatedRaisingCommandDecorator> ());
-      var order2CustomerOrdersRemoveCommand = ((DomainObjectCollectionEndPointRemoveCommand) ((VirtualEndPointStateUpdatedRaisingCommandDecorator) steps[1]).DecoratedCommand);
-      Assert.That (order2CustomerOrdersRemoveCommand.ModifiedEndPoint.ID.Definition.PropertyName, Is.EqualTo (typeof (Customer).FullName + ".Orders"));
-      Assert.That (order2CustomerOrdersRemoveCommand.ModifiedEndPoint.ID.ObjectID, Is.EqualTo (customer3.ID));
-      Assert.That (order2CustomerOrdersRemoveCommand.OldRelatedObject, Is.SameAs (_order3));
-      Assert.That (order2CustomerOrdersRemoveCommand.NewRelatedObject, Is.Null);
+      Assert.That(steps[1], Is.TypeOf<VirtualEndPointStateUpdatedRaisingCommandDecorator>());
+      var order2CustomerOrdersRemoveCommand = ((DomainObjectCollectionEndPointRemoveCommand)((VirtualEndPointStateUpdatedRaisingCommandDecorator)steps[1]).DecoratedCommand);
+      Assert.That(order2CustomerOrdersRemoveCommand.ModifiedEndPoint.ID.Definition.PropertyName, Is.EqualTo(typeof(Customer).FullName + ".Orders"));
+      Assert.That(order2CustomerOrdersRemoveCommand.ModifiedEndPoint.ID.ObjectID, Is.EqualTo(customer3.ID));
+      Assert.That(order2CustomerOrdersRemoveCommand.OldRelatedObject, Is.SameAs(_order3));
+      Assert.That(order2CustomerOrdersRemoveCommand.NewRelatedObject, Is.Null);
 
       // order3.Customer = DomainObject
-      Assert.That (steps[2], Is.InstanceOf (typeof (RealObjectEndPointRegistrationCommandDecorator)));
-      var setOrder2CustomerCommand = ((ObjectEndPointSetCommand) ((RealObjectEndPointRegistrationCommandDecorator) steps[2]).DecoratedCommand);
-      Assert.That (setOrder2CustomerCommand.ModifiedEndPoint.ID.Definition.PropertyName, Is.EqualTo (typeof (Order).FullName + ".Customer"));
-      Assert.That (setOrder2CustomerCommand.ModifiedEndPoint.ID.ObjectID, Is.EqualTo (_order3.ID));
-      Assert.That (setOrder2CustomerCommand.OldRelatedObject, Is.SameAs (customer3));
-      Assert.That (setOrder2CustomerCommand.NewRelatedObject, Is.SameAs (DomainObject));
+      Assert.That(steps[2], Is.InstanceOf(typeof(RealObjectEndPointRegistrationCommandDecorator)));
+      var setOrder2CustomerCommand = ((ObjectEndPointSetCommand)((RealObjectEndPointRegistrationCommandDecorator)steps[2]).DecoratedCommand);
+      Assert.That(setOrder2CustomerCommand.ModifiedEndPoint.ID.Definition.PropertyName, Is.EqualTo(typeof(Order).FullName + ".Customer"));
+      Assert.That(setOrder2CustomerCommand.ModifiedEndPoint.ID.ObjectID, Is.EqualTo(_order3.ID));
+      Assert.That(setOrder2CustomerCommand.OldRelatedObject, Is.SameAs(customer3));
+      Assert.That(setOrder2CustomerCommand.NewRelatedObject, Is.SameAs(DomainObject));
 
       // DomainObject.Orders = _newCollection
-      Assert.That (steps[3], Is.SameAs (_command));
+      Assert.That(steps[3], Is.SameAs(_command));
     }
   }
 }

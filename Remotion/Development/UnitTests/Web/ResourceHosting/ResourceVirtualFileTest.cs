@@ -30,13 +30,13 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     {
       using (var tempFile = new TempFile())
       {
-        tempFile.WriteAllText ("expected");
+        tempFile.WriteAllText("expected");
 
-        var resourceVirtualFile = new ResourceVirtualFile ("~/rest/test/virtualFile", new FileInfo (tempFile.FileName));
+        var resourceVirtualFile = new ResourceVirtualFile("~/rest/test/virtualFile", new FileInfo(tempFile.FileName));
 
-        using (var reader = new StreamReader (resourceVirtualFile.Open()))
+        using (var reader = new StreamReader(resourceVirtualFile.Open()))
         {
-          Assert.That (reader.ReadToEnd(), Is.EqualTo ("expected"));
+          Assert.That(reader.ReadToEnd(), Is.EqualTo("expected"));
         }
       }
     }
@@ -44,19 +44,19 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     [Test]
     public void Exists_FileIsNull ()
     {
-      var resourceVirtualFile = new ResourceVirtualFile ("~/rest/test/virtualFile", null);
+      var resourceVirtualFile = new ResourceVirtualFile("~/rest/test/virtualFile", null);
 
-      Assert.That (resourceVirtualFile.Exists, Is.False);
+      Assert.That(resourceVirtualFile.Exists, Is.False);
     }
 
     [Test]
     public void Name_WithOnlyRootDirectory_ReturnsNotNull ()
     {
-      var resourceVirtualFile = new ResourceVirtualFile ("/", new FileInfo("/something"));
+      var resourceVirtualFile = new ResourceVirtualFile("/", new FileInfo("/something"));
 
       var name = resourceVirtualFile.Name;
 
-      Assert.That (name, Is.EqualTo (string.Empty));
+      Assert.That(name, Is.EqualTo(string.Empty));
     }
   }
 }

@@ -35,24 +35,23 @@ namespace Remotion.Validation.Attributes.Validation
 
     protected override IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
       NotEmptyValidator validator;
-      if (string.IsNullOrEmpty (ErrorMessage))
+      if (string.IsNullOrEmpty(ErrorMessage))
       {
-        validator = PropertyValidatorFactory.Create (
+        validator = PropertyValidatorFactory.Create(
             property,
-            parameters => new NotEmptyValidator (parameters.ValidationMessage),
+            parameters => new NotEmptyValidator(parameters.ValidationMessage),
             validationMessageFactory);
       }
       else
       {
-        validator = new NotEmptyValidator (new InvariantValidationMessage (ErrorMessage));
+        validator = new NotEmptyValidator(new InvariantValidationMessage(ErrorMessage));
       }
 
-      return EnumerableUtility.Singleton (validator);
+      return EnumerableUtility.Singleton(validator);
     }
   }
 }
-

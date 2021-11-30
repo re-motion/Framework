@@ -28,27 +28,27 @@ namespace Remotion.SecurityManager.PerformanceTests
     {
       var defaultServiceLocator = DefaultServiceLocator.Create();
 
-      defaultServiceLocator.Register (
-          typeof (Remotion.Data.DomainObjects.IClientTransactionExtensionFactory),
-          typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory),
+      defaultServiceLocator.Register(
+          typeof(Remotion.Data.DomainObjects.IClientTransactionExtensionFactory),
+          typeof(Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory),
           LifetimeKind.Singleton,
           RegistrationType.Single);
-      defaultServiceLocator.Register (
-          typeof (Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory),
-          typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory),
+      defaultServiceLocator.Register(
+          typeof(Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory),
+          typeof(Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory),
           LifetimeKind.Singleton,
           RegistrationType.Single);
 
-      ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
+      ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 
       LogManager.Initialize();
 
-      var provider = new SecurityService (
+      var provider = new SecurityService(
           SafeServiceLocator.Current.GetInstance<IAccessControlListFinder>(),
           SafeServiceLocator.Current.GetInstance<ISecurityTokenBuilder>(),
           SafeServiceLocator.Current.GetInstance<IAccessResolver>());
       var context =
-          new SimpleSecurityContext (
+          new SimpleSecurityContext(
               "ActaNova.Federal.Domain.File, ActaNova.Federal.Domain",
               "ServiceUser",
               string.Empty,
@@ -58,11 +58,11 @@ namespace Remotion.SecurityManager.PerformanceTests
               {
                   {
                       "CommonFileState",
-                      EnumWrapper.Get ("Work|ActaNova.Domain.CommonFile+CommonFileStateType, ActaNova.Domain")
+                      EnumWrapper.Get("Work|ActaNova.Domain.CommonFile+CommonFileStateType, ActaNova.Domain")
                   }
               },
               new EnumWrapper[0]);
-      ISecurityPrincipal user = new SecurityPrincipal ("ServiceUser", null, null, null);
+      ISecurityPrincipal user = new SecurityPrincipal("ServiceUser", null, null, null);
 
       LoadMapping();
       LoadObjectBinding();
@@ -70,7 +70,7 @@ namespace Remotion.SecurityManager.PerformanceTests
       InitializeLinq();
       ExecuteFirstLinqQuery();
 
-      Console.WriteLine ("done init");
+      Console.WriteLine("done init");
       Console.ReadLine();
 
       TestSimpleQueryAsString();
@@ -79,19 +79,19 @@ namespace Remotion.SecurityManager.PerformanceTests
       TestSimpleLinqQueryWithCustomProjection();
       TestComplexLinqQuery();
 
-      Console.WriteLine ();
-
-      Console.WriteLine ("Initializing query cache...");
-      new SecurityContextRepository (new RevisionProvider(), new UserNamesRevisionProvider()).GetTenant ("SystemTenant");
-      new SecurityPrincipalRepository (new UserRevisionProvider()).GetUser ("ServiceUser");
-      Console.WriteLine ("Query cache initialized");
       Console.WriteLine();
 
-      using (StopwatchScope.CreateScope ("First access check took {elapsed:ms} ms."))
+      Console.WriteLine("Initializing query cache...");
+      new SecurityContextRepository(new RevisionProvider(), new UserNamesRevisionProvider()).GetTenant("SystemTenant");
+      new SecurityPrincipalRepository(new UserRevisionProvider()).GetUser("ServiceUser");
+      Console.WriteLine("Query cache initialized");
+      Console.WriteLine();
+
+      using (StopwatchScope.CreateScope("First access check took {elapsed:ms} ms."))
       {
-        provider.GetAccess (context, user);
+        provider.GetAccess(context, user);
       }
-      Console.WriteLine ("Init done");
+      Console.WriteLine("Init done");
       //Console.ReadKey();
 
       Stopwatch stopwatch = Stopwatch.StartNew();
@@ -99,13 +99,13 @@ namespace Remotion.SecurityManager.PerformanceTests
       int count = 1;
       for (int i = 0; i < count; i++)
       {
-        dummy += provider.GetAccess (context, user).Length;
+        dummy += provider.GetAccess(context, user).Length;
       }
       stopwatch.Stop();
-      Console.WriteLine ("Time taken: {0}ms", ((decimal) stopwatch.ElapsedMilliseconds) / count);
+      Console.WriteLine("Time taken: {0}ms", ((decimal)stopwatch.ElapsedMilliseconds) / count);
 
-      provider.GetAccess (
-          new SimpleSecurityContext (
+      provider.GetAccess(
+          new SimpleSecurityContext(
               "ActaNova.Federal.Domain.File, ActaNova.Federal.Domain",
               null,
               null,
@@ -113,28 +113,28 @@ namespace Remotion.SecurityManager.PerformanceTests
               true,
               new Dictionary<string, EnumWrapper>(),
               new EnumWrapper[0]),
-          new SecurityPrincipal ("jou", null, null, null));
+          new SecurityPrincipal("jou", null, null, null));
 
-      Trace.Write (dummy);
+      Trace.Write(dummy);
       Console.ReadKey();
     }
 
     private static void LoadMapping ()
     {
-      using (StopwatchScope.CreateScope ("Loading Mapping took {elapsed:ms} ms."))
+      using (StopwatchScope.CreateScope("Loading Mapping took {elapsed:ms} ms."))
         MappingConfiguration.Current.GetTypeDefinitions();
     }
 
     private static void LoadObjectBinding ()
     {
-      using (StopwatchScope.CreateScope ("Loading object binding took {elapsed:ms} ms."))
-        BindableObjectProvider.GetProviderForBindableObjectType (typeof (Tenant)).GetBindableObjectClass (typeof (Tenant));
+      using (StopwatchScope.CreateScope("Loading object binding took {elapsed:ms} ms."))
+        BindableObjectProvider.GetProviderForBindableObjectType(typeof(Tenant)).GetBindableObjectClass(typeof(Tenant));
     }
 
     private static void CreateFirstDomainObject ()
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
-      using (StopwatchScope.CreateScope ("First DomainObject {elapsed:ms} ms."))
+      using (StopwatchScope.CreateScope("First DomainObject {elapsed:ms} ms."))
         new OrganizationalStructureFactory().CreatePosition();
     }
 
@@ -142,7 +142,7 @@ namespace Remotion.SecurityManager.PerformanceTests
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        using (StopwatchScope.CreateScope ("Initializing Linq took {elapsed:ms} ms."))
+        using (StopwatchScope.CreateScope("Initializing Linq took {elapsed:ms} ms."))
           QueryFactory.CreateLinqQuery<Tenant>();
       }
     }
@@ -151,7 +151,7 @@ namespace Remotion.SecurityManager.PerformanceTests
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-       using (StopwatchScope.CreateScope ("Executing first Linq query took {elapsed:ms} ms."))
+       using (StopwatchScope.CreateScope("Executing first Linq query took {elapsed:ms} ms."))
        QueryFactory.CreateLinqQuery<Position>().ToList();
       }
     }
@@ -160,46 +160,46 @@ namespace Remotion.SecurityManager.PerformanceTests
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        using (StopwatchScope.CreateScope ("Simple Linq query took {elapsed:ms} ms"))
+        using (StopwatchScope.CreateScope("Simple Linq query took {elapsed:ms} ms"))
         {
           QueryFactory.CreateLinqQuery<Position>().ToList();
         }
       }
     }
-    
+
     private static void TestSimpleLinqQueryWithCustomProjection_MappingInitialization ()
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        QueryFactory.CreateLinqQuery<Tenant>().Select (p => new { Value = p.ID, Key = p.UniqueIdentifier }).ToList();
+        QueryFactory.CreateLinqQuery<Tenant>().Select(p => new { Value = p.ID, Key = p.UniqueIdentifier }).ToList();
       }
     }
-    
+
     private static void TestSimpleLinqQueryWithCustomProjection ()
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        using (StopwatchScope.CreateScope ("Simple Linq query with custom projection took {elapsed:ms} ms"))
+        using (StopwatchScope.CreateScope("Simple Linq query with custom projection took {elapsed:ms} ms"))
         {
-          QueryFactory.CreateLinqQuery<Tenant>().Select (p => new { Value = p.ID, Key = p.UniqueIdentifier }).ToList();
+          QueryFactory.CreateLinqQuery<Tenant>().Select(p => new { Value = p.ID, Key = p.UniqueIdentifier }).ToList();
         }
       }
     }
-    
+
     private static void TestSimpleQueryAsString ()
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        using (StopwatchScope.CreateScope ("Simple query from string took {elapsed:ms} ms"))
+        using (StopwatchScope.CreateScope("Simple query from string took {elapsed:ms} ms"))
         {
           var query =
-              QueryFactory.CreateQuery (
-                  new QueryDefinition (
+              QueryFactory.CreateQuery(
+                  new QueryDefinition(
                       "id",
                       DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions["SecurityManager"],
                       "select * from PositionView",
                       QueryType.Collection));
-          ClientTransaction.Current.QueryManager.GetCollection<Position> (query);
+          ClientTransaction.Current.QueryManager.GetCollection<Position>(query);
         }
       }
     }
@@ -207,7 +207,7 @@ namespace Remotion.SecurityManager.PerformanceTests
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        using (StopwatchScope.CreateScope ("Complex query took {elapsed:ms} ms"))
+        using (StopwatchScope.CreateScope("Complex query took {elapsed:ms} ms"))
         {
           var result = from acl in QueryFactory.CreateLinqQuery<StatefulAccessControlList>()
                        from sc in acl.GetStateCombinationsForQuery()

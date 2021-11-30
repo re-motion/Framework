@@ -40,12 +40,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </remarks>
     public static string Convert ([NotNull] string value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      value = EncloseSpecialCharacters (value);
-      value = TransformKeys (value);
-      value = TransformModifierKeys (value);
-      value = TransformNewlines (value);
+      value = EncloseSpecialCharacters(value);
+      value = TransformKeys(value);
+      value = TransformModifierKeys(value);
+      value = TransformNewlines(value);
       return value;
     }
 
@@ -53,13 +53,13 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       var charactersToEncloseForSendKeys = new[]
                                            {
-                                               Regex.Escape ("+"), Regex.Escape ("^"), Regex.Escape ("%"), Regex.Escape ("~"), Regex.Escape ("("),
-                                               Regex.Escape (")"), Regex.Escape ("'"), Regex.Escape ("["), Regex.Escape ("]"), Regex.Escape ("{"),
-                                               Regex.Escape ("}")
+                                               Regex.Escape("+"), Regex.Escape("^"), Regex.Escape("%"), Regex.Escape("~"), Regex.Escape("("),
+                                               Regex.Escape(")"), Regex.Escape("'"), Regex.Escape("["), Regex.Escape("]"), Regex.Escape("{"),
+                                               Regex.Escape("}")
                                            };
 
-      var charactersToEncloseForSendKeysRegex = string.Join ("|", charactersToEncloseForSendKeys);
-      return Regex.Replace (value, charactersToEncloseForSendKeysRegex, match => "{" + match.Value + "}");
+      var charactersToEncloseForSendKeysRegex = string.Join("|", charactersToEncloseForSendKeys);
+      return Regex.Replace(value, charactersToEncloseForSendKeysRegex, match => "{" + match.Value + "}");
     }
 
     private static string TransformKeys (string value)
@@ -101,7 +101,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
                                   };
 
       foreach (var replacement in replacementDictionary)
-        value = value.Replace (replacement.Key, replacement.Value);
+        value = value.Replace(replacement.Key, replacement.Value);
 
       return value;
     }
@@ -129,7 +129,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     private static string TransformNewlines (string value)
     {
-      return value.Replace ("\r", string.Empty).Replace ("\n", "\r\n");
+      return value.Replace("\r", string.Empty).Replace("\n", "\r\n");
     }
   }
 }

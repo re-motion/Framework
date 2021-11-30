@@ -31,13 +31,13 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     public void SerializeAndDeserialize ()
     {
       int[] array = new int[] { 1, 2, 3 };
-      int[] array2 = Serializer.SerializeAndDeserialize (array);
-      Assert.That (array2, Is.Not.SameAs (array));
+      int[] array2 = Serializer.SerializeAndDeserialize(array);
+      Assert.That(array2, Is.Not.SameAs(array));
 
-      Assert.That (array2.Length, Is.EqualTo (array.Length));
-      Assert.That (array2[0], Is.EqualTo (array[0]));
-      Assert.That (array2[1], Is.EqualTo (array[1]));
-      Assert.That (array2[2], Is.EqualTo (array[2]));
+      Assert.That(array2.Length, Is.EqualTo(array.Length));
+      Assert.That(array2[0], Is.EqualTo(array[0]));
+      Assert.That(array2[1], Is.EqualTo(array[1]));
+      Assert.That(array2[2], Is.EqualTo(array[2]));
     }
   }
 }

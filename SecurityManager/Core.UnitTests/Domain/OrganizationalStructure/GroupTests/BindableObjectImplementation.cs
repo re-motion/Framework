@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
     public override void TearDown ()
     {
       base.TearDown();
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     [Test]
@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       OrganizationalStructureFactory factory = new OrganizationalStructureFactory();
       Group group = factory.CreateGroup();
 
-      Assert.IsNotEmpty (group.UniqueIdentifier);
+      Assert.IsNotEmpty(group.UniqueIdentifier);
     }
 
     [Test]
@@ -53,7 +53,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       group.Name = "LongGroupName";
       group.ShortName = "ShortName";
 
-      Assert.That (@group.DisplayName, Is.EqualTo ("ShortName (LongGroupName)"));
+      Assert.That(@group.DisplayName, Is.EqualTo("ShortName (LongGroupName)"));
     }
 
     [Test]
@@ -63,7 +63,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       group.Name = "LongGroupName";
       group.ShortName = null;
 
-      Assert.That (@group.DisplayName, Is.EqualTo ("LongGroupName"));
+      Assert.That(@group.DisplayName, Is.EqualTo("LongGroupName"));
     }
 
     [Test]
@@ -73,7 +73,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
 
       group.UniqueIdentifier = "My Unique Identifier";
 
-      Assert.That (@group.UniqueIdentifier, Is.EqualTo ("My Unique Identifier"));
+      Assert.That(@group.UniqueIdentifier, Is.EqualTo("My Unique Identifier"));
     }
 
     [Test]
@@ -84,7 +84,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
 
       group.UniqueIdentifier = "My Unique Identifier";
 
-      Assert.That (businessObject.UniqueIdentifier, Is.EqualTo (@group.ID.ToString()));
+      Assert.That(businessObject.UniqueIdentifier, Is.EqualTo(@group.ID.ToString()));
     }
 
     [Test]
@@ -95,8 +95,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
 
       group.UniqueIdentifier = "My Unique Identifier";
 
-      Assert.That (businessObject.GetProperty ("UniqueIdentifier"), Is.EqualTo ("My Unique Identifier"));
-      Assert.That (businessObject.UniqueIdentifier, Is.EqualTo (@group.ID.ToString()));
+      Assert.That(businessObject.GetProperty("UniqueIdentifier"), Is.EqualTo("My Unique Identifier"));
+      Assert.That(businessObject.UniqueIdentifier, Is.EqualTo(@group.ID.ToString()));
     }
 
     [Test]
@@ -105,9 +105,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       Group group = CreateGroup();
       IBusinessObjectWithIdentity businessObject = group;
 
-      businessObject.SetProperty ("UniqueIdentifier", "My Unique Identifier");
-      Assert.That (@group.UniqueIdentifier, Is.EqualTo ("My Unique Identifier"));
-      Assert.That (businessObject.UniqueIdentifier, Is.EqualTo (@group.ID.ToString()));
+      businessObject.SetProperty("UniqueIdentifier", "My Unique Identifier");
+      Assert.That(@group.UniqueIdentifier, Is.EqualTo("My Unique Identifier"));
+      Assert.That(businessObject.UniqueIdentifier, Is.EqualTo(@group.ID.ToString()));
     }
 
     [Test]
@@ -117,10 +117,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       IBusinessObjectWithIdentity businessObject = group;
       group.UniqueIdentifier = "My Unique Identifier";
 
-      IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition ("UniqueIdentifier");
+      IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition("UniqueIdentifier");
 
-      Assert.IsInstanceOf (typeof (IBusinessObjectStringProperty), property);
-      Assert.That (businessObject.GetProperty (property), Is.EqualTo ("My Unique Identifier"));
+      Assert.IsInstanceOf(typeof(IBusinessObjectStringProperty), property);
+      Assert.That(businessObject.GetProperty(property), Is.EqualTo("My Unique Identifier"));
     }
 
     [Test]
@@ -134,14 +134,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       bool isFound = false;
       foreach (PropertyBase property in properties)
       {
-        if (property.Identifier == "UniqueIdentifier" && property.PropertyInfo.DeclaringType.Equals (TypeAdapter.Create (typeof (Group))))
+        if (property.Identifier == "UniqueIdentifier" && property.PropertyInfo.DeclaringType.Equals(TypeAdapter.Create(typeof(Group))))
         {
           isFound = true;
           break;
         }
       }
 
-      Assert.IsTrue (isFound, "Property UnqiueIdentifier declared on Group was not found.");
+      Assert.IsTrue(isFound, "Property UnqiueIdentifier declared on Group was not found.");
     }
 
     [Test]
@@ -150,23 +150,23 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
       var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService (typeof (GroupPropertyTypeSearchService), searchServiceStub.Object);
-      var groupClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (Group));
-      var groupTypeProperty = (IBusinessObjectReferenceProperty) groupClass.GetPropertyDefinition ("Parent");
-      Assert.That (groupTypeProperty, Is.Not.Null);
+          .AddService(typeof(GroupPropertyTypeSearchService), searchServiceStub.Object);
+      var groupClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Group));
+      var groupTypeProperty = (IBusinessObjectReferenceProperty)groupClass.GetPropertyDefinition("Parent");
+      Assert.That(groupTypeProperty, Is.Not.Null);
 
       var group = CreateGroup();
       var expected = new[] { new Mock<IBusinessObject>().Object };
 
-      searchServiceStub.Setup (stub => stub.SupportsProperty (groupTypeProperty)).Returns (true);
-      searchServiceStub.Setup (stub => stub.Search (group, groupTypeProperty, args.Object)).Returns (expected);
+      searchServiceStub.Setup(stub => stub.SupportsProperty(groupTypeProperty)).Returns(true);
+      searchServiceStub.Setup(stub => stub.Search(group, groupTypeProperty, args.Object)).Returns(expected);
 
-      Assert.That (groupTypeProperty.SupportsSearchAvailableObjects, Is.True);
+      Assert.That(groupTypeProperty.SupportsSearchAvailableObjects, Is.True);
 
-      IBusinessObject[] actual = groupTypeProperty.SearchAvailableObjects (group, args.Object);
-      Assert.That (actual, Is.SameAs (expected));
+      IBusinessObject[] actual = groupTypeProperty.SearchAvailableObjects(group, args.Object);
+      Assert.That(actual, Is.SameAs(expected));
     }
 
     [Test]
@@ -175,23 +175,23 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
       var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService (typeof (GroupTypePropertyTypeSearchService), searchServiceStub.Object);
-      var groupClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (Group));
-      var groupTypeProperty = (IBusinessObjectReferenceProperty) groupClass.GetPropertyDefinition ("GroupType");
-      Assert.That (groupTypeProperty, Is.Not.Null);
+          .AddService(typeof(GroupTypePropertyTypeSearchService), searchServiceStub.Object);
+      var groupClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Group));
+      var groupTypeProperty = (IBusinessObjectReferenceProperty)groupClass.GetPropertyDefinition("GroupType");
+      Assert.That(groupTypeProperty, Is.Not.Null);
 
       var group = CreateGroup();
       var expected = new[] { new Mock<IBusinessObject>().Object };
 
-      searchServiceStub.Setup (stub => stub.SupportsProperty (groupTypeProperty)).Returns (true);
-      searchServiceStub.Setup (stub => stub.Search (group, groupTypeProperty, args.Object)).Returns (expected);
+      searchServiceStub.Setup(stub => stub.SupportsProperty(groupTypeProperty)).Returns(true);
+      searchServiceStub.Setup(stub => stub.Search(group, groupTypeProperty, args.Object)).Returns(expected);
 
-      Assert.That (groupTypeProperty.SupportsSearchAvailableObjects, Is.True);
+      Assert.That(groupTypeProperty.SupportsSearchAvailableObjects, Is.True);
 
-      IBusinessObject[] actual = groupTypeProperty.SearchAvailableObjects (group, args.Object);
-      Assert.That (actual, Is.SameAs (expected));
+      IBusinessObject[] actual = groupTypeProperty.SearchAvailableObjects(group, args.Object);
+      Assert.That(actual, Is.SameAs(expected));
     }
   }
 }

@@ -29,7 +29,7 @@ namespace Remotion.Logging
 
     public LogThreshold (ILog logger, LogLevel threshold)
     {
-      ArgumentUtility.CheckNotNull ("logger", logger);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       _logger = logger;
       _threshold = threshold;

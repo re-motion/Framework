@@ -35,19 +35,19 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IWebTabStripRenderer> ();
+      var factory = _serviceLocator.GetInstance<IWebTabStripRenderer>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (WebTabStripRenderer)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(WebTabStripRenderer)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IWebTabStripRenderer> ();
-      var factory2 = _serviceLocator.GetInstance<IWebTabStripRenderer> ();
+      var factory1 = _serviceLocator.GetInstance<IWebTabStripRenderer>();
+      var factory2 = _serviceLocator.GetInstance<IWebTabStripRenderer>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

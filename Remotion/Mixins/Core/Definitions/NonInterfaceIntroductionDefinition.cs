@@ -20,13 +20,13 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{FullName}, not introduced by {Implementer.FullName}")]
+  [DebuggerDisplay("{FullName}, not introduced by {Implementer.FullName}")]
   public class NonInterfaceIntroductionDefinition : IVisitableDefinition
   {
     public NonInterfaceIntroductionDefinition (Type type, MixinDefinition implementer, bool explicitSuppression)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("implementer", implementer);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("implementer", implementer);
 
       InterfaceType = type;
       Implementer = implementer;
@@ -44,8 +44,8 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
     }
 
     public string? FullName

@@ -31,45 +31,45 @@ namespace Remotion.Data.DomainObjects.Persistence
   {
     private static string BuildMessage (IEnumerable<ObjectID> ids)
     {
-      return string.Format ("Object(s) could not be found: {0}.", string.Join (", ", ids.Select (id => "'" + id + "'")));
+      return string.Format("Object(s) could not be found: {0}.", string.Join(", ", ids.Select(id => "'" + id + "'")));
     }
 
     private readonly ObjectID[] _ids;
 
     public ObjectsNotFoundException (IEnumerable<ObjectID> ids)
-      : this (ids, null)
+      : this(ids, null)
     {
     }
 
     public ObjectsNotFoundException (IEnumerable<ObjectID> ids, Exception inner)
-        : this (BuildMessage (ArgumentUtility.CheckNotNull ("ids", ids)), ids, inner)
+        : this(BuildMessage(ArgumentUtility.CheckNotNull("ids", ids)), ids, inner)
     {
     }
 
     public ObjectsNotFoundException (string message, IEnumerable<ObjectID> ids, Exception inner)
-      : base (message, inner)
+      : base(message, inner)
     {
-      ArgumentUtility.CheckNotNull ("ids", ids);
+      ArgumentUtility.CheckNotNull("ids", ids);
 
       _ids = ids.ToArray();
     }
 
     protected ObjectsNotFoundException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
-      _ids = (ObjectID[]) info.GetValue ("_ids", typeof (ObjectID[]));
+      _ids = (ObjectID[])info.GetValue("_ids", typeof(ObjectID[]));
     }
 
     public ReadOnlyCollection<ObjectID> IDs
     {
-      get { return Array.AsReadOnly (_ids); }
+      get { return Array.AsReadOnly(_ids); }
     }
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      base.GetObjectData (info, context);
+      base.GetObjectData(info, context);
 
-      info.AddValue ("_ids", _ids);
+      info.AddValue("_ids", _ids);
     }
   }
 }

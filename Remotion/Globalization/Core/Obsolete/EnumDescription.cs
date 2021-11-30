@@ -32,31 +32,31 @@ namespace Remotion.Globalization
   public static class EnumDescription
   {
     [NotNull]
-    [Obsolete ("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. (Version 1.13.223.0)", true)]
+    [Obsolete("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. (Version 1.13.223.0)", true)]
     public static EnumValue[] GetAllValues ([NotNull] Type enumType)
     {
-      throw new NotSupportedException ("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. (Version 1.13.223.0)");
+      throw new NotSupportedException("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. (Version 1.13.223.0)");
     }
 
     [NotNull]
-    [Obsolete ("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)", true)]
+    [Obsolete("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)", true)]
     public static EnumValue[] GetAllValues ([NotNull] Type enumType, [CanBeNull] CultureInfo culture)
     {
-      throw new NotSupportedException ("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)");
+      throw new NotSupportedException("Use Enum.GetValues (enumType) to get the values, then use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...) for each value. Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)");
     }
 
     [NotNull]
-    [Obsolete ("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...). (Version 1.13.223.0)", true)]
+    [Obsolete("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...). (Version 1.13.223.0)", true)]
     public static string GetDescription ([NotNull] Enum value)
     {
-      throw new NotSupportedException ("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...). (Version 1.13.223.0)");
+      throw new NotSupportedException("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...). (Version 1.13.223.0)");
     }
 
     [NotNull]
-    [Obsolete ("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...).  Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)", true)]
+    [Obsolete("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...).  Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)", true)]
     public static string GetDescription ([NotNull] Enum value, [CanBeNull] CultureInfo culture)
     {
-      throw new NotSupportedException ("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...).  Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)");
+      throw new NotSupportedException("Use IEnumerationGlobalizationService.GetEnumerationValueDisplayName (...).  Use a CultureScope set the CurrentUICulture. (Version 1.13.223.0)");
     }
   }
 }

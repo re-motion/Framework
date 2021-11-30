@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding
   /// <summary>
   /// Specifies if a property or field is read only.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public sealed class ObjectBindingAttribute : Attribute
   {
     private bool _readOnly = false;

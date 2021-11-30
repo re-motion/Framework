@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
     // construction and disposing
 
     public UndefinedEnumTestFunction ()
-      : base (WxeTransactionMode.CreateRootWithAutoCommit)
+      : base(WxeTransactionMode.CreateRootWithAutoCommit)
     {
       ReturnUrl = "default.aspx";
     }
@@ -43,29 +43,29 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     public SearchObjectWithUndefinedEnum SearchObjectWithUndefinedEnum
     {
-      get { return (SearchObjectWithUndefinedEnum) Variables["SearchObjectWithUndefinedEnum"]; }
+      get { return (SearchObjectWithUndefinedEnum)Variables["SearchObjectWithUndefinedEnum"]; }
       set { Variables["SearchObjectWithUndefinedEnum"] = value; }
     }
 
     public ClassWithUndefinedEnum ExistingObjectWithUndefinedEnum
     {
-      get { return (ClassWithUndefinedEnum) Variables["ExistingObjectWithUndefinedEnum"]; }
+      get { return (ClassWithUndefinedEnum)Variables["ExistingObjectWithUndefinedEnum"]; }
       set { Variables["ExistingObjectWithUndefinedEnum"] = value; }
     }
 
     public ClassWithUndefinedEnum NewObjectWithUndefinedEnum
     {
-      get { return (ClassWithUndefinedEnum) Variables["NewObjectWithUndefinedEnum"]; }
+      get { return (ClassWithUndefinedEnum)Variables["NewObjectWithUndefinedEnum"]; }
       set { Variables["NewObjectWithUndefinedEnum"] = value; }
     }
 
     private void Step1 ()
     {
-      ExistingObjectWithUndefinedEnum = DomainObjectIDs.ObjectWithUndefinedEnum.GetObject<ClassWithUndefinedEnum> ();
+      ExistingObjectWithUndefinedEnum = DomainObjectIDs.ObjectWithUndefinedEnum.GetObject<ClassWithUndefinedEnum>();
       NewObjectWithUndefinedEnum = ClassWithUndefinedEnum.NewObject();
-      SearchObjectWithUndefinedEnum = ObjectFactory.Create<SearchObjectWithUndefinedEnum> (ParamList.Empty);
+      SearchObjectWithUndefinedEnum = ObjectFactory.Create<SearchObjectWithUndefinedEnum>(ParamList.Empty);
     }
 
-    private WxePageStep Step2 = new WxePageStep ("UndefinedEnumTest.aspx");
+    private WxePageStep Step2 = new WxePageStep("UndefinedEnumTest.aspx");
   }
 }

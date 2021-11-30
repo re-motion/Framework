@@ -20,7 +20,7 @@ using Remotion.ObjectBinding.BindableObject;
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
   [BindableObjectWithIdentityProvider]
-  [SuppressAttributes (typeof (BusinessObjectProviderAttribute))]
+  [SuppressAttributes(typeof(BusinessObjectProviderAttribute))]
   [Serializable]
   public class DerivedBusinessObjectClassWithoutAttributeAndWithSpecificBusinessObjectProviderAttribute : BaseBusinessObjectClass
   {

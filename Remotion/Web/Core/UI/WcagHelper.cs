@@ -27,7 +27,7 @@ namespace Remotion.Web.UI
 
 public class WcagHelper
 {
-  private static readonly ILog s_log = LogManager.GetLogger (typeof (WcagHelper));
+  private static readonly ILog s_log = LogManager.GetLogger(typeof(WcagHelper));
   private static readonly DoubleCheckedLockingContainer<WcagHelper> s_instance = new DoubleCheckedLockingContainer<WcagHelper>(()=>new WcagHelper());
 
   public static WcagHelper Instance
@@ -40,7 +40,7 @@ public class WcagHelper
     s_instance.Value = instance;
   }
 
-  protected WcagHelper()
+  protected WcagHelper ()
 	{
 	}
 
@@ -51,7 +51,7 @@ public class WcagHelper
 
   public virtual bool IsWaiConformanceLevelARequired ()
   {
-    return IsWaiConformanceLevelARequired (GetWaiConformanceLevel());
+    return IsWaiConformanceLevelARequired(GetWaiConformanceLevel());
   }
 
   public virtual bool IsWaiConformanceLevelDoubleARequired (WaiConformanceLevel conformanceLevel)
@@ -61,7 +61,7 @@ public class WcagHelper
 
   public virtual bool IsWaiConformanceLevelDoubleARequired ()
   {
-    return IsWaiConformanceLevelDoubleARequired (GetWaiConformanceLevel());
+    return IsWaiConformanceLevelDoubleARequired(GetWaiConformanceLevel());
   }
 
   public virtual bool IsWaiConformanceLevelTripleARequired (WaiConformanceLevel conformanceLevel)
@@ -71,96 +71,96 @@ public class WcagHelper
 
   public virtual bool IsWaiConformanceLevelTripleARequired ()
   {
-    return IsWaiConformanceLevelTripleARequired (GetWaiConformanceLevel());
+    return IsWaiConformanceLevelTripleARequired(GetWaiConformanceLevel());
   }
 
-  public virtual bool IsWcagDebuggingEnabled()
+  public virtual bool IsWcagDebuggingEnabled ()
   {
     return WebConfiguration.Current.Wcag.Debugging != WcagDebugMode.Disabled;
   }
 
-  public virtual bool IsWcagDebugLogEnabled()
+  public virtual bool IsWcagDebugLogEnabled ()
   {
     return WebConfiguration.Current.Wcag.Debugging == WcagDebugMode.Logging
         || WebConfiguration.Current.Wcag.Debugging == WcagDebugMode.Exception;
   }
 
-  public virtual bool IsWcagDebugExceptionEnabled()
+  public virtual bool IsWcagDebugExceptionEnabled ()
   {
     return WebConfiguration.Current.Wcag.Debugging == WcagDebugMode.Exception;
   }
 
-  public virtual WaiConformanceLevel GetWaiConformanceLevel()
+  public virtual WaiConformanceLevel GetWaiConformanceLevel ()
   {
     return WebConfiguration.Current.Wcag.ConformanceLevel;
   }
 
   public virtual void HandleWarning (int priority)
   {
-    string message = string.Format (
+    string message = string.Format(
         "An element on the page might not comply with a priority {0} checkpoint.", priority);
-    HandleWarning (message);
+    HandleWarning(message);
   }
 
   public virtual void HandleWarning (int priority, Control control)
   {
-    ArgumentUtility.CheckNotNull ("control", control);
+    ArgumentUtility.CheckNotNull("control", control);
 
-    string message = string.Format (
-       "{0} '{1}' on page '{2}' might not comply with a priority {3} checkpoint.", 
+    string message = string.Format(
+       "{0} '{1}' on page '{2}' might not comply with a priority {3} checkpoint.",
         control.GetType().Name, control.ID, control.Page!.GetType().GetFullNameSafe(), priority);
-    HandleWarning (message);
+    HandleWarning(message);
   }
 
   public virtual void HandleWarning (int priority, Control control, string property)
   {
-    ArgumentUtility.CheckNotNull ("control", control);
+    ArgumentUtility.CheckNotNull("control", control);
 
-    string message = string.Format (
-        "The value of property '{0}' for {1} '{2}' on page '{3}' might not comply with a priority {4} checkpoint.", 
+    string message = string.Format(
+        "The value of property '{0}' for {1} '{2}' on page '{3}' might not comply with a priority {4} checkpoint.",
         property, control.GetType().Name, control.ID, control.Page!.GetType().GetFullNameSafe(), priority);
-    HandleWarning (message);
+    HandleWarning(message);
   }
 
   public virtual void HandleWarning (string message)
   {
     if (IsWcagDebugLogEnabled())
-      s_log.Warn (message);
+      s_log.Warn(message);
   }
 
   public virtual void HandleError (int priority)
   {
-    string message = string.Format (
+    string message = string.Format(
         "An element on the page does comply with a priority {0} checkpoint.", priority);
-    HandleError (message);
+    HandleError(message);
   }
 
   public virtual void HandleError (int priority, Control control)
   {
-    ArgumentUtility.CheckNotNull ("control", control);
+    ArgumentUtility.CheckNotNull("control", control);
 
-    string message = string.Format (
-       "{0} '{1}' on page '{2}' does not comply with a priority {3} checkpoint.", 
+    string message = string.Format(
+       "{0} '{1}' on page '{2}' does not comply with a priority {3} checkpoint.",
         control.GetType().Name, control.ID, control.Page!.GetType().GetFullNameSafe(), priority);
-    HandleError (message);
+    HandleError(message);
   }
 
   public virtual void HandleError (int priority, Control control, string property)
   {
-    ArgumentUtility.CheckNotNull ("control", control);
+    ArgumentUtility.CheckNotNull("control", control);
 
-    string message = string.Format (
-        "The value of property '{0}' for {1} '{2}' on page '{3}' does not comply with a priority {4} checkpoint.", 
+    string message = string.Format(
+        "The value of property '{0}' for {1} '{2}' on page '{3}' does not comply with a priority {4} checkpoint.",
         property, control.GetType().Name, control.ID, control.Page!.GetType().GetFullNameSafe(), priority);
-    HandleError (message);
+    HandleError(message);
   }
 
   public virtual void HandleError (string message)
   {
     if (IsWcagDebugLogEnabled())
-      s_log.Error (message);
+      s_log.Error(message);
     if (IsWcagDebugExceptionEnabled())
-      throw new WcagException (message, null);
+      throw new WcagException(message, null);
   }
 }
 

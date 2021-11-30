@@ -20,12 +20,12 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{FullName}, not introduced by {Attribute.DeclaringDefinition.FullName}")]
+  [DebuggerDisplay("{FullName}, not introduced by {Attribute.DeclaringDefinition.FullName}")]
   public class NonAttributeIntroductionDefinition : IVisitableDefinition
   {
     public NonAttributeIntroductionDefinition (AttributeDefinition attribute, bool explicitSuppression)
     {
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
+      ArgumentUtility.CheckNotNull("attribute", attribute);
       Attribute = attribute;
       IsExplicitlySuppressed = explicitSuppression;
     }
@@ -45,8 +45,8 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
     }
 
     public string? FullName

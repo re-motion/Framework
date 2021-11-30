@@ -30,26 +30,26 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     [Test]
     public void Fail_Null ()
     {
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", null, typeof (string)),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("arg", null, typeof(string)),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
     public void Fail_Type ()
     {
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", typeof (object), typeof (string)),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("arg", typeof(object), typeof(string)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'arg' is a 'System.Object', which cannot be assigned to type 'System.String'.", "arg"));
     }
 
     [Test]
     public void Succeed ()
     {
-      Type result = ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", typeof (string), typeof (object));
-      Assert.That (result, Is.SameAs (typeof (string)));
+      Type result = ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("arg", typeof(string), typeof(object));
+      Assert.That(result, Is.SameAs(typeof(string)));
     }
   }
 }

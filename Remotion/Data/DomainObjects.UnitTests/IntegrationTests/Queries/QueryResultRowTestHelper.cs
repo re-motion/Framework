@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
   {
     public static object[] ExtractRawValues (IQueryResultRow row)
     {
-      return Enumerable.Range (0, row.ValueCount).Select (row.GetRawValue).ToArray();
+      return Enumerable.Range(0, row.ValueCount).Select(row.GetRawValue).ToArray();
     }
   }
 }

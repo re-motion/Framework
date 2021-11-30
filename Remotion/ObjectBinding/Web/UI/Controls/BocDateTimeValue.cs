@@ -40,9 +40,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit date/time values. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/Class/*' />
-  [ValidationProperty ("ValidationValue")]
-  [DefaultEvent ("TextChanged")]
-  [ToolboxItemFilter ("System.Web.UI")]
+  [ValidationProperty("ValidationValue")]
+  [DefaultEvent("TextChanged")]
+  [ToolboxItemFilter("System.Web.UI")]
   public class BocDateTimeValue : BusinessObjectBoundEditableWebControl, IBocDateTimeValue, IPostBackDataHandler, IFocusableControl
   {
     // types
@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocDateTimeValue")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocDateTimeValue")]
     public enum ResourceIdentifier
     {
       /// <summary> The validation error message displayed when both the date and the time component missing. </summary>
@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     // static members
 
-    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectDateTimeProperty) };
+    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof(IBusinessObjectDateTimeProperty) };
 
     private static readonly object s_dateTimeChangedEvent = new object();
 
@@ -136,33 +136,33 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       _datePickerButton.ID = ID + "_Boc_DatePicker";
       _datePickerButton.EnableViewState = false;
-      Controls.Add (_datePickerButton);
+      Controls.Add(_datePickerButton);
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       Binding.BindingChanged += Binding_BindingChanged;
-      Page!.RegisterRequiresPostBack (this);
+      Page!.RegisterRequiresPostBack(this);
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      base.RegisterHtmlHeadContents (htmlHeadAppender);
+      base.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender);
 
-      _datePickerButton.RegisterHtmlHeadContents (htmlHeadAppender);
+      _datePickerButton.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
     /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       if (RequiresLoadPostData)
-        return LoadPostData (postDataKey, postCollection);
+        return LoadPostData(postDataKey, postCollection);
       else
         return false;
     }
@@ -182,12 +182,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       //  Date input field
 
-      string? newDateValue = PageUtility.GetPostBackCollectionItem (Page!, GetDateValueName());
+      string? newDateValue = PageUtility.GetPostBackCollectionItem(Page!, GetDateValueName());
       bool isDateChanged = newDateValue != null
                            && (_internalDateValue ?? string.Empty) != newDateValue;
       if (isDateChanged)
       {
-        InternalDateValue = StringUtility.EmptyToNull (newDateValue);
+        InternalDateValue = StringUtility.EmptyToNull(newDateValue);
 
         //  Reset the time in if the control is displayed in date mode and the date was changed
         if ((ActualValueType == BocDateTimeValueType.Date) && _savedDateTimeValue.HasValue)
@@ -197,19 +197,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       //  Time input field
 
-      string? newTimeValue = PageUtility.GetPostBackCollectionItem (Page!, GetTimeValueName());
+      string? newTimeValue = PageUtility.GetPostBackCollectionItem(Page!, GetTimeValueName());
       bool isTimeChanged = newTimeValue != null
                            && (_internalTimeValue ?? string.Empty) != newTimeValue;
       if (isTimeChanged)
       {
-        InternalTimeValue = StringUtility.EmptyToNull (newTimeValue);
+        InternalTimeValue = StringUtility.EmptyToNull(newTimeValue);
 
         //  Reset the seconds if the control does not display seconds and the time was changed
         if (!ShowSeconds
             && _savedDateTimeValue.HasValue)
         {
-          TimeSpan seconds = new TimeSpan (0, 0, _savedDateTimeValue.Value.Second);
-          _savedDateTimeValue = _savedDateTimeValue.Value.Subtract (seconds);
+          TimeSpan seconds = new TimeSpan(0, 0, _savedDateTimeValue.Value.Second);
+          _savedDateTimeValue = _savedDateTimeValue.Value.Subtract(seconds);
         }
         IsDirty = true;
       }
@@ -227,9 +227,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Fires the <see cref="DateTimeChanged"/> event. </summary>
     protected virtual void OnDateTimeChanged ()
     {
-      EventHandler? eventHandler = (EventHandler?) Events[s_dateTimeChangedEvent];
+      EventHandler? eventHandler = (EventHandler?)Events[s_dateTimeChangedEvent];
       if (eventHandler != null)
-        eventHandler (this, EventArgs.Empty);
+        eventHandler(this, EventArgs.Empty);
     }
 
     /// <summary> Checks whether the control conforms to the required WAI level. </summary>
@@ -239,28 +239,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
       {
         if (DateTextBoxStyle.AutoPostBack == true)
-          WcagHelper.Instance.HandleWarning (1, this, "DateTextBoxStyle.AutoPostBack");
+          WcagHelper.Instance.HandleWarning(1, this, "DateTextBoxStyle.AutoPostBack");
 
         if (TimeTextBoxStyle.AutoPostBack == true)
-          WcagHelper.Instance.HandleWarning (1, this, "TimeTextBoxStyle.AutoPostBack");
+          WcagHelper.Instance.HandleWarning(1, this, "TimeTextBoxStyle.AutoPostBack");
 
         if (DateTimeTextBoxStyle.AutoPostBack == true)
-          WcagHelper.Instance.HandleWarning (1, this, "DateTimeTextBoxStyle.AutoPostBack");
+          WcagHelper.Instance.HandleWarning(1, this, "DateTimeTextBoxStyle.AutoPostBack");
       }
 
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelDoubleARequired())
       {
         if (ActualValueType == BocDateTimeValueType.DateTime)
-          WcagHelper.Instance.HandleError (2, this, "ActualValueType");
+          WcagHelper.Instance.HandleError(2, this, "ActualValueType");
       }
     }
 
     protected override void OnPreRender (EventArgs e)
     {
       EnsureChildControls();
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      LoadResources (GetResourceManager(), GlobalizationService);
+      LoadResources(GetResourceManager(), GlobalizationService);
 
       _datePickerButton.ContainerControlID = ClientID;
       _datePickerButton.TargetControlID = GetDateValueName();
@@ -270,15 +270,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
     {
-      return new BocDateTimeValueConstraintVisitor (this);
+      return new BocDateTimeValueConstraintVisitor(this);
     }
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext (writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     protected virtual IBocDateTimeValueRenderer CreateRenderer ()
@@ -288,28 +288,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual BocDateTimeValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      Assertion.IsNotNull (Context, "Context must not be null.");
+      Assertion.IsNotNull(Context, "Context must not be null.");
 
-      return new BocDateTimeValueRenderingContext (Context, writer, this);
+      return new BocDateTimeValueRenderingContext(Context, writer, this);
     }
 
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[]) savedState!;
+      object?[] values = (object?[])savedState!;
 
-      base.LoadControlState (values[0]!);
+      base.LoadControlState(values[0]!);
 
       if (values[1] != null)
-        _internalDateValue = (string) values[1]!;
+        _internalDateValue = (string)values[1]!;
       if (values[2] != null)
-        _internalTimeValue = (string) values[2]!;
-      _valueType = (BocDateTimeValueType) values[3]!;
-      _actualValueType = (BocDateTimeValueType) values[4]!;
-      _showSeconds = (bool) values[5]!;
-      _provideMaxLength = (bool) values[6]!;
-      _savedDateTimeValue = (DateTime?) values[7];
+        _internalTimeValue = (string)values[2]!;
+      _valueType = (BocDateTimeValueType)values[3]!;
+      _actualValueType = (BocDateTimeValueType)values[4]!;
+      _showSeconds = (bool)values[5]!;
+      _provideMaxLength = (bool)values[6]!;
+      _savedDateTimeValue = (DateTime?)values[7];
     }
 
     protected override object SaveControlState ()
@@ -345,16 +345,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       DateTime? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (DateTime?) DataSource.BusinessObject.GetProperty (Property);
+        value = (DateTime?)DataSource.BusinessObject.GetProperty(Property);
 
-      LoadValueInternal (value, false);
+      LoadValueInternal(value, false);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (DateTime? value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
@@ -363,7 +363,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (interim)
         return;
 
-      SetValue (value);
+      SetValue(value);
       IsDirty = false;
     }
 
@@ -385,7 +385,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         //  GetValue parses the internal representation of the date/time value
         //  SetValue updates the internal representation of the date/time value
-        SetValue (GetValue());
+        SetValue(GetValue());
         IsDirty = false;
         return true;
       }
@@ -395,26 +395,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     public IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      base.LoadResources (resourceManager, globalizationService);
+      base.LoadResources(resourceManager, globalizationService);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
-      if (!string.IsNullOrEmpty (key))
-        ErrorMessage = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage);
+      if (!string.IsNullOrEmpty(key))
+        ErrorMessage = resourceManager.GetString(key);
     }
 
-    [Obsolete ("For DependDB only.", true)]
+    [Obsolete("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("For DependDB only.");
+      throw new NotImplementedException("For DependDB only.");
     }
 
     /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
@@ -429,7 +429,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = ServiceLocator.GetInstance<IBocDateTimeValueValidatorFactory>();
-      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+      _validators = validatorFactory.CreateValidators(this, isReadOnly).ToList().AsReadOnly();
 
       OverrideValidatorErrorMessages();
 
@@ -438,8 +438,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OverrideValidatorErrorMessages ()
     {
-      if (!string.IsNullOrEmpty (_errorMessage))
-        UpdateValidtaorErrorMessages<BocDateTimeValueValidatorBase> (_errorMessage);
+      if (!string.IsNullOrEmpty(_errorMessage))
+        UpdateValidtaorErrorMessages<BocDateTimeValueValidatorBase>(_errorMessage);
     }
 
     private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
@@ -466,7 +466,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (Property != null)
       {
         if (_valueType == BocDateTimeValueType.Undefined)
-          _actualValueType = GetBocDateTimeValueType (Property);
+          _actualValueType = GetBocDateTimeValueType(Property);
       }
     }
 
@@ -482,7 +482,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       IBusinessObjectDateTimeProperty? dateTimeProperty = property as IBusinessObjectDateTimeProperty;
       if (dateTimeProperty == null)
-        throw new NotSupportedException ("BocDateTimeValue does not support property type " + property.GetType());
+        throw new NotSupportedException("BocDateTimeValue does not support property type " + property.GetType());
 
       if (dateTimeProperty.Type == DateTimeType.Date)
         return BocDateTimeValueType.Date;
@@ -497,14 +497,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see langword="null"/> is returned.
     /// </value>
     /// <remarks> The dirty state is reset when the value is set. </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public new DateTime? Value
     {
       get { return GetValue(); }
       set
       {
         IsDirty = true;
-        SetValue (value);
+        SetValue(value);
       }
     }
 
@@ -526,10 +526,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return null;
       }
 
-      Assertion.IsNotNull (InternalDateValue, "InternalDateValue must not be null.");
+      Assertion.IsNotNull(InternalDateValue, "InternalDateValue must not be null.");
       try
       {
-        dateTimeValue = DateTime.Parse (InternalDateValue).Date;
+        dateTimeValue = DateTime.Parse(InternalDateValue).Date;
       }
       catch (FormatException)
       {
@@ -549,7 +549,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         try
         {
-          dateTimeValue = dateTimeValue.Add (DateTime.Parse (InternalTimeValue).TimeOfDay);
+          dateTimeValue = dateTimeValue.Add(DateTime.Parse(InternalTimeValue).TimeOfDay);
         }
         catch (FormatException)
         {
@@ -564,13 +564,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         //  Restore the seconds if the control does not display them.
         if (!ShowSeconds
             && _savedDateTimeValue.HasValue)
-          dateTimeValue = dateTimeValue.AddSeconds (_savedDateTimeValue.Value.Second);
+          dateTimeValue = dateTimeValue.AddSeconds(_savedDateTimeValue.Value.Second);
       }
       else if (ActualValueType == BocDateTimeValueType.Date
                && _savedDateTimeValue.HasValue)
       {
         //  Restore the time if the control is displayed in date mode.
-        dateTimeValue = dateTimeValue.Add (_savedDateTimeValue.Value.TimeOfDay);
+        dateTimeValue = dateTimeValue.Add(_savedDateTimeValue.Value.TimeOfDay);
       }
 
       return dateTimeValue;
@@ -595,11 +595,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       try
       {
-        InternalDateValue = DateTimeFormatter.FormatDateValue (_savedDateTimeValue.Value);
+        InternalDateValue = DateTimeFormatter.FormatDateValue(_savedDateTimeValue.Value);
       }
       catch (InvalidCastException e)
       {
-        throw new ArgumentException ("Expected type '" + _actualValueType + "', but was '" + value!.GetType().GetFullNameSafe() + "'.", "value", e);
+        throw new ArgumentException("Expected type '" + _actualValueType + "', but was '" + value!.GetType().GetFullNameSafe() + "'.", "value", e);
       }
 
       if (ActualValueType == BocDateTimeValueType.DateTime
@@ -607,11 +607,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         try
         {
-          InternalTimeValue = DateTimeFormatter.FormatTimeValue (_savedDateTimeValue.Value, ShowSeconds);
+          InternalTimeValue = DateTimeFormatter.FormatTimeValue(_savedDateTimeValue.Value, ShowSeconds);
         }
         catch (InvalidCastException e)
         {
-          throw new ArgumentException (
+          throw new ArgumentException(
               "Expected type '" + _actualValueType + "', but was '" + value!.GetType().GetFullNameSafe() + "'.",
               "value",
               e);
@@ -625,22 +625,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override sealed object? ValueImplementation
     {
       get { return Value; }
-      set { Value = ArgumentUtility.CheckType<DateTime?> ("value", value); }
+      set { Value = ArgumentUtility.CheckType<DateTime?>("value", value); }
     }
 
     /// <summary>Gets a flag indicating whether the <see cref="BocDateTimeValue"/> contains a value. </summary>
     public override bool HasValue
     {
-      get { return !(string.IsNullOrEmpty (InternalDateValue) && string.IsNullOrEmpty (InternalTimeValue)); }
+      get { return !(string.IsNullOrEmpty(InternalDateValue) && string.IsNullOrEmpty(InternalTimeValue)); }
     }
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectDateTimeProperty"/> object this control is bound to. </summary>
     /// <value> An instance of type <see cref="IBusinessObjectDateTimeProperty"/>. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectDateTimeProperty? Property
     {
-      get { return (IBusinessObjectDateTimeProperty?) base.Property; }
+      get { return (IBusinessObjectDateTimeProperty?)base.Property; }
       set { base.Property = value; }
     }
 
@@ -732,8 +732,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Returns the <see cref="Control.ClientID"/> of the date text box if the control is in edit mode, 
     ///   otherwise <see langword="null"/>. 
     /// </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public string? FocusID
     {
       get { return IsReadOnly ? null : GetDateValueName(); }
@@ -744,11 +744,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   (edit mode) as well as the label (read-only mode).
     /// </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/CommonStyle/*' />
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the date and the time TextBoxes (edit mode) and the Label (read-only mode).")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the date and the time TextBoxes (edit mode) and the Label (read-only mode).")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style CommonStyle
     {
       get { return _commonStyle; }
@@ -759,11 +759,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   (edit mode) only.
     /// </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/DateTimeTextBoxStyle/*' />
-    [Category ("Style")]
-    [Description ("The style that you want to apply to both the date and the time TextBoxes (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to both the date and the time TextBoxes (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public SingleRowTextBoxStyle DateTimeTextBoxStyle
     {
       get { return _dateTimeTextBoxStyle; }
@@ -771,11 +771,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the style that you want to apply to the date text box (edit mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="DateTimeTextBoxStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to only the date TextBox (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to only the date TextBox (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public SingleRowTextBoxStyle DateTextBoxStyle
     {
       get { return _dateTextBoxStyle; }
@@ -783,11 +783,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the style that you want to apply to the time text box (edit mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="DateTimeTextBoxStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to only the time TextBox (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to only the time TextBox (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public SingleRowTextBoxStyle TimeTextBoxStyle
     {
       get { return _timeTextBoxStyle; }
@@ -795,11 +795,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the style that you want to apply to the <see cref="Label"/> (read-only mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the Label (read-only mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the Label (read-only mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style LabelStyle
     {
       get { return _labelStyle; }
@@ -807,11 +807,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the style that you want to apply to the <see cref="DatePickerButton"/> (edit mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="CommonStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the Button (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the Button (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style ButtonStyle
     {
       get { return _datePickerButton.DatePickerButtonStyle; }
@@ -819,9 +819,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets a flag that determines whether to display the seconds. </summary>
     /// <value> <see langword="true"/> to enable the seconds. The default value is <see langword="false"/>. </value>
-    [Category ("Appearance")]
-    [Description ("True to display the seconds. ")]
-    [DefaultValue (false)]
+    [Category("Appearance")]
+    [Description("True to display the seconds. ")]
+    [DefaultValue(false)]
     public bool ShowSeconds
     {
       get { return _showSeconds; }
@@ -830,9 +830,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets a flag that determines whether to apply an automatic maximum length to the text boxes. </summary>
     /// <value> <see langword="true"/> to enable the maximum length. The default value is <see langword="true"/>. </value>
-    [Category ("Behavior")]
-    [Description (" True to automatically limit the maxmimum length of the date and time input fields. ")]
-    [DefaultValue (true)]
+    [Category("Behavior")]
+    [Description(" True to automatically limit the maxmimum length of the date and time input fields. ")]
+    [DefaultValue(true)]
     public bool ProvideMaxLength
     {
       get { return _provideMaxLength; }
@@ -841,9 +841,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets a flag that determines whether the client script is enabled. </summary>
     /// <value> <see langword="true"/> to enable the client script. The default value is <see langword="true"/>. </value>
-    [Category ("Behavior")]
-    [Description (" True to enable the client script for the pop-up calendar. ")]
-    [DefaultValue (true)]
+    [Category("Behavior")]
+    [Description(" True to enable the client script for the pop-up calendar. ")]
+    [DefaultValue(true)]
     public bool EnableClientScript
     {
       get { return _enableClientScript; }
@@ -859,9 +859,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The externally set <see cref="BocDateTimeValueType"/>. The default value is 
     ///   <see cref="BocDateTimeValueType.Undefined"/>. 
     /// </value>
-    [Description ("Gets or sets a fixed value type.")]
-    [Category ("Data")]
-    [DefaultValue (BocDateTimeValueType.Undefined)]
+    [Description("Gets or sets a fixed value type.")]
+    [Category("Data")]
+    [DefaultValue(BocDateTimeValueType.Undefined)]
     public BocDateTimeValueType ValueType
     {
       get { return _valueType; }
@@ -912,11 +912,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     string IBocDateTimeValue.GetDatePickerText ()
     {
-      return GetResourceManager().GetString (ResourceIdentifier.DataPickerButtonAlternateText);
+      return GetResourceManager().GetString(ResourceIdentifier.DataPickerButtonAlternateText);
     }
 
     /// <summary> Gets the <see cref="BocDateTimeValueType"/> actually used by the cotnrol. </summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public BocDateTimeValueType ActualValueType
     {
       get
@@ -927,7 +927,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets the <see cref="IDatePickerButton"/> used in edit mode for opening the date picker. </summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public IDatePickerButton DatePickerButton
     {
       get { return _datePickerButton; }
@@ -937,7 +937,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets the entered date and time, seperated by a newline character.
     /// </summary>
     /// <remarks> This property is used for validation. </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public string ValidationValue
     {
       get
@@ -952,12 +952,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> This event is fired when the date or time is changed between postbacks. </summary>
-    [Category ("Action")]
-    [Description ("Fires when the value of the control has changed.")]
+    [Category("Action")]
+    [Description("Fires when the value of the control has changed.")]
     public event EventHandler DateTimeChanged
     {
-      add { Events.AddHandler (s_dateTimeChangedEvent, value); }
-      remove { Events.RemoveHandler (s_dateTimeChangedEvent, value); }
+      add { Events.AddHandler(s_dateTimeChangedEvent, value); }
+      remove { Events.RemoveHandler(s_dateTimeChangedEvent, value); }
     }
 
     /// <summary> Gets or sets the validation error message. </summary>
@@ -965,16 +965,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if there is an error.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
+    [Description("Validation message displayed if there is an error.")]
+    [Category("Validator")]
+    [DefaultValue("")]
     public string? ErrorMessage
     {
       get { return _errorMessage; }
       set
       {
         _errorMessage = value;
-        UpdateValidtaorErrorMessages<BocDateTimeValueValidatorBase> (_errorMessage);
+        UpdateValidtaorErrorMessages<BocDateTimeValueValidatorBase>(_errorMessage);
       }
     }
 
@@ -1000,12 +1000,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     IEnumerable<string> IBocDateTimeValue.GetDateValueValidationErrors ()
     {
-      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct();
     }
 
     IEnumerable<string> IBocDateTimeValue.GetTimeValueValidationErrors ()
     {
-      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct();
     }
 
     string IControlWithDiagnosticMetadata.ControlType

@@ -18,6 +18,6 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration.TestDomain
 {
-  [AttributeUsage (AttributeTargets.All, AllowMultiple = true, Inherited = false)]
+  [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = false)]
   public class MultiNonInheritedAttribute : Attribute { }
 }

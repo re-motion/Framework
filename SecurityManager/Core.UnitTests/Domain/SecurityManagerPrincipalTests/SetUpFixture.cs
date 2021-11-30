@@ -37,21 +37,21 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
         _testHelper = new OrganizationalStructureTestHelper();
 
         _dbFixtures = new DatabaseFixtures();
-        var tenant = _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (_testHelper.Transaction);
+        var tenant = _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(_testHelper.Transaction);
 
         using (_testHelper.Transaction.EnterNonDiscardingScope())
         {
-          Tenant child = _testHelper.CreateTenant ("Child", "UID: TenantChild");
+          Tenant child = _testHelper.CreateTenant("Child", "UID: TenantChild");
           child.IsAbstract = true;
           child.Parent = tenant;
-          Tenant grandChild = _testHelper.CreateTenant ("GrandChild", "UID: TenantGrandChild");
+          Tenant grandChild = _testHelper.CreateTenant("GrandChild", "UID: TenantGrandChild");
           grandChild.Parent = child;
           ClientTransaction.Current.Commit();
         }
       }
       catch (Exception e)
       {
-        Console.WriteLine (e);
+        Console.WriteLine(e);
         throw;
       }
     }

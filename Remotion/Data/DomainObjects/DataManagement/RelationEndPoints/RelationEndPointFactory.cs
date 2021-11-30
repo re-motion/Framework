@@ -45,22 +45,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         ILazyLoader lazyLoader,
         IClientTransactionEventSink transactionEventSink,
         IVirtualObjectEndPointDataManagerFactory virtualObjectEndPointDataManagerFactory,
-        IDomainObjectCollectionEndPointDataManagerFactory domainObjectCollectionEndPointDataManagerFactory, 
-        IDomainObjectCollectionEndPointCollectionProvider domainObjectCollectionEndPointCollectionProvider, 
+        IDomainObjectCollectionEndPointDataManagerFactory domainObjectCollectionEndPointDataManagerFactory,
+        IDomainObjectCollectionEndPointCollectionProvider domainObjectCollectionEndPointCollectionProvider,
         IAssociatedDomainObjectCollectionDataStrategyFactory associatedDomainObjectCollectionDataStrategyFactory,
         IVirtualCollectionEndPointCollectionProvider virtualCollectionEndPointCollectionProvider,
         IVirtualCollectionEndPointDataManagerFactory virtualCollectionEndPointDataManagerFactory)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
-      ArgumentUtility.CheckNotNull ("lazyLoader", lazyLoader);
-      ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);
-      ArgumentUtility.CheckNotNull ("virtualObjectEndPointDataManagerFactory", virtualObjectEndPointDataManagerFactory);
-      ArgumentUtility.CheckNotNull ("domainObjectCollectionEndPointDataManagerFactory", domainObjectCollectionEndPointDataManagerFactory);
-      ArgumentUtility.CheckNotNull ("domainObjectCollectionEndPointCollectionProvider", domainObjectCollectionEndPointCollectionProvider);
-      ArgumentUtility.CheckNotNull ("associatedDomainObjectCollectionDataStrategyFactory", associatedDomainObjectCollectionDataStrategyFactory);
-      ArgumentUtility.CheckNotNull ("virtualCollectionEndPointCollectionProvider", virtualCollectionEndPointCollectionProvider);
-      ArgumentUtility.CheckNotNull ("virtualObjectEndPointDataManagerFactory", virtualObjectEndPointDataManagerFactory);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
+      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNull("virtualObjectEndPointDataManagerFactory", virtualObjectEndPointDataManagerFactory);
+      ArgumentUtility.CheckNotNull("domainObjectCollectionEndPointDataManagerFactory", domainObjectCollectionEndPointDataManagerFactory);
+      ArgumentUtility.CheckNotNull("domainObjectCollectionEndPointCollectionProvider", domainObjectCollectionEndPointCollectionProvider);
+      ArgumentUtility.CheckNotNull("associatedDomainObjectCollectionDataStrategyFactory", associatedDomainObjectCollectionDataStrategyFactory);
+      ArgumentUtility.CheckNotNull("virtualCollectionEndPointCollectionProvider", virtualCollectionEndPointCollectionProvider);
+      ArgumentUtility.CheckNotNull("virtualObjectEndPointDataManagerFactory", virtualObjectEndPointDataManagerFactory);
 
       _clientTransaction = clientTransaction;
       _endPointProvider = endPointProvider;
@@ -126,17 +126,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IRealObjectEndPoint CreateRealObjectEndPoint (RelationEndPointID endPointID, DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
 
-      return new RealObjectEndPoint (_clientTransaction, endPointID, dataContainer, _endPointProvider, _transactionEventSink);
+      return new RealObjectEndPoint(_clientTransaction, endPointID, dataContainer, _endPointProvider, _transactionEventSink);
     }
 
     public IVirtualObjectEndPoint CreateVirtualObjectEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      var virtualObjectEndPoint = new VirtualObjectEndPoint (
+      var virtualObjectEndPoint = new VirtualObjectEndPoint(
           _clientTransaction,
           endPointID,
           _lazyLoader,
@@ -148,12 +148,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IVirtualCollectionEndPoint CreateVirtualCollectionEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      var collectionEndPoint = new VirtualCollectionEndPoint (
+      var collectionEndPoint = new VirtualCollectionEndPoint(
           _clientTransaction,
           endPointID,
-          new VirtualCollectionEndPointCollectionManager (endPointID, _virtualCollectionEndPointCollectionProvider),
+          new VirtualCollectionEndPointCollectionManager(endPointID, _virtualCollectionEndPointCollectionProvider),
           _lazyLoader,
           _endPointProvider,
           _transactionEventSink,
@@ -163,12 +163,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      var collectionEndPoint = new DomainObjectCollectionEndPoint (
+      var collectionEndPoint = new DomainObjectCollectionEndPoint(
           _clientTransaction,
           endPointID,
-          new DomainObjectCollectionEndPointCollectionManager (endPointID, _domainObjectCollectionEndPointCollectionProvider, _associatedDomainObjectCollectionDataStrategyFactory),
+          new DomainObjectCollectionEndPointCollectionManager(endPointID, _domainObjectCollectionEndPointCollectionProvider, _associatedDomainObjectCollectionDataStrategyFactory),
           _lazyLoader,
           _endPointProvider,
           _transactionEventSink,
@@ -194,16 +194,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddHandle (_clientTransaction);
-      info.AddHandle (_endPointProvider);
-      info.AddHandle (_lazyLoader);
-      info.AddHandle (_transactionEventSink);
-      info.AddHandle (_virtualObjectEndPointDataManagerFactory );
-      info.AddHandle (_domainObjectCollectionEndPointDataManagerFactory );
-      info.AddHandle (_domainObjectCollectionEndPointCollectionProvider);
-      info.AddHandle (_associatedDomainObjectCollectionDataStrategyFactory);
-      info.AddHandle (_virtualCollectionEndPointCollectionProvider);
-      info.AddHandle (_virtualCollectionEndPointDataManagerFactory);
+      info.AddHandle(_clientTransaction);
+      info.AddHandle(_endPointProvider);
+      info.AddHandle(_lazyLoader);
+      info.AddHandle(_transactionEventSink);
+      info.AddHandle(_virtualObjectEndPointDataManagerFactory );
+      info.AddHandle(_domainObjectCollectionEndPointDataManagerFactory );
+      info.AddHandle(_domainObjectCollectionEndPointCollectionProvider);
+      info.AddHandle(_associatedDomainObjectCollectionDataStrategyFactory);
+      info.AddHandle(_virtualCollectionEndPointCollectionProvider);
+      info.AddHandle(_virtualCollectionEndPointDataManagerFactory);
     }
 
     #endregion

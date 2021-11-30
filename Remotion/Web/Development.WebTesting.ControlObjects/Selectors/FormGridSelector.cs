@@ -29,31 +29,31 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       : TypedControlSelectorBase<FormGridControlObject>, ITitleControlSelector<FormGridControlObject>
   {
     public FormGridSelector ()
-        : base ("FormGrid")
+        : base("FormGrid")
     {
     }
 
     /// <inheritdoc/>
     public FormGridControlObject SelectPerTitle (ControlSelectionContext context, string title)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("title", title);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("title", title);
 
-      var scope = FindScopePerTitle (context, title);
+      var scope = FindScopePerTitle(context, title);
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public FormGridControlObject? SelectOptionalPerTitle (ControlSelectionContext context, string title)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("title", title);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("title", title);
 
-      var scope = FindScopePerTitle (context, title);
+      var scope = FindScopePerTitle(context, title);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -61,10 +61,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerTitle (ControlSelectionContext context, string title)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("title", title);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("title", title);
 
-      var scope = FindScopePerTitle (context, title);
+      var scope = FindScopePerTitle(context, title);
 
       return scope.ExistsWorkaround();
     }
@@ -74,10 +74,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new FormGridControlObject (newControlObjectContext);
+      return new FormGridControlObject(newControlObjectContext);
     }
 
     private ElementScope FindScopePerTitle (ControlSelectionContext context, string title)
@@ -87,9 +87,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
       //var scope = context.Scope.FindCss (string.Format ("table[{0}='{1}']", DiagnosticMetadataAttributes.FormGridTitle, title));
 
       // Note: this implementation assumes that the title cell has the CSS class formGridTitleCell.
-      var hasClassCheck = DomSelectorUtility.CreateHasClassCheckForXPath ("formGridTitleCell");
-      var escapedTitleParameter = DomSelectorUtility.CreateMatchValueForXPath (title);
-      var scope = context.Scope.FindXPath (string.Format (".//table[tbody/tr/td{0}={1}]", hasClassCheck, escapedTitleParameter));
+      var hasClassCheck = DomSelectorUtility.CreateHasClassCheckForXPath("formGridTitleCell");
+      var escapedTitleParameter = DomSelectorUtility.CreateMatchValueForXPath(title);
+      var scope = context.Scope.FindXPath(string.Format(".//table[tbody/tr/td{0}={1}]", hasClassCheck, escapedTitleParameter));
 
       // This alternative implementation assumes that the title cell is the very first row and column.
       // var scope = context.Scope.FindXPath (string.Format (".//table[tbody/tr[1]/td[1]='{0}']", title));

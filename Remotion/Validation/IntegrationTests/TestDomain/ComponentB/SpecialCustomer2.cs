@@ -23,7 +23,7 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentB
 {
   public class SpecialCustomer2 : Customer
   {
-    [RemoveValidator (typeof (LengthValidator))]
+    [RemoveValidator(typeof(LengthValidator))]
     public override string LastName { get; set; }
 
     public override string UserName { get; set; }

@@ -40,149 +40,149 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     public void Initialize ()
     {
       bool includeBaseProperties = BooleanObjectMother.GetRandomBoolean();
-      bool includeMixinProperties = BooleanObjectMother.GetRandomBoolean ();
-      var propertyFinder = new StubPropertyFinderBase (
-          typeof (ClassWithDifferentProperties), includeBaseProperties, includeMixinProperties, _persistentMixinFinderStub);
+      bool includeMixinProperties = BooleanObjectMother.GetRandomBoolean();
+      var propertyFinder = new StubPropertyFinderBase(
+          typeof(ClassWithDifferentProperties), includeBaseProperties, includeMixinProperties, _persistentMixinFinderStub);
 
-      Assert.That (propertyFinder.Type, Is.SameAs (typeof (ClassWithDifferentProperties)));
-      Assert.That (propertyFinder.IncludeBaseProperties, Is.EqualTo (includeBaseProperties));
-      Assert.That (propertyFinder.IncludeMixinProperties, Is.EqualTo (includeMixinProperties));
+      Assert.That(propertyFinder.Type, Is.SameAs(typeof(ClassWithDifferentProperties)));
+      Assert.That(propertyFinder.IncludeBaseProperties, Is.EqualTo(includeBaseProperties));
+      Assert.That(propertyFinder.IncludeMixinProperties, Is.EqualTo(includeMixinProperties));
     }
 
     [Test]
     public void FindPropertyInfos_ForInheritanceRoot ()
     {
-      var propertyFinder = new StubPropertyFinderBase (typeof (ClassWithDifferentProperties), true, false, _persistentMixinFinderStub);
+      var propertyFinder = new StubPropertyFinderBase(typeof(ClassWithDifferentProperties), true, false, _persistentMixinFinderStub);
 
-      Assert.That (
-          propertyFinder.FindPropertyInfos (),
-          Is.EquivalentTo (
+      Assert.That(
+          propertyFinder.FindPropertyInfos(),
+          Is.EquivalentTo(
               new[]
                   {
-                      GetProperty (typeof (ClassWithDifferentPropertiesNotInMapping), "BaseString"),
-                      GetProperty (typeof (ClassWithDifferentPropertiesNotInMapping), "BaseUnidirectionalOneToOne"),
-                      GetProperty (typeof (ClassWithDifferentPropertiesNotInMapping), "BasePrivateUnidirectionalOneToOne"),
-                      GetProperty (typeof (ClassWithDifferentProperties), "Int32"),
-                      GetProperty (typeof (ClassWithDifferentProperties), "String"),
-                      GetProperty (typeof (ClassWithDifferentProperties), "UnidirectionalOneToOne"),
-                      GetProperty (typeof (ClassWithDifferentProperties), "PrivateString")
+                      GetProperty(typeof(ClassWithDifferentPropertiesNotInMapping), "BaseString"),
+                      GetProperty(typeof(ClassWithDifferentPropertiesNotInMapping), "BaseUnidirectionalOneToOne"),
+                      GetProperty(typeof(ClassWithDifferentPropertiesNotInMapping), "BasePrivateUnidirectionalOneToOne"),
+                      GetProperty(typeof(ClassWithDifferentProperties), "Int32"),
+                      GetProperty(typeof(ClassWithDifferentProperties), "String"),
+                      GetProperty(typeof(ClassWithDifferentProperties), "UnidirectionalOneToOne"),
+                      GetProperty(typeof(ClassWithDifferentProperties), "PrivateString")
                   }));
     }
 
     [Test]
     public void FindPropertyInfos_ForDerivedClass ()
     {
-      var propertyFinder = new StubPropertyFinderBase (typeof (ClassWithDifferentProperties), false, false, _persistentMixinFinderStub);
+      var propertyFinder = new StubPropertyFinderBase(typeof(ClassWithDifferentProperties), false, false, _persistentMixinFinderStub);
 
-      Assert.That (
-          propertyFinder.FindPropertyInfos (),
-          Is.EquivalentTo (
+      Assert.That(
+          propertyFinder.FindPropertyInfos(),
+          Is.EquivalentTo(
               new[]
                   {
-                      GetProperty (typeof (ClassWithDifferentProperties), "Int32"),
-                      GetProperty (typeof (ClassWithDifferentProperties), "String"),
-                      GetProperty (typeof (ClassWithDifferentProperties), "UnidirectionalOneToOne"),
-                      GetProperty (typeof (ClassWithDifferentProperties), "PrivateString")
+                      GetProperty(typeof(ClassWithDifferentProperties), "Int32"),
+                      GetProperty(typeof(ClassWithDifferentProperties), "String"),
+                      GetProperty(typeof(ClassWithDifferentProperties), "UnidirectionalOneToOne"),
+                      GetProperty(typeof(ClassWithDifferentProperties), "PrivateString")
                   }));
     }
 
     [Test]
     public void FindPropertyInfos_ForClassWithInterface ()
     {
-      var propertyFinder = new StubPropertyFinderBase (typeof (ClassWithInterface), false, false, _persistentMixinFinderStub);
+      var propertyFinder = new StubPropertyFinderBase(typeof(ClassWithInterface), false, false, _persistentMixinFinderStub);
 
-      Assert.That (
-          propertyFinder.FindPropertyInfos (),
-          Is.EquivalentTo (
+      Assert.That(
+          propertyFinder.FindPropertyInfos(),
+          Is.EquivalentTo(
               new[]
                   {
-                      GetProperty (typeof (ClassWithInterface), "Property"),
-                      GetProperty (typeof (ClassWithInterface), "ImplicitProperty"),
-                      GetProperty (typeof (ClassWithInterface), "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.IInterfaceWithProperties.ExplicitManagedProperty")
+                      GetProperty(typeof(ClassWithInterface), "Property"),
+                      GetProperty(typeof(ClassWithInterface), "ImplicitProperty"),
+                      GetProperty(typeof(ClassWithInterface), "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.IInterfaceWithProperties.ExplicitManagedProperty")
                   }));
     }
 
     [Test]
     public void FindPropertyInfos_ForDomainObjectType ()
     {
-      var propertyFinder = new StubPropertyFinderBase (typeof (DomainObject), true, false, _persistentMixinFinderStub);
+      var propertyFinder = new StubPropertyFinderBase(typeof(DomainObject), true, false, _persistentMixinFinderStub);
 
-      Assert.That (propertyFinder.FindPropertyInfos (), Is.Not.Empty.And.Member (PropertyInfoAdapter.Create (typeof (DomainObject).GetProperty ("ID"))));
+      Assert.That(propertyFinder.FindPropertyInfos(), Is.Not.Empty.And.Member(PropertyInfoAdapter.Create(typeof(DomainObject).GetProperty("ID"))));
     }
 
     [Test]
     public void FindPropertyInfos_ForObjectType ()
     {
-      var propertyFinder = new StubPropertyFinderBase (typeof (object), true, false, _persistentMixinFinderStub);
+      var propertyFinder = new StubPropertyFinderBase(typeof(object), true, false, _persistentMixinFinderStub);
 
-      Assert.That (propertyFinder.FindPropertyInfos (), Is.Empty);
+      Assert.That(propertyFinder.FindPropertyInfos(), Is.Empty);
     }
 
     [Test]
     public void FindPropertyInfos_ForNonDomainObject ()
     {
-      var propertyFinder = new StubPropertyFinderBase (typeof (int), true, false, _persistentMixinFinderStub);
+      var propertyFinder = new StubPropertyFinderBase(typeof(int), true, false, _persistentMixinFinderStub);
 
-      Assert.That (propertyFinder.FindPropertyInfos (), Is.Empty);
+      Assert.That(propertyFinder.FindPropertyInfos(), Is.Empty);
     }
 
     [Test]
     public void FindPropertyInfos_WithMixins_ForInheritanceRoot ()
     {
-      var persistentMixinFinder = new PersistentMixinFinder (typeof (TargetClassA));
-      var propertyFinder = new StubPropertyFinderBase (typeof (TargetClassA), true, true, persistentMixinFinder);
+      var persistentMixinFinder = new PersistentMixinFinder(typeof(TargetClassA));
+      var propertyFinder = new StubPropertyFinderBase(typeof(TargetClassA), true, true, persistentMixinFinder);
 
-      Assert.That (
-          propertyFinder.FindPropertyInfos (),
-          Is.EquivalentTo (
+      Assert.That(
+          propertyFinder.FindPropertyInfos(),
+          Is.EquivalentTo(
               new[]
                   {
-                      GetProperty (typeof (TargetClassBase), "P0"),
-                      GetProperty (typeof (MixinBase), "P0a"),
-                      GetProperty (typeof (TargetClassA), "P1"),
-                      GetProperty (typeof (TargetClassA), "P2"),
-                      GetProperty (typeof (MixinA), "P5"),
-                      GetProperty (typeof (MixinC), "P7"),
-                      GetProperty (typeof (MixinD), "P8"),
+                      GetProperty(typeof(TargetClassBase), "P0"),
+                      GetProperty(typeof(MixinBase), "P0a"),
+                      GetProperty(typeof(TargetClassA), "P1"),
+                      GetProperty(typeof(TargetClassA), "P2"),
+                      GetProperty(typeof(MixinA), "P5"),
+                      GetProperty(typeof(MixinC), "P7"),
+                      GetProperty(typeof(MixinD), "P8"),
                   }));
     }
 
     [Test]
     public void FindPropertyInfos_WithMixins_ForNonInheritanceRoot ()
     {
-      var persistentMixinFinder = new PersistentMixinFinder (typeof (TargetClassA));
-      var propertyFinder = new StubPropertyFinderBase (typeof (TargetClassA), false, true, persistentMixinFinder);
+      var persistentMixinFinder = new PersistentMixinFinder(typeof(TargetClassA));
+      var propertyFinder = new StubPropertyFinderBase(typeof(TargetClassA), false, true, persistentMixinFinder);
 
-      Assert.That (
-          propertyFinder.FindPropertyInfos (),
-          Is.EquivalentTo (
+      Assert.That(
+          propertyFinder.FindPropertyInfos(),
+          Is.EquivalentTo(
               new[]
                   {
-                      GetProperty (typeof (TargetClassA), "P1"),
-                      GetProperty (typeof (TargetClassA), "P2"),
-                      GetProperty (typeof (MixinA), "P5"),
-                      GetProperty (typeof (MixinC), "P7"),
-                      GetProperty (typeof (MixinD), "P8"),
+                      GetProperty(typeof(TargetClassA), "P1"),
+                      GetProperty(typeof(TargetClassA), "P2"),
+                      GetProperty(typeof(MixinA), "P5"),
+                      GetProperty(typeof(MixinC), "P7"),
+                      GetProperty(typeof(MixinD), "P8"),
                   }));
     }
 
     [Test]
     public void FindPropertyInfos_WithMixins_ForDerived ()
     {
-      var persistentMixinFinder = new PersistentMixinFinder (typeof (TargetClassB));
-      var propertyFinder = new StubPropertyFinderBase (typeof (TargetClassB), false, true, persistentMixinFinder);
+      var persistentMixinFinder = new PersistentMixinFinder(typeof(TargetClassB));
+      var propertyFinder = new StubPropertyFinderBase(typeof(TargetClassB), false, true, persistentMixinFinder);
 
-      Assert.That (
-          propertyFinder.FindPropertyInfos (),
-          Is.EquivalentTo (
+      Assert.That(
+          propertyFinder.FindPropertyInfos(),
+          Is.EquivalentTo(
               new[]
                   {
-                      GetProperty (typeof (TargetClassB), "P3"),
-                      GetProperty (typeof (TargetClassB), "P4"),
-                      GetProperty (typeof (MixinB), "P6"),
-                      GetProperty (typeof (MixinE), "P9"),
+                      GetProperty(typeof(TargetClassB), "P3"),
+                      GetProperty(typeof(TargetClassB), "P4"),
+                      GetProperty(typeof(MixinB), "P6"),
+                      GetProperty(typeof(MixinE), "P9"),
                   }));
     }
-    
+
   }
 }

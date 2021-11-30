@@ -20,6 +20,6 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
 {
   public class ClassWithoutAttributes
   {
-    
+
   }
 }

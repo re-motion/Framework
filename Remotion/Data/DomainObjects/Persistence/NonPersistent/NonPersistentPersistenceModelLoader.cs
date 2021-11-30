@@ -36,91 +36,91 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 
     public NonPersistentPersistenceModelLoader (StorageProviderDefinition storageProviderDefinition)
     {
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
       StorageProviderDefinition = storageProviderDefinition;
     }
 
     public IPersistenceMappingValidator CreatePersistenceMappingValidator (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      return new PersistenceMappingValidator (
+      return new PersistenceMappingValidator(
           new PropertyStorageClassIsSupportedByStorageProviderValidationRule(),
           new RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule());
     }
 
     public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
 
       ClassDefinition[] derivedClasses = classDefinition.GetAllDerivedClasses();
-      var allClassDefinitions = new[] { classDefinition }.Concat (derivedClasses);
+      var allClassDefinitions = new[] { classDefinition }.Concat(derivedClasses);
 
       // ReSharper disable PossibleMultipleEnumeration - multiple enumeration is okay here.
-      EnsureAllStoragePropertiesCreated (allClassDefinitions);
-      EnsureAllStorageEntitiesCreated (allClassDefinitions);
+      EnsureAllStoragePropertiesCreated(allClassDefinitions);
+      EnsureAllStorageEntitiesCreated(allClassDefinitions);
       // ReSharper restore PossibleMultipleEnumeration
     }
 
     private void EnsureAllStorageEntitiesCreated (IEnumerable<ClassDefinition> classDefinitions)
     {
       foreach (var classDefinition in classDefinitions)
-        EnsureStorageEntitiesCreated (classDefinition);
+        EnsureStorageEntitiesCreated(classDefinition);
     }
 
     private void EnsureStorageEntitiesCreated (ClassDefinition classDefinition)
     {
       if (classDefinition.StorageEntityDefinition == null)
       {
-        var storageEntity = CreateEntityDefinition (classDefinition);
-        classDefinition.SetStorageEntity (storageEntity);
+        var storageEntity = CreateEntityDefinition(classDefinition);
+        classDefinition.SetStorageEntity(storageEntity);
       }
       else if (!(classDefinition.StorageEntityDefinition is NonPersistentStorageEntity))
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The storage entity definition of class '{0}' is not of type '{1}'.",
                 classDefinition.ID,
-                typeof (NonPersistentStorageEntity).Name));
+                typeof(NonPersistentStorageEntity).Name));
       }
 
-      Assertion.IsNotNull (classDefinition.StorageEntityDefinition);
+      Assertion.IsNotNull(classDefinition.StorageEntityDefinition);
     }
 
     private void EnsureAllStoragePropertiesCreated (IEnumerable<ClassDefinition> classDefinitions)
     {
       foreach (var classDefinition in classDefinitions)
-        EnsureStoragePropertiesCreated (classDefinition);
+        EnsureStoragePropertiesCreated(classDefinition);
     }
 
     private void EnsureStoragePropertiesCreated (ClassDefinition classDefinition)
     {
-      foreach (var propertyDefinition in classDefinition.MyPropertyDefinitions.Where (pd => pd.StorageClass == StorageClass.Persistent))
+      foreach (var propertyDefinition in classDefinition.MyPropertyDefinitions.Where(pd => pd.StorageClass == StorageClass.Persistent))
       {
         if (propertyDefinition.StoragePropertyDefinition == null)
         {
-          propertyDefinition.SetStorageProperty (NonPersistentStorageProperty.Instance);
+          propertyDefinition.SetStorageProperty(NonPersistentStorageProperty.Instance);
         }
         else if (!(propertyDefinition.StoragePropertyDefinition is NonPersistentStorageProperty))
         {
-          throw new InvalidOperationException (
-              string.Format (
+          throw new InvalidOperationException(
+              string.Format(
                   "The property definition '{0}' of class '{1}' has a storage property type of '{2}' when only '{3}' is supported.",
                   propertyDefinition.PropertyName,
                   classDefinition.ID,
                   propertyDefinition.StoragePropertyDefinition.GetType(),
-                  typeof (NonPersistentStorageProperty).Name));
+                  typeof(NonPersistentStorageProperty).Name));
         }
 
-        Assertion.IsNotNull (propertyDefinition.StoragePropertyDefinition);
+        Assertion.IsNotNull(propertyDefinition.StoragePropertyDefinition);
       }
     }
 
     private IStorageEntityDefinition CreateEntityDefinition (ClassDefinition classDefinition)
     {
-      return new NonPersistentStorageEntity (StorageProviderDefinition);
+      return new NonPersistentStorageEntity(StorageProviderDefinition);
     }
   }
 }

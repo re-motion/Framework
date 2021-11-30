@@ -30,97 +30,97 @@ namespace Remotion.Mixins.MixerTools.UnitTests
     [Test]
     public void CreatePipeline ()
     {
-      var factory = new MixerPipelineFactory ("Assembly_{counter}", 2);
-      var pipeline = factory.CreatePipeline (@"c:\directory");
+      var factory = new MixerPipelineFactory("Assembly_{counter}", 2);
+      var pipeline = factory.CreatePipeline(@"c:\directory");
 
-      CheckRemotionPipelineFactoryWasUsedForCreation (pipeline);
+      CheckRemotionPipelineFactoryWasUsedForCreation(pipeline);
 
       var defaultPipeline = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline;
-      Assert.That (pipeline.ParticipantConfigurationID, Is.EqualTo (defaultPipeline.ParticipantConfigurationID));
-      Assert.That (pipeline.Participants, Is.EqualTo (defaultPipeline.Participants));
+      Assert.That(pipeline.ParticipantConfigurationID, Is.EqualTo(defaultPipeline.ParticipantConfigurationID));
+      Assert.That(pipeline.Participants, Is.EqualTo(defaultPipeline.Participants));
 
-      Assert.That (pipeline.Settings.AssemblyNamePattern, Is.EqualTo ("Assembly_{counter}"));
-      Assert.That (pipeline.Settings.AssemblyDirectory, Is.EqualTo (@"c:\directory"));
-      Assert.That (
+      Assert.That(pipeline.Settings.AssemblyNamePattern, Is.EqualTo("Assembly_{counter}"));
+      Assert.That(pipeline.Settings.AssemblyDirectory, Is.EqualTo(@"c:\directory"));
+      Assert.That(
           pipeline.Settings.EnableSerializationWithoutAssemblySaving,
-          Is.EqualTo (defaultPipeline.Settings.EnableSerializationWithoutAssemblySaving));
-      Assert.That (pipeline.Settings.ForceStrongNaming, Is.EqualTo (defaultPipeline.Settings.ForceStrongNaming));
-      Assert.That (pipeline.Settings.KeyFilePath, Is.EqualTo (defaultPipeline.Settings.KeyFilePath));
-      Assert.That (pipeline.Settings.DegreeOfParallelism, Is.EqualTo (2));
+          Is.EqualTo(defaultPipeline.Settings.EnableSerializationWithoutAssemblySaving));
+      Assert.That(pipeline.Settings.ForceStrongNaming, Is.EqualTo(defaultPipeline.Settings.ForceStrongNaming));
+      Assert.That(pipeline.Settings.KeyFilePath, Is.EqualTo(defaultPipeline.Settings.KeyFilePath));
+      Assert.That(pipeline.Settings.DegreeOfParallelism, Is.EqualTo(2));
     }
 
     [Test]
     public void GetModulePaths_WithoutCounterPattern_WithoutGeneratedFiles_ReturnsEmptyList ()
     {
-      var tempDirectory = Directory.CreateDirectory (Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString()));
+      var tempDirectory = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
       try
       {
-        var factory = new MixerPipelineFactory ("Assembly", 1);
-        File.Create (Path.Combine (tempDirectory.FullName, "AssemblyOther.dll")).Close();
+        var factory = new MixerPipelineFactory("Assembly", 1);
+        File.Create(Path.Combine(tempDirectory.FullName, "AssemblyOther.dll")).Close();
 
-        Assert.That (factory.GetModulePaths (tempDirectory.FullName), Is.Empty);
+        Assert.That(factory.GetModulePaths(tempDirectory.FullName), Is.Empty);
       }
       finally
       {
-        tempDirectory.Delete (true);
+        tempDirectory.Delete(true);
       }
     }
 
     [Test]
     public void GetModulePaths_WithoutCounterPattern_WithGeneratedFiles_ReturnsMatchingFiles ()
     {
-      var tempDirectory = Directory.CreateDirectory (Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString()));
+      var tempDirectory = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
       try
       {
-        var factory = new MixerPipelineFactory ("Assembly", 1);
+        var factory = new MixerPipelineFactory("Assembly", 1);
 
-        var assembly = Path.Combine (tempDirectory.FullName, "Assembly.dll");
-        File.Create (assembly).Close();
+        var assembly = Path.Combine(tempDirectory.FullName, "Assembly.dll");
+        File.Create(assembly).Close();
 
-        File.Create (Path.Combine (tempDirectory.FullName, "AssemblyOther.dll")).Close();
+        File.Create(Path.Combine(tempDirectory.FullName, "AssemblyOther.dll")).Close();
 
-        Assert.That (factory.GetModulePaths (tempDirectory.FullName), Is.EqualTo (new[] { assembly }));
+        Assert.That(factory.GetModulePaths(tempDirectory.FullName), Is.EqualTo(new[] { assembly }));
       }
       finally
       {
-        tempDirectory.Delete (true);
+        tempDirectory.Delete(true);
       }
     }
 
     [Test]
     public void GetModulePaths_WithCounterPattern_WithGeneratedFiles_ReturnsMatchingFiles ()
     {
-      var tempDirectory = Directory.CreateDirectory (Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString()));
+      var tempDirectory = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
       try
       {
-        var factory = new MixerPipelineFactory ("Assembly.{counter}", 1);
+        var factory = new MixerPipelineFactory("Assembly.{counter}", 1);
 
-        var assembly1 = Path.Combine (tempDirectory.FullName, "Assembly.1.dll");
-        File.Create (assembly1).Close();
+        var assembly1 = Path.Combine(tempDirectory.FullName, "Assembly.1.dll");
+        File.Create(assembly1).Close();
 
-        var assembly2 = Path.Combine (tempDirectory.FullName, "Assembly.2.dll");
-        File.Create (assembly2).Close();
+        var assembly2 = Path.Combine(tempDirectory.FullName, "Assembly.2.dll");
+        File.Create(assembly2).Close();
 
-        File.Create (Path.Combine (tempDirectory.FullName, "AssemblyOther.dll")).Close();
+        File.Create(Path.Combine(tempDirectory.FullName, "AssemblyOther.dll")).Close();
 
-        Assert.That (factory.GetModulePaths (tempDirectory.FullName), Is.EqualTo (new[] { assembly1, assembly2 }));
+        Assert.That(factory.GetModulePaths(tempDirectory.FullName), Is.EqualTo(new[] { assembly1, assembly2 }));
       }
       finally
       {
-        tempDirectory.Delete (true);
+        tempDirectory.Delete(true);
       }
     }
 
     private void CheckRemotionPipelineFactoryWasUsedForCreation (IPipeline pipeline)
     {
-      var targetType = typeof (TargetClassForGlobalMix);
-      var assembledType = pipeline.ReflectionService.GetAssembledType (targetType);
+      var targetType = typeof(TargetClassForGlobalMix);
+      var assembledType = pipeline.ReflectionService.GetAssembledType(targetType);
       var assembly = assembledType.Assembly;
 
-      Assert.That (assembledType, Is.Not.EqualTo (targetType));
+      Assert.That(assembledType, Is.Not.EqualTo(targetType));
 
       // RemotionPipelineFactory will add the [NonApplicationAssemblyAttribute] to the generated assembly.
-      Assert.That (assembly.IsDefined (typeof (NonApplicationAssemblyAttribute), inherit: false), Is.True);
+      Assert.That(assembly.IsDefined(typeof(NonApplicationAssemblyAttribute), inherit: false), Is.True);
     }
   }
 }

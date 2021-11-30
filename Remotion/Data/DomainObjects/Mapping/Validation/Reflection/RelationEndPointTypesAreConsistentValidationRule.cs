@@ -27,11 +27,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   {
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
-        var validationResult = Validate (endPointDefinition);
+        var validationResult = Validate(endPointDefinition);
         if (!validationResult.IsValid)
           return validationResult;
       }
@@ -41,11 +41,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     private MappingValidationResult Validate (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
       if (!relationEndPointDefinition.IsAnonymous && !(relationEndPointDefinition is InvalidRelationEndPointDefinitionBase))
       {
-        var relationAttribute = relationEndPointDefinition.PropertyInfo.GetCustomAttribute<BidirectionalRelationAttribute> (true);
+        var relationAttribute = relationEndPointDefinition.PropertyInfo.GetCustomAttribute<BidirectionalRelationAttribute>(true);
         var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
         if (oppositeEndPointDefinition != null
             && !oppositeEndPointDefinition.IsAnonymous
@@ -54,9 +54,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
         {
           var oppositePropertyInfo = oppositeEndPointDefinition.PropertyInfo;
           var classDefinition = relationEndPointDefinition.ClassDefinition;
-          var oppositeDomainObjectType = ReflectionUtility.GetRelatedObjectTypeFromRelationProperty (oppositePropertyInfo);
+          var oppositeDomainObjectType = ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(oppositePropertyInfo);
           var declaringDomainObjectTypeForProperty =
-              ReflectionUtility.GetDeclaringDomainObjectTypeForProperty (relationEndPointDefinition.PropertyInfo, classDefinition);
+              ReflectionUtility.GetDeclaringDomainObjectTypeForProperty(relationEndPointDefinition.PropertyInfo, classDefinition);
           bool isPropertyDeclaredByThisClassDefinition = declaringDomainObjectTypeForProperty == classDefinition.ClassType;
           if (isPropertyDeclaredByThisClassDefinition)
           {
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
             // In this case, the opposite property's return type must exactly match this ClassDefinition's type.
             if (classDefinition.ClassType != oppositeDomainObjectType)
             {
-              return MappingValidationResult.CreateInvalidResultForProperty (
+              return MappingValidationResult.CreateInvalidResultForProperty(
                   relationEndPointDefinition.PropertyInfo,
                   "The type '{0}' does not match the type of the opposite relation propery '{1}' declared on type '{2}'.",
                   declaringDomainObjectTypeForProperty.Name,
@@ -84,9 +84,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
             // This is the only case where the two sides of a bidirectional relation can point to subclasses of each other.
             // (The scenario this was actually needed for is to allow for generic base classes above the inheritance root defining relation properties.)
-            if (!declaringDomainObjectTypeForProperty.IsAssignableFrom (oppositeDomainObjectType))
+            if (!declaringDomainObjectTypeForProperty.IsAssignableFrom(oppositeDomainObjectType))
             {
-              return MappingValidationResult.CreateInvalidResultForProperty (
+              return MappingValidationResult.CreateInvalidResultForProperty(
                   relationEndPointDefinition.PropertyInfo,
                   "The type '{0}' cannot be assigned to the type of the opposite relation propery '{1}' declared on type '{2}'.",
                   declaringDomainObjectTypeForProperty.Name,

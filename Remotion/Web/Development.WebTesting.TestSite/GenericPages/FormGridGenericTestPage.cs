@@ -44,17 +44,17 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
     {
       var table = new HtmlTable { ID = options.ID };
       var row = new HtmlTableRow();
-      row.Cells.Add (new HtmlTableCell { ColSpan = 2, InnerText = options.Title });
-      table.Rows.Add (row);
+      row.Cells.Add(new HtmlTableCell { ColSpan = 2, InnerText = options.Title });
+      table.Rows.Add(row);
 
       var row2 = new HtmlTableRow();
-      row2.Cells.Add (new HtmlTableCell());
-      row2.Cells.Add (new HtmlTableCell { InnerText = "test content" });
-      table.Rows.Add (row2);
+      row2.Cells.Add(new HtmlTableCell());
+      row2.Cells.Add(new HtmlTableCell { InnerText = "test content" });
+      table.Rows.Add(row2);
 
       var container = new Panel();
-      container.Controls.Add (table);
-      container.Controls.Add (new FormGridManager { ID = options.ID, FormGridSuffix = options.ID });
+      container.Controls.Add(table);
+      container.Controls.Add(new FormGridManager { ID = options.ID, FormGridSuffix = options.ID });
 
       return container;
     }

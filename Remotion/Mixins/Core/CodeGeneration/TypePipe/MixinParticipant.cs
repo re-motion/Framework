@@ -30,7 +30,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// A TypePipe <see cref="IParticipant"/> that specifies the code generation needs necessary for re-mix.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IParticipant), Position = 1, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IParticipant), Position = 1, RegistrationType = RegistrationType.Multiple)]
   public class MixinParticipant : IParticipant
   {
     static MixinParticipant ()
@@ -38,14 +38,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       PipelineRegistryInitializer.InitializeWithServiceLocator();
     }
 
-    [Obsolete ("Use constructor instead. (Version 1.17.13")]
+    [Obsolete("Use constructor instead. (Version 1.17.13")]
     public static MixinParticipant Create (
         IConfigurationProvider configurationProvider,
         IMixinTypeProvider mixinTypeProvider,
         ITargetTypeModifier targetTypeModifier,
         IConcreteTypeMetadataImporter concreteTypeMetadataImporter)
     {
-      return new MixinParticipant (configurationProvider, mixinTypeProvider, targetTypeModifier, concreteTypeMetadataImporter);
+      return new MixinParticipant(configurationProvider, mixinTypeProvider, targetTypeModifier, concreteTypeMetadataImporter);
     }
 
     private readonly IConfigurationProvider _configurationProvider;
@@ -59,10 +59,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         ITargetTypeModifier targetTypeModifier,
         IConcreteTypeMetadataImporter concreteTypeMetadataImporter)
     {
-      ArgumentUtility.CheckNotNull ("configurationProvider", configurationProvider);
-      ArgumentUtility.CheckNotNull ("mixinTypeProvider", mixinTypeProvider);
-      ArgumentUtility.CheckNotNull ("targetTypeModifier", targetTypeModifier);
-      ArgumentUtility.CheckNotNull ("concreteTypeMetadataImporter", concreteTypeMetadataImporter);
+      ArgumentUtility.CheckNotNull("configurationProvider", configurationProvider);
+      ArgumentUtility.CheckNotNull("mixinTypeProvider", mixinTypeProvider);
+      ArgumentUtility.CheckNotNull("targetTypeModifier", targetTypeModifier);
+      ArgumentUtility.CheckNotNull("concreteTypeMetadataImporter", concreteTypeMetadataImporter);
 
       _configurationProvider = configurationProvider;
       _mixinTypeProvider = mixinTypeProvider;
@@ -77,24 +77,24 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void Participate (object id, IProxyTypeAssemblyContext proxyTypeAssemblyContext)
     {
-      ArgumentUtility.CheckNotNull ("proxyTypeAssemblyContext", proxyTypeAssemblyContext);
+      ArgumentUtility.CheckNotNull("proxyTypeAssemblyContext", proxyTypeAssemblyContext);
 
-      var targetClassDefinition = _configurationProvider.GetTargetClassDefinition ((ClassContext) id);
+      var targetClassDefinition = _configurationProvider.GetTargetClassDefinition((ClassContext)id);
       if (targetClassDefinition == null)
         return;
 
       var concreteTarget = proxyTypeAssemblyContext.ProxyType;
-      var mixinInfos = targetClassDefinition.Mixins.Select (m => _mixinTypeProvider.GetMixinInfo (proxyTypeAssemblyContext, m)).ToList();
-      var interfacesToImplement = _configurationProvider.GetInterfacesToImplement (targetClassDefinition, mixinInfos);
+      var mixinInfos = targetClassDefinition.Mixins.Select(m => _mixinTypeProvider.GetMixinInfo(proxyTypeAssemblyContext, m)).ToList();
+      var interfacesToImplement = _configurationProvider.GetInterfacesToImplement(targetClassDefinition, mixinInfos);
 
-      _targetTypeModifier.ModifyTargetType (concreteTarget, targetClassDefinition, interfacesToImplement, mixinInfos);
+      _targetTypeModifier.ModifyTargetType(concreteTarget, targetClassDefinition, interfacesToImplement, mixinInfos);
     }
 
     public object? GetAdditionalTypeID (Type additionalType)
     {
-      ArgumentUtility.CheckNotNull ("additionalType", additionalType);
+      ArgumentUtility.CheckNotNull("additionalType", additionalType);
 
-      var conreteMixinType = _concreteTypeMetadataImporter.GetMetadataForMixinType (additionalType);
+      var conreteMixinType = _concreteTypeMetadataImporter.GetMetadataForMixinType(additionalType);
       if (conreteMixinType == null)
         return null;
       return conreteMixinType.Identifier;
@@ -102,22 +102,22 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public Type? GetOrCreateAdditionalType (object additionalTypeID, IAdditionalTypeAssemblyContext additionalTypeAssemblyContext)
     {
-      ArgumentUtility.CheckNotNull ("additionalTypeID", additionalTypeID);
-      ArgumentUtility.CheckNotNull ("additionalTypeAssemblyContext", additionalTypeAssemblyContext);
+      ArgumentUtility.CheckNotNull("additionalTypeID", additionalTypeID);
+      ArgumentUtility.CheckNotNull("additionalTypeAssemblyContext", additionalTypeAssemblyContext);
 
       var concreteMixinTypeIdentifier = additionalTypeID as ConcreteMixinTypeIdentifier;
       if (concreteMixinTypeIdentifier == null)
         return null;
 
-      return _mixinTypeProvider.GetOrGenerateConcreteMixinType (additionalTypeAssemblyContext, concreteMixinTypeIdentifier).GeneratedType;
+      return _mixinTypeProvider.GetOrGenerateConcreteMixinType(additionalTypeAssemblyContext, concreteMixinTypeIdentifier).GeneratedType;
     }
 
     public void HandleNonSubclassableType (Type nonSubclassableRequestedType)
     {
-      ArgumentUtility.CheckNotNull ("nonSubclassableRequestedType", nonSubclassableRequestedType);
+      ArgumentUtility.CheckNotNull("nonSubclassableRequestedType", nonSubclassableRequestedType);
 
-      var targetClassDefinition = _configurationProvider.GetTargetClassDefinition (nonSubclassableRequestedType);
-      Assertion.IsNull (
+      var targetClassDefinition = _configurationProvider.GetTargetClassDefinition(nonSubclassableRequestedType);
+      Assertion.IsNull(
           targetClassDefinition,
           "There should be no mixin configuration for a non-subclassable type; "
           + "and if there was (i.e., user error) an configuration validation exception should have been thrown.");

@@ -26,14 +26,14 @@ using Remotion.Web.Services;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
 {
-  [WebService (Namespace = "http://re-motion.org/ObjectBinding.Web/")]
-  [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
-  [ToolboxItem (false)]
+  [WebService(Namespace = "http://re-motion.org/ObjectBinding.Web/")]
+  [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+  [ToolboxItem(false)]
   [ScriptService]
   public class BocTreeViewWebService : WebService, IBocTreeViewWebService
   {
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public WebMenuItemProxy[] GetMenuItemStatusForTreeNode (
         string controlID,
         string controlType,
@@ -48,11 +48,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         string[] itemIDs)
     {
       if (arguments == "error")
-        throw new HttpException (500, "Server error");
+        throw new HttpException(500, "Server error");
 
-      var delayInMilliseconds = int.Parse (arguments);
-      Thread.Sleep (TimeSpan.FromMilliseconds (delayInMilliseconds));
-      return itemIDs.Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: false)).ToArray();
+      var delayInMilliseconds = int.Parse(arguments);
+      Thread.Sleep(TimeSpan.FromMilliseconds(delayInMilliseconds));
+      return itemIDs.Select(itemID => WebMenuItemProxy.Create(itemID, isDisabled: false)).ToArray();
     }
   }
 }

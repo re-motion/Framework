@@ -37,32 +37,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _changeDetectionStrategy = MockRepository.GenerateStub<IDomainObjectCollectionEndPointChangeDetectionStrategy>();
 
-      _factory = new DomainObjectCollectionEndPointDataManagerFactory (_changeDetectionStrategy);
+      _factory = new DomainObjectCollectionEndPointDataManagerFactory(_changeDetectionStrategy);
     }
 
     [Test]
     public void Create ()
     {
-      var relationEndPointID = RelationEndPointID.Create (
-          DomainObjectIDs.Customer1, 
+      var relationEndPointID = RelationEndPointID.Create(
+          DomainObjectIDs.Customer1,
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
 
-      var result = _factory.CreateEndPointDataManager (relationEndPointID);
+      var result = _factory.CreateEndPointDataManager(relationEndPointID);
 
-      Assert.That (result, Is.TypeOf (typeof (DomainObjectCollectionEndPointDataManager)));
-      Assert.That (((DomainObjectCollectionEndPointDataManager) result).EndPointID, Is.SameAs (relationEndPointID));
-      Assert.That (((DomainObjectCollectionEndPointDataManager) result).ChangeDetectionStrategy, Is.SameAs (_changeDetectionStrategy));
+      Assert.That(result, Is.TypeOf(typeof(DomainObjectCollectionEndPointDataManager)));
+      Assert.That(((DomainObjectCollectionEndPointDataManager)result).EndPointID, Is.SameAs(relationEndPointID));
+      Assert.That(((DomainObjectCollectionEndPointDataManager)result).ChangeDetectionStrategy, Is.SameAs(_changeDetectionStrategy));
     }
 
     [Test]
     public void Serializable ()
     {
       var changeDetectionStrategy = new SerializableDomainObjectCollectionEndPointChangeDetectionStrategyFake();
-      var factory = new DomainObjectCollectionEndPointDataManagerFactory (changeDetectionStrategy);
+      var factory = new DomainObjectCollectionEndPointDataManagerFactory(changeDetectionStrategy);
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (factory);
+      var deserializedInstance = Serializer.SerializeAndDeserialize(factory);
 
-      Assert.That (deserializedInstance.ChangeDetectionStrategy, Is.Not.Null);
+      Assert.That(deserializedInstance.ChangeDetectionStrategy, Is.Not.Null);
     }
   }
 }

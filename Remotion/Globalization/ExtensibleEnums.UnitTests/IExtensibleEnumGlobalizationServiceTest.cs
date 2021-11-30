@@ -36,27 +36,27 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
     [Test]
     public void GetInstance_Once ()
     {
-      var service = _serviceLocator.GetInstance<IExtensibleEnumGlobalizationService> ();
+      var service = _serviceLocator.GetInstance<IExtensibleEnumGlobalizationService>();
 
-      Assert.That (service, Is.Not.Null);
-      Assert.That (service, Is.TypeOf (typeof (CompoundExtensibleEnumGlobalizationService)));
-      Assert.That (
-          ((CompoundExtensibleEnumGlobalizationService) service).ExtensibleEnumGlobalizationServices.Select (s => s.GetType()),
-          Is.EqualTo (
+      Assert.That(service, Is.Not.Null);
+      Assert.That(service, Is.TypeOf(typeof(CompoundExtensibleEnumGlobalizationService)));
+      Assert.That(
+          ((CompoundExtensibleEnumGlobalizationService)service).ExtensibleEnumGlobalizationServices.Select(s => s.GetType()),
+          Is.EqualTo(
               new[]
               {
-                  typeof (ResourceManagerBasedExtensibleEnumGlobalizationService),
-                  typeof (MultiLingualNameBasedExtensibleEnumGlobalizationService)
+                  typeof(ResourceManagerBasedExtensibleEnumGlobalizationService),
+                  typeof(MultiLingualNameBasedExtensibleEnumGlobalizationService)
               }));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var service1 = _serviceLocator.GetInstance<IExtensibleEnumGlobalizationService> ();
-      var service2 = _serviceLocator.GetInstance<IExtensibleEnumGlobalizationService> ();
+      var service1 = _serviceLocator.GetInstance<IExtensibleEnumGlobalizationService>();
+      var service2 = _serviceLocator.GetInstance<IExtensibleEnumGlobalizationService>();
 
-      Assert.That (service1, Is.SameAs (service2));
+      Assert.That(service1, Is.SameAs(service2));
     }
   }
 }

@@ -29,14 +29,14 @@ namespace Remotion.Web.UI.Controls.Rendering
   /// Default implementation of the <see cref="ILabelReferenceRenderer" /> interface.
   /// </summary>
   /// <seealso cref="ILabelReferenceRenderer"/>
-  [ImplementationFor (typeof (ILabelReferenceRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ILabelReferenceRenderer), Lifetime = LifetimeKind.Singleton)]
   public class LabelReferenceRenderer : ILabelReferenceRenderer
   {
     private readonly IRenderingFeatures _renderingFeatures;
 
     public LabelReferenceRenderer ([NotNull] IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 
       _renderingFeatures = renderingFeatures;
     }
@@ -46,20 +46,20 @@ namespace Remotion.Web.UI.Controls.Rendering
         IReadOnlyCollection<string> labelIDs,
         IReadOnlyCollection<string> accessibilityAnnotationIDs)
     {
-      ArgumentUtility.CheckNotNull ("attributeAccessor", attributeAccessor);
-      ArgumentUtility.CheckNotNull ("labelIDs", labelIDs);
-      ArgumentUtility.CheckNotNull ("accessibilityAnnotationIDs", accessibilityAnnotationIDs);
+      ArgumentUtility.CheckNotNull("attributeAccessor", attributeAccessor);
+      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
+      ArgumentUtility.CheckNotNull("accessibilityAnnotationIDs", accessibilityAnnotationIDs);
 
       if (!labelIDs.Any() && !accessibilityAnnotationIDs.Any())
         return;
 
-      var labelIDsJoined = string.Join (" ", labelIDs.Concat (accessibilityAnnotationIDs));
-      attributeAccessor.SetAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelIDsJoined);
+      var labelIDsJoined = string.Join(" ", labelIDs.Concat(accessibilityAnnotationIDs));
+      attributeAccessor.SetAttribute(HtmlTextWriterAttribute2.AriaLabelledBy, labelIDsJoined);
 
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
-        var nameLabelIndex = GetJoinedNameLabelIndex (labelIDs.Count);
-        attributeAccessor.SetAttribute (DiagnosticMetadataAttributes.LabelIDIndex, nameLabelIndex);
+        var nameLabelIndex = GetJoinedNameLabelIndex(labelIDs.Count);
+        attributeAccessor.SetAttribute(DiagnosticMetadataAttributes.LabelIDIndex, nameLabelIndex);
       }
     }
 
@@ -68,20 +68,20 @@ namespace Remotion.Web.UI.Controls.Rendering
         IReadOnlyCollection<string> labelIDs,
         IReadOnlyCollection<string> accessibilityAnnotationIDs)
     {
-      ArgumentUtility.CheckNotNull ("htmlTextWriter", htmlTextWriter);
-      ArgumentUtility.CheckNotNull ("labelIDs", labelIDs);
+      ArgumentUtility.CheckNotNull("htmlTextWriter", htmlTextWriter);
+      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
 
 
       if (!labelIDs.Any() && !accessibilityAnnotationIDs.Any())
         return;
 
-      var labelIDsJoined = string.Join (" ", labelIDs.Concat (accessibilityAnnotationIDs));
-      htmlTextWriter.AddAttribute (HtmlTextWriterAttribute2.AriaLabelledBy, labelIDsJoined);
+      var labelIDsJoined = string.Join(" ", labelIDs.Concat(accessibilityAnnotationIDs));
+      htmlTextWriter.AddAttribute(HtmlTextWriterAttribute2.AriaLabelledBy, labelIDsJoined);
 
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
-        var nameLabelIndex = GetJoinedNameLabelIndex (labelIDs.Count);
-        htmlTextWriter.AddAttribute (DiagnosticMetadataAttributes.LabelIDIndex, nameLabelIndex);
+        var nameLabelIndex = GetJoinedNameLabelIndex(labelIDs.Count);
+        htmlTextWriter.AddAttribute(DiagnosticMetadataAttributes.LabelIDIndex, nameLabelIndex);
       }
    }
 
@@ -94,8 +94,8 @@ namespace Remotion.Web.UI.Controls.Rendering
         case 2:
           return "0 1";
         default:
-          var labelIDIndexes = Enumerable.Range (0, numberOfLabelIDs);
-          return string.Join (" ", labelIDIndexes);
+          var labelIDIndexes = Enumerable.Range(0, numberOfLabelIDs);
+          return string.Join(" ", labelIDIndexes);
       }
     }
   }

@@ -43,8 +43,8 @@ namespace Remotion.FunctionalProgramming
     public static TSource First<TSource, TException> (this IEnumerable<TSource> source, Func<TException> createEmptySequenceException)
         where TException: Exception
     {
-      ArgumentUtility.CheckNotNull ("source", source);
-      ArgumentUtility.CheckNotNull ("createEmptySequenceException", createEmptySequenceException);
+      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull("createEmptySequenceException", createEmptySequenceException);
 
       using (IEnumerator<TSource> enumerator = source.GetEnumerator())
       {
@@ -71,13 +71,13 @@ namespace Remotion.FunctionalProgramming
         this IEnumerable<TSource> source, Func<TSource, bool> predicate, Func<TException> createNoMatchingElementException)
         where TException: Exception
     {
-      ArgumentUtility.CheckNotNull ("source", source);
-      ArgumentUtility.CheckNotNull ("predicate", predicate);
-      ArgumentUtility.CheckNotNull ("createNoMatchingElementException", createNoMatchingElementException);
+      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull("predicate", predicate);
+      ArgumentUtility.CheckNotNull("createNoMatchingElementException", createNoMatchingElementException);
 
       foreach (TSource current in source)
       {
-        if (predicate (current))
+        if (predicate(current))
           return current;
       }
 
@@ -99,15 +99,15 @@ namespace Remotion.FunctionalProgramming
     public static TSource Single<TSource, TException> (this IEnumerable<TSource> source, Func<TException> createEmptySequenceException)
         where TException: Exception
     {
-      ArgumentUtility.CheckNotNull ("source", source);
-      ArgumentUtility.CheckNotNull ("createEmptySequenceException", createEmptySequenceException);
+      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull("createEmptySequenceException", createEmptySequenceException);
 
-      TSource result = default (TSource)!;
+      TSource result = default(TSource)!;
       bool isElementFound = false;
       foreach (TSource current in source)
       {
         if (isElementFound)
-          throw new InvalidOperationException ("Sequence contains more than one element.");
+          throw new InvalidOperationException("Sequence contains more than one element.");
 
         isElementFound = true;
         result = current;
@@ -136,18 +136,18 @@ namespace Remotion.FunctionalProgramming
         this IEnumerable<TSource> source, Func<TSource, bool> predicate, Func<TException> createNoMatchingElementException)
         where TException: Exception
     {
-      ArgumentUtility.CheckNotNull ("source", source);
-      ArgumentUtility.CheckNotNull ("predicate", predicate);
-      ArgumentUtility.CheckNotNull ("createNoMatchingElementException", createNoMatchingElementException);
+      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull("predicate", predicate);
+      ArgumentUtility.CheckNotNull("createNoMatchingElementException", createNoMatchingElementException);
 
-      TSource result = default (TSource)!;
+      TSource result = default(TSource)!;
       bool isElementFound = false;
       foreach (TSource current in source)
       {
-        if (predicate (current))
+        if (predicate(current))
         {
           if (isElementFound)
-            throw new InvalidOperationException ("Sequence contains more than one matching element.");
+            throw new InvalidOperationException("Sequence contains more than one matching element.");
 
           isElementFound = true;
           result = current;
@@ -174,10 +174,10 @@ namespace Remotion.FunctionalProgramming
     public static IEnumerable<TSource> CreateSequence<TSource> (this TSource? source, Func<TSource, TSource?> nextElementSelector, Func<TSource, bool> predicate)
         where TSource : class
     {
-      ArgumentUtility.CheckNotNull ("nextElementSelector", nextElementSelector);
-      ArgumentUtility.CheckNotNull ("predicate", predicate);
+      ArgumentUtility.CheckNotNull("nextElementSelector", nextElementSelector);
+      ArgumentUtility.CheckNotNull("predicate", predicate);
 
-      for (TSource? current = source; current != null && predicate (current); current = nextElementSelector (current))
+      for (TSource? current = source; current != null && predicate(current); current = nextElementSelector(current))
         yield return current;
     }
 
@@ -195,9 +195,9 @@ namespace Remotion.FunctionalProgramming
     public static IEnumerable<TSource> CreateSequence<TSource> (this TSource? source, Func<TSource, TSource?> nextElementSelector)
         where TSource : class
     {
-      ArgumentUtility.CheckNotNull ("nextElementSelector", nextElementSelector);
+      ArgumentUtility.CheckNotNull("nextElementSelector", nextElementSelector);
 
-      return CreateSequence (source, nextElementSelector, e => true);
+      return CreateSequence(source, nextElementSelector, e => true);
     }
 
     /// <summary>
@@ -224,7 +224,7 @@ namespace Remotion.FunctionalProgramming
         where TSource : class
         where TException : Exception
     {
-      return CreateSequenceWithCycleCheck (source, nextElementSelector, e => true, EqualityComparer<TSource>.Default, createCycleFoundException);
+      return CreateSequenceWithCycleCheck(source, nextElementSelector, e => true, EqualityComparer<TSource>.Default, createCycleFoundException);
     }
 
     /// <summary>
@@ -257,21 +257,21 @@ namespace Remotion.FunctionalProgramming
         where TSource : class
         where TException : Exception
     {
-      ArgumentUtility.CheckNotNull ("nextElementSelector", nextElementSelector);
-      ArgumentUtility.CheckNotNull ("predicate", predicate);
-      ArgumentUtility.CheckNotNull ("createCycleFoundException", createCycleFoundException);
+      ArgumentUtility.CheckNotNull("nextElementSelector", nextElementSelector);
+      ArgumentUtility.CheckNotNull("predicate", predicate);
+      ArgumentUtility.CheckNotNull("createCycleFoundException", createCycleFoundException);
 
-      var chainMembers = new HashSet<TSource> (equalityComparer);
+      var chainMembers = new HashSet<TSource>(equalityComparer);
       Func<TSource, TSource?> nextElementSelectorWithCycleCheck = element =>
       {
-        if (chainMembers.Contains (element))
-          throw createCycleFoundException (element);
-        chainMembers.Add (element);
+        if (chainMembers.Contains(element))
+          throw createCycleFoundException(element);
+        chainMembers.Add(element);
 
-        return nextElementSelector (element);
+        return nextElementSelector(element);
       };
 
-      return CreateSequence (source, nextElementSelectorWithCycleCheck, predicate);
+      return CreateSequence(source, nextElementSelectorWithCycleCheck, predicate);
     }
 
     /// <summary>
@@ -287,10 +287,10 @@ namespace Remotion.FunctionalProgramming
     /// <exception cref="ArgumentNullException">One of the sequences is <see langword="null" />.</exception>
     public static bool SetEquals<T> (this IEnumerable<T> sequence1, IEnumerable<T> sequence2)
     {
-      ArgumentUtility.CheckNotNull ("sequence1", sequence1);
-      ArgumentUtility.CheckNotNull ("sequence2", sequence2);
+      ArgumentUtility.CheckNotNull("sequence1", sequence1);
+      ArgumentUtility.CheckNotNull("sequence2", sequence2);
 
-      return new HashSet<T> (sequence1).SetEquals (sequence2);
+      return new HashSet<T>(sequence1).SetEquals(sequence2);
     }
 
 #if NETFRAMEWORK
@@ -310,10 +310,10 @@ namespace Remotion.FunctionalProgramming
     /// </remarks>
     public static IEnumerable<Tuple<T1, T2>> Zip<T1, T2> (this IEnumerable<T1> first, IEnumerable<T2> second)
     {
-      ArgumentUtility.CheckNotNull ("first", first);
-      ArgumentUtility.CheckNotNull ("second", second);
+      ArgumentUtility.CheckNotNull("first", first);
+      ArgumentUtility.CheckNotNull("second", second);
 
-      return first.Zip (second, Tuple.Create);
+      return first.Zip(second, Tuple.Create);
     }
 #endif
 
@@ -331,8 +331,8 @@ namespace Remotion.FunctionalProgramming
     /// </remarks>
     public static IEnumerable<T> Interleave<T> (this IEnumerable<T> first, IEnumerable<T> second)
     {
-      using (var enumerator1 = first.GetEnumerator ())
-      using (var enumerator2 = second.GetEnumerator ())
+      using (var enumerator1 = first.GetEnumerator())
+      using (var enumerator2 = second.GetEnumerator())
       {
         bool firstHasMore;
         bool secondHasMore;
@@ -358,7 +358,7 @@ namespace Remotion.FunctionalProgramming
     /// as <paramref name="source"/>.</returns>
     public static ICollection<T> ConvertToCollection<T> (this IEnumerable<T> source)
     {
-      ArgumentUtility.CheckNotNull ("source", source);
+      ArgumentUtility.CheckNotNull("source", source);
 
       var collection = source as ICollection<T>;
       if (collection != null)
@@ -379,9 +379,9 @@ namespace Remotion.FunctionalProgramming
     /// </returns>
     public static IEnumerable<T> Concat<T> (this IEnumerable<T> source, T item)
     {
-      ArgumentUtility.CheckNotNull ("source", source);
+      ArgumentUtility.CheckNotNull("source", source);
 
-      return source.Concat (new[] { item });
+      return source.Concat(new[] { item });
     }
 
     /// <summary>
@@ -397,13 +397,13 @@ namespace Remotion.FunctionalProgramming
     public static TSource SingleOrDefault<TSource, TException> (this IEnumerable<TSource> source, Func<TException> createMultipleElementsException)
         where TException : Exception
     {
-      ArgumentUtility.CheckNotNull ("source", source);
-      ArgumentUtility.CheckNotNull ("createMultipleElementsException", createMultipleElementsException);
+      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull("createMultipleElementsException", createMultipleElementsException);
 
       using (var enumerator = source.GetEnumerator())
       {
         if (!enumerator.MoveNext())
-          return default (TSource)!;
+          return default(TSource)!;
 
         var element = enumerator.Current;
         if (enumerator.MoveNext())
@@ -412,7 +412,7 @@ namespace Remotion.FunctionalProgramming
         return element;
       }
     }
-    
+
     /// <summary>
     /// Works like <see cref="Enumerable.SingleOrDefault{TSource}(System.Collections.Generic.IEnumerable{TSource},System.Func{TSource,bool})"/>
     /// but throws a custom exception if the sequence contains more than one matching element.
@@ -428,11 +428,11 @@ namespace Remotion.FunctionalProgramming
         this IEnumerable<TSource> source, Func<TSource, bool> predicate, Func<TException> createMultipleMatchingElementsException)
         where TException : Exception
     {
-      ArgumentUtility.CheckNotNull ("source", source);
-      ArgumentUtility.CheckNotNull ("predicate", predicate);
-      ArgumentUtility.CheckNotNull ("createMultipleMatchingElementsException", createMultipleMatchingElementsException);
-      
-      return SingleOrDefault (source.Where (predicate), createMultipleMatchingElementsException);
+      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull("predicate", predicate);
+      ArgumentUtility.CheckNotNull("createMultipleMatchingElementsException", createMultipleMatchingElementsException);
+
+      return SingleOrDefault(source.Where(predicate), createMultipleMatchingElementsException);
     }
 
     /// <summary>
@@ -449,12 +449,12 @@ namespace Remotion.FunctionalProgramming
     /// </remarks>
     public static IEnumerable<T> ApplySideEffect<T> (this IEnumerable<T> source, Action<T> sideEffect)
     {
-      ArgumentUtility.CheckNotNull ("source", source);
-      ArgumentUtility.CheckNotNull ("sideEffect", sideEffect);
+      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull("sideEffect", sideEffect);
 
       foreach (var item in source)
       {
-        sideEffect (item);
+        sideEffect(item);
         yield return item;
       }
     }

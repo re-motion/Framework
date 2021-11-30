@@ -17,10 +17,10 @@
 
 namespace Remotion.Globalization.UnitTests.TestDomain
 {
-  [MultiLingualName ("The Invariant Derived Interface Name", "")]
-  [MultiLingualName ("The en-US Derived Interface Name", "en-US")]
+  [MultiLingualName("The Invariant Derived Interface Name", "")]
+  [MultiLingualName("The en-US Derived Interface Name", "en-US")]
   public interface DerivedInterfaceWithOwnMultiLingualNameAttribute : InterfaceWithMultiLingualNameAttribute
   {
-     
+
   }
 }

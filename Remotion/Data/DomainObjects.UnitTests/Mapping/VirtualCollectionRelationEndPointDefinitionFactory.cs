@@ -32,11 +32,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         Lazy<SortExpressionDefinition> sortExpressionDefinition)
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub (stub => stub.Name).Return (propertyName);
-      propertyInformationStub.Stub (stub => stub.PropertyType).Return (propertyType);
-      propertyInformationStub.Stub (stub => stub.DeclaringType).Return (TypeAdapter.Create (classDefinition.ClassType));
+      propertyInformationStub.Stub(stub => stub.Name).Return(propertyName);
+      propertyInformationStub.Stub(stub => stub.PropertyType).Return(propertyType);
+      propertyInformationStub.Stub(stub => stub.DeclaringType).Return(TypeAdapter.Create(classDefinition.ClassType));
 
-      return new VirtualCollectionRelationEndPointDefinition (
+      return new VirtualCollectionRelationEndPointDefinition(
           classDefinition, propertyName, isMandatory, sortExpressionDefinition, propertyInformationStub);
     }
 
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         bool isMandatory,
         Type propertyType)
     {
-      return Create (classDefinition, propertyName, isMandatory, propertyType, new Lazy<SortExpressionDefinition> (() => null));
+      return Create(classDefinition, propertyName, isMandatory, propertyType, new Lazy<SortExpressionDefinition>(() => null));
     }
   }
 }

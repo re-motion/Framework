@@ -31,10 +31,10 @@ namespace Remotion.SecurityManager
 
     // construction and disposing
 
-    public SecurityManagerException () : this ("An error occurred in the security manager.") {}
-    public SecurityManagerException (string message) : base (message) {}
-    public SecurityManagerException (string message, Exception inner) : base (message, inner) {}
-    protected SecurityManagerException (SerializationInfo info, StreamingContext context) : base (info, context) { }
+    public SecurityManagerException () : this("An error occurred in the security manager.") {}
+    public SecurityManagerException (string message) : base(message) {}
+    public SecurityManagerException (string message, Exception inner) : base(message, inner) {}
+    protected SecurityManagerException (SerializationInfo info, StreamingContext context) : base(info, context) { }
 
     // methods and properties
   }

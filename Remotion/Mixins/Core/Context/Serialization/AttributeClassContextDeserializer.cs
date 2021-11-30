@@ -30,7 +30,7 @@ namespace Remotion.Mixins.Context.Serialization
 
     protected override ArrayMixinContextDeserializer CreateMixinContextDeserializer (object[] values)
     {
-      return new AttributeMixinContextDeserializer (values);
+      return new AttributeMixinContextDeserializer(values);
     }
   }
 }

@@ -27,22 +27,22 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     [Test]
     public void DerivedType ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (DerivedType), typeof (DerivedType)), Is.EqualTo (new Type[0]));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(DerivedType), typeof(DerivedType)), Is.EqualTo(new Type[0]));
     }
 
     [Test]
     public void DerivedTypeFromBaseType ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (DerivedType), typeof (BaseType)), Is.EqualTo (new Type[0]));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(DerivedType), typeof(BaseType)), Is.EqualTo(new Type[0]));
     }
 
     [Test]
     public void BaseType ()
     {
-      Assert.That (
-          () => TypeExtensions.GetAscribedGenericArguments (typeof (BaseType), typeof (DerivedType)),
+      Assert.That(
+          () => TypeExtensions.GetAscribedGenericArguments(typeof(BaseType), typeof(DerivedType)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
                   + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.DerivedType' was expected.",
                   "type"));

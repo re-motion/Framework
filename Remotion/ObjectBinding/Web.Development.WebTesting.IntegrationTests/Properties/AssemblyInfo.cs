@@ -23,4 +23,4 @@ using System.Reflection;
 // associated with an assembly.
 //
 
-[assembly: AssemblyCulture ("")]
+[assembly: AssemblyCulture("")]

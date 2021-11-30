@@ -27,15 +27,15 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration
     private readonly ConfigurationPropertyCollection _properties = new ConfigurationPropertyCollection();
     private readonly ConfigurationProperty _mappingLoaderProperty;
 
-    public MappingLoaderConfiguration()
+    public MappingLoaderConfiguration ()
     {
-      _mappingLoaderProperty = new ConfigurationProperty (
+      _mappingLoaderProperty = new ConfigurationProperty(
           "loader",
-          typeof (TypeElement<IMappingLoader, MappingReflector>),
+          typeof(TypeElement<IMappingLoader, MappingReflector>),
           null,
           ConfigurationPropertyOptions.None);
 
-      _properties.Add (_mappingLoaderProperty);
+      _properties.Add(_mappingLoaderProperty);
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration
       get { return _properties; }
     }
 
-    public IMappingLoader CreateMappingLoader()
+    public IMappingLoader CreateMappingLoader ()
     {
       return MappingLoaderElement.CreateInstance();
     }
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration
 
     protected TypeElement<IMappingLoader> MappingLoaderElement
     {
-      get { return (TypeElement<IMappingLoader>) this[_mappingLoaderProperty]; }
+      get { return (TypeElement<IMappingLoader>)this[_mappingLoaderProperty]; }
     }
   }
 }

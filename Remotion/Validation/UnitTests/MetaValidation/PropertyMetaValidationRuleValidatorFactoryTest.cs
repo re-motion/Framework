@@ -30,11 +30,11 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     {
       var systemMetaRulesProviderFactoryStub = new Mock<ISystemPropertyMetaValidationRuleProviderFactory>();
 
-      var factory = new PropertyMetaValidationRuleValidatorFactory (systemMetaRulesProviderFactoryStub.Object);
-      
-      var result = factory.CreatePropertyMetaValidationRuleValidator (new IPropertyMetaValidationRuleCollector[0]);
+      var factory = new PropertyMetaValidationRuleValidatorFactory(systemMetaRulesProviderFactoryStub.Object);
 
-      Assert.That (result, Is.TypeOf (typeof (PropertyMetaValidationRuleValidator)));
+      var result = factory.CreatePropertyMetaValidationRuleValidator(new IPropertyMetaValidationRuleCollector[0]);
+
+      Assert.That(result, Is.TypeOf(typeof(PropertyMetaValidationRuleValidator)));
     }
   }
 }

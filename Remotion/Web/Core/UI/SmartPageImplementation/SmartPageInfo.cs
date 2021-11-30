@@ -43,7 +43,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.Web.Globalization.SmartPageInfo")]
+    [MultiLingualResources("Remotion.Web.Globalization.SmartPageInfo")]
     public enum ResourceIdentifier
     {
       /// <summary> Displayed when the user attempts to leave the page. </summary>
@@ -59,9 +59,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
     private const string c_styleFileUrl = "SmartPage.css";
     private const string c_smartNavigationScriptFileUrl = "SmartNavigation.js";
 
-    private static readonly string s_scriptFileKey = typeof (SmartPageInfo).GetFullNameChecked() + "_Script";
-    private static readonly string s_styleFileKey = typeof (SmartPageInfo).GetFullNameChecked() + "_Style";
-    private static readonly string s_smartNavigationScriptKey = typeof (SmartPageInfo).GetFullNameChecked() + "_SmartNavigation";
+    private static readonly string s_scriptFileKey = typeof(SmartPageInfo).GetFullNameChecked() + "_Script";
+    private static readonly string s_styleFileKey = typeof(SmartPageInfo).GetFullNameChecked() + "_Style";
+    private static readonly string s_smartNavigationScriptKey = typeof(SmartPageInfo).GetFullNameChecked() + "_SmartNavigation";
 
     private readonly ISmartPage _page;
 
@@ -85,7 +85,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     public SmartPageInfo (ISmartPage page)
     {
-      ArgumentUtility.CheckNotNullAndType<Page> ("page", page);
+      ArgumentUtility.CheckNotNullAndType<Page>("page", page);
       _page = page;
       _page.Init += Page_Init;
       // PreRenderComplete-handler must be registered before ScriptManager registers its own PreRenderComplete-handler during OnInit.
@@ -95,14 +95,14 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary> Implements <see cref="ISmartPage.RegisterClientSidePageEventHandler">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
     public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
-      ArgumentUtility.CheckNotNullOrEmpty ("function", function);
-      if (! Regex.IsMatch (function, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
-        throw new ArgumentException ("Invalid function name: '" + function + "'.", "function");
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty("function", function);
+      if (! Regex.IsMatch(function, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
+        throw new ArgumentException("Invalid function name: '" + function + "'.", "function");
 
       if (_isPreRenderComplete)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "RegisterClientSidePageEventHandler must not be called after the PreRenderComplete method of the System.Web.UI.Page has been invoked.");
       }
 
@@ -122,11 +122,11 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary> Implements <see cref="ISmartPage.RegisterControlForDirtyStateTracking">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
     public void RegisterControlForDirtyStateTracking (IEditableControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (_isPreRenderComplete)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "RegisterControlForDirtyStateTracking must not be called after the PreRenderComplete method of the System.Web.UI.Page has been invoked.");
       }
 
@@ -137,7 +137,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private void UnregisterControlForDirtyStateTracking (object? sender, EventArgs args)
     {
-      var control = ArgumentUtility.CheckNotNullAndType<IEditableControl> ("sender", sender!);
+      var control = ArgumentUtility.CheckNotNullAndType<IEditableControl>("sender", sender!);
 
       if (_isPreRenderComplete)
       {
@@ -146,23 +146,23 @@ namespace Remotion.Web.UI.SmartPageImplementation
         return;
       }
 
-      _trackedControls.Remove (control);
+      _trackedControls.Remove(control);
       control.Unload -= UnregisterControlForDirtyStateTracking;
     }
 
     /// <summary> Implements <see cref="ISmartPage.RegisterControlForDirtyStateTracking">ISmartPage.RegisterControlForDirtyStateTracking</see>. </summary>
     public void RegisterControlForDirtyStateTracking (string clientID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("clientID", clientID);
+      ArgumentUtility.CheckNotNullOrEmpty("clientID", clientID);
 
       if (_isPreRenderComplete)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "RegisterControlForDirtyStateTracking must not be called after the PreRenderComplete method of the System.Web.UI.Page has been invoked.");
       }
 
-      if (! _trackedControlsByID.Contains (clientID))
-        _trackedControlsByID.Add (clientID);
+      if (! _trackedControlsByID.Contains(clientID))
+        _trackedControlsByID.Add(clientID);
     }
 
     /// <summary> Implements <see cref="ISmartPage.EvaluateDirtyState">ISmartPage.EvaluateDirtyState</see>. </summary>
@@ -180,46 +180,46 @@ namespace Remotion.Web.UI.SmartPageImplementation
     public string? CheckFormStateFunction
     {
       get { return _checkFormStateFunction; }
-      set { _checkFormStateFunction = StringUtility.EmptyToNull (value); }
+      set { _checkFormStateFunction = StringUtility.EmptyToNull(value); }
     }
 
     public void RegisterCommandForSynchronousPostBack ([NotNull]Control control, [NotNull]string eventArguments)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNullOrEmpty ("eventArguments", eventArguments);
+      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNullOrEmpty("eventArguments", eventArguments);
 
       if (_isPreRenderComplete)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "RegisterCommandForSynchronousPostBack must not be called after the PreRenderComplete method of the System.Web.UI.Page has been invoked.");
       }
 
-      Tuple<Control, string> command = new Tuple<Control, string> (control, eventArguments);
-      if (!_synchronousPostBackCommands.Contains (command))
+      Tuple<Control, string> command = new Tuple<Control, string>(control, eventArguments);
+      if (!_synchronousPostBackCommands.Contains(command))
       {
-        var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
+        var scriptManager = ScriptManager.GetCurrent(_page.WrappedInstance);
         if (scriptManager != null)
-          scriptManager.RegisterAsyncPostBackControl (control);
+          scriptManager.RegisterAsyncPostBackControl(control);
         // Do not add logic for removing the control/command from the collection upon removing the control from the page tree.
         // The ASP.NET ScriptManager does not remove the the control either and the registration is only performed during the PreRender phase.
         // This implies that it is unlikely the control is removed again before getting rendered.
-        _synchronousPostBackCommands.Add (command);
+        _synchronousPostBackCommands.Add(command);
       }
     }
 
     public void RegisterControlForSynchronousPostBack (Control control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
-      var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
+      var scriptManager = ScriptManager.GetCurrent(_page.WrappedInstance);
       if (scriptManager != null)
-        scriptManager.RegisterPostBackControl (control);
+        scriptManager.RegisterPostBackControl(control);
     }
 
     /// <summary> Find the <see cref="IResourceManager"/> for this SmartPageInfo. </summary>
     protected virtual IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     /// <summary> Find the <see cref="IResourceManager"/> for this control info. </summary>
@@ -229,7 +229,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </param>
     protected IResourceManager GetResourceManager (Type localResourcesType)
     {
-      ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
+      ArgumentUtility.CheckNotNull("localResourcesType", localResourcesType);
 
       //  Provider has already been identified.
       if (_cachedResourceManager != null)
@@ -237,10 +237,10 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       //  Get the resource managers
 
-      var localResourceManager = GlobalizationService.GetResourceManager (localResourcesType);
-      var pageResourceManager = ResourceManagerUtility.GetResourceManager (_page.WrappedInstance, true);
+      var localResourceManager = GlobalizationService.GetResourceManager(localResourcesType);
+      var pageResourceManager = ResourceManagerUtility.GetResourceManager(_page.WrappedInstance, true);
 
-      _cachedResourceManager = ResourceManagerSet.Create (pageResourceManager, localResourceManager);
+      _cachedResourceManager = ResourceManagerSet.Create(pageResourceManager, localResourceManager);
 
       return _cachedResourceManager;
     }
@@ -259,30 +259,30 @@ namespace Remotion.Web.UI.SmartPageImplementation
           }
         }
         if (! hasHeadContents)
-          _page.Header.Controls.AddAt (0, new HtmlHeadContents());
+          _page.Header.Controls.AddAt(0, new HtmlHeadContents());
       }
 
       HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude();
 
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
 
-      var smartNavigationUrl = resourceUrlFactory.CreateResourceUrl (typeof (SmartPageInfo), ResourceType.Html, c_smartNavigationScriptFileUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_smartNavigationScriptKey, smartNavigationUrl);
+      var smartNavigationUrl = resourceUrlFactory.CreateResourceUrl(typeof(SmartPageInfo), ResourceType.Html, c_smartNavigationScriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude(s_smartNavigationScriptKey, smartNavigationUrl);
 
-      var scriptUrl = resourceUrlFactory.CreateResourceUrl (typeof (SmartPageInfo), ResourceType.Html, c_scriptFileUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+      var scriptUrl = resourceUrlFactory.CreateResourceUrl(typeof(SmartPageInfo), ResourceType.Html, c_scriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude(s_scriptFileKey, scriptUrl);
 
       HtmlHeadAppender.Current.RegisterCommonStyleSheet();
 
       var infrastructureResourceUrlFactory = SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>();
-      var styleUrl = infrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Html, c_styleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
+      var styleUrl = infrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink(s_styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
 
-      var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
+      var scriptManager = ScriptManager.GetCurrent(_page.WrappedInstance);
       if (scriptManager != null)
       {
-        var handler = new SmartPageAsyncPostBackErrorHandler (_page.Context!); // TODO RM-8118: Add not null assertion
-        scriptManager.AsyncPostBackError += (o, args) => handler.HandleError (args.Exception);
+        var handler = new SmartPageAsyncPostBackErrorHandler(_page.Context!); // TODO RM-8118: Add not null assertion
+        scriptManager.AsyncPostBackError += (o, args) => handler.HandleError(args.Exception);
       }
     }
 
@@ -301,7 +301,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private void PreRenderSmartPage ()
     {
-      _page.ClientScript.RegisterHiddenField (_page, CacheDetectionID, null);
+      _page.ClientScript.RegisterHiddenField(_page, CacheDetectionID, null);
 
       RegisterSmartPageInitializationScript();
     }
@@ -310,14 +310,14 @@ namespace Remotion.Web.UI.SmartPageImplementation
     {
       var htmlForm = _page.Form;
       if (htmlForm == null)
-        throw new InvalidOperationException ("SmartPage requires an HtmlForm control on the page.");
+        throw new InvalidOperationException("SmartPage requires an HtmlForm control on the page.");
 
       string abortMessage = GetAbortMessage();
       string statusIsSubmittingMessage = GetStatusIsSubmittingMessage();
       string abortQueuedSubmit = _page.IsQueuedSubmitToBeAborted ? "true" : "false";
 
       string checkFormStateFunction = "null";
-      if (! string.IsNullOrEmpty (_checkFormStateFunction))
+      if (! string.IsNullOrEmpty(_checkFormStateFunction))
         checkFormStateFunction = "'" + _checkFormStateFunction + "'";
 
       string smartScrollingFieldID = "null";
@@ -335,75 +335,75 @@ namespace Remotion.Web.UI.SmartPageImplementation
       string isDirtyStateTrackingEnabled = "false";
       string isDirty = "false";
 
-      StringBuilder initScript = new StringBuilder (500);
+      StringBuilder initScript = new StringBuilder(500);
 
-      initScript.AppendLine ("function SmartPage_Initialize ()");
-      initScript.AppendLine ("{");
+      initScript.AppendLine("function SmartPage_Initialize ()");
+      initScript.AppendLine("{");
 
       const string eventHandlersArray = "eventHandlers";
-      initScript.Append ("  var ").Append (eventHandlersArray).AppendLine (" = new Array();");
-      FormatPopulateEventHandlersArrayClientScript (initScript, eventHandlersArray);
+      initScript.Append("  var ").Append(eventHandlersArray).AppendLine(" = new Array();");
+      FormatPopulateEventHandlersArrayClientScript(initScript, eventHandlersArray);
       initScript.AppendLine();
 
       const string trackedControlsArray = "trackedControls";
-      initScript.Append ("  var ").Append (trackedControlsArray).AppendLine (" = new Array();");
+      initScript.Append("  var ").Append(trackedControlsArray).AppendLine(" = new Array();");
       if (_page.IsDirtyStateTrackingEnabled)
       {
         isDirtyStateTrackingEnabled = "true";
         if (_page.EvaluateDirtyState())
           isDirty = "true";
         else
-          FormatPopulateTrackedControlsArrayClientScript (initScript, trackedControlsArray);
+          FormatPopulateTrackedControlsArrayClientScript(initScript, trackedControlsArray);
       }
       initScript.AppendLine();
 
       const string synchronousPostBackCommandsArray = "synchronousPostBackCommands";
-      initScript.Append ("  var ").Append (synchronousPostBackCommandsArray).AppendLine (" = new Array();");
-      FormatPopulateSynchronousPostBackCommandsArrayClientScript (initScript, synchronousPostBackCommandsArray);
+      initScript.Append("  var ").Append(synchronousPostBackCommandsArray).AppendLine(" = new Array();");
+      FormatPopulateSynchronousPostBackCommandsArrayClientScript(initScript, synchronousPostBackCommandsArray);
       initScript.AppendLine();
 
-      initScript.AppendLine ("  if (SmartPage_Context.Instance == null)");
-      initScript.AppendLine ("  {");
+      initScript.AppendLine("  if (SmartPage_Context.Instance == null)");
+      initScript.AppendLine("  {");
 
       initScript.AppendLine();
 
-      initScript.AppendLine ("    SmartPage_Context.Instance = new SmartPage_Context (");
-      initScript.Append ("        '").Append (htmlForm.ClientID).AppendLine ("',");
-      initScript.Append ("        ").Append (isDirtyStateTrackingEnabled).AppendLine (",");
-      initScript.Append ("        ").Append (abortMessage).AppendLine (",");
-      initScript.Append ("        ").Append (statusIsSubmittingMessage).AppendLine (",");
-      initScript.Append ("        ").Append (smartScrollingFieldID).AppendLine (",");
-      initScript.Append ("        ").Append (smartFocusFieldID).AppendLine (",");
-      initScript.Append ("        ").Append (checkFormStateFunction).AppendLine (");");
+      initScript.AppendLine("    SmartPage_Context.Instance = new SmartPage_Context (");
+      initScript.Append("        '").Append(htmlForm.ClientID).AppendLine("',");
+      initScript.Append("        ").Append(isDirtyStateTrackingEnabled).AppendLine(",");
+      initScript.Append("        ").Append(abortMessage).AppendLine(",");
+      initScript.Append("        ").Append(statusIsSubmittingMessage).AppendLine(",");
+      initScript.Append("        ").Append(smartScrollingFieldID).AppendLine(",");
+      initScript.Append("        ").Append(smartFocusFieldID).AppendLine(",");
+      initScript.Append("        ").Append(checkFormStateFunction).AppendLine(");");
 
-      initScript.AppendLine ("  }");
+      initScript.AppendLine("  }");
       initScript.AppendLine();
 
-      initScript.Append ("  SmartPage_Context.Instance.set_AbortQueuedSubmit (").Append (abortQueuedSubmit).AppendLine (");");
-      initScript.Append ("  SmartPage_Context.Instance.set_EventHandlers (").Append (eventHandlersArray).AppendLine (");");
-      initScript.Append ("  SmartPage_Context.Instance.set_TrackedIDs (").Append (trackedControlsArray).AppendLine (");");
-      initScript.Append ("  SmartPage_Context.Instance.set_SynchronousPostBackCommands (").Append (synchronousPostBackCommandsArray).AppendLine (");");
-      initScript.AppendLine ("}");
+      initScript.Append("  SmartPage_Context.Instance.set_AbortQueuedSubmit (").Append(abortQueuedSubmit).AppendLine(");");
+      initScript.Append("  SmartPage_Context.Instance.set_EventHandlers (").Append(eventHandlersArray).AppendLine(");");
+      initScript.Append("  SmartPage_Context.Instance.set_TrackedIDs (").Append(trackedControlsArray).AppendLine(");");
+      initScript.Append("  SmartPage_Context.Instance.set_SynchronousPostBackCommands (").Append(synchronousPostBackCommandsArray).AppendLine(");");
+      initScript.AppendLine("}");
       initScript.AppendLine();
-      initScript.AppendLine ("SmartPage_Initialize ();");
+      initScript.AppendLine("SmartPage_Initialize ();");
       initScript.AppendLine();
 
-      _page.ClientScript.RegisterClientScriptBlock (_page, typeof (SmartPageInfo), "smartPageInitialize", initScript.ToString ());
+      _page.ClientScript.RegisterClientScriptBlock(_page, typeof(SmartPageInfo), "smartPageInitialize", initScript.ToString());
 
       string isAsynchronous = "false";
       if (IsInAsyncPostBack)
         isAsynchronous = "true";
-      _page.ClientScript.RegisterStartupScriptBlock (_page, typeof (SmartPageInfo), "smartPageStartUp", "SmartPage_Context.Instance.OnStartUp (" + isAsynchronous + ", " + isDirty + ");");
+      _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(SmartPageInfo), "smartPageStartUp", "SmartPage_Context.Instance.OnStartUp (" + isAsynchronous + ", " + isDirty + ");");
 
       // Ensure the __doPostBack function and the __EventTarget and __EventArgument hidden fields on the rendered page
-      _page.ClientScript.GetPostBackEventReference (new PostBackOptions (_page.WrappedInstance) { ClientSubmit = true }, false);
+      _page.ClientScript.GetPostBackEventReference(new PostBackOptions(_page.WrappedInstance) { ClientSubmit = true }, false);
     }
 
     private bool IsInAsyncPostBack
     {
       get
       {
-        var scriptManager = ScriptManager.GetCurrent (_page.WrappedInstance);
+        var scriptManager = ScriptManager.GetCurrent(_page.WrappedInstance);
         return scriptManager != null && scriptManager.IsInAsyncPostBack;
       }
     }
@@ -416,11 +416,11 @@ namespace Remotion.Web.UI.SmartPageImplementation
       if (_page.IsAbortConfirmationEnabled)
       {
         string temp;
-        if (string.IsNullOrEmpty (_page.AbortMessage))
-          temp = resourceManager.GetString (ResourceIdentifier.AbortMessage);
+        if (string.IsNullOrEmpty(_page.AbortMessage))
+          temp = resourceManager.GetString(ResourceIdentifier.AbortMessage);
         else
           temp = _page.AbortMessage;
-        abortMessage = "'" + ScriptUtility.EscapeClientScript (temp) + "'";
+        abortMessage = "'" + ScriptUtility.EscapeClientScript(temp) + "'";
       }
 
       return abortMessage;
@@ -434,11 +434,11 @@ namespace Remotion.Web.UI.SmartPageImplementation
       if (_page.IsStatusIsSubmittingMessageEnabled)
       {
         string temp;
-        if (string.IsNullOrEmpty (_page.StatusIsSubmittingMessage))
-          temp = resourceManager.GetString (ResourceIdentifier.StatusIsSubmittingMessage);
+        if (string.IsNullOrEmpty(_page.StatusIsSubmittingMessage))
+          temp = resourceManager.GetString(ResourceIdentifier.StatusIsSubmittingMessage);
         else
           temp = _page.StatusIsSubmittingMessage;
-        statusIsSubmittingMessage = "'" + ScriptUtility.EscapeClientScript (temp) + "'";
+        statusIsSubmittingMessage = "'" + ScriptUtility.EscapeClientScript(temp) + "'";
       }
 
       return statusIsSubmittingMessage;
@@ -452,22 +452,22 @@ namespace Remotion.Web.UI.SmartPageImplementation
       {
         NameValueCollection eventHandlers = _clientSideEventHandlers[pageEvent];
 
-        script.Append ("  ");
-        script.Append (eventHandlersByEventArray).AppendLine (" = new Array();");
+        script.Append("  ");
+        script.Append(eventHandlersByEventArray).AppendLine(" = new Array();");
 
         for (int i = 0; i < eventHandlers.Keys.Count; i++)
         {
           // IE 5.0.1 does not understand push
-          script.Append ("  ");
-          script.Append (eventHandlersByEventArray).Append ("[").Append (eventHandlersByEventArray).Append (".length] = '");
-          script.Append (eventHandlers.Get (i));
-          script.AppendLine ("';");
+          script.Append("  ");
+          script.Append(eventHandlersByEventArray).Append("[").Append(eventHandlersByEventArray).Append(".length] = '");
+          script.Append(eventHandlers.Get(i));
+          script.AppendLine("';");
         }
 
-        script.Append ("  ");
-        script.Append (eventHandlersArray).Append ("['");
-        script.Append (pageEvent.ToString().ToLower());
-        script.Append ("'] = ").Append (eventHandlersByEventArray).AppendLine (";");
+        script.Append("  ");
+        script.Append(eventHandlersArray).Append("['");
+        script.Append(pageEvent.ToString().ToLower());
+        script.Append("'] = ").Append(eventHandlersByEventArray).AppendLine(";");
         script.AppendLine();
       }
     }
@@ -482,10 +482,10 @@ namespace Remotion.Web.UI.SmartPageImplementation
           for (int i = 0; i < trackedIDs.Length; i++)
           {
             // IE 5.0.1 does not understand push
-            script.Append ("  ");
-            script.Append (trackedControlsArray).Append ("[").Append (trackedControlsArray).Append (".length] = '");
-            script.Append (trackedIDs[i]);
-            script.AppendLine ("';");
+            script.Append("  ");
+            script.Append(trackedControlsArray).Append("[").Append(trackedControlsArray).Append(".length] = '");
+            script.Append(trackedIDs[i]);
+            script.AppendLine("';");
           }
         }
       }
@@ -493,10 +493,10 @@ namespace Remotion.Web.UI.SmartPageImplementation
       foreach (string? trackedID in _trackedControlsByID)
       {
         // IE 5.0.1 does not understand push
-        script.Append ("  ");
-        script.Append (trackedControlsArray).Append ("[").Append (trackedControlsArray).Append (".length] = '");
-        script.Append (trackedID);
-        script.AppendLine ("';");
+        script.Append("  ");
+        script.Append(trackedControlsArray).Append("[").Append(trackedControlsArray).Append(".length] = '");
+        script.Append(trackedID);
+        script.AppendLine("';");
       }
     }
 
@@ -504,10 +504,10 @@ namespace Remotion.Web.UI.SmartPageImplementation
     {
       foreach (Tuple<Control, string> command in _synchronousPostBackCommands)
       {
-        script.Append ("  ");
-        script.Append (array).Append ("[").Append (array).Append (".length] = '");
-        script.Append (command.Item1.UniqueID + "|" + command.Item2);
-        script.AppendLine ("';");
+        script.Append("  ");
+        script.Append(array).Append("[").Append(array).Append(".length] = '");
+        script.Append(command.Item1.UniqueID + "|" + command.Item2);
+        script.AppendLine("';");
       }
     }
 
@@ -524,7 +524,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
         string? smartScrollingValue = null;
         if (postBackCollection != null && (_smartNavigationDataToBeDisacarded & SmartNavigationData.ScrollPosition) == SmartNavigationData.None)
           smartScrollingValue = postBackCollection[c_smartScrollingID];
-        _page.ClientScript.RegisterHiddenField (_page, c_smartScrollingID, smartScrollingValue);
+        _page.ClientScript.RegisterHiddenField(_page, c_smartScrollingID, smartScrollingValue);
       }
 
       if (smartNavigablePage.IsSmartFocusingEnabled)
@@ -532,9 +532,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
         string? smartFocusValue = null;
         if (postBackCollection != null && (_smartNavigationDataToBeDisacarded & SmartNavigationData.Focus) == SmartNavigationData.None)
           smartFocusValue = postBackCollection[c_smartFocusID];
-        if (! string.IsNullOrEmpty (_smartFocusID))
+        if (! string.IsNullOrEmpty(_smartFocusID))
           smartFocusValue = _smartFocusID;
-        _page.ClientScript.RegisterHiddenField (_page, c_smartFocusID, smartFocusValue);
+        _page.ClientScript.RegisterHiddenField(_page, c_smartFocusID, smartFocusValue);
       }
     }
 
@@ -577,10 +577,10 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </summary>
     public void SetFocus (IFocusableControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      if (string.IsNullOrEmpty (control.FocusID))
+      ArgumentUtility.CheckNotNull("control", control);
+      if (string.IsNullOrEmpty(control.FocusID))
         return;
-      SetFocus (control.FocusID);
+      SetFocus(control.FocusID);
     }
 
     /// <summary>
@@ -588,7 +588,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </summary>
     public void SetFocus ([NotNull] string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
       _smartFocusID = id;
     }
 
@@ -597,7 +597,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </summary>
     public void RegisterNavigationControl (INavigationControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       // Registration is typically done during the Control's init-phase to allow building of navigation urls during the entire life cycle.
       // Note: If the control is removed again, the previously built navigation urls will no longer be valid.
@@ -607,8 +607,8 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private void UnregisterNavigationControl (object? sender, EventArgs args)
     {
-      var control = ArgumentUtility.CheckNotNullAndType<INavigationControl> ("sender", sender!);
-      _navigationControls.Remove (control);
+      var control = ArgumentUtility.CheckNotNullAndType<INavigationControl>("sender", sender!);
+      _navigationControls.Remove(control);
       control.Unload -= UnregisterNavigationControl;
     }
 
@@ -618,7 +618,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     public string AppendNavigationUrlParameters (string url)
     {
       NameValueCollection urlParameters = GetNavigationUrlParameters();
-      return UrlUtility.AddParameters (url, urlParameters);
+      return UrlUtility.AddParameters(url, urlParameters);
     }
 
     /// <summary>
@@ -628,7 +628,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     {
       NameValueCollection urlParameters = new NameValueCollection();
       foreach (INavigationControl control in _navigationControls.Values)
-        NameValueCollectionUtility.Append (urlParameters, control.GetNavigationUrlParameters());
+        NameValueCollectionUtility.Append(urlParameters, control.GetNavigationUrlParameters());
 
       return urlParameters;
     }

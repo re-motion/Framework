@@ -41,33 +41,33 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
 
     public ChromeBrowserFactory ([NotNull] IChromeConfiguration chromeConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("chromeConfiguration", chromeConfiguration);
+      ArgumentUtility.CheckNotNull("chromeConfiguration", chromeConfiguration);
 
       _chromeConfiguration = chromeConfiguration;
       _extendedChromeOptions = _chromeConfiguration.CreateChromeOptions();
-      _registryCleanUpStrategy = ChromiumSecurityWarningsRegistryCleanUpStrategyFactory.CreateForChrome (_chromeConfiguration.DisableSecurityWarningsBehavior);
+      _registryCleanUpStrategy = ChromiumSecurityWarningsRegistryCleanUpStrategyFactory.CreateForChrome(_chromeConfiguration.DisableSecurityWarningsBehavior);
     }
 
     public IBrowserSession CreateBrowser (DriverConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
+      ArgumentUtility.CheckNotNull("configuration", configuration);
 
-      var sessionConfiguration = CreateSessionConfiguration (configuration);
+      var sessionConfiguration = CreateSessionConfiguration(configuration);
       var commandTimeout = configuration.CommandTimeout;
 
-      var driver = CreateChromeDriver (out var driverProcessID, commandTimeout);
+      var driver = CreateChromeDriver(out var driverProcessID, commandTimeout);
       driver.Manage().Timeouts().AsynchronousJavaScript = configuration.AsyncJavaScriptTimeout;
 
-      var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Chrome));
+      var session = new Coypu.BrowserSession(sessionConfiguration, new CustomSeleniumWebDriver(driver, Browser.Chrome));
 
-      return new ChromeBrowserSession (
+      return new ChromeBrowserSession(
           session,
           _chromeConfiguration,
           driverProcessID,
           new[]
           {
               _registryCleanUpStrategy,
-              new ChromiumUserDirectoryCleanUpStrategy (_chromeConfiguration.UserDirectoryRoot, _extendedChromeOptions.UserDirectory!)
+              new ChromiumUserDirectoryCleanUpStrategy(_chromeConfiguration.UserDirectoryRoot, _extendedChromeOptions.UserDirectory!)
           });
     }
 
@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
                  ConsiderInvisibleElements = WebTestingConstants.ShouldConsiderInvisibleElements,
                  Match = WebTestingConstants.DefaultMatchStrategy,
                  TextPrecision = WebTestingConstants.DefaultTextPrecision,
-                 Driver = typeof (CustomSeleniumWebDriver)
+                 Driver = typeof(CustomSeleniumWebDriver)
              };
     }
 
@@ -89,7 +89,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
     {
       var driverService = CreateChromeDriverService();
 
-      var driver = new ChromeDriver (driverService, _extendedChromeOptions, commandTimeout);
+      var driver = new ChromeDriver(driverService, _extendedChromeOptions, commandTimeout);
       driverProcessID = driverService.ProcessId;
 
       return driver;
@@ -97,13 +97,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
 
     private ChromeDriverService CreateChromeDriverService ()
     {
-      var driverDirectory = Path.GetDirectoryName (_chromeConfiguration.DriverBinaryPath);
-      var driverExecutable = Path.GetFileName (_chromeConfiguration.DriverBinaryPath);
+      var driverDirectory = Path.GetDirectoryName(_chromeConfiguration.DriverBinaryPath);
+      var driverExecutable = Path.GetFileName(_chromeConfiguration.DriverBinaryPath);
 
-      var driverService = ChromeDriverService.CreateDefaultService (driverDirectory, driverExecutable);
+      var driverService = ChromeDriverService.CreateDefaultService(driverDirectory, driverExecutable);
 
       driverService.EnableVerboseLogging = false;
-      driverService.LogPath = WebDriverLogUtility.CreateLogFile (_chromeConfiguration.LogsDirectory, _chromeConfiguration.BrowserName);
+      driverService.LogPath = WebDriverLogUtility.CreateLogFile(_chromeConfiguration.LogsDirectory, _chromeConfiguration.BrowserName);
 
       return driverService;
     }

@@ -26,10 +26,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static Location NewObject ()
     {
-      return NewObject<Location> ();
+      return NewObject<Location>();
     }
 
-    protected Location()
+    protected Location ()
     {
     }
 

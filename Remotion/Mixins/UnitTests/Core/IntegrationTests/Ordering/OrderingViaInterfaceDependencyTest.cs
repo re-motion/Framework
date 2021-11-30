@@ -25,15 +25,15 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     [Test]
     public void InterfaceDependency ()
     {
-      var instance1 = BuildMixedInstance<C> (
-          b => b.AddMixinDependency<MixinA, IMixinB> (),
-          typeof (MixinA), typeof (MixinB));
-      Assert.That (instance1.Method1 (), Is.EqualTo ("MixinA.Method1 - MixinB.Method1 - C.Method1"));
+      var instance1 = BuildMixedInstance<C>(
+          b => b.AddMixinDependency<MixinA, IMixinB>(),
+          typeof(MixinA), typeof(MixinB));
+      Assert.That(instance1.Method1(), Is.EqualTo("MixinA.Method1 - MixinB.Method1 - C.Method1"));
 
-      var instance2 = BuildMixedInstance<C> (
-          b => b.AddMixinDependency<MixinB, IMixinA> (),
-          typeof (MixinA), typeof (MixinB));
-      Assert.That (instance2.Method1 (), Is.EqualTo ("MixinB.Method1 - MixinA.Method1 - C.Method1"));
+      var instance2 = BuildMixedInstance<C>(
+          b => b.AddMixinDependency<MixinB, IMixinA>(),
+          typeof(MixinA), typeof(MixinB));
+      Assert.That(instance2.Method1(), Is.EqualTo("MixinB.Method1 - MixinA.Method1 - C.Method1"));
     }
 
     public class C
@@ -52,13 +52,13 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     public class MixinA : Mixin<object, IC>, IMixinA
     {
       [OverrideTarget]
-      public string Method1 () { return "MixinA.Method1 - " + Next.Method1 (); }
+      public string Method1 () { return "MixinA.Method1 - " + Next.Method1(); }
     }
 
     public class MixinB : Mixin<object, IC>, IMixinB
     {
       [OverrideTarget]
-      public string Method1 () { return "MixinB.Method1 - " + Next.Method1 (); }
+      public string Method1 () { return "MixinB.Method1 - " + Next.Method1(); }
     }
   }
 }

@@ -40,10 +40,10 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   // constants
 
   // types
-  
+
   // static members
-  private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
-      typeof (IBusinessObjectReferenceProperty) };
+  private static readonly Type[] s_supportedPropertyInterfaces = new Type[] {
+      typeof(IBusinessObjectReferenceProperty) };
   private static readonly object s_menuItemClickEvent = new object();
 
   // member fields
@@ -60,46 +60,46 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   protected IWebServiceFactory WebServiceFactory { get; }
 
   public BocDropDownMenu ()
-      : this (SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
+      : this(SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
   {
   }
 
   protected BocDropDownMenu ([NotNull] IWebServiceFactory webServiceFactory)
   {
-    ArgumentUtility.CheckNotNull ("webServiceFactory", webServiceFactory);
+    ArgumentUtility.CheckNotNull("webServiceFactory", webServiceFactory);
 
-    _dropDownMenu = new DropDownMenu (this);
+    _dropDownMenu = new DropDownMenu(this);
     WebServiceFactory = webServiceFactory;
   }
 
   // methods and properties
 
-  protected override void OnInit(EventArgs e)
+  protected override void OnInit (EventArgs e)
   {
-    base.OnInit (e);
-    InitializeMenusItems ();
+    base.OnInit(e);
+    InitializeMenusItems();
   }
 
-  protected override void CreateChildControls()
+  protected override void CreateChildControls ()
   {
-    base.CreateChildControls ();
+    base.CreateChildControls();
     _dropDownMenu.ID = ID + "_Boc_DropDownMenu";
-    Controls.Add (_dropDownMenu);
-    _dropDownMenu.EventCommandClick += new WebMenuItemClickEventHandler (DropDownMenu_EventCommandClick);
-    _dropDownMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler (DropDownMenu_WxeFunctionCommandClick);
+    Controls.Add(_dropDownMenu);
+    _dropDownMenu.EventCommandClick += new WebMenuItemClickEventHandler(DropDownMenu_EventCommandClick);
+    _dropDownMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler(DropDownMenu_WxeFunctionCommandClick);
   }
- 
+
   /// <summary> Checks whether the control conforms to the required WAI level. </summary>
   /// <exception cref="Remotion.Web.UI.WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
     if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-      WcagHelper.Instance.HandleError (1, this);
+      WcagHelper.Instance.HandleError(1, this);
   }
 
-  protected override void OnPreRender(EventArgs e)
+  protected override void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
     PreRenderMenuItems();
 
     PreRenderDropDownMenu();
@@ -109,29 +109,29 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   private void CheckControlService ()
   {
-    if (string.IsNullOrEmpty (ControlServicePath))
+    if (string.IsNullOrEmpty(ControlServicePath))
       return;
 
-    var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, ControlServicePath);
-    WebServiceFactory.CreateJsonService<IBocDropDownMenuWebService> (virtualServicePath);
+    var virtualServicePath = VirtualPathUtility.GetVirtualPath(this, ControlServicePath);
+    WebServiceFactory.CreateJsonService<IBocDropDownMenuWebService>(virtualServicePath);
   }
 
-  protected virtual void InitializeMenusItems()
+  protected virtual void InitializeMenusItems ()
   {
   }
 
-  protected virtual void PreRenderMenuItems()
+  protected virtual void PreRenderMenuItems ()
   {
     if (_hiddenMenuItems == null)
       return;
 
-    BocDropDownMenu.HideMenuItems (MenuItems, _hiddenMenuItems);
+    BocDropDownMenu.HideMenuItems(MenuItems, _hiddenMenuItems);
   }
 
   public static void HideMenuItems (WebMenuItemCollection menuItems, string[] hiddenItems)
   {
-    ArgumentUtility.CheckNotNull ("menuItems", menuItems);
-    ArgumentUtility.CheckNotNull ("hiddenItems", hiddenItems);
+    ArgumentUtility.CheckNotNull("menuItems", menuItems);
+    ArgumentUtility.CheckNotNull("hiddenItems", hiddenItems);
 
     for (int idxHiddenItems = 0; idxHiddenItems < hiddenItems.Length; idxHiddenItems++)
     {
@@ -139,19 +139,19 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
       if (itemID.Length == 0)
         continue;
 
-      bool isSuffix = itemID.IndexOf (".") == -1;
+      bool isSuffix = itemID.IndexOf(".") == -1;
       string? itemIDSuffix = null;
       if (isSuffix)
         itemIDSuffix = "." + itemID;
 
       for (int idxItems = 0; idxItems < menuItems.Count; idxItems++)
       {
-        WebMenuItem menuItem = (WebMenuItem) menuItems[idxItems];
+        WebMenuItem menuItem = (WebMenuItem)menuItems[idxItems];
         if (! menuItem.IsVisible)
           continue;
-        if (string.IsNullOrEmpty (menuItem.ItemID))
+        if (string.IsNullOrEmpty(menuItem.ItemID))
           continue;
-        
+
         if (isSuffix)
         {
           if (menuItem.ItemID.Length == itemID.Length)
@@ -161,7 +161,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
           }
           else
           {
-            if (menuItem.ItemID.EndsWith (itemIDSuffix!))
+            if (menuItem.ItemID.EndsWith(itemIDSuffix!))
               menuItem.IsVisible = false;
           }
         }
@@ -174,7 +174,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     }
   }
 
-  private void PreRenderDropDownMenu()
+  private void PreRenderDropDownMenu ()
   {
     _dropDownMenu.IsReadOnly = true;
     _dropDownMenu.Enabled = Enabled;
@@ -188,12 +188,12 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     if (businessObject != null)
     {
       _dropDownMenu.GetSelectionCount = "function() { return 1; }";
-      var titleText = GetTitleText (businessObject);
-      _dropDownMenu.TitleText = System.Web.HttpUtility.HtmlEncode (titleText);
+      var titleText = GetTitleText(businessObject);
+      _dropDownMenu.TitleText = System.Web.HttpUtility.HtmlEncode(titleText);
 
      if (_enableIcon)
      {
-       _dropDownMenu.TitleIcon = BusinessObjectBoundWebControl.GetIcon (businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
+       _dropDownMenu.TitleIcon = BusinessObjectBoundWebControl.GetIcon(businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
       }
     }
     else
@@ -204,10 +204,10 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   protected virtual string GetTitleText (IBusinessObject businessObject)
   {
-    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    
+    ArgumentUtility.CheckNotNull("businessObject", businessObject);
+
     if (businessObject is IBusinessObjectWithIdentity)
-      return ((IBusinessObjectWithIdentity) businessObject).GetAccessibleDisplayName();
+      return ((IBusinessObjectWithIdentity)businessObject).GetAccessibleDisplayName();
     else
       return businessObject.ToString()!;
   }
@@ -216,32 +216,32 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   {
     EvaluateWaiConformity();
 
-    if (!string.IsNullOrEmpty (ControlServicePath))
+    if (!string.IsNullOrEmpty(ControlServicePath))
     {
       var businessObjectWebServiceContext = CreateBusinessObjectWebServiceContext();
 
       var stringValueParametersDictionary = new Dictionary<string, string?>();
-      stringValueParametersDictionary.Add ("controlID", ID);
-      stringValueParametersDictionary.Add (
+      stringValueParametersDictionary.Add("controlID", ID);
+      stringValueParametersDictionary.Add(
           "controlType",
-          TypeUtility.GetPartialAssemblyQualifiedName (MixinTypeUtility.GetUnderlyingTargetType (GetType())));
-      stringValueParametersDictionary.Add ("businessObjectClass", businessObjectWebServiceContext.BusinessObjectClass);
-      stringValueParametersDictionary.Add ("businessObjectProperty", businessObjectWebServiceContext.BusinessObjectProperty);
-      stringValueParametersDictionary.Add ("businessObject", businessObjectWebServiceContext.BusinessObjectIdentifier);
-      stringValueParametersDictionary.Add ("arguments", businessObjectWebServiceContext.Arguments);
+          TypeUtility.GetPartialAssemblyQualifiedName(MixinTypeUtility.GetUnderlyingTargetType(GetType())));
+      stringValueParametersDictionary.Add("businessObjectClass", businessObjectWebServiceContext.BusinessObjectClass);
+      stringValueParametersDictionary.Add("businessObjectProperty", businessObjectWebServiceContext.BusinessObjectProperty);
+      stringValueParametersDictionary.Add("businessObject", businessObjectWebServiceContext.BusinessObjectIdentifier);
+      stringValueParametersDictionary.Add("arguments", businessObjectWebServiceContext.Arguments);
 
-      _dropDownMenu.SetLoadMenuItemStatus (
+      _dropDownMenu.SetLoadMenuItemStatus(
           ControlServicePath,
-          nameof (IBocDropDownMenuWebService.GetMenuItemStatus),
+          nameof(IBocDropDownMenuWebService.GetMenuItemStatus),
           stringValueParametersDictionary);
     }
 
-    _dropDownMenu.RenderControl (writer);
+    _dropDownMenu.RenderControl(writer);
   }
 
   private BusinessObjectWebServiceContext CreateBusinessObjectWebServiceContext ()
   {
-    return BusinessObjectWebServiceContext.Create (
+    return BusinessObjectWebServiceContext.Create(
         DataSource,
         Property,
         ControlServiceArguments);
@@ -258,9 +258,9 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     if (Property == null)
       value = DataSource.BusinessObject;
     else if (DataSource.BusinessObject != null)
-      value = (IBusinessObject?) DataSource.BusinessObject.GetProperty (Property);
+      value = (IBusinessObject?)DataSource.BusinessObject.GetProperty(Property);
 
-    LoadValueInternal (value, interim);
+    LoadValueInternal(value, interim);
   }
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
@@ -270,7 +270,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// <param name="interim"> Not used. </param>
   public void LoadUnboundValue (IBusinessObject value, bool interim)
   {
-    LoadValueInternal (value, interim);
+    LoadValueInternal(value, interim);
   }
 
   /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
@@ -281,7 +281,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   /// <summary> Gets or sets the current value. </summary>
   /// <value> An object implementing <see cref="IBusinessObject"/>. </value>
-  [Browsable (false)]
+  [Browsable(false)]
   public new IBusinessObject? Value
   {
     get { return _value; }
@@ -293,7 +293,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   protected override sealed object? ValueImplementation
   {
     get { return Value; }
-    set { Value = (IBusinessObject?) value; }
+    set { Value = (IBusinessObject?)value; }
   }
 
   /// <summary>Gets a flag indicating whether the <see cref="BocDropDownMenu"/> contains a value. </summary>
@@ -312,12 +312,12 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   ///   the <see cref="BusinessObjectBoundWebControl.DataSource"/>'s <see cref="IBusinessObject"/> 
   ///   itself will be used as the control's value.
   /// </value>
-  [Browsable (false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
   public new IBusinessObjectReferenceProperty? Property
   {
-    get { return (IBusinessObjectReferenceProperty?) base.Property; }
-    set { base.Property = (IBusinessObjectReferenceProperty?) value; }
+    get { return (IBusinessObjectReferenceProperty?)base.Property; }
+    set { base.Property = (IBusinessObjectReferenceProperty?)value; }
   }
 
   /// <summary> The <see cref="BocDropDownMenu"/> supports only scalar properties. </summary>
@@ -351,43 +351,43 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its 
   ///   <see cref="Control.ClientID"/>.
   /// </summary>
-  public override Control TargetControl 
+  public override Control TargetControl
   {
-    get { return (Control) _dropDownMenu; }
+    get { return (Control)_dropDownMenu; }
   }
 
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  [ListBindable (false)]
-  [Category ("Menu")]
-  [Description ("The menu items displayed by the menu.")]
-  [DefaultValue ((string?) null)]
+  [PersistenceMode(PersistenceMode.InnerProperty)]
+  [ListBindable(false)]
+  [Category("Menu")]
+  [Description("The menu items displayed by the menu.")]
+  [DefaultValue((string?)null)]
   public WebMenuItemCollection MenuItems
   {
     get { return _dropDownMenu.MenuItems; }
   }
 
-  [DefaultValue (true)]
+  [DefaultValue(true)]
   public bool EnableGrouping
   {
     get { return _dropDownMenu.EnableGrouping; }
     set { _dropDownMenu.EnableGrouping = value; }
   }
 
-  [Category ("Behavior")]
-  [DefaultValue ("")]
+  [Category("Behavior")]
+  [DefaultValue("")]
   public string? ControlServicePath
   {
     get { return _controlServicePath; }
     set { _controlServicePath = value ?? string.Empty; }
   }
 
-  [Category ("Behavior")]
-  [DefaultValue ("")]
-  [Description ("Additional arguments passed to the control service.")]
+  [Category("Behavior")]
+  [DefaultValue("")]
+  [Description("Additional arguments passed to the control service.")]
   public string? ControlServiceArguments
   {
     get { return _controlServiceArguments; }
-    set { _controlServiceArguments = StringUtility.EmptyToNull (value); }
+    set { _controlServiceArguments = StringUtility.EmptyToNull(value); }
   }
 
   /// <summary> 
@@ -398,7 +398,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// <param name="e"> An <see cref="WebMenuItemClickEventArgs"/> object that contains the event data. </param>
   private void DropDownMenu_EventCommandClick (object sender, WebMenuItemClickEventArgs e)
   {
-    OnMenuItemEventCommandClick (e.Item);
+    OnMenuItemEventCommandClick(e.Item);
   }
 
   /// <summary> 
@@ -409,28 +409,28 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// <remarks> Only called for commands of type <see cref="CommandType.Event"/>. </remarks>
   protected virtual void OnMenuItemEventCommandClick (WebMenuItem menuItem)
   {
-    WebMenuItemClickEventHandler? menuItemClickHandler = (WebMenuItemClickEventHandler?) Events[s_menuItemClickEvent];
+    WebMenuItemClickEventHandler? menuItemClickHandler = (WebMenuItemClickEventHandler?)Events[s_menuItemClickEvent];
     if (menuItem.Command != null)
     {
       if (menuItem is BocMenuItem)
-        ((BocMenuItemCommand) menuItem.Command).OnClick ((BocMenuItem) menuItem);
+        ((BocMenuItemCommand)menuItem.Command).OnClick((BocMenuItem)menuItem);
       else
         menuItem.Command.OnClick();
     }
     if (menuItemClickHandler != null)
     {
-      WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
-      menuItemClickHandler (this, e);
+      WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs(menuItem);
+      menuItemClickHandler(this, e);
     }
   }
 
   /// <summary> Is raised when a menu item with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
-  [Category ("Action")]
-  [Description ("Is raised when a menu item with a command of type Event is clicked.")]
+  [Category("Action")]
+  [Description("Is raised when a menu item with a command of type Event is clicked.")]
   public event WebMenuItemClickEventHandler MenuItemClick
   {
-    add { Events.AddHandler (s_menuItemClickEvent, value); }
-    remove { Events.RemoveHandler (s_menuItemClickEvent, value); }
+    add { Events.AddHandler(s_menuItemClickEvent, value); }
+    remove { Events.RemoveHandler(s_menuItemClickEvent, value); }
   }
 
   /// <summary> 
@@ -442,7 +442,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   /// <remarks> Only called for commands of type <see cref="CommandType.Event"/>. </remarks>
   private void DropDownMenu_WxeFunctionCommandClick (object sender, WebMenuItemClickEventArgs e)
   {
-    OnMenuItemWxeFunctionCommandClick (e.Item);
+    OnMenuItemWxeFunctionCommandClick(e.Item);
   }
 
   /// <summary> 
@@ -463,10 +463,10 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
           businessObjects = new IBusinessObject[] { Value };
         else
           businessObjects = new IBusinessObject[0];
-   
-        BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
+
+        BocMenuItemCommand command = (BocMenuItemCommand)menuItem.Command;
         if (Page is IWxePage)
-          command.ExecuteWxeFunction ((IWxePage) Page, indices, businessObjects);
+          command.ExecuteWxeFunction((IWxePage)Page, indices, businessObjects);
         //else
         //  command.ExecuteWxeFunction (Page, indices, businessObjects);
       }
@@ -474,7 +474,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
       {
         Command command = menuItem.Command;
         if (Page is IWxePage)
-          command.ExecuteWxeFunction ((IWxePage) Page, null);
+          command.ExecuteWxeFunction((IWxePage)Page, null);
         //else
         //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
       }
@@ -494,10 +494,10 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   ///   provides an instance of type <see cref="IBusinessObjectWebUIService"/> and 
   ///   <see cref="IBusinessObjectWebUIService.GetIcon"/> returns not <see langword="null"/>.
   /// </remarks>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Appearance")]
-  [Description ("Flag that determines whether to show the icon in front of the value.")]
-  [DefaultValue (true)]
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [Category("Appearance")]
+  [Description("Flag that determines whether to show the icon in front of the value.")]
+  [DefaultValue(true)]
   public bool EnableIcon
   {
     get { return _enableIcon; }
@@ -506,13 +506,13 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   /// <summary> Gets or sets the list of menu items to be hidden. </summary>
   /// <value> The <see cref="WebMenuItem.ItemID"/> values of the menu items to hide. </value>
-  [Category ("Menu")]
-  [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
-  [DefaultValue ((string?) null)]
-  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category("Menu")]
+  [Description("The list of menu items to be hidden, identified by their ItemIDs.")]
+  [DefaultValue((string?)null)]
+  [PersistenceMode(PersistenceMode.Attribute)]
   public string[] HiddenMenuItems
   {
-    get 
+    get
     {
       if (_hiddenMenuItems == null)
         return new string[0];
@@ -544,7 +544,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     get { return true; }
   }
 
-  IBusinessObject[] IBocMenuItemContainer.GetSelectedBusinessObjects()
+  IBusinessObject[] IBocMenuItemContainer.GetSelectedBusinessObjects ()
   {
     if (Value == null)
       return new IBusinessObject[0];
@@ -552,14 +552,14 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
       return new IBusinessObject[] {Value};
   }
 
-  void IBocMenuItemContainer.RemoveBusinessObjects(IBusinessObject[] businessObjects)
+  void IBocMenuItemContainer.RemoveBusinessObjects (IBusinessObject[] businessObjects)
   {
-    throw new NotSupportedException ("BocDropDownMenu is a read-only control, even though the bound object might be modifiable.");
+    throw new NotSupportedException("BocDropDownMenu is a read-only control, even though the bound object might be modifiable.");
   }
 
-  void IBocMenuItemContainer.InsertBusinessObjects(IBusinessObject[] businessObjects)
+  void IBocMenuItemContainer.InsertBusinessObjects (IBusinessObject[] businessObjects)
   {
-    throw new NotSupportedException ("BocDropDownMenu is a read-only control, even though the bound object might be modifiable.");
+    throw new NotSupportedException("BocDropDownMenu is a read-only control, even though the bound object might be modifiable.");
   }
 }
 

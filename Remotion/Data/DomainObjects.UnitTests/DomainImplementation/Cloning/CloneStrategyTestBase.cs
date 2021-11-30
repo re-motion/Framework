@@ -33,12 +33,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _mockRepository = new MockRepository ();
-      _cloner = new DomainObjectCloner ();
+      base.SetUp();
+      _mockRepository = new MockRepository();
+      _cloner = new DomainObjectCloner();
       _contextMock = MockRepository.StrictMock<CloneContext>(Cloner);
-      _sourceTransaction = ClientTransaction.CreateRootTransaction ();
-      _cloneTransaction = ClientTransaction.CreateRootTransaction ();
+      _sourceTransaction = ClientTransaction.CreateRootTransaction();
+      _cloneTransaction = ClientTransaction.CreateRootTransaction();
     }
 
     protected MockRepository MockRepository
@@ -70,13 +70,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     [Test]
     public void HandleReference_OneOne_RealSide ()
     {
-      Computer source = DomainObjectMother.CreateObjectInTransaction<Computer> (SourceTransaction);
-      Computer clone = DomainObjectMother.CreateObjectInTransaction<Computer> (CloneTransaction);
-      Employee sourceRelated = DomainObjectMother.CreateObjectInTransaction<Employee> (SourceTransaction);
-      Employee cloneRelated = DomainObjectMother.CreateObjectInTransaction<Employee> (CloneTransaction);
+      Computer source = DomainObjectMother.CreateObjectInTransaction<Computer>(SourceTransaction);
+      Computer clone = DomainObjectMother.CreateObjectInTransaction<Computer>(CloneTransaction);
+      Employee sourceRelated = DomainObjectMother.CreateObjectInTransaction<Employee>(SourceTransaction);
+      Employee cloneRelated = DomainObjectMother.CreateObjectInTransaction<Employee>(CloneTransaction);
 
-      PropertyAccessor sourceReference = source.Properties[typeof (Computer), "Employee"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (Computer), "Employee"];
+      PropertyAccessor sourceReference = source.Properties[typeof(Computer), "Employee"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(Computer), "Employee"];
 
       source.Employee = sourceRelated;
 
@@ -88,17 +88,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     [Test]
     public void HandleReference_OneOne_RealSide_Null ()
     {
-      Computer source = DomainObjectMother.CreateObjectInTransaction<Computer> (SourceTransaction);
-      Computer clone = DomainObjectMother.CreateObjectInTransaction<Computer> (CloneTransaction);
+      Computer source = DomainObjectMother.CreateObjectInTransaction<Computer>(SourceTransaction);
+      Computer clone = DomainObjectMother.CreateObjectInTransaction<Computer>(CloneTransaction);
       Employee sourceRelated = null;
       Employee cloneRelated = null;
 
-      PropertyAccessor sourceReference = source.Properties[typeof (Computer), "Employee"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (Computer), "Employee"];
+      PropertyAccessor sourceReference = source.Properties[typeof(Computer), "Employee"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(Computer), "Employee"];
 
       source.Employee = sourceRelated;
 
-      HandleReference_OneOne_RealSide_Checks_Null (sourceRelated, sourceReference, cloneRelated, cloneReference);
+      HandleReference_OneOne_RealSide_Checks_Null(sourceRelated, sourceReference, cloneRelated, cloneReference);
     }
 
     protected abstract void HandleReference_OneOne_RealSide_Checks_Null (Employee sourceRelated, PropertyAccessor sourceReference, Employee cloneRelated, PropertyAccessor cloneReference);
@@ -106,13 +106,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     [Test]
     public void HandleReference_OneOne_VirtualSide ()
     {
-      Employee source = DomainObjectMother.CreateObjectInTransaction<Employee> (SourceTransaction);
-      Employee clone = DomainObjectMother.CreateObjectInTransaction<Employee> (CloneTransaction);
-      Computer sourceRelated = DomainObjectMother.CreateObjectInTransaction<Computer> (SourceTransaction);
-      Computer cloneRelated = DomainObjectMother.CreateObjectInTransaction<Computer> (CloneTransaction);
+      Employee source = DomainObjectMother.CreateObjectInTransaction<Employee>(SourceTransaction);
+      Employee clone = DomainObjectMother.CreateObjectInTransaction<Employee>(CloneTransaction);
+      Computer sourceRelated = DomainObjectMother.CreateObjectInTransaction<Computer>(SourceTransaction);
+      Computer cloneRelated = DomainObjectMother.CreateObjectInTransaction<Computer>(CloneTransaction);
 
-      PropertyAccessor sourceReference = source.Properties[typeof (Employee), "Computer"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (Employee), "Computer"];
+      PropertyAccessor sourceReference = source.Properties[typeof(Employee), "Computer"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(Employee), "Computer"];
 
       source.Computer = sourceRelated;
 
@@ -124,17 +124,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     [Test]
     public void HandleReference_OneOne_VirtualSide_Null ()
     {
-      Employee source = DomainObjectMother.CreateObjectInTransaction<Employee> (SourceTransaction);
-      Employee clone = DomainObjectMother.CreateObjectInTransaction<Employee> (CloneTransaction);
+      Employee source = DomainObjectMother.CreateObjectInTransaction<Employee>(SourceTransaction);
+      Employee clone = DomainObjectMother.CreateObjectInTransaction<Employee>(CloneTransaction);
       Computer sourceRelated = null;
       Computer cloneRelated = null;
 
-      PropertyAccessor sourceReference = source.Properties[typeof (Employee), "Computer"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (Employee), "Computer"];
+      PropertyAccessor sourceReference = source.Properties[typeof(Employee), "Computer"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(Employee), "Computer"];
 
       source.Computer = sourceRelated;
 
-      HandleReference_OneOne_VirtualSide_Checks_Null (sourceRelated, sourceReference, cloneRelated, cloneReference);
+      HandleReference_OneOne_VirtualSide_Checks_Null(sourceRelated, sourceReference, cloneRelated, cloneReference);
     }
 
     protected abstract void HandleReference_OneOne_VirtualSide_Checks_Null (Computer sourceRelated, PropertyAccessor sourceReference, Computer cloneRelated, PropertyAccessor cloneReference);
@@ -142,13 +142,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     [Test]
     public virtual void HandleReference_OneMany_RealSide ()
     {
-      OrderItem source = DomainObjectMother.CreateObjectInTransaction<OrderItem> (SourceTransaction);
-      OrderItem clone = DomainObjectMother.CreateObjectInTransaction<OrderItem> (CloneTransaction);
-      Order sourceRelated = DomainObjectMother.CreateObjectInTransaction<Order> (SourceTransaction);
-      Order cloneRelated = DomainObjectMother.CreateObjectInTransaction<Order> (CloneTransaction);
+      OrderItem source = DomainObjectMother.CreateObjectInTransaction<OrderItem>(SourceTransaction);
+      OrderItem clone = DomainObjectMother.CreateObjectInTransaction<OrderItem>(CloneTransaction);
+      Order sourceRelated = DomainObjectMother.CreateObjectInTransaction<Order>(SourceTransaction);
+      Order cloneRelated = DomainObjectMother.CreateObjectInTransaction<Order>(CloneTransaction);
 
-      PropertyAccessor sourceReference = source.Properties[typeof (OrderItem), "Order"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (OrderItem), "Order"];
+      PropertyAccessor sourceReference = source.Properties[typeof(OrderItem), "Order"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(OrderItem), "Order"];
 
       source.Order = sourceRelated;
 
@@ -156,21 +156,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     }
 
     protected abstract void HandleReference_OneMany_RealSide_Checks (Order sourceRelated, PropertyAccessor sourceReference, Order cloneRelated, PropertyAccessor cloneReference);
-    
+
     [Test]
     public void HandleReference_OneMany_RealSide_Null ()
     {
-      OrderItem source = DomainObjectMother.CreateObjectInTransaction<OrderItem> (SourceTransaction);
-      OrderItem clone = DomainObjectMother.CreateObjectInTransaction<OrderItem> (CloneTransaction);
+      OrderItem source = DomainObjectMother.CreateObjectInTransaction<OrderItem>(SourceTransaction);
+      OrderItem clone = DomainObjectMother.CreateObjectInTransaction<OrderItem>(CloneTransaction);
       Order sourceRelated = null;
       Order cloneRelated = null;
 
-      PropertyAccessor sourceReference = source.Properties[typeof (OrderItem), "Order"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (OrderItem), "Order"];
+      PropertyAccessor sourceReference = source.Properties[typeof(OrderItem), "Order"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(OrderItem), "Order"];
 
       source.Order = sourceRelated;
 
-      HandleReference_OneMany_RealSide_Checks_Null (sourceRelated, sourceReference, cloneRelated, cloneReference);
+      HandleReference_OneMany_RealSide_Checks_Null(sourceRelated, sourceReference, cloneRelated, cloneReference);
     }
 
     protected abstract void HandleReference_OneMany_RealSide_Checks_Null (Order sourceRelated, PropertyAccessor sourceReference, Order cloneRelated, PropertyAccessor cloneReference);
@@ -179,16 +179,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     public void HandleReference_OneMany_VirtualSide ()
     {
       Cloner.CloneTransaction = CloneTransaction;
-      
-      Order source = DomainObjectMother.CreateObjectInTransaction<Order> (SourceTransaction);
-      Order clone = DomainObjectMother.CreateObjectInTransaction<Order> (CloneTransaction);
-      OrderItem sourceRelated = DomainObjectMother.CreateObjectInTransaction<OrderItem> (SourceTransaction);
-      OrderItem cloneRelated = DomainObjectMother.CreateObjectInTransaction<OrderItem> (CloneTransaction);
 
-      PropertyAccessor sourceReference = source.Properties[typeof (Order), "OrderItems"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (Order), "OrderItems"];
+      Order source = DomainObjectMother.CreateObjectInTransaction<Order>(SourceTransaction);
+      Order clone = DomainObjectMother.CreateObjectInTransaction<Order>(CloneTransaction);
+      OrderItem sourceRelated = DomainObjectMother.CreateObjectInTransaction<OrderItem>(SourceTransaction);
+      OrderItem cloneRelated = DomainObjectMother.CreateObjectInTransaction<OrderItem>(CloneTransaction);
 
-      source.OrderItems.Add (sourceRelated);
+      PropertyAccessor sourceReference = source.Properties[typeof(Order), "OrderItems"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(Order), "OrderItems"];
+
+      source.OrderItems.Add(sourceRelated);
 
       HandleReference_OneMany_VirtualSide_Checks(sourceRelated, sourceReference, cloneRelated, cloneReference);
     }
@@ -200,13 +200,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     {
       Cloner.CloneTransaction = CloneTransaction;
 
-      Order source = DomainObjectMother.CreateObjectInTransaction<Order> (SourceTransaction);
-      Order clone = DomainObjectMother.CreateObjectInTransaction<Order> (CloneTransaction);
+      Order source = DomainObjectMother.CreateObjectInTransaction<Order>(SourceTransaction);
+      Order clone = DomainObjectMother.CreateObjectInTransaction<Order>(CloneTransaction);
 
-      PropertyAccessor sourceReference = source.Properties[typeof (Order), "OrderItems"];
-      PropertyAccessor cloneReference = clone.Properties[typeof (Order), "OrderItems"];
+      PropertyAccessor sourceReference = source.Properties[typeof(Order), "OrderItems"];
+      PropertyAccessor cloneReference = clone.Properties[typeof(Order), "OrderItems"];
 
-      HandleReference_OneMany_VirtualSide_Checks_Null (sourceReference, cloneReference);
+      HandleReference_OneMany_VirtualSide_Checks_Null(sourceReference, cloneReference);
     }
 
     protected abstract void HandleReference_OneMany_VirtualSide_Checks_Null (PropertyAccessor sourceReference, PropertyAccessor cloneReference);

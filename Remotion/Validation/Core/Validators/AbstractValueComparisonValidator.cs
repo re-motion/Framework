@@ -42,9 +42,9 @@ namespace Remotion.Validation.Validators
         [NotNull] string errorMessage,
         [NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull ("comparisonValue", comparisonValue);
-      ArgumentUtility.CheckNotNull ("errorMessage", errorMessage);
-      ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull("comparisonValue", comparisonValue);
+      ArgumentUtility.CheckNotNull("errorMessage", errorMessage);
+      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
       Comparer = comparer;
       ComparisonValue = comparisonValue;
@@ -57,10 +57,10 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
-      if (IsValid (context))
+      if (IsValid(context))
         return Enumerable.Empty<PropertyValidationFailure>();
 
-      return EnumerableUtility.Singleton (CreateValidationError (context));
+      return EnumerableUtility.Singleton(CreateValidationError(context));
     }
 
     private bool IsValid (PropertyValidatorContext context)
@@ -71,12 +71,12 @@ namespace Remotion.Validation.Validators
         return true;
 
       if (Comparer != null)
-        return IsComparisonResultValid (Comparer.Compare (propertyValue, ComparisonValue));
+        return IsComparisonResultValid(Comparer.Compare(propertyValue, ComparisonValue));
 
       if (propertyValue.GetType() != ComparisonValue.GetType())
         return true;
 
-      return IsComparisonResultValid (((IComparable) propertyValue).CompareTo (ComparisonValue));
+      return IsComparisonResultValid(((IComparable)propertyValue).CompareTo(ComparisonValue));
     }
 
     private bool IsComparisonResultValid (int comparisonResult)
@@ -92,18 +92,18 @@ namespace Remotion.Validation.Validators
         case Comparison.LessThanOrEqual:
           return comparisonResult <= 0;
         default:
-          throw new InvalidOperationException ($"Unknown comparison type '{Comparison}'.");
+          throw new InvalidOperationException($"Unknown comparison type '{Comparison}'.");
       }
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
-      string localizedValidationMessage = ValidationMessage.Format (
+      string localizedValidationMessage = ValidationMessage.Format(
           CultureInfo.CurrentUICulture,
-          (IFormatProvider) CultureInfo.CurrentCulture,
+          (IFormatProvider)CultureInfo.CurrentCulture,
           ComparisonValue);
 
-      return new PropertyValidationFailure (
+      return new PropertyValidationFailure(
           context.Instance,
           context.Property,
           context.PropertyValue,

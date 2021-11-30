@@ -28,9 +28,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   {
     public static BindableDomainObjectImplementation Create (BindableDomainObject wrapper)
     {
-      ArgumentUtility.CheckNotNull ("wrapper", wrapper);
-      var impl = new BindableDomainObjectImplementation (wrapper);
-      ((IInitializableMixin) impl).Initialize (wrapper, null, false);
+      ArgumentUtility.CheckNotNull("wrapper", wrapper);
+      var impl = new BindableDomainObjectImplementation(wrapper);
+      ((IInitializableMixin)impl).Initialize(wrapper, null, false);
       return impl;
     }
 
@@ -38,13 +38,13 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
     protected BindableDomainObjectImplementation (BindableDomainObject wrapper)
     {
-      ArgumentUtility.CheckNotNull ("wrapper", wrapper);
+      ArgumentUtility.CheckNotNull("wrapper", wrapper);
       _wrapper = wrapper;
     }
 
     void IDeserializationCallback.OnDeserialization (object sender)
     {
-      MixinTargetMockUtility.MockMixinTargetAfterDeserialization (this, _wrapper);
+      MixinTargetMockUtility.MockMixinTargetAfterDeserialization(this, _wrapper);
     }
 
     public string BaseDisplayName
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
     public override string DisplayName
     {
-      get { return ((IBusinessObjectWithIdentity) Target).DisplayName; }
+      get { return ((IBusinessObjectWithIdentity)Target).DisplayName; }
     }
   }
 }

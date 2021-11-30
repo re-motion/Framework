@@ -24,8 +24,7 @@ using System.Reflection;
 //
 using Remotion.ObjectBinding.Security;
 
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 
 [assembly: EnsureSecuritySupportForObjectBinding]
-

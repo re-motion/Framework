@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.SortExpressionForPropertyOnDerivedType
 {
-  [ClassID ("Success_SortExpressionForNonPublicProperty_DerivedRelationTargetOneSide")]
+  [ClassID("Success_SortExpressionForNonPublicProperty_DerivedRelationTargetOneSide")]
   public class DerivedRelationTargetOneSide : RelationTargetOneSide
   {
     public int SortProperty

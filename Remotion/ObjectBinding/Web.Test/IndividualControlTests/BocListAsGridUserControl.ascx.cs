@@ -37,7 +37,7 @@ public class BocListAsGridUserControl : BaseUserControl
   {
     public override IBusinessObjectBoundEditableWebControl Create (BocSimpleColumnDefinition column, int columnIndex)
     {
-      var control =(BusinessObjectBoundEditableWebControl) base.Create (column, columnIndex);
+      var control =(BusinessObjectBoundEditableWebControl)base.Create(column, columnIndex);
       control.Required = true;
       return control;
     }
@@ -77,21 +77,21 @@ public class BocListAsGridUserControl : BaseUserControl
     EndEditModeButton.Click += new EventHandler(EndEditModeButton_Click);
     CancelEditModeButton.Click += new EventHandler(CancelEditModeButton_Click);
 
-    AddItemButton.Click += new EventHandler (AddItemButton_Click);
-    AddRowButton.Click += new EventHandler (AddRowButton_Click);
-    AddRowsButton.Click += new EventHandler (AddRowsButton_Click);
-    RemoveRowsButton.Click += new EventHandler (RemoveRowsButton_Click);
-    RemoveItemsButton.Click += new EventHandler (RemoveItemsButton_Click);
-    
+    AddItemButton.Click += new EventHandler(AddItemButton_Click);
+    AddRowButton.Click += new EventHandler(AddRowButton_Click);
+    AddRowsButton.Click += new EventHandler(AddRowsButton_Click);
+    RemoveRowsButton.Click += new EventHandler(RemoveRowsButton_Click);
+    RemoveItemsButton.Click += new EventHandler(RemoveItemsButton_Click);
+
     ChildrenList.ListItemCommandClick += new BocListItemCommandClickEventHandler(this.ChildrenList_ListItemCommandClick);
     ChildrenList.MenuItemClick += new WebMenuItemClickEventHandler(this.ChildrenList_MenuItemClick);
-    
+
     ChildrenList.DataRowRender += new BocListDataRowRenderEventHandler(this.ChildrenList_DataRowRender);
 
-    ChildrenList.EditableRowChangesCanceling += new BocListEditableRowChangesEventHandler (ChildrenList_EditableRowChangesCanceling);
-    ChildrenList.EditableRowChangesCanceled += new BocListItemEventHandler (ChildrenList_EditableRowChangesCanceled);
-    ChildrenList.EditableRowChangesSaving += new BocListEditableRowChangesEventHandler (ChildrenList_EditableRowChangesSaving);
-    ChildrenList.EditableRowChangesSaved += new BocListItemEventHandler (ChildrenList_EditableRowChangesSaved);
+    ChildrenList.EditableRowChangesCanceling += new BocListEditableRowChangesEventHandler(ChildrenList_EditableRowChangesCanceling);
+    ChildrenList.EditableRowChangesCanceled += new BocListItemEventHandler(ChildrenList_EditableRowChangesCanceled);
+    ChildrenList.EditableRowChangesSaving += new BocListEditableRowChangesEventHandler(ChildrenList_EditableRowChangesSaving);
+    ChildrenList.EditableRowChangesSaved += new BocListItemEventHandler(ChildrenList_EditableRowChangesSaved);
 
     ChildrenList.EditModeControlFactory = new AllRequiredEditableRowControlFactory();
     ChildrenList.DisableEditModeValidationMessages = true;
@@ -107,14 +107,14 @@ public class BocListAsGridUserControl : BaseUserControl
     get { return CurrentObjectValidationResultDispatchingValidator; }
   }
 
-  override protected void OnInit(EventArgs e)
+  override protected void OnInit (EventArgs e)
   {
     InitializeComponent();
-    base.OnInit (e);
+    base.OnInit(e);
     InitializeMenuItems();
   }
 
-  private void InitializeMenuItems()
+  private void InitializeMenuItems ()
   {
     BocMenuItem menuItem = null;
 
@@ -125,8 +125,8 @@ public class BocListAsGridUserControl : BaseUserControl
     menuItem.Icon.Url = "~/Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.ExactlyOne;
     menuItem.Command.Type = CommandType.Event;
-    ChildrenList.ListMenuItems.Add (menuItem);
-    ChildrenList.OptionsMenuItems.Add (menuItem);
+    ChildrenList.ListMenuItems.Add(menuItem);
+    ChildrenList.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
@@ -134,67 +134,67 @@ public class BocListAsGridUserControl : BaseUserControl
     menuItem.Text = "Paste";
     menuItem.IsDisabled = false;
     menuItem.Command.Type = CommandType.Event;
-    ChildrenList.ListMenuItems.Add (menuItem);
-    ChildrenList.OptionsMenuItems.Add (menuItem);
+    ChildrenList.ListMenuItems.Add(menuItem);
+    ChildrenList.OptionsMenuItems.Add(menuItem);
   }
 
   override protected void OnLoad (EventArgs e)
   {
-    base.OnLoad (e);
+    base.OnLoad(e);
 
-    IBusinessObjectProperty dateOfBirth = CurrentObject.BusinessObjectClass.GetPropertyDefinition ("DateOfBirth");
-    IBusinessObjectProperty dateOfDeath = CurrentObject.BusinessObjectClass.GetPropertyDefinition ("DateOfDeath");
-    IBusinessObjectProperty height = CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Height");
-    IBusinessObjectProperty gender = CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Gender");
-    IBusinessObjectProperty cv = CurrentObject.BusinessObjectClass.GetPropertyDefinition ("CV");
-    IBusinessObjectProperty income = CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Income");
+    IBusinessObjectProperty dateOfBirth = CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
+    IBusinessObjectProperty dateOfDeath = CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfDeath");
+    IBusinessObjectProperty height = CurrentObject.BusinessObjectClass.GetPropertyDefinition("Height");
+    IBusinessObjectProperty gender = CurrentObject.BusinessObjectClass.GetPropertyDefinition("Gender");
+    IBusinessObjectProperty cv = CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
+    IBusinessObjectProperty income = CurrentObject.BusinessObjectClass.GetPropertyDefinition("Income");
 
 
     //  Additional columns, in-code generated
 
     BocSimpleColumnDefinition birthdayColumnDefinition = new BocSimpleColumnDefinition();
     birthdayColumnDefinition.ColumnTitle = "Birthday";
-    birthdayColumnDefinition.SetPropertyPath (BusinessObjectPropertyPath.CreateStatic (new []{dateOfBirth}));
+    birthdayColumnDefinition.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new []{dateOfBirth}));
 
     BocSimpleColumnDefinition dayofDeathColumnDefinition = new BocSimpleColumnDefinition();
     dayofDeathColumnDefinition.ColumnTitle = "Day of Death";
-    dayofDeathColumnDefinition.SetPropertyPath (BusinessObjectPropertyPath.CreateStatic (new [] { dateOfDeath }));
-    dayofDeathColumnDefinition.Width = Unit.Parse ("9.1em", CultureInfo.InvariantCulture);
+    dayofDeathColumnDefinition.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new [] { dateOfDeath }));
+    dayofDeathColumnDefinition.Width = Unit.Parse("9.1em", CultureInfo.InvariantCulture);
     dayofDeathColumnDefinition.EnforceWidth = true;
 
     BocSimpleColumnDefinition heightColumnDefinition = new BocSimpleColumnDefinition();
-    heightColumnDefinition.SetPropertyPath (BusinessObjectPropertyPath.CreateStatic (new [] { height }));
+    heightColumnDefinition.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new [] { height }));
 
     BocSimpleColumnDefinition genderColumnDefinition = new BocSimpleColumnDefinition();
-    genderColumnDefinition.SetPropertyPath (BusinessObjectPropertyPath.CreateStatic (new [] { gender }));
+    genderColumnDefinition.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new [] { gender }));
 
     BocSimpleColumnDefinition cvColumnDefinition = new BocSimpleColumnDefinition();
-    cvColumnDefinition.SetPropertyPath (BusinessObjectPropertyPath.CreateStatic (new [] { cv }));
+    cvColumnDefinition.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new [] { cv }));
 
     BocSimpleColumnDefinition incomeColumnDefinition = new BocSimpleColumnDefinition();
-    incomeColumnDefinition.SetPropertyPath (BusinessObjectPropertyPath.CreateStatic (new [] { income }));
+    incomeColumnDefinition.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new [] { income }));
 
     BocListView datesView = new BocListView();
     datesView.Title = "Dates";
-    datesView.ColumnDefinitions.AddRange (
+    datesView.ColumnDefinitions.AddRange(
           new BocColumnDefinition[] {birthdayColumnDefinition, dayofDeathColumnDefinition});
 
     BocListView statsView = new BocListView();
     statsView.Title = "Stats";
-    statsView.ColumnDefinitions.AddRange (
+    statsView.ColumnDefinitions.AddRange(
         new BocColumnDefinition[] {heightColumnDefinition, genderColumnDefinition});
 
     BocListView cvView = new BocListView();
     cvView.Title = "CV";
-    cvView.ColumnDefinitions.AddRange (
+    cvView.ColumnDefinitions.AddRange(
         new BocColumnDefinition[] {cvColumnDefinition});
 
     BocListView incomeView = new BocListView();
     incomeView.Title = "Income";
-    incomeView.ColumnDefinitions.AddRange (
+    incomeView.ColumnDefinitions.AddRange(
         new BocColumnDefinition[] {incomeColumnDefinition});
 
-    ChildrenList.AvailableViews.AddRange (new BocListView[] {
+    ChildrenList.AvailableViews.AddRange(new BocListView[] {
       datesView,
       statsView,
       cvView,
@@ -218,9 +218,9 @@ public class BocListAsGridUserControl : BaseUserControl
     NumberOfNewRowsField.IsDirty = false;
   }
 
-  protected override void OnPreRender(EventArgs e)
+  protected override void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
     SwitchToEditModeButton.Enabled = ! ChildrenList.IsListEditModeActive;
     EndEditModeButton.Enabled = ChildrenList.IsListEditModeActive;
@@ -228,74 +228,74 @@ public class BocListAsGridUserControl : BaseUserControl
     CancelEditModeButton.Enabled = ChildrenList.IsListEditModeActive;
   }
 
-  private void SwitchToEditModeButton_Click(object sender, EventArgs e)
+  private void SwitchToEditModeButton_Click (object sender, EventArgs e)
   {
-    ChildrenList.SwitchListIntoEditMode ();
+    ChildrenList.SwitchListIntoEditMode();
   }
 
-  private void EndEditModeButton_Click(object sender, EventArgs e)
+  private void EndEditModeButton_Click (object sender, EventArgs e)
   {
-    ChildrenList.EndListEditMode (true);
+    ChildrenList.EndListEditMode(true);
   }
 
-  private void CancelEditModeButton_Click(object sender, EventArgs e)
+  private void CancelEditModeButton_Click (object sender, EventArgs e)
   {
-    ChildrenList.EndListEditMode (false);
+    ChildrenList.EndListEditMode(false);
   }
 
-  private void AddItemButton_Click(object sender, EventArgs e)
+  private void AddItemButton_Click (object sender, EventArgs e)
   {
-    Person person = Person.CreateObject (Guid.NewGuid());
+    Person person = Person.CreateObject(Guid.NewGuid());
     person.LastName = "X";
 
     // Exercise IList in BocList.ValueAsList
-    ChildrenList.ValueAsList.Add (person);
+    ChildrenList.ValueAsList.Add(person);
     ChildrenList.SynchronizeRows();
   }
 
-  private void AddRowButton_Click(object sender, EventArgs e)
+  private void AddRowButton_Click (object sender, EventArgs e)
   {
-    Person person = Person.CreateObject (Guid.NewGuid());
+    Person person = Person.CreateObject(Guid.NewGuid());
     person.LastName = "X";
 
-    ChildrenList.AddRow ((IBusinessObject) person);
+    ChildrenList.AddRow((IBusinessObject)person);
   }
 
-  private void AddRowsButton_Click(object sender, EventArgs e)
+  private void AddRowsButton_Click (object sender, EventArgs e)
   {
     int count = 0;
-    
+
     if (NumberOfNewRowsField.Validate())
-      count = (int) NumberOfNewRowsField.Value;
+      count = (int)NumberOfNewRowsField.Value;
 
     Person[] persons = new Person[count];
     for (int i = 0; i < count; i++)
-      persons[i] = Person.CreateObject (Guid.NewGuid());
+      persons[i] = Person.CreateObject(Guid.NewGuid());
 
-    ChildrenList.AddRows ((IBusinessObjectWithIdentity[]) ArrayUtility.Convert (persons, typeof (IBusinessObjectWithIdentity)));
+    ChildrenList.AddRows((IBusinessObjectWithIdentity[])ArrayUtility.Convert(persons, typeof(IBusinessObjectWithIdentity)));
   }
 
-  private void RemoveRowsButton_Click(object sender, EventArgs e)
+  private void RemoveRowsButton_Click (object sender, EventArgs e)
   {
     IBusinessObject[] selectedBusinessObjects = ChildrenList.GetSelectedBusinessObjects();
-    ChildrenList.RemoveRows (selectedBusinessObjects);
+    ChildrenList.RemoveRows(selectedBusinessObjects);
   }
 
-  private void RemoveItemsButton_Click(object sender, EventArgs e)
+  private void RemoveItemsButton_Click (object sender, EventArgs e)
   {
     IBusinessObject[] selectedBusinessObjects = ChildrenList.GetSelectedBusinessObjects();
     foreach (var obj in selectedBusinessObjects)
-      ChildrenList.ValueAsList.Remove ((Person) obj);
+      ChildrenList.ValueAsList.Remove((Person)obj);
     ChildrenList.SynchronizeRows();
   }
 
   private void ChildrenList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
   {
     ChildrenListEventCheckBox.Checked = true;
-    ChildrenListEventArgsLabel.Text += string.Format ("ColumnID: {0}<br />", e.Column.ItemID);
+    ChildrenListEventArgsLabel.Text += string.Format("ColumnID: {0}<br />", e.Column.ItemID);
     if (e.BusinessObject is IBusinessObjectWithIdentity)
-      ChildrenListEventArgsLabel.Text += string.Format ("BusinessObjectID: {0}<br />", ((IBusinessObjectWithIdentity) e.BusinessObject).UniqueIdentifier);
-    ChildrenListEventArgsLabel.Text += string.Format ("ListIndex: {0}<br />", e.ListIndex);
+      ChildrenListEventArgsLabel.Text += string.Format("BusinessObjectID: {0}<br />", ((IBusinessObjectWithIdentity)e.BusinessObject).UniqueIdentifier);
+    ChildrenListEventArgsLabel.Text += string.Format("ListIndex: {0}<br />", e.ListIndex);
   }
 
   private void ChildrenList_MenuItemClick (object sender, WebMenuItemClickEventArgs e)
@@ -309,19 +309,19 @@ public class BocListAsGridUserControl : BaseUserControl
       e.SetRowReadOnly();
   }
 
-  private void ChildrenList_EditableRowChangesCanceling(object sender, BocListEditableRowChangesEventArgs e)
+  private void ChildrenList_EditableRowChangesCanceling (object sender, BocListEditableRowChangesEventArgs e)
   {
   }
 
-  private void ChildrenList_EditableRowChangesCanceled(object sender, BocListItemEventArgs e)
+  private void ChildrenList_EditableRowChangesCanceled (object sender, BocListItemEventArgs e)
   {
   }
 
-  private void ChildrenList_EditableRowChangesSaving(object sender, BocListEditableRowChangesEventArgs e)
+  private void ChildrenList_EditableRowChangesSaving (object sender, BocListEditableRowChangesEventArgs e)
   {
   }
 
-  private void ChildrenList_EditableRowChangesSaved(object sender, BocListItemEventArgs e)
+  private void ChildrenList_EditableRowChangesSaved (object sender, BocListItemEventArgs e)
   {
   }
 
@@ -330,7 +330,7 @@ public class BocListAsGridUserControl : BaseUserControl
   ///		Required method for Designer support - do not modify
   ///		the contents of this method with the code editor.
   /// </summary>
-  private void InitializeComponent()
+  private void InitializeComponent ()
   {
 
   }

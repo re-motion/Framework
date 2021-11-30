@@ -23,10 +23,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.SingleIn
   {
     public virtual string BaseProperty { get; set; }
 
-    [DBBidirectionalRelation ("ScalarProperty")]
+    [DBBidirectionalRelation("ScalarProperty")]
     public virtual SingleInheritanceObjectWithRelations ScalarOpposingProperty { get; set; }
 
-    [DBBidirectionalRelation ("VectorProperty")]
+    [DBBidirectionalRelation("VectorProperty")]
     public virtual SingleInheritanceObjectWithRelations VectorOpposingProperty { get; set; }
   }
 }

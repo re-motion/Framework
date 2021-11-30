@@ -26,14 +26,14 @@ namespace Remotion.Validation.Attributes
   /// but the collector should only applied with one or more specific types within the inheritance hierarchy.
   /// </summary>
   /// //TODO RM-5906: sample for derived type inhieriting interface
-  [AttributeUsage (AttributeTargets.Class)]
+  [AttributeUsage(AttributeTargets.Class)]
   public class ApplyWithClassAttribute : Attribute
   {
     private readonly Type _classType;
 
     public ApplyWithClassAttribute (Type classType)
     {
-      ArgumentUtility.CheckNotNull ("classType", classType);
+      ArgumentUtility.CheckNotNull("classType", classType);
 
       _classType = classType;
     }

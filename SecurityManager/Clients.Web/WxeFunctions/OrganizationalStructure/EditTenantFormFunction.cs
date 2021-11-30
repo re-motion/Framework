@@ -33,12 +33,12 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
     }
 
     protected EditTenantFormFunction (ITransactionMode transactionMode, params object[] args)
-        : base (transactionMode, args)
+        : base(transactionMode, args)
     {
     }
 
     public EditTenantFormFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<Tenant> currentObjectHandle)
-        : base (transactionMode, currentObjectHandle)
+        : base(transactionMode, currentObjectHandle)
     {
     }
 
@@ -48,6 +48,6 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
         CurrentObject = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateTenant();
     }
 
-    private WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditTenantForm), "UI/OrganizationalStructure/EditTenantForm.aspx");
+    private WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof(EditTenantForm), "UI/OrganizationalStructure/EditTenantForm.aspx");
   }
 }

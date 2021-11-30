@@ -41,9 +41,9 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       _functionalSecurityStrategyStub = new Mock<IFunctionalSecurityStrategy>();
       _principalProviderStub = new Mock<IPrincipalProvider>();
 
-      _principalProviderStub.Setup (stub => stub.GetPrincipal()).Returns (_securityPrincipalStub.Object);
+      _principalProviderStub.Setup(stub => stub.GetPrincipal()).Returns(_securityPrincipalStub.Object);
 
-      _securityClient = new SecurityClient (
+      _securityClient = new SecurityClient(
           _securityProviderStub.Object,
           new PermissionReflector(),
           _principalProviderStub.Object,
@@ -57,18 +57,18 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       var securityContextStub = new Mock<ISecurityContext>();
       var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Setup (mock => mock.CreateSecurityContext()).Returns (securityContextStub.Object);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
       _securityProviderStub
-          .Setup (mock => mock.GetAccess (securityContextStub.Object, _securityPrincipalStub.Object))
-          .Returns (new[] { AccessType.Get (GeneralAccessTypes.Delete) });
+          .Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object))
+          .Returns(new[] { AccessType.Get(GeneralAccessTypes.Delete) });
 
-      ISecurableObject securableObject = 
-          new SecurableObject (ObjectSecurityStrategy.Create (securityContextFactoryStub.Object, InvalidationToken.Create()));
-      var methodInfo = typeof (SecurableObject).GetMethod ("Delete", new Type[0]);
+      ISecurableObject securableObject =
+          new SecurableObject(ObjectSecurityStrategy.Create(securityContextFactoryStub.Object, InvalidationToken.Create()));
+      var methodInfo = typeof(SecurableObject).GetMethod("Delete", new Type[0]);
 
-      var hasMethodAccess = _securityClient.HasMethodAccess (securableObject, methodInfo);
+      var hasMethodAccess = _securityClient.HasMethodAccess(securableObject, methodInfo);
 
-      Assert.That (hasMethodAccess, Is.True);
+      Assert.That(hasMethodAccess, Is.True);
     }
 
     [Test]
@@ -77,68 +77,68 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       var securityContextStub = new Mock<ISecurityContext>();
       var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Setup (mock => mock.CreateSecurityContext()).Returns (securityContextStub.Object);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
       _securityProviderStub
-          .Setup (mock => mock.GetAccess (securityContextStub.Object, _securityPrincipalStub.Object))
-          .Returns (new[] { AccessType.Get (GeneralAccessTypes.Create) });
+          .Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object))
+          .Returns(new[] { AccessType.Get(GeneralAccessTypes.Create) });
 
-      ISecurableObject securableObject = 
-          new DerivedSecurableObject (ObjectSecurityStrategy.Create (securityContextFactoryStub.Object, InvalidationToken.Create()));
-      var methodInfo = typeof (DerivedSecurableObject).GetMethod ("Make");
+      ISecurableObject securableObject =
+          new DerivedSecurableObject(ObjectSecurityStrategy.Create(securityContextFactoryStub.Object, InvalidationToken.Create()));
+      var methodInfo = typeof(DerivedSecurableObject).GetMethod("Make");
 
-      var hasMethodAccess = _securityClient.HasMethodAccess (securableObject, methodInfo);
+      var hasMethodAccess = _securityClient.HasMethodAccess(securableObject, methodInfo);
 
-      Assert.That (hasMethodAccess, Is.True);
+      Assert.That(hasMethodAccess, Is.True);
     }
 
     [Test]
     public void HasAccess_StaticMethod ()
     {
-      var securityContext = SecurityContext.CreateStateless (typeof (SecurableObject));
+      var securityContext = SecurityContext.CreateStateless(typeof(SecurableObject));
       var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Setup (mock => mock.CreateSecurityContext()).Returns (securityContext);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContext);
       _securityProviderStub
-          .Setup (mock => mock.GetAccess (securityContext, _securityPrincipalStub.Object))
-          .Returns (new[] { AccessType.Get (GeneralAccessTypes.Read) });
+          .Setup(mock => mock.GetAccess(securityContext, _securityPrincipalStub.Object))
+          .Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
-      var securityClient = new SecurityClient (
+      var securityClient = new SecurityClient(
           _securityProviderStub.Object,
           new PermissionReflector(),
           _principalProviderStub.Object,
           new FunctionalSecurityStrategy(),
           new ReflectionBasedMemberResolver());
 
-      var methodInfo = typeof (SecurableObject).GetMethod ("IsValid", new[] { typeof (SecurableObject) });
+      var methodInfo = typeof(SecurableObject).GetMethod("IsValid", new[] { typeof(SecurableObject) });
 
-      var hasMethodAccess = securityClient.HasStaticMethodAccess (typeof (SecurableObject), methodInfo);
+      var hasMethodAccess = securityClient.HasStaticMethodAccess(typeof(SecurableObject), methodInfo);
 
-      Assert.That (hasMethodAccess, Is.True);
+      Assert.That(hasMethodAccess, Is.True);
     }
 
     [Test]
     public void HasAccess_StatelessMethod ()
     {
-      var securityContext = SecurityContext.CreateStateless (typeof (SecurableObject));
+      var securityContext = SecurityContext.CreateStateless(typeof(SecurableObject));
       var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Setup (mock => mock.CreateSecurityContext()).Returns (securityContext);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContext);
       _securityProviderStub
-          .Setup (mock => mock.GetAccess (securityContext, _securityPrincipalStub.Object))
-          .Returns (new[] { AccessType.Get (GeneralAccessTypes.Delete) });
+          .Setup(mock => mock.GetAccess(securityContext, _securityPrincipalStub.Object))
+          .Returns(new[] { AccessType.Get(GeneralAccessTypes.Delete) });
 
-      var securityClient = new SecurityClient (
+      var securityClient = new SecurityClient(
           _securityProviderStub.Object,
           new PermissionReflector(),
           _principalProviderStub.Object,
           new FunctionalSecurityStrategy(),
           new ReflectionBasedMemberResolver());
 
-      var methodInfo = typeof (SecurableObject).GetMethod ("Delete", new Type[0]);
+      var methodInfo = typeof(SecurableObject).GetMethod("Delete", new Type[0]);
 
-      var hasMethodAccess = securityClient.HasStatelessMethodAccess (typeof (SecurableObject), methodInfo);
+      var hasMethodAccess = securityClient.HasStatelessMethodAccess(typeof(SecurableObject), methodInfo);
 
-      Assert.That (hasMethodAccess, Is.True);
+      Assert.That(hasMethodAccess, Is.True);
     }
 
     [Test]
@@ -147,17 +147,17 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
       var securityContextStub = new Mock<ISecurityContext>();
       var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Setup (mock => mock.CreateSecurityContext()).Returns (securityContextStub.Object);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
       _securityProviderStub
-          .Setup (mock => mock.GetAccess (securityContextStub.Object, _securityPrincipalStub.Object))
-          .Returns (new[] { AccessType.Get (GeneralAccessTypes.Read) });
+          .Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object))
+          .Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
-      ISecurableObject securableObject = new SecurableObject (
+      ISecurableObject securableObject = new SecurableObject(
           ObjectSecurityStrategy.Create(securityContextFactoryStub.Object, InvalidationToken.Create()));
 
-      var hasMethodAccess = _securityClient.HasPropertyReadAccess (securableObject, "IsVisible");
+      var hasMethodAccess = _securityClient.HasPropertyReadAccess(securableObject, "IsVisible");
 
-      Assert.That (hasMethodAccess, Is.True);
+      Assert.That(hasMethodAccess, Is.True);
     }
   }
 }

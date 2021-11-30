@@ -18,9 +18,9 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.CoreComponentIntegration.TestDomain
 {
-  [SuppressAttributes (typeof (BaseNonInheritedAttribute))]
+  [SuppressAttributes(typeof(BaseNonInheritedAttribute))]
   public class MixinSuppressingNonInheritedAttribute
   {
-    
+
   }
 }

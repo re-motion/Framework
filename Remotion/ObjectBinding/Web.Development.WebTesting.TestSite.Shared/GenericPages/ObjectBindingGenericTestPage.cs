@@ -94,39 +94,39 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Gene
 
     protected override void AddControlsOnInit (GenericTestPageType pageType, IGenericTestPage<TOptions> testPage)
     {
-      base.AddControlsOnInit (pageType, testPage);
+      base.AddControlsOnInit(pageType, testPage);
 
-      if (pageType.HasFlag (GenericTestPageType.ReadOnlyElements))
-        ReadOnlyControlPanel.Controls.Add (testPage.CreateControl (ReadOnlyControlOptions));
+      if (pageType.HasFlag(GenericTestPageType.ReadOnlyElements))
+        ReadOnlyControlPanel.Controls.Add(testPage.CreateControl(ReadOnlyControlOptions));
 
-      if (pageType.HasFlag (GenericTestPageType.EnabledFormGrid))
+      if (pageType.HasFlag(GenericTestPageType.EnabledFormGrid))
       {
         var shiftedColumnsFormGridTable = new HtmlTable();
 
         var shiftedColumnsTableRow = new HtmlTableRow();
-        shiftedColumnsTableRow.Cells.Add (new HtmlTableCell());
-        shiftedColumnsTableRow.Cells.Add (new HtmlTableCell());
-        shiftedColumnsTableRow.Cells.Add (new HtmlTableCell());
-        shiftedColumnsTableRow.Cells.Add (new HtmlTableCell());
-        shiftedColumnsFormGridTable.Rows.Add (shiftedColumnsTableRow);
+        shiftedColumnsTableRow.Cells.Add(new HtmlTableCell());
+        shiftedColumnsTableRow.Cells.Add(new HtmlTableCell());
+        shiftedColumnsTableRow.Cells.Add(new HtmlTableCell());
+        shiftedColumnsTableRow.Cells.Add(new HtmlTableCell());
+        shiftedColumnsFormGridTable.Rows.Add(shiftedColumnsTableRow);
         shiftedColumnsFormGridTable.ID = "FormGridShifted";
 
-        ShiftedColumnsFormGrid.Controls.Add (shiftedColumnsFormGridTable);
+        ShiftedColumnsFormGrid.Controls.Add(shiftedColumnsFormGridTable);
 
         var formGridManager1 = new FormGridManager();
-        ShiftedColumnsFormGrid.Controls.Add (formGridManager1);
+        ShiftedColumnsFormGrid.Controls.Add(formGridManager1);
         formGridManager1.ID = "ShiftedFormGridManager";
         formGridManager1.FormGridSuffix = "Shifted";
         formGridManager1.ControlsColumn = 3;
         formGridManager1.LabelsColumn = 2;
 
         var formGridManager2 = new FormGridManager();
-        MultipleControlsFormGrid.Controls.Add (formGridManager2);
+        MultipleControlsFormGrid.Controls.Add(formGridManager2);
         formGridManager2.ID = "MultiFormGridManager1";
         formGridManager2.FormGridSuffix = "Multi";
 
         var formGridManager3 = new FormGridManager();
-        MultipleControlsFormGrid.Controls.Add (formGridManager3);
+        MultipleControlsFormGrid.Controls.Add(formGridManager3);
         formGridManager3.ID = "MultiFormGridManager2";
         formGridManager3.FormGridSuffix = "Multi";
         formGridManager3.ControlsColumn = 4;
@@ -134,24 +134,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Gene
 
         var formGridMultiTable = new HtmlTable();
         var formGridMultiTableRow = new HtmlTableRow();
-        formGridMultiTableRow.Cells.Add (new HtmlTableCell());
-        formGridMultiTableRow.Cells.Add (new HtmlTableCell());
-        formGridMultiTableRow.Cells.Add (new HtmlTableCell());
-        formGridMultiTableRow.Cells.Add (new HtmlTableCell());
-        formGridMultiTableRow.Cells.Add (new HtmlTableCell());
-        formGridMultiTable.Rows.Add (formGridMultiTableRow);
+        formGridMultiTableRow.Cells.Add(new HtmlTableCell());
+        formGridMultiTableRow.Cells.Add(new HtmlTableCell());
+        formGridMultiTableRow.Cells.Add(new HtmlTableCell());
+        formGridMultiTableRow.Cells.Add(new HtmlTableCell());
+        formGridMultiTableRow.Cells.Add(new HtmlTableCell());
+        formGridMultiTable.Rows.Add(formGridMultiTableRow);
         formGridMultiTable.ID = "FormGridMulti";
 
-        MultipleControlsFormGrid.Controls.Add (formGridMultiTable);
+        MultipleControlsFormGrid.Controls.Add(formGridMultiTable);
 
-        FormGridControlTable.Rows[0].Cells[1].Controls.Add (testPage.CreateControl (FormGridControlOptions));
-        FormGridWithReadonlyControlTable.Rows[0].Cells[1].Controls.Add (testPage.CreateControl (FormGridWithReadonlyControlOptions));
-        OneControlOverMultipleRowsFormGridTable.Rows[1].Cells[0].Controls.Add (testPage.CreateControl (OneControlOverMultipleRowsFormGridControlOptions));
-        shiftedColumnsFormGridTable.Rows[0].Cells[3].Controls.Add (testPage.CreateControl (ShiftedColumnsFormGridControlOptions));
-        formGridMultiTable.Rows[0].Cells[1].Controls.Add (testPage.CreateControl (FormGridMultiControlOptions1));
+        FormGridControlTable.Rows[0].Cells[1].Controls.Add(testPage.CreateControl(FormGridControlOptions));
+        FormGridWithReadonlyControlTable.Rows[0].Cells[1].Controls.Add(testPage.CreateControl(FormGridWithReadonlyControlOptions));
+        OneControlOverMultipleRowsFormGridTable.Rows[1].Cells[0].Controls.Add(testPage.CreateControl(OneControlOverMultipleRowsFormGridControlOptions));
+        shiftedColumnsFormGridTable.Rows[0].Cells[3].Controls.Add(testPage.CreateControl(ShiftedColumnsFormGridControlOptions));
+        formGridMultiTable.Rows[0].Cells[1].Controls.Add(testPage.CreateControl(FormGridMultiControlOptions1));
 
-        var secondControlInMultiTable = testPage.CreateControl (FormGridMultiControlOptions2);
-        formGridMultiTable.Rows[0].Cells[4].Controls.Add (secondControlInMultiTable);
+        var secondControlInMultiTable = testPage.CreateControl(FormGridMultiControlOptions2);
+        formGridMultiTable.Rows[0].Cells[4].Controls.Add(secondControlInMultiTable);
 
         // Label is not created automatically
         var labelsControl = new SmartLabel();
@@ -159,34 +159,34 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Gene
         labelsControl.ID = secondControlInMultiTable.ID + "_Label";
         labelsControl.EnableViewState = true;
 
-        formGridMultiTable.Rows[0].Cells[3].Controls.Add (labelsControl);
+        formGridMultiTable.Rows[0].Cells[3].Controls.Add(labelsControl);
       }
 
-      if (pageType.HasFlag (GenericTestPageType.EnabledValidation))
+      if (pageType.HasFlag(GenericTestPageType.EnabledValidation))
       {
-        FormGridValidationTable.Rows[1].Cells[1].Controls.Add (testPage.CreateControl (FormGridControlOptions));
+        FormGridValidationTable.Rows[1].Cells[1].Controls.Add(testPage.CreateControl(FormGridControlOptions));
 
-        var customValidatedControl = testPage.CreateControl (CustomValidatedControlOptions);
-        FormGridValidationTable.Rows[3].Cells[1].Controls.Add (customValidatedControl);
+        var customValidatedControl = testPage.CreateControl(CustomValidatedControlOptions);
+        FormGridValidationTable.Rows[3].Cells[1].Controls.Add(customValidatedControl);
 
-        var customValidatorForCustomValidatedControl = CreateCustomValidator (customValidatedControl, "Always false.");
-        FormGridValidationTable.Rows[3].Cells[1].Controls.Add (customValidatorForCustomValidatedControl);
+        var customValidatorForCustomValidatedControl = CreateCustomValidator(customValidatedControl, "Always false.");
+        FormGridValidationTable.Rows[3].Cells[1].Controls.Add(customValidatorForCustomValidatedControl);
 
 
-        var multipleValidatedControl = testPage.CreateControl (MultipleValidatedControlOptions);
-        FormGridValidationTable.Rows[5].Cells[1].Controls.Add (multipleValidatedControl);
+        var multipleValidatedControl = testPage.CreateControl(MultipleValidatedControlOptions);
+        FormGridValidationTable.Rows[5].Cells[1].Controls.Add(multipleValidatedControl);
 
-        var customValidatorForMultipleValidatedControl1 = CreateCustomValidator (multipleValidatedControl, "Always false.");
-        FormGridValidationTable.Rows[5].Cells[1].Controls.Add (customValidatorForMultipleValidatedControl1);
+        var customValidatorForMultipleValidatedControl1 = CreateCustomValidator(multipleValidatedControl, "Always false.");
+        FormGridValidationTable.Rows[5].Cells[1].Controls.Add(customValidatorForMultipleValidatedControl1);
 
-        var customValidatorForMultipleValidatedControl2 = CreateCustomValidator (multipleValidatedControl, "Always false. The second.");
-        FormGridValidationTable.Rows[5].Cells[1].Controls.Add (customValidatorForMultipleValidatedControl2);
+        var customValidatorForMultipleValidatedControl2 = CreateCustomValidator(multipleValidatedControl, "Always false. The second.");
+        FormGridValidationTable.Rows[5].Cells[1].Controls.Add(customValidatorForMultipleValidatedControl2);
 
-        var customValidatedReadOnlyControl = testPage.CreateControl (CustomValidatedReadOnlyControlOptions);
-        FormGridValidationTable.Rows[7].Cells[1].Controls.Add (customValidatedReadOnlyControl);
+        var customValidatedReadOnlyControl = testPage.CreateControl(CustomValidatedReadOnlyControlOptions);
+        FormGridValidationTable.Rows[7].Cells[1].Controls.Add(customValidatedReadOnlyControl);
 
-        var customValidatorForCustomValidatedReadOnlyControl = CreateCustomValidator (customValidatedReadOnlyControl, "Always false.");
-        FormGridValidationTable.Rows[7].Cells[1].Controls.Add (customValidatorForCustomValidatedReadOnlyControl);
+        var customValidatorForCustomValidatedReadOnlyControl = CreateCustomValidator(customValidatedReadOnlyControl, "Always false.");
+        FormGridValidationTable.Rows[7].Cells[1].Controls.Add(customValidatorForCustomValidatedReadOnlyControl);
       }
     }
 

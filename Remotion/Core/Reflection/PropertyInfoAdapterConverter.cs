@@ -40,8 +40,8 @@ namespace Remotion.Reflection
     /// </returns>
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
-      return sourceType == typeof (PropertyInfo);
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+      return sourceType == typeof(PropertyInfo);
     }
 
     /// <summary>
@@ -56,8 +56,8 @@ namespace Remotion.Reflection
     /// </returns>
     public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
-      return destinationType == typeof (PropertyInfo);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
+      return destinationType == typeof(PropertyInfo);
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ namespace Remotion.Reflection
     /// <exception cref="System.NotSupportedException">
     /// The conversion cannot be performed.
     /// </exception>
-    [return: NotNullIfNotNull ("value")]
+    [return: NotNullIfNotNull("value")]
     public override object? ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
     {
       if (value == null)
@@ -82,8 +82,8 @@ namespace Remotion.Reflection
       var propertyInfo = value as PropertyInfo;
       if (propertyInfo == null)
       {
-        var message = string.Format ("Cannot convert value from type '{0}' to type '{1}'.", value.GetType (), typeof (PropertyInfoAdapter));
-        throw new NotSupportedException (message);
+        var message = string.Format("Cannot convert value from type '{0}' to type '{1}'.", value.GetType(), typeof(PropertyInfoAdapter));
+        throw new NotSupportedException(message);
       }
 
       return PropertyInfoAdapter.Create(propertyInfo);
@@ -108,18 +108,18 @@ namespace Remotion.Reflection
     /// <exception cref="T:System.NotSupportedException">
     /// The conversion cannot be performed.
     /// </exception>
-    [return: NotNullIfNotNull ("value")]
+    [return: NotNullIfNotNull("value")]
     public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      if (destinationType != typeof (PropertyInfo))
+      if (destinationType != typeof(PropertyInfo))
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot convert values to type '{0}'. This converter only supports converting to type '{1}'.",
             destinationType,
-            typeof (PropertyInfo));
-        throw new NotSupportedException (message);
+            typeof(PropertyInfo));
+        throw new NotSupportedException(message);
       }
 
       if (value == null)
@@ -128,12 +128,12 @@ namespace Remotion.Reflection
       var propertyInfoAdapter = value as PropertyInfoAdapter;
       if (propertyInfoAdapter == null)
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot convert values of type '{0}' to type '{1}'. This converter only supports values of type '{2}'.",
-            value.GetType (),
+            value.GetType(),
             destinationType,
-            typeof (PropertyInfoAdapter));
-        throw new NotSupportedException (message);
+            typeof(PropertyInfoAdapter));
+        throw new NotSupportedException(message);
       }
 
       return propertyInfoAdapter.PropertyInfo;

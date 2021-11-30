@@ -49,85 +49,85 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       _updatedColumnsSpecificationStub = MockRepository.GenerateStub<IUpdatedColumnsSpecification>();
 
       _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect>();
-      _sqlDialectStub.Stub (stub => stub.StatementDelimiter).Return (";");
+      _sqlDialectStub.Stub(stub => stub.StatementDelimiter).Return(";");
       _dbDataParameterStub = MockRepository.GenerateStub<IDbDataParameter>();
       _dataParameterCollectionMock = MockRepository.GenerateStrictMock<IDataParameterCollection>();
 
       _dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      _dbCommandStub.Stub (stub => stub.CreateParameter()).Return (_dbDataParameterStub);
-      _dbCommandStub.Stub (stub => stub.Parameters).Return (_dataParameterCollectionMock);
+      _dbCommandStub.Stub(stub => stub.CreateParameter()).Return(_dbDataParameterStub);
+      _dbCommandStub.Stub(stub => stub.Parameters).Return(_dataParameterCollectionMock);
 
       _commandExecutionContextStub = MockRepository.GenerateStub<IRdbmsProviderCommandExecutionContext>();
-      _commandExecutionContextStub.Stub (stub => stub.CreateDbCommand()).Return (_dbCommandStub);
+      _commandExecutionContextStub.Stub(stub => stub.CreateDbCommand()).Return(_dbCommandStub);
     }
 
     [Test]
     public void Create_WithDefaultSchema ()
     {
-      var tableDefinition = TableDefinitionObjectMother.Create (TestDomainStorageProviderDefinition, new EntityNameDefinition (null, "Table"));
-      var builder = new UpdateDbCommandBuilder (
+      var tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table"));
+      var builder = new UpdateDbCommandBuilder(
           tableDefinition,
           _updatedColumnsSpecificationStub,
           _comparedColumnsSpecificationStrictMock,
           _sqlDialectStub);
 
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("Table")).Return ("[delimited Table]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Table")).Return("[delimited Table]");
 
       _updatedColumnsSpecificationStub
-          .Stub (stub => stub.AppendColumnValueAssignments (Arg<StringBuilder>.Is.Anything, Arg.Is (_dbCommandStub), Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[Column1] = 5, [Column2] = 'test', [Column3] = true"));
+          .Stub(stub => stub.AppendColumnValueAssignments(Arg<StringBuilder>.Is.Anything, Arg.Is(_dbCommandStub), Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1] = 5, [Column2] = 'test', [Column3] = true"));
 
-      _comparedColumnsSpecificationStrictMock.Expect (stub => stub.AddParameters (_dbCommandStub, _sqlDialectStub));
+      _comparedColumnsSpecificationStrictMock.Expect(stub => stub.AddParameters(_dbCommandStub, _sqlDialectStub));
       _comparedColumnsSpecificationStrictMock
-          .Expect (
-              stub => stub.AppendComparisons (
+          .Expect(
+              stub => stub.AppendComparisons(
                   Arg<StringBuilder>.Is.Anything,
-                  Arg.Is (_dbCommandStub),
-                  Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[ID] = @ID"));
-      _comparedColumnsSpecificationStrictMock.Replay ();
+                  Arg.Is(_dbCommandStub),
+                  Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[ID] = @ID"));
+      _comparedColumnsSpecificationStrictMock.Replay();
 
-      var result = builder.Create (_commandExecutionContextStub);
+      var result = builder.Create(_commandExecutionContextStub);
 
       _comparedColumnsSpecificationStrictMock.VerifyAllExpectations();
-      Assert.That (
-          result.CommandText, Is.EqualTo ("UPDATE [delimited Table] SET [Column1] = 5, [Column2] = 'test', [Column3] = true WHERE [ID] = @ID;"));
+      Assert.That(
+          result.CommandText, Is.EqualTo("UPDATE [delimited Table] SET [Column1] = 5, [Column2] = 'test', [Column3] = true WHERE [ID] = @ID;"));
     }
 
     [Test]
     public void Create_WithCustomSchema ()
     {
-      var tableDefinition = TableDefinitionObjectMother.Create (
-          TestDomainStorageProviderDefinition, new EntityNameDefinition ("customSchema", "Table"));
-      var builder = new UpdateDbCommandBuilder (
+      var tableDefinition = TableDefinitionObjectMother.Create(
+          TestDomainStorageProviderDefinition, new EntityNameDefinition("customSchema", "Table"));
+      var builder = new UpdateDbCommandBuilder(
           tableDefinition,
           _updatedColumnsSpecificationStub,
           _comparedColumnsSpecificationStrictMock,
           _sqlDialectStub);
 
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("Table")).Return ("[delimited Table]");
-      _sqlDialectStub.Stub (stub => stub.DelimitIdentifier ("customSchema")).Return ("[delimited customSchema]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Table")).Return("[delimited Table]");
+      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("customSchema")).Return("[delimited customSchema]");
 
       _updatedColumnsSpecificationStub
-          .Stub (stub => stub.AppendColumnValueAssignments (Arg<StringBuilder>.Is.Anything, Arg.Is (_dbCommandStub), Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[Column1] = 5, [Column2] = 'test', [Column3] = true"));
+          .Stub(stub => stub.AppendColumnValueAssignments(Arg<StringBuilder>.Is.Anything, Arg.Is(_dbCommandStub), Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1] = 5, [Column2] = 'test', [Column3] = true"));
 
-      _comparedColumnsSpecificationStrictMock.Expect (stub => stub.AddParameters (_dbCommandStub, _sqlDialectStub));
+      _comparedColumnsSpecificationStrictMock.Expect(stub => stub.AddParameters(_dbCommandStub, _sqlDialectStub));
       _comparedColumnsSpecificationStrictMock
-          .Expect (
-              stub => stub.AppendComparisons (
+          .Expect(
+              stub => stub.AppendComparisons(
                   Arg<StringBuilder>.Is.Anything,
-                  Arg.Is (_dbCommandStub),
-                  Arg.Is (_sqlDialectStub)))
-          .WhenCalled (mi => ((StringBuilder) mi.Arguments[0]).Append ("[ID] = @ID"));
-      _comparedColumnsSpecificationStrictMock.Replay ();
+                  Arg.Is(_dbCommandStub),
+                  Arg.Is(_sqlDialectStub)))
+          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[ID] = @ID"));
+      _comparedColumnsSpecificationStrictMock.Replay();
 
-      var result = builder.Create (_commandExecutionContextStub);
+      var result = builder.Create(_commandExecutionContextStub);
 
       _comparedColumnsSpecificationStrictMock.VerifyAllExpectations();
-      Assert.That (
+      Assert.That(
           result.CommandText,
-          Is.EqualTo (
+          Is.EqualTo(
               "UPDATE [delimited customSchema].[delimited Table] SET [Column1] = 5, [Column2] = 'test', [Column3] = true WHERE [ID] = @ID;"));
     }
   }

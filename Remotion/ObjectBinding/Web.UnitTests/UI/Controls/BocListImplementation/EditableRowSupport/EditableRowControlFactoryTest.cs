@@ -35,12 +35,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [SetUp]
     public virtual void SetUp ()
     {
-      _stringValueClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof (TypeWithString));
+      _stringValueClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(TypeWithString));
 
-      _stringValuePropertyPath = BusinessObjectPropertyPath.CreateStatic (_stringValueClass, "FirstValue");
+      _stringValuePropertyPath = BusinessObjectPropertyPath.CreateStatic(_stringValueClass, "FirstValue");
 
       _stringValueColumn = new BocSimpleColumnDefinition();
-      _stringValueColumn.SetPropertyPath (_stringValuePropertyPath);
+      _stringValueColumn.SetPropertyPath(_stringValuePropertyPath);
 
       _factory = EditableRowControlFactory.CreateEditableRowControlFactory();
     }
@@ -48,17 +48,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void CreateWithStringProperty ()
     {
-      IBusinessObjectBoundEditableWebControl control = _factory.Create (_stringValueColumn, 0);
+      IBusinessObjectBoundEditableWebControl control = _factory.Create(_stringValueColumn, 0);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control is BocTextValue, Is.True);
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control is BocTextValue, Is.True);
     }
 
     [Test]
     public void CreateWithNegativeIndex ()
     {
-      Assert.That (
-          () => _factory.Create (_stringValueColumn, -1),
+      Assert.That(
+          () => _factory.Create(_stringValueColumn, -1),
           Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
   }

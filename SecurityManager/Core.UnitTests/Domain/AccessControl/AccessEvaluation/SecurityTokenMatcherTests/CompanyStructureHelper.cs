@@ -29,8 +29,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     public CompanyStructureHelper (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      _testHelper = new OrganizationalStructureTestHelper (clientTransaction);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      _testHelper = new OrganizationalStructureTestHelper(clientTransaction);
 
       Build();
     }
@@ -61,46 +61,46 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     private void Build ()
     {
-      CompanyTenant = _testHelper.CreateTenant ("Worldwide Corporation", Guid.NewGuid().ToString());
+      CompanyTenant = _testHelper.CreateTenant("Worldwide Corporation", Guid.NewGuid().ToString());
 
-      HeadPosition = _testHelper.CreatePosition ("Head");
-      MemberPosition = _testHelper.CreatePosition ("Member");
+      HeadPosition = _testHelper.CreatePosition("Head");
+      MemberPosition = _testHelper.CreatePosition("Member");
 
-      DivisionGroupType = _testHelper.CreateGroupType ("Division");
-      DivisionHead = _testHelper.CreateGroupTypePosition (DivisionGroupType, HeadPosition);
-      DivisionMember = _testHelper.CreateGroupTypePosition (DivisionGroupType, MemberPosition);
+      DivisionGroupType = _testHelper.CreateGroupType("Division");
+      DivisionHead = _testHelper.CreateGroupTypePosition(DivisionGroupType, HeadPosition);
+      DivisionMember = _testHelper.CreateGroupTypePosition(DivisionGroupType, MemberPosition);
       AustrianDivsion = CreateGroup("Austria", null, CompanyTenant, DivisionGroupType);
-      GermanDivision = CreateGroup ("Germany", null, CompanyTenant, DivisionGroupType);
+      GermanDivision = CreateGroup("Germany", null, CompanyTenant, DivisionGroupType);
 
-      DepartmentGroupType = _testHelper.CreateGroupType ("Department");
-      DepartmentHead = _testHelper.CreateGroupTypePosition (DepartmentGroupType, HeadPosition);
-      DepartmentMember = _testHelper.CreateGroupTypePosition (DepartmentGroupType, MemberPosition);
-      AustrianHumanResourcesDepartment = CreateGroup ("Human Resources (Austria)", AustrianDivsion, CompanyTenant, DepartmentGroupType);
-      AustrianFinanceDepartment = CreateGroup ("Human Resources (Austria)", AustrianDivsion, CompanyTenant, DepartmentGroupType);
-      AustrianProjectsDepartment = CreateGroup ("Projects (Austria)", AustrianDivsion, CompanyTenant, DepartmentGroupType);
-      GermanHumanResourcesDepartment = CreateGroup ("Human Resources (Germany)", GermanDivision, CompanyTenant, DepartmentGroupType);
+      DepartmentGroupType = _testHelper.CreateGroupType("Department");
+      DepartmentHead = _testHelper.CreateGroupTypePosition(DepartmentGroupType, HeadPosition);
+      DepartmentMember = _testHelper.CreateGroupTypePosition(DepartmentGroupType, MemberPosition);
+      AustrianHumanResourcesDepartment = CreateGroup("Human Resources (Austria)", AustrianDivsion, CompanyTenant, DepartmentGroupType);
+      AustrianFinanceDepartment = CreateGroup("Human Resources (Austria)", AustrianDivsion, CompanyTenant, DepartmentGroupType);
+      AustrianProjectsDepartment = CreateGroup("Projects (Austria)", AustrianDivsion, CompanyTenant, DepartmentGroupType);
+      GermanHumanResourcesDepartment = CreateGroup("Human Resources (Germany)", GermanDivision, CompanyTenant, DepartmentGroupType);
 
-      TeamGroupType = _testHelper.CreateGroupType ("Team");
-      TeamHead = _testHelper.CreateGroupTypePosition (TeamGroupType, HeadPosition);
-      TeamMember = _testHelper.CreateGroupTypePosition (TeamGroupType, MemberPosition);
-      AustrianCarTeam = CreateGroup ("Car Developers", AustrianProjectsDepartment, CompanyTenant, TeamGroupType);
-      AustrianPlaneTeam = CreateGroup ("Plane Developers", AustrianProjectsDepartment, CompanyTenant, TeamGroupType);
-      AustrianAccountingTeam = CreateGroup ("Accounts", AustrianFinanceDepartment, CompanyTenant, TeamGroupType);
+      TeamGroupType = _testHelper.CreateGroupType("Team");
+      TeamHead = _testHelper.CreateGroupTypePosition(TeamGroupType, HeadPosition);
+      TeamMember = _testHelper.CreateGroupTypePosition(TeamGroupType, MemberPosition);
+      AustrianCarTeam = CreateGroup("Car Developers", AustrianProjectsDepartment, CompanyTenant, TeamGroupType);
+      AustrianPlaneTeam = CreateGroup("Plane Developers", AustrianProjectsDepartment, CompanyTenant, TeamGroupType);
+      AustrianAccountingTeam = CreateGroup("Accounts", AustrianFinanceDepartment, CompanyTenant, TeamGroupType);
 
-      OwningGroup = CreateGroup ("Users", null, CompanyTenant, null);
+      OwningGroup = CreateGroup("Users", null, CompanyTenant, null);
 
-      CarTeamMember = CreateUser ("CarTeamMember", OwningGroup, CompanyTenant);
-      _testHelper.CreateRole (CarTeamMember, AustrianCarTeam, MemberPosition);
+      CarTeamMember = CreateUser("CarTeamMember", OwningGroup, CompanyTenant);
+      _testHelper.CreateRole(CarTeamMember, AustrianCarTeam, MemberPosition);
     }
 
     private User CreateUser (string userName, Group group, Tenant tenant)
     {
-      return _testHelper.CreateUser (userName, "First", "Last", null, group, tenant);
+      return _testHelper.CreateUser(userName, "First", "Last", null, group, tenant);
     }
 
     private Group CreateGroup (string name, Group parentGroup, Tenant tenant, GroupType groupType)
     {
-      Group group = _testHelper.CreateGroup (name, parentGroup, tenant);
+      Group group = _testHelper.CreateGroup(name, parentGroup, tenant);
       group.GroupType = groupType;
 
       return group;

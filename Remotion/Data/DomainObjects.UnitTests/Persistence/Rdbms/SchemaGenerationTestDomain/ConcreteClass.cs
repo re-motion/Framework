@@ -23,16 +23,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [Instantiable]
   public abstract class ConcreteClass : DomainObject
   {
-    public static ConcreteClass NewObject()
+    public static ConcreteClass NewObject ()
     {
-      return DomainObject.NewObject<ConcreteClass> ();
+      return DomainObject.NewObject<ConcreteClass>();
     }
 
-    protected ConcreteClass()
+    protected ConcreteClass ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string PropertyInConcreteClass { get; set; }
 
     [StorageClassTransaction]

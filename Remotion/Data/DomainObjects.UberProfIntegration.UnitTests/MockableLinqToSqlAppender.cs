@@ -52,61 +52,61 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
     public void ConnectionStarted (Guid sessionID)
     {
       if (AppenderMock != null)
-        AppenderMock.ConnectionStarted (sessionID);
+        AppenderMock.ConnectionStarted(sessionID);
     }
 
     public void ConnectionDisposed (Guid sessionID)
     {
       if (AppenderMock != null)
-        AppenderMock.ConnectionDisposed (sessionID);
+        AppenderMock.ConnectionDisposed(sessionID);
     }
 
     public void StatementRowCount (Guid sessionID, Guid queryID, int rowCount)
     {
       if (AppenderMock != null)
-        AppenderMock.StatementRowCount (sessionID, queryID, rowCount);
+        AppenderMock.StatementRowCount(sessionID, queryID, rowCount);
     }
 
     public void StatementError (Guid sessionID, Exception e)
     {
       if (AppenderMock != null)
-        AppenderMock.StatementError (sessionID, e);
+        AppenderMock.StatementError(sessionID, e);
     }
 
     public void CommandDurationAndRowCount (Guid sessionID, long milliseconds, int? rowCount)
     {
       if (AppenderMock != null)
-        AppenderMock.CommandDurationAndRowCount (sessionID, milliseconds, rowCount);
+        AppenderMock.CommandDurationAndRowCount(sessionID, milliseconds, rowCount);
     }
 
     public void StatementExecuted (Guid sessionID, Guid queryID, string statement)
     {
       if (AppenderMock != null)
-        AppenderMock.StatementExecuted (sessionID, queryID, statement);
+        AppenderMock.StatementExecuted(sessionID, queryID, statement);
     }
 
     public void TransactionBegan (Guid sessionID, IsolationLevel isolationLevel)
     {
       if (AppenderMock != null)
-        AppenderMock.TransactionBegan (sessionID, isolationLevel);
+        AppenderMock.TransactionBegan(sessionID, isolationLevel);
     }
 
     public void TransactionCommit (Guid sessionID)
     {
       if (AppenderMock != null)
-        AppenderMock.TransactionCommit (sessionID);
+        AppenderMock.TransactionCommit(sessionID);
     }
 
     public void TransactionDisposed (Guid sessionID)
     {
       if (AppenderMock != null)
-        AppenderMock.TransactionDisposed (sessionID);
+        AppenderMock.TransactionDisposed(sessionID);
     }
 
     public void TransactionRolledBack (Guid sessionID)
     {
       if (AppenderMock != null)
-        AppenderMock.TransactionRolledBack (sessionID);
+        AppenderMock.TransactionRolledBack(sessionID);
     }
   }
 }

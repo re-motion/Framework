@@ -24,7 +24,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       MyWebButton1Sync.Command += Command;
       MyWebButtonPrimary1Sync.Command += Command;
@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void Command (object sender, CommandEventArgs e)
     {
-      ((Layout) Master).SetTestOutput (e.CommandName);
+      ((Layout)Master).SetTestOutput(e.CommandName);
     }
   }
 }

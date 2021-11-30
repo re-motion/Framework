@@ -40,46 +40,46 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       try
       {
-        ServiceLocator.SetLocatorProvider (() => null);
+        ServiceLocator.SetLocatorProvider(() => null);
 
-        LogManager.ResetConfiguration ();
-        Assert.That (LogManager.GetLogger (typeof (LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
+        LogManager.ResetConfiguration();
+        Assert.That(LogManager.GetLogger(typeof(LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
 
         StandardConfiguration.Initialize();
-        TableInheritanceConfiguration.Initialize ();
+        TableInheritanceConfiguration.Initialize();
 
         SqlConnection.ClearAllPools();
 
-        var masterAgent = new DatabaseAgent (DatabaseTest.MasterConnectionString);
-        masterAgent.ExecuteBatchFile ("Database\\DataDomainObjects_CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());  
-        var testDomainAgent = new DatabaseAgent (DatabaseTest.TestDomainConnectionString);
-        testDomainAgent.ExecuteBatchFile ("Database\\DataDomainObjects_SetupDB.sql", true, DatabaseConfiguration.GetReplacementDictionary());
+        var masterAgent = new DatabaseAgent(DatabaseTest.MasterConnectionString);
+        masterAgent.ExecuteBatchFile("Database\\DataDomainObjects_CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+        var testDomainAgent = new DatabaseAgent(DatabaseTest.TestDomainConnectionString);
+        testDomainAgent.ExecuteBatchFile("Database\\DataDomainObjects_SetupDB.sql", true, DatabaseConfiguration.GetReplacementDictionary());
 
-        _standardMappingDatabaseAgent = new StandardMappingDatabaseAgent (DatabaseTest.TestDomainConnectionString);
+        _standardMappingDatabaseAgent = new StandardMappingDatabaseAgent(DatabaseTest.TestDomainConnectionString);
         string sqlFileName = StandardMappingTest.CreateTestDataFileName;
-        _standardMappingDatabaseAgent.ExecuteBatchFile (sqlFileName, true, DatabaseConfiguration.GetReplacementDictionary());
+        _standardMappingDatabaseAgent.ExecuteBatchFile(sqlFileName, true, DatabaseConfiguration.GetReplacementDictionary());
         string sqlFileName1 = TableInheritanceMappingTest.CreateTestDataFileName;
-        _standardMappingDatabaseAgent.ExecuteBatchFile (sqlFileName1, true, DatabaseConfiguration.GetReplacementDictionary());
-        _standardMappingDatabaseAgent.SetDatabaseReadOnly (DatabaseTest.DatabaseName);
+        _standardMappingDatabaseAgent.ExecuteBatchFile(sqlFileName1, true, DatabaseConfiguration.GetReplacementDictionary());
+        _standardMappingDatabaseAgent.SetDatabaseReadOnly(DatabaseTest.DatabaseName);
 
         // We don't want the tests to initialize a default mapping; therefore, modify MappingConfiguration.s_fields.Current so that it will 
         // throw when asked to generate a new MappingConfiguration.
 
-        var throwingMappingConfigurationContainer = new DoubleCheckedLockingContainer<IMappingConfiguration> (
+        var throwingMappingConfigurationContainer = new DoubleCheckedLockingContainer<IMappingConfiguration>(
             () =>
             {
-              throw new InvalidOperationException (
+              throw new InvalidOperationException(
                   "This test failed to setup the mapping configuration. Did you forget to derive from StandardMappingTest or to call base.SetUp?");
             });
-        var fields = PrivateInvoke.GetNonPublicStaticField (typeof (MappingConfiguration), "s_fields");
-        Assertion.IsNotNull (fields);
-        _previousMappingConfigurationContainer = (DoubleCheckedLockingContainer<IMappingConfiguration>) PrivateInvoke.GetPublicField (fields, "Current");
-        PrivateInvoke.SetPublicField (fields, "Current", throwingMappingConfigurationContainer);
+        var fields = PrivateInvoke.GetNonPublicStaticField(typeof(MappingConfiguration), "s_fields");
+        Assertion.IsNotNull(fields);
+        _previousMappingConfigurationContainer = (DoubleCheckedLockingContainer<IMappingConfiguration>)PrivateInvoke.GetPublicField(fields, "Current");
+        PrivateInvoke.SetPublicField(fields, "Current", throwingMappingConfigurationContainer);
       }
       catch (Exception ex)
       {
-        Console.WriteLine ("SetUpFixture failed: " + ex);
-        Console.WriteLine ();
+        Console.WriteLine("SetUpFixture failed: " + ex);
+        Console.WriteLine();
         throw;
       }
     }
@@ -87,11 +87,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [OneTimeTearDown]
     public void OneTimeTearDown ()
     {
-      var fields = PrivateInvoke.GetNonPublicStaticField (typeof (MappingConfiguration), "s_fields");
-      Assertion.IsNotNull (fields);
-      PrivateInvoke.SetPublicField (fields, "Current", _previousMappingConfigurationContainer);
+      var fields = PrivateInvoke.GetNonPublicStaticField(typeof(MappingConfiguration), "s_fields");
+      Assertion.IsNotNull(fields);
+      PrivateInvoke.SetPublicField(fields, "Current", _previousMappingConfigurationContainer);
 
-      _standardMappingDatabaseAgent.SetDatabaseReadWrite (DatabaseTest.DatabaseName);
+      _standardMappingDatabaseAgent.SetDatabaseReadWrite(DatabaseTest.DatabaseName);
       SqlConnection.ClearAllPools();
     }
   }

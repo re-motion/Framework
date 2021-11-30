@@ -28,36 +28,36 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     private readonly string _connectionString;
 
     public RdbmsProviderDefinition (string name, IStorageObjectFactory factory, string connectionString)
-        : base (name, factory)
+        : base(name, factory)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("connectionString", connectionString);
-      ArgumentUtility.CheckNotNullAndType<IRdbmsStorageObjectFactory> ("factory", factory);
-      
+      ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
+      ArgumentUtility.CheckNotNullAndType<IRdbmsStorageObjectFactory>("factory", factory);
+
       _connectionString = connectionString;
     }
 
     public RdbmsProviderDefinition (string name, NameValueCollection config)
-        : base (name, config)
+        : base(name, config)
     {
-      ArgumentUtility.CheckNotNull ("config", config);
+      ArgumentUtility.CheckNotNull("config", config);
 
       if (!(base.Factory is IRdbmsStorageObjectFactory))
       {
-        var message = string.Format (
+        var message = string.Format(
             "The factory type for the storage provider defined by '{0}' must implement the 'IRdbmsStorageObjectFactory' interface. "
-            + "'{1}' does not implement that interface.", 
+            + "'{1}' does not implement that interface.",
             name,
             base.Factory.GetType().Name);
-        throw new ConfigurationErrorsException (message);
+        throw new ConfigurationErrorsException(message);
       }
 
-      string connectionStringName = GetAndRemoveNonEmptyStringAttribute (config, "connectionString", name, true);
-      _connectionString = ConfigurationWrapper.Current.GetConnectionString (connectionStringName, true).ConnectionString;
+      string connectionStringName = GetAndRemoveNonEmptyStringAttribute(config, "connectionString", name, true);
+      _connectionString = ConfigurationWrapper.Current.GetConnectionString(connectionStringName, true).ConnectionString;
     }
 
     public new IRdbmsStorageObjectFactory Factory
     {
-      get { return (IRdbmsStorageObjectFactory) base.Factory; }
+      get { return (IRdbmsStorageObjectFactory)base.Factory; }
     }
 
     public string ConnectionString
@@ -67,9 +67,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     public override bool IsIdentityTypeSupported (Type identityType)
     {
-      ArgumentUtility.CheckNotNull ("identityType", identityType);
+      ArgumentUtility.CheckNotNull("identityType", identityType);
 
-      return (identityType == typeof (Guid));
+      return (identityType == typeof(Guid));
     }
   }
 }

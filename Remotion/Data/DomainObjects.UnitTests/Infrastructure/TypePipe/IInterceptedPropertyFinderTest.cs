@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       var instance = _serviceLocator.GetInstance<IInterceptedPropertyFinder>();
 
-      Assert.That (instance, Is.TypeOf<InterceptedPropertyCollectorAdapter>());
+      Assert.That(instance, Is.TypeOf<InterceptedPropertyCollectorAdapter>());
     }
 
     [Test]
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       var instance1 = _serviceLocator.GetInstance<IInterceptedPropertyFinder>();
       var instance2 = _serviceLocator.GetInstance<IInterceptedPropertyFinder>();
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

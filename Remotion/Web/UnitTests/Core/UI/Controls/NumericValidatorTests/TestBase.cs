@@ -37,9 +37,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
     {
       _textBox = new TextBox();
       _textBox.ID = "TextBox";
-      var namingContainer = new Mock<Control> (MockBehavior.Strict);
-      namingContainer.Setup (_ => _.FindControl ("TextBox")).Returns (_textBox).Verifiable();
-      _validator = new NumericValidatorMock ((Control) namingContainer.As<INamingContainer>().Object);
+      var namingContainer = new Mock<Control>(MockBehavior.Strict);
+      namingContainer.Setup(_ => _.FindControl("TextBox")).Returns(_textBox).Verifiable();
+      _validator = new NumericValidatorMock((Control)namingContainer.As<INamingContainer>().Object);
       _validator.ControlToValidate = _textBox.ID;
 
       _cultureBackup = Thread.CurrentThread.CurrentCulture;

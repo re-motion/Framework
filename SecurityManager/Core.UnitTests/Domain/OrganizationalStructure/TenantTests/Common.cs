@@ -28,10 +28,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     [Test]
     public void UniqueIdentifier_SameIdentifierTwice ()
     {
-      string tenantUniqueIdentifier = Guid.NewGuid ().ToString ();
-      TestHelper.CreateTenant ("TestTenant1", tenantUniqueIdentifier);
-      TestHelper.CreateTenant ("TestTenant2", tenantUniqueIdentifier);
-      Assert.That (
+      string tenantUniqueIdentifier = Guid.NewGuid().ToString();
+      TestHelper.CreateTenant("TestTenant1", tenantUniqueIdentifier);
+      TestHelper.CreateTenant("TestTenant2", tenantUniqueIdentifier);
+      Assert.That(
           () => ClientTransactionScope.CurrentTransaction.Commit(),
           Throws.InstanceOf<RdbmsProviderException>());
     }

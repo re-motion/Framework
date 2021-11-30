@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public ClientTransactionHierarchy (ClientTransaction rootTransaction)
     {
-      ArgumentUtility.CheckNotNull ("rootTransaction", rootTransaction);
+      ArgumentUtility.CheckNotNull("rootTransaction", rootTransaction);
       _rootTransaction = rootTransaction;
       _leafTransaction = rootTransaction;
       _activeTransaction = rootTransaction;
@@ -60,35 +60,35 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public void AppendLeafTransaction (ClientTransaction leafTransaction)
     {
-      ArgumentUtility.CheckNotNull ("leafTransaction", leafTransaction);
+      ArgumentUtility.CheckNotNull("leafTransaction", leafTransaction);
 
       if (leafTransaction.ParentTransaction != _leafTransaction)
-        throw new ArgumentException ("The new LeafTransaction must have the previous LeafTransaction as its parent.", "leafTransaction");
+        throw new ArgumentException("The new LeafTransaction must have the previous LeafTransaction as its parent.", "leafTransaction");
 
       _leafTransaction = leafTransaction;
-      Assertion.IsTrue (_leafTransaction.RootTransaction == _rootTransaction);
+      Assertion.IsTrue(_leafTransaction.RootTransaction == _rootTransaction);
     }
 
     public void RemoveLeafTransaction ()
     {
       if (_leafTransaction == _rootTransaction)
-        throw new InvalidOperationException ("Cannot remove the root transaction.");
+        throw new InvalidOperationException("Cannot remove the root transaction.");
       _leafTransaction = _leafTransaction.ParentTransaction;
 
-      Assertion.IsNotNull (_leafTransaction);
+      Assertion.IsNotNull(_leafTransaction);
     }
 
     public IDisposable ActivateTransaction (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
       if (clientTransaction.RootTransaction != _rootTransaction)
-        throw new ArgumentException ("The activated transaction must be from this ClientTransactionHierarchy.", "clientTransaction");
+        throw new ArgumentException("The activated transaction must be from this ClientTransactionHierarchy.", "clientTransaction");
 
       var previousActivatedTransaction = _activeTransaction;
       _activeTransaction = clientTransaction;
 
-      return new ActivationScope (this, clientTransaction, previousActivatedTransaction);
+      return new ActivationScope(this, clientTransaction, previousActivatedTransaction);
     }
 
     private sealed class ActivationScope : IDisposable
@@ -100,9 +100,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       public ActivationScope (
           ClientTransactionHierarchy hierarchy, ClientTransaction expectedActivatedTransaction, ClientTransaction previousActivatedTransaction)
       {
-        ArgumentUtility.CheckNotNull ("hierarchy", hierarchy);
-        ArgumentUtility.CheckNotNull ("expectedActivatedTransaction", expectedActivatedTransaction);
-        ArgumentUtility.CheckNotNull ("previousActivatedTransaction", previousActivatedTransaction);
+        ArgumentUtility.CheckNotNull("hierarchy", hierarchy);
+        ArgumentUtility.CheckNotNull("expectedActivatedTransaction", expectedActivatedTransaction);
+        ArgumentUtility.CheckNotNull("previousActivatedTransaction", previousActivatedTransaction);
 
         _hierarchy = hierarchy;
         _expectedActivatedTransaction = expectedActivatedTransaction;
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       public void Dispose ()
       {
         if (_hierarchy._activeTransaction != _expectedActivatedTransaction)
-          throw new InvalidOperationException ("The scopes returned by ActivateTransaction must be disposed inside out.");
+          throw new InvalidOperationException("The scopes returned by ActivateTransaction must be disposed inside out.");
 
         _hierarchy._activeTransaction = _previousActivatedTransaction;
       }

@@ -26,23 +26,23 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     public XmlDocumentEqualConstraint (XmlDocument expected)
         : base(expected)
     {
-      _xmlnsAttributeFilter = new XmlnsAttributeHandler ();
+      _xmlnsAttributeFilter = new XmlnsAttributeHandler();
     }
 
     protected override bool CompareDocuments (XmlDocument expectedDocument, XmlDocument actualDocument)
     {
-      return CompareNodes (expectedDocument, actualDocument);
+      return CompareNodes(expectedDocument, actualDocument);
     }
 
     protected bool CompareNodes (XmlNode expectedParentNode, XmlNode actualParentNode)
     {
       if (expectedParentNode.ChildNodes.Count != actualParentNode.ChildNodes.Count)
       {
-        
+
         Messages.Add("Child node lengths differ:");
-        Messages.Add ("Expected: " + expectedParentNode.ChildNodes.Count);
-        Messages.Add ("Actual: " + actualParentNode.ChildNodes.Count);
-        SetFailureMessage (expectedParentNode, actualParentNode);
+        Messages.Add("Expected: " + expectedParentNode.ChildNodes.Count);
+        Messages.Add("Actual: " + actualParentNode.ChildNodes.Count);
+        SetFailureMessage(expectedParentNode, actualParentNode);
 
         return false;
       }
@@ -52,14 +52,14 @@ namespace Remotion.Security.UnitTests.XmlAsserter
         XmlNode expectedNode = expectedParentNode.ChildNodes[i];
         XmlNode actualNode = actualParentNode.ChildNodes[i];
 
-        if (!AreNodesEqual (expectedNode, actualNode))
+        if (!AreNodesEqual(expectedNode, actualNode))
         {
-          Messages.Add ("Nodes differ:");
-          SetFailureMessage (expectedNode, actualNode);
+          Messages.Add("Nodes differ:");
+          SetFailureMessage(expectedNode, actualNode);
           return false;
         }
 
-        if (!CompareNodes (expectedNode, actualNode))
+        if (!CompareNodes(expectedNode, actualNode))
           return false;
       }
 
@@ -70,7 +70,7 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     {
       return expected.NamespaceURI == actual.NamespaceURI
           && expected.LocalName == actual.LocalName
-          && AreNodeAttributesEqual (expected.Attributes, actual.Attributes)
+          && AreNodeAttributesEqual(expected.Attributes, actual.Attributes)
           && expected.Value == actual.Value;
     }
 
@@ -82,15 +82,15 @@ namespace Remotion.Security.UnitTests.XmlAsserter
       if (expectedAttributes == null || actualAttributes == null)
         return false;
 
-      _xmlnsAttributeFilter.Handle (expectedAttributes);
-      _xmlnsAttributeFilter.Handle (actualAttributes);
+      _xmlnsAttributeFilter.Handle(expectedAttributes);
+      _xmlnsAttributeFilter.Handle(actualAttributes);
 
       if (expectedAttributes.Count != actualAttributes.Count)
         return false;
 
       for (int i = 0; i < expectedAttributes.Count; i++)
       {
-        if (!AreAttributesEqual (expectedAttributes[i], actualAttributes[i]))
+        if (!AreAttributesEqual(expectedAttributes[i], actualAttributes[i]))
           return false;
       }
 
@@ -106,8 +106,8 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 
     protected void SetFailureMessage (XmlNode expectedNode, XmlNode actualNode)
     {
-      ShowNodeStack (expectedNode, Messages.Add);
-      ShowNodeStack (actualNode, Messages.Add);
+      ShowNodeStack(expectedNode, Messages.Add);
+      ShowNodeStack(actualNode, Messages.Add);
     }
   }
 }

@@ -32,31 +32,31 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
     private readonly ICollection<IMixinDeclarationAnalyzer<Assembly>> _assemblyAnalyzers;
 
     public DeclarativeConfigurationAnalyzer (
-        IEnumerable<IMixinDeclarationAnalyzer<Type>> typeAnalyzers, 
+        IEnumerable<IMixinDeclarationAnalyzer<Type>> typeAnalyzers,
         IEnumerable<IMixinDeclarationAnalyzer<Assembly>> assemblyAnalyzers)
     {
-      ArgumentUtility.CheckNotNull ("typeAnalyzers", typeAnalyzers);
-      ArgumentUtility.CheckNotNull ("assemblyAnalyzers", assemblyAnalyzers);
+      ArgumentUtility.CheckNotNull("typeAnalyzers", typeAnalyzers);
+      ArgumentUtility.CheckNotNull("assemblyAnalyzers", assemblyAnalyzers);
 
-      _typeAnalyzers = typeAnalyzers.ConvertToCollection ();
-      _assemblyAnalyzers = assemblyAnalyzers.ConvertToCollection ();
+      _typeAnalyzers = typeAnalyzers.ConvertToCollection();
+      _assemblyAnalyzers = assemblyAnalyzers.ConvertToCollection();
     }
-    
+
     public void Analyze (IEnumerable<Type> types, MixinConfigurationBuilder configurationBuilder)
     {
-      ArgumentUtility.CheckNotNull ("types", types);
-      ArgumentUtility.CheckNotNull ("configurationBuilder", configurationBuilder);
+      ArgumentUtility.CheckNotNull("types", types);
+      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
 
       var assemblies = new HashSet<Assembly>();
 
       foreach (var type in types)
       {
-        AnalyzeType (configurationBuilder, type);
+        AnalyzeType(configurationBuilder, type);
 
-        if (!assemblies.Contains (type.Assembly))
+        if (!assemblies.Contains(type.Assembly))
         {
-          assemblies.Add (type.Assembly);
-          AnalyzeAssembly (configurationBuilder, type.Assembly);
+          assemblies.Add(type.Assembly);
+          AnalyzeAssembly(configurationBuilder, type.Assembly);
         }
       }
     }
@@ -64,13 +64,13 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
     private void AnalyzeType (MixinConfigurationBuilder configurationBuilder, Type type)
     {
       foreach (var typeAnalyzer in _typeAnalyzers)
-        typeAnalyzer.Analyze (type, configurationBuilder);
+        typeAnalyzer.Analyze(type, configurationBuilder);
     }
 
     private void AnalyzeAssembly (MixinConfigurationBuilder configurationBuilder, Assembly assembly)
     {
       foreach (var assemblyAnalyzer in _assemblyAnalyzers)
-        assemblyAnalyzer.Analyze (assembly, configurationBuilder);
+        assemblyAnalyzer.Analyze(assembly, configurationBuilder);
     }
 
   }

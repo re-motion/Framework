@@ -40,11 +40,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     {
       get
       {
-        return CurrentProperty.GetValue<string> (); // CurrentProperty used on purpose here - tests whether shadowed properties work correctly
+        return CurrentProperty.GetValue<string>(); // CurrentProperty used on purpose here - tests whether shadowed properties work correctly
       }
       set
       {
-        CurrentProperty.SetValue (value); // CurrentProperty used on purpose here - tests whether shadowed properties work correctly
+        CurrentProperty.SetValue(value); // CurrentProperty used on purpose here - tests whether shadowed properties work correctly
       }
     }
 
@@ -55,12 +55,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
       get
       {
         return Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithDifferentProperties.PrivateString"]
-            .GetValue<string> ();
+            .GetValue<string>();
       }
       set
       {
         Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithDifferentProperties.PrivateString"]
-            .SetValue (value);
+            .SetValue(value);
       }
     }
   }

@@ -48,7 +48,7 @@ namespace Remotion.Mixins
     static class LazyStaticFields
     {
       public static readonly ITypeFactoryImplementation TypeFactoryImplementation =
-          SafeServiceLocator.Current.GetInstance<ITypeFactoryImplementation> ();
+          SafeServiceLocator.Current.GetInstance<ITypeFactoryImplementation>();
 
       // ReSharper disable EmptyConstructor
       // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit; this will make the static fields as lazy as possible.
@@ -89,7 +89,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static Type GetConcreteType (Type targetOrConcreteType)
     {
-      return LazyStaticFields.TypeFactoryImplementation.GetConcreteType (targetOrConcreteType);
+      return LazyStaticFields.TypeFactoryImplementation.GetConcreteType(targetOrConcreteType);
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ namespace Remotion.Mixins
     /// <remarks>This method is useful when a mixin target instance is created via <see cref="FormatterServices.GetSafeUninitializedObject"/>.</remarks>
     public static void InitializeUnconstructedInstance (object mixinTarget, InitializationSemantics initializationSemantics)
     {
-      LazyStaticFields.TypeFactoryImplementation.InitializeUnconstructedInstance (mixinTarget, initializationSemantics);
+      LazyStaticFields.TypeFactoryImplementation.InitializeUnconstructedInstance(mixinTarget, initializationSemantics);
     }
   }
 }

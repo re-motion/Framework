@@ -42,51 +42,51 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocAutoCompleteReferenceValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (DisabledTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (ReadOnlyTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (LabelTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (ValidationErrorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(ReadOnlyTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(LabelTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(ValidationErrorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> testAction)
     {
-      testAction (Helper, e => e.AutoCompletes(), "autoCompleteReferenceValue");
+      testAction(Helper, e => e.AutoCompletes(), "autoCompleteReferenceValue");
     }
 
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
-    [TestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(DomainPropertyControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
+    [TestCaseSource(typeof(DisplayNameControlSelectorTestCaseFactory<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocAutoCompleteReferenceValueSelector, BocAutoCompleteReferenceValueControlObject> testAction)
     {
-      testAction (Helper, e => e.AutoCompletes(), "autoCompleteReferenceValue");
+      testAction(Helper, e => e.AutoCompletes(), "autoCompleteReferenceValue");
     }
 
     /// <summary>
     /// Tests that the various parts of the <see cref="BocAutoCompleteReferenceValueControlObject"/> can be annotated when using the screenshot API.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest ()
     {
       var home = Start();
 
-      var control = home.AutoCompletes().GetByID ("body_DataEditControl_PartnerField_NoAutoPostBack");
+      var control = home.AutoCompletes().GetByID("body_DataEditControl_PartnerField_NoAutoPostBack");
       var fluentControl = control.ForControlObjectScreenshot();
 
-      Helper.RunScreenshotTestExact<FluentScreenshotElement<BocAutoCompleteReferenceValueControlObject>, BocAutoCompleteReferenceValueControlObjectTest> (
+      Helper.RunScreenshotTestExact<FluentScreenshotElement<BocAutoCompleteReferenceValueControlObject>, BocAutoCompleteReferenceValueControlObjectTest>(
           fluentControl,
           ScreenshotTestingType.Both,
           (builder, target) =>
           {
-            builder.AnnotateBox (target, Pens.Black, WebPadding.Inner);
+            builder.AnnotateBox(target, Pens.Black, WebPadding.Inner);
 
-            builder.AnnotateBox (target.GetDropDownButton(), Pens.Red, WebPadding.Inner);
-            builder.AnnotateBox (target.GetOptionsMenu(), Pens.Blue, WebPadding.Inner);
-            builder.AnnotateBox (target.GetValue(), Pens.Green, WebPadding.Inner);
+            builder.AnnotateBox(target.GetDropDownButton(), Pens.Red, WebPadding.Inner);
+            builder.AnnotateBox(target.GetOptionsMenu(), Pens.Blue, WebPadding.Inner);
+            builder.AnnotateBox(target.GetValue(), Pens.Green, WebPadding.Inner);
 
-            builder.Crop (target, new WebPadding (1));
+            builder.Crop(target, new WebPadding(1));
           });
     }
 
@@ -94,88 +94,88 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     /// Tests that all the navigation and select methods are working and that 
     /// the items are correctly annotated when using the screenshot API.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_AutoComplete ()
     {
       var home = Start();
 
-      var control = home.AutoCompletes().GetByID ("body_DataEditControl_PartnerField_NoAutoPostBack");
+      var control = home.AutoCompletes().GetByID("body_DataEditControl_PartnerField_NoAutoPostBack");
       var input = control.ForControlObjectScreenshot();
       var selectList = input.GetSelectList();
 
       if (control.IsReadOnly())
-        Assert.Fail ("This test requires the control to be not read-only.");
+        Assert.Fail("This test requires the control to be not read-only.");
 
-      input.SetValue (string.Empty);
+      input.SetValue(string.Empty);
       selectList.WaitUntilVisible();
 
       Helper
           .RunScreenshotTestExact
-          <FluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList>, BocAutoCompleteReferenceValueControlObjectTest> (
+          <FluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList>, BocAutoCompleteReferenceValueControlObjectTest>(
               selectList,
               ScreenshotTestingType.Desktop,
               (builder, target) =>
               {
-                builder.AnnotateBox (target, Pens.Transparent, WebPadding.Inner);
+                builder.AnnotateBox(target, Pens.Transparent, WebPadding.Inner);
 
-                builder.AnnotateBox (target.GetSelectedItem(), Pens.Blue, WebPadding.Inner);
+                builder.AnnotateBox(target.GetSelectedItem(), Pens.Blue, WebPadding.Inner);
 
                 target.NextPage();
-                builder.AnnotateBox (target.GetSelectedItem(), Pens.Green, WebPadding.Inner);
+                builder.AnnotateBox(target.GetSelectedItem(), Pens.Green, WebPadding.Inner);
 
                 target.NextItem();
-                builder.AnnotateBox (target.GetSelectedItem(), Pens.Red, WebPadding.Inner);
+                builder.AnnotateBox(target.GetSelectedItem(), Pens.Red, WebPadding.Inner);
 
                 target.PreviousPage();
-                builder.AnnotateBox (target.GetSelectedItem(), Pens.Yellow, WebPadding.Inner);
+                builder.AnnotateBox(target.GetSelectedItem(), Pens.Yellow, WebPadding.Inner);
 
-                target.Select().WithIndex (5);
-                builder.AnnotateBox (target.GetSelectedItem(), Pens.Magenta, WebPadding.Inner);
+                target.Select().WithIndex(5);
+                builder.AnnotateBox(target.GetSelectedItem(), Pens.Magenta, WebPadding.Inner);
 
                 target.PreviousItem();
-                builder.AnnotateBox (target.GetSelectedItem(), Pens.Pink, WebPadding.Inner);
+                builder.AnnotateBox(target.GetSelectedItem(), Pens.Pink, WebPadding.Inner);
 
-                target.Select().WithDisplayText ("B, B");
-                builder.AnnotateBox (target.GetSelectedItem(), Pens.Chartreuse, WebPadding.Inner);
+                target.Select().WithDisplayText("B, B");
+                builder.AnnotateBox(target.GetSelectedItem(), Pens.Chartreuse, WebPadding.Inner);
 
-                builder.Crop (target);
+                builder.Crop(target);
               });
     }
 
     /// <summary>
     /// Tests the visibility of the auto-complete (show via input, wait until visible, hide).
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_AutoCompleteVisibility ()
     {
       var home = Start();
 
-      var control = home.AutoCompletes().GetByID ("body_DataEditControl_PartnerField_NoAutoPostBack");
+      var control = home.AutoCompletes().GetByID("body_DataEditControl_PartnerField_NoAutoPostBack");
       var input = control.ForControlObjectScreenshot();
       var selectList = input.GetSelectList();
 
       if (control.IsReadOnly())
-        Assert.Fail ("This test requires the control to be not read-only.");
+        Assert.Fail("This test requires the control to be not read-only.");
 
-      Assert.That (selectList.IsVisible(), Is.False);
+      Assert.That(selectList.IsVisible(), Is.False);
 
-      input.SetValue (string.Empty);
+      input.SetValue(string.Empty);
       selectList.WaitUntilVisible();
-      Assert.That (selectList.IsVisible(), Is.True);
+      Assert.That(selectList.IsVisible(), Is.True);
 
       selectList.Hide();
-      Assert.That (selectList.IsVisible(), Is.False);
+      Assert.That(selectList.IsVisible(), Is.False);
 
       selectList.Show();
-      Assert.That (selectList.IsVisible(), Is.True);
+      Assert.That(selectList.IsVisible(), Is.True);
     }
 
     /// <summary>
     /// Tests that the bounding box is correctly displayed when using the screenshot API.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_Popup ()
     {
@@ -183,33 +183,33 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
 
-      var control = home.AutoCompletes().GetByID ("body_DataEditControl_PartnerField_NoAutoPostBack");
+      var control = home.AutoCompletes().GetByID("body_DataEditControl_PartnerField_NoAutoPostBack");
       var fluentControl = control.ForControlObjectScreenshot();
       var informationPopup = fluentControl.GetInformationPopup();
 
       if (control.IsReadOnly())
-        Assert.Fail ("This test requires the control to be not read-only.");
+        Assert.Fail("This test requires the control to be not read-only.");
 
-      informationPopup.Display (nonBreakingSpace);
+      informationPopup.Display(nonBreakingSpace);
       informationPopup.WaitUntilVisible();
 
       Helper
           .RunScreenshotTestExact
-          <FluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueInformationPopup>, BocAutoCompleteReferenceValueControlObjectTest> (
+          <FluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueInformationPopup>, BocAutoCompleteReferenceValueControlObjectTest>(
               informationPopup,
               ScreenshotTestingType.Both,
               (builder, target) =>
               {
-                builder.AnnotateBox (target, Pens.Transparent, WebPadding.Inner);
+                builder.AnnotateBox(target, Pens.Transparent, WebPadding.Inner);
 
-                builder.Crop (target);
+                builder.Crop(target);
               });
     }
 
     /// <summary>
     /// Tests that the popup can display custom text via the <c>Display</c> method.
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_PopupDisplay ()
     {
@@ -217,24 +217,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
 
-      var control = home.AutoCompletes().GetByID ("body_DataEditControl_PartnerField_NoAutoPostBack");
+      var control = home.AutoCompletes().GetByID("body_DataEditControl_PartnerField_NoAutoPostBack");
       var fluentControl = control.ForControlObjectScreenshot();
       var informationPopup = fluentControl.GetInformationPopup();
 
       if (control.IsReadOnly())
-        Assert.Fail ("This test requires the control to be not read-only.");
+        Assert.Fail("This test requires the control to be not read-only.");
 
-      Assert.That (informationPopup.IsVisible(), Is.False);
+      Assert.That(informationPopup.IsVisible(), Is.False);
 
-      informationPopup.Display (text);
-      Assert.That (informationPopup.IsVisible(), Is.True);
-      Assert.That (informationPopup.GetTarget().WebElement.Text, Is.EqualTo (text));
+      informationPopup.Display(text);
+      Assert.That(informationPopup.IsVisible(), Is.True);
+      Assert.That(informationPopup.GetTarget().WebElement.Text, Is.EqualTo(text));
     }
 
     /// <summary>
     /// Tests the visibility of the popup (show via input, wait until visible, hide).
     /// </summary>
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_PopupVisibility ()
     {
@@ -242,64 +242,64 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
 
-      var control = home.AutoCompletes().GetByID ("body_DataEditControl_PartnerField_NoAutoPostBack");
+      var control = home.AutoCompletes().GetByID("body_DataEditControl_PartnerField_NoAutoPostBack");
       var fluentControl = control.ForControlObjectScreenshot();
       var informationPopup = fluentControl.GetInformationPopup();
 
       if (control.IsReadOnly())
-        Assert.Fail ("This test requires the control to be not read-only.");
+        Assert.Fail("This test requires the control to be not read-only.");
 
-      Assert.That (informationPopup.IsVisible(), Is.False);
+      Assert.That(informationPopup.IsVisible(), Is.False);
 
-      fluentControl.SetValue (search);
+      fluentControl.SetValue(search);
 
       informationPopup.WaitUntilVisible();
-      Assert.That (informationPopup.IsVisible(), Is.True);
+      Assert.That(informationPopup.IsVisible(), Is.True);
 
       informationPopup.Hide();
-      Assert.That (informationPopup.IsVisible(), Is.False);
+      Assert.That(informationPopup.IsVisible(), Is.False);
     }
 
-    [Category ("Screenshot")]
+    [Category("Screenshot")]
     [Test]
     public void ScreenshotTest_DerivedType ()
     {
       var home = Start();
-      var controlObjectContext = home.AutoCompletes().GetByLocalID ("body_DataEditControl_PartnerField_NoAutoPostBack").Context;
-      var controlObject = new DerivedBocAutoCompleteReferenceValueControlObject (controlObjectContext);
+      var controlObjectContext = home.AutoCompletes().GetByLocalID("body_DataEditControl_PartnerField_NoAutoPostBack").Context;
+      var controlObject = new DerivedBocAutoCompleteReferenceValueControlObject(controlObjectContext);
       var fluentControlObject = controlObject.ForControlObjectScreenshot();
 
-      Assert.That (fluentControlObject.GetSelectList(), Is.Not.Null);
+      Assert.That(fluentControlObject.GetSelectList(), Is.Not.Null);
       var fluentInformationPopup = fluentControlObject.GetInformationPopup();
-      Assert.That (fluentInformationPopup, Is.Not.Null);
-      Assert.That (fluentControlObject.GetDropDownButton(), Is.Not.Null);
-      Assert.That (fluentControlObject.GetOptionsMenu(), Is.Not.Null);
-      Assert.That (fluentControlObject.GetValue(), Is.Not.Null);
-      Assert.That (fluentControlObject.IsReadOnly(), Is.Not.Null);
-      Assert.That (() => fluentControlObject.SetValue (""), Throws.Nothing);
+      Assert.That(fluentInformationPopup, Is.Not.Null);
+      Assert.That(fluentControlObject.GetDropDownButton(), Is.Not.Null);
+      Assert.That(fluentControlObject.GetOptionsMenu(), Is.Not.Null);
+      Assert.That(fluentControlObject.GetValue(), Is.Not.Null);
+      Assert.That(fluentControlObject.IsReadOnly(), Is.Not.Null);
+      Assert.That(() => fluentControlObject.SetValue(""), Throws.Nothing);
 
-      var derivedInformationPopup = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocAutoCompleteReferenceValueInformationPopup (fluentInformationPopup.GetTarget().FluentAutoComplete));
+      var derivedInformationPopup = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocAutoCompleteReferenceValueInformationPopup(fluentInformationPopup.GetTarget().FluentAutoComplete));
       const string nonBreakingSpace = " ";
-      Assert.That (() => derivedInformationPopup.Display (nonBreakingSpace), Throws.Nothing);
-      Assert.That (() => derivedInformationPopup.WaitUntilVisible(), Throws.Nothing);
-      Assert.That (derivedInformationPopup.IsVisible(), Is.Not.Null);
-      Assert.That (() => derivedInformationPopup.Hide(), Throws.Nothing);
+      Assert.That(() => derivedInformationPopup.Display(nonBreakingSpace), Throws.Nothing);
+      Assert.That(() => derivedInformationPopup.WaitUntilVisible(), Throws.Nothing);
+      Assert.That(derivedInformationPopup.IsVisible(), Is.Not.Null);
+      Assert.That(() => derivedInformationPopup.Hide(), Throws.Nothing);
 
-      var derivedSelectList = SelfResolvableFluentScreenshot.Create (
-          new DerivedScreenshotBocAutoCompleteReferenceValueSelectList (fluentInformationPopup.GetTarget().FluentAutoComplete));
-      Assert.That (() => derivedSelectList.Hide(), Throws.Nothing);
-      fluentControlObject.SetValue (string.Empty);
-      Assert.That (() => derivedSelectList.Show (), Throws.Nothing);
-      Assert.That (() => derivedSelectList.WaitUntilVisible(), Throws.Nothing);
-      Assert.That (derivedSelectList.IsVisible(), Is.Not.Null);
-      Assert.That (() => derivedSelectList.NextItem(), Throws.Nothing);
-      Assert.That (() => derivedSelectList.PreviousItem(), Throws.Nothing);
-      Assert.That (() => derivedSelectList.NextPage(), Throws.Nothing);
-      Assert.That (() => derivedSelectList.PreviousPage(), Throws.Nothing);
-      Assert.That (() => derivedSelectList.Select(), Throws.Nothing);
-      Assert.That (() => derivedSelectList.Select(0), Throws.Nothing);
-      Assert.That (derivedSelectList.GetSelectedItem(), Is.Not.Null);
+      var derivedSelectList = SelfResolvableFluentScreenshot.Create(
+          new DerivedScreenshotBocAutoCompleteReferenceValueSelectList(fluentInformationPopup.GetTarget().FluentAutoComplete));
+      Assert.That(() => derivedSelectList.Hide(), Throws.Nothing);
+      fluentControlObject.SetValue(string.Empty);
+      Assert.That(() => derivedSelectList.Show(), Throws.Nothing);
+      Assert.That(() => derivedSelectList.WaitUntilVisible(), Throws.Nothing);
+      Assert.That(derivedSelectList.IsVisible(), Is.Not.Null);
+      Assert.That(() => derivedSelectList.NextItem(), Throws.Nothing);
+      Assert.That(() => derivedSelectList.PreviousItem(), Throws.Nothing);
+      Assert.That(() => derivedSelectList.NextPage(), Throws.Nothing);
+      Assert.That(() => derivedSelectList.PreviousPage(), Throws.Nothing);
+      Assert.That(() => derivedSelectList.Select(), Throws.Nothing);
+      Assert.That(() => derivedSelectList.Select(0), Throws.Nothing);
+      Assert.That(derivedSelectList.GetSelectedItem(), Is.Not.Null);
     }
 
     [Test]
@@ -307,21 +307,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.AutoCompletes().GetByLocalID ("Disabled");
+      var control = home.AutoCompletes().GetByLocalID("Disabled");
 
-      Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (
-          () => control.FillWith ("text"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "FillWith").Message));
-      Assert.That (
-          () => control.FillWith ("text", FinishInput.Promptly),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "FillWith").Message));
-      Assert.That (
-          () => control.SelectFirstMatch ("DoesntMatter"), 
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectFirstMatch").Message));
-      Assert.That (
-          () => control.SelectFirstMatch ("DoesntMatter", FinishInput.WithTab),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectFirstMatch").Message));
+      Assert.That(control.IsDisabled(), Is.True);
+      Assert.That(
+          () => control.FillWith("text"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "FillWith").Message));
+      Assert.That(
+          () => control.FillWith("text", FinishInput.Promptly),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "FillWith").Message));
+      Assert.That(
+          () => control.SelectFirstMatch("DoesntMatter"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectFirstMatch").Message));
+      Assert.That(
+          () => control.SelectFirstMatch("DoesntMatter", FinishInput.WithTab),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectFirstMatch").Message));
     }
 
     [Test]
@@ -329,19 +329,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.AutoCompletes().GetByLocalID ("PartnerField_ReadOnly");
+      var control = home.AutoCompletes().GetByLocalID("PartnerField_ReadOnly");
 
-      Assert.That (control.IsReadOnly(), Is.True);
-      Assert.That (() => control.FillWith ("text"), Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
-      Assert.That (
-          () => control.FillWith ("text", FinishInput.Promptly), 
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
-      Assert.That (
-          () => control.SelectFirstMatch ("DoesntMatter"), 
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
-      Assert.That (
-          () => control.SelectFirstMatch ("DoesntMatter", FinishInput.WithTab), 
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException (Driver).Message));
+      Assert.That(control.IsReadOnly(), Is.True);
+      Assert.That(() => control.FillWith("text"), Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
+      Assert.That(
+          () => control.FillWith("text", FinishInput.Promptly),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
+      Assert.That(
+          () => control.SelectFirstMatch("DoesntMatter"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
+      Assert.That(
+          () => control.SelectFirstMatch("DoesntMatter", FinishInput.WithTab),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
     }
 
     [Test]
@@ -349,20 +349,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-      Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("D, A"));
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
+      Assert.That(bocAutoComplete.GetText(), Is.EqualTo("D, A"));
 
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_ReadOnly");
-      Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("D, A"));
+      bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_ReadOnly");
+      Assert.That(bocAutoComplete.GetText(), Is.EqualTo("D, A"));
 
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Disabled");
-      Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("D, A"));
+      bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Disabled");
+      Assert.That(bocAutoComplete.GetText(), Is.EqualTo("D, A"));
 
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_NoAutoPostBack");
-      Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("D, A"));
+      bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_NoAutoPostBack");
+      Assert.That(bocAutoComplete.GetText(), Is.EqualTo("D, A"));
 
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_NoCommandNoMenu");
-      Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("D, A"));
+      bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_NoCommandNoMenu");
+      Assert.That(bocAutoComplete.GetText(), Is.EqualTo("D, A"));
     }
 
     [Test]
@@ -374,40 +374,40 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       const string daLabel = "00000000-0000-0000-0000-000000000009";
 
       {
-        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-        var completionDetection = new CompletionDetectionStrategyTestHelper (bocAutoComplete);
-        bocAutoComplete.FillWith ("Invalid");
-        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-        Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.Empty);
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(bocAutoComplete);
+        bocAutoComplete.FillWith("Invalid");
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.Empty);
       }
 
       {
-        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-        bocAutoComplete.FillWith ("B, A");
-        Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (baLabel));
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
+        bocAutoComplete.FillWith("B, A");
+        Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.EqualTo(baLabel));
       }
 
       {
-        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_NoAutoPostBack");
-        var completionDetection = new CompletionDetectionStrategyTestHelper (bocAutoComplete);
-        bocAutoComplete.FillWith ("B, A"); // no auto post back
-        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-        Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_NoAutoPostBack");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(bocAutoComplete);
+        bocAutoComplete.FillWith("B, A"); // no auto post back
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindIdEndingWith("BOUINoAutoPostBackLabel").Text, Is.EqualTo(daLabel));
       }
 
       {
-        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-        var completionDetection = new CompletionDetectionStrategyTestHelper (bocAutoComplete);
-        bocAutoComplete.FillWith ("B, A", Opt.ContinueImmediately()); // same value, does not trigger post back
-        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-        Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(bocAutoComplete);
+        bocAutoComplete.FillWith("B, A", Opt.ContinueImmediately()); // same value, does not trigger post back
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindIdEndingWith("BOUINoAutoPostBackLabel").Text, Is.EqualTo(daLabel));
       }
 
       {
-        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-        bocAutoComplete.FillWith ("D, A");
-        Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (daLabel));
-        Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (baLabel));
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
+        bocAutoComplete.FillWith("D, A");
+        Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.EqualTo(daLabel));
+        Assert.That(home.Scope.FindIdEndingWith("BOUINoAutoPostBackLabel").Text, Is.EqualTo(baLabel));
       }
     }
 
@@ -421,37 +421,37 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       const string dLabel = "a2752869-e46b-4cfa-b89f-0b824e42b250"; //D, 
 
       {
-        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-        var completionDetection = new CompletionDetectionStrategyTestHelper (bocAutoComplete);
-        bocAutoComplete.SelectFirstMatch ("B,");
-        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-        Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("B, A"));
-        Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (baLabel));
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(bocAutoComplete);
+        bocAutoComplete.SelectFirstMatch("B,");
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(bocAutoComplete.GetText(), Is.EqualTo("B, A"));
+        Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.EqualTo(baLabel));
       }
 
       {
-        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_NoAutoPostBack");
-        var completionDetection = new CompletionDetectionStrategyTestHelper (bocAutoComplete);
-        bocAutoComplete.SelectFirstMatch ("B,"); // no auto post back
-        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-        Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("B, A"));
-        Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_NoAutoPostBack");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(bocAutoComplete);
+        bocAutoComplete.SelectFirstMatch("B,"); // no auto post back
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That(bocAutoComplete.GetText(), Is.EqualTo("B, A"));
+        Assert.That(home.Scope.FindIdEndingWith("BOUINoAutoPostBackLabel").Text, Is.EqualTo(daLabel));
       }
 
       {
-        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-        var completionDetection = new CompletionDetectionStrategyTestHelper (bocAutoComplete);
-        bocAutoComplete.SelectFirstMatch ("B,", Opt.ContinueImmediately()); // same value, does not trigger post back
-        Assert.That (completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-        Assert.That (bocAutoComplete.GetText(), Is.EqualTo ("B, A"));
-        Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daLabel));
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(bocAutoComplete);
+        bocAutoComplete.SelectFirstMatch("B,", Opt.ContinueImmediately()); // same value, does not trigger post back
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That(bocAutoComplete.GetText(), Is.EqualTo("B, A"));
+        Assert.That(home.Scope.FindIdEndingWith("BOUINoAutoPostBackLabel").Text, Is.EqualTo(daLabel));
       }
 
       {
-        var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-        bocAutoComplete.SelectFirstMatch ("D");
-        Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (dLabel));
-        Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (baLabel));
+        var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
+        bocAutoComplete.SelectFirstMatch("D");
+        Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.EqualTo(dLabel));
+        Assert.That(home.Scope.FindIdEndingWith("BOUINoAutoPostBackLabel").Text, Is.EqualTo(baLabel));
       }
     }
 
@@ -460,11 +460,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
-      Assert.That (
-          () => bocAutoComplete.SelectFirstMatch ("Invalid"),
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
+      Assert.That(
+          () => bocAutoComplete.SelectFirstMatch("Invalid"),
           Throws.Exception.InstanceOf<WebTestException>()
-              .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "No matches were found for the specified filter: 'Invalid'.").Message));
+              .With.Message.EqualTo(AssertionExceptionUtility.CreateExpectationException(Driver, "No matches were found for the specified filter: 'Invalid'.").Message));
     }
 
     [Test]
@@ -472,19 +472,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
       var dropDownMenu = bocAutoComplete.GetDropDownMenu();
-      dropDownMenu.SelectItem ("OptCmd2");
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("MenuItemClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("OptCmd2|My menu command 2"));
+      dropDownMenu.SelectItem("OptCmd2");
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("PartnerField_Normal"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("MenuItemClick"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("OptCmd2|My menu command 2"));
 
-      bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_ReadOnly");
+      bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_ReadOnly");
       dropDownMenu = bocAutoComplete.GetDropDownMenu();
-      dropDownMenu.SelectItem ("OptCmd2");
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_ReadOnly"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("MenuItemClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("OptCmd2|My menu command 2"));
+      dropDownMenu.SelectItem("OptCmd2");
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("PartnerField_ReadOnly"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("MenuItemClick"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("OptCmd2|My menu command 2"));
     }
 
     [Test]
@@ -492,20 +492,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
 
-      var searchResults = bocAutoComplete.GetSearchServiceResults ("D", 1);
-      Assert.That (searchResults.Count, Is.EqualTo (1));
-      Assert.That (searchResults[0].UniqueIdentifier, Is.EqualTo ("a2752869-e46b-4cfa-b89f-0b824e42b250"));
-      Assert.That (searchResults[0].DisplayName, Is.EqualTo ("D, "));
-      Assert.That (searchResults[0].IconUrl, Does.EndWith ("/Remotion.ObjectBinding.Sample.Person.gif"));
+      var searchResults = bocAutoComplete.GetSearchServiceResults("D", 1);
+      Assert.That(searchResults.Count, Is.EqualTo(1));
+      Assert.That(searchResults[0].UniqueIdentifier, Is.EqualTo("a2752869-e46b-4cfa-b89f-0b824e42b250"));
+      Assert.That(searchResults[0].DisplayName, Is.EqualTo("D, "));
+      Assert.That(searchResults[0].IconUrl, Does.EndWith("/Remotion.ObjectBinding.Sample.Person.gif"));
 
-      searchResults = bocAutoComplete.GetSearchServiceResults ("D", 5);
-      Assert.That (searchResults.Count, Is.EqualTo (4));
-      Assert.That (searchResults[0].DisplayName, Is.EqualTo ("D, "));
+      searchResults = bocAutoComplete.GetSearchServiceResults("D", 5);
+      Assert.That(searchResults.Count, Is.EqualTo(4));
+      Assert.That(searchResults[0].DisplayName, Is.EqualTo("D, "));
 
-      searchResults = bocAutoComplete.GetSearchServiceResults ("unexistentValue", 5);
-      Assert.That (searchResults.Count, Is.EqualTo (0));
+      searchResults = bocAutoComplete.GetSearchServiceResults("unexistentValue", 5);
+      Assert.That(searchResults.Count, Is.EqualTo(0));
     }
 
     [Test]
@@ -513,15 +513,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
 
-      var searchResult = bocAutoComplete.GetExactSearchServiceResult ("D, ");
-      Assert.That (searchResult.UniqueIdentifier, Is.EqualTo ("a2752869-e46b-4cfa-b89f-0b824e42b250"));
-      Assert.That (searchResult.DisplayName, Is.EqualTo ("D, "));
-      Assert.That (searchResult.IconUrl, Does.EndWith ("/Remotion.ObjectBinding.Sample.Person.gif"));
+      var searchResult = bocAutoComplete.GetExactSearchServiceResult("D, ");
+      Assert.That(searchResult.UniqueIdentifier, Is.EqualTo("a2752869-e46b-4cfa-b89f-0b824e42b250"));
+      Assert.That(searchResult.DisplayName, Is.EqualTo("D, "));
+      Assert.That(searchResult.IconUrl, Does.EndWith("/Remotion.ObjectBinding.Sample.Person.gif"));
 
-      searchResult = bocAutoComplete.GetExactSearchServiceResult ("D");
-      Assert.That (searchResult, Is.Null);
+      searchResult = bocAutoComplete.GetExactSearchServiceResult("D");
+      Assert.That(searchResult, Is.Null);
     }
 
     [Test]
@@ -529,9 +529,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
 
-      Assert.That (() => bocAutoComplete.GetSearchServiceResults ("throw", 1), Throws.Exception.InstanceOf<WebServiceExceutionException>());
+      Assert.That(() => bocAutoComplete.GetSearchServiceResults("throw", 1), Throws.Exception.InstanceOf<WebServiceExceutionException>());
     }
 
     [Test]
@@ -539,33 +539,33 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocAutoComplete = home.AutoCompletes().GetByLocalID ("PartnerField_Normal");
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
       var dropDownMenu = bocAutoComplete.GetDropDownMenu();
 
       dropDownMenu.Open();
       var menuItem = GetDropDownMenuItem3();
-      Assert.That (menuItem.IsDisabled, Is.False);
+      Assert.That(menuItem.IsDisabled, Is.False);
 
-      bocAutoComplete.FillWith ("");
+      bocAutoComplete.FillWith("");
       menuItem = GetDropDownMenuItem3();
-      Assert.That (menuItem.IsDisabled, Is.True);
+      Assert.That(menuItem.IsDisabled, Is.True);
 
-      bocAutoComplete.SelectFirstMatch ("D");
+      bocAutoComplete.SelectFirstMatch("D");
       menuItem = GetDropDownMenuItem3();
-      Assert.That (menuItem.IsDisabled, Is.False);
+      Assert.That(menuItem.IsDisabled, Is.False);
 
-      ItemDefinition GetDropDownMenuItem3 () => dropDownMenu.GetItemDefinitions().Single (x => x.ItemID == "OptCmd3");
+      ItemDefinition GetDropDownMenuItem3 () => dropDownMenu.GetItemDefinitions().Single(x => x.ItemID == "OptCmd3");
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocAutoCompleteReferenceValue");
+      return Start("BocAutoCompleteReferenceValue");
     }
 
     private class DerivedBocAutoCompleteReferenceValueControlObject : BocAutoCompleteReferenceValueControlObject
     {
       public DerivedBocAutoCompleteReferenceValueControlObject (ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
     }
@@ -574,7 +574,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       public DerivedScreenshotBocAutoCompleteReferenceValueInformationPopup (
           IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentControl)
-          : base (fluentControl)
+          : base(fluentControl)
       {
       }
     }
@@ -583,7 +583,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       public DerivedScreenshotBocAutoCompleteReferenceValueSelectList (
           IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
-          : base (fluentAutoComplete)
+          : base(fluentAutoComplete)
       {
       }
     }

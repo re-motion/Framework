@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public CompoundDataType (string stringValue, int int32Value)
     {
-      ArgumentUtility.CheckNotNull ("stringValue", stringValue);
+      ArgumentUtility.CheckNotNull("stringValue", stringValue);
 
       _stringValue = stringValue;
       _int32Value = int32Value;
@@ -48,12 +48,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var otherCompoundDataType = other as CompoundDataType;
       if (otherCompoundDataType == null)
         return false;
-      return comparer.Equals (_stringValue, otherCompoundDataType._stringValue) && comparer.Equals (_int32Value, otherCompoundDataType._int32Value);
+      return comparer.Equals(_stringValue, otherCompoundDataType._stringValue) && comparer.Equals(_int32Value, otherCompoundDataType._int32Value);
     }
 
     public int GetHashCode (IEqualityComparer comparer)
     {
-      return comparer.GetHashCode (_stringValue);
+      return comparer.GetHashCode(_stringValue);
     }
   }
 }

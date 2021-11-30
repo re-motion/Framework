@@ -34,18 +34,18 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Returns the HTML element's computed background color. You must provide the ElementScope as the first parameter to the JavaScript call.
     /// </summary>
-    public static readonly string GetComputedBackgroundColor = CreateGetComputedCssValueScript ("background-color");
+    public static readonly string GetComputedBackgroundColor = CreateGetComputedCssValueScript("background-color");
 
     /// <summary>
     /// Returns the HTML element's computed text color. You must provide the ElementScope as the first parameter to the JavaScript call.
     /// </summary>
-    public static readonly string GetComputedTextColor = CreateGetComputedCssValueScript ("color");
+    public static readonly string GetComputedTextColor = CreateGetComputedCssValueScript("color");
 
     private static string CreateGetComputedCssValueScript ([NotNull] string cssProperty)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("cssProperty", cssProperty);
+      ArgumentUtility.CheckNotNullOrEmpty("cssProperty", cssProperty);
 
-      return string.Format ("return window.getComputedStyle (arguments[0])['{0}'];", cssProperty);
+      return string.Format("return window.getComputedStyle (arguments[0])['{0}'];", cssProperty);
     }
   }
 }

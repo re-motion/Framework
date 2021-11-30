@@ -35,8 +35,8 @@ namespace Remotion.UnitTests.Utilities
 
       var endDateTime = DateTime.UtcNow;
 
-      Assert.That (result, Is.GreaterThanOrEqualTo(startDateTime));
-      Assert.That (result, Is.LessThanOrEqualTo(endDateTime));
+      Assert.That(result, Is.GreaterThanOrEqualTo(startDateTime));
+      Assert.That(result, Is.LessThanOrEqualTo(endDateTime));
 
     }
   }

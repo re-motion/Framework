@@ -33,7 +33,7 @@ namespace Remotion.UnitTests.FunctionalProgramming.TestDomain
 
     public ReadOnlyCollection<RecursiveItem> Children
     {
-      get { return Array.AsReadOnly (_children); }
+      get { return Array.AsReadOnly(_children); }
     }
   }
 }

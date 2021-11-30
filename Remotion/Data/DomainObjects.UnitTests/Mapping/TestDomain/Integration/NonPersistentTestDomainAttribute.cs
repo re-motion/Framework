@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
   public class NonPersistentTestDomainAttribute: StorageGroupAttribute
   {
     public NonPersistentTestDomainAttribute ()
-        : base (DefaultStorageClass.Transaction)
+        : base(DefaultStorageClass.Transaction)
     {
     }
   }

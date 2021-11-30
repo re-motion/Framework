@@ -36,13 +36,13 @@ namespace Remotion.Validation.Mixins.IntegrationTests
     [SetUp]
     public virtual void SetUp ()
     {
-      var serviceLocator = DefaultServiceLocator.Create ();
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
-      
-      MemoryAppender = new MemoryAppender();
-      BasicConfigurator.Configure (MemoryAppender);
+      var serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
-      ValidationBuilder = serviceLocator.GetInstance<IValidatorBuilder> ();
+      MemoryAppender = new MemoryAppender();
+      BasicConfigurator.Configure(MemoryAppender);
+
+      ValidationBuilder = serviceLocator.GetInstance<IValidatorBuilder>();
     }
 
     [TearDown]
@@ -51,15 +51,15 @@ namespace Remotion.Validation.Mixins.IntegrationTests
       if (ShowLogOutput)
       {
         var logEvents = MemoryAppender.GetEvents().Reverse().ToArray();
-        Console.WriteLine (logEvents.Skip (1).First().RenderedMessage);
-        Console.WriteLine (logEvents.First().RenderedMessage);
+        Console.WriteLine(logEvents.Skip(1).First().RenderedMessage);
+        Console.WriteLine(logEvents.First().RenderedMessage);
       }
 
       MemoryAppender.Clear();
       LogManager.ResetConfiguration();
-      _serviceLocatorScope.Dispose ();
+      _serviceLocatorScope.Dispose();
 
-      Assert.That (LogManager.GetLogger (typeof (DiagnosticOutputValidationRuleMergeDecorator)).IsDebugEnabled, Is.False);
+      Assert.That(LogManager.GetLogger(typeof(DiagnosticOutputValidationRuleMergeDecorator)).IsDebugEnabled, Is.False);
     }
   }
 }

@@ -28,65 +28,65 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     private WxeContext _wxeContext;
     private string _lastExecutedStepID;
 
-    public TestFunctionWithNesting()
-      : base (new NoneTransactionMode ())
+    public TestFunctionWithNesting ()
+      : base(new NoneTransactionMode())
     {
       ReturnUrl = TestFunction.ReturnUrlValue;
     }
 
     public TestFunctionWithNesting (params object[] args)
-        : base (new NoneTransactionMode (), args)
+        : base(new NoneTransactionMode(), args)
     {
       ReturnUrl = TestFunction.ReturnUrlValue;
     }
 
-    [WxeParameter (1, false, WxeParameterDirection.In)]
+    [WxeParameter(1, false, WxeParameterDirection.In)]
     public string Parameter1
     {
-      get { return (string) Variables["Parameter1"]; }
+      get { return (string)Variables["Parameter1"]; }
       set { Variables["Parameter1"] = value; }
     }
 
-    void Step1()
+    void Step1 ()
     {
       _lastExecutedStepID = "1";
     }
-  
-    void Step2()
+
+    void Step2 ()
     {
       _lastExecutedStepID = "2";
     }
 
     class Step3: WxeFunction
     {
-      public Step3()
-        : base (new NoneTransactionMode ())
+      public Step3 ()
+        : base(new NoneTransactionMode())
       {
       }
 
-      void Step1()
+      void Step1 ()
       {
         TestFunctionWithNesting._lastExecutedStepID = "3.1";
       }
-    
-      void Step2()
+
+      void Step2 ()
       {
         TestFunctionWithNesting._lastExecutedStepID = "3.2";
       }
-    
-      void Step3_()
+
+      void Step3_ ()
       {
         TestFunctionWithNesting._lastExecutedStepID = "3.3";
       }
 
       private TestFunctionWithNesting TestFunctionWithNesting
       {
-        get { return (TestFunctionWithNesting) ParentStep; }
+        get { return (TestFunctionWithNesting)ParentStep; }
       }
 
     }
-  
-    void Step4()
+
+    void Step4 ()
     {
       _lastExecutedStepID = "4";
     }
@@ -104,7 +104,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     public override void Execute (WxeContext context)
     {
       _wxeContext = context;
-      base.Execute (context);
+      base.Execute(context);
     }
 
   }

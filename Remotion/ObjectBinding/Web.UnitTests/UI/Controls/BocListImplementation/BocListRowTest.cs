@@ -29,11 +29,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var businessObject = new Mock<IBusinessObject>();
       var index = 5;
-      var row1 = new BocListRow (index, businessObject.Object);
-      var row2 = new BocListRow (index, businessObject.Object);
+      var row1 = new BocListRow(index, businessObject.Object);
+      var row2 = new BocListRow(index, businessObject.Object);
 
-      Assert.That (row1.Equals (row2), Is.True);
-      Assert.That (row2.Equals (row1), Is.True);
+      Assert.That(row1.Equals(row2), Is.True);
+      Assert.That(row2.Equals(row1), Is.True);
     }
 
     [Test]
@@ -41,57 +41,57 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var businessObject = new Mock<IBusinessObject>();
       var index = 5;
-      IEquatable<BocListRow> row1 = new BocListRow (index, businessObject.Object);
-      IEquatable<BocListRow> row2 = new BocListRow (index, businessObject.Object);
+      IEquatable<BocListRow> row1 = new BocListRow(index, businessObject.Object);
+      IEquatable<BocListRow> row2 = new BocListRow(index, businessObject.Object);
 
-      Assert.That (row1.Equals (row2), Is.True);
-      Assert.That (row2.Equals (row1), Is.True);
+      Assert.That(row1.Equals(row2), Is.True);
+      Assert.That(row2.Equals(row1), Is.True);
     }
 
     [Test]
     public void IEquatable_OtherBusinessObject_SameIndex_AreNotEqual ()
     {
       var index = 5;
-      IEquatable<BocListRow> row1 = new BocListRow (index, new Mock<IBusinessObject>().Object);
-      IEquatable<BocListRow> row2 = new BocListRow (index, new Mock<IBusinessObject>().Object);
+      IEquatable<BocListRow> row1 = new BocListRow(index, new Mock<IBusinessObject>().Object);
+      IEquatable<BocListRow> row2 = new BocListRow(index, new Mock<IBusinessObject>().Object);
 
-      Assert.That (row1.Equals (row2), Is.False);
-      Assert.That (row2.Equals (row1), Is.False);
+      Assert.That(row1.Equals(row2), Is.False);
+      Assert.That(row2.Equals(row1), Is.False);
     }
 
     [Test]
     public void IEquatable_SameBusinessObject_OtherIndex_AreNotEqual ()
     {
       var businessObject = new Mock<IBusinessObject>();
-      IEquatable<BocListRow> row1 = new BocListRow (4, businessObject.Object);
-      IEquatable<BocListRow> row2 = new BocListRow (6, businessObject.Object);
+      IEquatable<BocListRow> row1 = new BocListRow(4, businessObject.Object);
+      IEquatable<BocListRow> row2 = new BocListRow(6, businessObject.Object);
 
-      Assert.That (row1.Equals (row2), Is.False);
-      Assert.That (row2.Equals (row1), Is.False);
+      Assert.That(row1.Equals(row2), Is.False);
+      Assert.That(row2.Equals(row1), Is.False);
     }
 
     [Test]
     public void Equal_OtherRowNull_AreNotEqual ()
     {
-      var row = new BocListRow (5, new Mock<IBusinessObject>().Object);
+      var row = new BocListRow(5, new Mock<IBusinessObject>().Object);
 
-      Assert.That (row.Equals (null), Is.False);
+      Assert.That(row.Equals(null), Is.False);
     }
 
     [Test]
     public void IEquatable_OtherRowNull_AreNotEqual ()
     {
-      IEquatable<BocListRow> row = new BocListRow (5, new Mock<IBusinessObject>().Object);
+      IEquatable<BocListRow> row = new BocListRow(5, new Mock<IBusinessObject>().Object);
 
-      Assert.That (row.Equals (null), Is.False);
+      Assert.That(row.Equals(null), Is.False);
     }
 
     [Test]
     public void Equal_OtherType_AreNotEqual ()
     {
-      var row = new BocListRow (5, new Mock<IBusinessObject>().Object);
+      var row = new BocListRow(5, new Mock<IBusinessObject>().Object);
 
-      Assert.That (row.Equals (new object()), Is.False);
+      Assert.That(row.Equals(new object()), Is.False);
     }
 
     [Test]
@@ -99,22 +99,22 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var businessObject = new Mock<IBusinessObject>();
       var index = 5;
-      var row1 = new BocListRow (index, businessObject.Object);
-      var row2 = new BocListRow (index, businessObject.Object);
+      var row1 = new BocListRow(index, businessObject.Object);
+      var row2 = new BocListRow(index, businessObject.Object);
 
-      Assert.That (row1 == row2, Is.True);
-      Assert.That (row2 == row1, Is.True);
+      Assert.That(row1 == row2, Is.True);
+      Assert.That(row2 == row1, Is.True);
     }
 
     [Test]
     public void OperatorNotEqual_SameBusinessObject_OtherIndex_AreNotEqual ()
     {
       var businessObject = new Mock<IBusinessObject>();
-      var row1 = new BocListRow (4, businessObject.Object);
-      var row2 = new BocListRow (6, businessObject.Object);
+      var row1 = new BocListRow(4, businessObject.Object);
+      var row2 = new BocListRow(6, businessObject.Object);
 
-      Assert.That (row1 != row2, Is.True);
-      Assert.That (row2 != row1, Is.True);
+      Assert.That(row1 != row2, Is.True);
+      Assert.That(row2 != row1, Is.True);
     }
 
     [Test]
@@ -122,10 +122,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var businessObject = new Mock<IBusinessObject>();
       var index = 5;
-      var row1 = new BocListRow (index, businessObject.Object);
-      var row2 = new BocListRow (index, businessObject.Object);
+      var row1 = new BocListRow(index, businessObject.Object);
+      var row2 = new BocListRow(index, businessObject.Object);
 
-      Assert.That (row1.GetHashCode(), Is.EqualTo(row2.GetHashCode()));
+      Assert.That(row1.GetHashCode(), Is.EqualTo(row2.GetHashCode()));
     }
   }
 }

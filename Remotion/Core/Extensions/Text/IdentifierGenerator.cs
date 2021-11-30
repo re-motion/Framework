@@ -41,13 +41,13 @@ public class IdentifierGenerator: ICloneable
   ///     (Note that C# allows a number of unicode characters too, including languages-specific letters.)
   ///   </para>
   /// </remarks>
-  public static IdentifierGenerator CStyle 
+  public static IdentifierGenerator CStyle
   {
-    get 
+    get
     {
       if (s_cStyle == null)
       {
-        IdentifierGenerator idgen = new IdentifierGenerator ();
+        IdentifierGenerator idgen = new IdentifierGenerator();
         idgen._isTemplate = true;
 
         idgen.AllowEnglishLetters = true;
@@ -79,13 +79,13 @@ public class IdentifierGenerator: ICloneable
   ///     See http://www.w3.org/TR/html4/types.html#type-id
   ///   </para>
   /// </remarks>
-  public static IdentifierGenerator HtmlStyle 
+  public static IdentifierGenerator HtmlStyle
   {
-    get 
+    get
     {
       if (s_htmlStyle == null)
       {
-        IdentifierGenerator idgen = new IdentifierGenerator ();
+        IdentifierGenerator idgen = new IdentifierGenerator();
         idgen._isTemplate = true;
 
         idgen.AllowEnglishLetters = true;
@@ -99,7 +99,7 @@ public class IdentifierGenerator: ICloneable
 
         idgen.IsCaseSensitive = false;
         idgen.UniqueSeparator = "_";
-        
+
         s_htmlStyle = idgen;
       }
       return s_htmlStyle;
@@ -116,13 +116,13 @@ public class IdentifierGenerator: ICloneable
   ///     See http://www.w3.org/TR/REC-xml#id
   ///   </para>
   /// </remarks>
-  public static IdentifierGenerator XmlStyle 
+  public static IdentifierGenerator XmlStyle
   {
-    get 
+    get
     {
       if (s_xmlStyle == null)
       {
-        IdentifierGenerator idgen = new IdentifierGenerator ();
+        IdentifierGenerator idgen = new IdentifierGenerator();
         idgen._isTemplate = true;
 
         idgen.AllowEnglishLetters = true;
@@ -145,7 +145,7 @@ public class IdentifierGenerator: ICloneable
   }
 
   /// <summary> Hashtable&lt;object uniqueObject, string uniqueIdentifier&gt; </summary>
-  private Hashtable? _uniqueIdentfiersByObject; 
+  private Hashtable? _uniqueIdentfiersByObject;
   /// <summary> Hashtable&lt;string uniqueIdentifier, null&gt; </summary>
   private Hashtable? _uniqueIdentifiers;
   /// <summary> Specifies that the IdentifierGenerator must be cloned and cannot be used directly. </summary>
@@ -175,8 +175,8 @@ public class IdentifierGenerator: ICloneable
   public void AddSpecificReplaceString (char characterToReplace, string stringToReplaceWith)
   {
     if (_specificReplaceStrings == null)
-      _specificReplaceStrings = new Hashtable ();
-    _specificReplaceStrings.Add (characterToReplace, stringToReplaceWith);
+      _specificReplaceStrings = new Hashtable();
+    _specificReplaceStrings.Add(characterToReplace, stringToReplaceWith);
   }
 
   public IdentifierGenerator ()
@@ -185,7 +185,7 @@ public class IdentifierGenerator: ICloneable
 
   public string GetValidIdentifier (string str)
   {
-    StringBuilder sb = new StringBuilder (str.Length);
+    StringBuilder sb = new StringBuilder(str.Length);
 
     bool allowEnglishLetters;
     bool allowLanguageSpecificLetters;
@@ -226,30 +226,30 @@ public class IdentifierGenerator: ICloneable
 
       if (_specificReplaceStrings != null)
       {
-        string? replaceString = (string?) _specificReplaceStrings[c];
+        string? replaceString = (string?)_specificReplaceStrings[c];
         if (replaceString != null)
           isValid = true;
       }
 
       if (   isValid
-          || (   allowLanguageSpecificLetters 
-              && char.IsLetter (c))
-          || (   ! allowLanguageSpecificLetters 
-              && allowEnglishLetters 
+          || (   allowLanguageSpecificLetters
+              && char.IsLetter(c))
+          || (   ! allowLanguageSpecificLetters
+              && allowEnglishLetters
               && (    (c >= 'a' && c <= 'z')
                   || (c >= 'A' && c <= 'Z')))
-          || (   allowDigits 
-              && char.IsDigit (c))
-          || (   allowAdditionalCharacters != null 
-              && allowAdditionalCharacters.IndexOf (c) >= 0))
+          || (   allowDigits
+              && char.IsDigit(c))
+          || (   allowAdditionalCharacters != null
+              && allowAdditionalCharacters.IndexOf(c) >= 0))
       {
         isValid = true;
       }
 
       if (isValid)
-        sb.Append (c);
+        sb.Append(c);
       else
-        sb.Append (defaultReplaceString);
+        sb.Append(defaultReplaceString);
     }
 
     return sb.ToString();
@@ -258,35 +258,35 @@ public class IdentifierGenerator: ICloneable
   public string GetUniqueIdentifier (object uniqueObject, string name)
   {
     if (_isTemplate)
-      throw new InvalidOperationException ("This instance of IdentifierGenerator is a template. Use the Clone method to create a new IdentifierGenerator that can be used to create unique identifieres.");
+      throw new InvalidOperationException("This instance of IdentifierGenerator is a template. Use the Clone method to create a new IdentifierGenerator that can be used to create unique identifieres.");
 
     if (_uniqueIdentifiers == null)
     {
       if (_isCaseSensitive)
-        _uniqueIdentifiers = new Hashtable ();
+        _uniqueIdentifiers = new Hashtable();
       else
-        _uniqueIdentifiers = new Hashtable (StringComparer.CurrentCultureIgnoreCase);
+        _uniqueIdentifiers = new Hashtable(StringComparer.CurrentCultureIgnoreCase);
 
       if (_useCaseSensitiveNames)
-        _uniqueIdentfiersByObject = new Hashtable ();
+        _uniqueIdentfiersByObject = new Hashtable();
       else
-        _uniqueIdentfiersByObject = new Hashtable (StringComparer.CurrentCultureIgnoreCase);
+        _uniqueIdentfiersByObject = new Hashtable(StringComparer.CurrentCultureIgnoreCase);
     }
     else
     {
-      string? uniqueIdentifier = (string?) _uniqueIdentfiersByObject![uniqueObject];
+      string? uniqueIdentifier = (string?)_uniqueIdentfiersByObject![uniqueObject];
       if (uniqueIdentifier != null)
         return uniqueIdentifier;
     }
 
-    string identifier = GetValidIdentifier (name);
+    string identifier = GetValidIdentifier(name);
 
     if (_uniqueIdentifiers.Contains(identifier))
     {
       for (int uniqueNum = 1; ; ++uniqueNum)
       {
         string numberedIdentifier = identifier + _uniqueSeparator + uniqueNum.ToString();
-        if (! _uniqueIdentifiers.Contains (numberedIdentifier))
+        if (! _uniqueIdentifiers.Contains(numberedIdentifier))
         {
           identifier = numberedIdentifier;
           break;
@@ -294,14 +294,14 @@ public class IdentifierGenerator: ICloneable
       }
     }
 
-    _uniqueIdentfiersByObject.Add (uniqueObject, identifier);
-    _uniqueIdentifiers.Add (identifier, null);
+    _uniqueIdentfiersByObject.Add(uniqueObject, identifier);
+    _uniqueIdentifiers.Add(identifier, null);
     return identifier;
   }
 
   public string GetUniqueIdentifier (string uniqueName)
   {
-    return GetUniqueIdentifier (uniqueName, uniqueName);
+    return GetUniqueIdentifier(uniqueName, uniqueName);
   }
 
   /// <summary>
@@ -456,11 +456,11 @@ public class IdentifierGenerator: ICloneable
   public bool IsCaseSensitive
   {
     get { return _isCaseSensitive; }
-    set 
-    { 
+    set
+    {
       if (_uniqueIdentifiers != null)
-        throw new InvalidOperationException ("Cannot change property IsCaseSensitive after unique identifiers have been produced.");
-      _isCaseSensitive = value; 
+        throw new InvalidOperationException("Cannot change property IsCaseSensitive after unique identifiers have been produced.");
+      _isCaseSensitive = value;
     }
   }
 
@@ -474,15 +474,15 @@ public class IdentifierGenerator: ICloneable
   public bool UseCaseSensitiveNames
   {
     get { return _useCaseSensitiveNames; }
-    set 
-    { 
+    set
+    {
       if (_uniqueIdentfiersByObject != null)
-        throw new InvalidOperationException ("Cannot change property UseCaseSensitiveNames after unique identifiers have been produced.");
-      _useCaseSensitiveNames = value; 
+        throw new InvalidOperationException("Cannot change property UseCaseSensitiveNames after unique identifiers have been produced.");
+      _useCaseSensitiveNames = value;
     }
   }
 
-  object ICloneable.Clone()
+  object ICloneable.Clone ()
   {
     return this.Clone();
   }
@@ -495,7 +495,7 @@ public class IdentifierGenerator: ICloneable
   /// </remarks>
   public IdentifierGenerator Clone ()
   {
-    IdentifierGenerator clone = new IdentifierGenerator ();
+    IdentifierGenerator clone = new IdentifierGenerator();
 
     clone._uniqueSeparator = this._uniqueSeparator;
 

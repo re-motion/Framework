@@ -39,7 +39,7 @@ public class CommandLineParser
 
   public CommandLineParser ()
   {
-    Arguments = new CommandLineArgumentCollection (this);
+    Arguments = new CommandLineArgumentCollection(this);
   }
 
 
@@ -47,14 +47,14 @@ public class CommandLineParser
 
   public char Separator
   {
-    get 
-    { 
-      return _separator; 
+    get
+    {
+      return _separator;
     }
-    set 
-    { 
-      if (char.IsWhiteSpace(value))  throw new ArgumentOutOfRangeException ("value", value, "Whitespace is not supported as separator.");
-      _separator = value; 
+    set
+    {
+      if (char.IsWhiteSpace(value))  throw new ArgumentOutOfRangeException("value", value, "Whitespace is not supported as separator.");
+      _separator = value;
     }
   }
 
@@ -101,7 +101,7 @@ public class CommandLineParser
             break;
           default:
             state = 1;
-            current.Append (c);
+            current.Append(c);
             break;
         }
       }
@@ -116,12 +116,12 @@ public class CommandLineParser
             state = 0;
             if (current.Length > 0)
             {
-              argsArray.Add (current.ToString());
+              argsArray.Add(current.ToString());
               current.Length = 0;
             }
             break;
           default:
-            current.Append (c);
+            current.Append(c);
             break;
         }
       }
@@ -132,7 +132,7 @@ public class CommandLineParser
           case '\"':
             if (((i + 1) < len) && (commandLine[i+1] == '\"'))
             {
-              current.Append ('\"');
+              current.Append('\"');
               ++i;
             }
             else
@@ -142,15 +142,15 @@ public class CommandLineParser
             break;
 
           default:
-            current.Append (c);
+            current.Append(c);
             break;
         }
       }
     }
     if (current.Length > 0)
-      argsArray.Add (current.ToString());
+      argsArray.Add(current.ToString());
 
-    int copyStart = 0; 
+    int copyStart = 0;
     int copyCount = argsArray.Count;
     if (! includeFirstArgument)
     {
@@ -158,7 +158,7 @@ public class CommandLineParser
       -- copyCount;
     }
     string[] args = new string[copyCount];
-    argsArray.CopyTo (copyStart, args, 0, copyCount);
+    argsArray.CopyTo(copyStart, args, 0, copyCount);
     return args;
   }
 
@@ -172,7 +172,7 @@ public class CommandLineParser
   /// <exception cref="MissingRequiredCommandLineParameterException">A non-optional command line argument is not contained in the command line.</exception>
   public void Parse (string commandLine, bool includeFirstArgument)
   {
-    Parse (SplitCommandLine (commandLine, includeFirstArgument));
+    Parse(SplitCommandLine(commandLine, includeFirstArgument));
   }
 
   /// <summary>
@@ -190,49 +190,49 @@ public class CommandLineParser
     for (int i = 0; i < args.Length; ++i)
     {
       string arg = args[i];
-      if (arg.StartsWith (_argumentDeclarationPrefix))
+      if (arg.StartsWith(_argumentDeclarationPrefix))
       {
         string? name = null;
         string? value = null;
 
-        arg = arg.Substring (1);
-        int pos = arg.IndexOf (_separator);
+        arg = arg.Substring(1);
+        int pos = arg.IndexOf(_separator);
         if (pos >= 0)
         {
-          name = arg.Substring (0, pos);
-          value = arg.Substring (pos + 1);
+          name = arg.Substring(0, pos);
+          value = arg.Substring(pos + 1);
         }
-        else 
+        else
         {
-          pos = arg.IndexOfAny (new char[] { '+', '-' });
+          pos = arg.IndexOfAny(new char[] { '+', '-' });
           if (pos >= 0)
           {
-            name = arg.Substring (0, pos);
-            value = arg.Substring (pos);
+            name = arg.Substring(0, pos);
+            value = arg.Substring(pos);
           }
         }
         if (name == null)
           name = arg;
 
-        CommandLineArgument argument = GetArgument (name);
+        CommandLineArgument argument = GetArgument(name);
 
-        argument.SetStringValue ((value != null) ? value : string.Empty);
+        argument.SetStringValue((value != null) ? value : string.Empty);
       }
       else
       {
-        CommandLineArgument? argument = GetPositionalArgument (nextPositionalArgument);
+        CommandLineArgument? argument = GetPositionalArgument(nextPositionalArgument);
         if (argument == null)
-          throw new InvalidNumberOfCommandLineArgumentsException (arg, nextPositionalArgument);
+          throw new InvalidNumberOfCommandLineArgumentsException(arg, nextPositionalArgument);
         ++ nextPositionalArgument;
 
-        argument.SetStringValue (arg);
+        argument.SetStringValue(arg);
       }
     }
 
     foreach (CommandLineArgument argument in this.Arguments)
     {
       if (! argument.IsOptional && argument.StringValue == null)
-        throw new MissingRequiredCommandLineParameterException (argument);
+        throw new MissingRequiredCommandLineParameterException(argument);
     }
   }
 
@@ -264,12 +264,12 @@ public class CommandLineParser
         if (argumentName == null)
           continue;
 
-        if (string.Compare (argumentName, name, !_isCaseSensitive, CultureInfo.InvariantCulture) == 0)
+        if (string.Compare(argumentName, name, !_isCaseSensitive, CultureInfo.InvariantCulture) == 0)
         {
           return argument;
         }
         else if (argumentName.Length > name.Length
-               && string.Compare (argumentName, 0, name, 0, name.Length, !_isCaseSensitive, CultureInfo.InvariantCulture) == 0)
+               && string.Compare(argumentName, 0, name, 0, name.Length, !_isCaseSensitive, CultureInfo.InvariantCulture) == 0)
         {
           if (foundArgument != null)
             found2ndArgument = true;
@@ -279,9 +279,9 @@ public class CommandLineParser
       }
 
       if (foundArgument == null)
-        throw new InvalidCommandLineArgumentNameException (name, InvalidCommandLineArgumentNameException.MessageNotFound);
+        throw new InvalidCommandLineArgumentNameException(name, InvalidCommandLineArgumentNameException.MessageNotFound);
       else if (found2ndArgument)
-        throw new InvalidCommandLineArgumentNameException (name, InvalidCommandLineArgumentNameException.MessageAmbiguous);
+        throw new InvalidCommandLineArgumentNameException(name, InvalidCommandLineArgumentNameException.MessageAmbiguous);
 
       return foundArgument;
     }
@@ -292,7 +292,7 @@ public class CommandLineParser
         if (argument.Name == name)
           return argument;
       }
-      throw new InvalidCommandLineArgumentNameException (name, InvalidCommandLineArgumentNameException.MessageNotFound);
+      throw new InvalidCommandLineArgumentNameException(name, InvalidCommandLineArgumentNameException.MessageNotFound);
     }
 
   }
@@ -305,9 +305,9 @@ public class CommandLineParser
   /// <returns>A syntax overview containing a short command line overview and a table of parameters and desciptions.</returns>
   public string GetAsciiSynopsis (string commandName, int maxWidth)
   {
-    StringBuilder sb = new StringBuilder (2048); 
+    StringBuilder sb = new StringBuilder(2048);
 
-    sb.Append (commandName);
+    sb.Append(commandName);
     int maxLength = 0;
     int openSquareBrackets = 0;
     for (int i = 0; i < Arguments.Count; ++i)
@@ -318,10 +318,10 @@ public class CommandLineParser
       if (argument is { } and not ICommandLinePartArgument)
       {
         // append opening square bracket
-        sb.Append (" ");
+        sb.Append(" ");
         if (argument.IsOptional)
         {
-          sb.Append ("[");
+          sb.Append("[");
           ++ openSquareBrackets;
         }
 
@@ -329,11 +329,11 @@ public class CommandLineParser
 
         // append closing square brackets after last optional argument
         if (   nextArgument == null
-            || ! nextArgument.IsOptional 
+            || ! nextArgument.IsOptional
             || ! nextArgument.IsPositional)
         {
           for (int k = 0; k < openSquareBrackets; ++k)
-            sb.Append ("]");
+            sb.Append("]");
           openSquareBrackets = 0;
         }
       }
@@ -341,19 +341,19 @@ public class CommandLineParser
       if (argument is { } and not CommandLineGroupArgument)
       {
         if (argument.Name != null)
-          maxLength = Math.Max (maxLength, argument.Name.Length + 1);
+          maxLength = Math.Max(maxLength, argument.Name.Length + 1);
         else if (argument.Placeholder != null)
-          maxLength = Math.Max (maxLength, argument.Placeholder.Length);
+          maxLength = Math.Max(maxLength, argument.Placeholder.Length);
       }
     }
 
     // insert word breaks
     string synopsis = sb.ToString();
     sb.Length = 0;
-    MonospaceTextFormat.AppendWrappedText (sb, maxWidth, synopsis);
+    MonospaceTextFormat.AppendWrappedText(sb, maxWidth, synopsis);
 
     // create parameter name/description table
-    sb.Append ("\n");
+    sb.Append("\n");
     foreach (CommandLineArgument argument in Arguments)
     {
       if (! (argument is CommandLineGroupArgument))
@@ -362,8 +362,8 @@ public class CommandLineParser
         if (argument.Name != null)
           name = _argumentDeclarationPrefix + argument.Name;
 
-        sb.AppendFormat ("\n  {0,-" + maxLength.ToString() + "}  ", name);
-        MonospaceTextFormat.AppendIndentedText (sb, maxLength + 4, maxWidth, argument.Description);
+        sb.AppendFormat("\n  {0,-" + maxLength.ToString() + "}  ", name);
+        MonospaceTextFormat.AppendIndentedText(sb, maxLength + 4, maxWidth, argument.Description);
       }
     }
 

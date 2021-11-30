@@ -39,11 +39,11 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [Test]
     public void CheckValid_MixinType_ExceptionIsThrown ()
     {
-      _collectorStub.Setup (stub => stub.ValidatedType).Returns (typeof (CustomerMixin));
+      _collectorStub.Setup(stub => stub.ValidatedType).Returns(typeof(CustomerMixin));
 
-      Assert.That (
-          () => _validator.CheckValid (_collectorStub.Object),
-          Throws.TypeOf<NotSupportedException> ().And.Message.EqualTo (
+      Assert.That(
+          () => _validator.CheckValid(_collectorStub.Object),
+          Throws.TypeOf<NotSupportedException>().And.Message.EqualTo(
               "Validation rules for type 'Remotion.Validation.Mixins.UnitTests.TestDomain.CustomerMixin' are not supported. "
               + "If validation rules should be defined for mixins, please ensure to apply the rules to 'ITargetInterface' or 'IIntroducedInterface' instead."
               ));
@@ -52,9 +52,9 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [Test]
     public void CheckValid_NoMixinType_NoExceptionIsThrown ()
     {
-      _collectorStub.Setup (stub => stub.ValidatedType).Returns (typeof (Customer));
+      _collectorStub.Setup(stub => stub.ValidatedType).Returns(typeof(Customer));
 
-      _validator.CheckValid (_collectorStub.Object);
+      _validator.CheckValid(_collectorStub.Object);
     }
   }
 }

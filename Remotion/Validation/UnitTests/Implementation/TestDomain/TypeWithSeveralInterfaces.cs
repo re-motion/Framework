@@ -29,7 +29,7 @@ namespace Remotion.Validation.UnitTests.Implementation.TestDomain
   public interface ITypeWithServeralInterfaces1
   {
   }
-  
+
   public class TypeWithSeveralInterfaces : ITypeWithServeralInterfaces1, ITypeWithSeveralInterfaces2, ITypeWithSeveralInterfaces3
   {
   }

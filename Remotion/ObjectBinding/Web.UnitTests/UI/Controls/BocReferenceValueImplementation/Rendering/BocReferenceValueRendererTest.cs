@@ -60,10 +60,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     private IBusinessObjectProvider _provider;
     private BusinessObjectReferenceDataSource _dataSource;
-    protected static readonly Unit Width = Unit.Pixel (250);
-    protected static readonly Unit Height = Unit.Point (12);
+    protected static readonly Unit Width = Unit.Pixel(250);
+    protected static readonly Unit Height = Unit.Point(12);
     private IResourceUrlFactory _resourceUrlFactoryStub;
-    
+
     public Mock<IClientScriptManager> ClientScriptManagerMock { get; set; }
     public Mock<IBocReferenceValue> Control { get; set; }
     public TypeWithReference BusinessObject { get; set; }
@@ -79,54 +79,54 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       DropDownList = new StubDropDownList();
 
       Control = new Mock<IBocReferenceValue>();
-      Control.SetupProperty (_ => _.CssClass);
-      Control.Setup (stub => stub.ClientID).Returns (c_clientID);
-      Control.Setup (stub => stub.ControlType).Returns ("BocReferenceValue");
-      Control.Setup (mock => mock.GetLabelIDs()).Returns (EnumerableUtility.Singleton (c_labelID));
-      Control.Setup (mock => mock.GetValidationErrors()).Returns (EnumerableUtility.Singleton (c_validationErrors));
-      Control.Setup (stub => stub.BusinessObjectUniqueIdentifier).Returns (c_uniqueIdentifier);
+      Control.SetupProperty(_ => _.CssClass);
+      Control.Setup(stub => stub.ClientID).Returns(c_clientID);
+      Control.Setup(stub => stub.ControlType).Returns("BocReferenceValue");
+      Control.Setup(mock => mock.GetLabelIDs()).Returns(EnumerableUtility.Singleton(c_labelID));
+      Control.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(c_validationErrors));
+      Control.Setup(stub => stub.BusinessObjectUniqueIdentifier).Returns(c_uniqueIdentifier);
 
-      Control.Setup (stub => stub.OptionsMenu).Returns (OptionsMenu);
+      Control.Setup(stub => stub.OptionsMenu).Returns(OptionsMenu);
 
       var pageStub = new Mock<IPage>();
-      pageStub.Setup (stub => stub.WrappedInstance).Returns (new PageMock());
-      Control.Setup (stub => stub.Page).Returns (pageStub.Object);
+      pageStub.Setup(stub => stub.WrappedInstance).Returns(new PageMock());
+      Control.Setup(stub => stub.Page).Returns(pageStub.Object);
 
       ClientScriptManagerMock = new Mock<IClientScriptManager>();
-      pageStub.Setup (stub => stub.ClientScript).Returns (ClientScriptManagerMock.Object);
+      pageStub.Setup(stub => stub.ClientScript).Returns(ClientScriptManagerMock.Object);
 
-      BusinessObject = TypeWithReference.Create ("MyBusinessObject");
+      BusinessObject = TypeWithReference.Create("MyBusinessObject");
       BusinessObject.ReferenceList = new[]
                                      {
-                                         TypeWithReference.Create ("ReferencedObject 0"),
-                                         TypeWithReference.Create ("ReferencedObject 1"),
-                                         TypeWithReference.Create ("ReferencedObject 2")
+                                         TypeWithReference.Create("ReferencedObject 0"),
+                                         TypeWithReference.Create("ReferencedObject 1"),
+                                         TypeWithReference.Create("ReferencedObject 2")
                                      };
       _dataSource = new BusinessObjectReferenceDataSource();
-      _dataSource.BusinessObject = (IBusinessObject) BusinessObject;
+      _dataSource.BusinessObject = (IBusinessObject)BusinessObject;
 
-      _provider = ((IBusinessObject) BusinessObject).BusinessObjectClass.BusinessObjectProvider;
-      _provider.AddService<IBusinessObjectWebUIService> (new ReflectionBusinessObjectWebUIService());
+      _provider = ((IBusinessObject)BusinessObject).BusinessObjectClass.BusinessObjectProvider;
+      _provider.AddService<IBusinessObjectWebUIService>(new ReflectionBusinessObjectWebUIService());
 
       StateBag stateBag = new StateBag();
-      Control.Setup (mock => mock.Attributes).Returns (new AttributeCollection (stateBag));
-      Control.Setup (mock => mock.Style).Returns (Control.Object.Attributes.CssStyle);
-      Control.Setup (mock => mock.LabelStyle).Returns (new Style (stateBag));
-      Control.Setup (mock => mock.DropDownListStyle).Returns (new DropDownListStyle());
-      Control.Setup (mock => mock.ControlStyle).Returns (new Style (stateBag));
-      Control.Setup (stub => stub.GetValueName ()).Returns (c_valueName);
-      Control.Setup (stub => stub.PopulateDropDownList (It.IsNotNull<DropDownList>()))
-          .Callback (
+      Control.Setup(mock => mock.Attributes).Returns(new AttributeCollection(stateBag));
+      Control.Setup(mock => mock.Style).Returns(Control.Object.Attributes.CssStyle);
+      Control.Setup(mock => mock.LabelStyle).Returns(new Style(stateBag));
+      Control.Setup(mock => mock.DropDownListStyle).Returns(new DropDownListStyle());
+      Control.Setup(mock => mock.ControlStyle).Returns(new Style(stateBag));
+      Control.Setup(stub => stub.GetValueName()).Returns(c_valueName);
+      Control.Setup(stub => stub.PopulateDropDownList(It.IsNotNull<DropDownList>()))
+          .Callback(
               (DropDownList dropDownList) =>
               {
                 foreach (var item in BusinessObject.ReferenceList)
-                  dropDownList.Items.Add (new ListItem (item.DisplayName, item.UniqueIdentifier));
+                  dropDownList.Items.Add(new ListItem(item.DisplayName, item.UniqueIdentifier));
               });
 
-      Control.Setup (stub => stub.GetLabelText()).Returns ("MyText");
-      Control.Setup (stub => stub.ResolveClientUrl (It.IsAny<string>())).Returns ((string url) => url.TrimStart ('~'));
-      Control.Setup (stub => stub.GetResourceManager()).Returns (NullResourceManager.Instance);
-      Control.Setup (stub => stub.NullValueString).Returns ("null-id");
+      Control.Setup(stub => stub.GetLabelText()).Returns("MyText");
+      Control.Setup(stub => stub.ResolveClientUrl(It.IsAny<string>())).Returns((string url) => url.TrimStart('~'));
+      Control.Setup(stub => stub.GetResourceManager()).Returns(NullResourceManager.Instance);
+      Control.Setup(stub => stub.NullValueString).Returns("null-id");
 
       _resourceUrlFactoryStub = new FakeResourceUrlFactory();
     }
@@ -140,267 +140,267 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     [Test]
     public void RenderNullReferenceValue ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      XmlNode containerDiv = GetAssertedContainerSpan (false);
-      AssertControl (containerDiv, OptionMenuConfiguration.NoOptionsMenu);
+      Control.Setup(stub => stub.Enabled).Returns(true);
+      XmlNode containerDiv = GetAssertedContainerSpan(false);
+      AssertControl(containerDiv, OptionMenuConfiguration.NoOptionsMenu);
     }
 
     [Test]
     public void RenderNullReferenceValueWithOptionsMenu ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
+      Control.Setup(stub => stub.HasOptionsMenu).Returns(true);
 
-      XmlNode containerDiv = GetAssertedContainerSpan (false);
-      AssertControl (containerDiv, OptionMenuConfiguration.HasOptionsMenu);
+      XmlNode containerDiv = GetAssertedContainerSpan(false);
+      AssertControl(containerDiv, OptionMenuConfiguration.HasOptionsMenu);
     }
 
     [Test]
     public void RenderNullReferenceValueReadOnly ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
-      Control.Setup (stub => stub.IsReadOnly).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
+      Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
+      Control.Setup(stub => stub.IsReadOnly).Returns(true);
 
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertReadOnlyContent (span);
+      XmlNode span = GetAssertedContainerSpan(false);
+      AssertReadOnlyContent(span);
     }
 
     [Test]
     public void RenderNullReferenceValueReadOnlyWithStyle ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
-      Control.Setup (stub => stub.IsReadOnly).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
+      Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
+      Control.Setup(stub => stub.IsReadOnly).Returns(true);
       AddStyle();
 
-      XmlNode span = GetAssertedContainerSpan (true);
-      AssertReadOnlyContent (span);
+      XmlNode span = GetAssertedContainerSpan(true);
+      AssertReadOnlyContent(span);
     }
 
     [Test]
     public void RenderNullReferenceValueReadOnlyWithOptionsMenu ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
-      Control.Setup (stub => stub.IsReadOnly).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
+      Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
+      Control.Setup(stub => stub.HasOptionsMenu).Returns(true);
+      Control.Setup(stub => stub.IsReadOnly).Returns(true);
 
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertReadOnlyContent (span);
+      XmlNode span = GetAssertedContainerSpan(false);
+      AssertReadOnlyContent(span);
 
-      Assert.That (OptionsMenu.Style["width"], Is.Null);
-      Assert.That (OptionsMenu.Style["height"], Is.Null);
+      Assert.That(OptionsMenu.Style["width"], Is.Null);
+      Assert.That(OptionsMenu.Style["height"], Is.Null);
     }
 
     [Test]
     public void RenderNullReferenceValueWithStyle ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
       AddStyle();
 
-      XmlNode span = GetAssertedContainerSpan (true);
-      AssertControl (span, OptionMenuConfiguration.NoOptionsMenu);
+      XmlNode span = GetAssertedContainerSpan(true);
+      AssertControl(span, OptionMenuConfiguration.NoOptionsMenu);
     }
 
     [Test]
     public void RenderNullReferenceValueWithOptionsAndStyle ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
+      Control.Setup(stub => stub.HasOptionsMenu).Returns(true);
       AddStyle();
 
-      XmlNode span = GetAssertedContainerSpan (true);
-      AssertControl (span, OptionMenuConfiguration.HasOptionsMenu);
+      XmlNode span = GetAssertedContainerSpan(true);
+      AssertControl(span, OptionMenuConfiguration.HasOptionsMenu);
 
-      Assert.That (OptionsMenu.Style["width"], Is.Null);
-      Assert.That (OptionsMenu.Style["height"], Is.Null);
+      Assert.That(OptionsMenu.Style["width"], Is.Null);
+      Assert.That(OptionsMenu.Style["height"], Is.Null);
     }
 
     [Test]
     public void RenderNullReferenceValueWithIcon ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
-      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
-      Control.Setup (stub => stub.Property).Returns (
-          (IBusinessObjectReferenceProperty) ((IBusinessObject) BusinessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue"));
+      Control.Setup(stub => stub.Enabled).Returns(true);
+      Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
+      Control.Setup(stub => stub.Property).Returns(
+          (IBusinessObjectReferenceProperty)((IBusinessObject)BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
       SetUpGetIconExpectations();
 
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertControl (span, OptionMenuConfiguration.NoOptionsMenu);
+      XmlNode span = GetAssertedContainerSpan(false);
+      AssertControl(span, OptionMenuConfiguration.NoOptionsMenu);
     }
 
     [Test]
     public void RenderReferenceValue ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
       SetValue();
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertControl (span, OptionMenuConfiguration.NoOptionsMenu);
+      XmlNode span = GetAssertedContainerSpan(false);
+      AssertControl(span, OptionMenuConfiguration.NoOptionsMenu);
     }
 
     [Test]
     public void RenderReferenceValueAutoPostback ()
     {
       DropDownList.AutoPostBack = false;
-      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
       SetValue();
 
-      Control.Setup (stub => stub.DropDownListStyle).Returns (new DropDownListStyle());
+      Control.Setup(stub => stub.DropDownListStyle).Returns(new DropDownListStyle());
       Control.Object.DropDownListStyle.AutoPostBack = true;
 
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertControl (span, OptionMenuConfiguration.NoOptionsMenu);
-      Assert.That (DropDownList.AutoPostBack, Is.True);
+      XmlNode span = GetAssertedContainerSpan(false);
+      AssertControl(span, OptionMenuConfiguration.NoOptionsMenu);
+      Assert.That(DropDownList.AutoPostBack, Is.True);
     }
 
     private void SetValue ()
     {
       BusinessObject.ReferenceValue = BusinessObject.ReferenceList[0];
-      Control.Setup (stub => stub.Value).Returns ((IBusinessObjectWithIdentity) BusinessObject.ReferenceValue);
+      Control.Setup(stub => stub.Value).Returns((IBusinessObjectWithIdentity)BusinessObject.ReferenceValue);
     }
 
     [Test]
     public void RenderReferenceValueWithOptionsMenu ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
       SetValue();
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
+      Control.Setup(stub => stub.HasOptionsMenu).Returns(true);
 
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertControl (span, OptionMenuConfiguration.HasOptionsMenu);
+      XmlNode span = GetAssertedContainerSpan(false);
+      AssertControl(span, OptionMenuConfiguration.HasOptionsMenu);
 
-      Assert.That (OptionsMenu.Style["width"], Is.Null);
-      Assert.That (OptionsMenu.Style["height"], Is.Null);
+      Assert.That(OptionsMenu.Style["width"], Is.Null);
+      Assert.That(OptionsMenu.Style["height"], Is.Null);
     }
 
     [Test]
     public void RenderReferenceValueReadOnly ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
       SetValue();
-      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
-      Control.Setup (stub => stub.IsReadOnly).Returns (true);
+      Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
+      Control.Setup(stub => stub.IsReadOnly).Returns(true);
 
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertReadOnlyContent (span);
+      XmlNode span = GetAssertedContainerSpan(false);
+      AssertReadOnlyContent(span);
     }
 
     [Test]
     public void RenderReferenceValueReadOnlyWithStyle ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
       SetValue();
-      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
-      Control.Setup (stub => stub.IsReadOnly).Returns (true);
+      Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
+      Control.Setup(stub => stub.IsReadOnly).Returns(true);
       AddStyle();
 
-      XmlNode span = GetAssertedContainerSpan (true);
-      AssertReadOnlyContent (span);
+      XmlNode span = GetAssertedContainerSpan(true);
+      AssertReadOnlyContent(span);
     }
 
     [Test]
     public void RenderReferenceValueReadOnlyWithOptionsMenu ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
       SetValue();
-      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
-      Control.Setup (stub => stub.ReserveOptionsMenuWidth).Returns (true);
-      Control.Setup (stub => stub.IsReadOnly).Returns (true);
+      Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
+      Control.Setup(stub => stub.HasOptionsMenu).Returns(true);
+      Control.Setup(stub => stub.ReserveOptionsMenuWidth).Returns(true);
+      Control.Setup(stub => stub.IsReadOnly).Returns(true);
 
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertReadOnlyContent (span);
+      XmlNode span = GetAssertedContainerSpan(false);
+      AssertReadOnlyContent(span);
 
-      Assert.That (OptionsMenu.Style["width"], Is.Null);
-      Assert.That (OptionsMenu.Style["height"], Is.Null);
+      Assert.That(OptionsMenu.Style["width"], Is.Null);
+      Assert.That(OptionsMenu.Style["height"], Is.Null);
     }
 
     [Test]
     public void RenderReferenceValueWithStyle ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
       SetValue();
       AddStyle();
 
-      XmlNode span = GetAssertedContainerSpan (true);
-      AssertControl (span, OptionMenuConfiguration.NoOptionsMenu);
+      XmlNode span = GetAssertedContainerSpan(true);
+      AssertControl(span, OptionMenuConfiguration.NoOptionsMenu);
     }
 
     [Test]
     public void RenderReferenceValueWithOptionsAndStyle ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
       SetValue();
-      Control.Setup (stub => stub.HasOptionsMenu).Returns (true);
+      Control.Setup(stub => stub.HasOptionsMenu).Returns(true);
       AddStyle();
 
-      XmlNode span = GetAssertedContainerSpan (true);
-      AssertControl (span, OptionMenuConfiguration.HasOptionsMenu);
+      XmlNode span = GetAssertedContainerSpan(true);
+      AssertControl(span, OptionMenuConfiguration.HasOptionsMenu);
 
-      Assert.That (OptionsMenu.Style["width"], Is.Null);
-      Assert.That (OptionsMenu.Style["height"], Is.Null);
+      Assert.That(OptionsMenu.Style["width"], Is.Null);
+      Assert.That(OptionsMenu.Style["height"], Is.Null);
     }
 
     [Test]
     public void RenderReferenceValueWithIcon ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
       SetValue();
-      Control.Setup (stub => stub.IsIconEnabled()).Returns (true);
-      Control.Setup (stub => stub.Property).Returns (
-          (IBusinessObjectReferenceProperty) ((IBusinessObject) BusinessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue"));
+      Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
+      Control.Setup(stub => stub.Property).Returns(
+          (IBusinessObjectReferenceProperty)((IBusinessObject)BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
       SetUpGetIconExpectations();
 
-      XmlNode span = GetAssertedContainerSpan (false);
-      AssertControl (span, OptionMenuConfiguration.NoOptionsMenu);
+      XmlNode span = GetAssertedContainerSpan(false);
+      AssertControl(span, OptionMenuConfiguration.NoOptionsMenu);
     }
 
     [Test]
     public void RenderIDs ()
     {
-      Control.Setup (stub => stub.Enabled).Returns (true);
+      Control.Setup(stub => stub.Enabled).Returns(true);
 
-      var renderer = new BocReferenceValueRenderer (
+      var renderer = new BocReferenceValueRenderer(
           _resourceUrlFactoryStub,
           GlobalizationService,
           RenderingFeatures.Default,
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
-      renderer.Render (CreateRenderingContext ());
-      var document = Html.GetResultDocument ();
-      var span = document.GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 0).GetAssertedChildElement ("span", 1);
-      var select = span.GetAssertedChildElement ("select", 0);
-      select.AssertAttributeValueEquals ("id", c_valueName);
-      select.AssertAttributeValueEquals ("name", c_valueName);
-      Html.AssertAttribute (select, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      Html.AssertAttribute (select, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
-      Html.AssertAttribute (select, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (select, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      renderer.Render(CreateRenderingContext());
+      var document = Html.GetResultDocument();
+      var span = document.GetAssertedChildElement("span", 0).GetAssertedChildElement("span", 0).GetAssertedChildElement("span", 1);
+      var select = span.GetAssertedChildElement("select", 0);
+      select.AssertAttributeValueEquals("id", c_valueName);
+      select.AssertAttributeValueEquals("name", c_valueName);
+      Html.AssertAttribute(select, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute(select, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute(select, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(select, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
 
-      var validationErrors = span.GetAssertedChildElement ("fake", 1);
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      var validationErrors = span.GetAssertedChildElement("fake", 1);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
     }
 
     [Test]
-    public void RenderDiagnosticMetadataAttributes()
+    public void RenderDiagnosticMetadataAttributes ()
     {
       Control.Object.DropDownListStyle.AutoPostBack = true;
 
-      var renderer = new BocReferenceValueRenderer (
+      var renderer = new BocReferenceValueRenderer(
           _resourceUrlFactoryStub,
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
-      renderer.Render (CreateRenderingContext ());
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
       var control = document.DocumentElement;
-      control.AssertAttributeValueEquals (DiagnosticMetadataAttributes.ControlType, "BocReferenceValue");
-      control.AssertAttributeValueEquals (DiagnosticMetadataAttributes.TriggersPostBack, "true");
-      control.AssertAttributeValueEquals (DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, "null-id");
+      control.AssertAttributeValueEquals(DiagnosticMetadataAttributes.ControlType, "BocReferenceValue");
+      control.AssertAttributeValueEquals(DiagnosticMetadataAttributes.TriggersPostBack, "true");
+      control.AssertAttributeValueEquals(DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, "null-id");
     }
 
     private void AssertReadOnlyContent (XmlNode parent)
@@ -409,101 +409,101 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var optionsMenuOffset = hasOptionsMenu ? 1 : 0;
       var hasOptionsMenuCssClass = hasOptionsMenu ? "hasOptionsMenu" : "withoutOptionsMenu";
 
-      var span = parent.GetAssertedChildElement ("span", 0);
-      span.AssertAttributeValueEquals ("class", "body");
+      var span = parent.GetAssertedChildElement("span", 0);
+      span.AssertAttributeValueEquals("class", "body");
 
-      var hasIcon = AssertIcon (span);
+      var hasIcon = AssertIcon(span);
       var iconOffset = hasIcon ? 1 : 0;
       var hasIconCssClass = hasIcon ? " hasIcon" : "";
 
-      span.AssertChildElementCount (2 + iconOffset + optionsMenuOffset);
+      span.AssertChildElementCount(2 + iconOffset + optionsMenuOffset);
 
-      var contentSpan = span.GetAssertedChildElement ("span", 0 + iconOffset);
-      contentSpan.AssertAttributeValueEquals ("id",  c_contentID);
-      contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed" + hasIconCssClass + " " + hasOptionsMenuCssClass);
-      contentSpan.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      contentSpan.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_readOnlyTextValueName);
-      contentSpan.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      contentSpan.AssertAttributeValueEquals (StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
-      contentSpan.AssertChildElementCount (1);
+      var contentSpan = span.GetAssertedChildElement("span", 0 + iconOffset);
+      contentSpan.AssertAttributeValueEquals("id",  c_contentID);
+      contentSpan.AssertAttributeValueEquals("class", "content remotion-themed" + hasIconCssClass + " " + hasOptionsMenuCssClass);
+      contentSpan.AssertAttributeValueEquals(StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      contentSpan.AssertAttributeValueEquals(StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_readOnlyTextValueName);
+      contentSpan.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      contentSpan.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      contentSpan.AssertChildElementCount(1);
 
-      var innerSpan = contentSpan.GetAssertedChildElement ("span", 0);
-      innerSpan.AssertAttributeValueEquals ("id", c_readOnlyTextValueName);
-      innerSpan.AssertAttributeValueEquals ("data-value", c_uniqueIdentifier);
-      innerSpan.AssertChildElementCount (0);
-      innerSpan.AssertTextNode ("MyText", 0);
+      var innerSpan = contentSpan.GetAssertedChildElement("span", 0);
+      innerSpan.AssertAttributeValueEquals("id", c_readOnlyTextValueName);
+      innerSpan.AssertAttributeValueEquals("data-value", c_uniqueIdentifier);
+      innerSpan.AssertChildElementCount(0);
+      innerSpan.AssertTextNode("MyText", 0);
 
-      var validationErrors = span.GetAssertedChildElement ("fake", 1 + iconOffset);
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      var validationErrors = span.GetAssertedChildElement("fake", 1 + iconOffset);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
 
       if (hasOptionsMenu)
       {
-        var wrapperSpan = span.GetAssertedChildElement ("span", 2 + iconOffset);
-        wrapperSpan.AssertAttributeValueEquals ("class", "optionsMenu");
-        wrapperSpan.AssertChildElementCount (0);
-        wrapperSpan.AssertTextNode ("DropDownMenu", 0);
+        var wrapperSpan = span.GetAssertedChildElement("span", 2 + iconOffset);
+        wrapperSpan.AssertAttributeValueEquals("class", "optionsMenu");
+        wrapperSpan.AssertChildElementCount(0);
+        wrapperSpan.AssertTextNode("DropDownMenu", 0);
       }
     }
 
     private void AssertControl (XmlNode containerDiv, OptionMenuConfiguration optionMenuConfiguration)
     {
-      var contentDiv = containerDiv.GetAssertedChildElement ("span", 0);
-      contentDiv.AssertAttributeValueEquals ("class", "body");
+      var contentDiv = containerDiv.GetAssertedChildElement("span", 0);
+      contentDiv.AssertAttributeValueEquals("class", "body");
 
-      var hasIcon = AssertIcon (contentDiv);
+      var hasIcon = AssertIcon(contentDiv);
       var iconOffset = 1;
       var hasIconCssClass = hasIcon ? " hasIcon" : "";
 
-      var contentSpan = contentDiv.GetAssertedChildElement ("span", iconOffset);
-      contentSpan.AssertAttributeValueEquals ("id",  c_contentID);
+      var contentSpan = contentDiv.GetAssertedChildElement("span", iconOffset);
+      contentSpan.AssertAttributeValueEquals("id",  c_contentID);
       switch (optionMenuConfiguration)
       {
         case OptionMenuConfiguration.NoOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed" + hasIconCssClass + " withoutOptionsMenu");
+          contentSpan.AssertAttributeValueEquals("class", "content remotion-themed" + hasIconCssClass + " withoutOptionsMenu");
           break;
         case OptionMenuConfiguration.HasOptionsMenu:
-          contentSpan.AssertAttributeValueEquals ("class", "content remotion-themed" + hasIconCssClass + " hasOptionsMenu");
+          contentSpan.AssertAttributeValueEquals("class", "content remotion-themed" + hasIconCssClass + " hasOptionsMenu");
           break;
       }
 
-      contentSpan.AssertTextNode ("DropDownList", 0);
+      contentSpan.AssertTextNode("DropDownList", 0);
 
       if (optionMenuConfiguration == OptionMenuConfiguration.HasOptionsMenu)
       {
-        var optionsMenuDiv = contentDiv.GetAssertedChildElement ("span", 1 + iconOffset);
-        optionsMenuDiv.AssertAttributeValueEquals ("class", "optionsMenu");
-        optionsMenuDiv.AssertTextNode ("DropDownMenu", 0);
+        var optionsMenuDiv = contentDiv.GetAssertedChildElement("span", 1 + iconOffset);
+        optionsMenuDiv.AssertAttributeValueEquals("class", "optionsMenu");
+        optionsMenuDiv.AssertTextNode("DropDownMenu", 0);
       }
     }
 
     private XmlNode GetAssertedContainerSpan (bool withStyle)
     {
-      var renderer = new TestableBocReferenceValueRenderer (
+      var renderer = new TestableBocReferenceValueRenderer(
           _resourceUrlFactoryStub,
           GlobalizationService,
           RenderingFeatures.Default,
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer(),
           () => DropDownList);
-      renderer.Render (CreateRenderingContext());
-      
-      var document = Html.GetResultDocument();
-      var containerDiv = document.GetAssertedChildElement ("span", 0);
+      renderer.Render(CreateRenderingContext());
 
-      containerDiv.AssertAttributeValueEquals ("id", c_clientID);
-      containerDiv.AssertAttributeValueContains ("class", "bocReferenceValue");
+      var document = Html.GetResultDocument();
+      var containerDiv = document.GetAssertedChildElement("span", 0);
+
+      containerDiv.AssertAttributeValueEquals("id", c_clientID);
+      containerDiv.AssertAttributeValueContains("class", "bocReferenceValue");
       if (Control.Object.IsReadOnly)
-        containerDiv.AssertAttributeValueContains ("class", "readOnly");
+        containerDiv.AssertAttributeValueContains("class", "readOnly");
       if (!Control.Object.Enabled)
-        containerDiv.AssertAttributeValueContains ("class", "disabled");
+        containerDiv.AssertAttributeValueContains("class", "disabled");
       if (Control.Object.HasOptionsMenu && Control.Object.ReserveOptionsMenuWidth)
-        containerDiv.AssertAttributeValueContains ("class", "reserveOptionsMenuWidth");
+        containerDiv.AssertAttributeValueContains("class", "reserveOptionsMenuWidth");
 
       if (withStyle)
       {
-        containerDiv.AssertStyleAttribute ("width", Width.ToString());
-        containerDiv.AssertStyleAttribute ("height", Height.ToString());
+        containerDiv.AssertStyleAttribute("width", Width.ToString());
+        containerDiv.AssertStyleAttribute("height", Height.ToString());
       }
 
       return containerDiv;
@@ -511,8 +511,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     protected void AddStyle ()
     {
-      Control.SetupProperty (_ => _.Height);
-      Control.SetupProperty (_ => _.Width);
+      Control.SetupProperty(_ => _.Height);
+      Control.SetupProperty(_ => _.Width);
       Control.Object.Height = Height;
       Control.Object.Width = Width;
       Control.Object.Style["height"] = Control.Object.Height.ToString();
@@ -521,7 +521,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     protected void SetUpGetIconExpectations ()
     {
-      Control.Setup (mock => mock.GetIcon ()).Returns (new IconInfo ("~/Images/NullIcon.gif")).Verifiable();
+      Control.Setup(mock => mock.GetIcon()).Returns(new IconInfo("~/Images/NullIcon.gif")).Verifiable();
     }
 
     private bool AssertIcon (XmlNode parent)
@@ -535,22 +535,22 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
         return false;
 
       var iconOffset = 0;
-      var iconParent = parent.GetAssertedChildElement ("span", iconOffset);
+      var iconParent = parent.GetAssertedChildElement("span", iconOffset);
 
-      iconParent.AssertAttributeValueEquals ("class", "icon");
-      iconParent.AssertChildElementCount (1);
+      iconParent.AssertAttributeValueEquals("class", "icon");
+      iconParent.AssertChildElementCount(1);
 
-      var icon = iconParent.GetAssertedChildElement ("img", 0);
-      icon.AssertAttributeValueEquals ("src", "/Images/NullIcon.gif");
+      var icon = iconParent.GetAssertedChildElement("img", 0);
+      icon.AssertAttributeValueEquals("src", "/Images/NullIcon.gif");
 
       return true;
     }
 
     private BocReferenceValueRenderingContext CreateRenderingContext ()
     {
-      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (Control.Object.DataSource, Control.Object.Property, "Args");
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(Control.Object.DataSource, Control.Object.Property, "Args");
 
-      return new BocReferenceValueRenderingContext (HttpContext, Html.Writer, Control.Object, businessObjectWebServiceContext);
+      return new BocReferenceValueRenderingContext(HttpContext, Html.Writer, Control.Object, businessObjectWebServiceContext);
     }
   }
 }

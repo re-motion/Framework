@@ -35,90 +35,90 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
       _locator1 = MockRepository.GenerateStub<IServiceLocator>();
       _locator2 = MockRepository.GenerateStub<IServiceLocator>();
 
-      ServiceLocator.SetLocatorProvider (null);
+      ServiceLocator.SetLocatorProvider(null);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      ServiceLocator.SetLocatorProvider (null);
+      ServiceLocator.SetLocatorProvider(null);
     }
 
     [Test]
     public void Initialization_AndDispose_ServiceLocator_Set ()
     {
-      ServiceLocator.SetLocatorProvider (() => _locator1);
-      Assert.That (ServiceLocator.Current, Is.SameAs (_locator1));
+      ServiceLocator.SetLocatorProvider(() => _locator1);
+      Assert.That(ServiceLocator.Current, Is.SameAs(_locator1));
 
-      using (new ServiceLocatorScope (_locator2))
+      using (new ServiceLocatorScope(_locator2))
       {
-        Assert.That (ServiceLocator.Current, Is.SameAs (_locator2));
+        Assert.That(ServiceLocator.Current, Is.SameAs(_locator2));
       }
 
-      Assert.That (ServiceLocator.Current, Is.SameAs (_locator1));
+      Assert.That(ServiceLocator.Current, Is.SameAs(_locator1));
     }
 
     [Test]
     public void Initialization_AndDispose_ServiceLocator_InitialLocatorNull ()
     {
-      ServiceLocator.SetLocatorProvider (() => null);
-      Assert.That (ServiceLocator.Current, Is.Null);
+      ServiceLocator.SetLocatorProvider(() => null);
+      Assert.That(ServiceLocator.Current, Is.Null);
 
-      using (new ServiceLocatorScope (_locator2))
+      using (new ServiceLocatorScope(_locator2))
       {
-        Assert.That (ServiceLocator.Current, Is.SameAs (_locator2));
+        Assert.That(ServiceLocator.Current, Is.SameAs(_locator2));
       }
 
-      Assert.That (ServiceLocator.Current, Is.Null);
+      Assert.That(ServiceLocator.Current, Is.Null);
     }
 
     [Test]
     public void Initialization_AndDispose_ServiceLocator_InitialProviderNull ()
     {
-      Assert.That (ServiceLocator.IsLocationProviderSet, Is.False);
+      Assert.That(ServiceLocator.IsLocationProviderSet, Is.False);
 
-      using (new ServiceLocatorScope (_locator2))
+      using (new ServiceLocatorScope(_locator2))
       {
-        Assert.That (ServiceLocator.Current, Is.SameAs (_locator2));
+        Assert.That(ServiceLocator.Current, Is.SameAs(_locator2));
       }
 
-      Assert.That (ServiceLocator.IsLocationProviderSet, Is.False);
+      Assert.That(ServiceLocator.IsLocationProviderSet, Is.False);
     }
 
     [Test]
     public void Initialization_AndDispose_ServiceLocator_SetNull ()
     {
-      ServiceLocator.SetLocatorProvider (() => _locator1);
-      Assert.That (ServiceLocator.Current, Is.SameAs (_locator1));
+      ServiceLocator.SetLocatorProvider(() => _locator1);
+      Assert.That(ServiceLocator.Current, Is.SameAs(_locator1));
 
-      using (new ServiceLocatorScope ((IServiceLocator) null))
+      using (new ServiceLocatorScope((IServiceLocator)null))
       {
-        Assert.That (ServiceLocator.Current, Is.Null);
+        Assert.That(ServiceLocator.Current, Is.Null);
       }
 
-      Assert.That (ServiceLocator.Current, Is.SameAs (_locator1));
+      Assert.That(ServiceLocator.Current, Is.SameAs(_locator1));
     }
 
     [Test]
     public void Initialization_AndDispose_ServiceLocator_ServiceConfigurationEntries ()
     {
-      ServiceLocator.SetLocatorProvider (() => _locator1);
-      Assert.That (ServiceLocator.Current, Is.SameAs (_locator1));
+      ServiceLocator.SetLocatorProvider(() => _locator1);
+      Assert.That(ServiceLocator.Current, Is.SameAs(_locator1));
 
-      var entry1 = new ServiceConfigurationEntry (typeof (object), new ServiceImplementationInfo (typeof (DomainType1), LifetimeKind.InstancePerDependency));
-      var entry2 = new ServiceConfigurationEntry (typeof (IFormattable), new ServiceImplementationInfo (typeof (DomainType2), LifetimeKind.Singleton));
-      
-      using (new ServiceLocatorScope (entry1, entry2))
+      var entry1 = new ServiceConfigurationEntry(typeof(object), new ServiceImplementationInfo(typeof(DomainType1), LifetimeKind.InstancePerDependency));
+      var entry2 = new ServiceConfigurationEntry(typeof(IFormattable), new ServiceImplementationInfo(typeof(DomainType2), LifetimeKind.Singleton));
+
+      using (new ServiceLocatorScope(entry1, entry2))
       {
-        Assert.That (ServiceLocator.Current, Is.Not.SameAs (_locator1));
-        Assert.That (ServiceLocator.Current, Is.TypeOf<DefaultServiceLocator> ());
-        Assert.That (ServiceLocator.Current.GetInstance (typeof (object)), Is.TypeOf<DomainType1> ());
-        Assert.That (ServiceLocator.Current.GetInstance (typeof (object)), Is.Not.SameAs (ServiceLocator.Current.GetInstance (typeof (object))));
-        Assert.That (ServiceLocator.Current.GetInstance (typeof (IFormattable)), Is.TypeOf<DomainType2> ());
-        Assert.That (ServiceLocator.Current.GetInstance (typeof (IFormattable)), Is.SameAs (ServiceLocator.Current.GetInstance (typeof (IFormattable))));
+        Assert.That(ServiceLocator.Current, Is.Not.SameAs(_locator1));
+        Assert.That(ServiceLocator.Current, Is.TypeOf<DefaultServiceLocator>());
+        Assert.That(ServiceLocator.Current.GetInstance(typeof(object)), Is.TypeOf<DomainType1>());
+        Assert.That(ServiceLocator.Current.GetInstance(typeof(object)), Is.Not.SameAs(ServiceLocator.Current.GetInstance(typeof(object))));
+        Assert.That(ServiceLocator.Current.GetInstance(typeof(IFormattable)), Is.TypeOf<DomainType2>());
+        Assert.That(ServiceLocator.Current.GetInstance(typeof(IFormattable)), Is.SameAs(ServiceLocator.Current.GetInstance(typeof(IFormattable))));
       }
 
-      Assert.That (ServiceLocator.Current, Is.SameAs (_locator1));
+      Assert.That(ServiceLocator.Current, Is.SameAs(_locator1));
     }
 
     class DomainType1 { }

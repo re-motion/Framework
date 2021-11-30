@@ -29,7 +29,7 @@ namespace Remotion.Web.Security.UI
     // construction and disposing
 
     public DemandTargetWxeFunctionPermissionAttribute (Type functionType)
-      : base (functionType)
+      : base(functionType)
     {
     }
 

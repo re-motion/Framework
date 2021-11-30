@@ -41,10 +41,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] T target,
         [NotNull] ResolvedScreenshotElement resolvedElement)
     {
-      ArgumentUtility.CheckNotNull ("graphics", graphics);
-      ArgumentUtility.CheckNotNull ("resolver", resolver);
-      ArgumentUtility.CheckNotNull ("target", target);
-      ArgumentUtility.CheckNotNull ("resolvedElement", resolvedElement);
+      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("resolver", resolver);
+      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull("resolvedElement", resolvedElement);
 
       _manipulation = manipulation;
       _graphics = graphics;
@@ -102,13 +102,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         ResolvedScreenshotElement? resolvedElement = null)
     {
       if (target.HasValue && target.Value == null)
-        throw new ArgumentNullException ("target", "Value of optional parameter cannot be null.");
+        throw new ArgumentNullException("target", "Value of optional parameter cannot be null.");
 
-      return new ScreenshotTransformationContext<T> (
+      return new ScreenshotTransformationContext<T>(
           _manipulation,
           _graphics,
           resolver ?? _resolver,
-          Assertion.IsNotNull (target.GetValueOrDefault (_target)),
+          Assertion.IsNotNull(target.GetValueOrDefault(_target)),
           resolvedElement ?? _resolvedElement);
     }
   }

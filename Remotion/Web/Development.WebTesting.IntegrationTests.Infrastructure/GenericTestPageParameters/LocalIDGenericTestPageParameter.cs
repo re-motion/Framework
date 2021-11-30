@@ -42,14 +42,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     public string FoundControlID { get; private set; }
 
     public LocalIDGenericTestPageParameter ()
-        : base (TestConstants.LocalIDSelectorID, c_parameterCount)
+        : base(TestConstants.LocalIDSelectorID, c_parameterCount)
     {
     }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       VisibleControlLocalID = data.Arguments[0];
       HiddenControlLocalID = data.Arguments[1];

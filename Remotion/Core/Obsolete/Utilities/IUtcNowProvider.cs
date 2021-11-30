@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Utilities
 {
-  [Obsolete ("Dummy declaration for DependDB.", true)]
+  [Obsolete("Dummy declaration for DependDB.", true)]
   public interface IUtcNowProvider
   {
     DateTime UtcNow { get; }

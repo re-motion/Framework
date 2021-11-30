@@ -27,90 +27,90 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     [Test]
     public void ClosedGenericType ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (GenericType<ParameterType>), typeof (GenericType<>)), Is.EqualTo (new Type[] {typeof (ParameterType)}));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(GenericType<ParameterType>), typeof(GenericType<>)), Is.EqualTo(new Type[] {typeof(ParameterType)}));
 
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (GenericType<ParameterType>), typeof (GenericType<ParameterType>)), Is.EqualTo (new Type[] {typeof (ParameterType)}));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(GenericType<ParameterType>), typeof(GenericType<ParameterType>)), Is.EqualTo(new Type[] {typeof(ParameterType)}));
     }
 
     [Test]
     public void ClosedGenericType_WithTwoTypeParameters ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (GenericType<ParameterType, int>), typeof (GenericType<,>)), Is.EqualTo (new Type[] {typeof (ParameterType), typeof (int)}));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(GenericType<ParameterType, int>), typeof(GenericType<,>)), Is.EqualTo(new Type[] {typeof(ParameterType), typeof(int)}));
 
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (GenericType<ParameterType, int>), typeof (GenericType<ParameterType, int>)), Is.EqualTo (new Type[] {typeof (ParameterType), typeof (int)}));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(GenericType<ParameterType, int>), typeof(GenericType<ParameterType, int>)), Is.EqualTo(new Type[] {typeof(ParameterType), typeof(int)}));
     }
 
     [Test]
     public void OpenGenericType ()
     {
-      var types = TypeExtensions.GetAscribedGenericArguments (typeof (GenericType<>), typeof (GenericType<>));
-      Assert.That (types.Count, Is.EqualTo (1));
-      Assert.That (types[0].Name, Is.EqualTo ("T"));
+      var types = TypeExtensions.GetAscribedGenericArguments(typeof(GenericType<>), typeof(GenericType<>));
+      Assert.That(types.Count, Is.EqualTo(1));
+      Assert.That(types[0].Name, Is.EqualTo("T"));
     }
 
     [Test]
     public void OpenGenericType_WithTwoTypeParameters ()
     {
-      var types = TypeExtensions.GetAscribedGenericArguments (typeof (GenericType<,>), typeof (GenericType<,>));
-      Assert.That (types.Count, Is.EqualTo (2));
-      Assert.That (types[0].Name, Is.EqualTo ("T1"));
-      Assert.That (types[1].Name, Is.EqualTo ("T2"));
+      var types = TypeExtensions.GetAscribedGenericArguments(typeof(GenericType<,>), typeof(GenericType<,>));
+      Assert.That(types.Count, Is.EqualTo(2));
+      Assert.That(types[0].Name, Is.EqualTo("T1"));
+      Assert.That(types[1].Name, Is.EqualTo("T2"));
     }
 
     [Test]
     public void OpenGenericType_WithOneOpenTypeParameter ()
     {
-      var types = TypeExtensions.GetAscribedGenericArguments (typeof (DerivedOpenGenericType<>), typeof (GenericType<,>));
-      Assert.That (types.Count, Is.EqualTo (2));
-      Assert.That (types[0], Is.EqualTo (typeof (ParameterType)));
-      Assert.That (types[1].Name, Is.EqualTo ("T"));
+      var types = TypeExtensions.GetAscribedGenericArguments(typeof(DerivedOpenGenericType<>), typeof(GenericType<,>));
+      Assert.That(types.Count, Is.EqualTo(2));
+      Assert.That(types[0], Is.EqualTo(typeof(ParameterType)));
+      Assert.That(types[1].Name, Is.EqualTo("T"));
     }
 
     [Test]
     public void ClosedDerivedGenericType ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (DerivedGenericType<ParameterType>), typeof (GenericType<>)), Is.EqualTo (new Type[] {typeof (ParameterType)}));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(DerivedGenericType<ParameterType>), typeof(GenericType<>)), Is.EqualTo(new Type[] {typeof(ParameterType)}));
 
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (DerivedGenericType<ParameterType>), typeof (GenericType<ParameterType>)), Is.EqualTo (new Type[] {typeof (ParameterType)}));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(DerivedGenericType<ParameterType>), typeof(GenericType<ParameterType>)), Is.EqualTo(new Type[] {typeof(ParameterType)}));
     }
 
     [Test]
     public void OpenDerivedGenericType ()
     {
-      var types = TypeExtensions.GetAscribedGenericArguments (typeof (DerivedGenericType<>), typeof (GenericType<>));
-      Assert.That (types.Count, Is.EqualTo (1));
-      Assert.That (types[0].Name, Is.EqualTo ("T"));
+      var types = TypeExtensions.GetAscribedGenericArguments(typeof(DerivedGenericType<>), typeof(GenericType<>));
+      Assert.That(types.Count, Is.EqualTo(1));
+      Assert.That(types[0].Name, Is.EqualTo("T"));
     }
 
     [Test]
     public void NonGenericDerivedGenericType ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (DerivedGenericType), typeof (GenericType<>)), Is.EqualTo (new Type[] {typeof (ParameterType)}));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(DerivedGenericType), typeof(GenericType<>)), Is.EqualTo(new Type[] {typeof(ParameterType)}));
 
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (DerivedGenericType), typeof (GenericType<ParameterType>)), Is.EqualTo (new Type[] {typeof (ParameterType)}));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(DerivedGenericType), typeof(GenericType<ParameterType>)), Is.EqualTo(new Type[] {typeof(ParameterType)}));
     }
 
     [Test]
     public void ClosedGenericDerivedGenericType ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (GenericDerivedGenericType<int>), typeof (GenericType<>)), Is.EqualTo (new Type[] {typeof (ParameterType)}));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(GenericDerivedGenericType<int>), typeof(GenericType<>)), Is.EqualTo(new Type[] {typeof(ParameterType)}));
 
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (GenericDerivedGenericType<int>), typeof (GenericType<ParameterType>)), Is.EqualTo (new Type[] {typeof (ParameterType)}));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(GenericDerivedGenericType<int>), typeof(GenericType<ParameterType>)), Is.EqualTo(new Type[] {typeof(ParameterType)}));
     }
 
     [Test]
     public void OpenGenericDerivedGenericType ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (GenericDerivedGenericType<>), typeof (GenericType<>)), Is.EqualTo (new Type[] {typeof (ParameterType)}));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(GenericDerivedGenericType<>), typeof(GenericType<>)), Is.EqualTo(new Type[] {typeof(ParameterType)}));
     }
 
     [Test]
     public void BaseType ()
     {
-      Assert.That (
-          () => TypeExtensions.GetAscribedGenericArguments (typeof (BaseType), typeof (GenericType<>)),
+      Assert.That(
+          () => TypeExtensions.GetAscribedGenericArguments(typeof(BaseType), typeof(GenericType<>)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
                   + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.GenericType`1[T]' was expected.",
                   "type"));

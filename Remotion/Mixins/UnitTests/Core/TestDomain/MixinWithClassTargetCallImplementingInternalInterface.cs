@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
   }
 
-  [Uses (typeof (MixinWithClassTargetCallImplementingInternalInterface))]
+  [Uses(typeof(MixinWithClassTargetCallImplementingInternalInterface))]
   public class ClassImplementingInternalInterface : IInternalInterface1, IInternalInterface2
   {
     public string MethodInInternalInterface ()
@@ -40,7 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
     public string GetStringViaThis ()
     {
-      return Target.MethodInInternalInterface ();
+      return Target.MethodInInternalInterface();
     }
   }
 }

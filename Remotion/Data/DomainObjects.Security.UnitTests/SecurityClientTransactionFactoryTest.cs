@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     {
       base.SetUp();
 
-      _testHelper = new TestHelper ();
+      _testHelper = new TestHelper();
     }
 
     [Test]
@@ -44,8 +44,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       ITransaction transaction;
       try
       {
-        Assert.That (SecurityConfiguration.Current.DisableAccessChecks, Is.False);
-        transaction = factory.CreateRootTransaction ();
+        Assert.That(SecurityConfiguration.Current.DisableAccessChecks, Is.False);
+        transaction = factory.CreateRootTransaction();
       }
       finally
       {
@@ -53,12 +53,12 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       }
 
       var clientTransaction = transaction.To<ClientTransaction>();
-      var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy (clientTransaction);
-      Assert.That (persistenceStrategy, Is.InstanceOf (typeof (RootPersistenceStrategy)));
-      Assert.That (
-          clientTransaction.Extensions, 
-          Has.Some.InstanceOf (typeof (SecurityClientTransactionExtension))
-              .With.Property ("Key").EqualTo (typeof (SecurityClientTransactionExtension).FullName));
+      var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy(clientTransaction);
+      Assert.That(persistenceStrategy, Is.InstanceOf(typeof(RootPersistenceStrategy)));
+      Assert.That(
+          clientTransaction.Extensions,
+          Has.Some.InstanceOf(typeof(SecurityClientTransactionExtension))
+              .With.Property("Key").EqualTo(typeof(SecurityClientTransactionExtension).FullName));
     }
 
     [Test]
@@ -74,9 +74,9 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
         ITransaction transaction = factory.CreateRootTransaction();
 
         var clientTransaction = transaction.To<ClientTransaction>();
-        var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy (clientTransaction);
-        Assert.That (persistenceStrategy, Is.InstanceOf (typeof (RootPersistenceStrategy)));
-        Assert.That (clientTransaction.Extensions, Has.No.InstanceOf<SecurityClientTransactionExtension>());
+        var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy(clientTransaction);
+        Assert.That(persistenceStrategy, Is.InstanceOf(typeof(RootPersistenceStrategy)));
+        Assert.That(clientTransaction.Extensions, Has.No.InstanceOf<SecurityClientTransactionExtension>());
       }
       finally
       {

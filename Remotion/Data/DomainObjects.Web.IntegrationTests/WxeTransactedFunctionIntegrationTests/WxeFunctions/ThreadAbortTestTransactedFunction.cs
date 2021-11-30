@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     // construction and disposing
 
     public ThreadAbortTestTransactedFunction ()
-      : base (WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit)
+      : base(WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit)
     {
     }
 
@@ -50,28 +50,28 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
 
     private void Step1 ()
     {
-      Assert.That (FirstStepExecuted, Is.False);
-      Assert.That (SecondStepExecuted, Is.False);
-      Assert.That (ThreadAborted, Is.False);
+      Assert.That(FirstStepExecuted, Is.False);
+      Assert.That(SecondStepExecuted, Is.False);
+      Assert.That(ThreadAborted, Is.False);
       FirstStepExecuted = true;
       TransactionScopeInFirstStep = ClientTransactionScope.ActiveScope;
     }
 
     private void Step2 ()
     {
-      Assert.That (FirstStepExecuted, Is.True);
-      Assert.That (SecondStepExecuted, Is.False);
+      Assert.That(FirstStepExecuted, Is.True);
+      Assert.That(SecondStepExecuted, Is.False);
 
       if (!ThreadAborted)
       {
         TransactionScopeInSecondStepBeforeException = ClientTransactionScope.ActiveScope;
-        Assert.That (TransactionScopeInSecondStepBeforeException, Is.SameAs (TransactionScopeInFirstStep));
+        Assert.That(TransactionScopeInSecondStepBeforeException, Is.SameAs(TransactionScopeInFirstStep));
         ThreadAborted = true;
         WxeThreadAbortHelper.Abort();
       }
       TransactionScopeInSecondStepAfterException = ClientTransactionScope.ActiveScope;
-      Assert.That (TransactionScopeInSecondStepAfterException, Is.Not.SameAs (TransactionScopeInFirstStep));
-      Assert.That (TransactionScopeInSecondStepAfterException.ScopedTransaction, Is.SameAs (TransactionScopeInFirstStep.ScopedTransaction));
+      Assert.That(TransactionScopeInSecondStepAfterException, Is.Not.SameAs(TransactionScopeInFirstStep));
+      Assert.That(TransactionScopeInSecondStepAfterException.ScopedTransaction, Is.SameAs(TransactionScopeInFirstStep.ScopedTransaction));
       SecondStepExecuted = true;
     }
   }

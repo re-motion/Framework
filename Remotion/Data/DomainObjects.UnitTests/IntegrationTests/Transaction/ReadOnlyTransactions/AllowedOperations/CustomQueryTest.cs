@@ -28,21 +28,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void QueryInReadOnlyRootTransaction_IsAllowed ()
     {
-      var resultSet = ExecuteInReadOnlyRootTransaction (
-          () => QueryFactory.CreateLinqQuery<Order> ().Where (obj => obj.OrderNumber == 1).Select (o => new { o.OrderNumber }).ToList());
+      var resultSet = ExecuteInReadOnlyRootTransaction(
+          () => QueryFactory.CreateLinqQuery<Order>().Where(obj => obj.OrderNumber == 1).Select(o => new { o.OrderNumber }).ToList());
 
-      Assert.That (resultSet, Has.Count.EqualTo (1));
-      Assert.That (resultSet[0].OrderNumber, Is.EqualTo (1));
+      Assert.That(resultSet, Has.Count.EqualTo(1));
+      Assert.That(resultSet[0].OrderNumber, Is.EqualTo(1));
     }
 
     [Test]
     public void QueryInReadOnlyMiddleTransaction_IsAllowed ()
     {
-      var resultSet = ExecuteInReadOnlyMiddleTransaction (
-          () => QueryFactory.CreateLinqQuery<Order> ().Where (obj => obj.OrderNumber == 1).Select (o => new { o.OrderNumber }).ToList ());
+      var resultSet = ExecuteInReadOnlyMiddleTransaction(
+          () => QueryFactory.CreateLinqQuery<Order>().Where(obj => obj.OrderNumber == 1).Select(o => new { o.OrderNumber }).ToList());
 
-      Assert.That (resultSet, Has.Count.EqualTo (1));
-      Assert.That (resultSet[0].OrderNumber, Is.EqualTo (1));
+      Assert.That(resultSet, Has.Count.EqualTo(1));
+      Assert.That(resultSet[0].OrderNumber, Is.EqualTo(1));
     }
   }
 }

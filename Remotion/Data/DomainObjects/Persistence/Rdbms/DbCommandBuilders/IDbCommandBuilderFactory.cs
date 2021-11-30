@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IEnumerable<ColumnValue> comparedColumnValues,
         IEnumerable<OrderedColumn> orderedColumns);
     IDbCommandBuilder CreateForSelect (
-        TableDefinition table, 
-        IEnumerable<ColumnDefinition> selectedColumns, 
+        TableDefinition table,
+        IEnumerable<ColumnDefinition> selectedColumns,
         ColumnValueTable comparedColumnValueTable,
         IEnumerable<OrderedColumn> orderedColumns);
     IDbCommandBuilder CreateForSelect (

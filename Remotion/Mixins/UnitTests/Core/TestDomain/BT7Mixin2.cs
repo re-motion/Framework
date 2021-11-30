@@ -30,17 +30,17 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     string Four ();
   }
 
-  [Extends (typeof (BaseType7))]
+  [Extends(typeof(BaseType7))]
   public class BT7Mixin2 : Mixin<BaseType7, IBT7Mixin2Reqs>, IBT7Mixin2
   {
     [OverrideTarget]
     public virtual string One<T> (T t)
     {
-      return "BT7Mixin2.One(" + t + ")-" + ((IBaseType7) Next).One (t) + "-" + ((IBT7Mixin3) Next).One (t) + "-" + Next.Two() + "-" + Target.Two();
+      return "BT7Mixin2.One(" + t + ")-" + ((IBaseType7)Next).One(t) + "-" + ((IBT7Mixin3)Next).One(t) + "-" + Next.Two() + "-" + Target.Two();
     }
 
     [OverrideTarget]
-    public virtual string Two()
+    public virtual string Two ()
     {
       return "BT7Mixin2.Two";
     }
@@ -48,7 +48,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     [OverrideTarget]
     public virtual string Three ()
     {
-      return "BT7Mixin2.Three-" + Next.Three ();
+      return "BT7Mixin2.Three-" + Next.Three();
     }
 
     [OverrideTarget]

@@ -28,106 +28,106 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _parameter = new QueryParameter ("name", "value");
-      _collection = new QueryParameterCollection ();
+      _parameter = new QueryParameter("name", "value");
+      _collection = new QueryParameterCollection();
     }
 
     [Test]
     public void Add ()
     {
-      _collection.Add (_parameter);
-      Assert.That (_collection.Count, Is.EqualTo (1));
+      _collection.Add(_parameter);
+      Assert.That(_collection.Count, Is.EqualTo(1));
     }
 
     [Test]
     public void QueryParameterIndexer ()
     {
-      _collection.Add (_parameter);
-      Assert.That (_collection[_parameter.Name], Is.SameAs (_parameter));
+      _collection.Add(_parameter);
+      Assert.That(_collection[_parameter.Name], Is.SameAs(_parameter));
     }
 
     [Test]
     public void NumericIndexer ()
     {
-      _collection.Add (_parameter);
-      Assert.That (_collection[0], Is.SameAs (_parameter));
+      _collection.Add(_parameter);
+      Assert.That(_collection[0], Is.SameAs(_parameter));
     }
 
     [Test]
     public void ContainsParameterNameTrue ()
     {
-      _collection.Add (_parameter);
-      Assert.That (_collection.Contains (_parameter.Name), Is.True);
+      _collection.Add(_parameter);
+      Assert.That(_collection.Contains(_parameter.Name), Is.True);
     }
 
     [Test]
     public void ContainsParameterNameFalse ()
     {
-      Assert.That (_collection.Contains (_parameter.Name), Is.False);
+      Assert.That(_collection.Contains(_parameter.Name), Is.False);
     }
 
     [Test]
     public void CopyConstructor ()
     {
-      _collection.Add (_parameter);
+      _collection.Add(_parameter);
 
-      QueryParameterCollection copiedCollection = new QueryParameterCollection (_collection, false);
+      QueryParameterCollection copiedCollection = new QueryParameterCollection(_collection, false);
 
-      Assert.That (copiedCollection.Count, Is.EqualTo (1));
-      Assert.That (copiedCollection[0], Is.SameAs (_parameter));
+      Assert.That(copiedCollection.Count, Is.EqualTo(1));
+      Assert.That(copiedCollection[0], Is.SameAs(_parameter));
     }
 
     [Test]
     public void ContainsParameterTrue ()
     {
-      _collection.Add (_parameter);
-      Assert.That (_collection.Contains (_parameter), Is.True);
+      _collection.Add(_parameter);
+      Assert.That(_collection.Contains(_parameter), Is.True);
     }
 
     [Test]
     public void ContainsParameterFalse ()
     {
-      _collection.Add (_parameter);
-      QueryParameter param = new QueryParameter ("Test", "Test", QueryParameterType.Text);
-      Assert.That (_collection.Contains (param), Is.False);
+      _collection.Add(_parameter);
+      QueryParameter param = new QueryParameter("Test", "Test", QueryParameterType.Text);
+      Assert.That(_collection.Contains(param), Is.False);
     }
 
     [Test]
     public void ContainsNullQueryParameter ()
     {
-      Assert.That (
-          () => _collection.Contains ((QueryParameter) null),
+      Assert.That(
+          () => _collection.Contains((QueryParameter)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
     public void ContainsNullQueryParameterName ()
     {
-      Assert.That (
-          () => _collection.Contains ((string) null),
+      Assert.That(
+          () => _collection.Contains((string)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
     public void AddShorthand1 ()
     {
-      _collection.Add (_parameter.Name, _parameter.Value, _parameter.ParameterType);
-      Assert.That (_collection.Count, Is.EqualTo (1));
-      Assert.That (_collection[0].Name, Is.EqualTo (_parameter.Name));
-      Assert.That (_collection[0].Value, Is.EqualTo (_parameter.Value));
-      Assert.That (_collection[0].ParameterType, Is.EqualTo (_parameter.ParameterType));
+      _collection.Add(_parameter.Name, _parameter.Value, _parameter.ParameterType);
+      Assert.That(_collection.Count, Is.EqualTo(1));
+      Assert.That(_collection[0].Name, Is.EqualTo(_parameter.Name));
+      Assert.That(_collection[0].Value, Is.EqualTo(_parameter.Value));
+      Assert.That(_collection[0].ParameterType, Is.EqualTo(_parameter.ParameterType));
     }
 
     [Test]
     public void AddShorthand2 ()
     {
-      _collection.Add (_parameter.Name, _parameter.Value);
-      Assert.That (_collection.Count, Is.EqualTo (1));
-      Assert.That (_collection[0].Name, Is.EqualTo (_parameter.Name));
-      Assert.That (_collection[0].Value, Is.EqualTo (_parameter.Value));
-      Assert.That (_collection[0].ParameterType, Is.EqualTo (QueryParameterType.Value));
+      _collection.Add(_parameter.Name, _parameter.Value);
+      Assert.That(_collection.Count, Is.EqualTo(1));
+      Assert.That(_collection[0].Name, Is.EqualTo(_parameter.Name));
+      Assert.That(_collection[0].Value, Is.EqualTo(_parameter.Value));
+      Assert.That(_collection[0].ParameterType, Is.EqualTo(QueryParameterType.Value));
     }
   }
 }

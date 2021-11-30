@@ -129,19 +129,19 @@ namespace Remotion.Web.UI.Globalization
   {
 
     public WebMultiLingualResourcesAttribute (string baseName)
-        : base (baseName)
+        : base(baseName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("baseName", baseName);
-      Type? type = BuildManager.GetType (baseName, throwOnError: false, ignoreCase: false);
+      ArgumentUtility.CheckNotNullOrEmpty("baseName", baseName);
+      Type? type = BuildManager.GetType(baseName, throwOnError: false, ignoreCase: false);
       if (type != null)
-        SetResourceAssembly (type.Assembly);
+        SetResourceAssembly(type.Assembly);
     }
 
     public WebMultiLingualResourcesAttribute (Type resourceType)
-        : base (resourceType.GetFullNameChecked())
+        : base(resourceType.GetFullNameChecked())
     {
-      ArgumentUtility.CheckNotNull ("resourceType", resourceType);
-      SetResourceAssembly (resourceType.Assembly);
+      ArgumentUtility.CheckNotNull("resourceType", resourceType);
+      SetResourceAssembly(resourceType.Assembly);
     }
 
     private static IBuildManager BuildManager

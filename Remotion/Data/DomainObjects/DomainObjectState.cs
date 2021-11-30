@@ -39,36 +39,36 @@ namespace Remotion.Data.DomainObjects
       private Builder (Flags flags) => _flags = flags;
 
       /// <summary>Gets the newly constructed <see cref="DomainObjectState"/>.</summary>
-      public DomainObjectState Value => new DomainObjectState (_flags);
+      public DomainObjectState Value => new DomainObjectState(_flags);
 
       /// <summary>Sets <see cref="DomainObjectState"/>.<see cref="DomainObjectState.IsUnchanged"/></summary>
       [MustUseReturnValue]
-      public Builder SetUnchanged () => SetFlag (Flags.Unchanged);
+      public Builder SetUnchanged () => SetFlag(Flags.Unchanged);
 
       /// <summary>Sets <see cref="DomainObjectState"/>.<see cref="DomainObjectState.IsChanged"/></summary>
       [MustUseReturnValue]
-      public Builder SetChanged () => SetFlag (Flags.Changed);
+      public Builder SetChanged () => SetFlag(Flags.Changed);
 
       /// <summary>Sets <see cref="DomainObjectState"/>.<see cref="DomainObjectState.IsNotLoadedYet"/></summary>
       [MustUseReturnValue]
-      public Builder SetNotLoadedYet () => SetFlag (Flags.NotLoadedYet);
+      public Builder SetNotLoadedYet () => SetFlag(Flags.NotLoadedYet);
 
       /// <summary>Sets <see cref="DomainObjectState"/>.<see cref="DomainObjectState.IsNew"/></summary>
       [MustUseReturnValue]
-      public Builder SetNew () => SetFlag (Flags.New);
+      public Builder SetNew () => SetFlag(Flags.New);
 
       /// <summary>Sets <see cref="DomainObjectState"/>.<see cref="DomainObjectState.IsDeleted"/></summary>
       [MustUseReturnValue]
-      public Builder SetDeleted () => SetFlag (Flags.Deleted);
+      public Builder SetDeleted () => SetFlag(Flags.Deleted);
 
       /// <summary>Sets <see cref="DomainObjectState"/>.<see cref="DomainObjectState.IsInvalid"/></summary>
       [MustUseReturnValue]
-      public Builder SetInvalid () => SetFlag (Flags.Invalid);
+      public Builder SetInvalid () => SetFlag(Flags.Invalid);
 
       private Builder SetFlag (Flags flag)
       {
         _flags |= flag;
-        return new Builder (_flags);
+        return new Builder(_flags);
       }
     }
 
@@ -111,6 +111,6 @@ namespace Remotion.Data.DomainObjects
     /// </summary>
     public bool IsNotLoadedYet => (_flags & Flags.NotLoadedYet) != 0;
 
-    public override string ToString () => nameof (DomainObjectState) + " (" + _flags + ")";
+    public override string ToString () => nameof(DomainObjectState) + " (" + _flags + ")";
   }
 }

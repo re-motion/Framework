@@ -26,9 +26,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _testHelper = new AccessControlTestHelper ();
-      _testHelper.Transaction.EnterNonDiscardingScope ();
+      base.SetUp();
+      _testHelper = new AccessControlTestHelper();
+      _testHelper.Transaction.EnterNonDiscardingScope();
     }
 
     protected AccessControlTestHelper TestHelper
@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     protected User CreateUser (Tenant tenant, Group group)
     {
-      return _testHelper.CreateUser ("test.user", "Test", "User", null, group, tenant);
+      return _testHelper.CreateUser("test.user", "Test", "User", null, group, tenant);
     }
   }
 }

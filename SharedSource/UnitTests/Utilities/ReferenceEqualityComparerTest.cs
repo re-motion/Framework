@@ -34,26 +34,26 @@ namespace Remotion.UnitTests.Utilities
     public void SetUp ()
     {
       _comparer = ReferenceEqualityComparer<object>.Instance;
-      _obj1 = new Object ();
-      _obj2 = new Object ();
+      _obj1 = new Object();
+      _obj2 = new Object();
     }
 
     [Test]
     public void Equal_True ()
     {
-      Assert.That (_comparer.Equals (_obj1, _obj1), Is.True);
+      Assert.That(_comparer.Equals(_obj1, _obj1), Is.True);
     }
 
     [Test]
     public void Equal_False ()
     {
-      Assert.That (_comparer.Equals (_obj1, _obj2), Is.False);
+      Assert.That(_comparer.Equals(_obj1, _obj2), Is.False);
     }
 
     [Test]
     public void GetHashcode ()
     {
-      Assert.That (_comparer.GetHashCode (_obj1), Is.EqualTo (_comparer.GetHashCode (_obj1)));
+      Assert.That(_comparer.GetHashCode(_obj1), Is.EqualTo(_comparer.GetHashCode(_obj1)));
     }
   }
 }

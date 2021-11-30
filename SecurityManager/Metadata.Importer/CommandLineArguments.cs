@@ -22,15 +22,15 @@ namespace Remotion.SecurityManager.Metadata.Importer
 {
   public class CommandLineArguments
   {
-    [CommandLineModeArgument (false)]
+    [CommandLineModeArgument(false)]
     public OperationMode Mode;
 
-    [CommandLineStringArgument (false,
+    [CommandLineStringArgument(false,
         Description = "The name of the XML metadata file.",
         Placeholder = "metadata")]
     public string MetadataFile = string.Empty;
 
-    [CommandLineFlagArgument ("verbose", false,
+    [CommandLineFlagArgument("verbose", false,
         Description = "Verbose output")]
     public bool Verbose;
 

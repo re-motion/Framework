@@ -31,28 +31,28 @@ namespace Remotion.Mixins.UnitTests.Core
     public void SetUp ()
     {
       _mockRepository = new MockRepository();
-      _configurationBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration) null);
+      _configurationBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration)null);
     }
 
     [Test]
     public void IgnoresDuplicates ()
     {
-      var attribute = new ComposedInterfaceAttribute (typeof (string));
-      Assert.That (attribute.IgnoresDuplicates, Is.False);
+      var attribute = new ComposedInterfaceAttribute(typeof(string));
+      Assert.That(attribute.IgnoresDuplicates, Is.False);
     }
 
     [Test]
     public void Apply ()
     {
-      var attribute = new ComposedInterfaceAttribute (typeof (string));
-      ClassContextBuilder classBuilderMock = _mockRepository.StrictMock<ClassContextBuilder> (_configurationBuilderMock, typeof (string));
+      var attribute = new ComposedInterfaceAttribute(typeof(string));
+      ClassContextBuilder classBuilderMock = _mockRepository.StrictMock<ClassContextBuilder>(_configurationBuilderMock, typeof(string));
 
-      _configurationBuilderMock.Expect (mock => mock.ForClass (typeof (string))).Return (classBuilderMock);
-      classBuilderMock.Expect (mock => mock.AddComposedInterface (typeof (IServiceProvider))).Return (classBuilderMock);
+      _configurationBuilderMock.Expect(mock => mock.ForClass(typeof(string))).Return(classBuilderMock);
+      classBuilderMock.Expect(mock => mock.AddComposedInterface(typeof(IServiceProvider))).Return(classBuilderMock);
 
       _mockRepository.ReplayAll();
-      attribute.Apply (_configurationBuilderMock, typeof (IServiceProvider));
-      _mockRepository.VerifyAll ();
+      attribute.Apply(_configurationBuilderMock, typeof(IServiceProvider));
+      _mockRepository.VerifyAll();
     }
   }
 }

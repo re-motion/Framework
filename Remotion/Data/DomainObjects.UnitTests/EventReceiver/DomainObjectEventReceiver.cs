@@ -209,10 +209,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       _changingOldValue = args.OldValue;
       _changingNewValue = args.NewValue;
 
-      VerifyTransaction ();
+      VerifyTransaction();
 
       if (_cancel)
-        CancelOperation ();
+        CancelOperation();
     }
 
     private void DomainObject_PropertyChanged (object sender, PropertyChangeEventArgs args)
@@ -222,7 +222,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       _changedOldValue = args.OldValue;
       _changedNewValue = args.NewValue;
 
-      VerifyTransaction ();
+      VerifyTransaction();
     }
 
     protected virtual void DomainObject_RelationChanging (object sender, RelationChangingEventArgs args)
@@ -232,10 +232,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       _changingOldRelatedObject = args.OldRelatedObject;
       _changingNewRelatedObject = args.NewRelatedObject;
 
-      VerifyTransaction ();
+      VerifyTransaction();
 
       if (_cancel)
-        CancelOperation ();
+        CancelOperation();
     }
 
     protected virtual void DomainObject_RelationChanged (object sender, RelationChangedEventArgs args)
@@ -245,15 +245,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       _changedOldRelatedObject = args.OldRelatedObject;
       _changedNewRelatedObject = args.NewRelatedObject;
 
-      VerifyTransaction ();
+      VerifyTransaction();
     }
 
     protected virtual void domainObject_Deleting (object sender, EventArgs args)
     {
       if (_cancel)
-        CancelOperation ();
+        CancelOperation();
 
-      VerifyTransaction ();
+      VerifyTransaction();
 
       _hasDeletingEventBeenCalled = true;
     }
@@ -262,18 +262,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     {
       _hasDeletedEventBeenCalled = true;
 
-      VerifyTransaction ();
+      VerifyTransaction();
     }
 
     private void DomainObject_Committing (object sender, EventArgs e)
     {
       if (_hasCommittingEventBeenCalled)
-        throw CreateApplicationException ("Committing event on DomainObject '{0}' has already been called.", _domainObject.ID);
+        throw CreateApplicationException("Committing event on DomainObject '{0}' has already been called.", _domainObject.ID);
 
-      VerifyTransaction ();
+      VerifyTransaction();
 
       if (_cancel)
-        CancelOperation ();
+        CancelOperation();
 
       _hasCommittingEventBeenCalled = true;
     }
@@ -281,22 +281,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     private void DomainObject_Committed (object sender, EventArgs e)
     {
       if (_hasCommittedEventBeenCalled)
-        throw CreateApplicationException ("Committed event on DomainObject '{0}' has already been called.", _domainObject.ID);
+        throw CreateApplicationException("Committed event on DomainObject '{0}' has already been called.", _domainObject.ID);
 
       _hasCommittedEventBeenCalled = true;
 
-      VerifyTransaction ();
+      VerifyTransaction();
     }
 
     private void DomainObject_RollingBack (object sender, EventArgs e)
     {
       if (_hasRollingBackEventBeenCalled)
-        throw CreateApplicationException ("RollingBack event on DomainObject '{0}' has already been called.", _domainObject.ID);
+        throw CreateApplicationException("RollingBack event on DomainObject '{0}' has already been called.", _domainObject.ID);
 
-      VerifyTransaction ();
+      VerifyTransaction();
 
       if (_cancel)
-        CancelOperation ();
+        CancelOperation();
 
       _hasRollingBackEventBeenCalled = true;
     }
@@ -304,22 +304,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     private void DomainObject_RolledBack (object sender, EventArgs e)
     {
       if (_hasRolledBackEventBeenCalled)
-        throw CreateApplicationException ("RolledBack event on DomainObject '{0}' has already been called.", _domainObject.ID);
+        throw CreateApplicationException("RolledBack event on DomainObject '{0}' has already been called.", _domainObject.ID);
 
       _hasRolledBackEventBeenCalled = true;
 
-      VerifyTransaction ();
+      VerifyTransaction();
     }
 
     private void VerifyTransaction ()
     {
       if (_transactionToVerify != null && ClientTransaction.Current != _transactionToVerify)
-        throw CreateApplicationException ("The event did not set the right transaction.");
+        throw CreateApplicationException("The event did not set the right transaction.");
     }
 
     private ApplicationException CreateApplicationException (string message, params object[] args)
     {
-      return new ApplicationException (string.Format (message, args));
+      return new ApplicationException(string.Format(message, args));
     }
   }
 }

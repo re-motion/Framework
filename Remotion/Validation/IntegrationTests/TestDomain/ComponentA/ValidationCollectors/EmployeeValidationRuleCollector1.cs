@@ -24,11 +24,11 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
   {
     public EmployeeValidationRuleCollector1 ()
     {
-      AddRule (e => e.Salary)
-          .SetValidator (_ => new NotEqualValidator (0m, new InvariantValidationMessage ("Conditional Message Text: Kein Gehalt definiert")));
-      AddRule (e => e.Salary)
-          .SetCondition (e => e.Salary > 0)
-          .SetValidator (_ => new GreaterThanValidator (500m, new InvariantValidationMessage ("Conditional Message Text: Gehalt zu gering")));
+      AddRule(e => e.Salary)
+          .SetValidator(_ => new NotEqualValidator(0m, new InvariantValidationMessage("Conditional Message Text: Kein Gehalt definiert")));
+      AddRule(e => e.Salary)
+          .SetCondition(e => e.Salary > 0)
+          .SetValidator(_ => new GreaterThanValidator(500m, new InvariantValidationMessage("Conditional Message Text: Gehalt zu gering")));
     }
   }
 }

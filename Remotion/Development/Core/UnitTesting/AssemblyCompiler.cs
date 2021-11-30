@@ -29,42 +29,42 @@ namespace Remotion.Development.UnitTesting
   {
     public static AssemblyCompiler CreateInMemoryAssemblyCompiler (string sourceDirectory, params string[] referencedAssemblies)
     {
-      return new AssemblyCompiler (sourceDirectory, referencedAssemblies);
+      return new AssemblyCompiler(sourceDirectory, referencedAssemblies);
     }
-    
+
     private readonly string _sourceDirectory;
     private CompilerResults? _results;
     private readonly CompilerParameters _compilerParameters;
 
     public AssemblyCompiler (string sourceDirectory, string outputAssembly, params string[] referencedAssemblies)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("sourceDirectory", sourceDirectory);
-      ArgumentUtility.CheckNotNullOrEmpty ("outputAssembly", outputAssembly);
-      ArgumentUtility.CheckNotNullOrItemsNull ("referencedAssemblies", referencedAssemblies);
+      ArgumentUtility.CheckNotNullOrEmpty("sourceDirectory", sourceDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty("outputAssembly", outputAssembly);
+      ArgumentUtility.CheckNotNullOrItemsNull("referencedAssemblies", referencedAssemblies);
 
       _sourceDirectory = sourceDirectory;
 
-      _compilerParameters = new CompilerParameters ();
+      _compilerParameters = new CompilerParameters();
       _compilerParameters.GenerateExecutable = false;
       _compilerParameters.OutputAssembly = outputAssembly;
       _compilerParameters.GenerateInMemory = false;
       _compilerParameters.TreatWarningsAsErrors = false;
-      _compilerParameters.ReferencedAssemblies.AddRange (referencedAssemblies);
+      _compilerParameters.ReferencedAssemblies.AddRange(referencedAssemblies);
     }
 
     private AssemblyCompiler (string sourceDirectory, params string[] referencedAssemblies)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("sourceDirectory", sourceDirectory);
-      ArgumentUtility.CheckNotNullOrItemsNull ("referencedAssemblies", referencedAssemblies);
+      ArgumentUtility.CheckNotNullOrEmpty("sourceDirectory", sourceDirectory);
+      ArgumentUtility.CheckNotNullOrItemsNull("referencedAssemblies", referencedAssemblies);
 
       _sourceDirectory = sourceDirectory;
 
-      _compilerParameters = new CompilerParameters ();
+      _compilerParameters = new CompilerParameters();
       _compilerParameters.GenerateExecutable = false;
       _compilerParameters.OutputAssembly = null;
       _compilerParameters.GenerateInMemory = true;
       _compilerParameters.TreatWarningsAsErrors = false;
-      _compilerParameters.ReferencedAssemblies.AddRange (referencedAssemblies);
+      _compilerParameters.ReferencedAssemblies.AddRange(referencedAssemblies);
     }
 
     public CompilerParameters CompilerParameters
@@ -89,24 +89,24 @@ namespace Remotion.Development.UnitTesting
 
     public void Compile ()
     {
-      CodeDomProvider provider = new CSharpCodeProvider ();
+      CodeDomProvider provider = new CSharpCodeProvider();
 
-      string[] sourceFiles = Directory.GetFiles (_sourceDirectory, "*.cs");
+      string[] sourceFiles = Directory.GetFiles(_sourceDirectory, "*.cs");
 
-      string[] resourceFiles = Directory.GetFiles (_sourceDirectory, "*.resources");
-      if (provider.Supports (GeneratorSupport.Resources))
-        _compilerParameters.EmbeddedResources.AddRange (resourceFiles);
+      string[] resourceFiles = Directory.GetFiles(_sourceDirectory, "*.resources");
+      if (provider.Supports(GeneratorSupport.Resources))
+        _compilerParameters.EmbeddedResources.AddRange(resourceFiles);
 
-      _results = provider.CompileAssemblyFromFile (_compilerParameters, sourceFiles);
+      _results = provider.CompileAssemblyFromFile(_compilerParameters, sourceFiles);
 
       if (_results.Errors.Count > 0)
       {
-        StringBuilder errorBuilder = new StringBuilder ();
-        errorBuilder.AppendFormat ("Errors building {0} into {1}", _sourceDirectory, _results.PathToAssembly).AppendLine ();
+        StringBuilder errorBuilder = new StringBuilder();
+        errorBuilder.AppendFormat("Errors building {0} into {1}", _sourceDirectory, _results.PathToAssembly).AppendLine();
         foreach (CompilerError compilerError in _results.Errors)
-          errorBuilder.AppendFormat ("  ").AppendLine (compilerError.ToString ());
+          errorBuilder.AppendFormat("  ").AppendLine(compilerError.ToString());
 
-        throw new AssemblyCompilationException (errorBuilder.ToString ());
+        throw new AssemblyCompilationException(errorBuilder.ToString());
       }
     }
 
@@ -116,21 +116,21 @@ namespace Remotion.Development.UnitTesting
       AppDomain appDomain = null;
       try
       {
-        appDomain = AppDomain.CreateDomain (
+        appDomain = AppDomain.CreateDomain(
             "CompilerAppDomain",
             null,
             AppContext.BaseDirectory,
             AppDomain.CurrentDomain.RelativeSearchPath,
             AppDomain.CurrentDomain.ShadowCopyFiles);
-        appDomain.DoCallBack (Compile);
+        appDomain.DoCallBack(Compile);
       }
       finally
       {
         if (appDomain != null)
-          AppDomain.Unload (appDomain);
+          AppDomain.Unload(appDomain);
       }
 #else
-      throw new PlatformNotSupportedException ("Compiling in a separate assembly is not supported in .NET 5.");
+      throw new PlatformNotSupportedException("Compiling in a separate assembly is not supported in .NET 5.");
 #endif
     }
   }

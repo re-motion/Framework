@@ -26,17 +26,17 @@ namespace Remotion.Validation.Implementation
   public class ValidationConfigurationException : Exception
   {
     public ValidationConfigurationException (string message)
-        : base (message)
+        : base(message)
     {
     }
 
     public ValidationConfigurationException (string message, Exception inner)
-        : base (message, inner)
+        : base(message, inner)
     {
     }
 
     protected ValidationConfigurationException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
   }

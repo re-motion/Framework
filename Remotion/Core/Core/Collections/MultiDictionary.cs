@@ -31,7 +31,7 @@ namespace Remotion.Collections
     }
 
     public MultiDictionary (IEqualityComparer<TKey> comparer)
-      : base (comparer)
+      : base(comparer)
     {
     }
 
@@ -40,7 +40,7 @@ namespace Remotion.Collections
       get { return base.Count; }
     }
 
-    public int CountValues()
+    public int CountValues ()
     {
       int count = 0;
       foreach (TKey key in Keys)
@@ -53,7 +53,7 @@ namespace Remotion.Collections
     /// </summary>
     public void Add (TKey key, TValue value)
     {
-      this[key].Add (value);
+      this[key].Add(value);
     }
   }
 }

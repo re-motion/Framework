@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
   {
     public static OrderViewModel NewObject ()
     {
-      return NewObject<OrderViewModel> ();
+      return NewObject<OrderViewModel>();
     }
 
     protected OrderViewModel ()

@@ -36,7 +36,7 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
       }
 
       [WebMethod]
-      [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+      [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
       public void JsonMethod ()
       {
       }
@@ -47,13 +47,13 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
       }
 
       [WebMethod]
-      [ScriptMethod (ResponseFormat = ResponseFormat.Xml)]
+      [ScriptMethod(ResponseFormat = ResponseFormat.Xml)]
       public void MethodWithResponeFormatNotJson ()
       {
       }
 
       [WebMethod]
-      [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+      [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
       public void MethodWithParameters (int param1, bool param2)
       {
       }
@@ -63,11 +63,11 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     private class TestWebService : WebService
     {
       [WebMethod]
-      public void Method()
+      public void Method ()
       {
       }
     }
-    
+
     private class TestNotAWebService
     {
     }
@@ -75,16 +75,16 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     [Test]
     public void CheckJsonServiceMethod_Valid ()
     {
-      Assert.That (() => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "JsonMethod", new string[0]), Throws.Nothing);
+      Assert.That(() => WebServiceUtility.CheckJsonService(typeof(TestScriptService), "JsonMethod", new string[0]), Throws.Nothing);
     }
-    
+
     [Test]
     public void Test_BaseTypeNotWebService ()
     {
-      Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestNotAWebService), "Method", new string[0]),
+      Assert.That(
+          () => WebServiceUtility.CheckJsonService(typeof(TestNotAWebService), "Method", new string[0]),
           Throws.ArgumentException
-              .And.Message.EqualTo (
+              .And.Message.EqualTo(
                   "Web service type 'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckJsonService+TestNotAWebService'"
                   + " does not derive from 'System.Web.Services.WebService'."));
     }
@@ -92,10 +92,10 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     [Test]
     public void Test_MissingScriptServiceAttribute ()
     {
-      Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestWebService), "Method", new string[0]),
+      Assert.That(
+          () => WebServiceUtility.CheckJsonService(typeof(TestWebService), "Method", new string[0]),
           Throws.ArgumentException
-              .And.Message.EqualTo (
+              .And.Message.EqualTo(
                   "Web service type 'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckJsonService+TestWebService'"
                   + " does not have the 'System.Web.Script.Services.ScriptServiceAttribute' applied."));
     }
@@ -103,10 +103,10 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     [Test]
     public void Test_ResponseFormatNotJson ()
     {
-      Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithResponeFormatNotJson", new string[0]),
+      Assert.That(
+          () => WebServiceUtility.CheckJsonService(typeof(TestScriptService), "MethodWithResponeFormatNotJson", new string[0]),
           Throws.ArgumentException
-              .And.Message.EqualTo (
+              .And.Message.EqualTo(
                   "Web method 'MethodWithResponeFormatNotJson' on web service type "
                   + "'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckJsonService+TestScriptService'"
                   + " does not have the ResponseFormat property of the ScriptMethodAttribute set to Json."));
@@ -115,18 +115,18 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     [Test]
     public void Test_ParametersMatch ()
     {
-      Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", new [] { "param2", "param1" }),
+      Assert.That(
+          () => WebServiceUtility.CheckJsonService(typeof(TestScriptService), "MethodWithParameters", new [] { "param2", "param1" }),
           Throws.Nothing);
     }
 
     [Test]
-    public void Test_MissingParameter()
+    public void Test_MissingParameter ()
     {
-      Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", new [] { "param1", "param3" }),
+      Assert.That(
+          () => WebServiceUtility.CheckJsonService(typeof(TestScriptService), "MethodWithParameters", new [] { "param1", "param3" }),
           Throws.ArgumentException
-              .And.Message.EqualTo (
+              .And.Message.EqualTo(
                   "Web method 'MethodWithParameters' on web service type "
                   + "'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckJsonService+TestScriptService'"
                   + " does not declare the required parameter 'param3'. Parameters are matched by name and case."));
@@ -135,22 +135,22 @@ namespace Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests
     [Test]
     public void Test_UnexpectedParameter ()
     {
-      Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", new [] { "param2" }),
+      Assert.That(
+          () => WebServiceUtility.CheckJsonService(typeof(TestScriptService), "MethodWithParameters", new [] { "param2" }),
           Throws.ArgumentException
-              .And.Message.EqualTo (
+              .And.Message.EqualTo(
                   "Web method 'MethodWithParameters' on web service type "
                   + "'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckJsonService+TestScriptService'"
                   + " has unexpected parameter 'param1'."));
     }
 
     [Test]
-    public void Test_ParameterWithWrongCase()
+    public void Test_ParameterWithWrongCase ()
     {
-      Assert.That (
-          () => WebServiceUtility.CheckJsonService (typeof (TestScriptService), "MethodWithParameters", new [] { "param1", "Param2" }),
+      Assert.That(
+          () => WebServiceUtility.CheckJsonService(typeof(TestScriptService), "MethodWithParameters", new [] { "param1", "Param2" }),
           Throws.ArgumentException
-              .And.Message.EqualTo (
+              .And.Message.EqualTo(
                   "Web method 'MethodWithParameters' on web service type "
                   + "'Remotion.Web.UnitTests.Core.Services.WebServiceUtilityTests.CheckJsonService+TestScriptService'"
                   + " does not declare the required parameter 'Param2'. Parameters are matched by name and case."));

@@ -31,19 +31,19 @@ namespace Remotion.Security.UnitTests.SampleDomain
     }
 
     public DerivedSecurableObject (IObjectSecurityStrategy objectSecurityStrategy)
-      : base (objectSecurityStrategy)
+      : base(objectSecurityStrategy)
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Read)]
+    [DemandPermission(GeneralAccessTypes.Read)]
     public new void Send ()
     {
     }
 
-    [DemandPermission (GeneralAccessTypes.Create)]
+    [DemandPermission(GeneralAccessTypes.Create)]
     public override void Print ()
     {
-      base.Print ();
+      base.Print();
     }
 
     public override void Make ()
@@ -53,7 +53,7 @@ namespace Remotion.Security.UnitTests.SampleDomain
 
     public override void Record ()
     {
-      base.Record ();
+      base.Record();
     }
   }
 }

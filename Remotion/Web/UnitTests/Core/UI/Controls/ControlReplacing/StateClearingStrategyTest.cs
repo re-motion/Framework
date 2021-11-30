@@ -31,15 +31,15 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     [Test]
     public void LoadControlState ()
     {
-      var testPageHolder = new TestPageHolder (false, RequestMode.PostBack);
-      IStateModificationStrategy stateModificationStrategy = new StateClearingStrategy ();
-      var replacer = new ControlReplacer (MemberCallerMock.Object);
+      var testPageHolder = new TestPageHolder(false, RequestMode.PostBack);
+      IStateModificationStrategy stateModificationStrategy = new StateClearingStrategy();
+      var replacer = new ControlReplacer(MemberCallerMock.Object);
       replacer.StateModificationStrategy = stateModificationStrategy;
-      replacer.Controls.Add (testPageHolder.NamingContainer);
+      replacer.Controls.Add(testPageHolder.NamingContainer);
 
-      MemberCallerMock.Setup (mock => mock.ClearChildControlState (replacer)).Verifiable();
+      MemberCallerMock.Setup(mock => mock.ClearChildControlState(replacer)).Verifiable();
 
-      stateModificationStrategy.LoadControlState (replacer, MemberCallerMock.Object);
+      stateModificationStrategy.LoadControlState(replacer, MemberCallerMock.Object);
 
       MemberCallerMock.Verify();
     }
@@ -47,19 +47,19 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     [Test]
     public void LoadViewState ()
     {
-      var testPageHolder = new TestPageHolder (false, RequestMode.PostBack);
-      IStateModificationStrategy stateModificationStrategy = new StateClearingStrategy ();
-      var replacer = new ControlReplacer (MemberCallerMock.Object);
+      var testPageHolder = new TestPageHolder(false, RequestMode.PostBack);
+      IStateModificationStrategy stateModificationStrategy = new StateClearingStrategy();
+      var replacer = new ControlReplacer(MemberCallerMock.Object);
       replacer.StateModificationStrategy = stateModificationStrategy;
-      testPageHolder.Page.Controls.Add (replacer);
-      ControlInvoker replacerInvoker = new ControlInvoker (replacer);
-      replacerInvoker.LoadViewStateRecursive (new Pair (null, new ArrayList { 0, new Pair ("ChildState", null) }));
+      testPageHolder.Page.Controls.Add(replacer);
+      ControlInvoker replacerInvoker = new ControlInvoker(replacer);
+      replacerInvoker.LoadViewStateRecursive(new Pair(null, new ArrayList { 0, new Pair("ChildState", null) }));
 
-      stateModificationStrategy.LoadViewState (replacer, MemberCallerMock.Object);
+      stateModificationStrategy.LoadViewState(replacer, MemberCallerMock.Object);
 
       var newControl = new ControlMock();
-      replacer.Controls.Add (newControl);
-      Assert.That (newControl.ValueInViewState, Is.Null);
+      replacer.Controls.Add(newControl);
+      Assert.That(newControl.ValueInViewState, Is.Null);
     }
   }
 }

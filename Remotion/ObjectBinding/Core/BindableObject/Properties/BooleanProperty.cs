@@ -24,9 +24,9 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
 
     public BooleanProperty (Parameters parameters)
-        : base (parameters)
+        : base(parameters)
     {
-      _booleanToEnumPropertyConverter = new BooleanToEnumPropertyConverter (this);
+      _booleanToEnumPropertyConverter = new BooleanToEnumPropertyConverter(this);
     }
 
     /// <summary> Returns the human readable value of the boolean property. </summary>
@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <remarks> The value of this property may depend on the current culture. </remarks>
     public string GetDisplayName (bool value)
     {
-      return BindableObjectGlobalizationService.GetBooleanValueDisplayName (value);
+      return BindableObjectGlobalizationService.GetBooleanValueDisplayName(value);
     }
 
     /// <summary> Returns the default value to be assumed if the boolean property returns <see langword="null"/>. </summary>
@@ -76,7 +76,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="value"/>. </returns>
     public IEnumerationValueInfo? GetValueInfoByValue (object? value, IBusinessObject? businessObject)
     {
-      return _booleanToEnumPropertyConverter.GetValueInfoByValue (value);
+      return _booleanToEnumPropertyConverter.GetValueInfoByValue(value);
     }
 
     /// <summary> Returns a specific enumeration value. </summary>
@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="identifier"/>. </returns>
     public IEnumerationValueInfo? GetValueInfoByIdentifier (string? identifier, IBusinessObject? businessObject)
     {
-      return _booleanToEnumPropertyConverter.GetValueInfoByIdentifier (identifier);
+      return _booleanToEnumPropertyConverter.GetValueInfoByIdentifier(identifier);
     }
   }
 }

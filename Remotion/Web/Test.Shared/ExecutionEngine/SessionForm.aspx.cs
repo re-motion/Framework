@@ -62,32 +62,32 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 
-    private void Page_Load(object sender, System.EventArgs e)
+    private void Page_Load (object sender, System.EventArgs e)
     {
-      RegisterClientSidePageEventHandler (SmartPageEvents.OnPostBack, "Page_PostBack", "Page_PostBack");
-      RegisterClientSidePageEventHandler (SmartPageEvents.OnPostBack, "Page_Abort", "Page_Abort");
-      RegisterClientSidePageEventHandler (SmartPageEvents.OnLoaded, "Page_Loaded", "Page_Loaded");
-      RegisterClientSidePageEventHandler (SmartPageEvents.OnBeforeUnload, "Page_BeforeUnload", "Page_BeforeUnload");
-      RegisterClientSidePageEventHandler (SmartPageEvents.OnUnload, "Page_Unload", "Page_Unload");
+      RegisterClientSidePageEventHandler(SmartPageEvents.OnPostBack, "Page_PostBack", "Page_PostBack");
+      RegisterClientSidePageEventHandler(SmartPageEvents.OnPostBack, "Page_Abort", "Page_Abort");
+      RegisterClientSidePageEventHandler(SmartPageEvents.OnLoaded, "Page_Loaded", "Page_Loaded");
+      RegisterClientSidePageEventHandler(SmartPageEvents.OnBeforeUnload, "Page_BeforeUnload", "Page_BeforeUnload");
+      RegisterClientSidePageEventHandler(SmartPageEvents.OnUnload, "Page_Unload", "Page_Unload");
       FunctionTokenLabel.Text = "Token = " + WxeContext.Current.FunctionToken;
       PostBackIDLabel.Text = "PostBackID = " + WxeContext.Current.PostBackID.ToString();
       ViewStateTokenLabel.Text = "ViewStateToken = " + _viewStateToken.ToLongDateString() + ", " + _viewStateToken.ToLongTimeString();
 
-      CurrentFunctionPermaLink.NavigateUrl = GetPermanentUrl ();
+      CurrentFunctionPermaLink.NavigateUrl = GetPermanentUrl();
       CurrentFunctionPermaLink.Text = CurrentFunctionPermaLink.NavigateUrl;
       NameValueCollection queryString = new NameValueCollection();
-      queryString.Add ("Parameter", "Hello World!");
-      SampleFunctionPermaLink.NavigateUrl = GetPermanentUrl (typeof (SampleWxeFunction), queryString);
-      SampleFunctionPermaLink.Text = HttpUtility.HtmlEncode (SampleFunctionPermaLink.NavigateUrl);
+      queryString.Add("Parameter", "Hello World!");
+      SampleFunctionPermaLink.NavigateUrl = GetPermanentUrl(typeof(SampleWxeFunction), queryString);
+      SampleFunctionPermaLink.Text = HttpUtility.HtmlEncode(SampleFunctionPermaLink.NavigateUrl);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
-      HtmlHeadAppender.Current.RegisterPageStylesheetLink ();
+      base.OnPreRender(e);
+      HtmlHeadAppender.Current.RegisterPageStylesheetLink();
     }
 
-    override protected void OnInit(EventArgs e)
+    override protected void OnInit (EventArgs e)
     {
       //
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -97,13 +97,13 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     }
     #region Web Form Designer generated code
 
-	
+
     /// <summary>
     /// Required method for Designer support - do not modify
     /// the contents of this method with the code editor.
     /// </summary>
-    private void InitializeComponent()
-    {    
+    private void InitializeComponent ()
+    {
       this.PostBackButton.Click += new System.EventHandler(this.PostBackButton_Click);
       this.OpenSelfButton.Click += new System.EventHandler(this.OpenSelfButton_Click);
       this.Button1.Click += new System.EventHandler(this.Button1_Click);
@@ -112,7 +112,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       this.ExecuteButton.Click += new System.EventHandler(this.ExecuteButton_Click);
       this.ExecuteNoRepostButton.Click += new System.EventHandler(this.ExecuteNoRepostButton_Click);
       this.Button2Button.Click += new System.EventHandler(this.Button2Button_Click);
-      this.ImageButton.Click += new ImageClickEventHandler (this.ImageButton_Click);
+      this.ImageButton.Click += new ImageClickEventHandler(this.ImageButton_Click);
       this.OpenSampleFunctionButton.Click += new System.EventHandler(this.OpenSampleFunctionButton_Click);
       this.OpenSampleFunctionWithPermanentUrlButton.Click += new System.EventHandler(this.OpenSampleFunctionWithPermanentUrlButton_Click);
       this.OpenSampleFunctionInNewWindowButton.Click += new System.EventHandler(this.OpenSampleFunctionInNewWindowButton_Click);
@@ -137,79 +137,79 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private DateTime _viewStateToken = DateTime.MinValue;
 
-    protected override void LoadViewState(object savedState)
+    protected override void LoadViewState (object savedState)
     {
       if (savedState is Pair)
       {
-        Pair pair = (Pair) savedState;
-        base.LoadViewState (pair.First);
-        _viewStateToken = (DateTime) pair.Second;
+        Pair pair = (Pair)savedState;
+        base.LoadViewState(pair.First);
+        _viewStateToken = (DateTime)pair.Second;
       }
       else
       {
-        base.LoadViewState (savedState);
+        base.LoadViewState(savedState);
       }
     }
 
-    protected override object SaveViewState()
+    protected override object SaveViewState ()
     {
-      return new Pair (base.SaveViewState (), DateTime.Now);
+      return new Pair(base.SaveViewState(), DateTime.Now);
     }
 
-    private void PostBackButton_Click(object sender, System.EventArgs e)
+    private void PostBackButton_Click (object sender, System.EventArgs e)
     {
-      System.Threading.Thread.Sleep (10000);  
+      System.Threading.Thread.Sleep(10000);
     }
 
-    private void OpenSelfButton_Click(object sender, System.EventArgs e)
+    private void OpenSelfButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
-        this.ExecuteFunctionExternal (new SessionWxeFunction (true), "_blank", OpenSelfButton, true);
+        this.ExecuteFunctionExternal(new SessionWxeFunction(true), "_blank", OpenSelfButton, true);
     }
 
-    private void Button1_Click(object sender, System.EventArgs e)
+    private void Button1_Click (object sender, System.EventArgs e)
     {
-  
+
     }
 
-    private void Button1Button_Click(object sender, System.EventArgs e)
+    private void Button1Button_Click (object sender, System.EventArgs e)
     {
-  
+
     }
 
-    private void Submit1Button_Click(object sender, System.EventArgs e)
+    private void Submit1Button_Click (object sender, System.EventArgs e)
     {
-  
+
     }
 
-    private void Button2Button_Click(object sender, System.EventArgs e)
+    private void Button2Button_Click (object sender, System.EventArgs e)
     {
-  
+
     }
-    
-    private void ImageButton_Click(object sender, System.EventArgs e)
+
+    private void ImageButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
-        ExecuteFunction (new SampleWxeFunction(), new WxeCallArguments ((Control) sender, new WxeCallOptions()));
+        ExecuteFunction(new SampleWxeFunction(), new WxeCallArguments((Control)sender, new WxeCallOptions()));
       else
         ImageButtonLabel.Text = "returning postback";
     }
 
-    private void ExecuteButton_Click(object sender, System.EventArgs e)
+    private void ExecuteButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
-        this.ExecuteFunction (new SampleWxeFunction ());
+        this.ExecuteFunction(new SampleWxeFunction());
     }
 
     private void ExecuteNoRepostButton_Click (object sender, System.EventArgs e)
     {
-      this.ExecuteFunctionNoRepost (new SampleWxeFunction (), (Control) sender);
+      this.ExecuteFunctionNoRepost(new SampleWxeFunction(), (Control)sender);
     }
 
     private void OpenSampleFunctionButton_Click (object sender, System.EventArgs e)
     {
       if (! IsReturningPostBack)
-        this.ExecuteFunction (new SampleWxeFunction (), false, false);
+        this.ExecuteFunction(new SampleWxeFunction(), false, false);
     }
 
     private void OpenSampleFunctionWithPermanentUrlButton_Click (object sender, System.EventArgs e)
@@ -217,15 +217,15 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       if (! IsReturningPostBack)
       {
         NameValueCollection queryString = new NameValueCollection();
-        queryString.Add ("Parameter", "Hello World!");
-        this.ExecuteFunction (new SampleWxeFunction(), true, true, queryString);
+        queryString.Add("Parameter", "Hello World!");
+        this.ExecuteFunction(new SampleWxeFunction(), true, true, queryString);
       }
     }
 
     private void OpenSampleFunctionInNewWindowButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
-        this.ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", (Control) sender, true, false, false);
+        this.ExecuteFunctionExternal(new SampleWxeFunction(), "_blank", (Control)sender, true, false, false);
     }
 
     private void OpenSampleFunctionWithPermanentUrlInNewWindowButton_Click (object sender, System.EventArgs e)
@@ -233,97 +233,97 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       if (!IsReturningPostBack)
       {
         NameValueCollection queryString = new NameValueCollection();
-        queryString.Add ("Parameter", "Hello World!");
-        this.ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", (Control) sender, true, true, true, queryString);
+        queryString.Add("Parameter", "Hello World!");
+        this.ExecuteFunctionExternal(new SampleWxeFunction(), "_blank", (Control)sender, true, true, true, queryString);
       }
     }
 
-    private void OpenSessionFunctionButton_Click(object sender, System.EventArgs e)
+    private void OpenSessionFunctionButton_Click (object sender, System.EventArgs e)
     {
       if (! IsReturningPostBack)
-        this.ExecuteFunction (new SessionWxeFunction (true), false, false);
+        this.ExecuteFunction(new SessionWxeFunction(true), false, false);
     }
 
-    private void OpenSessionFunctionWithPermanentUrlButton_Click(object sender, System.EventArgs e)
+    private void OpenSessionFunctionWithPermanentUrlButton_Click (object sender, System.EventArgs e)
     {
       if (! IsReturningPostBack)
-        this.ExecuteFunction (new SessionWxeFunction (true), true, true);
+        this.ExecuteFunction(new SessionWxeFunction(true), true, true);
     }
 
     private void OpenSessionFunctionInNewWindowButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
-        this.ExecuteFunctionExternal (new SessionWxeFunction (true), "_blank", (Control) sender, true, false, false);
+        this.ExecuteFunctionExternal(new SessionWxeFunction(true), "_blank", (Control)sender, true, false, false);
     }
 
     private void OpenSessionFunctionWithPermanentUrlInNewWindowButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
-        this.ExecuteFunctionExternal (new SessionWxeFunction (true), "_blank", (Control) sender, true, true, true);
+        this.ExecuteFunctionExternal(new SessionWxeFunction(true), "_blank", (Control)sender, true, true, true);
     }
 
-    private void OpenSampleFunctionByRedirectButton_Click(object sender, System.EventArgs e)
+    private void OpenSampleFunctionByRedirectButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
       {
         NameValueCollection queryString = new NameValueCollection();
-        queryString.Add ("Parameter", "Hello World!");
-        this.ExecuteFunctionExternal (new SampleWxeFunction (), (Control) sender, false, true, queryString, true, null);
+        queryString.Add("Parameter", "Hello World!");
+        this.ExecuteFunctionExternal(new SampleWxeFunction(), (Control)sender, false, true, queryString, true, null);
       }
     }
 
-    private void OpenSampleFunctionByRedirectDoNotReturnButton_Click(object sender, System.EventArgs e)
+    private void OpenSampleFunctionByRedirectDoNotReturnButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
       {
         NameValueCollection queryString = new NameValueCollection();
-        queryString.Add ("Parameter", "Hello World!");
-        this.ExecuteFunctionExternal (new SampleWxeFunction (), (Control) sender, false, true, queryString, false, null);
+        queryString.Add("Parameter", "Hello World!");
+        this.ExecuteFunctionExternal(new SampleWxeFunction(), (Control)sender, false, true, queryString, false, null);
       }
     }
 
-    private void OpenSampleFunctionWithPermanentUrlByRedirectButton_Click(object sender, System.EventArgs e)
+    private void OpenSampleFunctionWithPermanentUrlByRedirectButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
       {
-        this.ExecuteFunctionExternal (new SampleWxeFunction (), (Control) sender, true, true, null, true, null);
+        this.ExecuteFunctionExternal(new SampleWxeFunction(), (Control)sender, true, true, null, true, null);
       }
     }
 
-    private void OpenSampleFunctionWithPermanentUrlByDoNotReturnRedirectButton_Click(object sender, System.EventArgs e)
+    private void OpenSampleFunctionWithPermanentUrlByDoNotReturnRedirectButton_Click (object sender, System.EventArgs e)
     {
       if (!IsReturningPostBack)
       {
-        this.ExecuteFunctionExternal (new SampleWxeFunction (), (Control) sender, true, true, null, false, null);
+        this.ExecuteFunctionExternal(new SampleWxeFunction(), (Control)sender, true, true, null, false, null);
       }
     }
 
-    private void ContextOpenSampleFunctionButton_Click(object sender, System.EventArgs e)
+    private void ContextOpenSampleFunctionButton_Click (object sender, System.EventArgs e)
     {
       NameValueCollection queryString = new NameValueCollection();
-      queryString.Add ("Parameter", "Hello World!");
-      WxeContext.ExecuteFunctionExternal (this, new SampleWxeFunction (), queryString, true);
+      queryString.Add("Parameter", "Hello World!");
+      WxeContext.ExecuteFunctionExternal(this, new SampleWxeFunction(), queryString, true);
     }
 
-    private void ContextOpenSampleFunctionInNewWindowButton_Click(object sender, System.EventArgs e)
+    private void ContextOpenSampleFunctionInNewWindowButton_Click (object sender, System.EventArgs e)
     {
       NameValueCollection queryString = new NameValueCollection();
-      queryString.Add ("Parameter", "Hello World!");
-      WxeContext.ExecuteFunctionExternal (this, new SampleWxeFunction (), "_blank", string.Empty, queryString);
+      queryString.Add("Parameter", "Hello World!");
+      WxeContext.ExecuteFunctionExternal(this, new SampleWxeFunction(), "_blank", string.Empty, queryString);
     }
 
-    private void ContextOpenSampleFunctionWithPermanentUrlButton_Click(object sender, System.EventArgs e)
+    private void ContextOpenSampleFunctionWithPermanentUrlButton_Click (object sender, System.EventArgs e)
     {
       NameValueCollection queryString = new NameValueCollection();
-      queryString.Add ("Parameter", "Hello World!");
-      WxeContext.ExecuteFunctionExternal (this, new SampleWxeFunction (), true, queryString, true);
+      queryString.Add("Parameter", "Hello World!");
+      WxeContext.ExecuteFunctionExternal(this, new SampleWxeFunction(), true, queryString, true);
     }
 
-    private void ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton_Click(object sender, System.EventArgs e)
+    private void ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton_Click (object sender, System.EventArgs e)
     {
       NameValueCollection queryString = new NameValueCollection();
-      queryString.Add ("Parameter", "Hello World!");
-      WxeContext.ExecuteFunctionExternal (this, new SampleWxeFunction (), "_blank", string.Empty, true, queryString);
+      queryString.Add("Parameter", "Hello World!");
+      WxeContext.ExecuteFunctionExternal(this, new SampleWxeFunction(), "_blank", string.Empty, true, queryString);
     }
   }
 }

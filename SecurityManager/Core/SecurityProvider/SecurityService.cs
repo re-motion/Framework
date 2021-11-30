@@ -27,12 +27,12 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager
 {
-  [ImplementationFor (typeof (ISecurityProvider), Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor(typeof(ISecurityProvider), Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
   public class SecurityService : ISecurityProvider
   {
     public const int Position = NullSecurityProvider.Position - 1;
 
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (SecurityService));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(SecurityService));
 
     private readonly IAccessControlListFinder _accessControlListFinder;
     private readonly ISecurityTokenBuilder _securityTokenBuilder;
@@ -43,9 +43,9 @@ namespace Remotion.SecurityManager
         ISecurityTokenBuilder securityTokenBuilder,
         IAccessResolver accessResolver)
     {
-      ArgumentUtility.CheckNotNull ("accessControlListFinder", accessControlListFinder);
-      ArgumentUtility.CheckNotNull ("securityTokenBuilder", securityTokenBuilder);
-      ArgumentUtility.CheckNotNull ("accessResolver", accessResolver);
+      ArgumentUtility.CheckNotNull("accessControlListFinder", accessControlListFinder);
+      ArgumentUtility.CheckNotNull("securityTokenBuilder", securityTokenBuilder);
+      ArgumentUtility.CheckNotNull("accessResolver", accessResolver);
 
       _accessControlListFinder = accessControlListFinder;
       _securityTokenBuilder = securityTokenBuilder;
@@ -54,8 +54,8 @@ namespace Remotion.SecurityManager
 
     public AccessType[] GetAccess (ISecurityContext context, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("principal", principal);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("principal", principal);
 
       using (SecurityFreeSection.Activate())
       {
@@ -63,12 +63,12 @@ namespace Remotion.SecurityManager
         SecurityToken token;
         try
         {
-          acl = _accessControlListFinder.Find (context);
-          token = _securityTokenBuilder.CreateToken (principal, context);
+          acl = _accessControlListFinder.Find(context);
+          token = _securityTokenBuilder.CreateToken(principal, context);
         }
         catch (AccessControlException e)
         {
-          s_log.Error ("Error during evaluation of security query.", e);
+          s_log.Error("Error during evaluation of security query.", e);
           return new AccessType[0];
         }
 
@@ -77,11 +77,11 @@ namespace Remotion.SecurityManager
 
         try
         {
-          return _accessResolver.GetAccessTypes (acl, token);
+          return _accessResolver.GetAccessTypes(acl, token);
         }
         catch (ObjectsNotFoundException e)
         {
-          s_log.Error ("Error during evaluation of security query.", e);
+          s_log.Error("Error during evaluation of security query.", e);
           return new AccessType[0];
         }
       }

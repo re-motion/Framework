@@ -56,9 +56,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider> ();
+      _endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider>();
       _oppositeObjectSetterCalled = false;
       _oppositeObjectSetter = id =>
       {

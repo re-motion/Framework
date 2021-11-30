@@ -20,18 +20,18 @@ using Remotion.Globalization;
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
 {
   [DBTable]
-  [MultiLingualResources ("Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Resources.Order")]
+  [MultiLingualResources("Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain.Resources.Order")]
   public class Order : DomainObject
   {
     public static Order NewObject ()
     {
-      return NewObject<Order> ();
+      return NewObject<Order>();
     }
 
     [StringProperty(IsNullable = false, MaximumLength = 10)]
     public virtual string Number { get; set; }
 
-    [DBBidirectionalRelation ("Order")]
+    [DBBidirectionalRelation("Order")]
     [Mandatory]
     public virtual ObjectList<OrderItem> OrderItems { get; }
   }

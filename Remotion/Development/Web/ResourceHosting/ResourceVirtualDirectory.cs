@@ -33,12 +33,12 @@ namespace Remotion.Development.Web.ResourceHosting
     private readonly string? _displayName;
 
     public ResourceVirtualDirectory (string virtualPath, DirectoryInfo physicalDirectory, string? displayName = null)
-        : base (virtualPath)
+        : base(virtualPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
-      ArgumentUtility.CheckNotNull ("physicalDirectory", physicalDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);
+      ArgumentUtility.CheckNotNull("physicalDirectory", physicalDirectory);
 
-      _virtualPath = VirtualPathUtility.AppendTrailingSlash (virtualPath);
+      _virtualPath = VirtualPathUtility.AppendTrailingSlash(virtualPath);
       _physicalDirectory = physicalDirectory;
       _displayName = displayName;
     }
@@ -47,7 +47,7 @@ namespace Remotion.Development.Web.ResourceHosting
     {
       get { return _virtualPath;  }
     }
-    
+
     public virtual string? PhysicalPath
     {
       get
@@ -76,8 +76,8 @@ namespace Remotion.Development.Web.ResourceHosting
         {
           foreach (var directory in _physicalDirectory.GetDirectories())
           {
-            var path = VirtualPathUtility.AppendTrailingSlash (VirtualPathUtility.Combine (AppRelativeVirtualPath, directory.Name));
-            yield return new ResourceVirtualDirectory (path, directory);
+            var path = VirtualPathUtility.AppendTrailingSlash(VirtualPathUtility.Combine(AppRelativeVirtualPath, directory.Name));
+            yield return new ResourceVirtualDirectory(path, directory);
           }
         }
       }
@@ -91,8 +91,8 @@ namespace Remotion.Development.Web.ResourceHosting
         {
           foreach (var file in _physicalDirectory.GetFiles())
           {
-            var path = VirtualPathUtility.Combine (AppRelativeVirtualPath, file.Name);
-            yield return new ResourceVirtualFile (path, file);
+            var path = VirtualPathUtility.Combine(AppRelativeVirtualPath, file.Name);
+            yield return new ResourceVirtualFile(path, file);
           }
         }
       }

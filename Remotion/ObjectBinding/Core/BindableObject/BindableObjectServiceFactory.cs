@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.BindableObject
   {
     public static BindableObjectServiceFactory Create ()
     {
-      return ObjectFactory.Create<BindableObjectServiceFactory> (true, ParamList.Empty);
+      return ObjectFactory.Create<BindableObjectServiceFactory>(true, ParamList.Empty);
     }
 
     protected BindableObjectServiceFactory ()
@@ -56,9 +56,9 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public virtual IBusinessObjectService? CreateService (IBusinessObjectProviderWithIdentity provider, Type serviceType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("serviceType", serviceType, typeof (IBusinessObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof(IBusinessObjectService));
 
-      if (serviceType == typeof (IBusinessObjectStringFormatterService))
+      if (serviceType == typeof(IBusinessObjectStringFormatterService))
         return new BusinessObjectStringFormatterService();
 
       return null;

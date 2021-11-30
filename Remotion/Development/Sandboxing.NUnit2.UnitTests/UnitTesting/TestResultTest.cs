@@ -30,104 +30,104 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [SetUp]
     public void SetUp ()
     {
-      _methodInfo = typeof (DummyTest1).GetMethod ("Test1");
-      _exception = new Exception ("Test");
+      _methodInfo = typeof(DummyTest1).GetMethod("Test1");
+      _exception = new Exception("Test");
     }
 
     [Test]
     public void CreateSucceeded ()
     {
-      var result = TestResult.CreateSucceeded (_methodInfo);
-      
-      Assert.That (result.MethodInfo, Is.SameAs (_methodInfo));
-      Assert.That (result.Status, Is.EqualTo (SandboxTestStatus.Succeeded));
-      Assert.That (result.Exception, Is.Null);
+      var result = TestResult.CreateSucceeded(_methodInfo);
+
+      Assert.That(result.MethodInfo, Is.SameAs(_methodInfo));
+      Assert.That(result.Status, Is.EqualTo(SandboxTestStatus.Succeeded));
+      Assert.That(result.Exception, Is.Null);
     }
 
     [Test]
     public void CreateIgnored ()
     {
-      var result = TestResult.CreateIgnored (_methodInfo);
+      var result = TestResult.CreateIgnored(_methodInfo);
 
-      Assert.That (result.MethodInfo, Is.SameAs (_methodInfo));
-      Assert.That (result.Status, Is.EqualTo (SandboxTestStatus.Ignored));
-      Assert.That (result.Exception, Is.Null);
+      Assert.That(result.MethodInfo, Is.SameAs(_methodInfo));
+      Assert.That(result.Status, Is.EqualTo(SandboxTestStatus.Ignored));
+      Assert.That(result.Exception, Is.Null);
     }
 
     [Test]
     public void CreateFailed ()
     {
-      var result = TestResult.CreateFailed (_methodInfo, _exception);
+      var result = TestResult.CreateFailed(_methodInfo, _exception);
 
-      Assert.That (result.MethodInfo, Is.SameAs (_methodInfo));
-      Assert.That (result.Status, Is.EqualTo (SandboxTestStatus.Failed));
-      Assert.That (result.Exception, Is.SameAs (_exception));
+      Assert.That(result.MethodInfo, Is.SameAs(_methodInfo));
+      Assert.That(result.Status, Is.EqualTo(SandboxTestStatus.Failed));
+      Assert.That(result.Exception, Is.SameAs(_exception));
     }
 
     [Test]
     public void CreateFailedInSetUp ()
     {
-      var result = TestResult.CreateFailedInSetUp (_methodInfo, _exception);
+      var result = TestResult.CreateFailedInSetUp(_methodInfo, _exception);
 
-      Assert.That (result.MethodInfo, Is.SameAs (_methodInfo));
-      Assert.That (result.Status, Is.EqualTo (SandboxTestStatus.FailedInSetUp));
-      Assert.That (result.Exception, Is.SameAs (_exception));
+      Assert.That(result.MethodInfo, Is.SameAs(_methodInfo));
+      Assert.That(result.Status, Is.EqualTo(SandboxTestStatus.FailedInSetUp));
+      Assert.That(result.Exception, Is.SameAs(_exception));
     }
 
     [Test]
     public void CreateFailedInTearDown ()
     {
-      var result = TestResult.CreateFailedInTearDown (_methodInfo, _exception);
+      var result = TestResult.CreateFailedInTearDown(_methodInfo, _exception);
 
-      Assert.That (result.MethodInfo, Is.SameAs (_methodInfo));
-      Assert.That (result.Status, Is.EqualTo (SandboxTestStatus.FailedInTearDown));
-      Assert.That (result.Exception, Is.SameAs (_exception));
+      Assert.That(result.MethodInfo, Is.SameAs(_methodInfo));
+      Assert.That(result.Status, Is.EqualTo(SandboxTestStatus.FailedInTearDown));
+      Assert.That(result.Exception, Is.SameAs(_exception));
     }
-    
+
 
     [Test]
     public void EnsureNotFailed_Succeeded ()
     {
-      var result = TestResult.CreateSucceeded (_methodInfo);
+      var result = TestResult.CreateSucceeded(_methodInfo);
       result.EnsureNotFailed();
     }
 
     [Test]
     public void EnsureNotFailed_Ignored ()
     {
-      var result = TestResult.CreateIgnored (_methodInfo);
-      result.EnsureNotFailed ();
+      var result = TestResult.CreateIgnored(_methodInfo);
+      result.EnsureNotFailed();
     }
 
     [Test]
     public void EnsureNotFailed_Failed ()
     {
-      var result = TestResult.CreateFailed (_methodInfo, _exception);
-      Assert.That (
-          () => result.EnsureNotFailed (),
+      var result = TestResult.CreateFailed(_methodInfo, _exception);
+      Assert.That(
+          () => result.EnsureNotFailed(),
           Throws.InstanceOf<TestFailedException>()
-              .With.Message.EqualTo ("Test 'Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting.DummyTest1.Test1' failed. Status: Failed."));
+              .With.Message.EqualTo("Test 'Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting.DummyTest1.Test1' failed. Status: Failed."));
     }
 
     [Test]
     public void EnsureNotFailed_FailedInSetUp ()
     {
-      var result = TestResult.CreateFailedInSetUp (_methodInfo, _exception);
-      Assert.That (
-          () => result.EnsureNotFailed (),
+      var result = TestResult.CreateFailedInSetUp(_methodInfo, _exception);
+      Assert.That(
+          () => result.EnsureNotFailed(),
           Throws.InstanceOf<TestFailedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Test 'Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting.DummyTest1.Test1' failed. Status: FailedInSetUp."));
     }
 
     [Test]
     public void EnsureNotFailed_FailedInTearDown ()
     {
-      var result = TestResult.CreateFailedInTearDown (_methodInfo, _exception);
-      Assert.That (
-          () => result.EnsureNotFailed (),
+      var result = TestResult.CreateFailedInTearDown(_methodInfo, _exception);
+      Assert.That(
+          () => result.EnsureNotFailed(),
           Throws.InstanceOf<TestFailedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Test 'Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting.DummyTest1.Test1' failed. Status: FailedInTearDown."));
     }
   }

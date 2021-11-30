@@ -27,35 +27,35 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
   {
     public override void OneTimeSetUp ()
     {
-      base.OneTimeSetUp ();
-    
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateAndCommitSecurableClassDefinitionWithLocalizedNames (ClientTransaction.CreateRootTransaction());
+      base.OneTimeSetUp();
+
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      dbFixtures.CreateAndCommitSecurableClassDefinitionWithLocalizedNames(ClientTransaction.CreateRootTransaction());
     }
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ();
+      ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
     }
 
     [Test]
     public void Find_Existing ()
     {
-      Culture foundCulture = Culture.Find ("de");
+      Culture foundCulture = Culture.Find("de");
 
-      Assert.That (foundCulture, Is.Not.Null);
-      Assert.That (foundCulture.State.IsNew, Is.False);
-      Assert.That (foundCulture.CultureName, Is.EqualTo ("de"));
+      Assert.That(foundCulture, Is.Not.Null);
+      Assert.That(foundCulture.State.IsNew, Is.False);
+      Assert.That(foundCulture.CultureName, Is.EqualTo("de"));
     }
 
     [Test]
     public void Find_NotExisting ()
     {
-      Culture foundCulture = Culture.Find ("hu");
+      Culture foundCulture = Culture.Find("hu");
 
-      Assert.That (foundCulture, Is.Null);
+      Assert.That(foundCulture, Is.Null);
     }
   }
 }

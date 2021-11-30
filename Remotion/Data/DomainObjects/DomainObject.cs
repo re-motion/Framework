@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     protected static T NewObject<T> () where T : DomainObject
     {
-      return NewObject<T> (ParamList.Empty);
+      return NewObject<T>(ParamList.Empty);
     }
 
     /// <summary>
@@ -97,9 +97,9 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     protected static T NewObject<T> (ParamList constructorParameters) where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
+      ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
 
-      return (T) LifetimeService.NewObject (ClientTransactionScope.CurrentTransaction, typeof (T), constructorParameters);
+      return (T)LifetimeService.NewObject(ClientTransactionScope.CurrentTransaction, typeof(T), constructorParameters);
     }
 
     #endregion
@@ -192,17 +192,17 @@ namespace Remotion.Data.DomainObjects
       PerformConstructorCheck();
       // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
-      Assertion.IsNotNull (ClientTransaction.Current, "This constructor cannot be called with a null ClientTransaction.");
+      Assertion.IsNotNull(ClientTransaction.Current, "This constructor cannot be called with a null ClientTransaction.");
       var initializationContext = ObjectInititalizationContextScope.CurrentObjectInitializationContext;
       if (initializationContext == null)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "The DomainObject constructor may only be called via ClientTransaction.NewObject. "
             + "If this exception occurs during a base call of a deserialization constructor, adjust the base call to call the DomainObject's "
             + "deserialization constructor instead.");
       }
-      Initialize (initializationContext.ObjectID, initializationContext.RootTransaction);
-      initializationContext.RegisterObject (this);
+      Initialize(initializationContext.ObjectID, initializationContext.RootTransaction);
+      initializationContext.RegisterObject(this);
 
       RaiseReferenceInitializatingEvent();
 
@@ -222,41 +222,39 @@ namespace Remotion.Data.DomainObjects
         // ReSharper restore UnusedParameter.Local
 #pragma warning restore 168
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
       try
       {
-        _id = (ObjectID) info.GetValue ("DomainObject.ID", typeof (ObjectID));
-        _rootTransaction = (ClientTransaction) info.GetValue ("DomainObject._rootTransaction", typeof (ClientTransaction));
-        _needsLoadModeDataContainerOnly = info.GetBoolean ("DomainObject._needsLoadModeDataContainerOnly");
+        _id = (ObjectID)info.GetValue("DomainObject.ID", typeof(ObjectID));
+        _rootTransaction = (ClientTransaction)info.GetValue("DomainObject._rootTransaction", typeof(ClientTransaction));
+        _needsLoadModeDataContainerOnly = info.GetBoolean("DomainObject._needsLoadModeDataContainerOnly");
 
         PropertyChanging =
-            (EventHandler<PropertyChangeEventArgs>) info.GetValue ("DomainObject.PropertyChanging", typeof (EventHandler<PropertyChangeEventArgs>));
+            (EventHandler<PropertyChangeEventArgs>)info.GetValue("DomainObject.PropertyChanging", typeof(EventHandler<PropertyChangeEventArgs>));
         PropertyChanged =
-            (EventHandler<PropertyChangeEventArgs>) info.GetValue ("DomainObject.PropertyChanged", typeof (EventHandler<PropertyChangeEventArgs>));
+            (EventHandler<PropertyChangeEventArgs>)info.GetValue("DomainObject.PropertyChanged", typeof(EventHandler<PropertyChangeEventArgs>));
         RelationChanging =
-            (EventHandler<RelationChangingEventArgs>)
-                info.GetValue ("DomainObject.RelationChanging", typeof (EventHandler<RelationChangingEventArgs>));
+            (EventHandler<RelationChangingEventArgs>)info.GetValue("DomainObject.RelationChanging", typeof(EventHandler<RelationChangingEventArgs>));
         RelationChanged =
-            (EventHandler<RelationChangedEventArgs>) info.GetValue ("DomainObject.RelationChanged", typeof (EventHandler<RelationChangedEventArgs>));
-        Deleting = (EventHandler) info.GetValue ("DomainObject.Deleting", typeof (EventHandler));
-        Deleted = (EventHandler) info.GetValue ("DomainObject.Deleted", typeof (EventHandler));
+            (EventHandler<RelationChangedEventArgs>)info.GetValue("DomainObject.RelationChanged", typeof(EventHandler<RelationChangedEventArgs>));
+        Deleting = (EventHandler)info.GetValue("DomainObject.Deleting", typeof(EventHandler));
+        Deleted = (EventHandler)info.GetValue("DomainObject.Deleted", typeof(EventHandler));
         Committing =
-            (EventHandler<DomainObjectCommittingEventArgs>)
-                info.GetValue ("DomainObject.Committing", typeof (EventHandler<DomainObjectCommittingEventArgs>));
-        Committed = (EventHandler) info.GetValue ("DomainObject.Committed", typeof (EventHandler));
-        RollingBack = (EventHandler) info.GetValue ("DomainObject.RollingBack", typeof (EventHandler));
-        RolledBack = (EventHandler) info.GetValue ("DomainObject.RolledBack", typeof (EventHandler));
+            (EventHandler<DomainObjectCommittingEventArgs>)info.GetValue("DomainObject.Committing", typeof(EventHandler<DomainObjectCommittingEventArgs>));
+        Committed = (EventHandler)info.GetValue("DomainObject.Committed", typeof(EventHandler));
+        RollingBack = (EventHandler)info.GetValue("DomainObject.RollingBack", typeof(EventHandler));
+        RolledBack = (EventHandler)info.GetValue("DomainObject.RolledBack", typeof(EventHandler));
       }
       catch (SerializationException ex)
       {
         // ReSharper disable DoNotCallOverridableMethodsInConstructor
         Type publicDomainObjectType = GetPublicDomainObjectType();
         // ReSharper restore DoNotCallOverridableMethodsInConstructor
-        string message = String.Format (
+        string message = String.Format(
             "The GetObjectData method on type {0} did not call DomainObject's BaseGetObjectData method.",
             publicDomainObjectType.GetFullNameSafe());
-        throw new SerializationException (message, ex);
+        throw new SerializationException(message, ex);
       }
     }
 
@@ -288,7 +286,7 @@ namespace Remotion.Data.DomainObjects
     /// <value>The transaction context.</value>
     public DomainObjectTransactionContextIndexer TransactionContext
     {
-      get { return new DomainObjectTransactionContextIndexer (this, _isReferenceInitializeEventExecuting); }
+      get { return new DomainObjectTransactionContextIndexer(this, _isReferenceInitializeEventExecuting); }
     }
 
     /// <summary>
@@ -321,7 +319,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>
     /// For more information why and when an object becomes invalid see <see cref="ObjectInvalidException"/>.
     /// </remarks>
-    [Obsolete ("Use State.IsInvalid instead. (Version: 1.21.8)", false)]
+    [Obsolete("Use State.IsInvalid instead. (Version: 1.21.8)", false)]
     public bool IsInvalid
     {
       get { return State.IsInvalid; }
@@ -346,10 +344,10 @@ namespace Remotion.Data.DomainObjects
     /// generates a concrete <see cref="DomainObject"/> type, it overrides this method to disable the exception. This ensures that 
     /// <see cref="DomainObject"/> instances cannot be created simply by calling the <see cref="DomainObject"/>'s constructor.
     /// </remarks>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     protected virtual void PerformConstructorCheck ()
     {
-      throw new InvalidOperationException (
+      throw new InvalidOperationException(
           "DomainObject constructors must not be called directly. Use DomainObject.NewObject to create DomainObject "
           + "instances.");
     }
@@ -365,22 +363,22 @@ namespace Remotion.Data.DomainObjects
     protected void BaseGetObjectData (SerializationInfo info, StreamingContext context)
         // ReSharper restore UnusedParameter.Global
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
-      info.AddValue ("DomainObject.ID", ID);
-      info.AddValue ("DomainObject._rootTransaction", _rootTransaction);
-      info.AddValue ("DomainObject._needsLoadModeDataContainerOnly", _needsLoadModeDataContainerOnly);
+      info.AddValue("DomainObject.ID", ID);
+      info.AddValue("DomainObject._rootTransaction", _rootTransaction);
+      info.AddValue("DomainObject._needsLoadModeDataContainerOnly", _needsLoadModeDataContainerOnly);
 
-      info.AddValue ("DomainObject.PropertyChanging", PropertyChanging);
-      info.AddValue ("DomainObject.PropertyChanged", PropertyChanged);
-      info.AddValue ("DomainObject.RelationChanging", RelationChanging);
-      info.AddValue ("DomainObject.RelationChanged", RelationChanged);
-      info.AddValue ("DomainObject.Deleted", Deleted);
-      info.AddValue ("DomainObject.Deleting", Deleting);
-      info.AddValue ("DomainObject.Committing", Committing);
-      info.AddValue ("DomainObject.Committed", Committed);
-      info.AddValue ("DomainObject.RollingBack", RollingBack);
-      info.AddValue ("DomainObject.RolledBack", RolledBack);
+      info.AddValue("DomainObject.PropertyChanging", PropertyChanging);
+      info.AddValue("DomainObject.PropertyChanged", PropertyChanged);
+      info.AddValue("DomainObject.RelationChanging", RelationChanging);
+      info.AddValue("DomainObject.RelationChanged", RelationChanged);
+      info.AddValue("DomainObject.Deleted", Deleted);
+      info.AddValue("DomainObject.Deleting", Deleting);
+      info.AddValue("DomainObject.Committing", Committing);
+      info.AddValue("DomainObject.Committed", Committed);
+      info.AddValue("DomainObject.RollingBack", RollingBack);
+      info.AddValue("DomainObject.RolledBack", RolledBack);
     }
 
     /// <summary>
@@ -396,14 +394,14 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="ID"/> and enlists it with the given <see cref="DomainObjects.ClientTransaction"/>.</remarks>
     public void Initialize (ObjectID id, ClientTransaction rootTransaction)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
-      ArgumentUtility.CheckNotNull ("rootTransaction", rootTransaction);
+      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull("rootTransaction", rootTransaction);
 
       if (rootTransaction.RootTransaction != rootTransaction)
-        throw new ArgumentException ("The rootTransaction parameter must be passed a root transaction.", "rootTransaction");
+        throw new ArgumentException("The rootTransaction parameter must be passed a root transaction.", "rootTransaction");
 
       if (_id != null)
-        throw new InvalidOperationException ("The object cannot be initialized, it already has an ID.");
+        throw new InvalidOperationException("The object cannot be initialized, it already has an ID.");
 
       _id = id;
       _rootTransaction = rootTransaction;
@@ -414,12 +412,12 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="DomainObject.GetPublicDomainObjectType"/> can be used to get the Type object of the original underlying domain object type. If
     /// the <see cref="Type"/> object for the generated class is explicitly required, this object can be cast to 'object' before calling GetType.
     /// </summary>
-    [Obsolete ("GetType might return a Type object for a generated class, which is usually not what is expected. "
+    [Obsolete("GetType might return a Type object for a generated class, which is usually not what is expected. "
                + "DomainObject.GetPublicDomainObjectType can be used to get the Type object of the original underlying domain object type. If the Type object"
                + "for the generated class is explicitly required, this object can be cast to 'object' before calling GetType.", true)]
     public new Type GetType ()
     {
-      throw new InvalidOperationException ("DomainObject.GetType should not be used.");
+      throw new InvalidOperationException("DomainObject.GetType should not be used.");
     }
 
     /// <summary>
@@ -463,7 +461,7 @@ namespace Remotion.Data.DomainObjects
     protected void Delete ()
     {
       CheckInitializeEventNotExecuting();
-      LifetimeService.DeleteObject (DefaultTransactionContext.ClientTransaction, this);
+      LifetimeService.DeleteObject(DefaultTransactionContext.ClientTransaction, this);
     }
 
     /// <summary>
@@ -497,7 +495,7 @@ namespace Remotion.Data.DomainObjects
       {
         CheckInitializeEventNotExecuting();
 
-        return new PropertyIndexer (this);
+        return new PropertyIndexer(this);
       }
     }
 
@@ -510,7 +508,7 @@ namespace Remotion.Data.DomainObjects
       try
       {
         OnReferenceInitializing();
-        DomainObjectMixinCodeGenerationBridge.OnDomainObjectReferenceInitializing (this);
+        DomainObjectMixinCodeGenerationBridge.OnDomainObjectReferenceInitializing(this);
       }
       finally
       {
@@ -526,8 +524,8 @@ namespace Remotion.Data.DomainObjects
       LoadMode loadMode = _needsLoadModeDataContainerOnly ? LoadMode.DataContainerLoadedOnly : LoadMode.WholeDomainObjectInitialized;
       _needsLoadModeDataContainerOnly = true;
 
-      DomainObjectMixinCodeGenerationBridge.OnDomainObjectLoaded (this, loadMode);
-      OnLoaded (loadMode);
+      DomainObjectMixinCodeGenerationBridge.OnDomainObjectLoaded(this, loadMode);
+      OnLoaded(loadMode);
     }
 
     /// <summary>
@@ -623,7 +621,7 @@ namespace Remotion.Data.DomainObjects
     protected internal virtual void OnCommitting (DomainObjectCommittingEventArgs args)
     {
       if (Committing != null)
-        Committing (this, args);
+        Committing(this, args);
     }
 
     /// <summary>
@@ -633,7 +631,7 @@ namespace Remotion.Data.DomainObjects
     protected internal virtual void OnCommitted (EventArgs args)
     {
       if (Committed != null)
-        Committed (this, args);
+        Committed(this, args);
     }
 
     /// <summary>
@@ -643,7 +641,7 @@ namespace Remotion.Data.DomainObjects
     protected internal virtual void OnRollingBack (EventArgs args)
     {
       if (RollingBack != null)
-        RollingBack (this, args);
+        RollingBack(this, args);
     }
 
     /// <summary>
@@ -653,7 +651,7 @@ namespace Remotion.Data.DomainObjects
     protected internal virtual void OnRolledBack (EventArgs args)
     {
       if (RolledBack != null)
-        RolledBack (this, args);
+        RolledBack(this, args);
     }
 
     /// <summary>
@@ -666,7 +664,7 @@ namespace Remotion.Data.DomainObjects
     protected internal virtual void OnRelationChanging (RelationChangingEventArgs args)
     {
       if (RelationChanging != null)
-        RelationChanging (this, args);
+        RelationChanging(this, args);
     }
 
     /// <summary>
@@ -677,7 +675,7 @@ namespace Remotion.Data.DomainObjects
     protected internal virtual void OnRelationChanged (RelationChangedEventArgs args)
     {
       if (RelationChanged != null)
-        RelationChanged (this, args);
+        RelationChanged(this, args);
     }
 
     /// <summary>
@@ -687,7 +685,7 @@ namespace Remotion.Data.DomainObjects
     protected internal virtual void OnPropertyChanging (PropertyChangeEventArgs args)
     {
       if (PropertyChanging != null)
-        PropertyChanging (this, args);
+        PropertyChanging(this, args);
     }
 
     /// <summary>
@@ -697,7 +695,7 @@ namespace Remotion.Data.DomainObjects
     protected internal virtual void OnPropertyChanged (PropertyChangeEventArgs args)
     {
       if (PropertyChanged != null)
-        PropertyChanged (this, args);
+        PropertyChanged(this, args);
     }
 
     /// <summary>
@@ -707,7 +705,7 @@ namespace Remotion.Data.DomainObjects
     protected internal virtual void OnDeleting (EventArgs args)
     {
       if (Deleting != null)
-        Deleting (this, args);
+        Deleting(this, args);
     }
 
     /// <summary>
@@ -717,13 +715,13 @@ namespace Remotion.Data.DomainObjects
     protected internal virtual void OnDeleted (EventArgs args)
     {
       if (Deleted != null)
-        Deleted (this, args);
+        Deleted(this, args);
     }
 
     private void CheckInitializeEventNotExecuting ()
     {
       if (_isReferenceInitializeEventExecuting)
-        throw new InvalidOperationException ("While the OnReferenceInitializing event is executing, this member cannot be used.");
+        throw new InvalidOperationException("While the OnReferenceInitializing event is executing, this member cannot be used.");
     }
 
     /// <summary>
@@ -735,7 +733,7 @@ namespace Remotion.Data.DomainObjects
     /// <seealso cref="DomainObjectExtensions.RegisterForCommit"/>
     protected void RegisterForCommit ()
     {
-      DomainObjectExtensions.RegisterForCommit (this);
+      DomainObjectExtensions.RegisterForCommit(this);
     }
 
     /// <summary>
@@ -746,7 +744,7 @@ namespace Remotion.Data.DomainObjects
     /// <seealso cref="DomainObjectExtensions.EnsureDataAvailable"/>
     protected void EnsureDataAvailable ()
     {
-      DomainObjectExtensions.EnsureDataAvailable (this);
+      DomainObjectExtensions.EnsureDataAvailable(this);
     }
 
     /// <summary>
@@ -757,7 +755,7 @@ namespace Remotion.Data.DomainObjects
     /// <seealso cref="DomainObjectExtensions.TryEnsureDataAvailable"/>
     protected bool TryEnsureDataAvailable ()
     {
-      return DomainObjectExtensions.TryEnsureDataAvailable (this);
+      return DomainObjectExtensions.TryEnsureDataAvailable(this);
     }
   }
 }

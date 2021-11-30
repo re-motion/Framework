@@ -23,7 +23,7 @@ namespace Remotion.Validation.UnitTests.MetaValidation
   public class PropertyMetaValidationRuleBaseTest
   {
     [Test]
-    [Ignore ("RM-5906")]
+    [Ignore("RM-5906")]
     public void Validate ()
     {
     }

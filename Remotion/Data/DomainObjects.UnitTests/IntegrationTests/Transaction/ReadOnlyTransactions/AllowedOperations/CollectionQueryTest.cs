@@ -28,57 +28,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void QueryInReadOnlyRootTransaction_WithoutLoading_IsAllowed ()
     {
-      WriteableSubTransaction.EnsureDataAvailable (DomainObjectIDs.Order1);
+      WriteableSubTransaction.EnsureDataAvailable(DomainObjectIDs.Order1);
 
-      var resultSet = ExecuteInReadOnlyRootTransaction (() => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.OrderNumber == 1).ToList());
+      var resultSet = ExecuteInReadOnlyRootTransaction(() => QueryFactory.CreateLinqQuery<Order>().Where(obj => obj.OrderNumber == 1).ToList());
 
-      Assert.That (resultSet, Has.Count.EqualTo (1));
-      Assert.That (resultSet[0].ID, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(resultSet, Has.Count.EqualTo(1));
+      Assert.That(resultSet[0].ID, Is.EqualTo(DomainObjectIDs.Order1));
     }
 
     [Test]
     public void QueryInReadOnlyMiddleTransaction_WithoutLoading_IsAllowed ()
     {
-      WriteableSubTransaction.EnsureDataAvailable (DomainObjectIDs.Order1);
+      WriteableSubTransaction.EnsureDataAvailable(DomainObjectIDs.Order1);
 
-      var resultSet = ExecuteInReadOnlyMiddleTransaction ( () => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.OrderNumber == 1).ToList());
+      var resultSet = ExecuteInReadOnlyMiddleTransaction( () => QueryFactory.CreateLinqQuery<Order>().Where(obj => obj.OrderNumber == 1).ToList());
 
-      Assert.That (resultSet, Has.Count.EqualTo (1));
-      Assert.That (resultSet[0].ID, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(resultSet, Has.Count.EqualTo(1));
+      Assert.That(resultSet[0].ID, Is.EqualTo(DomainObjectIDs.Order1));
     }
 
     [Test]
     public void QueryInReadOnlyRootTransaction_WithLoading_IsAllowed ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      var resultSet = ExecuteInReadOnlyRootTransaction (() => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.OrderNumber == 1).ToList());
+      var resultSet = ExecuteInReadOnlyRootTransaction(() => QueryFactory.CreateLinqQuery<Order>().Where(obj => obj.OrderNumber == 1).ToList());
 
-      Assert.That (resultSet, Has.Count.EqualTo (1));
-      Assert.That (resultSet[0].ID, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(resultSet, Has.Count.EqualTo(1));
+      Assert.That(resultSet[0].ID, Is.EqualTo(DomainObjectIDs.Order1));
 
-      CheckDataLoaded (ReadOnlyRootTransaction, resultSet[0]);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, resultSet[0]);
-      CheckDataNotLoaded (WriteableSubTransaction, resultSet[0]);
+      CheckDataLoaded(ReadOnlyRootTransaction, resultSet[0]);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, resultSet[0]);
+      CheckDataNotLoaded(WriteableSubTransaction, resultSet[0]);
     }
 
     [Test]
     public void QueryInReadOnlyMiddleTransaction_WithLoading_IsAllowed ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      var resultSet = ExecuteInReadOnlyMiddleTransaction (() => QueryFactory.CreateLinqQuery<Order>().Where (obj => obj.OrderNumber == 1).ToList());
+      var resultSet = ExecuteInReadOnlyMiddleTransaction(() => QueryFactory.CreateLinqQuery<Order>().Where(obj => obj.OrderNumber == 1).ToList());
 
-      Assert.That (resultSet, Has.Count.EqualTo (1));
-      Assert.That (resultSet[0].ID, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(resultSet, Has.Count.EqualTo(1));
+      Assert.That(resultSet[0].ID, Is.EqualTo(DomainObjectIDs.Order1));
 
-      CheckDataLoaded (ReadOnlyRootTransaction, resultSet[0]);
-      CheckDataLoaded (ReadOnlyMiddleTransaction, resultSet[0]);
-      CheckDataNotLoaded (WriteableSubTransaction, resultSet[0]);
+      CheckDataLoaded(ReadOnlyRootTransaction, resultSet[0]);
+      CheckDataLoaded(ReadOnlyMiddleTransaction, resultSet[0]);
+      CheckDataNotLoaded(WriteableSubTransaction, resultSet[0]);
     }
   }
 }

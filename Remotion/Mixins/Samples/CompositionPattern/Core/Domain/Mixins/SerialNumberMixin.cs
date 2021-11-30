@@ -28,7 +28,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Domain.Mixins
   {
     public interface ITargetRequirements
     {
-      string ToString();
+      string ToString ();
     }
 
     private int _number = 0;
@@ -36,7 +36,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Domain.Mixins
     [OverrideTarget]
     public new string ToString ()
     {
-      return _number + ": " + Next.ToString ();
+      return _number + ": " + Next.ToString();
     }
   }
 }

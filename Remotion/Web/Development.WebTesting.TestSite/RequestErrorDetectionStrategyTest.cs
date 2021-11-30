@@ -25,11 +25,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class RequestErrorDetectionStrategyTestFunction : WxeFunction
   {
     public RequestErrorDetectionStrategyTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("RequestErrorDetectionStrategyTest.aspx");
+    private WxeStep Step1 = new WxePageStep("RequestErrorDetectionStrategyTest.aspx");
   }
 }

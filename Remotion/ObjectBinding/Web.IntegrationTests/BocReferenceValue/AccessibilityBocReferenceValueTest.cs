@@ -30,80 +30,80 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocReferenceValue
     public void Normal ()
     {
       var home = Start();
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocReferenceValue.Analyze (analyzer);
+      var result = bocReferenceValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void PartnerFieldWithoutSelectedValueRequired_WithValidationErrors ()
     {
       var home = Start();
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_WithoutSelectedValue_Required");
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_WithoutSelectedValue_Required");
       var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocReferenceValue.Analyze (analyzer);
+      var result = bocReferenceValue.Analyze(analyzer);
 
-      Assert.That (bocReferenceValue.GetValidationErrors(), Is.Not.Empty);
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(bocReferenceValue.GetValidationErrors(), Is.Not.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ReadOnly ()
     {
       var home = Start();
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_ReadOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocReferenceValue.Analyze (analyzer);
+      var result = bocReferenceValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ReadOnlyWithoutSelectedValue ()
     {
       var home = Start();
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnlyWithoutSelectedValue");
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_ReadOnlyWithoutSelectedValue");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocReferenceValue.Analyze (analyzer);
+      var result = bocReferenceValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Disabled ()
     {
       var home = Start();
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Disabled");
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Disabled");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocReferenceValue.Analyze (analyzer);
+      var result = bocReferenceValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Required ()
     {
       var home = Start();
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Required");
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Required");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocReferenceValue.Analyze (analyzer);
+      var result = bocReferenceValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocReferenceValue");
+      return Start("BocReferenceValue");
     }
   }
 }

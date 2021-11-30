@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         if (s_instance == null)
         {
           Debugger.Break();
-          throw new InvalidOperationException ("TestMappingConfiguration has not been Initialized by invoking Initialize()");
+          throw new InvalidOperationException("TestMappingConfiguration has not been Initialized by invoking Initialize()");
         }
         return s_instance;
       }
@@ -66,42 +66,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     protected TestMappingConfiguration ()
     {
       ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = StorageProviderDefinitionObjectMother.CreateTestDomainStorageProviders();
-      _storageConfiguration = new StorageConfiguration (
+      _storageConfiguration = new StorageConfiguration(
           storageProviderDefinitionCollection, storageProviderDefinitionCollection[MappingReflectionTestBase.DefaultStorageProviderID]);
-      _storageConfiguration.StorageGroups.Add (new StorageGroupElement (new TestDomainAttribute(), MappingReflectionTestBase.c_testDomainProviderID));
-      _storageConfiguration.StorageGroups.Add (
-          new StorageGroupElement (new StorageProviderStubAttribute(), MappingReflectionTestBase.c_unitTestStorageProviderStubID));
-      _storageConfiguration.StorageGroups.Add (
-          new StorageGroupElement (new TableInheritanceTestDomainAttribute(), TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
-      _storageConfiguration.StorageGroups.Add (
-          new StorageGroupElement (new NonPersistentTestDomainAttribute(), MappingReflectionTestBase.c_nonPersistentTestDomainProviderID));
+      _storageConfiguration.StorageGroups.Add(new StorageGroupElement(new TestDomainAttribute(), MappingReflectionTestBase.c_testDomainProviderID));
+      _storageConfiguration.StorageGroups.Add(
+          new StorageGroupElement(new StorageProviderStubAttribute(), MappingReflectionTestBase.c_unitTestStorageProviderStubID));
+      _storageConfiguration.StorageGroups.Add(
+          new StorageGroupElement(new TableInheritanceTestDomainAttribute(), TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
+      _storageConfiguration.StorageGroups.Add(
+          new StorageGroupElement(new NonPersistentTestDomainAttribute(), MappingReflectionTestBase.c_nonPersistentTestDomainProviderID));
 
       _mappingLoaderConfiguration = new MappingLoaderConfiguration();
-      _queryConfiguration = new QueryConfiguration ("QueriesForStandardMapping.xml");
-      DomainObjectsConfiguration.SetCurrent (
-          new FakeDomainObjectsConfiguration (_mappingLoaderConfiguration, _storageConfiguration, _queryConfiguration));
+      _queryConfiguration = new QueryConfiguration("QueriesForStandardMapping.xml");
+      DomainObjectsConfiguration.SetCurrent(
+          new FakeDomainObjectsConfiguration(_mappingLoaderConfiguration, _storageConfiguration, _queryConfiguration));
 
       var typeDiscoveryService = GetTypeDiscoveryService();
 
-      _mappingConfiguration = new MappingConfiguration (
-          MappingReflectorObjectMother.CreateMappingReflector (typeDiscoveryService),
-          new PersistenceModelLoader (new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage)));
-      MappingConfiguration.SetCurrent (_mappingConfiguration);
+      _mappingConfiguration = new MappingConfiguration(
+          MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
+          new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage)));
+      MappingConfiguration.SetCurrent(_mappingConfiguration);
 
       _domainObjectIDs = new DomainObjectIDs();
     }
 
     public static ITypeDiscoveryService GetTypeDiscoveryService ()
     {
-      var mappingRootNamespace = typeof (TestMappingConfiguration).Namespace;
+      var mappingRootNamespace = typeof(TestMappingConfiguration).Namespace;
       var testMappingNamespace = mappingRootNamespace + ".TestDomain.Integration";
 
-      var rootAssemlbies = new[] { new RootAssembly (typeof (TestMappingConfiguration).Assembly, true) };
-      var rootAssemblyFinder = new FixedRootAssemblyFinder (rootAssemlbies);
-      var assemblyLoader = new FilteringAssemblyLoader (ApplicationAssemblyLoaderFilter.Instance);
-      var assemblyFinder = new CachingAssemblyFinderDecorator (new AssemblyFinder (rootAssemblyFinder, assemblyLoader));
-      var typeDiscoveryService = (ITypeDiscoveryService) new AssemblyFinderTypeDiscoveryService (assemblyFinder);
-      typeDiscoveryService = FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist (typeDiscoveryService, testMappingNamespace);
+      var rootAssemlbies = new[] { new RootAssembly(typeof(TestMappingConfiguration).Assembly, true) };
+      var rootAssemblyFinder = new FixedRootAssemblyFinder(rootAssemlbies);
+      var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
+      var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
+      var typeDiscoveryService = (ITypeDiscoveryService)new AssemblyFinderTypeDiscoveryService(assemblyFinder);
+      typeDiscoveryService = FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist(typeDiscoveryService, testMappingNamespace);
 
       return typeDiscoveryService;
     }
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration ()
     {
-      return new FakeDomainObjectsConfiguration (_mappingLoaderConfiguration, _storageConfiguration, _queryConfiguration);
+      return new FakeDomainObjectsConfiguration(_mappingLoaderConfiguration, _storageConfiguration, _queryConfiguration);
     }
 
     public DomainObjectIDs GetDomainObjectIDs ()

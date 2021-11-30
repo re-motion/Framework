@@ -24,10 +24,10 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
   public class ShowThirdUserControlFormFunction : WxeFunction
   {
     public ShowThirdUserControlFormFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
-    private WxeResourceUserControlStep Step1 = new WxeResourceUserControlStep (typeof (ThirdControl), "ExecutionEngine/ThirdControl.ascx");
+    private WxeResourceUserControlStep Step1 = new WxeResourceUserControlStep(typeof(ThirdControl), "ExecutionEngine/ThirdControl.ascx");
   }
 }

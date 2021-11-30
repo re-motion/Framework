@@ -30,13 +30,13 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     protected static void CheckOrderedMixinTypes (object instance, params Type[] expectedMixinTypes)
     {
       var type = instance.GetType();
-      var mixinTypes = MixinTypeUtility.GetMixinTypesExact (type);
-      Assert.That (mixinTypes, Is.EqualTo (expectedMixinTypes));
+      var mixinTypes = MixinTypeUtility.GetMixinTypesExact(type);
+      Assert.That(mixinTypes, Is.EqualTo(expectedMixinTypes));
     }
 
     protected T BuildMixedInstance<T> (params Type[] mixins)
     {
-      using (MixinConfiguration.BuildNew ().ForClass<T> ().AddMixins (mixins).EnterScope ())
+      using (MixinConfiguration.BuildNew().ForClass<T>().AddMixins(mixins).EnterScope())
       {
         return ObjectFactory.Create<T>();
       }
@@ -44,9 +44,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
 
     protected T BuildMixedInstance<T> (Action<ClassContextBuilder> configuration, params Type[] mixins)
     {
-      var classContextBuilder = MixinConfiguration.BuildNew().ForClass<T>().AddMixins (mixins);
-      configuration (classContextBuilder);
-      using (classContextBuilder.EnterScope ())
+      var classContextBuilder = MixinConfiguration.BuildNew().ForClass<T>().AddMixins(mixins);
+      configuration(classContextBuilder);
+      using (classContextBuilder.EnterScope())
       {
         return ObjectFactory.Create<T>();
       }
@@ -54,8 +54,8 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
 
     protected T BuildMixedInstanceWithDeclarativeConfiguration<T> (params Type[] additionalAnalyzedTypes)
     {
-      var mixinConfiguration = DeclarativeConfigurationBuilder.BuildConfigurationFromTypes (null, additionalAnalyzedTypes.Concat (typeof (OrderingViaAttributeDependencyTest.C)));
-      using (mixinConfiguration.EnterScope ())
+      var mixinConfiguration = DeclarativeConfigurationBuilder.BuildConfigurationFromTypes(null, additionalAnalyzedTypes.Concat(typeof(OrderingViaAttributeDependencyTest.C)));
+      using (mixinConfiguration.EnterScope())
       {
         return ObjectFactory.Create<T>();
       }
@@ -68,39 +68,39 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
 
     protected void CheckOrderingException<T> (ActualValueDelegate<T> action, Type targetClass, params Tuple<Type[], string>[] conflictingMixinGroups)
     {
-      var expectedMessage = String.Format (
+      var expectedMessage = String.Format(
           "The mixins applied to target class '{0}' cannot be ordered. The following mixin groups require a clear base call ordering, but do not "
           + "provide enough dependency information:{2}{1}.{2}"
           + "Please supply additional dependencies to the mixin definitions, use the AcceptsAlphabeticOrderingAttribute, or adjust the "
-          + "mixin configuration accordingly.", 
+          + "mixin configuration accordingly.",
           targetClass.FullName,
-          BuildMixinListForExceptionMessage (conflictingMixinGroups),
+          BuildMixinListForExceptionMessage(conflictingMixinGroups),
           Environment.NewLine);
-      Assert.That (action, Throws.TypeOf<ConfigurationException>().With.Message.EqualTo (expectedMessage));
+      Assert.That(action, Throws.TypeOf<ConfigurationException>().With.Message.EqualTo(expectedMessage));
     }
 
     protected void CheckCycleException<T> (ActualValueDelegate<T> action, Type targetClass, params Type[] mixinTypes)
     {
-      var expectedMessage = String.Format (
-          "The mixins applied to target class '{0}' cannot be ordered. The following group of mixins contains circular dependencies:{2}{1}.", 
+      var expectedMessage = String.Format(
+          "The mixins applied to target class '{0}' cannot be ordered. The following group of mixins contains circular dependencies:{2}{1}.",
           targetClass.FullName,
-          BuildMixinListForExceptionMessage (mixinTypes),
+          BuildMixinListForExceptionMessage(mixinTypes),
           Environment.NewLine);
-      Assert.That (
-          action, 
-          Throws.TypeOf<ConfigurationException>().With.Message.EqualTo (expectedMessage));
+      Assert.That(
+          action,
+          Throws.TypeOf<ConfigurationException>().With.Message.EqualTo(expectedMessage));
     }
 
     private static string BuildMixinListForExceptionMessage (IEnumerable<Type> mixinTypes)
     {
-      return string.Join ("," + Environment.NewLine, mixinTypes.Select (m => "'" + m.FullName + "'"));
+      return string.Join("," + Environment.NewLine, mixinTypes.Select(m => "'" + m.FullName + "'"));
     }
 
     private static string BuildMixinListForExceptionMessage (IEnumerable<Tuple<Type[], string>> mixinTypeGroups)
     {
       var groupStrings = mixinTypeGroups
-          .Select (g => "{" + string.Join (", ", g.Item1.Select (m => "'" + m.FullName + "'")) + "} (overriding: '" + g.Item2 + "')");
-      return string.Join ("," + Environment.NewLine, groupStrings.Select (groupString => groupString));
+          .Select(g => "{" + string.Join(", ", g.Item1.Select(m => "'" + m.FullName + "'")) + "} (overriding: '" + g.Item2 + "')");
+      return string.Join("," + Environment.NewLine, groupStrings.Select(groupString => groupString));
     }
   }
 }

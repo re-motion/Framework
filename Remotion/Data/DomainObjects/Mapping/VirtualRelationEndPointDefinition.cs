@@ -20,7 +20,7 @@ using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
-  [Obsolete ("Use DomainObjectCollectionRelationEndPointDefinition or VirtualCollectionRelationEndPointDefinition or VirtualObjectRelationEndPointDefinition respectively. (Version: 3.0.0)", true)]
+  [Obsolete("Use DomainObjectCollectionRelationEndPointDefinition or VirtualCollectionRelationEndPointDefinition or VirtualObjectRelationEndPointDefinition respectively. (Version: 3.0.0)", true)]
   public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition
   {
     public VirtualRelationEndPointDefinition (
@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         string sortExpressionText,
         IPropertyInformation propertyInfo)
     {
-      throw new NotImplementedException (
+      throw new NotImplementedException(
           "Use DomainObjectCollectionRelationEndPointDefinition or VirtualCollectionRelationEndPointDefinition or VirtualObjectRelationEndPointDefinition respectively. (Version: 3.0.0)");
     }
 

@@ -45,11 +45,11 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       _validatedObject = new Customer();
       var propertyStub1 = new Mock<IPropertyInformation>();
-      propertyStub1.Setup (_ => _.Name).Returns ("PropertyStub1");
+      propertyStub1.Setup(_ => _.Name).Returns("PropertyStub1");
       var propertyStub2 = new Mock<IPropertyInformation>();
-      propertyStub2.Setup (_ => _.Name).Returns ("PropertyStub3");
+      propertyStub2.Setup(_ => _.Name).Returns("PropertyStub3");
       var propertyStub3 = new Mock<IPropertyInformation>();
-      propertyStub3.Setup (_ => _.Name).Returns ("PropertyStub3");
+      propertyStub3.Setup(_ => _.Name).Returns("PropertyStub3");
 
       _validationRuleStub1 = new Mock<IValidationRule>();
       _validationRuleStub2 = new Mock<IValidationRule>();
@@ -57,67 +57,67 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validatorStub1 = new Mock<IValidator<Customer>>();
       _validatorStub2 = new Mock<IValidator<Customer>>();
 
-      _compoundValidator = new CompoundValidator (new[] { _validatorStub1.Object, _validatorStub2.Object }, typeof (Customer));
+      _compoundValidator = new CompoundValidator(new[] { _validatorStub1.Object, _validatorStub2.Object }, typeof(Customer));
 
-      _validationFailure1 = new ObjectValidationFailure (_validatedObject, "Error1", "ValidationMessage1");
-      _validationFailure2 = new PropertyValidationFailure (_validatedObject, propertyStub2.Object, "value2", "Error2", "ValidationMessage2");
-      _validationFailure3 = new PropertyValidationFailure (_validatedObject, propertyStub3.Object, null, "Error3", "ValidationMessage3");
+      _validationFailure1 = new ObjectValidationFailure(_validatedObject, "Error1", "ValidationMessage1");
+      _validationFailure2 = new PropertyValidationFailure(_validatedObject, propertyStub2.Object, "value2", "Error2", "ValidationMessage2");
+      _validationFailure3 = new PropertyValidationFailure(_validatedObject, propertyStub3.Object, null, "Error3", "ValidationMessage3");
 
-      _validationResult1 = new ValidationResult (new[] { _validationFailure1, _validationFailure2 });
-      _validationResult2 = new ValidationResult (new[] { _validationFailure3 });
+      _validationResult1 = new ValidationResult(new[] { _validationFailure1, _validationFailure2 });
+      _validationResult2 = new ValidationResult(new[] { _validationFailure3 });
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_compoundValidator.Validators, Is.EquivalentTo (new[] { _validatorStub1.Object, _validatorStub2.Object }));
+      Assert.That(_compoundValidator.Validators, Is.EquivalentTo(new[] { _validatorStub1.Object, _validatorStub2.Object }));
     }
 
     [Test]
     public void Validate ()
     {
-      _validatorStub1.Setup (stub => stub.Validate (It.IsNotNull<ValidationContext>())).Returns (_validationResult1);
-      _validatorStub2.Setup (stub => stub.Validate (It.IsNotNull<ValidationContext>())).Returns (_validationResult2);
+      _validatorStub1.Setup(stub => stub.Validate(It.IsNotNull<ValidationContext>())).Returns(_validationResult1);
+      _validatorStub2.Setup(stub => stub.Validate(It.IsNotNull<ValidationContext>())).Returns(_validationResult2);
 
-      var result = _compoundValidator.Validate (_validatedObject);
+      var result = _compoundValidator.Validate(_validatedObject);
 
-      Assert.That (result.Errors, Is.EquivalentTo (new[] { _validationFailure1, _validationFailure2, _validationFailure3 }));
+      Assert.That(result.Errors, Is.EquivalentTo(new[] { _validationFailure1, _validationFailure2, _validationFailure3 }));
     }
 
     [Test]
     public void Validate_InvalidInstance ()
     {
-      Assert.That (
-          () => ((IValidator) _compoundValidator).Validate ("Invalid"),
-          Throws.InvalidOperationException.And.Message.EqualTo (
+      Assert.That(
+          () => ((IValidator)_compoundValidator).Validate("Invalid"),
+          Throws.InvalidOperationException.And.Message.EqualTo(
               "Cannot validate instances of type 'String'. This validator can only validate instances of type 'Customer'."));
     }
 
     [Test]
     public void CreateDescriptor ()
     {
-      var validator1 = new Validator (new[] { _validationRuleStub1.Object }, typeof (Customer));
-      var validator2 = new Validator (new[] { _validationRuleStub2.Object }, typeof (Customer));
-      var compositeValidator = new CompoundValidator (new[] { validator1, validator2 }, typeof (Customer));
+      var validator1 = new Validator(new[] { _validationRuleStub1.Object }, typeof(Customer));
+      var validator2 = new Validator(new[] { _validationRuleStub2.Object }, typeof(Customer));
+      var compositeValidator = new CompoundValidator(new[] { validator1, validator2 }, typeof(Customer));
 
       var result = compositeValidator.CreateDescriptor();
 
-      Assert.That (result.ValidationRules, Is.EquivalentTo (new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }));
+      Assert.That(result.ValidationRules, Is.EquivalentTo(new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }));
     }
 
     [Test]
     public void CanValidateInstancesOfType_Customer_True ()
     {
-      _validatorStub1.Setup (stub => stub.CanValidateInstancesOfType (typeof (Customer))).Returns (true);
-      _validatorStub2.Setup (stub => stub.CanValidateInstancesOfType (typeof (Customer))).Returns (true);
+      _validatorStub1.Setup(stub => stub.CanValidateInstancesOfType(typeof(Customer))).Returns(true);
+      _validatorStub2.Setup(stub => stub.CanValidateInstancesOfType(typeof(Customer))).Returns(true);
 
-      Assert.That (_compoundValidator.CanValidateInstancesOfType (typeof (Customer)), Is.True);
+      Assert.That(_compoundValidator.CanValidateInstancesOfType(typeof(Customer)), Is.True);
     }
 
     [Test]
     public void CanValidateInstancesOfType_NoCustomer_False ()
     {
-      Assert.That (_compoundValidator.CanValidateInstancesOfType (typeof (Address)), Is.False);
+      Assert.That(_compoundValidator.CanValidateInstancesOfType(typeof(Address)), Is.False);
     }
   }
 }

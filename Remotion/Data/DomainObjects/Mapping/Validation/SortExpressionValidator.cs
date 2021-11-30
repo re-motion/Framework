@@ -33,9 +33,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
 
     public SortExpressionValidator (params IRelationDefinitionValidatorRule[] validationRules)
     {
-      ArgumentUtility.CheckNotNull ("validationRules", validationRules);
+      ArgumentUtility.CheckNotNull("validationRules", validationRules);
 
-      _validationRules = Array.AsReadOnly (validationRules);
+      _validationRules = Array.AsReadOnly(validationRules);
     }
 
     public ReadOnlyCollection<IRelationDefinitionValidatorRule> ValidationRules
@@ -45,11 +45,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
 
     public IEnumerable<MappingValidationResult> Validate (IEnumerable<RelationDefinition> relationDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinitions", relationDefinitions);
+      ArgumentUtility.CheckNotNull("relationDefinitions", relationDefinitions);
 
       return from rule in _validationRules
              from relationDefinition in relationDefinitions
-             let result = rule.Validate (relationDefinition)
+             let result = rule.Validate(relationDefinition)
              where !result.IsValid
              select result;
     }

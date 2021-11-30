@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Gene
     /// <inheritdoc />
     public override BocCheckBox CreateControl (GenericTestOptions options)
     {
-      var control = base.CreateControl (options);
+      var control = base.CreateControl(options);
 
       return control;
     }

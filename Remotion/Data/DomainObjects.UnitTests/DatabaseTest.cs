@@ -46,8 +46,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     protected DatabaseTest (DatabaseAgent databaseAgent, string createTestDataFileName)
     {
-      ArgumentUtility.CheckNotNull ("databaseAgent", databaseAgent);
-      ArgumentUtility.CheckNotNullOrEmpty ("createTestDataFileName", createTestDataFileName);
+      ArgumentUtility.CheckNotNull("databaseAgent", databaseAgent);
+      ArgumentUtility.CheckNotNullOrEmpty("createTestDataFileName", createTestDataFileName);
 
       _databaseAgent = databaseAgent;
       _createTestDataFileName = createTestDataFileName;
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       if (_isDatabaseModifyable)
       {
-        _databaseAgent.ExecuteBatchFile (_createTestDataFileName, true, DatabaseConfiguration.GetReplacementDictionary());
+        _databaseAgent.ExecuteBatchFile(_createTestDataFileName, true, DatabaseConfiguration.GetReplacementDictionary());
       }
     }
 
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       if (_isDatabaseModifyable)
       {
-        _databaseAgent.SetDatabaseReadOnly (DatabaseName);
+        _databaseAgent.SetDatabaseReadOnly(DatabaseName);
         _isDatabaseModifyable = false;
       }
     }
@@ -90,27 +90,27 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static string TestDomainConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=DBPrefix_TestDomain; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_TestDomain; Max Pool Size=1;"); }
     }
 
     public static string MasterConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=master; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=master; Max Pool Size=1;"); }
     }
 
     public static string SchemaGenerationConnectionString1
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=DBPrefix_SchemaGenerationTestDomain1; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_SchemaGenerationTestDomain1; Max Pool Size=1;"); }
     }
 
     public static string SchemaGenerationConnectionString2
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=DBPrefix_SchemaGenerationTestDomain2; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_SchemaGenerationTestDomain2; Max Pool Size=1;"); }
     }
 
     public static string SchemaGenerationConnectionString3
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Initial Catalog=DBPrefix_SchemaGenerationTestDomain3; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_SchemaGenerationTestDomain3; Max Pool Size=1;"); }
     }
 
     protected void SetDatabaseModifyable ()
@@ -118,19 +118,19 @@ namespace Remotion.Data.DomainObjects.UnitTests
       if (!_isDatabaseModifyable)
       {
         _isDatabaseModifyable = true;
-        _databaseAgent.SetDatabaseReadWrite (DatabaseName);
+        _databaseAgent.SetDatabaseReadWrite(DatabaseName);
       }
     }
 
     protected IDbCommand CreateCommand (string table, Guid id, IDbConnection connection)
     {
       IDbCommand command = connection.CreateCommand();
-      command.CommandText = string.Format ("SELECT * FROM [{0}] where ID = @id", table);
+      command.CommandText = string.Format("SELECT * FROM [{0}] where ID = @id", table);
 
       IDbDataParameter parameter = command.CreateParameter();
       parameter.ParameterName = "@id";
       parameter.Value = id;
-      command.Parameters.Add (parameter);
+      command.Parameters.Add(parameter);
 
       return command;
     }

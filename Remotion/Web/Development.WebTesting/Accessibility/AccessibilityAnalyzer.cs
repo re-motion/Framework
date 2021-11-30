@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
   /// </summary>
   public class AccessibilityAnalyzer
   {
-    private static readonly TimeSpan s_defaultMaximumTimeToWaitForFrame = TimeSpan.FromMilliseconds (3000);
+    private static readonly TimeSpan s_defaultMaximumTimeToWaitForFrame = TimeSpan.FromMilliseconds(3000);
 
     /// <summary>
     /// Creates an <see cref="AccessibilityAnalyzer"/> that uses an instance of <see cref="RemoteWebDriver"/> for both <see cref="IWebDriver"/>
@@ -49,14 +49,14 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityResultMapper mapper,
         [NotNull] ILog logger)
     {
-      ArgumentUtility.CheckNotNull ("remoteWebDriver", remoteWebDriver);
-      ArgumentUtility.CheckNotNull ("axeResultParser", axeResultParser);
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
-      ArgumentUtility.CheckNotNull ("sourceProvider", sourceProvider);
-      ArgumentUtility.CheckNotNull ("mapper", mapper);
-      ArgumentUtility.CheckNotNull ("logger", logger);
+      ArgumentUtility.CheckNotNull("remoteWebDriver", remoteWebDriver);
+      ArgumentUtility.CheckNotNull("axeResultParser", axeResultParser);
+      ArgumentUtility.CheckNotNull("configuration", configuration);
+      ArgumentUtility.CheckNotNull("sourceProvider", sourceProvider);
+      ArgumentUtility.CheckNotNull("mapper", mapper);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
-      return new AccessibilityAnalyzer (remoteWebDriver, remoteWebDriver, axeResultParser, configuration, sourceProvider, mapper, logger);
+      return new AccessibilityAnalyzer(remoteWebDriver, remoteWebDriver, axeResultParser, configuration, sourceProvider, mapper, logger);
     }
 
     /// <summary>
@@ -88,12 +88,12 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityResultMapper mapper,
         [NotNull] ILog logger)
     {
-      ArgumentUtility.CheckNotNull ("webDriver", webDriver);
-      ArgumentUtility.CheckNotNull ("axeResultParser", axeResultParser);
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
-      ArgumentUtility.CheckNotNull ("axeSourceProvider", axeSourceProvider);
-      ArgumentUtility.CheckNotNull ("mapper", mapper);
-      ArgumentUtility.CheckNotNull ("logger", logger);
+      ArgumentUtility.CheckNotNull("webDriver", webDriver);
+      ArgumentUtility.CheckNotNull("axeResultParser", axeResultParser);
+      ArgumentUtility.CheckNotNull("configuration", configuration);
+      ArgumentUtility.CheckNotNull("axeSourceProvider", axeSourceProvider);
+      ArgumentUtility.CheckNotNull("mapper", mapper);
+      ArgumentUtility.CheckNotNull("logger", logger);
 
       WebDriver = webDriver;
       JsExecutor = jsExecutor;
@@ -112,9 +112,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <param name="element"><see cref="ControlObject"/> to ignore.</param>
     public void IgnoreControlObject ([NotNull] ControlObject element)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull("element", element);
 
-      IgnoreCssSelector ($"#{element.GetHtmlID()}");
+      IgnoreCssSelector($"#{element.GetHtmlID()}");
     }
 
     /// <summary>
@@ -124,9 +124,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <param name="cssSelector">CSS selector of the <see cref="ControlObject"/>.</param>
     public void IgnoreCssSelector ([NotNull] string cssSelector)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("cssSelector", cssSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("cssSelector", cssSelector);
 
-      ExcludedElements.Add (cssSelector);
+      ExcludedElements.Add(cssSelector);
     }
 
     /// <summary>
@@ -135,7 +135,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <param name="rule">The <see cref="AccessibilityRuleID"/> to ignore when executing the analysis.</param>
     public void IgnoreRule (AccessibilityRuleID rule)
     {
-      ExcludedRules.Add (AccessibilityRuleIDConverter.ConvertToString (rule));
+      ExcludedRules.Add(AccessibilityRuleIDConverter.ConvertToString(rule));
     }
 
     /// <summary>
@@ -149,9 +149,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public AccessibilityResult Analyze ([NotNull] ControlObject controlObject, [CanBeNull] TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull ("controlObject", controlObject);
+      ArgumentUtility.CheckNotNull("controlObject", controlObject);
 
-      return Analyze ($"#{controlObject.GetHtmlID()}", timeout);
+      return Analyze($"#{controlObject.GetHtmlID()}", timeout);
     }
 
     /// <summary>
@@ -165,9 +165,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public AccessibilityResult Analyze ([NotNull] string cssSelector, [CanBeNull] TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("cssSelector", cssSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("cssSelector", cssSelector);
 
-      return GetAccessibilityResult (cssSelector, timeout ?? s_defaultMaximumTimeToWaitForFrame);
+      return GetAccessibilityResult(cssSelector, timeout ?? s_defaultMaximumTimeToWaitForFrame);
     }
 
     /// <summary>
@@ -184,13 +184,13 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public AccessibilityResult Analyze ([CanBeNull] TimeSpan? timeout = null)
     {
-      var outerFrame = (string) JsExecutor.ExecuteScript ("return self.name;");
+      var outerFrame = (string)JsExecutor.ExecuteScript("return self.name;");
       if (outerFrame != "")
         WebDriver.SwitchTo().DefaultContent();
 
-      var result = GetAccessibilityResult (null, timeout ?? s_defaultMaximumTimeToWaitForFrame);
+      var result = GetAccessibilityResult(null, timeout ?? s_defaultMaximumTimeToWaitForFrame);
       if (outerFrame != "")
-        WebDriver.SwitchTo().Frame (outerFrame);
+        WebDriver.SwitchTo().Frame(outerFrame);
 
       return result;
     }
@@ -201,31 +201,31 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
 
       if (!AxeIsInjected())
       {
-        using (new PerformanceTimer (Logger, "aXe has been injected."))
+        using (new PerformanceTimer(Logger, "aXe has been injected."))
         {
-          InjectAxeSource (source, timeout);
+          InjectAxeSource(source, timeout);
         }
       }
 
-      var axeRunFunctionCall = BuildAxeRunFunctionCall (cssSelector);
+      var axeRunFunctionCall = BuildAxeRunFunctionCall(cssSelector);
 
       string result;
-      using (new PerformanceTimer (Logger, "Accessibility analysis has been performed."))
+      using (new PerformanceTimer(Logger, "Accessibility analysis has been performed."))
       {
-        result = (string) JsExecutor.ExecuteAsyncScript (axeRunFunctionCall);
+        result = (string)JsExecutor.ExecuteAsyncScript(axeRunFunctionCall);
 
         if (result == null)
-          result = GetRawAxeResultForInternetExplorer (axeRunFunctionCall);
+          result = GetRawAxeResultForInternetExplorer(axeRunFunctionCall);
       }
 
-      var parsedResult = AxeResultParser.Parse (result);
+      var parsedResult = AxeResultParser.Parse(result);
 
-      return Mapper.Map (parsedResult);
+      return Mapper.Map(parsedResult);
     }
 
     private bool AxeIsInjected ()
     {
-      return (bool) JsExecutor.ExecuteScript ("return (typeof axe !== 'undefined')");
+      return (bool)JsExecutor.ExecuteScript("return (typeof axe !== 'undefined')");
     }
 
     /// <summary>
@@ -238,13 +238,13 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// </remarks>
     private void InjectIntoIFrames (string source, TimeSpan timeout)
     {
-      foreach (var frame in WebDriver.FindElements (By.TagName ("iframe")))
+      foreach (var frame in WebDriver.FindElements(By.TagName("iframe")))
       {
-        frame.WaitUntilFrameIsVisible (timeout);
-        WebDriver.SwitchTo().Frame (frame);
+        frame.WaitUntilFrameIsVisible(timeout);
+        WebDriver.SwitchTo().Frame(frame);
 
         if (!IsEmptyFrame() && !AxeIsInjected())
-          InjectAxeSource (source, timeout);
+          InjectAxeSource(source, timeout);
 
         WebDriver.SwitchTo().DefaultContent();
       }
@@ -252,58 +252,58 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
 
     private bool IsEmptyFrame ()
     {
-      return !WebDriver.FindElements (By.XPath ("/html/body/*")).Any();
+      return !WebDriver.FindElements(By.XPath("/html/body/*")).Any();
     }
 
     private void InjectAxeSource (string source, TimeSpan timeout)
     {
-      JsExecutor.ExecuteScript (source);
+      JsExecutor.ExecuteScript(source);
 
       if (Configuration.IncludeIFrames)
-        InjectIntoIFrames (source, timeout);
+        InjectIntoIFrames(source, timeout);
     }
 
     private string BuildAxeRunFunctionCall (string? cssToInclude)
     {
       var stringBuilder = new StringBuilder();
 
-      stringBuilder.Append ("var callback = arguments[0];axe.run(");
+      stringBuilder.Append("var callback = arguments[0];axe.run(");
 
-      AppendAxeRunFunctionCallContext (stringBuilder, cssToInclude);
-      stringBuilder.Append (AccessibilityConfigurationJsonSerializer.Serialize (Configuration));
+      AppendAxeRunFunctionCallContext(stringBuilder, cssToInclude);
+      stringBuilder.Append(AccessibilityConfigurationJsonSerializer.Serialize(Configuration));
       if (ExcludedRules.Any())
-        AppendExcludeRules (stringBuilder);
-      stringBuilder.Append (",function (err, results) {callback(JSON.stringify(results));});");
+        AppendExcludeRules(stringBuilder);
+      stringBuilder.Append(",function (err, results) {callback(JSON.stringify(results));});");
       return stringBuilder.ToString();
     }
 
     private void AppendExcludeRules (StringBuilder stringBuilder)
     {
       stringBuilder.Length--;
-      stringBuilder.Append (",rules:{");
-      stringBuilder.Append (ExcludedRules.Select (x => '"' + x + "\": {enabled: false}").Aggregate ((i, j) => i + ",\n" + j));
-      stringBuilder.Append ("}}");
+      stringBuilder.Append(",rules:{");
+      stringBuilder.Append(ExcludedRules.Select(x => '"' + x + "\": {enabled: false}").Aggregate((i, j) => i + ",\n" + j));
+      stringBuilder.Append("}}");
     }
 
     private void AppendAxeRunFunctionCallContext (StringBuilder stringBuilder, string? cssToInclude)
     {
       if (cssToInclude == null && !ExcludedElements.Any())
       {
-        stringBuilder.Append ("document,");
+        stringBuilder.Append("document,");
       }
       else
       {
-        stringBuilder.Append ('{');
-        AppendAxeRunFunctionCallContextInclude (stringBuilder, cssToInclude);
-        AppendAxeRunFunctionCallContextExclude (stringBuilder, cssToInclude);
-        stringBuilder.Append ("},");
+        stringBuilder.Append('{');
+        AppendAxeRunFunctionCallContextInclude(stringBuilder, cssToInclude);
+        AppendAxeRunFunctionCallContextExclude(stringBuilder, cssToInclude);
+        stringBuilder.Append("},");
       }
     }
 
     private void AppendAxeRunFunctionCallContextInclude (StringBuilder stringBuilder, string? cssToInclude)
     {
       if (cssToInclude != null)
-        stringBuilder.Append ($"include: [['{cssToInclude}']]");
+        stringBuilder.Append($"include: [['{cssToInclude}']]");
     }
 
     private void AppendAxeRunFunctionCallContextExclude (StringBuilder stringBuilder, string? cssToInclude)
@@ -311,27 +311,27 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
       if (ExcludedElements.Count != 0)
       {
         if (cssToInclude != null)
-          stringBuilder.Append (',');
+          stringBuilder.Append(',');
 
-        stringBuilder.Append ("exclude: [");
-        stringBuilder.Append (string.Join (", ", ExcludedElements.Select (s => $"['{s}']")));
-        stringBuilder.Append (']');
+        stringBuilder.Append("exclude: [");
+        stringBuilder.Append(string.Join(", ", ExcludedElements.Select(s => $"['{s}']")));
+        stringBuilder.Append(']');
       }
     }
 
     private string GetRawAxeResultForInternetExplorer (string axeRunFunctionCall)
     {
       // Internet Explorer does sometimes return a null result instead of the actual result, which will be available after a short delay.
-      foreach (var _ in Enumerable.Range (0, 5))
+      foreach (var _ in Enumerable.Range(0, 5))
       {
-        var result = (string) JsExecutor.ExecuteAsyncScript (axeRunFunctionCall);
+        var result = (string)JsExecutor.ExecuteAsyncScript(axeRunFunctionCall);
         if (result == null)
-          Thread.Sleep (500);
+          Thread.Sleep(500);
         else
           return result;
       }
 
-      throw new InvalidOperationException ("Could not obtain accessibility analysis result.");
+      throw new InvalidOperationException("Could not obtain accessibility analysis result.");
     }
   }
 }

@@ -24,46 +24,46 @@ namespace Remotion.Mixins.Context
   public class ClassContextDeriver
   {
     public static readonly ClassContextDeriver Instance = new ClassContextDeriver();
-    
+
     public ClassContext DeriveContext (ClassContext contextToBeDerived, IEnumerable<ClassContext> baseContexts)
     {
-      ArgumentUtility.CheckNotNull ("contextToBeDerived", contextToBeDerived);
-      ArgumentUtility.CheckNotNull ("baseContexts", baseContexts);
+      ArgumentUtility.CheckNotNull("contextToBeDerived", contextToBeDerived);
+      ArgumentUtility.CheckNotNull("baseContexts", baseContexts);
 
-      var mixins = new List<MixinContext> (contextToBeDerived.Mixins);
-      var interfaces = new List<Type> (contextToBeDerived.ComposedInterfaces);
+      var mixins = new List<MixinContext>(contextToBeDerived.Mixins);
+      var interfaces = new List<Type>(contextToBeDerived.ComposedInterfaces);
 
       foreach (ClassContext baseContext in baseContexts)
-        ApplyInheritance (contextToBeDerived.Type, contextToBeDerived.Mixins, baseContext, mixins, interfaces);
+        ApplyInheritance(contextToBeDerived.Type, contextToBeDerived.Mixins, baseContext, mixins, interfaces);
 
-      return new ClassContext (contextToBeDerived.Type, mixins, interfaces);
+      return new ClassContext(contextToBeDerived.Type, mixins, interfaces);
     }
 
     public void ApplyInheritance (Type targetClass, IEnumerable<MixinContext> ownMixins, ClassContext baseContext, ICollection<MixinContext> mixins, ICollection<Type> interfaces)
     {
-      Tuple<MixinContext, MixinContext>? overridden_override = GetFirstOverrideThatIsNotOverriddenByBase (mixins, baseContext.Mixins);
+      Tuple<MixinContext, MixinContext>? overridden_override = GetFirstOverrideThatIsNotOverriddenByBase(mixins, baseContext.Mixins);
       if (overridden_override != null)
       {
-        string message = string.Format (
+        string message = string.Format(
             "The class {0} inherits the mixin {1} from class {2}, but it is explicitly "
                 + "configured for the less specific mixin {3}.",
             targetClass.GetFullNameSafe(),
             overridden_override.Item2.MixinType.GetFullNameSafe(),
             baseContext.Type.GetFullNameSafe(),
             overridden_override.Item1.MixinType);
-        throw new ConfigurationException (message);
+        throw new ConfigurationException(message);
       }
 
-      ApplyInheritanceForMixins (ownMixins, baseContext, mixins);
-      ApplyInheritanceForInterfaces (baseContext, interfaces);
+      ApplyInheritanceForMixins(ownMixins, baseContext, mixins);
+      ApplyInheritanceForInterfaces(baseContext, interfaces);
     }
 
     public void ApplyInheritanceForMixins (IEnumerable<MixinContext> ownMixins, ClassContext baseContext, ICollection<MixinContext> mixins)
     {
       foreach (MixinContext inheritedMixin in baseContext.Mixins)
       {
-        if (!MixinContextCollection.ContainsOverrideForMixin (ownMixins, inheritedMixin.MixinType))
-          mixins.Add (inheritedMixin);
+        if (!MixinContextCollection.ContainsOverrideForMixin(ownMixins, inheritedMixin.MixinType))
+          mixins.Add(inheritedMixin);
       }
     }
 
@@ -71,8 +71,8 @@ namespace Remotion.Mixins.Context
     {
       foreach (Type inheritedInterface in baseContext.ComposedInterfaces)
       {
-        if (!interfaces.Contains (inheritedInterface))
-          interfaces.Add (inheritedInterface);
+        if (!interfaces.Contains(inheritedInterface))
+          interfaces.Add(inheritedInterface);
       }
     }
 
@@ -83,9 +83,9 @@ namespace Remotion.Mixins.Context
       foreach (MixinContext mixin in baseMixins)
       {
         MixinContext? overrideForMixin;
-        if ((overrideForMixin = MixinContextCollection.GetOverrideForMixin (potentialOverrides, mixin.MixinType)) != null
-            && !MixinContextCollection.ContainsOverrideForMixin (baseMixins, overrideForMixin.MixinType))
-          return Tuple.Create (mixin, overrideForMixin);
+        if ((overrideForMixin = MixinContextCollection.GetOverrideForMixin(potentialOverrides, mixin.MixinType)) != null
+            && !MixinContextCollection.ContainsOverrideForMixin(baseMixins, overrideForMixin.MixinType))
+          return Tuple.Create(mixin, overrideForMixin);
       }
       return null;
     }

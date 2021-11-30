@@ -24,22 +24,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation
   {
     public string Property { get; set; }
 
-    [StorageClass (StorageClass.Persistent)]
+    [StorageClass(StorageClass.Persistent)]
     public string PropertyWithStorageClassPersistent { get; set; }
 
-    [StorageClass (StorageClass.Transaction)]
+    [StorageClass(StorageClass.Transaction)]
     public string PropertyWithStorageClassTransaction { get; set; }
 
-    [StorageClass (StorageClass.None)]
+    [StorageClass(StorageClass.None)]
     public string PropertyWithStorageClassNone { get; set; }
 
-    [StorageClass (StorageClass.Persistent)]
+    [StorageClass(StorageClass.Persistent)]
     public object PropertyWithTypeObjectWithStorageClassPersistent { get; set; }
 
-    [StorageClass (StorageClass.Persistent)]
+    [StorageClass(StorageClass.Persistent)]
     public OtherDerivedValidationHierarchyClass RelationPropertyWithStorageClassPersistent { get; set; }
 
-    [StorageClass (StorageClass.Transaction)]
+    [StorageClass(StorageClass.Transaction)]
     public OtherDerivedValidationHierarchyClass RelationPropertyWithStorageClassTransaction { get; set; }
   }
 }

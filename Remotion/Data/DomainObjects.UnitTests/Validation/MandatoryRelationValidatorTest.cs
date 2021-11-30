@@ -39,27 +39,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      
+      base.SetUp();
+
       _validator = new MandatoryRelationValidator();
 
       _endPointMock = MockRepository.GenerateStrictMock<IRelationEndPoint>();
 
-      _mandatoryEndPointDefinition = GetEndPointDefinition (typeof (Order), "OrderTicket");
-      _nonMandatoryEndPointDefinition = GetEndPointDefinition (typeof (Computer), "Employee");
+      _mandatoryEndPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
+      _nonMandatoryEndPointDefinition = GetEndPointDefinition(typeof(Computer), "Employee");
     }
 
     [Test]
     public void Validate_ChecksComplete_AndMandatoryRelationEndPoints ()
     {
-      var dataItem = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock });
+      var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock });
 
-      _endPointMock.Stub (stub => stub.Definition).Return (_mandatoryEndPointDefinition);
-      _endPointMock.Stub (stub => stub.IsDataComplete).Return (true);
-      _endPointMock.Expect (mock => mock.ValidateMandatory());
+      _endPointMock.Stub(stub => stub.Definition).Return(_mandatoryEndPointDefinition);
+      _endPointMock.Stub(stub => stub.IsDataComplete).Return(true);
+      _endPointMock.Expect(mock => mock.ValidateMandatory());
       _endPointMock.Replay();
 
-      _validator.Validate (ClientTransaction.CreateRootTransaction(), dataItem);
+      _validator.Validate(ClientTransaction.CreateRootTransaction(), dataItem);
 
       _endPointMock.VerifyAllExpectations();
     }
@@ -67,69 +67,69 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     [Test]
     public void Validate_IgnoresIncompleteEndPoints ()
     {
-      var dataItem = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock });
+      var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock });
 
-      _endPointMock.Stub (stub => stub.Definition).Return (_mandatoryEndPointDefinition);
-      _endPointMock.Stub (stub => stub.IsDataComplete).Return (false);
-      _endPointMock.Replay ();
+      _endPointMock.Stub(stub => stub.Definition).Return(_mandatoryEndPointDefinition);
+      _endPointMock.Stub(stub => stub.IsDataComplete).Return(false);
+      _endPointMock.Replay();
 
-      _validator.Validate (ClientTransaction.CreateRootTransaction(), dataItem);
+      _validator.Validate(ClientTransaction.CreateRootTransaction(), dataItem);
 
-      _endPointMock.AssertWasNotCalled (mock => mock.ValidateMandatory ());
+      _endPointMock.AssertWasNotCalled(mock => mock.ValidateMandatory());
     }
 
     [Test]
     public void Validate_IgnoresNonMandatoryEndPoints ()
     {
-      var dataItem = CreatePersistableData (new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock });
+      var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock });
 
-      _endPointMock.Stub (stub => stub.Definition).Return (_nonMandatoryEndPointDefinition);
-      _endPointMock.Stub (stub => stub.IsDataComplete).Return (true);
-      _endPointMock.Replay ();
+      _endPointMock.Stub(stub => stub.Definition).Return(_nonMandatoryEndPointDefinition);
+      _endPointMock.Stub(stub => stub.IsDataComplete).Return(true);
+      _endPointMock.Replay();
 
-      _validator.Validate (ClientTransaction.CreateRootTransaction(), dataItem);
+      _validator.Validate(ClientTransaction.CreateRootTransaction(), dataItem);
 
-      _endPointMock.AssertWasNotCalled (mock => mock.ValidateMandatory ());
+      _endPointMock.AssertWasNotCalled(mock => mock.ValidateMandatory());
     }
 
     [Test]
     public void Validate_IgnoresDeletedObjects ()
     {
-      var dataItem = CreatePersistableData (new DomainObjectState.Builder().SetDeleted().Value, new[] { _endPointMock });
+      var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetDeleted().Value, new[] { _endPointMock });
 
-      _endPointMock.Stub (stub => stub.Definition).Return (_mandatoryEndPointDefinition);
-      _endPointMock.Stub (stub => stub.IsDataComplete).Return (true);
-      _endPointMock.Replay ();
+      _endPointMock.Stub(stub => stub.Definition).Return(_mandatoryEndPointDefinition);
+      _endPointMock.Stub(stub => stub.IsDataComplete).Return(true);
+      _endPointMock.Replay();
 
-      _validator.Validate (ClientTransaction.CreateRootTransaction(), dataItem);
+      _validator.Validate(ClientTransaction.CreateRootTransaction(), dataItem);
 
-      _endPointMock.AssertWasNotCalled (mock => mock.ValidateMandatory ());
+      _endPointMock.AssertWasNotCalled(mock => mock.ValidateMandatory());
     }
 
     [Test]
     public void Validate_IntegrationTest_RelationsOk ()
     {
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var orderTicket = OrderTicket.NewObject ();
+        var orderTicket = OrderTicket.NewObject();
         orderTicket.Order = Order.NewObject();
 
-        var persistableData = PersistableDataObjectMother.Create (ClientTransaction.Current, orderTicket);
-        Assert.That (() => _validator.Validate (ClientTransaction.Current, persistableData), Throws.Nothing);
+        var persistableData = PersistableDataObjectMother.Create(ClientTransaction.Current, orderTicket);
+        Assert.That(() => _validator.Validate(ClientTransaction.Current, persistableData), Throws.Nothing);
       }
     }
 
     [Test]
     public void Validate_IntegrationTest_RelationsNotOk ()
     {
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var orderTicket = OrderTicket.NewObject();
 
-        var persistableData = PersistableDataObjectMother.Create (ClientTransaction.Current, orderTicket);
-        Assert.That (
-            () => _validator.Validate (ClientTransaction.Current, persistableData),
-            Throws.TypeOf<MandatoryRelationNotSetException>().With.Message.Matches (
+        var persistableData = PersistableDataObjectMother.Create(ClientTransaction.Current, orderTicket);
+        Assert.That(
+            () => _validator.Validate(ClientTransaction.Current, persistableData),
+            Throws.TypeOf<MandatoryRelationNotSetException>().With.Message.Matches(
                 @"Mandatory relation property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.OrderTicket\.Order' of domain object "
                 + @"'OrderTicket|.*|System\.Guid' cannot be null."));
       }
@@ -137,10 +137,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
 
     private PersistableData CreatePersistableData (DomainObjectState domainObjectState, IRelationEndPoint[] associatedEndPointSequence)
     {
-      var domainObject = DomainObjectMother.CreateFakeObject<OrderItem> (DomainObjectIDs.OrderItem1);
+      var domainObject = DomainObjectMother.CreateFakeObject<OrderItem>(DomainObjectIDs.OrderItem1);
 
-      var dataContainer = DataContainer.CreateNew (domainObject.ID);
-      return new PersistableData (domainObject, domainObjectState, dataContainer, associatedEndPointSequence);
+      var dataContainer = DataContainer.CreateNew(domainObject.ID);
+      return new PersistableData(domainObject, domainObjectState, dataContainer, associatedEndPointSequence);
     }
 
   }

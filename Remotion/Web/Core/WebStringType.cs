@@ -9,7 +9,7 @@
     /// The <see cref="WebString"/> contains plain text, which will be encoded before being rendered.
     /// </summary>
     PlainText,
-    
+
     /// <summary>
     /// The <see cref="WebString"/> contains already encoded text, which will be rendered as is.
     /// </summary>

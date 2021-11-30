@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   /// </list>
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IParticipant), Position = 2, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IParticipant), Position = 2, RegistrationType = RegistrationType.Multiple)]
   public class DomainObjectParticipant : IParticipant
   {
     static DomainObjectParticipant ()
@@ -53,21 +53,21 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       PipelineRegistryInitializer.InitializeWithServiceLocator();
     }
 
-    [Obsolete ("Use constructor instead. (Version 1.17.13")]
+    [Obsolete("Use constructor instead. (Version 1.17.13")]
     public static DomainObjectParticipant Create (ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
     {
-      return new DomainObjectParticipant (typeDefinitionProvider, interceptedPropertyFinder);
+      return new DomainObjectParticipant(typeDefinitionProvider, interceptedPropertyFinder);
     }
 
-    private static readonly Type s_domainObjectBaseType = typeof (DomainObject);
-    private static readonly MethodInfo s_getPublicDomainObjectTypeImplementation = GetInfrastructureHook ("GetPublicDomainObjectTypeImplementation");
-    private static readonly MethodInfo s_performConstructorCheck = GetInfrastructureHook ("PerformConstructorCheck");
+    private static readonly Type s_domainObjectBaseType = typeof(DomainObject);
+    private static readonly MethodInfo s_getPublicDomainObjectTypeImplementation = GetInfrastructureHook("GetPublicDomainObjectTypeImplementation");
+    private static readonly MethodInfo s_performConstructorCheck = GetInfrastructureHook("PerformConstructorCheck");
 
     private static MethodInfo GetInfrastructureHook (string name)
     {
       var bindingFlags = BindingFlags.NonPublic | BindingFlags.Instance;
-      var method = s_domainObjectBaseType.GetMethod (name, bindingFlags);
-      Assertion.IsNotNull (method);
+      var method = s_domainObjectBaseType.GetMethod(name, bindingFlags);
+      Assertion.IsNotNull(method);
 
       return method;
     }
@@ -77,8 +77,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public DomainObjectParticipant (ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
     {
-      ArgumentUtility.CheckNotNull ("typeDefinitionProvider", typeDefinitionProvider);
-      ArgumentUtility.CheckNotNull ("interceptedPropertyFinder", interceptedPropertyFinder);
+      ArgumentUtility.CheckNotNull("typeDefinitionProvider", typeDefinitionProvider);
+      ArgumentUtility.CheckNotNull("interceptedPropertyFinder", interceptedPropertyFinder);
 
       _typeDefinitionProvider = typeDefinitionProvider;
       _interceptedPropertyFinder = interceptedPropertyFinder;
@@ -98,41 +98,41 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public void Participate (object id, IProxyTypeAssemblyContext proxyTypeAssemblyContext)
     {
-      ArgumentUtility.CheckNotNull ("proxyTypeAssemblyContext", proxyTypeAssemblyContext);
+      ArgumentUtility.CheckNotNull("proxyTypeAssemblyContext", proxyTypeAssemblyContext);
 
-      if (!s_domainObjectBaseType.IsTypePipeAssignableFrom (proxyTypeAssemblyContext.RequestedType))
+      if (!s_domainObjectBaseType.IsTypePipeAssignableFrom(proxyTypeAssemblyContext.RequestedType))
         return;
 
       var proxyType = proxyTypeAssemblyContext.ProxyType;
       var domainObjectType = proxyTypeAssemblyContext.RequestedType;
 
-      var classDefinition = _typeDefinitionProvider.GetTypeDefinition (domainObjectType);
+      var classDefinition = _typeDefinitionProvider.GetTypeDefinition(domainObjectType);
       if (classDefinition == null || classDefinition.IsAbstract)
         return;
 
       // Add marker interface.
-      proxyType.AddInterface (typeof (IInterceptedDomainObject));
+      proxyType.AddInterface(typeof(IInterceptedDomainObject));
 
       // Override infrastructure hooks on DomainObject.
-      OverridePerformConstructorCheck (proxyType);
-      OverrideGetPublicDomainObjectType (proxyType, domainObjectType);
+      OverridePerformConstructorCheck(proxyType);
+      OverrideGetPublicDomainObjectType(proxyType, domainObjectType);
 
       // Intercept properties.
-      InterceptProperties (proxyType, domainObjectType, classDefinition);
+      InterceptProperties(proxyType, domainObjectType, classDefinition);
     }
 
     public void HandleNonSubclassableType (Type nonSubclassableRequestedType)
     {
-      ArgumentUtility.CheckNotNull ("nonSubclassableRequestedType", nonSubclassableRequestedType);
+      ArgumentUtility.CheckNotNull("nonSubclassableRequestedType", nonSubclassableRequestedType);
 
-      if (!s_domainObjectBaseType.IsTypePipeAssignableFrom (nonSubclassableRequestedType))
+      if (!s_domainObjectBaseType.IsTypePipeAssignableFrom(nonSubclassableRequestedType))
         return;
 
-      var classDefinition = _typeDefinitionProvider.GetTypeDefinition (nonSubclassableRequestedType);
+      var classDefinition = _typeDefinitionProvider.GetTypeDefinition(nonSubclassableRequestedType);
       if (classDefinition != null && !classDefinition.IsAbstract)
       {
-        var message = string.Format ("The requested type '{0}' is derived from DomainObject but cannot be subclassed.", nonSubclassableRequestedType.Name);
-        throw new NotSupportedException (message);
+        var message = string.Format("The requested type '{0}' is derived from DomainObject but cannot be subclassed.", nonSubclassableRequestedType.Name);
+        throw new NotSupportedException(message);
       }
     }
 
@@ -148,20 +148,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     private void OverridePerformConstructorCheck (MutableType proxyType)
     {
-      proxyType.GetOrAddOverride (s_performConstructorCheck).SetBody (ctx => Expression.Empty());
+      proxyType.GetOrAddOverride(s_performConstructorCheck).SetBody(ctx => Expression.Empty());
     }
 
     private void OverrideGetPublicDomainObjectType (MutableType proxyType, Type publicDomainObjectType)
     {
-      proxyType.GetOrAddOverride (s_getPublicDomainObjectTypeImplementation).SetBody (ctx => Expression.Constant (publicDomainObjectType));
+      proxyType.GetOrAddOverride(s_getPublicDomainObjectTypeImplementation).SetBody(ctx => Expression.Constant(publicDomainObjectType));
     }
 
     private void InterceptProperties (MutableType proxyType, Type domainObjectType, ClassDefinition classDefinition)
     {
-      var accessorInterceptors = _interceptedPropertyFinder.GetPropertyInterceptors (classDefinition, domainObjectType);
+      var accessorInterceptors = _interceptedPropertyFinder.GetPropertyInterceptors(classDefinition, domainObjectType);
 
       foreach (var interceptor in accessorInterceptors)
-        interceptor.Intercept (proxyType);
+        interceptor.Intercept(proxyType);
     }
   }
 }

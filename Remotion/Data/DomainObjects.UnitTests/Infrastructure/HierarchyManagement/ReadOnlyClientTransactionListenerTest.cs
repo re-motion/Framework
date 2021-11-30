@@ -72,75 +72,75 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       _listener = new ReadOnlyClientTransactionListener();
       _clientTransaction = new TestableClientTransaction();
 
-      _allMethods = typeof (ReadOnlyClientTransactionListener).GetMethods (BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
-      Assert.That (_allMethods, Has.Length.EqualTo (38));
+      _allMethods = typeof(ReadOnlyClientTransactionListener).GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+      Assert.That(_allMethods, Has.Length.EqualTo(38));
 
-      _neverThrowingMethods = _allMethods.Where (n => _neverThrowingMethodNames.Contains (n.Name)).ToArray();
-      Assert.That (_neverThrowingMethods, Has.Length.EqualTo (_neverThrowingMethodNames.Length));
+      _neverThrowingMethods = _allMethods.Where(n => _neverThrowingMethodNames.Contains(n.Name)).ToArray();
+      Assert.That(_neverThrowingMethods, Has.Length.EqualTo(_neverThrowingMethodNames.Length));
 
-      _throwingMethods = _allMethods.Where (n => !_neverThrowingMethodNames.Contains (n.Name)).ToArray ();
-      Assert.That (_throwingMethods, Has.Length.EqualTo (_allMethods.Length - _neverThrowingMethods.Length));
+      _throwingMethods = _allMethods.Where(n => !_neverThrowingMethodNames.Contains(n.Name)).ToArray();
+      Assert.That(_throwingMethods, Has.Length.EqualTo(_allMethods.Length - _neverThrowingMethods.Length));
     }
 
     [Test]
     public void ClientTransactionReadOnly_ThrowingMethods ()
     {
-      ClientTransactionTestHelper.SetIsWriteable (_clientTransaction, false);
+      ClientTransactionTestHelper.SetIsWriteable(_clientTransaction, false);
 
       foreach (var method in _throwingMethods)
       {
-        object[] arguments = Array.ConvertAll (method.GetParameters (), p => GetDefaultValue (p.ParameterType));
+        object[] arguments = Array.ConvertAll(method.GetParameters(), p => GetDefaultValue(p.ParameterType));
 
-        ExpectException (method, arguments);
+        ExpectException(method, arguments);
       }
     }
 
     [Test]
     public void ClientTransactionReadOnly_NotThrowingMethods ()
     {
-      ClientTransactionTestHelper.SetIsWriteable (_clientTransaction, true);
+      ClientTransactionTestHelper.SetIsWriteable(_clientTransaction, true);
 
       foreach (var method in _neverThrowingMethods)
       {
-        var concreteMethod = GetCallableMethod (method);
-        object[] arguments = Array.ConvertAll (concreteMethod.GetParameters (), p => GetDefaultValue (p.ParameterType));
+        var concreteMethod = GetCallableMethod(method);
+        object[] arguments = Array.ConvertAll(concreteMethod.GetParameters(), p => GetDefaultValue(p.ParameterType));
 
-        ExpectNoException (concreteMethod, arguments);
+        ExpectNoException(concreteMethod, arguments);
       }
     }
 
     [Test]
     public void ClientTransactionWriteable_NoMethodThrows ()
     {
-      ClientTransactionTestHelper.SetIsWriteable (_clientTransaction, true);
+      ClientTransactionTestHelper.SetIsWriteable(_clientTransaction, true);
 
       foreach (var method in _allMethods)
       {
-        var concreteMethod = GetCallableMethod (method);
-        object[] arguments = Array.ConvertAll (concreteMethod.GetParameters (), p => GetDefaultValue (p.ParameterType));
+        var concreteMethod = GetCallableMethod(method);
+        object[] arguments = Array.ConvertAll(concreteMethod.GetParameters(), p => GetDefaultValue(p.ParameterType));
 
-        ExpectNoException (concreteMethod, arguments);
+        ExpectNoException(concreteMethod, arguments);
       }
     }
-    
+
     private void ExpectException (MethodInfo method, object[] arguments)
     {
-      string message = string.Format (
+      string message = string.Format(
             "The operation cannot be executed because the ClientTransaction is read-only, probably because it has an open subtransaction. "
             + "Offending transaction modification: {0}.",
             method.Name);
 
-      Assert.That (
-        () => method.Invoke (_listener, arguments),
-        Throws.TargetInvocationException.With.InnerException.TypeOf<ClientTransactionReadOnlyException> ().And.InnerException.Message.EqualTo (message),
+      Assert.That(
+        () => method.Invoke(_listener, arguments),
+        Throws.TargetInvocationException.With.InnerException.TypeOf<ClientTransactionReadOnlyException>().And.InnerException.Message.EqualTo(message),
         "Expected exception to be thrown by method '{0}'.",
         method.Name);
     }
 
     private void ExpectNoException (MethodInfo method, object[] arguments)
     {
-      Assert.That (
-        () => method.Invoke (_listener, arguments),
+      Assert.That(
+        () => method.Invoke(_listener, arguments),
         Throws.Nothing,
         "Expected no exception to be thrown by method '{0}'.",
         method.Name);
@@ -149,8 +149,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     private object GetDefaultValue (Type t)
     {
       if (t.IsValueType)
-        return Activator.CreateInstance (t);
-      else if (t == typeof (ClientTransaction))
+        return Activator.CreateInstance(t);
+      else if (t == typeof(ClientTransaction))
         return _clientTransaction;
       else
         return null;
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     private MethodInfo GetCallableMethod (MethodInfo method)
     {
       return method.Name == "FilterQueryResult" || method.Name == "FilterCustomQueryResult"
-                 ? method.MakeGenericMethod (typeof (Order))
+                 ? method.MakeGenericMethod(typeof(Order))
                  : method;
     }
   }

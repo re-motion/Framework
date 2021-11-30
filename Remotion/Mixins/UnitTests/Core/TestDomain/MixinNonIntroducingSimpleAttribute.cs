@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [NonIntroduced (typeof (SimpleAttribute))]
+  [NonIntroduced(typeof(SimpleAttribute))]
   [Simple]
   public class MixinNonIntroducingSimpleAttribute
   {

@@ -38,11 +38,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IUpdatedColumnsSpecification updatedColumnsSpecification,
         IComparedColumnsSpecification comparedColumnsSpecification,
         ISqlDialect sqlDialect)
-        : base (sqlDialect)
+        : base(sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
-      ArgumentUtility.CheckNotNull ("updatedColumnsSpecification", updatedColumnsSpecification);
-      ArgumentUtility.CheckNotNull ("comparedColumnsSpecification", comparedColumnsSpecification);
+      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull("updatedColumnsSpecification", updatedColumnsSpecification);
+      ArgumentUtility.CheckNotNull("comparedColumnsSpecification", comparedColumnsSpecification);
 
       _tableDefinition = tableDefinition;
       _updatedColumnsSpecification = updatedColumnsSpecification;
@@ -66,29 +66,29 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     public override IDbCommand Create (IRdbmsProviderCommandExecutionContext commandExecutionContext)
     {
-      ArgumentUtility.CheckNotNull ("commandExecutionContext", commandExecutionContext);
+      ArgumentUtility.CheckNotNull("commandExecutionContext", commandExecutionContext);
 
-      var command = commandExecutionContext.CreateDbCommand ();
-      var statement = new StringBuilder ();
+      var command = commandExecutionContext.CreateDbCommand();
+      var statement = new StringBuilder();
 
-      statement.Append ("UPDATE ");
-      AppendTableName (statement, command, _tableDefinition);
-      AppendUpdateClause (statement, command, _updatedColumnsSpecification);
-      AppendWhereClause (statement, command, _comparedColumnsSpecification);
-      statement.Append (SqlDialect.StatementDelimiter);
+      statement.Append("UPDATE ");
+      AppendTableName(statement, command, _tableDefinition);
+      AppendUpdateClause(statement, command, _updatedColumnsSpecification);
+      AppendWhereClause(statement, command, _comparedColumnsSpecification);
+      statement.Append(SqlDialect.StatementDelimiter);
 
-      command.CommandText = statement.ToString ();
+      command.CommandText = statement.ToString();
       return command;
     }
 
     protected virtual void AppendUpdateClause (StringBuilder statement, IDbCommand command, IUpdatedColumnsSpecification updatedColumnsSpecification)
     {
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("updatedColumnsSpecification", updatedColumnsSpecification);
-      ArgumentUtility.CheckNotNull ("command", command);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("updatedColumnsSpecification", updatedColumnsSpecification);
+      ArgumentUtility.CheckNotNull("command", command);
 
-      statement.Append (" SET ");
-      updatedColumnsSpecification.AppendColumnValueAssignments (statement, command, SqlDialect);
+      statement.Append(" SET ");
+      updatedColumnsSpecification.AppendColumnValueAssignments(statement, command, SqlDialect);
     }
   }
 }

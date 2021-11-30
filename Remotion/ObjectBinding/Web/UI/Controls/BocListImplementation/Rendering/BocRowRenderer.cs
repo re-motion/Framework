@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// Responsible for rendering single data rows or the title row of a specific <see cref="BocList"/>.
   /// </summary>
   /// <remarks>This class should not be instantiated directly. It is meant to be used by a <see cref="BocListRenderer"/>.</remarks>
-  [ImplementationFor (typeof (IBocRowRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocRowRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocRowRenderer : IBocRowRenderer
   {
     private readonly BocListCssClassDefinition _cssClasses;
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IBocSelectorColumnRenderer selectorColumnRenderer,
         IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull ("cssClasses", cssClasses);
+      ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
 
       _cssClasses = cssClasses;
       _indexColumnRenderer = indexColumnRenderer;
@@ -61,23 +61,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderTitlesRow (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
-      GetIndexColumnRenderer().RenderTitleCell (renderingContext);
-      GetSelectorColumnRenderer().RenderTitleCell (renderingContext);
+      GetIndexColumnRenderer().RenderTitleCell(renderingContext);
+      GetSelectorColumnRenderer().RenderTitleCell(renderingContext);
 
       foreach (var columnRenderer in renderingContext.ColumnRenderers)
-        columnRenderer.RenderTitleCell (renderingContext);
+        columnRenderer.RenderTitleCell(renderingContext);
 
       renderingContext.Writer.RenderEndTag();
     }
 
     public void RenderEmptyListDataRow (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       BocColumnRenderer[] columnRenderers = renderingContext.ColumnRenderers;
       int columnCount = 0;
@@ -95,18 +95,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           columnCount++;
       }
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Colspan, columnCount.ToString());
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Colspan, columnCount.ToString());
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
       string emptyListMessage;
-      if (string.IsNullOrEmpty (renderingContext.Control.EmptyListMessage))
-        emptyListMessage = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.EmptyListMessage);
+      if (string.IsNullOrEmpty(renderingContext.Control.EmptyListMessage))
+        emptyListMessage = renderingContext.Control.GetResourceManager().GetString(BocList.ResourceIdentifier.EmptyListMessage);
       else
         emptyListMessage = renderingContext.Control.EmptyListMessage;
       // Do not HTML encode
-      renderingContext.Writer.Write (emptyListMessage);
+      renderingContext.Writer.Write(emptyListMessage);
 
       renderingContext.Writer.RenderEndTag();
       renderingContext.Writer.RenderEndTag();
@@ -114,8 +114,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderDataRow (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, int rowIndex)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("rowRenderingContext", rowRenderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("rowRenderingContext", rowRenderingContext);
 
       var absoluteRowIndex = rowRenderingContext.SortedIndex;
       var originalRowIndex = rowRenderingContext.Row.Index;
@@ -124,38 +124,38 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       bool isChecked = rowRenderingContext.IsSelected;
       bool isOddRow = (rowIndex % 2 == 0); // row index is zero-based here, but one-based in rendering => invert even/odd
 
-      var dataRowRenderEventArgs = new BocListDataRowRenderEventArgs (
+      var dataRowRenderEventArgs = new BocListDataRowRenderEventArgs(
           originalRowIndex,
           businessObject,
           true,
           isOddRow);
-      renderingContext.Control.OnDataRowRendering (dataRowRenderEventArgs);
+      renderingContext.Control.OnDataRowRendering(dataRowRenderEventArgs);
 
-      string cssClassTableRow = GetCssClassTableRow (renderingContext, isChecked, dataRowRenderEventArgs);
+      string cssClassTableRow = GetCssClassTableRow(renderingContext, isChecked, dataRowRenderEventArgs);
       string cssClassTableCell = CssClasses.DataCell;
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableRow);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClassTableRow);
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
         // Note: business objects without identity can already be selected via row index.
         var businessObjectWithIdentity = rowRenderingContext.Row.BusinessObject as IBusinessObjectWithIdentity;
         if (businessObjectWithIdentity != null)
-          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.ItemID, businessObjectWithIdentity.UniqueIdentifier);
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.ItemID, businessObjectWithIdentity.UniqueIdentifier);
 
         var oneBasedRowIndex = rowIndex + 1;
-        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BocListRowIndex, oneBasedRowIndex.ToString());
+        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListRowIndex, oneBasedRowIndex.ToString());
       }
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
       // Note: The cells preceeding the selector-control will also act as selector, allowing adding/removing of the selection.
       // This behavior extends the original behavior, where clicking the selector-control or the associated label in the index-cell 
       // changed the selection state. This improves usability as the user does not have to precisely hit the text or the checkbox/radio button.
       // If this is changed, an update to the Javascript code will be required.
-      GetIndexColumnRenderer().RenderDataCell (renderingContext, originalRowIndex, absoluteRowIndex, cssClassTableCell);
-      GetSelectorColumnRenderer().RenderDataCell (renderingContext, rowRenderingContext, cssClassTableCell);
+      GetIndexColumnRenderer().RenderDataCell(renderingContext, originalRowIndex, absoluteRowIndex, cssClassTableCell);
+      GetSelectorColumnRenderer().RenderDataCell(renderingContext, rowRenderingContext, cssClassTableCell);
 
-      RenderDataCells (renderingContext, rowIndex, dataRowRenderEventArgs);
+      RenderDataCells(renderingContext, rowIndex, dataRowRenderEventArgs);
 
       renderingContext.Writer.RenderEndTag();
     }
@@ -173,7 +173,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void RenderDataCells (BocListRenderingContext renderingContext, int rowIndex, BocListDataRowRenderEventArgs dataRowRenderEventArgs)
     {
       foreach (BocColumnRenderer columnRenderer in renderingContext.ColumnRenderers)
-        columnRenderer.RenderDataCell (renderingContext, rowIndex, dataRowRenderEventArgs);
+        columnRenderer.RenderDataCell(renderingContext, rowIndex, dataRowRenderEventArgs);
     }
 
     private string GetCssClassTableRow (
@@ -188,7 +188,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       else
         cssClassTableRow += " " + CssClasses.DataRowEven;
 
-      if (!string.IsNullOrEmpty (dataRowRenderEventArgs.AdditionalCssClassForDataRow))
+      if (!string.IsNullOrEmpty(dataRowRenderEventArgs.AdditionalCssClassForDataRow))
         cssClassTableRow += " " + dataRowRenderEventArgs.AdditionalCssClassForDataRow;
 
       if (isChecked && renderingContext.Control.AreDataRowsClickSensitive())

@@ -35,10 +35,10 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull ("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull ("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
+      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
 
       _classDefinition = classDefinition;
       _propertyInfo = propertyInfo;
@@ -66,9 +66,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       get { return _propertyMetadataProvider; }
     }
 
-    public StorageClass GetStorageClass()
+    public StorageClass GetStorageClass ()
     {
-      return _propertyMetadataProvider.GetStorageClass (_propertyInfo) ?? GetDefaultStorageClass();
+      return _propertyMetadataProvider.GetStorageClass(_propertyInfo) ?? GetDefaultStorageClass();
     }
 
     private StorageClass GetDefaultStorageClass ()
@@ -80,14 +80,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         case DefaultStorageClass.Transaction:
           return StorageClass.Transaction;
         default:
-          throw new NotImplementedException ($"{nameof (DefaultStorageClass)} '{_classDefinition.DefaultStorageClass}' is not supported.");
+          throw new NotImplementedException($"{nameof(DefaultStorageClass)} '{_classDefinition.DefaultStorageClass}' is not supported.");
       }
     }
 
     protected string GetPropertyName ()
     {
-      return _nameResolver.GetPropertyName (PropertyInfo);
+      return _nameResolver.GetPropertyName(PropertyInfo);
     }
-    
+
   }
 }

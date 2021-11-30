@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   public class DomainObjectStateCache
   {
     private readonly ClientTransaction _clientTransaction;
-    private readonly Dictionary<ObjectID, DomainObjectState> _stateCache = new Dictionary<ObjectID, DomainObjectState> ();
+    private readonly Dictionary<ObjectID, DomainObjectState> _stateCache = new Dictionary<ObjectID, DomainObjectState>();
 
     [Serializable]
     private class StateUpdateListener : ClientTransactionListenerBase
@@ -39,45 +39,45 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       public StateUpdateListener (DomainObjectStateCache cache)
       {
-        ArgumentUtility.CheckNotNull ("cache", cache);
+        ArgumentUtility.CheckNotNull("cache", cache);
         _cache = cache;
       }
 
       public override void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer dataContainer, DataContainerState newDataContainerState)
       {
-        _cache.HandleStateUpdate (dataContainer.ID);
+        _cache.HandleStateUpdate(dataContainer.ID);
       }
 
       public override void VirtualRelationEndPointStateUpdated (ClientTransaction clientTransaction, RelationEndPointID endPointID, bool? newEndPointChangeState)
       {
-        _cache.HandleStateUpdate (endPointID.ObjectID);
+        _cache.HandleStateUpdate(endPointID.ObjectID);
       }
 
       public override void DataContainerMapRegistering (ClientTransaction clientTransaction, DataContainer container)
       {
-        _cache.HandleStateUpdate (container.ID);
+        _cache.HandleStateUpdate(container.ID);
       }
 
       public override void DataContainerMapUnregistering (ClientTransaction clientTransaction, DataContainer container)
       {
-        _cache.HandleStateUpdate (container.ID);
+        _cache.HandleStateUpdate(container.ID);
       }
 
       public override void ObjectMarkedInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
       {
-        _cache.HandleStateUpdate (domainObject.ID);
+        _cache.HandleStateUpdate(domainObject.ID);
       }
 
       public override void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
       {
-        _cache.HandleStateUpdate (domainObject.ID);
+        _cache.HandleStateUpdate(domainObject.ID);
       }
     }
 
     public DomainObjectStateCache (ClientTransaction clientTransaction)
     {
       _clientTransaction = clientTransaction;
-      _clientTransaction.AddListener (new StateUpdateListener (this));
+      _clientTransaction.AddListener(new StateUpdateListener(this));
     }
 
     /// <summary>
@@ -91,27 +91,27 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </returns>
     public DomainObjectState GetState (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
       DomainObjectState state;
-      if (_stateCache.TryGetValue (objectID, out state))
+      if (_stateCache.TryGetValue(objectID, out state))
         return state;
 
-      state = CalculateState (objectID);
-      _stateCache.Add (objectID, state);
+      state = CalculateState(objectID);
+      _stateCache.Add(objectID, state);
       return state;
     }
 
     private void HandleStateUpdate (ObjectID objectID)
     {
-      _stateCache.Remove (objectID);
+      _stateCache.Remove(objectID);
     }
 
     private DomainObjectState CalculateState (ObjectID objectID)
     {
       var stateBuilder = new DomainObjectState.Builder();
 
-      if (_clientTransaction.IsInvalid (objectID))
+      if (_clientTransaction.IsInvalid(objectID))
         return stateBuilder.SetInvalid().Value;
 
       var dataContainer = _clientTransaction.DataManager.DataContainers[objectID];
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       var dataContainerState = dataContainer.State;
 
       if (dataContainerState.IsUnchanged)
-        return HasRelationChanged (dataContainer) ? stateBuilder.SetChanged().Value : stateBuilder.SetUnchanged().Value;
+        return HasRelationChanged(dataContainer) ? stateBuilder.SetChanged().Value : stateBuilder.SetUnchanged().Value;
 
       if (dataContainerState.IsChanged)
         return stateBuilder.SetChanged().Value;
@@ -134,18 +134,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       if (dataContainerState.IsDiscarded)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             $"DataContainer for object '{objectID}' has been discarded without removing the instance from the DataManager.");
       }
 
-      throw new InvalidOperationException ($"DomainObjectState for '{objectID}' cannot be calculated.");
+      throw new InvalidOperationException($"DomainObjectState for '{objectID}' cannot be calculated.");
     }
 
     private bool HasRelationChanged (DataContainer dataContainer)
     {
       return dataContainer.AssociatedRelationEndPointIDs
-          .Select (id => _clientTransaction.DataManager.GetRelationEndPointWithoutLoading (id))
-          .Any (endPoint => endPoint != null && endPoint.HasChanged);
+          .Select(id => _clientTransaction.DataManager.GetRelationEndPointWithoutLoading(id))
+          .Any(endPoint => endPoint != null && endPoint.HasChanged);
     }
   }
 

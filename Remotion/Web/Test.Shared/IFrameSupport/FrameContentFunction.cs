@@ -24,11 +24,11 @@ namespace Remotion.Web.Test.Shared.IFrameSupport
   public class FrameContentFunction : WxeFunction
   {
     public FrameContentFunction ()
-        : base (WxeTransactionMode<NullTransactionFactory>.None)
+        : base(WxeTransactionMode<NullTransactionFactory>.None)
     {
     }
 
     [UsedImplicitly]
-    private WxeStep Step1 = new WxeResourcePageStep (typeof (FrameContent), "IFrameSupport/FrameContent.aspx");
+    private WxeStep Step1 = new WxeResourcePageStep(typeof(FrameContent), "IFrameSupport/FrameContent.aspx");
   }
 }

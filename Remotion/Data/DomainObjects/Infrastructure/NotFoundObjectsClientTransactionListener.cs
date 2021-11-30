@@ -29,17 +29,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   {
     public override void ObjectsNotFound (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
       foreach (var objectID in objectIDs)
       {
-        var objectReference = clientTransaction.GetObjectReference (objectID);
+        var objectReference = clientTransaction.GetObjectReference(objectID);
         for (var tx = clientTransaction; tx != null; tx = tx.SubTransaction)
         {
           using (tx.HierarchyManager.UnlockIfRequired())
           {
-            tx.DataManager.MarkInvalid (objectReference);
+            tx.DataManager.MarkInvalid(objectReference);
           }
         }
       }

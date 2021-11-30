@@ -31,43 +31,43 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _companyHelper = new CompanyStructureHelper (TestHelper.Transaction);
+      _companyHelper = new CompanyStructureHelper(TestHelper.Transaction);
 
-      _ace = TestHelper.CreateAceWithPositionAndGroupCondition (_companyHelper.HeadPosition, GroupCondition.None);
+      _ace = TestHelper.CreateAceWithPositionAndGroupCondition(_companyHelper.HeadPosition, GroupCondition.None);
 
-      Assert.That (_ace.TenantCondition, Is.EqualTo (TenantCondition.None));
-      Assert.That (_ace.GroupCondition, Is.EqualTo (GroupCondition.None));
-      Assert.That (_ace.UserCondition, Is.EqualTo (UserCondition.SpecificPosition));
-      Assert.That (_ace.SpecificPosition, Is.SameAs (_companyHelper.HeadPosition));
-      Assert.That (_ace.SpecificAbstractRole, Is.Null);
+      Assert.That(_ace.TenantCondition, Is.EqualTo(TenantCondition.None));
+      Assert.That(_ace.GroupCondition, Is.EqualTo(GroupCondition.None));
+      Assert.That(_ace.UserCondition, Is.EqualTo(UserCondition.SpecificPosition));
+      Assert.That(_ace.SpecificPosition, Is.SameAs(_companyHelper.HeadPosition));
+      Assert.That(_ace.SpecificAbstractRole, Is.Null);
     }
 
     [Test]
     public void TokenWithPrincipalAndPosition_Matches ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
-      TestHelper.CreateRole (user, _companyHelper.AustrianProjectsDepartment, _companyHelper.HeadPosition);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
+      TestHelper.CreateRole(user, _companyHelper.AustrianProjectsDepartment, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningUser (user, null);
+      SecurityToken token = TestHelper.CreateTokenWithOwningUser(user, null);
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(_ace);
 
-      Assert.That (matcher.MatchesToken (token), Is.True);
+      Assert.That(matcher.MatchesToken(token), Is.True);
     }
 
     [Test]
     public void TokenWithPrincipalAndOtherPosition_DoesNotMatch ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
-      TestHelper.CreateRole (user, _companyHelper.AustrianProjectsDepartment, _companyHelper.MemberPosition);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
+      TestHelper.CreateRole(user, _companyHelper.AustrianProjectsDepartment, _companyHelper.MemberPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningUser (user, null);
+      SecurityToken token = TestHelper.CreateTokenWithOwningUser(user, null);
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(_ace);
 
-      Assert.That (matcher.MatchesToken (token), Is.False);
+      Assert.That(matcher.MatchesToken(token), Is.False);
     }
 
     [Test]
@@ -75,9 +75,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     {
       SecurityToken token = TestHelper.CreateTokenWithoutUser();
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(_ace);
 
-      Assert.That (matcher.MatchesToken (token), Is.False);
+      Assert.That(matcher.MatchesToken(token), Is.False);
     }
   }
 }

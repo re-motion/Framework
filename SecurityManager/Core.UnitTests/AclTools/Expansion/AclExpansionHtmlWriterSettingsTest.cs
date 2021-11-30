@@ -28,9 +28,9 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     public void CtorTest ()
     {
       var aclExpansionHtmlWriterSettings = new AclExpansionHtmlWriterSettings();
-      Assert.That (aclExpansionHtmlWriterSettings.OutputDeniedRights, Is.False);
-      Assert.That (aclExpansionHtmlWriterSettings.OutputRowCount, Is.False);
-      Assert.That (aclExpansionHtmlWriterSettings.ShortenNames, Is.False);
+      Assert.That(aclExpansionHtmlWriterSettings.OutputDeniedRights, Is.False);
+      Assert.That(aclExpansionHtmlWriterSettings.OutputRowCount, Is.False);
+      Assert.That(aclExpansionHtmlWriterSettings.ShortenNames, Is.False);
     }
   }
 }

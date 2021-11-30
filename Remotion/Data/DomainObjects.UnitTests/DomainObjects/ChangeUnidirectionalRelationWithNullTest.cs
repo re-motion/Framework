@@ -27,44 +27,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void SetRelatedObjectwithNewNullObject ()
     {
-      Client oldClient = DomainObjectIDs.Client1.GetObject<Client> ();
+      Client oldClient = DomainObjectIDs.Client1.GetObject<Client>();
       Location location = DomainObjectIDs.Location1.GetObject<Location>();
-      Assert.That (location.Client, Is.SameAs (oldClient));
+      Assert.That(location.Client, Is.SameAs(oldClient));
 
       location.Client = null;
 
-      Assert.That (location.Client, Is.Null);
-      Assert.That (location.Properties[typeof (Location), "Client"].GetRelatedObjectID(), Is.Null);
-      Assert.That (location.State.IsChanged, Is.True);
-      Assert.That (oldClient.State.IsUnchanged, Is.True);
+      Assert.That(location.Client, Is.Null);
+      Assert.That(location.Properties[typeof(Location), "Client"].GetRelatedObjectID(), Is.Null);
+      Assert.That(location.State.IsChanged, Is.True);
+      Assert.That(oldClient.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void SetRelatedObjectWithOldNullObject ()
     {
-      Client client = DomainObjectIDs.Client4.GetObject<Client> ();
-      Client newClient = DomainObjectIDs.Client1.GetObject<Client> ();
+      Client client = DomainObjectIDs.Client4.GetObject<Client>();
+      Client newClient = DomainObjectIDs.Client1.GetObject<Client>();
 
       client.ParentClient = newClient;
 
-      Assert.That (client.ParentClient, Is.SameAs (newClient));
-      Assert.That (client.Properties[typeof (Client), "ParentClient"].GetRelatedObjectID (), Is.EqualTo (newClient.ID));
-      Assert.That (client.State.IsChanged, Is.True);
-      Assert.That (newClient.State.IsUnchanged, Is.True);
+      Assert.That(client.ParentClient, Is.SameAs(newClient));
+      Assert.That(client.Properties[typeof(Client), "ParentClient"].GetRelatedObjectID(), Is.EqualTo(newClient.ID));
+      Assert.That(client.State.IsChanged, Is.True);
+      Assert.That(newClient.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void SetRelatedObjectWithOldAndNewNullObject ()
     {
-      Client client = DomainObjectIDs.Client4.GetObject<Client> ();
-      SequenceEventReceiver eventReceiver = new SequenceEventReceiver (client);
+      Client client = DomainObjectIDs.Client4.GetObject<Client>();
+      SequenceEventReceiver eventReceiver = new SequenceEventReceiver(client);
 
       client.ParentClient = null;
 
-      eventReceiver.Check (new ChangeState[0]);
-      Assert.That (client.ParentClient, Is.Null);
-      Assert.That (client.Properties[typeof (Client), "ParentClient"].GetRelatedObjectID (), Is.Null);
-      Assert.That (client.State.IsUnchanged, Is.True);
+      eventReceiver.Check(new ChangeState[0]);
+      Assert.That(client.ParentClient, Is.Null);
+      Assert.That(client.Properties[typeof(Client), "ParentClient"].GetRelatedObjectID(), Is.Null);
+      Assert.That(client.State.IsUnchanged, Is.True);
     }
   }
 }

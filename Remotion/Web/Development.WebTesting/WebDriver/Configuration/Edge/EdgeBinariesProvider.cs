@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     private const string c_edgeExecutableName = "msedge.exe";
     private const string c_zipFileName = "msedgedriver.zip";
 
-    private static readonly Version s_minimumSupportedEdgeVersion = new Version (76, 0);
+    private static readonly Version s_minimumSupportedEdgeVersion = new Version(76, 0);
 
     /// <summary>
     /// Returns the <see cref="EdgeExecutable"/> that contains the installed Edge browser location, the corresponding msedgedriver location,
@@ -46,20 +46,20 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     public EdgeExecutable GetInstalledExecutable ()
     {
       var browserPath = GetInstalledEdgePath();
-      var driverPath = GetDriverPathAndDownloadIfMissing (browserPath);
+      var driverPath = GetDriverPathAndDownloadIfMissing(browserPath);
       var userDirectory = GetUserDirectoryTempPath();
 
-      return new EdgeExecutable (browserPath, driverPath, userDirectory);
+      return new EdgeExecutable(browserPath, driverPath, userDirectory);
     }
 
     private string GetInstalledEdgePath ()
     {
-      var defaultBetaEdgePath = Path.Combine (Get32BitProgramFilesPath(), "Microsoft", "Edge", "Application", c_edgeExecutableName);
+      var defaultBetaEdgePath = Path.Combine(Get32BitProgramFilesPath(), "Microsoft", "Edge", "Application", c_edgeExecutableName);
 
-      if (File.Exists (defaultBetaEdgePath))
+      if (File.Exists(defaultBetaEdgePath))
         return defaultBetaEdgePath;
 
-      throw new InvalidOperationException ($"No beta Edge version could be found at '{defaultBetaEdgePath}'.");
+      throw new InvalidOperationException($"No beta Edge version could be found at '{defaultBetaEdgePath}'.");
     }
 
     private string Get32BitProgramFilesPath ()
@@ -68,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
           ? Environment.SpecialFolder.ProgramFilesX86
           : Environment.SpecialFolder.ProgramFiles;
 
-      return Environment.GetFolderPath (programFiles32BitFolder);
+      return Environment.GetFolderPath(programFiles32BitFolder);
     }
 
     /// <summary>
@@ -76,101 +76,101 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     /// </summary>
     private string GetDriverPathAndDownloadIfMissing ([NotNull] string edgePath)
     {
-      var edgeFileVersion = GetFileVersion (edgePath);
+      var edgeFileVersion = GetFileVersion(edgePath);
 
       if (edgeFileVersion < s_minimumSupportedEdgeVersion)
       {
-        throw new NotSupportedException (
-            string.Format (
+        throw new NotSupportedException(
+            string.Format(
                 "The installed Edge version ({0}) is lower than the minimum required version of {1}.",
                 edgeFileVersion,
                 s_minimumSupportedEdgeVersion));
       }
 
       var edgeVersion = edgeFileVersion.ToString();
-      var driverPath = GetEdgeDriverTempPath (edgeVersion);
+      var driverPath = GetEdgeDriverTempPath(edgeVersion);
 
-      if (!EdgeDriverExists (edgeVersion))
-        DownloadEdgeDriver (edgeVersion);
+      if (!EdgeDriverExists(edgeVersion))
+        DownloadEdgeDriver(edgeVersion);
 
       return driverPath;
     }
 
     private Version GetFileVersion (string filePath)
     {
-      var fileVersion = Assertion.IsNotNull (FileVersionInfo.GetVersionInfo (filePath).FileVersion, "File version could not be read from '{0}'.", filePath);
-      return Version.Parse (fileVersion);
+      var fileVersion = Assertion.IsNotNull(FileVersionInfo.GetVersionInfo(filePath).FileVersion, "File version could not be read from '{0}'.", filePath);
+      return Version.Parse(fileVersion);
     }
 
     private bool EdgeDriverExists (string driverVersion)
     {
-      return File.Exists (GetEdgeDriverTempPath (driverVersion));
+      return File.Exists(GetEdgeDriverTempPath(driverVersion));
     }
 
     private string GetEdgeDriverTempPath (string driverVersion)
     {
-      return Path.Combine (GetEdgeDriverTempDirectory (driverVersion), c_driverExecutableName);
+      return Path.Combine(GetEdgeDriverTempDirectory(driverVersion), c_driverExecutableName);
     }
 
     private string GetUserDirectoryTempPath ()
     {
-      return Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString());
+      return Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
     }
 
     private string GetEdgeDriverRootDirectory ()
     {
-      return Path.Combine (Path.GetTempPath(), c_webDriverFolderName);
+      return Path.Combine(Path.GetTempPath(), c_webDriverFolderName);
     }
 
     private string GetEdgeDriverTempDirectory (string driverVersion)
     {
-      return Path.Combine (GetEdgeDriverRootDirectory(), $"msedgedriver_v{driverVersion}");
+      return Path.Combine(GetEdgeDriverRootDirectory(), $"msedgedriver_v{driverVersion}");
     }
 
     private void RemoveEdgeDriverRootDirectoryIfExists ()
     {
       var edgeDriverRootDirectory = GetEdgeDriverRootDirectory();
-      if (Directory.Exists (edgeDriverRootDirectory))
-        Directory.Delete (edgeDriverRootDirectory, true);
+      if (Directory.Exists(edgeDriverRootDirectory))
+        Directory.Delete(edgeDriverRootDirectory, true);
     }
 
     private void DownloadEdgeDriver (string edgeDriverVersion)
     {
-      var tempPath = GetEdgeDriverTempDirectory (edgeDriverVersion);
-      var fullZipPath = Path.Combine (Path.GetTempPath(), c_zipFileName);
+      var tempPath = GetEdgeDriverTempDirectory(edgeDriverVersion);
+      var fullZipPath = Path.Combine(Path.GetTempPath(), c_zipFileName);
 
-      var url = GetDriverDownloadUrl (edgeDriverVersion);
+      var url = GetDriverDownloadUrl(edgeDriverVersion);
 
       RemoveEdgeDriverRootDirectoryIfExists();
-      Directory.CreateDirectory (tempPath);
+      Directory.CreateDirectory(tempPath);
 
       try
       {
         using (var webClient = new WebClient())
         {
-          webClient.DownloadFile (url, fullZipPath);
+          webClient.DownloadFile(url, fullZipPath);
         }
       }
       catch (WebException ex) when ((ex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             $"No matching EdgeDriver could be found for the installed Edge version {edgeDriverVersion}. "
             + "This could mean that no corresponding EdgeDriver has been released for the version of Edge you are using.",
             ex);
       }
       catch (WebException ex)
       {
-        throw new WebException ($"Could not download the EdgeDriver for Edge v{edgeDriverVersion} from '{url}': {ex.Message}", ex.Status);
+        throw new WebException($"Could not download the EdgeDriver for Edge v{edgeDriverVersion} from '{url}': {ex.Message}", ex.Status);
       }
 
-      ZipFile.ExtractToDirectory (fullZipPath, tempPath);
+      ZipFile.ExtractToDirectory(fullZipPath, tempPath);
 
-      File.Delete (fullZipPath);
+      File.Delete(fullZipPath);
     }
 
     private string GetDriverDownloadUrl (string edgeDriverVersion)
     {
-      return string.Format (c_driverDownloadUrlFormat, edgeDriverVersion);
+      return string.Format(c_driverDownloadUrlFormat, edgeDriverVersion);
     }
   }
 }

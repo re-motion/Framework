@@ -22,8 +22,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
   {
     public int PersistentProperty
     {
-      get { return Properties[typeof (MixinAddingSimplePersistentProperties), "PersistentProperty"].GetValue<int> (); }
-      set { Properties[typeof (MixinAddingSimplePersistentProperties), "PersistentProperty"].SetValue (value); }
+      get { return Properties[typeof(MixinAddingSimplePersistentProperties), "PersistentProperty"].GetValue<int>(); }
+      set { Properties[typeof(MixinAddingSimplePersistentProperties), "PersistentProperty"].SetValue(value); }
     }
   }
 }

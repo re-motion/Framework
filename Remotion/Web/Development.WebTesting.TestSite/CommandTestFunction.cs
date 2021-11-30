@@ -25,11 +25,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class CommandTestFunction : WxeFunction
   {
     public CommandTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("CommandTest.aspx");
+    private WxeStep Step1 = new WxePageStep("CommandTest.aspx");
   }
 }

@@ -32,40 +32,40 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     [NotNull]
     public static DiagnosticScreenshotBuilder CreateDesktopScreenshot ([NotNull] IBrowserContentLocator contentLocator)
     {
-      ArgumentUtility.CheckNotNull ("contentLocator", contentLocator);
+      ArgumentUtility.CheckNotNull("contentLocator", contentLocator);
 
-      return new DiagnosticScreenshotBuilder (Screenshot.TakeDesktopScreenshot(), contentLocator);
+      return new DiagnosticScreenshotBuilder(Screenshot.TakeDesktopScreenshot(), contentLocator);
     }
 
     [NotNull]
     public static DiagnosticScreenshotBuilder CreateBrowserScreenshot ([NotNull] IBrowserContentLocator contentLocator, [NotNull] IBrowserSession browserSession)
     {
-      ArgumentUtility.CheckNotNull ("contentLocator", contentLocator);
-      ArgumentUtility.CheckNotNull ("browserSession", browserSession);
+      ArgumentUtility.CheckNotNull("contentLocator", contentLocator);
+      ArgumentUtility.CheckNotNull("browserSession", browserSession);
 
-      return new DiagnosticScreenshotBuilder (
-          Screenshot.TakeBrowserScreenshot (browserSession, contentLocator),
+      return new DiagnosticScreenshotBuilder(
+          Screenshot.TakeBrowserScreenshot(browserSession, contentLocator),
           contentLocator);
     }
 
     private DiagnosticScreenshotBuilder ([NotNull] Screenshot screenshot, [NotNull] IBrowserContentLocator locator)
-        : base (screenshot, locator)
+        : base(screenshot, locator)
     {
     }
 
     public void SaveAnnotation ([NotNull] string path, bool overwriteFileIfExists = false)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("path", path);
+      ArgumentUtility.CheckNotNullOrEmpty("path", path);
 
-      if (!overwriteFileIfExists && File.Exists (path))
-        throw new InvalidOperationException (string.Format ("A screenshot with the file name '{0}' does already exist.", path));
+      if (!overwriteFileIfExists && File.Exists(path))
+        throw new InvalidOperationException(string.Format("A screenshot with the file name '{0}' does already exist.", path));
 
-      var directory = Path.GetDirectoryName (path);
-      Directory.CreateDirectory (directory);
+      var directory = Path.GetDirectoryName(path);
+      Directory.CreateDirectory(directory);
 
       using (var annotationImage = AnnotationLayer.CloneImage())
       {
-        annotationImage.Save (path, ImageFormat.Png);
+        annotationImage.Save(path, ImageFormat.Png);
       }
     }
   }

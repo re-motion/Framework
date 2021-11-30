@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   public class ExtensibleEnumWithFilter : ExtensibleEnum<ExtensibleEnumWithFilter>
   {
     public ExtensibleEnumWithFilter (string id)
-        : base (id)
+        : base(id)
     {
     }
   }

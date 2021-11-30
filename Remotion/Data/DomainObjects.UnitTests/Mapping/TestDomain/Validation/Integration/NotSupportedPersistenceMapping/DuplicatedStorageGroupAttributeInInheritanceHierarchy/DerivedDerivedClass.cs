@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     DuplicatedStorageGroupAttributeInInheritanceHierarchy
 {
   [DBStorageGroup]
-  [ClassID ("DuplicatedStorageGroupAttributeInInheritanceHierarchy_DerivedDerivedClass")]
+  [ClassID("DuplicatedStorageGroupAttributeInInheritanceHierarchy_DerivedDerivedClass")]
   public class DerivedDerivedClass : DerivedClass
   {
   }

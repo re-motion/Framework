@@ -34,10 +34,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         [NotNull] string domainPropertyPath)
         where TCellControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("row", row);
-      ArgumentUtility.CheckNotNullOrEmpty ("domainPropertyPath", domainPropertyPath);
+      ArgumentUtility.CheckNotNull("row", row);
+      ArgumentUtility.CheckNotNullOrEmpty("domainPropertyPath", domainPropertyPath);
 
-      return row.WithDomainPropertyPaths (domainPropertyPath);
+      return row.WithDomainPropertyPaths(domainPropertyPath);
     }
   }
 }

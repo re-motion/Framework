@@ -33,14 +33,14 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [Test]
     public void Test1 ()
     {
-      Assert.That (_value, Is.EqualTo (10));
+      Assert.That(_value, Is.EqualTo(10));
       _value = 100;
     }
 
     [Test]
     public void Test2 ()
     {
-      Assert.That (_value, Is.EqualTo (10));
+      Assert.That(_value, Is.EqualTo(10));
       _value = 200;
     }
   }

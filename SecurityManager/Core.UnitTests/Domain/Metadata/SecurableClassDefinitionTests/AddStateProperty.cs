@@ -38,9 +38,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       var stateProperty = StatePropertyDefinition.NewObject();
       var securableClassDefinition = SecurableClassDefinition.NewObject();
 
-      securableClassDefinition.AddStateProperty (stateProperty);
+      securableClassDefinition.AddStateProperty(stateProperty);
 
-      Assert.That (securableClassDefinition.StateProperties, Is.EqualTo (new[] { stateProperty }));
+      Assert.That(securableClassDefinition.StateProperties, Is.EqualTo(new[] { stateProperty }));
     }
 
     [Test]
@@ -51,26 +51,26 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         securableClassDefinition.EnsureDataAvailable();
-        Assert.That (securableClassDefinition.State.IsUnchanged, Is.True);
+        Assert.That(securableClassDefinition.State.IsUnchanged, Is.True);
 
-        securableClassDefinition.AddStateProperty (StatePropertyDefinition.NewObject());
+        securableClassDefinition.AddStateProperty(StatePropertyDefinition.NewObject());
 
-        Assert.That (securableClassDefinition.State.IsChanged, Is.True);
+        Assert.That(securableClassDefinition.State.IsChanged, Is.True);
       }
     }
 
     [Test]
     public void FailsForExistingStateProperty ()
     {
-      var stateProperty = StatePropertyDefinition.NewObject (Guid.NewGuid(), "Test");
+      var stateProperty = StatePropertyDefinition.NewObject(Guid.NewGuid(), "Test");
 
       var securableClassDefinition = SecurableClassDefinition.NewObject();
       securableClassDefinition.Name = "Class";
-      securableClassDefinition.AddStateProperty (stateProperty);
-      Assert.That (
-          () => securableClassDefinition.AddStateProperty (stateProperty),
+      securableClassDefinition.AddStateProperty(stateProperty);
+      Assert.That(
+          () => securableClassDefinition.AddStateProperty(stateProperty),
           Throws.ArgumentException
-              .And.Message.StartsWith ("The property 'Test' has already been added to the securable class definition."));
+              .And.Message.StartsWith("The property 'Test' has already been added to the securable class definition."));
     }
   }
 }

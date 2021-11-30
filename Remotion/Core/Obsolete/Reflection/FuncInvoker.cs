@@ -19,7 +19,7 @@ using System;
 // ReSharper disable once CheckNamespace
 namespace Remotion.Reflection
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
   internal abstract class FuncInvoker<T>
   {
     public abstract T With ();

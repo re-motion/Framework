@@ -41,25 +41,25 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlSelectionCommand<TControlObject> IControlSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
-      return new IndexControlSelectionCommand<TControlObject> (controlSelector, _oneBasedIndex);
+      return new IndexControlSelectionCommand<TControlObject>(controlSelector, _oneBasedIndex);
     }
 
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
-      return new IndexControlSelectionCommand<TControlObject> (controlSelector, _oneBasedIndex);
+      return new IndexControlSelectionCommand<TControlObject>(controlSelector, _oneBasedIndex);
     }
 
     /// <inheritdoc/>
     IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
-      return new IndexControlSelectionCommand<TControlObject> (controlSelector, _oneBasedIndex);
+      return new IndexControlSelectionCommand<TControlObject>(controlSelector, _oneBasedIndex);
     }
   }
 }

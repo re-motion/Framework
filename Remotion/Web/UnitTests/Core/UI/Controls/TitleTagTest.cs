@@ -34,24 +34,24 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     [Test]
     public void Render ()
     {
-      var titleTag = new TitleTag ("My Title");
+      var titleTag = new TitleTag("My Title");
 
-      titleTag.Render (_htmlHelper.Writer);
+      titleTag.Render(_htmlHelper.Writer);
 
       var document = _htmlHelper.GetResultDocument();
-      var titleElement = _htmlHelper.GetAssertedChildElement (document, "title", 0);
-      _htmlHelper.AssertTextNode (titleElement, "My Title", 0);
+      var titleElement = _htmlHelper.GetAssertedChildElement(document, "title", 0);
+      _htmlHelper.AssertTextNode(titleElement, "My Title", 0);
     }
 
     [Test]
     public void Render_UsesHtmlEncoding ()
     {
-      var titleTag = new TitleTag ("My <Title>");
+      var titleTag = new TitleTag("My <Title>");
 
-      titleTag.Render (_htmlHelper.Writer);
+      titleTag.Render(_htmlHelper.Writer);
 
       var documentText = _htmlHelper.GetDocumentText();
-      Assert.That (documentText, Does.Contain("My &lt;Title&gt;"));
+      Assert.That(documentText, Does.Contain("My &lt;Title&gt;"));
     }
   }
 }

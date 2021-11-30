@@ -38,8 +38,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     {
       var factory = _serviceLocator.GetInstance<IUserNamesRevisionProvider>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (UserNamesRevisionProvider)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(UserNamesRevisionProvider)));
     }
 
     [Test]
@@ -48,7 +48,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       var factory1 = _serviceLocator.GetInstance<IUserNamesRevisionProvider>();
       var factory2 = _serviceLocator.GetInstance<IUserNamesRevisionProvider>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

@@ -34,16 +34,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _customerClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Customer));
-      _customerOrdersEndPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
+      _customerClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Customer));
+      _customerOrdersEndPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
           _customerClassDefinition,
           "Orders",
           false,
-          typeof (OrderCollection));
+          typeof(OrderCollection));
 
-      _orderClassDefinition = CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses ();
+      _orderClassDefinition = CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses();
     }
 
     [Test]
@@ -53,83 +53,83 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           _orderClassDefinition,
           "VirtualEndPoint",
           true,
-          typeof (OrderCollection));
+          typeof(OrderCollection));
 
-      Assert.That (endPoint.PropertyInfo.PropertyType, Is.SameAs (typeof (OrderCollection)));
+      Assert.That(endPoint.PropertyInfo.PropertyType, Is.SameAs(typeof(OrderCollection)));
     }
 
     [Test]
     public void IsAnonymous ()
     {
-      Assert.That (_customerOrdersEndPoint.IsAnonymous, Is.False);
+      Assert.That(_customerOrdersEndPoint.IsAnonymous, Is.False);
     }
 
     [Test]
     public void RelationDefinition_Null ()
     {
-      Assert.That (_customerOrdersEndPoint.RelationDefinition, Is.Null);
+      Assert.That(_customerOrdersEndPoint.RelationDefinition, Is.Null);
     }
 
     [Test]
     public void RelationDefinition_NonNull ()
     {
-      _customerOrdersEndPoint.SetRelationDefinition (new RelationDefinition ("Test", _customerOrdersEndPoint, _customerOrdersEndPoint));
-      Assert.That (_customerOrdersEndPoint.RelationDefinition, Is.Not.Null);
+      _customerOrdersEndPoint.SetRelationDefinition(new RelationDefinition("Test", _customerOrdersEndPoint, _customerOrdersEndPoint));
+      Assert.That(_customerOrdersEndPoint.RelationDefinition, Is.Not.Null);
     }
 
     [Test]
     public void GetSortExpression_Null ()
     {
-      var endPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
+      var endPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
           _orderClassDefinition,
           "OrderItems",
           false,
-          typeof (ObjectList<OrderItem>),
-          new Lazy<SortExpressionDefinition> (() => null));
+          typeof(ObjectList<OrderItem>),
+          new Lazy<SortExpressionDefinition>(() => null));
 
-      Assert.That (endPoint.GetSortExpression(), Is.Null);
+      Assert.That(endPoint.GetSortExpression(), Is.Null);
 
 #pragma warning disable 618
-      Assert.That (endPoint.SortExpressionText, Is.Null);
+      Assert.That(endPoint.SortExpressionText, Is.Null);
 #pragma warning restore 618
     }
 
     [Test]
     public void GetSortExpression_NonNull ()
     {
-      var sortExpressionDefinition = new SortExpressionDefinition (
+      var sortExpressionDefinition = new SortExpressionDefinition(
           new[]
           {
-              SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending (
-                  PropertyDefinitionObjectMother.CreateForFakePropertyInfo ("ProductNumber", StorageClass.Persistent))
+              SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(
+                  PropertyDefinitionObjectMother.CreateForFakePropertyInfo("ProductNumber", StorageClass.Persistent))
           });
 
-      var endPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create (
+      var endPoint = DomainObjectCollectionRelationEndPointDefinitionFactory.Create(
           _orderClassDefinition,
           "OrderItems",
           false,
-          typeof (ObjectList<OrderItem>),
-          new Lazy<SortExpressionDefinition> (() => sortExpressionDefinition));
+          typeof(ObjectList<OrderItem>),
+          new Lazy<SortExpressionDefinition>(() => sortExpressionDefinition));
 
-      Assert.That (endPoint.GetSortExpression(), Is.SameAs (sortExpressionDefinition));
+      Assert.That(endPoint.GetSortExpression(), Is.SameAs(sortExpressionDefinition));
 
 #pragma warning disable 618
-      Assert.That (endPoint.SortExpressionText, Is.EqualTo ("ProductNumber DESC"));
+      Assert.That(endPoint.SortExpressionText, Is.EqualTo("ProductNumber DESC"));
 #pragma warning restore 618
     }
 
     [Test]
     public void PropertyInfo ()
     {
-      ClassDefinition orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Order));
+      ClassDefinition orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
       DomainObjectCollectionRelationEndPointDefinition relationEndPointDefinition =
-          (DomainObjectCollectionRelationEndPointDefinition) orderClassDefinition.GetRelationEndPointDefinition (typeof (Order) + ".OrderItems");
-      Assert.That (relationEndPointDefinition.PropertyInfo, Is.EqualTo (PropertyInfoAdapter.Create(typeof (Order).GetProperty ("OrderItems"))));
+          (DomainObjectCollectionRelationEndPointDefinition)orderClassDefinition.GetRelationEndPointDefinition(typeof(Order) + ".OrderItems");
+      Assert.That(relationEndPointDefinition.PropertyInfo, Is.EqualTo(PropertyInfoAdapter.Create(typeof(Order).GetProperty("OrderItems"))));
     }
 
     private static ClassDefinition CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses ()
     {
-      return ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses ("Order", classType: typeof (Order));
+      return ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("Order", classType: typeof(Order));
     }
   }
 }

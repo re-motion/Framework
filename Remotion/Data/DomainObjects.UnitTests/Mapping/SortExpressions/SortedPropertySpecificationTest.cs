@@ -35,23 +35,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     public override void SetUp ()
     {
       base.SetUp();
-      _orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (OrderItem));
-      _productPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition (typeof (OrderItem).FullName + ".Product");
-      _positionPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition (typeof (OrderItem).FullName + ".Position");
+      _orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem));
+      _productPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Product");
+      _positionPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Position");
 
-      _customerClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Customer));
-      _customerSincePropertyDefinition = _customerClassDefinition.GetMandatoryPropertyDefinition (typeof (Customer).FullName + ".CustomerSince");
+      _customerClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Customer));
+      _customerSincePropertyDefinition = _customerClassDefinition.GetMandatoryPropertyDefinition(typeof(Customer).FullName + ".CustomerSince");
     }
 
     [Test]
     public void Initialization_NoIComparableType ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (ClassWithAllDataTypes));
-      var propertyDefinition = classDefinition.GetPropertyDefinition (typeof (ClassWithAllDataTypes).FullName + ".BinaryProperty");
-      Assert.That (
-          () => new SortedPropertySpecification (propertyDefinition, SortOrder.Ascending),
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(ClassWithAllDataTypes));
+      var propertyDefinition = classDefinition.GetPropertyDefinition(typeof(ClassWithAllDataTypes).FullName + ".BinaryProperty");
+      Assert.That(
+          () => new SortedPropertySpecification(propertyDefinition, SortOrder.Ascending),
           Throws.InstanceOf<MappingException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Cannot sort by property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty' - its property type "
                   + "('Byte[]') does not implement IComparable."));
     }
@@ -59,41 +59,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     [Test]
     public void Initialization_IComparableType_Nullable ()
     {
-      Assert.That (Nullable.GetUnderlyingType (_customerSincePropertyDefinition.PropertyType), Is.Not.Null);
-      new SortedPropertySpecification (_customerSincePropertyDefinition, SortOrder.Ascending);
+      Assert.That(Nullable.GetUnderlyingType(_customerSincePropertyDefinition.PropertyType), Is.Not.Null);
+      new SortedPropertySpecification(_customerSincePropertyDefinition, SortOrder.Ascending);
     }
 
     [Test]
     public void To_String ()
     {
-      var specificationAsc = new SortedPropertySpecification (_productPropertyDefinition, SortOrder.Ascending);
-      var specificationDesc = new SortedPropertySpecification (_productPropertyDefinition, SortOrder.Descending);
+      var specificationAsc = new SortedPropertySpecification(_productPropertyDefinition, SortOrder.Ascending);
+      var specificationDesc = new SortedPropertySpecification(_productPropertyDefinition, SortOrder.Descending);
 
-      Assert.That (specificationAsc.ToString(), Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product ASC"));
-      Assert.That (specificationDesc.ToString(), Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product DESC"));
+      Assert.That(specificationAsc.ToString(), Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product ASC"));
+      Assert.That(specificationDesc.ToString(), Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product DESC"));
     }
 
     [Test]
     public void Equals ()
     {
-      var specification1 = new SortedPropertySpecification (_productPropertyDefinition, SortOrder.Ascending);
-      var specification2 = new SortedPropertySpecification (_productPropertyDefinition, SortOrder.Ascending);
-      var specification3 = new SortedPropertySpecification (_productPropertyDefinition, SortOrder.Descending);
-      var specification4 = new SortedPropertySpecification (_positionPropertyDefinition, SortOrder.Ascending);
+      var specification1 = new SortedPropertySpecification(_productPropertyDefinition, SortOrder.Ascending);
+      var specification2 = new SortedPropertySpecification(_productPropertyDefinition, SortOrder.Ascending);
+      var specification3 = new SortedPropertySpecification(_productPropertyDefinition, SortOrder.Descending);
+      var specification4 = new SortedPropertySpecification(_positionPropertyDefinition, SortOrder.Ascending);
 
-      Assert.That (specification1, Is.Not.EqualTo (null));
-      Assert.That (specification1, Is.EqualTo (specification2));
-      Assert.That (specification1, Is.Not.EqualTo (specification3));
-      Assert.That (specification1, Is.Not.EqualTo (specification4));
+      Assert.That(specification1, Is.Not.EqualTo(null));
+      Assert.That(specification1, Is.EqualTo(specification2));
+      Assert.That(specification1, Is.Not.EqualTo(specification3));
+      Assert.That(specification1, Is.Not.EqualTo(specification4));
     }
 
     [Test]
     public void Get_HashCode ()
     {
-      var specification1 = new SortedPropertySpecification (_productPropertyDefinition, SortOrder.Ascending);
-      var specification2 = new SortedPropertySpecification (_productPropertyDefinition, SortOrder.Ascending);
+      var specification1 = new SortedPropertySpecification(_productPropertyDefinition, SortOrder.Ascending);
+      var specification2 = new SortedPropertySpecification(_productPropertyDefinition, SortOrder.Ascending);
 
-      Assert.That (specification1.GetHashCode(), Is.EqualTo (specification2.GetHashCode()));
+      Assert.That(specification1.GetHashCode(), Is.EqualTo(specification2.GetHashCode()));
     }
   }
 }

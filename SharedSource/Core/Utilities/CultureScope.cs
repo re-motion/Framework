@@ -43,9 +43,9 @@ namespace Remotion.Utilities
     /// <summary>
     /// Returns an invariant culture scope, i.e. initialized with <see cref="CultureInfo"/> = <see cref="CultureInfo.InvariantCulture"/>.
     /// </summary>
-    public static CultureScope CreateInvariantCultureScope()
+    public static CultureScope CreateInvariantCultureScope ()
     {
-      return new CultureScope (CultureInfo.InvariantCulture, CultureInfo.InvariantCulture);
+      return new CultureScope(CultureInfo.InvariantCulture, CultureInfo.InvariantCulture);
     }
 
 
@@ -55,9 +55,9 @@ namespace Remotion.Utilities
     /// <param name="cultureName">Culture name string. <see langword="null" /> to not switch culture.</param>
     /// <param name="uiCultureName">User interface culture name string. <see langword="null" /> to not switch UI-culture.</param>
     public CultureScope (string? cultureName, string? uiCultureName)
-      : this (
-      cultureName == null ? null : CultureInfo.GetCultureInfo (cultureName),
-      uiCultureName == null ? null : CultureInfo.GetCultureInfo (uiCultureName))
+      : this(
+      cultureName == null ? null : CultureInfo.GetCultureInfo(cultureName),
+      uiCultureName == null ? null : CultureInfo.GetCultureInfo(uiCultureName))
     {
     }
 
@@ -66,7 +66,7 @@ namespace Remotion.Utilities
     /// Intialize both the culture and UI-culture with the same culture-name
     /// </summary>
     /// <param name="cultureAndUiCultureName">Culture and User interface culture name string.</param>
-    public CultureScope (string? cultureAndUiCultureName) : this (cultureAndUiCultureName, cultureAndUiCultureName) { }
+    public CultureScope (string? cultureAndUiCultureName) : this(cultureAndUiCultureName, cultureAndUiCultureName) { }
 
 
     /// <summary>

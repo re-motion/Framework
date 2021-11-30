@@ -32,7 +32,7 @@ namespace Remotion.Collections
 
     public ReadOnlySetWrapper (ISet<T> collection)
     {
-      ArgumentUtility.CheckNotNull ("collection", collection);
+      ArgumentUtility.CheckNotNull("collection", collection);
 
       _collection = collection;
     }
@@ -44,17 +44,17 @@ namespace Remotion.Collections
 
     public IEnumerator<T> GetEnumerator ()
     {
-      return _collection.GetEnumerator ();
+      return _collection.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
-      return GetEnumerator ();
+      return GetEnumerator();
     }
 
     public bool Contains (T item)
     {
-      return _collection.Contains (item);
+      return _collection.Contains(item);
     }
   }
 }

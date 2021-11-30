@@ -37,71 +37,71 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     // construction and disposing
 
     public DomainObjectRelationCheckEventReceiver (DomainObject domainObject)
-      : this (domainObject, false)
+      : this(domainObject, false)
     {
     }
 
     public DomainObjectRelationCheckEventReceiver (DomainObject domainObject, bool cancel)
-      : base (domainObject, cancel)
+      : base(domainObject, cancel)
     {
-      _changingRelatedObjects = new Dictionary<string, DomainObject> ();
-      _changedRelatedObjects = new Dictionary<string, DomainObject> ();
+      _changingRelatedObjects = new Dictionary<string, DomainObject>();
+      _changedRelatedObjects = new Dictionary<string, DomainObject>();
     }
 
     // methods and properties
 
     public DomainObject GetChangingRelatedDomainObject (string propertyName)
     {
-      return (DomainObject) _changingRelatedObjects[propertyName];
+      return (DomainObject)_changingRelatedObjects[propertyName];
     }
 
     public DomainObject GetChangedRelatedDomainObject (string propertyName)
     {
-      return (DomainObject) _changedRelatedObjects[propertyName];
+      return (DomainObject)_changedRelatedObjects[propertyName];
     }
 
     protected override void DomainObject_RelationChanging (object sender, RelationChangingEventArgs args)
     {
-      TestDomainBase domainObject = (TestDomainBase) sender;
+      TestDomainBase domainObject = (TestDomainBase)sender;
 
       Dev.Null = domainObject.State;
 
       string changedProperty = args.RelationEndPointDefinition.PropertyName;
 
-      if (CardinalityType.One == domainObject.InternalDataContainer.ClassDefinition.GetRelationEndPointDefinition (changedProperty).Cardinality)
+      if (CardinalityType.One == domainObject.InternalDataContainer.ClassDefinition.GetRelationEndPointDefinition(changedProperty).Cardinality)
       {
-        DomainObject relatedDomainObject = domainObject.GetRelatedObject (changedProperty);
-        _changingRelatedObjects.Add (changedProperty, relatedDomainObject);
+        DomainObject relatedDomainObject = domainObject.GetRelatedObject(changedProperty);
+        _changingRelatedObjects.Add(changedProperty, relatedDomainObject);
       }
       else
       {
-        IEnumerable relatedDomainObjects = domainObject.GetRelatedObjects (changedProperty);
-        _changingRelatedObjects.Add (changedProperty, relatedDomainObjects.Cast<DomainObject>().ToArray());
+        IEnumerable relatedDomainObjects = domainObject.GetRelatedObjects(changedProperty);
+        _changingRelatedObjects.Add(changedProperty, relatedDomainObjects.Cast<DomainObject>().ToArray());
       }
 
-      base.DomainObject_RelationChanging (sender, args);
+      base.DomainObject_RelationChanging(sender, args);
     }
 
     protected override void DomainObject_RelationChanged (object sender, RelationChangedEventArgs args)
     {
-      TestDomainBase domainObject = (TestDomainBase) sender;
+      TestDomainBase domainObject = (TestDomainBase)sender;
 
       Dev.Null = domainObject.State;
 
       string changedProperty = args.RelationEndPointDefinition.PropertyName;
 
-      if (CardinalityType.One == domainObject.InternalDataContainer.ClassDefinition.GetRelationEndPointDefinition (changedProperty).Cardinality)
+      if (CardinalityType.One == domainObject.InternalDataContainer.ClassDefinition.GetRelationEndPointDefinition(changedProperty).Cardinality)
       {
-        DomainObject relatedDomainObject = domainObject.GetRelatedObject (changedProperty);
-        _changedRelatedObjects.Add (changedProperty, relatedDomainObject);
+        DomainObject relatedDomainObject = domainObject.GetRelatedObject(changedProperty);
+        _changedRelatedObjects.Add(changedProperty, relatedDomainObject);
       }
       else
       {
-        IEnumerable relatedDomainObjects = domainObject.GetRelatedObjects (changedProperty);
-        _changingRelatedObjects.Add (changedProperty, relatedDomainObjects.Cast<DomainObject>().ToArray());
+        IEnumerable relatedDomainObjects = domainObject.GetRelatedObjects(changedProperty);
+        _changingRelatedObjects.Add(changedProperty, relatedDomainObjects.Cast<DomainObject>().ToArray());
       }
 
-      base.DomainObject_RelationChanged (sender, args);
+      base.DomainObject_RelationChanged(sender, args);
     }
   }
 }

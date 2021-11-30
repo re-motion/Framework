@@ -41,28 +41,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       base.SetUp();
 
-      _clientClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Client)];
-      _locationClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Location)];
+      _clientClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Client)];
+      _locationClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Location)];
 
       RelationDefinition relation = FakeMappingConfiguration.Current.RelationDefinitions[
           "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location:Remotion.Data.DomainObjects.UnitTests.Mapping."
           + "TestDomain.Integration.Location.Client"];
-      _clientEndPoint = (AnonymousRelationEndPointDefinition) relation.EndPointDefinitions[0];
-      _locationEndPoint = (RelationEndPointDefinition) relation.EndPointDefinitions[1];
+      _clientEndPoint = (AnonymousRelationEndPointDefinition)relation.EndPointDefinitions[0];
+      _locationEndPoint = (RelationEndPointDefinition)relation.EndPointDefinitions[1];
     }
 
     [Test]
     public void GetRelationEndPointDefinitions ()
     {
-      Assert.That (_locationClass.GetRelationEndPointDefinitions (), Has.Member(_locationEndPoint));
-      Assert.That (_clientClass.GetRelationEndPointDefinitions (), Has.No.Member(_clientEndPoint));
+      Assert.That(_locationClass.GetRelationEndPointDefinitions(), Has.Member(_locationEndPoint));
+      Assert.That(_clientClass.GetRelationEndPointDefinitions(), Has.No.Member(_clientEndPoint));
     }
 
     [Test]
     public void GetMyRelationEndPointDefinitions ()
     {
-      Assert.That (_locationClass.MyRelationEndPointDefinitions, Has.Member(_locationEndPoint));
-      Assert.That (_clientClass.MyRelationEndPointDefinitions, Has.No.Member(_clientEndPoint));
+      Assert.That(_locationClass.MyRelationEndPointDefinitions, Has.Member(_locationEndPoint));
+      Assert.That(_clientClass.MyRelationEndPointDefinitions, Has.No.Member(_clientEndPoint));
     }
   }
 }

@@ -35,11 +35,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     [AssertionMethod]
     public static void EnsureNotInvalid ([NotNull] IDomainObject domainObject, [NotNull] ClientTransaction clientTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("clientTransaction", clientTransaction);
 
       if (domainObject.TransactionContext[clientTransaction].State.IsInvalid)
-        throw new ObjectInvalidException (domainObject.ID);
+        throw new ObjectInvalidException(domainObject.ID);
     }
 
     /// <summary>
@@ -52,11 +52,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     [AssertionMethod]
     public static void EnsureNotDeleted ([NotNull] IDomainObject domainObject, [NotNull] ClientTransaction clientTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("clientTransaction", clientTransaction);
 
       if (domainObject.TransactionContext[clientTransaction].State.IsDeleted)
-        throw new ObjectDeletedException (domainObject.ID);
+        throw new ObjectDeletedException(domainObject.ID);
     }
 
     /// <summary>
@@ -72,17 +72,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     [AssertionMethod]
     public static void CheckIfRightTransaction ([NotNull] IDomainObject domainObject, [NotNull] ClientTransaction clientTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("clientTransaction", clientTransaction);
 
       if (clientTransaction.RootTransaction != domainObject.RootTransaction)
       {
-        string message = String.Format (
+        string message = String.Format(
             "Domain object '{0}' cannot be used in the given transaction as it was loaded or created in another "
             + "transaction. Enter a scope for the transaction, or enlist the object "
             + "in the transaction. (If no transaction was explicitly given, ClientTransaction.Current was used.)",
             domainObject.ID);
-        throw new ClientTransactionsDifferException (message);
+        throw new ClientTransactionsDifferException(message);
       }
     }
   }

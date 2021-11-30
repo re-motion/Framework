@@ -23,9 +23,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 {
   public class FlattenedSerializationInfo
   {
-    private readonly FlattenedSerializationWriter<object> _objectWriter = new FlattenedSerializationWriter<object> ();
-    private readonly FlattenedSerializationWriter<int> _intWriter = new FlattenedSerializationWriter<int> ();
-    private readonly FlattenedSerializationWriter<bool> _boolWriter = new FlattenedSerializationWriter<bool> ();
+    private readonly FlattenedSerializationWriter<object> _objectWriter = new FlattenedSerializationWriter<object>();
+    private readonly FlattenedSerializationWriter<int> _intWriter = new FlattenedSerializationWriter<int>();
+    private readonly FlattenedSerializationWriter<bool> _boolWriter = new FlattenedSerializationWriter<bool>();
     private readonly Dictionary<object, int> _handleMap = new Dictionary<object, int>();
 
     public FlattenedSerializationInfo ()
@@ -34,30 +34,30 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 
     public object[] GetData ()
     {
-      var objects = _objectWriter.GetData ();
-      var ints = _intWriter.GetData ();
-      var bools = _boolWriter.GetData ();
+      var objects = _objectWriter.GetData();
+      var ints = _intWriter.GetData();
+      var bools = _boolWriter.GetData();
 
       return new object[] { objects, ints, bools };
     }
 
     public void AddIntValue (int value)
     {
-      _intWriter.AddSimpleValue (value);
+      _intWriter.AddSimpleValue(value);
     }
 
     public void AddBoolValue (bool value)
     {
-      _boolWriter.AddSimpleValue (value);
+      _boolWriter.AddSimpleValue(value);
     }
 
     /// <remarks>Note: This will use T to decide whether to recurse into an IFlattenedSerializable or not.</remarks>
     public void AddValue<T> (T value)
     {
-      if (typeof (IFlattenedSerializable).IsAssignableFrom (typeof (T)))
-        AddFlattenedSerializable ((IFlattenedSerializable) value);
+      if (typeof(IFlattenedSerializable).IsAssignableFrom(typeof(T)))
+        AddFlattenedSerializable((IFlattenedSerializable)value);
       else
-        _objectWriter.AddSimpleValue (value);
+        _objectWriter.AddSimpleValue(value);
     }
 
     private void AddFlattenedSerializable (IFlattenedSerializable serializable)
@@ -65,45 +65,45 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       if (serializable != null)
       {
         var typeName = serializable.GetType().AssemblyQualifiedName;
-        AddHandle (typeName);
-        serializable.SerializeIntoFlatStructure (this);
+        AddHandle(typeName);
+        serializable.SerializeIntoFlatStructure(this);
       }
       else
       {
-        AddHandle<Type> (null);
+        AddHandle<Type>(null);
       }
     }
 
     public void AddArray<T> (T[] valueArray)
     {
-      ArgumentUtility.CheckNotNull ("valueArray", valueArray);
-      AddCollection (valueArray);
+      ArgumentUtility.CheckNotNull("valueArray", valueArray);
+      AddCollection(valueArray);
     }
 
     public void AddCollection<T> (ICollection<T> valueCollection)
     {
-      ArgumentUtility.CheckNotNull ("valueCollection", valueCollection);
-      AddIntValue (valueCollection.Count);
+      ArgumentUtility.CheckNotNull("valueCollection", valueCollection);
+      AddIntValue(valueCollection.Count);
       foreach (T t in valueCollection)
-        AddValue (t);
+        AddValue(t);
     }
 
     public void AddHandle<T> (T value)
     {
       if (value == null)
-        AddIntValue (-1);
+        AddIntValue(-1);
       else
       {
         int handle;
-        if (!_handleMap.TryGetValue (value, out handle))
+        if (!_handleMap.TryGetValue(value, out handle))
         {
           handle = _handleMap.Count;
-          _handleMap.Add (value, handle);
-          AddIntValue (handle);
-          AddValue (value);
+          _handleMap.Add(value, handle);
+          AddIntValue(handle);
+          AddValue(value);
         }
         else
-          AddIntValue (handle);
+          AddIntValue(handle);
       }
     }
   }

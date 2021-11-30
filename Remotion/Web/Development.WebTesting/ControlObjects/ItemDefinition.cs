@@ -32,8 +32,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     public ItemDefinition ([NotNull] string itemID, int oneBasedIndex, [NotNull] string text, bool isDisabled)
     {
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
-      ArgumentUtility.CheckNotNull ("text", text);
+      ArgumentUtility.CheckNotNull("itemID", itemID);
+      ArgumentUtility.CheckNotNull("text", text);
 
       _itemID = itemID;
       _oneBasedIndex = oneBasedIndex;
@@ -56,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       get { return _text; }
     }
 
-    [Obsolete ("Use IsDisabled instead. (Version 1.17.5)")]
+    [Obsolete("Use IsDisabled instead. (Version 1.17.5)")]
     public bool IsEnabled
     {
       get { return !IsDisabled; }

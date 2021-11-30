@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   public class Color : ExtensibleEnum<Color>
   {
     public Color (MethodBase currentMethod)
-        : base (currentMethod)
+        : base(currentMethod)
     {
     }
   }

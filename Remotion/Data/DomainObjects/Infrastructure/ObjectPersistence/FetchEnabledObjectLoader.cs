@@ -38,11 +38,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         ILoadedObjectDataRegistrationAgent loadedObjectDataRegistrationAgent,
         ILoadedObjectDataProvider loadedObjectDataProvider,
         IEagerFetcher eagerFetcher)
-        : base (persistenceStrategy, loadedObjectDataRegistrationAgent, loadedObjectDataProvider)
+        : base(persistenceStrategy, loadedObjectDataRegistrationAgent, loadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull ("persistenceStrategy", persistenceStrategy);
-      ArgumentUtility.CheckNotNull ("eagerFetcher", eagerFetcher);
-      
+      ArgumentUtility.CheckNotNull("persistenceStrategy", persistenceStrategy);
+      ArgumentUtility.CheckNotNull("eagerFetcher", eagerFetcher);
+
       _persistenceStrategy = persistenceStrategy;
       _eagerFetcher = eagerFetcher;
     }
@@ -59,52 +59,52 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public override ICollection<ILoadedObjectData> GetOrLoadCollectionQueryResult (IQuery query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
-      var pendingRegistrationCollector = new LoadedObjectDataPendingRegistrationCollector ();
+      var pendingRegistrationCollector = new LoadedObjectDataPendingRegistrationCollector();
 
-      var loadedObjectData = _persistenceStrategy.ExecuteCollectionQuery (query, LoadedObjectDataProvider);
-      
+      var loadedObjectData = _persistenceStrategy.ExecuteCollectionQuery(query, LoadedObjectDataProvider);
+
       var loadedObjectDataAfterConsolidation = LoadedObjectDataRegistrationAgent
-          .BeginRegisterIfRequired (loadedObjectData, true, pendingRegistrationCollector)
-          .ConvertToCollection ();
+          .BeginRegisterIfRequired(loadedObjectData, true, pendingRegistrationCollector)
+          .ConvertToCollection();
 
       try
       {
-        _eagerFetcher.PerformEagerFetching (loadedObjectDataAfterConsolidation, query.EagerFetchQueries, this, pendingRegistrationCollector);
+        _eagerFetcher.PerformEagerFetching(loadedObjectDataAfterConsolidation, query.EagerFetchQueries, this, pendingRegistrationCollector);
       }
       finally
       {
         // Even with an exception during eager fetching, go ahead and register everything.
-        LoadedObjectDataRegistrationAgent.EndRegisterIfRequired (pendingRegistrationCollector);
+        LoadedObjectDataRegistrationAgent.EndRegisterIfRequired(pendingRegistrationCollector);
       }
 
       return loadedObjectDataAfterConsolidation;
     }
 
     public ICollection<LoadedObjectDataWithDataSourceData> GetOrLoadFetchQueryResult (
-        IQuery query, 
+        IQuery query,
         LoadedObjectDataPendingRegistrationCollector pendingRegistrationCollector)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
-      ArgumentUtility.CheckNotNull ("pendingRegistrationCollector", pendingRegistrationCollector);
+      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull("pendingRegistrationCollector", pendingRegistrationCollector);
 
-      var loadedObjectDataWithSource = _persistenceStrategy.ExecuteFetchQuery (query, LoadedObjectDataProvider).ConvertToCollection ();
+      var loadedObjectDataWithSource = _persistenceStrategy.ExecuteFetchQuery(query, LoadedObjectDataProvider).ConvertToCollection();
 
       var loadedObjectDataAfterConsolidation = LoadedObjectDataRegistrationAgent
-          .BeginRegisterIfRequired (
-              loadedObjectDataWithSource.Select (data => data.LoadedObjectData),
+          .BeginRegisterIfRequired(
+              loadedObjectDataWithSource.Select(data => data.LoadedObjectData),
               true,
               pendingRegistrationCollector)
           .ToList();
-      
-      Assertion.IsTrue (loadedObjectDataWithSource.Count == loadedObjectDataAfterConsolidation.Count);
+
+      Assertion.IsTrue(loadedObjectDataWithSource.Count == loadedObjectDataAfterConsolidation.Count);
       var loadedObjectDataWithSourceAfterConsolidation = loadedObjectDataWithSource
-          .Select ((d, i) => new LoadedObjectDataWithDataSourceData (loadedObjectDataAfterConsolidation[i], d.DataSourceData))
+          .Select((d, i) => new LoadedObjectDataWithDataSourceData(loadedObjectDataAfterConsolidation[i], d.DataSourceData))
           .ConvertToCollection();
 
-      _eagerFetcher.PerformEagerFetching (loadedObjectDataAfterConsolidation, query.EagerFetchQueries, this, pendingRegistrationCollector);
-      
+      _eagerFetcher.PerformEagerFetching(loadedObjectDataAfterConsolidation, query.EagerFetchQueries, this, pendingRegistrationCollector);
+
       return loadedObjectDataWithSourceAfterConsolidation;
     }
   }

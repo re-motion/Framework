@@ -28,37 +28,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order1 = (Order) LifetimeService.GetObjectReference (WriteableSubTransaction, DomainObjectIDs.Order1);
+      _order1 = (Order)LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Order1);
     }
 
     [Test]
     public void EnsureDataAvailableInReadOnlyRootTransaction_IsAllowed ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      ReadOnlyRootTransaction.EnsureDataAvailable (_order1.ID);
+      ReadOnlyRootTransaction.EnsureDataAvailable(_order1.ID);
 
-      CheckDataLoaded (ReadOnlyRootTransaction, _order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, _order1);
-      CheckDataNotLoaded (WriteableSubTransaction, _order1);
+      CheckDataLoaded(ReadOnlyRootTransaction, _order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, _order1);
+      CheckDataNotLoaded(WriteableSubTransaction, _order1);
     }
 
     [Test]
     public void EnsureDataAvailableInReadOnlyMiddleTransaction_IsAllowed ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      ReadOnlyMiddleTransaction.EnsureDataAvailable (_order1.ID);
+      ReadOnlyMiddleTransaction.EnsureDataAvailable(_order1.ID);
 
-      CheckDataLoaded (ReadOnlyRootTransaction, _order1);
-      CheckDataLoaded (ReadOnlyMiddleTransaction, _order1);
-      CheckDataNotLoaded (WriteableSubTransaction, _order1);
+      CheckDataLoaded(ReadOnlyRootTransaction, _order1);
+      CheckDataLoaded(ReadOnlyMiddleTransaction, _order1);
+      CheckDataNotLoaded(WriteableSubTransaction, _order1);
     }
   }
 }

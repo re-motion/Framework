@@ -20,15 +20,15 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [Uses (typeof (StubStoragePersistentMixin))]
-  [Uses (typeof (NullMixin))]
+  [Uses(typeof(StubStoragePersistentMixin))]
+  [Uses(typeof(NullMixin))]
   [DBTable]
   [StorageProviderStub]
   public class StubStorageTargetClassForPersistentMixin : DomainObject, ISupportsGetObject
   {
     public static StubStorageTargetClassForPersistentMixin NewObject ()
     {
-      return NewObject<StubStorageTargetClassForPersistentMixin> ();
+      return NewObject<StubStorageTargetClassForPersistentMixin>();
     }
   }
 }

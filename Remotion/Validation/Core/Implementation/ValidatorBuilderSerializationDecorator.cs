@@ -25,7 +25,7 @@ namespace Remotion.Validation.Implementation
   /// Enables <see cref="IValidatorBuilder"/> to be serialized/deserialized.
   /// </summary>
   [Serializable]
-  [ImplementationFor (typeof (IValidatorBuilder), RegistrationType = RegistrationType.Decorator, Position = Int32.MinValue)]
+  [ImplementationFor(typeof(IValidatorBuilder), RegistrationType = RegistrationType.Decorator, Position = Int32.MinValue)]
   public class ValidatorBuilderSerializationDecorator : IValidatorBuilder, IObjectReference
   {
     [NonSerialized]
@@ -33,7 +33,7 @@ namespace Remotion.Validation.Implementation
 
     public ValidatorBuilderSerializationDecorator (IValidatorBuilder validatorBuilder)
     {
-      ArgumentUtility.CheckNotNull ("validatorBuilder", validatorBuilder);
+      ArgumentUtility.CheckNotNull("validatorBuilder", validatorBuilder);
 
       _validatorBuilder = validatorBuilder;
     }
@@ -45,9 +45,9 @@ namespace Remotion.Validation.Implementation
 
     public IValidator BuildValidator (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+      ArgumentUtility.CheckNotNull("validatedType", validatedType);
 
-      return _validatorBuilder.BuildValidator (validatedType);
+      return _validatorBuilder.BuildValidator(validatedType);
     }
 
     object IObjectReference.GetRealObject (StreamingContext context)

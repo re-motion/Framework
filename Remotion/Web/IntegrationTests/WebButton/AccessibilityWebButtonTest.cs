@@ -29,29 +29,29 @@ namespace Remotion.Web.IntegrationTests.WebButton
     public void Sync ()
     {
       var home = Start();
-      var webButton = home.WebButtons().GetByLocalID ("MyWebButton1Sync");
+      var webButton = home.WebButtons().GetByLocalID("MyWebButton1Sync");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (webButton);
+      var result = analyzer.Analyze(webButton);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Disabled ()
     {
       var home = Start();
-      var webButton = home.WebButtons().GetByLocalID ("MyDisabledWebButton");
+      var webButton = home.WebButtons().GetByLocalID("MyDisabledWebButton");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (webButton);
+      var result = analyzer.Analyze(webButton);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("WebButtonTest.wxe");
+      return Start<WxePageObject>("WebButtonTest.wxe");
     }
   }
 }

@@ -33,7 +33,7 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
       if (version != PEVerifyVersion.DotNet2)
         return ".NET SDK 2.0: n/a";
       else
-        return string.Format (".NET SDK 2.0: Registry: HKEY_LOCAL_MACHINE\\{0}\\{1}\\bin\\PEVerify.exe", SdkRegistryKey, SdkRegistryValue);
+        return string.Format(".NET SDK 2.0: Registry: HKEY_LOCAL_MACHINE\\{0}\\{1}\\bin\\PEVerify.exe", SdkRegistryKey, SdkRegistryValue);
     }
 
     protected override string? GetPotentialPEVerifyPath (PEVerifyVersion version)
@@ -41,14 +41,14 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
       if (version != PEVerifyVersion.DotNet2)
         return null;
 
-      var sdkPath = RegistryKey.OpenBaseKey (RegistryHive.LocalMachine, RegistryView.Registry32)
-          .OpenSubKey (SdkRegistryKey, false)
-          ?.GetValue (SdkRegistryValue) as string;
+      var sdkPath = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32)
+          .OpenSubKey(SdkRegistryKey, false)
+          ?.GetValue(SdkRegistryValue) as string;
 
       if (sdkPath == null)
         return null;
 
-      return Path.Combine (sdkPath, "bin", "PEVerify.exe");
+      return Path.Combine(sdkPath, "bin", "PEVerify.exe");
     }
   }
 }

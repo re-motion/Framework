@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         [NotNull] HtmlTextWriter writer,
         [NotNull] IBocAutoCompleteReferenceValue control,
         [NotNull] BusinessObjectWebServiceContext businessObjectWebServiceContext)
-        : base (httpContext, writer, control, businessObjectWebServiceContext)
+        : base(httpContext, writer, control, businessObjectWebServiceContext)
     {
     }
   }

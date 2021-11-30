@@ -35,22 +35,22 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     public SmartPageAsyncPostBackErrorHandler (HttpContextBase context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      
+      ArgumentUtility.CheckNotNull("context", context);
+
       _context = context;
     }
 
     public void HandleError (Exception error)
     {
-      ArgumentUtility.CheckNotNull ("error", error);
+      ArgumentUtility.CheckNotNull("error", error);
 
-      string errorHtml = GetErrorHtml (_context, error);
+      string errorHtml = GetErrorHtml(_context, error);
 
       _context.Items[ControlHelper.AsyncPostBackErrorKey] = true;
       _context.Items[ControlHelper.AsyncPostBackErrorMessageKey] = errorHtml;
       _context.Items[ControlHelper.AsyncPostBackErrorHttpCodeKey] = 500;
 
-      throw new AsyncUnhandledException (error);
+      throw new AsyncUnhandledException(error);
     }
 
     private static string GetErrorHtml (HttpContextBase context, Exception exception)
@@ -59,20 +59,20 @@ namespace Remotion.Web.UI.SmartPageImplementation
       if (context.IsCustomErrorEnabled)
       {
         string aspNetErrorPage;
-        using (var reader = new StreamReader (
-            Assembly.GetExecutingAssembly().GetManifestResourceStream (
-                typeof (SmartPageInfo),
+        using (var reader = new StreamReader(
+            Assembly.GetExecutingAssembly().GetManifestResourceStream(
+                typeof(SmartPageInfo),
                 "Generic_Error_Async_Remote.htm")!))
         {
           aspNetErrorPage = reader.ReadToEnd();
         }
-        errorHtml = ExtractBodyContent (aspNetErrorPage);
-        errorHtml = errorHtml.Replace ("{applicationPath}", context.Request.ApplicationPath);
+        errorHtml = ExtractBodyContent(aspNetErrorPage);
+        errorHtml = errorHtml.Replace("{applicationPath}", context.Request.ApplicationPath);
       }
       else
       {
-        var aspNetErrorPage = new HttpUnhandledException ("Async Postback Error", exception).GetHtmlErrorMessage()!; // TODO RM-8118: not null assertion
-        errorHtml = ExtractBodyContent (aspNetErrorPage);
+        var aspNetErrorPage = new HttpUnhandledException("Async Postback Error", exception).GetHtmlErrorMessage()!; // TODO RM-8118: not null assertion
+        errorHtml = ExtractBodyContent(aspNetErrorPage);
       }
       return errorHtml;
     }
@@ -81,7 +81,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     {
       var bodyBegin = @"<body bgcolor=""white"">";
       var bodyEnd = @"</body>";
-      return aspNetErrorPage.Split (new[] { bodyBegin, bodyEnd }, StringSplitOptions.None).Skip (1).Take (1).Single();
+      return aspNetErrorPage.Split(new[] { bodyBegin, bodyEnd }, StringSplitOptions.None).Skip(1).Take(1).Single();
     }
   }
 }

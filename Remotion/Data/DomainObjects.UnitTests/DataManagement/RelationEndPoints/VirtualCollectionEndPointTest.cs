@@ -6,7 +6,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   public class VirtualCollectionEndPointTest
   {
     [Test]
-    [Ignore ("TODO: RM-7294 Add tests")]
+    [Ignore("TODO: RM-7294 Add tests")]
     public void Initialize ()
     {
     }

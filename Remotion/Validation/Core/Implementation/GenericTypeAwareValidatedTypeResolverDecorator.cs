@@ -27,7 +27,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via <see cref="IValidationRuleCollector{TValidatedType}"/>.
   /// </summary>
-  [ImplementationFor (typeof (IValidatedTypeResolver), Position = 0, RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor(typeof(IValidatedTypeResolver), Position = 0, RegistrationType = RegistrationType.Decorator)]
   public class GenericTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private static readonly ConcurrentDictionary<Type, (bool CanAscribeTo, Type? ItemType)> s_genericValidationRuleCollectorTypeCache = new();
@@ -35,7 +35,7 @@ namespace Remotion.Validation.Implementation
 
     public GenericTypeAwareValidatedTypeResolverDecorator (IValidatedTypeResolver validatedTypeResolver)
     {
-      ArgumentUtility.CheckNotNull ("validatedTypeResolver", validatedTypeResolver);
+      ArgumentUtility.CheckNotNull("validatedTypeResolver", validatedTypeResolver);
 
       _validatedTypeResolver = validatedTypeResolver;
     }
@@ -47,25 +47,25 @@ namespace Remotion.Validation.Implementation
 
     public Type? GetValidatedType (Type collectorType)
     {
-      ArgumentUtility.CheckNotNull ("collectorType", collectorType);
+      ArgumentUtility.CheckNotNull("collectorType", collectorType);
 
-      var itemType = s_genericValidationRuleCollectorTypeCache.GetOrAdd (
+      var itemType = s_genericValidationRuleCollectorTypeCache.GetOrAdd(
               collectorType,
               static t =>
               {
-                var canAscribeTo = typeof (IValidationRuleCollector).IsAssignableFrom (t) && t.CanAscribeTo (typeof (IValidationRuleCollector<>));
-                return ValueTuple.Create (
+                var canAscribeTo = typeof(IValidationRuleCollector).IsAssignableFrom(t) && t.CanAscribeTo(typeof(IValidationRuleCollector<>));
+                return ValueTuple.Create(
                     canAscribeTo,
                     canAscribeTo
-                        ? t.GetAscribedGenericArguments (typeof (IValidationRuleCollector<>))[0]
+                        ? t.GetAscribedGenericArguments(typeof(IValidationRuleCollector<>))[0]
                         : null);
               })
           .ItemType;
 
       if (itemType != null)
-        return itemType; 
+        return itemType;
 
-      return _validatedTypeResolver.GetValidatedType (collectorType);
+      return _validatedTypeResolver.GetValidatedType(collectorType);
     }
   }
 }

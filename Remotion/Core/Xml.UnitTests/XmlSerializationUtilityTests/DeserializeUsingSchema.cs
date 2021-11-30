@@ -26,50 +26,50 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
   public class DeserializeUsingSchema
   {
     [Test]
-    public void WithSchemaUriAndSchemaSet()
+    public void WithSchemaUriAndSchemaSet ()
     {
-      SampleClass actual = (SampleClass) XmlSerializationUtility.DeserializeUsingSchema (
-          GetReaderForDefaultFragment (1),
-          typeof (SampleClass),
+      SampleClass actual = (SampleClass)XmlSerializationUtility.DeserializeUsingSchema(
+          GetReaderForDefaultFragment(1),
+          typeof(SampleClass),
           GetXmlSchemaSet());
 
-      Assert.That (actual, Is.Not.Null);
-      Assert.That (actual.Value, Is.EqualTo (1));
+      Assert.That(actual, Is.Not.Null);
+      Assert.That(actual.Value, Is.EqualTo(1));
     }
 
     [Test]
-    public void WithSchemaUriAndSchemaReader()
+    public void WithSchemaUriAndSchemaReader ()
     {
-      SampleClass actual = (SampleClass) XmlSerializationUtility.DeserializeUsingSchema (
-          GetReaderForDefaultFragment (1),
-          typeof (SampleClass),
+      SampleClass actual = (SampleClass)XmlSerializationUtility.DeserializeUsingSchema(
+          GetReaderForDefaultFragment(1),
+          typeof(SampleClass),
           SampleClass.SchemaUri,
           SampleClass.GetSchemaReader());
 
-      Assert.That (actual, Is.Not.Null);
-      Assert.That (actual.Value, Is.EqualTo (1));
+      Assert.That(actual, Is.Not.Null);
+      Assert.That(actual.Value, Is.EqualTo(1));
     }
 
     [Test]
-    public void WithNamespaceAndSchemaSet()
+    public void WithNamespaceAndSchemaSet ()
     {
-      SampleClass actual = (SampleClass) XmlSerializationUtility.DeserializeUsingSchema (
-          GetReaderForDefaultFragment (1),
-          typeof (SampleClass),
+      SampleClass actual = (SampleClass)XmlSerializationUtility.DeserializeUsingSchema(
+          GetReaderForDefaultFragment(1),
+          typeof(SampleClass),
           "http://www.re-motion.org/core/unitTests",
           GetXmlSchemaSet());
 
-      Assert.That (actual, Is.Not.Null);
-      Assert.That (actual.Value, Is.EqualTo (1));
+      Assert.That(actual, Is.Not.Null);
+      Assert.That(actual.Value, Is.EqualTo(1));
     }
 
     [Test]
     public void WithNamespaceAndSchemaSet_HavingInvalidDataTypeInXmlFragment ()
     {
-      Assert.That (
-          () => XmlSerializationUtility.DeserializeUsingSchema (
-              GetReaderForDefaultFragment ("data"),
-              typeof (SampleClass),
+      Assert.That(
+          () => XmlSerializationUtility.DeserializeUsingSchema(
+              GetReaderForDefaultFragment("data"),
+              typeof(SampleClass),
               "http://www.re-motion.org/core/unitTests",
               GetXmlSchemaSet()),
           Throws.InstanceOf<XmlSchemaValidationException>()
@@ -79,10 +79,10 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
         // Assert.AreEqual (26, e.LinePosition);
     }
 
-    private XmlSchemaSet GetXmlSchemaSet()
+    private XmlSchemaSet GetXmlSchemaSet ()
     {
       XmlSchemaSet schemas = new XmlSchemaSet();
-      schemas.Add (SampleClass.SchemaUri, SampleClass.GetSchemaReader());
+      schemas.Add(SampleClass.SchemaUri, SampleClass.GetSchemaReader());
       return schemas;
     }
 
@@ -92,14 +92,14 @@ namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests
           @"<sampleClass xmlns=""http://www.re-motion.org/core/unitTests"">
             <value>{0}</value>
           </sampleClass>";
-      return GetReader (string.Format (xmlFragment, value));
+      return GetReader(string.Format(xmlFragment, value));
     }
 
     private XmlReader GetReader (string xmlFragment)
     {
-      StringReader stringReader = new StringReader (xmlFragment);
+      StringReader stringReader = new StringReader(xmlFragment);
 
-      return XmlReader.Create (stringReader, null, "test.xml");
+      return XmlReader.Create(stringReader, null, "test.xml");
     }
   }
 }

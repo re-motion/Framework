@@ -37,21 +37,21 @@ namespace Remotion.UnitTests.Development.RhinoMocks.UnitTesting
       var equivalent = false;
       var different = false;
 
-      myMock.Expect (mock => mock.SomeMethod (Arg<IEnumerable<string>>.List.Equivalent ("a", "b", "c")))
-            .WhenCalled (mi => equal = true);
-      myMock.Expect (mock => mock.SomeMethod (Arg<IEnumerable<string>>.List.Equivalent ("d", "e", "f")))
-            .WhenCalled (mi => equivalent = true);
-      myMock.Expect (mock => mock.SomeMethod (Arg<IEnumerable<string>>.List.Equivalent ("g", "h", "i")))
-            .WhenCalled (mi => different = true);
+      myMock.Expect(mock => mock.SomeMethod(Arg<IEnumerable<string>>.List.Equivalent("a", "b", "c")))
+            .WhenCalled(mi => equal = true);
+      myMock.Expect(mock => mock.SomeMethod(Arg<IEnumerable<string>>.List.Equivalent("d", "e", "f")))
+            .WhenCalled(mi => equivalent = true);
+      myMock.Expect(mock => mock.SomeMethod(Arg<IEnumerable<string>>.List.Equivalent("g", "h", "i")))
+            .WhenCalled(mi => different = true);
 
-      myMock.SomeMethod (new[] { "a", "b", "c" });
-      myMock.SomeMethod (new List<string> { "f", "e", "d" });
-      myMock.SomeMethod (new[] { "g", "h", "j" });
+      myMock.SomeMethod(new[] { "a", "b", "c" });
+      myMock.SomeMethod(new List<string> { "f", "e", "d" });
+      myMock.SomeMethod(new[] { "g", "h", "j" });
 
-      Assert.That (equal, Is.True);
-      Assert.That (equivalent, Is.True);
-      Assert.That (different, Is.False);
-      Assert.That (() => myMock.VerifyAllExpectations(), Throws.Exception);
+      Assert.That(equal, Is.True);
+      Assert.That(equivalent, Is.True);
+      Assert.That(different, Is.False);
+      Assert.That(() => myMock.VerifyAllExpectations(), Throws.Exception);
     }
   }
 

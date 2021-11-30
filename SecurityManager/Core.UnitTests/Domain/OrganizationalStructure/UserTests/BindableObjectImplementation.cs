@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
     public override void TearDown ()
     {
       base.TearDown();
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     [Test]
@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       user.FirstName = "UserFirstName";
       user.Title = "UserTitle";
 
-      Assert.That (user.DisplayName, Is.EqualTo ("UserLastName UserFirstName, UserTitle"));
+      Assert.That(user.DisplayName, Is.EqualTo("UserLastName UserFirstName, UserTitle"));
     }
 
     [Test]
@@ -54,7 +54,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       user.FirstName = "UserFirstName";
       user.Title = null;
 
-      Assert.That (user.DisplayName, Is.EqualTo ("UserLastName UserFirstName"));
+      Assert.That(user.DisplayName, Is.EqualTo("UserLastName UserFirstName"));
     }
 
     [Test]
@@ -65,7 +65,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       user.FirstName = null;
       user.Title = null;
 
-      Assert.That (user.DisplayName, Is.EqualTo ("UserLastName"));
+      Assert.That(user.DisplayName, Is.EqualTo("UserLastName"));
     }
 
     [Test]
@@ -74,23 +74,23 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
       var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService (typeof (GroupPropertyTypeSearchService), searchServiceStub.Object);
-      IBusinessObjectClass userClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (User));
-      IBusinessObjectReferenceProperty owningGroupProperty = (IBusinessObjectReferenceProperty) userClass.GetPropertyDefinition ("OwningGroup");
-      Assert.That (owningGroupProperty, Is.Not.Null);
+          .AddService(typeof(GroupPropertyTypeSearchService), searchServiceStub.Object);
+      IBusinessObjectClass userClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(User));
+      IBusinessObjectReferenceProperty owningGroupProperty = (IBusinessObjectReferenceProperty)userClass.GetPropertyDefinition("OwningGroup");
+      Assert.That(owningGroupProperty, Is.Not.Null);
 
       User user = CreateUser();
       var expected = new[] { new Mock<IBusinessObject>().Object };
 
-      searchServiceStub.Setup (stub => stub.SupportsProperty (owningGroupProperty)).Returns (true);
-      searchServiceStub.Setup (stub => stub.Search (user, owningGroupProperty, args.Object)).Returns (expected);
+      searchServiceStub.Setup(stub => stub.SupportsProperty(owningGroupProperty)).Returns(true);
+      searchServiceStub.Setup(stub => stub.Search(user, owningGroupProperty, args.Object)).Returns(expected);
 
-      Assert.That (owningGroupProperty.SupportsSearchAvailableObjects, Is.True);
+      Assert.That(owningGroupProperty.SupportsSearchAvailableObjects, Is.True);
 
-      IBusinessObject[] actual = owningGroupProperty.SearchAvailableObjects (user, args.Object);
-      Assert.That (actual, Is.SameAs (expected));
+      IBusinessObject[] actual = owningGroupProperty.SearchAvailableObjects(user, args.Object);
+      Assert.That(actual, Is.SameAs(expected));
     }
   }
 }

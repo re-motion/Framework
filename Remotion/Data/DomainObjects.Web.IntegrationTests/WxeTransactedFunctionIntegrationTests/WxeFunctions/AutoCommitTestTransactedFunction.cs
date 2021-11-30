@@ -33,23 +33,23 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     // construction and disposing
 
     public AutoCommitTestTransactedFunction (ITransactionMode transactionMode, ObjectID objectWithAllDataTypes)
-        : base (transactionMode, objectWithAllDataTypes)
+        : base(transactionMode, objectWithAllDataTypes)
     {
-      Assertion.IsTrue (TransactionMode.AutoCommit);
+      Assertion.IsTrue(TransactionMode.AutoCommit);
     }
 
     // methods and properties
 
-    [WxeParameter (1, true, WxeParameterDirection.In)]
+    [WxeParameter(1, true, WxeParameterDirection.In)]
     public ObjectID ObjectWithAllDataTypes
     {
-      get { return (ObjectID) Variables["ObjectWithAllDataTypes"]; }
+      get { return (ObjectID)Variables["ObjectWithAllDataTypes"]; }
       set { Variables["ObjectWithAllDataTypes"] = value; }
     }
 
     private void Step1 ()
     {
-      SampleObject objectWithAllDataTypes = ObjectWithAllDataTypes.GetObject<SampleObject> ();
+      SampleObject objectWithAllDataTypes = ObjectWithAllDataTypes.GetObject<SampleObject>();
 
       objectWithAllDataTypes.Int32Property = 10;
     }

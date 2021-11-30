@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain
 {
-  [DBTable ("TableWithAllDataTypes")]
+  [DBTable("TableWithAllDataTypes")]
   [FirstStorageGroup]
   [Instantiable]
   public abstract class ClassWithAllDataTypes : DomainObject
@@ -30,151 +30,151 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       Value2 = 2
     }
 
-    public static ClassWithAllDataTypes NewObject()
+    public static ClassWithAllDataTypes NewObject ()
     {
-      return NewObject<ClassWithAllDataTypes> ();
+      return NewObject<ClassWithAllDataTypes>();
     }
 
-    [DBColumn ("Boolean")]
+    [DBColumn("Boolean")]
     public abstract bool BooleanProperty { get; set; }
 
-    [DBColumn ("Byte")]
+    [DBColumn("Byte")]
     public abstract byte ByteProperty { get; set; }
 
-    [DBColumn ("Date")]
+    [DBColumn("Date")]
     public abstract DateTime DateProperty { get; set; }
 
-    [DBColumn ("DateTime")]
+    [DBColumn("DateTime")]
     public abstract DateTime DateTimeProperty { get; set; }
 
-    [DBColumn ("Decimal")]
+    [DBColumn("Decimal")]
     public abstract decimal DecimalProperty { get; set; }
 
-    [DBColumn ("Double")]
+    [DBColumn("Double")]
     public abstract double DoubleProperty { get; set; }
 
-    [DBColumn ("Enum")]
+    [DBColumn("Enum")]
     public abstract EnumType EnumProperty { get; set; }
 
-    [ExtensibleEnumProperty (IsNullable = false)]
-    [DBColumn ("ExtensibleEnum")]
+    [ExtensibleEnumProperty(IsNullable = false)]
+    [DBColumn("ExtensibleEnum")]
     public virtual Color ExtensibleEnumProperty { get; set; }
 
-    [DBColumn ("Guid")]
+    [DBColumn("Guid")]
     public abstract Guid GuidProperty { get; set; }
 
-    [DBColumn ("Int16")]
+    [DBColumn("Int16")]
     public abstract short Int16Property { get; set; }
 
-    [DBColumn ("Int32")]
+    [DBColumn("Int32")]
     public abstract int Int32Property { get; set; }
 
-    [DBColumn ("Int64")]
+    [DBColumn("Int64")]
     public abstract long Int64Property { get; set; }
 
-    [DBColumn ("Single")]
+    [DBColumn("Single")]
     public abstract float SingleProperty { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
-    [DBColumn ("String")]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
+    [DBColumn("String")]
     public abstract string StringProperty { get; set; }
 
-    [StringProperty (IsNullable = false)]
-    [DBColumn ("StringWithoutMaxLength")]
+    [StringProperty(IsNullable = false)]
+    [DBColumn("StringWithoutMaxLength")]
     public abstract string StringPropertyWithoutMaxLength { get; set; }
 
-    [BinaryProperty (IsNullable = false, MaximumLength = 100)]
-    [DBColumn ("Binary")]
+    [BinaryProperty(IsNullable = false, MaximumLength = 100)]
+    [DBColumn("Binary")]
     public abstract byte[] BinaryProperty { get; set; }
 
-    [BinaryProperty (IsNullable = false)]
-    [DBColumn ("BinaryWithoutMaxLength")]
+    [BinaryProperty(IsNullable = false)]
+    [DBColumn("BinaryWithoutMaxLength")]
     public abstract byte[] BinaryWithoutMaxLengthProperty { get; set; }
 
-    [DBColumn ("NaBoolean")]
+    [DBColumn("NaBoolean")]
     public abstract bool? NaBooleanProperty { get; set; }
 
-    [DBColumn ("NaByte")]
+    [DBColumn("NaByte")]
     public abstract byte? NaByteProperty { get; set; }
 
-    [DBColumn ("NaDate")]
+    [DBColumn("NaDate")]
     public abstract DateTime? NaDateProperty { get; set; }
 
-    [DBColumn ("NaDateTime")]
+    [DBColumn("NaDateTime")]
     public abstract DateTime? NaDateTimeProperty { get; set; }
 
-    [DBColumn ("NaDecimal")]
+    [DBColumn("NaDecimal")]
     public abstract Decimal? NaDecimalProperty { get; set; }
 
-    [DBColumn ("NaDouble")]
+    [DBColumn("NaDouble")]
     public abstract double? NaDoubleProperty { get; set; }
 
-    [DBColumn ("NaEnum")]
+    [DBColumn("NaEnum")]
     public abstract EnumType? NaEnumProperty { get; set; }
 
-    [DBColumn ("NaGuid")]
+    [DBColumn("NaGuid")]
     public abstract Guid? NaGuidProperty { get; set; }
 
-    [DBColumn ("NaInt16")]
+    [DBColumn("NaInt16")]
     public abstract short? NaInt16Property { get; set; }
 
-    [DBColumn ("NaInt32")]
+    [DBColumn("NaInt32")]
     public abstract int? NaInt32Property { get; set; }
 
-    [DBColumn ("NaInt64")]
+    [DBColumn("NaInt64")]
     public abstract long? NaInt64Property { get; set; }
 
-    [DBColumn ("NaSingle")]
+    [DBColumn("NaSingle")]
     public abstract float? NaSingleProperty { get; set; }
 
-    [StringProperty (MaximumLength = 100)]
-    [DBColumn ("StringWithNullValue")]
+    [StringProperty(MaximumLength = 100)]
+    [DBColumn("StringWithNullValue")]
     public abstract string StringWithNullValueProperty { get; set; }
 
-    [DBColumn ("ExtensibleEnumWithNullValue")]
+    [DBColumn("ExtensibleEnumWithNullValue")]
     public virtual Color ExtensibleEnumWithNullValueProperty { get; set; }
 
-    [DBColumn ("NaBooleanWithNullValue")]
+    [DBColumn("NaBooleanWithNullValue")]
     public abstract bool? NaBooleanWithNullValueProperty { get; set; }
 
-    [DBColumn ("NaByteWithNullValue")]
+    [DBColumn("NaByteWithNullValue")]
     public abstract byte? NaByteWithNullValueProperty { get; set; }
 
-    [DBColumn ("NaDateWithNullValue")]
+    [DBColumn("NaDateWithNullValue")]
     public abstract DateTime? NaDateWithNullValueProperty { get; set; }
 
-    [DBColumn ("NaDateTimeWithNullValue")]
+    [DBColumn("NaDateTimeWithNullValue")]
     public abstract DateTime? NaDateTimeWithNullValueProperty { get; set; }
 
-    [DBColumn ("NaDecimalWithNullValue")]
+    [DBColumn("NaDecimalWithNullValue")]
     public abstract Decimal? NaDecimalWithNullValueProperty { get; set; }
 
-    [DBColumn ("NaDoubleWithNullValue")]
+    [DBColumn("NaDoubleWithNullValue")]
     public abstract double? NaDoubleWithNullValueProperty { get; set; }
 
-    [DBColumn ("NaEnumWithNullValue")]
+    [DBColumn("NaEnumWithNullValue")]
     public abstract EnumType? NaEnumWithNullValueProperty { get; set; }
 
-    [DBColumn ("NaGuidWithNullValue")]
+    [DBColumn("NaGuidWithNullValue")]
     public abstract Guid? NaGuidWithNullValueProperty { get; set; }
 
-    [DBColumn ("NaInt16WithNullValue")]
+    [DBColumn("NaInt16WithNullValue")]
     public abstract short? NaInt16WithNullValueProperty { get; set; }
 
-    [DBColumn ("NaInt32WithNullValue")]
+    [DBColumn("NaInt32WithNullValue")]
     public abstract int? NaInt32WithNullValueProperty { get; set; }
 
-    [DBColumn ("NaInt64WithNullValue")]
+    [DBColumn("NaInt64WithNullValue")]
     public abstract long? NaInt64WithNullValueProperty { get; set; }
 
-    [DBColumn ("NaSingleWithNullValue")]
+    [DBColumn("NaSingleWithNullValue")]
     public abstract float? NaSingleWithNullValueProperty { get; set; }
 
-    [BinaryProperty (MaximumLength = 100)]
-    [DBColumn ("NullableBinary")]
+    [BinaryProperty(MaximumLength = 100)]
+    [DBColumn("NullableBinary")]
     public abstract byte[] NullableBinaryProperty { get; set; }
 
-    [DBColumn ("NullableBinaryWithoutMaxLength")]
+    [DBColumn("NullableBinaryWithoutMaxLength")]
     public abstract byte[] NullableBinaryWithoutMaxLengthProperty { get; set; }
   }
 }

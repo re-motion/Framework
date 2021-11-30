@@ -29,7 +29,7 @@ using Remotion.Utilities;
 namespace Remotion.Mixins.CodeGeneration
 {
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IConcreteTypeMetadataImporter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor(typeof(IConcreteTypeMetadataImporter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class AttributeBasedMetadataImporter : IConcreteTypeMetadataImporter
   {
     public AttributeBasedMetadataImporter ()
@@ -39,12 +39,12 @@ namespace Remotion.Mixins.CodeGeneration
     [CanBeNull]
     public virtual ClassContext? GetMetadataForMixedType (Type concreteMixedType)
     {
-      ArgumentUtility.CheckNotNull ("concreteMixedType", concreteMixedType);
+      ArgumentUtility.CheckNotNull("concreteMixedType", concreteMixedType);
 
-      var attribute = 
-          (ConcreteMixedTypeAttribute?) concreteMixedType.GetCustomAttributes (typeof (ConcreteMixedTypeAttribute), false).SingleOrDefault ();
+      var attribute =
+          (ConcreteMixedTypeAttribute?)concreteMixedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false).SingleOrDefault();
       if (attribute != null)
-        return attribute.GetClassContext ();
+        return attribute.GetClassContext();
       else
         return null;
     }
@@ -52,47 +52,47 @@ namespace Remotion.Mixins.CodeGeneration
     [CanBeNull]
     public virtual ConcreteMixinTypeIdentifier? GetIdentifierForMixinType (Type concreteMixinType)
     {
-      ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
+      ArgumentUtility.CheckNotNull("concreteMixinType", concreteMixinType);
 
-      var attribute = 
-          (ConcreteMixinTypeAttribute?) concreteMixinType.GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false).SingleOrDefault ();
+      var attribute =
+          (ConcreteMixinTypeAttribute?)concreteMixinType.GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false).SingleOrDefault();
       if (attribute != null)
-        return attribute.GetIdentifier ();
+        return attribute.GetIdentifier();
       else
         return null;
     }
 
     public virtual Dictionary<MethodInfo, MethodInfo> GetMethodWrappersForMixinType (Type concreteMixinType)
     {
-      ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
-      var wrappers = from potentialWrapper in concreteMixinType.GetMethods (BindingFlags.Instance | BindingFlags.Public)
-                     let wrappedMethod = GetWrappedMethod (potentialWrapper)
+      ArgumentUtility.CheckNotNull("concreteMixinType", concreteMixinType);
+      var wrappers = from potentialWrapper in concreteMixinType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                     let wrappedMethod = GetWrappedMethod(potentialWrapper)
                      where wrappedMethod != null
-                     select new { Method = (MethodInfo) wrappedMethod, Wrapper = potentialWrapper };
-      return wrappers.ToDictionary (pair => pair.Method, pair => pair.Wrapper);
+                     select new { Method = (MethodInfo)wrappedMethod, Wrapper = potentialWrapper };
+      return wrappers.ToDictionary(pair => pair.Method, pair => pair.Wrapper);
     }
 
     // Searches the mixin methods corresponding to the methods of the override interface based on a signature comparison and returns a mapping from
     // mixin method to interface method.
     public virtual Dictionary<MethodInfo, MethodInfo> GetOverrideInterfaceMethodsByMixinMethod (
-        Type interfaceType, 
+        Type interfaceType,
         ConcreteMixinTypeIdentifier identifier)
     {
       var mixinMethodsWithInterfaceMethods =
           from interfaceMethod in interfaceType.GetMethods()
-          let attribute = (OverrideInterfaceMappingAttribute) interfaceMethod.GetCustomAttributes (typeof (OverrideInterfaceMappingAttribute), false)
+          let attribute = (OverrideInterfaceMappingAttribute)interfaceMethod.GetCustomAttributes(typeof(OverrideInterfaceMappingAttribute), false)
               .Single()
-          let resolvedMethod = attribute.ResolveReferencedMethod ()
+          let resolvedMethod = attribute.ResolveReferencedMethod()
           select new { resolvedMethod, interfaceMethod };
 
-      return mixinMethodsWithInterfaceMethods.ToDictionary (pair => pair.resolvedMethod, pair => pair.interfaceMethod);
+      return mixinMethodsWithInterfaceMethods.ToDictionary(pair => pair.resolvedMethod, pair => pair.interfaceMethod);
     }
 
     private MethodInfo? GetWrappedMethod (MethodInfo potentialWrapper)
     {
-      var attribute = GetWrapperAttribute (potentialWrapper);
+      var attribute = GetWrapperAttribute(potentialWrapper);
       if (attribute != null)
-        return attribute.ResolveReferencedMethod ();
+        return attribute.ResolveReferencedMethod();
       else
         return null;
     }
@@ -100,30 +100,30 @@ namespace Remotion.Mixins.CodeGeneration
     // This is a separate method in order to be able to test it with Rhino.Mocks.
     protected virtual GeneratedMethodWrapperAttribute? GetWrapperAttribute (MethodInfo potentialWrapper)
     {
-      return AttributeUtility.GetCustomAttribute<GeneratedMethodWrapperAttribute> (potentialWrapper, false);
+      return AttributeUtility.GetCustomAttribute<GeneratedMethodWrapperAttribute>(potentialWrapper, false);
     }
 
     public ConcreteMixinType? GetMetadataForMixinType (Type concreteMixinType)
     {
-      ArgumentUtility.CheckNotNull ("concreteMixinType", concreteMixinType);
+      ArgumentUtility.CheckNotNull("concreteMixinType", concreteMixinType);
 
-      var identifier = GetIdentifierForMixinType (concreteMixinType);
+      var identifier = GetIdentifierForMixinType(concreteMixinType);
       if (identifier == null)
         return null;
 
-      var generatedOverrideInterface = concreteMixinType.GetNestedType ("IOverriddenMethods");
+      var generatedOverrideInterface = concreteMixinType.GetNestedType("IOverriddenMethods");
       if (generatedOverrideInterface == null)
       {
-        var message = string.Format (
-            "The given type '{0}' has a concrete mixin type identifier, but no IOverriddenMethods interface.", 
+        var message = string.Format(
+            "The given type '{0}' has a concrete mixin type identifier, but no IOverriddenMethods interface.",
             concreteMixinType);
-        throw new TypeImportException (message);
+        throw new TypeImportException(message);
       }
 
-      var overrideInterfaceMethods = GetOverrideInterfaceMethodsByMixinMethod (generatedOverrideInterface, identifier);
-      var methodWrappers = GetMethodWrappersForMixinType (concreteMixinType);
+      var overrideInterfaceMethods = GetOverrideInterfaceMethodsByMixinMethod(generatedOverrideInterface, identifier);
+      var methodWrappers = GetMethodWrappersForMixinType(concreteMixinType);
 
-      return new ConcreteMixinType (identifier, concreteMixinType, generatedOverrideInterface, overrideInterfaceMethods, methodWrappers);
+      return new ConcreteMixinType(identifier, concreteMixinType, generatedOverrideInterface, overrideInterfaceMethods, methodWrappers);
     }
   }
 }

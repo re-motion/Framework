@@ -38,12 +38,12 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var validatorBuilder = _serviceLocator.GetInstance<IValidatorBuilder>();
 
-      Assert.That (validatorBuilder, Is.Not.Null);
-      Assert.That (validatorBuilder, Is.TypeOf (typeof (ValidatorBuilderSerializationDecorator)));
-      var validatorBuilderSerializationDecorator = ((ValidatorBuilderSerializationDecorator) validatorBuilder).InnerValidatorBuilder;
-      Assert.That (validatorBuilderSerializationDecorator, Is.TypeOf (typeof (CompoundValidatorBuilder)));
-      var validatorBuilders = ((CompoundValidatorBuilder) validatorBuilderSerializationDecorator).Builders;
-      Assert.That (validatorBuilders.Select (b => b.GetType()), Is.EqualTo (new[] { typeof (ValidationRuleCollectorBasedValidatorBuilder) }));
+      Assert.That(validatorBuilder, Is.Not.Null);
+      Assert.That(validatorBuilder, Is.TypeOf(typeof(ValidatorBuilderSerializationDecorator)));
+      var validatorBuilderSerializationDecorator = ((ValidatorBuilderSerializationDecorator)validatorBuilder).InnerValidatorBuilder;
+      Assert.That(validatorBuilderSerializationDecorator, Is.TypeOf(typeof(CompoundValidatorBuilder)));
+      var validatorBuilders = ((CompoundValidatorBuilder)validatorBuilderSerializationDecorator).Builders;
+      Assert.That(validatorBuilders.Select(b => b.GetType()), Is.EqualTo(new[] { typeof(ValidationRuleCollectorBasedValidatorBuilder) }));
     }
 
     [Test]
@@ -52,7 +52,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       var instance1 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
       var instance2 = _serviceLocator.GetInstance<IValidationRuleCollectorValidator>();
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

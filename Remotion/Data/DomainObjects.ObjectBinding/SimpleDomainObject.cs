@@ -82,8 +82,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     /// </exception>
     public static TDomainObject NewObject (ParamList constructorParameters)
     {
-      ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
-      return DomainObject.NewObject<TDomainObject> (constructorParameters);
+      ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
+      return DomainObject.NewObject<TDomainObject>(constructorParameters);
     }
 
     protected SimpleDomainObject ()
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     /// <remarks>Be sure to call this base constructor from the deserialization constructor of any concrete <see cref="SimpleDomainObject{TDomainObject}"/> type
     /// implementing the <see cref="ISerializable"/> interface.</remarks>
     protected SimpleDomainObject (SerializationInfo info, StreamingContext context)
-      : base (info, context)
+      : base(info, context)
     {
     }
 

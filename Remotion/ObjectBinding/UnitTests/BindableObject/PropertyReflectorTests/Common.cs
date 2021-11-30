@@ -33,220 +33,220 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _businessObjectProvider = new BindableObjectProvider ();
+      _businessObjectProvider = new BindableObjectProvider();
     }
 
     [Test]
     public void Initialize ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithAllDataTypes), "String");
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithAllDataTypes), "String");
 
       PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
 
-      Assert.That (propertyReflector.PropertyInfo, Is.SameAs (propertyInfo));
-      Assert.That (propertyReflector.BusinessObjectProvider, Is.SameAs (_businessObjectProvider));
+      Assert.That(propertyReflector.PropertyInfo, Is.SameAs(propertyInfo));
+      Assert.That(propertyReflector.BusinessObjectProvider, Is.SameAs(_businessObjectProvider));
     }
 
     [Test]
     public void Initialize_WithMixin ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithAllDataTypes), "String");
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithAllDataTypes), "String");
 
-      using (MixinConfiguration.BuildNew ().ForClass (typeof (PropertyReflector)).AddMixin<MixinStub> ().EnterScope ())
+      using (MixinConfiguration.BuildNew().ForClass(typeof(PropertyReflector)).AddMixin<MixinStub>().EnterScope())
       {
-        PropertyReflector propertyReflector = PropertyReflector.Create (propertyInfo, _businessObjectProvider);
+        PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
 
-        Assert.That (propertyReflector.PropertyInfo, Is.SameAs (propertyInfo));
-        Assert.That (propertyReflector.BusinessObjectProvider, Is.SameAs (_businessObjectProvider));
-        Assert.That (propertyReflector, Is.InstanceOf (typeof (IMixinTarget)));
+        Assert.That(propertyReflector.PropertyInfo, Is.SameAs(propertyInfo));
+        Assert.That(propertyReflector.BusinessObjectProvider, Is.SameAs(_businessObjectProvider));
+        Assert.That(propertyReflector, Is.InstanceOf(typeof(IMixinTarget)));
       }
     }
 
     [Test]
     public void GetMetadata_WithBoolean ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Boolean");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Boolean");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (BooleanProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Boolean"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(BooleanProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Boolean"));
     }
 
     [Test]
     public void GetMetadata_WithByte ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Byte");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Byte");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (ByteProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Byte"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(ByteProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Byte"));
     }
 
     [Test]
     public void GetMetadata_WithDate ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Date");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Date");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (DateProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Date"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(DateProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Date"));
     }
 
     [Test]
     public void GetMetadata_WithDateTime ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("DateTime");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("DateTime");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (DateTimeProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("DateTime"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(DateTimeProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("DateTime"));
     }
 
     [Test]
     public void GetMetadata_WithDecimal ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Decimal");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Decimal");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (DecimalProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Decimal"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(DecimalProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Decimal"));
     }
 
     [Test]
     public void GetMetadata_WithDouble ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Double");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Double");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (DoubleProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Double"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(DoubleProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Double"));
     }
 
     [Test]
     public void GetMetadata_WithEnum ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Enum");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Enum");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (EnumerationProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Enum"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(EnumerationProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Enum"));
     }
 
     [Test]
     public void GetMetadata_WithFlags ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Flags");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Flags");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (NotSupportedProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Flags"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(NotSupportedProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Flags"));
     }
 
     [Test]
     public void GetMetadata_WithExtensibleEnum ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("ExtensibleEnum");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("ExtensibleEnum");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (ExtensibleEnumerationProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ExtensibleEnum"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(ExtensibleEnumerationProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("ExtensibleEnum"));
     }
 
     [Test]
     public void GetMetadata_WithGuid ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Guid");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Guid");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (GuidProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Guid"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(GuidProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Guid"));
     }
 
     [Test]
     public void GetMetadata_WithEnumBase ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithReferenceType<Enum>), "Scalar");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof(ClassWithReferenceType<Enum>), "Scalar");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (NotSupportedProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Scalar"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(NotSupportedProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Scalar"));
     }
 
     [Test]
     public void GetMetadata_WithInt16 ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Int16");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Int16");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (Int16Property)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Int16"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(Int16Property)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Int16"));
     }
 
     [Test]
     public void GetMetadata_WithInt32 ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Int32");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Int32");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (Int32Property)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Int32"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(Int32Property)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Int32"));
     }
 
     [Test]
     public void GetMetadata_WithInt64 ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Int64");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Int64");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (Int64Property)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Int64"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(Int64Property)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Int64"));
     }
 
     [Test]
     public void GetMetadata_WithBusinessObject ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("BusinessObject");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("BusinessObject");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (ReferenceProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("BusinessObject"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(ReferenceProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("BusinessObject"));
     }
 
     [Test]
     public void GetMetadata_WithSingle ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("Single");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("Single");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (SingleProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Single"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(SingleProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Single"));
     }
 
     [Test]
     public void GetMetadata_WithString ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("String");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("String");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (StringProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("String"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(StringProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("String"));
     }
-    
+
     [Test]
     public void GetMetadata_WithIEnumerable ()
     {
-      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector ("IEnumerable");
+      IBusinessObjectProperty businessObjectProperty = GetMetadataFromPropertyReflector("IEnumerable");
 
-      Assert.That (businessObjectProperty, Is.TypeOf (typeof (NotSupportedProperty)));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("IEnumerable"));
+      Assert.That(businessObjectProperty, Is.TypeOf(typeof(NotSupportedProperty)));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("IEnumerable"));
     }
 
     [Test]
-    [Ignore ("TODO: test")]
+    [Ignore("TODO: test")]
     public void GetMetadata_WithRequiredStringAttribute ()
     {
     }
 
     [Test]
-    [Ignore ("TODO: test")]
+    [Ignore("TODO: test")]
     public void GetMetadata_WithMaxLengthStringAttribute ()
     {
     }
 
     private IBusinessObjectProperty GetMetadataFromPropertyReflector (string propertyName)
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithAllDataTypes), propertyName);
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithAllDataTypes), propertyName);
       PropertyReflector propertyReflector = PropertyReflector.Create(propertyInfo, _businessObjectProvider);
 
-      return propertyReflector.GetMetadata ();
+      return propertyReflector.GetMetadata();
     }
   }
 }

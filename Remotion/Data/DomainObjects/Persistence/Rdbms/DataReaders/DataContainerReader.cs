@@ -46,11 +46,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         IRdbmsPersistenceModelProvider persistenceModelProvider,
         IDataContainerValidator dataContainerValidator)
     {
-      ArgumentUtility.CheckNotNull ("idProperty", idProperty);
-      ArgumentUtility.CheckNotNull ("timestampProperty", timestampProperty);
-      ArgumentUtility.CheckNotNull ("ordinalProvider", ordinalProvider);
-      ArgumentUtility.CheckNotNull ("persistenceModelProvider", persistenceModelProvider);
-      ArgumentUtility.CheckNotNull ("dataContainerValidator", dataContainerValidator);
+      ArgumentUtility.CheckNotNull("idProperty", idProperty);
+      ArgumentUtility.CheckNotNull("timestampProperty", timestampProperty);
+      ArgumentUtility.CheckNotNull("ordinalProvider", ordinalProvider);
+      ArgumentUtility.CheckNotNull("persistenceModelProvider", persistenceModelProvider);
+      ArgumentUtility.CheckNotNull("dataContainerValidator", dataContainerValidator);
 
       _idProperty = idProperty;
       _timestampProperty = timestampProperty;
@@ -86,41 +86,41 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public virtual DataContainer Read (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
       if (dataReader.Read())
-        return CreateDataContainerFromReader (dataReader, new ColumnValueReader (dataReader, _ordinalProvider));
+        return CreateDataContainerFromReader(dataReader, new ColumnValueReader(dataReader, _ordinalProvider));
       else
         return null;
     }
 
     public virtual IEnumerable<DataContainer> ReadSequence (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
-      var columnValueReader = new ColumnValueReader (dataReader, _ordinalProvider);
+      var columnValueReader = new ColumnValueReader(dataReader, _ordinalProvider);
       while (dataReader.Read())
       {
-        yield return CreateDataContainerFromReader (dataReader, columnValueReader);
+        yield return CreateDataContainerFromReader(dataReader, columnValueReader);
       }
     }
 
     protected virtual DataContainer CreateDataContainerFromReader (IDataReader dataReader, ColumnValueReader columnValueReader)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
-      var id = (ObjectID) _idProperty.CombineValue (columnValueReader);
+      var id = (ObjectID)_idProperty.CombineValue(columnValueReader);
       if (id == null)
         return null;
 
-      var timestamp = _timestampProperty.CombineValue (columnValueReader);
+      var timestamp = _timestampProperty.CombineValue(columnValueReader);
 
-      var dataContainer = DataContainer.CreateForExisting (
-          id, 
-          timestamp, 
-          pd => pd.StorageClass == StorageClass.Persistent ? ReadPropertyValue (pd, columnValueReader, id) : pd.DefaultValue);
+      var dataContainer = DataContainer.CreateForExisting(
+          id,
+          timestamp,
+          pd => pd.StorageClass == StorageClass.Persistent ? ReadPropertyValue(pd, columnValueReader, id) : pd.DefaultValue);
 
-      _dataContainerValidator.Validate (dataContainer);
+      _dataContainerValidator.Validate(dataContainer);
 
       return dataContainer;
     }
@@ -129,13 +129,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
     {
       try
       {
-        var storagePropertyDefinition = _persistenceModelProvider.GetStoragePropertyDefinition (propertyDefinition);
-        return storagePropertyDefinition.CombineValue (columnValueProvider) ?? propertyDefinition.DefaultValue;
+        var storagePropertyDefinition = _persistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition);
+        return storagePropertyDefinition.CombineValue(columnValueProvider) ?? propertyDefinition.DefaultValue;
       }
       catch (Exception e)
       {
-        var message = string.Format ("Error while reading property '{0}' of object '{1}': {2}", propertyDefinition.PropertyName, id, e.Message);
-        throw new RdbmsProviderException (message, e);
+        var message = string.Format("Error while reading property '{0}' of object '{1}': {2}", propertyDefinition.PropertyName, id, e.Message);
+        throw new RdbmsProviderException(message, e);
       }
     }
   }

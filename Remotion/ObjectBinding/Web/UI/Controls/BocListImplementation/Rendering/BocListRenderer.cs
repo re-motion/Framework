@@ -40,11 +40,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// This class should not be instantiated directly. Use a <see cref="BocRowRenderer"/> to obtain an instance.</remarks>
   /// <seealso cref="BocListNavigationBlockRenderer"/>
   /// <seealso cref="BocListMenuBlockRenderer"/>
-  [ImplementationFor (typeof (IBocListRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocListRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocListRenderer : BocRendererBase<IBocList>, IBocListRenderer
   {
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocListRenderer")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocListRenderer")]
     public enum ResourceIdentifier
     {
       ControlTypeScreenReaderLabelText
@@ -65,13 +65,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IBocListNavigationBlockRenderer navigationBlockRenderer,
         IBocListMenuBlockRenderer menuBlockRenderer,
         ILabelReferenceRenderer labelReferenceRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull ("cssClasses", cssClasses);
-      ArgumentUtility.CheckNotNull ("tableBlockRenderer", tableBlockRenderer);
-      ArgumentUtility.CheckNotNull ("navigationBlockRenderer", navigationBlockRenderer);
-      ArgumentUtility.CheckNotNull ("menuBlockRenderer", menuBlockRenderer);
-      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
+      ArgumentUtility.CheckNotNull("tableBlockRenderer", tableBlockRenderer);
+      ArgumentUtility.CheckNotNull("navigationBlockRenderer", navigationBlockRenderer);
+      ArgumentUtility.CheckNotNull("menuBlockRenderer", menuBlockRenderer);
+      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
 
       _cssClasses = cssClasses;
       _tableBlockRenderer = tableBlockRenderer;
@@ -118,21 +118,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public void RegisterHtmlHeadContents (
         HtmlHeadAppender htmlHeadAppender, EditableRowControlFactory editableRowControlFactory)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string styleFileKey = typeof (BocListRenderer).GetFullNameChecked() + "_Style";
-      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocListRenderer), ResourceType.Html, "BocList.css");
-      htmlHeadAppender.RegisterStylesheetLink (styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
+      string styleFileKey = typeof(BocListRenderer).GetFullNameChecked() + "_Style";
+      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocListRenderer), ResourceType.Html, "BocList.css");
+      htmlHeadAppender.RegisterStylesheetLink(styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
 
-      string scriptFileKey = typeof (BocListRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (BocListRenderer), ResourceType.Html, "BocList.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptUrl);
+      string scriptFileKey = typeof(BocListRenderer).GetFullNameChecked() + "_Script";
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(BocListRenderer), ResourceType.Html, "BocList.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptUrl);
 
-      editableRowControlFactory.RegisterHtmlHeadContents (htmlHeadAppender);
+      editableRowControlFactory.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
     /// <summary>
@@ -150,95 +150,95 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <seealso cref="BocListNavigationBlockRenderer"/>
     public void Render (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      RegisterInitializeGlobalsScript (renderingContext);
+      RegisterInitializeGlobalsScript(renderingContext);
 
-      AddAttributesToRender (renderingContext);
+      AddAttributesToRender(renderingContext);
 
       if (!renderingContext.Control.MenuBlockMinWidth.IsEmpty)
-        renderingContext.Writer.AddStyleAttribute ("--boclist-menublock-minimum-width", renderingContext.Control.MenuBlockMinWidth.ToString());
+        renderingContext.Writer.AddStyleAttribute("--boclist-menublock-minimum-width", renderingContext.Control.MenuBlockMinWidth.ToString());
 
       if (!renderingContext.Control.MenuBlockMaxWidth.IsEmpty)
-        renderingContext.Writer.AddStyleAttribute ("--boclist-menublock-maximum-width", renderingContext.Control.MenuBlockMaxWidth.ToString());
+        renderingContext.Writer.AddStyleAttribute("--boclist-menublock-maximum-width", renderingContext.Control.MenuBlockMaxWidth.ToString());
 
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-      RenderContents (renderingContext);
+      RenderContents(renderingContext);
 
       renderingContext.Writer.RenderEndTag();
 
-      RegisterInitializeListScript (renderingContext);
+      RegisterInitializeListScript(renderingContext);
     }
 
     protected override void AddAdditionalAttributes (RenderingContext<IBocList> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      
-      base.AddAdditionalAttributes (renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      renderingContext.Writer.AddAttribute ("role", "group");
+      base.AddAdditionalAttributes(renderingContext);
+
+      renderingContext.Writer.AddAttribute("role", "group");
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      var accessibilityAnnotationIDs = new []{ GetControlTypeLabelID (renderingContext) };
-      _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs, accessibilityAnnotationIDs);
+      var accessibilityAnnotationIDs = new []{ GetControlTypeLabelID(renderingContext) };
+      _labelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs, accessibilityAnnotationIDs);
     }
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<IBocList> renderingContext)
     {
-      base.AddDiagnosticMetadataAttributes (renderingContext);
+      base.AddDiagnosticMetadataAttributes(renderingContext);
 
-      renderingContext.Writer.AddAttribute (
+      renderingContext.Writer.AddAttribute(
           DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive,
           renderingContext.Control.EditModeController.IsRowEditModeActive || renderingContext.Control.EditModeController.IsListEditModeActive
               ? "true"
               : "false");
 
-      renderingContext.Writer.AddAttribute (
+      renderingContext.Writer.AddAttribute(
           DiagnosticMetadataAttributesForObjectBinding.BocListHasNavigationBlock,
           renderingContext.Control.HasNavigator ? "true" : "false");
     }
 
     protected virtual void RenderContents (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetControlTypeLabelID (renderingContext));
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      var resourceManager = GetResourceManager (renderingContext);
-      renderingContext.Writer.Write (resourceManager.GetString (ResourceIdentifier.ControlTypeScreenReaderLabelText));
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetControlTypeLabelID(renderingContext));
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      var resourceManager = GetResourceManager(renderingContext);
+      renderingContext.Writer.Write(resourceManager.GetString(ResourceIdentifier.ControlTypeScreenReaderLabelText));
       renderingContext.Writer.RenderEndTag();
 
       //  Menu Block
       if (renderingContext.Control.HasMenuBlock)
       {
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.MenuBlock);
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.MenuBlock);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-        MenuBlockRenderer.Render (renderingContext);
+        MenuBlockRenderer.Render(renderingContext);
 
         renderingContext.Writer.RenderEndTag();
         renderingContext.Writer.RenderEndTag();
       }
 
       //  Table Block
-      renderingContext.Writer.AddAttribute (
-          HtmlTextWriterAttribute.Class, CssClasses.GetTableBlock (renderingContext.Control.HasMenuBlock, renderingContext.Control.HasNavigator));
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      renderingContext.Writer.AddAttribute(
+          HtmlTextWriterAttribute.Class, CssClasses.GetTableBlock(renderingContext.Control.HasMenuBlock, renderingContext.Control.HasNavigator));
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-      TableBlockRenderer.Render (renderingContext);
+      TableBlockRenderer.Render(renderingContext);
 
       if (renderingContext.Control.HasNavigator)
-        NavigationBlockRenderer.Render (renderingContext);
+        NavigationBlockRenderer.Render(renderingContext);
 
       renderingContext.Writer.RenderEndTag();
     }
 
     protected virtual IResourceManager GetResourceManager (BocListRenderingContext renderingContext)
     {
-      return GetResourceManager (typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
+      return GetResourceManager(typeof(ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
     private void RegisterInitializeGlobalsScript (BocListRenderingContext renderingContext)
@@ -246,12 +246,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!renderingContext.Control.HasClientScript)
         return;
 
-      string startUpScriptKey = typeof (BocListRenderer).GetFullNameChecked() + "_Startup";
-      if (!renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered (typeof (BocListRenderer), startUpScriptKey))
+      string startUpScriptKey = typeof(BocListRenderer).GetFullNameChecked() + "_Startup";
+      if (!renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered(typeof(BocListRenderer), startUpScriptKey))
       {
         string script = "BocList.InitializeGlobals ();";
-        renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
-            renderingContext.Control, typeof (BocListRenderer), startUpScriptKey, script);
+        renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(
+            renderingContext.Control, typeof(BocListRenderer), startUpScriptKey, script);
       }
     }
 
@@ -265,19 +265,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
                                      && renderingContext.Control.AreDataRowsClickSensitive();
 
         const string scriptTemplate = "BocList.InitializeList ( '#{0}', '{1}', '{2}', {3}, {4}, {5});";
-        string script = string.Format (
+        string script = string.Format(
             scriptTemplate,
             renderingContext.Control.ClientID,
-            renderingContext.Control.GetSelectorControlName (),
+            renderingContext.Control.GetSelectorControlName(),
             renderingContext.Control.GetSelectAllControlName(),
-            (int) renderingContext.Control.Selection,
+            (int)renderingContext.Control.Selection,
             hasClickSensitiveRows ? "true" : "false",
             renderingContext.Control.GetSelectionChangedHandlerScript());
 
-        renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock (
+        renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock(
             renderingContext.Control,
-            typeof (BocListTableBlockRenderer),
-            typeof (BocList).GetFullNameChecked() + "_" + renderingContext.Control.ClientID + "_InitializeListScript",
+            typeof(BocListTableBlockRenderer),
+            typeof(BocList).GetFullNameChecked() + "_" + renderingContext.Control.ClientID + "_InitializeListScript",
             script);
       }
     }

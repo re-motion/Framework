@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public StorageProviderSerializer (IClassSerializer classSerializer)
     {
-      ArgumentUtility.CheckNotNull ("classSerializer", classSerializer);
+      ArgumentUtility.CheckNotNull("classSerializer", classSerializer);
 
       _classSerializer = classSerializer;
     }
@@ -44,12 +44,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public XElement Serialize (IEnumerable<ClassDefinition> classDefinitions, RdbmsProviderDefinition providerDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
-      ArgumentUtility.CheckNotNull ("providerDefinition", providerDefinition);
+      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("providerDefinition", providerDefinition);
 
-      return new XElement (Constants.Namespace + "storageProvider",
+      return new XElement(Constants.Namespace + "storageProvider",
               new XAttribute("name", providerDefinition.Name),
-              classDefinitions.Select (c => _classSerializer.Serialize (c)));
+              classDefinitions.Select(c => _classSerializer.Serialize(c)));
     }
   }
 }

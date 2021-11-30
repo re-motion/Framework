@@ -19,7 +19,7 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration.TestDomain
 {
-  [Uses (typeof (NullMixin))]
+  [Uses(typeof(NullMixin))]
   public class ClassWithCtors
   {
     public object O;

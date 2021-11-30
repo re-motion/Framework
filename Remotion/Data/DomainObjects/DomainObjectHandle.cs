@@ -33,11 +33,11 @@ namespace Remotion.Data.DomainObjects
 
     public DomainObjectHandle (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      if (objectID.ClassDefinition.ClassType != typeof (T))
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      if (objectID.ClassDefinition.ClassType != typeof(T))
       {
-        var message = string.Format ("The class type of ObjectID '{0}' doesn't match the handle type '{1}'.", objectID, typeof (T));
-        throw new ArgumentException (message, "objectID");
+        var message = string.Format("The class type of ObjectID '{0}' doesn't match the handle type '{1}'.", objectID, typeof(T));
+        throw new ArgumentException(message, "objectID");
       }
 
       _objectID = objectID;
@@ -48,43 +48,43 @@ namespace Remotion.Data.DomainObjects
       get { return _objectID; }
     }
 
-    public IDomainObjectHandle<TOther> Cast<TOther> () 
+    public IDomainObjectHandle<TOther> Cast<TOther> ()
       where TOther : IDomainObject
     {
       try
       {
-        return (IDomainObjectHandle<TOther>) this;
+        return (IDomainObjectHandle<TOther>)this;
       }
       catch (InvalidCastException ex)
       {
-        var message = string.Format ("The handle for object '{0}' cannot be represented as a handle for type '{1}'.", _objectID, typeof (TOther));
-        throw new InvalidCastException (message, ex);
+        var message = string.Format("The handle for object '{0}' cannot be represented as a handle for type '{1}'.", _objectID, typeof(TOther));
+        throw new InvalidCastException(message, ex);
       }
     }
 
     public bool Equals (IDomainObjectHandle<IDomainObject> other)
     {
-      if (ReferenceEquals (null, other))
+      if (ReferenceEquals(null, other))
         return false;
-      if (ReferenceEquals (this, other))
+      if (ReferenceEquals(this, other))
         return true;
       if (GetType() != other.GetType())
         return false;
-      return Equals (_objectID, other.ObjectID);
+      return Equals(_objectID, other.ObjectID);
     }
 
     public override bool Equals (object obj)
     {
-      if (ReferenceEquals (null, obj))
+      if (ReferenceEquals(null, obj))
         return false;
-      if (ReferenceEquals (this, obj))
+      if (ReferenceEquals(this, obj))
         return true;
-      return Equals (obj as IDomainObjectHandle<IDomainObject>);
+      return Equals(obj as IDomainObjectHandle<IDomainObject>);
     }
 
     public override int GetHashCode ()
     {
-      return _objectID.GetHashCode ();
+      return _objectID.GetHashCode();
     }
 
     public override string ToString ()

@@ -27,14 +27,14 @@ namespace Remotion.Validation.Providers
   /// <summary>
   /// Use this class to retrieve the <see cref="IValidationRuleCollector{TValidatedType}"/>s for a <see cref="Type"/> based on reflection metadata.
   /// </summary>
-  [ImplementationFor (typeof (IValidationRuleCollectorProvider), Lifetime = LifetimeKind.Singleton, Position = 2, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IValidationRuleCollectorProvider), Lifetime = LifetimeKind.Singleton, Position = 2, RegistrationType = RegistrationType.Multiple)]
   public class ApiBasedValidationRuleCollectorProvider : IValidationRuleCollectorProvider
   {
     private readonly IValidationRuleCollectorReflector _validationRuleCollectorReflector;
 
     public ApiBasedValidationRuleCollectorProvider (IValidationRuleCollectorReflector validationRuleCollectorReflector)
     {
-      ArgumentUtility.CheckNotNull ("validationRuleCollectorReflector", validationRuleCollectorReflector);
+      ArgumentUtility.CheckNotNull("validationRuleCollectorReflector", validationRuleCollectorReflector);
 
       _validationRuleCollectorReflector = validationRuleCollectorReflector;
     }
@@ -46,12 +46,12 @@ namespace Remotion.Validation.Providers
 
     public IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> GetValidationRuleCollectors (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull ("types", types);
+      ArgumentUtility.CheckNotNull("types", types);
 
       var result = types
-          .SelectMany (_validationRuleCollectorReflector.GetCollectorsForType)
-          .Select (c => new ValidationRuleCollectorInfo (
-              (IValidationRuleCollector) Assertion.IsNotNull (Activator.CreateInstance (c), "Could not create an instance of {0}.", c.GetFullNameSafe()),
+          .SelectMany(_validationRuleCollectorReflector.GetCollectorsForType)
+          .Select(c => new ValidationRuleCollectorInfo(
+              (IValidationRuleCollector)Assertion.IsNotNull(Activator.CreateInstance(c), "Could not create an instance of {0}.", c.GetFullNameSafe()),
               GetType()))
           .ToArray();
       return result.Any() ? new[] { result } : Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>();

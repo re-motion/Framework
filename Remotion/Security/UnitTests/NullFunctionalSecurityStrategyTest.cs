@@ -29,19 +29,19 @@ namespace Remotion.Security.UnitTests
     {
       var strategy = new NullFunctionalSecurityStrategy();
 
-      var result = strategy.HasAccess (
-          typeof (SecurableObject),
+      var result = strategy.HasAccess(
+          typeof(SecurableObject),
           new Mock<ISecurityProvider>().Object,
           new Mock<ISecurityPrincipal>().Object,
-          new[] { AccessType.Get (GeneralAccessTypes.Read) });
+          new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
     }
 
     [Test]
     public void IsNull_ReturnsTrue ()
     {
-      Assert.That (((IFunctionalSecurityStrategy) new NullFunctionalSecurityStrategy()).IsNull, Is.True);
+      Assert.That(((IFunctionalSecurityStrategy)new NullFunctionalSecurityStrategy()).IsNull, Is.True);
     }
   }
 }

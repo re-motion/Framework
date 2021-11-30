@@ -22,6 +22,6 @@ namespace Remotion.Globalization.Mixins.UnitTests.TestDomain
   [Uses(typeof(MixinAddingResources))]
   public class ClassWithMixinResource
   {
-     
+
   }
 }

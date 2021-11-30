@@ -43,18 +43,18 @@ namespace Remotion.Security.Metadata
 
     public Dictionary<Enum, EnumValueInfo> GetValues (Type type, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
       if (!type.IsEnum)
-        throw new ArgumentException (string.Format ("The type '{0}' is not an enumerated type.", type.GetFullNameSafe()), "type");
-      ArgumentUtility.CheckNotNull ("cache", cache);
+        throw new ArgumentException(string.Format("The type '{0}' is not an enumerated type.", type.GetFullNameSafe()), "type");
+      ArgumentUtility.CheckNotNull("cache", cache);
 
-      IList values = Enum.GetValues (type);
+      IList values = Enum.GetValues(type);
 
-      Dictionary<Enum, EnumValueInfo> enumValueInfos = new Dictionary<Enum, EnumValueInfo> ();
+      Dictionary<Enum, EnumValueInfo> enumValueInfos = new Dictionary<Enum, EnumValueInfo>();
       for (int i = 0; i < values.Count; i++)
       {
-        Enum value = (Enum) values[i]!;
-        enumValueInfos.Add (value, GetValue (value, cache));
+        Enum value = (Enum)values[i]!;
+        enumValueInfos.Add(value, GetValue(value, cache));
       }
 
       return enumValueInfos;
@@ -62,21 +62,21 @@ namespace Remotion.Security.Metadata
 
     public EnumValueInfo GetValue (Enum value, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNull ("cache", cache);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull("cache", cache);
 
-      EnumValueInfo? info = cache.GetEnumValueInfo (value);
+      EnumValueInfo? info = cache.GetEnumValueInfo(value);
       if (info == null)
       {
-        string name = value.ToString ();
-        info = new EnumValueInfo (TypeUtility.GetPartialAssemblyQualifiedName (value.GetType ()), name, Convert.ToInt32 (value));
-        FieldInfo? fieldInfo = value.GetType ().GetField (name, BindingFlags.Static | BindingFlags.Public);
-        Assertion.DebugIsNotNull (fieldInfo, "Field '{0}' was not found on type '{1}'.", name, value.GetType());
-        PermanentGuidAttribute? attribute = (PermanentGuidAttribute?) Attribute.GetCustomAttribute (fieldInfo, typeof (PermanentGuidAttribute), false);
+        string name = value.ToString();
+        info = new EnumValueInfo(TypeUtility.GetPartialAssemblyQualifiedName(value.GetType()), name, Convert.ToInt32(value));
+        FieldInfo? fieldInfo = value.GetType().GetField(name, BindingFlags.Static | BindingFlags.Public);
+        Assertion.DebugIsNotNull(fieldInfo, "Field '{0}' was not found on type '{1}'.", name, value.GetType());
+        PermanentGuidAttribute? attribute = (PermanentGuidAttribute?)Attribute.GetCustomAttribute(fieldInfo, typeof(PermanentGuidAttribute), false);
         if (attribute != null)
-          info.ID = attribute.Value.ToString ();
+          info.ID = attribute.Value.ToString();
 
-        cache.AddEnumValueInfo (value, info);
+        cache.AddEnumValueInfo(value, info);
       }
 
       return info;

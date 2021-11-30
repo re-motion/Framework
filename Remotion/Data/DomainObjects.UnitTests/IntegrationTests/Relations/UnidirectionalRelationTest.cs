@@ -33,10 +33,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _oldClient = DomainObjectIDs.Client1.GetObject<Client> ();
-      _newClient = DomainObjectIDs.Client2.GetObject<Client> ();
+      _oldClient = DomainObjectIDs.Client1.GetObject<Client>();
+      _newClient = DomainObjectIDs.Client2.GetObject<Client>();
       _location = DomainObjectIDs.Location1.GetObject<Location>();
     }
 
@@ -45,72 +45,72 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       _location.Client = _newClient;
 
-      Assert.That (_location.Client, Is.SameAs (_newClient));
-      Assert.That (_location.Properties[typeof (Location), "Client"].GetRelatedObjectID (), Is.EqualTo (_newClient.ID));
-      Assert.That (_location.State.IsChanged, Is.True);
-      Assert.That (_oldClient.State.IsUnchanged, Is.True);
-      Assert.That (_newClient.State.IsUnchanged, Is.True);
+      Assert.That(_location.Client, Is.SameAs(_newClient));
+      Assert.That(_location.Properties[typeof(Location), "Client"].GetRelatedObjectID(), Is.EqualTo(_newClient.ID));
+      Assert.That(_location.State.IsChanged, Is.True);
+      Assert.That(_oldClient.State.IsUnchanged, Is.True);
+      Assert.That(_newClient.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void EventsForSetRelatedObject ()
     {
-      SequenceEventReceiver eventReceiver = new SequenceEventReceiver (new DomainObject[] { _location, _oldClient, _newClient }, new DomainObjectCollection[0]);
+      SequenceEventReceiver eventReceiver = new SequenceEventReceiver(new DomainObject[] { _location, _oldClient, _newClient }, new DomainObjectCollection[0]);
 
       _location.Client = _newClient;
 
       ChangeState[] expectedStates = new ChangeState[]
     {
-      new RelationChangeState (_location, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", _oldClient, _newClient, "1. Changing event of location"),
-      new RelationChangeState (_location, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, null, "2. Changed event of location")
+      new RelationChangeState(_location, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", _oldClient, _newClient, "1. Changing event of location"),
+      new RelationChangeState(_location, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, null, "2. Changed event of location")
     };
 
-      eventReceiver.Check (expectedStates);
+      eventReceiver.Check(expectedStates);
     }
 
     [Test]
     public void SetRelatedObjectWithSameOldAndNewObject ()
     {
-      SequenceEventReceiver eventReceiver = new SequenceEventReceiver (new DomainObject[] { _location, _oldClient, _newClient }, new DomainObjectCollection[0]);
+      SequenceEventReceiver eventReceiver = new SequenceEventReceiver(new DomainObject[] { _location, _oldClient, _newClient }, new DomainObjectCollection[0]);
 
       _location.Client = _oldClient;
 
-      eventReceiver.Check (new ChangeState[0]);
-      Assert.That (_location.State.IsUnchanged, Is.True);
+      eventReceiver.Check(new ChangeState[0]);
+      Assert.That(_location.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void GetRelatedObject ()
     {
-      Assert.That (_location.GetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client"), Is.SameAs (_oldClient));
+      Assert.That(_location.GetRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client"), Is.SameAs(_oldClient));
     }
 
     [Test]
     public void GetOriginalRelatedObject ()
     {
-      Assert.That (_location.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client"), Is.SameAs (_oldClient));
+      Assert.That(_location.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client"), Is.SameAs(_oldClient));
 
       _location.Client = _newClient;
 
-      Assert.That (_location.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client"), Is.SameAs (_oldClient));
+      Assert.That(_location.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client"), Is.SameAs(_oldClient));
     }
 
     [Test]
     public void CreateObjectsAndCommit ()
     {
-      SetDatabaseModifyable ();
+      SetDatabaseModifyable();
 
-      Client client1 = Client.NewObject ();
-      Client client2 = Client.NewObject ();
+      Client client1 = Client.NewObject();
+      Client client2 = Client.NewObject();
       Location location = Location.NewObject();
 
-      SequenceEventReceiver eventReceiver = new SequenceEventReceiver (new DomainObject[] { location, client1, client2 }, new DomainObjectCollection[0]);
+      SequenceEventReceiver eventReceiver = new SequenceEventReceiver(new DomainObject[] { location, client1, client2 }, new DomainObjectCollection[0]);
 
       location.Client = client1;
 
-      Assert.That (client1.State.IsNew, Is.True);
-      Assert.That (client2.State.IsNew, Is.True);
-      Assert.That (location.State.IsNew, Is.True);
+      Assert.That(client1.State.IsNew, Is.True);
+      Assert.That(client2.State.IsNew, Is.True);
+      Assert.That(location.State.IsNew, Is.True);
 
       ObjectID clientID1 = client1.ID;
       ObjectID clientID2 = client2.ID;
@@ -119,106 +119,106 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
       ChangeState[] expectedStates = new ChangeState[]
     {
-      new RelationChangeState (location, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, client1, "1. Changing event of location"),
-      new RelationChangeState (location, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, null, "2. Changed event of location")
+      new RelationChangeState(location, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, client1, "1. Changing event of location"),
+      new RelationChangeState(location, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Location.Client", null, null, "2. Changed event of location")
     };
 
-      eventReceiver.Check (expectedStates);
+      eventReceiver.Check(expectedStates);
 
-      TestableClientTransaction.Commit ();
+      TestableClientTransaction.Commit();
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        client1 = clientID1.GetObject<Client> ();
-        client2 = clientID2.GetObject<Client> ();
+        client1 = clientID1.GetObject<Client>();
+        client2 = clientID2.GetObject<Client>();
         location = locationID.GetObject<Location>();
 
-        Assert.That (client1, Is.Not.Null);
-        Assert.That (client2, Is.Not.Null);
-        Assert.That (location, Is.Not.Null);
-        Assert.That (location.Client, Is.SameAs (client1));
+        Assert.That(client1, Is.Not.Null);
+        Assert.That(client2, Is.Not.Null);
+        Assert.That(location, Is.Not.Null);
+        Assert.That(location.Client, Is.SameAs(client1));
       }
     }
 
     [Test]
     public void DeleteLocationAndCommit ()
     {
-      SetDatabaseModifyable ();
+      SetDatabaseModifyable();
 
-      SequenceEventReceiver eventReceiver = new SequenceEventReceiver (new DomainObject[] { _location, _oldClient, _newClient }, new DomainObjectCollection[0]);
+      SequenceEventReceiver eventReceiver = new SequenceEventReceiver(new DomainObject[] { _location, _oldClient, _newClient }, new DomainObjectCollection[0]);
 
-      _location.Delete ();
-      TestableClientTransaction.Commit ();
+      _location.Delete();
+      TestableClientTransaction.Commit();
 
       ChangeState[] expectedStates = new ChangeState[]
     {
-      new ObjectDeletionState (_location, "1. Deleting event of location"),
-      new ObjectDeletionState (_location, "2. Deleted event of location")
+      new ObjectDeletionState(_location, "1. Deleting event of location"),
+      new ObjectDeletionState(_location, "2. Deleted event of location")
     };
 
-      eventReceiver.Check (expectedStates);
+      eventReceiver.Check(expectedStates);
     }
 
     [Test]
     public void DeleteMultipleObjectsAndCommit ()
     {
-      SetDatabaseModifyable ();
+      SetDatabaseModifyable();
 
-      _location.Delete ();
-      _oldClient.Delete ();
-      _newClient.Delete ();
+      _location.Delete();
+      _oldClient.Delete();
+      _newClient.Delete();
 
-      Client client3 = DomainObjectIDs.Client3.GetObject<Client> ();
-      client3.Delete ();
+      Client client3 = DomainObjectIDs.Client3.GetObject<Client>();
+      client3.Delete();
 
       Location location2 = DomainObjectIDs.Location2.GetObject<Location>();
-      location2.Delete ();
+      location2.Delete();
 
       Location location3 = DomainObjectIDs.Location3.GetObject<Location>();
-      location3.Delete ();
+      location3.Delete();
 
-      TestableClientTransaction.Commit ();
+      TestableClientTransaction.Commit();
     }
 
     [Test]
     public void RelationAccessToDeletedLoaded_ReturnsDeletedObject_AndThrowsOnChanges ()
     {
-      _location.Client.Delete ();
+      _location.Client.Delete();
       Client client = _location.Client;
 
-      Assert.That (client.State.IsDeleted, Is.True);
-      Assert.That (() => client.ParentClient, Is.Null);
-      Assert.That (() => client.ParentClient = null, Throws.TypeOf<ObjectDeletedException> ());
+      Assert.That(client.State.IsDeleted, Is.True);
+      Assert.That(() => client.ParentClient, Is.Null);
+      Assert.That(() => client.ParentClient = null, Throws.TypeOf<ObjectDeletedException>());
     }
 
     [Test]
     public void DeletedObject_CanBeOverwritten ()
     {
-      Location location = Location.NewObject ();
-      location.Client = DomainObjectIDs.Client1.GetObject<Client> ();
-      location.Client.Delete ();
-      location.Client = Client.NewObject ();
+      Location location = Location.NewObject();
+      location.Client = DomainObjectIDs.Client1.GetObject<Client>();
+      location.Client.Delete();
+      location.Client = Client.NewObject();
     }
 
     [Test]
     public void RelationAccessToDeletedNew_ReturnsInvalidObject_AndThrowsOnAccess ()
     {
-      _location.Client = Client.NewObject ();
-      _location.Client.Delete ();
+      _location.Client = Client.NewObject();
+      _location.Client.Delete();
       Client client = _location.Client;
 
-      Assert.That (client.State.IsInvalid, Is.True);
-      Assert.That (() => client.ParentClient, Throws.TypeOf<ObjectInvalidException> ());
-      Assert.That (() => client.ParentClient = null, Throws.TypeOf<ObjectInvalidException> ());
+      Assert.That(client.State.IsInvalid, Is.True);
+      Assert.That(() => client.ParentClient, Throws.TypeOf<ObjectInvalidException>());
+      Assert.That(() => client.ParentClient = null, Throws.TypeOf<ObjectInvalidException>());
     }
 
     [Test]
     public void InvalidObject_CanBeOverwritten ()
     {
-      Location location = Location.NewObject ();
-      location.Client = Client.NewObject ();
-      location.Client.Delete ();
-      location.Client = Client.NewObject ();
+      Location location = Location.NewObject();
+      location.Client = Client.NewObject();
+      location.Client.Delete();
+      location.Client = Client.NewObject();
     }
 
 
@@ -226,91 +226,91 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     public void DeleteClientAndCommit_CausesRelatedObjectToBecomeInvalid ()
     {
       // Need to perform this test within a subtransaction, otherwise, the database will yield a foreign key violation
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         _location.Client.Delete();
         ClientTransaction.Current.Commit();
-        Assert.That (_location.Client, Is.Not.Null);
-        Assert.That (_location.Client.State.IsInvalid, Is.True);
+        Assert.That(_location.Client, Is.Not.Null);
+        Assert.That(_location.Client.State.IsInvalid, Is.True);
       }
     }
 
     [Test]
     public void ResettingDeletedLoadedWorks ()
     {
-      _location.Client.Delete ();
-      Client newClient = Client.NewObject ();
+      _location.Client.Delete();
+      Client newClient = Client.NewObject();
       _location.Client = newClient;
-      Assert.That (_location.Client, Is.SameAs (newClient));
+      Assert.That(_location.Client, Is.SameAs(newClient));
     }
 
     [Test]
     public void ResettingDeletedNewWorks ()
     {
-      _location.Client = Client.NewObject ();
-      _location.Client.Delete ();
-      Client newClient = Client.NewObject ();
+      _location.Client = Client.NewObject();
+      _location.Client.Delete();
+      Client newClient = Client.NewObject();
       _location.Client = newClient;
-      Assert.That (_location.Client, Is.SameAs (newClient));
+      Assert.That(_location.Client, Is.SameAs(newClient));
     }
 
     [Test]
     public void StateRemainsUnchangedWhenDeletingRelatedObject ()
     {
-      Assert.That (_location.State.IsUnchanged, Is.True);
-      _location.Client.Delete ();
-      Assert.That (_location.State.IsUnchanged, Is.True);
+      Assert.That(_location.State.IsUnchanged, Is.True);
+      _location.Client.Delete();
+      Assert.That(_location.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void Rollback ()
     {
-      _location.Delete ();
+      _location.Delete();
       Location newLocation = Location.NewObject();
       newLocation.Client = _newClient;
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
-      Assert.That (_location.State.IsUnchanged, Is.True);
+      Assert.That(_location.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void CreateHierarchy ()
     {
-      SetDatabaseModifyable ();
+      SetDatabaseModifyable();
 
-      Client newClient1 = Client.NewObject ();
-      Client newClient2 = Client.NewObject ();
+      Client newClient1 = Client.NewObject();
+      Client newClient2 = Client.NewObject();
       newClient2.ParentClient = newClient1;
 
       ObjectID newClientID1 = newClient1.ID;
       ObjectID newClientID2 = newClient2.ID;
 
-      TestableClientTransaction.Commit ();
+      TestableClientTransaction.Commit();
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        newClient1 = newClientID1.GetObject<Client> ();
-        newClient2 = newClientID2.GetObject<Client> ();
+        newClient1 = newClientID1.GetObject<Client>();
+        newClient2 = newClientID2.GetObject<Client>();
 
-        Assert.That (newClient1, Is.Not.Null);
-        Assert.That (newClient2, Is.Not.Null);
-        Assert.That (newClient2.ParentClient, Is.SameAs (newClient1));
+        Assert.That(newClient1, Is.Not.Null);
+        Assert.That(newClient2, Is.Not.Null);
+        Assert.That(newClient2.ParentClient, Is.SameAs(newClient1));
       }
     }
 
     [Test]
     public void HasBeenTouched ()
     {
-      CheckTouching (delegate { _location.Client = _newClient; }, _location, "Client",
-          RelationEndPointID.Create(_location.ID, typeof (Location).FullName + ".Client"));
+      CheckTouching(delegate { _location.Client = _newClient; }, _location, "Client",
+          RelationEndPointID.Create(_location.ID, typeof(Location).FullName + ".Client"));
     }
 
     [Test]
     public void HasBeenTouched_OriginalValue ()
     {
-      CheckTouching (delegate { _location.Client = _location.Client; }, _location, "Client",
-          RelationEndPointID.Create(_location.ID, typeof (Location).FullName + ".Client"));
+      CheckTouching(delegate { _location.Client = _location.Client; }, _location, "Client",
+          RelationEndPointID.Create(_location.ID, typeof(Location).FullName + ".Client"));
     }
   }
 }

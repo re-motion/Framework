@@ -27,30 +27,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
     public void TryParse ()
     {
       object resultValue;
-      var success = Int32ObjectIDValueParser.Instance.TryParse ("12", out resultValue);
+      var success = Int32ObjectIDValueParser.Instance.TryParse("12", out resultValue);
 
-      Assert.That (success, Is.True);
-      Assert.That (resultValue, Is.EqualTo (12));
+      Assert.That(success, Is.True);
+      Assert.That(resultValue, Is.EqualTo(12));
     }
 
     [Test]
     public void TryParse_EmptyValue ()
     {
       object resultValue;
-      var success = Int32ObjectIDValueParser.Instance.TryParse ("", out resultValue);
+      var success = Int32ObjectIDValueParser.Instance.TryParse("", out resultValue);
 
-      Assert.That (success, Is.False);
-      Assert.That (resultValue, Is.Null);
+      Assert.That(success, Is.False);
+      Assert.That(resultValue, Is.Null);
     }
 
     [Test]
     public void TryParse_NonInt ()
     {
       object resultValue;
-      var success = Int32ObjectIDValueParser.Instance.TryParse ("a", out resultValue);
+      var success = Int32ObjectIDValueParser.Instance.TryParse("a", out resultValue);
 
-      Assert.That (success, Is.False);
-      Assert.That (resultValue, Is.Null);
+      Assert.That(success, Is.False);
+      Assert.That(resultValue, Is.Null);
     }
   }
 }

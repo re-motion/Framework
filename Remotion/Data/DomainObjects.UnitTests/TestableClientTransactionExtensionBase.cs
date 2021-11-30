@@ -22,13 +22,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
   public class TestableClientTransactionExtensionBase : ClientTransactionExtensionBase
   {
     public TestableClientTransactionExtensionBase (string key)
-        : base (key)
+        : base(key)
     {
     }
 
     public new bool TryInstall (ClientTransaction clientTransaction)
     {
-      return base.TryInstall (clientTransaction);
+      return base.TryInstall(clientTransaction);
     }
   }
 }

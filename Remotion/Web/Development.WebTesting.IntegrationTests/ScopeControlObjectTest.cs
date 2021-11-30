@@ -28,11 +28,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ScopeControlObjectTest : IntegrationTest
   {
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<ScopeSelector, ScopeControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<ScopeSelector, ScopeControlObject> testAction)
     {
-      testAction (Helper, e => e.Scopes(), "scope");
+      testAction(Helper, e => e.Scopes(), "scope");
     }
 
     [Test]
@@ -40,12 +40,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      Assert.That (home.Scope.Text, Does.Contain ("DoNotFindMe"));
+      Assert.That(home.Scope.Text, Does.Contain("DoNotFindMe"));
 
-      var scope = home.Scopes().GetByID ("body_MyScope");
-      Assert.That (scope.GetHtmlID(), Is.EqualTo ("body_MyScope"));
-      Assert.That (scope.Scope.Text, Does.Contain ("Content"));
-      Assert.That (scope.Scope.Text, Does.Not.Contains ("DoNotFindMe"));
+      var scope = home.Scopes().GetByID("body_MyScope");
+      Assert.That(scope.GetHtmlID(), Is.EqualTo("body_MyScope"));
+      Assert.That(scope.Scope.Text, Does.Contain("Content"));
+      Assert.That(scope.Scope.Text, Does.Not.Contains("DoNotFindMe"));
     }
 
     [Test]
@@ -53,17 +53,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      Assert.That (home.Scope.Text, Does.Contain ("DoNotFindMe"));
+      Assert.That(home.Scope.Text, Does.Contain("DoNotFindMe"));
 
-      var scope = home.Scopes().GetByLocalID ("MyScope");
-      Assert.That (scope.GetHtmlID(), Is.EqualTo ("body_MyScope"));
-      Assert.That (scope.Scope.Text, Does.Contain ("Content"));
-      Assert.That (scope.Scope.Text, Does.Not.Contains ("DoNotFindMe"));
+      var scope = home.Scopes().GetByLocalID("MyScope");
+      Assert.That(scope.GetHtmlID(), Is.EqualTo("body_MyScope"));
+      Assert.That(scope.Scope.Text, Does.Contain("Content"));
+      Assert.That(scope.Scope.Text, Does.Not.Contains("DoNotFindMe"));
     }
 
     private WebFormsTestPageObject Start ()
     {
-      return Start<WebFormsTestPageObject> ("ScopeTest.aspx");
+      return Start<WebFormsTestPageObject>("ScopeTest.aspx");
     }
   }
 }

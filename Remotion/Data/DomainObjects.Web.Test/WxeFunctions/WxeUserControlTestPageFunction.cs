@@ -23,30 +23,30 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
   [Serializable]
   public class WxeUserControlTestPageFunction : WxeFunction
   {
-    public WxeUserControlTestPageFunction()
-        : base (WxeTransactionMode.CreateRoot)
+    public WxeUserControlTestPageFunction ()
+        : base(WxeTransactionMode.CreateRoot)
     {
       ReturnUrl = "default.aspx";
     }
 
     // methods and properties
 
-    private void Step1()
+    private void Step1 ()
     {
-      ObjectPassedIntoSecondControl = DomainObjectIDs.ObjectWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
+      ObjectPassedIntoSecondControl = DomainObjectIDs.ObjectWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
     }
 
-    private WxePageStep Step2 = new WxePageStep ("WxeUserControlTestPage.aspx");
+    private WxePageStep Step2 = new WxePageStep("WxeUserControlTestPage.aspx");
 
     public ClassWithAllDataTypes ObjectPassedIntoSecondControl
     {
-      get { return (ClassWithAllDataTypes) Variables["ObjectPassedIntoSecondControl"]; }
+      get { return (ClassWithAllDataTypes)Variables["ObjectPassedIntoSecondControl"]; }
       set { Variables["ObjectPassedIntoSecondControl"] = value; }
     }
 
     public ClassWithAllDataTypes ObjectReadFromSecondControl
     {
-      get { return (ClassWithAllDataTypes) Variables["ObjectReadFromSecondControl"]; }
+      get { return (ClassWithAllDataTypes)Variables["ObjectReadFromSecondControl"]; }
       set { Variables["ObjectReadFromSecondControl"] = value; }
     }
   }

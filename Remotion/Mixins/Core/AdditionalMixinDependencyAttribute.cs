@@ -60,7 +60,7 @@ namespace Remotion.Mixins
   /// <see cref="ConfigurationException"/> is raised at attribute analysis time.
   /// </para>
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Assembly, AllowMultiple = true)]
+  [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
   public class AdditionalMixinDependencyAttribute : Attribute, IMixinConfigurationAttribute<Assembly>
   {
     private readonly Type _targetType;
@@ -69,9 +69,9 @@ namespace Remotion.Mixins
 
     public AdditionalMixinDependencyAttribute (Type targetType, Type dependentMixin, Type dependency)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("dependentMixin", dependentMixin);
-      ArgumentUtility.CheckNotNull ("dependency", dependency);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull("dependentMixin", dependentMixin);
+      ArgumentUtility.CheckNotNull("dependency", dependency);
 
       _targetType = targetType;
       _dependentMixin = dependentMixin;
@@ -100,10 +100,10 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder configurationBuilder, Assembly attributeTarget)
     {
-      ArgumentUtility.CheckNotNull ("configurationBuilder", configurationBuilder);
-      ArgumentUtility.CheckNotNull ("attributeTarget", attributeTarget);
+      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
+      ArgumentUtility.CheckNotNull("attributeTarget", attributeTarget);
 
-      configurationBuilder.ForClass (TargetType).AddMixinDependency (DependentMixin, Dependency);
+      configurationBuilder.ForClass(TargetType).AddMixinDependency(DependentMixin, Dependency);
     }
   }
 }

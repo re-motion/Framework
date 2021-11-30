@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
     /// </summary>
     public static bool IsInternetExplorer ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
 
       return browserConfiguration is InternetExplorerConfiguration;
     }

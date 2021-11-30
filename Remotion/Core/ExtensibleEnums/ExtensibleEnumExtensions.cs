@@ -26,10 +26,10 @@ namespace Remotion.ExtensibleEnums
     /// <summary>
     /// Gets the localized name of the value represented by this <see cref="IExtensibleEnum"/> value.
     /// </summary>
-    [Obsolete ("Retrieve IExtensibleEnumerationGlobalizationService from IoC container and use IExtensibleEnumerationGlobalizationService.GetExtensibleEnumerationValueDisplayName (...). (Version 1.13.223.0)", true)]
+    [Obsolete("Retrieve IExtensibleEnumerationGlobalizationService from IoC container and use IExtensibleEnumerationGlobalizationService.GetExtensibleEnumerationValueDisplayName (...). (Version 1.13.223.0)", true)]
     public static string GetLocalizedName (this IExtensibleEnum extensibleEnum)
     {
-      throw new NotSupportedException ("Retrieve IExtensibleEnumerationGlobalizationService from IoC container and use IExtensibleEnumerationGlobalizationService.GetExtensibleEnumerationValueDisplayName (...). (Version 1.13.223.0)");
+      throw new NotSupportedException("Retrieve IExtensibleEnumerationGlobalizationService from IoC container and use IExtensibleEnumerationGlobalizationService.GetExtensibleEnumerationValueDisplayName (...). (Version 1.13.223.0)");
     }
   }
 }

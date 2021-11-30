@@ -24,7 +24,7 @@ using Remotion.Validation.Validators;
 
 namespace Remotion.ObjectBinding.Validation
 {
-  [ImplementationFor (typeof (IPropertyValidatorToBusinessObjectPropertyConstraintConverter), Position = Position, RegistrationType = RegistrationType.Multiple, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IPropertyValidatorToBusinessObjectPropertyConstraintConverter), Position = Position, RegistrationType = RegistrationType.Multiple, Lifetime = LifetimeKind.Singleton)]
   public class PropertyValidatorToBusinessObjectPropertyConstraintConverter : IPropertyValidatorToBusinessObjectPropertyConstraintConverter
   {
     public const int Position = 0;
@@ -35,10 +35,10 @@ namespace Remotion.ObjectBinding.Validation
 
     public IEnumerable<IBusinessObjectPropertyConstraint> Convert (IPropertyValidator propertyValidator)
     {
-      ArgumentUtility.CheckNotNull ("propertyValidator", propertyValidator);
+      ArgumentUtility.CheckNotNull("propertyValidator", propertyValidator);
 
       if (propertyValidator is ILengthValidator lengthValidator && lengthValidator.Max.HasValue)
-        yield return new BusinessObjectPropertyValueLengthConstraint (lengthValidator.Max.Value);
+        yield return new BusinessObjectPropertyValueLengthConstraint(lengthValidator.Max.Value);
 
       if (propertyValidator is INotNullValidator)
         yield return new BusinessObjectPropertyValueRequiredConstraint();

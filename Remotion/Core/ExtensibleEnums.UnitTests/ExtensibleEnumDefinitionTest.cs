@@ -37,66 +37,66 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _red = new Color ("Red");
-      _green = new Color ("Green");
-      _blue = new Color ("Blue");
-      _fakeMethod = typeof (ColorExtensions).GetMethod ("Red");
+      _red = new Color("Red");
+      _green = new Color("Green");
+      _blue = new Color("Blue");
+      _fakeMethod = typeof(ColorExtensions).GetMethod("Red");
     }
 
     [Test]
     public void GetEnumType ()
     {
-      var definition = CreateDefinition (_red, _green);
-      Assert.That (definition.GetEnumType (), Is.SameAs (typeof (Color)));
+      var definition = CreateDefinition(_red, _green);
+      Assert.That(definition.GetEnumType(), Is.SameAs(typeof(Color)));
     }
 
     [Test]
     public void IsDefined_String_True ()
     {
-      var definition = CreateDefinition (_red, _green);
-      Assert.That (definition.IsDefined (_red.ID), Is.True);
+      var definition = CreateDefinition(_red, _green);
+      Assert.That(definition.IsDefined(_red.ID), Is.True);
     }
 
     [Test]
     public void IsDefined_String_False ()
     {
-      var definition = CreateDefinition (_green);
-      Assert.That (definition.IsDefined (_red.ID), Is.False);
+      var definition = CreateDefinition(_green);
+      Assert.That(definition.IsDefined(_red.ID), Is.False);
     }
 
     [Test]
     public void IsDefined_Value_True ()
     {
-      var definition = CreateDefinition (_red, _green);
-      Assert.That (definition.IsDefined (_red), Is.True);
+      var definition = CreateDefinition(_red, _green);
+      Assert.That(definition.IsDefined(_red), Is.True);
     }
 
     [Test]
     public void IsDefined_Value_False_ID ()
     {
-      var definition = CreateDefinition (_green);
-      Assert.That (definition.IsDefined (_red), Is.False);
+      var definition = CreateDefinition(_green);
+      Assert.That(definition.IsDefined(_red), Is.False);
     }
 
     [Test]
     public void IsDefined_Value_False_Type ()
     {
-      var definition = CreateDefinition (_red);
-      
-      var valueWithWrongType = new EnumWithDifferentCtors (_red.ID);
-      Assert.That (valueWithWrongType.ID, Is.EqualTo (_red.ID));
-      
-      Assert.That (definition.IsDefined (valueWithWrongType), Is.False);
+      var definition = CreateDefinition(_red);
+
+      var valueWithWrongType = new EnumWithDifferentCtors(_red.ID);
+      Assert.That(valueWithWrongType.ID, Is.EqualTo(_red.ID));
+
+      Assert.That(definition.IsDefined(valueWithWrongType), Is.False);
     }
 
     [Test]
     public void GetValueInfos ()
     {
-      var infos = GetInfos (_red, _green, _blue).ToArray();
-      var definition = CreateDefinition<Color> (infos);
+      var infos = GetInfos(_red, _green, _blue).ToArray();
+      var definition = CreateDefinition<Color>(infos);
       var valueInstances = definition.GetValueInfos().ToArray();
 
-      Assert.That (valueInstances, Is.EquivalentTo (infos));
+      Assert.That(valueInstances, Is.EquivalentTo(infos));
     }
 
     [Test]
@@ -104,164 +104,164 @@ namespace Remotion.ExtensibleEnums.UnitTests
     {
       var valueDiscoveryServiceMock = new Mock<IExtensibleEnumValueDiscoveryService>();
       valueDiscoveryServiceMock
-          .Setup (mock => mock.GetValueInfos (It.IsAny<ExtensibleEnumDefinition<Color>>()))
-          .Returns (GetInfos (_red))
+          .Setup(mock => mock.GetValueInfos(It.IsAny<ExtensibleEnumDefinition<Color>>()))
+          .Returns(GetInfos(_red))
           .Verifiable();
 
-      var extensibleEnumDefinition = new ExtensibleEnumDefinition<Color> (valueDiscoveryServiceMock.Object);
+      var extensibleEnumDefinition = new ExtensibleEnumDefinition<Color>(valueDiscoveryServiceMock.Object);
       var values1 = extensibleEnumDefinition.GetValueInfos();
       var values2 = extensibleEnumDefinition.GetValueInfos();
 
-      valueDiscoveryServiceMock.Verify (mock => mock.GetValueInfos (It.IsAny<ExtensibleEnumDefinition<Color>>()), Times.Once());
-      Assert.That (values1, Is.SameAs (values2));
+      valueDiscoveryServiceMock.Verify(mock => mock.GetValueInfos(It.IsAny<ExtensibleEnumDefinition<Color>>()), Times.Once());
+      Assert.That(values1, Is.SameAs(values2));
     }
 
     [Test]
     public void GetValueInfos_PassesExtensibleEnumDefinitionInstance_ToExtensibleEnumValueDiscoveryService ()
     {
       var valueDiscoveryServiceMock = new Mock<IExtensibleEnumValueDiscoveryService>();
-      var infos = GetInfos (_red);
-      valueDiscoveryServiceMock.Setup (mock => mock.GetValueInfos (It.IsAny<ExtensibleEnumDefinition<Color>>())).Returns (infos);
+      var infos = GetInfos(_red);
+      valueDiscoveryServiceMock.Setup(mock => mock.GetValueInfos(It.IsAny<ExtensibleEnumDefinition<Color>>())).Returns(infos);
 
-      var extensibleEnumDefinition = new ExtensibleEnumDefinition<Color> (valueDiscoveryServiceMock.Object);
+      var extensibleEnumDefinition = new ExtensibleEnumDefinition<Color>(valueDiscoveryServiceMock.Object);
       extensibleEnumDefinition.GetValueInfos();
 
-      valueDiscoveryServiceMock.Verify (mock => mock.GetValueInfos (extensibleEnumDefinition), Times.AtLeastOnce());
+      valueDiscoveryServiceMock.Verify(mock => mock.GetValueInfos(extensibleEnumDefinition), Times.AtLeastOnce());
     }
 
     [Test]
     public void GetValueInfos_DefaultOrder_IsAlphabetic ()
     {
-      var definition = CreateDefinition (_red, _blue, _green);
+      var definition = CreateDefinition(_red, _blue, _green);
 
-      var values = definition.GetValueInfos().Select (info => info.Value).ToArray();
+      var values = definition.GetValueInfos().Select(info => info.Value).ToArray();
 
-      Assert.That (values, Is.EqualTo (new[] { _blue, _green, _red }));
+      Assert.That(values, Is.EqualTo(new[] { _blue, _green, _red }));
     }
 
     [Test]
     public void GetValueInfos_ExplicitOrder_WithKeys ()
     {
-      var infos = new[]  { 
-          CreateInfo (new Planet ("Earth"), 1.5),
-          CreateInfo (new Planet ("Mars"), 2.0),
-          CreateInfo (new Planet ("Venus"), 1.0),
+      var infos = new[]  {
+          CreateInfo(new Planet("Earth"), 1.5),
+          CreateInfo(new Planet("Mars"), 2.0),
+          CreateInfo(new Planet("Venus"), 1.0),
       };
-      var definition = CreateDefinition<Planet> (infos);
+      var definition = CreateDefinition<Planet>(infos);
 
-      var values = definition.GetValueInfos ();
+      var values = definition.GetValueInfos();
 
-      Assert.That (values, Is.EqualTo (new[] { infos[2], infos[0], infos[1] }));
+      Assert.That(values, Is.EqualTo(new[] { infos[2], infos[0], infos[1] }));
     }
 
     [Test]
     public void GetValueInfos_ExplicitOrder_SameKeys_DefaultToAlphabetic ()
     {
-      var infos = new[]  { 
-          CreateInfo (new Planet ("Saturn"), 1.0),
-          CreateInfo (new Planet ("Jupiter"), 1.0)
+      var infos = new[]  {
+          CreateInfo(new Planet("Saturn"), 1.0),
+          CreateInfo(new Planet("Jupiter"), 1.0)
       };
-      var definition = CreateDefinition<Planet> (infos);
+      var definition = CreateDefinition<Planet>(infos);
 
-      var values = definition.GetValueInfos ();
+      var values = definition.GetValueInfos();
 
-      Assert.That (values, Is.EqualTo (new[] { infos[1], infos[0] }));
+      Assert.That(values, Is.EqualTo(new[] { infos[1], infos[0] }));
     }
 
     [Test]
     public void GetValueInfos_DuplicateIDs ()
     {
-      var definition = CreateDefinition (_red, _red);
-      Assert.That (
+      var definition = CreateDefinition(_red, _red);
+      Assert.That(
           () => definition.GetValueInfos(),
           Throws.InstanceOf<InvalidExtensibleEnumDefinitionException>()
-              .With.Message.EqualTo ("Extensible enum 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' defines two values with ID 'Red'."));
+              .With.Message.EqualTo("Extensible enum 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' defines two values with ID 'Red'."));
     }
 
     [Test]
     public void GetValueInfos_NoValues_ReturnsEmptySet ()
     {
       var definition = CreateDefinition<Color>();
-      Assert.That (definition.GetValueInfos(), Is.Empty);
+      Assert.That(definition.GetValueInfos(), Is.Empty);
     }
 
     [Test]
     public void GetValueInfoByID ()
     {
-      var definition = CreateDefinition (_red, _green);
-      var valueInfo = definition.GetValueInfoByID ("Red");
+      var definition = CreateDefinition(_red, _green);
+      var valueInfo = definition.GetValueInfoByID("Red");
 
-      Assert.That (valueInfo.Value, Is.EqualTo (_red));
+      Assert.That(valueInfo.Value, Is.EqualTo(_red));
     }
 
     [Test]
     public void GetValueInfoByID_WrongIDThrows ()
     {
-      var definition = CreateDefinition (_red, _green);
-      Assert.That (
-          () => definition.GetValueInfoByID ("?"),
+      var definition = CreateDefinition(_red, _green);
+      Assert.That(
+          () => definition.GetValueInfoByID("?"),
           Throws.InstanceOf<KeyNotFoundException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The extensible enum type 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' does not define a value called '?'."));
     }
 
     [Test]
     public void GetValueInfoByID_DuplicateIDs ()
     {
-      var definition = CreateDefinition (_red, _red);
-      Assert.That (
-          () => definition.GetValueInfoByID ("ID"),
+      var definition = CreateDefinition(_red, _red);
+      Assert.That(
+          () => definition.GetValueInfoByID("ID"),
           Throws.InstanceOf<InvalidExtensibleEnumDefinitionException>()
-              .With.Message.EqualTo ("Extensible enum 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' defines two values with ID 'Red'."));
+              .With.Message.EqualTo("Extensible enum 'Remotion.ExtensibleEnums.UnitTests.TestDomain.Color' defines two values with ID 'Red'."));
     }
 
     [Test]
     public void TryGetValueInfoByID ()
     {
-      var definition = CreateDefinition (_red, _green);
+      var definition = CreateDefinition(_red, _green);
 
       ExtensibleEnumInfo<Color> result;
-      var success = definition.TryGetValueInfoByID ("Red", out result);
+      var success = definition.TryGetValueInfoByID("Red", out result);
 
       var expected = Color.Values.Red();
-      Assert.That (success, Is.True);
-      Assert.That (result.Value, Is.EqualTo (expected));
+      Assert.That(success, Is.True);
+      Assert.That(result.Value, Is.EqualTo(expected));
     }
 
     [Test]
     public void TryGetValueInfoByID_WrongID ()
     {
-      var definition = CreateDefinition (_red, _green);
+      var definition = CreateDefinition(_red, _green);
 
       ExtensibleEnumInfo<Color> result;
-      var success = definition.TryGetValueInfoByID ("?", out result);
+      var success = definition.TryGetValueInfoByID("?", out result);
 
-      Assert.That (success, Is.False);
-      Assert.That (result, Is.Null);
+      Assert.That(success, Is.False);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void GetCustomAttributes_NonGeneric ()
     {
-      var customAttributes = Color.Values.GetCustomAttributes (typeof (SampleAttribute));
+      var customAttributes = Color.Values.GetCustomAttributes(typeof(SampleAttribute));
 
-      var expected = typeof (ColorExtensions).GetCustomAttributes (typeof (SampleAttribute), false)
-          .Concat (typeof (LightColorExtensions).GetCustomAttributes (typeof (SampleAttribute), false))
+      var expected = typeof(ColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false)
+          .Concat(typeof(LightColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false))
           .ToArray();
-      Assert.That (customAttributes, Is.EquivalentTo (expected));
-      Assert.That (customAttributes, Is.TypeOf (typeof (SampleAttribute[])));
+      Assert.That(customAttributes, Is.EquivalentTo(expected));
+      Assert.That(customAttributes, Is.TypeOf(typeof(SampleAttribute[])));
     }
 
     [Test]
     public void GetCustomAttributes_NonGeneric_Interface ()
     {
-      var customAttributes = Color.Values.GetCustomAttributes (typeof (ISampleAttribute));
+      var customAttributes = Color.Values.GetCustomAttributes(typeof(ISampleAttribute));
 
-      var expected = typeof (ColorExtensions).GetCustomAttributes (typeof (SampleAttribute), false)
-          .Concat (typeof (LightColorExtensions).GetCustomAttributes (typeof (SampleAttribute), false))
-          .ToArray ();
-      Assert.That (customAttributes, Is.EquivalentTo (expected));
-      Assert.That (customAttributes, Is.TypeOf (typeof (ISampleAttribute[])));
+      var expected = typeof(ColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false)
+          .Concat(typeof(LightColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false))
+          .ToArray();
+      Assert.That(customAttributes, Is.EquivalentTo(expected));
+      Assert.That(customAttributes, Is.TypeOf(typeof(ISampleAttribute[])));
     }
 
     [Test]
@@ -269,90 +269,90 @@ namespace Remotion.ExtensibleEnums.UnitTests
     {
       var customAttributes = Color.Values.GetCustomAttributes<SampleAttribute>();
 
-      var expected = typeof (ColorExtensions).GetCustomAttributes (typeof (SampleAttribute), false)
-          .Concat (typeof (LightColorExtensions).GetCustomAttributes (typeof (SampleAttribute), false))
-          .ToArray ();
-       Assert.That (customAttributes, Is.EquivalentTo (expected));
+      var expected = typeof(ColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false)
+          .Concat(typeof(LightColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false))
+          .ToArray();
+       Assert.That(customAttributes, Is.EquivalentTo(expected));
     }
 
     [Test]
     public void GetCustomAttributes_Generic_Interface ()
     {
-      var customAttributes = Color.Values.GetCustomAttributes<ISampleAttribute> ();
+      var customAttributes = Color.Values.GetCustomAttributes<ISampleAttribute>();
 
-      var expected = typeof (ColorExtensions).GetCustomAttributes (typeof (SampleAttribute), false)
-          .Concat (typeof (LightColorExtensions).GetCustomAttributes (typeof (SampleAttribute), false))
-          .ToArray ();
-      Assert.That (customAttributes, Is.EquivalentTo (expected));
+      var expected = typeof(ColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false)
+          .Concat(typeof(LightColorExtensions).GetCustomAttributes(typeof(SampleAttribute), false))
+          .ToArray();
+      Assert.That(customAttributes, Is.EquivalentTo(expected));
     }
 
     [Test]
     public void GetCustomAttributes_EqualAttributes_ExtensionTypesAreFiltered ()
     {
-      var customAttributes = ExtensibleEnumWithDuplicateAttribute.Values.GetCustomAttributes<ISampleAttribute> ();
+      var customAttributes = ExtensibleEnumWithDuplicateAttribute.Values.GetCustomAttributes<ISampleAttribute>();
 
-      Assert.That (customAttributes.Length, Is.EqualTo (2));
+      Assert.That(customAttributes.Length, Is.EqualTo(2));
     }
 
     [Test]
     public void GetValueInfos_NonGeneric ()
     {
-      var definition = CreateDefinition (_red, _green);
+      var definition = CreateDefinition(_red, _green);
 
-      ReadOnlyCollection<IExtensibleEnumInfo> valueInfos = ((IExtensibleEnumDefinition) definition).GetValueInfos();
-      Assert.That (valueInfos, Is.EqualTo (definition.GetValueInfos()));
+      ReadOnlyCollection<IExtensibleEnumInfo> valueInfos = ((IExtensibleEnumDefinition)definition).GetValueInfos();
+      Assert.That(valueInfos, Is.EqualTo(definition.GetValueInfos()));
     }
 
     [Test]
     public void GetValueInfoByID_NonGeneric ()
     {
-      var definition = CreateDefinition (_red, _green);
+      var definition = CreateDefinition(_red, _green);
 
-      IExtensibleEnumInfo valueInfo = ((IExtensibleEnumDefinition) definition).GetValueInfoByID ("Red");
-      Assert.That (valueInfo, Is.SameAs (definition.GetValueInfoByID ("Red")));
+      IExtensibleEnumInfo valueInfo = ((IExtensibleEnumDefinition)definition).GetValueInfoByID("Red");
+      Assert.That(valueInfo, Is.SameAs(definition.GetValueInfoByID("Red")));
     }
 
     [Test]
     public void TryGetValueInfoByID_NonGeneric ()
     {
-      var definition = CreateDefinition (_red, _green);
+      var definition = CreateDefinition(_red, _green);
 
       IExtensibleEnumInfo valueInfo;
-      bool success = ((IExtensibleEnumDefinition) definition).TryGetValueInfoByID ("Red", out valueInfo);
+      bool success = ((IExtensibleEnumDefinition)definition).TryGetValueInfoByID("Red", out valueInfo);
 
       ExtensibleEnumInfo<Color> expectedValueInfo;
-      bool expectedSuccess = definition.TryGetValueInfoByID ("Red", out expectedValueInfo);
+      bool expectedSuccess = definition.TryGetValueInfoByID("Red", out expectedValueInfo);
 
-      Assert.That (success, Is.EqualTo (expectedSuccess));
-      Assert.That (valueInfo, Is.SameAs (expectedValueInfo));
+      Assert.That(success, Is.EqualTo(expectedSuccess));
+      Assert.That(valueInfo, Is.SameAs(expectedValueInfo));
     }
 
-    private IEnumerable<ExtensibleEnumInfo<T>> GetInfos<T> (params T[] values) 
+    private IEnumerable<ExtensibleEnumInfo<T>> GetInfos<T> (params T[] values)
         where T: ExtensibleEnum<T>
     {
-      return values.Select (value => CreateInfo (value, 0.0));
+      return values.Select(value => CreateInfo(value, 0.0));
     }
 
-    private ExtensibleEnumInfo<T> CreateInfo<T> (T value,  double positionalKey) 
+    private ExtensibleEnumInfo<T> CreateInfo<T> (T value,  double positionalKey)
         where T: ExtensibleEnum<T>
     {
-      return new ExtensibleEnumInfo<T> (value, _fakeMethod, positionalKey);
+      return new ExtensibleEnumInfo<T>(value, _fakeMethod, positionalKey);
     }
 
-    private ExtensibleEnumDefinition<T> CreateDefinition<T> (params T[] values) 
+    private ExtensibleEnumDefinition<T> CreateDefinition<T> (params T[] values)
         where T: ExtensibleEnum<T>
     {
-      var infos = GetInfos (values);
-      return CreateDefinition (infos);
+      var infos = GetInfos(values);
+      return CreateDefinition(infos);
     }
 
-    private ExtensibleEnumDefinition<T> CreateDefinition<T> (IEnumerable<ExtensibleEnumInfo<T>> infos) 
+    private ExtensibleEnumDefinition<T> CreateDefinition<T> (IEnumerable<ExtensibleEnumInfo<T>> infos)
         where T: ExtensibleEnum<T>
     {
       var valueDiscoveryServiceStub = new Mock<IExtensibleEnumValueDiscoveryService>();
-      var definition = new ExtensibleEnumDefinition<T> (valueDiscoveryServiceStub.Object);
+      var definition = new ExtensibleEnumDefinition<T>(valueDiscoveryServiceStub.Object);
 
-      valueDiscoveryServiceStub.Setup (stub => stub.GetValueInfos (It.IsAny<ExtensibleEnumDefinition<T>>())).Returns (infos);
+      valueDiscoveryServiceStub.Setup(stub => stub.GetValueInfos(It.IsAny<ExtensibleEnumDefinition<T>>())).Returns(infos);
       return definition;
     }
   }

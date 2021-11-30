@@ -43,38 +43,38 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected new SecurableClassDefinitionListFormFunction CurrentFunction
     {
-      get { return (SecurableClassDefinitionListFormFunction) base.CurrentFunction; }
+      get { return (SecurableClassDefinitionListFormFunction)base.CurrentFunction; }
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
-      LoadTree (IsPostBack, false);
+      LoadTree(IsPostBack, false);
       if (!IsPostBack)
-        ExpandTreeNodes (SecurableClassDefinitionTree.Nodes);
+        ExpandTreeNodes(SecurableClassDefinitionTree.Nodes);
     }
 
     protected override void OnPreRenderComplete (EventArgs e)
     {
-      var title = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.Title);
-      HtmlHeadAppender.Current.SetTitle (title);
-      base.OnPreRenderComplete (e);
+      var title = GlobalizationService.GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.Title);
+      HtmlHeadAppender.Current.SetTitle(title);
+      base.OnPreRenderComplete(e);
     }
 
     private void LoadTree (bool interim, bool refreshTreeNodes)
     {
-      SecurableClassDefinitionTree.LoadUnboundValue (SecurableClassDefinition.FindAllBaseClasses (), interim);
+      SecurableClassDefinitionTree.LoadUnboundValue(SecurableClassDefinition.FindAllBaseClasses(), interim);
       if (refreshTreeNodes)
-        SecurableClassDefinitionTree.RefreshTreeNodes ();
+        SecurableClassDefinitionTree.RefreshTreeNodes();
     }
 
     private void ExpandTreeNodes (WebTreeNodeCollection webTreeNodeCollection)
     {
       foreach (WebTreeNode treeNode in webTreeNodeCollection)
       {
-        treeNode.EvaluateExpand ();
-        ExpandTreeNodes (treeNode.Children);
+        treeNode.EvaluateExpand();
+        ExpandTreeNodes(treeNode.Children);
       }
     }
 
@@ -82,13 +82,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     {
       if (!IsReturningPostBack)
       {
-        var classDefinition = (SecurableClassDefinition) e.BusinessObjectTreeNode.BusinessObject;
-        var function = new EditPermissionsFormFunction (WxeTransactionMode.CreateRootWithAutoCommit , classDefinition.GetHandle());
-        var options = new WxeCallOptionsExternal (
+        var classDefinition = (SecurableClassDefinition)e.BusinessObjectTreeNode.BusinessObject;
+        var function = new EditPermissionsFormFunction(WxeTransactionMode.CreateRootWithAutoCommit , classDefinition.GetHandle());
+        var options = new WxeCallOptionsExternal(
             "_blank", "width=1000, height=700, resizable=yes, menubar=no, toolbar=no, location=no, status=no", true);
         try
         {
-          ExecuteFunction (function, new WxeCallArguments ((Control) sender, options));
+          ExecuteFunction(function, new WxeCallArguments((Control)sender, options));
         }
         catch (WxeCallExternalException)
         {
@@ -96,15 +96,15 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       }
       else
       {
-        var classDefinition = ((EditPermissionsFormFunction) ReturningFunction).CurrentObjectHandle.GetObject();
-        UnloadService.UnloadVirtualEndPoint (
+        var classDefinition = ((EditPermissionsFormFunction)ReturningFunction).CurrentObjectHandle.GetObject();
+        UnloadService.UnloadVirtualEndPoint(
             ClientTransaction.Current,
-            RelationEndPointID.Resolve (classDefinition, c => c.StatelessAccessControlList));
-        UnloadService.UnloadVirtualEndPoint (
+            RelationEndPointID.Resolve(classDefinition, c => c.StatelessAccessControlList));
+        UnloadService.UnloadVirtualEndPoint(
             ClientTransaction.Current,
-            RelationEndPointID.Resolve (classDefinition, c => c.StatefulAccessControlLists));
+            RelationEndPointID.Resolve(classDefinition, c => c.StatefulAccessControlLists));
 
-        LoadTree (false, true);
+        LoadTree(false, true);
       }
     }
   }

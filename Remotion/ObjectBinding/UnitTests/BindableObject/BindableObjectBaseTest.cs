@@ -35,82 +35,82 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     private Mock<IBusinessObjectClass> _businessObjectClassFake;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _implementationMock = new Mock<IBindableObjectBaseImplementation>();
-      _instance = new ClassDerivedFromBindableObjectBase (_implementationMock.Object);
+      _instance = new ClassDerivedFromBindableObjectBase(_implementationMock.Object);
 
       _propertyFake = new Mock<IBusinessObjectProperty>();
       _businessObjectClassFake = new Mock<IBusinessObjectClass>();
     }
 
     [Test]
-    public void BindableObjectProviderAttribute()
+    public void BindableObjectProviderAttribute ()
     {
-      Assert.That (typeof (BindableObjectBase).IsDefined (typeof (BindableObjectProviderAttribute), false), Is.True);
+      Assert.That(typeof(BindableObjectBase).IsDefined(typeof(BindableObjectProviderAttribute), false), Is.True);
     }
 
     [Test]
     public void BindableObjectBaseClassAttribute ()
     {
-      Assert.That (typeof (BindableObjectBase).IsDefined (typeof (BindableObjectBaseClassAttribute), false), Is.True);
+      Assert.That(typeof(BindableObjectBase).IsDefined(typeof(BindableObjectBaseClassAttribute), false), Is.True);
     }
 
     [Test]
     public void CreateImplementation ()
     {
-      var instance = new ClassDerivedFromBindableObjectBase ();
-      Assert.That (PrivateInvoke.GetNonPublicField (instance, "_implementation"), Is.InstanceOf (typeof (BindableObjectBaseImplementation)));
+      var instance = new ClassDerivedFromBindableObjectBase();
+      Assert.That(PrivateInvoke.GetNonPublicField(instance, "_implementation"), Is.InstanceOf(typeof(BindableObjectBaseImplementation)));
     }
 
     [Test]
     public void Implementation_IsInitialized ()
     {
       var instance = new ClassDerivedFromBindableObjectBase();
-      var mixin = (BindableObjectMixin) PrivateInvoke.GetNonPublicField (instance, "_implementation");
-      Assert.That (mixin.BusinessObjectClass, Is.Not.Null);
+      var mixin = (BindableObjectMixin)PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      Assert.That(mixin.BusinessObjectClass, Is.Not.Null);
     }
 
     [Test]
     public void Serialization ()
     {
-      var instance = new ClassDerivedFromBindableObjectBase ();
-      instance = Serializer.SerializeAndDeserialize (instance);
-      var mixin = (BindableObjectMixin) PrivateInvoke.GetNonPublicField (instance, "_implementation");
-      Assert.That (mixin.BusinessObjectClass, Is.Not.Null);
+      var instance = new ClassDerivedFromBindableObjectBase();
+      instance = Serializer.SerializeAndDeserialize(instance);
+      var mixin = (BindableObjectMixin)PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      Assert.That(mixin.BusinessObjectClass, Is.Not.Null);
     }
 
     [Test]
-    public void GetProperty()
+    public void GetProperty ()
     {
-      _implementationMock.Setup (mock => mock.GetProperty (_propertyFake.Object)).Returns (12).Verifiable();
+      _implementationMock.Setup(mock => mock.GetProperty(_propertyFake.Object)).Returns(12).Verifiable();
 
-      Assert.That (_instance.GetProperty (_propertyFake.Object), Is.EqualTo (12));
+      Assert.That(_instance.GetProperty(_propertyFake.Object), Is.EqualTo(12));
       _implementationMock.Verify();
     }
 
     [Test]
     public void SetProperty ()
     {
-      _implementationMock.Setup (mock => mock.SetProperty (_propertyFake.Object, 174)).Verifiable();
+      _implementationMock.Setup(mock => mock.SetProperty(_propertyFake.Object, 174)).Verifiable();
 
-      _instance.SetProperty (_propertyFake.Object, 174);
+      _instance.SetProperty(_propertyFake.Object, 174);
       _implementationMock.Verify();
     }
 
     [Test]
-    public void GetPropertyString()
+    public void GetPropertyString ()
     {
-      _implementationMock.Setup (mock => mock.GetPropertyString (_propertyFake.Object, "gj")).Returns ("yay").Verifiable();
+      _implementationMock.Setup(mock => mock.GetPropertyString(_propertyFake.Object, "gj")).Returns("yay").Verifiable();
 
-      Assert.That (_instance.GetPropertyString (_propertyFake.Object, "gj"), Is.EqualTo ("yay"));
-      _implementationMock.Verify(); 
+      Assert.That(_instance.GetPropertyString(_propertyFake.Object, "gj"), Is.EqualTo("yay"));
+      _implementationMock.Verify();
     }
 
     [Test]
     public void BindableObjectMixin_ImplementsMixinWithoutBaseObjectDependency ()
     {
-      Assert.That (typeof (BindableObjectMixin).CanAscribeTo (typeof (Mixin<,>)), Is.False);
+      Assert.That(typeof(BindableObjectMixin).CanAscribeTo(typeof(Mixin<,>)), Is.False);
     }
   }
 }

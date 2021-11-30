@@ -24,10 +24,10 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine.ExceptionHandling
   public class MissingUserControlFunction : WxeFunction
   {
     public MissingUserControlFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
-    private WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (MissingUserControlFunction), "ExecutionEngine/ExceptionHandling/MissingUserControlForm.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof(MissingUserControlFunction), "ExecutionEngine/ExceptionHandling/MissingUserControlForm.aspx");
   }
 }

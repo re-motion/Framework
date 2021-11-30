@@ -31,10 +31,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void Create ()
     {
-      var wrapper = SampleBindableDomainObject.NewObject ();
-      var mixin = BindableDomainObjectImplementation.Create (wrapper);
-      Assert.That (mixin.BusinessObjectClass, Is.Not.Null);
-      Assert.That (PrivateInvoke.GetNonPublicProperty (mixin, "Target"), Is.SameAs (wrapper));
+      var wrapper = SampleBindableDomainObject.NewObject();
+      var mixin = BindableDomainObjectImplementation.Create(wrapper);
+      Assert.That(mixin.BusinessObjectClass, Is.Not.Null);
+      Assert.That(PrivateInvoke.GetNonPublicProperty(mixin, "Target"), Is.SameAs(wrapper));
     }
 
     [Test]
@@ -42,65 +42,65 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var wrapper = SampleBindableDomainObject.NewObject ();
-      var mixin = BindableDomainObjectImplementation.Create (wrapper);
-      var deserializedData = Serializer.SerializeAndDeserialize (Tuple.Create (mixin, wrapper));
-      Assert.That (deserializedData.Item1.BusinessObjectClass, Is.Not.Null);
-      Assert.That (PrivateInvoke.GetNonPublicProperty (deserializedData.Item1, "Target"), Is.SameAs (deserializedData.Item2));
+      var wrapper = SampleBindableDomainObject.NewObject();
+      var mixin = BindableDomainObjectImplementation.Create(wrapper);
+      var deserializedData = Serializer.SerializeAndDeserialize(Tuple.Create(mixin, wrapper));
+      Assert.That(deserializedData.Item1.BusinessObjectClass, Is.Not.Null);
+      Assert.That(PrivateInvoke.GetNonPublicProperty(deserializedData.Item1, "Target"), Is.SameAs(deserializedData.Item2));
     }
 
     [Test]
     public void UniqueIdentifierViaImplementation ()
     {
-      var instance = SampleBindableDomainObject.NewObject ();
-      var mixin = (BindableDomainObjectImplementation) PrivateInvoke.GetNonPublicField (instance, typeof(BindableDomainObject), "_implementation");
-      Assert.That (mixin.UniqueIdentifier, Is.EqualTo (instance.ID.ToString()));
+      var instance = SampleBindableDomainObject.NewObject();
+      var mixin = (BindableDomainObjectImplementation)PrivateInvoke.GetNonPublicField(instance, typeof(BindableDomainObject), "_implementation");
+      Assert.That(mixin.UniqueIdentifier, Is.EqualTo(instance.ID.ToString()));
     }
 
     [Test]
     public void BaseUniqueIdentifier ()
     {
-      var wrapper = SampleBindableDomainObject.NewObject ();
-      var implementation = BindableDomainObjectImplementation.Create (wrapper);
-      Assert.That (implementation.BaseUniqueIdentifier, Is.EqualTo (wrapper.ID.ToString()));
+      var wrapper = SampleBindableDomainObject.NewObject();
+      var implementation = BindableDomainObjectImplementation.Create(wrapper);
+      Assert.That(implementation.BaseUniqueIdentifier, Is.EqualTo(wrapper.ID.ToString()));
     }
 
     [Test]
     public void UniqueIdentifier_ViaImplementation () // overriding UniqueIdentifier is not possbile in BindableDomainObjects
     {
-      var wrapper = SampleBindableDomainObject.NewObject ();
-      var implementation = BindableDomainObjectImplementation.Create (wrapper);
-      Assert.That (implementation.UniqueIdentifier, Is.EqualTo (wrapper.ID.ToString ()));
+      var wrapper = SampleBindableDomainObject.NewObject();
+      var implementation = BindableDomainObjectImplementation.Create(wrapper);
+      Assert.That(implementation.UniqueIdentifier, Is.EqualTo(wrapper.ID.ToString()));
     }
 
     [Test]
     public void BaseDisplayName ()
     {
-      var wrapper = SampleBindableDomainObject.NewObject ();
-      var implementation = BindableDomainObjectImplementation.Create (wrapper);
-      Assert.That (implementation.BaseDisplayName, Is.EqualTo (((IBusinessObject)wrapper).BusinessObjectClass.Identifier));
+      var wrapper = SampleBindableDomainObject.NewObject();
+      var implementation = BindableDomainObjectImplementation.Create(wrapper);
+      Assert.That(implementation.BaseDisplayName, Is.EqualTo(((IBusinessObject)wrapper).BusinessObjectClass.Identifier));
     }
 
     [Test]
     public void DisplayName_ViaImplementation_Default ()
     {
-      var wrapper = SampleBindableDomainObject.NewObject ();
-      var implementation = BindableDomainObjectImplementation.Create (wrapper);
-      Assert.That (implementation.DisplayName, Is.EqualTo (((IBusinessObject) wrapper).BusinessObjectClass.Identifier));
+      var wrapper = SampleBindableDomainObject.NewObject();
+      var implementation = BindableDomainObjectImplementation.Create(wrapper);
+      Assert.That(implementation.DisplayName, Is.EqualTo(((IBusinessObject)wrapper).BusinessObjectClass.Identifier));
     }
 
     [Test]
     public void DisplayName_ViaImplementation_Overridden ()
     {
-      var wrapper = SampleBindableDomainObjectWithOverriddenDisplayName.NewObject ();
-      var implementation = BindableDomainObjectImplementation.Create (wrapper);
-      Assert.That (implementation.DisplayName, Is.EqualTo ("TheDisplayName"));
+      var wrapper = SampleBindableDomainObjectWithOverriddenDisplayName.NewObject();
+      var implementation = BindableDomainObjectImplementation.Create(wrapper);
+      Assert.That(implementation.DisplayName, Is.EqualTo("TheDisplayName"));
     }
 
     [Test]
     public void BindableDomainObjectMixin_ImplementsMixinWithoutBaseObjectDependency ()
     {
-      Assert.That (typeof (BindableDomainObjectImplementation).CanAscribeTo (typeof (Mixin<,>)), Is.False);
+      Assert.That(typeof(BindableDomainObjectImplementation).CanAscribeTo(typeof(Mixin<,>)), Is.False);
     }
   }
 }

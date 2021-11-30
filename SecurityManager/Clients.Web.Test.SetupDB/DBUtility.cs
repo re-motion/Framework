@@ -36,34 +36,34 @@ public class DBUtility
 
   public static void ExecuteSqlFile (string sqlFile, SqlConnection connection)
   {
-    ExecuteSqlFile (sqlFile, connection, null, null);
+    ExecuteSqlFile(sqlFile, connection, null, null);
   }
 
   public static void ExecuteSqlFile (string sqlFile, SqlConnection connection, string databaseName)
   {
-    ExecuteSqlFile (sqlFile, connection, databaseName, null);
+    ExecuteSqlFile(sqlFile, connection, databaseName, null);
   }
 
   public static void ExecuteSqlFile (string sqlFile, SqlConnection connection, string databaseName, string databaseFilesPath)
   {
-    string sqlString = ReadFile (sqlFile);
+    string sqlString = ReadFile(sqlFile);
 
     if (databaseName != null && databaseName != string.Empty)
-      sqlString = sqlString.Replace ("<Database>", databaseName);
+      sqlString = sqlString.Replace("<Database>", databaseName);
 
     if (databaseFilesPath != null && databaseFilesPath != string.Empty)
-      sqlString = sqlString.Replace ("<DatabaseFilesPath>", databaseFilesPath);
+      sqlString = sqlString.Replace("<DatabaseFilesPath>", databaseFilesPath);
 
-    string[] sqlScriptParts = Regex.Split (
+    string[] sqlScriptParts = Regex.Split(
       sqlString, @"^[ \t]*GO[ \t]*(\r\n)?", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
     foreach (string sqlScriptPart in sqlScriptParts)
     {
-      if (sqlScriptPart.Replace ("\r", "").Replace ("\n", "").Replace ("\t", "").Trim() != string.Empty)
+      if (sqlScriptPart.Replace("\r", "").Replace("\n", "").Replace("\t", "").Trim() != string.Empty)
       {
-        using (SqlCommand command = new SqlCommand (sqlScriptPart, connection))
+        using (SqlCommand command = new SqlCommand(sqlScriptPart, connection))
         {
-          command.ExecuteNonQuery ();
+          command.ExecuteNonQuery();
         }
       }
     }
@@ -71,9 +71,9 @@ public class DBUtility
 
   public static string ReadFile (string file)
   {
-    using (StreamReader reader = new StreamReader (file, Encoding.UTF8))
+    using (StreamReader reader = new StreamReader(file, Encoding.UTF8))
     {
-      return reader.ReadToEnd ();
+      return reader.ReadToEnd();
     }
   }
 
@@ -89,7 +89,7 @@ public class DBUtility
 
   public static void LoadAllCsvFiles (string directory, bool resetTables, SqlConnection connection)
   {
-    LoadAllCsvFiles (directory, resetTables, connection, null);
+    LoadAllCsvFiles(directory, resetTables, connection, null);
   }
 
   public static void LoadAllCsvFiles (string directory, bool resetTables, SqlConnection connection, SqlTransaction transaction)
@@ -97,13 +97,13 @@ public class DBUtility
     string[] tables = {
         "File",
         "FileItem",
-        "Tenant", 
-        "Group", 
-        "GroupType", 
-        "GroupTypePosition", 
-        "Position", 
-        "Role", 
-        "User", 
+        "Tenant",
+        "Group",
+        "GroupType",
+        "GroupTypePosition",
+        "Position",
+        "Role",
+        "User",
         "SecurableClassDefinition",
         "StatePropertyDefinition",
         "EnumValueDefinition",
@@ -120,9 +120,9 @@ public class DBUtility
 
     if (resetTables)
     {
-      StringBuilder sb = new StringBuilder (1000);
+      StringBuilder sb = new StringBuilder(1000);
 
-      sb.Append (
+      sb.Append(
           @"DECLARE @statement nvarchar (MAX)
           SET @statement = ''
           SELECT @statement = @statement + 'ALTER TABLE [' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' 
@@ -132,68 +132,68 @@ public class DBUtility
           exec sp_executesql @statement;");
 
       foreach (string table in tables)
-        sb.AppendFormat ("DELETE FROM [{0}];\r\n", table);
-      
-      SqlCommand command = new SqlCommand (sb.ToString(), connection, transaction);
-      command.ExecuteNonQuery ();
+        sb.AppendFormat("DELETE FROM [{0}];\r\n", table);
+
+      SqlCommand command = new SqlCommand(sb.ToString(), connection, transaction);
+      command.ExecuteNonQuery();
     }
 
     for (int i = tables.Length - 1; i >= 0; --i)
     {
-      StringBuilder sb = new StringBuilder (directory, directory.Length + 30);
-      if (! directory.EndsWith ("\\"))
-        sb.Append ("\\");
-      sb.Append (tables[i]);
-      sb.Append (".csv");
+      StringBuilder sb = new StringBuilder(directory, directory.Length + 30);
+      if (! directory.EndsWith("\\"))
+        sb.Append("\\");
+      sb.Append(tables[i]);
+      sb.Append(".csv");
       string path = sb.ToString();
       if (new FileInfo(path).Exists)
-        LoadCsvFile (path.ToString(), connection, transaction);
+        LoadCsvFile(path.ToString(), connection, transaction);
     }
   }
 
   public static void LoadCsvFile (string path, SqlConnection connection, SqlTransaction transaction)
   {
-    TimeTrace ("start of loadData");
+    TimeTrace("start of loadData");
 
-    FileInfo fileInfo = new FileInfo (path);
-    int lastBs = path.LastIndexOf ("\\");
-    string name = (lastBs != -1) ? path.Substring (lastBs + 1) : path;
-    int lastDot = name.LastIndexOf (".");
-    string tableName = (lastDot != -1) ? name.Substring (0, lastDot) : name;
+    FileInfo fileInfo = new FileInfo(path);
+    int lastBs = path.LastIndexOf("\\");
+    string name = (lastBs != -1) ? path.Substring(lastBs + 1) : path;
+    int lastDot = name.LastIndexOf(".");
+    string tableName = (lastDot != -1) ? name.Substring(0, lastDot) : name;
 
     StreamReader csvReader = null;
     try
     {
-      Trace ("------------");
-      TimeTrace ("before read csv file");
+      Trace("------------");
+      TimeTrace("before read csv file");
 
-      csvReader = new StreamReader (path, Encoding.UTF8);
+      csvReader = new StreamReader(path, Encoding.UTF8);
 
       string columnNameLine = csvReader.ReadLine();
-      int commaPos = columnNameLine.IndexOf (",");
+      int commaPos = columnNameLine.IndexOf(",");
       char delimiter = (commaPos != -1) ? ',' : ';';
-      string[] columnNames = columnNameLine.Split (delimiter);
+      string[] columnNames = columnNameLine.Split(delimiter);
 
       #region tracing
         #if VERBOSE
-          Trace ("tableName: {0}", tableName);
+          Trace("tableName: {0}", tableName);
           foreach (string columnName in columnNames)
-            Trace ("column: {0}", columnName);
-          Trace ("------------");
+            Trace("column: {0}", columnName);
+          Trace("------------");
         #endif
       #endregion
 
-      string[][] records = ParseCsv (csvReader.ReadToEnd(), delimiter);
-      TimeTrace ("after read csv file");
-      LoadData (tableName, columnNames, records, connection, transaction);
+      string[][] records = ParseCsv(csvReader.ReadToEnd(), delimiter);
+      TimeTrace("after read csv file");
+      LoadData(tableName, columnNames, records, connection, transaction);
 
       #region tracing
         #if VERBOSE
           foreach (string[] record in records)
           {
             for (int i = 0; i < record.Length; ++i)
-              Trace (columnNames[i] + ": " + record[i]);
-            Trace ("----");
+              Trace(columnNames[i] + ": " + record[i]);
+            Trace("----");
           }
         #endif
       #endregion
@@ -203,34 +203,34 @@ public class DBUtility
       if (csvReader != null)
         csvReader.Close();
     }
-    TimeTrace ("end of LoadData");
+    TimeTrace("end of LoadData");
   }
 
   private static void LoadData (
       string tableName, string[] columnNames, string[][] records, SqlConnection connection, SqlTransaction transaction)
   {
-    DataTable schemaTable = (DataTable) _schemaTables[tableName];
+    DataTable schemaTable = (DataTable)_schemaTables[tableName];
     if (schemaTable == null)
     {
       string selectStatement = "SELECT * FROM [" + tableName + "]";
-      SqlDataAdapter schemaAdapter = new SqlDataAdapter (selectStatement, connection);
-      TimeTrace ("before reading schema");
+      SqlDataAdapter schemaAdapter = new SqlDataAdapter(selectStatement, connection);
+      TimeTrace("before reading schema");
 
       schemaAdapter.SelectCommand.Transaction = transaction;
-      using (SqlDataReader schemaReader = schemaAdapter.SelectCommand.ExecuteReader (
+      using (SqlDataReader schemaReader = schemaAdapter.SelectCommand.ExecuteReader(
               CommandBehavior.SchemaOnly | CommandBehavior.KeyInfo))
       {
-        schemaTable = schemaReader.GetSchemaTable ();
+        schemaTable = schemaReader.GetSchemaTable();
         _schemaTables[tableName] = schemaTable;
         schemaReader.Close();
       }
-      TimeTrace ("after reading schema");
+      TimeTrace("after reading schema");
     }
 
     Type[] columnTypes = new Type[columnNames.Length];
     bool[] columnNullableFlags = new bool[columnNames.Length];
 
-    ArrayList columnNamesComplete = new ArrayList (columnNames);
+    ArrayList columnNamesComplete = new ArrayList(columnNames);
     bool hasCreatedBy = false;
     bool hasCreatedAt = false;
     bool hasChangedBy = false;
@@ -239,71 +239,71 @@ public class DBUtility
 
     foreach (DataRow schemaRow in schemaTable.Rows)
     {
-      string columnName = (string) schemaRow["ColumnName"];
-      TimeTrace ("preparing schema for " + columnName);
-      int index = Array.IndexOf (columnNames, columnName);
+      string columnName = (string)schemaRow["ColumnName"];
+      TimeTrace("preparing schema for " + columnName);
+      int index = Array.IndexOf(columnNames, columnName);
 
       if (index != -1)
       {
-        columnTypes[index] = (Type) schemaRow["DataType"];
-        columnNullableFlags[index] = (bool) schemaRow["AllowDBNull"];
+        columnTypes[index] = (Type)schemaRow["DataType"];
+        columnNullableFlags[index] = (bool)schemaRow["AllowDBNull"];
       }
       else if (columnName == "CreatedBy")
       {
         hasCreatedBy = true;
-        columnNamesComplete.Add ("CreatedBy");
+        columnNamesComplete.Add("CreatedBy");
       }
       else if (columnName == "CreatedAt")
       {
         hasCreatedAt = true;
-        columnNamesComplete.Add ("CreatedAt");
+        columnNamesComplete.Add("CreatedAt");
       }
       else if (columnName == "ChangedBy")
       {
         hasChangedBy = true;
-        columnNamesComplete.Add ("ChangedBy");
+        columnNamesComplete.Add("ChangedBy");
       }
       else if (columnName == "ChangedAt")
       {
         hasChangedAt = true;
-        columnNamesComplete.Add ("ChangedAt");
+        columnNamesComplete.Add("ChangedAt");
       }
       else if (columnName == "ClassID")
       {
         hasClassID = true;
-        columnNamesComplete.Add ("ClassID");
+        columnNamesComplete.Add("ClassID");
       }
     }
-    TimeTrace ("finished preparing columns");
+    TimeTrace("finished preparing columns");
 
     // Not all tables have identity columns (e.g. Resources) => 
     // Check if table has an identity column before using IDENTITY_INSERT.
-    string sqlStatementTemplate = 
+    string sqlStatementTemplate =
         "IF EXISTS (SELECT * FROM syscolumns WHERE id = OBJECT_ID ('[{0}]') and (colstat & 1 <> 0))\n" +
         "  SET IDENTITY_INSERT [{0}] {1}";
 
-    SqlCommand identityOnCommand = new SqlCommand (string.Format (sqlStatementTemplate, tableName, "ON"), connection, transaction);
-    SqlCommand identityOffCommand = new SqlCommand (string.Format (sqlStatementTemplate, tableName, "OFF"), connection, transaction);
+    SqlCommand identityOnCommand = new SqlCommand(string.Format(sqlStatementTemplate, tableName, "ON"), connection, transaction);
+    SqlCommand identityOffCommand = new SqlCommand(string.Format(sqlStatementTemplate, tableName, "OFF"), connection, transaction);
 
-    string commandString = GetCommandString (tableName, (string[]) columnNamesComplete.ToArray (typeof (string)));
+    string commandString = GetCommandString(tableName, (string[])columnNamesComplete.ToArray(typeof(string)));
 
-    TimeTrace ("before set identity insert");
+    TimeTrace("before set identity insert");
     identityOnCommand.ExecuteNonQuery();
-    TimeTrace ("after set identity insert");
+    TimeTrace("after set identity insert");
 
     for (int idxRecord = 0; idxRecord < records.Length; ++idxRecord)
     {
-      TimeTrace ("prepare insert record " + idxRecord);
-      SqlCommand command = new SqlCommand (commandString, connection, transaction);
-      TimeTrace ("after new sqlcommand" + idxRecord);
+      TimeTrace("prepare insert record " + idxRecord);
+      SqlCommand command = new SqlCommand(commandString, connection, transaction);
+      TimeTrace("after new sqlcommand" + idxRecord);
       string[] record = records[idxRecord];
       if (record.Length > columnNames.Length)
       {
-        throw new ApplicationException (string.Format ("error in row {0} (line {1}): field count = {2}, column count = {3}.", 
+        throw new ApplicationException(string.Format("error in row {0} (line {1}): field count = {2}, column count = {3}.",
             idxRecord, idxRecord + 2, record.Length, columnNames.Length));
       }
 
-      TimeTrace ("before parameters");
+      TimeTrace("before parameters");
       bool isClassIDPresent = false;
       for (int idxColumn = 0; idxColumn < columnNames.Length; ++idxColumn)
       {
@@ -318,52 +318,52 @@ public class DBUtility
         if (columnNames[idxColumn] == "ClassID")
           isClassIDPresent = true;
 
-        if (columnType == typeof (string))
+        if (columnType == typeof(string))
         {
-          string columnStringValue = columnValue.Replace ("\n", "\r\n");
-          parameter = command.Parameters.Add (parameterName, SqlDbType.VarChar, columnStringValue.Length);
-          parameter.Value = (columnStringValue.Trim () == string.Empty && columnIsNullable)
-              ? DBNull.Value : (object) columnStringValue;
+          string columnStringValue = columnValue.Replace("\n", "\r\n");
+          parameter = command.Parameters.Add(parameterName, SqlDbType.VarChar, columnStringValue.Length);
+          parameter.Value = (columnStringValue.Trim() == string.Empty && columnIsNullable)
+              ? DBNull.Value : (object)columnStringValue;
         }
-        else if (columnType == typeof (int))
+        else if (columnType == typeof(int))
         {
-          parameter = command.Parameters.Add (parameterName, SqlDbType.Int);
-          parameter.Value = isNull ? DBNull.Value : (object) int.Parse (columnValue);
+          parameter = command.Parameters.Add(parameterName, SqlDbType.Int);
+          parameter.Value = isNull ? DBNull.Value : (object)int.Parse(columnValue);
         }
-        else if (columnType == typeof (bool))
+        else if (columnType == typeof(bool))
         {
-          parameter = command.Parameters.Add (parameterName, SqlDbType.Bit);
-          parameter.Value = isNull ? DBNull.Value : (object) (bool)(columnValue.Trim() == "1");
+          parameter = command.Parameters.Add(parameterName, SqlDbType.Bit);
+          parameter.Value = isNull ? DBNull.Value : (object)(bool)(columnValue.Trim() == "1");
         }
-        else if (columnType == typeof (DateTime))
+        else if (columnType == typeof(DateTime))
         {
-          parameter = command.Parameters.Add (parameterName, SqlDbType.DateTime);
-          parameter.Value = isNull ? DBNull.Value : (object) DateTime.Parse (columnValue.Trim(), new CultureInfo ("en-US"));
+          parameter = command.Parameters.Add(parameterName, SqlDbType.DateTime);
+          parameter.Value = isNull ? DBNull.Value : (object)DateTime.Parse(columnValue.Trim(), new CultureInfo("en-US"));
         }
-        else if (columnType == typeof (Decimal))
+        else if (columnType == typeof(Decimal))
         {
-          parameter = command.Parameters.Add (parameterName, SqlDbType.Decimal);
-          parameter.Value = isNull ? DBNull.Value : (object) Decimal.Parse (columnValue, CultureInfo.InvariantCulture);
+          parameter = command.Parameters.Add(parameterName, SqlDbType.Decimal);
+          parameter.Value = isNull ? DBNull.Value : (object)Decimal.Parse(columnValue, CultureInfo.InvariantCulture);
         }
-        else if (columnType == typeof (Double))
+        else if (columnType == typeof(Double))
         {
-          parameter = command.Parameters.Add (parameterName, SqlDbType.Float);
-          parameter.Value = isNull ? DBNull.Value : (object) Double.Parse (columnValue, CultureInfo.InvariantCulture);
+          parameter = command.Parameters.Add(parameterName, SqlDbType.Float);
+          parameter.Value = isNull ? DBNull.Value : (object)Double.Parse(columnValue, CultureInfo.InvariantCulture);
         }
-        else if (columnType == typeof (Guid))
+        else if (columnType == typeof(Guid))
         {
-          parameter = command.Parameters.Add (parameterName, SqlDbType.UniqueIdentifier);
-          parameter.Value = isNull ? DBNull.Value : (object) new Guid (columnValue);
+          parameter = command.Parameters.Add(parameterName, SqlDbType.UniqueIdentifier);
+          parameter.Value = isNull ? DBNull.Value : (object)new Guid(columnValue);
         }
-        else if (columnType == typeof (Byte[]))
+        else if (columnType == typeof(Byte[]))
         {
-          parameter = command.Parameters.Add (parameterName, SqlDbType.Image);
-          parameter.Value = isNull ? DBNull.Value : (object) Encoding.UTF8.GetBytes (columnValue);
+          parameter = command.Parameters.Add(parameterName, SqlDbType.Image);
+          parameter.Value = isNull ? DBNull.Value : (object)Encoding.UTF8.GetBytes(columnValue);
         }
-        else 
+        else
         {
-          throw new ApplicationException (string.Format ("Unsupported type in column {0} (Views?). Cannot insert {1} values.",
-              columnNames[idxColumn], 
+          throw new ApplicationException(string.Format("Unsupported type in column {0} (Views?). Cannot insert {1} values.",
+              columnNames[idxColumn],
               (columnType != null) ? columnType.FullName : "(unknown type)"));
         }
       }
@@ -372,24 +372,24 @@ public class DBUtility
       {
         string classID = tableName;
 
-        SqlParameter parameter = command.Parameters.Add ("@ClassID", SqlDbType.VarChar, classID.Length);
+        SqlParameter parameter = command.Parameters.Add("@ClassID", SqlDbType.VarChar, classID.Length);
         parameter.Value = classID;
       }
 
-      TimeTrace ("after parameters");
+      TimeTrace("after parameters");
 
       string userName = "TestDataLoader";
       if (hasCreatedBy)
-        command.Parameters.Add ("@CreatedBy", SqlDbType.VarChar, userName.Length).Value = userName;
+        command.Parameters.Add("@CreatedBy", SqlDbType.VarChar, userName.Length).Value = userName;
       if (hasCreatedAt)
-        command.Parameters.AddWithValue ("@CreatedAt", DateTime.Now);
+        command.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
       if (hasChangedBy)
-        command.Parameters.Add ("@ChangedBy", SqlDbType.VarChar, userName.Length).Value = userName;
+        command.Parameters.Add("@ChangedBy", SqlDbType.VarChar, userName.Length).Value = userName;
       if (hasChangedAt)
-        command.Parameters.AddWithValue ("@ChangedAt", DateTime.Now);
+        command.Parameters.AddWithValue("@ChangedAt", DateTime.Now);
 
-      TimeTrace ("before executeNonQuery()");
-      int rows = command.ExecuteNonQuery ();
+      TimeTrace("before executeNonQuery()");
+      int rows = command.ExecuteNonQuery();
     }
 
     identityOffCommand.ExecuteNonQuery();
@@ -397,9 +397,9 @@ public class DBUtility
 
   private static string GetCommandString (string tableName, string[] columnNames)
   {
-    StringBuilder columns = new StringBuilder ();
-    StringBuilder parameters = new StringBuilder ();
-    StringBuilder setStatements = new StringBuilder ();
+    StringBuilder columns = new StringBuilder();
+    StringBuilder parameters = new StringBuilder();
+    StringBuilder setStatements = new StringBuilder();
 
     bool hasID = false;
     bool firstSetParameter = true;
@@ -408,13 +408,13 @@ public class DBUtility
     {
       if (i > 0)
       {
-        columns.Append (", ");
-        parameters.Append (", ");
+        columns.Append(", ");
+        parameters.Append(", ");
       }
       string columnName = columnNames[i];
 
-      columns.Append ("[" + columnName + "]");
-      parameters.Append ("@" + columnName);
+      columns.Append("[" + columnName + "]");
+      parameters.Append("@" + columnName);
 
       if (columnName.ToLower() == "id")
         hasID = true;
@@ -423,14 +423,14 @@ public class DBUtility
         if (firstSetParameter)
           firstSetParameter = false;
         else
-          setStatements.Append (", ");
-        setStatements.Append ("[" + columnName + "] = @" + columnName);
+          setStatements.Append(", ");
+        setStatements.Append("[" + columnName + "] = @" + columnName);
       }
     }
 
     if (hasID)
     {
-      return string.Format (
+      return string.Format(
           "IF EXISTS (SELECT * FROM [{0}] WHERE ID = @id)"
             + "\n   UPDATE [{0}] SET {3}"
             + "\n   WHERE ID = @id"
@@ -441,18 +441,18 @@ public class DBUtility
     }
     else
     {
-      return string.Format ("INSERT INTO {0} ( {1} ) VALUES ( {2} )", 
+      return string.Format("INSERT INTO {0} ( {1} ) VALUES ( {2} )",
           tableName, columns, parameters);
     }
   }
 
   private static string[][] ParseCsv (string csvContent, char delimiter)
   {
-    ArrayList records = new ArrayList ();
-    ArrayList cells = new ArrayList ();
+    ArrayList records = new ArrayList();
+    ArrayList cells = new ArrayList();
 
     int state = 0;
-    StringBuilder cell = new StringBuilder ();
+    StringBuilder cell = new StringBuilder();
     for (int i = 0; i < csvContent.Length; ++i)
     {
       char c = csvContent[i];
@@ -462,8 +462,8 @@ public class DBUtility
         case 0: // within cell, outside quotation marks
           if (c == delimiter)
           {
-            cells.Add (cell.ToString());
-            cell = new StringBuilder ();
+            cells.Add(cell.ToString());
+            cell = new StringBuilder();
           }
           else if (c == '"')
           {
@@ -471,60 +471,60 @@ public class DBUtility
           }
           else if (c == '\r' && nextC == '\n')
           {
-            cells.Add (cell.ToString());
-            records.Add (cells.ToArray (typeof(string)));
-            cells = new ArrayList ();
-            cell = new StringBuilder ();
+            cells.Add(cell.ToString());
+            records.Add(cells.ToArray(typeof(string)));
+            cells = new ArrayList();
+            cell = new StringBuilder();
             ++i;
           }
           else
           {
-            cell.Append (c);
+            cell.Append(c);
           }
           break;
-        
+
         case 1: // within quotation marks
           if (c == '"' && nextC == '"')
           {
-            cell.Append ('"');
+            cell.Append('"');
             ++i;
           }
           else if (c == '"')
           {
             state = 0;
           }
-          else 
+          else
           {
-            cell.Append (c);
+            cell.Append(c);
           }
           break;
       }
     }
-    return (string[][]) records.ToArray (typeof (string[]));
+    return (string[][])records.ToArray(typeof(string[]));
   }
 
-  [Conditional ("VERBOSE")]
+  [Conditional("VERBOSE")]
   private static void TimeTrace (string msg)
   {
     #if VERBOSE
       DateTime now = DateTime.Now;
       TimeSpan diff = now - s_prevNow;
-      string time = string.Format("{0}.{1:D3}\t{2,5}", now.ToLongTimeString (), now.Millisecond, diff.Milliseconds);
-      Debug.WriteLine (time + "\t" + msg);
+      string time = string.Format("{0}.{1:D3}\t{2,5}", now.ToLongTimeString(), now.Millisecond, diff.Milliseconds);
+      Debug.WriteLine(time + "\t" + msg);
       s_prevNow = now;
     #endif 
   }
-  
-  [Conditional ("VERBOSE")]
+
+  [Conditional("VERBOSE")]
   private static void Trace (string msg)
   {
-    Debug.WriteLine (msg);
+    Debug.WriteLine(msg);
   }
-  
-  [Conditional ("VERBOSE")]
+
+  [Conditional("VERBOSE")]
   private static void Trace (string format, params object[] args)
   {
-    Debug.WriteLine (string.Format (format, args));
+    Debug.WriteLine(string.Format(format, args));
   }
 
   // member fields

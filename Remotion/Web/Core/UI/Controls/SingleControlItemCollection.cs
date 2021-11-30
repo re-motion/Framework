@@ -40,7 +40,7 @@ public class SingleControlItemCollection
   }
 
   public SingleControlItemCollection (Type[] supportedTypes)
-    : this (null, supportedTypes)
+    : this(null, supportedTypes)
   {
   }
 
@@ -49,8 +49,8 @@ public class SingleControlItemCollection
     get { return _controlItem; }
     set
     {
-      if (value != null && ! IsSupportedType (value)) 
-        throw ArgumentUtility.CreateArgumentTypeException ("value", value.GetType(), null);
+      if (value != null && ! IsSupportedType(value))
+        throw ArgumentUtility.CreateArgumentTypeException("value", value.GetType(), null);
       _controlItem = value;
       if (_controlItem != null)
         _controlItem.OwnerControl = _ownerControl;
@@ -75,16 +75,16 @@ public class SingleControlItemCollection
 
     foreach (Type type in _supportedTypes)
     {
-      if (type.IsAssignableFrom (controlItemType))
+      if (type.IsAssignableFrom(controlItemType))
         return true;
     }
-    
+
     return false;
   }
 
-  IEnumerator IEnumerable.GetEnumerator()
+  IEnumerator IEnumerable.GetEnumerator ()
   {
-     return new SingleControlItemCollectionEnumerator (_controlItem);
+     return new SingleControlItemCollectionEnumerator(_controlItem);
   }
 
   void ICollection.CopyTo (Array array, int index)
@@ -92,41 +92,41 @@ public class SingleControlItemCollection
     throw new NotSupportedException();
   }
 
-  int ICollection.Count 
+  int ICollection.Count
   {
     get { return 1; }
   }
 
-  bool ICollection.IsSynchronized 
-  { 
+  bool ICollection.IsSynchronized
+  {
     get { return true; }
   }
 
   object ICollection.SyncRoot
-  { 
+  {
     get { return this; }
   }
 
   /// <summary> For Designer Support. (VS2003, VS2005) </summary>
   /// <exclude/>
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public IControlItem? this[int index]
   {
 	  get
 	  {
-      if (index > 0) throw new NotSupportedException ("Getting an element above index 0 is not implemented.");
+      if (index > 0) throw new NotSupportedException("Getting an element above index 0 is not implemented.");
       return ControlItem;
 	  }
 	  set
 	  {
-      if (index > 0) throw new NotSupportedException ("Setting an element above index 0 is not implemented.");
+      if (index > 0) throw new NotSupportedException("Setting an element above index 0 is not implemented.");
       ControlItem = value;
 	  }
   }
 
   /// <summary> For Designer Support. (VS2003, VS2005) </summary>
   /// <exclude/>
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public int Add (IControlItem value)
   {
     ControlItem = value;
@@ -147,7 +147,7 @@ public class SingleControlItemCollectionEnumerator: IEnumerator
     _isEnd = false;
   }
 
-  public void Reset()
+  public void Reset ()
   {
     _isMoved = false;
     _isEnd = false;
@@ -157,13 +157,13 @@ public class SingleControlItemCollectionEnumerator: IEnumerator
   {
     get
     {
-      if (! _isMoved) throw new InvalidOperationException ("The enumerator is positioned before the first element.");
-      if (_isEnd) throw new InvalidOperationException ("The enumerator is positioned after the last element.");
+      if (! _isMoved) throw new InvalidOperationException("The enumerator is positioned before the first element.");
+      if (_isEnd) throw new InvalidOperationException("The enumerator is positioned after the last element.");
       return _controlItem;
     }
   }
 
-  public bool MoveNext()
+  public bool MoveNext ()
   {
     if (_isMoved)
       _isEnd = true;

@@ -41,66 +41,66 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       _serviceFactory = BindableObjectServiceFactory.Create();
       _serviceMixin = Mixin.Get<BindableDomainObjectServiceFactoryMixin>(_serviceFactory);
 
-      _mockRepository = new MockRepository ();
-      _bindableDomainObjectProvider = _mockRepository.Stub<IBusinessObjectProviderWithIdentity> ();
-      _bindableObjectProvider = _mockRepository.Stub<IBusinessObjectProviderWithIdentity> ();
-      SetupResult.For (_bindableDomainObjectProvider.ProviderAttribute).Return (new BindableDomainObjectProviderAttribute());
-      SetupResult.For (_bindableObjectProvider.ProviderAttribute).Return (new BindableObjectProviderAttribute ());
+      _mockRepository = new MockRepository();
+      _bindableDomainObjectProvider = _mockRepository.Stub<IBusinessObjectProviderWithIdentity>();
+      _bindableObjectProvider = _mockRepository.Stub<IBusinessObjectProviderWithIdentity>();
+      SetupResult.For(_bindableDomainObjectProvider.ProviderAttribute).Return(new BindableDomainObjectProviderAttribute());
+      SetupResult.For(_bindableObjectProvider.ProviderAttribute).Return(new BindableObjectProviderAttribute());
       _mockRepository.ReplayAll();
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.That (_serviceMixin, Is.Not.Null);
-      Assert.That (_serviceMixin, Is.InstanceOf (typeof (IBusinessObjectServiceFactory)));
+      Assert.That(_serviceMixin, Is.Not.Null);
+      Assert.That(_serviceMixin, Is.InstanceOf(typeof(IBusinessObjectServiceFactory)));
     }
 
     [Test]
     public void GetService_FromIBusinessObjectStringFormatterService ()
     {
-      Assert.That (
-          _serviceFactory.CreateService (_bindableDomainObjectProvider, typeof (IBusinessObjectStringFormatterService)),
-          Is.InstanceOf (typeof (BusinessObjectStringFormatterService)));
+      Assert.That(
+          _serviceFactory.CreateService(_bindableDomainObjectProvider, typeof(IBusinessObjectStringFormatterService)),
+          Is.InstanceOf(typeof(BusinessObjectStringFormatterService)));
     }
 
     [Test]
     public void GetService_FromIGetObjectService ()
     {
-      Assert.That (
-          _serviceFactory.CreateService (_bindableDomainObjectProvider, typeof (IGetObjectService)),
-          Is.InstanceOf (typeof (BindableDomainObjectGetObjectService)));
+      Assert.That(
+          _serviceFactory.CreateService(_bindableDomainObjectProvider, typeof(IGetObjectService)),
+          Is.InstanceOf(typeof(BindableDomainObjectGetObjectService)));
     }
 
     [Test]
     public void GetService_FromISearchAvailableObjectsService ()
     {
-      Assert.That (
-          _serviceFactory.CreateService (_bindableDomainObjectProvider, typeof (ISearchAvailableObjectsService)),
-          Is.InstanceOf (typeof (BindableDomainObjectCompoundSearchService)));
+      Assert.That(
+          _serviceFactory.CreateService(_bindableDomainObjectProvider, typeof(ISearchAvailableObjectsService)),
+          Is.InstanceOf(typeof(BindableDomainObjectCompoundSearchService)));
     }
 
     [Test]
     public void GetService_FromIGetObjectServiceWithBindableObjectProvider ()
     {
-      Assert.That (
-          _serviceFactory.CreateService (_bindableObjectProvider, typeof (IGetObjectService)),
+      Assert.That(
+          _serviceFactory.CreateService(_bindableObjectProvider, typeof(IGetObjectService)),
           Is.Null);
     }
 
     [Test]
     public void GetService_FromISearchAvailableObjectsServiceWithBindableObjectProvider ()
     {
-      Assert.That (
-          _serviceFactory.CreateService (_bindableObjectProvider, typeof (ISearchAvailableObjectsService)),
+      Assert.That(
+          _serviceFactory.CreateService(_bindableObjectProvider, typeof(ISearchAvailableObjectsService)),
           Is.Null);
     }
 
     [Test]
     public void GetService_FromUnknownService ()
     {
-      Assert.That (
-          _serviceFactory.CreateService (_bindableDomainObjectProvider, typeof (IStubService)),
+      Assert.That(
+          _serviceFactory.CreateService(_bindableDomainObjectProvider, typeof(IStubService)),
           Is.Null);
     }
   }

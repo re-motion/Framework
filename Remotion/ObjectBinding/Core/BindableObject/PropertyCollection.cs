@@ -43,15 +43,15 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public PropertyCollection (IEnumerable<PropertyBase> properties)
     {
-      ArgumentUtility.CheckNotNull ("properties", properties);
+      ArgumentUtility.CheckNotNull("properties", properties);
 
       foreach (var property in properties)
-        _innerCollection.Add (property);
+        _innerCollection.Add(property);
     }
 
     public bool Contains (string propertyIdentifier)
     {
-      return _innerCollection.Contains (propertyIdentifier);
+      return _innerCollection.Contains(propertyIdentifier);
     }
 
     public PropertyBase this[string propertyIdentifier]
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public PropertyBase[] ToArray ()
     {
-      return ArrayUtility.Convert (_innerCollection);
+      return ArrayUtility.Convert(_innerCollection);
     }
   }
 }

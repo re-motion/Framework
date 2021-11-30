@@ -43,13 +43,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _productReview3 = DomainObjectIDs.ProductReview3.GetObject<ProductReview>();
       _product1 = DomainObjectIDs.Product1.GetObject<Product>();
 
-      var stateUpdateRaisingEndPointDecorator = (StateUpdateRaisingVirtualCollectionEndPointDecorator)
-          TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad (
-              RelationEndPointID.Create (
+      var stateUpdateRaisingEndPointDecorator = (StateUpdateRaisingVirtualCollectionEndPointDecorator)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(
+              RelationEndPointID.Create(
                   DomainObjectIDs.Product1,
-                  typeof (Product),
+                  typeof(Product),
                   "Reviews"));
-      _productEndPoint = (VirtualCollectionEndPoint) stateUpdateRaisingEndPointDecorator.InnerEndPoint;
+      _productEndPoint = (VirtualCollectionEndPoint)stateUpdateRaisingEndPointDecorator.InnerEndPoint;
     }
 
     [Test]
@@ -57,21 +56,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var newProductReview = ProductReview.NewObject();
       newProductReview.CreatedAt = DateTime.Now;
-      Assert.That (
+      Assert.That(
           _productEndPoint.Collection,
-          Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
+          Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3 }));
+      Assert.That(_productEndPoint.IsDataComplete, Is.True);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
 
       newProductReview.Product = _product1;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
-      Assert.That (
+      Assert.That(_productEndPoint.IsDataComplete, Is.True);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(
           _productEndPoint.Collection,
-          Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3, newProductReview }),
+          Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3, newProductReview }),
           "changes go down to actual data store");
-      Assert.That (newProductReview.Product, Is.SameAs (_productEndPoint.GetDomainObject()), "bidirectional modification");
+      Assert.That(newProductReview.Product, Is.SameAs(_productEndPoint.GetDomainObject()), "bidirectional modification");
     }
 
     [Test]
@@ -79,18 +78,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var newProductReview = ProductReview.NewObject();
       newProductReview.CreatedAt = DateTime.Now;
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
 
       newProductReview.Product = _product1;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
-      Assert.That (
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(
           _productEndPoint.Collection,
-          Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3, newProductReview }),
+          Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3, newProductReview }),
           "changes go down to actual data store");
-      Assert.That (newProductReview.Product, Is.SameAs (_productEndPoint.GetDomainObject()), "bidirectional modification");
+      Assert.That(newProductReview.Product, Is.SameAs(_productEndPoint.GetDomainObject()), "bidirectional modification");
     }
 
     [Test]
@@ -99,10 +98,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       SetDatabaseModifyable();
 
       _productEndPoint.EnsureDataComplete();
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
-      Assert.That (
+      Assert.That(_productEndPoint.IsDataComplete, Is.True);
+      Assert.That(
           _productEndPoint.Collection,
-          Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }),
+          Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3 }),
           "changes go down to actual data store");
 
       ObjectID newProductReviewID;
@@ -119,10 +118,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var newProductReview2 = newProductReviewID.GetObject<ProductReview>();
 
-      Assert.That (newProductReview2.Product, Is.SameAs (_productEndPoint.GetDomainObject()), "bidirectional modification");
-      Assert.That (
+      Assert.That(newProductReview2.Product, Is.SameAs(_productEndPoint.GetDomainObject()), "bidirectional modification");
+      Assert.That(
           _productEndPoint.Collection,
-          Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3, newProductReview2 }),
+          Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3, newProductReview2 }),
           "changes go down to actual data store");
     }
 
@@ -130,54 +129,54 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void Remove_WithCompleteCollectionEndPoint_InvalidatesCollectionState ()
     {
       _productEndPoint.EnsureDataComplete();
-      Assert.That (
+      Assert.That(
           _productEndPoint.Collection,
-          Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
+          Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3 }));
+      Assert.That(_productEndPoint.IsDataComplete, Is.True);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
 
       _productReview1.Product = null;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
-      Assert.That (_productEndPoint.Collection, Is.EqualTo (new[] { _productReview2, _productReview3 }), "changes go down to actual data store");
-      Assert.That (_productReview1.Product, Is.Null, "bidirectional modification");
+      Assert.That(_productEndPoint.IsDataComplete, Is.True);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_productEndPoint.Collection, Is.EqualTo(new[] { _productReview2, _productReview3 }), "changes go down to actual data store");
+      Assert.That(_productReview1.Product, Is.Null, "bidirectional modification");
     }
 
     [Test]
     public void Remove_WithLazyLoadedCollectionEndPoint ()
     {
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
 
       _productReview1.Product = null;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
-      Assert.That (_productEndPoint.Collection, Is.EqualTo (new[] { _productReview2, _productReview3 }), "changes go down to actual data store");
-      Assert.That (_productReview1.Product, Is.Null, "bidirectional modification");
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_productEndPoint.Collection, Is.EqualTo(new[] { _productReview2, _productReview3 }), "changes go down to actual data store");
+      Assert.That(_productReview1.Product, Is.Null, "bidirectional modification");
     }
 
     [Test]
     public void GetCollection_DoesNotLoadData ()
     {
       _productEndPoint.MarkDataIncomplete();
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
 
       Dev.Null = _productEndPoint.Collection;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
     }
 
     [Test]
     public void GetCollectionWithOriginalData_LoadsData ()
     {
       _productEndPoint.MarkDataIncomplete();
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
 
       Dev.Null = _productEndPoint.GetCollectionWithOriginalData();
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
+      Assert.That(_productEndPoint.IsDataComplete, Is.True);
     }
 
     [Test]
@@ -187,25 +186,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       newProductReview.CreatedAt = DateTime.Now;
       newProductReview.InternalDataContainer.CommitState();
 
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
-      Assert.That (_productEndPoint.Collection, Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
-      Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.Collection, Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3 }));
+      Assert.That(_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3 }));
 
       newProductReview.Product = _product1;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
-      Assert.That (_productEndPoint.Collection, Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
-      Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
+      Assert.That(_productEndPoint.IsDataComplete, Is.True);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_productEndPoint.Collection, Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
+      Assert.That(_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3 }));
 
       _productEndPoint.Rollback();
       newProductReview.InternalDataContainer.RollbackState();
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
-      Assert.That (_productEndPoint.Collection, Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
-      Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
-      Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (_productEndPoint.Collection));
+      Assert.That(_productEndPoint.IsDataComplete, Is.True);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.Collection, Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3 }));
+      Assert.That(_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3 }));
+      Assert.That(_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo(_productEndPoint.Collection));
     }
 
     [Test]
@@ -215,34 +214,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       newProductReview.CreatedAt = DateTime.Now;
       newProductReview.InternalDataContainer.CommitState();
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
 
       newProductReview.Product = _product1;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
 
       _productEndPoint.Rollback();
       newProductReview.InternalDataContainer.RollbackState();
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
-      Assert.That (_productEndPoint.Collection, Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
-      Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
-      Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (_productEndPoint.Collection));
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.Collection, Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3 }));
+      Assert.That(_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3 }));
+      Assert.That(_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo(_productEndPoint.Collection));
     }
 
     [Test]
     public void Rollback_UnchangedUnloaded_DoesNotLoadData ()
     {
       _productEndPoint.MarkDataIncomplete();
-      Assert.That (_productEndPoint.HasChanged, Is.False);
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasChanged, Is.False);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
 
       _productEndPoint.Rollback();
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
     }
 
     [Test]
@@ -251,26 +250,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var newProductReview = ProductReview.NewObject();
       newProductReview.CreatedAt = DateTime.Now;
 
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
-      Assert.That (_productEndPoint.Collection, Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
-      Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.Collection, Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3 }));
+      Assert.That(_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3 }));
 
       newProductReview.Product = _product1;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
-      Assert.That (_productEndPoint.Collection, Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
-      Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3 }));
+      Assert.That(_productEndPoint.IsDataComplete, Is.True);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_productEndPoint.Collection, Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
+      Assert.That(_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3 }));
 
       _productEndPoint.Commit();
       newProductReview.InternalDataContainer.CommitState();
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
-      Assert.That (_productEndPoint.Collection, Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
-      Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
-      Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (_productEndPoint.Collection));
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.IsDataComplete, Is.True);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.Collection, Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
+      Assert.That(_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
+      Assert.That(_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo(_productEndPoint.Collection));
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
     }
 
     [Test]
@@ -279,35 +278,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var newProductReview = ProductReview.NewObject();
       newProductReview.CreatedAt = DateTime.Now;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
 
       newProductReview.Product = _product1;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
 
       _productEndPoint.Commit();
       newProductReview.InternalDataContainer.CommitState();
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
-      Assert.That (_productEndPoint.Collection, Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
-      Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
-      Assert.That (_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo (_productEndPoint.Collection));
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.Collection, Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
+      Assert.That(_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo(new[] { _productReview1, _productReview2, _productReview3, newProductReview }));
+      Assert.That(_productEndPoint.GetCollectionWithOriginalData(), Is.EqualTo(_productEndPoint.Collection));
     }
 
     [Test]
     public void ChangesToDataState_CauseTransactionListenerNotifications ()
     {
-      var listener = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (_productEndPoint.ClientTransaction);
+      var listener = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(_productEndPoint.ClientTransaction);
 
       var newProductReview = ProductReview.NewObject();
       newProductReview.CreatedAt = DateTime.Now;
 
       newProductReview.Product = _product1;
 
-      listener.AssertWasCalled (mock => mock.VirtualRelationEndPointStateUpdated (_productEndPoint.ClientTransaction, _productEndPoint.ID, true));
+      listener.AssertWasCalled(mock => mock.VirtualRelationEndPointStateUpdated(_productEndPoint.ClientTransaction, _productEndPoint.ID, true));
     }
 
     [Test]
@@ -315,49 +314,49 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var newProductReview = ProductReview.NewObject();
       _productEndPoint.EnsureDataComplete();
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
 
       newProductReview.Product = _product1;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_productEndPoint.IsDataComplete, Is.True);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
     }
 
     [Test]
     public void HasBeenTouched_Add_WithLazyLoadedCollectionEndPoint ()
     {
       var newProductReview = ProductReview.NewObject();
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
 
       newProductReview.Product = _product1;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
     }
 
     [Test]
     public void HasBeenTouched_Remove_WithCompleteCollectionEndPoint ()
     {
       _productEndPoint.EnsureDataComplete();
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
 
       _productReview1.Product = null;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.True);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_productEndPoint.IsDataComplete, Is.True);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
     }
 
     [Test]
     public void HasBeenTouched_Remove_WithLazyLoadedCollectionEndPoint ()
     {
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
 
       _productReview1.Product = null;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
     }
 
     [Test]
@@ -365,11 +364,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var newProductReview = ProductReview.NewObject();
 
-      Assert.That (_productEndPoint.HasBeenTouched, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.False);
       newProductReview.Product = _product1;
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
       newProductReview.Product = null;
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
     }
 
     [Test]
@@ -380,8 +379,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var result = _productEndPoint.HasBeenTouched;
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (result, Is.True);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(result, Is.True);
     }
 
     [Test]
@@ -391,12 +390,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _productEndPoint.Touch();
 
-      Assert.That (_productEndPoint.IsDataComplete, Is.False);
-      Assert.That (_productEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_productEndPoint.IsDataComplete, Is.False);
+      Assert.That(_productEndPoint.HasBeenTouched, Is.True);
     }
 
     [Test]
-    [Ignore ("RM-7294: Reorder elements when sort property changes its value")]
+    [Ignore("RM-7294: Reorder elements when sort property changes its value")]
     public void SortPropertyChangesValue_UpdatesElementsOrder ()
     {
     }

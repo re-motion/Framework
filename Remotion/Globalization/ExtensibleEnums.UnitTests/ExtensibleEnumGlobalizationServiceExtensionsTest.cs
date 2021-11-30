@@ -45,18 +45,18 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
       _memoryAppender = new MemoryAppender();
 
       LoggerMatchFilter acceptFilter = new LoggerMatchFilter();
-      acceptFilter.LoggerToMatch = typeof (ResourceLogger).FullName;
+      acceptFilter.LoggerToMatch = typeof(ResourceLogger).FullName;
       acceptFilter.AcceptOnMatch = true;
-      _memoryAppender.AddFilter (acceptFilter);
+      _memoryAppender.AddFilter(acceptFilter);
 
       DenyAllFilter denyFilter = new DenyAllFilter();
-      _memoryAppender.AddFilter (denyFilter);
+      _memoryAppender.AddFilter(denyFilter);
 
-      BasicConfigurator.Configure (_memoryAppender);
+      BasicConfigurator.Configure(_memoryAppender);
     }
 
     [TearDown]
-    public void TearDown()
+    public void TearDown ()
     {
       LogManager.ResetConfiguration();
     }
@@ -68,10 +68,10 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
       var outValue = "expected";
 
       _serviceStub
-          .Setup (_ => _.TryGetExtensibleEnumValueDisplayName (_valueStub.Object, out outValue))
-          .Returns (true);
+          .Setup(_ => _.TryGetExtensibleEnumValueDisplayName(_valueStub.Object, out outValue))
+          .Returns(true);
 
-      Assert.That (_serviceStub.Object.GetExtensibleEnumValueDisplayName (_valueStub.Object), Is.EqualTo ("expected"));
+      Assert.That(_serviceStub.Object.GetExtensibleEnumValueDisplayName(_valueStub.Object), Is.EqualTo("expected"));
     }
 
     [Test]
@@ -80,10 +80,10 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
       var outValue = "expected";
 
       _serviceStub
-          .Setup (_ => _.TryGetExtensibleEnumValueDisplayName (_valueStub.Object, out outValue))
-          .Returns (true);
+          .Setup(_ => _.TryGetExtensibleEnumValueDisplayName(_valueStub.Object, out outValue))
+          .Returns(true);
 
-      Assert.That (_serviceStub.Object.GetExtensibleEnumValueDisplayNameOrDefault (_valueStub.Object), Is.EqualTo ("expected"));
+      Assert.That(_serviceStub.Object.GetExtensibleEnumValueDisplayNameOrDefault(_valueStub.Object), Is.EqualTo("expected"));
     }
 
     [Test]
@@ -92,34 +92,34 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
       var outValue = "expected";
 
       _serviceStub
-          .Setup (_ => _.TryGetExtensibleEnumValueDisplayName (_valueStub.Object, out outValue))
-          .Returns (true);
+          .Setup(_ => _.TryGetExtensibleEnumValueDisplayName(_valueStub.Object, out outValue))
+          .Returns(true);
 
-      Assert.That (_serviceStub.Object.ContainsExtensibleEnumValueDisplayName (_valueStub.Object), Is.True);
+      Assert.That(_serviceStub.Object.ContainsExtensibleEnumValueDisplayName(_valueStub.Object), Is.True);
     }
 
     [Test]
     public void GetEnumerationValueDisplayName_WithoutResourceManager_ReturnsValueName ()
     {
       var valueInfoStub = new Mock<IExtensibleEnumInfo>();
-      valueInfoStub.Setup (_ => _.DefiningMethod).Returns (NormalizingMemberInfoFromExpressionUtility.GetMethod (() => ColorExtensions.Red (null)));
+      valueInfoStub.Setup(_ => _.DefiningMethod).Returns(NormalizingMemberInfoFromExpressionUtility.GetMethod(() => ColorExtensions.Red(null)));
       string outValue = null;
 
-      _valueStub.Setup (_ => _.ValueName).Returns ("expected");
-      _valueStub.Setup (_ => _.GetValueInfo()).Returns (valueInfoStub.Object);
+      _valueStub.Setup(_ => _.ValueName).Returns("expected");
+      _valueStub.Setup(_ => _.GetValueInfo()).Returns(valueInfoStub.Object);
 
       _serviceStub
-          .Setup (_ => _.TryGetExtensibleEnumValueDisplayName (_valueStub.Object, out outValue))
-          .Returns (false);
+          .Setup(_ => _.TryGetExtensibleEnumValueDisplayName(_valueStub.Object, out outValue))
+          .Returns(false);
 
-      Assert.That (_serviceStub.Object.GetExtensibleEnumValueDisplayName (_valueStub.Object), Is.EqualTo ("expected"));
+      Assert.That(_serviceStub.Object.GetExtensibleEnumValueDisplayName(_valueStub.Object), Is.EqualTo("expected"));
 
       LoggingEvent[] events = _memoryAppender.GetEvents();
-      Assert.That (events.Length, Is.EqualTo (1));
-      Assert.That (events[0].Level, Is.EqualTo (Level.Debug));
-      Assert.That (
+      Assert.That(events.Length, Is.EqualTo(1));
+      Assert.That(events[0].Level, Is.EqualTo(Level.Debug));
+      Assert.That(
           events[0].RenderedMessage,
-          Is.EqualTo (
+          Is.EqualTo(
               "No resource entry exists for the following element: Extensible enum value: 'expected' (Method: 'Red', Type: 'Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.ColorExtensions')"));
     }
 
@@ -129,10 +129,10 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
       string outValue = null;
 
       _serviceStub
-          .Setup (_ => _.TryGetExtensibleEnumValueDisplayName (_valueStub.Object, out outValue))
-          .Returns (false);
+          .Setup(_ => _.TryGetExtensibleEnumValueDisplayName(_valueStub.Object, out outValue))
+          .Returns(false);
 
-      Assert.That (_serviceStub.Object.GetExtensibleEnumValueDisplayNameOrDefault (_valueStub.Object), Is.Null);
+      Assert.That(_serviceStub.Object.GetExtensibleEnumValueDisplayNameOrDefault(_valueStub.Object), Is.Null);
     }
 
     [Test]
@@ -141,10 +141,10 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
       string outValue = null;
 
       _serviceStub
-          .Setup (_ => _.TryGetExtensibleEnumValueDisplayName (_valueStub.Object, out outValue))
-          .Returns (false);
+          .Setup(_ => _.TryGetExtensibleEnumValueDisplayName(_valueStub.Object, out outValue))
+          .Returns(false);
 
-      Assert.That (_serviceStub.Object.ContainsExtensibleEnumValueDisplayName (_valueStub.Object), Is.False);
+      Assert.That(_serviceStub.Object.ContainsExtensibleEnumValueDisplayName(_valueStub.Object), Is.False);
     }
   }
 }

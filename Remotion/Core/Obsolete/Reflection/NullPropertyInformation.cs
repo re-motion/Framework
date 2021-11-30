@@ -20,7 +20,7 @@ using System.Reflection;
 
 namespace Remotion.Reflection
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
   internal sealed class NullPropertyInformation : IPropertyInformation
   {
     public string Name
@@ -79,7 +79,7 @@ namespace Remotion.Reflection
 
     public IMethodInformation GetSetMethod (bool nonPublic)
     {
-      return new NullMethodInformation ();
+      return new NullMethodInformation();
     }
 
     public IPropertyInformation FindInterfaceImplementation (Type implementationType)

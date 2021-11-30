@@ -28,96 +28,96 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _relationEndPointManager = (RelationEndPointManager) DataManagerTestHelper.GetRelationEndPointManager (TestableClientTransaction.DataManager);
+      _relationEndPointManager = (RelationEndPointManager)DataManagerTestHelper.GetRelationEndPointManager(TestableClientTransaction.DataManager);
     }
 
     [Test]
     public void DataContainerWithNoRelation ()
     {
-      var container = TestDataContainerObjectMother.CreateClassWithAllDataTypes1DataContainer ();
-      _relationEndPointManager.RegisterEndPointsForDataContainer (container);
+      var container = TestDataContainerObjectMother.CreateClassWithAllDataTypes1DataContainer();
+      _relationEndPointManager.RegisterEndPointsForDataContainer(container);
 
-      Assert.That (_relationEndPointManager.RelationEndPoints.Count, Is.EqualTo (0));
+      Assert.That(_relationEndPointManager.RelationEndPoints.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void OrderTicket ()
     {
-      var orderTicketContainer = TestDataContainerObjectMother.CreateOrderTicket1DataContainer ();
-      _relationEndPointManager.RegisterEndPointsForDataContainer (orderTicketContainer);
+      var orderTicketContainer = TestDataContainerObjectMother.CreateOrderTicket1DataContainer();
+      _relationEndPointManager.RegisterEndPointsForDataContainer(orderTicketContainer);
 
-      Assert.AreEqual (2, _relationEndPointManager.RelationEndPoints.Count, "Count");
+      Assert.AreEqual(2, _relationEndPointManager.RelationEndPoints.Count, "Count");
 
-      var expectedEndPointIDForOrderTicket = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1, 
+      var expectedEndPointIDForOrderTicket = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1,
                                                     "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order");
 
-      Assert.AreEqual (expectedEndPointIDForOrderTicket,
-                       _relationEndPointManager.GetRelationEndPointWithoutLoading (expectedEndPointIDForOrderTicket).ID, "RelationEndPointID for OrderTicket");
+      Assert.AreEqual(expectedEndPointIDForOrderTicket,
+                       _relationEndPointManager.GetRelationEndPointWithoutLoading(expectedEndPointIDForOrderTicket).ID, "RelationEndPointID for OrderTicket");
 
-      Assert.AreEqual (
+      Assert.AreEqual(
           DomainObjectIDs.Order1,
-          ((IObjectEndPoint) _relationEndPointManager.GetRelationEndPointWithoutLoading (expectedEndPointIDForOrderTicket)).OppositeObjectID,
+          ((IObjectEndPoint)_relationEndPointManager.GetRelationEndPointWithoutLoading(expectedEndPointIDForOrderTicket)).OppositeObjectID,
           "OppositeObjectID for OrderTicket");
 
-      var expectedEndPointIDForOrder = RelationEndPointID.Create(DomainObjectIDs.Order1, 
+      var expectedEndPointIDForOrder = RelationEndPointID.Create(DomainObjectIDs.Order1,
                                               "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
-      Assert.AreEqual (expectedEndPointIDForOrder,
-                       _relationEndPointManager.GetRelationEndPointWithoutLoading (expectedEndPointIDForOrder).ID, "RelationEndPointID for Order");
+      Assert.AreEqual(expectedEndPointIDForOrder,
+                       _relationEndPointManager.GetRelationEndPointWithoutLoading(expectedEndPointIDForOrder).ID, "RelationEndPointID for Order");
 
-      Assert.AreEqual (
+      Assert.AreEqual(
           DomainObjectIDs.OrderTicket1,
-          ((IObjectEndPoint) _relationEndPointManager.GetRelationEndPointWithoutLoading (expectedEndPointIDForOrder)).OppositeObjectID,
+          ((IObjectEndPoint)_relationEndPointManager.GetRelationEndPointWithoutLoading(expectedEndPointIDForOrder)).OppositeObjectID,
           "OppositeObjectID for Order");
     }
 
     [Test]
     public void VirtualEndPoint ()
     {
-      DataContainer container = TestDataContainerObjectMother.CreateClassWithGuidKeyDataContainer ();
-      _relationEndPointManager.RegisterEndPointsForDataContainer (container);
+      DataContainer container = TestDataContainerObjectMother.CreateClassWithGuidKeyDataContainer();
+      _relationEndPointManager.RegisterEndPointsForDataContainer(container);
 
-      Assert.That (_relationEndPointManager.RelationEndPoints.Count, Is.EqualTo (0));
+      Assert.That(_relationEndPointManager.RelationEndPoints.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void DerivedDataContainer ()
     {
-      DataContainer distributorContainer = TestDataContainerObjectMother.CreateDistributor2DataContainer ();
-      _relationEndPointManager.RegisterEndPointsForDataContainer (distributorContainer);
+      DataContainer distributorContainer = TestDataContainerObjectMother.CreateDistributor2DataContainer();
+      _relationEndPointManager.RegisterEndPointsForDataContainer(distributorContainer);
 
-      Assert.That (_relationEndPointManager.RelationEndPoints.Count, Is.EqualTo (4));
+      Assert.That(_relationEndPointManager.RelationEndPoints.Count, Is.EqualTo(4));
     }
 
     [Test]
     public void DataContainerWithOneToManyRelation ()
     {
-      DataContainer orderContainer = TestDataContainerObjectMother.CreateOrder1DataContainer ();
+      DataContainer orderContainer = TestDataContainerObjectMother.CreateOrder1DataContainer();
 
-      _relationEndPointManager.RegisterEndPointsForDataContainer (orderContainer);
+      _relationEndPointManager.RegisterEndPointsForDataContainer(orderContainer);
 
-      Assert.AreEqual (4, _relationEndPointManager.RelationEndPoints.Count, "Count");
+      Assert.AreEqual(4, _relationEndPointManager.RelationEndPoints.Count, "Count");
 
       var customerEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer");
-      var customerEndPoint = (IObjectEndPoint) _relationEndPointManager.GetRelationEndPointWithoutLoading (customerEndPointID);
-      Assert.That (customerEndPoint.OppositeObjectID, Is.EqualTo (DomainObjectIDs.Customer1));
+      var customerEndPoint = (IObjectEndPoint)_relationEndPointManager.GetRelationEndPointWithoutLoading(customerEndPointID);
+      Assert.That(customerEndPoint.OppositeObjectID, Is.EqualTo(DomainObjectIDs.Customer1));
 
-      var customerOrdersEndPointID = RelationEndPointID.Create (
-          DomainObjectIDs.Customer1, 
+      var customerOrdersEndPointID = RelationEndPointID.Create(
+          DomainObjectIDs.Customer1,
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
-      var customerOrdersEndPoint = _relationEndPointManager.GetRelationEndPointWithoutLoading (customerOrdersEndPointID);
-      Assert.That (customerOrdersEndPoint, Is.Not.Null);
+      var customerOrdersEndPoint = _relationEndPointManager.GetRelationEndPointWithoutLoading(customerOrdersEndPointID);
+      Assert.That(customerOrdersEndPoint, Is.Not.Null);
 
       var officialEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Official");
-      var officialEndPoint = (IObjectEndPoint) _relationEndPointManager.GetRelationEndPointWithoutLoading (officialEndPointID);
-      Assert.That (officialEndPoint.OppositeObjectID, Is.EqualTo (DomainObjectIDs.Official1));
-      var officialOrdersEndPointID = RelationEndPointID.Create (
-          DomainObjectIDs.Official1, 
+      var officialEndPoint = (IObjectEndPoint)_relationEndPointManager.GetRelationEndPointWithoutLoading(officialEndPointID);
+      Assert.That(officialEndPoint.OppositeObjectID, Is.EqualTo(DomainObjectIDs.Official1));
+      var officialOrdersEndPointID = RelationEndPointID.Create(
+          DomainObjectIDs.Official1,
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.Official.Orders");
-      var officialOrdersEndPoint = _relationEndPointManager.GetRelationEndPointWithoutLoading (officialOrdersEndPointID);
-      Assert.That (officialOrdersEndPoint, Is.Not.Null);
+      var officialOrdersEndPoint = _relationEndPointManager.GetRelationEndPointWithoutLoading(officialOrdersEndPointID);
+      Assert.That(officialOrdersEndPoint, Is.Not.Null);
     }
   }
 }

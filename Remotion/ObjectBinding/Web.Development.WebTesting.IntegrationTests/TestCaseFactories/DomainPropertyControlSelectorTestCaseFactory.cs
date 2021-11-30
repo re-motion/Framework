@@ -45,118 +45,118 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     [GenericPageTestMethod]
     public void Get_Returns_NotNull ()
     {
-      var control = Selector.GetByDomainProperty (Parameter.VisibleDomainProperty);
+      var control = Selector.GetByDomainProperty(Parameter.VisibleDomainProperty);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_Throws_WebTestException ()
     {
-      Assert.That (
-          (TestDelegate) (() => Selector.GetByDomainProperty (Parameter.HiddenDomainProperty)),
+      Assert.That(
+          (TestDelegate)(() => Selector.GetByDomainProperty(Parameter.HiddenDomainProperty)),
           Throws.InstanceOf<WebTestException>());
     }
 
     [GenericPageTestMethod]
     public void Get_WithClass_Returns_NotNull ()
     {
-      var control = Selector.GetByDomainProperty (Parameter.VisibleDomainProperty, Parameter.CorrectDomainClass);
+      var control = Selector.GetByDomainProperty(Parameter.VisibleDomainProperty, Parameter.CorrectDomainClass);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_WithClass_Throws_WebTestException ()
     {
-      Assert.That (
-          (TestDelegate) (() => Selector.GetByDomainProperty (Parameter.VisibleDomainProperty, Parameter.IncorrectDomainClass)),
+      Assert.That(
+          (TestDelegate)(() => Selector.GetByDomainProperty(Parameter.VisibleDomainProperty, Parameter.IncorrectDomainClass)),
           Throws.InstanceOf<WebTestException>());
-      Assert.That (
-          (TestDelegate) (() => Selector.GetByDomainProperty (Parameter.HiddenDomainProperty, Parameter.IncorrectDomainClass)),
+      Assert.That(
+          (TestDelegate)(() => Selector.GetByDomainProperty(Parameter.HiddenDomainProperty, Parameter.IncorrectDomainClass)),
           Throws.InstanceOf<WebTestException>());
-      Assert.That (
-          (TestDelegate) (() => Selector.GetByDomainProperty (Parameter.HiddenDomainProperty, Parameter.CorrectDomainClass)),
+      Assert.That(
+          (TestDelegate)(() => Selector.GetByDomainProperty(Parameter.HiddenDomainProperty, Parameter.CorrectDomainClass)),
           Throws.InstanceOf<WebTestException>());
     }
 
     [GenericPageTestMethod]
     public void GetOrNull_Returns_NotNull ()
     {
-      var control = Selector.GetByDomainPropertyOrNull (Parameter.VisibleDomainProperty);
+      var control = Selector.GetByDomainPropertyOrNull(Parameter.VisibleDomainProperty);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
     [GenericPageTestMethod]
     public void GetOrNull_Returns_Null ()
     {
-      var control = Selector.GetByDomainPropertyOrNull (Parameter.HiddenDomainProperty);
+      var control = Selector.GetByDomainPropertyOrNull(Parameter.HiddenDomainProperty);
 
-      Assert.That (control, Is.Null);
+      Assert.That(control, Is.Null);
     }
 
     [GenericPageTestMethod]
     public void GetOrNull_WithClass_Returns_NotNull ()
     {
-      var control = Selector.GetByDomainPropertyOrNull (Parameter.VisibleDomainProperty, Parameter.CorrectDomainClass);
+      var control = Selector.GetByDomainPropertyOrNull(Parameter.VisibleDomainProperty, Parameter.CorrectDomainClass);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void GetOrNull_WithClass_Returns_Null ()
     {
-      Assert.That (
-          () => Selector.GetByDomainPropertyOrNull (Parameter.VisibleDomainProperty, Parameter.IncorrectDomainClass),
+      Assert.That(
+          () => Selector.GetByDomainPropertyOrNull(Parameter.VisibleDomainProperty, Parameter.IncorrectDomainClass),
           Is.Null);
-      Assert.That (
-          () => Selector.GetByDomainPropertyOrNull (Parameter.HiddenDomainProperty, Parameter.IncorrectDomainClass),
+      Assert.That(
+          () => Selector.GetByDomainPropertyOrNull(Parameter.HiddenDomainProperty, Parameter.IncorrectDomainClass),
           Is.Null);
-      Assert.That (
-          () => Selector.GetByDomainPropertyOrNull (Parameter.HiddenDomainProperty, Parameter.CorrectDomainClass),
+      Assert.That(
+          () => Selector.GetByDomainPropertyOrNull(Parameter.HiddenDomainProperty, Parameter.CorrectDomainClass),
           Is.Null);
     }
 
     [GenericPageTestMethod]
     public void Exists_Returns_True ()
     {
-      var controlVisible = Selector.ExistsByDomainProperty (Parameter.VisibleDomainProperty);
+      var controlVisible = Selector.ExistsByDomainProperty(Parameter.VisibleDomainProperty);
 
-      Assert.That (controlVisible, Is.True);
+      Assert.That(controlVisible, Is.True);
     }
 
     [GenericPageTestMethod]
     public void Exists_Returns_False ()
     {
-      var controlVisible = Selector.ExistsByDomainProperty (Parameter.HiddenDomainProperty);
+      var controlVisible = Selector.ExistsByDomainProperty(Parameter.HiddenDomainProperty);
 
-      Assert.That (controlVisible, Is.False);
+      Assert.That(controlVisible, Is.False);
     }
 
     [GenericPageTestMethod]
     public void Exists_WithClass_Returns_NotNull ()
     {
-      var controlVisible = Selector.ExistsByDomainProperty (Parameter.VisibleDomainProperty, Parameter.CorrectDomainClass);
+      var controlVisible = Selector.ExistsByDomainProperty(Parameter.VisibleDomainProperty, Parameter.CorrectDomainClass);
 
-      Assert.That (controlVisible, Is.True);
+      Assert.That(controlVisible, Is.True);
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Exists_WithClass_Returns_False ()
     {
-      Assert.That (
-          () => Selector.ExistsByDomainProperty (Parameter.VisibleDomainProperty, Parameter.IncorrectDomainClass),
+      Assert.That(
+          () => Selector.ExistsByDomainProperty(Parameter.VisibleDomainProperty, Parameter.IncorrectDomainClass),
           Is.False);
-      Assert.That (
-          () => Selector.ExistsByDomainProperty (Parameter.HiddenDomainProperty, Parameter.IncorrectDomainClass),
+      Assert.That(
+          () => Selector.ExistsByDomainProperty(Parameter.HiddenDomainProperty, Parameter.IncorrectDomainClass),
           Is.False);
-      Assert.That (
-          () => Selector.ExistsByDomainProperty (Parameter.HiddenDomainProperty, Parameter.CorrectDomainClass),
+      Assert.That(
+          () => Selector.ExistsByDomainProperty(Parameter.HiddenDomainProperty, Parameter.CorrectDomainClass),
           Is.False);
     }
   }

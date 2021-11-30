@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering table cells of <see cref="BocCompoundColumnDefinition"/> columns.
   /// </summary>
-  [ImplementationFor (typeof (IBocCompoundColumnRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocCompoundColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocCompoundColumnRenderer : BocValueColumnRendererBase<BocCompoundColumnDefinition>, IBocCompoundColumnRenderer
   {
     private readonly IRenderingFeatures _renderingFeatures;
@@ -47,9 +47,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
         BocListCssClassDefinition cssClasses)
-        : base (resourceUrlFactory, renderingFeatures, cssClasses)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses)
     {
-      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 
       _renderingFeatures = renderingFeatures;
     }
@@ -63,10 +63,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     protected override void RenderCellDataForEditMode (
         BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow? editableRow)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-      RenderValueColumnCellText (renderingContext, renderingContext.ColumnDefinition.GetStringValue (businessObject));
+      RenderValueColumnCellText(renderingContext, renderingContext.ColumnDefinition.GetStringValue(businessObject));
     }
 
     /// <summary>
@@ -74,27 +74,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </summary>
     protected override void RenderTitleCell (BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, SortingDirection sortingDirection, int orderIndex)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
-        var boundPropertyPaths = renderingContext.ColumnDefinition.PropertyPathBindings.ToArray().Select (x => x.PropertyPathIdentifier);
-        var joinedBoundPropertyPaths = string.Join ("\u001e", boundPropertyPaths);
+        var boundPropertyPaths = renderingContext.ColumnDefinition.PropertyPathBindings.ToArray().Select(x => x.PropertyPathIdentifier);
+        var joinedBoundPropertyPaths = string.Join("\u001e", boundPropertyPaths);
 
-        if (!string.IsNullOrEmpty (joinedBoundPropertyPaths))
+        if (!string.IsNullOrEmpty(joinedBoundPropertyPaths))
         {
-          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
-          renderingContext.Writer.AddAttribute (
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
+          renderingContext.Writer.AddAttribute(
               DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths,
               joinedBoundPropertyPaths);
         }
         else
         {
-          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
         }
       }
 
-      base.RenderTitleCell (renderingContext, sortingDirection, orderIndex);
+      base.RenderTitleCell(renderingContext, sortingDirection, orderIndex);
     }
   }
 }

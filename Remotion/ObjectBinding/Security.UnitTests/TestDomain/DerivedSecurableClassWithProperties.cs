@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.TestDomain
     private string _accessibleProperty = string.Empty;
 
     public DerivedSecurableClassWithProperties (IObjectSecurityStrategy securityStrategy)
-        : base (securityStrategy)
+        : base(securityStrategy)
     {
     }
 

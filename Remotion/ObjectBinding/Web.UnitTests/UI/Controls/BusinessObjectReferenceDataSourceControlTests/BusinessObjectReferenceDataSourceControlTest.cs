@@ -18,10 +18,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BusinessObjectReferen
       var control = new BusinessObjectReferenceDataSourceControl();
       var serviceLocatorMock = new Mock<IServiceLocator>();
       var factoryMock = new Mock<IBusinessObjectReferenceDataSourceControlValidatorFactory>();
-      serviceLocatorMock.Setup (m => m.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>()).Returns (factoryMock.Object).Verifiable();
-      factoryMock.Setup (f => f.CreateValidators (control, false)).Returns (new List<BaseValidator>()).Verifiable();
+      serviceLocatorMock.Setup(m => m.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>()).Returns(factoryMock.Object).Verifiable();
+      factoryMock.Setup(f => f.CreateValidators(control, false)).Returns(new List<BaseValidator>()).Verifiable();
 
-      using (new ServiceLocatorScope (serviceLocatorMock.Object))
+      using (new ServiceLocatorScope(serviceLocatorMock.Object))
       {
         control.CreateValidators();
       }

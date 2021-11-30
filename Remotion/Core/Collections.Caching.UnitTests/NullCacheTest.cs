@@ -30,67 +30,67 @@ namespace Remotion.Collections.Caching.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _cache = new NullCache<string, object> ();
+      _cache = new NullCache<string, object>();
     }
 
     [Test]
     public void TryGetValue ()
     {
-      Assert.That (_cache.TryGetValue ("anyKey", out var actual), Is.False);
+      Assert.That(_cache.TryGetValue("anyKey", out var actual), Is.False);
     }
 
     [Test]
     public void GetOrCreateValue ()
     {
       object exptected = new object();
-      Assert.That (_cache.GetOrCreateValue ("anyKey", delegate { return exptected; }), Is.SameAs (exptected));
+      Assert.That(_cache.GetOrCreateValue("anyKey", delegate { return exptected; }), Is.SameAs(exptected));
     }
 
     [Test]
     public void Add_TryGetValue ()
     {
-      _cache.GetOrCreateValue ("key1", delegate { return new object(); });
-      Assert.That (_cache.TryGetValue ("key1", out var actual), Is.False);
-      Assert.That (actual, Is.Null);
+      _cache.GetOrCreateValue("key1", delegate { return new object(); });
+      Assert.That(_cache.TryGetValue("key1", out var actual), Is.False);
+      Assert.That(actual, Is.Null);
     }
 
     [Test]
-    public void GetEnumerator_Generic()
+    public void GetEnumerator_Generic ()
     {
-      _cache.GetOrCreateValue ("key1", delegate { return new object(); });
-      _cache.GetOrCreateValue ("key2", delegate { return new object(); });
+      _cache.GetOrCreateValue("key1", delegate { return new object(); });
+      _cache.GetOrCreateValue("key2", delegate { return new object(); });
 
-      Assert.That (_cache.ToArray(), Is.Empty);
+      Assert.That(_cache.ToArray(), Is.Empty);
     }
 
     [Test]
-    public void GetEnumerator_NonGeneric()
+    public void GetEnumerator_NonGeneric ()
     {
-      _cache.GetOrCreateValue ("key1", delegate { return new object(); });
-      _cache.GetOrCreateValue ("key2", delegate { return new object(); });
+      _cache.GetOrCreateValue("key1", delegate { return new object(); });
+      _cache.GetOrCreateValue("key2", delegate { return new object(); });
 
-      Assert.That (_cache.ToNonGenericEnumerable(), Is.Empty);
+      Assert.That(_cache.ToNonGenericEnumerable(), Is.Empty);
     }
 
     [Test]
     public void Clear ()
     {
-      _cache.Clear ();
+      _cache.Clear();
       // Succeed
     }
 
     [Test]
-    public void GetIsNull()
+    public void GetIsNull ()
     {
-      Assert.That (_cache.IsNull, Is.True);
+      Assert.That(_cache.IsNull, Is.True);
     }
 
     [Test]
     public void Serialization ()
     {
-      ICache<string, object> deserializedCache = Serializer.SerializeAndDeserialize (_cache);
-      Assert.That (deserializedCache is NullCache<string, object>, Is.True);
-      Assert.That (deserializedCache, Is.Not.SameAs (_cache));
+      ICache<string, object> deserializedCache = Serializer.SerializeAndDeserialize(_cache);
+      Assert.That(deserializedCache is NullCache<string, object>, Is.True);
+      Assert.That(deserializedCache, Is.Not.SameAs(_cache));
     }
   }
 }

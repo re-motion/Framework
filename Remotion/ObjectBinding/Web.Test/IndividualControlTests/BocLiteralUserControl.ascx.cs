@@ -27,10 +27,10 @@ namespace OBWTest.IndividualControlTests
   {
     protected override void RegisterEventHandlers ()
     {
-      base.RegisterEventHandlers ();
+      base.RegisterEventHandlers();
 
-      this.CVTestSetNullButton.Click += new EventHandler (this.CVTestSetNullButton_Click);
-      this.CVTestSetNewValueButton.Click += new EventHandler (this.CVTestSetNewValueButton_Click);
+      this.CVTestSetNullButton.Click += new EventHandler(this.CVTestSetNullButton_Click);
+      this.CVTestSetNewValueButton.Click += new EventHandler(this.CVTestSetNewValueButton_Click);
     }
 
     public override IBusinessObjectDataSourceControl DataSource
@@ -45,16 +45,16 @@ namespace OBWTest.IndividualControlTests
 
     override protected void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
-      Person person = (Person) CurrentObject.BusinessObject;
+      Person person = (Person)CurrentObject.BusinessObject;
 
-      UnboundCVField.LoadUnboundValue (person.CVStringLiteral, IsPostBack);
+      UnboundCVField.LoadUnboundValue(person.CVStringLiteral, IsPostBack);
     }
 
     override protected void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     private void CVTestSetNullButton_Click (object sender, EventArgs e)

@@ -25,13 +25,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
   [Instantiable]
   public abstract class OrderItem : TestDomainBase
   {
-    protected OrderItem()
+    protected OrderItem ()
     {
     }
 
     protected OrderItem (Order order)
     {
-      ArgumentUtility.CheckNotNull ("order", order);
+      ArgumentUtility.CheckNotNull("order", order);
       Order = order;
     }
 
@@ -42,17 +42,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 
     public abstract int Position { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Product { get; set; }
 
-    [DBBidirectionalRelation ("OrderItems")]
+    [DBBidirectionalRelation("OrderItems")]
     [Mandatory]
     public abstract Order Order { get; set; }
 
     [StorageClassNone]
     public object OriginalOrder
     {
-      get { return Properties[typeof (OrderItem), "Order"].GetOriginalValue<Order>(); }
+      get { return Properties[typeof(OrderItem), "Order"].GetOriginalValue<Order>(); }
     }
   }
 }

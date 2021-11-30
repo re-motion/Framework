@@ -68,10 +68,10 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         bool is32BitProcess,
         IReadOnlyCollection<string> mounts)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("absoluteWebApplicationPath", absoluteWebApplicationPath);
-      ArgumentUtility.CheckNotNullOrEmpty ("dockerImageName", dockerImageName);
-      ArgumentUtility.CheckNotEmpty ("hostname", hostname);
-      ArgumentUtility.CheckNotNull ("mounts", mounts);
+      ArgumentUtility.CheckNotNullOrEmpty("absoluteWebApplicationPath", absoluteWebApplicationPath);
+      ArgumentUtility.CheckNotNullOrEmpty("dockerImageName", dockerImageName);
+      ArgumentUtility.CheckNotEmpty("hostname", hostname);
+      ArgumentUtility.CheckNotNull("mounts", mounts);
 
       AbsoluteWebApplicationPath = absoluteWebApplicationPath;
       WebApplicationPort = webApplicationPort;

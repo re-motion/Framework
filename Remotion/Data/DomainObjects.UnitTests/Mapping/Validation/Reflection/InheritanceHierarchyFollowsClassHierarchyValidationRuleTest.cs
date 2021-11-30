@@ -36,41 +36,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void ClassDefinitionWithoutBaseClass ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (BaseOfBaseValidationDomainObjectClass));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass));
 
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void ClassDefinitionWithBaseClass_ClassTypeIsDerivedFromBaseClassType ()
     {
-      var baseType = typeof (BaseOfBaseValidationDomainObjectClass);
-      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: baseType);
-      var derivedType = typeof (BaseValidationDomainObjectClass);
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: derivedType, baseClass: baseClassDefinition);
+      var baseType = typeof(BaseOfBaseValidationDomainObjectClass);
+      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: baseType);
+      var derivedType = typeof(BaseValidationDomainObjectClass);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: derivedType, baseClass: baseClassDefinition);
 
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void ClassDefinitionWithBaseClass_ClassTypeIsNotDerivedFromBaseClassType ()
     {
-      var baseType = typeof (BaseOfBaseValidationDomainObjectClass);
-      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("Base", baseType);
-      var derivedType = typeof (BaseValidationDomainObjectClass);
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (id: "Derived", classType: derivedType, baseClass: baseClassDefinition);
-      PrivateInvoke.SetNonPublicField (classDefinition, "_classType", typeof (ClassOutOfInheritanceHierarchy));
+      var baseType = typeof(BaseOfBaseValidationDomainObjectClass);
+      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Base", baseType);
+      var derivedType = typeof(BaseValidationDomainObjectClass);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(id: "Derived", classType: derivedType, baseClass: baseClassDefinition);
+      PrivateInvoke.SetNonPublicField(classDefinition, "_classType", typeof(ClassOutOfInheritanceHierarchy));
 
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
-      Assert.That (validationResult.IsValid, Is.False);
+      Assert.That(validationResult.IsValid, Is.False);
       var expectedMessage =
          @"Type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.ClassOutOfInheritanceHierarchy, Remotion.Data.DomainObjects.UnitTests, Version=.*, Culture=.*, PublicKeyToken=.*' of class 'Derived' is not derived from type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.BaseOfBaseValidationDomainObjectClass, Remotion.Data.DomainObjects.UnitTests, Version=.*, Culture=.*, PublicKeyToken=.*' of base class 'Base'\.";
-      Assert.That (validationResult.Message, Does.Match (expectedMessage));
+      Assert.That(validationResult.Message, Does.Match(expectedMessage));
     }
   }
 }

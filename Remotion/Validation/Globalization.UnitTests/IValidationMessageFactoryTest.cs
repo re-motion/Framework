@@ -30,7 +30,7 @@ namespace Remotion.Validation.Globalization.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _serviceLocator = DefaultServiceLocator.Create ();
+      _serviceLocator = DefaultServiceLocator.Create();
     }
 
     [Test]
@@ -38,26 +38,26 @@ namespace Remotion.Validation.Globalization.UnitTests
     {
       var factory = _serviceLocator.GetInstance<IValidationMessageFactory>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf<CompoundValidationMessageFactory>());
-      Assert.That (
-          ((CompoundValidationMessageFactory) factory).ValidationMessageFactories.Select (f => f.GetType()),
-          Is.EqualTo (
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf<CompoundValidationMessageFactory>());
+      Assert.That(
+          ((CompoundValidationMessageFactory)factory).ValidationMessageFactories.Select(f => f.GetType()),
+          Is.EqualTo(
               new[]
               {
-                  typeof (TypeBasedValidationMessageFactory),
-                  typeof (LocalizedValidationMessageFactory),
-                  typeof (FallbackValidationMessageFactory)
+                  typeof(TypeBasedValidationMessageFactory),
+                  typeof(LocalizedValidationMessageFactory),
+                  typeof(FallbackValidationMessageFactory)
               }));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IValidationMessageFactory> ();
-      var factory2 = _serviceLocator.GetInstance<IValidationMessageFactory> ();
+      var factory1 = _serviceLocator.GetInstance<IValidationMessageFactory>();
+      var factory2 = _serviceLocator.GetInstance<IValidationMessageFactory>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

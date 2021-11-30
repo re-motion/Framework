@@ -25,7 +25,7 @@ namespace Remotion.Collections
   /// Case-sensitive name/object dictionary.
   /// </summary>
   [Serializable]
-  [DebuggerDisplay ("Count={Count}")]
+  [DebuggerDisplay("Count={Count}")]
   public class NameObjectCollection : ICollection, IDictionary, ISerializable, ICloneable
   {
     private Hashtable _hashtable;
@@ -37,12 +37,12 @@ namespace Remotion.Collections
 
     protected NameObjectCollection (SerializationInfo info, StreamingContext context)
     {
-      _hashtable = (Hashtable) info.GetValue ("_hashtable", typeof (Hashtable))!;
+      _hashtable = (Hashtable)info.GetValue("_hashtable", typeof(Hashtable))!;
     }
 
     void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      info.AddValue ("_hashtable", _hashtable);
+      info.AddValue("_hashtable", _hashtable);
     }
 
     public object? this [string name]
@@ -68,7 +68,7 @@ namespace Remotion.Collections
 
     public void CopyTo (Array array, int index)
     {
-      _hashtable.CopyTo (array, index);
+      _hashtable.CopyTo(array, index);
     }
 
     public object SyncRoot
@@ -78,7 +78,7 @@ namespace Remotion.Collections
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
-      return ((IEnumerable) _hashtable).GetEnumerator();
+      return ((IEnumerable)_hashtable).GetEnumerator();
     }
 
     public bool IsReadOnly
@@ -88,33 +88,33 @@ namespace Remotion.Collections
 
     IDictionaryEnumerator IDictionary.GetEnumerator ()
     {
-      return ((IDictionary) _hashtable).GetEnumerator();
+      return ((IDictionary)_hashtable).GetEnumerator();
     }
 
     object? IDictionary.this [object key]
     {
-      get { return this[(string) key]; }
-      set { this[(string) key] = value; }
+      get { return this[(string)key]; }
+      set { this[(string)key] = value; }
     }
 
     public void Remove (string name)
     {
-      _hashtable.Remove (name);
+      _hashtable.Remove(name);
     }
 
     void IDictionary.Remove (object key)
     {
-      Remove ((string) key);
+      Remove((string)key);
     }
 
     public bool Contains (object key)
     {
-      return _hashtable.Contains (key);
+      return _hashtable.Contains(key);
     }
 
     bool IDictionary.Contains (object key)
     {
-      return _hashtable.Contains (key);
+      return _hashtable.Contains(key);
     }
 
     public ICollection Values
@@ -124,12 +124,12 @@ namespace Remotion.Collections
 
     public void Add (string key, object? value)
     {
-      _hashtable.Add (key, value);
+      _hashtable.Add(key, value);
     }
 
     void IDictionary.Add (object key, object? value)
     {
-      Add ((string) key, value);
+      Add((string)key, value);
     }
 
     public ICollection Keys
@@ -157,7 +157,7 @@ namespace Remotion.Collections
       NameObjectCollection result = first.Clone();
 
       foreach (DictionaryEntry entry in second)
-        result[(string) entry.Key] = entry.Value;
+        result[(string)entry.Key] = entry.Value;
 
       return result;
     }
@@ -166,7 +166,7 @@ namespace Remotion.Collections
     {
       NameObjectCollection result = new NameObjectCollection();
       foreach (DictionaryEntry entry in this)
-        result.Add ((string) entry.Key, entry.Value);
+        result.Add((string)entry.Key, entry.Value);
 
       return result;
     }

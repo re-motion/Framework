@@ -20,17 +20,17 @@ using Remotion.ObjectBinding.BindableObject;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  [DisableExtensibleEnumValues ("Value3")]
+  [DisableExtensibleEnumValues("Value3")]
   public static class ExtensibleEnumWithFilterExtensions2
   {
     public static ExtensibleEnumWithFilter Value3 (this ExtensibleEnumDefinition<ExtensibleEnumWithFilter> definition)
     {
-      return new ExtensibleEnumWithFilter ("Value3");
+      return new ExtensibleEnumWithFilter("Value3");
     }
 
     public static ExtensibleEnumWithFilter Value4 (this ExtensibleEnumDefinition<ExtensibleEnumWithFilter> definition)
     {
-      return new ExtensibleEnumWithFilter ("Value4");
+      return new ExtensibleEnumWithFilter("Value4");
     }
   }
 }

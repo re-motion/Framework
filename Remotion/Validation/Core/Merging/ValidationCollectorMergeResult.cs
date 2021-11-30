@@ -34,9 +34,9 @@ namespace Remotion.Validation.Merging
         IEnumerable<IAddingObjectValidationRuleCollector> collectedObjectValidationRules,
         ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull ("collectedPropertyValidationRules", collectedPropertyValidationRules);
-      ArgumentUtility.CheckNotNull ("collectedObjectValidationRules", collectedObjectValidationRules);
-      ArgumentUtility.CheckNotNull ("logContext", logContext);
+      ArgumentUtility.CheckNotNull("collectedPropertyValidationRules", collectedPropertyValidationRules);
+      ArgumentUtility.CheckNotNull("collectedObjectValidationRules", collectedObjectValidationRules);
+      ArgumentUtility.CheckNotNull("logContext", logContext);
 
       _collectedPropertyValidationRules = collectedPropertyValidationRules.ToList().AsReadOnly();
       _collectedObjectValidationRules = collectedObjectValidationRules.ToList().AsReadOnly();

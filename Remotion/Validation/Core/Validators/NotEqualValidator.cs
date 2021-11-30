@@ -39,8 +39,8 @@ namespace Remotion.Validation.Validators
         [NotNull] ValidationMessage validationMessage,
         [CanBeNull] IEqualityComparer? comparer = null)
     {
-      ArgumentUtility.CheckNotNull ("comparisonValue", comparisonValue);
-      ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull("comparisonValue", comparisonValue);
+      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
       ComparisonValue = comparisonValue;
       Comparer = comparer;
@@ -52,10 +52,10 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
-      if (IsValid (context))
+      if (IsValid(context))
         return Enumerable.Empty<PropertyValidationFailure>();
 
-      return EnumerableUtility.Singleton (CreateValidationError (context));
+      return EnumerableUtility.Singleton(CreateValidationError(context));
     }
 
     private bool IsValid (PropertyValidatorContext context)
@@ -66,22 +66,22 @@ namespace Remotion.Validation.Validators
         return true;
 
       if (Comparer != null)
-        return !Comparer.Equals (ComparisonValue, propertyValue);
+        return !Comparer.Equals(ComparisonValue, propertyValue);
 
       if (ComparisonValue.GetType() != propertyValue.GetType())
         return true;
 
-      return !ComparisonValue.Equals (propertyValue);
+      return !ComparisonValue.Equals(propertyValue);
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
-      string localizedValidationMessage = ValidationMessage.Format (
+      string localizedValidationMessage = ValidationMessage.Format(
           CultureInfo.CurrentUICulture,
-          (IFormatProvider) CultureInfo.CurrentCulture,
+          (IFormatProvider)CultureInfo.CurrentCulture,
           ComparisonValue);
 
-      return new PropertyValidationFailure (
+      return new PropertyValidationFailure(
           context.Instance,
           context.Property,
           context.PropertyValue,

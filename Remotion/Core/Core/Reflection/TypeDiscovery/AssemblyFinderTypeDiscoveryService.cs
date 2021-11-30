@@ -37,7 +37,7 @@ namespace Remotion.Reflection.TypeDiscovery
   /// </summary>
   public sealed class AssemblyFinderTypeDiscoveryService : ITypeDiscoveryService
   {
-    private static readonly Lazy<ILog> s_log = new Lazy<ILog> (() => LogManager.GetLogger (typeof (AssemblyFinderTypeDiscoveryService)));
+    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof(AssemblyFinderTypeDiscoveryService)));
 
     private readonly IAssemblyFinder _assemblyFinder;
     private readonly Lazy<BaseTypeCache> _baseTypeCache;
@@ -54,9 +54,9 @@ namespace Remotion.Reflection.TypeDiscovery
     /// <param name="assemblyFinder">The assembly finder used by this service instance to retrieve types.</param>
     public AssemblyFinderTypeDiscoveryService (IAssemblyFinder assemblyFinder)
     {
-      ArgumentUtility.CheckNotNull ("assemblyFinder", assemblyFinder);
+      ArgumentUtility.CheckNotNull("assemblyFinder", assemblyFinder);
       _assemblyFinder = assemblyFinder;
-      _baseTypeCache = new Lazy<BaseTypeCache> (CreateBaseTypeCache);
+      _baseTypeCache = new Lazy<BaseTypeCache>(CreateBaseTypeCache);
     }
 
     /// <summary>
@@ -79,60 +79,60 @@ namespace Remotion.Reflection.TypeDiscovery
     /// </returns>
     public ICollection GetTypes (Type? baseType, bool excludeGlobalTypes)
     {
-      var nonNullBaseType = baseType ?? typeof (object);
+      var nonNullBaseType = baseType ?? typeof(object);
 
       if (nonNullBaseType.IsSealed) // ValueTypes are also sealed
         return new[] { nonNullBaseType };
 
-      if (!excludeGlobalTypes && AssemblyTypeCache.IsGacAssembly (nonNullBaseType.Assembly))
+      if (!excludeGlobalTypes && AssemblyTypeCache.IsGacAssembly(nonNullBaseType.Assembly))
       {
 #if FEATURE_GAC
         // C# compiler 7.2 does not provide caching for anonymous method but calls are only during application start so no caching is needed.
-        return _globalTypesCache.GetOrAdd (
+        return _globalTypesCache.GetOrAdd(
             nonNullBaseType,
             key =>
             {
-              s_log.Value.DebugFormat ("Discovering types derived from '{0}', including GAC...", key);
-              using (StopwatchScope.CreateScope (
+              s_log.Value.DebugFormat("Discovering types derived from '{0}', including GAC...", key);
+              using (StopwatchScope.CreateScope(
                   s_log.Value,
                   LogLevel.Info,
-                  string.Format ("Discovered types derived from '{0}', including GAC. Time taken: {{elapsed}}", key)))
+                  string.Format("Discovered types derived from '{0}', including GAC. Time taken: {{elapsed}}", key)))
               {
-                return GetTypesFromAllAssemblies (key, excludeGlobalTypes: false).ToList().AsReadOnly();
+                return GetTypesFromAllAssemblies(key, excludeGlobalTypes: false).ToList().AsReadOnly();
               }
             });
 #else
-        throw new PlatformNotSupportedException (
-            $"{nameof (AssemblyTypeCache)} resolved type '{baseType}' as belonging to the Global Assembly Cache, but the Global Assembly Cache does not exist on this platform.");
+        throw new PlatformNotSupportedException(
+            $"{nameof(AssemblyTypeCache)} resolved type '{baseType}' as belonging to the Global Assembly Cache, but the Global Assembly Cache does not exist on this platform.");
 #endif
       }
 
       var baseTypeCache = _baseTypeCache.Value;
-      Assertion.IsTrue (_baseTypeCache.IsValueCreated);
+      Assertion.IsTrue(_baseTypeCache.IsValueCreated);
 
-      return baseTypeCache.GetTypes (nonNullBaseType);
+      return baseTypeCache.GetTypes(nonNullBaseType);
     }
 
     private BaseTypeCache CreateBaseTypeCache ()
     {
-      s_log.Value.DebugFormat ("Creating cache for all types in application directory...");
-      using (StopwatchScope.CreateScope (
+      s_log.Value.DebugFormat("Creating cache for all types in application directory...");
+      using (StopwatchScope.CreateScope(
           s_log.Value,
           LogLevel.Info,
           "Created cache for all types in application directory. Time taken: {elapsed}"))
       {
-        return BaseTypeCache.Create (GetTypesFromAllAssemblies (null, true));
+        return BaseTypeCache.Create(GetTypesFromAllAssemblies(null, true));
       }
     }
 
     private IEnumerable<Type> GetTypesFromAllAssemblies (Type? baseType, bool excludeGlobalTypes)
     {
 #if !FEATURE_GAC
-      Assertion.DebugAssert (baseType == null, "{0} parameter must be 'null'.", nameof (baseType));
-      Assertion.DebugAssert (excludeGlobalTypes == true, "{0} parameter must be 'true'.", nameof (excludeGlobalTypes));
+      Assertion.DebugAssert(baseType == null, "{0} parameter must be 'null'.", nameof(baseType));
+      Assertion.DebugAssert(excludeGlobalTypes == true, "{0} parameter must be 'true'.", nameof(excludeGlobalTypes));
 #endif
 
-      return GetAssemblies (excludeGlobalTypes).AsParallel().SelectMany (a => GetTypesFromBaseType (a, baseType));
+      return GetAssemblies(excludeGlobalTypes).AsParallel().SelectMany(a => GetTypesFromBaseType(a, baseType));
     }
 
     private IEnumerable<Assembly> GetAssemblies (bool excludeGlobalTypes)
@@ -140,9 +140,9 @@ namespace Remotion.Reflection.TypeDiscovery
       var assemblies = _assemblyFinder.FindAssemblies();
 
 #if FEATURE_GAC
-      return assemblies.Where (assembly => !excludeGlobalTypes || !assembly.GlobalAssemblyCache);
+      return assemblies.Where(assembly => !excludeGlobalTypes || !assembly.GlobalAssemblyCache);
 #else
-      Assertion.IsTrue (excludeGlobalTypes, "{0} parameter must be 'true'.", nameof (excludeGlobalTypes));
+      Assertion.IsTrue(excludeGlobalTypes, "{0} parameter must be 'true'.", nameof(excludeGlobalTypes));
       return assemblies;
 #endif
     }
@@ -150,38 +150,38 @@ namespace Remotion.Reflection.TypeDiscovery
     private IEnumerable<Type> GetTypesFromBaseType (Assembly assembly, Type? baseType)
     {
 #if !FEATURE_GAC
-      Assertion.DebugAssert (baseType == null, "{0} parameter must be 'null'.", nameof (baseType));
+      Assertion.DebugAssert(baseType == null, "{0} parameter must be 'null'.", nameof(baseType));
 #endif
 
       IReadOnlyCollection<Type> allTypesInAssembly;
 
       try
       {
-        allTypesInAssembly = AssemblyTypeCache.GetTypes (assembly);
+        allTypesInAssembly = AssemblyTypeCache.GetTypes(assembly);
       }
       catch (ReflectionTypeLoadException ex)
       {
-        string message = string.Format (
+        string message = string.Format(
             "The types from assembly '{0}' could not be loaded.{1}{2}",
             assembly.GetName(),
             Environment.NewLine,
-            string.Join (Environment.NewLine, ex.LoaderExceptions.Select (e => e!.Message))); // TODO RM-7753: Message property should not be accessed for null items.
-        throw new TypeLoadException (message, ex);
+            string.Join(Environment.NewLine, ex.LoaderExceptions.Select(e => e!.Message))); // TODO RM-7753: Message property should not be accessed for null items.
+        throw new TypeLoadException(message, ex);
       }
 
       if (baseType == null)
         return allTypesInAssembly;
 
-      return GetFilteredTypes (allTypesInAssembly, baseType);
+      return GetFilteredTypes(allTypesInAssembly, baseType);
     }
 
     private IEnumerable<Type> GetFilteredTypes (IEnumerable<Type> types, Type baseType)
     {
 #if FEATURE_GAC
       var isBaseTypeAGenericTypeDefinition = baseType.IsGenericTypeDefinition;
-      return types.Where (type => baseType.IsAssignableFrom (type) || (isBaseTypeAGenericTypeDefinition && type.CanAscribeTo (baseType)));
+      return types.Where(type => baseType.IsAssignableFrom(type) || (isBaseTypeAGenericTypeDefinition && type.CanAscribeTo(baseType)));
 #else
-      throw new PlatformNotSupportedException ($"{nameof (GetFilteredTypes)} is only used with GAC lookups but the GAC is not supported on this this platform.");
+      throw new PlatformNotSupportedException($"{nameof(GetFilteredTypes)} is only used with GAC lookups but the GAC is not supported on this this platform.");
 #endif
     }
   }

@@ -36,50 +36,50 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     public void SetUp ()
     {
       _serviceLocator = DefaultServiceLocator.Create();
-      _cache = new ExtensibleEnumDefinitionCache (new ExtensibleEnumValueDiscoveryService ());
+      _cache = new ExtensibleEnumDefinitionCache(new ExtensibleEnumValueDiscoveryService());
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_cache.ValueDiscoveryService, Is.InstanceOf (typeof (ExtensibleEnumValueDiscoveryService)));
-      Assert.That (
-          ((ExtensibleEnumValueDiscoveryService) _cache.ValueDiscoveryService).TypeDiscoveryService,
-          Is.SameAs (ContextAwareTypeUtility.GetTypeDiscoveryService()));
+      Assert.That(_cache.ValueDiscoveryService, Is.InstanceOf(typeof(ExtensibleEnumValueDiscoveryService)));
+      Assert.That(
+          ((ExtensibleEnumValueDiscoveryService)_cache.ValueDiscoveryService).TypeDiscoveryService,
+          Is.SameAs(ContextAwareTypeUtility.GetTypeDiscoveryService()));
     }
 
     [Test]
     public void GetDefinition ()
     {
-      IExtensibleEnumDefinition instance = _cache.GetDefinition (typeof (Color));
+      IExtensibleEnumDefinition instance = _cache.GetDefinition(typeof(Color));
 
-      Assert.That (instance, Is.InstanceOf (typeof (ExtensibleEnumDefinition<Color>)));
+      Assert.That(instance, Is.InstanceOf(typeof(ExtensibleEnumDefinition<Color>)));
     }
 
     [Test]
     public void GetDefinition_SetsDiscoveryService ()
     {
-      IExtensibleEnumDefinition instance = _cache.GetDefinition (typeof (Color));
+      IExtensibleEnumDefinition instance = _cache.GetDefinition(typeof(Color));
 
-      Assert.That (PrivateInvoke.GetNonPublicField (instance, "_valueDiscoveryService"), Is.SameAs (_cache.ValueDiscoveryService));
+      Assert.That(PrivateInvoke.GetNonPublicField(instance, "_valueDiscoveryService"), Is.SameAs(_cache.ValueDiscoveryService));
     }
 
     [Test]
     public void GetDefinition_Cached ()
     {
-      IExtensibleEnumDefinition instance1 = _cache.GetDefinition (typeof (Color));
-      IExtensibleEnumDefinition instance2 = _cache.GetDefinition (typeof (Color));
+      IExtensibleEnumDefinition instance1 = _cache.GetDefinition(typeof(Color));
+      IExtensibleEnumDefinition instance2 = _cache.GetDefinition(typeof(Color));
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
 
     [Test]
     public void GetDefinition_ThrowsOnInvalidType ()
     {
-      Assert.That (
-          () => _cache.GetDefinition (typeof (object)),
+      Assert.That(
+          () => _cache.GetDefinition(typeof(object)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Type 'System.Object' is not an extensible enum type "
                   + "derived from ExtensibleEnum<T>.", "extensibleEnumType"));
     }
@@ -87,10 +87,10 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [Test]
     public void GetDefinition_ThrowsOnDerivedEnum ()
     {
-      Assert.That (
-          () => _cache.GetDefinition (typeof (MetallicColor)),
+      Assert.That(
+          () => _cache.GetDefinition(typeof(MetallicColor)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Type 'Remotion.ExtensibleEnums.UnitTests.TestDomain.MetallicColor' is not an extensible enum type "
                   + "derived from ExtensibleEnum<T>.", "extensibleEnumType"));
     }
@@ -100,7 +100,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     {
       var factory = _serviceLocator.GetInstance<ExtensibleEnumDefinitionCache>();
 
-      Assert.That (factory, Is.TypeOf (typeof (ExtensibleEnumDefinitionCache)));
+      Assert.That(factory, Is.TypeOf(typeof(ExtensibleEnumDefinitionCache)));
     }
 
     [Test]
@@ -109,7 +109,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
       var factory1 = _serviceLocator.GetInstance<ExtensibleEnumDefinitionCache>();
       var factory2 = _serviceLocator.GetInstance<ExtensibleEnumDefinitionCache>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

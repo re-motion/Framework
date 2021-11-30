@@ -41,10 +41,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
       get
       {
         return Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithoutStorageGroupWithDifferentProperties.String"]
-            .GetValue<string> ();
+            .GetValue<string>();
       }
       set { Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithoutStorageGroupWithDifferentProperties.String"]
-            .SetValue (value); }
+            .SetValue(value); }
     }
 
     public abstract ClassWithOneSideRelationProperties UnidirectionalOneToOne { get; set; }
@@ -54,11 +54,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
       get
       {
         return Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithoutStorageGroupWithDifferentProperties.PrivateString"]
-            .GetValue<string> ();
+            .GetValue<string>();
       }
       set
       {
-        Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithDifferentProperties.PrivateString"].SetValue (value);
+        Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.ClassWithDifferentProperties.PrivateString"].SetValue(value);
       }
     }
   }

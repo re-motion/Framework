@@ -60,223 +60,223 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       base.SetUp();
 
-      _sqlQueryGeneratorMock = MockRepository.GenerateStrictMock<ISqlQueryGenerator> ();
+      _sqlQueryGeneratorMock = MockRepository.GenerateStrictMock<ISqlQueryGenerator>();
       _typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
       _storageTypeInformationProviderStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      _generator = new DomainObjectQueryGenerator (
-          _sqlQueryGeneratorMock, 
-          _typeConversionProvider, 
-          _storageTypeInformationProviderStub, 
+      _generator = new DomainObjectQueryGenerator(
+          _sqlQueryGeneratorMock,
+          _typeConversionProvider,
+          _storageTypeInformationProviderStub,
           Configuration);
 
-      _customerClassDefinition = GetTypeDefinition (typeof (Customer));
-      _customerQueryModel = QueryModelObjectMother.Create (Expression.Constant (null, typeof (Customer)));
+      _customerClassDefinition = GetTypeDefinition(typeof(Customer));
+      _customerQueryModel = QueryModelObjectMother.Create(Expression.Constant(null, typeof(Customer)));
     }
 
     [Test]
     public void CreateScalarQuery ()
     {
-      Expression<Func<IDatabaseResultRow, int>> inMemoryProjection = row => CheckScalarResultRowAdapter (row, "an object", 42);
+      Expression<Func<IDatabaseResultRow, int>> inMemoryProjection = row => CheckScalarResultRowAdapter(row, "an object", 42);
 
-      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult (
+      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult(
           "SELECT x",
           inMemoryProjectionParameter: inMemoryProjection.Parameters.Single(),
           inMemoryProjectionBody: inMemoryProjection.Body);
-      _sqlQueryGeneratorMock.Expect (mock => mock.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQueryResult);
+      _sqlQueryGeneratorMock.Expect(mock => mock.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQueryResult);
 
-      var result = _generator.CreateScalarQuery<int> ("id", TestDomainStorageProviderDefinition, _customerQueryModel);
+      var result = _generator.CreateScalarQuery<int>("id", TestDomainStorageProviderDefinition, _customerQueryModel);
 
       _sqlQueryGeneratorMock.VerifyAllExpectations();
 
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result, Is.TypeOf (typeof (ScalarQueryAdapter<int>)));
-      Assert.That (result.ID, Is.EqualTo ("id"));
-      Assert.That (result.StorageProviderDefinition, Is.SameAs (TestDomainStorageProviderDefinition));
-      Assert.That (result.Statement, Is.EqualTo ("SELECT x"));
-      Assert.That (result.QueryType, Is.EqualTo (QueryType.Scalar));
-      Assert.That (result.CollectionType, Is.Null);
-      Assert.That (result.EagerFetchQueries, Is.Empty);
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result, Is.TypeOf(typeof(ScalarQueryAdapter<int>)));
+      Assert.That(result.ID, Is.EqualTo("id"));
+      Assert.That(result.StorageProviderDefinition, Is.SameAs(TestDomainStorageProviderDefinition));
+      Assert.That(result.Statement, Is.EqualTo("SELECT x"));
+      Assert.That(result.QueryType, Is.EqualTo(QueryType.Scalar));
+      Assert.That(result.CollectionType, Is.Null);
+      Assert.That(result.EagerFetchQueries, Is.Empty);
 
-      var resultConversion = ((ScalarQueryAdapter<int>) result).ResultConversion;
-      Assert.That (resultConversion ("an object"), Is.EqualTo (42));
+      var resultConversion = ((ScalarQueryAdapter<int>)result).ResultConversion;
+      Assert.That(resultConversion("an object"), Is.EqualTo(42));
     }
 
     [Test]
     public void CreateScalarQuery_NoParameters ()
     {
-      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult (parameters: new CommandParameter[0]);
-      _sqlQueryGeneratorMock.Expect (mock => mock.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQueryResult);
+      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult(parameters: new CommandParameter[0]);
+      _sqlQueryGeneratorMock.Expect(mock => mock.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQueryResult);
 
-      var result = _generator.CreateScalarQuery<int> ("id", TestDomainStorageProviderDefinition, _customerQueryModel);
+      var result = _generator.CreateScalarQuery<int>("id", TestDomainStorageProviderDefinition, _customerQueryModel);
 
-      _sqlQueryGeneratorMock.VerifyAllExpectations ();
-      Assert.That (result.Parameters, Is.Empty);
+      _sqlQueryGeneratorMock.VerifyAllExpectations();
+      Assert.That(result.Parameters, Is.Empty);
     }
 
     [Test]
     public void CreateScalarQuery_WithParameters ()
     {
-      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult (parameters: new[] { new CommandParameter ("p0", "paramval") });
-      _sqlQueryGeneratorMock.Expect (stub => stub.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQueryResult);
+      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult(parameters: new[] { new CommandParameter("p0", "paramval") });
+      _sqlQueryGeneratorMock.Expect(stub => stub.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQueryResult);
 
-      var result = _generator.CreateScalarQuery<int> ("id", TestDomainStorageProviderDefinition, _customerQueryModel);
+      var result = _generator.CreateScalarQuery<int>("id", TestDomainStorageProviderDefinition, _customerQueryModel);
 
       _sqlQueryGeneratorMock.VerifyAllExpectations();
-      Assert.That (result.Parameters, Is.EqualTo (new[] { new QueryParameter ("p0", "paramval", QueryParameterType.Value) }));
+      Assert.That(result.Parameters, Is.EqualTo(new[] { new QueryParameter("p0", "paramval", QueryParameterType.Value) }));
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery ()
     {
-      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult ("SELECT x", selectedEntityType: typeof (Order));
-      _sqlQueryGeneratorMock.Expect (mock => mock.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQueryResult);
+      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult("SELECT x", selectedEntityType: typeof(Order));
+      _sqlQueryGeneratorMock.Expect(mock => mock.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQueryResult);
 
-      var result = _generator.CreateSequenceQuery<Order> (
+      var result = _generator.CreateSequenceQuery<Order>(
           "id",
           TestDomainStorageProviderDefinition,
           _customerQueryModel,
           Enumerable.Empty<FetchQueryModelBuilder>());
 
-      _sqlQueryGeneratorMock.VerifyAllExpectations ();
-      Assert.That (result, Is.TypeOf (typeof (DomainObjectSequenceQueryAdapter<Order>)));
-      Assert.That (result.ID, Is.EqualTo ("id"));
-      Assert.That (result.StorageProviderDefinition, Is.EqualTo (TestDomainStorageProviderDefinition));
-      Assert.That (result.Statement, Is.EqualTo ("SELECT x"));
-      Assert.That (result.QueryType, Is.EqualTo (QueryType.Collection));
-      Assert.That (result.CollectionType, Is.EqualTo (typeof (ObjectList<Order>)));
-      Assert.That (result.EagerFetchQueries, Is.Empty);
+      _sqlQueryGeneratorMock.VerifyAllExpectations();
+      Assert.That(result, Is.TypeOf(typeof(DomainObjectSequenceQueryAdapter<Order>)));
+      Assert.That(result.ID, Is.EqualTo("id"));
+      Assert.That(result.StorageProviderDefinition, Is.EqualTo(TestDomainStorageProviderDefinition));
+      Assert.That(result.Statement, Is.EqualTo("SELECT x"));
+      Assert.That(result.QueryType, Is.EqualTo(QueryType.Collection));
+      Assert.That(result.CollectionType, Is.EqualTo(typeof(ObjectList<Order>)));
+      Assert.That(result.EagerFetchQueries, Is.Empty);
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithProjectionTypeOtherThanDomainObject_InfersCollectionTypeFromSelectedEntityType ()
     {
-      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult ("SELECT x", selectedEntityType: typeof (Order));
-      _sqlQueryGeneratorMock.Expect (mock => mock.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQueryResult);
+      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult("SELECT x", selectedEntityType: typeof(Order));
+      _sqlQueryGeneratorMock.Expect(mock => mock.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQueryResult);
 
-      var result = _generator.CreateSequenceQuery<IOrder> (
+      var result = _generator.CreateSequenceQuery<IOrder>(
           "id",
           TestDomainStorageProviderDefinition,
           _customerQueryModel,
           Enumerable.Empty<FetchQueryModelBuilder>());
 
-      _sqlQueryGeneratorMock.VerifyAllExpectations ();
-      Assert.That (result, Is.TypeOf (typeof (DomainObjectSequenceQueryAdapter<IOrder>)));
-      Assert.That (result.QueryType, Is.EqualTo (QueryType.Collection));
-      Assert.That (result.CollectionType, Is.EqualTo (typeof (ObjectList<Order>)));
+      _sqlQueryGeneratorMock.VerifyAllExpectations();
+      Assert.That(result, Is.TypeOf(typeof(DomainObjectSequenceQueryAdapter<IOrder>)));
+      Assert.That(result.QueryType, Is.EqualTo(QueryType.Collection));
+      Assert.That(result.CollectionType, Is.EqualTo(typeof(ObjectList<Order>)));
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_NoParameters ()
     {
-      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult (
-        selectedEntityType: typeof (Order), 
+      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult(
+        selectedEntityType: typeof(Order),
         parameters: new CommandParameter[0]);
-      _sqlQueryGeneratorMock.Expect (mock => mock.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQueryResult);
+      _sqlQueryGeneratorMock.Expect(mock => mock.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQueryResult);
 
-      var result = _generator.CreateSequenceQuery<Order> (
+      var result = _generator.CreateSequenceQuery<Order>(
           "id", TestDomainStorageProviderDefinition, _customerQueryModel, Enumerable.Empty<FetchQueryModelBuilder>());
 
-      _sqlQueryGeneratorMock.VerifyAllExpectations ();
-      Assert.That (result.Parameters, Is.Empty);
+      _sqlQueryGeneratorMock.VerifyAllExpectations();
+      Assert.That(result.Parameters, Is.Empty);
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithParameters ()
     {
-      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult (
-          selectedEntityType: typeof (Order), 
-          parameters: new[] { new CommandParameter ("p0", "paramval") });
-      _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQueryResult);
+      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult(
+          selectedEntityType: typeof(Order),
+          parameters: new[] { new CommandParameter("p0", "paramval") });
+      _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQueryResult);
 
-      var result = _generator.CreateSequenceQuery<Order> (
+      var result = _generator.CreateSequenceQuery<Order>(
           "id", TestDomainStorageProviderDefinition, _customerQueryModel, Enumerable.Empty<FetchQueryModelBuilder>());
 
-      Assert.That (result.Parameters, Is.EqualTo (new[] { new QueryParameter ("p0", "paramval", QueryParameterType.Value) }));
+      Assert.That(result.Parameters, Is.EqualTo(new[] { new QueryParameter("p0", "paramval", QueryParameterType.Value) }));
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithFetchRequests ()
     {
-      var fakeSqlQuery = CreateSqlQueryGeneratorResult (selectedEntityType: typeof (Customer));
-      _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQuery);
+      var fakeSqlQuery = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(Customer));
+      _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQuery);
 
-      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder ((Customer o) => o.Ceo);
-      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult (commandText: "FETCH", selectedEntityType: typeof (Ceo));
+      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder((Customer o) => o.Ceo);
+      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "FETCH", selectedEntityType: typeof(Ceo));
 
       _sqlQueryGeneratorMock
-          .Expect (mock => mock.CreateSqlQuery (Arg<QueryModel>.Matches (qm => qm.SelectClause.Selector.Type == typeof (Ceo))))
-          .Return (fakeFetchSqlQueryResult)
-          .WhenCalled (mi =>
+          .Expect(mock => mock.CreateSqlQuery(Arg<QueryModel>.Matches(qm => qm.SelectClause.Selector.Type == typeof(Ceo))))
+          .Return(fakeFetchSqlQueryResult)
+          .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
-            var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel ();
-            CheckActualFetchQueryModel (actualQueryModel, fetchQueryModel);
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
+            var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel();
+            CheckActualFetchQueryModel(actualQueryModel, fetchQueryModel);
           });
 
-      var result = _generator.CreateSequenceQuery<Customer> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
+      var result = _generator.CreateSequenceQuery<Customer>("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
 
-      _sqlQueryGeneratorMock.VerifyAllExpectations ();
-      CheckSingleFetchRequest (result.EagerFetchQueries, typeof (Company), "Ceo", "FETCH", typeof (Ceo));
+      _sqlQueryGeneratorMock.VerifyAllExpectations();
+      CheckSingleFetchRequest(result.EagerFetchQueries, typeof(Company), "Ceo", "FETCH", typeof(Ceo));
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithDownCast ()
     {
-      var fakeSqlQuery = CreateSqlQueryGeneratorResult (selectedEntityType: typeof (Company));
-      var targetTypeQueryModel = QueryModelObjectMother.Create (Expression.Constant (null, typeof (Company)));
-      _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (targetTypeQueryModel)).Return (fakeSqlQuery);
+      var fakeSqlQuery = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(Company));
+      var targetTypeQueryModel = QueryModelObjectMother.Create(Expression.Constant(null, typeof(Company)));
+      _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Return(fakeSqlQuery);
 
-      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder ((Partner o) => o.ContactPerson, targetTypeQueryModel);
-      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult (commandText: "FETCH", selectedEntityType: typeof (Person));
+      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder((Partner o) => o.ContactPerson, targetTypeQueryModel);
+      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "FETCH", selectedEntityType: typeof(Person));
 
       _sqlQueryGeneratorMock
-          .Expect (mock => mock.CreateSqlQuery (Arg<QueryModel>.Is.Anything))
-          .Return (fakeFetchSqlQueryResult)
-          .WhenCalled (mi =>
+          .Expect(mock => mock.CreateSqlQuery(Arg<QueryModel>.Is.Anything))
+          .Return(fakeFetchSqlQueryResult)
+          .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
-            var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel ();
-            CheckActualFetchQueryModel (actualQueryModel, fetchQueryModel);
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
+            var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel();
+            CheckActualFetchQueryModel(actualQueryModel, fetchQueryModel);
           });
 
-      var result = _generator.CreateSequenceQuery<Company> ("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder });
+      var result = _generator.CreateSequenceQuery<Company>("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder });
 
-      _sqlQueryGeneratorMock.VerifyAllExpectations ();
-      var expectedEndPointDefinition = GetEndPointDefinition (typeof (Partner), typeof (Partner), "ContactPerson");
-      CheckSingleFetchRequest (result.EagerFetchQueries, expectedEndPointDefinition, "FETCH", typeof (Person));
+      _sqlQueryGeneratorMock.VerifyAllExpectations();
+      var expectedEndPointDefinition = GetEndPointDefinition(typeof(Partner), typeof(Partner), "ContactPerson");
+      CheckSingleFetchRequest(result.EagerFetchQueries, expectedEndPointDefinition, "FETCH", typeof(Person));
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithMixinFetchRequest ()
     {
-      var fakeSqlQuery = CreateSqlQueryGeneratorResult (selectedEntityType: typeof (TargetClassForPersistentMixin));
-      var targetTypeQueryModel = QueryModelObjectMother.Create (Expression.Constant (null, typeof (TargetClassForPersistentMixin)));
-      _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (targetTypeQueryModel)).Return (fakeSqlQuery);
+      var fakeSqlQuery = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(TargetClassForPersistentMixin));
+      var targetTypeQueryModel = QueryModelObjectMother.Create(Expression.Constant(null, typeof(TargetClassForPersistentMixin)));
+      _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Return(fakeSqlQuery);
 
-      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder ((IMixinAddingPersistentProperties o) => o.RelationProperty);
-      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult (commandText: "FETCH", selectedEntityType: typeof (RelationTargetForPersistentMixin));
+      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder((IMixinAddingPersistentProperties o) => o.RelationProperty);
+      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "FETCH", selectedEntityType: typeof(RelationTargetForPersistentMixin));
 
       _sqlQueryGeneratorMock
-          .Expect (mock => mock.CreateSqlQuery (Arg<QueryModel>.Is.Anything))
-          .Return (fakeFetchSqlQueryResult)
-          .WhenCalled (mi =>
+          .Expect(mock => mock.CreateSqlQuery(Arg<QueryModel>.Is.Anything))
+          .Return(fakeFetchSqlQueryResult)
+          .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
-            var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel ();
-            CheckActualFetchQueryModel (actualQueryModel, fetchQueryModel);
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
+            var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel();
+            CheckActualFetchQueryModel(actualQueryModel, fetchQueryModel);
           });
 
-      var result = _generator.CreateSequenceQuery<TargetClassForPersistentMixin> ("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder });
+      var result = _generator.CreateSequenceQuery<TargetClassForPersistentMixin>("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder });
 
-      _sqlQueryGeneratorMock.VerifyAllExpectations ();
-      var expectedEndPointDefinition = GetEndPointDefinition (
-          typeof (TargetClassForPersistentMixin), typeof (MixinAddingPersistentProperties), "RelationProperty");
-      CheckSingleFetchRequest (result.EagerFetchQueries, expectedEndPointDefinition, "FETCH", typeof (RelationTargetForPersistentMixin));
+      _sqlQueryGeneratorMock.VerifyAllExpectations();
+      var expectedEndPointDefinition = GetEndPointDefinition(
+          typeof(TargetClassForPersistentMixin), typeof(MixinAddingPersistentProperties), "RelationProperty");
+      CheckSingleFetchRequest(result.EagerFetchQueries, expectedEndPointDefinition, "FETCH", typeof(RelationTargetForPersistentMixin));
     }
 
     [Test]
-    [Ignore ("TODO RM-7294: implement test for VirtualCollection")]
+    [Ignore("TODO RM-7294: implement test for VirtualCollection")]
     public void CreateSequenceQuery_EntityQuery_WithFetchRequestDoesNotSupportExpression ()
     {
     }
@@ -284,96 +284,96 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithFetchRequestWithSortExpression ()
     {
-      var fakeSqlQuery = CreateSqlQueryGeneratorResult (selectedEntityType: typeof (Customer));
-      _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQuery);
+      var fakeSqlQuery = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(Customer));
+      _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQuery);
 
-      var fetchQueryModelBuilder = CreateFetchManyQueryModelBuilder ((Customer o) => o.Orders);
-      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult (commandText: "FETCH", selectedEntityType: typeof (Order));
+      var fetchQueryModelBuilder = CreateFetchManyQueryModelBuilder((Customer o) => o.Orders);
+      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "FETCH", selectedEntityType: typeof(Order));
 
       _sqlQueryGeneratorMock
-          .Expect (mock => mock.CreateSqlQuery (Arg<QueryModel>.Is.Anything))
-          .Return (fakeFetchSqlQueryResult)
-          .WhenCalled (mi =>
+          .Expect(mock => mock.CreateSqlQuery(Arg<QueryModel>.Is.Anything))
+          .Return(fakeFetchSqlQueryResult)
+          .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
-            var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel ();
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
+            var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel();
 
-            Assert.That (actualQueryModel.MainFromClause.FromExpression, Is.TypeOf<SubQueryExpression> ());
-            CheckActualFetchQueryModel (((SubQueryExpression) actualQueryModel.MainFromClause.FromExpression).QueryModel, fetchQueryModel);
+            Assert.That(actualQueryModel.MainFromClause.FromExpression, Is.TypeOf<SubQueryExpression>());
+            CheckActualFetchQueryModel(((SubQueryExpression)actualQueryModel.MainFromClause.FromExpression).QueryModel, fetchQueryModel);
 
-            Assert.That (actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause> ());
-            var orderByClause = (OrderByClause) actualQueryModel.BodyClauses.Single ();
-            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition) GetEndPointDefinition (typeof (Customer), "Orders"));
-            Assert.That (endPointDefinition.GetSortExpression().ToString(), Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber ASC"));
-            var orderNumberMember = NormalizingMemberInfoFromExpressionUtility.GetProperty ((Order o) => o.OrderNumber);
-            Assert.That (((MemberExpression) orderByClause.Orderings[0].Expression).Member, Is.SameAs (orderNumberMember));
-            Assert.That (orderByClause.Orderings[0].OrderingDirection, Is.EqualTo (OrderingDirection.Asc));
+            Assert.That(actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause>());
+            var orderByClause = (OrderByClause)actualQueryModel.BodyClauses.Single();
+            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition)GetEndPointDefinition(typeof(Customer), "Orders"));
+            Assert.That(endPointDefinition.GetSortExpression().ToString(), Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber ASC"));
+            var orderNumberMember = NormalizingMemberInfoFromExpressionUtility.GetProperty((Order o) => o.OrderNumber);
+            Assert.That(((MemberExpression)orderByClause.Orderings[0].Expression).Member, Is.SameAs(orderNumberMember));
+            Assert.That(orderByClause.Orderings[0].OrderingDirection, Is.EqualTo(OrderingDirection.Asc));
           });
 
-      _generator.CreateSequenceQuery<Customer> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
+      _generator.CreateSequenceQuery<Customer>("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
 
-      _sqlQueryGeneratorMock.VerifyAllExpectations ();
+      _sqlQueryGeneratorMock.VerifyAllExpectations();
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithFetchRequestWithSortExpressionBasedOnMixinProperty ()
     {
-      var fakeSqlQuery = CreateSqlQueryGeneratorResult (selectedEntityType: typeof (RelationTargetForPersistentMixin));
-      var targetTypeQueryModel = QueryModelObjectMother.Create (Expression.Constant (null, typeof (RelationTargetForPersistentMixin)));
-      _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (targetTypeQueryModel)).Return (fakeSqlQuery);
+      var fakeSqlQuery = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(RelationTargetForPersistentMixin));
+      var targetTypeQueryModel = QueryModelObjectMother.Create(Expression.Constant(null, typeof(RelationTargetForPersistentMixin)));
+      _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Return(fakeSqlQuery);
 
-      var fetchQueryModelBuilder = CreateFetchManyQueryModelBuilder ((RelationTargetForPersistentMixin o) => o.RelationProperty4, targetTypeQueryModel);
-      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult (commandText: "FETCH", selectedEntityType: typeof (TargetClassForPersistentMixin));
+      var fetchQueryModelBuilder = CreateFetchManyQueryModelBuilder((RelationTargetForPersistentMixin o) => o.RelationProperty4, targetTypeQueryModel);
+      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "FETCH", selectedEntityType: typeof(TargetClassForPersistentMixin));
 
       _sqlQueryGeneratorMock
-          .Expect (mock => mock.CreateSqlQuery (Arg<QueryModel>.Is.Anything))
-          .Return (fakeFetchSqlQueryResult)
-          .WhenCalled (mi =>
+          .Expect(mock => mock.CreateSqlQuery(Arg<QueryModel>.Is.Anything))
+          .Return(fakeFetchSqlQueryResult)
+          .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
-            var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel ();
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
+            var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel();
 
-            Assert.That (actualQueryModel.MainFromClause.FromExpression, Is.TypeOf<SubQueryExpression> ());
-            CheckActualFetchQueryModel (((SubQueryExpression) actualQueryModel.MainFromClause.FromExpression).QueryModel, fetchQueryModel);
+            Assert.That(actualQueryModel.MainFromClause.FromExpression, Is.TypeOf<SubQueryExpression>());
+            CheckActualFetchQueryModel(((SubQueryExpression)actualQueryModel.MainFromClause.FromExpression).QueryModel, fetchQueryModel);
 
-            Assert.That (actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause> ());
-            var orderByClause = (OrderByClause) actualQueryModel.BodyClauses.Single ();
-            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition) GetEndPointDefinition (typeof (RelationTargetForPersistentMixin), "RelationProperty4"));
-            Assert.That (endPointDefinition.GetSortExpression().ToString(), 
-                Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.MixinAddingPersistentProperties.PersistentProperty ASC"));
-            var sortedByMember = NormalizingMemberInfoFromExpressionUtility.GetProperty ((IMixinAddingPersistentProperties o) => o.PersistentProperty);
-            Assert.That (((MemberExpression) orderByClause.Orderings[0].Expression).Member, Is.SameAs (sortedByMember));
-            Assert.That (orderByClause.Orderings[0].OrderingDirection, Is.EqualTo (OrderingDirection.Asc));
+            Assert.That(actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause>());
+            var orderByClause = (OrderByClause)actualQueryModel.BodyClauses.Single();
+            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition)GetEndPointDefinition(typeof(RelationTargetForPersistentMixin), "RelationProperty4"));
+            Assert.That(endPointDefinition.GetSortExpression().ToString(),
+                Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.MixinAddingPersistentProperties.PersistentProperty ASC"));
+            var sortedByMember = NormalizingMemberInfoFromExpressionUtility.GetProperty((IMixinAddingPersistentProperties o) => o.PersistentProperty);
+            Assert.That(((MemberExpression)orderByClause.Orderings[0].Expression).Member, Is.SameAs(sortedByMember));
+            Assert.That(orderByClause.Orderings[0].OrderingDirection, Is.EqualTo(OrderingDirection.Asc));
           });
-      _generator.CreateSequenceQuery<RelationTargetForPersistentMixin> ("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder });
+      _generator.CreateSequenceQuery<RelationTargetForPersistentMixin>("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder });
 
-      _sqlQueryGeneratorMock.VerifyAllExpectations ();
+      _sqlQueryGeneratorMock.VerifyAllExpectations();
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithFetchRequestWithSortExpressionBasedOnMixinPropertyNotPartOfInterface_ThrowsNotSupportedException ()
     {
       var fakeSqlQuery =
-          CreateSqlQueryGeneratorResult (
-              selectedEntityType: typeof (RelationTarget));
+          CreateSqlQueryGeneratorResult(
+              selectedEntityType: typeof(RelationTarget));
       var targetTypeQueryModel =
-          QueryModelObjectMother.Create (
-              Expression.Constant (null, typeof (RelationTarget)));
-      _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (targetTypeQueryModel)).Return (fakeSqlQuery);
+          QueryModelObjectMother.Create(
+              Expression.Constant(null, typeof(RelationTarget)));
+      _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Return(fakeSqlQuery);
 
       var fetchQueryModelBuilder =
-          CreateFetchManyQueryModelBuilder (
+          CreateFetchManyQueryModelBuilder(
               (RelationTarget o) => o.CollectionProperty,
               targetTypeQueryModel);
-      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult (commandText: "FETCH", selectedEntityType: typeof (MixinTarget));
+      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "FETCH", selectedEntityType: typeof(MixinTarget));
 
       _sqlQueryGeneratorMock
-          .Stub (mock => mock.CreateSqlQuery (Arg<QueryModel>.Is.Anything))
-          .Return (fakeFetchSqlQueryResult);
+          .Stub(mock => mock.CreateSqlQuery(Arg<QueryModel>.Is.Anything))
+          .Return(fakeFetchSqlQueryResult);
 
-      Assert.That (
-          () => _generator.CreateSequenceQuery<RelationTarget> ("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder }),
-          Throws.TypeOf<NotSupportedException>().And.Message.EqualTo (
+      Assert.That(
+          () => _generator.CreateSequenceQuery<RelationTarget>("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder }),
+          Throws.TypeOf<NotSupportedException>().And.Message.EqualTo(
               "The member 'Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Error.SortExpressionForPropertyWithoutInterface.RelationMixin.SortProperty' "
               + "is not part of any interface introduced onto the target class "
               + "'Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Error.SortExpressionForPropertyWithoutInterface.MixinTarget'. "
@@ -384,101 +384,101 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     public void CreateSequenceQuery_EntityQuery_WithFetchRequestWithSortExpressionBasedOnPropertyDeclaredOnDerivedType ()
     {
       var fakeSqlQuery =
-          CreateSqlQueryGeneratorResult (
-              selectedEntityType: typeof (RelationTargetManySide));
+          CreateSqlQueryGeneratorResult(
+              selectedEntityType: typeof(RelationTargetManySide));
       var targetTypeQueryModel =
-          QueryModelObjectMother.Create (
-              Expression.Constant (null, typeof (RelationTargetManySide)));
-      _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (targetTypeQueryModel)).Return (fakeSqlQuery);
+          QueryModelObjectMother.Create(
+              Expression.Constant(null, typeof(RelationTargetManySide)));
+      _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Return(fakeSqlQuery);
 
       var fetchQueryModelBuilder =
-          CreateFetchManyQueryModelBuilder (
+          CreateFetchManyQueryModelBuilder(
               (RelationTargetManySide o) => o.CollectionProperty,
               targetTypeQueryModel);
-      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult (commandText: "FETCH", selectedEntityType: typeof (RelationTargetOneSide));
+      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "FETCH", selectedEntityType: typeof(RelationTargetOneSide));
 
       _sqlQueryGeneratorMock
-          .Expect (mock => mock.CreateSqlQuery (Arg<QueryModel>.Is.Anything))
-          .Return (fakeFetchSqlQueryResult)
-          .WhenCalled (mi =>
+          .Expect(mock => mock.CreateSqlQuery(Arg<QueryModel>.Is.Anything))
+          .Return(fakeFetchSqlQueryResult)
+          .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
-            var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel ();
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
+            var fetchQueryModel = fetchQueryModelBuilder.GetOrCreateFetchQueryModel();
 
-            Assert.That (actualQueryModel.MainFromClause.FromExpression, Is.TypeOf<SubQueryExpression> ());
-            CheckActualFetchQueryModel (((SubQueryExpression) actualQueryModel.MainFromClause.FromExpression).QueryModel, fetchQueryModel);
+            Assert.That(actualQueryModel.MainFromClause.FromExpression, Is.TypeOf<SubQueryExpression>());
+            CheckActualFetchQueryModel(((SubQueryExpression)actualQueryModel.MainFromClause.FromExpression).QueryModel, fetchQueryModel);
 
-            Assert.That (actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause> ());
-            var orderByClause = (OrderByClause) actualQueryModel.BodyClauses.Single ();
-            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition) GetEndPointDefinition (typeof (RelationTargetManySide), "CollectionProperty"));
-            Assert.That (endPointDefinition.GetSortExpression().ToString(),
-                Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.SortExpressionForPropertyOnDerivedType.DerivedRelationTargetOneSide.SortProperty ASC"));
-            var sortedByMember = NormalizingMemberInfoFromExpressionUtility.GetProperty ((DerivedRelationTargetOneSide o) => o.SortProperty);
-            Assert.That (((MemberExpression) orderByClause.Orderings[0].Expression).Member, Is.SameAs (sortedByMember));
-            Assert.That (orderByClause.Orderings[0].OrderingDirection, Is.EqualTo (OrderingDirection.Asc));
+            Assert.That(actualQueryModel.BodyClauses, Has.Some.TypeOf<OrderByClause>());
+            var orderByClause = (OrderByClause)actualQueryModel.BodyClauses.Single();
+            var endPointDefinition = ((DomainObjectCollectionRelationEndPointDefinition)GetEndPointDefinition(typeof(RelationTargetManySide), "CollectionProperty"));
+            Assert.That(endPointDefinition.GetSortExpression().ToString(),
+                Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.SortExpressionForPropertyOnDerivedType.DerivedRelationTargetOneSide.SortProperty ASC"));
+            var sortedByMember = NormalizingMemberInfoFromExpressionUtility.GetProperty((DerivedRelationTargetOneSide o) => o.SortProperty);
+            Assert.That(((MemberExpression)orderByClause.Orderings[0].Expression).Member, Is.SameAs(sortedByMember));
+            Assert.That(orderByClause.Orderings[0].OrderingDirection, Is.EqualTo(OrderingDirection.Asc));
           });
 
-      _generator.CreateSequenceQuery<RelationTargetManySide> ("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder });
+      _generator.CreateSequenceQuery<RelationTargetManySide>("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder });
 
-      _sqlQueryGeneratorMock.VerifyAllExpectations ();
+      _sqlQueryGeneratorMock.VerifyAllExpectations();
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithNestedFetchRequests ()
     {
-      var fakeSqlQuery = CreateSqlQueryGeneratorResult (selectedEntityType: typeof (Customer));
-      _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQuery);
+      var fakeSqlQuery = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(Customer));
+      _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQuery);
 
-      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder ((Customer c) => c.Ceo);
-      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult (selectedEntityType: typeof (Ceo), commandText: "FETCH");
-      _sqlQueryGeneratorMock.Expect (mock => mock.CreateSqlQuery (Arg<QueryModel>.Is.Anything)).Return (fakeFetchSqlQueryResult).Repeat.Once ();
+      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder((Customer c) => c.Ceo);
+      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(Ceo), commandText: "FETCH");
+      _sqlQueryGeneratorMock.Expect(mock => mock.CreateSqlQuery(Arg<QueryModel>.Is.Anything)).Return(fakeFetchSqlQueryResult).Repeat.Once();
 
-      var innerFetchRequest = CreateFetchOneRequest ((Ceo c) => c.Company);
-      fetchQueryModelBuilder.FetchRequest.GetOrAddInnerFetchRequest (innerFetchRequest);
+      var innerFetchRequest = CreateFetchOneRequest((Ceo c) => c.Company);
+      fetchQueryModelBuilder.FetchRequest.GetOrAddInnerFetchRequest(innerFetchRequest);
 
-      var fakeInnerFetchSqlQueryResult = CreateSqlQueryGeneratorResult (commandText: "INNER FETCH", selectedEntityType: typeof (Company));
+      var fakeInnerFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "INNER FETCH", selectedEntityType: typeof(Company));
       _sqlQueryGeneratorMock
-          .Expect (mock => mock.CreateSqlQuery (Arg<QueryModel>.Is.Anything))
-          .Return (fakeInnerFetchSqlQueryResult)
-          .WhenCalled (mi =>
+          .Expect(mock => mock.CreateSqlQuery(Arg<QueryModel>.Is.Anything))
+          .Return(fakeInnerFetchSqlQueryResult)
+          .WhenCalled(mi =>
           {
-            var actualQueryModel = (QueryModel) mi.Arguments[0];
-            Assert.That (((StreamedSequenceInfo) actualQueryModel.GetOutputDataInfo ()).ItemExpression.Type, Is.SameAs (typeof (Company)));
+            var actualQueryModel = (QueryModel)mi.Arguments[0];
+            Assert.That(((StreamedSequenceInfo)actualQueryModel.GetOutputDataInfo()).ItemExpression.Type, Is.SameAs(typeof(Company)));
           });
 
-      var result = _generator.CreateSequenceQuery<Customer> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
+      var result = _generator.CreateSequenceQuery<Customer>("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
 
-      _sqlQueryGeneratorMock.VerifyAllExpectations ();
+      _sqlQueryGeneratorMock.VerifyAllExpectations();
 
-      var fetchQuery = result.EagerFetchQueries.Single ();
-      CheckSingleFetchRequest (fetchQuery.Value.EagerFetchQueries, typeof (Ceo), "Company", "INNER FETCH", typeof (Company));
+      var fetchQuery = result.EagerFetchQueries.Single();
+      CheckSingleFetchRequest(fetchQuery.Value.EagerFetchQueries, typeof(Ceo), "Company", "INNER FETCH", typeof(Company));
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithInvalidFetchRequest_MemberIsNoPropertyInfo ()
     {
-      var fakeSqlQuery = CreateSqlQueryGeneratorResult (selectedEntityType: typeof (Order));
-      _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQuery);
+      var fakeSqlQuery = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(Order));
+      _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQuery);
 
-      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder ((Customer o) => o.CtorCalled);
-      Assert.That (
-          () => _generator.CreateSequenceQuery<Order> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder }),
+      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder((Customer o) => o.CtorCalled);
+      Assert.That(
+          () => _generator.CreateSequenceQuery<Order>("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder }),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The member 'CtorCalled' is a 'Field', which cannot be fetched by this LINQ provider. Only properties can be fetched."));
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithInvalidFetchRequest_MemberIsNoRelationProperty ()
     {
-      var fakeSqlQuery = CreateSqlQueryGeneratorResult (selectedEntityType: typeof (Order));
-      _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQuery);
+      var fakeSqlQuery = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(Order));
+      _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQuery);
 
-      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder ((Customer o) => o.Name);
-      Assert.That (
-          () => _generator.CreateSequenceQuery<Order> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder }),
+      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder((Customer o) => o.Name);
+      Assert.That(
+          () => _generator.CreateSequenceQuery<Order>("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder }),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name' is not a relation end point. "
                   + "Fetching it is not supported by this LINQ provider."));
     }
@@ -487,77 +487,77 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     public void CreateSequenceQuery_NonEntityQuery ()
     {
       var fakeQueryResultRow = MockRepository.GenerateStrictMock<IQueryResultRow>();
-      Expression<Func<IDatabaseResultRow, int>> inMemoryProjection = row => CheckQueryResultRowAdapter (row, fakeQueryResultRow, 42);
-      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult (
+      Expression<Func<IDatabaseResultRow, int>> inMemoryProjection = row => CheckQueryResultRowAdapter(row, fakeQueryResultRow, 42);
+      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult(
           "SELECT x",
           selectedEntityType: null,
           inMemoryProjectionParameter: inMemoryProjection.Parameters.Single(),
           inMemoryProjectionBody: inMemoryProjection.Body);
-      _sqlQueryGeneratorMock.Expect (mock => mock.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQueryResult);
+      _sqlQueryGeneratorMock.Expect(mock => mock.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQueryResult);
 
-      var result = _generator.CreateSequenceQuery<int> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, Enumerable.Empty<FetchQueryModelBuilder> ());
+      var result = _generator.CreateSequenceQuery<int>("id", TestDomainStorageProviderDefinition, _customerQueryModel, Enumerable.Empty<FetchQueryModelBuilder>());
 
-      _sqlQueryGeneratorMock.VerifyAllExpectations ();
-      Assert.That (result, Is.TypeOf (typeof (CustomSequenceQueryAdapter<int>)));
-      Assert.That (result.ID, Is.EqualTo ("id"));
-      Assert.That (result.StorageProviderDefinition, Is.EqualTo (_customerClassDefinition.StorageEntityDefinition.StorageProviderDefinition));
-      Assert.That (result.Statement, Is.EqualTo ("SELECT x"));
-      Assert.That (result.QueryType, Is.EqualTo (QueryType.Custom));
-      Assert.That (result.CollectionType, Is.Null);
-      Assert.That (result.EagerFetchQueries, Is.Empty);
+      _sqlQueryGeneratorMock.VerifyAllExpectations();
+      Assert.That(result, Is.TypeOf(typeof(CustomSequenceQueryAdapter<int>)));
+      Assert.That(result.ID, Is.EqualTo("id"));
+      Assert.That(result.StorageProviderDefinition, Is.EqualTo(_customerClassDefinition.StorageEntityDefinition.StorageProviderDefinition));
+      Assert.That(result.Statement, Is.EqualTo("SELECT x"));
+      Assert.That(result.QueryType, Is.EqualTo(QueryType.Custom));
+      Assert.That(result.CollectionType, Is.Null);
+      Assert.That(result.EagerFetchQueries, Is.Empty);
 
-      var resultConversion = ((CustomSequenceQueryAdapter<int>) result).ResultConversion;
-      Assert.That (resultConversion (fakeQueryResultRow), Is.EqualTo (42));
+      var resultConversion = ((CustomSequenceQueryAdapter<int>)result).ResultConversion;
+      Assert.That(resultConversion(fakeQueryResultRow), Is.EqualTo(42));
     }
-    
+
     [Test]
     public void CreateSequenceQuery_NonEntityQuery_NoParameters ()
     {
-      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult (selectedEntityType: null, parameters: new CommandParameter[0]);
-      _sqlQueryGeneratorMock.Expect (mock => mock.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQueryResult);
+      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult(selectedEntityType: null, parameters: new CommandParameter[0]);
+      _sqlQueryGeneratorMock.Expect(mock => mock.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQueryResult);
 
-      var result = _generator.CreateSequenceQuery<int> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, Enumerable.Empty<FetchQueryModelBuilder> ());
+      var result = _generator.CreateSequenceQuery<int>("id", TestDomainStorageProviderDefinition, _customerQueryModel, Enumerable.Empty<FetchQueryModelBuilder>());
 
-      _sqlQueryGeneratorMock.VerifyAllExpectations ();
-      Assert.That (result.Parameters, Is.Empty);
+      _sqlQueryGeneratorMock.VerifyAllExpectations();
+      Assert.That(result.Parameters, Is.Empty);
     }
 
     [Test]
     public void CreateSequenceQuery_NonEntityQuery_WithParameters ()
     {
-      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult (
+      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult(
           selectedEntityType: null,
-          parameters: new[] { new CommandParameter ("p0", "paramval") });
-      _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQueryResult);
+          parameters: new[] { new CommandParameter("p0", "paramval") });
+      _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQueryResult);
 
-      var result = _generator.CreateSequenceQuery<int> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, Enumerable.Empty<FetchQueryModelBuilder> ());
+      var result = _generator.CreateSequenceQuery<int>("id", TestDomainStorageProviderDefinition, _customerQueryModel, Enumerable.Empty<FetchQueryModelBuilder>());
 
-      Assert.That (result.Parameters, Is.EqualTo (new[] { new QueryParameter ("p0", "paramval", QueryParameterType.Value) }));
+      Assert.That(result.Parameters, Is.EqualTo(new[] { new QueryParameter("p0", "paramval", QueryParameterType.Value) }));
     }
 
     [Test]
     public void CreateSequenceQuery_NonEntityQuery_WithFetchRequests ()
     {
-      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult (selectedEntityType: null);
-      _sqlQueryGeneratorMock.Stub (stub => stub.CreateSqlQuery (_customerQueryModel)).Return (fakeSqlQueryResult);
+      var fakeSqlQueryResult = CreateSqlQueryGeneratorResult(selectedEntityType: null);
+      _sqlQueryGeneratorMock.Stub(stub => stub.CreateSqlQuery(_customerQueryModel)).Return(fakeSqlQueryResult);
 
-      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder ((Customer o) => o.Ceo);
-      Assert.That (
-          () => _generator.CreateSequenceQuery<int> ("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder }),
+      var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder((Customer o) => o.Ceo);
+      Assert.That(
+          () => _generator.CreateSequenceQuery<int>("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder }),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Only queries returning DomainObjects can perform eager fetching."));
     }
-    
+
     private SqlQueryGeneratorResult CreateSqlQueryGeneratorResult (
-        string commandText = null, 
+        string commandText = null,
         CommandParameter[] parameters = null,
         Type selectedEntityType = null,
         ParameterExpression inMemoryProjectionParameter = null,
         Expression inMemoryProjectionBody = null)
     {
-      var sqlCommandData = CreateSqlCommandData (commandText, parameters, inMemoryProjectionParameter, inMemoryProjectionBody);
-      return new SqlQueryGeneratorResult (sqlCommandData, selectedEntityType);
+      var sqlCommandData = CreateSqlCommandData(commandText, parameters, inMemoryProjectionParameter, inMemoryProjectionBody);
+      return new SqlQueryGeneratorResult(sqlCommandData, selectedEntityType);
     }
 
     private SqlCommandData CreateSqlCommandData (
@@ -566,51 +566,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
         ParameterExpression inMemoryProjectionParameter = null,
         Expression inMemoryProjectionBody = null)
     {
-      return new SqlCommandData (
+      return new SqlCommandData(
           commandText ?? "bla",
           parameters ?? new CommandParameter[0],
-          inMemoryProjectionParameter ?? Expression.Parameter (typeof (IDatabaseResultRow), "row"),
-          inMemoryProjectionBody ?? Expression.Constant (null));
+          inMemoryProjectionParameter ?? Expression.Parameter(typeof(IDatabaseResultRow), "row"),
+          inMemoryProjectionBody ?? Expression.Constant(null));
     }
 
     private void CheckActualFetchQueryModel (QueryModel actualQueryModel, QueryModel fetchQueryModel)
     {
-      Assert.That (actualQueryModel, Is.Not.SameAs (fetchQueryModel));
-      Assert.That (fetchQueryModel.ResultOperators, Has.No.TypeOf<DistinctResultOperator> ());
-      Assert.That (actualQueryModel.ResultOperators, Has.Some.TypeOf<DistinctResultOperator> ());
-      Assert.That (actualQueryModel.MainFromClause.ToString (), Is.EqualTo (fetchQueryModel.MainFromClause.ToString ()));
-      Assert.That (actualQueryModel.SelectClause.ToString (), Is.EqualTo (fetchQueryModel.SelectClause.ToString ()));
+      Assert.That(actualQueryModel, Is.Not.SameAs(fetchQueryModel));
+      Assert.That(fetchQueryModel.ResultOperators, Has.No.TypeOf<DistinctResultOperator>());
+      Assert.That(actualQueryModel.ResultOperators, Has.Some.TypeOf<DistinctResultOperator>());
+      Assert.That(actualQueryModel.MainFromClause.ToString(), Is.EqualTo(fetchQueryModel.MainFromClause.ToString()));
+      Assert.That(actualQueryModel.SelectClause.ToString(), Is.EqualTo(fetchQueryModel.SelectClause.ToString()));
     }
 
     private FetchQueryModelBuilder CreateFetchOneQueryModelBuilder<TSource, TDest> (Expression<Func<TSource, TDest>> memberExpression, QueryModel queryModel = null)
     {
       var fetchRequest = CreateFetchOneRequest(memberExpression);
-      return new FetchQueryModelBuilder (fetchRequest, queryModel ?? _customerQueryModel, 0);
+      return new FetchQueryModelBuilder(fetchRequest, queryModel ?? _customerQueryModel, 0);
     }
 
     private FetchOneRequest CreateFetchOneRequest<TSource, TDest> (Expression<Func<TSource, TDest>> memberExpression)
     {
-      var relationMember = NormalizingMemberInfoFromExpressionUtility.GetMember (memberExpression);
-      return new FetchOneRequest (relationMember);
+      var relationMember = NormalizingMemberInfoFromExpressionUtility.GetMember(memberExpression);
+      return new FetchOneRequest(relationMember);
     }
 
     private FetchQueryModelBuilder CreateFetchManyQueryModelBuilder<TSource, TDest> (Expression<Func<TSource, TDest>> memberExpression, QueryModel queryModel = null)
     {
-      var fetchRequest = CreateFetchManyRequest (memberExpression);
-      return new FetchQueryModelBuilder (fetchRequest, queryModel ?? _customerQueryModel, 0);
+      var fetchRequest = CreateFetchManyRequest(memberExpression);
+      return new FetchQueryModelBuilder(fetchRequest, queryModel ?? _customerQueryModel, 0);
     }
 
     private FetchManyRequest CreateFetchManyRequest<TSource, TDest> (Expression<Func<TSource, TDest>> memberExpression)
     {
-      var relationMember = NormalizingMemberInfoFromExpressionUtility.GetProperty (memberExpression);
-      return new FetchManyRequest (relationMember);
+      var relationMember = NormalizingMemberInfoFromExpressionUtility.GetProperty(memberExpression);
+      return new FetchManyRequest(relationMember);
     }
 
     private void CheckSingleFetchRequest (
         EagerFetchQueryCollection fetchQueryCollection, Type sourceType, string fetchedProperty, string expectedFetchQueryText, Type fetchedType)
     {
-      var relationEndPointDefinition = GetEndPointDefinition (sourceType, fetchedProperty);
-      CheckSingleFetchRequest (fetchQueryCollection, relationEndPointDefinition, expectedFetchQueryText, fetchedType);
+      var relationEndPointDefinition = GetEndPointDefinition(sourceType, fetchedProperty);
+      CheckSingleFetchRequest(fetchQueryCollection, relationEndPointDefinition, expectedFetchQueryText, fetchedType);
     }
 
     private static void CheckSingleFetchRequest (
@@ -619,29 +619,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
         string expectedFetchQueryText,
         Type fetchedType)
     {
-      var queryType = typeof (QueryAdapterBase<>).MakeGenericType (typeof (IEnumerable<>).MakeGenericType (fetchedType));
-      var collectionType = typeof (ObjectList<>).MakeGenericType (fetchedType);
+      var queryType = typeof(QueryAdapterBase<>).MakeGenericType(typeof(IEnumerable<>).MakeGenericType(fetchedType));
+      var collectionType = typeof(ObjectList<>).MakeGenericType(fetchedType);
 
-      Assert.That (fetchQueryCollection.Count, Is.EqualTo (1));
+      Assert.That(fetchQueryCollection.Count, Is.EqualTo(1));
       var fetchQuery = fetchQueryCollection.Single();
-      Assert.That (fetchQuery.Key, Is.EqualTo (relationEndPointDefinition));
-      Assert.That (fetchQuery.Value.Statement, Is.EqualTo (expectedFetchQueryText));
-      Assert.That (fetchQuery.Value, Is.InstanceOf (queryType));
-      Assert.That (fetchQuery.Value.CollectionType, Is.EqualTo (collectionType));
+      Assert.That(fetchQuery.Key, Is.EqualTo(relationEndPointDefinition));
+      Assert.That(fetchQuery.Value.Statement, Is.EqualTo(expectedFetchQueryText));
+      Assert.That(fetchQuery.Value, Is.InstanceOf(queryType));
+      Assert.That(fetchQuery.Value.CollectionType, Is.EqualTo(collectionType));
     }
 
     private int CheckScalarResultRowAdapter (IDatabaseResultRow row, string expectedScalarValue, int fakeResult)
     {
-      Assert.That (row, Is.TypeOf<ScalarResultRowAdapter> ());
-      Assert.That (((ScalarResultRowAdapter) row).ScalarValue, Is.EqualTo (expectedScalarValue));
-      Assert.That (((ScalarResultRowAdapter) row).StorageTypeInformationProvider, Is.SameAs (_storageTypeInformationProviderStub));
+      Assert.That(row, Is.TypeOf<ScalarResultRowAdapter>());
+      Assert.That(((ScalarResultRowAdapter)row).ScalarValue, Is.EqualTo(expectedScalarValue));
+      Assert.That(((ScalarResultRowAdapter)row).StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
       return fakeResult;
     }
 
     private int CheckQueryResultRowAdapter (IDatabaseResultRow row, IQueryResultRow expectedResultRow, int fakeResult)
     {
-      Assert.That (row, Is.TypeOf<QueryResultRowAdapter> ());
-      Assert.That (((QueryResultRowAdapter) row).QueryResultRow, Is.EqualTo (expectedResultRow));
+      Assert.That(row, Is.TypeOf<QueryResultRowAdapter>());
+      Assert.That(((QueryResultRowAdapter)row).QueryResultRow, Is.EqualTo(expectedResultRow));
       return fakeResult;
     }
   }

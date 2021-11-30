@@ -22,10 +22,10 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
   [Flags]
   public enum OperationMode
   {
-    [CommandLineMode ("schema", Description = "Generate the database setup script(s).")]
+    [CommandLineMode("schema", Description = "Generate the database setup script(s).")]
     BuildSchema = 1,
 
-    [CommandLineMode ("exportMappingXml", Description = "Export mapping as a xml file.")]
+    [CommandLineMode("exportMappingXml", Description = "Export mapping as a xml file.")]
     ExportMappingXml = 2,
   }
 
@@ -36,38 +36,38 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
   [Serializable]
   public class RdbmsToolsParameters
   {
-    [CommandLineModeArgument (false)]
+    [CommandLineModeArgument(false)]
     public OperationMode Mode = OperationMode.BuildSchema;
 
-    [CommandLineStringArgument ("baseDirectory", true,
+    [CommandLineStringArgument("baseDirectory", true,
         Description = "The base directory to use for looking up the files to be processed (default: current).",
         Placeholder = "directory")]
     public string BaseDirectory = Environment.CurrentDirectory;
 
-    [CommandLineStringArgument ("config", true,
-        Description = 
+    [CommandLineStringArgument("config", true,
+        Description =
             "The config file holding the application's configuration. "
             + "Unless the path is rooted, the config file is located relative to the current directory.",
         Placeholder = "app.config")]
     public string ConfigFile = string.Empty;
 
-    [CommandLineStringArgument ("schemaDirectory", true,
+    [CommandLineStringArgument("schemaDirectory", true,
         Description = "Create schema file(s) in this directory (default: current).",
         Placeholder = "directory")]
     public string SchemaOutputDirectory = string.Empty;
 
-    [CommandLineStringArgument ("exportOutputFile", true,
+    [CommandLineStringArgument("exportOutputFile", true,
         Description = "The output filename for the mapping export.",
         Placeholder = "filename")]
     public string MappingExportOutputFileName = string.Empty;
 
     //TODO: remove parameter (1.13.84)
-    [CommandLineStringArgument ("schemaBuilder", true,
+    [CommandLineStringArgument("schemaBuilder", true,
         Description = "This parameter is obsolete and should no longer be used. (The schema file builder is now retrieved from the storage provider definition.)",
         Placeholder = "Namespace.ClassName,AssemblyName")]
     public string SchemaFileBuilderTypeName;
 
-    [CommandLineFlagArgument ("verbose", false,
+    [CommandLineFlagArgument("verbose", false,
         Description = "Verbose output")]
     public bool Verbose;
 

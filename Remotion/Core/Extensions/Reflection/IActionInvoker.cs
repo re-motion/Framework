@@ -20,7 +20,7 @@ namespace Remotion.Reflection
 {
   public partial interface IActionInvoker
   {
-    void With();
+    void With ();
 
     void With<A1> (A1 a1);
 

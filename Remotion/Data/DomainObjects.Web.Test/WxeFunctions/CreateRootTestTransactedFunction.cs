@@ -31,23 +31,23 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
     // construction and disposing
 
     public CreateRootTestTransactedFunction (ClientTransaction previousClientTransaction)
-        : base (WxeTransactionMode.CreateRootWithAutoCommit, previousClientTransaction)
+        : base(WxeTransactionMode.CreateRootWithAutoCommit, previousClientTransaction)
     {
     }
 
     // methods and properties
 
-    [WxeParameter (1, true, WxeParameterDirection.In)]
+    [WxeParameter(1, true, WxeParameterDirection.In)]
     public ClientTransaction PreviousClientTransaction
     {
-      get { return (ClientTransaction) Variables["PreviousClientTransaction"]; }
+      get { return (ClientTransaction)Variables["PreviousClientTransaction"]; }
       set { Variables["PreviousClientTransaction"] = value; }
     }
 
     private void Step1 ()
     {
       if (ClientTransactionScope.CurrentTransaction == PreviousClientTransaction)
-        throw new TestFailureException ("The WxeTransactedFunction did not properly set a new ClientTransaction.");
+        throw new TestFailureException("The WxeTransactedFunction did not properly set a new ClientTransaction.");
     }
   }
 }

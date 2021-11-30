@@ -44,30 +44,30 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
       public WebTreeViewNodeControlObject WithItemID (string itemID)
       {
-        var xpath = string.Format ("((.//ul)[1])/li[@data-item-id={0}]", DomSelectorUtility.CreateMatchValueForXPath (itemID));
-        var nodeScope = _webTreeViewNode.Scope.FindXPath (xpath);
-        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+        var xpath = string.Format("((.//ul)[1])/li[@data-item-id={0}]", DomSelectorUtility.CreateMatchValueForXPath(itemID));
+        var nodeScope = _webTreeViewNode.Scope.FindXPath(xpath);
+        return new WebTreeViewNodeControlObject(_webTreeViewNode.Context.CloneForControl(nodeScope));
       }
 
       public WebTreeViewNodeControlObject WithIndex (int oneBasedIndex)
       {
-        var xpath = string.Format ("((.//ul)[1])/li[@data-index={0}]", oneBasedIndex);
-        var nodeScope = _webTreeViewNode.Scope.FindXPath (xpath);
-        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+        var xpath = string.Format("((.//ul)[1])/li[@data-index={0}]", oneBasedIndex);
+        var nodeScope = _webTreeViewNode.Scope.FindXPath(xpath);
+        return new WebTreeViewNodeControlObject(_webTreeViewNode.Context.CloneForControl(nodeScope));
       }
 
       public WebTreeViewNodeControlObject WithDisplayText (string displayText)
       {
-        var xpath = string.Format ("((.//ul)[1])/li[@data-content={0}]", DomSelectorUtility.CreateMatchValueForXPath (displayText));
-        var nodeScope = _webTreeViewNode.Scope.FindXPath (xpath);
-        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+        var xpath = string.Format("((.//ul)[1])/li[@data-content={0}]", DomSelectorUtility.CreateMatchValueForXPath(displayText));
+        var nodeScope = _webTreeViewNode.Scope.FindXPath(xpath);
+        return new WebTreeViewNodeControlObject(_webTreeViewNode.Context.CloneForControl(nodeScope));
       }
 
       public WebTreeViewNodeControlObject WithDisplayTextContains (string containsDisplayText)
       {
-        var xpath = string.Format ("((.//ul)[1])/li[contains(@data-content, {0})]", DomSelectorUtility.CreateMatchValueForXPath (containsDisplayText));
-        var nodeScope = _webTreeViewNode.Scope.FindXPath (xpath);
-        return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+        var xpath = string.Format("((.//ul)[1])/li[contains(@data-content, {0})]", DomSelectorUtility.CreateMatchValueForXPath(containsDisplayText));
+        var nodeScope = _webTreeViewNode.Scope.FindXPath(xpath);
+        return new WebTreeViewNodeControlObject(_webTreeViewNode.Context.CloneForControl(nodeScope));
       }
     }
 
@@ -82,56 +82,56 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
       public WebTreeViewNodeControlObject WithItemID (string itemID)
       {
-        var nodeScope = _webTreeViewNode.Scope.FindTagWithAttribute ("ul li", DiagnosticMetadataAttributes.ItemID, itemID);
-        return CreateWebTreeViewNodeControlObject (nodeScope);
+        var nodeScope = _webTreeViewNode.Scope.FindTagWithAttribute("ul li", DiagnosticMetadataAttributes.ItemID, itemID);
+        return CreateWebTreeViewNodeControlObject(nodeScope);
       }
 
       public WebTreeViewNodeControlObject WithIndex (int oneBasedIndex)
       {
-        var foundNodes = _webTreeViewNode.Scope.FindTagsWithAttribute ("ul li", DiagnosticMetadataAttributes.IndexInCollection, oneBasedIndex.ToString()).ToArray();
+        var foundNodes = _webTreeViewNode.Scope.FindTagsWithAttribute("ul li", DiagnosticMetadataAttributes.IndexInCollection, oneBasedIndex.ToString()).ToArray();
         if (foundNodes.Length > 1)
-          throw AssertionExceptionUtility.CreateExpectationException (_webTreeViewNode.Driver, $"Multiple nodes with the index '{oneBasedIndex}' were found.");
+          throw AssertionExceptionUtility.CreateExpectationException(_webTreeViewNode.Driver, $"Multiple nodes with the index '{oneBasedIndex}' were found.");
 
         if (foundNodes.Length == 0)
-          throw AssertionExceptionUtility.CreateExpectationException (_webTreeViewNode.Driver, $"No node with the index '{oneBasedIndex}' was found.");
+          throw AssertionExceptionUtility.CreateExpectationException(_webTreeViewNode.Driver, $"No node with the index '{oneBasedIndex}' was found.");
 
         var nodeScope = foundNodes.Single();
 
-        return CreateWebTreeViewNodeControlObject (nodeScope);
+        return CreateWebTreeViewNodeControlObject(nodeScope);
       }
 
       public WebTreeViewNodeControlObject WithDisplayText (string displayText)
       {
-        var nodeScope = _webTreeViewNode.Scope.FindTagWithAttribute ("ul li", DiagnosticMetadataAttributes.Content, displayText);
-        return CreateWebTreeViewNodeControlObject (nodeScope);
+        var nodeScope = _webTreeViewNode.Scope.FindTagWithAttribute("ul li", DiagnosticMetadataAttributes.Content, displayText);
+        return CreateWebTreeViewNodeControlObject(nodeScope);
       }
 
       public WebTreeViewNodeControlObject WithDisplayTextContains (string containsDisplayText)
       {
-        var nodeScope = _webTreeViewNode.Scope.FindTagWithAttributeUsingOperator (
+        var nodeScope = _webTreeViewNode.Scope.FindTagWithAttributeUsingOperator(
             "ul li",
             CssComparisonOperator.SubstringMatch,
             DiagnosticMetadataAttributes.Content,
             containsDisplayText);
 
-        return CreateWebTreeViewNodeControlObject (nodeScope);
+        return CreateWebTreeViewNodeControlObject(nodeScope);
       }
 
       private WebTreeViewNodeControlObject CreateWebTreeViewNodeControlObject (ElementScope nodeScope)
       {
         try
         {
-          return new WebTreeViewNodeControlObject (_webTreeViewNode.Context.CloneForControl (nodeScope));
+          return new WebTreeViewNodeControlObject(_webTreeViewNode.Context.CloneForControl(nodeScope));
         }
         catch (StaleElementException ex)
         {
-          throw AssertionExceptionUtility.CreateControlMissingException (_webTreeViewNode.Driver, ex.Message);
+          throw AssertionExceptionUtility.CreateControlMissingException(_webTreeViewNode.Driver, ex.Message);
         }
       }
     }
 
     public WebTreeViewNodeControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -156,9 +156,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       var numberChildren = Scope[DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren];
       if (numberChildren == DiagnosticMetadataAttributes.Null)
-        throw AssertionExceptionUtility.CreateExpectationException (Driver, "TreeViewNode is not evaluated.");
+        throw AssertionExceptionUtility.CreateExpectationException(Driver, "TreeViewNode is not evaluated.");
 
-      return int.Parse (numberChildren);
+      return int.Parse(numberChildren);
     }
 
     /// <summary>
@@ -180,41 +180,41 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public IFluentControlObjectWithNodes<WebTreeViewNodeControlObject> GetNode ()
     {
-      return new GetNodeImplementationForChildren (this);
+      return new GetNodeImplementationForChildren(this);
     }
 
     /// <inheritdoc/>
     public WebTreeViewNodeControlObject GetNode (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return GetNode().WithItemID (itemID);
+      return GetNode().WithItemID(itemID);
     }
 
     /// <inheritdoc/>
     public WebTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
-      return GetNode().WithIndex (oneBasedIndex);
+      return GetNode().WithIndex(oneBasedIndex);
     }
 
     /// <inheritdoc/>
     public IFluentControlObjectWithNodes<WebTreeViewNodeControlObject> GetNodeInHierarchy ()
     {
-      return new GetNodeImplementationForHierarchy (this);
+      return new GetNodeImplementationForHierarchy(this);
     }
 
     /// <inheritdoc/>
     public WebTreeViewNodeControlObject GetNodeInHierarchy (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return GetNodeInHierarchy().WithItemID (itemID);
+      return GetNodeInHierarchy().WithItemID(itemID);
     }
 
     /// <inheritdoc/>
     public WebTreeViewNodeControlObject GetNodeInHierarchy (int oneBasedIndex)
     {
-      return GetNodeInHierarchy().WithIndex (oneBasedIndex);
+      return GetNodeInHierarchy().WithIndex(oneBasedIndex);
     }
 
     /// <summary>
@@ -223,7 +223,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public bool IsEvaluated ()
     {
       int nodeCount;
-      return int.TryParse (Scope[DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren], out nodeCount);
+      return int.TryParse(Scope[DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren], out nodeCount);
     }
 
     /// <summary>
@@ -236,7 +236,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
       if (numberOfChildren == DiagnosticMetadataAttributes.Null)
         return true;
 
-      return int.Parse (numberOfChildren) != 0;
+      return int.Parse(numberOfChildren) != 0;
     }
 
     /// <summary>
@@ -253,9 +253,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public WebTreeViewNodeControlObject Expand ()
     {
       if (!IsExpandable())
-        throw AssertionExceptionUtility.CreateExpectationException (Driver, "The WebTreeViewNode cannot be expanded as it has no children.");
+        throw AssertionExceptionUtility.CreateExpectationException(Driver, "The WebTreeViewNode cannot be expanded as it has no children.");
       if (IsExpanded())
-        throw AssertionExceptionUtility.CreateExpectationException (Driver, "TreeViewNode is already expanded.");
+        throw AssertionExceptionUtility.CreateExpectationException(Driver, "TreeViewNode is already expanded.");
 
       ToggleExpansion();
 
@@ -268,9 +268,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public WebTreeViewNodeControlObject Collapse ()
     {
       if (!IsExpandable())
-        throw AssertionExceptionUtility.CreateExpectationException (Driver, "The WebTreeViewNode cannot be collapsed as it has no children.");
+        throw AssertionExceptionUtility.CreateExpectationException(Driver, "The WebTreeViewNode cannot be collapsed as it has no children.");
       if (!IsExpanded())
-        throw AssertionExceptionUtility.CreateExpectationException (Driver, "TreeViewNode is already collapsed.");
+        throw AssertionExceptionUtility.CreateExpectationException(Driver, "TreeViewNode is already collapsed.");
 
       ToggleExpansion();
 
@@ -282,7 +282,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public WebTreeViewNodeControlObject Select ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
-      ClickNode (actionOptions);
+      ClickNode(actionOptions);
       return this;
     }
 
@@ -291,23 +291,23 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public UnspecifiedPageObject Click ([CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
-      ClickNode (actionOptions);
+      ClickNode(actionOptions);
       return UnspecifiedPage();
     }
 
     private void ClickNode (IWebTestActionOptions? actionOptions)
     {
-      var selectAnchorScope = Scope.FindCss ("span > span > a");
+      var selectAnchorScope = Scope.FindCss("span > span > a");
 
-      var actualCompletionDetector = MergeWithDefaultActionOptions (selectAnchorScope, actionOptions);
-      ExecuteAction (new ClickAction (this, selectAnchorScope), actualCompletionDetector);
+      var actualCompletionDetector = MergeWithDefaultActionOptions(selectAnchorScope, actionOptions);
+      ExecuteAction(new ClickAction(this, selectAnchorScope), actualCompletionDetector);
     }
 
     public ContextMenuControlObject GetContextMenu ()
     {
-      var contextMenuScope = Scope.FindXPath ("./span/span");
+      var contextMenuScope = Scope.FindXPath("./span/span");
 
-      return new ContextMenuControlObject (Context.CloneForControl (contextMenuScope));
+      return new ContextMenuControlObject(Context.CloneForControl(contextMenuScope));
     }
 
     /// <summary>
@@ -320,10 +320,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     private void ToggleExpansion ()
     {
-      var toggleAnchor = Scope.FindCss ("span > a");
+      var toggleAnchor = Scope.FindCss("span > a");
 
-      var actionOptions = MergeWithDefaultActionOptions (toggleAnchor, null);
-      ExecuteAction (new ClickAction (this, toggleAnchor), actionOptions);
+      var actionOptions = MergeWithDefaultActionOptions(toggleAnchor, null);
+      ExecuteAction(new ClickAction(this, toggleAnchor), actionOptions);
     }
   }
 }

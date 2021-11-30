@@ -26,12 +26,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     {
       var instance = _serviceLocator.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>();
 
-      Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>>());
+      Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>>());
 
       var factories =
-          ((CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>) instance).VlidatorFactories.Select (f => f.GetType()).ToList();
-      Assert.That (factories, Has.Member (typeof (ValidationBocReferenceDataSourceValidatorFactory)));
-      Assert.That (factories.Count, Is.EqualTo (1));
+          ((CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>)instance).VlidatorFactories.Select(f => f.GetType()).ToList();
+      Assert.That(factories, Has.Member(typeof(ValidationBocReferenceDataSourceValidatorFactory)));
+      Assert.That(factories.Count, Is.EqualTo(1));
     }
 
     [Test]
@@ -40,31 +40,31 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
       var instance1 = _serviceLocator.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>();
       var instance2 = _serviceLocator.GetInstance<IBusinessObjectReferenceDataSourceControlValidatorFactory>();
 
-      Assert.That (instance1, Is.InstanceOf<CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>>());
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.InstanceOf<CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>>());
+      Assert.That(instance1, Is.SameAs(instance2));
     }
 
     [Test]
-    [TestCase (true)]
-    [TestCase (false)]
+    [TestCase(true)]
+    [TestCase(false)]
     public void CreateValidators_IBocAutoCompleteReferenceValue (bool isReadOnly)
     {
       var mock = new Mock<BusinessObjectReferenceDataSourceControl>();
-      mock.Setup (m => m.ID).Returns ("ID").Verifiable();
+      mock.Setup(m => m.ID).Returns("ID").Verifiable();
 
       var factory = new ValidationBocReferenceDataSourceValidatorFactory();
-      var validators = factory.CreateValidators (mock.Object, isReadOnly).ToArray();
+      var validators = factory.CreateValidators(mock.Object, isReadOnly).ToArray();
 
       if (isReadOnly)
       {
-        Assert.That (validators, Is.Empty);
+        Assert.That(validators, Is.Empty);
       }
       else
       {
-        Assert.That (
-            validators.Select (v => v.GetType()),
-            Is.EquivalentTo (new[] { typeof (BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator) }));
-        Assert.That (validators, Has.All.Property ("EnableViewState").False);
+        Assert.That(
+            validators.Select(v => v.GetType()),
+            Is.EquivalentTo(new[] { typeof(BusinessObjectReferenceDataSourceControlValidationResultDispatchingValidator) }));
+        Assert.That(validators, Has.All.Property("EnableViewState").False);
       }
     }
   }

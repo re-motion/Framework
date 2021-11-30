@@ -20,14 +20,14 @@ using Remotion.Utilities;
 namespace Remotion.ObjectBinding.BindableObject
 {
   //TODO: doc
-  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public sealed class GetObjectServiceTypeAttribute : Attribute, IBusinessObjectServiceTypeAttribute<IGetObjectService>
   {
     private readonly Type _type;
 
     public GetObjectServiceTypeAttribute (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (IGetObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(IGetObjectService));
       _type = type;
     }
 

@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
-  [DBTable ("TableWithKeyOfInvalidType")]
+  [DBTable("TableWithKeyOfInvalidType")]
   [TestDomain]
   [Instantiable]
   public abstract class ClassWithKeyOfInvalidType : TestDomainBase

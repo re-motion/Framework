@@ -27,13 +27,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
     [Test]
     public void TestInjectSourceToIFrames ()
     {
-      var home = Start<WxePageObject> ("Accessibility/IFrame.html");
+      var home = Start<WxePageObject>("Accessibility/IFrame.html");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var accessibilityResult = home.Analyze (analyzer);
+      var accessibilityResult = home.Analyze(analyzer);
       var violations = accessibilityResult.Violations;
 
-      Assert.That (violations, Is.Not.Empty);
+      Assert.That(violations, Is.Not.Empty);
     }
   }
 }

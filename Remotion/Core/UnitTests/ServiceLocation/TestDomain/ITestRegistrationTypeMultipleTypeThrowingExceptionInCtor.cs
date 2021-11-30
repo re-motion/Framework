@@ -23,12 +23,12 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ImplementationFor (typeof (ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor), Lifetime = LifetimeKind.InstancePerDependency, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor), Lifetime = LifetimeKind.InstancePerDependency, RegistrationType = RegistrationType.Multiple)]
   public class TestRegistrationTypeMultipleTypeThrowingExceptionInCtor : ITestRegistrationTypeMultipleTypeThrowingExceptionInCtor
   {
     public TestRegistrationTypeMultipleTypeThrowingExceptionInCtor ()
     {
-      throw new InvalidOperationException ("This exception comes from the ctor.");
+      throw new InvalidOperationException("This exception comes from the ctor.");
     }
   }
 }

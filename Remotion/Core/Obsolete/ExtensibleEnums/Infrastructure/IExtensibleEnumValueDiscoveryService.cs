@@ -20,7 +20,7 @@ using System;
 
 namespace Remotion.ExtensibleEnums.Infrastructure
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.ExtensibleEnums.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.ExtensibleEnums.dll", true)]
   internal interface IExtensibleEnumValueDiscoveryService
   {
   }

@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
     public static ReadOnlyDictionary<string, string> GetReplacementDictionary ()
     {
-      return new ReadOnlyDictionary<string, string> (
+      return new ReadOnlyDictionary<string, string>(
           new Dictionary<string, string>
           {
               {

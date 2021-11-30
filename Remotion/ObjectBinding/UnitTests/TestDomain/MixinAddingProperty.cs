@@ -41,13 +41,13 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       get { return _mixedProperty; }
       set { _mixedProperty = value; }
     }
-    
+
     public string MixedPropertyWithShortNameInLocalization
     {
       get { return _mixedPropertyWithShortNameInLocalization; }
       set { _mixedPropertyWithShortNameInLocalization = value; }
     }
-    
+
     public string MixedPropertyWithoutLocalization
     {
       get { return _mixedPropertyWithoutLocalization; }

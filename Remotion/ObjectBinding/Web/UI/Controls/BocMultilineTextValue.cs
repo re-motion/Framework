@@ -35,9 +35,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit a list of strings. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/Class/*' />
-  [ValidationProperty ("Text")]
-  [DefaultEvent ("TextChanged")]
-  [ToolboxItemFilter ("System.Web.UI")]
+  [ValidationProperty("Text")]
+  [DefaultEvent("TextChanged")]
+  [ToolboxItemFilter("System.Web.UI")]
   public class BocMultilineTextValue : BocTextValueBase, IBocMultilineTextValue
   {
     // types
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocMultilineTextValue")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocMultilineTextValue")]
     public enum ResourceIdentifier
     {
       /// <summary> The validation error message displayed when no text is entered but input is required. </summary>
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     // static members
 
-    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectStringProperty) };
+    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof(IBusinessObjectStringProperty) };
 
     private string[]? _text = null;
     private string? _errorMessage;
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     // construction and disposing
 
     public BocMultilineTextValue ()
-        : base (BocTextBoxMode.MultiLine)
+        : base(BocTextBoxMode.MultiLine)
     {
     }
 
@@ -79,10 +79,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      base.RegisterHtmlHeadContents (htmlHeadAppender);
+      base.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender, this.TextBoxStyle);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender, this.TextBoxStyle);
     }
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
@@ -101,9 +101,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       string[]? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (string[]?) DataSource.BusinessObject.GetProperty (Property);
+        value = (string[]?)DataSource.BusinessObject.GetProperty(Property);
 
-      LoadValueInternal (value, false);
+      LoadValueInternal(value, false);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='..\..\doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (string[] value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (interim)
         return;
 
-      SetValue (value);
+      SetValue(value);
       IsDirty = false;
     }
 
@@ -131,7 +131,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (interim)
         return false;
-      
+
       bool isValid = Validate();
       if (!isValid)
         return false;
@@ -149,45 +149,45 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
     {
-      return new BocMultilineTextValueConstraintVisitor (this);
+      return new BocMultilineTextValueConstraintVisitor(this);
     }
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     protected virtual IBocMultilineTextValueRenderer CreateRenderer ()
     {
-      return ServiceLocator.GetInstance<IBocMultilineTextValueRenderer> ();
+      return ServiceLocator.GetInstance<IBocMultilineTextValueRenderer>();
     }
 
     protected virtual BocMultilineTextValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      Assertion.IsNotNull (Context, "Context must not be null.");
+      Assertion.IsNotNull(Context, "Context must not be null.");
 
-      return new BocMultilineTextValueRenderingContext (Context, writer, this);
+      return new BocMultilineTextValueRenderingContext(Context, writer, this);
     }
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectStringProperty"/> object this control is bound to. </summary>
     /// <value> An <see cref="IBusinessObjectStringProperty"/> object. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectStringProperty? Property
     {
-      get { return (IBusinessObjectStringProperty?) base.Property; }
+      get { return (IBusinessObjectStringProperty?)base.Property; }
       set { base.Property = value; }
     }
 
     /// <summary> Gets or sets the current value. </summary>
     /// <value> The <see cref="String"/> array currently displayed or <see langword="null"/> if no text is entered. </value>
     /// <remarks> The dirty state is reset when the value is set. </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public new string[]? Value
     {
       get
@@ -198,25 +198,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         IsDirty = true;
 
-        SetValue (value);
+        SetValue(value);
       }
     }
-    
+
     /// <summary> Gets or sets the string representation of the current value. </summary>
     /// <remarks> Uses <c>\r\n</c> or <c>\n</c> as separation characters. The default value is an empty <see cref="String"/>. </remarks>
-    [Description ("The string representation of the current value.")]
-    [Category ("Data")]
-    [DefaultValue ("")]
+    [Description("The string representation of the current value.")]
+    [Category("Data")]
+    [DefaultValue("")]
     public override sealed string Text
     {
-      get { return string.Join ("\r\n", _text ?? Enumerable.Empty<string>()); }
+      get { return string.Join("\r\n", _text ?? Enumerable.Empty<string>()); }
       set
       {
         IsDirty = true;
         if (value == null)
           _text = null;
         else
-          _text = StringUtility.ParseNewLineSeparatedString (value).ToArray();
+          _text = StringUtility.ParseNewLineSeparatedString(value).ToArray();
       }
     }
 
@@ -225,18 +225,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if there is an error.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
+    [Description("Validation message displayed if there is an error.")]
+    [Category("Validator")]
+    [DefaultValue("")]
     public string? ErrorMessage
     {
       get { return _errorMessage; }
       set
       {
         _errorMessage = value;
-       
-        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
-        UpdateValidtaorErrorMessages<LengthValidator> (_errorMessage);
+
+        UpdateValidtaorErrorMessages<RequiredFieldValidator>(_errorMessage);
+        UpdateValidtaorErrorMessages<LengthValidator>(_errorMessage);
       }
     }
 
@@ -249,13 +249,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_text == null)
         return null;
 
-      var temp = new List<string>(_text.SkipWhile (string.IsNullOrWhiteSpace));
+      var temp = new List<string>(_text.SkipWhile(string.IsNullOrWhiteSpace));
 
       if (temp.Count > 0)
         temp[0] = temp[0].TrimStart();
 
-      while (temp.Count > 0 && string.IsNullOrWhiteSpace (temp[temp.Count - 1]))
-        temp.RemoveAt (temp.Count - 1);
+      while (temp.Count > 0 && string.IsNullOrWhiteSpace(temp[temp.Count - 1]))
+        temp.RemoveAt(temp.Count - 1);
 
       if (temp.Count > 0)
         temp[temp.Count - 1] = temp[temp.Count - 1].TrimEnd();
@@ -283,13 +283,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override sealed object? ValueImplementation
     {
       get { return Value; }
-      set { Value = ArgumentUtility.CheckType<string[]> ("value", value); }
+      set { Value = ArgumentUtility.CheckType<string[]>("value", value); }
     }
 
     /// <summary>Gets a flag indicating whether the <see cref="BocMultilineTextValue"/> contains a value. </summary>
     public override bool HasValue
     {
-      get { return _text != null && _text.Any (s => !string.IsNullOrWhiteSpace (s)); }
+      get { return _text != null && _text.Any(s => !string.IsNullOrWhiteSpace(s)); }
     }
 
     /// <summary>
@@ -298,10 +298,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="savedState">The state object created by <see cref="SaveControlState"/>.</param>
     protected override void LoadControlState (object? savedState)
     {
-      object?[] values = (object?[]) savedState!;
+      object?[] values = (object?[])savedState!;
 
-      base.LoadControlState (values[0]);
-      _text = (string[]?) values[1];
+      base.LoadControlState(values[0]);
+      _text = (string[]?)values[1];
     }
 
     /// <summary>
@@ -321,27 +321,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     public override IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      base.LoadResources (resourceManager, globalizationService);
+      base.LoadResources(resourceManager, globalizationService);
 
       //  Dispatch simple properties
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
-      if (! string.IsNullOrEmpty (key))
-        ErrorMessage = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage);
+      if (! string.IsNullOrEmpty(key))
+        ErrorMessage = resourceManager.GetString(key);
     }
 
-    [Obsolete ("For DependDB only.", true)]
+    [Obsolete("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("For DependDB only.");
+      throw new NotImplementedException("For DependDB only.");
     }
 
     /// <summary>
@@ -366,7 +366,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = ServiceLocator.GetInstance<IBocMultilineTextValueValidatorFactory>();
-      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+      _validators = validatorFactory.CreateValidators(this, isReadOnly).ToList().AsReadOnly();
 
       OverrideValidatorErrorMessages();
 
@@ -375,11 +375,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OverrideValidatorErrorMessages ()
     {
-      if (string.IsNullOrEmpty (_errorMessage))
+      if (string.IsNullOrEmpty(_errorMessage))
         return;
 
-      UpdateValidtaorErrorMessages<RequiredFieldValidator> (_errorMessage);
-      UpdateValidtaorErrorMessages<LengthValidator> (_errorMessage);
+      UpdateValidtaorErrorMessages<RequiredFieldValidator>(_errorMessage);
+      UpdateValidtaorErrorMessages<LengthValidator>(_errorMessage);
     }
 
     private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator

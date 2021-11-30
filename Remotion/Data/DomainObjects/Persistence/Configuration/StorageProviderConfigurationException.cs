@@ -30,11 +30,11 @@ public class StorageProviderConfigurationException : ConfigurationException
 
   // construction and disposing
 
-  public StorageProviderConfigurationException () : this ("A storage provider exception occurred.") {}
+  public StorageProviderConfigurationException () : this("A storage provider exception occurred.") {}
 
-  public StorageProviderConfigurationException (string message) : base (message) {}
-  public StorageProviderConfigurationException (string message, Exception inner) : base (message, inner) {}
-  protected StorageProviderConfigurationException (SerializationInfo info, StreamingContext context) : base (info, context) {}
+  public StorageProviderConfigurationException (string message) : base(message) {}
+  public StorageProviderConfigurationException (string message, Exception inner) : base(message, inner) {}
+  protected StorageProviderConfigurationException (SerializationInfo info, StreamingContext context) : base(info, context) {}
 
   // methods and properties
 

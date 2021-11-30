@@ -37,7 +37,7 @@ namespace Remotion.Web.UI.Controls
         ownerControl = this;
 
       _ownerControl = ownerControl;
-      _menuItems = new WebMenuItemCollection (ownerControl, supportedMenuItemTypes);
+      _menuItems = new WebMenuItemCollection(ownerControl, supportedMenuItemTypes);
     }
 
     public IControl OwnerControl
@@ -45,17 +45,17 @@ namespace Remotion.Web.UI.Controls
       get { return _ownerControl; }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
-    [Category ("Behavior")]
-    [Description ("The menu items displayed by this drop down menu.")]
-    [DefaultValue ((string?) null)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
+    [Category("Behavior")]
+    [Description("The menu items displayed by this drop down menu.")]
+    [DefaultValue((string?)null)]
     public WebMenuItemCollection MenuItems
     {
       get { return _menuItems; }
     }
 
-    [DefaultValue (false)]
+    [DefaultValue(false)]
     public bool IsReadOnly
     {
       get { return _isReadOnly; }
@@ -66,7 +66,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="eventArgument"> &lt;index&gt; </param>
     void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
 
       //  First part: index
       int index;
@@ -74,16 +74,16 @@ namespace Remotion.Web.UI.Controls
       {
         if (eventArgument.Length == 0)
           throw new FormatException();
-        index = int.Parse (eventArgument);
+        index = int.Parse(eventArgument);
       }
       catch (FormatException)
       {
-        throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<index>'.");
+        throw new ArgumentException("First part of argument 'eventArgument' must be an integer. Expected format: '<index>'.");
       }
 
       if (index >= _menuItems.Count)
       {
-        throw new ArgumentOutOfRangeException (
+        throw new ArgumentOutOfRangeException(
             eventArgument,
             "Index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed menu items.'");
       }
@@ -91,7 +91,7 @@ namespace Remotion.Web.UI.Controls
       WebMenuItem item = _menuItems[index];
       if (item.Command == null)
       {
-        throw new ArgumentOutOfRangeException (
+        throw new ArgumentOutOfRangeException(
             eventArgument, "The DropDownMenu '" + ID + "' does not have a command associated with menu item " + index + ".");
       }
 
@@ -99,12 +99,12 @@ namespace Remotion.Web.UI.Controls
       {
         case CommandType.Event:
         {
-          OnEventCommandClick (item);
+          OnEventCommandClick(item);
           break;
         }
         case CommandType.WxeFunction:
         {
-          OnWxeFunctionCommandClick (item);
+          OnWxeFunctionCommandClick(item);
           break;
         }
         default:
@@ -115,27 +115,27 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Occurs when a command of type <see cref="CommandType.Event"/> is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when a command of type Event is clicked.")]
+    [Category("Action")]
+    [Description("Occurs when a command of type Event is clicked.")]
     public virtual event WebMenuItemClickEventHandler? EventCommandClick;
 
     /// <summary> Occurs when a command of type <see cref="CommandType.WxeFunction"/> is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when a command of type WxeFunction is clicked.")]
+    [Category("Action")]
+    [Description("Occurs when a command of type WxeFunction is clicked.")]
     public virtual event WebMenuItemClickEventHandler? WxeFunctionCommandClick;
 
     /// <summary> Fires the <see cref="MenuBase.EventCommandClick"/> event. </summary>
     protected virtual void OnEventCommandClick (WebMenuItem item)
     {
-      ArgumentUtility.CheckNotNull ("item", item);
+      ArgumentUtility.CheckNotNull("item", item);
 
       if (item.Command != null)
         item.Command.OnClick();
 
       if (EventCommandClick != null)
       {
-        WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (item);
-        EventCommandClick (this, e);
+        WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs(item);
+        EventCommandClick(this, e);
       }
     }
 
@@ -144,14 +144,14 @@ namespace Remotion.Web.UI.Controls
     {
       if (WxeFunctionCommandClick != null)
       {
-        WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (item);
-        WxeFunctionCommandClick (this, e);
+        WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs(item);
+        WxeFunctionCommandClick(this, e);
       }
     }
 
     public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
   }
 }

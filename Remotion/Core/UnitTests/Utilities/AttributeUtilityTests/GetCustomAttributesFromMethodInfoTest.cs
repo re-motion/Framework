@@ -26,40 +26,40 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests
   {
     protected override MemberInfo BaseMemberWithSingleAttribute
     {
-      get { return typeof (SampleClass).GetMethod ("MethodWithSingleAttribute"); }
+      get { return typeof(SampleClass).GetMethod("MethodWithSingleAttribute"); }
     }
 
     protected override MemberInfo BaseMemberWithNonInheritedAttribute
     {
-      get { return typeof (SampleClass).GetMethod ("MethodWithNotInheritedAttribute"); }
+      get { return typeof(SampleClass).GetMethod("MethodWithNotInheritedAttribute"); }
     }
 
     protected override MemberInfo DerivedMemberWithSingleAttribute
     {
-      get { return typeof (DerivedSampleClass).GetMethod ("MethodWithSingleAttribute"); }
+      get { return typeof(DerivedSampleClass).GetMethod("MethodWithSingleAttribute"); }
     }
 
     protected override MemberInfo DerivedMemberWithMultipleAttribute
     {
-      get { return typeof (DerivedSampleClass).GetMethod ("MethodWithMultipleAttribute"); }
+      get { return typeof(DerivedSampleClass).GetMethod("MethodWithMultipleAttribute"); }
     }
 
     protected override MemberInfo DerivedProtectedMember
     {
       get
       {
-        return typeof (DerivedSampleClass).GetMethod ("ProtectedMethodWithAttribute", BindingFlags.NonPublic | BindingFlags.Instance);
+        return typeof(DerivedSampleClass).GetMethod("ProtectedMethodWithAttribute", BindingFlags.NonPublic | BindingFlags.Instance);
       }
     }
 
     protected override MemberInfo DerivedMemberNotInheritingAttribute
     {
-      get { return typeof (DerivedSampleClass).GetMethod ("MethodWithNotInheritedAttribute"); }
+      get { return typeof(DerivedSampleClass).GetMethod("MethodWithNotInheritedAttribute"); }
     }
 
     protected override MemberInfo DerivedMemberHidingAttribute
     {
-      get { return typeof (DerivedSampleClass).GetMethod ("MethodWithInheritedNotMultipleAttribute"); }
+      get { return typeof(DerivedSampleClass).GetMethod("MethodWithInheritedNotMultipleAttribute"); }
     }
   }
 }

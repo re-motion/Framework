@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public override void SetUp ()
     {
       Column = new BocCommandColumnDefinition();
-      Column.Command = new BocListItemCommand (CommandType.Event);
+      Column.Command = new BocListItemCommand(CommandType.Event);
       Column.Command.EventCommand = new Command.EventCommandInfo();
       Column.Command.EventCommand.RequiresSynchronousPostBack = true;
       Column.Text = "TestCommand";
@@ -49,9 +49,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       base.SetUp();
       Column.OwnerControl = List.Object;
 
-      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
-      _renderingContext = new BocColumnRenderingContext<BocCommandColumnDefinition> (
-          new BocColumnRenderingContext (HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      _renderingContext = new BocColumnRenderingContext<BocCommandColumnDefinition>(
+          new BocColumnRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, Column, 0, 0));
     }
 
     [TearDown]
@@ -63,67 +63,67 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderBasicCell ()
     {
-      IBocColumnRenderer renderer = new BocCommandColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderDataCell (_renderingContext, 5, false, EventArgs);
+      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      renderer.RenderDataCell(_renderingContext, 5, false, EventArgs);
 
       var document = Html.GetResultDocument();
 
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
-      Html.AssertAttribute (td, "role", "cell");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute(td, "role", "cell");
 
-      var a = Html.GetAssertedChildElement (td, "a", 0);
-      Html.AssertAttribute (a, "id", List.Object.ClientID + "_Column_0_Command_Row_10");
-      Html.AssertAttribute (a, "href", "#");
-      Html.AssertAttribute (a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
+      var a = Html.GetAssertedChildElement(td, "a", 0);
+      Html.AssertAttribute(a, "id", List.Object.ClientID + "_Column_0_Command_Row_10");
+      Html.AssertAttribute(a, "href", "#");
+      Html.AssertAttribute(a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
 
-      Html.AssertTextNode (a, "TestCommand", 0);
+      Html.AssertTextNode(a, "TestCommand", 0);
     }
 
     [Test]
     public void RenderIconCell ()
     {
-      IBocColumnRenderer renderer = new BocCommandColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderDataCell (_renderingContext, 0, true, EventArgs);
+      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      renderer.RenderDataCell(_renderingContext, 0, true, EventArgs);
 
       var document = Html.GetResultDocument();
 
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
-      Html.AssertAttribute (td, "role", "cell");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute(td, "role", "cell");
 
-      var a = Html.GetAssertedChildElement (td, "a", 0);
-      Html.AssertAttribute (a, "href", "#");
-      Html.AssertAttribute (a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
+      var a = Html.GetAssertedChildElement(td, "a", 0);
+      Html.AssertAttribute(a, "href", "#");
+      Html.AssertAttribute(a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
 
-      Html.AssertIcon (a, EventArgs.BusinessObject, null);
+      Html.AssertIcon(a, EventArgs.BusinessObject, null);
 
-      Html.AssertTextNode (a, HtmlHelper.WhiteSpace + "TestCommand", 1);
+      Html.AssertTextNode(a, HtmlHelper.WhiteSpace + "TestCommand", 1);
     }
 
     [Test]
     public void RenderCommandIconCell ()
     {
       Column.Icon.Url = "~/Images/CommandIcon.gif";
-      Column.Icon.Width = new Unit (16, UnitType.Pixel);
-      Column.Icon.Height = new Unit (16, UnitType.Pixel);
+      Column.Icon.Width = new Unit(16, UnitType.Pixel);
+      Column.Icon.Height = new Unit(16, UnitType.Pixel);
 
-      IBocColumnRenderer renderer = new BocCommandColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
 
       var document = Html.GetResultDocument();
 
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
-      Html.AssertAttribute (td, "role", "cell");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute(td, "role", "cell");
 
-      var a = Html.GetAssertedChildElement (td, "a", 0);
-      Html.AssertAttribute (a, "href", "#");
-      Html.AssertAttribute (a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
+      var a = Html.GetAssertedChildElement(td, "a", 0);
+      Html.AssertAttribute(a, "href", "#");
+      Html.AssertAttribute(a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
 
-      Html.AssertIcon (a, EventArgs.BusinessObject, Column.Icon.Url.TrimStart ('~'));
+      Html.AssertIcon(a, EventArgs.BusinessObject, Column.Icon.Url.TrimStart('~'));
 
-      Html.AssertTextNode (a, "TestCommand", 1);
+      Html.AssertTextNode(a, "TestCommand", 1);
     }
 
     [Test]
@@ -131,19 +131,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       WebConfigurationMock.Current.Wcag.ConformanceLevel = WaiConformanceLevel.A;
 
-      IBocColumnRenderer renderer = new BocCommandColumnRenderer (new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderDataCell (_renderingContext, 0, false, EventArgs);
+      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
 
       var document = Html.GetResultDocument();
 
-      var td = Html.GetAssertedChildElement (document, "td", 0);
-      Html.AssertAttribute (td, "class", _bocListCssClassDefinition.DataCell);
-      Html.AssertAttribute (td, "role", "cell");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement (td, "span", 0);
-      Html.AssertAttribute (span, "class", _bocListCssClassDefinition.Content);
+      var span = Html.GetAssertedChildElement(td, "span", 0);
+      Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
 
-      Html.AssertTextNode (span, "TestCommand", 0);
+      Html.AssertTextNode(span, "TestCommand", 0);
     }
   }
 }

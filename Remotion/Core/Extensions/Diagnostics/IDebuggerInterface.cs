@@ -30,7 +30,7 @@ namespace Remotion.Diagnostics
     string? DefaultCategory { get; }
 
     void Break ();
-    void Launch();
+    void Launch ();
 
     void Log (int level, string category, string message);
     bool IsLogging ();

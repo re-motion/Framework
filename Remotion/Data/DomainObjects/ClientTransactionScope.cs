@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects
   /// </remarks>
   public class ClientTransactionScope : IDisposable, ITransactionScope
   {
-    private static readonly SafeContextSingleton<ClientTransactionScope> s_scopeSingleton = 
-        new SafeContextSingleton<ClientTransactionScope> (SafeContextKeys.DataDomainObjectsClientTransactionScope, () => null);
+    private static readonly SafeContextSingleton<ClientTransactionScope> s_scopeSingleton =
+        new SafeContextSingleton<ClientTransactionScope>(SafeContextKeys.DataDomainObjectsClientTransactionScope, () => null);
 
     /// <summary>
     /// Gets a value indicating if a <see cref="ClientTransaction"/> is currently set as <see cref="CurrentTransaction"/>. 
@@ -75,8 +75,8 @@ namespace Remotion.Data.DomainObjects
         ClientTransactionScope activeScope = ActiveScope;
 
         if (activeScope == null || activeScope.ScopedTransaction == null)
-          throw new InvalidOperationException ("No ClientTransaction has been associated with the current thread.");
-        
+          throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");
+
         return activeScope.ScopedTransaction;
       }
     }
@@ -97,12 +97,12 @@ namespace Remotion.Data.DomainObjects
     /// method to avoid memory leaks. It should only be used in very special scenarios, however.</remarks>
     public static void ResetActiveScope ()
     {
-      SetActiveScope (null);
+      SetActiveScope(null);
     }
 
     private static void SetActiveScope (ClientTransactionScope scope)
     {
-      s_scopeSingleton.SetCurrent (scope);
+      s_scopeSingleton.SetCurrent(scope);
     }
 
     /// <summary>
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public static ClientTransactionScope EnterNullScope ()
     {
-      return new ClientTransactionScope (null, DomainObjects.AutoRollbackBehavior.None, null);
+      return new ClientTransactionScope(null, DomainObjects.AutoRollbackBehavior.None, null);
     }
 
     private readonly ClientTransactionScope _previousScope;
@@ -145,7 +145,7 @@ namespace Remotion.Data.DomainObjects
 
       _previousScope = ClientTransactionScope.ActiveScope;
 
-      ClientTransactionScope.SetActiveScope (this);
+      ClientTransactionScope.SetActiveScope(this);
       _scopedTransaction = scopedCurrentTransaction;
       _attachedScope = attachedScope;
     }
@@ -195,29 +195,29 @@ namespace Remotion.Data.DomainObjects
     public void Leave ()
     {
       if (_hasBeenLeft)
-        throw new InvalidOperationException ("The ClientTransactionScope has already been left.");
+        throw new InvalidOperationException("The ClientTransactionScope has already been left.");
 
       if (ActiveScope != this)
-        throw new InvalidOperationException ("This ClientTransactionScope is not the active scope. Leave the active scope before leaving this one.");
+        throw new InvalidOperationException("This ClientTransactionScope is not the active scope. Leave the active scope before leaving this one.");
 
-      ExecuteAutoRollbackBehavior ();
+      ExecuteAutoRollbackBehavior();
       if (_attachedScope != null)
         _attachedScope.Dispose();
-      ClientTransactionScope.SetActiveScope (_previousScope);
+      ClientTransactionScope.SetActiveScope(_previousScope);
       _hasBeenLeft = true;
     }
 
     void IDisposable.Dispose ()
     {
-      Leave ();
+      Leave();
     }
 
     private void ExecuteAutoRollbackBehavior ()
     {
-      if (AutoRollbackBehavior == AutoRollbackBehavior.Rollback && ScopedTransaction.HasChanged ())
-        Rollback ();
+      if (AutoRollbackBehavior == AutoRollbackBehavior.Rollback && ScopedTransaction.HasChanged())
+        Rollback();
       else if (AutoRollbackBehavior == AutoRollbackBehavior.Discard)
-        DiscardTransaction ();
+        DiscardTransaction();
     }
 
     /// <summary>
@@ -228,7 +228,7 @@ namespace Remotion.Data.DomainObjects
     public void Commit ()
     {
       if (ScopedTransaction != null)
-        ScopedTransaction.Commit ();
+        ScopedTransaction.Commit();
     }
 
     /// <summary>
@@ -237,13 +237,13 @@ namespace Remotion.Data.DomainObjects
     public void Rollback ()
     {
       if (ScopedTransaction != null)
-        ScopedTransaction.Rollback ();
+        ScopedTransaction.Rollback();
     }
 
     private void DiscardTransaction ()
     {
       if (ScopedTransaction != null)
-        ScopedTransaction.Discard ();
+        ScopedTransaction.Discard();
     }
   }
 }

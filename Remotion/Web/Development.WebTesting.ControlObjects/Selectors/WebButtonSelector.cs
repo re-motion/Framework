@@ -32,31 +32,31 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
         IItemIDControlSelector<WebButtonControlObject>
   {
     public WebButtonSelector ()
-        : base ("WebButton")
+        : base("WebButton")
     {
     }
 
     /// <inheritdoc/>
     public WebButtonControlObject SelectPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
 
-      var scope = FindScopePerTextContent (context, textContent);
+      var scope = FindScopePerTextContent(context, textContent);
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public WebButtonControlObject? SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
 
-      var scope = FindScopePerTextContent (context, textContent);
+      var scope = FindScopePerTextContent(context, textContent);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -64,10 +64,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("textContent", textContent);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
 
-      var scope = FindScopePerTextContent (context, textContent);
+      var scope = FindScopePerTextContent(context, textContent);
 
       return scope.ExistsWorkaround();
     }
@@ -75,24 +75,24 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public WebButtonControlObject SelectPerItemID (ControlSelectionContext context, string itemID)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      var scope = FindScopePerItemID (context, itemID);
+      var scope = FindScopePerItemID(context, itemID);
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public WebButtonControlObject? SelectOptionalPerItemID (ControlSelectionContext context, string itemID)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      var scope = FindScopePerItemID (context, itemID);
+      var scope = FindScopePerItemID(context, itemID);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -100,10 +100,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerItemID (ControlSelectionContext context, string itemID)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      var scope = FindScopePerItemID (context, itemID);
+      var scope = FindScopePerItemID(context, itemID);
 
       return scope.ExistsWorkaround();
     }
@@ -113,10 +113,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new WebButtonControlObject (newControlObjectContext);
+      return new WebButtonControlObject(newControlObjectContext);
     }
 
     private ElementScope FindScopePerTextContent (ControlSelectionContext context, string textContent)
@@ -127,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
                                     { DiagnosticMetadataAttributes.Content, textContent }
                                 };
 
-      return context.Scope.FindTagWithAttributes ("*", diagnosticMetadata);
+      return context.Scope.FindTagWithAttributes("*", diagnosticMetadata);
 
     }
 
@@ -139,7 +139,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
                                    { DiagnosticMetadataAttributes.ItemID, itemID }
                                };
 
-      var scope = context.Scope.FindTagWithAttributes ("*", diagnosticMetadata);
+      var scope = context.Scope.FindTagWithAttributes("*", diagnosticMetadata);
 
       return scope;
     }

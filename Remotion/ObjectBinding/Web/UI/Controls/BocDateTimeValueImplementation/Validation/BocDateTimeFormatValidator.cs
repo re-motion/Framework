@@ -41,15 +41,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
     protected override bool EvaluateIsValid ()
     {
-      Control? control = NamingContainer.FindControl (ControlToValidate);
+      Control? control = NamingContainer.FindControl(ControlToValidate);
 
       BocDateTimeValue? dateTimeValueControl = control as BocDateTimeValue;
 
       if (dateTimeValueControl == null)
-        throw new InvalidOperationException ("BocDateTimeValueValidatorBase may only be applied to controls of type BocDateTimeValue");
+        throw new InvalidOperationException("BocDateTimeValueValidatorBase may only be applied to controls of type BocDateTimeValue");
 
-      bool isValidDate = EvaluateIsValidDate (dateTimeValueControl);
-      bool isValidTime = EvaluateIsValidTime (dateTimeValueControl);
+      bool isValidDate = EvaluateIsValidDate(dateTimeValueControl);
+      bool isValidTime = EvaluateIsValidTime(dateTimeValueControl);
 
       if (!isValidDate && !isValidTime)
         Error = ValidationError.InvalidDateAndTime;
@@ -80,12 +80,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
       string? dateValue = control.DateString;
 
-      if (string.IsNullOrWhiteSpace (dateValue))
+      if (string.IsNullOrWhiteSpace(dateValue))
         return true;
 
       //  Is a valid date/time value? If not, FormatException will be thrown and caught
       DateTime dateTime;
-      if (!DateTime.TryParse (dateValue, out dateTime))
+      if (!DateTime.TryParse(dateValue, out dateTime))
         return false;
 
       //  Has a time component?
@@ -97,10 +97,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       // Parse can be used because dateValue is already checked and is a parsable value.
 
       // Empty date defaults to 01.01.0001 
-      DateTime dateTimeFirstDay = DateTime.Parse (dateValue, Thread.CurrentThread.CurrentCulture, DateTimeStyles.NoCurrentDateDefault);
-      
+      DateTime dateTimeFirstDay = DateTime.Parse(dateValue, Thread.CurrentThread.CurrentCulture, DateTimeStyles.NoCurrentDateDefault);
+
       //  Empty date defaults to today
-      DateTime dateTimeToday = DateTime.Parse (dateValue, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None);
+      DateTime dateTimeToday = DateTime.Parse(dateValue, Thread.CurrentThread.CurrentCulture, DateTimeStyles.None);
 
       //  That's actually a time instead of a date
       if (dateTimeToday.Date != dateTimeFirstDay.Date)
@@ -121,11 +121,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
       string? timeValue = control.TimeString;
 
-      if (string.IsNullOrWhiteSpace (timeValue))
+      if (string.IsNullOrWhiteSpace(timeValue))
         return true;
 
       DateTime dateTime;
-      if (!DateTime.TryParse (timeValue, Thread.CurrentThread.CurrentCulture, DateTimeStyles.NoCurrentDateDefault, out dateTime))
+      if (!DateTime.TryParse(timeValue, Thread.CurrentThread.CurrentCulture, DateTimeStyles.NoCurrentDateDefault, out dateTime))
         return false;
 
       //  If only a time was entered, the date will default to 01.01.0001
@@ -141,19 +141,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       {
         case ValidationError.InvalidDateAndTime:
         {
-          if (!string.IsNullOrEmpty (InvalidDateAndTimeErrorMessage))
+          if (!string.IsNullOrEmpty(InvalidDateAndTimeErrorMessage))
             ErrorMessage = InvalidDateAndTimeErrorMessage;
           break;
         }
         case ValidationError.InvalidDate:
         {
-          if (!string.IsNullOrEmpty (InvalidDateErrorMessage))
+          if (!string.IsNullOrEmpty(InvalidDateErrorMessage))
             ErrorMessage = InvalidDateErrorMessage;
           break;
         }
         case ValidationError.InvalidTime:
         {
-          if (!string.IsNullOrEmpty (InvalidTimeErrorMessage))
+          if (!string.IsNullOrEmpty(InvalidTimeErrorMessage))
             ErrorMessage = InvalidTimeErrorMessage;
           break;
         }

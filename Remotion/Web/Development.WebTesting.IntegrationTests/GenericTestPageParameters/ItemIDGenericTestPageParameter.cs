@@ -44,14 +44,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.GenericTestPagePa
     public string FoundControlID { get; private set; }
 
     public ItemIDGenericTestPageParameter ()
-        : base (TestConstants.ItemIDSelectorID, c_parameterCount)
+        : base(TestConstants.ItemIDSelectorID, c_parameterCount)
     {
     }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       VisibleControlItemID = data.Arguments[0];
       HiddenControlItemID = data.Arguments[1];

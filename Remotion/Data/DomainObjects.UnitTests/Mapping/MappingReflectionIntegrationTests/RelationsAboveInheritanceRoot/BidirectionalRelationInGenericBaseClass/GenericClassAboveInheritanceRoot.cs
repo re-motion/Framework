@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
 {
   public class GenericClassAboveInheritanceRoot<T> : DomainObject
   {
-    [DBBidirectionalRelation ("RelationProperty")]
+    [DBBidirectionalRelation("RelationProperty")]
     public virtual T RelationPropertyOnClassAboveInheritanceRoot { get; set; }
   }
 }

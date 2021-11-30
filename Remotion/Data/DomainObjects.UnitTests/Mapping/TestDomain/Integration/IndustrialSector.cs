@@ -28,30 +28,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public virtual string Name
     {
       get
       {
-        return CurrentProperty.GetValue<string> ();
+        return CurrentProperty.GetValue<string>();
       }
       set
       {
-        CurrentProperty.SetValue (value);
+        CurrentProperty.SetValue(value);
       }
     }
 
-    [DBBidirectionalRelation ("IndustrialSector")]
+    [DBBidirectionalRelation("IndustrialSector")]
     [Mandatory]
     public virtual ObjectList<Company> Companies
     {
       get
       {
-        return CurrentProperty.GetValue<ObjectList<Company>> ();
+        return CurrentProperty.GetValue<ObjectList<Company>>();
       }
       set
       {
-        CurrentProperty.SetValue (value);
+        CurrentProperty.SetValue(value);
       }
     }
   }

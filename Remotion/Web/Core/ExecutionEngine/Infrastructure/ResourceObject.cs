@@ -30,14 +30,14 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public ResourceObject (string path)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("path", path);
+      ArgumentUtility.CheckNotNullOrEmpty("path", path);
       _path = path;
     }
 
     public ResourceObject (IResourcePathBuilder resourcePathBuilder, Assembly assembly, string path)
         : base(resourcePathBuilder, assembly)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("path", path);
+      ArgumentUtility.CheckNotNullOrEmpty("path", path);
       _path = path;
     }
 
@@ -48,8 +48,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override string GetResourcePath (NameObjectCollection variables)
     {
-      return VirtualPathUtility.Combine (
-          VirtualPathUtility.AppendTrailingSlash (ResourceRoot),
+      return VirtualPathUtility.Combine(
+          VirtualPathUtility.AppendTrailingSlash(ResourceRoot),
           _path);
     }
   }

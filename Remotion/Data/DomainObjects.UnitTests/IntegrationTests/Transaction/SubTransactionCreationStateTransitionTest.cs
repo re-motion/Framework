@@ -27,179 +27,179 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void RootToSubUnchanged ()
     {
-      DomainObject obj = GetUnchanged ();
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      DomainObject obj = GetUnchanged();
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.State.IsNotLoadedYet, Is.True);
-        obj.EnsureDataAvailable ();
-        Assert.That (obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNotLoadedYet, Is.True);
+        obj.EnsureDataAvailable();
+        Assert.That(obj.State.IsUnchanged, Is.True);
       }
-      Assert.That (obj.State.IsUnchanged, Is.True);
+      Assert.That(obj.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void RootToSubChangedThroughPropertyValue ()
     {
-      Order obj = GetChangedThroughPropertyValue ();
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      Order obj = GetChangedThroughPropertyValue();
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.State.IsNotLoadedYet, Is.True);
-        Assert.That (obj.Properties[typeof (Order) + ".OrderNumber"].GetOriginalValue<int> (), Is.EqualTo (obj.OrderNumber));
-        Assert.That (obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNotLoadedYet, Is.True);
+        Assert.That(obj.Properties[typeof(Order) + ".OrderNumber"].GetOriginalValue<int>(), Is.EqualTo(obj.OrderNumber));
+        Assert.That(obj.State.IsUnchanged, Is.True);
       }
-      Assert.That (obj.State.IsChanged, Is.True);
+      Assert.That(obj.State.IsChanged, Is.True);
     }
 
     [Test]
     public void RootToSubChangedThroughRelatedObjects ()
     {
-      Order obj = GetChangedThroughRelatedObjects ();
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      Order obj = GetChangedThroughRelatedObjects();
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.State.IsNotLoadedYet, Is.True);
-        Assert.That (obj.Properties[typeof (Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>> ().Count, Is.EqualTo (obj.OrderItems.Count));
-        Assert.That (obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNotLoadedYet, Is.True);
+        Assert.That(obj.Properties[typeof(Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>>().Count, Is.EqualTo(obj.OrderItems.Count));
+        Assert.That(obj.State.IsUnchanged, Is.True);
       }
-      Assert.That (obj.State.IsChanged, Is.True);
+      Assert.That(obj.State.IsChanged, Is.True);
     }
 
     [Test]
     public void RootToSubChangedThroughRelatedObjectRealSide ()
     {
-      Computer obj = GetChangedThroughRelatedObjectRealSide ();
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      Computer obj = GetChangedThroughRelatedObjectRealSide();
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.State.IsNotLoadedYet, Is.True);
-        Assert.That (obj.Properties[typeof (Computer) + ".Employee"].GetOriginalValue<Employee> (), Is.EqualTo (obj.Employee));
-        Assert.That (obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNotLoadedYet, Is.True);
+        Assert.That(obj.Properties[typeof(Computer) + ".Employee"].GetOriginalValue<Employee>(), Is.EqualTo(obj.Employee));
+        Assert.That(obj.State.IsUnchanged, Is.True);
       }
-      Assert.That (obj.State.IsChanged, Is.True);
+      Assert.That(obj.State.IsChanged, Is.True);
     }
 
     [Test]
     public void RootToSubChangedThroughRelatedObjectVirtualSide ()
     {
-      Employee obj = GetChangedThroughRelatedObjectVirtualSide ();
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      Employee obj = GetChangedThroughRelatedObjectVirtualSide();
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.State.IsNotLoadedYet, Is.True);
-        Assert.That (obj.Properties[typeof (Employee) + ".Computer"].GetOriginalValue<Computer> (), Is.EqualTo (obj.Computer));
-        Assert.That (obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNotLoadedYet, Is.True);
+        Assert.That(obj.Properties[typeof(Employee) + ".Computer"].GetOriginalValue<Computer>(), Is.EqualTo(obj.Computer));
+        Assert.That(obj.State.IsUnchanged, Is.True);
       }
-      Assert.That (obj.State.IsChanged, Is.True);
+      Assert.That(obj.State.IsChanged, Is.True);
     }
 
     [Test]
     public void RootToSubNewUnchanged ()
     {
-      DomainObject obj = GetNewUnchanged ();
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      DomainObject obj = GetNewUnchanged();
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.State.IsNotLoadedYet, Is.True);
-        obj.EnsureDataAvailable ();
-        Assert.That (obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNotLoadedYet, Is.True);
+        obj.EnsureDataAvailable();
+        Assert.That(obj.State.IsUnchanged, Is.True);
       }
-      Assert.That (obj.State.IsNew, Is.True);
+      Assert.That(obj.State.IsNew, Is.True);
     }
 
     [Test]
     public void RootToSubNewChanged ()
     {
-      DomainObject obj = GetNewChanged ();
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      DomainObject obj = GetNewChanged();
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.State.IsNotLoadedYet, Is.True);
-        obj.EnsureDataAvailable ();
-        Assert.That (obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNotLoadedYet, Is.True);
+        obj.EnsureDataAvailable();
+        Assert.That(obj.State.IsUnchanged, Is.True);
       }
-      Assert.That (obj.State.IsNew, Is.True);
+      Assert.That(obj.State.IsNew, Is.True);
     }
 
     [Test]
     public void RootToSubDeleted ()
     {
-      Order obj = GetDeleted ();
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      Order obj = GetDeleted();
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.State.IsInvalid, Is.True);
+        Assert.That(obj.State.IsInvalid, Is.True);
       }
-      Assert.That (obj.State.IsDeleted, Is.True);
+      Assert.That(obj.State.IsDeleted, Is.True);
     }
 
     [Test]
     public void RootToSubDeletedThrowsWhenReloadingTheObject ()
     {
-      Order obj = GetDeleted ();
+      Order obj = GetDeleted();
       ObjectID id = obj.ID;
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.State.IsInvalid, Is.True);
-        Assert.That (
-            () => id.GetObject<Order> (),
+        Assert.That(obj.State.IsInvalid, Is.True);
+        Assert.That(
+            () => id.GetObject<Order>(),
             Throws.InstanceOf<ObjectInvalidException>()
-                .With.Message.EqualTo ("Object 'Order|90e26c86-611f-4735-8d1b-e1d0918515c2|System.Guid' is invalid in this transaction."));
+                .With.Message.EqualTo("Object 'Order|90e26c86-611f-4735-8d1b-e1d0918515c2|System.Guid' is invalid in this transaction."));
       }
     }
 
     [Test]
     public void RootToSubUnidirectionalWithDeleted ()
     {
-      Client deleted = DomainObjectIDs.Client1.GetObject<Client> ();
-      Location obj = GetUnidirectionalWithDeleted ();
-      Assert.That (deleted.State.IsDeleted, Is.True);
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      Client deleted = DomainObjectIDs.Client1.GetObject<Client>();
+      Location obj = GetUnidirectionalWithDeleted();
+      Assert.That(deleted.State.IsDeleted, Is.True);
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.State.IsNotLoadedYet, Is.True);
-        obj.EnsureDataAvailable ();
-        Assert.That (obj.State.IsUnchanged, Is.True);
-        Assert.That (deleted.State.IsInvalid, Is.True);
+        Assert.That(obj.State.IsNotLoadedYet, Is.True);
+        obj.EnsureDataAvailable();
+        Assert.That(obj.State.IsUnchanged, Is.True);
+        Assert.That(deleted.State.IsInvalid, Is.True);
       }
-      Assert.That (obj.State.IsUnchanged, Is.True);
-      Assert.That (deleted.State.IsDeleted, Is.True);
+      Assert.That(obj.State.IsUnchanged, Is.True);
+      Assert.That(deleted.State.IsDeleted, Is.True);
     }
 
     [Test]
     public void RootToSubUnidirectional_WithDeleted_ReturnsInvalidObject ()
     {
-      Location obj = GetUnidirectionalWithDeleted ();
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      Location obj = GetUnidirectionalWithDeleted();
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.Client.State.IsInvalid, Is.True);
+        Assert.That(obj.Client.State.IsInvalid, Is.True);
       }
     }
 
     [Test]
     public void RootToSubUnidirectionalWithDeletedNew ()
     {
-      Location obj = GetUnidirectionalWithDeletedNew ();
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      Location obj = GetUnidirectionalWithDeletedNew();
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.State.IsNotLoadedYet, Is.True);
-        obj.EnsureDataAvailable ();
-        Assert.That (obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNotLoadedYet, Is.True);
+        obj.EnsureDataAvailable();
+        Assert.That(obj.State.IsUnchanged, Is.True);
       }
-      Assert.That (obj.State.IsChanged, Is.True);
+      Assert.That(obj.State.IsChanged, Is.True);
     }
 
     [Test]
     public void RootToSubUnidirectional_WithDeletedNew_ReturnsInvalidObject ()
     {
-      Location obj = GetUnidirectionalWithDeletedNew ();
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      Location obj = GetUnidirectionalWithDeletedNew();
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.Client.State.IsInvalid, Is.True);
+        Assert.That(obj.Client.State.IsInvalid, Is.True);
       }
     }
 
     [Test]
     public void RootToSubDiscarded ()
     {
-      DomainObject obj = GetInvalid ();
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      DomainObject obj = GetInvalid();
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (obj.State.IsInvalid, Is.True);
+        Assert.That(obj.State.IsInvalid, Is.True);
       }
-      Assert.That (obj.State.IsInvalid, Is.True);
+      Assert.That(obj.State.IsInvalid, Is.True);
     }
   }
 }

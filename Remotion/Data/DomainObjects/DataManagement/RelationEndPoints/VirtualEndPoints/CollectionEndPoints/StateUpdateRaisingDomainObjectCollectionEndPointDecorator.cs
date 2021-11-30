@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       public void Dispose ()
       {
-        Assertion.IsTrue (_changeStateBefore == _innerEndPoint.HasChangedFast);
+        Assertion.IsTrue(_changeStateBefore == _innerEndPoint.HasChangedFast);
       }
     }
 
@@ -62,8 +62,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public StateUpdateRaisingDomainObjectCollectionEndPointDecorator (IDomainObjectCollectionEndPoint innerEndPoint, IVirtualEndPointStateUpdateListener listener)
     {
-      ArgumentUtility.CheckNotNull ("innerEndPoint", innerEndPoint);
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("innerEndPoint", innerEndPoint);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
       _innerEndPoint = innerEndPoint;
       _listener = listener;
@@ -81,11 +81,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void SetDataFromSubTransaction (IRelationEndPoint source)
     {
-      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<StateUpdateRaisingDomainObjectCollectionEndPointDecorator> ("source", source);
+      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>("source", source);
       var hasChangedFastBefore = _innerEndPoint.HasChangedFast;
       try
       {
-        _innerEndPoint.SetDataFromSubTransaction (sourceCollectionEndPoint.InnerEndPoint);
+        _innerEndPoint.SetDataFromSubTransaction(sourceCollectionEndPoint.InnerEndPoint);
       }
       finally
       {
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
       finally
       {
-        RaiseStateUpdatedIfNecessary (hasChangedFastBefore);
+        RaiseStateUpdatedIfNecessary(hasChangedFastBefore);
       }
     }
 
@@ -111,11 +111,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       var hasChangedFastBefore = _innerEndPoint.HasChangedFast;
       try
       {
-        _innerEndPoint.SynchronizeOppositeEndPoint (oppositeEndPoint);
+        _innerEndPoint.SynchronizeOppositeEndPoint(oppositeEndPoint);
       }
       finally
       {
-        RaiseStateUpdatedIfNecessary (hasChangedFastBefore);
+        RaiseStateUpdatedIfNecessary(hasChangedFastBefore);
       }
     }
 
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
       finally
       {
-        RaiseStateUpdatedIfNecessary (hasChangedFastBefore);
+        RaiseStateUpdatedIfNecessary(hasChangedFastBefore);
       }
     }
 
@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
       finally
       {
-        RaiseStateUpdatedIfNecessary (hasChangedFastBefore);
+        RaiseStateUpdatedIfNecessary(hasChangedFastBefore);
       }
     }
 
@@ -150,11 +150,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       var hasChangedFastBefore = _innerEndPoint.HasChangedFast;
       try
       {
-        _innerEndPoint.SortCurrentData (comparison);
+        _innerEndPoint.SortCurrentData(comparison);
       }
       finally
       {
-        RaiseStateUpdatedIfNecessary (hasChangedFastBefore);
+        RaiseStateUpdatedIfNecessary(hasChangedFastBefore);
       }
     }
 
@@ -165,66 +165,66 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        var command = _innerEndPoint.CreateRemoveCommand (removedRelatedObject);
-        return CreateStateUpdateRaisingCommandDecorator (command);
+        var command = _innerEndPoint.CreateRemoveCommand(removedRelatedObject);
+        return CreateStateUpdateRaisingCommandDecorator(command);
       }
     }
 
     public IDataManagementCommand CreateDeleteCommand ()
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
         var command = _innerEndPoint.CreateDeleteCommand();
-        return CreateStateUpdateRaisingCommandDecorator (command);
+        return CreateStateUpdateRaisingCommandDecorator(command);
       }
     }
 
     public IDataManagementCommand CreateSetCollectionCommand (DomainObjectCollection newCollection)
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        var command = _innerEndPoint.CreateSetCollectionCommand (newCollection);
-        return CreateStateUpdateRaisingCommandDecorator (command);
+        var command = _innerEndPoint.CreateSetCollectionCommand(newCollection);
+        return CreateStateUpdateRaisingCommandDecorator(command);
       }
     }
 
     public IDataManagementCommand CreateInsertCommand (DomainObject insertedRelatedObject, int index)
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        var command = _innerEndPoint.CreateInsertCommand (insertedRelatedObject, index);
-        return CreateStateUpdateRaisingCommandDecorator (command);
+        var command = _innerEndPoint.CreateInsertCommand(insertedRelatedObject, index);
+        return CreateStateUpdateRaisingCommandDecorator(command);
       }
     }
 
     public IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject)
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        var command = _innerEndPoint.CreateAddCommand (addedRelatedObject);
-        return CreateStateUpdateRaisingCommandDecorator (command);
+        var command = _innerEndPoint.CreateAddCommand(addedRelatedObject);
+        return CreateStateUpdateRaisingCommandDecorator(command);
       }
     }
 
     public IDataManagementCommand CreateReplaceCommand (int index, DomainObject replacementObject)
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        var command = _innerEndPoint.CreateReplaceCommand (index, replacementObject);
-        return CreateStateUpdateRaisingCommandDecorator (command);
+        var command = _innerEndPoint.CreateReplaceCommand(index, replacementObject);
+        return CreateStateUpdateRaisingCommandDecorator(command);
       }
     }
 
@@ -235,7 +235,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get
       {
 #if DEBUG
-        using (new ConstantChangeStateAsserter (_innerEndPoint))
+        using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
         {
           return _innerEndPoint.IsNull;
@@ -248,7 +248,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get
       {
 #if DEBUG
-        using (new ConstantChangeStateAsserter (_innerEndPoint))
+        using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
         {
           return _innerEndPoint.ID;
@@ -261,7 +261,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get
       {
 #if DEBUG
-        using (new ConstantChangeStateAsserter (_innerEndPoint))
+        using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
         {
           return _innerEndPoint.ClientTransaction;
@@ -274,7 +274,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get
       {
 #if DEBUG
-        using (new ConstantChangeStateAsserter (_innerEndPoint))
+        using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
         {
           return _innerEndPoint.ObjectID;
@@ -287,7 +287,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get
       {
 #if DEBUG
-        using (new ConstantChangeStateAsserter (_innerEndPoint))
+        using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
         {
           return _innerEndPoint.Definition;
@@ -300,7 +300,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get
       {
 #if DEBUG
-        using (new ConstantChangeStateAsserter (_innerEndPoint))
+        using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
         {
           return _innerEndPoint.RelationDefinition;
@@ -329,7 +329,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         }
         finally
         {
-          Assertion.DebugAssert (hasChangedFastBefore == null || hasChangedFastBefore == _innerEndPoint.HasChangedFast);
+          Assertion.DebugAssert(hasChangedFastBefore == null || hasChangedFastBefore == _innerEndPoint.HasChangedFast);
         }
 #endif
       }
@@ -340,7 +340,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get
       {
 #if DEBUG
-        using (new ConstantChangeStateAsserter (_innerEndPoint))
+        using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
         {
           return _innerEndPoint.HasBeenTouched;
@@ -351,20 +351,20 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public DomainObject GetDomainObject ()
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        return _innerEndPoint.GetDomainObject ();
+        return _innerEndPoint.GetDomainObject();
       }
     }
 
     public DomainObject GetDomainObjectReference ()
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        return _innerEndPoint.GetDomainObjectReference ();
+        return _innerEndPoint.GetDomainObjectReference();
       }
     }
 
@@ -373,7 +373,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get
       {
 #if DEBUG
-        using (new ConstantChangeStateAsserter (_innerEndPoint))
+        using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
         {
           return _innerEndPoint.IsDataComplete;
@@ -384,10 +384,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public void EnsureDataComplete ()
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        _innerEndPoint.EnsureDataComplete ();
+        _innerEndPoint.EnsureDataComplete();
       }
     }
 
@@ -396,7 +396,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get
       {
 #if DEBUG
-        using (new ConstantChangeStateAsserter (_innerEndPoint))
+        using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
         {
           return _innerEndPoint.IsSynchronized;
@@ -407,30 +407,30 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public void Touch ()
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        _innerEndPoint.Touch ();
+        _innerEndPoint.Touch();
       }
     }
 
     public void ValidateMandatory ()
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        _innerEndPoint.ValidateMandatory ();
+        _innerEndPoint.ValidateMandatory();
       }
     }
 
     public IEnumerable<RelationEndPointID> GetOppositeRelationEndPointIDs ()
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        return _innerEndPoint.GetOppositeRelationEndPointIDs ();
+        return _innerEndPoint.GetOppositeRelationEndPointIDs();
       }
     }
 
@@ -439,7 +439,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get
       {
 #if DEBUG
-        using (new ConstantChangeStateAsserter (_innerEndPoint))
+        using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
         {
           return _innerEndPoint.CanBeCollected;
@@ -452,7 +452,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get
       {
 #if DEBUG
-        using (new ConstantChangeStateAsserter (_innerEndPoint))
+        using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
         {
           return _innerEndPoint.CanBeMarkedIncomplete;
@@ -463,70 +463,70 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public void MarkDataIncomplete ()
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        _innerEndPoint.MarkDataIncomplete ();
+        _innerEndPoint.MarkDataIncomplete();
       }
     }
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        _innerEndPoint.RegisterOriginalOppositeEndPoint (oppositeEndPoint);
+        _innerEndPoint.RegisterOriginalOppositeEndPoint(oppositeEndPoint);
       }
     }
 
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        _innerEndPoint.UnregisterOriginalOppositeEndPoint (oppositeEndPoint);
+        _innerEndPoint.UnregisterOriginalOppositeEndPoint(oppositeEndPoint);
       }
     }
 
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        _innerEndPoint.RegisterCurrentOppositeEndPoint (oppositeEndPoint);
+        _innerEndPoint.RegisterCurrentOppositeEndPoint(oppositeEndPoint);
       }
     }
 
     public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        _innerEndPoint.UnregisterCurrentOppositeEndPoint (oppositeEndPoint);
+        _innerEndPoint.UnregisterCurrentOppositeEndPoint(oppositeEndPoint);
       }
     }
 
     public ReadOnlyDomainObjectCollectionDataDecorator GetData ()
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        return _innerEndPoint.GetData ();
+        return _innerEndPoint.GetData();
       }
     }
 
     public ReadOnlyDomainObjectCollectionDataDecorator GetOriginalData ()
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        return _innerEndPoint.GetOriginalData ();
+        return _innerEndPoint.GetOriginalData();
       }
     }
 
@@ -535,7 +535,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get
       {
 #if DEBUG
-        using (new ConstantChangeStateAsserter (_innerEndPoint))
+        using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
         {
           return _innerEndPoint.Collection;
@@ -548,7 +548,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get
       {
 #if DEBUG
-        using (new ConstantChangeStateAsserter (_innerEndPoint))
+        using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
         {
           return _innerEndPoint.OriginalCollection;
@@ -559,40 +559,40 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ()
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        return _innerEndPoint.GetCollectionEventRaiser ();
+        return _innerEndPoint.GetCollectionEventRaiser();
       }
     }
 
     public DomainObjectCollection GetCollectionWithOriginalData ()
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        return _innerEndPoint.GetCollectionWithOriginalData ();
+        return _innerEndPoint.GetCollectionWithOriginalData();
       }
     }
 
     public void MarkDataComplete (DomainObject[] items)
     {
 #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        _innerEndPoint.MarkDataComplete (items);
+        _innerEndPoint.MarkDataComplete(items);
       }
     }
 
     public override string ToString ()
     {
  #if DEBUG
-      using (new ConstantChangeStateAsserter (_innerEndPoint))
+      using (new ConstantChangeStateAsserter(_innerEndPoint))
 #endif
       {
-        return string.Format ("{0} {{ {1} }}", GetType().Name, _innerEndPoint.ToString());
+        return string.Format("{0} {{ {1} }}", GetType().Name, _innerEndPoint.ToString());
       }
     }
 
@@ -603,12 +603,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       var hasChangedFastNow = _innerEndPoint.HasChangedFast;
       // We only raise the update if the state has changed or if we don't know the state before the operation.
       if (hasChangedFastBefore == null || hasChangedFastBefore != hasChangedFastNow)
-        _listener.VirtualEndPointStateUpdated (_innerEndPoint.ID, hasChangedFastNow);
+        _listener.VirtualEndPointStateUpdated(_innerEndPoint.ID, hasChangedFastNow);
     }
 
     private IDataManagementCommand CreateStateUpdateRaisingCommandDecorator (IDataManagementCommand command)
     {
-      return new VirtualEndPointStateUpdatedRaisingCommandDecorator (command, _innerEndPoint.ID, _listener, () => _innerEndPoint.HasChangedFast);
+      return new VirtualEndPointStateUpdatedRaisingCommandDecorator(command, _innerEndPoint.ID, _listener, () => _innerEndPoint.HasChangedFast);
     }
 
     #region Serialization
@@ -621,8 +621,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddValue (_innerEndPoint);
-      info.AddHandle (_listener);
+      info.AddValue(_innerEndPoint);
+      info.AddHandle(_listener);
     }
 
     #endregion

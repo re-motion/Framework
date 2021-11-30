@@ -20,7 +20,7 @@ namespace Remotion.Utilities.Singleton
 {
   public class DefaultInstanceCreator<T> : IInstanceCreator<T> where T : new()
   {
-    public T CreateInstance()
+    public T CreateInstance ()
     {
       return new T();
     }

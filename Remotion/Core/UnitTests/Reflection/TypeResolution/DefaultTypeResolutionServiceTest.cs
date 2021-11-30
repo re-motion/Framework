@@ -30,16 +30,16 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     public void GetType_WithValidTypeName_ReturnsType ()
     {
       var service = CreateTypeResolutionService();
-      Assert.That (service.GetType ("System.String"), Is.SameAs (typeof (string)));
+      Assert.That(service.GetType("System.String"), Is.SameAs(typeof(string)));
     }
 
     [Test]
     public void GetType_WithInvalidTypeName_ReturnsNull ()
     {
-      Assert.That (Type.GetType ("Foo, System"), Is.Null);
+      Assert.That(Type.GetType("Foo, System"), Is.Null);
 
       var service = CreateTypeResolutionService();
-      Assert.That (service.GetType ("Foo, System"), Is.Null);
+      Assert.That(service.GetType("Foo, System"), Is.Null);
     }
 
 
@@ -47,25 +47,25 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     public void GetType_WithThrowOnErrorTrue_WithValidTypeName_ReturnsType ()
     {
       var service = CreateTypeResolutionService();
-      Assert.That (service.GetType ("System.String", throwOnError: true), Is.SameAs (typeof (string)));
+      Assert.That(service.GetType("System.String", throwOnError: true), Is.SameAs(typeof(string)));
     }
 
     [Test]
     public void GetType_WithThrowOnErrorTrue_WithInvalidTypeName_ThrowsTypeLoadException ()
     {
-      Assert.That (() => Type.GetType ("Foo, Remotion.UnitTests", throwOnError: true), Throws.TypeOf<TypeLoadException>());
+      Assert.That(() => Type.GetType("Foo, Remotion.UnitTests", throwOnError: true), Throws.TypeOf<TypeLoadException>());
 
       var service = CreateTypeResolutionService();
-      Assert.That (() => service.GetType ("Foo, Remotion.UnitTests", throwOnError: true), Throws.TypeOf<TypeLoadException>());
+      Assert.That(() => service.GetType("Foo, Remotion.UnitTests", throwOnError: true), Throws.TypeOf<TypeLoadException>());
     }
 
     [Test]
     public void GetType_WithThrowOnErrorFalse_WithInvalidTypeName_ReturnsNull ()
     {
-      Assert.That (Type.GetType ("Foo, Remotion.UnitTests", throwOnError: false), Is.Null);
+      Assert.That(Type.GetType("Foo, Remotion.UnitTests", throwOnError: false), Is.Null);
 
       var service = CreateTypeResolutionService();
-      Assert.That (service.GetType ("Foo, Remotion.UnitTests", throwOnError: false), Is.Null);
+      Assert.That(service.GetType("Foo, Remotion.UnitTests", throwOnError: false), Is.Null);
     }
 
 
@@ -73,70 +73,70 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     public void GetType_WithThrowOnErrorTrue_AndWithIgnoreCaseFalse_WithValidTypeName_ReturnsType ()
     {
       var service = CreateTypeResolutionService();
-      Assert.That (service.GetType ("System.String", throwOnError: true, ignoreCase: false), Is.SameAs (typeof (string)));
+      Assert.That(service.GetType("System.String", throwOnError: true, ignoreCase: false), Is.SameAs(typeof(string)));
     }
 
     [Test]
     public void GetType_WithThrowOnErrorTrue_AndWithIgnoreCaseFalse_WithInvalidTypeName_ThrowsTypeLoadException ()
     {
-      Assert.That (() => Type.GetType ("Foo, Remotion.UnitTests", throwOnError: true, ignoreCase: false), Throws.TypeOf<TypeLoadException>());
+      Assert.That(() => Type.GetType("Foo, Remotion.UnitTests", throwOnError: true, ignoreCase: false), Throws.TypeOf<TypeLoadException>());
 
       var service = CreateTypeResolutionService();
-      Assert.That (() => service.GetType ("Foo, Remotion.UnitTests", throwOnError: true, ignoreCase: false), Throws.TypeOf<TypeLoadException>());
+      Assert.That(() => service.GetType("Foo, Remotion.UnitTests", throwOnError: true, ignoreCase: false), Throws.TypeOf<TypeLoadException>());
     }
 
     [Test]
     public void GetType_WithThrowOnErrorTrue_AndWithIgnoreCaseTrue_WithTypeNameHavingCaseMismatch_ThrowsTypeLoadException ()
     {
-      Assert.That (() => Type.GetType ("system.string", throwOnError: true, ignoreCase: false), Throws.TypeOf<TypeLoadException>());
+      Assert.That(() => Type.GetType("system.string", throwOnError: true, ignoreCase: false), Throws.TypeOf<TypeLoadException>());
 
       var service = CreateTypeResolutionService();
-      Assert.That (() => service.GetType ("system.string", throwOnError: true, ignoreCase: false), Throws.TypeOf<TypeLoadException>());
+      Assert.That(() => service.GetType("system.string", throwOnError: true, ignoreCase: false), Throws.TypeOf<TypeLoadException>());
     }
 
     [Test]
     public void GetType_WithThrowOnErrorTrue_AndWithIgnoreCaseTrue_WithTypeNameHavingCaseMismatch_ReturnsType ()
     {
-      Assert.That (() => Type.GetType ("system.string", throwOnError: true, ignoreCase: true), Is.SameAs (typeof (string)));
+      Assert.That(() => Type.GetType("system.string", throwOnError: true, ignoreCase: true), Is.SameAs(typeof(string)));
 
       var service = CreateTypeResolutionService();
-      Assert.That (() => service.GetType ("system.string", throwOnError: true, ignoreCase: true), Is.SameAs (typeof (string)));
+      Assert.That(() => service.GetType("system.string", throwOnError: true, ignoreCase: true), Is.SameAs(typeof(string)));
     }
 
     [Test]
     public void GetType_WithThrowOnErrorFalse_AndWithIgnoreCaseTrue_WithInvalidTypeName_ReturnsNull ()
     {
-      Assert.That (Type.GetType ("Foo, Remotion.UnitTests", throwOnError: false, ignoreCase: true), Is.Null);
+      Assert.That(Type.GetType("Foo, Remotion.UnitTests", throwOnError: false, ignoreCase: true), Is.Null);
 
       var service = CreateTypeResolutionService();
-      Assert.That (service.GetType ("Foo, Remotion.UnitTests", throwOnError: false, ignoreCase: true), Is.Null);
+      Assert.That(service.GetType("Foo, Remotion.UnitTests", throwOnError: false, ignoreCase: true), Is.Null);
     }
 
     [Test]
     public void GetType_WithThrowOnErrorFalse_AndWithIgnoreCaseTrue_WithTypeNameHavingCaseMismatch_ReturnsType ()
     {
-      Assert.That (Type.GetType ("system.string", throwOnError: false, ignoreCase: true), Is.SameAs (typeof (string)));
+      Assert.That(Type.GetType("system.string", throwOnError: false, ignoreCase: true), Is.SameAs(typeof(string)));
 
       var service = CreateTypeResolutionService();
-      Assert.That (service.GetType ("system.string", throwOnError: false, ignoreCase: true), Is.SameAs (typeof (string)));
+      Assert.That(service.GetType("system.string", throwOnError: false, ignoreCase: true), Is.SameAs(typeof(string)));
     }
 
     [Test]
     public void GetType_WithThrowOnErrorFalse_AndWithIgnoreCaseFalse_WithInvalidTypeName_ReturnsNull ()
     {
-      Assert.That (Type.GetType ("Foo, Remotion.UnitTests", throwOnError: false, ignoreCase: false), Is.Null);
+      Assert.That(Type.GetType("Foo, Remotion.UnitTests", throwOnError: false, ignoreCase: false), Is.Null);
 
       var service = CreateTypeResolutionService();
-      Assert.That (service.GetType ("Foo, Remotion.UnitTests", throwOnError: false, ignoreCase: false), Is.Null);
+      Assert.That(service.GetType("Foo, Remotion.UnitTests", throwOnError: false, ignoreCase: false), Is.Null);
     }
 
     [Test]
     public void GetType_WithThrowOnErrorFalse_AndWithIgnoreCaseFalse_WithTypeNameHavingCaseMismatch_ReturnsNull ()
     {
-      Assert.That (Type.GetType ("system.string", throwOnError: false, ignoreCase: false), Is.Null);
+      Assert.That(Type.GetType("system.string", throwOnError: false, ignoreCase: false), Is.Null);
 
       var service = CreateTypeResolutionService();
-      Assert.That (service.GetType ("system.string", throwOnError: false, ignoreCase: false), Is.Null);
+      Assert.That(service.GetType("system.string", throwOnError: false, ignoreCase: false), Is.Null);
     }
 
     [Test]
@@ -144,8 +144,8 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     {
       var service = CreateTypeResolutionService();
 
-      var assembly = typeof (string).Assembly;
-      Assert.That (service.GetAssembly (assembly.GetName()), Is.SameAs (assembly));
+      var assembly = typeof(string).Assembly;
+      Assert.That(service.GetAssembly(assembly.GetName()), Is.SameAs(assembly));
     }
 
     [Test]
@@ -153,7 +153,7 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     {
       var service = CreateTypeResolutionService();
 
-      Assert.That (service.GetAssembly (new AssemblyName ("Foo")), Is.Null);
+      Assert.That(service.GetAssembly(new AssemblyName("Foo")), Is.Null);
     }
 
     [Test]
@@ -161,8 +161,8 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     {
       var service = CreateTypeResolutionService();
 
-      var assembly = typeof (string).Assembly;
-      Assert.That (service.GetAssembly (assembly.GetName(), throwOnError: true), Is.SameAs (assembly));
+      var assembly = typeof(string).Assembly;
+      Assert.That(service.GetAssembly(assembly.GetName(), throwOnError: true), Is.SameAs(assembly));
     }
 
     [Test]
@@ -170,7 +170,7 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     {
       var service = CreateTypeResolutionService();
 
-      Assert.That (() => service.GetAssembly (new AssemblyName ("Foo"), throwOnError: true), Throws.TypeOf<FileNotFoundException>());
+      Assert.That(() => service.GetAssembly(new AssemblyName("Foo"), throwOnError: true), Throws.TypeOf<FileNotFoundException>());
     }
 
     [Test]
@@ -178,8 +178,8 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     {
       var service = CreateTypeResolutionService();
 
-      var assembly = typeof (string).Assembly;
-      Assert.That (service.GetAssembly (assembly.GetName(), throwOnError: false), Is.SameAs (assembly));
+      var assembly = typeof(string).Assembly;
+      Assert.That(service.GetAssembly(assembly.GetName(), throwOnError: false), Is.SameAs(assembly));
     }
 
     [Test]
@@ -187,7 +187,7 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     {
       var service = CreateTypeResolutionService();
 
-      Assert.That (service.GetAssembly (new AssemblyName ("Foo"), throwOnError: false), Is.Null);
+      Assert.That(service.GetAssembly(new AssemblyName("Foo"), throwOnError: false), Is.Null);
     }
 
     [Test]
@@ -195,18 +195,18 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     {
       var service = CreateTypeResolutionService();
 
-      var assembly = typeof (string).Assembly;
+      var assembly = typeof(string).Assembly;
 
       // Shadow Copying is only supported in .NET Framework.
       // Given that we are using mscorlib.dll, we may assume the assembly is never shadow copied and thus Assembly.Location and Assembly.CodeBase are equal
 
-      Assert.That (assembly.Location, Is.Not.Null);
-      Assert.That (service.GetPathOfAssembly (assembly.GetName()), Is.EqualTo (assembly.Location));
+      Assert.That(assembly.Location, Is.Not.Null);
+      Assert.That(service.GetPathOfAssembly(assembly.GetName()), Is.EqualTo(assembly.Location));
     }
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+    [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
 #endif
     public void GetPathOfAssembly_WithHashInDirectoryName ()
     {
@@ -220,7 +220,7 @@ namespace Remotion.UnitTests.Reflection.TypeResolution
     {
       var service = CreateTypeResolutionService();
 
-      Assert.That (service.GetPathOfAssembly (new AssemblyName ("Foo")), Is.Null);
+      Assert.That(service.GetPathOfAssembly(new AssemblyName("Foo")), Is.Null);
     }
 
     private ITypeResolutionService CreateTypeResolutionService ()

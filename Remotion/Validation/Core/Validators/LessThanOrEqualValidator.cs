@@ -24,7 +24,7 @@ namespace Remotion.Validation.Validators
   public class LessThanOrEqualValidator : AbstractValueComparisonValidator
   {
     public LessThanOrEqualValidator ([NotNull] IComparable comparisonValue, [NotNull] ValidationMessage validationMessage, [CanBeNull] IComparer? comparer = null)
-        : base (comparisonValue, comparer, Comparison.LessThanOrEqual, $"The value must be less than or equal to '{comparisonValue}'.", validationMessage)
+        : base(comparisonValue, comparer, Comparison.LessThanOrEqual, $"The value must be less than or equal to '{comparisonValue}'.", validationMessage)
     {
     }
   }

@@ -31,63 +31,63 @@ namespace Remotion.Collections.Caching.UnitTests
     public void GetOrCreateValue_WithValueInCache_ReturnsValue ()
     {
       var cache = new Cache<object, string>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
       var key = new object();
-      cache.GetOrCreateValue (key, o => "Value");
+      cache.GetOrCreateValue(key, o => "Value");
 
-      var value = decorator.GetOrCreateValue (key, o => throw new InvalidOperationException());
+      var value = decorator.GetOrCreateValue(key, o => throw new InvalidOperationException());
 
-      Assert.That (value, Is.EqualTo ("Value"));
+      Assert.That(value, Is.EqualTo("Value"));
     }
 
     [Test]
     public void GetOrCreateValue_WithValueNotInCache_CreatedValue_ReturnsValue ()
     {
       var cache = new Cache<object, string>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
       var key = new object();
 
-      var value = decorator.GetOrCreateValue (key, o => "Value");
+      var value = decorator.GetOrCreateValue(key, o => "Value");
 
-      Assert.That (value, Is.EqualTo ("Value"));
+      Assert.That(value, Is.EqualTo("Value"));
 
-      cache.TryGetValue (key, out var cachedValue);
-      Assert.That (cachedValue, Is.EqualTo ("Value"));
+      cache.TryGetValue(key, out var cachedValue);
+      Assert.That(cachedValue, Is.EqualTo("Value"));
     }
 
     [Test]
     public void GetOrCreateValue_AfterTokenWasInvalidated_CreatesNewValue_ReturnsValue ()
     {
       var cache = new Cache<object, string>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
       var key = new object();
-      cache.GetOrCreateValue (key, o => "Value1");
+      cache.GetOrCreateValue(key, o => "Value1");
 
       decorator.InvalidationToken.Invalidate();
 
-      var value = decorator.GetOrCreateValue (key, o => "Value2");
+      var value = decorator.GetOrCreateValue(key, o => "Value2");
 
-      Assert.That (value, Is.EqualTo ("Value2"));
+      Assert.That(value, Is.EqualTo("Value2"));
 
-      cache.TryGetValue (key, out var cachedValue);
-      Assert.That (cachedValue, Is.EqualTo ("Value2"));
+      cache.TryGetValue(key, out var cachedValue);
+      Assert.That(cachedValue, Is.EqualTo("Value2"));
     }
 
     [Test]
     public void GetOrCreateValue_AfterTokenWasInvalidated_RefreshesRevision_ReturnsValue ()
     {
       var cache = new Cache<object, string>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
       var key = new object();
-      cache.GetOrCreateValue (key, o => "Value1");
+      cache.GetOrCreateValue(key, o => "Value1");
 
       decorator.InvalidationToken.Invalidate();
 
-      var valueOnFirstCall = decorator.GetOrCreateValue (key, o => "Value2");
-      Assert.That (valueOnFirstCall, Is.EqualTo ("Value2"));
+      var valueOnFirstCall = decorator.GetOrCreateValue(key, o => "Value2");
+      Assert.That(valueOnFirstCall, Is.EqualTo("Value2"));
 
-      var valueOnSecondCall = decorator.GetOrCreateValue (key, o => { throw new InvalidOperationException(); });
-      Assert.That (valueOnSecondCall, Is.EqualTo ("Value2"));
+      var valueOnSecondCall = decorator.GetOrCreateValue(key, o => { throw new InvalidOperationException(); });
+      Assert.That(valueOnSecondCall, Is.EqualTo("Value2"));
     }
 
     [Test]
@@ -95,10 +95,10 @@ namespace Remotion.Collections.Caching.UnitTests
     {
       var cacheStub = new Mock<ICache<object, string>>();
       var invalidationToken = InvalidationToken.Create();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cacheStub.Object, invalidationToken);
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cacheStub.Object, invalidationToken);
       var key = new object();
       var count = 0;
-      cacheStub.Setup (_ => _.Clear()).Callback (
+      cacheStub.Setup(_ => _.Clear()).Callback(
           () =>
           {
             if (count < 2)
@@ -107,97 +107,97 @@ namespace Remotion.Collections.Caching.UnitTests
               count++;
             }
           });
-      cacheStub.Setup (_ => _.GetOrCreateValue (It.IsAny<object>(), It.IsAny<Func<object, string>>())).Returns ("Value");
+      cacheStub.Setup(_ => _.GetOrCreateValue(It.IsAny<object>(), It.IsAny<Func<object, string>>())).Returns("Value");
 
-      var value = decorator.GetOrCreateValue (key, o => null);
+      var value = decorator.GetOrCreateValue(key, o => null);
 
-      Assert.That (value, Is.EqualTo ("Value"));
+      Assert.That(value, Is.EqualTo("Value"));
     }
 
     [Test]
     public void TryGetValue_WithValueInCache_ReturnsTrueAndSetsOutValue ()
     {
       var cache = new Cache<object, string>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
       var key = new object();
-      cache.GetOrCreateValue (key, o => "Value");
+      cache.GetOrCreateValue(key, o => "Value");
 
-      var result = decorator.TryGetValue (key, out var value);
+      var result = decorator.TryGetValue(key, out var value);
 
-      Assert.That (result, Is.True);
-      Assert.That (value, Is.EqualTo ("Value"));
+      Assert.That(result, Is.True);
+      Assert.That(value, Is.EqualTo("Value"));
     }
 
     [Test]
     public void TryGetValue_WithValueNotInCache_ReturnsFalse ()
     {
       var cache = new Cache<object, string>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
       var key = new object();
 
-      var result = decorator.TryGetValue (key, out var value);
+      var result = decorator.TryGetValue(key, out var value);
 
-      Assert.That (result, Is.False);
-      Assert.That (value, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(value, Is.Null);
     }
 
     [Test]
     public void TryGetValue_AfterTokenWasInvalidated_ReturnsFalse ()
     {
       var cache = new Cache<object, string>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
       var key = new object();
-      cache.GetOrCreateValue (key, o => "Value");
+      cache.GetOrCreateValue(key, o => "Value");
 
       decorator.InvalidationToken.Invalidate();
 
-      var result = decorator.TryGetValue (key, out var value);
+      var result = decorator.TryGetValue(key, out var value);
 
-      Assert.That (result, Is.False);
-      Assert.That (value, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(value, Is.Null);
 
-      bool cachedResult = cache.TryGetValue (key, out var cachedValue);
-      Assert.That (cachedResult, Is.False);
+      bool cachedResult = cache.TryGetValue(key, out var cachedValue);
+      Assert.That(cachedResult, Is.False);
     }
 
     [Test]
     public void TryGetValue_AfterTokenWasInvalidated_RefreshesRevision_ReturnsFalse ()
     {
       var cache = new Cache<object, string>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
       var key = new object();
 
       decorator.InvalidationToken.Invalidate();
 
-      cache.GetOrCreateValue (key, o => "Value");
-      var resultOnFirstCall = decorator.TryGetValue (key, out var valueOnFirstCall);
-      Assert.That (resultOnFirstCall, Is.False);
-      Assert.That (valueOnFirstCall, Is.Null);
+      cache.GetOrCreateValue(key, o => "Value");
+      var resultOnFirstCall = decorator.TryGetValue(key, out var valueOnFirstCall);
+      Assert.That(resultOnFirstCall, Is.False);
+      Assert.That(valueOnFirstCall, Is.Null);
 
-      cache.GetOrCreateValue (key, o => "Value2");
-      var resultOnSecondCall = decorator.TryGetValue (key, out var valueOnSecondCall);
-      Assert.That (resultOnSecondCall, Is.True);
-      Assert.That (valueOnSecondCall, Is.EqualTo ("Value2"));
+      cache.GetOrCreateValue(key, o => "Value2");
+      var resultOnSecondCall = decorator.TryGetValue(key, out var valueOnSecondCall);
+      Assert.That(resultOnSecondCall, Is.True);
+      Assert.That(valueOnSecondCall, Is.EqualTo("Value2"));
     }
 
     [Test]
     public void GetEnumerator_Generic_ReturnsItemsFromCache ()
     {
       var cache = new Cache<string, object>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<string, object> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<string, object>(cache, InvalidationToken.Create());
 
       object exptected1 = new object();
       object exptected2 = new object();
-      cache.GetOrCreateValue ("key1", o => exptected1);
-      cache.GetOrCreateValue ("key2", o => exptected2);
+      cache.GetOrCreateValue("key1", o => exptected1);
+      cache.GetOrCreateValue("key2", o => exptected2);
 
-      Assert.That (
+      Assert.That(
           decorator.ToArray(),
-          Is.EquivalentTo (
+          Is.EquivalentTo(
               new[]
               {
-                  new KeyValuePair<string, object> ("key1", exptected1),
-                  new KeyValuePair<string, object> ("key2", exptected2)
+                  new KeyValuePair<string, object>("key1", exptected1),
+                  new KeyValuePair<string, object>("key2", exptected2)
               }
               ));
     }
@@ -209,32 +209,32 @@ namespace Remotion.Collections.Caching.UnitTests
 
       object exptected1 = new object();
       object exptected2 = new object();
-      cache.GetOrCreateValue ("key1", o => exptected1);
-      cache.GetOrCreateValue ("key2", o => exptected2);
+      cache.GetOrCreateValue("key1", o => exptected1);
+      cache.GetOrCreateValue("key2", o => exptected2);
 
-      var decorated = new InvalidationTokenBasedCacheDecorator<string, object> (cache, InvalidationToken.Create());
+      var decorated = new InvalidationTokenBasedCacheDecorator<string, object>(cache, InvalidationToken.Create());
       decorated.InvalidationToken.Invalidate();
-      Assert.That (decorated.ToArray(), Is.Empty);
+      Assert.That(decorated.ToArray(), Is.Empty);
     }
 
     [Test]
     public void GetEnumerator_NonGeneric_ReturnsItemsFromCache ()
     {
       var cache = new Cache<string, object>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<string, object> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<string, object>(cache, InvalidationToken.Create());
 
       object exptected1 = new object();
       object exptected2 = new object();
-      cache.GetOrCreateValue ("key1", o => exptected1);
-      cache.GetOrCreateValue ("key2", o => exptected2);
+      cache.GetOrCreateValue("key1", o => exptected1);
+      cache.GetOrCreateValue("key2", o => exptected2);
 
-      Assert.That (
+      Assert.That(
           decorator.ToNonGenericEnumerable(),
-          Is.EquivalentTo (
+          Is.EquivalentTo(
               new[]
               {
-                  new KeyValuePair<string, object> ("key1", exptected1),
-                  new KeyValuePair<string, object> ("key2", exptected2)
+                  new KeyValuePair<string, object>("key1", exptected1),
+                  new KeyValuePair<string, object>("key2", exptected2)
               }
               ));
     }
@@ -246,56 +246,56 @@ namespace Remotion.Collections.Caching.UnitTests
 
       object exptected1 = new object();
       object exptected2 = new object();
-      cache.GetOrCreateValue ("key1", o => exptected1);
-      cache.GetOrCreateValue ("key2", o => exptected2);
+      cache.GetOrCreateValue("key1", o => exptected1);
+      cache.GetOrCreateValue("key2", o => exptected2);
 
-      var decorated = new InvalidationTokenBasedCacheDecorator<string, object> (cache, InvalidationToken.Create());
+      var decorated = new InvalidationTokenBasedCacheDecorator<string, object>(cache, InvalidationToken.Create());
       decorated.InvalidationToken.Invalidate();
-      Assert.That (decorated.ToNonGenericEnumerable().Cast<KeyValuePair<string, object>>(), Is.Empty);
+      Assert.That(decorated.ToNonGenericEnumerable().Cast<KeyValuePair<string, object>>(), Is.Empty);
     }
 
     [Test]
     public void Clear_ClearsInnerCache ()
     {
       var cache = new Cache<object, string>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
       var key = new object();
-      cache.GetOrCreateValue (key, o => "Value");
+      cache.GetOrCreateValue(key, o => "Value");
 
-      ((ICache<object, string>) decorator).Clear();
+      ((ICache<object, string>)decorator).Clear();
 
-      bool cachedResult = cache.TryGetValue (key, out var cachedValue);
-      Assert.That (cachedResult, Is.False);
+      bool cachedResult = cache.TryGetValue(key, out var cachedValue);
+      Assert.That(cachedResult, Is.False);
     }
 
     [Test]
     public void Clear_DoesNotInvalidateToken ()
     {
       var cache = new Cache<object, string>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
 
       var revision = decorator.InvalidationToken.GetCurrent();
 
-      ((ICache<object, string>) decorator).Clear();
+      ((ICache<object, string>)decorator).Clear();
 
-      Assert.That (decorator.InvalidationToken.IsCurrent (revision), Is.True);
+      Assert.That(decorator.InvalidationToken.IsCurrent(revision), Is.True);
     }
 
     [Test]
     public void Clear_RefreshesRevision ()
     {
       var cache = new Cache<object, string>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
 
       decorator.InvalidationToken.Invalidate();
-      ((ICache<object, string>) decorator).Clear();
+      ((ICache<object, string>)decorator).Clear();
       var key = new object();
-      cache.GetOrCreateValue (key, o => "Value");
+      cache.GetOrCreateValue(key, o => "Value");
 
-      var result = decorator.TryGetValue (key, out var value);
+      var result = decorator.TryGetValue(key, out var value);
 
-      Assert.That (result, Is.True);
-      Assert.That (value, Is.EqualTo ("Value"));
+      Assert.That(result, Is.True);
+      Assert.That(value, Is.EqualTo("Value"));
     }
 
     [Test]
@@ -303,9 +303,9 @@ namespace Remotion.Collections.Caching.UnitTests
     {
       var cacheStub = new Mock<ICache<object, string>>();
       var invalidationToken = InvalidationToken.Create();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cacheStub.Object, invalidationToken);
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cacheStub.Object, invalidationToken);
       var count = 0;
-      cacheStub.Setup (_ => _.Clear()).Callback (
+      cacheStub.Setup(_ => _.Clear()).Callback(
           () =>
           {
             if (count < 2)
@@ -315,37 +315,37 @@ namespace Remotion.Collections.Caching.UnitTests
             }
           });
 
-      ((ICache<object, string>) decorator).Clear();
+      ((ICache<object, string>)decorator).Clear();
     }
 
     [Test]
     public void IsNull_WithNonNullCache_ReturnsFalse ()
     {
       var cache = new Cache<object, string>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
 
-      Assert.That (((ICache<object, string>) decorator).IsNull, Is.False);
+      Assert.That(((ICache<object, string>)decorator).IsNull, Is.False);
     }
 
     [Test]
     public void IsNull_WithNullCache_ReturnsTrue ()
     {
       var cache = new NullCache<object, string>();
-      var decorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
 
-      Assert.That (((ICache<object, string>) decorator).IsNull, Is.True);
+      Assert.That(((ICache<object, string>)decorator).IsNull, Is.True);
     }
 
     [Test]
     public void Serializable ()
     {
       var cache = new Cache<object, string>();
-      var invalidationTokenBasedCacheDecorator = new InvalidationTokenBasedCacheDecorator<object, string> (cache, InvalidationToken.Create());
+      var invalidationTokenBasedCacheDecorator = new InvalidationTokenBasedCacheDecorator<object, string>(cache, InvalidationToken.Create());
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (invalidationTokenBasedCacheDecorator);
+      var deserializedInstance = Serializer.SerializeAndDeserialize(invalidationTokenBasedCacheDecorator);
 
-      Assert.That (deserializedInstance, Is.Not.SameAs (invalidationTokenBasedCacheDecorator));
-      Assert.That (deserializedInstance.InvalidationToken, Is.Not.SameAs (invalidationTokenBasedCacheDecorator.InvalidationToken));
+      Assert.That(deserializedInstance, Is.Not.SameAs(invalidationTokenBasedCacheDecorator));
+      Assert.That(deserializedInstance.InvalidationToken, Is.Not.SameAs(invalidationTokenBasedCacheDecorator.InvalidationToken));
     }
   }
 }

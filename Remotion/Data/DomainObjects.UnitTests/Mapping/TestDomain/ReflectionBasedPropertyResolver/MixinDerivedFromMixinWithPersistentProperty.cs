@@ -20,6 +20,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.ReflectionBas
 {
   public class MixinDerivedFromMixinWithPersistentProperty : MixinWithPersistentProperty
   {
-    
+
   }
 }

@@ -31,7 +31,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
     public WebTabStripRenderingContext (HttpContextBase httpContext, HtmlTextWriter writer, IWebTabStrip control, WebTabRendererAdapter[] webTabRenderers)
         : base(httpContext, writer, control)
     {
-      ArgumentUtility.CheckNotNull ("webTabRenderers", webTabRenderers);
+      ArgumentUtility.CheckNotNull("webTabRenderers", webTabRenderers);
 
       _webTabRenderers = webTabRenderers;
     }

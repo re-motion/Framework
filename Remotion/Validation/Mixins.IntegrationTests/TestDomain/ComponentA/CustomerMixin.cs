@@ -23,12 +23,12 @@ namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA
 {
   public interface ICustomerIntroduced
   {
-    [NotEqualValidation ("Chef1")]
+    [NotEqualValidation("Chef1")]
     string Title { get; set; }
   }
 
-  [MultiLingualResources ("Remotion.Validation.Mixins.IntegrationTests.TestDomain.Resources.CustomerMixin")]
-  [Extends (typeof (Customer), IntroducedMemberVisibility = MemberVisibility.Public)]
+  [MultiLingualResources("Remotion.Validation.Mixins.IntegrationTests.TestDomain.Resources.CustomerMixin")]
+  [Extends(typeof(Customer), IntroducedMemberVisibility = MemberVisibility.Public)]
   public class CustomerMixin : Mixin<IPerson, CustomerMixin.IBaseMethods>, ICustomerIntroduced
   {
     public interface IBaseMethods

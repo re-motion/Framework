@@ -53,10 +53,10 @@ namespace Remotion.ObjectBinding.BindableObject
     ///   <see langword="true" /> if the <paramref name="exception"/> represents an expected domain constraint during property access, 
     ///   <see langword="false" /> if the original <paramref name="exception"/> should be re-thrown.
     /// </returns>
-    [ContractAnnotation ("=>true, propertyAccessException:notnull; =>false, propertyAccessException:null")]
+    [ContractAnnotation("=>true, propertyAccessException:notnull; =>false, propertyAccessException:null")]
     bool IsPropertyAccessException (
         [JetBrains.Annotations.NotNull] IBusinessObject businessObject,
         [JetBrains.Annotations.NotNull] PropertyBase bindableProperty,
         [JetBrains.Annotations.NotNull] Exception exception,
-        [CanBeNull, MaybeNullWhen (false)] out BusinessObjectPropertyAccessException propertyAccessException);  }
+        [CanBeNull, MaybeNullWhen(false)] out BusinessObjectPropertyAccessException propertyAccessException);  }
 }

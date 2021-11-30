@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public SimpleStoragePropertyDefinition (Type propertyType, ColumnDefinition columnDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
-      ArgumentUtility.CheckNotNull ("columnDefinition", columnDefinition);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull("columnDefinition", columnDefinition);
 
       _columnDefinition = columnDefinition;
       _propertyType = propertyType;
@@ -51,56 +51,56 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnDefinition> GetColumns ()
     {
-      return EnumerableUtility.Singleton (_columnDefinition);
+      return EnumerableUtility.Singleton(_columnDefinition);
     }
 
     public IEnumerable<ColumnDefinition> GetColumnsForComparison ()
     {
-      return EnumerableUtility.Singleton (_columnDefinition);
+      return EnumerableUtility.Singleton(_columnDefinition);
     }
 
     public IEnumerable<ColumnValue> SplitValue (object value)
     {
-      return EnumerableUtility.Singleton (new ColumnValue (_columnDefinition, value));
+      return EnumerableUtility.Singleton(new ColumnValue(_columnDefinition, value));
     }
 
     public IEnumerable<ColumnValue> SplitValueForComparison (object value)
     {
-      return SplitValue (value);
+      return SplitValue(value);
     }
 
     public ColumnValueTable SplitValuesForComparison (IEnumerable<object> values)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
+      ArgumentUtility.CheckNotNull("values", values);
 
       return new ColumnValueTable(
-          EnumerableUtility.Singleton (_columnDefinition), 
-          values.Select (v => new ColumnValueTable.Row (EnumerableUtility.Singleton (v))));
+          EnumerableUtility.Singleton(_columnDefinition),
+          values.Select(v => new ColumnValueTable.Row(EnumerableUtility.Singleton(v))));
     }
 
     public object CombineValue (IColumnValueProvider columnValueProvider)
     {
-      ArgumentUtility.CheckNotNull ("columnValueProvider", columnValueProvider);
-      return columnValueProvider.GetValueForColumn (_columnDefinition);
+      ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
+      return columnValueProvider.GetValueForColumn(_columnDefinition);
     }
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull ("equivalentProperties", equivalentProperties);
-      var checkedProperties = equivalentProperties.Select (property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
+      ArgumentUtility.CheckNotNull("equivalentProperties", equivalentProperties);
+      var checkedProperties = equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
           this,
           property,
           "equivalentProperties",
-          prop => Tuple.Create<string, object> ("property type", prop.PropertyType),
-          prop => Tuple.Create<string, object> ("column name", prop.ColumnDefinition.Name),
-          prop => Tuple.Create<string, object> ("primary key flag", prop.ColumnDefinition.IsPartOfPrimaryKey)
-          )).ToArray ();
+          prop => Tuple.Create<string, object>("property type", prop.PropertyType),
+          prop => Tuple.Create<string, object>("column name", prop.ColumnDefinition.Name),
+          prop => Tuple.Create<string, object>("primary key flag", prop.ColumnDefinition.IsPartOfPrimaryKey)
+          )).ToArray();
 
-      return new SimpleStoragePropertyDefinition (
+      return new SimpleStoragePropertyDefinition(
           _propertyType,
-          new ColumnDefinition (
+          new ColumnDefinition(
               _columnDefinition.Name,
-              _columnDefinition.StorageTypeInfo.UnifyForEquivalentProperties (checkedProperties.Select (p => p.ColumnDefinition.StorageTypeInfo)),
+              _columnDefinition.StorageTypeInfo.UnifyForEquivalentProperties(checkedProperties.Select(p => p.ColumnDefinition.StorageTypeInfo)),
               _columnDefinition.IsPartOfPrimaryKey));
     }
   }

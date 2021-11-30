@@ -28,60 +28,60 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Over
     public void GetProperty_OverriddenByMixin_AndOnlyAccessorIsMixed ()
     {
       var instance = ObjectFactory.Create<TargetClass>();
-      var businessObject = (IBusinessObject) instance;
+      var businessObject = (IBusinessObject)instance;
       var businessObjectClass = businessObject.BusinessObjectClass;
-      var businessObjectProperty = businessObjectClass.GetPropertyDefinition ("MixinOverrideTargetProperty");
-      Assert.That (businessObjectProperty, Is.Not.Null);
+      var businessObjectProperty = businessObjectClass.GetPropertyDefinition("MixinOverrideTargetProperty");
+      Assert.That(businessObjectProperty, Is.Not.Null);
 
       instance.MixinOverrideTargetProperty = "Value";
 
-      Assert.That (businessObject.GetProperty (businessObjectProperty), Is.EqualTo ("Value (mixed)"));
+      Assert.That(businessObject.GetProperty(businessObjectProperty), Is.EqualTo("Value (mixed)"));
     }
 
     [Test]
     public void GetProperty_OverriddenByMixin_PropertyMetadataIsMixed ()
     {
       var instance = ObjectFactory.Create<TargetClass>();
-      var businessObject = (IBusinessObject) instance;
+      var businessObject = (IBusinessObject)instance;
       var businessObjectClass = businessObject.BusinessObjectClass;
-      var businessObjectProperty = businessObjectClass.GetPropertyDefinition ("MixinOverrideTargetPropertyWithPropertyMetadata");
-      Assert.That (businessObjectProperty, Is.Not.Null);
+      var businessObjectProperty = businessObjectClass.GetPropertyDefinition("MixinOverrideTargetPropertyWithPropertyMetadata");
+      Assert.That(businessObjectProperty, Is.Not.Null);
 
       instance.MixinOverrideTargetPropertyWithPropertyMetadata = "Value";
 
-      Assert.That (businessObject.GetProperty (businessObjectProperty), Is.EqualTo ("Value (mixed)"));
+      Assert.That(businessObject.GetProperty(businessObjectProperty), Is.EqualTo("Value (mixed)"));
     }
 
     [Test]
-    [Ignore ("RM-6877 - InvalidCaseException")]
+    [Ignore("RM-6877 - InvalidCaseException")]
     public void GetProperty_OverriddenByMixin_AndOnlyAccessorIsMixed_AndDerivedInstanceType ()
     {
       var instance = ObjectFactory.Create<TargetClass>();
-      var businessObjectClass = ((IBusinessObject) instance).BusinessObjectClass;
-      var businessObjectProperty = businessObjectClass.GetPropertyDefinition ("MixinOverrideTargetProperty");
-      Assert.That (businessObjectProperty, Is.Not.Null);
+      var businessObjectClass = ((IBusinessObject)instance).BusinessObjectClass;
+      var businessObjectProperty = businessObjectClass.GetPropertyDefinition("MixinOverrideTargetProperty");
+      Assert.That(businessObjectProperty, Is.Not.Null);
 
       var derived = ObjectFactory.Create<DerivedTargetClass>();
 
       derived.MixinOverrideTargetProperty = "Value";
 
-      Assert.That (((IBusinessObject) derived).GetProperty (businessObjectProperty), Is.EqualTo ("Value (mixed)"));
+      Assert.That(((IBusinessObject)derived).GetProperty(businessObjectProperty), Is.EqualTo("Value (mixed)"));
     }
 
     [Test]
-    [Ignore ("RM-6877 - InvalidCaseException")]
+    [Ignore("RM-6877 - InvalidCaseException")]
     public void GetProperty_OverriddenByMixin_PropertyMetadataIsMixed_AndDerivedInstanceType ()
     {
       var instance = ObjectFactory.Create<TargetClass>();
-      var businessObjectClass = ((IBusinessObject) instance).BusinessObjectClass;
-      var businessObjectProperty = businessObjectClass.GetPropertyDefinition ("MixinOverrideTargetPropertyWithPropertyMetadata");
-      Assert.That (businessObjectProperty, Is.Not.Null);
+      var businessObjectClass = ((IBusinessObject)instance).BusinessObjectClass;
+      var businessObjectProperty = businessObjectClass.GetPropertyDefinition("MixinOverrideTargetPropertyWithPropertyMetadata");
+      Assert.That(businessObjectProperty, Is.Not.Null);
 
       var derived = ObjectFactory.Create<DerivedTargetClass>();
 
       derived.MixinOverrideTargetPropertyWithPropertyMetadata = "Value";
 
-      Assert.That (((IBusinessObject) derived).GetProperty (businessObjectProperty), Is.EqualTo ("Value (mixed)"));
+      Assert.That(((IBusinessObject)derived).GetProperty(businessObjectProperty), Is.EqualTo("Value (mixed)"));
     }
   }
 }

@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     private readonly QueryDefinition _duplicate;
 
     public DuplicateQueryDefinitionException (QueryDefinition queryDefinition, QueryDefinition duplicate)
-        : base (GetMessage (queryDefinition))
+        : base(GetMessage(queryDefinition))
     {
       _queryDefinition = queryDefinition;
       _duplicate = duplicate;
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
     private static string GetMessage (QueryDefinition queryDefinition)
     {
-      return string.Format ("The query with ID '{0}' has a duplicate.", queryDefinition.ID);
+      return string.Format("The query with ID '{0}' has a duplicate.", queryDefinition.ID);
     }
   }
 }

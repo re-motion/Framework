@@ -22,7 +22,7 @@ namespace Remotion.Validation.Mixins.UnitTests.TestDomain.Collectors
   {
     public CustomerMixinIntroducedValidationRuleCollector2 ()
     {
-      AddRule (c => c.Title).NotEqual ("Chef3");
+      AddRule(c => c.Title).NotEqual("Chef3");
     }
   }
 }

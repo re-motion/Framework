@@ -29,14 +29,14 @@ namespace Remotion.Validation.Implementation
   /// as the <see cref="IValidationRuleCollector.ValidatedType"/> of a <see cref="IValidationRuleCollector"/>.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IValidationTypeFilter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IValidationTypeFilter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundValidationTypeFilter : IValidationTypeFilter
   {
     private readonly ReadOnlyCollection<IValidationTypeFilter> _validationTypeFilters;
 
     public CompoundValidationTypeFilter (IEnumerable<IValidationTypeFilter> validationTypeFilters)
     {
-      ArgumentUtility.CheckNotNull ("validationTypeFilters", validationTypeFilters);
+      ArgumentUtility.CheckNotNull("validationTypeFilters", validationTypeFilters);
 
       _validationTypeFilters = validationTypeFilters.ToList().AsReadOnly();
     }
@@ -48,9 +48,9 @@ namespace Remotion.Validation.Implementation
 
     public bool IsValidatableType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return _validationTypeFilters.All (f => f.IsValidatableType (type));
+      return _validationTypeFilters.All(f => f.IsValidatableType(type));
     }
   }
 }

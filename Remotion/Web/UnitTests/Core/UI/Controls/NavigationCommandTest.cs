@@ -53,14 +53,14 @@ public class NavigationCommandTest
   private HtmlTextWriterSingleTagMock _writer;
 
   [SetUp]
-  public virtual void SetUp()
+  public virtual void SetUp ()
   {
-    _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "default.html", null);
+    _currentHttpContext = HttpContextHelper.CreateHttpContext("GET", "default.html", null);
     _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
-    HttpContextHelper.SetCurrent (_currentHttpContext);
+    HttpContextHelper.SetCurrent(_currentHttpContext);
 
-    _functionType = typeof (TestFunction);
-    _functionTypeName = TypeUtility.GetPartialAssemblyQualifiedName (_functionType);
+    _functionType = typeof(TestFunction);
+    _functionTypeName = TypeUtility.GetPartialAssemblyQualifiedName(_functionType);
     _wxeFunctionParameter1Value = "Value1";
     _wxeFunctionParameters = "\"Value1\"";
 
@@ -87,32 +87,32 @@ public class NavigationCommandTest
     _wxeFunctionCommand.WxeFunctionCommand.Parameters = _wxeFunctionParameters;
     _wxeFunctionCommand.WxeFunctionCommand.Target = _target;
 
-    _noneCommand = new NavigationCommand ();
+    _noneCommand = new NavigationCommand();
     _noneCommand.Type = CommandType.None;
 
     _writer = new HtmlTextWriterSingleTagMock();
   }
 
   [TearDown]
-  public virtual void TearDown()
-  { 
+  public virtual void TearDown ()
+  {
     WebConfigurationMock.Current = null;
-    Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
-    HttpContextHelper.SetCurrent (null);
+    Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent(null);
+    HttpContextHelper.SetCurrent(null);
   }
 
   [Test]
-  public void RenderWxeFunctionCommand()
+  public void RenderWxeFunctionCommand ()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
-    
-    NameValueCollection additionalUrlParameters = new NameValueCollection();
-    additionalUrlParameters.Add ("Parameter2", "Value2");
+    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
 
-    string expectedHref = _wxeFunctionCommand.GetWxeFunctionPermanentUrl (additionalUrlParameters);
+    NameValueCollection additionalUrlParameters = new NameValueCollection();
+    additionalUrlParameters.Add("Parameter2", "Value2");
+
+    string expectedHref = _wxeFunctionCommand.GetWxeFunctionPermanentUrl(additionalUrlParameters);
     string expectedOnClick = _onClick;
 
-    _wxeFunctionCommand.RenderBegin (
+    _wxeFunctionCommand.RenderBegin(
         _writer,
         RenderingFeatures.Default,
         _postBackEvent,
@@ -124,179 +124,179 @@ public class NavigationCommandTest
         new Style(),
         new NameValueCollection());
 
-    Assert.IsNotNull (_writer.Tag, "Missing Tag");
-    Assert.AreEqual (HtmlTextWriterTag.A, _writer.Tag, "Wrong Tag");
+    Assert.IsNotNull(_writer.Tag, "Missing Tag");
+    Assert.AreEqual(HtmlTextWriterTag.A, _writer.Tag, "Wrong Tag");
 
-    Assert.IsNotNull (_writer.Attributes[HtmlTextWriterAttribute.Href], "Missing Href");
-    Assert.AreEqual (expectedHref, _writer.Attributes[HtmlTextWriterAttribute.Href], "Wrong Href");
+    Assert.IsNotNull(_writer.Attributes[HtmlTextWriterAttribute.Href], "Missing Href");
+    Assert.AreEqual(expectedHref, _writer.Attributes[HtmlTextWriterAttribute.Href], "Wrong Href");
 
-    Assert.IsNotNull (_writer.Attributes[HtmlTextWriterAttribute.Onclick], "Missing OnClick");
-    Assert.AreEqual (expectedOnClick, _writer.Attributes[HtmlTextWriterAttribute.Onclick], "Wrong OnClick");
+    Assert.IsNotNull(_writer.Attributes[HtmlTextWriterAttribute.Onclick], "Missing OnClick");
+    Assert.AreEqual(expectedOnClick, _writer.Attributes[HtmlTextWriterAttribute.Onclick], "Wrong OnClick");
 
-    Assert.IsNotNull (_writer.Attributes[HtmlTextWriterAttribute.Title], "Missing Title");
-    Assert.AreEqual (_toolTip, _writer.Attributes[HtmlTextWriterAttribute.Title], "Wrong Title");
+    Assert.IsNotNull(_writer.Attributes[HtmlTextWriterAttribute.Title], "Missing Title");
+    Assert.AreEqual(_toolTip, _writer.Attributes[HtmlTextWriterAttribute.Title], "Wrong Title");
 
-    Assert.IsNotNull (_writer.Attributes[HtmlTextWriterAttribute.Target], "Missing Target");
-    Assert.AreEqual (_target, _writer.Attributes[HtmlTextWriterAttribute.Target], "Wrong Target");
+    Assert.IsNotNull(_writer.Attributes[HtmlTextWriterAttribute.Target], "Missing Target");
+    Assert.AreEqual(_target, _writer.Attributes[HtmlTextWriterAttribute.Target], "Wrong Target");
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithDefaultWxeHandler()
+  public void GetWxeFunctionPermanentUrlWithDefaultWxeHandler ()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
-    
+    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
+
     string wxeHandler = Remotion.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
 
-    string expectedUrl = wxeHandler.TrimStart ('~');
+    string expectedUrl = wxeHandler.TrimStart('~');
     NameValueCollection expectedQueryString = new NameValueCollection();
-    expectedQueryString.Add ("Parameter1", _wxeFunctionParameter1Value);
-    expectedQueryString.Add (WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
-    expectedQueryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
-    expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
+    expectedQueryString.Add("Parameter1", _wxeFunctionParameter1Value);
+    expectedQueryString.Add(WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
+    expectedQueryString.Add(WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
+    expectedUrl += UrlUtility.FormatQueryString(expectedQueryString);
 
-    NavigationCommand command = new NavigationCommand ();
+    NavigationCommand command = new NavigationCommand();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = _wxeFunctionParameters;
-    string url = command.GetWxeFunctionPermanentUrl ();
+    string url = command.GetWxeFunctionPermanentUrl();
 
-    Assert.That (url, Is.Not.Null);
-    Assert.That (url, Is.EqualTo (expectedUrl));
+    Assert.That(url, Is.Not.Null);
+    Assert.That(url, Is.EqualTo(expectedUrl));
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeByTypeName()
+  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeByTypeName ()
   {
     string resource = "~/Test.wxe";
-    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, resource));
+    UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_functionType, resource));
     string parameter1 = "Value1";
-    
-    string expectedUrl = resource.TrimStart ('~');
+
+    string expectedUrl = resource.TrimStart('~');
     NameValueCollection expectedQueryString = new NameValueCollection();
-    expectedQueryString.Add ("Parameter1", parameter1);
-    expectedQueryString.Add (WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
-    expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
+    expectedQueryString.Add("Parameter1", parameter1);
+    expectedQueryString.Add(WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
+    expectedUrl += UrlUtility.FormatQueryString(expectedQueryString);
 
-    NavigationCommand command = new NavigationCommand ();
+    NavigationCommand command = new NavigationCommand();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
-    string url = command.GetWxeFunctionPermanentUrl ();
+    string url = command.GetWxeFunctionPermanentUrl();
 
-    Assert.That (url, Is.Not.Null);
-    Assert.That (url, Is.EqualTo (expectedUrl));
+    Assert.That(url, Is.Not.Null);
+    Assert.That(url, Is.EqualTo(expectedUrl));
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeByMappingID()
+  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeByMappingID ()
   {
     string mappingID = "Test";
     string resource = "~/Test.wxe";
-    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (mappingID, _functionType, resource));
+    UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(mappingID, _functionType, resource));
     string parameter1 = "Value1";
 
-    string expectedUrl = resource.TrimStart ('~');
-    NameValueCollection expectedQueryString = new NameValueCollection ();
-    expectedQueryString.Add ("Parameter1", parameter1);
-    expectedQueryString.Add (WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
-    expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
+    string expectedUrl = resource.TrimStart('~');
+    NameValueCollection expectedQueryString = new NameValueCollection();
+    expectedQueryString.Add("Parameter1", parameter1);
+    expectedQueryString.Add(WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
+    expectedUrl += UrlUtility.FormatQueryString(expectedQueryString);
 
-    NavigationCommand command = new NavigationCommand ();
+    NavigationCommand command = new NavigationCommand();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.MappingID = mappingID;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
-    string url = command.GetWxeFunctionPermanentUrl ();
+    string url = command.GetWxeFunctionPermanentUrl();
 
-    Assert.That (url, Is.Not.Null);
-    Assert.That (url, Is.EqualTo (expectedUrl));
+    Assert.That(url, Is.Not.Null);
+    Assert.That(url, Is.EqualTo(expectedUrl));
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeAndInvalidTypeNameMappingIDCombination()
+  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeAndInvalidTypeNameMappingIDCombination ()
   {
     string mappingID = "Test";
     string resource = "~/Test.wxe";
-    Type functionWithNestingType = typeof (TestFunctionWithNesting);
-    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (mappingID, functionWithNestingType, resource));
+    Type functionWithNestingType = typeof(TestFunctionWithNesting);
+    UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(mappingID, functionWithNestingType, resource));
     string parameter1 = "Value1";
-    
-    NavigationCommand command = new NavigationCommand ();
+
+    NavigationCommand command = new NavigationCommand();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.MappingID = mappingID;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
-    Assert.That (
-        () => command.GetWxeFunctionPermanentUrl (),
+    Assert.That(
+        () => command.GetWxeFunctionPermanentUrl(),
         Throws.InvalidOperationException);
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithDefaultWxeHandlerAndAdditionalUrlParameters()
+  public void GetWxeFunctionPermanentUrlWithDefaultWxeHandlerAndAdditionalUrlParameters ()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
-    
+    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
+
     string wxeHandler = Remotion.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
-    
+
     NameValueCollection additionalUrlParameters = new NameValueCollection();
-    additionalUrlParameters.Add ("Parameter2", "Value2");
+    additionalUrlParameters.Add("Parameter2", "Value2");
 
-    string expectedUrl = wxeHandler.TrimStart ('~');
+    string expectedUrl = wxeHandler.TrimStart('~');
     NameValueCollection expectedQueryString = new NameValueCollection();
-    expectedQueryString.Add ("Parameter1", _wxeFunctionParameter1Value);
-    expectedQueryString.Add (WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
-    expectedQueryString.Add (additionalUrlParameters);
-    expectedQueryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
-    expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
+    expectedQueryString.Add("Parameter1", _wxeFunctionParameter1Value);
+    expectedQueryString.Add(WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
+    expectedQueryString.Add(additionalUrlParameters);
+    expectedQueryString.Add(WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
+    expectedUrl += UrlUtility.FormatQueryString(expectedQueryString);
 
-    NavigationCommand command = new NavigationCommand ();
+    NavigationCommand command = new NavigationCommand();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = _wxeFunctionParameters;
-    string url = command.GetWxeFunctionPermanentUrl (additionalUrlParameters);
+    string url = command.GetWxeFunctionPermanentUrl(additionalUrlParameters);
 
-    Assert.That (url, Is.Not.Null);
-    Assert.That (url, Is.EqualTo (expectedUrl));
+    Assert.That(url, Is.Not.Null);
+    Assert.That(url, Is.EqualTo(expectedUrl));
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeAndAdditionalUrlParameters()
+  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeAndAdditionalUrlParameters ()
   {
     string resource = "~/Test.wxe";
-    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, resource));
+    UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_functionType, resource));
     string parameter1 = "Value1";
 
     NameValueCollection additionalUrlParameters = new NameValueCollection();
-    additionalUrlParameters.Add ("Parameter2", "Value2");
+    additionalUrlParameters.Add("Parameter2", "Value2");
 
-    string expectedUrl = resource.TrimStart ('~');
-    NameValueCollection expectedQueryString = new NameValueCollection ();
-    expectedQueryString.Add ("Parameter1", parameter1);
-    expectedQueryString.Add (WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
-    expectedQueryString.Add (additionalUrlParameters);
-    expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
+    string expectedUrl = resource.TrimStart('~');
+    NameValueCollection expectedQueryString = new NameValueCollection();
+    expectedQueryString.Add("Parameter1", parameter1);
+    expectedQueryString.Add(WxeHandler.Parameters.WxeReturnToSelf, true.ToString());
+    expectedQueryString.Add(additionalUrlParameters);
+    expectedUrl += UrlUtility.FormatQueryString(expectedQueryString);
 
-    NavigationCommand command = new NavigationCommand ();
+    NavigationCommand command = new NavigationCommand();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
-    string url = command.GetWxeFunctionPermanentUrl (additionalUrlParameters);
+    string url = command.GetWxeFunctionPermanentUrl(additionalUrlParameters);
 
-    Assert.That (url, Is.Not.Null);
-    Assert.That (url, Is.EqualTo (expectedUrl));
+    Assert.That(url, Is.Not.Null);
+    Assert.That(url, Is.EqualTo(expectedUrl));
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithoutDefaultWxeHandler()
+  public void GetWxeFunctionPermanentUrlWithoutDefaultWxeHandler ()
   {
     WebConfigurationMock.Current = null;
     string parameter1 = "Hello World!";
-    
-    NavigationCommand command = new NavigationCommand ();
+
+    NavigationCommand command = new NavigationCommand();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
-    Assert.That (
-        () => command.GetWxeFunctionPermanentUrl (),
+    Assert.That(
+        () => command.GetWxeFunctionPermanentUrl(),
         Throws.InstanceOf<WxeException>());
   }
 }

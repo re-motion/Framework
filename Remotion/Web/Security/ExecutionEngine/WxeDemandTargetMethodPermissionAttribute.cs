@@ -31,42 +31,42 @@ namespace Remotion.Web.Security.ExecutionEngine
     // construction and disposing
 
     public WxeDemandTargetMethodPermissionAttribute (object methodNameEnum)
-      : base (MethodType.Instance)
+      : base(MethodType.Instance)
     {
-      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum> ("methodNameEnum", methodNameEnum);
-      Type enumType = enumValue.GetType ();
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodNameEnum", methodNameEnum);
+      Type enumType = enumValue.GetType();
 
-      CheckDeclaringTypeOfMethodNameEnum (enumValue);
+      CheckDeclaringTypeOfMethodNameEnum(enumValue);
 
-      MethodName = enumValue.ToString ();
+      MethodName = enumValue.ToString();
       SecurableClass = enumType.DeclaringType;
     }
 
     public WxeDemandTargetMethodPermissionAttribute (object methodNameEnum, Type securableClass)
-      : base (MethodType.Instance)
+      : base(MethodType.Instance)
     {
-      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum> ("methodNameEnum", methodNameEnum);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableObject));
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodNameEnum", methodNameEnum);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof(ISecurableObject));
 
-      CheckDeclaringTypeOfMethodNameEnum (enumValue, securableClass);
+      CheckDeclaringTypeOfMethodNameEnum(enumValue, securableClass);
 
-      MethodName = enumValue.ToString ();
+      MethodName = enumValue.ToString();
       SecurableClass = securableClass;
     }
 
     public WxeDemandTargetMethodPermissionAttribute (string methodName)
-      : base (MethodType.Instance)
+      : base(MethodType.Instance)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
+      ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
 
       MethodName = methodName;
     }
 
     public WxeDemandTargetMethodPermissionAttribute (string methodName, Type securableClass)
-      : base (MethodType.Instance)
+      : base(MethodType.Instance)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof(ISecurableObject));
 
       MethodName = methodName;
       SecurableClass = securableClass;

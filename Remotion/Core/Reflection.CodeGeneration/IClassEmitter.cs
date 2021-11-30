@@ -94,7 +94,7 @@ namespace Remotion.Reflection.CodeGeneration
     IClassEmitter CreateNestedClass (string typeName, Type baseType, Type[] interfaces, TypeAttributes flags);
 
     void ReplicateBaseTypeConstructors (Action<ConstructorEmitter> preStatementsAdder, Action<ConstructorEmitter> postStatementsAdder);
-    
+
     MethodInfo GetPublicMethodWrapper (MethodInfo methodToBeWrapped);
     Type BuildType ();
   }

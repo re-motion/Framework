@@ -66,19 +66,19 @@ namespace Remotion.ServiceLocation
 
     public static DefaultServiceLocator Create ()
     {
-      return new DefaultServiceLocator (DefaultServiceConfigurationDiscoveryService.Create());
+      return new DefaultServiceLocator(DefaultServiceConfigurationDiscoveryService.Create());
     }
 
     public DefaultServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull ("serviceConfigurationDiscoveryService", serviceConfigurationDiscoveryService);
+      ArgumentUtility.CheckNotNull("serviceConfigurationDiscoveryService", serviceConfigurationDiscoveryService);
 
       _serviceConfigurationDiscoveryService = serviceConfigurationDiscoveryService;
 
       // Optimized for memory allocations
       _createRegistrationFromTypeFunc = CreateRegistrationFromType;
 
-      Register (new ServiceConfigurationEntry (typeof (ILogManager), new ServiceImplementationInfo (typeof (Log4NetLogManager), LifetimeKind.Singleton)));
+      Register(new ServiceConfigurationEntry(typeof(ILogManager), new ServiceImplementationInfo(typeof(Log4NetLogManager), LifetimeKind.Singleton)));
     }
 
     /// <summary>
@@ -92,11 +92,11 @@ namespace Remotion.ServiceLocation
     /// not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public object GetInstance (Type serviceType)
     {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
+      ArgumentUtility.CheckNotNull("serviceType", serviceType);
 
-      var instance = GetInstanceOrNull (serviceType);
+      var instance = GetInstanceOrNull(serviceType);
       if (instance == null)
-        throw new ActivationException (string.Format ("No implementation is registered for service type '{0}'.", serviceType));
+        throw new ActivationException(string.Format("No implementation is registered for service type '{0}'.", serviceType));
 
       return instance;
     }
@@ -113,9 +113,9 @@ namespace Remotion.ServiceLocation
     /// not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public object GetInstance (Type serviceType, string key)
     {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
+      ArgumentUtility.CheckNotNull("serviceType", serviceType);
 
-      return GetInstance (serviceType);
+      return GetInstance(serviceType);
     }
 
     /// <summary>
@@ -131,9 +131,9 @@ namespace Remotion.ServiceLocation
     /// implementation could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public IEnumerable<object> GetAllInstances (Type serviceType)
     {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
+      ArgumentUtility.CheckNotNull("serviceType", serviceType);
 
-      return GetAllInstances (serviceType, false);
+      return GetAllInstances(serviceType, false);
     }
 
     /// <summary>
@@ -147,7 +147,7 @@ namespace Remotion.ServiceLocation
     /// could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public TService GetInstance<TService> ()
     {
-      return (TService) GetInstance (typeof (TService));
+      return (TService)GetInstance(typeof(TService));
     }
 
     /// <summary>
@@ -162,7 +162,7 @@ namespace Remotion.ServiceLocation
     /// could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public TService GetInstance<TService> (string key)
     {
-      return (TService) GetInstance (typeof (TService), key);
+      return (TService)GetInstance(typeof(TService), key);
     }
 
     /// <summary>
@@ -178,7 +178,7 @@ namespace Remotion.ServiceLocation
     /// implementation could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public IEnumerable<TService> GetAllInstances<TService> ()
     {
-      return GetAllInstances (typeof (TService)).Cast<TService> ();
+      return GetAllInstances(typeof(TService)).Cast<TService>();
     }
 
     /// <summary>
@@ -192,53 +192,53 @@ namespace Remotion.ServiceLocation
     /// implementation could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     object? IServiceProvider.GetService (Type serviceType)
     {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
+      ArgumentUtility.CheckNotNull("serviceType", serviceType);
 
-      return GetInstanceOrNull (serviceType);
+      return GetInstanceOrNull(serviceType);
     }
 
     private object? GetInstanceOrNull (Type serviceType)
     {
-      var registration = GetOrCreateRegistrationWithActivationException (serviceType);
+      var registration = GetOrCreateRegistrationWithActivationException(serviceType);
 
       if (registration.CompoundFactory != null)
-        return InvokeInstanceFactoryWithActivationException (registration.CompoundFactory, serviceType);
+        return InvokeInstanceFactoryWithActivationException(registration.CompoundFactory, serviceType);
 
       if (registration.SingleFactory == null && registration.MultipleFactories.Any())
       {
-        throw new ActivationException (
-            string.Format (
+        throw new ActivationException(
+            string.Format(
                 "Multiple implementations are configured for service type '{0}'. Use GetAllInstances() to retrieve the implementations.",
                 serviceType));
       }
 
       if (registration.SingleFactory != null)
-        return InvokeInstanceFactoryWithActivationException (registration.SingleFactory, serviceType);
+        return InvokeInstanceFactoryWithActivationException(registration.SingleFactory, serviceType);
 
       return null;
     }
 
     private IEnumerable<object> GetAllInstances (Type serviceType, bool isCompoundResolution)
     {
-      var registration = GetOrCreateRegistrationWithActivationException (serviceType);
+      var registration = GetOrCreateRegistrationWithActivationException(serviceType);
 
       if (registration.SingleFactory != null)
       {
-        throw new ActivationException (
-            string.Format (
+        throw new ActivationException(
+            string.Format(
                 "A single implementation is configured for service type '{0}'. Use GetInstance() to retrieve the implementation.",
                 serviceType));
       }
 
       if (!isCompoundResolution && registration.CompoundFactory != null)
       {
-        throw new ActivationException (
-            string.Format (
+        throw new ActivationException(
+            string.Format(
                 "A compound implementation is configured for service type '{0}'. Use GetInstance() to retrieve the implementation.",
                 serviceType));
       }
 
-      return registration.MultipleFactories.Select (factory => InvokeInstanceFactoryWithActivationException (factory, serviceType));
+      return registration.MultipleFactories.Select(factory => InvokeInstanceFactoryWithActivationException(factory, serviceType));
     }
 
     private object InvokeInstanceFactoryWithActivationException (Func<object> factory, Type serviceType)
@@ -250,30 +250,30 @@ namespace Remotion.ServiceLocation
       }
       catch (ActivationException ex)
       {
-        var message = string.Format ("Could not resolve type '{0}': {1}", serviceType, ex.Message);
-        throw new ActivationException (message, ex);
+        var message = string.Format("Could not resolve type '{0}': {1}", serviceType, ex.Message);
+        throw new ActivationException(message, ex);
       }
       catch (Exception ex)
       {
-        var message = string.Format ("{0}: {1}", ex.GetType().Name, ex.Message);
-        throw new ActivationException (message, ex);
+        var message = string.Format("{0}: {1}", ex.GetType().Name, ex.Message);
+        throw new ActivationException(message, ex);
       }
 
       if (instance == null)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The registered factory returned null instead of an instance implementing the requested service type '{0}'.",
             serviceType);
-        throw new ActivationException (message);
+        throw new ActivationException(message);
       }
 
-      if (!serviceType.IsInstanceOfType (instance))
+      if (!serviceType.IsInstanceOfType(instance))
       {
-        var message = string.Format (
+        var message = string.Format(
             "The instance returned by the registered factory does not implement the requested type '{0}'. (Instance type: '{1}'.)",
             serviceType,
             instance.GetType());
-        throw new ActivationException (message);
+        throw new ActivationException(message);
       }
 
       return instance;

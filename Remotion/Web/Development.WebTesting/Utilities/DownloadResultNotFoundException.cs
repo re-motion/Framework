@@ -30,25 +30,25 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private readonly IReadOnlyCollection<string> _unmatchedFilesInDownloadDirectory;
 
     public DownloadResultNotFoundException ([NotNull] string message, [NotNull] IReadOnlyCollection<string> unmatchedFiles)
-        : base (FormatMessage (message, unmatchedFiles))
+        : base(FormatMessage(message, unmatchedFiles))
     {
       _unmatchedFilesInDownloadDirectory = unmatchedFiles;
     }
 
     private static string FormatMessage ([NotNull] string message, [NotNull] IReadOnlyCollection<string> unmatchedFiles)
     {
-      ArgumentUtility.CheckNotNull ("message", message);
-      ArgumentUtility.CheckNotNull ("unmatchedFiles", unmatchedFiles);
+      ArgumentUtility.CheckNotNull("message", message);
+      ArgumentUtility.CheckNotNull("unmatchedFiles", unmatchedFiles);
 
       if (!unmatchedFiles.Any())
         return message;
-      
-      return message + string.Format (
+
+      return message + string.Format(
           @"
 
 Unmatched files in the download directory (will be cleaned up by the infrastructure):
  - {0}",
-          string.Join ("\r\n - ", unmatchedFiles));
+          string.Join("\r\n - ", unmatchedFiles));
     }
 
     public IReadOnlyCollection<string> GetUnmatchedFilesInDownloadDirectory ()

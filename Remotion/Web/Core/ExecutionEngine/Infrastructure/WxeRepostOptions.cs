@@ -31,12 +31,12 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   {
     public static WxeRepostOptions SuppressRepost ([NotNull] Control sender, bool usesEventTarget)
     {
-      return new WxeRepostOptions (sender, usesEventTarget);
+      return new WxeRepostOptions(sender, usesEventTarget);
     }
 
     public static WxeRepostOptions DoRepost ([CanBeNull] Control? sender)
     {
-      return new WxeRepostOptions (sender);
+      return new WxeRepostOptions(sender);
     }
 
     private readonly Control? _sender;
@@ -45,11 +45,11 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     private WxeRepostOptions (Control sender, bool usesEventTarget)
     {
-      ArgumentUtility.CheckNotNull ("sender", sender);
+      ArgumentUtility.CheckNotNull("sender", sender);
 
       if (!usesEventTarget && !(sender is IPostBackEventHandler || sender is IPostBackDataHandler))
       {
-        throw new ArgumentException (
+        throw new ArgumentException(
             "The 'sender' must implement either IPostBackEventHandler or IPostBackDataHandler. Provide the control that raised the post back event.");
       }
 

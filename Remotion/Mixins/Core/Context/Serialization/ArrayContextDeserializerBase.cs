@@ -30,10 +30,10 @@ namespace Remotion.Mixins.Context.Serialization
 
     protected ArrayContextDeserializerBase (object[] values, int expectedNumberOfValues)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
+      ArgumentUtility.CheckNotNull("values", values);
 
       if (values.Length != expectedNumberOfValues)
-        throw new ArgumentException (string.Format ("Expected an array with {0} elements.", expectedNumberOfValues), "values");
+        throw new ArgumentException(string.Format("Expected an array with {0} elements.", expectedNumberOfValues), "values");
 
       _values = values;
     }
@@ -42,22 +42,22 @@ namespace Remotion.Mixins.Context.Serialization
     {
       var value = _values[index];
 
-      return ConvertFromStorageFormat<T> (value, index);
+      return ConvertFromStorageFormat<T>(value, index);
     }
 
     protected virtual T ConvertFromStorageFormat<T> (object value, int index)
     {
       if (!(value is T))
       {
-        var message = string.Format (
+        var message = string.Format(
             "Expected value of type '{0}' at index {1} in the values array, but found '{2}'.",
-            typeof (T).GetFullNameSafe(),
+            typeof(T).GetFullNameSafe(),
             index,
             value != null ? value.GetType().GetFullNameSafe() : "null");
-        throw new SerializationException (message);
+        throw new SerializationException(message);
       }
 
-      return (T) value;
+      return (T)value;
     }
   }
 }

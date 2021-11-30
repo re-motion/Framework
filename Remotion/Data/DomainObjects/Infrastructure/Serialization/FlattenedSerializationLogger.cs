@@ -25,31 +25,31 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
   {
     public static void LogStatistics (ILog log, object[] objects, int[] ints, bool[] bools)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      ArgumentUtility.CheckNotNull ("objects", objects);
-      ArgumentUtility.CheckNotNull ("ints", ints);
-      ArgumentUtility.CheckNotNull ("bools", bools);
+      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull("objects", objects);
+      ArgumentUtility.CheckNotNull("ints", ints);
+      ArgumentUtility.CheckNotNull("bools", bools);
 
       if (log.IsDebugEnabled())
       {
-        log.DebugFormat (
+        log.DebugFormat(
             "Flattened serialization: {0} objects ({1} unique), {2} integers, and {3} boolean values.",
             objects.Length,
-            objects.Distinct ().Count (),
+            objects.Distinct().Count(),
             ints.Length,
             bools.Length);
 
         var objectsByType = from o in objects
-                            group o by o != null ? o.GetType () : typeof (object);
+                            group o by o != null ? o.GetType() : typeof(object);
         var groupingsWithCount = from g in objectsByType
-                                 let count = g.Count ()
+                                 let count = g.Count()
                                  orderby count descending
                                  select new { g.Key, Count = count };
 
-        var statisticsString = string.Join (Environment.NewLine, groupingsWithCount.Select (g => g.Key + ": " + g.Count));
-        log.Debug (statisticsString);
+        var statisticsString = string.Join(Environment.NewLine, groupingsWithCount.Select(g => g.Key + ": " + g.Count));
+        log.Debug(statisticsString);
       }
-      
+
     }
   }
 }

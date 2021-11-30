@@ -29,7 +29,7 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _converterBuilder = new MetadataConverterBuilder ();
+      _converterBuilder = new MetadataConverterBuilder();
     }
 
     [Test]
@@ -37,109 +37,109 @@ namespace Remotion.Security.UnitTests.Metadata
     {
       _converterBuilder.ConvertMetadataToXml = true;
 
-      IMetadataConverter converter = _converterBuilder.Create ();
+      IMetadataConverter converter = _converterBuilder.Create();
 
-      Assert.IsInstanceOf (typeof (MetadataToXmlConverter), converter);
+      Assert.IsInstanceOf(typeof(MetadataToXmlConverter), converter);
     }
 
     [Test]
     public void Create_LocalizingConverterForOneLanguage ()
     {
-      _converterBuilder.AddLocalization ("de");
+      _converterBuilder.AddLocalization("de");
 
-      IMetadataConverter converter = _converterBuilder.Create ();
+      IMetadataConverter converter = _converterBuilder.Create();
 
-      Assert.IsInstanceOf (typeof (LocalizingMetadataConverter), converter);
-      LocalizingMetadataConverter localizingConverter = (LocalizingMetadataConverter) converter;
-      Assert.That (localizingConverter.MetadataConverter, Is.Null);
-      Assert.That (localizingConverter.Cultures.Length, Is.EqualTo (1));
-      Assert.That (localizingConverter.Cultures[0].TwoLetterISOLanguageName, Is.EqualTo ("de"));
+      Assert.IsInstanceOf(typeof(LocalizingMetadataConverter), converter);
+      LocalizingMetadataConverter localizingConverter = (LocalizingMetadataConverter)converter;
+      Assert.That(localizingConverter.MetadataConverter, Is.Null);
+      Assert.That(localizingConverter.Cultures.Length, Is.EqualTo(1));
+      Assert.That(localizingConverter.Cultures[0].TwoLetterISOLanguageName, Is.EqualTo("de"));
     }
 
     [Test]
     public void Create_LocalizingConverterForLanguageWithWhitespaces ()
     {
-      _converterBuilder.AddLocalization (" de ");
+      _converterBuilder.AddLocalization(" de ");
 
-      IMetadataConverter converter = _converterBuilder.Create ();
+      IMetadataConverter converter = _converterBuilder.Create();
 
-      Assert.IsInstanceOf (typeof (LocalizingMetadataConverter), converter);
-      LocalizingMetadataConverter localizingConverter = (LocalizingMetadataConverter) converter;
-      Assert.That (localizingConverter.MetadataConverter, Is.Null);
-      Assert.That (localizingConverter.Cultures.Length, Is.EqualTo (1));
-      Assert.That (localizingConverter.Cultures[0].TwoLetterISOLanguageName, Is.EqualTo ("de"));
+      Assert.IsInstanceOf(typeof(LocalizingMetadataConverter), converter);
+      LocalizingMetadataConverter localizingConverter = (LocalizingMetadataConverter)converter;
+      Assert.That(localizingConverter.MetadataConverter, Is.Null);
+      Assert.That(localizingConverter.Cultures.Length, Is.EqualTo(1));
+      Assert.That(localizingConverter.Cultures[0].TwoLetterISOLanguageName, Is.EqualTo("de"));
     }
 
     [Test]
     public void Create_LocalizingConverterForOneCultureInfo ()
     {
-      _converterBuilder.AddLocalization (new CultureInfo("de"));
+      _converterBuilder.AddLocalization(new CultureInfo("de"));
 
-      IMetadataConverter converter = _converterBuilder.Create ();
+      IMetadataConverter converter = _converterBuilder.Create();
 
-      Assert.IsInstanceOf (typeof (LocalizingMetadataConverter), converter);
-      LocalizingMetadataConverter localizingConverter = (LocalizingMetadataConverter) converter;
-      Assert.That (localizingConverter.MetadataConverter, Is.Null);
-      Assert.That (localizingConverter.Cultures.Length, Is.EqualTo (1));
-      Assert.That (localizingConverter.Cultures[0].TwoLetterISOLanguageName, Is.EqualTo ("de"));
+      Assert.IsInstanceOf(typeof(LocalizingMetadataConverter), converter);
+      LocalizingMetadataConverter localizingConverter = (LocalizingMetadataConverter)converter;
+      Assert.That(localizingConverter.MetadataConverter, Is.Null);
+      Assert.That(localizingConverter.Cultures.Length, Is.EqualTo(1));
+      Assert.That(localizingConverter.Cultures[0].TwoLetterISOLanguageName, Is.EqualTo("de"));
     }
 
     [Test]
     public void Create_LocalizingConverterForTwoLanguages ()
     {
-      _converterBuilder.AddLocalization ("de");
-      _converterBuilder.AddLocalization ("fr");
+      _converterBuilder.AddLocalization("de");
+      _converterBuilder.AddLocalization("fr");
 
-      IMetadataConverter converter = _converterBuilder.Create ();
+      IMetadataConverter converter = _converterBuilder.Create();
 
-      Assert.IsInstanceOf (typeof (LocalizingMetadataConverter), converter);
-      LocalizingMetadataConverter localizingConverter = (LocalizingMetadataConverter) converter;
-      Assert.That (localizingConverter.MetadataConverter, Is.Null);
-      Assert.That (localizingConverter.Cultures.Length, Is.EqualTo (2));
-      Assert.That (localizingConverter.Cultures[0].TwoLetterISOLanguageName, Is.EqualTo ("de"));
-      Assert.That (localizingConverter.Cultures[1].TwoLetterISOLanguageName, Is.EqualTo ("fr"));
+      Assert.IsInstanceOf(typeof(LocalizingMetadataConverter), converter);
+      LocalizingMetadataConverter localizingConverter = (LocalizingMetadataConverter)converter;
+      Assert.That(localizingConverter.MetadataConverter, Is.Null);
+      Assert.That(localizingConverter.Cultures.Length, Is.EqualTo(2));
+      Assert.That(localizingConverter.Cultures[0].TwoLetterISOLanguageName, Is.EqualTo("de"));
+      Assert.That(localizingConverter.Cultures[1].TwoLetterISOLanguageName, Is.EqualTo("fr"));
     }
 
     [Test]
     public void Create_LocalizingConverterWithMetadataToXmlConverter ()
     {
-      _converterBuilder.AddLocalization ("de");
-      _converterBuilder.AddLocalization ("fr");
+      _converterBuilder.AddLocalization("de");
+      _converterBuilder.AddLocalization("fr");
       _converterBuilder.ConvertMetadataToXml = true;
 
-      IMetadataConverter converter = _converterBuilder.Create ();
+      IMetadataConverter converter = _converterBuilder.Create();
 
-      Assert.IsInstanceOf (typeof (LocalizingMetadataConverter), converter);
-      LocalizingMetadataConverter localizingConverter = (LocalizingMetadataConverter) converter;
-      Assert.IsInstanceOf (typeof (MetadataToXmlConverter), localizingConverter.MetadataConverter);
-      Assert.That (localizingConverter.Cultures.Length, Is.EqualTo (2));
-      Assert.That (localizingConverter.Cultures[0].TwoLetterISOLanguageName, Is.EqualTo ("de"));
-      Assert.That (localizingConverter.Cultures[1].TwoLetterISOLanguageName, Is.EqualTo ("fr"));
+      Assert.IsInstanceOf(typeof(LocalizingMetadataConverter), converter);
+      LocalizingMetadataConverter localizingConverter = (LocalizingMetadataConverter)converter;
+      Assert.IsInstanceOf(typeof(MetadataToXmlConverter), localizingConverter.MetadataConverter);
+      Assert.That(localizingConverter.Cultures.Length, Is.EqualTo(2));
+      Assert.That(localizingConverter.Cultures[0].TwoLetterISOLanguageName, Is.EqualTo("de"));
+      Assert.That(localizingConverter.Cultures[1].TwoLetterISOLanguageName, Is.EqualTo("fr"));
     }
 
     [Test]
     public void Create_LocalizingConverterWithInvariantCulture ()
     {
-      _converterBuilder.AddLocalization ("de");
-      _converterBuilder.AddLocalization (CultureInfo.InvariantCulture);
+      _converterBuilder.AddLocalization("de");
+      _converterBuilder.AddLocalization(CultureInfo.InvariantCulture);
 
-      IMetadataConverter converter = _converterBuilder.Create ();
+      IMetadataConverter converter = _converterBuilder.Create();
 
-      Assert.IsInstanceOf (typeof (LocalizingMetadataConverter), converter);
-      LocalizingMetadataConverter localizingConverter = (LocalizingMetadataConverter) converter;
-      Assert.That (localizingConverter.MetadataConverter, Is.Null);
-      Assert.That (localizingConverter.Cultures.Length, Is.EqualTo (2));
-      Assert.That (localizingConverter.Cultures[0].TwoLetterISOLanguageName, Is.EqualTo ("de"));
-      Assert.That (localizingConverter.Cultures[1].TwoLetterISOLanguageName, Is.EqualTo (CultureInfo.InvariantCulture.TwoLetterISOLanguageName));
+      Assert.IsInstanceOf(typeof(LocalizingMetadataConverter), converter);
+      LocalizingMetadataConverter localizingConverter = (LocalizingMetadataConverter)converter;
+      Assert.That(localizingConverter.MetadataConverter, Is.Null);
+      Assert.That(localizingConverter.Cultures.Length, Is.EqualTo(2));
+      Assert.That(localizingConverter.Cultures[0].TwoLetterISOLanguageName, Is.EqualTo("de"));
+      Assert.That(localizingConverter.Cultures[1].TwoLetterISOLanguageName, Is.EqualTo(CultureInfo.InvariantCulture.TwoLetterISOLanguageName));
     }
 
     [Test]
     public void Create_ExceptionWithoutLocalizationAndMetadataConverter ()
     {
-      Assert.That (
-          () => _converterBuilder.Create (),
+      Assert.That(
+          () => _converterBuilder.Create(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "You must specify at least a localization or a metadata converter."));
     }
   }

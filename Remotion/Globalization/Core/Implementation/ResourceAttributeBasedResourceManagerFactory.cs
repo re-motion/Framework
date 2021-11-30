@@ -33,7 +33,7 @@ namespace Remotion.Globalization.Implementation
   /// </summary>
   /// <seealso cref="MultiLingualResourcesAttribute"/>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IResourceManagerFactory), Position = Position, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IResourceManagerFactory), Position = Position, RegistrationType = RegistrationType.Multiple)]
   public sealed class ResourceAttributeBasedResourceManagerFactory : IResourceManagerFactory
   {
     public const int Position = 19;
@@ -47,51 +47,51 @@ namespace Remotion.Globalization.Implementation
 
     public IResourceManager CreateResourceManager (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var resourceAttributes = AttributeUtility.GetCustomAttributes<IResourcesAttribute> (type, false);
+      var resourceAttributes = AttributeUtility.GetCustomAttributes<IResourcesAttribute>(type, false);
       var assembly = type.Assembly;
-      var resourceManagers = resourceAttributes.Select (resourcesAttribute => GetResourceManagerFromCache (assembly, resourcesAttribute));
-      return new ResourceManagerSet (resourceManagers);
+      var resourceManagers = resourceAttributes.Select(resourcesAttribute => GetResourceManagerFromCache(assembly, resourcesAttribute));
+      return new ResourceManagerSet(resourceManagers);
     }
 
     private ResourceManagerWrapper GetResourceManagerFromCache (Assembly assembly, IResourcesAttribute resourcesAttribute)
     {
       // C# compiler 7.2 does not provide caching for delegate but when creating the ResourceManager there is already a significant amount of GC pressure so the delegate creation does not matter
-      return _resourceManagersCache.GetOrAdd (
-          Tuple.Create (resourcesAttribute.ResourceAssembly ?? assembly, resourcesAttribute.BaseName),
+      return _resourceManagersCache.GetOrAdd(
+          Tuple.Create(resourcesAttribute.ResourceAssembly ?? assembly, resourcesAttribute.BaseName),
           GetResourceManager);
     }
 
     private ResourceManagerWrapper GetResourceManager (Tuple<Assembly, string> key)
     {
-      var resourceManager = new ResourceManager (key.Item2, key.Item1);
-      var neutralSet = resourceManager.GetResourceSet (CultureInfo.InvariantCulture, true, false);
+      var resourceManager = new ResourceManager(key.Item2, key.Item1);
+      var neutralSet = resourceManager.GetResourceSet(CultureInfo.InvariantCulture, true, false);
       if (neutralSet == null)
       {
-        throw new MissingManifestResourceException (
-            string.Format (
+        throw new MissingManifestResourceException(
+            string.Format(
                 "Could not find any resources appropriate for the neutral culture. Make sure '{1}.resources' was correctly embedded into assembly '{0}' at compile time.",
                 key.Item1.GetName().GetNameSafe(),
                 key.Item2));
       }
 
-      var availableCultures = GetAvailableCultures (key.Item1);
+      var availableCultures = GetAvailableCultures(key.Item1);
 
-      return new ResourceManagerWrapper (resourceManager, availableCultures);
+      return new ResourceManagerWrapper(resourceManager, availableCultures);
     }
 
     private IReadOnlyList<CultureInfo> GetAvailableCultures (Assembly assembly)
     {
       var availableResourceLanguagesAttribute = assembly.GetCustomAttribute<AvailableResourcesLanguagesAttribute>();
       if (availableResourceLanguagesAttribute == null)
-        return CultureInfo.GetCultures (CultureTypes.AllCultures);
+        return CultureInfo.GetCultures(CultureTypes.AllCultures);
 
-      var result = availableResourceLanguagesAttribute.CultureNames.Select (CultureInfo.GetCultureInfo);
+      var result = availableResourceLanguagesAttribute.CultureNames.Select(CultureInfo.GetCultureInfo);
 
       var neutralResourcesLanguageAttribute = assembly.GetCustomAttribute<NeutralResourcesLanguageAttribute>();
       if (neutralResourcesLanguageAttribute != null)
-        result = result.Concat (CultureInfo.GetCultureInfo (neutralResourcesLanguageAttribute.CultureName));
+        result = result.Concat(CultureInfo.GetCultureInfo(neutralResourcesLanguageAttribute.CultureName));
 
       return result.ToArray();
     }

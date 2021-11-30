@@ -22,14 +22,14 @@ using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
 {
-  [ImplementationFor (typeof (IBusinessObjectPropertyConstraintProvider), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBusinessObjectPropertyConstraintProvider), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
   public class CompoundBusinessObjectPropertyConstraintProvider : IBusinessObjectPropertyConstraintProvider
   {
     public IReadOnlyCollection<IBusinessObjectPropertyConstraintProvider> BusinessObjectConstraintProviders { get; }
 
     public CompoundBusinessObjectPropertyConstraintProvider (IEnumerable<IBusinessObjectPropertyConstraintProvider>businessObjectConstraintProviders)
     {
-      ArgumentUtility.CheckNotNull ("businessObjectConstraintProviders", businessObjectConstraintProviders);
+      ArgumentUtility.CheckNotNull("businessObjectConstraintProviders", businessObjectConstraintProviders);
 
       BusinessObjectConstraintProviders = businessObjectConstraintProviders.ToList().AsReadOnly();
     }
@@ -39,11 +39,11 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
         IBusinessObjectProperty businessObjectProperty,
         IBusinessObject? businessObject)
     {
-      ArgumentUtility.CheckNotNull ("businessObjectClass", businessObjectClass);
-      ArgumentUtility.CheckNotNull ("businessObjectProperty", businessObjectProperty);
+      ArgumentUtility.CheckNotNull("businessObjectClass", businessObjectClass);
+      ArgumentUtility.CheckNotNull("businessObjectProperty", businessObjectProperty);
 
-      return BusinessObjectConstraintProviders.SelectMany (
-          p => p.GetPropertyConstraints (businessObjectClass, businessObjectProperty, businessObject));
+      return BusinessObjectConstraintProviders.SelectMany(
+          p => p.GetPropertyConstraints(businessObjectClass, businessObjectProperty, businessObject));
     }
   }
 }

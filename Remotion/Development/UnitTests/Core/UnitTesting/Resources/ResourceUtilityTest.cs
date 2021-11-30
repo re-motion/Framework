@@ -24,56 +24,56 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Resources
   [TestFixture]
   public class ResourceUtilityTest
   {
-    
+
     [Test]
     public void GetResourceStream ()
     {
-      var resourceStream = ResourceUtility.GetResourceStream (Assembly.GetExecutingAssembly (), 
+      var resourceStream = ResourceUtility.GetResourceStream(Assembly.GetExecutingAssembly(),
           "Remotion.Development.UnitTests.Core.UnitTesting.Resources.TestEmbeddedResource.txt");
-      
-      Assert.That (resourceStream.Length, Is.EqualTo(11));
+
+      Assert.That(resourceStream.Length, Is.EqualTo(11));
     }
 
     [Test]
     public void GetResourceStream_WithType ()
     {
-      var resourceStream = ResourceUtility.GetResourceStream (GetType (), "TestEmbeddedResource.txt");
+      var resourceStream = ResourceUtility.GetResourceStream(GetType(), "TestEmbeddedResource.txt");
 
-      Assert.That (resourceStream.Length, Is.EqualTo (11));
+      Assert.That(resourceStream.Length, Is.EqualTo(11));
     }
 
     [Test]
     public void GetResource ()
     {
-      var resourceBytes = ResourceUtility.GetResource (Assembly.GetExecutingAssembly (),
+      var resourceBytes = ResourceUtility.GetResource(Assembly.GetExecutingAssembly(),
           "Remotion.Development.UnitTests.Core.UnitTesting.Resources.TestEmbeddedResource.txt");
 
-      Assert.That (resourceBytes.Length, Is.EqualTo (11));
+      Assert.That(resourceBytes.Length, Is.EqualTo(11));
     }
 
     [Test]
     public void GetResource_WithType ()
     {
-      var resourceBytes = ResourceUtility.GetResource (GetType(), "TestEmbeddedResource.txt");
+      var resourceBytes = ResourceUtility.GetResource(GetType(), "TestEmbeddedResource.txt");
 
-      Assert.That (resourceBytes.Length, Is.EqualTo (11));
+      Assert.That(resourceBytes.Length, Is.EqualTo(11));
     }
 
     [Test]
     public void GetResourceString ()
     {
-      var resourceContent = ResourceUtility.GetResourceString(Assembly.GetExecutingAssembly (),
+      var resourceContent = ResourceUtility.GetResourceString(Assembly.GetExecutingAssembly(),
           "Remotion.Development.UnitTests.Core.UnitTesting.Resources.TestEmbeddedResource.txt");
 
-      Assert.That (resourceContent, Is.EqualTo("Testcontent"));
+      Assert.That(resourceContent, Is.EqualTo("Testcontent"));
     }
 
     [Test]
     public void GetResourceString_WithType ()
     {
-      var resourceContent = ResourceUtility.GetResourceString (GetType (), "TestEmbeddedResource.txt");
+      var resourceContent = ResourceUtility.GetResourceString(GetType(), "TestEmbeddedResource.txt");
 
-      Assert.That (resourceContent, Is.EqualTo ("Testcontent"));
+      Assert.That(resourceContent, Is.EqualTo("Testcontent"));
     }
   }
 }

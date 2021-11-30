@@ -36,53 +36,53 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void CurrentObjectInitializationContext_NullByDefault ()
     {
-      Assert.That (ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
+      Assert.That(ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
     }
 
     [Test]
     public void CurrentObjectInitializationContext_NonNullWhileInScope ()
     {
-      using (new ObjectInititalizationContextScope (_initializationContext))
+      using (new ObjectInititalizationContextScope(_initializationContext))
       {
-        Assert.That (ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Not.Null.And.SameAs (_initializationContext));
+        Assert.That(ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Not.Null.And.SameAs(_initializationContext));
       }
     }
 
     [Test]
     public void CurrentObjectInitializationContext_NullAfterScope ()
     {
-      using (new ObjectInititalizationContextScope (_initializationContext))
+      using (new ObjectInititalizationContextScope(_initializationContext))
       {
       }
-      Assert.That (ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
+      Assert.That(ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
     }
 
     [Test]
     public void CurrentObjectInitializationContext_NestedScopes ()
     {
-      var initializationContext2 = MockRepository.GenerateStub<IObjectInitializationContext> ();
+      var initializationContext2 = MockRepository.GenerateStub<IObjectInitializationContext>();
 
-      Assert.That (ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
-      using (new ObjectInititalizationContextScope (_initializationContext))
+      Assert.That(ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
+      using (new ObjectInititalizationContextScope(_initializationContext))
       {
-        Assert.That (ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Not.Null.And.SameAs (_initializationContext));
-        using (new ObjectInititalizationContextScope (initializationContext2))
+        Assert.That(ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Not.Null.And.SameAs(_initializationContext));
+        using (new ObjectInititalizationContextScope(initializationContext2))
         {
-          Assert.That (ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Not.Null.And.SameAs (initializationContext2));
+          Assert.That(ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Not.Null.And.SameAs(initializationContext2));
         }
-        Assert.That (ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Not.Null.And.SameAs (_initializationContext));
+        Assert.That(ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Not.Null.And.SameAs(_initializationContext));
       }
-      Assert.That (ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
+      Assert.That(ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
     }
 
     [Test]
     public void CurrentObjectInitializationContext_ThreadStatic ()
     {
-      using (new ObjectInititalizationContextScope (_initializationContext))
+      using (new ObjectInititalizationContextScope(_initializationContext))
       {
-        ThreadRunner.Run (() => Assert.That (ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null));
+        ThreadRunner.Run(() => Assert.That(ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null));
       }
-      Assert.That (ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
+      Assert.That(ObjectInititalizationContextScope.CurrentObjectInitializationContext, Is.Null);
     }
   }
 }

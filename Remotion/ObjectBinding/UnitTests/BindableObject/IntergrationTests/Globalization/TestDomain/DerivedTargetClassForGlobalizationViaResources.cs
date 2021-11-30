@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
 {
   [BindableObject]
   [Serializable]
-  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.Resources.DerivedTargetClassForGlobalizationViaResources")]
+  [MultiLingualResources("Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.Resources.DerivedTargetClassForGlobalizationViaResources")]
   public class DerivedTargetClassForGlobalizationViaResources : TargetClassForGlobalizationViaResources
   {
     public DerivedTargetClassForGlobalizationViaResources ()

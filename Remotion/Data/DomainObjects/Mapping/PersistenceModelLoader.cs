@@ -31,29 +31,29 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PersistenceModelLoader (IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
     {
-      ArgumentUtility.CheckNotNull ("storageProviderDefinitionFinder", storageProviderDefinitionFinder);
+      ArgumentUtility.CheckNotNull("storageProviderDefinitionFinder", storageProviderDefinitionFinder);
 
       _storageProviderDefinitionFinder = storageProviderDefinitionFinder;
     }
 
     public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       var persistenceModelLoader = GetProviderSpecificPersistenceModelLoader(classDefinition);
-      persistenceModelLoader.ApplyPersistenceModelToHierarchy (classDefinition);
+      persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);
     }
 
     public IPersistenceMappingValidator CreatePersistenceMappingValidator (ClassDefinition classDefinition)
     {
-      var persistenceModelLoader = GetProviderSpecificPersistenceModelLoader (classDefinition);
-      return persistenceModelLoader.CreatePersistenceMappingValidator (classDefinition);
+      var persistenceModelLoader = GetProviderSpecificPersistenceModelLoader(classDefinition);
+      return persistenceModelLoader.CreatePersistenceMappingValidator(classDefinition);
     }
 
     private IPersistenceModelLoader GetProviderSpecificPersistenceModelLoader (ClassDefinition classDefinition)
     {
-      var storageProviderDefinition = _storageProviderDefinitionFinder.GetStorageProviderDefinition (classDefinition, null);
-      return storageProviderDefinition.Factory.CreatePersistenceModelLoader (storageProviderDefinition, _storageProviderDefinitionFinder);
+      var storageProviderDefinition = _storageProviderDefinitionFinder.GetStorageProviderDefinition(classDefinition, null);
+      return storageProviderDefinition.Factory.CreatePersistenceModelLoader(storageProviderDefinition, _storageProviderDefinitionFinder);
     }
   }
 }

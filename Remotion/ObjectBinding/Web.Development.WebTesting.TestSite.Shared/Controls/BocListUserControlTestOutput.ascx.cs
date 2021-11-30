@@ -24,20 +24,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
   {
     public void SetInfoForNormalBocList (BocList bocList)
     {
-      SelectedIndicesLabel.Text = GetSelectedRowIndicesAsString (bocList);
+      SelectedIndicesLabel.Text = GetSelectedRowIndicesAsString(bocList);
       SelectedViewLabel.Text = bocList.SelectedView.ItemID;
       EditModeLabel.Text = bocList.IsRowEditModeActive.ToString();
     }
 
     public void SetInfoForRadioButtonBocList (BocList bocList)
     {
-      SelectedIndexForRadioButtonLabel.Text = GetSelectedRowIndicesAsString (bocList);
+      SelectedIndexForRadioButtonLabel.Text = GetSelectedRowIndicesAsString(bocList);
     }
 
     private string GetSelectedRowIndicesAsString (BocList bocList)
     {
-      var selectedRows = string.Join (", ", bocList.GetSelectedRows());
-      if (string.IsNullOrEmpty (selectedRows))
+      var selectedRows = string.Join(", ", bocList.GetSelectedRows());
+      if (string.IsNullOrEmpty(selectedRows))
         selectedRows = "NoneSelected";
       return selectedRows;
     }

@@ -39,13 +39,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     protected override void OnDataChanging (OperationKind operation, DomainObject affectedObject, int index)
     {
       if (_eventSink != null)
-        _eventSink.CollectionChanging (operation, affectedObject, index);
+        _eventSink.CollectionChanging(operation, affectedObject, index);
     }
 
     protected override void OnDataChanged (OperationKind operation, DomainObject affectedObject, int index)
     {
       if (_eventSink != null)
-        _eventSink.CollectionChanged (operation, affectedObject, index);
+        _eventSink.CollectionChanged(operation, affectedObject, index);
     }
   }
 }

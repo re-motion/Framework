@@ -22,7 +22,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
   {
     public static MixinWithPrivateCtorAndVirtualMethod Create ()
     {
-      return new MixinWithPrivateCtorAndVirtualMethod ();
+      return new MixinWithPrivateCtorAndVirtualMethod();
     }
 
     private MixinWithPrivateCtorAndVirtualMethod ()

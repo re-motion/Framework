@@ -39,112 +39,112 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void GetClass ()
     {
-      SecurableClassDefinition classDefinition = _testHelper.CreateClassDefinition ("SecurableClass");
-      StatefulAccessControlList acl = _testHelper.CreateStatefulAcl (classDefinition);
+      SecurableClassDefinition classDefinition = _testHelper.CreateClassDefinition("SecurableClass");
+      StatefulAccessControlList acl = _testHelper.CreateStatefulAcl(classDefinition);
 
-      Assert.That (acl.Class, Is.SameAs (classDefinition));
+      Assert.That(acl.Class, Is.SameAs(classDefinition));
     }
 
     [Test]
     public void SetAndGet_Index ()
     {
-      StatefulAccessControlList acl = StatefulAccessControlList.NewObject ();
+      StatefulAccessControlList acl = StatefulAccessControlList.NewObject();
 
       acl.Index = 1;
-      Assert.That (acl.Index, Is.EqualTo (1));
+      Assert.That(acl.Index, Is.EqualTo(1));
     }
 
     [Test]
     public void CreateStateCombination ()
     {
-      SecurableClassDefinition classDefinition = _testHelper.CreateClassDefinition ("SecurableClass");
-      StatefulAccessControlList acl = _testHelper.CreateStatefulAcl (classDefinition);
-      using (_testHelper.Transaction.CreateSubTransaction ().EnterDiscardingScope ())
+      SecurableClassDefinition classDefinition = _testHelper.CreateClassDefinition("SecurableClass");
+      StatefulAccessControlList acl = _testHelper.CreateStatefulAcl(classDefinition);
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        acl.EnsureDataAvailable ();
-        Assert.That (acl.State.IsUnchanged, Is.True);
+        acl.EnsureDataAvailable();
+        Assert.That(acl.State.IsUnchanged, Is.True);
 
-        StateCombination stateCombination = acl.CreateStateCombination ();
+        StateCombination stateCombination = acl.CreateStateCombination();
 
-        Assert.That (stateCombination.AccessControlList, Is.SameAs (acl));
-        Assert.That (stateCombination.Class, Is.EqualTo (acl.Class));
-        Assert.That (stateCombination.GetStates(), Is.Empty);
-        Assert.That (acl.State.IsChanged, Is.True);
+        Assert.That(stateCombination.AccessControlList, Is.SameAs(acl));
+        Assert.That(stateCombination.Class, Is.EqualTo(acl.Class));
+        Assert.That(stateCombination.GetStates(), Is.Empty);
+        Assert.That(acl.State.IsChanged, Is.True);
       }
     }
 
     [Test]
     public void CreateStateCombination_WithoutClassDefinition ()
     {
-      StatefulAccessControlList acl = _testHelper.CreateStatefulAcl (SecurableClassDefinition.NewObject ());
-      using (_testHelper.Transaction.CreateSubTransaction ().EnterDiscardingScope ())
+      StatefulAccessControlList acl = _testHelper.CreateStatefulAcl(SecurableClassDefinition.NewObject());
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        acl.EnsureDataAvailable ();
-        Assert.That (acl.State.IsUnchanged, Is.True);
+        acl.EnsureDataAvailable();
+        Assert.That(acl.State.IsUnchanged, Is.True);
 
         acl.CreateStateCombination();
 
-        Assert.That (acl.State.IsChanged, Is.True);
+        Assert.That(acl.State.IsChanged, Is.True);
       }
     }
 
     [Test]
     public void CreateStateCombination_TwoNewEntries ()
     {
-      StatefulAccessControlList acl = StatefulAccessControlList.NewObject ();
-      var securableClassDefinition = _testHelper.CreateClassDefinition ("SecurableClass");
-      securableClassDefinition.StatefulAccessControlLists.Add (acl);
-      using (_testHelper.Transaction.CreateSubTransaction ().EnterDiscardingScope ())
+      StatefulAccessControlList acl = StatefulAccessControlList.NewObject();
+      var securableClassDefinition = _testHelper.CreateClassDefinition("SecurableClass");
+      securableClassDefinition.StatefulAccessControlLists.Add(acl);
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        acl.EnsureDataAvailable ();
-        Assert.That (acl.State.IsUnchanged, Is.True);
+        acl.EnsureDataAvailable();
+        Assert.That(acl.State.IsUnchanged, Is.True);
 
-        StateCombination stateCombination0 = acl.CreateStateCombination ();
-        StateCombination stateCombination1 = acl.CreateStateCombination ();
+        StateCombination stateCombination0 = acl.CreateStateCombination();
+        StateCombination stateCombination1 = acl.CreateStateCombination();
 
-        Assert.That (acl.StateCombinations.Count, Is.EqualTo (2));
-        Assert.That (acl.StateCombinations[0], Is.SameAs (stateCombination0));
-        Assert.That (stateCombination0.Index, Is.EqualTo (0));
-        Assert.That (acl.StateCombinations[1], Is.SameAs (stateCombination1));
-        Assert.That (stateCombination1.Index, Is.EqualTo (1));
-        Assert.That (acl.State.IsChanged, Is.True);
+        Assert.That(acl.StateCombinations.Count, Is.EqualTo(2));
+        Assert.That(acl.StateCombinations[0], Is.SameAs(stateCombination0));
+        Assert.That(stateCombination0.Index, Is.EqualTo(0));
+        Assert.That(acl.StateCombinations[1], Is.SameAs(stateCombination1));
+        Assert.That(stateCombination1.Index, Is.EqualTo(1));
+        Assert.That(acl.State.IsChanged, Is.True);
       }
     }
 
     [Test]
     public void Get_StateCombinationsFromDatabase ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      var expectedAcl = dbFixtures.CreateAndCommitAccessControlListWithStateCombinations (10, ClientTransactionScope.CurrentTransaction);
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      var expectedAcl = dbFixtures.CreateAndCommitAccessControlListWithStateCombinations(10, ClientTransactionScope.CurrentTransaction);
       var expectedStateCombinations = expectedAcl.StateCombinations;
 
-      using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
-        var actualAcl = (StatefulAccessControlList) LifetimeService.GetObject (ClientTransaction.Current, expectedAcl.ID, false);
+        var actualAcl = (StatefulAccessControlList)LifetimeService.GetObject(ClientTransaction.Current, expectedAcl.ID, false);
 
-        Assert.That (actualAcl.StateCombinations.Count, Is.EqualTo (9));
+        Assert.That(actualAcl.StateCombinations.Count, Is.EqualTo(9));
         for (int i = 0; i < 9; i++)
-          Assert.That (actualAcl.StateCombinations[i].ID, Is.EqualTo (expectedStateCombinations[i].ID));
+          Assert.That(actualAcl.StateCombinations[i].ID, Is.EqualTo(expectedStateCombinations[i].ID));
       }
     }
 
     [Test]
     public void CreateStateCombination_BeforeClassIsSet ()
     {
-      StatefulAccessControlList acl = StatefulAccessControlList.NewObject ();
-      Assert.That (
-          () => acl.CreateStateCombination (),
+      StatefulAccessControlList acl = StatefulAccessControlList.NewObject();
+      Assert.That(
+          () => acl.CreateStateCombination(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Cannot create StateCombination if no SecurableClassDefinition is assigned to this StatefulAccessControlList."));
     }
 
     [Test]
     public void OnCommitting_RegistersClassForCommit ()
     {
-      var acl = StatefulAccessControlList.NewObject ();
-      var classDefinition = _testHelper.CreateClassDefinition ("SecurableClass");
-      classDefinition.StatefulAccessControlLists.Add (acl);
+      var acl = StatefulAccessControlList.NewObject();
+      var classDefinition = _testHelper.CreateClassDefinition("SecurableClass");
+      classDefinition.StatefulAccessControlLists.Add(acl);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -152,22 +152,22 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         acl.RegisterForCommit();
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (commitOnClassWasCalled, Is.True);
+        Assert.That(commitOnClassWasCalled, Is.True);
       }
     }
 
     [Test]
     public void OnCommitting_WithDeletedAcl_RegistersClassForCommit ()
     {
-      var acl = StatefulAccessControlList.NewObject ();
-      var classDefinition = _testHelper.CreateClassDefinition ("SecurableClass");
-      classDefinition.StatefulAccessControlLists.Add (acl);
+      var acl = StatefulAccessControlList.NewObject();
+      var classDefinition = _testHelper.CreateClassDefinition("SecurableClass");
+      classDefinition.StatefulAccessControlLists.Add(acl);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -175,13 +175,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         acl.Delete();
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (commitOnClassWasCalled, Is.True);
+        Assert.That(commitOnClassWasCalled, Is.True);
       }
     }
   }

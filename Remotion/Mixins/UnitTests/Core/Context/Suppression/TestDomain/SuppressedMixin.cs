@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.Context.Suppression.TestDomain
 {
-  [Extends (typeof (ClassWithSuppressingMixins))]
+  [Extends(typeof(ClassWithSuppressingMixins))]
   public class SuppressedMixin
   {
   }

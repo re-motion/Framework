@@ -8,7 +8,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation
   {
     public static EnumTypeValidationDomainObjectClass.ExtensibleEnumTypeWithValues Value (this ExtensibleEnumDefinition<EnumTypeValidationDomainObjectClass.ExtensibleEnumTypeWithValues> definition)
     {
-      return new EnumTypeValidationDomainObjectClass.ExtensibleEnumTypeWithValues (MethodBase.GetCurrentMethod());
+      return new EnumTypeValidationDomainObjectClass.ExtensibleEnumTypeWithValues(MethodBase.GetCurrentMethod());
     }
   }
 }

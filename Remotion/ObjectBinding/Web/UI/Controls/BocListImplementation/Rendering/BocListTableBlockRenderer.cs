@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering the table (consisting of title and data rows) that shows the items contained in the <see cref="IBocList"/>.
   /// </summary>
-  [ImplementationFor (typeof (IBocListTableBlockRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocListTableBlockRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocListTableBlockRenderer : IBocListTableBlockRenderer
   {
     private readonly BocListCssClassDefinition _cssClasses;
@@ -45,10 +45,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
     {
-      ArgumentUtility.CheckNotNull ("cssClasses", cssClasses);
-      ArgumentUtility.CheckNotNull ("rowRenderer", rowRenderer);
-      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull ("validationErrorRenderer", validationErrorRenderer);
+      ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
+      ArgumentUtility.CheckNotNull("rowRenderer", rowRenderer);
+      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
 
       _cssClasses = cssClasses;
       _rowRenderer = rowRenderer;
@@ -82,42 +82,42 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <seealso cref="RenderTableBody"/>
     public void Render (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       bool isReadOnly = renderingContext.Control.IsReadOnly;
       bool showForEmptyList = isReadOnly && renderingContext.Control.ShowEmptyListReadOnlyMode
                               || !isReadOnly && renderingContext.Control.ShowEmptyListEditMode;
 
       if (!renderingContext.Control.HasValue && !showForEmptyList)
-        RenderTable (renderingContext, false, false);
+        RenderTable(renderingContext, false, false);
       else
-        RenderTable (renderingContext, true, true);
+        RenderTable(renderingContext, true, true);
     }
 
     private void RenderTable (BocListRenderingContext renderingContext, bool tableHead, bool tableBody)
     {
-      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
-      var validationErrorsID = GetValidationErrorsID (renderingContext);
+      var validationErrors = GetValidationErrorsToRender(renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID(renderingContext);
 
       if (!tableHead && !tableBody)
       {
-        RenderEmptyTable (renderingContext, validationErrorsID, validationErrors);
+        RenderEmptyTable(renderingContext, validationErrorsID, validationErrors);
       }
       else
       {
-        RenderTableOpeningTag (renderingContext, validationErrorsID, validationErrors);
-        RenderTableBlockColumnGroup (renderingContext);
+        RenderTableOpeningTag(renderingContext, validationErrorsID, validationErrors);
+        RenderTableBlockColumnGroup(renderingContext);
 
         if (tableHead)
-          RenderTableHead (renderingContext);
+          RenderTableHead(renderingContext);
 
         if (tableBody)
-          RenderTableBody (renderingContext);
+          RenderTableBody(renderingContext);
 
-        RenderTableClosingTag (renderingContext);
+        RenderTableClosingTag(renderingContext);
       }
 
-      _validationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
+      _validationErrorRenderer.RenderValidationErrors(renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
     private void RenderEmptyTable (
@@ -125,22 +125,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         string validationErrorsID,
         IReadOnlyCollection<string> validationErrors)
     {
-      renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-      renderingContext.Writer.AddAttribute ("tabindex", "0");
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Table);
+      renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "100%");
+      renderingContext.Writer.AddAttribute("tabindex", "0");
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Table);
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
+      _labelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs);
 
-      AddValidationErrorsReference (renderingContext, validationErrorsID, validationErrors);
+      AddValidationErrorsReference(renderingContext, validationErrorsID, validationErrors);
 
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Table);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr);
-      renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Cell);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      renderingContext.Writer.Write ("&nbsp;");
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Table);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+      renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "100%");
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Cell);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
+      renderingContext.Writer.Write("&nbsp;");
       renderingContext.Writer.RenderEndTag();
       renderingContext.Writer.RenderEndTag();
       renderingContext.Writer.RenderEndTag();
@@ -157,12 +157,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <seealso cref="BocRowRenderer"/>
     protected virtual void RenderTableHead (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableHead);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RowGroup);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Thead);
-      RowRenderer.RenderTitlesRow (renderingContext);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.TableHead);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RowGroup);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Thead);
+      RowRenderer.RenderTitlesRow(renderingContext);
       renderingContext.Writer.RenderEndTag();
     }
 
@@ -177,22 +177,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <seealso cref="BocRowRenderer"/>
     protected virtual void RenderTableBody (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableBody);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RowGroup);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tbody);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.TableBody);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RowGroup);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tbody);
 
       if (!renderingContext.Control.HasValue && renderingContext.Control.ShowEmptyListMessage)
       {
-        RowRenderer.RenderEmptyListDataRow (renderingContext);
+        RowRenderer.RenderEmptyListDataRow(renderingContext);
       }
       else
       {
         var rowRenderingContexts = renderingContext.Control.GetRowsToRender();
         for (int index = 0; index < rowRenderingContexts.Length; index++)
         {
-          RowRenderer.RenderDataRow (renderingContext, rowRenderingContexts[index], index);
+          RowRenderer.RenderDataRow(renderingContext, rowRenderingContexts[index], index);
         }
       }
 
@@ -205,31 +205,31 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         string validationErrorsID,
         IReadOnlyCollection<string> validationErrors)
     {
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableContainer);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.TableContainer);
 #pragma warning disable CS0618 // Type or member is obsolete
       var ariaRoleForTableElement = GetAriaRoleForTableElement();
 #pragma warning restore CS0618 // Type or member is obsolete
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, ariaRoleForTableElement);
-      renderingContext.Writer.AddAttribute ("tabindex", "0");
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, ariaRoleForTableElement);
+      renderingContext.Writer.AddAttribute("tabindex", "0");
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      _labelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
+      _labelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs);
 
-      AddValidationErrorsReference (renderingContext, validationErrorsID, validationErrors);
+      AddValidationErrorsReference(renderingContext, validationErrorsID, validationErrors);
 
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.TableScrollContainer);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "_TableScrollContainer");
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.TableScrollContainer);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "_TableScrollContainer");
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Table);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Table);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Table);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Table);
     }
 
-    [Obsolete ("RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
+    [Obsolete("RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
     protected virtual string GetAriaRoleForTableElement ()
     {
       return HtmlRoleAttributeValue.Table;
@@ -248,15 +248,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary> Renders the column group, which provides the table's column layout. </summary>
     private void RenderTableBlockColumnGroup (BocListRenderingContext renderingContext)
     {
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Colgroup);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Colgroup);
 
-      var isTextXml = ControlHelper.IsXmlConformResponseTextRequired (renderingContext.HttpContext);
+      var isTextXml = ControlHelper.IsXmlConformResponseTextRequired(renderingContext.HttpContext);
 
-      RenderIndexColumnDeclaration (renderingContext, isTextXml);
-      RenderSelectorColumnDeclaration (renderingContext, isTextXml);
+      RenderIndexColumnDeclaration(renderingContext, isTextXml);
+      RenderSelectorColumnDeclaration(renderingContext, isTextXml);
 
       foreach (var columnRenderer in renderingContext.ColumnRenderers)
-        columnRenderer.RenderDataColumnDeclaration (renderingContext, isTextXml);
+        columnRenderer.RenderDataColumnDeclaration(renderingContext, isTextXml);
 
       renderingContext.Writer.RenderEndTag();
     }
@@ -266,14 +266,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       if (renderingContext.Control.IsSelectionEnabled)
       {
-        renderingContext.Writer.WriteBeginTag ("col");
-        renderingContext.Writer.Write (" style=\"");
-        renderingContext.Writer.WriteStyleAttribute ("width", "1.6em");
-        renderingContext.Writer.Write ("\"");
+        renderingContext.Writer.WriteBeginTag("col");
+        renderingContext.Writer.Write(" style=\"");
+        renderingContext.Writer.WriteStyleAttribute("width", "1.6em");
+        renderingContext.Writer.Write("\"");
         if (isTextXml)
-          renderingContext.Writer.Write (" />");
+          renderingContext.Writer.Write(" />");
         else
-          renderingContext.Writer.Write (">");
+          renderingContext.Writer.Write(">");
       }
     }
 
@@ -282,14 +282,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       if (renderingContext.Control.IsIndexEnabled)
       {
-        renderingContext.Writer.WriteBeginTag ("col");
-        renderingContext.Writer.Write (" style=\"");
-        renderingContext.Writer.WriteStyleAttribute ("width", "1.6em");
-        renderingContext.Writer.Write ("\"");
+        renderingContext.Writer.WriteBeginTag("col");
+        renderingContext.Writer.Write(" style=\"");
+        renderingContext.Writer.WriteStyleAttribute("width", "1.6em");
+        renderingContext.Writer.Write("\"");
         if (isTextXml)
-          renderingContext.Writer.Write (" />");
+          renderingContext.Writer.Write(" />");
         else
-          renderingContext.Writer.Write (">");
+          renderingContext.Writer.Write(">");
       }
     }
 
@@ -305,9 +305,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private void AddValidationErrorsReference (BocListRenderingContext renderingContext, string validationErrorsID, IReadOnlyCollection<string> validationErrors)
     {
-      var attributeCollection = new AttributeCollection (new StateBag());
-      _validationErrorRenderer.AddValidationErrorsReference (attributeCollection, validationErrorsID, validationErrors);
-      attributeCollection.AddAttributes (renderingContext.Writer);
+      var attributeCollection = new AttributeCollection(new StateBag());
+      _validationErrorRenderer.AddValidationErrorsReference(attributeCollection, validationErrorsID, validationErrors);
+      attributeCollection.AddAttributes(renderingContext.Writer);
     }
   }
 }

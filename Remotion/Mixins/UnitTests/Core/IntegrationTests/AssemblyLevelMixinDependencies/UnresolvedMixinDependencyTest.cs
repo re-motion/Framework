@@ -26,17 +26,17 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     [Test]
     public void UnresolvedDependency_ViaAssemblyLevelAttribute ()
     {
-      PrepareMixinConfigurationWithAttributeDeclarations (new AdditionalMixinDependencyAttribute (typeof (C), typeof (M1), typeof (M2)));
+      PrepareMixinConfigurationWithAttributeDeclarations(new AdditionalMixinDependencyAttribute(typeof(C), typeof(M1), typeof(M2)));
 
-      Assert.That (
-          () => ObjectFactory.Create<C> (), 
-          Throws.TypeOf<ValidationException> ().With.Message.Contains (
+      Assert.That(
+          () => ObjectFactory.Create<C>(),
+          Throws.TypeOf<ValidationException>().With.Message.Contains(
               "A mixin is configured with a dependency to another mixin, but that dependency is not satisfied."));
     }
 
     public class C : IC
     {
-      public virtual string M()
+      public virtual string M ()
       {
         return "C";
       }
@@ -47,7 +47,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       string M ();
     }
 
-    [Extends (typeof (C))]
+    [Extends(typeof(C))]
     public class M1 : Mixin<C, IC>
     {
       [OverrideTarget]

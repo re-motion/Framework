@@ -21,6 +21,6 @@ namespace Remotion.Mixins.UnitTests.CoreComponentIntegration.TestDomain
   [BaseInherited("MixinAddingInheritedAttribute")]
   public class MixinAddingInheritedAttribute
   {
-    
+
   }
 }

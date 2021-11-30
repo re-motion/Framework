@@ -34,8 +34,8 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     public WebTabRendererAdapter (IWebTabRenderer webTabRenderer, IWebTab webTab, bool isLast, bool isEnabled, WebTabStyle webTabStyle) // TODO RM-8118: Missing arg check for webTabStyle
     {
-      ArgumentUtility.CheckNotNull ("webTabRenderer", webTabRenderer);
-      ArgumentUtility.CheckNotNull ("webTab", webTab);
+      ArgumentUtility.CheckNotNull("webTabRenderer", webTabRenderer);
+      ArgumentUtility.CheckNotNull("webTab", webTab);
 
       _webTabRenderer = webTabRenderer;
       _webTab = webTab;
@@ -66,9 +66,9 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     public void Render (WebTabStripRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      
-      _webTabRenderer.Render (renderingContext, _webTab, _isEnabled, _isLast, _webTabStyle);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+
+      _webTabRenderer.Render(renderingContext, _webTab, _isEnabled, _isLast, _webTabStyle);
     }
 
   }

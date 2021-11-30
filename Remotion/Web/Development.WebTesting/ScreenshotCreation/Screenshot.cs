@@ -36,10 +36,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public static Screenshot TakeBrowserScreenshot ([NotNull] IBrowserSession browserSession, [NotNull] IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("browserSession", browserSession);
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("browserSession", browserSession);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
-      return CreateBrowserScreenshot (browserSession, locator);
+      return CreateBrowserScreenshot(browserSession, locator);
     }
 
     /// <summary>
@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public static Screenshot TakeDesktopScreenshot ()
     {
-      return TakeDesktopScreenshot (Screen.AllScreens);
+      return TakeDesktopScreenshot(Screen.AllScreens);
     }
 
     /// <summary>
@@ -58,12 +58,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public static Screenshot TakeDesktopScreenshot ([NotNull] Screen[] screens)
     {
-      ArgumentUtility.CheckNotNull ("screens", screens);
+      ArgumentUtility.CheckNotNull("screens", screens);
 
       if (screens.Length == 0)
-        throw new ArgumentException ("At least one screen must be specified in order to take a screenshot.", "screens");
+        throw new ArgumentException("At least one screen must be specified in order to take a screenshot.", "screens");
 
-      return CreateDesktopScreenshot (screens);
+      return CreateDesktopScreenshot(screens);
     }
 
     /// <summary>
@@ -72,25 +72,25 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public static Screenshot TakePrimaryDesktopScreenshot ()
     {
-      return TakeDesktopScreenshot (new[] { Screen.PrimaryScreen });
+      return TakeDesktopScreenshot(new[] { Screen.PrimaryScreen });
     }
 
     [NotNull]
     private static Screenshot CreateBrowserScreenshot (IBrowserSession browserSession, IBrowserContentLocator locator)
     {
-      var browserBounds = locator.GetBrowserContentBounds ((IWebDriver) browserSession.Driver.Native);
-      var image = new Bitmap (browserBounds.Width, browserBounds.Height);
-      using (var graphics = Graphics.FromImage (image))
+      var browserBounds = locator.GetBrowserContentBounds((IWebDriver)browserSession.Driver.Native);
+      var image = new Bitmap(browserBounds.Width, browserBounds.Height);
+      using (var graphics = Graphics.FromImage(image))
       {
-        graphics.CopyFromScreen (browserBounds.Location, Point.Empty, browserBounds.Size);
+        graphics.CopyFromScreen(browserBounds.Location, Point.Empty, browserBounds.Size);
 
         graphics.Flush();
       }
 
-      return new Screenshot (
+      return new Screenshot(
           image,
           Size.Empty,
-          new[] { new Rectangle (Point.Empty, browserBounds.Size) },
+          new[] { new Rectangle(Point.Empty, browserBounds.Size) },
           CursorInformation.Capture(),
           CoordinateSystem.Browser);
     }
@@ -98,26 +98,26 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     private static Screenshot CreateDesktopScreenshot (Screen[] screens)
     {
-      var screenBounds = screens.Select (s => s.Bounds).ToArray();
-      var requiredBounds = screenBounds.Aggregate (Rectangle.Union);
-      var offset = new Size (-requiredBounds.X, -requiredBounds.Y);
+      var screenBounds = screens.Select(s => s.Bounds).ToArray();
+      var requiredBounds = screenBounds.Aggregate(Rectangle.Union);
+      var offset = new Size(-requiredBounds.X, -requiredBounds.Y);
 
-      var image = new Bitmap (requiredBounds.Width, requiredBounds.Height);
-      using (var graphics = Graphics.FromImage (image))
+      var image = new Bitmap(requiredBounds.Width, requiredBounds.Height);
+      using (var graphics = Graphics.FromImage(image))
       {
-        graphics.Clear (Color.Transparent);
+        graphics.Clear(Color.Transparent);
 
         foreach (var screen in screens)
         {
-          graphics.CopyFromScreen (screen.Bounds.Location, screen.Bounds.Location + offset, screen.Bounds.Size);
+          graphics.CopyFromScreen(screen.Bounds.Location, screen.Bounds.Location + offset, screen.Bounds.Size);
         }
 
         graphics.Flush();
       }
 
-      return new Screenshot (
+      return new Screenshot(
           image,
-          new Size (requiredBounds.X, requiredBounds.Y),
+          new Size(requiredBounds.X, requiredBounds.Y),
           screenBounds,
           CursorInformation.Capture(),
           CoordinateSystem.Desktop);
@@ -138,9 +138,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] CursorInformation cursorInformation,
         CoordinateSystem coordinateSystem)
     {
-      ArgumentUtility.CheckNotNull ("image", image);
-      ArgumentUtility.CheckNotNull ("screenshotBounds", screenshotBounds);
-      ArgumentUtility.CheckNotNull ("cursorInformation", cursorInformation);
+      ArgumentUtility.CheckNotNull("image", image);
+      ArgumentUtility.CheckNotNull("screenshotBounds", screenshotBounds);
+      ArgumentUtility.CheckNotNull("cursorInformation", cursorInformation);
 
       _image = image;
       _desktopOffset = desktopOffset;
@@ -224,7 +224,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     {
       ThrowIfDisposed();
 
-      return _screenshotBounds.Any (t => t.Contains (target));
+      return _screenshotBounds.Any(t => t.Contains(target));
     }
 
     public void Dispose ()
@@ -237,7 +237,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     private void ThrowIfDisposed ()
     {
       if (_disposed)
-        throw new ObjectDisposedException (GetType().FullName);
+        throw new ObjectDisposedException(GetType().FullName);
     }
   }
 }

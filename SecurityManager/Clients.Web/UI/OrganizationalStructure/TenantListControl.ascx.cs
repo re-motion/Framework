@@ -49,39 +49,39 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (!IsPostBack)
       {
-        TenantList.SetSortingOrder (
-            new BocListSortingOrderEntry ((IBocSortableColumnDefinition) TenantList.FixedColumns[0], SortingDirection.Ascending));
+        TenantList.SetSortingOrder(
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)TenantList.FixedColumns[0], SortingDirection.Ascending));
       }
-      TenantList.LoadUnboundValue (GetValues(), IsPostBack);
+      TenantList.LoadUnboundValue(GetValues(), IsPostBack);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
       Type tenantType = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.GetTenantType();
-      NewTenantButton.Visible = securityClient.HasConstructorAccess (tenantType);
+      NewTenantButton.Visible = securityClient.HasConstructorAccess(tenantType);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
-      TenantListLabel.Text = resourceManager.GetString (ResourceIdentifier.TenantListLabelText);
-      NewTenantButton.Text = resourceManager.GetString (ResourceIdentifier.NewTenantButtonText);
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
+      TenantListLabel.Text = resourceManager.GetString(ResourceIdentifier.TenantListLabelText);
+      NewTenantButton.Text = resourceManager.GetString(ResourceIdentifier.NewTenantButtonText);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      ResetListOnTenantChange (TenantList);
+      ResetListOnTenantChange(TenantList);
     }
 
     protected void TenantList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
     {
-      HandleEditItemClick (TenantList, e);
+      HandleEditItemClick(TenantList, e);
     }
 
     protected void NewTenantButton_Click (object sender, EventArgs e)
     {
-      HandleNewButtonClick (TenantList);
+      HandleNewButtonClick(TenantList);
     }
 
     protected override IReadOnlyList<Tenant> GetValues ()
@@ -91,9 +91,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override FormFunction<Tenant> CreateEditFunction (ITransactionMode transactionMode, IDomainObjectHandle<Tenant> editedObject)
     {
-      ArgumentUtility.CheckNotNull ("transactionMode", transactionMode);
+      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
 
-      return new EditTenantFormFunction (transactionMode, editedObject);
+      return new EditTenantFormFunction(transactionMode, editedObject);
     }
   }
 }

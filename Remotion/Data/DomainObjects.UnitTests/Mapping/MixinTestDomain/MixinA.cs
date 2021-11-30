@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain
   {
     public int P5
     {
-      get { return Properties[typeof (MixinA), "P5"].GetValue<int>(); }
+      get { return Properties[typeof(MixinA), "P5"].GetValue<int>(); }
     }
   }
 }

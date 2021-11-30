@@ -22,20 +22,20 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{FullName} introduced via {Implementer.FullName}")]
+  [DebuggerDisplay("{FullName} introduced via {Implementer.FullName}")]
   public class InterfaceIntroductionDefinition : IVisitableDefinition
   {
     private readonly UniqueDefinitionCollection<MethodInfo, MethodIntroductionDefinition> _introducedMethods =
-        new UniqueDefinitionCollection<MethodInfo, MethodIntroductionDefinition> (m => m.InterfaceMember);
+        new UniqueDefinitionCollection<MethodInfo, MethodIntroductionDefinition>(m => m.InterfaceMember);
     private readonly UniqueDefinitionCollection<PropertyInfo, PropertyIntroductionDefinition> _introducedProperties =
-        new UniqueDefinitionCollection<PropertyInfo, PropertyIntroductionDefinition> (m => m.InterfaceMember);
+        new UniqueDefinitionCollection<PropertyInfo, PropertyIntroductionDefinition>(m => m.InterfaceMember);
     private readonly UniqueDefinitionCollection<EventInfo, EventIntroductionDefinition> _introducedEvents =
-        new UniqueDefinitionCollection<EventInfo, EventIntroductionDefinition> (m => m.InterfaceMember);
+        new UniqueDefinitionCollection<EventInfo, EventIntroductionDefinition>(m => m.InterfaceMember);
 
     public InterfaceIntroductionDefinition (Type type, MixinDefinition implementer)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("implementer", implementer);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("implementer", implementer);
 
       InterfaceType = type;
       Implementer = implementer;
@@ -86,11 +86,11 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
-      _introducedMethods.Accept (visitor);
-      _introducedProperties.Accept (visitor);
-      _introducedEvents.Accept (visitor);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
+      _introducedMethods.Accept(visitor);
+      _introducedProperties.Accept(visitor);
+      _introducedEvents.Accept(visitor);
     }
   }
 }

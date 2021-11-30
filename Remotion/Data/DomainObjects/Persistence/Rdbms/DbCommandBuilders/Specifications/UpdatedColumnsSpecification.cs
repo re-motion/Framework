@@ -34,36 +34,36 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public UpdatedColumnsSpecification (IEnumerable<ColumnValue> columnValues)
     {
-      ArgumentUtility.CheckNotNull ("columnValues", columnValues);
+      ArgumentUtility.CheckNotNull("columnValues", columnValues);
 
       var columnValuesArray = columnValues.ToArray();
-      ArgumentUtility.CheckNotEmpty ("columnValues", columnValuesArray);
+      ArgumentUtility.CheckNotEmpty("columnValues", columnValuesArray);
 
       _columnValues = columnValuesArray;
     }
 
     public ReadOnlyCollection<ColumnValue> ColumnValues
     {
-      get { return Array.AsReadOnly (_columnValues); }
+      get { return Array.AsReadOnly(_columnValues); }
     }
 
     public void AppendColumnValueAssignments (StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("statement", statement);
-      ArgumentUtility.CheckNotNull ("dbCommand", dbCommand);
-      ArgumentUtility.CheckNotNull ("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull("statement", statement);
+      ArgumentUtility.CheckNotNull("dbCommand", dbCommand);
+      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
 
-      var columnsWithParameters = _columnValues.Select (
+      var columnsWithParameters = _columnValues.Select(
           cv =>
           {
-            var parameter = cv.Column.StorageTypeInfo.CreateDataParameter (dbCommand, cv.Value);
-            parameter.ParameterName = sqlDialect.GetParameterName (cv.Column.Name);
-            dbCommand.Parameters.Add (parameter);
+            var parameter = cv.Column.StorageTypeInfo.CreateDataParameter(dbCommand, cv.Value);
+            parameter.ParameterName = sqlDialect.GetParameterName(cv.Column.Name);
+            dbCommand.Parameters.Add(parameter);
             return new { ColumnDefinition = cv.Column, Parameter = parameter };
           });
 
-      var updateStatement = string.Join (", ", columnsWithParameters.Select (cp => string.Format ("{0} = {1}", sqlDialect.DelimitIdentifier (cp.ColumnDefinition.Name), cp.Parameter.ParameterName)));
-      statement.Append (updateStatement);
+      var updateStatement = string.Join(", ", columnsWithParameters.Select(cp => string.Format("{0} = {1}", sqlDialect.DelimitIdentifier(cp.ColumnDefinition.Name), cp.Parameter.ParameterName)));
+      statement.Append(updateStatement);
     }
   }
 }

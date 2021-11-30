@@ -32,7 +32,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// Generates <see cref="INextCallProxy"/> instances.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (INextCallProxyGenerator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor(typeof(INextCallProxyGenerator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class NextCallProxyGenerator : INextCallProxyGenerator
   {
     public NextCallProxyGenerator ()
@@ -45,21 +45,21 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         TargetClassDefinition targetClassDefinition,
         IList<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
-      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull ("mixinInfos", mixinInfos);
+      ArgumentUtility.CheckNotNull("concreteTarget", concreteTarget);
+      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull("mixinInfos", mixinInfos);
 
       var nextCallProxyType = CreateNextCallProxyType(concreteTarget, targetClassDefinition);
 
-      var thisField = AddPublicField (nextCallProxyType, "__this", concreteTarget);
-      var depthField = AddPublicField (nextCallProxyType, "__depth", typeof (int));
+      var thisField = AddPublicField(nextCallProxyType, "__this", concreteTarget);
+      var depthField = AddPublicField(nextCallProxyType, "__depth", typeof(int));
 
-      var constructor = AddConstructor (nextCallProxyType, concreteTarget, thisField, depthField);
+      var constructor = AddConstructor(nextCallProxyType, concreteTarget, thisField, depthField);
 
-      var targetTypeForNextCall = GetTargetTypeWrapper (concreteTarget, extensionsField);
-      var nextCallMethodGenerator = new NextCallMethodGenerator (
+      var targetTypeForNextCall = GetTargetTypeWrapper(concreteTarget, extensionsField);
+      var nextCallMethodGenerator = new NextCallMethodGenerator(
           targetClassDefinition, targetTypeForNextCall, thisField, depthField, mixinInfos);
-      var nextCallProxy = new NextCallProxy (nextCallProxyType, constructor, targetClassDefinition, nextCallMethodGenerator);
+      var nextCallProxy = new NextCallProxy(nextCallProxyType, constructor, targetClassDefinition, nextCallMethodGenerator);
 
       nextCallProxy.ImplementBaseCallsForOverriddenMethodsOnTarget();
       nextCallProxy.ImplementBaseCallsForRequirements();
@@ -69,18 +69,18 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private ITargetTypeForNextCall GetTargetTypeWrapper (MutableType concreteTarget, FieldInfo extensionsField)
     {
-      ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
-      ArgumentUtility.CheckNotNull ("extensionsField", extensionsField);
+      ArgumentUtility.CheckNotNull("concreteTarget", concreteTarget);
+      ArgumentUtility.CheckNotNull("extensionsField", extensionsField);
 
-      return new TargetTypeForNextCall (concreteTarget, extensionsField);
+      return new TargetTypeForNextCall(concreteTarget, extensionsField);
     }
 
     private MutableType CreateNextCallProxyType (MutableType concreteTarget, TargetClassDefinition targetClassDefinition)
     {
       var attributes = TypeAttributes.NestedPublic | TypeAttributes.Sealed;
-      var nextCallProxy =  concreteTarget.AddNestedType ("NextCallProxy", attributes, typeof (object));
+      var nextCallProxy =  concreteTarget.AddNestedType("NextCallProxy", attributes, typeof(object));
 
-      AddRequiredInterfaces (nextCallProxy, targetClassDefinition);
+      AddRequiredInterfaces(nextCallProxy, targetClassDefinition);
 
       return nextCallProxy;
     }
@@ -88,30 +88,30 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     private void AddRequiredInterfaces (MutableType nextCallProxy, TargetClassDefinition targetClassDefinition)
     {
       var interfaces = EnumerableUtility
-          .Singleton (typeof (IGeneratedNextCallProxyType))
-          .Concat (targetClassDefinition.RequiredNextCallTypes.Select (requiredType => requiredType.Type));
+          .Singleton(typeof(IGeneratedNextCallProxyType))
+          .Concat(targetClassDefinition.RequiredNextCallTypes.Select(requiredType => requiredType.Type));
 
       foreach (var ifc in interfaces)
-        nextCallProxy.AddInterface (ifc);
+        nextCallProxy.AddInterface(ifc);
     }
 
     private Expression AddPublicField (MutableType nextCallProxyType, string name, Type type)
     {
-      var field = nextCallProxyType.AddField (name, FieldAttributes.Public, type);
-      return Expression.Field (new ThisExpression (nextCallProxyType), field);
+      var field = nextCallProxyType.AddField(name, FieldAttributes.Public, type);
+      return Expression.Field(new ThisExpression(nextCallProxyType), field);
     }
 
     private MutableConstructorInfo AddConstructor (
         MutableType nextCallProxy, MutableType concreteTarget, Expression thisField, Expression depthField)
     {
-      return nextCallProxy.AddConstructor (
+      return nextCallProxy.AddConstructor(
           MethodAttributes.Public,
-          new[] { new ParameterDeclaration (concreteTarget, "this"), new ParameterDeclaration (typeof (int), "depth") },
+          new[] { new ParameterDeclaration(concreteTarget, "this"), new ParameterDeclaration(typeof(int), "depth") },
           ctx =>
-          Expression.Block (
+          Expression.Block(
               ctx.CallBaseConstructor(),
-              Expression.Assign (thisField, ctx.Parameters[0]),
-              Expression.Assign (depthField, ctx.Parameters[1])));
+              Expression.Assign(thisField, ctx.Parameters[0]),
+              Expression.Assign(depthField, ctx.Parameters[1])));
     }
   }
 }

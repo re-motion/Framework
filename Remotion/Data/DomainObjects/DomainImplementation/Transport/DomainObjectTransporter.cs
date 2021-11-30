@@ -44,10 +44,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// </remarks>
     public static TransportedDomainObjects LoadTransportData (Stream stream)
     {
-      ArgumentUtility.CheckNotNull ("stream", stream);
+      ArgumentUtility.CheckNotNull("stream", stream);
 
       BinaryImportStrategy strategy = BinaryImportStrategy.Instance;
-      return LoadTransportData (stream, strategy);
+      return LoadTransportData(stream, strategy);
     }
 
     /// <summary>
@@ -63,10 +63,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// </remarks>
     public static TransportedDomainObjects LoadTransportData (Stream stream, IImportStrategy strategy)
     {
-      ArgumentUtility.CheckNotNull ("stream", stream);
-      ArgumentUtility.CheckNotNull ("strategy", strategy);
+      ArgumentUtility.CheckNotNull("stream", stream);
+      ArgumentUtility.CheckNotNull("strategy", strategy);
 
-      return DomainObjectImporter.CreateImporterFromStream (stream, strategy).GetImportedObjects ();
+      return DomainObjectImporter.CreateImporterFromStream(stream, strategy).GetImportedObjects();
     }
 
     private readonly ClientTransaction _transportTransaction;
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     public DomainObjectTransporter ()
     {
       _transportTransaction = ClientTransaction.CreateRootTransaction();
-      _transportTransaction.AddListener (new TransportTransactionListener (this));
+      _transportTransaction.AddListener(new TransportTransactionListener(this));
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <value>The IDs of the loaded objects.</value>
     public ReadOnlyCollection<ObjectID> ObjectIDs
     {
-      get { return new ReadOnlyCollection<ObjectID> (_transportedObjects.ToArray()); }
+      get { return new ReadOnlyCollection<ObjectID>(_transportedObjects.ToArray()); }
     }
 
     /// <summary>
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// </returns>
     public bool IsLoaded (ObjectID objectID)
     {
-      return _transportedObjects.Contains (objectID);
+      return _transportedObjects.Contains(objectID);
     }
 
     /// <summary>
@@ -108,10 +108,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <returns>A new instance of <paramref name="type"/> prepared for transport.</returns>
     public DomainObject LoadNew (Type type, ParamList constructorParameters)
     {
-      using (_transportTransaction.EnterNonDiscardingScope ())
+      using (_transportTransaction.EnterNonDiscardingScope())
       {
-        DomainObject domainObject = LifetimeService.NewObject (ClientTransaction.Current, type, constructorParameters);
-        Load (domainObject.ID);
+        DomainObject domainObject = LifetimeService.NewObject(ClientTransaction.Current, type, constructorParameters);
+        Load(domainObject.ID);
         return domainObject;
       }
     }
@@ -138,9 +138,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// </remarks>
     public DomainObject Load (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      DomainObject domainObject = _transportTransaction.GetObject (objectID, false);
-      _transportedObjects.Add (objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      DomainObject domainObject = _transportTransaction.GetObject(objectID, false);
+      _transportedObjects.Add(objectID);
       return domainObject;
     }
 
@@ -153,20 +153,20 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <seealso cref="PropertyIndexer.GetAllRelatedObjects"/>
     public IEnumerable<DomainObject> LoadWithRelatedObjects (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      return LazyLoadWithRelatedObjects(objectID).ToArray ();
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      return LazyLoadWithRelatedObjects(objectID).ToArray();
     }
 
     private IEnumerable<DomainObject> LazyLoadWithRelatedObjects (ObjectID objectID)
     {
-      IDomainObject sourceObject = _transportTransaction.GetObject (objectID, false);
-      yield return Load (sourceObject.ID);
-      using (_transportTransaction.EnterNonDiscardingScope ())
+      IDomainObject sourceObject = _transportTransaction.GetObject(objectID, false);
+      yield return Load(sourceObject.ID);
+      using (_transportTransaction.EnterNonDiscardingScope())
       {
-        PropertyIndexer sourceProperties = new PropertyIndexer (sourceObject);
+        PropertyIndexer sourceProperties = new PropertyIndexer(sourceObject);
         IEnumerable<DomainObject> relatedObjects = sourceProperties.GetAllRelatedObjects();
         foreach (DomainObject domainObject in relatedObjects)
-          yield return Load (domainObject.ID); // explicitly call load rather than just implicitly loading it into the transaction
+          yield return Load(domainObject.ID); // explicitly call load rather than just implicitly loading it into the transaction
       }
     }
 
@@ -179,8 +179,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <seealso cref="DomainObjectGraphTraverser.GetFlattenedRelatedObjectGraph"/>
     public IEnumerable<DomainObject> LoadRecursive (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      return LoadRecursive (objectID, FullGraphTraversalStrategy.Instance);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      return LoadRecursive(objectID, FullGraphTraversalStrategy.Instance);
     }
 
     /// <summary>
@@ -194,15 +194,15 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <seealso cref="DomainObjectGraphTraverser.GetFlattenedRelatedObjectGraph"/>
     public IEnumerable<DomainObject> LoadRecursive (ObjectID objectID, IGraphTraversalStrategy strategy)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      ArgumentUtility.CheckNotNull ("strategy", strategy);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull("strategy", strategy);
 
-      DomainObject sourceObject = _transportTransaction.GetObject (objectID, false);
-      using (_transportTransaction.EnterNonDiscardingScope ())
+      DomainObject sourceObject = _transportTransaction.GetObject(objectID, false);
+      using (_transportTransaction.EnterNonDiscardingScope())
       {
-        HashSet<DomainObject> graph = new DomainObjectGraphTraverser (sourceObject, strategy).GetFlattenedRelatedObjectGraph ();
+        HashSet<DomainObject> graph = new DomainObjectGraphTraverser(sourceObject, strategy).GetFlattenedRelatedObjectGraph();
         foreach (DomainObject domainObject in graph)
-          Load (domainObject.ID); // explicitly call load rather than just implicitly loading it into the transaction for consistency
+          Load(domainObject.ID); // explicitly call load rather than just implicitly loading it into the transaction for consistency
         return graph;
       }
     }
@@ -214,14 +214,14 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <returns>A <see cref="DomainObject"/> representing an object to be transported. Properties of this object can be manipulated.</returns>
     public DomainObject GetTransportedObject (ObjectID loadedObjectID)
     {
-      ArgumentUtility.CheckNotNull ("loadedObjectID", loadedObjectID);
-      if (!IsLoaded (loadedObjectID))
+      ArgumentUtility.CheckNotNull("loadedObjectID", loadedObjectID);
+      if (!IsLoaded(loadedObjectID))
       {
-        string message = string.Format ("Object '{0}' cannot be retrieved, it hasn't been loaded yet. Load it first, then retrieve it for editing.",
+        string message = string.Format("Object '{0}' cannot be retrieved, it hasn't been loaded yet. Load it first, then retrieve it for editing.",
             loadedObjectID);
-        throw new ArgumentException (message, "loadedObjectID");
+        throw new ArgumentException(message, "loadedObjectID");
       }
-      return _transportTransaction.GetObject (loadedObjectID, false);
+      return _transportTransaction.GetObject(loadedObjectID, false);
     }
 
     /// <summary>
@@ -231,7 +231,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <param name="stream">The <see cref="Stream"/> to which to export the loaded objects.</param>
     public void Export (Stream stream)
     {
-      Export (stream, BinaryExportStrategy.Instance);
+      Export(stream, BinaryExportStrategy.Instance);
     }
 
     /// <summary>
@@ -244,8 +244,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     public void Export (Stream stream, IExportStrategy strategy)
     {
       IEnumerable<DataContainer> transportedContainers = GetTransportedContainers();
-      TransportItem[] transportItems = TransportItem.PackageDataContainers (transportedContainers).ToArray ();
-      strategy.Export (stream, transportItems);
+      TransportItem[] transportItems = TransportItem.PackageDataContainers(transportedContainers).ToArray();
+      strategy.Export(stream, transportItems);
     }
 
     private IEnumerable<DataContainer> GetTransportedContainers ()

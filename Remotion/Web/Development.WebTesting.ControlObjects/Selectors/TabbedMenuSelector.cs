@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
   public class TabbedMenuSelector : TypedControlSelectorBase<TabbedMenuControlObject>
   {
     public TabbedMenuSelector ()
-        : base ("TabbedMenu")
+        : base("TabbedMenu")
     {
     }
 
@@ -35,10 +35,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new TabbedMenuControlObject (newControlObjectContext);
+      return new TabbedMenuControlObject(newControlObjectContext);
     }
   }
 }

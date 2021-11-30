@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
   /// </summary>
   public class ChromiumUserDirectoryCleanUpStrategy : IBrowserSessionCleanUpStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (ChromiumUserDirectoryCleanUpStrategy));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(ChromiumUserDirectoryCleanUpStrategy));
 
     private readonly string _userDirectoryRoot;
     private readonly string _userDirectory;
@@ -36,8 +36,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
     public ChromiumUserDirectoryCleanUpStrategy ([NotNull] string userDirectoryRoot, [NotNull] string userDirectory)
     {
       // TODO RM-8117: userDirectory should be nullable.
-      ArgumentUtility.CheckNotNullOrEmpty ("userDirectoryRoot", userDirectoryRoot);
-      ArgumentUtility.CheckNotNullOrEmpty ("userDirectory", userDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty("userDirectoryRoot", userDirectoryRoot);
+      ArgumentUtility.CheckNotNullOrEmpty("userDirectory", userDirectory);
 
       _userDirectoryRoot = userDirectoryRoot;
       _userDirectory = userDirectory;
@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
     /// </summary>
     private void DeleteUserDirectory ()
     {
-      if (string.IsNullOrEmpty (_userDirectory))
+      if (string.IsNullOrEmpty(_userDirectory))
         return;
 
       // The amount of times we try to delete the user data folder before giving up
@@ -68,12 +68,12 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
       var tries = 0;
       do
       {
-        if (!Directory.Exists (_userDirectory))
+        if (!Directory.Exists(_userDirectory))
           return;
 
         try
         {
-          Directory.Delete (_userDirectory, true);
+          Directory.Delete(_userDirectory, true);
         }
         catch (Exception ex)
         {
@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
 
           if (tries == maxTries - 1)
           {
-            s_log.InfoFormat (
+            s_log.InfoFormat(
                 @"Could not delete the user data folder '{0}' because of an '{1}':
 {2}",
                 _userDirectory,
@@ -92,7 +92,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
                 ex.Message);
           }
 
-          Thread.Sleep ((int) sleep);
+          Thread.Sleep((int)sleep);
           sleep *= 1.25f;
 
           tries++;
@@ -105,15 +105,15 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium
     /// </summary>
     private void DeleteUserDirectoryRoot ()
     {
-      if (!Directory.Exists (_userDirectoryRoot))
+      if (!Directory.Exists(_userDirectoryRoot))
         return;
 
-      if (Directory.GetDirectories (_userDirectoryRoot).Length > 0)
+      if (Directory.GetDirectories(_userDirectoryRoot).Length > 0)
         return;
 
       try
       {
-        Directory.Delete (_userDirectoryRoot);
+        Directory.Delete(_userDirectoryRoot);
       }
       catch (IOException)
       {

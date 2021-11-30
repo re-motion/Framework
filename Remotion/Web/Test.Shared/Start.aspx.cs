@@ -31,7 +31,7 @@ namespace Remotion.Web.Test.Shared
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
       CurrentFunctionCountLabel.Text = WxeFunctionStateManager.Current.CleanUpExpired().ToString();
     }
 

@@ -34,34 +34,34 @@ namespace Remotion.Web.Security.ExecutionEngine
     // construction and disposing
 
     public WxeDemandTargetStaticMethodPermissionAttribute (object methodNameEnum)
-      : base (MethodType.Static)
+      : base(MethodType.Static)
     {
-      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum> ("methodNameEnum", methodNameEnum);
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodNameEnum", methodNameEnum);
       Type enumType = enumValue.GetType();
 
-      CheckDeclaringTypeOfMethodNameEnum (enumValue);
+      CheckDeclaringTypeOfMethodNameEnum(enumValue);
 
-      Initialize (enumValue.ToString (), enumType.DeclaringType);
+      Initialize(enumValue.ToString(), enumType.DeclaringType);
     }
 
     public WxeDemandTargetStaticMethodPermissionAttribute (object methodNameEnum, Type securableClass)
-      : base (MethodType.Static)
+      : base(MethodType.Static)
     {
-      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum> ("methodNameEnum", methodNameEnum);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableObject));
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodNameEnum", methodNameEnum);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof(ISecurableObject));
 
-      CheckDeclaringTypeOfMethodNameEnum (enumValue, securableClass);
+      CheckDeclaringTypeOfMethodNameEnum(enumValue, securableClass);
 
-      Initialize (enumValue.ToString (), securableClass);
+      Initialize(enumValue.ToString(), securableClass);
     }
 
     public WxeDemandTargetStaticMethodPermissionAttribute (string methodName, Type securableClass)
-      : base (MethodType.Static)
+      : base(MethodType.Static)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableObject));
+      ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof(ISecurableObject));
 
-      Initialize (methodName, securableClass);
+      Initialize(methodName, securableClass);
     }
 
     // methods and properties

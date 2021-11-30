@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
   /// <summary>
   /// DTO object for JSON conversion.
   /// </summary>
-  [UsedImplicitly (ImplicitUseTargetFlags.WithMembers)]
+  [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
   public class GenericTestPageParameterDto
   {
     public GenericTestPageStatus Status { get; }

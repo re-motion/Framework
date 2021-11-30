@@ -22,13 +22,13 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
   public class FakeLinqToSqlProfiler
   {
     private static bool s_initialized;
-    private static readonly object s_initializedLock = new object ();
+    private static readonly object s_initializedLock = new object();
 
     public static void Initialize ()
     {
       lock (s_initializedLock)
       {
-        Assert.That (s_initialized, Is.False, "Initialize must not be called twice.");
+        Assert.That(s_initialized, Is.False, "Initialize must not be called twice.");
         s_initialized = true;
       }
     }
@@ -37,11 +37,11 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
     {
       lock (s_initializedLock)
       {
-        Assert.That (s_initialized, Is.True, "Initialize must be called before GetAppender.");
+        Assert.That(s_initialized, Is.True, "Initialize must be called before GetAppender.");
         s_initialized = false;
       }
 
-      return new MockableLinqToSqlAppender (name);
+      return new MockableLinqToSqlAppender(name);
     }
   }
 }

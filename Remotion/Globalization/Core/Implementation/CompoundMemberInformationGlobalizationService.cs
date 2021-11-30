@@ -30,7 +30,7 @@ namespace Remotion.Globalization.Implementation
   /// delegates to them to retrieve localized name for a specified member.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundMemberInformationGlobalizationService : IMemberInformationGlobalizationService
   {
     private readonly IReadOnlyCollection<IMemberInformationGlobalizationService> _memberInformationGlobalizationServices;
@@ -41,7 +41,7 @@ namespace Remotion.Globalization.Implementation
     /// <param name="memberInformationGlobalizationServices"> The <see cref="IMemberInformationGlobalizationService"/>s, starting with the least specific.</param>
     public CompoundMemberInformationGlobalizationService (IEnumerable<IMemberInformationGlobalizationService> memberInformationGlobalizationServices)
     {
-      ArgumentUtility.CheckNotNull ("memberInformationGlobalizationServices", memberInformationGlobalizationServices);
+      ArgumentUtility.CheckNotNull("memberInformationGlobalizationServices", memberInformationGlobalizationServices);
 
       _memberInformationGlobalizationServices = memberInformationGlobalizationServices.ToArray();
     }
@@ -54,14 +54,14 @@ namespace Remotion.Globalization.Implementation
     public bool TryGetTypeDisplayName (
         ITypeInformation typeInformation,
         ITypeInformation typeInformationForResourceResolution,
-        [MaybeNullWhen (false)] out string result)
+        [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
-      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
       foreach (var service in _memberInformationGlobalizationServices)
       {
-        if (service.TryGetTypeDisplayName (typeInformation, typeInformationForResourceResolution, out result))
+        if (service.TryGetTypeDisplayName(typeInformation, typeInformationForResourceResolution, out result))
           return true;
       }
 
@@ -72,14 +72,14 @@ namespace Remotion.Globalization.Implementation
     public bool TryGetPropertyDisplayName (
         IPropertyInformation propertyInformation,
         ITypeInformation typeInformationForResourceResolution,
-        [MaybeNullWhen (false)] out string result)
+        [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
       foreach (var service in _memberInformationGlobalizationServices)
       {
-        if (service.TryGetPropertyDisplayName (propertyInformation, typeInformationForResourceResolution, out result))
+        if (service.TryGetPropertyDisplayName(propertyInformation, typeInformationForResourceResolution, out result))
           return true;
       }
 
@@ -91,16 +91,16 @@ namespace Remotion.Globalization.Implementation
         IPropertyInformation propertyInformation,
         ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
       var result = new Dictionary<CultureInfo, string>();
       foreach (var service in _memberInformationGlobalizationServices)
       {
-        foreach (var localization in service.GetAvailablePropertyDisplayNames (propertyInformation, typeInformationForResourceResolution))
+        foreach (var localization in service.GetAvailablePropertyDisplayNames(propertyInformation, typeInformationForResourceResolution))
         {
-          if (!result.ContainsKey (localization.Key))
-            result.Add (localization.Key, localization.Value);
+          if (!result.ContainsKey(localization.Key))
+            result.Add(localization.Key, localization.Value);
         }
       }
 
@@ -111,16 +111,16 @@ namespace Remotion.Globalization.Implementation
         ITypeInformation typeInformation,
         ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
-      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
       var result = new Dictionary<CultureInfo, string>();
       foreach (var service in _memberInformationGlobalizationServices)
       {
-        foreach (var localization in service.GetAvailableTypeDisplayNames (typeInformation, typeInformationForResourceResolution))
+        foreach (var localization in service.GetAvailableTypeDisplayNames(typeInformation, typeInformationForResourceResolution))
         {
-          if (!result.ContainsKey (localization.Key))
-            result.Add (localization.Key, localization.Value);
+          if (!result.ContainsKey(localization.Key))
+            result.Add(localization.Key, localization.Value);
         }
       }
 

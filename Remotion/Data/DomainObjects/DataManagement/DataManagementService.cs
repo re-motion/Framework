@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// </returns>
     public static IDataManager GetDataManager (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
       return clientTransaction.DataManager;
     }

@@ -47,88 +47,88 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void GetColumnRenderers ()
     {
-      var builder = new BocColumnRendererArrayBuilder (new[] { _stubColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
+      var builder = new BocColumnRendererArrayBuilder(new[] { _stubColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
 
       var bocColumnRenderers = builder.CreateColumnRenderers();
 
-      Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
-      Assert.That (PrivateInvoke.GetNonPublicField (bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf (typeof (StubColumnRenderer)));
-      Assert.That (bocColumnRenderers[0].ColumnDefinition, Is.SameAs (_stubColumnDefinition));
-      Assert.That (bocColumnRenderers[0].ColumnIndex, Is.EqualTo (0));
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof(StubColumnRenderer)));
+      Assert.That(bocColumnRenderers[0].ColumnDefinition, Is.SameAs(_stubColumnDefinition));
+      Assert.That(bocColumnRenderers[0].ColumnIndex, Is.EqualTo(0));
     }
 
     [Test]
     public void GetColumnRenderers_PrepareSorting_IsClientSideSortingEnabled_False_And_HasSortingKeys_False ()
     {
-      var builder = new BocColumnRendererArrayBuilder (new[] { _stubColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
-      builder.SortingOrder = new List<BocListSortingOrderEntry> (new[] { new BocListSortingOrderEntry (_stubColumnDefinition, SortingDirection.Ascending) });
+      var builder = new BocColumnRendererArrayBuilder(new[] { _stubColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
+      builder.SortingOrder = new List<BocListSortingOrderEntry>(new[] { new BocListSortingOrderEntry(_stubColumnDefinition, SortingDirection.Ascending) });
       builder.IsClientSideSortingEnabled = false;
       builder.HasSortingKeys = false;
 
       var bocColumnRenderers = builder.CreateColumnRenderers();
 
-      Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
-      Assert.That (bocColumnRenderers[0].SortingDirection, Is.EqualTo (SortingDirection.None));
-      Assert.That (bocColumnRenderers[0].OrderIndex, Is.EqualTo (-1));
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(bocColumnRenderers[0].SortingDirection, Is.EqualTo(SortingDirection.None));
+      Assert.That(bocColumnRenderers[0].OrderIndex, Is.EqualTo(-1));
     }
 
     [Test]
     public void GetColumnRenderers_PrepareSorting_IsClientSideSortingEnabledTrue_And_HasSortingKeys_False ()
     {
-      var builder = new BocColumnRendererArrayBuilder (new[] { _stubColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
-      builder.SortingOrder = new List<BocListSortingOrderEntry> (new[] { new BocListSortingOrderEntry (_stubColumnDefinition, SortingDirection.Ascending) });
+      var builder = new BocColumnRendererArrayBuilder(new[] { _stubColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
+      builder.SortingOrder = new List<BocListSortingOrderEntry>(new[] { new BocListSortingOrderEntry(_stubColumnDefinition, SortingDirection.Ascending) });
       builder.IsClientSideSortingEnabled = true;
       builder.HasSortingKeys = false;
 
       var bocColumnRenderers = builder.CreateColumnRenderers();
 
-      Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
-      Assert.That (bocColumnRenderers[0].SortingDirection, Is.EqualTo (SortingDirection.Ascending));
-      Assert.That (bocColumnRenderers[0].OrderIndex, Is.EqualTo (0));
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(bocColumnRenderers[0].SortingDirection, Is.EqualTo(SortingDirection.Ascending));
+      Assert.That(bocColumnRenderers[0].OrderIndex, Is.EqualTo(0));
     }
 
     [Test]
     public void GetColumnRenderers_PrepareSorting_IsClientSideSortingEnabled_False_And_HasSortingKeys_True ()
     {
-      var builder = new BocColumnRendererArrayBuilder (new[] { _stubColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
-      builder.SortingOrder = new List<BocListSortingOrderEntry> (new[] { new BocListSortingOrderEntry (_stubColumnDefinition, SortingDirection.Ascending) });
+      var builder = new BocColumnRendererArrayBuilder(new[] { _stubColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
+      builder.SortingOrder = new List<BocListSortingOrderEntry>(new[] { new BocListSortingOrderEntry(_stubColumnDefinition, SortingDirection.Ascending) });
       builder.IsClientSideSortingEnabled = false;
       builder.HasSortingKeys = true;
 
       var bocColumnRenderers = builder.CreateColumnRenderers();
 
-      Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
-      Assert.That (bocColumnRenderers[0].SortingDirection, Is.EqualTo (SortingDirection.Ascending));
-      Assert.That (bocColumnRenderers[0].OrderIndex, Is.EqualTo (0));
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(bocColumnRenderers[0].SortingDirection, Is.EqualTo(SortingDirection.Ascending));
+      Assert.That(bocColumnRenderers[0].OrderIndex, Is.EqualTo(0));
     }
 
     [Test]
     public void GetColumnRenderers_PrepareSorting_SeveralColumns ()
     {
       var columns = new[] { _stubColumnDefinition, new StubColumnDefinition(), new StubColumnDefinition(), new StubColumnDefinition() };
-      var builder = new BocColumnRendererArrayBuilder (columns, _serviceLocator, _wcagHelperStub.Object);
+      var builder = new BocColumnRendererArrayBuilder(columns, _serviceLocator, _wcagHelperStub.Object);
       builder.SortingOrder =
-          new List<BocListSortingOrderEntry> (
+          new List<BocListSortingOrderEntry>(
               new[]
               {
-                  new BocListSortingOrderEntry (columns[0], SortingDirection.Ascending),
-                  new BocListSortingOrderEntry (columns[2], SortingDirection.Descending),
-                  new BocListSortingOrderEntry (columns[3], SortingDirection.None)
+                  new BocListSortingOrderEntry(columns[0], SortingDirection.Ascending),
+                  new BocListSortingOrderEntry(columns[2], SortingDirection.Descending),
+                  new BocListSortingOrderEntry(columns[3], SortingDirection.None)
               });
       builder.IsClientSideSortingEnabled = true;
       builder.HasSortingKeys = true;
 
       var bocColumnRenderers = builder.CreateColumnRenderers();
 
-      Assert.That (bocColumnRenderers.Length, Is.EqualTo (4));
-      Assert.That (bocColumnRenderers[0].SortingDirection, Is.EqualTo (SortingDirection.Ascending));
-      Assert.That (bocColumnRenderers[0].OrderIndex, Is.EqualTo (0));
-      Assert.That (bocColumnRenderers[1].SortingDirection, Is.EqualTo (SortingDirection.None));
-      Assert.That (bocColumnRenderers[1].OrderIndex, Is.EqualTo (-1));
-      Assert.That (bocColumnRenderers[2].SortingDirection, Is.EqualTo (SortingDirection.Descending));
-      Assert.That (bocColumnRenderers[2].OrderIndex, Is.EqualTo (1));
-      Assert.That (bocColumnRenderers[3].SortingDirection, Is.EqualTo (SortingDirection.None));
-      Assert.That (bocColumnRenderers[3].OrderIndex, Is.EqualTo (-1));
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(4));
+      Assert.That(bocColumnRenderers[0].SortingDirection, Is.EqualTo(SortingDirection.Ascending));
+      Assert.That(bocColumnRenderers[0].OrderIndex, Is.EqualTo(0));
+      Assert.That(bocColumnRenderers[1].SortingDirection, Is.EqualTo(SortingDirection.None));
+      Assert.That(bocColumnRenderers[1].OrderIndex, Is.EqualTo(-1));
+      Assert.That(bocColumnRenderers[2].SortingDirection, Is.EqualTo(SortingDirection.Descending));
+      Assert.That(bocColumnRenderers[2].OrderIndex, Is.EqualTo(1));
+      Assert.That(bocColumnRenderers[3].SortingDirection, Is.EqualTo(SortingDirection.None));
+      Assert.That(bocColumnRenderers[3].OrderIndex, Is.EqualTo(-1));
     }
 
     [Test]
@@ -136,60 +136,60 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var columns = new BocColumnDefinition[]
                     { _stubColumnDefinition, new StubColumnDefinition(), new StubValueColumnDefinition(), new StubColumnDefinition() };
-      var builder = new BocColumnRendererArrayBuilder (columns, _serviceLocator, _wcagHelperStub.Object);
+      var builder = new BocColumnRendererArrayBuilder(columns, _serviceLocator, _wcagHelperStub.Object);
       builder.SortingOrder =
-          new List<BocListSortingOrderEntry> (
+          new List<BocListSortingOrderEntry>(
               new[]
               {
-                  new BocListSortingOrderEntry ((IBocSortableColumnDefinition) columns[0], SortingDirection.Ascending),
-                  new BocListSortingOrderEntry ((IBocSortableColumnDefinition) columns[2], SortingDirection.Descending),
-                  new BocListSortingOrderEntry ((IBocSortableColumnDefinition) columns[3], SortingDirection.None)
+                  new BocListSortingOrderEntry((IBocSortableColumnDefinition)columns[0], SortingDirection.Ascending),
+                  new BocListSortingOrderEntry((IBocSortableColumnDefinition)columns[2], SortingDirection.Descending),
+                  new BocListSortingOrderEntry((IBocSortableColumnDefinition)columns[3], SortingDirection.None)
               });
       builder.IsClientSideSortingEnabled = true;
       builder.HasSortingKeys = true;
 
       var bocColumnRenderers = builder.CreateColumnRenderers();
 
-      Assert.That (bocColumnRenderers.Length, Is.EqualTo (4));
-      Assert.That (bocColumnRenderers[0].SortingDirection, Is.EqualTo (SortingDirection.Ascending));
-      Assert.That (bocColumnRenderers[0].OrderIndex, Is.EqualTo (0));
-      Assert.That (bocColumnRenderers[1].SortingDirection, Is.EqualTo (SortingDirection.None));
-      Assert.That (bocColumnRenderers[1].OrderIndex, Is.EqualTo (-1));
-      Assert.That (bocColumnRenderers[2].SortingDirection, Is.EqualTo (SortingDirection.Descending));
-      Assert.That (bocColumnRenderers[2].OrderIndex, Is.EqualTo (1));
-      Assert.That (bocColumnRenderers[3].SortingDirection, Is.EqualTo (SortingDirection.None));
-      Assert.That (bocColumnRenderers[3].OrderIndex, Is.EqualTo (-1));
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(4));
+      Assert.That(bocColumnRenderers[0].SortingDirection, Is.EqualTo(SortingDirection.Ascending));
+      Assert.That(bocColumnRenderers[0].OrderIndex, Is.EqualTo(0));
+      Assert.That(bocColumnRenderers[1].SortingDirection, Is.EqualTo(SortingDirection.None));
+      Assert.That(bocColumnRenderers[1].OrderIndex, Is.EqualTo(-1));
+      Assert.That(bocColumnRenderers[2].SortingDirection, Is.EqualTo(SortingDirection.Descending));
+      Assert.That(bocColumnRenderers[2].OrderIndex, Is.EqualTo(1));
+      Assert.That(bocColumnRenderers[3].SortingDirection, Is.EqualTo(SortingDirection.None));
+      Assert.That(bocColumnRenderers[3].OrderIndex, Is.EqualTo(-1));
     }
 
     [Test]
     public void GetColumnRenderers_BocValueColumnDefinition_EnableIcon_False ()
     {
-      var builder = new BocColumnRendererArrayBuilder (new[] { _stubValueColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
+      var builder = new BocColumnRendererArrayBuilder(new[] { _stubValueColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
       builder.EnableIcon = false;
 
       var bocColumnRenderers = builder.CreateColumnRenderers();
 
-      Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
-      Assert.That (bocColumnRenderers[0].ShowIcon, Is.False);
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(bocColumnRenderers[0].ShowIcon, Is.False);
     }
 
     [Test]
     public void GetColumnRenderers_BocValueColumnDefinition_EnableIcon_True ()
     {
-      var builder = new BocColumnRendererArrayBuilder (new[] { _stubValueColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
+      var builder = new BocColumnRendererArrayBuilder(new[] { _stubValueColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
       builder.EnableIcon = true;
 
       var bocColumnRenderers = builder.CreateColumnRenderers();
 
-      Assert.That (bocColumnRenderers.Length, Is.EqualTo (1));
-      Assert.That (bocColumnRenderers[0].ShowIcon, Is.True);
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(1));
+      Assert.That(bocColumnRenderers[0].ShowIcon, Is.True);
     }
 
     [Test]
     public void GetColumnRenderers_SeveralBocValueColumnDefinitions_EnableIcon_True ()
     {
       var builder =
-          new BocColumnRendererArrayBuilder (
+          new BocColumnRendererArrayBuilder(
               new[] { _stubValueColumnDefinition, new StubValueColumnDefinition(), new StubValueColumnDefinition() },
               _serviceLocator,
               _wcagHelperStub.Object);
@@ -197,10 +197,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var bocColumnRenderers = builder.CreateColumnRenderers();
 
-      Assert.That (bocColumnRenderers.Length, Is.EqualTo (3));
-      Assert.That (bocColumnRenderers[0].ShowIcon, Is.True);
-      Assert.That (bocColumnRenderers[1].ShowIcon, Is.False);
-      Assert.That (bocColumnRenderers[2].ShowIcon, Is.False);
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(3));
+      Assert.That(bocColumnRenderers[0].ShowIcon, Is.True);
+      Assert.That(bocColumnRenderers[1].ShowIcon, Is.False);
+      Assert.That(bocColumnRenderers[2].ShowIcon, Is.False);
     }
   }
 }

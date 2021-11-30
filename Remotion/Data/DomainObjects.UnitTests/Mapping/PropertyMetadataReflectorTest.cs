@@ -31,13 +31,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
       propertyInformationStub
-          .Stub (_ => _.GetCustomAttribute<StorageClassAttribute> (true))
-          .Return (new StorageClassAttribute (StorageClass.Transaction));
+          .Stub(_ => _.GetCustomAttribute<StorageClassAttribute>(true))
+          .Return(new StorageClassAttribute(StorageClass.Transaction));
 
       var reflector = new PropertyMetadataReflector();
-      var result = reflector.GetStorageClass (propertyInformationStub);
+      var result = reflector.GetStorageClass(propertyInformationStub);
 
-      Assert.That (result, Is.EqualTo (StorageClass.Transaction));
+      Assert.That(result, Is.EqualTo(StorageClass.Transaction));
     }
 
     [Test]
@@ -45,13 +45,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
       propertyInformationStub
-          .Stub (_ => _.GetCustomAttribute<StorageClassAttribute> (true))
-          .Return (new StorageClassNoneAttribute());
+          .Stub(_ => _.GetCustomAttribute<StorageClassAttribute>(true))
+          .Return(new StorageClassNoneAttribute());
 
       var reflector = new PropertyMetadataReflector();
-      var result = reflector.GetStorageClass (propertyInformationStub);
+      var result = reflector.GetStorageClass(propertyInformationStub);
 
-      Assert.That (result, Is.EqualTo (StorageClass.None));
+      Assert.That(result, Is.EqualTo(StorageClass.None));
     }
 
     [Test]
@@ -59,13 +59,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
       propertyInformationStub
-          .Stub (_ => _.GetCustomAttribute<StorageClassAttribute> (true))
-          .Return (null);
+          .Stub(_ => _.GetCustomAttribute<StorageClassAttribute>(true))
+          .Return(null);
 
       var reflector = new PropertyMetadataReflector();
-      var result = reflector.GetStorageClass (propertyInformationStub);
+      var result = reflector.GetStorageClass(propertyInformationStub);
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
   }
 }

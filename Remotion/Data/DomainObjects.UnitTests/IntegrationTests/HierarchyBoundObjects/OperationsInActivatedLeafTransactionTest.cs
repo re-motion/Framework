@@ -35,21 +35,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _rootTransaction = ClientTransaction.CreateRootTransaction();
-      _middleTransaction = _rootTransaction.CreateSubTransaction ();
-      _leafTransaction = _middleTransaction.CreateSubTransaction ();
+      _middleTransaction = _rootTransaction.CreateSubTransaction();
+      _leafTransaction = _middleTransaction.CreateSubTransaction();
 
-      _order1LoadedInMiddleTransaction = DomainObjectIDs.Order1.GetObject<Order> (_middleTransaction);
-      _objectReferenceFromMiddleTransaction = DomainObjectIDs.Order3.GetObjectReference<Order> (_rootTransaction);
+      _order1LoadedInMiddleTransaction = DomainObjectIDs.Order1.GetObject<Order>(_middleTransaction);
+      _objectReferenceFromMiddleTransaction = DomainObjectIDs.Order3.GetObjectReference<Order>(_rootTransaction);
     }
 
     [Test]
     public void DefaultTransactionContext_IsRootTransaction ()
     {
-      Assert.That (_order1LoadedInMiddleTransaction.RootTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_order1LoadedInMiddleTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_order1LoadedInMiddleTransaction.RootTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_order1LoadedInMiddleTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
@@ -57,8 +57,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        Assert.That (_order1LoadedInMiddleTransaction.RootTransaction, Is.SameAs (_rootTransaction));
-        Assert.That (_order1LoadedInMiddleTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_leafTransaction));
+        Assert.That(_order1LoadedInMiddleTransaction.RootTransaction, Is.SameAs(_rootTransaction));
+        Assert.That(_order1LoadedInMiddleTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(_leafTransaction));
       }
     }
 
@@ -67,23 +67,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        Assert.That (_order1LoadedInMiddleTransaction.State.IsNotLoadedYet, Is.True);
-        Assert.That (_order1LoadedInMiddleTransaction.OrderNumber, Is.EqualTo (1));
-        Assert.That (_order1LoadedInMiddleTransaction.OrderItems, Has.Count.EqualTo (2));
+        Assert.That(_order1LoadedInMiddleTransaction.State.IsNotLoadedYet, Is.True);
+        Assert.That(_order1LoadedInMiddleTransaction.OrderNumber, Is.EqualTo(1));
+        Assert.That(_order1LoadedInMiddleTransaction.OrderItems, Has.Count.EqualTo(2));
 
-        Assert.That (_leafTransaction.HasChanged(), Is.False);
+        Assert.That(_leafTransaction.HasChanged(), Is.False);
 
         _order1LoadedInMiddleTransaction.OrderNumber = 2;
         _order1LoadedInMiddleTransaction.OrderItems.Clear();
 
-        Assert.That (_order1LoadedInMiddleTransaction.State.IsChanged, Is.True);
-        Assert.That (_order1LoadedInMiddleTransaction.OrderNumber, Is.EqualTo (2));
-        Assert.That (_order1LoadedInMiddleTransaction.OrderItems, Is.Empty);
+        Assert.That(_order1LoadedInMiddleTransaction.State.IsChanged, Is.True);
+        Assert.That(_order1LoadedInMiddleTransaction.OrderNumber, Is.EqualTo(2));
+        Assert.That(_order1LoadedInMiddleTransaction.OrderItems, Is.Empty);
 
-        Assert.That (_rootTransaction.HasChanged(), Is.False);
-        Assert.That (_middleTransaction.HasChanged(), Is.False);
-        Assert.That (_leafTransaction.HasChanged(), Is.True);
-        Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _leafTransaction).IsChanged, Is.True);
+        Assert.That(_rootTransaction.HasChanged(), Is.False);
+        Assert.That(_middleTransaction.HasChanged(), Is.False);
+        Assert.That(_leafTransaction.HasChanged(), Is.True);
+        Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _leafTransaction).IsChanged, Is.True);
       }
     }
 
@@ -92,13 +92,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        Assert.That (_order1LoadedInMiddleTransaction.Properties[typeof (Order), "OrderNumber"].GetValue<int>(), Is.EqualTo (1));
-        Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _leafTransaction).IsUnchanged, Is.True);
+        Assert.That(_order1LoadedInMiddleTransaction.Properties[typeof(Order), "OrderNumber"].GetValue<int>(), Is.EqualTo(1));
+        Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _leafTransaction).IsUnchanged, Is.True);
 
-        _order1LoadedInMiddleTransaction.Properties[typeof (Order), "OrderNumber"].SetValue (2);
+        _order1LoadedInMiddleTransaction.Properties[typeof(Order), "OrderNumber"].SetValue(2);
 
-        Assert.That (_order1LoadedInMiddleTransaction.Properties[typeof (Order), "OrderNumber"].GetValue<int>(), Is.EqualTo (2));
-        Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _leafTransaction).IsChanged, Is.True);
+        Assert.That(_order1LoadedInMiddleTransaction.Properties[typeof(Order), "OrderNumber"].GetValue<int>(), Is.EqualTo(2));
+        Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _leafTransaction).IsChanged, Is.True);
       }
     }
 
@@ -107,8 +107,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        Assert.That (_order1LoadedInMiddleTransaction.OrderTicket.RootTransaction, Is.SameAs (_rootTransaction));
-        Assert.That (_order1LoadedInMiddleTransaction.OrderItems[0].RootTransaction, Is.SameAs (_rootTransaction));
+        Assert.That(_order1LoadedInMiddleTransaction.OrderTicket.RootTransaction, Is.SameAs(_rootTransaction));
+        Assert.That(_order1LoadedInMiddleTransaction.OrderItems[0].RootTransaction, Is.SameAs(_rootTransaction));
       }
     }
 
@@ -117,14 +117,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        var orderTicket = DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> (_middleTransaction);
+        var orderTicket = DomainObjectIDs.OrderTicket2.GetObject<OrderTicket>(_middleTransaction);
 
         _order1LoadedInMiddleTransaction.OrderTicket = orderTicket;
 
-        Assert.That (_order1LoadedInMiddleTransaction.OrderTicket, Is.SameAs (orderTicket));
-        Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _leafTransaction).IsChanged, Is.True);
-        Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _middleTransaction).IsUnchanged, Is.True);
-        Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _rootTransaction).IsUnchanged, Is.True);
+        Assert.That(_order1LoadedInMiddleTransaction.OrderTicket, Is.SameAs(orderTicket));
+        Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _leafTransaction).IsChanged, Is.True);
+        Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _middleTransaction).IsUnchanged, Is.True);
+        Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _rootTransaction).IsUnchanged, Is.True);
       }
     }
 
@@ -133,8 +133,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        var orderTicketFromOtherTransaction = ClientTransaction.CreateRootTransaction ().ExecuteInScope (() => OrderTicket.NewObject ());
-        Assert.That (
+        var orderTicketFromOtherTransaction = ClientTransaction.CreateRootTransaction().ExecuteInScope(() => OrderTicket.NewObject());
+        Assert.That(
             () => _order1LoadedInMiddleTransaction.OrderTicket = orderTicketFromOtherTransaction,
             Throws.InstanceOf<ClientTransactionsDifferException>());
       }
@@ -145,14 +145,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        OrderItem orderItem = DomainObjectIDs.OrderItem3.GetObject<OrderItem> (_middleTransaction);
+        OrderItem orderItem = DomainObjectIDs.OrderItem3.GetObject<OrderItem>(_middleTransaction);
 
-        _order1LoadedInMiddleTransaction.OrderItems.Add (orderItem);
+        _order1LoadedInMiddleTransaction.OrderItems.Add(orderItem);
 
-        Assert.That (_order1LoadedInMiddleTransaction.OrderItems.Last(), Is.SameAs (orderItem));
-        Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _leafTransaction).IsChanged, Is.True);
-        Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _middleTransaction).IsUnchanged, Is.True);
-        Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _rootTransaction).IsUnchanged, Is.True);
+        Assert.That(_order1LoadedInMiddleTransaction.OrderItems.Last(), Is.SameAs(orderItem));
+        Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _leafTransaction).IsChanged, Is.True);
+        Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _middleTransaction).IsUnchanged, Is.True);
+        Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _rootTransaction).IsUnchanged, Is.True);
       }
     }
 
@@ -161,9 +161,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        var orderItemFromOtherHierarchy = ClientTransaction.CreateRootTransaction().ExecuteInScope (() => OrderItem.NewObject());
-        Assert.That (
-            () => _order1LoadedInMiddleTransaction.OrderItems.Add (orderItemFromOtherHierarchy),
+        var orderItemFromOtherHierarchy = ClientTransaction.CreateRootTransaction().ExecuteInScope(() => OrderItem.NewObject());
+        Assert.That(
+            () => _order1LoadedInMiddleTransaction.OrderItems.Add(orderItemFromOtherHierarchy),
             Throws.InstanceOf<ClientTransactionsDifferException>());
       }
     }
@@ -175,11 +175,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        Assert.That (GetStateFromTransaction (_objectReferenceFromMiddleTransaction, _leafTransaction).IsNotLoadedYet, Is.True);
+        Assert.That(GetStateFromTransaction(_objectReferenceFromMiddleTransaction, _leafTransaction).IsNotLoadedYet, Is.True);
 
         _objectReferenceFromMiddleTransaction.EnsureDataAvailable();
 
-        Assert.That (GetStateFromTransaction (_objectReferenceFromMiddleTransaction, _leafTransaction).IsUnchanged, Is.True);
+        Assert.That(GetStateFromTransaction(_objectReferenceFromMiddleTransaction, _leafTransaction).IsUnchanged, Is.True);
       }
     }
 
@@ -188,11 +188,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        Assert.That (GetStateFromTransaction (_objectReferenceFromMiddleTransaction, _leafTransaction).IsNotLoadedYet, Is.True);
+        Assert.That(GetStateFromTransaction(_objectReferenceFromMiddleTransaction, _leafTransaction).IsNotLoadedYet, Is.True);
 
         _objectReferenceFromMiddleTransaction.TryEnsureDataAvailable();
 
-        Assert.That (GetStateFromTransaction (_objectReferenceFromMiddleTransaction, _leafTransaction).IsUnchanged, Is.True);
+        Assert.That(GetStateFromTransaction(_objectReferenceFromMiddleTransaction, _leafTransaction).IsUnchanged, Is.True);
       }
     }
 
@@ -201,11 +201,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _leafTransaction).IsNotLoadedYet, Is.True);
+        Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _leafTransaction).IsNotLoadedYet, Is.True);
 
         _order1LoadedInMiddleTransaction.Delete();
 
-        Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _leafTransaction).IsDeleted, Is.True);
+        Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _leafTransaction).IsDeleted, Is.True);
       }
     }
 
@@ -214,15 +214,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        var order = (Order) LifetimeService.NewObject (_leafTransaction, typeof (Order), ParamList.Empty);
+        var order = (Order)LifetimeService.NewObject(_leafTransaction, typeof(Order), ParamList.Empty);
 
-        Assert.That (GetStateFromTransaction (order, _leafTransaction).IsNew, Is.True);
-        Assert.That (order.State.IsInvalid, Is.False);
+        Assert.That(GetStateFromTransaction(order, _leafTransaction).IsNew, Is.True);
+        Assert.That(order.State.IsInvalid, Is.False);
 
         order.Delete();
 
-        Assert.That (GetStateFromTransaction (order, _leafTransaction).IsInvalid, Is.True);
-        Assert.That (order.State.IsInvalid, Is.True);
+        Assert.That(GetStateFromTransaction(order, _leafTransaction).IsInvalid, Is.True);
+        Assert.That(order.State.IsInvalid, Is.True);
       }
     }
 
@@ -231,11 +231,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       using (_leafTransaction.EnterNonDiscardingScope())
       {
-        Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _leafTransaction).IsNotLoadedYet, Is.True);
+        Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _leafTransaction).IsNotLoadedYet, Is.True);
 
         _order1LoadedInMiddleTransaction.RegisterForCommit();
 
-        Assert.That (GetStateFromTransaction (_order1LoadedInMiddleTransaction, _leafTransaction).IsChanged, Is.True);
+        Assert.That(GetStateFromTransaction(_order1LoadedInMiddleTransaction, _leafTransaction).IsChanged, Is.True);
       }
     }
   }

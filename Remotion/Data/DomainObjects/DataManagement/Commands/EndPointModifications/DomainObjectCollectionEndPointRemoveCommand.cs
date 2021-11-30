@@ -34,24 +34,24 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     private readonly IRelationEndPointProvider _endPointProvider;
 
     public DomainObjectCollectionEndPointRemoveCommand (
-        IDomainObjectCollectionEndPoint modifiedEndPoint, 
-        DomainObject removedObject, 
+        IDomainObjectCollectionEndPoint modifiedEndPoint,
+        DomainObject removedObject,
         IDomainObjectCollectionData collectionData,
-        IRelationEndPointProvider endPointProvider, 
+        IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
-        : base (
-            ArgumentUtility.CheckNotNull ("modifiedEndPoint", modifiedEndPoint),
-            ArgumentUtility.CheckNotNull ("removedObject", removedObject),
+        : base(
+            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
+            ArgumentUtility.CheckNotNull("removedObject", removedObject),
             null,
-            ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink))
+            ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
     {
-      ArgumentUtility.CheckNotNull ("collectionData", collectionData);
-      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull("collectionData", collectionData);
+      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
 
       if (modifiedEndPoint.IsNull)
-        throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
+        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
-      _index = modifiedEndPoint.GetData().IndexOf (removedObject.ID);
+      _index = modifiedEndPoint.GetData().IndexOf(removedObject.ID);
       _modifiedCollectionData = collectionData;
       _modifiedCollectionEventRaiser = modifiedEndPoint.GetCollectionEventRaiser();
       _endPointProvider = endPointProvider;
@@ -76,23 +76,23 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     {
       using (EnterTransactionScope())
       {
-        ModifiedCollectionEventRaiser.BeginRemove (_index, OldRelatedObject);
+        ModifiedCollectionEventRaiser.BeginRemove(_index, OldRelatedObject);
       }
-      base.Begin ();
+      base.Begin();
     }
 
     public override void Perform ()
     {
-      ModifiedCollectionData.Remove (OldRelatedObject);
-      ModifiedEndPoint.Touch ();
+      ModifiedCollectionData.Remove(OldRelatedObject);
+      ModifiedEndPoint.Touch();
     }
 
     public override void End ()
     {
-      base.End ();
+      base.End();
       using (EnterTransactionScope())
       {
-        ModifiedCollectionEventRaiser.EndRemove (_index, OldRelatedObject);
+        ModifiedCollectionEventRaiser.EndRemove(_index, OldRelatedObject);
       }
     }
 
@@ -108,9 +108,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     /// </remarks>
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      var removedEndPoint = GetOppositeEndPoint (ModifiedEndPoint, OldRelatedObject, _endPointProvider);
-      return new ExpandedCommand (
-          removedEndPoint.CreateRemoveCommand (ModifiedEndPoint.GetDomainObject ()), 
+      var removedEndPoint = GetOppositeEndPoint(ModifiedEndPoint, OldRelatedObject, _endPointProvider);
+      return new ExpandedCommand(
+          removedEndPoint.CreateRemoveCommand(ModifiedEndPoint.GetDomainObject()),
           this);
     }
   }

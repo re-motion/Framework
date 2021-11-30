@@ -30,41 +30,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _attribute = new DomainObjectHandleAttribute ();
+      base.SetUp();
+      _attribute = new DomainObjectHandleAttribute();
     }
 
     [Test]
     public void GetReferencedType_ReturnsDomainObjectHandleTypeParameter ()
     {
-      var result = _attribute.GetReferencedType (typeof (IDomainObjectHandle<Order>));
+      var result = _attribute.GetReferencedType(typeof(IDomainObjectHandle<Order>));
 
-      Assert.That (result, Is.SameAs (typeof (Order)));
+      Assert.That(result, Is.SameAs(typeof(Order)));
     }
 
     [Test]
     public void GetReferencedType_NonGenericType_Throws ()
     {
-      Assert.That (
-          () => _attribute.GetReferencedType (typeof (Order)),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+      Assert.That(
+          () => _attribute.GetReferencedType(typeof(Order)),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The handleType parameter must be an instantiation of 'IDomainObjectHandle<T>'.", "handleType"));
     }
 
     [Test]
     public void GetReferencedType_WrongGenericType_Throws ()
     {
-      Assert.That (
-          () => _attribute.GetReferencedType (typeof (List<Order>)),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+      Assert.That(
+          () => _attribute.GetReferencedType(typeof(List<Order>)),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The handleType parameter must be an instantiation of 'IDomainObjectHandle<T>'.", "handleType"));
     }
 
     [Test]
     public void GetReferencedType_DomainObjectHandleClass_Throws ()
     {
-      Assert.That (
-          () => _attribute.GetReferencedType (typeof (DomainObjectHandle<Order>)),
+      Assert.That(
+          () => _attribute.GetReferencedType(typeof(DomainObjectHandle<Order>)),
           Throws.ArgumentException,
           "It's not recommended to use the DomainObjectHandle<T> class directly, the interface should be used instead.");
     }
@@ -77,9 +77,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
         var order = Order.NewObject();
         var handle = order.GetHandle();
 
-        var result = _attribute.GetReferencedInstance (handle);
+        var result = _attribute.GetReferencedInstance(handle);
 
-        Assert.That (result, Is.SameAs (order));
+        Assert.That(result, Is.SameAs(order));
       }
     }
 
@@ -88,21 +88,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var order = DomainObjectMother.GetDeletedObject (ClientTransaction.Current, DomainObjectIDs.Order1);
+        var order = DomainObjectMother.GetDeletedObject(ClientTransaction.Current, DomainObjectIDs.Order1);
         var handle = order.GetHandle();
 
-        var result = _attribute.GetReferencedInstance (handle);
+        var result = _attribute.GetReferencedInstance(handle);
 
-        Assert.That (result, Is.SameAs (order));
+        Assert.That(result, Is.SameAs(order));
       }
     }
 
     [Test]
     public void GetReferencedInstance_NoHandleInstance ()
     {
-      Assert.That (
-          () => _attribute.GetReferencedInstance (new object()),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo (
+      Assert.That(
+          () => _attribute.GetReferencedInstance(new object()),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "Parameter 'handleInstance' has type 'System.Object' "
               + "when type 'Remotion.Data.DomainObjects.IDomainObjectHandle`1[Remotion.Data.DomainObjects.DomainObject]' was expected.",
               "handleInstance"));
@@ -113,9 +113,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       var handle = DomainObjectIDs.Order1.GetHandle<Order>();
 
-      Assert.That (
-          () => _attribute.GetReferencedInstance (handle),
-          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+      Assert.That(
+          () => _attribute.GetReferencedInstance(handle),
+          Throws.InvalidOperationException.With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
     }
   }
 }

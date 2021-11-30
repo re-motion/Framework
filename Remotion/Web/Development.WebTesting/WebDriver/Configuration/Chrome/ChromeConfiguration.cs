@@ -43,13 +43,13 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     private const string c_partialFileDownloadExtension = ".crdownload";
 
     private static readonly Lazy<ChromeExecutable> s_chromeExecutable =
-        new Lazy<ChromeExecutable> (() => new ChromeBinariesProvider().GetInstalledExecutable(), LazyThreadSafetyMode.ExecutionAndPublication);
+        new Lazy<ChromeExecutable>(() => new ChromeBinariesProvider().GetInstalledExecutable(), LazyThreadSafetyMode.ExecutionAndPublication);
 
-    private static readonly Lazy<FieldInfo> s_knownCapabilityNamesField = new Lazy<FieldInfo> (
+    private static readonly Lazy<FieldInfo> s_knownCapabilityNamesField = new Lazy<FieldInfo>(
         () =>
         {
-          var knownCapabilityNamesField = typeof (DriverOptions).GetField ("knownCapabilityNames", BindingFlags.Instance | BindingFlags.NonPublic);
-          Assertion.IsNotNull (knownCapabilityNamesField, "Selenium has changed, please update s_knownCapabilityNamesField field.");
+          var knownCapabilityNamesField = typeof(DriverOptions).GetField("knownCapabilityNames", BindingFlags.Instance | BindingFlags.NonPublic);
+          Assertion.IsNotNull(knownCapabilityNamesField, "Selenium has changed, please update s_knownCapabilityNamesField field.");
           return knownCapabilityNamesField;
         },
         LazyThreadSafetyMode.ExecutionAndPublication);
@@ -68,27 +68,27 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
     public ChromeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection)
-        : this (webTestConfigurationSection, s_chromeExecutable.Value)
+        : this(webTestConfigurationSection, s_chromeExecutable.Value)
     {
     }
 
     public ChromeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection,
         [NotNull] ChromeExecutable chromeExecutable)
-        : base (webTestConfigurationSection)
+        : base(webTestConfigurationSection)
     {
-      ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
-      ArgumentUtility.CheckNotNull ("chromeExecutable", chromeExecutable);
+      ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
+      ArgumentUtility.CheckNotNull("chromeExecutable", chromeExecutable);
 
       BrowserBinaryPath = chromeExecutable.BrowserBinaryPath;
       DriverBinaryPath = chromeExecutable.DriverBinaryPath;
       UserDirectoryRoot = chromeExecutable.UserDirectory;
 
-      DownloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
+      DownloadDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 
-      var downloadStartedGracePeriod = TimeSpan.FromMinutes (1);
+      var downloadStartedGracePeriod = TimeSpan.FromMinutes(1);
 
-      DownloadHelper = new DefaultDownloadHelper (
+      DownloadHelper = new DefaultDownloadHelper(
           DownloadDirectory,
           c_partialFileDownloadExtension,
           webTestConfigurationSection.DownloadStartedTimeout,
@@ -99,7 +99,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       DisableSecurityWarningsBehavior = webTestConfigurationSection.Chrome.DisableSecurityWarningsBehavior;
     }
 
-    public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory (this);
+    public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory(this);
 
     public virtual ExtendedChromeOptions CreateChromeOptions ()
     {
@@ -110,25 +110,25 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
                               UserDirectory = userDirectory
                           };
 
-      DisableSpecCompliance (chromeOptions);
+      DisableSpecCompliance(chromeOptions);
 
-      chromeOptions.AddArgument ($"user-data-dir={userDirectory}");
+      chromeOptions.AddArgument($"user-data-dir={userDirectory}");
 
-      chromeOptions.AddArgument ("no-first-run");
-      chromeOptions.AddArgument ("force-device-scale-factor=1");
+      chromeOptions.AddArgument("no-first-run");
+      chromeOptions.AddArgument("force-device-scale-factor=1");
 
-      chromeOptions.AddUserProfilePreference ("safebrowsing.enabled", true);
-      chromeOptions.AddUserProfilePreference ("download.default_directory", DownloadDirectory);
+      chromeOptions.AddUserProfilePreference("safebrowsing.enabled", true);
+      chromeOptions.AddUserProfilePreference("download.default_directory", DownloadDirectory);
 
       return chromeOptions;
     }
 
     private void DisableSpecCompliance (ExtendedChromeOptions chromeOptions)
     {
-      var knownCapabilityNames = (Dictionary<string, string>) s_knownCapabilityNamesField.Value.GetValue (chromeOptions)!;
-      knownCapabilityNames.Remove ("w3c");
+      var knownCapabilityNames = (Dictionary<string, string>)s_knownCapabilityNamesField.Value.GetValue(chromeOptions)!;
+      knownCapabilityNames.Remove("w3c");
 
-      chromeOptions.AddAdditionalCapability ("w3c", false);
+      chromeOptions.AddAdditionalCapability("w3c", false);
     }
 
     private string CreateUnusedUserDirectoryPath ()
@@ -137,9 +137,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       var userDirectoryID = 0;
       do
       {
-        userDirectory = Path.Combine (UserDirectoryRoot, string.Join (c_userDataFolderPrefix, userDirectoryID));
+        userDirectory = Path.Combine(UserDirectoryRoot, string.Join(c_userDataFolderPrefix, userDirectoryID));
         userDirectoryID++;
-      } while (Directory.Exists (userDirectory));
+      } while (Directory.Exists(userDirectory));
 
       return userDirectory;
     }

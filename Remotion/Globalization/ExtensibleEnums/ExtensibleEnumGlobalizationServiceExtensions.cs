@@ -48,16 +48,16 @@ namespace Remotion.Globalization.ExtensibleEnums
         [NotNull] this IExtensibleEnumGlobalizationService extensibleEnumGlobalizationService,
         [NotNull] IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull ("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName (value, out var result))
+      if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName(value, out var result))
         return result;
 
       if (ResourceLogger.IsEnabled)
       {
         var definingMethod = value.GetValueInfo().DefiningMethod;
-        ResourceLogger.LogResourceEntryNotFound (
+        ResourceLogger.LogResourceEntryNotFound(
             "Extensible enum value: '{0}' (Method: '{1}', Type: '{2}')",
             value.ValueName,
             definingMethod.Name,
@@ -85,11 +85,11 @@ namespace Remotion.Globalization.ExtensibleEnums
         [NotNull] this IExtensibleEnumGlobalizationService extensibleEnumGlobalizationService,
         [NotNull] IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull ("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
+      ArgumentUtility.CheckNotNull("value", value);
 
       string? result;
-      if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName (value, out result))
+      if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName(value, out result))
         return result;
 
       return null;
@@ -109,11 +109,11 @@ namespace Remotion.Globalization.ExtensibleEnums
         [NotNull] this IExtensibleEnumGlobalizationService extensibleEnumGlobalizationService,
         [NotNull] IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull ("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
+      ArgumentUtility.CheckNotNull("value", value);
 
       string? result;
-      return extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName (value, out result);
+      return extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName(value, out result);
     }
   }
 }

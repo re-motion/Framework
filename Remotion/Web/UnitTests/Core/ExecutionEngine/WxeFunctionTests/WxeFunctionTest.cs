@@ -32,16 +32,16 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     [SetUp]
     public void SetUp ()
     {
-      _executionListenerMock = new Mock<IWxeFunctionExecutionListener> (MockBehavior.Strict);
+      _executionListenerMock = new Mock<IWxeFunctionExecutionListener>(MockBehavior.Strict);
     }
 
     [Test]
     public void GetFunctionToken_AsRootFunction ()
     {
       TestFunction rootFunction = new TestFunction();
-      PrivateInvoke.InvokeNonPublicMethod (rootFunction, "SetFunctionToken", "RootFunction");
+      PrivateInvoke.InvokeNonPublicMethod(rootFunction, "SetFunctionToken", "RootFunction");
 
-      Assert.That (rootFunction.FunctionToken, Is.EqualTo ("RootFunction"));
+      Assert.That(rootFunction.FunctionToken, Is.EqualTo("RootFunction"));
     }
 
     [Test]
@@ -49,10 +49,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     {
       TestFunction rootFunction = new TestFunction();
       TestFunction subFunction = new TestFunction();
-      rootFunction.Add (subFunction);
-      PrivateInvoke.InvokeNonPublicMethod (rootFunction, "SetFunctionToken", "RootFunction");
+      rootFunction.Add(subFunction);
+      PrivateInvoke.InvokeNonPublicMethod(rootFunction, "SetFunctionToken", "RootFunction");
 
-      Assert.That (subFunction.FunctionToken, Is.EqualTo ("RootFunction"));
+      Assert.That(subFunction.FunctionToken, Is.EqualTo("RootFunction"));
     }
 
     [Test]
@@ -60,10 +60,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     {
       TestFunction rootFunction = new TestFunction();
 
-      Assert.That (
+      Assert.That(
           () => rootFunction.FunctionToken,
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("The WxeFunction does not have a RootFunction, i.e. the top-most WxeFunction does not have a FunctionToken."));
+              .With.Message.EqualTo("The WxeFunction does not have a RootFunction, i.e. the top-most WxeFunction does not have a FunctionToken."));
     }
 
     [Test]
@@ -71,104 +71,104 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     {
       TestFunction2 function = new TestFunction2();
       ITransactionStrategy actualTransaction = null;
-      function.Add (new WxeDelegateStep (() => actualTransaction = function.Transaction));
-      function.SetTransactionMode (WxeTransactionMode<TestTransactionFactory>.CreateRoot);
+      function.Add(new WxeDelegateStep(() => actualTransaction = function.Transaction));
+      function.SetTransactionMode(WxeTransactionMode<TestTransactionFactory>.CreateRoot);
 
       WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext (function);
+      var context = contextFactory.CreateContext(function);
 
-      Assert.That (function.Transaction, Is.InstanceOf<NullTransactionStrategy>());
+      Assert.That(function.Transaction, Is.InstanceOf<NullTransactionStrategy>());
 
-      function.Execute (context);
+      function.Execute(context);
 
-      Assert.That (actualTransaction, Is.InstanceOf<RootTransactionStrategy>());
+      Assert.That(actualTransaction, Is.InstanceOf<RootTransactionStrategy>());
     }
 
     [Test]
     public void SetTransactionMode_AfterExecutionHasStarted_ThrowsInvalidOperationException ()
     {
       TestFunction2 function = new TestFunction2();
-      function.Add (
-          new WxeDelegateStep (
-              () => Assert.That (
-                  () => function.SetTransactionMode (WxeTransactionMode<TestTransactionFactory>.CreateRoot),
+      function.Add(
+          new WxeDelegateStep(
+              () => Assert.That(
+                  () => function.SetTransactionMode(WxeTransactionMode<TestTransactionFactory>.CreateRoot),
                   Throws.InvalidOperationException
-                      .With.Message.EqualTo ("The TransactionMode cannot be set after the TransactionStrategy has been initialized."))));
+                      .With.Message.EqualTo("The TransactionMode cannot be set after the TransactionStrategy has been initialized."))));
 
       WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext (function);
+      var context = contextFactory.CreateContext(function);
 
-      function.Execute (context);
+      function.Execute(context);
     }
 
     [Test]
     public void GetTransaction_BeforeTransactionStrategyInitialized ()
     {
       TestFunction2 function = new TestFunction2();
-      Assert.That (function.Transaction, Is.InstanceOf<NullTransactionStrategy>());
+      Assert.That(function.Transaction, Is.InstanceOf<NullTransactionStrategy>());
     }
 
     [Test]
     public void GetExecutionListener ()
     {
       TestFunction2 function = new TestFunction2();
-      Assert.That (function.ExecutionListener, Is.InstanceOf (typeof (NullExecutionListener)));
+      Assert.That(function.ExecutionListener, Is.InstanceOf(typeof(NullExecutionListener)));
     }
 
     [Test]
     public void SetExecutionListener ()
     {
       TestFunction2 function = new TestFunction2();
-      function.SetExecutionListener (_executionListenerMock.Object);
-      Assert.That (function.ExecutionListener, Is.SameAs (_executionListenerMock.Object));
+      function.SetExecutionListener(_executionListenerMock.Object);
+      Assert.That(function.ExecutionListener, Is.SameAs(_executionListenerMock.Object));
     }
 
     [Test]
     public void SetExecutionListener_AfterExecutionHasStarted_ThrowsInvalidOperationException ()
     {
       TestFunction2 function = new TestFunction2();
-      function.Add (
-          new WxeDelegateStep (
-              () => Assert.That (
-                  () => function.SetExecutionListener (_executionListenerMock.Object),
+      function.Add(
+          new WxeDelegateStep(
+              () => Assert.That(
+                  () => function.SetExecutionListener(_executionListenerMock.Object),
                   Throws.InvalidOperationException
-                      .With.Message.EqualTo ("The ExecutionListener cannot be set after the TransactionStrategy has been initialized."))));
+                      .With.Message.EqualTo("The ExecutionListener cannot be set after the TransactionStrategy has been initialized."))));
 
       WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext (function);
+      var context = contextFactory.CreateContext(function);
 
-      function.Execute (context);
+      function.Execute(context);
     }
 
     [Test]
     public void SetExecutionListenerNull ()
     {
       TestFunction2 function = new TestFunction2();
-      Assert.That (() =>function.SetExecutionListener (null), Throws.TypeOf<ArgumentNullException>());
+      Assert.That(() =>function.SetExecutionListener(null), Throws.TypeOf<ArgumentNullException>());
     }
 
     [Test]
     public void GetExecutingStep_BeforeExecutionHasStarted_ReturnsCurrentFunction ()
     {
       TestFunction2 function = new TestFunction2();
-      function.Add (new WxeDelegateStep (() => { }));
+      function.Add(new WxeDelegateStep(() => { }));
 
-      Assert.That (function.IsExecutionStarted, Is.False);
-      Assert.That (function.ExecutingStep, Is.SameAs (function));
+      Assert.That(function.IsExecutionStarted, Is.False);
+      Assert.That(function.ExecutingStep, Is.SameAs(function));
     }
 
     [Test]
     public void GetExecutingStep_AfterExecutionHasFinished_ReturnsCurrentFunction ()
     {
       TestFunction2 function = new TestFunction2();
-      function.Add (new WxeDelegateStep (() => { }));
+      function.Add(new WxeDelegateStep(() => { }));
 
       WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext (function);
+      var context = contextFactory.CreateContext(function);
 
-      function.Execute (context);
+      function.Execute(context);
 
-      Assert.That (function.ExecutingStep, Is.SameAs (function));
+      Assert.That(function.ExecutingStep, Is.SameAs(function));
     }
 
     [Test]
@@ -176,44 +176,44 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     {
       TestFunction2 function = new TestFunction2();
       WxeStep actualStep = null;
-      var expectedStep = new WxeDelegateStep (
+      var expectedStep = new WxeDelegateStep(
           () =>
           {
-            Assert.That (function.IsExecutionStarted, Is.True);
+            Assert.That(function.IsExecutionStarted, Is.True);
             actualStep = function.ExecutingStep;
           });
-      function.Add (expectedStep);
+      function.Add(expectedStep);
 
       WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext (function);
+      var context = contextFactory.CreateContext(function);
 
-      function.Execute (context);
+      function.Execute(context);
 
-      Assert.That (actualStep, Is.SameAs (expectedStep));
+      Assert.That(actualStep, Is.SameAs(expectedStep));
     }
 
     [Test]
     public void GetLastExecutedStep_BeforeExecutionHasStarted_ReturnsNull ()
     {
       TestFunction2 function = new TestFunction2();
-      function.Add (new WxeDelegateStep (() => { }));
+      function.Add(new WxeDelegateStep(() => { }));
 
-      Assert.That (function.IsExecutionStarted, Is.False);
-      Assert.That (function.LastExecutedStep, Is.Null);
+      Assert.That(function.IsExecutionStarted, Is.False);
+      Assert.That(function.LastExecutedStep, Is.Null);
     }
 
     [Test]
     public void GetLastExecutedStep_AfterExecutionHasFinished_ReturnsNull ()
     {
       TestFunction2 function = new TestFunction2();
-      function.Add (new WxeDelegateStep (() => { }));
+      function.Add(new WxeDelegateStep(() => { }));
 
       WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext (function);
+      var context = contextFactory.CreateContext(function);
 
-      function.Execute (context);
+      function.Execute(context);
 
-      Assert.That (function.LastExecutedStep, Is.Null);
+      Assert.That(function.LastExecutedStep, Is.Null);
     }
 
     [Test]
@@ -221,20 +221,20 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     {
       TestFunction2 function = new TestFunction2();
       WxeStep actualStep = null;
-      var expectedStep = new WxeDelegateStep (
+      var expectedStep = new WxeDelegateStep(
           () =>
           {
-            Assert.That (function.IsExecutionStarted, Is.True);
+            Assert.That(function.IsExecutionStarted, Is.True);
             actualStep = function.ExecutingStep;
           });
-      function.Add (expectedStep);
+      function.Add(expectedStep);
 
       WxeContextFactory contextFactory = new WxeContextFactory();
-      var context = contextFactory.CreateContext (function);
+      var context = contextFactory.CreateContext(function);
 
-      function.Execute (context);
+      function.Execute(context);
 
-      Assert.That (actualStep, Is.SameAs (expectedStep));
+      Assert.That(actualStep, Is.SameAs(expectedStep));
     }
   }
 }

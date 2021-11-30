@@ -42,36 +42,36 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     [SetUp]
     public virtual void SetUp ()
     {
-      _executionStateContextMock = new Mock<IExecutionStateContext> (MockBehavior.Strict);
+      _executionStateContextMock = new Mock<IExecutionStateContext>(MockBehavior.Strict);
 
-      _rootFunction = new TestFunction ("Value");
+      _rootFunction = new TestFunction("Value");
       _subFunction = CreateSubFunction();
 
       _httpContextMock = new Mock<HttpContextBase>();
-      _functionState = new WxeFunctionState (_rootFunction, true);
+      _functionState = new WxeFunctionState(_rootFunction, true);
 
-      _responseMock = new Mock<HttpResponseBase> (MockBehavior.Strict);
-      _httpContextMock.Setup (stub => stub.Response).Returns (_responseMock.Object);
+      _responseMock = new Mock<HttpResponseBase>(MockBehavior.Strict);
+      _httpContextMock.Setup(stub => stub.Response).Returns(_responseMock.Object);
 
-      _requestMock = new Mock<HttpRequestBase> (MockBehavior.Strict);
-      _httpContextMock.Setup (stub => stub.Request).Returns (_requestMock.Object);
+      _requestMock = new Mock<HttpRequestBase>(MockBehavior.Strict);
+      _httpContextMock.Setup(stub => stub.Request).Returns(_requestMock.Object);
 
       _postBackCollection = new NameValueCollection();
 
-      _functionStateManager = new WxeFunctionStateManager (new FakeHttpSessionStateBase());
-      _wxeContext = new WxeContext (_httpContextMock.Object, _functionStateManager, _functionState, new NameValueCollection ());
+      _functionStateManager = new WxeFunctionStateManager(new FakeHttpSessionStateBase());
+      _wxeContext = new WxeContext(_httpContextMock.Object, _functionStateManager, _functionState, new NameValueCollection());
     }
 
     protected virtual Mock<OtherTestFunction> CreateSubFunction ()
     {
-      return new Mock<OtherTestFunction> ("OtherValue");
+      return new Mock<OtherTestFunction>("OtherValue");
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      WxeContext.SetCurrent (null);
-      UrlMappingConfiguration.SetCurrent (null);
+      WxeContext.SetCurrent(null);
+      UrlMappingConfiguration.SetCurrent(null);
     }
 
     protected WxeFunctionState FunctionState
@@ -122,9 +122,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     protected T CheckExecutionState<T> (T executionState)
         where T: IExecutionState
     {
-      Assert.That (executionState, Is.Not.Null);
-      Assert.That (executionState.ExecutionStateContext, Is.SameAs (ExecutionStateContextMock.Object));
-      Assert.That (executionState.Parameters.SubFunction, Is.SameAs (SubFunction.Object));
+      Assert.That(executionState, Is.Not.Null);
+      Assert.That(executionState.ExecutionStateContext, Is.SameAs(ExecutionStateContextMock.Object));
+      Assert.That(executionState.Parameters.SubFunction, Is.SameAs(SubFunction.Object));
 
       return executionState;
     }

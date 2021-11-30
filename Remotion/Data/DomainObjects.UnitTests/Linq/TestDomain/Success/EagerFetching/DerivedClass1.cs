@@ -18,13 +18,13 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching
 {
-  [ClassID ("EagerFetching_DerivedClass1")]
+  [ClassID("EagerFetching_DerivedClass1")]
   public class DerivedClass1 : BaseClass
   {
-    [DBBidirectionalRelation ("CollectionPropertyOneSide")]
+    [DBBidirectionalRelation("CollectionPropertyOneSide")]
     public virtual ObjectList<RelationTarget> CollectionPropertyManySide { get; set; }
 
-    [DBBidirectionalRelation ("ScalarProperty1RealSide")]
+    [DBBidirectionalRelation("ScalarProperty1RealSide")]
     public virtual RelationTarget ScalarProperty1VirtualSide { get; set; }
   }
 }

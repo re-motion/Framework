@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.ObjectBinding.Web.Services
 {
-  [Obsolete ("Use IBocAutoCompleteReferenceValueWebService instead. (Version 3.0.0-alpha.3)", true)]
+  [Obsolete("Use IBocAutoCompleteReferenceValueWebService instead. (Version 3.0.0-alpha.3)", true)]
   public interface ISearchAvailableObjectWebService
   {
     BusinessObjectWithIdentityProxy[] Search (

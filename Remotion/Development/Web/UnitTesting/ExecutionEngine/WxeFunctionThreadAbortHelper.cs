@@ -10,7 +10,7 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine
 #if NETFRAMEWORK
       Thread.CurrentThread.Abort();
 #else
-      var exception = (ThreadAbortException) Activator.CreateInstance (typeof (ThreadAbortException), nonPublic: true)!;
+      var exception = (ThreadAbortException)Activator.CreateInstance(typeof(ThreadAbortException), nonPublic: true)!;
       throw exception;
 #endif
     }

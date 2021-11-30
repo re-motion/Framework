@@ -35,22 +35,22 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         IScreenshotTransformation<T> transformation,
         IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("graphics", graphics);
-      ArgumentUtility.CheckNotNull ("resolver", resolver);
-      ArgumentUtility.CheckNotNull ("target", target);
-      ArgumentUtility.CheckNotNull ("transformation", transformation);
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("graphics", graphics);
+      ArgumentUtility.CheckNotNull("resolver", resolver);
+      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull("transformation", transformation);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
-      var resolvedElement = Resolve (resolver, target, locator, coordinateSystem);
-      var context = new ScreenshotTransformationContext<T> (manipulation, graphics, resolver, target, resolvedElement);
+      var resolvedElement = Resolve(resolver, target, locator, coordinateSystem);
+      var context = new ScreenshotTransformationContext<T>(manipulation, graphics, resolver, target, resolvedElement);
 
-      context = transformation.BeginApply (context);
+      context = transformation.BeginApply(context);
 
       var parentBounds = context.ResolvedElement.ParentBounds;
       if (parentBounds.HasValue)
       {
-        _context = context.CloneWith (
-            resolvedElement: resolvedElement.CloneWith (elementBounds: Rectangle.Intersect (parentBounds.Value, context.ResolvedElement.ElementBounds)));
+        _context = context.CloneWith(
+            resolvedElement: resolvedElement.CloneWith(elementBounds: Rectangle.Intersect(parentBounds.Value, context.ResolvedElement.ElementBounds)));
       }
       else
       {
@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     public void Dispose ()
     {
-      _transformation.EndApply (_context);
+      _transformation.EndApply(_context);
     }
 
     private ResolvedScreenshotElement Resolve (
@@ -79,11 +79,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       switch (coordinateSystem)
       {
         case CoordinateSystem.Browser:
-          return resolver.ResolveBrowserCoordinates (target);
+          return resolver.ResolveBrowserCoordinates(target);
         case CoordinateSystem.Desktop:
-          return resolver.ResolveDesktopCoordinates (target, locator);
+          return resolver.ResolveDesktopCoordinates(target, locator);
         default:
-          throw new ArgumentOutOfRangeException ("coordinateSystem", coordinateSystem, null);
+          throw new ArgumentOutOfRangeException("coordinateSystem", coordinateSystem, null);
       }
     }
   }

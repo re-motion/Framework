@@ -27,36 +27,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void NewObjectInReadOnlyRootTransaction_IsForbidden ()
     {
-      CheckTransactionIsEmpty (ReadOnlyRootTransaction);
-      CheckTransactionIsEmpty (ReadOnlyMiddleTransaction);
-      CheckTransactionIsEmpty (WriteableSubTransaction);
+      CheckTransactionIsEmpty(ReadOnlyRootTransaction);
+      CheckTransactionIsEmpty(ReadOnlyMiddleTransaction);
+      CheckTransactionIsEmpty(WriteableSubTransaction);
 
-      CheckForbidden (() => ExecuteInReadOnlyRootTransaction (() => Order.NewObject()), "NewObjectCreating");
+      CheckForbidden(() => ExecuteInReadOnlyRootTransaction(() => Order.NewObject()), "NewObjectCreating");
 
-      CheckTransactionIsEmpty (ReadOnlyRootTransaction);
-      CheckTransactionIsEmpty (ReadOnlyMiddleTransaction);
-      CheckTransactionIsEmpty (WriteableSubTransaction);
+      CheckTransactionIsEmpty(ReadOnlyRootTransaction);
+      CheckTransactionIsEmpty(ReadOnlyMiddleTransaction);
+      CheckTransactionIsEmpty(WriteableSubTransaction);
     }
 
     [Test]
     public void NewObjectInReadOnlyMiddleTransaction_IsForbidden ()
     {
-      CheckTransactionIsEmpty (ReadOnlyRootTransaction);
-      CheckTransactionIsEmpty (ReadOnlyMiddleTransaction);
-      CheckTransactionIsEmpty (WriteableSubTransaction);
+      CheckTransactionIsEmpty(ReadOnlyRootTransaction);
+      CheckTransactionIsEmpty(ReadOnlyMiddleTransaction);
+      CheckTransactionIsEmpty(WriteableSubTransaction);
 
-      CheckForbidden (() => ExecuteInReadOnlyMiddleTransaction (() => Order.NewObject()), "NewObjectCreating");
+      CheckForbidden(() => ExecuteInReadOnlyMiddleTransaction(() => Order.NewObject()), "NewObjectCreating");
 
-      CheckTransactionIsEmpty (ReadOnlyRootTransaction);
-      CheckTransactionIsEmpty (ReadOnlyMiddleTransaction);
-      CheckTransactionIsEmpty (WriteableSubTransaction);
+      CheckTransactionIsEmpty(ReadOnlyRootTransaction);
+      CheckTransactionIsEmpty(ReadOnlyMiddleTransaction);
+      CheckTransactionIsEmpty(WriteableSubTransaction);
     }
 
     private void CheckTransactionIsEmpty (ClientTransaction clientTransaction)
     {
-      var dataManager = ClientTransactionTestHelper.GetIDataManager (clientTransaction);
-      Assert.That (dataManager.RelationEndPoints, Is.Empty);
-      Assert.That (dataManager.DataContainers, Is.Empty);
+      var dataManager = ClientTransactionTestHelper.GetIDataManager(clientTransaction);
+      Assert.That(dataManager.RelationEndPoints, Is.Empty);
+      Assert.That(dataManager.DataContainers, Is.Empty);
     }
   }
 }

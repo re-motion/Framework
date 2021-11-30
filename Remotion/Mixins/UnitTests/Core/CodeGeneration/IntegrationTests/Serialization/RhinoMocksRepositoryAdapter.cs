@@ -26,39 +26,39 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.Seriali
     private readonly MockRepository _mockRepository;
 
     public RhinoMocksRepositoryAdapter ()
-        : this (new MockRepository())
+        : this(new MockRepository())
     {
     }
 
     public RhinoMocksRepositoryAdapter (MockRepository mockRepository)
     {
-      ArgumentUtility.CheckNotNull ("mockRepository", mockRepository);
+      ArgumentUtility.CheckNotNull("mockRepository", mockRepository);
       _mockRepository = mockRepository;
     }
 
     public T StrictMock<T> (params object[] argumentsForConstructor)
     {
-      return _mockRepository.StrictMock<T> (argumentsForConstructor);
+      return _mockRepository.StrictMock<T>(argumentsForConstructor);
     }
 
     public void ReplayAll ()
     {
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
     }
 
     public void VerifyAll ()
     {
-      _mockRepository.VerifyAll ();
+      _mockRepository.VerifyAll();
     }
 
     public IDisposable Ordered ()
     {
-      return _mockRepository.Ordered ();
+      return _mockRepository.Ordered();
     }
 
     public void LastCall_IgnoreArguments ()
     {
-      LastCall.IgnoreArguments ();
+      LastCall.IgnoreArguments();
     }
   }
 }

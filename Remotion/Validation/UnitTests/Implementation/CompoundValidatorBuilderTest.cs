@@ -40,26 +40,26 @@ namespace Remotion.Validation.UnitTests.Implementation
       _validatorBuilderStub1 = new Mock<IValidatorBuilder>();
       _validatorBuilderStub2 = new Mock<IValidatorBuilder>();
 
-      _validatorBuilderStub1.Setup (stub => stub.BuildValidator (typeof (Customer))).Returns (_validatorStub1.Object);
-      _validatorBuilderStub2.Setup (stub => stub.BuildValidator (typeof (Customer))).Returns (_validatorStub2.Object);
+      _validatorBuilderStub1.Setup(stub => stub.BuildValidator(typeof(Customer))).Returns(_validatorStub1.Object);
+      _validatorBuilderStub2.Setup(stub => stub.BuildValidator(typeof(Customer))).Returns(_validatorStub2.Object);
 
-      _compoundValidatorBuilder = new CompoundValidatorBuilder (new[] { _validatorBuilderStub1.Object, _validatorBuilderStub2.Object });
+      _compoundValidatorBuilder = new CompoundValidatorBuilder(new[] { _validatorBuilderStub1.Object, _validatorBuilderStub2.Object });
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_compoundValidatorBuilder.Builders, Is.EquivalentTo (new[] { _validatorBuilderStub1.Object, _validatorBuilderStub2.Object }));
+      Assert.That(_compoundValidatorBuilder.Builders, Is.EquivalentTo(new[] { _validatorBuilderStub1.Object, _validatorBuilderStub2.Object }));
     }
 
     [Test]
     public void BuildValidator ()
     {
-      var result = _compoundValidatorBuilder.BuildValidator (typeof (Customer));
+      var result = _compoundValidatorBuilder.BuildValidator(typeof(Customer));
 
-      Assert.That (result, Is.TypeOf (typeof (CompoundValidator)));
-      var compoundValidator = (CompoundValidator) result;
-      Assert.That (compoundValidator.Validators, Is.EquivalentTo (new[] { _validatorStub1.Object, _validatorStub2.Object }));
+      Assert.That(result, Is.TypeOf(typeof(CompoundValidator)));
+      var compoundValidator = (CompoundValidator)result;
+      Assert.That(compoundValidator.Validators, Is.EquivalentTo(new[] { _validatorStub1.Object, _validatorStub2.Object }));
     }
   }
 }

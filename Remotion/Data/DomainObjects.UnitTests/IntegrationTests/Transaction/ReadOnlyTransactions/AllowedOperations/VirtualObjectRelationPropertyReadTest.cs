@@ -32,115 +32,115 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order1 = (Order) LifetimeService.GetObjectReference (WriteableSubTransaction, DomainObjectIDs.Order1);
-      _relationEndPointID = RelationEndPointID.Resolve (_order1, o => o.OrderTicket);
-      _oppositeRelationEndPointID = RelationEndPointID.Create (DomainObjectIDs.OrderTicket1, _relationEndPointID.Definition.GetOppositeEndPointDefinition ());
+      _order1 = (Order)LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Order1);
+      _relationEndPointID = RelationEndPointID.Resolve(_order1, o => o.OrderTicket);
+      _oppositeRelationEndPointID = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1, _relationEndPointID.Definition.GetOppositeEndPointDefinition());
     }
 
     [Test]
     public void RelationReadInReadOnlyRootTransaction_IsAllowed_NoLoading ()
     {
-      WriteableSubTransaction.EnsureDataAvailable (DomainObjectIDs.Order1);
-      WriteableSubTransaction.EnsureDataComplete (_relationEndPointID);
-      WriteableSubTransaction.EnsureDataAvailable (DomainObjectIDs.OrderTicket1);
+      WriteableSubTransaction.EnsureDataAvailable(DomainObjectIDs.Order1);
+      WriteableSubTransaction.EnsureDataComplete(_relationEndPointID);
+      WriteableSubTransaction.EnsureDataAvailable(DomainObjectIDs.OrderTicket1);
 
-      var orderTicket = ExecuteInReadOnlyRootTransaction (() => _order1.OrderTicket);
+      var orderTicket = ExecuteInReadOnlyRootTransaction(() => _order1.OrderTicket);
 
-      Assert.That (orderTicket.ID, Is.EqualTo (DomainObjectIDs.OrderTicket1));
+      Assert.That(orderTicket.ID, Is.EqualTo(DomainObjectIDs.OrderTicket1));
     }
 
     [Test]
     public void RelationReadInReadOnlyMiddleTransaction_IsAllowed_NoLoading ()
     {
-      WriteableSubTransaction.EnsureDataAvailable (DomainObjectIDs.Order1);
-      WriteableSubTransaction.EnsureDataComplete (_relationEndPointID);
-      WriteableSubTransaction.EnsureDataAvailable (DomainObjectIDs.OrderTicket1);
+      WriteableSubTransaction.EnsureDataAvailable(DomainObjectIDs.Order1);
+      WriteableSubTransaction.EnsureDataComplete(_relationEndPointID);
+      WriteableSubTransaction.EnsureDataAvailable(DomainObjectIDs.OrderTicket1);
 
-      var orderTicket = ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderTicket);
+      var orderTicket = ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderTicket);
 
-      Assert.That (orderTicket.ID, Is.EqualTo (DomainObjectIDs.OrderTicket1));
+      Assert.That(orderTicket.ID, Is.EqualTo(DomainObjectIDs.OrderTicket1));
     }
 
     [Test]
     public void RelationReadInReadOnlyRootTransaction_IsAllowed_WithLoading ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.OrderTicket1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.OrderTicket1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.OrderTicket1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.OrderTicket1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.OrderTicket1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.OrderTicket1);
 
-      CheckEndPointNull (ReadOnlyRootTransaction, _relationEndPointID);
-      CheckEndPointNull (ReadOnlyMiddleTransaction, _relationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _relationEndPointID);
+      CheckEndPointNull(ReadOnlyRootTransaction, _relationEndPointID);
+      CheckEndPointNull(ReadOnlyMiddleTransaction, _relationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _relationEndPointID);
 
-      CheckEndPointNull (ReadOnlyRootTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(ReadOnlyRootTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _oppositeRelationEndPointID);
 
-      var orderTicket = ExecuteInReadOnlyRootTransaction (() => _order1.OrderTicket);
-      
-      Assert.That (orderTicket.ID, Is.EqualTo (DomainObjectIDs.OrderTicket1));
+      var orderTicket = ExecuteInReadOnlyRootTransaction(() => _order1.OrderTicket);
 
-      CheckDataLoaded (ReadOnlyRootTransaction, _order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, _order1);
-      CheckDataNotLoaded (WriteableSubTransaction, _order1);
+      Assert.That(orderTicket.ID, Is.EqualTo(DomainObjectIDs.OrderTicket1));
 
-      CheckDataLoaded (ReadOnlyRootTransaction, orderTicket);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, orderTicket);
-      CheckDataNotLoaded (WriteableSubTransaction, orderTicket);
+      CheckDataLoaded(ReadOnlyRootTransaction, _order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, _order1);
+      CheckDataNotLoaded(WriteableSubTransaction, _order1);
 
-      CheckEndPointComplete (ReadOnlyRootTransaction, _relationEndPointID);
-      CheckEndPointNull (ReadOnlyMiddleTransaction, _relationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _relationEndPointID);
+      CheckDataLoaded(ReadOnlyRootTransaction, orderTicket);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, orderTicket);
+      CheckDataNotLoaded(WriteableSubTransaction, orderTicket);
 
-      CheckEndPointComplete (ReadOnlyRootTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _oppositeRelationEndPointID);
+      CheckEndPointComplete(ReadOnlyRootTransaction, _relationEndPointID);
+      CheckEndPointNull(ReadOnlyMiddleTransaction, _relationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _relationEndPointID);
+
+      CheckEndPointComplete(ReadOnlyRootTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _oppositeRelationEndPointID);
     }
 
     [Test]
     public void RelationReadInReadOnlyMiddleTransaction_IsAllowed_WithLoading ()
     {
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      CheckDataNotLoaded (ReadOnlyRootTransaction, DomainObjectIDs.OrderTicket1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, DomainObjectIDs.OrderTicket1);
-      CheckDataNotLoaded (WriteableSubTransaction, DomainObjectIDs.OrderTicket1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, DomainObjectIDs.OrderTicket1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, DomainObjectIDs.OrderTicket1);
+      CheckDataNotLoaded(WriteableSubTransaction, DomainObjectIDs.OrderTicket1);
 
-      CheckEndPointNull (ReadOnlyRootTransaction, _relationEndPointID);
-      CheckEndPointNull (ReadOnlyMiddleTransaction, _relationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _relationEndPointID);
+      CheckEndPointNull(ReadOnlyRootTransaction, _relationEndPointID);
+      CheckEndPointNull(ReadOnlyMiddleTransaction, _relationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _relationEndPointID);
 
-      CheckEndPointNull (ReadOnlyRootTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(ReadOnlyRootTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _oppositeRelationEndPointID);
 
-      var orderTicket = ExecuteInReadOnlyMiddleTransaction (() => _order1.OrderTicket);
+      var orderTicket = ExecuteInReadOnlyMiddleTransaction(() => _order1.OrderTicket);
 
-      Assert.That (orderTicket.ID, Is.EqualTo (DomainObjectIDs.OrderTicket1));
+      Assert.That(orderTicket.ID, Is.EqualTo(DomainObjectIDs.OrderTicket1));
 
-      CheckDataLoaded (ReadOnlyRootTransaction, _order1);
-      CheckDataLoaded (ReadOnlyMiddleTransaction, _order1);
-      CheckDataNotLoaded (WriteableSubTransaction, _order1);
+      CheckDataLoaded(ReadOnlyRootTransaction, _order1);
+      CheckDataLoaded(ReadOnlyMiddleTransaction, _order1);
+      CheckDataNotLoaded(WriteableSubTransaction, _order1);
 
-      CheckDataLoaded (ReadOnlyRootTransaction, orderTicket);
-      CheckDataLoaded (ReadOnlyMiddleTransaction, orderTicket);
-      CheckDataNotLoaded (WriteableSubTransaction, orderTicket);
+      CheckDataLoaded(ReadOnlyRootTransaction, orderTicket);
+      CheckDataLoaded(ReadOnlyMiddleTransaction, orderTicket);
+      CheckDataNotLoaded(WriteableSubTransaction, orderTicket);
 
-      CheckEndPointComplete (ReadOnlyRootTransaction, _relationEndPointID);
-      CheckEndPointComplete (ReadOnlyMiddleTransaction, _relationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _relationEndPointID);
+      CheckEndPointComplete(ReadOnlyRootTransaction, _relationEndPointID);
+      CheckEndPointComplete(ReadOnlyMiddleTransaction, _relationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _relationEndPointID);
 
-      CheckEndPointComplete (ReadOnlyRootTransaction, _oppositeRelationEndPointID);
-      CheckEndPointComplete (ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
-      CheckEndPointNull (WriteableSubTransaction, _oppositeRelationEndPointID);
+      CheckEndPointComplete(ReadOnlyRootTransaction, _oppositeRelationEndPointID);
+      CheckEndPointComplete(ReadOnlyMiddleTransaction, _oppositeRelationEndPointID);
+      CheckEndPointNull(WriteableSubTransaction, _oppositeRelationEndPointID);
     }
   }
 }

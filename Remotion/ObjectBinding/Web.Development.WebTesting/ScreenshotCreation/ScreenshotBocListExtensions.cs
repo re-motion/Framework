@@ -41,14 +41,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentList", fluentList);
+      ArgumentUtility.CheckNotNull("fluentList", fluentList);
 
-      var result = fluentList.Target.List.Scope.FindCss (".bocListMenuBlock", Options.NoWait);
-      if (!result.Exists (Options.NoWait))
-        throw new InvalidOperationException ("Can not find a menu-block for this BocList.");
+      var result = fluentList.Target.List.Scope.FindCss(".bocListMenuBlock", Options.NoWait);
+      if (!result.Exists(Options.NoWait))
+        throw new InvalidOperationException("Can not find a menu-block for this BocList.");
 
       return
-          SelfResolvableFluentScreenshot.Create (new ScreenshotBocListMenuBlock<TList, TRow, TCell> (fluentList, result.ForElementScopeScreenshot()));
+          SelfResolvableFluentScreenshot.Create(new ScreenshotBocListMenuBlock<TList, TRow, TCell>(fluentList, result.ForElementScopeScreenshot()));
     }
 
     /// <summary>
@@ -61,14 +61,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentList", fluentList);
+      ArgumentUtility.CheckNotNull("fluentList", fluentList);
 
-      var result = fluentList.Target.List.Scope.FindCss (".bocListNavigator", Options.NoWait);
-      if (!result.Exists (Options.NoWait))
-        throw new InvalidOperationException ("Can not find a navigator for this BocList.");
+      var result = fluentList.Target.List.Scope.FindCss(".bocListNavigator", Options.NoWait);
+      if (!result.Exists(Options.NoWait))
+        throw new InvalidOperationException("Can not find a navigator for this BocList.");
 
       return
-          SelfResolvableFluentScreenshot.Create (new ScreenshotBocListNavigator<TList, TRow, TCell> (fluentList, result.ForElementScopeScreenshot()));
+          SelfResolvableFluentScreenshot.Create(new ScreenshotBocListNavigator<TList, TRow, TCell>(fluentList, result.ForElementScopeScreenshot()));
     }
 
     /// <summary>
@@ -80,14 +80,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentList", fluentList);
+      ArgumentUtility.CheckNotNull("fluentList", fluentList);
 
-      var result = fluentList.Target.List.Scope.FindCss (".bocListTableContainer", Options.NoWait);
+      var result = fluentList.Target.List.Scope.FindCss(".bocListTableContainer", Options.NoWait);
       result.EnsureExistence();
 
       return
-          SelfResolvableFluentScreenshot.Create (
-              new ScreenshotBocListTableContainer<TList, TRow, TCell> (fluentList, result.ForElementScopeScreenshot()));
+          SelfResolvableFluentScreenshot.Create(
+              new ScreenshotBocListTableContainer<TList, TRow, TCell>(fluentList, result.ForElementScopeScreenshot()));
     }
   }
 }

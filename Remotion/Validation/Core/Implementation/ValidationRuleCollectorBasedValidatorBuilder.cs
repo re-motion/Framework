@@ -31,7 +31,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Collector-based validator builder.  
   /// </summary>
-  [ImplementationFor (typeof (IValidatorBuilder), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IValidatorBuilder), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class ValidationRuleCollectorBasedValidatorBuilder : IValidatorBuilder
   {
     public IValidationRuleCollectorProvider ValidationRuleCollectorProvider { get; }
@@ -51,13 +51,13 @@ namespace Remotion.Validation.Implementation
         IMemberInformationNameResolver memberInformationNameResolver,
         IValidationRuleCollectorValidator collectorValidator)
     {
-      ArgumentUtility.CheckNotNull ("validationRuleCollectorProvider", validationRuleCollectorProvider);
-      ArgumentUtility.CheckNotNull ("validationRuleCollectorMerger", validationRuleCollectorMerger);
-      ArgumentUtility.CheckNotNull ("propertyMetaValidationRuleValidatorFactory", propertyMetaValidationRuleValidatorFactory);
-      ArgumentUtility.CheckNotNull ("objectMetaValidationRuleValidatorFactory", objectMetaValidationRuleValidatorFactory);
-      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
-      ArgumentUtility.CheckNotNull ("memberInformationNameResolver", memberInformationNameResolver);
-      ArgumentUtility.CheckNotNull ("collectorValidator", collectorValidator);
+      ArgumentUtility.CheckNotNull("validationRuleCollectorProvider", validationRuleCollectorProvider);
+      ArgumentUtility.CheckNotNull("validationRuleCollectorMerger", validationRuleCollectorMerger);
+      ArgumentUtility.CheckNotNull("propertyMetaValidationRuleValidatorFactory", propertyMetaValidationRuleValidatorFactory);
+      ArgumentUtility.CheckNotNull("objectMetaValidationRuleValidatorFactory", objectMetaValidationRuleValidatorFactory);
+      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull("memberInformationNameResolver", memberInformationNameResolver);
+      ArgumentUtility.CheckNotNull("collectorValidator", collectorValidator);
 
       ValidationRuleCollectorProvider = validationRuleCollectorProvider;
       ValidationRuleCollectorMerger = validationRuleCollectorMerger;
@@ -71,29 +71,29 @@ namespace Remotion.Validation.Implementation
 
     public IValidator BuildValidator (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+      ArgumentUtility.CheckNotNull("validatedType", validatedType);
 
-      var allCollectors = ValidationRuleCollectorProvider.GetValidationRuleCollectors (new[] { validatedType }).Select (c => c.ToArray()).ToArray();
-      ValidateCollectors (allCollectors.SelectMany (c => c));
-      var validationCollectorMergeResult = ValidationRuleCollectorMerger.Merge (allCollectors);
-      ValidateMetaRules (
+      var allCollectors = ValidationRuleCollectorProvider.GetValidationRuleCollectors(new[] { validatedType }).Select(c => c.ToArray()).ToArray();
+      ValidateCollectors(allCollectors.SelectMany(c => c));
+      var validationCollectorMergeResult = ValidationRuleCollectorMerger.Merge(allCollectors);
+      ValidateMetaRules(
           allCollectors,
           validationCollectorMergeResult.CollectedPropertyValidationRules,
           validationCollectorMergeResult.CollectedObjectValidationRules);
 
       var propertyValidationRules = validationCollectorMergeResult.CollectedPropertyValidationRules
-          .Select (r => r.CreateValidationRule (ValidationMessageFactory));
+          .Select(r => r.CreateValidationRule(ValidationMessageFactory));
       var objectValidationRules = validationCollectorMergeResult.CollectedObjectValidationRules
-          .Select (r => r.CreateValidationRule (ValidationMessageFactory));
-      var validationRules = propertyValidationRules.Concat (objectValidationRules);
+          .Select(r => r.CreateValidationRule(ValidationMessageFactory));
+      var validationRules = propertyValidationRules.Concat(objectValidationRules);
 
-      return new Validator (validationRules, validatedType);
+      return new Validator(validationRules, validatedType);
     }
 
     private void ValidateCollectors (IEnumerable<ValidationRuleCollectorInfo> allCollectors)
     {
       foreach (var validationCollectorInfo in allCollectors)
-        CollectorValidator.CheckValid (validationCollectorInfo.Collector);
+        CollectorValidator.CheckValid(validationCollectorInfo.Collector);
     }
 
     private void ValidateMetaRules (
@@ -101,23 +101,23 @@ namespace Remotion.Validation.Implementation
         IEnumerable<IAddingPropertyValidationRuleCollector> allPropertyValidationRuleCollectors,
         IEnumerable<IAddingObjectValidationRuleCollector> allObjectValidationRuleCollectors)
     {
-      var validationRuleCollectors = allCollectors.SelectMany (cg => cg).Select (ci => ci.Collector).ToList();
+      var validationRuleCollectors = allCollectors.SelectMany(cg => cg).Select(ci => ci.Collector).ToList();
 
-      var propertyMetaValidationRuleCollectors = validationRuleCollectors.SelectMany (c => c.PropertyMetaValidationRules);
+      var propertyMetaValidationRuleCollectors = validationRuleCollectors.SelectMany(c => c.PropertyMetaValidationRules);
       var propertyValidationMetaRuleValidator =
-          PropertyMetaValidationRuleValidatorFactory.CreatePropertyMetaValidationRuleValidator (propertyMetaValidationRuleCollectors);
+          PropertyMetaValidationRuleValidatorFactory.CreatePropertyMetaValidationRuleValidator(propertyMetaValidationRuleCollectors);
 
-      var objectMetaValidationRuleCollectors = validationRuleCollectors.SelectMany (c => c.ObjectMetaValidationRules);
+      var objectMetaValidationRuleCollectors = validationRuleCollectors.SelectMany(c => c.ObjectMetaValidationRules);
       var objectValidationMetaRuleValidator =
-          ObjectMetaValidationRuleValidatorFactory.CreateObjectMetaValidationRuleValidator (objectMetaValidationRuleCollectors);
+          ObjectMetaValidationRuleValidatorFactory.CreateObjectMetaValidationRuleValidator(objectMetaValidationRuleCollectors);
 
       var metaValidationResults = propertyValidationMetaRuleValidator
-          .Validate (allPropertyValidationRuleCollectors.ToArray())
-          .Concat (objectValidationMetaRuleValidator.Validate (allObjectValidationRuleCollectors.ToArray()))
-          .Where (r => !r.IsValid).ToArray();
+          .Validate(allPropertyValidationRuleCollectors.ToArray())
+          .Concat(objectValidationMetaRuleValidator.Validate(allObjectValidationRuleCollectors.ToArray()))
+          .Where(r => !r.IsValid).ToArray();
 
       if (metaValidationResults.Any())
-        throw CreateMetaValidationException (metaValidationResults);
+        throw CreateMetaValidationException(metaValidationResults);
     }
 
     private ValidationConfigurationException CreateMetaValidationException (IEnumerable<MetaValidationRuleValidationResult> metaValidationResults)
@@ -126,11 +126,11 @@ namespace Remotion.Validation.Implementation
       foreach (var validationResult in metaValidationResults)
       {
         if (messages.Length > 0)
-          messages.AppendLine (new string ('-', 10));
-        messages.AppendLine (validationResult.Message);
+          messages.AppendLine(new string('-', 10));
+        messages.AppendLine(validationResult.Message);
       }
 
-      return new ValidationConfigurationException (messages.ToString().Trim());
+      return new ValidationConfigurationException(messages.ToString().Trim());
     }
   }
 }

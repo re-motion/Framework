@@ -43,15 +43,15 @@ namespace Remotion.Reflection.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _property = typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("NotVisibleAttributeScalar");
+      _property = typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("NotVisibleAttributeScalar");
       _adapter = PropertyInfoAdapter.Create(_property);
 
-      _explicitInterfaceImplementationProperty = typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty (
+      _explicitInterfaceImplementationProperty = typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar",
           BindingFlags.NonPublic | BindingFlags.Instance);
       _explicitInterfaceAdapter = PropertyInfoAdapter.Create(_explicitInterfaceImplementationProperty);
 
-      _implicitInterfaceImplementationProperty = typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty (
+      _implicitInterfaceImplementationProperty = typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty(
           "ImplicitInterfaceScalar",
           BindingFlags.Public | BindingFlags.Instance);
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(_implicitInterfaceImplementationProperty);
@@ -60,101 +60,101 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void Create_ReturnsSameInstance ()
     {
-      Assert.That (PropertyInfoAdapter.Create (_property), Is.SameAs (PropertyInfoAdapter.Create (_property)));
+      Assert.That(PropertyInfoAdapter.Create(_property), Is.SameAs(PropertyInfoAdapter.Create(_property)));
     }
 
     [Test]
     public void CreateOrNull_WithPropertyInfo_ReturnsSameInstanceAsCreate ()
     {
-      Assert.That (PropertyInfoAdapter.CreateOrNull (_property), Is.SameAs (PropertyInfoAdapter.Create (_property)));
+      Assert.That(PropertyInfoAdapter.CreateOrNull(_property), Is.SameAs(PropertyInfoAdapter.Create(_property)));
     }
 
     [Test]
     public void CreateOrNull_WithPropertyInfoNull_ReturnsNull ()
     {
-      Assert.That (PropertyInfoAdapter.CreateOrNull (null), Is.Null);
+      Assert.That(PropertyInfoAdapter.CreateOrNull(null), Is.Null);
     }
 
     [Test]
     public void Create_ReturnsSameInstance_ForMethodsReflectedFromDifferentLevelsInHierarchy ()
     {
-      var propertyViaBase = typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("NotVisibleAttributeScalar");
-      var propertyViaDerived = typeof (DerivedClassWithReferenceType<SimpleReferenceType>).GetProperty ("NotVisibleAttributeScalar");
+      var propertyViaBase = typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("NotVisibleAttributeScalar");
+      var propertyViaDerived = typeof(DerivedClassWithReferenceType<SimpleReferenceType>).GetProperty("NotVisibleAttributeScalar");
 
-      Assert.That (propertyViaBase, Is.Not.SameAs (propertyViaDerived));
-      Assert.That (PropertyInfoAdapter.Create (propertyViaBase), Is.SameAs (PropertyInfoAdapter.Create (propertyViaDerived)));
+      Assert.That(propertyViaBase, Is.Not.SameAs(propertyViaDerived));
+      Assert.That(PropertyInfoAdapter.Create(propertyViaBase), Is.SameAs(PropertyInfoAdapter.Create(propertyViaDerived)));
     }
 
     [Test]
     public void PropertyInfo ()
     {
-      CheckPropertyInfo (_property, _adapter);
-      CheckPropertyInfo (_implicitInterfaceImplementationProperty, _implicitInterfaceAdapter);
-      CheckPropertyInfo (_explicitInterfaceImplementationProperty, _explicitInterfaceAdapter);
+      CheckPropertyInfo(_property, _adapter);
+      CheckPropertyInfo(_implicitInterfaceImplementationProperty, _implicitInterfaceAdapter);
+      CheckPropertyInfo(_explicitInterfaceImplementationProperty, _explicitInterfaceAdapter);
     }
 
     [Test]
     public void PropertyType ()
     {
-      Assert.That (_adapter.PropertyType, Is.EqualTo (_property.PropertyType));
+      Assert.That(_adapter.PropertyType, Is.EqualTo(_property.PropertyType));
     }
 
     [Test]
     public void Name ()
     {
-      Assert.That (_adapter.Name, Is.EqualTo (_property.Name));
+      Assert.That(_adapter.Name, Is.EqualTo(_property.Name));
     }
 
     [Test]
     public void Name_ImplicitInterface ()
     {
-      Assert.That (_implicitInterfaceAdapter.Name, Is.EqualTo (_implicitInterfaceImplementationProperty.Name));
-      Assert.That (_implicitInterfaceAdapter.Name, Is.EqualTo ("ImplicitInterfaceScalar"));
+      Assert.That(_implicitInterfaceAdapter.Name, Is.EqualTo(_implicitInterfaceImplementationProperty.Name));
+      Assert.That(_implicitInterfaceAdapter.Name, Is.EqualTo("ImplicitInterfaceScalar"));
     }
 
     [Test]
     public void Name_ExplicitInterface ()
     {
-      Assert.That (_explicitInterfaceAdapter.Name, Is.EqualTo (_explicitInterfaceImplementationProperty.Name));
-      Assert.That (
+      Assert.That(_explicitInterfaceAdapter.Name, Is.EqualTo(_explicitInterfaceImplementationProperty.Name));
+      Assert.That(
           _explicitInterfaceAdapter.Name,
-          Is.EqualTo ("Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar"));
+          Is.EqualTo("Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar"));
     }
 
     [Test]
     public void DeclaringType ()
     {
-      Assert.That (_adapter.DeclaringType, Is.EqualTo (TypeAdapter.Create (_property.DeclaringType)));
+      Assert.That(_adapter.DeclaringType, Is.EqualTo(TypeAdapter.Create(_property.DeclaringType)));
     }
 
     [Test]
     public void CanBeSetFromOutside_Scalar ()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("Scalar");
+      PropertyInfo propertyInfo = typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("Scalar");
       var adapter = PropertyInfoAdapter.Create(propertyInfo);
 
-      Assert.That (adapter.CanBeSetFromOutside, Is.True);
-      AssertCanSet (adapter, new ClassWithReferenceType<SimpleReferenceType>(), new SimpleReferenceType());
+      Assert.That(adapter.CanBeSetFromOutside, Is.True);
+      AssertCanSet(adapter, new ClassWithReferenceType<SimpleReferenceType>(), new SimpleReferenceType());
     }
 
     [Test]
     public void CanBeSetFromOutside_ReadOnlyScalar ()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("ReadOnlyScalar");
+      PropertyInfo propertyInfo = typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ReadOnlyScalar");
       var adapter = PropertyInfoAdapter.Create(propertyInfo);
 
-      Assert.That (adapter.CanBeSetFromOutside, Is.False);
-      AssertCanNotSet (adapter, new ClassWithReferenceType<SimpleReferenceType>(), new SimpleReferenceType());
+      Assert.That(adapter.CanBeSetFromOutside, Is.False);
+      AssertCanNotSet(adapter, new ClassWithReferenceType<SimpleReferenceType>(), new SimpleReferenceType());
     }
 
     [Test]
     public void CanBeSetFromOutside_ReadOnlyNonPublicSetterScalar ()
     {
-      PropertyInfo propertyInfo = typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("ReadOnlyNonPublicSetterScalar");
+      PropertyInfo propertyInfo = typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ReadOnlyNonPublicSetterScalar");
       var adapter = PropertyInfoAdapter.Create(propertyInfo);
 
-      Assert.That (adapter.CanBeSetFromOutside, Is.False);
-      AssertCanNotSet (adapter, new ClassWithReferenceType<SimpleReferenceType>(), new SimpleReferenceType());
+      Assert.That(adapter.CanBeSetFromOutside, Is.False);
+      AssertCanNotSet(adapter, new ClassWithReferenceType<SimpleReferenceType>(), new SimpleReferenceType());
     }
 
     [Test]
@@ -162,32 +162,32 @@ namespace Remotion.Reflection.UnitTests
     {
       PropertyInfoAdapter adapter = _implicitInterfaceAdapter;
 
-      Assert.That (adapter.CanBeSetFromOutside, Is.True);
-      AssertCanSet (adapter, new ClassWithReferenceType<SimpleReferenceType>(), new SimpleReferenceType());
+      Assert.That(adapter.CanBeSetFromOutside, Is.True);
+      AssertCanSet(adapter, new ClassWithReferenceType<SimpleReferenceType>(), new SimpleReferenceType());
     }
 
     [Test]
     public void GetCustomAttribute ()
     {
-      Assert.That (
-          _adapter.GetCustomAttribute<SampleAttribute> (true),
-          Is.EqualTo (AttributeUtility.GetCustomAttribute<SampleAttribute> (_property, true)));
+      Assert.That(
+          _adapter.GetCustomAttribute<SampleAttribute>(true),
+          Is.EqualTo(AttributeUtility.GetCustomAttribute<SampleAttribute>(_property, true)));
     }
 
     [Test]
     public void GetCustomAttributes ()
     {
-      Assert.That (
-          _adapter.GetCustomAttributes<SampleAttribute> (true),
-          Is.EqualTo (AttributeUtility.GetCustomAttributes<SampleAttribute> (_property, true)));
+      Assert.That(
+          _adapter.GetCustomAttributes<SampleAttribute>(true),
+          Is.EqualTo(AttributeUtility.GetCustomAttributes<SampleAttribute>(_property, true)));
     }
 
     [Test]
     public void IsDefined ()
     {
-      Assert.That (
-          _adapter.IsDefined<SampleAttribute> (true),
-          Is.EqualTo (AttributeUtility.IsDefined<SampleAttribute> (_property, true)));
+      Assert.That(
+          _adapter.IsDefined<SampleAttribute>(true),
+          Is.EqualTo(AttributeUtility.IsDefined<SampleAttribute>(_property, true)));
     }
 
     [Test]
@@ -195,13 +195,13 @@ namespace Remotion.Reflection.UnitTests
     {
       var scalar = new SimpleReferenceType();
       var instanceMock = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
-      instanceMock.Setup (mock => mock[10]).Returns (scalar).Verifiable();
+      instanceMock.Setup(mock => mock[10]).Returns(scalar).Verifiable();
 
-      var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) });
+      var interfaceDeclarationProperty = typeof(IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty("Item", new[] { typeof(int) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
 
-      object actualScalar = _implicitInterfaceAdapter.GetValue (instanceMock.Object, new object[] { 10 });
-      Assert.That (actualScalar, Is.SameAs (scalar));
+      object actualScalar = _implicitInterfaceAdapter.GetValue(instanceMock.Object, new object[] { 10 });
+      Assert.That(actualScalar, Is.SameAs(scalar));
       instanceMock.Verify();
     }
 
@@ -209,12 +209,12 @@ namespace Remotion.Reflection.UnitTests
     public void GetValue_WithIndexerProperty_OneParameter_IndexParameterArrayLengthMismatch ()
     {
       var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
-      var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) });
+      var interfaceDeclarationProperty = typeof(IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty("Item", new[] { typeof(int) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-      Assert.That (
-          () => _implicitInterfaceAdapter.GetValue (instanceStub.Object, new object[0]),
+      Assert.That(
+          () => _implicitInterfaceAdapter.GetValue(instanceStub.Object, new object[0]),
           Throws.InstanceOf<TargetParameterCountException>()
-              .With.Message.EqualTo ("Parameter count mismatch."));
+              .With.Message.EqualTo("Parameter count mismatch."));
     }
 
     [Test]
@@ -222,15 +222,15 @@ namespace Remotion.Reflection.UnitTests
     {
       SimpleReferenceType scalar = new SimpleReferenceType();
       var instanceMock = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
-      instanceMock.Setup (mock => mock[10, new DateTime (2000, 1, 1)]).Returns (scalar).Verifiable();
+      instanceMock.Setup(mock => mock[10, new DateTime(2000, 1, 1)]).Returns(scalar).Verifiable();
 
-      var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
-          .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
+      var interfaceDeclarationProperty = typeof(IInterfaceWithReferenceType<SimpleReferenceType>)
+          .GetProperty("Item", new[] { typeof(int), typeof(DateTime) });
 
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
 
-      object actualScalar = _implicitInterfaceAdapter.GetValue (instanceMock.Object, new object[] { 10, new DateTime (2000, 1, 1) });
-      Assert.That (actualScalar, Is.SameAs (scalar));
+      object actualScalar = _implicitInterfaceAdapter.GetValue(instanceMock.Object, new object[] { 10, new DateTime(2000, 1, 1) });
+      Assert.That(actualScalar, Is.SameAs(scalar));
       instanceMock.Verify();
     }
 
@@ -239,13 +239,13 @@ namespace Remotion.Reflection.UnitTests
     {
       var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
 
-      var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
-          .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
+      var interfaceDeclarationProperty = typeof(IInterfaceWithReferenceType<SimpleReferenceType>)
+          .GetProperty("Item", new[] { typeof(int), typeof(DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-      Assert.That (
-          () => _implicitInterfaceAdapter.GetValue (instanceStub.Object, null),
+      Assert.That(
+          () => _implicitInterfaceAdapter.GetValue(instanceStub.Object, null),
           Throws.InstanceOf<TargetParameterCountException>()
-              .With.Message.EqualTo ("Parameter count mismatch."));
+              .With.Message.EqualTo("Parameter count mismatch."));
     }
 
     [Test]
@@ -253,13 +253,13 @@ namespace Remotion.Reflection.UnitTests
     {
       var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
 
-      var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
-          .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
+      var interfaceDeclarationProperty = typeof(IInterfaceWithReferenceType<SimpleReferenceType>)
+          .GetProperty("Item", new[] { typeof(int), typeof(DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-      Assert.That (
-          () => _implicitInterfaceAdapter.GetValue (instanceStub.Object, new object[1]),
+      Assert.That(
+          () => _implicitInterfaceAdapter.GetValue(instanceStub.Object, new object[1]),
           Throws.InstanceOf<TargetParameterCountException>()
-              .With.Message.EqualTo ("Parameter count mismatch."));
+              .With.Message.EqualTo("Parameter count mismatch."));
     }
 
     [Test]
@@ -267,14 +267,14 @@ namespace Remotion.Reflection.UnitTests
     {
       var scalar = new SimpleReferenceType();
       var instanceMock = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
-      instanceMock.Setup (mock => mock[10, new DateTime (2000, 1, 1), "foo"]).Returns (scalar).Verifiable();
+      instanceMock.Setup(mock => mock[10, new DateTime(2000, 1, 1), "foo"]).Returns(scalar).Verifiable();
 
-      var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
-          .GetProperty ("Item", new[] { typeof (int), typeof (DateTime), typeof (string) });
+      var interfaceDeclarationProperty = typeof(IInterfaceWithReferenceType<SimpleReferenceType>)
+          .GetProperty("Item", new[] { typeof(int), typeof(DateTime), typeof(string) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
 
-      object actualScalar = _implicitInterfaceAdapter.GetValue (instanceMock.Object, new object[] { 10, new DateTime (2000, 1, 1), "foo" });
-      Assert.That (actualScalar, Is.SameAs (scalar));
+      object actualScalar = _implicitInterfaceAdapter.GetValue(instanceMock.Object, new object[] { 10, new DateTime(2000, 1, 1), "foo" });
+      Assert.That(actualScalar, Is.SameAs(scalar));
       instanceMock.Verify();
     }
 
@@ -283,8 +283,8 @@ namespace Remotion.Reflection.UnitTests
     {
       IInterfaceWithReferenceType<SimpleReferenceType> instance = new ClassWithReferenceType<SimpleReferenceType>();
       SimpleReferenceType value = new SimpleReferenceType();
-      _explicitInterfaceAdapter.SetValue (instance, value, null);
-      Assert.That (instance.ExplicitInterfaceScalar, Is.SameAs (value));
+      _explicitInterfaceAdapter.SetValue(instance, value, null);
+      Assert.That(instance.ExplicitInterfaceScalar, Is.SameAs(value));
     }
 
     [Test]
@@ -292,12 +292,12 @@ namespace Remotion.Reflection.UnitTests
     {
       var scalar = new SimpleReferenceType();
       var instanceMock = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
-      instanceMock.SetupSet (mock => mock[10] = scalar).Verifiable();
+      instanceMock.SetupSet(mock => mock[10] = scalar).Verifiable();
 
-      var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) });
+      var interfaceDeclarationProperty = typeof(IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty("Item", new[] { typeof(int) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
 
-      _implicitInterfaceAdapter.SetValue (instanceMock.Object, scalar, new object[] { 10 });
+      _implicitInterfaceAdapter.SetValue(instanceMock.Object, scalar, new object[] { 10 });
       instanceMock.Verify();
     }
 
@@ -307,12 +307,12 @@ namespace Remotion.Reflection.UnitTests
       var scalar = new SimpleReferenceType();
       var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
 
-      var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) });
+      var interfaceDeclarationProperty = typeof(IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty("Item", new[] { typeof(int) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-      Assert.That (
-          () => _implicitInterfaceAdapter.SetValue (instanceStub.Object, scalar, null),
+      Assert.That(
+          () => _implicitInterfaceAdapter.SetValue(instanceStub.Object, scalar, null),
           Throws.InstanceOf<TargetParameterCountException>()
-              .With.Message.EqualTo ("Parameter count mismatch."));
+              .With.Message.EqualTo("Parameter count mismatch."));
     }
 
     [Test]
@@ -321,12 +321,12 @@ namespace Remotion.Reflection.UnitTests
       var scalar = new SimpleReferenceType();
       var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
 
-      var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) });
+      var interfaceDeclarationProperty = typeof(IInterfaceWithReferenceType<SimpleReferenceType>).GetProperty("Item", new[] { typeof(int) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-      Assert.That (
-          () => _implicitInterfaceAdapter.SetValue (instanceStub.Object, scalar, new object[0]),
+      Assert.That(
+          () => _implicitInterfaceAdapter.SetValue(instanceStub.Object, scalar, new object[0]),
           Throws.InstanceOf<TargetParameterCountException>()
-              .With.Message.EqualTo ("Parameter count mismatch."));
+              .With.Message.EqualTo("Parameter count mismatch."));
     }
 
     [Test]
@@ -334,13 +334,13 @@ namespace Remotion.Reflection.UnitTests
     {
       var scalar = new SimpleReferenceType();
       var instanceMock = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
-      instanceMock.SetupSet (mock => mock[10, new DateTime (2000, 1, 1)] = scalar).Verifiable();
+      instanceMock.SetupSet(mock => mock[10, new DateTime(2000, 1, 1)] = scalar).Verifiable();
 
-      var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
-          .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
+      var interfaceDeclarationProperty = typeof(IInterfaceWithReferenceType<SimpleReferenceType>)
+          .GetProperty("Item", new[] { typeof(int), typeof(DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
 
-      _implicitInterfaceAdapter.SetValue (instanceMock.Object, scalar, new object[] { 10, new DateTime (2000, 1, 1) });
+      _implicitInterfaceAdapter.SetValue(instanceMock.Object, scalar, new object[] { 10, new DateTime(2000, 1, 1) });
       instanceMock.Verify();
     }
 
@@ -350,13 +350,13 @@ namespace Remotion.Reflection.UnitTests
       var scalar = new SimpleReferenceType();
       var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
 
-      var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
-          .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
+      var interfaceDeclarationProperty = typeof(IInterfaceWithReferenceType<SimpleReferenceType>)
+          .GetProperty("Item", new[] { typeof(int), typeof(DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-      Assert.That (
-          () => _implicitInterfaceAdapter.SetValue (instanceStub.Object, scalar, null),
+      Assert.That(
+          () => _implicitInterfaceAdapter.SetValue(instanceStub.Object, scalar, null),
           Throws.InstanceOf<TargetParameterCountException>()
-              .With.Message.EqualTo ("Parameter count mismatch."));
+              .With.Message.EqualTo("Parameter count mismatch."));
     }
 
     [Test]
@@ -365,13 +365,13 @@ namespace Remotion.Reflection.UnitTests
       var scalar = new SimpleReferenceType();
       var instanceStub = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
 
-      var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
-          .GetProperty ("Item", new[] { typeof (int), typeof (DateTime) });
+      var interfaceDeclarationProperty = typeof(IInterfaceWithReferenceType<SimpleReferenceType>)
+          .GetProperty("Item", new[] { typeof(int), typeof(DateTime) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
-      Assert.That (
-          () => _implicitInterfaceAdapter.SetValue (instanceStub.Object, scalar, new object[1]),
+      Assert.That(
+          () => _implicitInterfaceAdapter.SetValue(instanceStub.Object, scalar, new object[1]),
           Throws.InstanceOf<TargetParameterCountException>()
-              .With.Message.EqualTo ("Parameter count mismatch."));
+              .With.Message.EqualTo("Parameter count mismatch."));
     }
 
     [Test]
@@ -379,268 +379,268 @@ namespace Remotion.Reflection.UnitTests
     {
       SimpleReferenceType scalar = new SimpleReferenceType();
       var instanceMock = new Mock<IInterfaceWithReferenceType<SimpleReferenceType>>();
-      instanceMock.SetupSet (mock => mock[10, new DateTime (2000, 1, 1), "foo"] = scalar).Verifiable();
+      instanceMock.SetupSet(mock => mock[10, new DateTime(2000, 1, 1), "foo"] = scalar).Verifiable();
 
-      var interfaceDeclarationProperty = typeof (IInterfaceWithReferenceType<SimpleReferenceType>)
-          .GetProperty ("Item", new[] { typeof (int), typeof (DateTime), typeof (string) });
+      var interfaceDeclarationProperty = typeof(IInterfaceWithReferenceType<SimpleReferenceType>)
+          .GetProperty("Item", new[] { typeof(int), typeof(DateTime), typeof(string) });
       _implicitInterfaceAdapter = PropertyInfoAdapter.Create(interfaceDeclarationProperty);
 
-      _implicitInterfaceAdapter.SetValue (instanceMock.Object, scalar, new object[] { 10, new DateTime (2000, 1, 1), "foo" });
+      _implicitInterfaceAdapter.SetValue(instanceMock.Object, scalar, new object[] { 10, new DateTime(2000, 1, 1), "foo" });
       instanceMock.Verify();
     }
 
     [Test]
     public void GetOriginalDeclaringType ()
     {
-      Assert.That (_adapter.GetOriginalDeclaringType(), Is.EqualTo (_adapter.DeclaringType));
+      Assert.That(_adapter.GetOriginalDeclaringType(), Is.EqualTo(_adapter.DeclaringType));
 
-      PropertyInfo propertyInfo = typeof (ClassWithOverridingMember).GetProperty ("BaseProperty");
+      PropertyInfo propertyInfo = typeof(ClassWithOverridingMember).GetProperty("BaseProperty");
       PropertyInfoAdapter overrideAdapter = PropertyInfoAdapter.Create(propertyInfo);
-      Assert.That (overrideAdapter.GetOriginalDeclaringType(), Is.Not.EqualTo (overrideAdapter.DeclaringType));
-      Assert.That (overrideAdapter.GetOriginalDeclaringType(), Is.EqualTo (overrideAdapter.DeclaringType.BaseType));
-      Assert.That (overrideAdapter.GetOriginalDeclaringType(), Is.TypeOf<TypeAdapter>().And.Property ("Type").SameAs (typeof (ClassWithBaseMember)));
+      Assert.That(overrideAdapter.GetOriginalDeclaringType(), Is.Not.EqualTo(overrideAdapter.DeclaringType));
+      Assert.That(overrideAdapter.GetOriginalDeclaringType(), Is.EqualTo(overrideAdapter.DeclaringType.BaseType));
+      Assert.That(overrideAdapter.GetOriginalDeclaringType(), Is.TypeOf<TypeAdapter>().And.Property("Type").SameAs(typeof(ClassWithBaseMember)));
     }
 
 
     [Test]
     public void GetOriginalDeclaration_WithPropertyIsOriginalDeclaration ()
     {
-      var propertyInfo = typeof (ClassWithReferenceType<object>).GetProperty ("PropertyWithPrivateSetter");
-      var adapter = PropertyInfoAdapter.Create (propertyInfo);
+      var propertyInfo = typeof(ClassWithReferenceType<object>).GetProperty("PropertyWithPrivateSetter");
+      var adapter = PropertyInfoAdapter.Create(propertyInfo);
 
       var result = adapter.GetOriginalDeclaration();
 
-      Assert.That (result, Is.Not.Null);
+      Assert.That(result, Is.Not.Null);
 
       var expectedPropertyInfo = propertyInfo;
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) result);
+      CheckPropertyInfo(expectedPropertyInfo, (PropertyInfoAdapter)result);
     }
 
     [Test]
     public void GetOriginalDeclaration_WithPropertyIsOverriddenDeclaration ()
     {
-      var propertyInfo = typeof (DerivedClassWithReferenceType<object>).GetProperty ("PropertyWithPrivateSetter");
-      var adapter = PropertyInfoAdapter.Create (propertyInfo);
+      var propertyInfo = typeof(DerivedClassWithReferenceType<object>).GetProperty("PropertyWithPrivateSetter");
+      var adapter = PropertyInfoAdapter.Create(propertyInfo);
 
       var result = adapter.GetOriginalDeclaration();
 
-      Assert.That (result, Is.Not.Null);
+      Assert.That(result, Is.Not.Null);
 
-      var expectedPropertyInfo = typeof (ClassWithReferenceType<object>).GetProperty ("PropertyWithPrivateSetter");
+      var expectedPropertyInfo = typeof(ClassWithReferenceType<object>).GetProperty("PropertyWithPrivateSetter");
 
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) result);
+      CheckPropertyInfo(expectedPropertyInfo, (PropertyInfoAdapter)result);
     }
 
     [Test]
     public void GetGetMethod_PublicProperty ()
     {
-      var getMethod = _adapter.GetGetMethod (false);
-      var expectedMethod = MethodInfoAdapter.Create(typeof (ClassWithReferenceType<SimpleReferenceType>).GetMethod ("get_NotVisibleAttributeScalar"));
+      var getMethod = _adapter.GetGetMethod(false);
+      var expectedMethod = MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetMethod("get_NotVisibleAttributeScalar"));
 
-      Assert.That (getMethod, Is.Not.Null);
-      Assert.That (getMethod, Is.EqualTo (expectedMethod));
+      Assert.That(getMethod, Is.Not.Null);
+      Assert.That(getMethod, Is.EqualTo(expectedMethod));
     }
 
     [Test]
     public void GetGetMethod_PrivateProperty_NonPublicFalse ()
     {
-      var getMethod = _explicitInterfaceAdapter.GetGetMethod (false);
+      var getMethod = _explicitInterfaceAdapter.GetGetMethod(false);
 
-      Assert.That (getMethod, Is.Null);
+      Assert.That(getMethod, Is.Null);
     }
 
     [Test]
     public void GetGetMethod_PrivateProperty_NonPublicTrue ()
     {
-      var getMethod = _explicitInterfaceAdapter.GetGetMethod (true);
+      var getMethod = _explicitInterfaceAdapter.GetGetMethod(true);
 
-      var expectedMethod = MethodInfoAdapter.Create(typeof (ClassWithReferenceType<SimpleReferenceType>).GetMethod (
+      var expectedMethod = MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetMethod(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.get_ExplicitInterfaceScalar",
           BindingFlags.Instance | BindingFlags.NonPublic));
 
-      Assert.That (getMethod, Is.Not.Null);
-      Assert.That (getMethod, Is.EqualTo (expectedMethod));
+      Assert.That(getMethod, Is.Not.Null);
+      Assert.That(getMethod, Is.EqualTo(expectedMethod));
     }
 
     [Test]
     public void GetGetMethod_NonExistingMethod ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("ImplicitInterfaceWriteOnlyScalar"));
+      var adapter = PropertyInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceWriteOnlyScalar"));
 
-      var getMethod = adapter.GetGetMethod (false);
+      var getMethod = adapter.GetGetMethod(false);
 
-      Assert.That (getMethod, Is.Null);
+      Assert.That(getMethod, Is.Null);
     }
 
     [Test]
     public void GetSetMethod_PublicProperty ()
     {
-      var setMethod = _adapter.GetSetMethod (false);
+      var setMethod = _adapter.GetSetMethod(false);
 
-      var expectedMethod = MethodInfoAdapter.Create(typeof (ClassWithReferenceType<SimpleReferenceType>).GetMethod ("set_NotVisibleAttributeScalar"));
-      Assert.That (setMethod, Is.Not.Null);
-      Assert.That (setMethod, Is.EqualTo (expectedMethod));
+      var expectedMethod = MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetMethod("set_NotVisibleAttributeScalar"));
+      Assert.That(setMethod, Is.Not.Null);
+      Assert.That(setMethod, Is.EqualTo(expectedMethod));
     }
 
     [Test]
     public void GetSetMethod_PrivateProperty_NonPublicFalse ()
     {
-      var setMethod = _explicitInterfaceAdapter.GetSetMethod (false);
+      var setMethod = _explicitInterfaceAdapter.GetSetMethod(false);
 
-      Assert.That (setMethod, Is.Null);
+      Assert.That(setMethod, Is.Null);
     }
 
     [Test]
     public void GetSetMethod_PrivateProperty_NonPublicTrue ()
     {
-      var setMethod = _explicitInterfaceAdapter.GetSetMethod (true);
+      var setMethod = _explicitInterfaceAdapter.GetSetMethod(true);
 
-      var expectedMethod = MethodInfoAdapter.Create(typeof (ClassWithReferenceType<SimpleReferenceType>).GetMethod (
+      var expectedMethod = MethodInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetMethod(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.set_ExplicitInterfaceScalar",
           BindingFlags.Instance | BindingFlags.NonPublic));
 
-      Assert.That (setMethod, Is.Not.Null);
-      Assert.That (setMethod, Is.EqualTo (expectedMethod));
+      Assert.That(setMethod, Is.Not.Null);
+      Assert.That(setMethod, Is.EqualTo(expectedMethod));
     }
 
     [Test]
     public void GetSetMethod_NonExistingMethod ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("ImplicitInterfaceReadOnlyScalar"));
+      var adapter = PropertyInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("ImplicitInterfaceReadOnlyScalar"));
 
-      var setMethod = adapter.GetSetMethod (false);
+      var setMethod = adapter.GetSetMethod(false);
 
-      Assert.That (setMethod, Is.Null);
+      Assert.That(setMethod, Is.Null);
     }
 
     [Test]
     public void FindInterfaceImplementation_InterfaceProperty_ImplicitImplementation ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar"));
-      var implementation = adapter.FindInterfaceImplementation (typeof (ClassWithReferenceType<object>));
+      var adapter = PropertyInfoAdapter.Create(typeof(IInterfaceWithReferenceType<object>).GetProperty("ImplicitInterfaceScalar"));
+      var implementation = adapter.FindInterfaceImplementation(typeof(ClassWithReferenceType<object>));
 
-      var expectedPropertyInfo = typeof (ClassWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar");
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      var expectedPropertyInfo = typeof(ClassWithReferenceType<object>).GetProperty("ImplicitInterfaceScalar");
+      CheckPropertyInfo(expectedPropertyInfo, (PropertyInfoAdapter)implementation);
     }
 
     [Test]
     public void FindInterfaceImplementation_InterfaceProperty_ExplicitImplementation ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ExplicitInterfaceScalar"));
-      var implementation = adapter.FindInterfaceImplementation (typeof (ClassWithReferenceType<object>));
+      var adapter = PropertyInfoAdapter.Create(typeof(IInterfaceWithReferenceType<object>).GetProperty("ExplicitInterfaceScalar"));
+      var implementation = adapter.FindInterfaceImplementation(typeof(ClassWithReferenceType<object>));
 
-      var expectedPropertyInfo = typeof (ClassWithReferenceType<object>).GetProperty (
+      var expectedPropertyInfo = typeof(ClassWithReferenceType<object>).GetProperty(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar",
           BindingFlags.Instance | BindingFlags.NonPublic);
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      CheckPropertyInfo(expectedPropertyInfo, (PropertyInfoAdapter)implementation);
     }
 
     [Test]
     public void FindInterfaceImplementation_InterfaceProperty_ExplicitImplementation_OnBaseClass ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ExplicitInterfaceScalar"));
-      var implementation = adapter.FindInterfaceImplementation (typeof (DerivedClassWithReferenceType<object>));
+      var adapter = PropertyInfoAdapter.Create(typeof(IInterfaceWithReferenceType<object>).GetProperty("ExplicitInterfaceScalar"));
+      var implementation = adapter.FindInterfaceImplementation(typeof(DerivedClassWithReferenceType<object>));
 
-      var expectedPropertyInfo = typeof (ClassWithReferenceType<object>).GetProperty (
+      var expectedPropertyInfo = typeof(ClassWithReferenceType<object>).GetProperty(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar",
           BindingFlags.Instance | BindingFlags.NonPublic);
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      CheckPropertyInfo(expectedPropertyInfo, (PropertyInfoAdapter)implementation);
     }
 
     [Test]
     public void FindInterfaceImplementation_InterfaceProperty_ExplicitImplementation_GetterOnly ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ExplicitInterfaceReadOnlyScalar"));
-      var implementation = adapter.FindInterfaceImplementation (typeof (ClassWithReferenceType<object>));
+      var adapter = PropertyInfoAdapter.Create(typeof(IInterfaceWithReferenceType<object>).GetProperty("ExplicitInterfaceReadOnlyScalar"));
+      var implementation = adapter.FindInterfaceImplementation(typeof(ClassWithReferenceType<object>));
 
-      var expectedPropertyInfo = typeof (ClassWithReferenceType<object>).GetProperty (
+      var expectedPropertyInfo = typeof(ClassWithReferenceType<object>).GetProperty(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceReadOnlyScalar",
           BindingFlags.Instance | BindingFlags.NonPublic);
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      CheckPropertyInfo(expectedPropertyInfo, (PropertyInfoAdapter)implementation);
     }
 
     [Test]
     public void FindInterfaceImplementation_InterfaceProperty_ExplicitImplementation_SetterOnly ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ExplicitInterfaceWriteOnlyScalar"));
-      var implementation = adapter.FindInterfaceImplementation (typeof (ClassWithReferenceType<object>));
+      var adapter = PropertyInfoAdapter.Create(typeof(IInterfaceWithReferenceType<object>).GetProperty("ExplicitInterfaceWriteOnlyScalar"));
+      var implementation = adapter.FindInterfaceImplementation(typeof(ClassWithReferenceType<object>));
 
-      var expectedPropertyInfo = typeof (ClassWithReferenceType<object>).GetProperty (
+      var expectedPropertyInfo = typeof(ClassWithReferenceType<object>).GetProperty(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceWriteOnlyScalar",
           BindingFlags.Instance | BindingFlags.NonPublic);
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      CheckPropertyInfo(expectedPropertyInfo, (PropertyInfoAdapter)implementation);
     }
 
     [Test]
     public void FindInterfaceImplementation_InterfaceProperty_ImplementedOnBaseClass ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ImplicitInterfaceReadOnlyScalar"));
-      var implementation = adapter.FindInterfaceImplementation (typeof (DerivedClassWithReferenceType<object>));
+      var adapter = PropertyInfoAdapter.Create(typeof(IInterfaceWithReferenceType<object>).GetProperty("ImplicitInterfaceReadOnlyScalar"));
+      var implementation = adapter.FindInterfaceImplementation(typeof(DerivedClassWithReferenceType<object>));
 
-      var expectedPropertyInfo = typeof (ClassWithReferenceType<object>).GetProperty ("ImplicitInterfaceReadOnlyScalar");
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      var expectedPropertyInfo = typeof(ClassWithReferenceType<object>).GetProperty("ImplicitInterfaceReadOnlyScalar");
+      CheckPropertyInfo(expectedPropertyInfo, (PropertyInfoAdapter)implementation);
     }
 
     [Test]
     public void FindInterfaceImplementation_InterfaceProperty_OverriddenOnDerivedClass ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar"));
-      var implementation = adapter.FindInterfaceImplementation (typeof (DerivedClassWithReferenceType<object>));
+      var adapter = PropertyInfoAdapter.Create(typeof(IInterfaceWithReferenceType<object>).GetProperty("ImplicitInterfaceScalar"));
+      var implementation = adapter.FindInterfaceImplementation(typeof(DerivedClassWithReferenceType<object>));
 
-      var expectedPropertyInfo = typeof (DerivedClassWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar");
-      CheckPropertyInfo (expectedPropertyInfo, (PropertyInfoAdapter) implementation);
+      var expectedPropertyInfo = typeof(DerivedClassWithReferenceType<object>).GetProperty("ImplicitInterfaceScalar");
+      CheckPropertyInfo(expectedPropertyInfo, (PropertyInfoAdapter)implementation);
     }
 
     [Test]
     public void FindInterfaceImplementation_InterfaceProperty_NotImplemented ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar"));
+      var adapter = PropertyInfoAdapter.Create(typeof(IInterfaceWithReferenceType<object>).GetProperty("ImplicitInterfaceScalar"));
 
-      var implementation = adapter.FindInterfaceImplementation (typeof (object));
+      var implementation = adapter.FindInterfaceImplementation(typeof(object));
 
-      Assert.That (implementation, Is.Null);
+      Assert.That(implementation, Is.Null);
     }
 
     [Test]
     public void FindInterfaceImplementation_InterfaceProperty_ImplementationIsInterface ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar"));
-      Assert.That (
-          () => adapter.FindInterfaceImplementation (typeof (IInterfaceWithReferenceType<object>)),
+      var adapter = PropertyInfoAdapter.Create(typeof(IInterfaceWithReferenceType<object>).GetProperty("ImplicitInterfaceScalar"));
+      Assert.That(
+          () => adapter.FindInterfaceImplementation(typeof(IInterfaceWithReferenceType<object>)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo ("The implementationType parameter must not be an interface.", "implementationType"));
+              .With.ArgumentExceptionMessageEqualTo("The implementationType parameter must not be an interface.", "implementationType"));
     }
 
     [Test]
     public void FindInterfaceImplementation_NonInterfaceProperty ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (ClassWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar"));
-      Assert.That (
-          () => adapter.FindInterfaceImplementation (typeof (ClassWithReferenceType<object>)),
+      var adapter = PropertyInfoAdapter.Create(typeof(ClassWithReferenceType<object>).GetProperty("ImplicitInterfaceScalar"));
+      Assert.That(
+          () => adapter.FindInterfaceImplementation(typeof(ClassWithReferenceType<object>)),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "This property is not an interface property."));
     }
 
     [Test]
     public void FindInterfaceDeclarations_ImplicitInterfaceImplementation ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (ClassWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar"));
+      var adapter = PropertyInfoAdapter.Create(typeof(ClassWithReferenceType<object>).GetProperty("ImplicitInterfaceScalar"));
 
       var result = adapter.FindInterfaceDeclarations();
 
       var expectedPropertyInfos =
           new[]
           {
-              MemberInfoFromExpressionUtility.GetProperty ((IInterfaceWithReferenceType<object> obj) => obj.ImplicitInterfaceScalar)
+              MemberInfoFromExpressionUtility.GetProperty((IInterfaceWithReferenceType<object> obj) => obj.ImplicitInterfaceScalar)
           };
-      CheckUnorderedPropertyInfos (expectedPropertyInfos, result.Cast<PropertyInfoAdapter>());
+      CheckUnorderedPropertyInfos(expectedPropertyInfos, result.Cast<PropertyInfoAdapter>());
     }
 
     [Test]
     public void FindInterfaceDeclarations_ExplicitInterfaceImplementation ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (ClassWithReferenceType<object>).GetProperty (
+      var adapter = PropertyInfoAdapter.Create(typeof(ClassWithReferenceType<object>).GetProperty(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceScalar",
           BindingFlags.Instance | BindingFlags.NonPublic));
 
@@ -649,201 +649,201 @@ namespace Remotion.Reflection.UnitTests
       var expectedPropertyInfos =
           new[]
           {
-              MemberInfoFromExpressionUtility.GetProperty ((IInterfaceWithReferenceType<object> obj) => obj.ExplicitInterfaceScalar)
+              MemberInfoFromExpressionUtility.GetProperty((IInterfaceWithReferenceType<object> obj) => obj.ExplicitInterfaceScalar)
           };
-      CheckUnorderedPropertyInfos (expectedPropertyInfos, result.Cast<PropertyInfoAdapter>());
+      CheckUnorderedPropertyInfos(expectedPropertyInfos, result.Cast<PropertyInfoAdapter>());
     }
 
     [Test]
     public void FindInterfaceDeclarations_ExplicitInterfaceImplementation_ReadOnlyProperty ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (ClassWithReferenceType<object>).GetProperty (
+      var adapter = PropertyInfoAdapter.Create(typeof(ClassWithReferenceType<object>).GetProperty(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceReadOnlyScalar",
           BindingFlags.Instance | BindingFlags.NonPublic));
 
-      var result = adapter.FindInterfaceDeclarations ();
+      var result = adapter.FindInterfaceDeclarations();
 
       var expectedPropertyInfos =
           new[]
           {
-              MemberInfoFromExpressionUtility.GetProperty ((IInterfaceWithReferenceType<object> obj) => obj.ExplicitInterfaceReadOnlyScalar)
+              MemberInfoFromExpressionUtility.GetProperty((IInterfaceWithReferenceType<object> obj) => obj.ExplicitInterfaceReadOnlyScalar)
           };
-      CheckUnorderedPropertyInfos (expectedPropertyInfos, result.Cast<PropertyInfoAdapter> ());
+      CheckUnorderedPropertyInfos(expectedPropertyInfos, result.Cast<PropertyInfoAdapter>());
     }
 
     [Test]
     public void FindInterfaceDeclarations_ExplicitInterfaceImplementation_WriteOnlyProperty ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (ClassWithReferenceType<object>).GetProperty (
+      var adapter = PropertyInfoAdapter.Create(typeof(ClassWithReferenceType<object>).GetProperty(
           "Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.IInterfaceWithReferenceType<T>.ExplicitInterfaceWriteOnlyScalar",
           BindingFlags.Instance | BindingFlags.NonPublic));
 
       var result = adapter.FindInterfaceDeclarations();
 
-      var expectedPropertyInfos = new[] { typeof (IInterfaceWithReferenceType<object>).GetProperty ("ExplicitInterfaceWriteOnlyScalar") };
-      CheckUnorderedPropertyInfos (expectedPropertyInfos, result.Cast<PropertyInfoAdapter> ());
+      var expectedPropertyInfos = new[] { typeof(IInterfaceWithReferenceType<object>).GetProperty("ExplicitInterfaceWriteOnlyScalar") };
+      CheckUnorderedPropertyInfos(expectedPropertyInfos, result.Cast<PropertyInfoAdapter>());
     }
 
     [Test]
     public void FindInterfaceDeclarations_MultipleDeclarations ()
     {
-      var propertyInfo = MemberInfoFromExpressionUtility.GetProperty ((DomainType obj) => obj.PropertyDeclaredByMultipleInterfaces);
-      var adapter = PropertyInfoAdapter.Create (propertyInfo);
+      var propertyInfo = MemberInfoFromExpressionUtility.GetProperty((DomainType obj) => obj.PropertyDeclaredByMultipleInterfaces);
+      var adapter = PropertyInfoAdapter.Create(propertyInfo);
 
-      var result = adapter.FindInterfaceDeclarations ();
+      var result = adapter.FindInterfaceDeclarations();
 
       var expectedPropertyInfos =
           new[]
           {
-              MemberInfoFromExpressionUtility.GetProperty ((IInterface1 obj) => obj.PropertyDeclaredByMultipleInterfaces),
-              MemberInfoFromExpressionUtility.GetProperty ((IInterface2 obj) => obj.PropertyDeclaredByMultipleInterfaces)
+              MemberInfoFromExpressionUtility.GetProperty((IInterface1 obj) => obj.PropertyDeclaredByMultipleInterfaces),
+              MemberInfoFromExpressionUtility.GetProperty((IInterface2 obj) => obj.PropertyDeclaredByMultipleInterfaces)
           };
 
-      CheckUnorderedPropertyInfos (expectedPropertyInfos, result.Cast<PropertyInfoAdapter>());
+      CheckUnorderedPropertyInfos(expectedPropertyInfos, result.Cast<PropertyInfoAdapter>());
     }
 
     [Test]
     public void FindInterfaceDeclarations_NonInterfaceImplementationProperty ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (ClassWithReferenceType<object>).GetProperty ("Scalar"));
+      var adapter = PropertyInfoAdapter.Create(typeof(ClassWithReferenceType<object>).GetProperty("Scalar"));
 
-      Assert.That (adapter.FindInterfaceDeclarations(), Is.Empty);
+      Assert.That(adapter.FindInterfaceDeclarations(), Is.Empty);
     }
 
     [Test]
     public void FindInterfaceDeclarations_InterfaceProperty ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar"));
-      Assert.That (
+      var adapter = PropertyInfoAdapter.Create(typeof(IInterfaceWithReferenceType<object>).GetProperty("ImplicitInterfaceScalar"));
+      Assert.That(
           () => adapter.FindInterfaceDeclarations(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("This property is itself an interface member, so it cannot have an interface declaration."));
+              .With.Message.EqualTo("This property is itself an interface member, so it cannot have an interface declaration."));
     }
 
     [Test]
     public void GetIndexParameters_IndexedProperty ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (ClassWithReferenceType<object>).GetProperty ("Item", new[] { typeof (int) }));
+      var adapter = PropertyInfoAdapter.Create(typeof(ClassWithReferenceType<object>).GetProperty("Item", new[] { typeof(int) }));
 
-      Assert.That (adapter.GetIndexParameters().Length, Is.EqualTo (1));
+      Assert.That(adapter.GetIndexParameters().Length, Is.EqualTo(1));
     }
 
     [Test]
     public void GetIndexParameters_NoIndexedProperty ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar"));
+      var adapter = PropertyInfoAdapter.Create(typeof(IInterfaceWithReferenceType<object>).GetProperty("ImplicitInterfaceScalar"));
 
-      Assert.That (adapter.GetIndexParameters().Length, Is.EqualTo (0));
+      Assert.That(adapter.GetIndexParameters().Length, Is.EqualTo(0));
     }
 
     [Test]
     public void GetAccessors_GetterAndSetter ()
     {
-      var propertyInfo = typeof (ClassWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar");
+      var propertyInfo = typeof(ClassWithReferenceType<object>).GetProperty("ImplicitInterfaceScalar");
       var adapter = PropertyInfoAdapter.Create(propertyInfo);
 
-      var result = adapter.GetAccessors (false);
+      var result = adapter.GetAccessors(false);
 
-      Assert.That (result.Length, Is.EqualTo (2));
+      Assert.That(result.Length, Is.EqualTo(2));
 
-      var expectedMethodInfo0 = typeof (ClassWithReferenceType<object>).GetMethod ("get_ImplicitInterfaceScalar");
-      var expectedMethodInfo1 = typeof (ClassWithReferenceType<object>).GetMethod ("set_ImplicitInterfaceScalar");
-      CheckMethodInfo (expectedMethodInfo0, (MethodInfoAdapter) result[0]);
-      CheckMethodInfo (expectedMethodInfo1, (MethodInfoAdapter) result[1]);
+      var expectedMethodInfo0 = typeof(ClassWithReferenceType<object>).GetMethod("get_ImplicitInterfaceScalar");
+      var expectedMethodInfo1 = typeof(ClassWithReferenceType<object>).GetMethod("set_ImplicitInterfaceScalar");
+      CheckMethodInfo(expectedMethodInfo0, (MethodInfoAdapter)result[0]);
+      CheckMethodInfo(expectedMethodInfo1, (MethodInfoAdapter)result[1]);
     }
 
     [Test]
     public void GetAccessors_Getter ()
     {
-      var propertyInfo = typeof (ClassWithReferenceType<object>).GetProperty ("ImplicitInterfaceReadOnlyScalar");
+      var propertyInfo = typeof(ClassWithReferenceType<object>).GetProperty("ImplicitInterfaceReadOnlyScalar");
       var adapter = PropertyInfoAdapter.Create(propertyInfo);
 
-      var result = adapter.GetAccessors (false);
+      var result = adapter.GetAccessors(false);
 
-      Assert.That (result.Length, Is.EqualTo (1));
+      Assert.That(result.Length, Is.EqualTo(1));
 
-      var expectedMethodInfo = typeof (ClassWithReferenceType<object>).GetMethod ("get_ImplicitInterfaceReadOnlyScalar");
-      CheckMethodInfo (expectedMethodInfo, (MethodInfoAdapter) result[0]);
+      var expectedMethodInfo = typeof(ClassWithReferenceType<object>).GetMethod("get_ImplicitInterfaceReadOnlyScalar");
+      CheckMethodInfo(expectedMethodInfo, (MethodInfoAdapter)result[0]);
     }
 
     [Test]
     public void GetAccessors_Setter ()
     {
-      var propertyInfo = typeof (ClassWithReferenceType<object>).GetProperty ("ImplicitInterfaceWriteOnlyScalar");
+      var propertyInfo = typeof(ClassWithReferenceType<object>).GetProperty("ImplicitInterfaceWriteOnlyScalar");
       var adapter = PropertyInfoAdapter.Create(propertyInfo);
 
-      var result = adapter.GetAccessors (false);
+      var result = adapter.GetAccessors(false);
 
-      Assert.That (result.Length, Is.EqualTo (1));
+      Assert.That(result.Length, Is.EqualTo(1));
 
-      var expectedMethodInfo = typeof (ClassWithReferenceType<object>).GetMethod ("set_ImplicitInterfaceWriteOnlyScalar");
-      CheckMethodInfo (expectedMethodInfo, (MethodInfoAdapter) result[0]);
+      var expectedMethodInfo = typeof(ClassWithReferenceType<object>).GetMethod("set_ImplicitInterfaceWriteOnlyScalar");
+      CheckMethodInfo(expectedMethodInfo, (MethodInfoAdapter)result[0]);
     }
 
     [Test]
     public void GetAccessors_NonPublicSetter_NonPublicFalse ()
     {
-      var propertyInfo = typeof (ClassWithReferenceType<object>).GetProperty ("PropertyWithPrivateSetter");
+      var propertyInfo = typeof(ClassWithReferenceType<object>).GetProperty("PropertyWithPrivateSetter");
       var adapter = PropertyInfoAdapter.Create(propertyInfo);
 
-      var result = adapter.GetAccessors (false);
+      var result = adapter.GetAccessors(false);
 
-      Assert.That (result.Length, Is.EqualTo (1));
+      Assert.That(result.Length, Is.EqualTo(1));
 
-      var expectedMethodInfo = typeof (ClassWithReferenceType<object>).GetMethod ("get_PropertyWithPrivateSetter");
-      CheckMethodInfo (expectedMethodInfo, (MethodInfoAdapter) result[0]);
+      var expectedMethodInfo = typeof(ClassWithReferenceType<object>).GetMethod("get_PropertyWithPrivateSetter");
+      CheckMethodInfo(expectedMethodInfo, (MethodInfoAdapter)result[0]);
     }
 
     [Test]
     public void GetAccessors_NonPublicSetter_NonPublicTrue ()
     {
-      var propertyInfo = typeof (ClassWithReferenceType<object>).GetProperty ("PropertyWithPrivateSetter");
+      var propertyInfo = typeof(ClassWithReferenceType<object>).GetProperty("PropertyWithPrivateSetter");
       var adapter = PropertyInfoAdapter.Create(propertyInfo);
 
-      var result = adapter.GetAccessors (true);
+      var result = adapter.GetAccessors(true);
 
-      Assert.That (result.Length, Is.EqualTo (2));
+      Assert.That(result.Length, Is.EqualTo(2));
 
-      var expectedMethodInfo0 = typeof (ClassWithReferenceType<object>).GetMethod ("get_PropertyWithPrivateSetter");
-      var expectedMethodInfo1 = typeof (ClassWithReferenceType<object>).GetMethod (
+      var expectedMethodInfo0 = typeof(ClassWithReferenceType<object>).GetMethod("get_PropertyWithPrivateSetter");
+      var expectedMethodInfo1 = typeof(ClassWithReferenceType<object>).GetMethod(
           "set_PropertyWithPrivateSetter", BindingFlags.Instance | BindingFlags.NonPublic);
-      CheckMethodInfo (expectedMethodInfo0, (MethodInfoAdapter) result[0]);
-      CheckMethodInfo (expectedMethodInfo1, (MethodInfoAdapter) result[1]);
+      CheckMethodInfo(expectedMethodInfo0, (MethodInfoAdapter)result[0]);
+      CheckMethodInfo(expectedMethodInfo1, (MethodInfoAdapter)result[1]);
     }
 
     [Test]
     public void To_String ()
     {
-      var adapter = PropertyInfoAdapter.Create(typeof (IInterfaceWithReferenceType<object>).GetProperty ("ImplicitInterfaceScalar"));
+      var adapter = PropertyInfoAdapter.Create(typeof(IInterfaceWithReferenceType<object>).GetProperty("ImplicitInterfaceScalar"));
 
-      Assert.That (adapter.ToString(), Is.EqualTo ("System.Object ImplicitInterfaceScalar"));
+      Assert.That(adapter.ToString(), Is.EqualTo("System.Object ImplicitInterfaceScalar"));
     }
 
     [Test]
     public void Equals ()
     {
-      Assert.That (_adapter.Equals (null), Is.False);
-      Assert.That (_adapter.Equals ("test"), Is.False);
-      Assert.That (_implicitInterfaceAdapter.Equals (PropertyInfoAdapter.Create(_explicitInterfaceImplementationProperty)), Is.False);
+      Assert.That(_adapter.Equals(null), Is.False);
+      Assert.That(_adapter.Equals("test"), Is.False);
+      Assert.That(_implicitInterfaceAdapter.Equals(PropertyInfoAdapter.Create(_explicitInterfaceImplementationProperty)), Is.False);
 
-      Assert.That (_implicitInterfaceAdapter.Equals (PropertyInfoAdapter.Create(_implicitInterfaceImplementationProperty)), Is.True);
+      Assert.That(_implicitInterfaceAdapter.Equals(PropertyInfoAdapter.Create(_implicitInterfaceImplementationProperty)), Is.True);
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (((IPropertyInformation) _adapter).IsNull, Is.False);
+      Assert.That(((IPropertyInformation)_adapter).IsNull, Is.False);
     }
 
     [Test]
     public void GetHashCode_UsesPropertyInfo ()
     {
-      Assert.That (
+      Assert.That(
           _implicitInterfaceAdapter.GetHashCode(),
-          Is.EqualTo (PropertyInfoAdapter.Create(_implicitInterfaceImplementationProperty).GetHashCode()));
-      Assert.That (
-          PropertyInfoAdapter.Create(typeof (int[]).GetProperty ("Length")).GetHashCode(),
-          Is.EqualTo (PropertyInfoAdapter.Create(typeof (int[]).GetProperty ("Length")).GetHashCode()));
+          Is.EqualTo(PropertyInfoAdapter.Create(_implicitInterfaceImplementationProperty).GetHashCode()));
+      Assert.That(
+          PropertyInfoAdapter.Create(typeof(int[]).GetProperty("Length")).GetHashCode(),
+          Is.EqualTo(PropertyInfoAdapter.Create(typeof(int[]).GetProperty("Length")).GetHashCode()));
     }
 
     [Test]
@@ -851,24 +851,24 @@ namespace Remotion.Reflection.UnitTests
     {
       var typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
 
-      Assert.That (typeConversionProvider.CanConvert (typeof (PropertyInfoAdapter), typeof (PropertyInfo)), Is.True);
+      Assert.That(typeConversionProvider.CanConvert(typeof(PropertyInfoAdapter), typeof(PropertyInfo)), Is.True);
     }
 
     private void AssertCanSet (PropertyInfoAdapter adapter, object instance, SimpleReferenceType value)
     {
-      adapter.SetValue (instance, value, null);
-      Assert.That (adapter.GetValue (instance, null), Is.SameAs (value));
+      adapter.SetValue(instance, value, null);
+      Assert.That(adapter.GetValue(instance, null), Is.SameAs(value));
     }
 
     private void AssertCanNotSet (PropertyInfoAdapter adapter, object instance, SimpleReferenceType value)
     {
       try
       {
-        adapter.SetValue (instance, value, null);
+        adapter.SetValue(instance, value, null);
       }
       catch (ArgumentException ex)
       {
-        Assert.That (ex.Message, Is.EqualTo ("Property set method not found."));
+        Assert.That(ex.Message, Is.EqualTo("Property set method not found."));
       }
     }
 
@@ -877,7 +877,7 @@ namespace Remotion.Reflection.UnitTests
     private void CheckPropertyInfo (PropertyInfo expectedPropertyInfo, PropertyInfoAdapter propertyInfoAdapter)
     {
       var actualPropertyInfo = propertyInfoAdapter.PropertyInfo;
-      Assert.That (MemberInfoEqualityComparer<PropertyInfo>.Instance.Equals (expectedPropertyInfo, actualPropertyInfo), Is.True);
+      Assert.That(MemberInfoEqualityComparer<PropertyInfo>.Instance.Equals(expectedPropertyInfo, actualPropertyInfo), Is.True);
     }
 
     // Cannot compare methods using MethodInfo.Equals because MethodInfoAdapter doesn't take the ReflectedType into account, 
@@ -885,17 +885,17 @@ namespace Remotion.Reflection.UnitTests
     private void CheckMethodInfo (MethodInfo expectedMethodInfo, MethodInfoAdapter methodInfoAdapter)
     {
       var actualMethodInfo = methodInfoAdapter.MethodInfo;
-      Assert.That (MemberInfoEqualityComparer<MethodInfo>.Instance.Equals (expectedMethodInfo, actualMethodInfo), Is.True);
+      Assert.That(MemberInfoEqualityComparer<MethodInfo>.Instance.Equals(expectedMethodInfo, actualMethodInfo), Is.True);
     }
 
     private void CheckUnorderedPropertyInfos (IEnumerable<PropertyInfo> expectedPropertyInfos, IEnumerable<PropertyInfoAdapter> actualPropertyInfoAdapters)
     {
-      var orderedExpected = expectedPropertyInfos.OrderBy (mi => mi.DeclaringType.FullName).ToArray ();
-      var orderedActual = actualPropertyInfoAdapters.OrderBy (mi => mi.DeclaringType.FullName).ToArray ();
+      var orderedExpected = expectedPropertyInfos.OrderBy(mi => mi.DeclaringType.FullName).ToArray();
+      var orderedActual = actualPropertyInfoAdapters.OrderBy(mi => mi.DeclaringType.FullName).ToArray();
 
-      Assert.That (orderedActual, Has.Length.EqualTo (orderedExpected.Length));
+      Assert.That(orderedActual, Has.Length.EqualTo(orderedExpected.Length));
       for (int i = 0; i < orderedActual.Length; i++)
-        CheckPropertyInfo (orderedExpected[i], orderedActual[i]);
+        CheckPropertyInfo(orderedExpected[i], orderedActual[i]);
     }
 
     public class DomainType : IInterface1, IInterface2

@@ -39,13 +39,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
     [SetUp]
     public void SetUp ()
     {
-      _classDefinition1 = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (DerivedValidationDomainObjectClass));
-      _classDefinition2 = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (DerivedValidationDomainObjectClass));
-      _classDefinition3 = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (DerivedValidationDomainObjectClass));
+      _classDefinition1 = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(DerivedValidationDomainObjectClass));
+      _classDefinition2 = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(DerivedValidationDomainObjectClass));
+      _classDefinition3 = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(DerivedValidationDomainObjectClass));
 
-      _validationRuleMock1 = MockRepository.GenerateStrictMock<IClassDefinitionValidationRule> ();
-      _validationRuleMock2 = MockRepository.GenerateStrictMock<IClassDefinitionValidationRule> ();
-      _validationRuleMock3 = MockRepository.GenerateStrictMock<IClassDefinitionValidationRule> ();
+      _validationRuleMock1 = MockRepository.GenerateStrictMock<IClassDefinitionValidationRule>();
+      _validationRuleMock2 = MockRepository.GenerateStrictMock<IClassDefinitionValidationRule>();
+      _validationRuleMock3 = MockRepository.GenerateStrictMock<IClassDefinitionValidationRule>();
 
       _fakeValidMappingValidationResult = MappingValidationResult.CreateValidResult();
       _fakeInvalidMappingValidationResult = MappingValidationResult.CreateInvalidResult("Test");
@@ -54,87 +54,87 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
     [Test]
     public void ValidateWithOneRuleAndClassDefinition_ValidResult ()
     {
-      var validator = new ClassDefinitionValidator (_validationRuleMock1);
+      var validator = new ClassDefinitionValidator(_validationRuleMock1);
 
-      _validationRuleMock1.Expect (mock => mock.Validate (_classDefinition1)).Return (_fakeValidMappingValidationResult);
+      _validationRuleMock1.Expect(mock => mock.Validate(_classDefinition1)).Return(_fakeValidMappingValidationResult);
       _validationRuleMock1.Replay();
 
-      var mappingValidationResults = validator.Validate (new[] { _classDefinition1 }).ToArray();
+      var mappingValidationResults = validator.Validate(new[] { _classDefinition1 }).ToArray();
 
-      _validationRuleMock1.VerifyAllExpectations ();
-      Assert.That (validator.ValidationRules.Count, Is.EqualTo (1));
-      Assert.That (mappingValidationResults.Length, Is.EqualTo (0));
+      _validationRuleMock1.VerifyAllExpectations();
+      Assert.That(validator.ValidationRules.Count, Is.EqualTo(1));
+      Assert.That(mappingValidationResults.Length, Is.EqualTo(0));
     }
 
     [Test]
     public void ValidateWithOneRuleAndClassDefinition_InvalidResult ()
     {
-      var validator = new ClassDefinitionValidator (_validationRuleMock1);
+      var validator = new ClassDefinitionValidator(_validationRuleMock1);
 
-      _validationRuleMock1.Expect (mock => mock.Validate (_classDefinition1)).Return (_fakeInvalidMappingValidationResult);
-      _validationRuleMock1.Replay ();
+      _validationRuleMock1.Expect(mock => mock.Validate(_classDefinition1)).Return(_fakeInvalidMappingValidationResult);
+      _validationRuleMock1.Replay();
 
-      var mappingValidationResults = validator.Validate (new[] { _classDefinition1 }).ToArray ();
+      var mappingValidationResults = validator.Validate(new[] { _classDefinition1 }).ToArray();
 
-      _validationRuleMock1.VerifyAllExpectations ();
-      Assert.That (validator.ValidationRules.Count, Is.EqualTo (1));
-      Assert.That (mappingValidationResults.Length, Is.EqualTo (1));
-      Assert.That (mappingValidationResults[0], Is.SameAs(_fakeInvalidMappingValidationResult));
+      _validationRuleMock1.VerifyAllExpectations();
+      Assert.That(validator.ValidationRules.Count, Is.EqualTo(1));
+      Assert.That(mappingValidationResults.Length, Is.EqualTo(1));
+      Assert.That(mappingValidationResults[0], Is.SameAs(_fakeInvalidMappingValidationResult));
     }
 
     [Test]
     public void ValidateWithSeveralRulesAndClassDefinitions_ValidResult ()
     {
-      var validator = new ClassDefinitionValidator (_validationRuleMock1, _validationRuleMock2, _validationRuleMock3);
+      var validator = new ClassDefinitionValidator(_validationRuleMock1, _validationRuleMock2, _validationRuleMock3);
 
-      _validationRuleMock1.Expect (mock => mock.Validate (_classDefinition1)).Return (_fakeValidMappingValidationResult);
-      _validationRuleMock1.Expect (mock => mock.Validate (_classDefinition2)).Return (_fakeValidMappingValidationResult);
-      _validationRuleMock1.Expect (mock => mock.Validate (_classDefinition3)).Return (_fakeValidMappingValidationResult);
-      _validationRuleMock2.Expect (mock => mock.Validate (_classDefinition1)).Return (_fakeValidMappingValidationResult);
-      _validationRuleMock2.Expect (mock => mock.Validate (_classDefinition2)).Return (_fakeValidMappingValidationResult);
-      _validationRuleMock2.Expect (mock => mock.Validate (_classDefinition3)).Return (_fakeValidMappingValidationResult);
-      _validationRuleMock3.Expect (mock => mock.Validate (_classDefinition1)).Return (_fakeValidMappingValidationResult);
-      _validationRuleMock3.Expect (mock => mock.Validate (_classDefinition2)).Return (_fakeValidMappingValidationResult);
-      _validationRuleMock3.Expect (mock => mock.Validate (_classDefinition3)).Return (_fakeValidMappingValidationResult);
-      _validationRuleMock1.Replay ();
+      _validationRuleMock1.Expect(mock => mock.Validate(_classDefinition1)).Return(_fakeValidMappingValidationResult);
+      _validationRuleMock1.Expect(mock => mock.Validate(_classDefinition2)).Return(_fakeValidMappingValidationResult);
+      _validationRuleMock1.Expect(mock => mock.Validate(_classDefinition3)).Return(_fakeValidMappingValidationResult);
+      _validationRuleMock2.Expect(mock => mock.Validate(_classDefinition1)).Return(_fakeValidMappingValidationResult);
+      _validationRuleMock2.Expect(mock => mock.Validate(_classDefinition2)).Return(_fakeValidMappingValidationResult);
+      _validationRuleMock2.Expect(mock => mock.Validate(_classDefinition3)).Return(_fakeValidMappingValidationResult);
+      _validationRuleMock3.Expect(mock => mock.Validate(_classDefinition1)).Return(_fakeValidMappingValidationResult);
+      _validationRuleMock3.Expect(mock => mock.Validate(_classDefinition2)).Return(_fakeValidMappingValidationResult);
+      _validationRuleMock3.Expect(mock => mock.Validate(_classDefinition3)).Return(_fakeValidMappingValidationResult);
+      _validationRuleMock1.Replay();
 
-      var mappingValidationResults = validator.Validate (new[] { _classDefinition1, _classDefinition2, _classDefinition3 }).ToArray ();
+      var mappingValidationResults = validator.Validate(new[] { _classDefinition1, _classDefinition2, _classDefinition3 }).ToArray();
 
-      _validationRuleMock1.VerifyAllExpectations ();
-      Assert.That (validator.ValidationRules.Count, Is.EqualTo (3));
-      Assert.That (mappingValidationResults.Length, Is.EqualTo (0));
+      _validationRuleMock1.VerifyAllExpectations();
+      Assert.That(validator.ValidationRules.Count, Is.EqualTo(3));
+      Assert.That(mappingValidationResults.Length, Is.EqualTo(0));
     }
 
     [Test]
     public void ValidateWithSeveralRulesAndClassDefinitions_InvalidResult ()
     {
-      var validator = new ClassDefinitionValidator (_validationRuleMock1, _validationRuleMock2, _validationRuleMock3);
+      var validator = new ClassDefinitionValidator(_validationRuleMock1, _validationRuleMock2, _validationRuleMock3);
 
-      _validationRuleMock1.Expect (mock => mock.Validate (_classDefinition1)).Return (_fakeInvalidMappingValidationResult);
-      _validationRuleMock1.Expect (mock => mock.Validate (_classDefinition2)).Return (_fakeInvalidMappingValidationResult);
-      _validationRuleMock1.Expect (mock => mock.Validate (_classDefinition3)).Return (_fakeInvalidMappingValidationResult);
-      _validationRuleMock2.Expect (mock => mock.Validate (_classDefinition1)).Return (_fakeInvalidMappingValidationResult);
-      _validationRuleMock2.Expect (mock => mock.Validate (_classDefinition2)).Return (_fakeInvalidMappingValidationResult);
-      _validationRuleMock2.Expect (mock => mock.Validate (_classDefinition3)).Return (_fakeInvalidMappingValidationResult);
-      _validationRuleMock3.Expect (mock => mock.Validate (_classDefinition1)).Return (_fakeInvalidMappingValidationResult);
-      _validationRuleMock3.Expect (mock => mock.Validate (_classDefinition2)).Return (_fakeInvalidMappingValidationResult);
-      _validationRuleMock3.Expect (mock => mock.Validate (_classDefinition3)).Return (_fakeInvalidMappingValidationResult);
-      _validationRuleMock1.Replay ();
+      _validationRuleMock1.Expect(mock => mock.Validate(_classDefinition1)).Return(_fakeInvalidMappingValidationResult);
+      _validationRuleMock1.Expect(mock => mock.Validate(_classDefinition2)).Return(_fakeInvalidMappingValidationResult);
+      _validationRuleMock1.Expect(mock => mock.Validate(_classDefinition3)).Return(_fakeInvalidMappingValidationResult);
+      _validationRuleMock2.Expect(mock => mock.Validate(_classDefinition1)).Return(_fakeInvalidMappingValidationResult);
+      _validationRuleMock2.Expect(mock => mock.Validate(_classDefinition2)).Return(_fakeInvalidMappingValidationResult);
+      _validationRuleMock2.Expect(mock => mock.Validate(_classDefinition3)).Return(_fakeInvalidMappingValidationResult);
+      _validationRuleMock3.Expect(mock => mock.Validate(_classDefinition1)).Return(_fakeInvalidMappingValidationResult);
+      _validationRuleMock3.Expect(mock => mock.Validate(_classDefinition2)).Return(_fakeInvalidMappingValidationResult);
+      _validationRuleMock3.Expect(mock => mock.Validate(_classDefinition3)).Return(_fakeInvalidMappingValidationResult);
+      _validationRuleMock1.Replay();
 
-      var mappingValidationResults = validator.Validate (new[] { _classDefinition1, _classDefinition2, _classDefinition3 }).ToArray ();
+      var mappingValidationResults = validator.Validate(new[] { _classDefinition1, _classDefinition2, _classDefinition3 }).ToArray();
 
-      _validationRuleMock1.VerifyAllExpectations ();
-      Assert.That (validator.ValidationRules.Count, Is.EqualTo (3));
-      Assert.That (mappingValidationResults.Length, Is.EqualTo (9));
-      Assert.That (mappingValidationResults[0], Is.SameAs (_fakeInvalidMappingValidationResult));
-      Assert.That (mappingValidationResults[1], Is.SameAs (_fakeInvalidMappingValidationResult));
-      Assert.That (mappingValidationResults[2], Is.SameAs (_fakeInvalidMappingValidationResult));
-      Assert.That (mappingValidationResults[3], Is.SameAs (_fakeInvalidMappingValidationResult));
-      Assert.That (mappingValidationResults[4], Is.SameAs (_fakeInvalidMappingValidationResult));
-      Assert.That (mappingValidationResults[5], Is.SameAs (_fakeInvalidMappingValidationResult));
-      Assert.That (mappingValidationResults[6], Is.SameAs (_fakeInvalidMappingValidationResult));
-      Assert.That (mappingValidationResults[7], Is.SameAs (_fakeInvalidMappingValidationResult));
-      Assert.That (mappingValidationResults[8], Is.SameAs (_fakeInvalidMappingValidationResult));
+      _validationRuleMock1.VerifyAllExpectations();
+      Assert.That(validator.ValidationRules.Count, Is.EqualTo(3));
+      Assert.That(mappingValidationResults.Length, Is.EqualTo(9));
+      Assert.That(mappingValidationResults[0], Is.SameAs(_fakeInvalidMappingValidationResult));
+      Assert.That(mappingValidationResults[1], Is.SameAs(_fakeInvalidMappingValidationResult));
+      Assert.That(mappingValidationResults[2], Is.SameAs(_fakeInvalidMappingValidationResult));
+      Assert.That(mappingValidationResults[3], Is.SameAs(_fakeInvalidMappingValidationResult));
+      Assert.That(mappingValidationResults[4], Is.SameAs(_fakeInvalidMappingValidationResult));
+      Assert.That(mappingValidationResults[5], Is.SameAs(_fakeInvalidMappingValidationResult));
+      Assert.That(mappingValidationResults[6], Is.SameAs(_fakeInvalidMappingValidationResult));
+      Assert.That(mappingValidationResults[7], Is.SameAs(_fakeInvalidMappingValidationResult));
+      Assert.That(mappingValidationResults[8], Is.SameAs(_fakeInvalidMappingValidationResult));
     }
   }
 }

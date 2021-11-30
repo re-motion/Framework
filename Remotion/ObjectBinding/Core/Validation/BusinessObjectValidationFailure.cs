@@ -29,10 +29,10 @@ namespace Remotion.ObjectBinding.Validation
         [NotNull] IBusinessObject validatedObject,
         [NotNull] string errorMessage)
     {
-      ArgumentUtility.CheckNotNull ("validatedObject", validatedObject);
-      ArgumentUtility.CheckNotNullOrEmpty ("errorMessage", errorMessage);
+      ArgumentUtility.CheckNotNull("validatedObject", validatedObject);
+      ArgumentUtility.CheckNotNullOrEmpty("errorMessage", errorMessage);
 
-      return new BusinessObjectValidationFailure (errorMessage, validatedObject, null);
+      return new BusinessObjectValidationFailure(errorMessage, validatedObject, null);
     }
 
     public static BusinessObjectValidationFailure CreateForBusinessObjectProperty (
@@ -40,16 +40,16 @@ namespace Remotion.ObjectBinding.Validation
         [NotNull] IBusinessObject validatedObject,
         [NotNull] IBusinessObjectProperty validatedProperty)
     {
-      ArgumentUtility.CheckNotNull ("validatedObject", validatedObject);
-      ArgumentUtility.CheckNotNull ("validatedProperty", validatedProperty);
-      ArgumentUtility.CheckNotNullOrEmpty ("errorMessage", errorMessage);
+      ArgumentUtility.CheckNotNull("validatedObject", validatedObject);
+      ArgumentUtility.CheckNotNull("validatedProperty", validatedProperty);
+      ArgumentUtility.CheckNotNullOrEmpty("errorMessage", errorMessage);
 
-      return new BusinessObjectValidationFailure (errorMessage, validatedObject, validatedProperty);
+      return new BusinessObjectValidationFailure(errorMessage, validatedObject, validatedProperty);
     }
 
     public static BusinessObjectValidationFailure Create ([NotNull] string errorMessage)
     {
-      return new BusinessObjectValidationFailure (errorMessage, null, null);
+      return new BusinessObjectValidationFailure(errorMessage, null, null);
     }
 
     [NotNull]

@@ -30,13 +30,13 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.UnitTests
       public bool UnmanagedCalled = false;
     }
 
-    [Uses (typeof (DisposableMixin))]
+    [Uses(typeof(DisposableMixin))]
     public class C
     {
       public Data Data = new Data();
 
       [OverrideMixin]
-      public void CleanupManagedResources()
+      public void CleanupManagedResources ()
       {
         Data.ManagedCalled = true;
       }
@@ -49,22 +49,22 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.UnitTests
     }
 
     [Test]
-    public void DisposeCallsAllCleanupMethods()
+    public void DisposeCallsAllCleanupMethods ()
     {
       C c = ObjectFactory.Create<C>(ParamList.Empty);
       Data data = c.Data;
 
-      Assert.That (data.ManagedCalled, Is.False);
-      Assert.That (data.UnmanagedCalled, Is.False);
+      Assert.That(data.ManagedCalled, Is.False);
+      Assert.That(data.UnmanagedCalled, Is.False);
 
       using ((IDisposable)c)
       {
-        Assert.That (data.ManagedCalled, Is.False);
-        Assert.That (data.UnmanagedCalled, Is.False);
+        Assert.That(data.ManagedCalled, Is.False);
+        Assert.That(data.UnmanagedCalled, Is.False);
       }
-      Assert.That (data.ManagedCalled, Is.True);
-      Assert.That (data.UnmanagedCalled, Is.True);
-      GC.KeepAlive (c);
+      Assert.That(data.ManagedCalled, Is.True);
+      Assert.That(data.UnmanagedCalled, Is.True);
+      GC.KeepAlive(c);
     }
 
     [Test]
@@ -72,23 +72,23 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.UnitTests
     {
       Data GetDataObject ()
       {
-        C c = ObjectFactory.Create<C> (ParamList.Empty);
+        C c = ObjectFactory.Create<C>(ParamList.Empty);
 
-        Assert.That (c.Data.ManagedCalled, Is.False);
-        Assert.That (c.Data.UnmanagedCalled, Is.False);
+        Assert.That(c.Data.ManagedCalled, Is.False);
+        Assert.That(c.Data.UnmanagedCalled, Is.False);
 
-        GC.KeepAlive (c);
+        GC.KeepAlive(c);
         return c.Data;
       }
 
       // The object must be created in a separate method: The x64 JITter in .NET 4.7.2 (DEBUG builds only) keeps the reference alive until the variable is out of scope.
       var data = GetDataObject();
 
-      GC.Collect ();
+      GC.Collect();
       GC.WaitForPendingFinalizers();
 
-      Assert.That (data.ManagedCalled, Is.False);
-      Assert.That (data.UnmanagedCalled, Is.True);
+      Assert.That(data.ManagedCalled, Is.False);
+      Assert.That(data.UnmanagedCalled, Is.True);
     }
   }
 }

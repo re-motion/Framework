@@ -29,9 +29,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public static MappingReflector CreateMappingReflector (ITypeDiscoveryService typeDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
+      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
 
-      return new MappingReflector (
+      return new MappingReflector(
           typeDiscoveryService,
           new ClassIDProvider(),
           new ReflectionBasedMemberInformationNameResolver(),

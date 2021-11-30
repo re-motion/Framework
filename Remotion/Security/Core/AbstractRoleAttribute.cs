@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Security
 {
-  [AttributeUsage (AttributeTargets.Enum)]
+  [AttributeUsage(AttributeTargets.Enum)]
   public class AbstractRoleAttribute : Attribute
   {
   }

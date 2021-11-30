@@ -36,20 +36,20 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     {
       if (sourceReference.PropertyData.Kind == PropertyKind.RelatedObject)
       {
-        var originalRelated = (DomainObject) sourceReference.GetValueWithoutTypeCheck ();
-        DomainObject cloneRelated = originalRelated != null ? context.GetCloneFor (originalRelated) : null;
-        cloneReference.SetValueWithoutTypeCheck (cloneRelated);
+        var originalRelated = (DomainObject)sourceReference.GetValueWithoutTypeCheck();
+        DomainObject cloneRelated = originalRelated != null ? context.GetCloneFor(originalRelated) : null;
+        cloneReference.SetValueWithoutTypeCheck(cloneRelated);
       }
       else
       {
-        Assertion.IsTrue (sourceReference.PropertyData.Kind == PropertyKind.RelatedObjectCollection);
-        var originalRelatedCollection = (DomainObjectCollection) sourceReference.GetValueWithoutTypeCheck ();
-        var cloneRelatedCollection = (DomainObjectCollection) cloneReference.GetValueWithoutTypeCheck ();
+        Assertion.IsTrue(sourceReference.PropertyData.Kind == PropertyKind.RelatedObjectCollection);
+        var originalRelatedCollection = (DomainObjectCollection)sourceReference.GetValueWithoutTypeCheck();
+        var cloneRelatedCollection = (DomainObjectCollection)cloneReference.GetValueWithoutTypeCheck();
 
         foreach (DomainObject originalRelated in originalRelatedCollection)
         {
-          DomainObject cloneRelated = context.GetCloneFor (originalRelated);
-          cloneRelatedCollection.Add (cloneRelated);
+          DomainObject cloneRelated = context.GetCloneFor(originalRelated);
+          cloneRelatedCollection.Add(cloneRelated);
         }
       }
     }

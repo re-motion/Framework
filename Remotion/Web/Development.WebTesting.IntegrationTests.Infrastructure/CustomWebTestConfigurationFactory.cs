@@ -37,98 +37,98 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     {
       var chromeVersionArchivePath = ConfigurationManager.AppSettings["ChromeVersionArchive"];
 
-      if (string.IsNullOrEmpty (chromeVersionArchivePath))
-        return new ChromeConfiguration (configSettings);
+      if (string.IsNullOrEmpty(chromeVersionArchivePath))
+        return new ChromeConfiguration(configSettings);
 
-      var versionedChromeFolder = GetVersionedBrowserFolderName ("Chrome", chromeVersionArchivePath, LatestTestedChromeVersion);
-      var customChromeDirectory = PrepareCustomBrowserDirectory (chromeVersionArchivePath, versionedChromeFolder);
+      var versionedChromeFolder = GetVersionedBrowserFolderName("Chrome", chromeVersionArchivePath, LatestTestedChromeVersion);
+      var customChromeDirectory = PrepareCustomBrowserDirectory(chromeVersionArchivePath, versionedChromeFolder);
 
-      var customBrowserBinary = GetBinaryPath (customChromeDirectory, "chrome");
-      var customDriverBinary = GetBinaryPath (customChromeDirectory, "chromedriver");
+      var customBrowserBinary = GetBinaryPath(customChromeDirectory, "chrome");
+      var customDriverBinary = GetBinaryPath(customChromeDirectory, "chromedriver");
       var customUserDirectoryPath = CustomUserDirectory.GetCustomUserDirectory();
 
-      var chromeExecutable = new ChromeExecutable (customBrowserBinary, customDriverBinary, customUserDirectoryPath);
+      var chromeExecutable = new ChromeExecutable(customBrowserBinary, customDriverBinary, customUserDirectoryPath);
 
-      return new ChromeConfiguration (configSettings, chromeExecutable);
+      return new ChromeConfiguration(configSettings, chromeExecutable);
     }
 
     protected override IEdgeConfiguration CreateEdgeConfiguration (WebTestConfigurationSection configSettings)
     {
       var edgeVersionArchivePath = ConfigurationManager.AppSettings["EdgeVersionArchive"];
 
-      if (string.IsNullOrEmpty (edgeVersionArchivePath))
-        return new EdgeConfiguration (configSettings);
+      if (string.IsNullOrEmpty(edgeVersionArchivePath))
+        return new EdgeConfiguration(configSettings);
 
-      var versionedEdgeFolder = GetVersionedBrowserFolderName ("Edge", edgeVersionArchivePath, LatestTestedEdgeVersion);
-      var customEdgeDirectory = PrepareCustomBrowserDirectory (edgeVersionArchivePath, versionedEdgeFolder);
+      var versionedEdgeFolder = GetVersionedBrowserFolderName("Edge", edgeVersionArchivePath, LatestTestedEdgeVersion);
+      var customEdgeDirectory = PrepareCustomBrowserDirectory(edgeVersionArchivePath, versionedEdgeFolder);
 
-      var customBrowserBinary = GetBinaryPath (customEdgeDirectory, "msedge");
-      var customDriverBinary = GetBinaryPath (customEdgeDirectory, "msedgedriver");
+      var customBrowserBinary = GetBinaryPath(customEdgeDirectory, "msedge");
+      var customDriverBinary = GetBinaryPath(customEdgeDirectory, "msedgedriver");
       var customUserDirectoryPath = CustomUserDirectory.GetCustomUserDirectory();
 
-      var edgeExecutable = new EdgeExecutable (customBrowserBinary, customDriverBinary, customUserDirectoryPath);
+      var edgeExecutable = new EdgeExecutable(customBrowserBinary, customDriverBinary, customUserDirectoryPath);
 
-      return new EdgeConfiguration (configSettings, edgeExecutable);
+      return new EdgeConfiguration(configSettings, edgeExecutable);
     }
 
     protected override IFirefoxConfiguration CreateFirefoxConfiguration (WebTestConfigurationSection configSettings)
     {
       var firefoxVersionArchivePath = ConfigurationManager.AppSettings["FirefoxVersionArchive"];
 
-      if (string.IsNullOrEmpty (firefoxVersionArchivePath))
-        return new FirefoxConfiguration (configSettings);
+      if (string.IsNullOrEmpty(firefoxVersionArchivePath))
+        return new FirefoxConfiguration(configSettings);
 
-      var versionedFirefoxFolder = GetVersionedBrowserFolderName ("Firefox", firefoxVersionArchivePath, LatestTestedFirefoxVersion);
-      var customFirefoxDirectory = PrepareCustomBrowserDirectory (firefoxVersionArchivePath, versionedFirefoxFolder);
+      var versionedFirefoxFolder = GetVersionedBrowserFolderName("Firefox", firefoxVersionArchivePath, LatestTestedFirefoxVersion);
+      var customFirefoxDirectory = PrepareCustomBrowserDirectory(firefoxVersionArchivePath, versionedFirefoxFolder);
 
-      var customBrowserBinary = GetBinaryPath (customFirefoxDirectory, "firefox");
-      var customDriverBinary = GetBinaryPath (customFirefoxDirectory, "geckodriver");
+      var customBrowserBinary = GetBinaryPath(customFirefoxDirectory, "firefox");
+      var customDriverBinary = GetBinaryPath(customFirefoxDirectory, "geckodriver");
 
-      var firefoxExecutable = new FirefoxExecutable (customBrowserBinary, customDriverBinary);
+      var firefoxExecutable = new FirefoxExecutable(customBrowserBinary, customDriverBinary);
 
-      return new FirefoxConfiguration (configSettings, firefoxExecutable);
+      return new FirefoxConfiguration(configSettings, firefoxExecutable);
     }
 
     protected override IBrowserConfiguration CreateCustomBrowserConfiguration (WebTestConfigurationSection configSettings)
     {
-      var configuredBrowser = Browser.Parse (configSettings.BrowserName);
+      var configuredBrowser = Browser.Parse(configSettings.BrowserName);
 
       if (configuredBrowser == Browser.InternetExplorer)
-        return new InternetExplorerConfiguration (configSettings);
+        return new InternetExplorerConfiguration(configSettings);
 
-      return base.CreateCustomBrowserConfiguration (configSettings);
+      return base.CreateCustomBrowserConfiguration(configSettings);
     }
 
     private string GetVersionedBrowserFolderName (string browserName, string versionArchivePath, string latestTestedMajorBrowserVersion)
     {
-      return Directory.GetFiles (versionArchivePath)
-          .Select (Path.GetFileNameWithoutExtension)
-          .Where (x => x.StartsWith (browserName))
-          .ToDictionary (fileName => fileName, fileName => CreateVersionFromBrowserZipName (fileName, browserName))
-          .OrderByDescending (kvp => kvp.Value)
-          .First (kvp => kvp.Value.Major == int.Parse (latestTestedMajorBrowserVersion))
+      return Directory.GetFiles(versionArchivePath)
+          .Select(Path.GetFileNameWithoutExtension)
+          .Where(x => x.StartsWith(browserName))
+          .ToDictionary(fileName => fileName, fileName => CreateVersionFromBrowserZipName(fileName, browserName))
+          .OrderByDescending(kvp => kvp.Value)
+          .First(kvp => kvp.Value.Major == int.Parse(latestTestedMajorBrowserVersion))
           .Key;
     }
 
     private Version CreateVersionFromBrowserZipName (string fileName, string browserName)
     {
-      var regex = new Regex (@$"^{browserName}_v(?<major>\d+)(?<additionalVersionInfo>(\.\d+)*)");
-      var match = regex.Match (fileName);
-      var additionalVersionInfoValue = StringUtility.EmptyToNull (match.Groups["additionalVersionInfo"].Value) ?? ".0";
+      var regex = new Regex(@$"^{browserName}_v(?<major>\d+)(?<additionalVersionInfo>(\.\d+)*)");
+      var match = regex.Match(fileName);
+      var additionalVersionInfoValue = StringUtility.EmptyToNull(match.Groups["additionalVersionInfo"].Value) ?? ".0";
 
-      return new Version ($"{match.Groups["major"].Value}{additionalVersionInfoValue}");
+      return new Version($"{match.Groups["major"].Value}{additionalVersionInfoValue}");
     }
 
     private string PrepareCustomBrowserDirectory (string browserVersionArchivePath, string versionedBrowserFolderName)
     {
-      var localBrowserBinaryFolderPath = Path.Combine (Path.GetTempPath(), versionedBrowserFolderName);
+      var localBrowserBinaryFolderPath = Path.Combine(Path.GetTempPath(), versionedBrowserFolderName);
 
-      if (!Directory.Exists (localBrowserBinaryFolderPath))
+      if (!Directory.Exists(localBrowserBinaryFolderPath))
       {
         var versionedChromeZipFile = $"{versionedBrowserFolderName}.zip";
 
-        ZipFile.ExtractToDirectory (
-            Path.Combine (browserVersionArchivePath, versionedChromeZipFile),
+        ZipFile.ExtractToDirectory(
+            Path.Combine(browserVersionArchivePath, versionedChromeZipFile),
             localBrowserBinaryFolderPath);
       }
 
@@ -137,7 +137,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     private string GetBinaryPath (string localBrowserDirectory, string binaryName)
     {
-      return Path.Combine (localBrowserDirectory, binaryName + ".exe");
+      return Path.Combine(localBrowserDirectory, binaryName + ".exe");
     }
   }
 }

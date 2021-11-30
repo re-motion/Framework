@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
           IResourceUrlFactory resourceUrlFactory,
           IGlobalizationService globalizationService,
           IRenderingFeatures renderingFeatures)
-          : base (resourceUrlFactory, globalizationService, renderingFeatures)
+          : base(resourceUrlFactory, globalizationService, renderingFeatures)
       {
       }
 
@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       // Enables testing of AddDiagnosticMetadataAttributes method
       public new void AddDiagnosticMetadataAttributes (RenderingContext<TestableBocControl> renderingContext)
       {
-        base.AddDiagnosticMetadataAttributes (renderingContext);
+        base.AddDiagnosticMetadataAttributes(renderingContext);
       }
     }
 
@@ -129,83 +129,83 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       Control.ReadOnly = true;
       var renderingContext = CreateRenderingContext();
-      BocRendererBase = new TestableBocRendererBase (_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
+      BocRendererBase = new TestableBocRendererBase(_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
 
-      BocRendererBase.AddDiagnosticMetadataAttributes (renderingContext);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      BocRendererBase.AddDiagnosticMetadataAttributes(renderingContext);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       renderingContext.Writer.RenderEndTag();
 
       var document = Html.GetResultDocument();
       var control = document.DocumentElement;
-      control.AssertNoAttribute (DiagnosticMetadataAttributesForObjectBinding.DisplayName);
-      control.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsReadOnly, "true");
-      control.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsDisabled, "false");
-      control.AssertAttributeValueEquals (DiagnosticMetadataAttributesForObjectBinding.IsBound, "false");
-      control.AssertNoAttribute (DiagnosticMetadataAttributesForObjectBinding.BoundType);
-      control.AssertNoAttribute (DiagnosticMetadataAttributesForObjectBinding.BoundProperty);
+      control.AssertNoAttribute(DiagnosticMetadataAttributesForObjectBinding.DisplayName);
+      control.AssertAttributeValueEquals(DiagnosticMetadataAttributes.IsReadOnly, "true");
+      control.AssertAttributeValueEquals(DiagnosticMetadataAttributes.IsDisabled, "false");
+      control.AssertAttributeValueEquals(DiagnosticMetadataAttributesForObjectBinding.IsBound, "false");
+      control.AssertNoAttribute(DiagnosticMetadataAttributesForObjectBinding.BoundType);
+      control.AssertNoAttribute(DiagnosticMetadataAttributesForObjectBinding.BoundProperty);
     }
 
     [Test]
     public void TestDiagnosticMetadataRenderingForBoundControl_DataSourceWithBusinessObject ()
     {
-      var businessObject = TypeWithReference.Create ("MyBusinessObject");
-      ((IBusinessObjectBoundControl) Control).Property =
-          ((IBusinessObject) businessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue");
+      var businessObject = TypeWithReference.Create("MyBusinessObject");
+      ((IBusinessObjectBoundControl)Control).Property =
+          ((IBusinessObject)businessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue");
 
-      var dataSource = new BindableObjectDataSource { Type = typeof (TypeWithReference) };
-      dataSource.BusinessObject = (IBusinessObject) businessObject;
-      dataSource.Register (Control);
+      var dataSource = new BindableObjectDataSource { Type = typeof(TypeWithReference) };
+      dataSource.BusinessObject = (IBusinessObject)businessObject;
+      dataSource.Register(Control);
       Control.DataSource = dataSource;
 
       var renderingContext = CreateRenderingContext();
-      BocRendererBase = new TestableBocRendererBase (_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
+      BocRendererBase = new TestableBocRendererBase(_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
 
-      BocRendererBase.AddDiagnosticMetadataAttributes (renderingContext);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      BocRendererBase.AddDiagnosticMetadataAttributes(renderingContext);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       renderingContext.Writer.RenderEndTag();
 
       var document = Html.GetResultDocument();
       var control = document.DocumentElement;
-      control.AssertAttributeValueEquals (DiagnosticMetadataAttributesForObjectBinding.DisplayName, "ReferenceValue");
-      control.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsReadOnly, "false");
-      control.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsDisabled, "false");
-      control.AssertAttributeValueEquals (DiagnosticMetadataAttributesForObjectBinding.IsBound, "true");
-      control.AssertAttributeValueEquals (
+      control.AssertAttributeValueEquals(DiagnosticMetadataAttributesForObjectBinding.DisplayName, "ReferenceValue");
+      control.AssertAttributeValueEquals(DiagnosticMetadataAttributes.IsReadOnly, "false");
+      control.AssertAttributeValueEquals(DiagnosticMetadataAttributes.IsDisabled, "false");
+      control.AssertAttributeValueEquals(DiagnosticMetadataAttributesForObjectBinding.IsBound, "true");
+      control.AssertAttributeValueEquals(
           DiagnosticMetadataAttributesForObjectBinding.BoundType,
           "Remotion.ObjectBinding.Web.UnitTests.Domain.TypeWithReference, Remotion.ObjectBinding.Web.UnitTests");
-      control.AssertAttributeValueEquals (DiagnosticMetadataAttributesForObjectBinding.BoundProperty, "ReferenceValue");
+      control.AssertAttributeValueEquals(DiagnosticMetadataAttributesForObjectBinding.BoundProperty, "ReferenceValue");
     }
 
     [Test]
     public void TestDiagnosticMetadataRenderingForBoundControl_DataSourceWithoutBusinessObject ()
     {
-      var businessObject = TypeWithReference.Create ("MyBusinessObject");
-      ((IBusinessObjectBoundControl) Control).Property =
-          ((IBusinessObject) businessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue");
+      var businessObject = TypeWithReference.Create("MyBusinessObject");
+      ((IBusinessObjectBoundControl)Control).Property =
+          ((IBusinessObject)businessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue");
 
-      var dataSource = new BindableObjectDataSource { Type = typeof (TypeWithReference) };
-      dataSource.Register (Control);
+      var dataSource = new BindableObjectDataSource { Type = typeof(TypeWithReference) };
+      dataSource.Register(Control);
       Control.DataSource = dataSource;
 
       var renderingContext = CreateRenderingContext();
-      BocRendererBase = new TestableBocRendererBase (_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
+      BocRendererBase = new TestableBocRendererBase(_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
 
-      BocRendererBase.AddDiagnosticMetadataAttributes (renderingContext);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      BocRendererBase.AddDiagnosticMetadataAttributes(renderingContext);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       renderingContext.Writer.RenderEndTag();
 
       var document = Html.GetResultDocument();
       var control = document.DocumentElement;
-      control.AssertAttributeValueEquals (DiagnosticMetadataAttributesForObjectBinding.IsBound, "true");
-      control.AssertAttributeValueEquals (
+      control.AssertAttributeValueEquals(DiagnosticMetadataAttributesForObjectBinding.IsBound, "true");
+      control.AssertAttributeValueEquals(
           DiagnosticMetadataAttributesForObjectBinding.BoundType,
           "Remotion.ObjectBinding.Web.UnitTests.Domain.TypeWithReference, Remotion.ObjectBinding.Web.UnitTests");
-      control.AssertAttributeValueEquals (DiagnosticMetadataAttributesForObjectBinding.BoundProperty, "ReferenceValue");
+      control.AssertAttributeValueEquals(DiagnosticMetadataAttributesForObjectBinding.BoundProperty, "ReferenceValue");
     }
 
     private RenderingContext<TestableBocControl> CreateRenderingContext ()
     {
-      return new BocRenderingContext<TestableBocControl> (HttpContext, Html.Writer, Control);
+      return new BocRenderingContext<TestableBocControl>(HttpContext, Html.Writer, Control);
     }
   }
 }

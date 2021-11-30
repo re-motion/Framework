@@ -35,16 +35,16 @@ namespace Remotion.Reflection
     /// </returns>
     public static bool CanAscribeTo (this Type type, Type ascribeeType)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("ascribeeType", ascribeeType);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("ascribeeType", ascribeeType);
 
       if (!ascribeeType.IsInterface)
-        return CanAscribeInternal (type, ascribeeType);
+        return CanAscribeInternal(type, ascribeeType);
 
-      if (type.IsInterface && CanAscribeInternal (type, ascribeeType))
+      if (type.IsInterface && CanAscribeInternal(type, ascribeeType))
         return true;
 
-      return Array.Exists (type.GetInterfaces(), current => CanAscribeInternal (current, ascribeeType));
+      return Array.Exists(type.GetInterfaces(), current => CanAscribeInternal(current, ascribeeType));
     }
 
     /// <summary>
@@ -64,31 +64,31 @@ namespace Remotion.Reflection
     /// </exception>
     public static IReadOnlyList<Type> GetAscribedGenericArguments (this Type type, Type ascribeeType)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("ascribeeType", ascribeeType);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("ascribeeType", ascribeeType);
 
       if (!ascribeeType.IsGenericType)
       {
-        if (ascribeeType.IsAssignableFrom (type))
+        if (ascribeeType.IsAssignableFrom(type))
           return Type.EmptyTypes;
         else
-          throw ArgumentUtility.CreateArgumentTypeException ("type", type, ascribeeType);
+          throw ArgumentUtility.CreateArgumentTypeException("type", type, ascribeeType);
       }
       else if (ascribeeType.IsInterface)
-        return GetAscribedGenericInterfaceArgumentsInternal (type, ascribeeType);
+        return GetAscribedGenericInterfaceArgumentsInternal(type, ascribeeType);
       else
-        return GetAscribedGenericClassArgumentsInternal (type, ascribeeType);
+        return GetAscribedGenericClassArgumentsInternal(type, ascribeeType);
     }
 
     private static bool CanAscribeInternal (Type type, Type ascribeeType)
     {
       if (!ascribeeType.IsGenericType)
-        return ascribeeType.IsAssignableFrom (type);
+        return ascribeeType.IsAssignableFrom(type);
 
       Type ascribeeGenericTypeDefinition = ascribeeType.GetGenericTypeDefinition();
       for (Type? currentType = type; currentType != null; currentType = currentType.BaseType)
       {
-        if (CanDirectlyAscribeToGenericTypeInternal (currentType, ascribeeType, ascribeeGenericTypeDefinition))
+        if (CanDirectlyAscribeToGenericTypeInternal(currentType, ascribeeType, ascribeeGenericTypeDefinition))
           return true;
       }
       return false;
@@ -96,22 +96,22 @@ namespace Remotion.Reflection
 
     private static IReadOnlyList<Type> GetAscribedGenericInterfaceArgumentsInternal (Type type, Type ascribeeType)
     {
-      Assertion.IsTrue (ascribeeType.IsGenericType);
-      Assertion.IsTrue (ascribeeType.IsInterface);
+      Assertion.IsTrue(ascribeeType.IsGenericType);
+      Assertion.IsTrue(ascribeeType.IsInterface);
 
       Type ascribeeGenericTypeDefinition = ascribeeType.GetGenericTypeDefinition();
 
       Type? conreteSpecialization; // concrete specialization of ascribeeType implemented by type
       // is type itself a specialization of ascribeeType?
-      if (type.IsInterface && CanDirectlyAscribeToGenericTypeInternal (type, ascribeeType, ascribeeGenericTypeDefinition))
+      if (type.IsInterface && CanDirectlyAscribeToGenericTypeInternal(type, ascribeeType, ascribeeGenericTypeDefinition))
         conreteSpecialization = type;
       else
       {
         // Type.GetInterfaces will return all interfaces inherited by type. We will filter it to those that are directly ascribable
         // to ascribeeType. Since interfaces have no base types, these can only be closed or constructed specializations of ascribeeType.
-        Type[] ascribableInterfaceTypes = Array.FindAll (
+        Type[] ascribableInterfaceTypes = Array.FindAll(
             type.GetInterfaces(),
-            current => CanDirectlyAscribeToGenericTypeInternal (current, ascribeeType, ascribeeGenericTypeDefinition));
+            current => CanDirectlyAscribeToGenericTypeInternal(current, ascribeeType, ascribeeGenericTypeDefinition));
 
         if (ascribableInterfaceTypes.Length == 0)
           conreteSpecialization = null;
@@ -120,47 +120,47 @@ namespace Remotion.Reflection
         else
         {
           string message =
-              String.Format ("The type {0} implements the given interface type {1} more than once.", type.GetFullNameSafe(), ascribeeType.GetFullNameSafe());
-          throw new AmbiguousMatchException (message);
+              String.Format("The type {0} implements the given interface type {1} more than once.", type.GetFullNameSafe(), ascribeeType.GetFullNameSafe());
+          throw new AmbiguousMatchException(message);
         }
       }
 
       if (conreteSpecialization == null)
-        throw ArgumentUtility.CreateArgumentTypeException ("type", type, ascribeeType);
+        throw ArgumentUtility.CreateArgumentTypeException("type", type, ascribeeType);
 
-      Assertion.IsTrue (conreteSpecialization.GetGenericTypeDefinition() == ascribeeType.GetGenericTypeDefinition());
-      return Array.AsReadOnly (conreteSpecialization.GetGenericArguments());
+      Assertion.IsTrue(conreteSpecialization.GetGenericTypeDefinition() == ascribeeType.GetGenericTypeDefinition());
+      return Array.AsReadOnly(conreteSpecialization.GetGenericArguments());
     }
 
     private static IReadOnlyList<Type> GetAscribedGenericClassArgumentsInternal (Type type, Type ascribeeType)
     {
-      Assertion.IsTrue (ascribeeType.IsGenericType);
-      Assertion.IsTrue (!ascribeeType.IsInterface);
+      Assertion.IsTrue(ascribeeType.IsGenericType);
+      Assertion.IsTrue(!ascribeeType.IsInterface);
 
       Type ascribeeGenericTypeDefinition = ascribeeType.GetGenericTypeDefinition();
 
       // Search via base type until we find a type that is directly ascribable to the base type. That's the type whose generic arguments we want
       Type? currentType = type;
-      while (currentType != null && !CanDirectlyAscribeToGenericTypeInternal (currentType, ascribeeType, ascribeeGenericTypeDefinition))
+      while (currentType != null && !CanDirectlyAscribeToGenericTypeInternal(currentType, ascribeeType, ascribeeGenericTypeDefinition))
         currentType = currentType.BaseType;
 
       if (currentType != null)
-        return Array.AsReadOnly (currentType.GetGenericArguments());
+        return Array.AsReadOnly(currentType.GetGenericArguments());
       else
-        throw ArgumentUtility.CreateArgumentTypeException ("type", type, ascribeeType);
+        throw ArgumentUtility.CreateArgumentTypeException("type", type, ascribeeType);
     }
 
     private static bool CanDirectlyAscribeToGenericTypeInternal (Type type, Type ascribeeType, Type ascribeeGenericTypeDefinition)
     {
-      Assertion.IsNotNull (ascribeeType);
+      Assertion.IsNotNull(ascribeeType);
 
       if (!type.IsGenericType || type.GetGenericTypeDefinition() != ascribeeGenericTypeDefinition)
         return false;
 
       if (ascribeeType != ascribeeGenericTypeDefinition)
-        return ascribeeType.IsAssignableFrom (type);
+        return ascribeeType.IsAssignableFrom(type);
       else
-        return ascribeeType.IsAssignableFrom (type.GetGenericTypeDefinition());
+        return ascribeeType.IsAssignableFrom(type.GetGenericTypeDefinition());
     }
   }
 }

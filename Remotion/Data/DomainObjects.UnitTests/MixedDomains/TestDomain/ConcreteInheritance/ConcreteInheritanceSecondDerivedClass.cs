@@ -21,12 +21,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.Concrete
 {
   [Instantiable]
   [DBTable]
-  [Uses (typeof (ConcreteInheritancePersistentMixin))]
+  [Uses(typeof(ConcreteInheritancePersistentMixin))]
   public abstract class ConcreteInheritanceSecondDerivedClass : ConcreteInheritanceBaseClass
   {
     public static ConcreteInheritanceSecondDerivedClass NewObject ()
     {
-      return NewObject<ConcreteInheritanceSecondDerivedClass> ();
+      return NewObject<ConcreteInheritanceSecondDerivedClass>();
     }
 
     public virtual string SecondDerivedProperty { get; set; }

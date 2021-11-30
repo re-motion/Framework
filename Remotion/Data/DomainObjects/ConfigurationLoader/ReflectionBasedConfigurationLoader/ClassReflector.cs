@@ -49,14 +49,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
         IDomainObjectCreator instanceCreator)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (DomainObject));
-      ArgumentUtility.CheckNotNull ("mappingObjectFactory", mappingObjectFactory);
-      ArgumentUtility.CheckNotNull ("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull ("classIDProvider", classIDProvider);
-      ArgumentUtility.CheckNotNull ("propertyMetadataProvider", propertyMetadataProvider);
-      ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull ("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
-      ArgumentUtility.CheckNotNull ("instanceCreator", instanceCreator);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(DomainObject));
+      ArgumentUtility.CheckNotNull("mappingObjectFactory", mappingObjectFactory);
+      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
+      ArgumentUtility.CheckNotNull("classIDProvider", classIDProvider);
+      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
+      ArgumentUtility.CheckNotNull("instanceCreator", instanceCreator);
 
       _type = type;
       _mappingObjectFactory = mappingObjectFactory;
@@ -85,12 +85,12 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public ClassDefinition GetMetadata (ClassDefinition baseClassDefinition)
     {
-      var persistentMixinFinder = new PersistentMixinFinder (Type, baseClassDefinition == null);
+      var persistentMixinFinder = new PersistentMixinFinder(Type, baseClassDefinition == null);
       var storageGroupAttribute = GetStorageGroupAttribute();
       var storageGroupType = storageGroupAttribute?.GetType();
       var defaultStorageClass = storageGroupAttribute?.DefaultStorageClass ?? DefaultStorageClass.Persistent;
-      var classDefinition = new ClassDefinition (
-              _classIDProvider.GetClassID (Type),
+      var classDefinition = new ClassDefinition(
+              _classIDProvider.GetClassID(Type),
               Type,
               IsAbstract(),
               baseClassDefinition,
@@ -99,36 +99,36 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
               persistentMixinFinder,
               _instanceCreator);
 
-      var properties = MappingObjectFactory.CreatePropertyDefinitionCollection (classDefinition, GetPropertyInfos (classDefinition));
-      classDefinition.SetPropertyDefinitions (properties);
-      var endPoints = MappingObjectFactory.CreateRelationEndPointDefinitionCollection (classDefinition);
-      classDefinition.SetRelationEndPointDefinitions (endPoints);
+      var properties = MappingObjectFactory.CreatePropertyDefinitionCollection(classDefinition, GetPropertyInfos(classDefinition));
+      classDefinition.SetPropertyDefinitions(properties);
+      var endPoints = MappingObjectFactory.CreateRelationEndPointDefinitionCollection(classDefinition);
+      classDefinition.SetRelationEndPointDefinitions(endPoints);
 
       return classDefinition;
     }
 
     private StorageGroupAttribute GetStorageGroupAttribute ()
     {
-      return AttributeUtility.GetCustomAttributes<StorageGroupAttribute> (Type, true).FirstOrDefault();
+      return AttributeUtility.GetCustomAttributes<StorageGroupAttribute>(Type, true).FirstOrDefault();
     }
 
     private bool IsAbstract ()
     {
       if (Type.IsAbstract)
-        return !Attribute.IsDefined (Type, typeof (InstantiableAttribute), false);
+        return !Attribute.IsDefined(Type, typeof(InstantiableAttribute), false);
 
       return false;
     }
 
     private IEnumerable<IPropertyInformation> GetPropertyInfos (ClassDefinition classDefinition)
     {
-      PropertyFinder propertyFinder = new PropertyFinder (
+      PropertyFinder propertyFinder = new PropertyFinder(
           classDefinition.ClassType,
           classDefinition,
           classDefinition.BaseClass == null,
           true,
           _nameResolver,
-          classDefinition.PersistentMixinFinder, 
+          classDefinition.PersistentMixinFinder,
           _propertyMetadataProvider,
           _domainModelConstraintProvider,
           _sortExpressionDefinitionProvider);

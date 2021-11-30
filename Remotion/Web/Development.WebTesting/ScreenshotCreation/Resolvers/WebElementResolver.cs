@@ -43,12 +43,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 
       public Rectangle GetElementBounds ()
       {
-        return new Rectangle (ElementBounds.X, ElementBounds.Y, ElementBounds.Width, ElementBounds.Height);
+        return new Rectangle(ElementBounds.X, ElementBounds.Y, ElementBounds.Width, ElementBounds.Height);
       }
 
       public Rectangle GetParentBounds ()
       {
-        return new Rectangle (ParentBounds.X, ParentBounds.Y, ParentBounds.Width, ParentBounds.Height);
+        return new Rectangle(ParentBounds.X, ParentBounds.Y, ParentBounds.Width, ParentBounds.Height);
       }
     }
 
@@ -80,22 +80,22 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 
       private static string RefreshScript ()
       {
-        var resourceName = typeof (WebElementResolver).FullName + "Script.js";
-        using (var stream = typeof (WebElementResolver).Assembly.GetManifestResourceStream (resourceName))
+        var resourceName = typeof(WebElementResolver).FullName + "Script.js";
+        using (var stream = typeof(WebElementResolver).Assembly.GetManifestResourceStream(resourceName))
         {
           if (stream == null)
-            throw new InvalidOperationException ("Could not find the WebElementResolver script.");
+            throw new InvalidOperationException("Could not find the WebElementResolver script.");
 
           // String builder in which the script will be loaded.
           var scriptBuilder = new StringBuilder();
-          scriptBuilder.Append ("return ");
+          scriptBuilder.Append("return ");
 
-          using (var reader = new StreamReader (stream))
+          using (var reader = new StreamReader(stream))
           {
             string? line;
             while ((line = reader.ReadLine()) != null)
-              if (!line.StartsWith ("//"))
-                scriptBuilder.Append (line);
+              if (!line.StartsWith("//"))
+                scriptBuilder.Append(line);
           }
 
           s_script = scriptBuilder.ToString();
@@ -116,17 +116,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveBrowserCoordinates (IWebElement target)
     {
-      ArgumentUtility.CheckNotNull ("target", target);
+      ArgumentUtility.CheckNotNull("target", target);
 
-      var executor = JavaScriptExecutor.GetJavaScriptExecutor (target);
-      var rawResult = JavaScriptExecutor.ExecuteStatement<string> (executor, ScriptLoader.Script, target);
-      var result = DataContractJsonSerializationUtility.Deserialize<ResultDto> (rawResult);
-      Assertion.IsNotNull (result, "Could not deserialize javascript result '{0}'.", rawResult);
+      var executor = JavaScriptExecutor.GetJavaScriptExecutor(target);
+      var rawResult = JavaScriptExecutor.ExecuteStatement<string>(executor, ScriptLoader.Script, target);
+      var result = DataContractJsonSerializationUtility.Deserialize<ResultDto>(rawResult);
+      Assertion.IsNotNull(result, "Could not deserialize javascript result '{0}'.", rawResult);
 
       var elementBounds = result.GetElementBounds();
       var parentBounds = result.GetParentBounds();
       var unresolvedBounds = elementBounds;
-      var intersection = Rectangle.Intersect (elementBounds, parentBounds);
+      var intersection = Rectangle.Intersect(elementBounds, parentBounds);
 
       ElementVisibility visibility;
       if (intersection.IsEmpty)
@@ -136,24 +136,24 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
       else
         visibility = ElementVisibility.PartiallyVisible;
 
-      return new ResolvedScreenshotElement (CoordinateSystem.Browser, elementBounds, visibility, parentBounds, unresolvedBounds);
+      return new ResolvedScreenshotElement(CoordinateSystem.Browser, elementBounds, visibility, parentBounds, unresolvedBounds);
     }
 
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IWebElement target, IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("target", target);
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
-      var executor = JavaScriptExecutor.GetJavaScriptExecutor (target);
-      var rawResult = JavaScriptExecutor.ExecuteStatement<string> (executor, ScriptLoader.Script, target);
-      var result = DataContractJsonSerializationUtility.Deserialize<ResultDto> (rawResult);
-      Assertion.IsNotNull (result, "Could not deserialize javascript result '{0}'.", rawResult);
+      var executor = JavaScriptExecutor.GetJavaScriptExecutor(target);
+      var rawResult = JavaScriptExecutor.ExecuteStatement<string>(executor, ScriptLoader.Script, target);
+      var result = DataContractJsonSerializationUtility.Deserialize<ResultDto>(rawResult);
+      Assertion.IsNotNull(result, "Could not deserialize javascript result '{0}'.", rawResult);
 
       var elementBounds = result.GetElementBounds();
       var unresolvedBounds = elementBounds;
       var parentBounds = result.GetParentBounds();
-      var intersection = Rectangle.Intersect (elementBounds, parentBounds);
+      var intersection = Rectangle.Intersect(elementBounds, parentBounds);
 
       ElementVisibility visibility;
       if (intersection.IsEmpty)
@@ -163,11 +163,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
       else
         visibility = ElementVisibility.PartiallyVisible;
 
-      var window = locator.GetBrowserContentBounds (((IWrapsDriver) target).WrappedDriver);
-      elementBounds.Offset (window.Location);
-      parentBounds.Offset (window.Location);
+      var window = locator.GetBrowserContentBounds(((IWrapsDriver)target).WrappedDriver);
+      elementBounds.Offset(window.Location);
+      parentBounds.Offset(window.Location);
 
-      return new ResolvedScreenshotElement (CoordinateSystem.Browser, elementBounds, visibility, parentBounds, unresolvedBounds);
+      return new ResolvedScreenshotElement(CoordinateSystem.Browser, elementBounds, visibility, parentBounds, unresolvedBounds);
     }
   }
 }

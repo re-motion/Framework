@@ -32,8 +32,8 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     public override WebTreeView CreateControl (GenericTestOptions options)
     {
-      var control = base.CreateControl (options);
-      control.Nodes.Add (new WebTreeNode { ItemID = "ItemA", Text = "A" });
+      var control = base.CreateControl(options);
+      control.Nodes.Add(new WebTreeNode { ItemID = "ItemA", Text = "A" });
       return control;
     }
   }

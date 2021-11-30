@@ -69,7 +69,7 @@ namespace JetBrains.Annotations
   /// <summary>
   /// Indicates that the return value of method invocation must be used.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Method)]
+  [AttributeUsage(AttributeTargets.Method)]
   sealed partial class MustUseReturnValueAttribute : Attribute
   {
     public MustUseReturnValueAttribute ()

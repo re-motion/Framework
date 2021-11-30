@@ -27,14 +27,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation
 
     public BocEnumValueConstraintVisitor (BocEnumValue control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       Control = control;
     }
 
     public void Visit (BusinessObjectPropertyValueRequiredConstraint constraint)
     {
-      ArgumentUtility.CheckNotNull ("constraint", constraint);
+      ArgumentUtility.CheckNotNull("constraint", constraint);
 
       if (Control.Required.HasValue)
         return;

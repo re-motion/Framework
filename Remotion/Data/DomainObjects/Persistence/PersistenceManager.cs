@@ -47,9 +47,9 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public PersistenceManager (IPersistenceExtension persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
 
-      _storageProviderManager = new StorageProviderManager (persistenceExtension);
+      _storageProviderManager = new StorageProviderManager(persistenceExtension);
     }
 
     #region IDisposable Members
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Persistence
         _storageProviderManager = null;
 
         _disposed = true;
-        GC.SuppressFinalize (this);
+        GC.SuppressFinalize(this);
       }
     }
 
@@ -78,45 +78,45 @@ namespace Remotion.Data.DomainObjects.Persistence
     public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      StorageProvider provider = _storageProviderManager.GetMandatory (classDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
-      return provider.CreateNewObjectID (classDefinition);
+      StorageProvider provider = _storageProviderManager.GetMandatory(classDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
+      return provider.CreateNewObjectID(classDefinition);
     }
 
     public void Save (DataContainerCollection dataContainers)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
 
       if (dataContainers.Count == 0)
         return;
 
       var groupedDataContainers = dataContainers
-          .ToLookup (dataContainer => dataContainer.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition)
-          .Select (group => new { Provider = _storageProviderManager.GetMandatory (group.Key.Name), DataContainers = group })
+          .ToLookup(dataContainer => dataContainer.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition)
+          .Select(group => new { Provider = _storageProviderManager.GetMandatory(group.Key.Name), DataContainers = group })
           .ToArray();
 
-      var providers = groupedDataContainers.Select (group => group.Provider).ToArray();
-      CheckProvidersCompatibleForSave (providers);
+      var providers = groupedDataContainers.Select(group => group.Provider).ToArray();
+      CheckProvidersCompatibleForSave(providers);
 
-      using (var saveContext = BeginTransaction (providers))
+      using (var saveContext = BeginTransaction(providers))
       {
         try
         {
           foreach (var group in groupedDataContainers)
           {
-            group.Provider.Save (group.DataContainers);
-            group.Provider.UpdateTimestamps (group.DataContainers.Where (dc => !dc.State.IsDeleted));
+            group.Provider.Save(group.DataContainers);
+            group.Provider.UpdateTimestamps(group.DataContainers.Where(dc => !dc.State.IsDeleted));
           }
 
-          CommitTransaction (providers, saveContext);
+          CommitTransaction(providers, saveContext);
         }
         catch
         {
           try
           {
-            RollbackTransaction (providers, saveContext);
+            RollbackTransaction(providers, saveContext);
           }
           // ReSharper disable EmptyGeneralCatchClause
           catch
@@ -132,10 +132,10 @@ namespace Remotion.Data.DomainObjects.Persistence
     public ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull("id", id);
 
-      var provider = _storageProviderManager.GetMandatory (id.StorageProviderDefinition.Name);
-      var result = provider.LoadDataContainer (id);
+      var provider = _storageProviderManager.GetMandatory(id.StorageProviderDefinition.Name);
+      var result = provider.LoadDataContainer(id);
 
       return result;
     }
@@ -143,25 +143,25 @@ namespace Remotion.Data.DomainObjects.Persistence
     public IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull ("ids", ids);
+      ArgumentUtility.CheckNotNull("ids", ids);
 
       var idCollection = ids.ConvertToCollection();
-      var idsByProvider = GroupIDsByProvider (idCollection);
+      var idsByProvider = GroupIDsByProvider(idCollection);
 
       var unorderedResultDictionary = idsByProvider
-          .SelectMany (idGroup => _storageProviderManager.GetMandatory (idGroup.Key).LoadDataContainers (idGroup.Value))
-          .ToLookup (dataContainerLookupResult => dataContainerLookupResult.ObjectID);
-      return idCollection.Select (id => unorderedResultDictionary[id].First());
+          .SelectMany(idGroup => _storageProviderManager.GetMandatory(idGroup.Key).LoadDataContainers(idGroup.Value))
+          .ToLookup(dataContainerLookupResult => dataContainerLookupResult.ObjectID);
+      return idCollection.Select(id => unorderedResultDictionary[id].First());
     }
 
     public DataContainerCollection LoadRelatedDataContainers (RelationEndPointID relationEndPointID)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+      ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
       if (!relationEndPointID.Definition.IsVirtual)
       {
-        throw CreatePersistenceException (
+        throw CreatePersistenceException(
             "A DataContainerCollection cannot be loaded for a relation with a non-virtual end point,"
             + " relation: '{0}', property: '{1}'. Check your mapping configuration.",
             relationEndPointID.Definition.RelationDefinition.ID,
@@ -171,16 +171,16 @@ namespace Remotion.Data.DomainObjects.Persistence
       var relationEndPointDefinition = relationEndPointID.Definition;
       if (relationEndPointDefinition.Cardinality == CardinalityType.One)
       {
-        throw CreatePersistenceException (
+        throw CreatePersistenceException(
             "Cannot load multiple related data containers for one-to-one relation '{0}'.",
             relationEndPointDefinition.RelationDefinition.ID);
       }
 
-      var oppositeDataContainers = LoadOppositeDataContainers (relationEndPointID);
+      var oppositeDataContainers = LoadOppositeDataContainers(relationEndPointID);
 
       if (relationEndPointDefinition.IsMandatory && oppositeDataContainers.Count == 0)
       {
-        throw CreatePersistenceException (
+        throw CreatePersistenceException(
             "Collection for mandatory relation property '{0}' on object '{1}' contains no items.",
             relationEndPointDefinition.PropertyName,
             relationEndPointID.ObjectID);
@@ -192,12 +192,12 @@ namespace Remotion.Data.DomainObjects.Persistence
     public DataContainer LoadRelatedDataContainer (RelationEndPointID relationEndPointID)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+      ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
       if (!relationEndPointID.Definition.IsVirtual)
-        throw new ArgumentException ("LoadRelatedDataContainer can only be used with virtual end points.", "relationEndPointID");
+        throw new ArgumentException("LoadRelatedDataContainer can only be used with virtual end points.", "relationEndPointID");
 
-      return GetOppositeDataContainerForVirtualEndPoint (relationEndPointID);
+      return GetOppositeDataContainerForVirtualEndPoint(relationEndPointID);
     }
 
     /// <summary>
@@ -210,12 +210,12 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// </remarks>
     protected virtual void CheckProvidersCompatibleForSave (IEnumerable<StorageProvider> providers)
     {
-      ArgumentUtility.CheckNotNull ("providers", providers);
+      ArgumentUtility.CheckNotNull("providers", providers);
 
-      var persistentStorageProviders = providers.Where (p => !(p is NonPersistentProvider));
+      var persistentStorageProviders = providers.Where(p => !(p is NonPersistentProvider));
 
       if (persistentStorageProviders.Count() > 1)
-        throw CreatePersistenceException ("Save does not support multiple storage providers.");
+        throw CreatePersistenceException("Save does not support multiple storage providers.");
     }
 
     /// <summary>
@@ -228,7 +228,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// </returns>
     protected virtual IDisposable BeginTransaction (IEnumerable<StorageProvider> providers)
     {
-      ArgumentUtility.CheckNotNull ("providers", providers);
+      ArgumentUtility.CheckNotNull("providers", providers);
 
       foreach (var provider in providers)
         provider.BeginTransaction();
@@ -245,7 +245,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// </param>
     protected virtual void CommitTransaction (IEnumerable<StorageProvider> providers, IDisposable context)
     {
-      ArgumentUtility.CheckNotNull ("providers", providers);
+      ArgumentUtility.CheckNotNull("providers", providers);
 
       foreach (var provider in providers)
         provider.Commit();
@@ -260,7 +260,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     /// </param>
     protected virtual void RollbackTransaction (IEnumerable<StorageProvider> providers, IDisposable context)
     {
-      ArgumentUtility.CheckNotNull ("providers", providers);
+      ArgumentUtility.CheckNotNull("providers", providers);
 
       foreach (var provider in providers)
       {
@@ -281,15 +281,15 @@ namespace Remotion.Data.DomainObjects.Persistence
       var relationEndPointDefinition = relationEndPointID.Definition;
       if (relationEndPointDefinition.Cardinality == CardinalityType.Many)
       {
-        throw CreatePersistenceException (
+        throw CreatePersistenceException(
             "Cannot load a single related data container for one-to-many relation '{0}'.",
             relationEndPointDefinition.RelationDefinition.ID);
       }
 
-      var oppositeDataContainers = LoadOppositeDataContainers (relationEndPointID);
+      var oppositeDataContainers = LoadOppositeDataContainers(relationEndPointID);
       if (oppositeDataContainers.Count > 1)
       {
-        throw CreatePersistenceException (
+        throw CreatePersistenceException(
             "Multiple related DataContainers where found for property '{0}' of DataContainer '{1}'.",
             relationEndPointDefinition.PropertyName,
             relationEndPointID.ObjectID);
@@ -299,7 +299,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       {
         if (relationEndPointDefinition.IsMandatory)
         {
-          throw CreatePersistenceException (
+          throw CreatePersistenceException(
             "Mandatory relation property '{0}' on object '{1}' contains no item.",
             relationEndPointDefinition.PropertyName,
             relationEndPointID.ObjectID);
@@ -314,12 +314,12 @@ namespace Remotion.Data.DomainObjects.Persistence
     private DataContainerCollection LoadOppositeDataContainers (RelationEndPointID relationEndPointID)
     {
       var relationEndPointDefinition = relationEndPointID.Definition;
-      Assertion.IsTrue (relationEndPointDefinition.IsVirtual, "RelationEndPointDefinition for '{0}' is not virtual.", relationEndPointID);
-      Assertion.IsFalse (relationEndPointDefinition.IsAnonymous, "RelationEndPointDefinition for '{0}' is anonymous.", relationEndPointID);
+      Assertion.IsTrue(relationEndPointDefinition.IsVirtual, "RelationEndPointDefinition for '{0}' is not virtual.", relationEndPointID);
+      Assertion.IsFalse(relationEndPointDefinition.IsAnonymous, "RelationEndPointDefinition for '{0}' is anonymous.", relationEndPointID);
 
       var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
       var oppositeProvider =
-          _storageProviderManager.GetMandatory (oppositeEndPointDefinition.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
+          _storageProviderManager.GetMandatory(oppositeEndPointDefinition.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
 
       SortExpressionDefinition sortExpression;
       if (relationEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition domainObjectCollectionRelationEndPointDefinition)
@@ -327,16 +327,16 @@ namespace Remotion.Data.DomainObjects.Persistence
       else
         sortExpression = null;
 
-      var oppositeDataContainers = oppositeProvider.LoadDataContainersByRelatedID (
-          (RelationEndPointDefinition) oppositeEndPointDefinition,
+      var oppositeDataContainers = oppositeProvider.LoadDataContainersByRelatedID(
+          (RelationEndPointDefinition)oppositeEndPointDefinition,
           sortExpression,
           relationEndPointID.ObjectID);
 
       var oppositeDataContainerCollection = new DataContainerCollection();
       foreach (var oppositeDataContainer in oppositeDataContainers)
       {
-        CheckClassIDForVirtualEndPoint (relationEndPointID, oppositeDataContainer);
-        oppositeDataContainerCollection.Add (oppositeDataContainer);
+        CheckClassIDForVirtualEndPoint(relationEndPointID, oppositeDataContainer);
+        oppositeDataContainerCollection.Add(oppositeDataContainer);
       }
       return oppositeDataContainerCollection;
     }
@@ -345,12 +345,12 @@ namespace Remotion.Data.DomainObjects.Persistence
         RelationEndPointID relationEndPointID,
         DataContainer oppositeDataContainer)
     {
-      var oppositeEndPointDefinition = (RelationEndPointDefinition) relationEndPointID.Definition.GetOppositeEndPointDefinition();
-      var objectID = (ObjectID) oppositeDataContainer.GetValueWithoutEvents (oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current);
+      var oppositeEndPointDefinition = (RelationEndPointDefinition)relationEndPointID.Definition.GetOppositeEndPointDefinition();
+      var objectID = (ObjectID)oppositeDataContainer.GetValueWithoutEvents(oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current);
 
       if (relationEndPointID.ObjectID.ClassID != objectID.ClassID)
       {
-        throw CreatePersistenceException (
+        throw CreatePersistenceException(
             "The property '{0}' of the loaded DataContainer '{1}'"
             + " refers to ClassID '{2}', but the actual ClassID is '{3}'.",
             oppositeEndPointDefinition.PropertyName,
@@ -362,20 +362,20 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     private PersistenceException CreatePersistenceException (string message, params object[] args)
     {
-      return new PersistenceException (string.Format (message, args));
+      return new PersistenceException(string.Format(message, args));
     }
 
     private void CheckDisposed ()
     {
       if (_disposed)
-        throw new ObjectDisposedException ("PersistenceManager", "A disposed PersistenceManager cannot be accessed.");
+        throw new ObjectDisposedException("PersistenceManager", "A disposed PersistenceManager cannot be accessed.");
     }
 
     private IEnumerable<KeyValuePair<string, List<ObjectID>>> GroupIDsByProvider (IEnumerable<ObjectID> ids)
     {
-      var result = new MultiDictionary<string, ObjectID> ();
+      var result = new MultiDictionary<string, ObjectID>();
       foreach (var id in ids)
-        result[id.StorageProviderDefinition.Name].Add (id);
+        result[id.StorageProviderDefinition.Name].Add(id);
       return result;
     }
 

@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding
     /// </summary>
     public virtual string GetPropertyString (IBusinessObjectProperty property, string? format)
     {
-      return StringFormatterService.GetPropertyString (this, property, format);
+      return StringFormatterService.GetPropertyString(this, property, format);
     }
 
     /// <summary> Gets the <see cref="IBusinessObjectClass"/> of this business object. </summary>

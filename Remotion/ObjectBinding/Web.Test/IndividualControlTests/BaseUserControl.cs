@@ -29,7 +29,7 @@ namespace OBWTest.IndividualControlTests
           DataEditUserControl,
           IObjectWithResources //  Provides the UserControl's ResourceManager via GetResourceManager() 
   {
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public abstract BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator { get; }
 
     protected virtual void RegisterEventHandlers ()
@@ -39,21 +39,21 @@ namespace OBWTest.IndividualControlTests
     protected override void OnInit (EventArgs e)
     {
       RegisterEventHandlers();
-      base.OnInit (e);
+      base.OnInit(e);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
       //  A call to the ResourceDispatcher to get have the automatic resources dispatched
-      ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
+      ResourceDispatcher.Dispatch(this, ResourceManagerUtility.GetResourceManager(this));
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     protected virtual IResourceManager GetResourceManager ()
     {
       Type type = GetType();
-      return GlobalizationService.GetResourceManager (type);
+      return GlobalizationService.GetResourceManager(type);
     }
 
     protected IGlobalizationService GlobalizationService

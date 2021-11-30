@@ -30,11 +30,11 @@ namespace Remotion.Development.Web.ResourceHosting
     private readonly FileInfo? _physicalFile;
 
     public ResourceVirtualFile (string virtualPath, FileInfo? physicalFile)
-        : base (virtualPath)
+        : base(virtualPath)
     {
       // TODO RM-8063: The constructor of ResourceVirtualFile should not accept null FileInfo arguments
-      ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
-      
+      ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);
+
       _physicalFile = physicalFile;
     }
 
@@ -48,8 +48,8 @@ namespace Remotion.Development.Web.ResourceHosting
       }
     }
 
-    [MemberNotNullWhen (true, nameof (_physicalFile))]
-    [MemberNotNullWhen (true, nameof (PhysicalPath))]
+    [MemberNotNullWhen(true, nameof(_physicalFile))]
+    [MemberNotNullWhen(true, nameof(PhysicalPath))]
     public bool Exists
     {
       get { return _physicalFile != null && _physicalFile.Exists; }
@@ -62,7 +62,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public override Stream Open ()
     {
-      return Assertion.IsNotNull (_physicalFile, "'_physicalFile' must not be null to be able to open a Stream.").OpenRead();
+      return Assertion.IsNotNull(_physicalFile, "'_physicalFile' must not be null to be able to open a Stream.").OpenRead();
     }
   }
 }

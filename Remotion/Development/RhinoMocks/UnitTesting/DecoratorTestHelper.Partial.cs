@@ -20,6 +20,6 @@ namespace Remotion.Development.RhinoMocks.UnitTesting
 {
   public partial class DecoratorTestHelper
   {
-     
+
   }
 }

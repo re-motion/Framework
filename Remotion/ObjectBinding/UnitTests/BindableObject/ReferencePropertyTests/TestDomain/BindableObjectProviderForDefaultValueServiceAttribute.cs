@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
   public class BindableObjectProviderForDefaultValueServiceAttribute : BusinessObjectProviderAttribute
   {
     public BindableObjectProviderForDefaultValueServiceAttribute ()
-        : base (typeof (BindableObjectProvider))
+        : base(typeof(BindableObjectProvider))
     {
     }
   }

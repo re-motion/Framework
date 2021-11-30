@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   public interface IVirtualEndPointDataManager : IFlattenedSerializable
   {
     RelationEndPointID EndPointID { get; }
-    
+
     bool ContainsOriginalObjectID (ObjectID objectID);
 
     void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
     void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
 
-    bool HasDataChanged();
-    void Commit();
-    void Rollback();
+    bool HasDataChanged ();
+    void Commit ();
+    void Rollback ();
   }
 }

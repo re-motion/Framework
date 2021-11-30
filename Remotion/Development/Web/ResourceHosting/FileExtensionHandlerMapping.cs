@@ -31,15 +31,15 @@ namespace Remotion.Development.Web.ResourceHosting
       {
         return new[]
                {
-                   new FileExtensionHandlerMapping ("jpg", ResourceVirtualPathProvider.StaticFileHandler),
-                   new FileExtensionHandlerMapping ("jpeg", ResourceVirtualPathProvider.StaticFileHandler),
-                   new FileExtensionHandlerMapping ("png", ResourceVirtualPathProvider.StaticFileHandler),
-                   new FileExtensionHandlerMapping ("gif", ResourceVirtualPathProvider.StaticFileHandler),
-                   new FileExtensionHandlerMapping ("svg", ResourceVirtualPathProvider.StaticFileHandler),
-                   new FileExtensionHandlerMapping ("js", ResourceVirtualPathProvider.StaticFileHandler),
-                   new FileExtensionHandlerMapping ("map", ResourceVirtualPathProvider.StaticFileHandler),
-                   new FileExtensionHandlerMapping ("css", ResourceVirtualPathProvider.StaticFileHandler),
-                   new FileExtensionHandlerMapping ("ttf", ResourceVirtualPathProvider.StaticFileHandler),
+                   new FileExtensionHandlerMapping("jpg", ResourceVirtualPathProvider.StaticFileHandler),
+                   new FileExtensionHandlerMapping("jpeg", ResourceVirtualPathProvider.StaticFileHandler),
+                   new FileExtensionHandlerMapping("png", ResourceVirtualPathProvider.StaticFileHandler),
+                   new FileExtensionHandlerMapping("gif", ResourceVirtualPathProvider.StaticFileHandler),
+                   new FileExtensionHandlerMapping("svg", ResourceVirtualPathProvider.StaticFileHandler),
+                   new FileExtensionHandlerMapping("js", ResourceVirtualPathProvider.StaticFileHandler),
+                   new FileExtensionHandlerMapping("map", ResourceVirtualPathProvider.StaticFileHandler),
+                   new FileExtensionHandlerMapping("css", ResourceVirtualPathProvider.StaticFileHandler),
+                   new FileExtensionHandlerMapping("ttf", ResourceVirtualPathProvider.StaticFileHandler),
                };
       }
     }
@@ -49,8 +49,8 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public FileExtensionHandlerMapping (string extension, IHttpHandler handler)
     {
-      ArgumentUtility.CheckNotNull ("extension", extension);
-      ArgumentUtility.CheckNotNull ("handler", handler);
+      ArgumentUtility.CheckNotNull("extension", extension);
+      ArgumentUtility.CheckNotNull("handler", handler);
 
       _extension = extension;
       _handler = handler;

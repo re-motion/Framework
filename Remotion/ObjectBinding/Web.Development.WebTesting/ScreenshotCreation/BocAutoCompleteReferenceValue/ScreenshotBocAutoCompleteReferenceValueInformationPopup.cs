@@ -59,15 +59,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveBrowserCoordinates ()
     {
-      return ((IFluentScreenshotElement<IWebElement>) _fluentControl.GetInformationPopup().GetElement()).ResolveBrowserCoordinates();
+      return ((IFluentScreenshotElement<IWebElement>)_fluentControl.GetInformationPopup().GetElement()).ResolveBrowserCoordinates();
     }
 
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
-      return ((IFluentScreenshotElement<IWebElement>) _fluentControl.GetInformationPopup().GetElement()).ResolveDesktopCoordinates (locator);
+      return ((IFluentScreenshotElement<IWebElement>)_fluentControl.GetInformationPopup().GetElement()).ResolveDesktopCoordinates(locator);
     }
   }
 }

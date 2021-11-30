@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes
 {
   [DBTable]
-  [ClassID ("AttributesOnUnsupportedTypes_ClassWithAttributesOnUnsupportedTypes")]
+  [ClassID("AttributesOnUnsupportedTypes_ClassWithAttributesOnUnsupportedTypes")]
   public class ClassWithAttributesOnUnsupportedTypes : DomainObject
   {
     [StringProperty]
@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     [Mandatory]
     public string StringPropertyWithMandatoryPropertyAttribute { get; set; }
 
-    [DBBidirectionalRelation ("Length")]
+    [DBBidirectionalRelation("Length")]
     public string StringPropertyWithBidirectionalRelationAttribute { get; set; }
   }
 }

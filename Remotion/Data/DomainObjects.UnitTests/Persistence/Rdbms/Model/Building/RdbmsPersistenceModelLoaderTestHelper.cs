@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
   //                       DerivedDerivedDerived
   //
   // All Base classes are persisted as UnionViewDefinitions, all Tables as TableDefinitions, all Derived as FilterViewDefinitions.
-  
+
   public class RdbmsPersistenceModelLoaderTestHelper
   {
     private readonly ClassDefinition _baseBaseClassDefinition;
@@ -58,41 +58,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
 
     public RdbmsPersistenceModelLoaderTestHelper ()
     {
-      _baseBaseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("BaseBaseClass", typeof (BaseBaseClass));
-      _baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("BaseClass", typeof (BaseClass), baseClass: _baseBaseClassDefinition);
-      _tableClassDefinition1 = ClassDefinitionObjectMother.CreateClassDefinition ("Table1Class", typeof (Table1Class), baseClass: _baseClassDefinition);
-      _tableClassDefinition2 = ClassDefinitionObjectMother.CreateClassDefinition ("Table2Class", typeof (Table2Class), baseClass: _baseClassDefinition);
-      _derivedClassDefinition1 = ClassDefinitionObjectMother.CreateClassDefinition ("Derived1Class", typeof (Derived1Class), baseClass: _tableClassDefinition2);
-      _derivedClassDefinition2 = ClassDefinitionObjectMother.CreateClassDefinition ("Derived2Class", typeof (Derived2Class), baseClass: _tableClassDefinition2);
-      _derivedDerivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("DerivedDerivedClass", typeof (DerivedDerivedClass), baseClass: _derivedClassDefinition2);
-      _derivedDerivedDerivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("DerivedDerivedDerivedClass", typeof (DerivedDerivedDerivedClass), baseClass: _derivedDerivedClassDefinition);
+      _baseBaseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition("BaseBaseClass", typeof(BaseBaseClass));
+      _baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition("BaseClass", typeof(BaseClass), baseClass: _baseBaseClassDefinition);
+      _tableClassDefinition1 = ClassDefinitionObjectMother.CreateClassDefinition("Table1Class", typeof(Table1Class), baseClass: _baseClassDefinition);
+      _tableClassDefinition2 = ClassDefinitionObjectMother.CreateClassDefinition("Table2Class", typeof(Table2Class), baseClass: _baseClassDefinition);
+      _derivedClassDefinition1 = ClassDefinitionObjectMother.CreateClassDefinition("Derived1Class", typeof(Derived1Class), baseClass: _tableClassDefinition2);
+      _derivedClassDefinition2 = ClassDefinitionObjectMother.CreateClassDefinition("Derived2Class", typeof(Derived2Class), baseClass: _tableClassDefinition2);
+      _derivedDerivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition("DerivedDerivedClass", typeof(DerivedDerivedClass), baseClass: _derivedClassDefinition2);
+      _derivedDerivedDerivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition("DerivedDerivedDerivedClass", typeof(DerivedDerivedDerivedClass), baseClass: _derivedDerivedClassDefinition);
 
-      _baseBaseClassDefinition.SetDerivedClasses (new[] { _baseClassDefinition });
-      _baseClassDefinition.SetDerivedClasses (new[] { _tableClassDefinition1, _tableClassDefinition2 });
-      _tableClassDefinition2.SetDerivedClasses (new[] { _derivedClassDefinition1, _derivedClassDefinition2 });
-      _derivedClassDefinition2.SetDerivedClasses (new[] { _derivedDerivedClassDefinition });
-      _tableClassDefinition1.SetDerivedClasses (new ClassDefinition[0]);
-      _derivedClassDefinition1.SetDerivedClasses (new ClassDefinition[0]);
-      _derivedDerivedClassDefinition.SetDerivedClasses (new[] { _derivedDerivedDerivedClassDefinition });
-      _derivedDerivedDerivedClassDefinition.SetDerivedClasses (new ClassDefinition[0]);
+      _baseBaseClassDefinition.SetDerivedClasses(new[] { _baseClassDefinition });
+      _baseClassDefinition.SetDerivedClasses(new[] { _tableClassDefinition1, _tableClassDefinition2 });
+      _tableClassDefinition2.SetDerivedClasses(new[] { _derivedClassDefinition1, _derivedClassDefinition2 });
+      _derivedClassDefinition2.SetDerivedClasses(new[] { _derivedDerivedClassDefinition });
+      _tableClassDefinition1.SetDerivedClasses(new ClassDefinition[0]);
+      _derivedClassDefinition1.SetDerivedClasses(new ClassDefinition[0]);
+      _derivedDerivedClassDefinition.SetDerivedClasses(new[] { _derivedDerivedDerivedClassDefinition });
+      _derivedDerivedDerivedClassDefinition.SetDerivedClasses(new ClassDefinition[0]);
 
-      _baseBaseClassDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection());
-      _baseClassDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection ());
-      _tableClassDefinition1.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection ());
-      _tableClassDefinition2.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection ());
-      _derivedClassDefinition1.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection ());
-      _derivedClassDefinition2.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection ());
-      _derivedDerivedClassDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection ());
-      _derivedDerivedDerivedClassDefinition.SetRelationEndPointDefinitions (new RelationEndPointDefinitionCollection ());
-      
-      _baseBasePropertyDefinition = CreateAndAddPropertyDefinition (_baseBaseClassDefinition, "BaseBaseProperty");
-      _basePropertyDefinition = CreateAndAddPropertyDefinition (_baseClassDefinition, "BaseProperty");
-      _tablePropertyDefinition1 = CreateAndAddPropertyDefinition (_tableClassDefinition1, "TableProperty1");
-      _tablePropertyDefinition2 = CreateAndAddPropertyDefinition (_tableClassDefinition2, "TableProperty2");
-      _derivedPropertyDefinition1 = CreateAndAddPropertyDefinition (_derivedClassDefinition1, "DerivedProperty1");
-      _derivedPropertyDefinition2 = CreateAndAddPropertyDefinition (_derivedClassDefinition2, "DerivedProperty2");
-      _derivedDerivedPropertyDefinition = CreateAndAddPropertyDefinition (_derivedDerivedClassDefinition, "DerivedDerivedProperty");
-      _derivedDerivedDerivedClassDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection());
+      _baseBaseClassDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+      _baseClassDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+      _tableClassDefinition1.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+      _tableClassDefinition2.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+      _derivedClassDefinition1.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+      _derivedClassDefinition2.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+      _derivedDerivedClassDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+      _derivedDerivedDerivedClassDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+
+      _baseBasePropertyDefinition = CreateAndAddPropertyDefinition(_baseBaseClassDefinition, "BaseBaseProperty");
+      _basePropertyDefinition = CreateAndAddPropertyDefinition(_baseClassDefinition, "BaseProperty");
+      _tablePropertyDefinition1 = CreateAndAddPropertyDefinition(_tableClassDefinition1, "TableProperty1");
+      _tablePropertyDefinition2 = CreateAndAddPropertyDefinition(_tableClassDefinition2, "TableProperty2");
+      _derivedPropertyDefinition1 = CreateAndAddPropertyDefinition(_derivedClassDefinition1, "DerivedProperty1");
+      _derivedPropertyDefinition2 = CreateAndAddPropertyDefinition(_derivedClassDefinition2, "DerivedProperty2");
+      _derivedDerivedPropertyDefinition = CreateAndAddPropertyDefinition(_derivedDerivedClassDefinition, "DerivedDerivedProperty");
+      _derivedDerivedDerivedClassDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
     }
 
     public ClassDefinition BaseBaseClassDefinition
@@ -172,17 +172,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
 
     public static PropertyDefinition CreateAndAddPropertyDefinition (ClassDefinition classDefinition, string propertyName)
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (classDefinition, propertyName);
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, propertyName);
 
-      classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, true));
+      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
       return propertyDefinition;
     }
 
     public static PropertyDefinition CreateAndAddPropertyDefinition (ClassDefinition classDefinition, string propertyName, IPropertyInformation propertyInformation)
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForPropertyInformation (classDefinition, propertyName, propertyInformation);
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForPropertyInformation(classDefinition, propertyName, propertyInformation);
 
-      classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { propertyDefinition }, true));
+      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
       return propertyDefinition;
     }
   }

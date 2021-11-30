@@ -30,13 +30,13 @@ public class CommandLineFlagArgument: CommandLineArgument
   // construction and disposal
 
   public CommandLineFlagArgument (string name, bool? defaultValue)
-    : base (name, true)
+    : base(name, true)
   {
     _defaultValue = defaultValue;
   }
 
   public CommandLineFlagArgument (string name)
-    : base (name, true)
+    : base(name, true)
   {
     _defaultValue = null;
   }
@@ -50,27 +50,27 @@ public class CommandLineFlagArgument: CommandLineArgument
 
   protected internal override void SetStringValue (string value)
   {
-    if (value == null) throw new ArgumentNullException ("value");
+    if (value == null) throw new ArgumentNullException("value");
 
     switch (value)
     {
-      case "": 
+      case "":
         _value = true;
         break;
 
       case "+":
         _value = true;
         break;
-      
+
       case "-":
         _value = false;
         break;
 
       default:
-        throw new InvalidCommandLineArgumentValueException (this, "Flag parameters support only + and - as arguments.");
+        throw new InvalidCommandLineArgumentValueException(this, "Flag parameters support only + and - as arguments.");
     }
 
-    base.SetStringValue (value);
+    base.SetStringValue(value);
   }
 
 
@@ -78,7 +78,7 @@ public class CommandLineFlagArgument: CommandLineArgument
   {
     get { return Value; }
   }
-  
+
   public bool? Value
   {
     get { return _value ?? _defaultValue; }
@@ -88,22 +88,22 @@ public class CommandLineFlagArgument: CommandLineArgument
   {
     if (IsOptional && _defaultValue == false)
     {
-      sb.Append (Parser!.ArgumentDeclarationPrefix);
-      sb.Append (Name);
+      sb.Append(Parser!.ArgumentDeclarationPrefix);
+      sb.Append(Name);
     }
     else if (IsOptional && _defaultValue == true)
     {
-      sb.Append (Parser!.ArgumentDeclarationPrefix);
-      sb.Append (Name);
-      sb.Append ("-");
+      sb.Append(Parser!.ArgumentDeclarationPrefix);
+      sb.Append(Name);
+      sb.Append("-");
     }
     else
     {
-      sb.Append (Parser!.ArgumentDeclarationPrefix);
-      sb.Append (Name);
-      sb.Append ("+ | /");
-      sb.Append (Name);
-      sb.Append ("-");
+      sb.Append(Parser!.ArgumentDeclarationPrefix);
+      sb.Append(Name);
+      sb.Append("+ | /");
+      sb.Append(Name);
+      sb.Append("-");
     }
   }
 }

@@ -28,101 +28,101 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void InstancePropertyReference ()
     {
-      CustomPropertyEmitter propertyEmitter = ClassEmitter.CreateProperty ("Property", PropertyKind.Instance, typeof (string));
+      CustomPropertyEmitter propertyEmitter = ClassEmitter.CreateProperty("Property", PropertyKind.Instance, typeof(string));
       propertyEmitter.CreateGetMethod();
       propertyEmitter.CreateSetMethod();
-      propertyEmitter.ImplementWithBackingField ();
+      propertyEmitter.ImplementWithBackingField();
 
-      var methodEmitter = GetMethodEmitter (false, typeof (string), new Type[0]);
-      
-      LocalReference oldValueLocal = methodEmitter.DeclareLocal (typeof (string));
-      PropertyReference propertyWithSelfOwner = new PropertyReference (propertyEmitter.PropertyBuilder);
-      Assert.That (propertyWithSelfOwner.Type, Is.EqualTo (typeof (string)));
+      var methodEmitter = GetMethodEmitter(false, typeof(string), new Type[0]);
 
-      methodEmitter.AddStatement (new AssignStatement (oldValueLocal, propertyWithSelfOwner.ToExpression()));
-      methodEmitter.AddStatement (new AssignStatement (propertyWithSelfOwner, new ConstReference ("New").ToExpression()));
-      methodEmitter.AddStatement (new ReturnStatement (oldValueLocal));
+      LocalReference oldValueLocal = methodEmitter.DeclareLocal(typeof(string));
+      PropertyReference propertyWithSelfOwner = new PropertyReference(propertyEmitter.PropertyBuilder);
+      Assert.That(propertyWithSelfOwner.Type, Is.EqualTo(typeof(string)));
 
-      object instance = GetBuiltInstance ();
-      PrivateInvoke.SetPublicProperty (instance, "Property", "Old");
-      Assert.That (InvokeMethod(), Is.EqualTo ("Old"));
-      Assert.That (PrivateInvoke.GetPublicProperty (instance, "Property"), Is.EqualTo ("New"));
+      methodEmitter.AddStatement(new AssignStatement(oldValueLocal, propertyWithSelfOwner.ToExpression()));
+      methodEmitter.AddStatement(new AssignStatement(propertyWithSelfOwner, new ConstReference("New").ToExpression()));
+      methodEmitter.AddStatement(new ReturnStatement(oldValueLocal));
+
+      object instance = GetBuiltInstance();
+      PrivateInvoke.SetPublicProperty(instance, "Property", "Old");
+      Assert.That(InvokeMethod(), Is.EqualTo("Old"));
+      Assert.That(PrivateInvoke.GetPublicProperty(instance, "Property"), Is.EqualTo("New"));
     }
 
     [Test]
     public void StaticPropertyReference ()
     {
-      CustomPropertyEmitter propertyEmitter = ClassEmitter.CreateProperty ("Property", PropertyKind.Static, typeof (string));
-      propertyEmitter.CreateGetMethod ();
-      propertyEmitter.CreateSetMethod ();
-      propertyEmitter.ImplementWithBackingField ();
+      CustomPropertyEmitter propertyEmitter = ClassEmitter.CreateProperty("Property", PropertyKind.Static, typeof(string));
+      propertyEmitter.CreateGetMethod();
+      propertyEmitter.CreateSetMethod();
+      propertyEmitter.ImplementWithBackingField();
 
-      var methodEmitter = GetMethodEmitter (true, typeof (string), new Type[0]);
+      var methodEmitter = GetMethodEmitter(true, typeof(string), new Type[0]);
 
-      LocalReference oldValueLocal = methodEmitter.DeclareLocal (typeof (string));
-      PropertyReference propertyWithNoOwner = new PropertyReference (null, propertyEmitter.PropertyBuilder);
-      Assert.That (propertyWithNoOwner.Type, Is.EqualTo (typeof (string)));
+      LocalReference oldValueLocal = methodEmitter.DeclareLocal(typeof(string));
+      PropertyReference propertyWithNoOwner = new PropertyReference(null, propertyEmitter.PropertyBuilder);
+      Assert.That(propertyWithNoOwner.Type, Is.EqualTo(typeof(string)));
 
-      methodEmitter.AddStatement (new AssignStatement (oldValueLocal, propertyWithNoOwner.ToExpression ()));
-      methodEmitter.AddStatement (new AssignStatement (propertyWithNoOwner, new ConstReference ("New").ToExpression ()));
-      methodEmitter.AddStatement (new ReturnStatement (oldValueLocal));
+      methodEmitter.AddStatement(new AssignStatement(oldValueLocal, propertyWithNoOwner.ToExpression()));
+      methodEmitter.AddStatement(new AssignStatement(propertyWithNoOwner, new ConstReference("New").ToExpression()));
+      methodEmitter.AddStatement(new ReturnStatement(oldValueLocal));
 
-      PrivateInvoke.SetPublicStaticProperty (GetBuiltType(), "Property", "Old");
-      Assert.That (InvokeMethod(), Is.EqualTo ("Old"));
-      Assert.That (PrivateInvoke.GetPublicStaticProperty (GetBuiltType (), "Property"), Is.EqualTo ("New"));
+      PrivateInvoke.SetPublicStaticProperty(GetBuiltType(), "Property", "Old");
+      Assert.That(InvokeMethod(), Is.EqualTo("Old"));
+      Assert.That(PrivateInvoke.GetPublicStaticProperty(GetBuiltType(), "Property"), Is.EqualTo("New"));
     }
 
     [Test]
     public void LoadPropertyWithoutGetterThrows ()
     {
-      CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty ("Property", PropertyKind.Instance, typeof (string));
+      CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty("Property", PropertyKind.Instance, typeof(string));
 
-      var methodEmitter = GetUnsavedMethodEmitter (false, typeof (string), new Type[0]);
+      var methodEmitter = GetUnsavedMethodEmitter(false, typeof(string), new Type[0]);
 
-      LocalReference oldValueLocal = methodEmitter.DeclareLocal (typeof (string));
-      PropertyReference propertyWithSelfOwner = new PropertyReference (propertyEmitter.PropertyBuilder);
+      LocalReference oldValueLocal = methodEmitter.DeclareLocal(typeof(string));
+      PropertyReference propertyWithSelfOwner = new PropertyReference(propertyEmitter.PropertyBuilder);
 
-      methodEmitter.AddStatement (new AssignStatement (oldValueLocal, propertyWithSelfOwner.ToExpression ()));
-      methodEmitter.AddStatement (new ReturnStatement (oldValueLocal));
-      Assert.That (
-          () => GetUnsavedBuiltType (),
+      methodEmitter.AddStatement(new AssignStatement(oldValueLocal, propertyWithSelfOwner.ToExpression()));
+      methodEmitter.AddStatement(new ReturnStatement(oldValueLocal));
+      Assert.That(
+          () => GetUnsavedBuiltType(),
           Throws.InvalidOperationException
-              .With.Message.Matches ("The property .*.Property cannot be loaded, it has no getter."));
+              .With.Message.Matches("The property .*.Property cannot be loaded, it has no getter."));
     }
 
     [Test]
     public void SavePropertyWithoutSetterThrows ()
     {
-      CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty ("Property", PropertyKind.Instance, typeof (string));
+      CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty("Property", PropertyKind.Instance, typeof(string));
 
-      var methodEmitter = GetUnsavedMethodEmitter (false, typeof (string), new Type[0]);
+      var methodEmitter = GetUnsavedMethodEmitter(false, typeof(string), new Type[0]);
 
-      PropertyReference propertyWithSelfOwner = new PropertyReference (propertyEmitter.PropertyBuilder);
+      PropertyReference propertyWithSelfOwner = new PropertyReference(propertyEmitter.PropertyBuilder);
 
-      methodEmitter.AddStatement (new AssignStatement (propertyWithSelfOwner, NullExpression.Instance));
-      methodEmitter.AddStatement (new ReturnStatement (NullExpression.Instance));
-      Assert.That (
-          () => GetUnsavedBuiltType (),
+      methodEmitter.AddStatement(new AssignStatement(propertyWithSelfOwner, NullExpression.Instance));
+      methodEmitter.AddStatement(new ReturnStatement(NullExpression.Instance));
+      Assert.That(
+          () => GetUnsavedBuiltType(),
           Throws.InvalidOperationException
-              .With.Message.Matches ("The property .*.Property cannot be stored, it has no setter."));
+              .With.Message.Matches("The property .*.Property cannot be stored, it has no setter."));
     }
 
     [Test]
     public void LoadPropertyAddressThrows ()
     {
-      CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty ("Property", PropertyKind.Instance, typeof (string));
+      CustomPropertyEmitter propertyEmitter = UnsavedClassEmitter.CreateProperty("Property", PropertyKind.Instance, typeof(string));
 
-      var methodEmitter = GetUnsavedMethodEmitter (false, typeof (string), new Type[0]);
+      var methodEmitter = GetUnsavedMethodEmitter(false, typeof(string), new Type[0]);
 
-      LocalReference valueAddress = methodEmitter.DeclareLocal (typeof (string).MakeByRefType());
-      PropertyReference propertyWithSelfOwner = new PropertyReference (propertyEmitter.PropertyBuilder);
+      LocalReference valueAddress = methodEmitter.DeclareLocal(typeof(string).MakeByRefType());
+      PropertyReference propertyWithSelfOwner = new PropertyReference(propertyEmitter.PropertyBuilder);
 
-      methodEmitter.AddStatement (new AssignStatement (valueAddress, propertyWithSelfOwner.ToAddressOfExpression()));
-      methodEmitter.AddStatement (new ReturnStatement (NullExpression.Instance));
-      Assert.That (
-          () => GetUnsavedBuiltType (),
+      methodEmitter.AddStatement(new AssignStatement(valueAddress, propertyWithSelfOwner.ToAddressOfExpression()));
+      methodEmitter.AddStatement(new ReturnStatement(NullExpression.Instance));
+      Assert.That(
+          () => GetUnsavedBuiltType(),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo ("A property's address cannot be loaded."));
+              .With.Message.EqualTo("A property's address cannot be loaded."));
     }
   }
 }

@@ -25,11 +25,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class TreeViewTestFunction : WxeFunction
   {
     public TreeViewTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("TreeViewTest.aspx");
+    private WxeStep Step1 = new WxePageStep("TreeViewTest.aspx");
   }
 }

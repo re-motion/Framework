@@ -18,14 +18,14 @@ using System;
 
 namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
 {
-  [BaseInherited ("DerivedClass")]
-  [DerivedInherited ("DerivedClass")]
-  [BaseNonInherited ("DerivedClass")]
-  [DerivedNonInherited ("DerivedClass")]
-  [InheritedNotMultiple ("DerivedClass")]
-  [SuppressAttributes (typeof (InheritedNotMultipleAttribute))]
+  [BaseInherited("DerivedClass")]
+  [DerivedInherited("DerivedClass")]
+  [BaseNonInherited("DerivedClass")]
+  [DerivedNonInherited("DerivedClass")]
+  [InheritedNotMultiple("DerivedClass")]
+  [SuppressAttributes(typeof(InheritedNotMultipleAttribute))]
   public class DerivedClassWithAttribute : BaseClassWithAttribute
   {
-    
+
   }
 }

@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
 {
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
   public class DerivedNonInheritedAttribute : BaseNonInheritedAttribute
   {
     public DerivedNonInheritedAttribute (string context)

@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public static IClientTransactionExtension Create ()
     {
       var extension = MockRepository.GenerateStub<IClientTransactionExtension>();
-      extension.Stub (stub => stub.Key).Return ("key");
+      extension.Stub(stub => stub.Key).Return("key");
       return extension;
     }
   }

@@ -40,63 +40,63 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
       get { return "SingleControlSelector"; }
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.NonAmbiguous)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.NonAmbiguous)]
     public void Get_Returns_NotNull ()
     {
       var control = Selector.Single();
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.HiddenElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.HiddenElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_WithHiddenElements_Throws_WebTestException ()
     {
-      Assert.That (
+      Assert.That(
           () => Selector.Single(),
           Throws.InstanceOf<WebTestException>());
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.AmbiguousElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.AmbiguousElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_WithAmbiguousElements_Throws_WebTestException ()
     {
-      Assert.That (
+      Assert.That(
           () => Selector.Single(),
           Throws.InstanceOf<WebTestException>());
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.NonAmbiguous)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.NonAmbiguous)]
     public void GetOrNull_Returns_NotNull ()
     {
       var control = Selector.SingleOrNull();
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.NonAmbiguous)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.NonAmbiguous)]
     public void GetOrNull_Returns_NotNull_After_IFrameSwitch ()
     {
       SwitchToIFrame();
 
       var control = Selector.SingleOrNull();
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.HiddenElements)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.HiddenElements)]
     public void GetOrNull_Returns_Null ()
     {
       var control = Selector.SingleOrNull();
 
-      Assert.That (control, Is.Null);
+      Assert.That(control, Is.Null);
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.AmbiguousElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.AmbiguousElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void GetOrNull_Throws_WebTestException ()
     {
-      Assert.That (
+      Assert.That(
           () => Selector.SingleOrNull(),
           Throws.InstanceOf<WebTestException>());
     }

@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
       return NewObject<InvalidOrder>();
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 10)]
+    [StringProperty(IsNullable = false, MaximumLength = 10)]
     public virtual string Number { get; set; }
   }
 }

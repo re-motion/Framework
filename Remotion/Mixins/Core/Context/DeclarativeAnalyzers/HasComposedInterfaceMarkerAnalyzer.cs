@@ -29,19 +29,19 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
   {
     public void Analyze (Type type, MixinConfigurationBuilder configurationBuilder)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("configurationBuilder", configurationBuilder);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
 
       var composedInterfaceMarkers = (from ifc in type.GetInterfaces()
                                       where ifc.IsGenericType
                                       let genericTypeDef = ifc.GetGenericTypeDefinition()
-                                      where genericTypeDef == typeof (IHasComposedInterface<>)
-                                      let composedInterface = ifc.GetGenericArguments ().Single ()
+                                      where genericTypeDef == typeof(IHasComposedInterface<>)
+                                      let composedInterface = ifc.GetGenericArguments().Single()
                                       where !composedInterface.ContainsGenericParameters
                                       select composedInterface).ToArray();
 
       if (composedInterfaceMarkers.Length > 0)
-        configurationBuilder.ForClass (type).AddComposedInterfaces (composedInterfaceMarkers);
+        configurationBuilder.ForClass(type).AddComposedInterfaces(composedInterfaceMarkers);
     }
   }
 }

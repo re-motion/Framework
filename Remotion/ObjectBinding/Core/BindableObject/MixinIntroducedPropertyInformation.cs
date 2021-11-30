@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public MixinIntroducedPropertyInformation (InterfaceImplementationPropertyInformation interfaceImplementationPropertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("interfaceImplementationPropertyInfo", interfaceImplementationPropertyInfo);
+      ArgumentUtility.CheckNotNull("interfaceImplementationPropertyInfo", interfaceImplementationPropertyInfo);
 
       _interfaceImplementationPropertyInfo = interfaceImplementationPropertyInfo;
     }
@@ -75,19 +75,19 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public T[] GetCustomAttributes<T> (bool inherited) where T: class
     {
-      return _interfaceImplementationPropertyInfo.GetCustomAttributes<T> (inherited);
+      return _interfaceImplementationPropertyInfo.GetCustomAttributes<T>(inherited);
     }
 
     public bool IsDefined<T> (bool inherited) where T: class
     {
-      return _interfaceImplementationPropertyInfo.IsDefined<T> (inherited);
+      return _interfaceImplementationPropertyInfo.IsDefined<T>(inherited);
     }
 
     public IPropertyInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull ("implementationType", implementationType);
+      ArgumentUtility.CheckNotNull("implementationType", implementationType);
 
-      return _interfaceImplementationPropertyInfo.FindInterfaceImplementation (implementationType);
+      return _interfaceImplementationPropertyInfo.FindInterfaceImplementation(implementationType);
     }
 
     public IEnumerable<IPropertyInformation> FindInterfaceDeclarations ()
@@ -112,54 +112,54 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public bool CanBeSetFromOutside
     {
-      get { return GetSetMethod (false) != null; }
+      get { return GetSetMethod(false) != null; }
     }
 
     public object? GetValue (object? instance, object?[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance!);
+      ArgumentUtility.CheckNotNull("instance", instance!);
 
-      return _interfaceImplementationPropertyInfo.GetValue (instance, indexParameters);
+      return _interfaceImplementationPropertyInfo.GetValue(instance, indexParameters);
     }
 
     public void SetValue (object? instance, object? value, object?[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance!);
+      ArgumentUtility.CheckNotNull("instance", instance!);
 
-      _interfaceImplementationPropertyInfo.SetValue (instance, value, indexParameters);
+      _interfaceImplementationPropertyInfo.SetValue(instance, value, indexParameters);
     }
 
     public IMethodInformation? GetGetMethod (bool nonPublic)
     {
-      var getMethod = _interfaceImplementationPropertyInfo.GetGetMethod (nonPublic);
+      var getMethod = _interfaceImplementationPropertyInfo.GetGetMethod(nonPublic);
       var interfaceImplementationGetMethod = getMethod as InterfaceImplementationMethodInformation;
 
       if (interfaceImplementationGetMethod == null)
         return null;
 
-      return new MixinIntroducedMethodInformation (interfaceImplementationGetMethod);
+      return new MixinIntroducedMethodInformation(interfaceImplementationGetMethod);
     }
 
     public IMethodInformation? GetSetMethod (bool nonPublic)
     {
-      var setMethod = _interfaceImplementationPropertyInfo.GetSetMethod (nonPublic);
+      var setMethod = _interfaceImplementationPropertyInfo.GetSetMethod(nonPublic);
       var interfaceImplementationGetMethod = setMethod as InterfaceImplementationMethodInformation;
 
       if (interfaceImplementationGetMethod == null)
         return null;
 
-      return new MixinIntroducedMethodInformation (interfaceImplementationGetMethod);
+      return new MixinIntroducedMethodInformation(interfaceImplementationGetMethod);
     }
 
     public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;
-      if (obj.GetType() != GetType()) 
+      if (obj.GetType() != GetType())
         return false;
-      var other = (MixinIntroducedPropertyInformation) obj;
+      var other = (MixinIntroducedPropertyInformation)obj;
 
-      return _interfaceImplementationPropertyInfo.Equals (other._interfaceImplementationPropertyInfo);
+      return _interfaceImplementationPropertyInfo.Equals(other._interfaceImplementationPropertyInfo);
     }
 
     public override int GetHashCode ()

@@ -30,72 +30,72 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public CompoundPersistenceExtension (IEnumerable<IPersistenceExtension> listeners)
     {
-      ArgumentUtility.CheckNotNull ("listeners", listeners);
+      ArgumentUtility.CheckNotNull("listeners", listeners);
 
-      _listeners.AddRange (listeners);
+      _listeners.AddRange(listeners);
     }
 
     public void ConnectionOpened (Guid connectionID)
     {
       foreach (var listener in _listeners)
-        listener.ConnectionOpened (connectionID);
+        listener.ConnectionOpened(connectionID);
     }
 
     public void ConnectionClosed (Guid connectionID)
     {
       foreach (var listener in _listeners)
-        listener.ConnectionClosed (connectionID);
+        listener.ConnectionClosed(connectionID);
     }
 
     public void TransactionBegan (Guid connectionID, IsolationLevel isolationLevel)
     {
       foreach (var listener in _listeners)
-        listener.TransactionBegan (connectionID, isolationLevel);
+        listener.TransactionBegan(connectionID, isolationLevel);
     }
 
     public void TransactionCommitted (Guid connectionID)
     {
       foreach (var listener in _listeners)
-        listener.TransactionCommitted (connectionID);
+        listener.TransactionCommitted(connectionID);
     }
 
     public void TransactionRolledBack (Guid connectionID)
     {
       foreach (var listener in _listeners)
-        listener.TransactionRolledBack (connectionID);
+        listener.TransactionRolledBack(connectionID);
     }
 
     public void TransactionDisposed (Guid connectionID)
     {
       foreach (var listener in _listeners)
-        listener.TransactionDisposed (connectionID);
+        listener.TransactionDisposed(connectionID);
     }
 
     public void QueryExecuting (Guid connectionID, Guid queryID, string commandText, IDictionary<string, object> parameters)
     {
-      ArgumentUtility.CheckNotNull ("commandText", commandText);
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
+      ArgumentUtility.CheckNotNull("commandText", commandText);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       foreach (var listener in _listeners)
-        listener.QueryExecuting (connectionID, queryID, commandText, parameters);
+        listener.QueryExecuting(connectionID, queryID, commandText, parameters);
     }
 
     public void QueryExecuted (Guid connectionID, Guid queryID, TimeSpan durationOfQueryExecution)
     {
       foreach (var listener in _listeners)
-        listener.QueryExecuted (connectionID, queryID, durationOfQueryExecution);
+        listener.QueryExecuted(connectionID, queryID, durationOfQueryExecution);
     }
 
     public void QueryCompleted (Guid connectionID, Guid queryID, TimeSpan durationOfDataRead, int rowCount)
     {
       foreach (var listener in _listeners)
-        listener.QueryCompleted (connectionID, queryID, durationOfDataRead, rowCount);
+        listener.QueryCompleted(connectionID, queryID, durationOfDataRead, rowCount);
     }
 
     public void QueryError (Guid connectionID, Guid queryID, Exception e)
     {
       foreach (var listener in _listeners)
-        listener.QueryError (connectionID, queryID, e);
+        listener.QueryError(connectionID, queryID, e);
     }
 
     bool INullObject.IsNull

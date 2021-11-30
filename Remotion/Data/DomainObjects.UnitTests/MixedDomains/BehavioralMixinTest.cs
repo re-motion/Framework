@@ -28,16 +28,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     [Test]
     public void DomainObjectsCanBeMixed ()
     {
-      var domainObject = TargetClassForBehavioralMixin.NewObject ();
-      Assert.That (Mixin.Get<NullMixin> (domainObject), Is.Not.Null);
+      var domainObject = TargetClassForBehavioralMixin.NewObject();
+      Assert.That(Mixin.Get<NullMixin>(domainObject), Is.Not.Null);
     }
 
     [Test]
     public void MixinCanAddInterface ()
     {
-      var domainObject = TargetClassForBehavioralMixin.NewObject ();
-      Assert.That (domainObject is IInterfaceAddedByMixin, Is.True);
-      Assert.That (((IInterfaceAddedByMixin) domainObject).GetGreetings (), Is.EqualTo ("Hello, my ID is " + domainObject.ID));
+      var domainObject = TargetClassForBehavioralMixin.NewObject();
+      Assert.That(domainObject is IInterfaceAddedByMixin, Is.True);
+      Assert.That(((IInterfaceAddedByMixin)domainObject).GetGreetings(), Is.EqualTo("Hello, my ID is " + domainObject.ID));
     }
 
     [Test]
@@ -45,26 +45,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
     {
       var instance = TargetClassForBehavioralMixin.NewObject();
       instance.Property = "Text";
-      Assert.That (instance.Property, Is.EqualTo ("Text-MixinSetter-MixinGetter"));
-      Assert.That (instance.GetSomething (), Is.EqualTo ("Something-MixinMethod"));
+      Assert.That(instance.Property, Is.EqualTo("Text-MixinSetter-MixinGetter"));
+      Assert.That(instance.GetSomething(), Is.EqualTo("Something-MixinMethod"));
     }
 
     [DBTable]
     [TestDomain]
-    [Uses (typeof (NullMixin))]
+    [Uses(typeof(NullMixin))]
     public class NestedDomainObject : DomainObject
     {
       public static NestedDomainObject NewObject ()
       {
-        return NewObject<NestedDomainObject> ();
+        return NewObject<NestedDomainObject>();
       }
     }
 
     [Test]
     public void NestedDomainObjects_CanBeMixed ()
     {
-      DomainObject domainObject = NestedDomainObject.NewObject ();
-      Assert.That (Mixin.Get<NullMixin> (domainObject), Is.Not.Null);
+      DomainObject domainObject = NestedDomainObject.NewObject();
+      Assert.That(Mixin.Get<NullMixin>(domainObject), Is.Not.Null);
     }
   }
 }

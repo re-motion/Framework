@@ -36,10 +36,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
         [CanBeNull] User owningUser,
         [NotNull] IEnumerable<IDomainObjectHandle<AbstractRoleDefinition>> abstractRoles)
     {
-      ArgumentUtility.CheckNotNull ("principal", principal);
-      ArgumentUtility.CheckNotNull ("abstractRoles", abstractRoles);
+      ArgumentUtility.CheckNotNull("principal", principal);
+      ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
 
-      return new SecurityToken (
+      return new SecurityToken(
           principal,
           owningTenant.GetSafeHandle(),
           owningGroup.GetSafeHandle(),
@@ -60,8 +60,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
         [CanBeNull] IDomainObjectHandle<User> owningUser,
         [NotNull] IEnumerable<IDomainObjectHandle<AbstractRoleDefinition>> abstractRoles)
     {
-      ArgumentUtility.CheckNotNull ("principal", principal);
-      ArgumentUtility.CheckNotNull ("abstractRoles", abstractRoles);
+      ArgumentUtility.CheckNotNull("principal", principal);
+      ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
 
       _principal = principal;
       _owningTenant = owningTenant;

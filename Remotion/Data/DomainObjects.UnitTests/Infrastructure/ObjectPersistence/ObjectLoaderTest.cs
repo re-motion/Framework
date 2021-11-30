@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
   public class ObjectLoaderTest : StandardMappingTest
   {
     private MockRepository _mockRepository;
-    
+
     private IPersistenceStrategy _persistenceStrategyMock;
     private ILoadedObjectDataRegistrationAgent _loadedObjectDataRegistrationAgentMock;
     private ILoadedObjectDataProvider _loadedObjectDataProviderStub;
@@ -43,158 +43,158 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _mockRepository = new MockRepository ();
+      _mockRepository = new MockRepository();
 
-      _persistenceStrategyMock = _mockRepository.StrictMock<IPersistenceStrategy> ();
+      _persistenceStrategyMock = _mockRepository.StrictMock<IPersistenceStrategy>();
       _loadedObjectDataRegistrationAgentMock = _mockRepository.StrictMock<ILoadedObjectDataRegistrationAgent>();
       _loadedObjectDataProviderStub = _mockRepository.Stub<ILoadedObjectDataProvider>();
 
-      _objectLoader = new ObjectLoader (_persistenceStrategyMock, _loadedObjectDataRegistrationAgentMock, _loadedObjectDataProviderStub);
+      _objectLoader = new ObjectLoader(_persistenceStrategyMock, _loadedObjectDataRegistrationAgentMock, _loadedObjectDataProviderStub);
 
       _fakeQuery = CreateFakeQuery();
 
-      _loadedObjectDataStub1 = MockRepository.GenerateStub<ILoadedObjectData> ();
-      _loadedObjectDataStub2 = MockRepository.GenerateStub<ILoadedObjectData> ();
+      _loadedObjectDataStub1 = MockRepository.GenerateStub<ILoadedObjectData>();
+      _loadedObjectDataStub2 = MockRepository.GenerateStub<ILoadedObjectData>();
     }
 
     [Test]
     public void LoadObject ()
     {
-      _persistenceStrategyMock.Expect (mock => mock.LoadObjectData (DomainObjectIDs.Order1)).Return (_loadedObjectDataStub1);
+      _persistenceStrategyMock.Expect(mock => mock.LoadObjectData(DomainObjectIDs.Order1)).Return(_loadedObjectDataStub1);
       var throwOnNotFound = BooleanObjectMother.GetRandomBoolean();
-      _loadedObjectDataRegistrationAgentMock.Expect (mock => mock.RegisterIfRequired (Arg.Is (new[] { _loadedObjectDataStub1 }), Arg.Is (throwOnNotFound)));
+      _loadedObjectDataRegistrationAgentMock.Expect(mock => mock.RegisterIfRequired(Arg.Is(new[] { _loadedObjectDataStub1 }), Arg.Is(throwOnNotFound)));
 
       _mockRepository.ReplayAll();
 
-      var result = _objectLoader.LoadObject (DomainObjectIDs.Order1, throwOnNotFound);
+      var result = _objectLoader.LoadObject(DomainObjectIDs.Order1, throwOnNotFound);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.SameAs (_loadedObjectDataStub1));
+      Assert.That(result, Is.SameAs(_loadedObjectDataStub1));
     }
 
     [Test]
     public void LoadObjects ()
     {
-      _loadedObjectDataStub1.Stub (stub => stub.ObjectID).Return (DomainObjectIDs.Order1);
-      _loadedObjectDataStub2.Stub (stub => stub.ObjectID).Return (DomainObjectIDs.Order3);
+      _loadedObjectDataStub1.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order1);
+      _loadedObjectDataStub2.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order3);
 
       _persistenceStrategyMock
-          .Expect (mock => mock.LoadObjectData (
-              Arg<ICollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 })))
-          .Return (new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 });
+          .Expect(mock => mock.LoadObjectData(
+              Arg<ICollection<ObjectID>>.List.Equal(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 })))
+          .Return(new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 });
       _loadedObjectDataRegistrationAgentMock
-          .Expect (mock => mock.RegisterIfRequired (
-              Arg<IEnumerable<ILoadedObjectData>>.List.Equal (new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }),
-              Arg.Is (true)));
+          .Expect(mock => mock.RegisterIfRequired(
+              Arg<IEnumerable<ILoadedObjectData>>.List.Equal(new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }),
+              Arg.Is(true)));
 
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      var result = _objectLoader.LoadObjects (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }, true);
+      var result = _objectLoader.LoadObjects(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }, true);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }));
+      Assert.That(result, Is.EqualTo(new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }));
     }
 
     [Test]
     public void GetOrLoadRelatedObject ()
     {
-      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order4, "OrderTicket");
+      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order4, "OrderTicket");
 
       _persistenceStrategyMock
-          .Expect (mock => mock.ResolveObjectRelationData (endPointID, _loadedObjectDataProviderStub))
-          .Return (_loadedObjectDataStub1);
+          .Expect(mock => mock.ResolveObjectRelationData(endPointID, _loadedObjectDataProviderStub))
+          .Return(_loadedObjectDataStub1);
       _loadedObjectDataRegistrationAgentMock
-          .Expect (mock => mock.RegisterIfRequired (new[] { _loadedObjectDataStub1 }, true));
+          .Expect(mock => mock.RegisterIfRequired(new[] { _loadedObjectDataStub1 }, true));
       _mockRepository.ReplayAll();
 
-      var result = _objectLoader.GetOrLoadRelatedObject (endPointID);
+      var result = _objectLoader.GetOrLoadRelatedObject(endPointID);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.SameAs (_loadedObjectDataStub1));
+      Assert.That(result, Is.SameAs(_loadedObjectDataStub1));
     }
 
     [Test]
     public void GetOrLoadRelatedObject_NonVirtualID ()
     {
-      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.OrderTicket1, "Order");
-      Assert.That (
-          () => _objectLoader.GetOrLoadRelatedObject (endPointID),
+      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.OrderTicket1, "Order");
+      Assert.That(
+          () => _objectLoader.GetOrLoadRelatedObject(endPointID),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo ("GetOrLoadRelatedObject can only be used with virtual end points.", "relationEndPointID"));
+              .With.ArgumentExceptionMessageEqualTo("GetOrLoadRelatedObject can only be used with virtual end points.", "relationEndPointID"));
     }
 
     [Test]
     public void GetOrLoadRelatedObject_WrongCardinality ()
     {
-      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderItems");
-      Assert.That (
-          () => _objectLoader.GetOrLoadRelatedObject (endPointID),
+      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderItems");
+      Assert.That(
+          () => _objectLoader.GetOrLoadRelatedObject(endPointID),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo ("GetOrLoadRelatedObject can only be used with one-valued end points.", "relationEndPointID"));
+              .With.ArgumentExceptionMessageEqualTo("GetOrLoadRelatedObject can only be used with one-valued end points.", "relationEndPointID"));
     }
 
     [Test]
     public void GetOrLoadRelatedObjects ()
     {
-      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Customer1, "Orders");
+      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Customer1, "Orders");
 
       _persistenceStrategyMock
-          .Expect (mock => mock.ResolveCollectionRelationData (endPointID, _loadedObjectDataProviderStub))
-          .Return (new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 });
+          .Expect(mock => mock.ResolveCollectionRelationData(endPointID, _loadedObjectDataProviderStub))
+          .Return(new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 });
       _loadedObjectDataRegistrationAgentMock
-          .Expect (
+          .Expect(
               mock =>
-              mock.RegisterIfRequired (
-                  Arg<IEnumerable<ILoadedObjectData>>.List.Equal (new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }), 
-                  Arg.Is (true)));
+              mock.RegisterIfRequired(
+                  Arg<IEnumerable<ILoadedObjectData>>.List.Equal(new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }),
+                  Arg.Is(true)));
 
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      var result = _objectLoader.GetOrLoadRelatedObjects (endPointID);
+      var result = _objectLoader.GetOrLoadRelatedObjects(endPointID);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }));
+      Assert.That(result, Is.EqualTo(new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }));
     }
 
     [Test]
     public void GetOrLoadRelatedObjects_WrongCardinality ()
     {
-      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
-      Assert.That (
-          () => _objectLoader.GetOrLoadRelatedObjects (endPointID),
+      var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
+      Assert.That(
+          () => _objectLoader.GetOrLoadRelatedObjects(endPointID),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo ("GetOrLoadRelatedObjects can only be used with many-valued end points.", "relationEndPointID"));
+              .With.ArgumentExceptionMessageEqualTo("GetOrLoadRelatedObjects can only be used with many-valued end points.", "relationEndPointID"));
     }
 
     [Test]
     public void GetOrLoadCollectionQueryResult ()
     {
       _persistenceStrategyMock
-          .Expect (mock => mock.ExecuteCollectionQuery (_fakeQuery, _loadedObjectDataProviderStub))
-          .Return (new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 });
+          .Expect(mock => mock.ExecuteCollectionQuery(_fakeQuery, _loadedObjectDataProviderStub))
+          .Return(new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 });
       _loadedObjectDataRegistrationAgentMock
-          .Expect (mock => mock.RegisterIfRequired (
-              Arg<IEnumerable<ILoadedObjectData>>.List.Equal (new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }),
-              Arg.Is (true)));
+          .Expect(mock => mock.RegisterIfRequired(
+              Arg<IEnumerable<ILoadedObjectData>>.List.Equal(new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }),
+              Arg.Is(true)));
 
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      var result = _objectLoader.GetOrLoadCollectionQueryResult (_fakeQuery);
+      var result = _objectLoader.GetOrLoadCollectionQueryResult(_fakeQuery);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }));
+      Assert.That(result, Is.EqualTo(new[] { _loadedObjectDataStub1, _loadedObjectDataStub2 }));
     }
 
     private IQuery CreateFakeQuery ()
     {
-      return QueryFactory.CreateCollectionQuery (
+      return QueryFactory.CreateCollectionQuery(
           "test",
           UnitTestStorageProviderDefinition,
           "TEST",
-          new QueryParameterCollection (),
-          typeof (DomainObjectCollection));
+          new QueryParameterCollection(),
+          typeof(DomainObjectCollection));
     }
   }
 }

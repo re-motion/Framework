@@ -38,10 +38,10 @@ namespace Remotion.Globalization.Mixins.UnitTests
     {
       var factory = _serviceLocator.GetInstance<IGlobalizationService>();
 
-      Assert.That (factory, Is.TypeOf (typeof (CompoundGlobalizationService)));
-      var compoundGlobalizationServices = ((CompoundGlobalizationService) factory).GlobalizationServices.ToArray();
-      Assert.That (compoundGlobalizationServices[0], Is.TypeOf<MixinGlobalizationService>());
-      Assert.That (compoundGlobalizationServices[1], Is.TypeOf<GlobalizationService>());
+      Assert.That(factory, Is.TypeOf(typeof(CompoundGlobalizationService)));
+      var compoundGlobalizationServices = ((CompoundGlobalizationService)factory).GlobalizationServices.ToArray();
+      Assert.That(compoundGlobalizationServices[0], Is.TypeOf<MixinGlobalizationService>());
+      Assert.That(compoundGlobalizationServices[1], Is.TypeOf<GlobalizationService>());
     }
 
     [Test]
@@ -50,7 +50,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
       var factory1 = _serviceLocator.GetInstance<IGlobalizationService>();
       var factory2 = _serviceLocator.GetInstance<IGlobalizationService>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

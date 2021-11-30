@@ -27,15 +27,15 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [Test]
     public void Execute_CreatesTransaction_ThenRestoresOriginal ()
     {
-      Assert.That (ClientTransactionScope.HasCurrentTransaction, Is.False);
+      Assert.That(ClientTransactionScope.HasCurrentTransaction, Is.False);
 
-      ExecuteDelegateInWxeFunction (WxeTransactionMode<ClientTransactionFactory>.CreateRoot, (ctx, f) =>
+      ExecuteDelegateInWxeFunction(WxeTransactionMode<ClientTransactionFactory>.CreateRoot, (ctx, f) =>
       {
-        Assert.That (ClientTransactionScope.HasCurrentTransaction, Is.True);
-        Assert.That (f.Transaction.GetNativeTransaction<ClientTransaction> (), Is.Not.Null.And.SameAs (ClientTransaction.Current));
+        Assert.That(ClientTransactionScope.HasCurrentTransaction, Is.True);
+        Assert.That(f.Transaction.GetNativeTransaction<ClientTransaction>(), Is.Not.Null.And.SameAs(ClientTransaction.Current));
       });
 
-      Assert.That (ClientTransactionScope.HasCurrentTransaction, Is.False);
+      Assert.That(ClientTransactionScope.HasCurrentTransaction, Is.False);
     }
 
     [Test]
@@ -43,12 +43,12 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     {
       try
       {
-        new RemoveCurrentTransactionScopeFunction ().Execute (Context);
+        new RemoveCurrentTransactionScopeFunction().Execute(Context);
       }
       catch (WxeFatalExecutionException ex)
       {
-        Assert.IsInstanceOf (typeof (InvalidOperationException), ex.InnerException);
-        Assert.That (ex.InnerException.Message, Is.EqualTo ("The ClientTransactionScope has already been left."));
+        Assert.IsInstanceOf(typeof(InvalidOperationException), ex.InnerException);
+        Assert.That(ex.InnerException.Message, Is.EqualTo("The ClientTransactionScope has already been left."));
       }
     }
 
@@ -57,13 +57,13 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     {
       try
       {
-        ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ();
-        new RemoveCurrentTransactionScopeFunction ().Execute (Context);
+        ClientTransaction.CreateRootTransaction().EnterDiscardingScope();
+        new RemoveCurrentTransactionScopeFunction().Execute(Context);
       }
       catch (WxeFatalExecutionException ex)
       {
-        Assert.IsInstanceOf (typeof (InvalidOperationException), ex.InnerException);
-        Assert.That (ex.InnerException.Message, Is.EqualTo ("The ClientTransactionScope has already been left."));
+        Assert.IsInstanceOf(typeof(InvalidOperationException), ex.InnerException);
+        Assert.That(ex.InnerException.Message, Is.EqualTo("The ClientTransactionScope has already been left."));
       }
     }
   }

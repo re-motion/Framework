@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding
   public class BusinessObjectPropertyAccessException : Exception
   {
     public BusinessObjectPropertyAccessException (string message, Exception innerException)
-        : base (message, innerException)
+        : base(message, innerException)
     {
     }
 

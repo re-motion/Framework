@@ -18,26 +18,26 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  [DBTable ("TableWithValidRelations")]
+  [DBTable("TableWithValidRelations")]
   [TestDomain]
   [Instantiable]
   public abstract class ClassWithValidRelations : TestDomainBase
   {
     public static ClassWithValidRelations NewObject ()
     {
-      return NewObject<ClassWithValidRelations> ();
+      return NewObject<ClassWithValidRelations>();
     }
 
-    protected ClassWithValidRelations()
+    protected ClassWithValidRelations ()
     {
     }
 
-    [DBBidirectionalRelation ("ClassWithValidRelationsOptional", ContainsForeignKey = true)]
-    [DBColumn ("TableWithGuidKeyOptionalID")]
+    [DBBidirectionalRelation("ClassWithValidRelationsOptional", ContainsForeignKey = true)]
+    [DBColumn("TableWithGuidKeyOptionalID")]
     public abstract ClassWithGuidKey ClassWithGuidKeyOptional { get; set; }
 
-    [DBBidirectionalRelation ("ClassWithValidRelationsNonOptional", ContainsForeignKey = true)]
-    [DBColumn ("TableWithGuidKeyNonOptionalID")]
+    [DBBidirectionalRelation("ClassWithValidRelationsNonOptional", ContainsForeignKey = true)]
+    [DBColumn("TableWithGuidKeyNonOptionalID")]
     [Mandatory]
     public abstract ClassWithGuidKey ClassWithGuidKeyNonOptional { get; set; }
   }

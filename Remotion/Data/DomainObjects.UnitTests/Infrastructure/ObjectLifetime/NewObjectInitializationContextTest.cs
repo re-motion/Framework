@@ -39,26 +39,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _objectID = DomainObjectIDs.Order1;
-      _enlistedDomainObjectManagerMock = MockRepository.GenerateStrictMock<IEnlistedDomainObjectManager> ();
-      _dataManagerMock = MockRepository.GenerateStrictMock<IDataManager> ();
+      _enlistedDomainObjectManagerMock = MockRepository.GenerateStrictMock<IEnlistedDomainObjectManager>();
+      _dataManagerMock = MockRepository.GenerateStrictMock<IDataManager>();
       _rootTransaction = ClientTransaction.CreateRootTransaction();
 
-      _context = new NewObjectInitializationContext (_objectID, _rootTransaction, _enlistedDomainObjectManagerMock, _dataManagerMock);
+      _context = new NewObjectInitializationContext(_objectID, _rootTransaction, _enlistedDomainObjectManagerMock, _dataManagerMock);
 
-      _domainObject = DomainObjectMother.CreateFakeObject (_objectID);
+      _domainObject = DomainObjectMother.CreateFakeObject(_objectID);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_context.ObjectID, Is.EqualTo (_objectID));
-      Assert.That (_context.EnlistedDomainObjectManager, Is.SameAs (_enlistedDomainObjectManagerMock));
-      Assert.That (_context.DataManager, Is.SameAs (_dataManagerMock));
-      Assert.That (_context.RootTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_context.RegisteredObject, Is.Null);
+      Assert.That(_context.ObjectID, Is.EqualTo(_objectID));
+      Assert.That(_context.EnlistedDomainObjectManager, Is.SameAs(_enlistedDomainObjectManagerMock));
+      Assert.That(_context.DataManager, Is.SameAs(_dataManagerMock));
+      Assert.That(_context.RootTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_context.RegisteredObject, Is.Null);
     }
 
     [Test]
@@ -66,43 +66,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     {
       var counter = new OrderedExpectationCounter();
       _enlistedDomainObjectManagerMock
-          .Expect (mock => mock.EnlistDomainObject (_domainObject))
-          .Ordered (counter);
-      StubEmptyDataContainersCollection (_dataManagerMock);
+          .Expect(mock => mock.EnlistDomainObject(_domainObject))
+          .Ordered(counter);
+      StubEmptyDataContainersCollection(_dataManagerMock);
       _dataManagerMock
-          .Expect (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything))
-          .WhenCalled (mi =>
+          .Expect(mock => mock.RegisterDataContainer(Arg<DataContainer>.Is.Anything))
+          .WhenCalled(mi =>
           {
-            var dc = (DataContainer) mi.Arguments[0];
-            Assert.That (dc.ID, Is.EqualTo (_objectID));
-            Assert.That (dc.DomainObject, Is.SameAs (_domainObject));
+            var dc = (DataContainer)mi.Arguments[0];
+            Assert.That(dc.ID, Is.EqualTo(_objectID));
+            Assert.That(dc.DomainObject, Is.SameAs(_domainObject));
           })
-          .Ordered (counter);
+          .Ordered(counter);
 
-      _context.RegisterObject (_domainObject);
+      _context.RegisterObject(_domainObject);
 
       _enlistedDomainObjectManagerMock.VerifyAllExpectations();
       _dataManagerMock.VerifyAllExpectations();
 
-      Assert.That (_context.RegisteredObject, Is.SameAs (_domainObject));
+      Assert.That(_context.RegisteredObject, Is.SameAs(_domainObject));
     }
-    
+
     [Test]
     public void RegisterObject_WithError ()
     {
-      var objectWithWrongID = DomainObjectMother.CreateFakeObject (DomainObjectIDs.Customer1);
-      Assert.That (objectWithWrongID.ID, Is.Not.EqualTo (_objectID));
+      var objectWithWrongID = DomainObjectMother.CreateFakeObject(DomainObjectIDs.Customer1);
+      Assert.That(objectWithWrongID.ID, Is.Not.EqualTo(_objectID));
 
-      Assert.That (
-          () => _context.RegisterObject (objectWithWrongID),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo ("The given DomainObject must have ID '" + _objectID + "'.", "domainObject"));
+      Assert.That(
+          () => _context.RegisterObject(objectWithWrongID),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("The given DomainObject must have ID '" + _objectID + "'.", "domainObject"));
 
-      _dataManagerMock.AssertWasNotCalled (mock => mock.RegisterDataContainer (Arg<DataContainer>.Is.Anything));
+      _dataManagerMock.AssertWasNotCalled(mock => mock.RegisterDataContainer(Arg<DataContainer>.Is.Anything));
     }
 
     private void StubEmptyDataContainersCollection (IDataManager dataManagerMock)
     {
-      dataManagerMock.Stub (stub => stub.DataContainers).Return (MockRepository.GenerateStub<IDataContainerMapReadOnlyView> ());
+      dataManagerMock.Stub(stub => stub.DataContainers).Return(MockRepository.GenerateStub<IDataContainerMapReadOnlyView>());
     }
   }
 }

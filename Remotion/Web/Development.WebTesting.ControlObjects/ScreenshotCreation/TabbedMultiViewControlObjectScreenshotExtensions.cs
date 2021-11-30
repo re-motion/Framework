@@ -32,11 +32,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     public static FluentScreenshotElement<WebTabStripControlObject> GetWebTabStrip (
         [NotNull] this IFluentScreenshotElementWithCovariance<TabbedMultiViewControlObject> fluentTabbedMultiView)
     {
-      ArgumentUtility.CheckNotNull ("fluentTabbedMultiView", fluentTabbedMultiView);
+      ArgumentUtility.CheckNotNull("fluentTabbedMultiView", fluentTabbedMultiView);
 
-      var element = fluentTabbedMultiView.Target.Scope.FindChild ("TabStrip");
+      var element = fluentTabbedMultiView.Target.Scope.FindChild("TabStrip");
 
-      return new WebTabStripControlObject (fluentTabbedMultiView.Target.Context.CloneForControl (element)).ForControlObjectScreenshot();
+      return new WebTabStripControlObject(fluentTabbedMultiView.Target.Context.CloneForControl(element)).ForControlObjectScreenshot();
     }
   }
 }

@@ -35,21 +35,21 @@ namespace Remotion.Data.DomainObjects.Validation
   {
     public static string DefaultKey
     {
-      get { return typeof (CommitValidationClientTransactionExtension).GetFullNameChecked(); }
+      get { return typeof(CommitValidationClientTransactionExtension).GetFullNameChecked(); }
     }
-    
+
     [NonSerialized]
     private IPersistableDataValidator _validator;
 
     public CommitValidationClientTransactionExtension (IPersistableDataValidator validator)
-      : this (validator, DefaultKey)
+      : this(validator, DefaultKey)
     {
     }
 
     protected CommitValidationClientTransactionExtension (IPersistableDataValidator validator, string key)
-        : base (key)
+        : base(key)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
+      ArgumentUtility.CheckNotNull("validator", validator);
 
       _validator = validator;
     }
@@ -61,20 +61,20 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public override void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("committedData", committedData);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("committedData", committedData);
 
       foreach (var item in committedData)
-        _validator.Validate (clientTransaction, item);
+        _validator.Validate(clientTransaction, item);
     }
 
     [OnSerializing]
     private void OnSerializing (StreamingContext context)
     {
       var validatorFromServiceLocator = SafeServiceLocator.Current.GetInstance<IPersistableDataValidator>();
-      if (!object.ReferenceEquals (_validator, validatorFromServiceLocator))
+      if (!object.ReferenceEquals(_validator, validatorFromServiceLocator))
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "Cannot serialize CommitValidationClientTransactionExtension because the IPersistableDataValidator cannot be loaded from the ServiceLocator.");
       }
     }

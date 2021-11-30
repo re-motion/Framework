@@ -29,51 +29,51 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void TestPropertyAccess ()
     {
       SampleBindableMixinDomainObject instance = SampleBindableMixinDomainObject.NewObject();
-      var instanceAsIBusinessObject = (IBusinessObject) instance;
+      var instanceAsIBusinessObject = (IBusinessObject)instance;
 
-      Assert.That (instanceAsIBusinessObject.GetProperty ("Int32"), Is.Null);
+      Assert.That(instanceAsIBusinessObject.GetProperty("Int32"), Is.Null);
 
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (instance.Int32, Is.EqualTo (0));
-        Assert.That (instanceAsIBusinessObject.GetProperty ("Int32"), Is.EqualTo (0));
+        Assert.That(instance.Int32, Is.EqualTo(0));
+        Assert.That(instanceAsIBusinessObject.GetProperty("Int32"), Is.EqualTo(0));
       }
 
-      instanceAsIBusinessObject.SetProperty ("Int32", 1);
-      Assert.That (instance.Int32, Is.EqualTo (1));
+      instanceAsIBusinessObject.SetProperty("Int32", 1);
+      Assert.That(instance.Int32, Is.EqualTo(1));
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (instance.Int32, Is.EqualTo (1));
-        Assert.That (instanceAsIBusinessObject.GetProperty ("Int32"), Is.EqualTo (1));
+        Assert.That(instance.Int32, Is.EqualTo(1));
+        Assert.That(instanceAsIBusinessObject.GetProperty("Int32"), Is.EqualTo(1));
       }
 
       instance.Int32 = 2;
-      Assert.That (instanceAsIBusinessObject.GetProperty ("Int32"), Is.EqualTo (2));
-      Assert.That (instanceAsIBusinessObject.GetPropertyString ("Int32"), Is.EqualTo ("2"));
+      Assert.That(instanceAsIBusinessObject.GetProperty("Int32"), Is.EqualTo(2));
+      Assert.That(instanceAsIBusinessObject.GetPropertyString("Int32"), Is.EqualTo("2"));
 
       instance.Int32 = 1;
-      Assert.That (instanceAsIBusinessObject.GetProperty ("Int32"), Is.EqualTo (1));
+      Assert.That(instanceAsIBusinessObject.GetProperty("Int32"), Is.EqualTo(1));
 
       instance.Int32 = 0;
-      Assert.That (instanceAsIBusinessObject.GetProperty ("Int32"), Is.EqualTo (0));
+      Assert.That(instanceAsIBusinessObject.GetProperty("Int32"), Is.EqualTo(0));
 
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (instance.Int32, Is.EqualTo (0));
-        Assert.That (instanceAsIBusinessObject.GetProperty ("Int32"), Is.EqualTo (0));
+        Assert.That(instance.Int32, Is.EqualTo(0));
+        Assert.That(instanceAsIBusinessObject.GetProperty("Int32"), Is.EqualTo(0));
       }
     }
 
     [Test]
     public void GetPropertyDefinitions ()
     {
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType (typeof (SampleBindableMixinDomainObject));
-      var bindableObjectClass = provider.GetBindableObjectClass (typeof (SampleBindableMixinDomainObject));
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(SampleBindableMixinDomainObject));
+      var bindableObjectClass = provider.GetBindableObjectClass(typeof(SampleBindableMixinDomainObject));
 
       var properties = bindableObjectClass.GetPropertyDefinitions();
 
-      var propertiesByName = Array.ConvertAll (properties, property => property.Identifier);
-      Assert.That (propertiesByName, Is.EquivalentTo (new[] { "List", "Relation", "Name", "Int32" }));
+      var propertiesByName = Array.ConvertAll(properties, property => property.Identifier);
+      Assert.That(propertiesByName, Is.EquivalentTo(new[] { "List", "Relation", "Name", "Int32" }));
     }
   }
 }

@@ -24,7 +24,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 
     public TargetClassCallingOverriddenMethodFromCtor ()
     {
-      Result = VirtualMethod ();
+      Result = VirtualMethod();
     }
 
     public virtual object VirtualMethod ()

@@ -27,17 +27,17 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply ()
     {
-      var attribute = new AdditionalMixinDependencyAttribute (typeof (string), typeof (int), typeof (double));
+      var attribute = new AdditionalMixinDependencyAttribute(typeof(string), typeof(int), typeof(double));
 
-      var configurationBuilderStub = MockRepository.GenerateStub<MixinConfigurationBuilder> (new object[] { null });
-      var classContextBuilderMock = MockRepository.GenerateStrictMock<ClassContextBuilder> (typeof (string));
-      
-      configurationBuilderStub.Stub (stub => stub.ForClass (typeof (string))).Return (classContextBuilderMock);
-      classContextBuilderMock.Expect (mock => mock.AddMixinDependency (typeof (int), typeof (double))).Return (classContextBuilderMock);
+      var configurationBuilderStub = MockRepository.GenerateStub<MixinConfigurationBuilder>(new object[] { null });
+      var classContextBuilderMock = MockRepository.GenerateStrictMock<ClassContextBuilder>(typeof(string));
 
-      attribute.Apply (configurationBuilderStub, GetType().Assembly);
+      configurationBuilderStub.Stub(stub => stub.ForClass(typeof(string))).Return(classContextBuilderMock);
+      classContextBuilderMock.Expect(mock => mock.AddMixinDependency(typeof(int), typeof(double))).Return(classContextBuilderMock);
+
+      attribute.Apply(configurationBuilderStub, GetType().Assembly);
 
       classContextBuilderMock.VerifyAllExpectations();
-    } 
+    }
   }
 }

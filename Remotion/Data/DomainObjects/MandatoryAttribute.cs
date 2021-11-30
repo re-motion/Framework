@@ -22,10 +22,10 @@ namespace Remotion.Data.DomainObjects
   /// <summary>
   /// Apply the <see cref="MandatoryAttribute"/> to properties of type <see cref="DomainObject"/>.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public sealed class MandatoryAttribute : Attribute, INullablePropertyAttribute
   {
-    public MandatoryAttribute()
+    public MandatoryAttribute ()
     {
     }
 

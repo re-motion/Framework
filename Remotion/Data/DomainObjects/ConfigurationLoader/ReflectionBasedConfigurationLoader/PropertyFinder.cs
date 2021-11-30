@@ -41,11 +41,11 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
-        : base (type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
+        : base(type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull ("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
 
       _classDefinition = classDefinition;
       _domainModelConstraintProvider = domainModelConstraintProvider;
@@ -54,12 +54,12 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     protected override bool FindPropertiesFilter (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      if (!base.FindPropertiesFilter (propertyInfo))
+      if (!base.FindPropertiesFilter(propertyInfo))
         return false;
 
-      if (IsVirtualRelationEndPoint (propertyInfo))
+      if (IsVirtualRelationEndPoint(propertyInfo))
         return false;
 
       return true;
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      return new PropertyFinder (
+      return new PropertyFinder(
           type,
           _classDefinition,
           includeBaseProperties,
@@ -87,9 +87,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     private bool IsVirtualRelationEndPoint (IPropertyInformation propertyInfo)
     {
-      if (!ReflectionUtility.IsRelationType (propertyInfo.PropertyType))
+      if (!ReflectionUtility.IsRelationType(propertyInfo.PropertyType))
         return false;
-      var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (
+      var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector(
           _classDefinition,
           propertyInfo,
           NameResolver,

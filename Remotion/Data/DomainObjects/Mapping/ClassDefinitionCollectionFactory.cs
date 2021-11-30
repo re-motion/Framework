@@ -32,48 +32,48 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public ClassDefinitionCollectionFactory (IMappingObjectFactory mappingObjectFactory)
     {
-      ArgumentUtility.CheckNotNull ("mappingObjectFactory", mappingObjectFactory);
+      ArgumentUtility.CheckNotNull("mappingObjectFactory", mappingObjectFactory);
 
       _mappingObjectFactory = mappingObjectFactory;
     }
 
     public ClassDefinition[] CreateClassDefinitionCollection (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull ("types", types);
+      ArgumentUtility.CheckNotNull("types", types);
 
-      var inheritanceHierarchyFilter = new InheritanceHierarchyFilter (types.ToArray());
+      var inheritanceHierarchyFilter = new InheritanceHierarchyFilter(types.ToArray());
       var leafTypes = inheritanceHierarchyFilter.GetLeafTypes();
 
       var classDefinitions = new Dictionary<Type, ClassDefinition>();
       foreach (var type in leafTypes)
-        GetClassDefinition (classDefinitions, type);
-      
-      SetDerivedClasses (classDefinitions.Values);
+        GetClassDefinition(classDefinitions, type);
+
+      SetDerivedClasses(classDefinitions.Values);
 
       return classDefinitions.Values.ToArray();
     }
 
     public ClassDefinition GetClassDefinition (IDictionary<Type, ClassDefinition> classDefinitions, Type classType)
     {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
-      ArgumentUtility.CheckNotNull ("classType", classType);
+      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("classType", classType);
 
-      if (classDefinitions.ContainsKey (classType))
+      if (classDefinitions.ContainsKey(classType))
         return classDefinitions[classType];
 
-      var baseClassDefinition = GetBaseClassDefinition (classDefinitions, classType);
-      var classDefinition = _mappingObjectFactory.CreateClassDefinition (classType, baseClassDefinition);
-      classDefinitions.Add (classDefinition.ClassType, classDefinition);
+      var baseClassDefinition = GetBaseClassDefinition(classDefinitions, classType);
+      var classDefinition = _mappingObjectFactory.CreateClassDefinition(classType, baseClassDefinition);
+      classDefinitions.Add(classDefinition.ClassType, classDefinition);
 
       return classDefinition;
     }
 
     private ClassDefinition GetBaseClassDefinition (IDictionary<Type, ClassDefinition> classDefinitions, Type type)
     {
-      if (ReflectionUtility.IsInheritanceRoot (type))
+      if (ReflectionUtility.IsInheritanceRoot(type))
         return null;
 
-      return GetClassDefinition (classDefinitions, type.BaseType);
+      return GetClassDefinition(classDefinitions, type.BaseType);
     }
 
     private void SetDerivedClasses (IEnumerable<ClassDefinition> classDefinitions)
@@ -81,15 +81,15 @@ namespace Remotion.Data.DomainObjects.Mapping
       var classesByBaseClass = (from classDefinition in classDefinitions
                                 where classDefinition.BaseClass != null
                                 group classDefinition by classDefinition.BaseClass)
-          .ToDictionary (grouping => grouping.Key, grouping => (IEnumerable<ClassDefinition>) grouping);
+          .ToDictionary(grouping => grouping.Key, grouping => (IEnumerable<ClassDefinition>)grouping);
 
       foreach (var classDefinition in classDefinitions)
       {
         IEnumerable<ClassDefinition> derivedClasses;
-        if (!classesByBaseClass.TryGetValue (classDefinition, out derivedClasses))
-          derivedClasses = Enumerable.Empty<ClassDefinition> ();
+        if (!classesByBaseClass.TryGetValue(classDefinition, out derivedClasses))
+          derivedClasses = Enumerable.Empty<ClassDefinition>();
 
-        classDefinition.SetDerivedClasses (derivedClasses);
+        classDefinition.SetDerivedClasses(derivedClasses);
       }
     }
   }

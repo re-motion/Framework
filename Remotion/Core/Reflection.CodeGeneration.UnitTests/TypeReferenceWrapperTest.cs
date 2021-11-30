@@ -29,25 +29,25 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void TypeAndOwner ()
     {
-      var ownerReference = new Mock<Reference> (MockBehavior.Strict);
-      var wrappedReference = new Mock<Reference> (MockBehavior.Strict, ownerReference.Object);
+      var ownerReference = new Mock<Reference>(MockBehavior.Strict);
+      var wrappedReference = new Mock<Reference>(MockBehavior.Strict, ownerReference.Object);
 
-      TypeReferenceWrapper tr = new TypeReferenceWrapper (wrappedReference.Object, typeof (int));
-      Assert.That (tr.Type, Is.EqualTo (typeof (int)));
-      Assert.That (tr.OwnerReference, Is.SameAs (ownerReference.Object));
+      TypeReferenceWrapper tr = new TypeReferenceWrapper(wrappedReference.Object, typeof(int));
+      Assert.That(tr.Type, Is.EqualTo(typeof(int)));
+      Assert.That(tr.OwnerReference, Is.SameAs(ownerReference.Object));
     }
 
     [Test]
     public void LoadReference ()
     {
-      var wrappedReference = new Mock<Reference> (MockBehavior.Strict);
-      ILGenerator gen = new DynamicMethod ("Foo", typeof (void), Type.EmptyTypes, AssemblyBuilder.GetExecutingAssembly().ManifestModule).GetILGenerator();
+      var wrappedReference = new Mock<Reference>(MockBehavior.Strict);
+      ILGenerator gen = new DynamicMethod("Foo", typeof(void), Type.EmptyTypes, AssemblyBuilder.GetExecutingAssembly().ManifestModule).GetILGenerator();
 
       // expect
-      wrappedReference.Setup (_ => _.LoadReference (gen)).Verifiable();
+      wrappedReference.Setup(_ => _.LoadReference(gen)).Verifiable();
 
-      TypeReferenceWrapper tr = new TypeReferenceWrapper (wrappedReference.Object, typeof (int));
-      tr.LoadReference (gen);
+      TypeReferenceWrapper tr = new TypeReferenceWrapper(wrappedReference.Object, typeof(int));
+      tr.LoadReference(gen);
 
       wrappedReference.Verify();
     }
@@ -55,14 +55,14 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void StoreReference ()
     {
-      var wrappedReference = new Mock<Reference> (MockBehavior.Strict);
-      ILGenerator gen = new DynamicMethod ("Foo", typeof (void), Type.EmptyTypes, AssemblyBuilder.GetExecutingAssembly ().ManifestModule).GetILGenerator ();
+      var wrappedReference = new Mock<Reference>(MockBehavior.Strict);
+      ILGenerator gen = new DynamicMethod("Foo", typeof(void), Type.EmptyTypes, AssemblyBuilder.GetExecutingAssembly().ManifestModule).GetILGenerator();
 
       // expect
-      wrappedReference.Setup (_ => _.StoreReference (gen)).Verifiable();
+      wrappedReference.Setup(_ => _.StoreReference(gen)).Verifiable();
 
-      TypeReferenceWrapper tr = new TypeReferenceWrapper (wrappedReference.Object, typeof (int));
-      tr.StoreReference (gen);
+      TypeReferenceWrapper tr = new TypeReferenceWrapper(wrappedReference.Object, typeof(int));
+      tr.StoreReference(gen);
 
       wrappedReference.Verify();
     }
@@ -70,14 +70,14 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void LoadAddressReference ()
     {
-      var wrappedReference = new Mock<Reference> (MockBehavior.Strict);
-      ILGenerator gen = new DynamicMethod ("Foo", typeof (void), Type.EmptyTypes, AssemblyBuilder.GetExecutingAssembly ().ManifestModule).GetILGenerator ();
+      var wrappedReference = new Mock<Reference>(MockBehavior.Strict);
+      ILGenerator gen = new DynamicMethod("Foo", typeof(void), Type.EmptyTypes, AssemblyBuilder.GetExecutingAssembly().ManifestModule).GetILGenerator();
 
       // expect
-      wrappedReference.Setup (_ => _.LoadAddressOfReference (gen)).Verifiable();
+      wrappedReference.Setup(_ => _.LoadAddressOfReference(gen)).Verifiable();
 
-      TypeReferenceWrapper tr = new TypeReferenceWrapper (wrappedReference.Object, typeof (int));
-      tr.LoadAddressOfReference (gen);
+      TypeReferenceWrapper tr = new TypeReferenceWrapper(wrappedReference.Object, typeof(int));
+      tr.LoadAddressOfReference(gen);
 
       wrappedReference.Verify();
     }

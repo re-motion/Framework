@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping.
     SamePropertyNameInInheritanceHierarchy
 {
-  [ClassID ("SamePropertyNameInInheritanceHierarchy_DerivedClass")]
+  [ClassID("SamePropertyNameInInheritanceHierarchy_DerivedClass")]
   public class DerivedClass : BaseClass
   {
   }

@@ -28,11 +28,11 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     public void DefaultValuesTest ()
     {
       var settings = new AclExpanderApplicationSettings();
-      Assert.That (settings.Directory, Is.EqualTo ("."));
-      Assert.That (settings.UseMultipleFileOutput, Is.EqualTo (false));
-      Assert.That (settings.UserFirstName, Is.Null);
-      Assert.That (settings.UserLastName, Is.Null);
-      Assert.That (settings.UserName, Is.Null);
+      Assert.That(settings.Directory, Is.EqualTo("."));
+      Assert.That(settings.UseMultipleFileOutput, Is.EqualTo(false));
+      Assert.That(settings.UserFirstName, Is.Null);
+      Assert.That(settings.UserLastName, Is.Null);
+      Assert.That(settings.UserName, Is.Null);
     }
   }
 }

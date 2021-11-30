@@ -32,23 +32,23 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     public DefaultNamedExpectedFileNameFinderStrategy ([NotNull] string fileName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("fileName", fileName);
+      ArgumentUtility.CheckNotNullOrEmpty("fileName", fileName);
 
       _fileName = fileName;
     }
 
     public string FindDownloadedFile (IReadOnlyCollection<string> newFiles)
     {
-      ArgumentUtility.CheckNotNull ("newFiles", newFiles);
+      ArgumentUtility.CheckNotNull("newFiles", newFiles);
 
       if (newFiles.Count == 0)
-        throw new DownloadResultNotFoundException ("Did not find any new files in the download directory.", newFiles);
-      
-      var foundFiles = newFiles.Where (file => file == _fileName).ToArray();
+        throw new DownloadResultNotFoundException("Did not find any new files in the download directory.", newFiles);
+
+      var foundFiles = newFiles.Where(file => file == _fileName).ToArray();
 
       if (foundFiles.Length != 1)
       {
-        throw new DownloadResultNotFoundException (string.Format ("Did not find file with the name '{0}' in the download directory.", _fileName), newFiles);
+        throw new DownloadResultNotFoundException(string.Format("Did not find file with the name '{0}' in the download directory.", _fileName), newFiles);
       }
 
       return foundFiles.Single();
@@ -56,9 +56,9 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     public bool ContainsPreDownloadFiles (IReadOnlyCollection<string> newFiles)
     {
-      ArgumentUtility.CheckNotNull ("newFiles", newFiles);
+      ArgumentUtility.CheckNotNull("newFiles", newFiles);
 
-      return newFiles.Any (x => x.EndsWith (".tmp"));
+      return newFiles.Any(x => x.EndsWith(".tmp"));
     }
   }
 }

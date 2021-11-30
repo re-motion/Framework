@@ -40,9 +40,9 @@ namespace Remotion.Logging
     /// <returns>The <paramref name="value"/> passed in to the method.</returns>
     public static T LogAndReturnValue<T> (this T value, ILog log, LogLevel logLevel, Func<T, string?> messageCreator)
     {
-      if (log.IsEnabled (logLevel))
+      if (log.IsEnabled(logLevel))
       {
-        log.Log (logLevel, (int?) null, messageCreator (value), (Exception?) null);
+        log.Log(logLevel, (int?)null, messageCreator(value), (Exception?)null);
       }
       return value;
     }
@@ -53,8 +53,8 @@ namespace Remotion.Logging
         LogLevel logLevel,
         Func<int, string?> iterationCompletedMessageCreator)
     {
-      if (log.IsEnabled (logLevel))
-        return LogAndReturnWithIteration (sequence, log, logLevel, iterationCompletedMessageCreator);
+      if (log.IsEnabled(logLevel))
+        return LogAndReturnWithIteration(sequence, log, logLevel, iterationCompletedMessageCreator);
       return sequence;
     }
 
@@ -73,7 +73,7 @@ namespace Remotion.Logging
       }
 
 
-      log.Log (logLevel, iterationCompletedMessageCreator (count));
+      log.Log(logLevel, iterationCompletedMessageCreator(count));
     }
 
     /// <summary>
@@ -83,8 +83,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public static void Log (this ILog log, LogLevel logLevel, int eventID, object? message)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (logLevel, eventID, message, (Exception?) null);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(logLevel, eventID, message, (Exception?)null);
     }
 
     /// <summary>
@@ -94,8 +94,8 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="logLevel" or @name="message" or @name="exceptionObject"]' />
     public static void Log (this ILog log, LogLevel logLevel, object? message, Exception exceptionObject)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (logLevel, (int?) null, message, exceptionObject);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(logLevel, (int?)null, message, exceptionObject);
     }
 
     /// <summary>
@@ -104,8 +104,8 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="logLevel" or @name="message"]' />
     public static void Log (this ILog log, LogLevel logLevel, object? message)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (logLevel, (int?) null, message, (Exception?) null);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(logLevel, (int?)null, message, (Exception?)null);
     }
 
     /// <overloads>Log a formatted string with the specified <paramref name="logLevel"/>.</overloads>
@@ -115,11 +115,11 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="logLevel" or @name="eventID"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void LogFormat (this ILog log, LogLevel logLevel, int eventID, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (logLevel, eventID, (Exception?) null, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(logLevel, eventID, (Exception?)null, format, args);
     }
 
     /// <summary>
@@ -127,11 +127,11 @@ namespace Remotion.Logging
     /// </summary>
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="logLevel"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void LogFormat (this ILog log, LogLevel logLevel, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (logLevel, (int?) null, (Exception?) null, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(logLevel, (int?)null, (Exception?)null, format, args);
     }
 
     /// <summary>
@@ -139,11 +139,11 @@ namespace Remotion.Logging
     /// </summary>
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="logLevel" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void LogFormat (this ILog log, LogLevel logLevel, Exception exceptionObject, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (logLevel, (int?) null, exceptionObject, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(logLevel, (int?)null, exceptionObject, format, args);
     }
 
     /// <overloads>Log a message object with the <see cref="LogLevel.Debug"/> level.</overloads>
@@ -155,8 +155,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public static void Debug (this ILog log, int eventID, object? message, Exception exceptionObject)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Debug, eventID, message, exceptionObject);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Debug, eventID, message, exceptionObject);
     }
 
     /// <summary>
@@ -166,10 +166,10 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public static void Debug (this ILog log, int eventID, object? message)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Debug, eventID, message, (Exception?)  null);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Debug, eventID, message, (Exception?)null);
     }
-    
+
     /// <summary>
     /// Log a message object with the <see cref="LogLevel.Debug"/> level,
     /// including the stack trace of <paramref name="exceptionObject"/>. 
@@ -177,8 +177,8 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="message" or @name="exceptionObject"]' />
     public static void Debug (this ILog log, object? message, Exception exceptionObject)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Debug, (int?) null, message, exceptionObject);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Debug, (int?)null, message, exceptionObject);
     }
 
     /// <summary>
@@ -187,8 +187,8 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="message"]' />
     public static void Debug (this ILog log, object? message)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Debug, (int?) null, message, (Exception?) null);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Debug, (int?)null, message, (Exception?)null);
     }
 
     /// <overloads>Log a formatted string with the <see cref="LogLevel.Debug"/> level.</overloads>
@@ -199,11 +199,11 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="eventID" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void DebugFormat (this ILog log, int eventID, Exception exceptionObject, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Debug, eventID, exceptionObject, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Debug, eventID, exceptionObject, format, args);
     }
 
     /// <summary>
@@ -212,22 +212,22 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="eventID"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void DebugFormat (this ILog log, int eventID, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Debug, eventID, (Exception?) null, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Debug, eventID, (Exception?)null, format, args);
     }
         /// <summary>
     /// Log a formatted string with the <see cref="LogLevel.Debug"/> level.
     /// </summary>
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void DebugFormat (this ILog log, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Debug, (int?) null, (Exception?) null, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Debug, (int?)null, (Exception?)null, format, args);
     }
 
     /// <summary>
@@ -236,11 +236,11 @@ namespace Remotion.Logging
     /// </summary>
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void DebugFormat (this ILog log, Exception exceptionObject, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Debug, (int?) null, exceptionObject, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Debug, (int?)null, exceptionObject, format, args);
     }
 
     /// <overloads>Log a message object with the <see cref="LogLevel.Info"/> level.</overloads>
@@ -252,8 +252,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public static void Info (this ILog log, int eventID, object? message, Exception exceptionObject)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Info, eventID, message, exceptionObject);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Info, eventID, message, exceptionObject);
     }
 
     /// <summary>
@@ -263,10 +263,10 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public static void Info (this ILog log, int eventID, object? message)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Info, eventID, message, (Exception?) null);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Info, eventID, message, (Exception?)null);
     }
-    
+
     /// <summary>
     /// Log a message object with the <see cref="LogLevel.Info"/> level,
     /// including the stack trace of <paramref name="exceptionObject"/>. 
@@ -274,8 +274,8 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="message" or @name="exceptionObject"]' />
     public static void Info (this ILog log, object? message, Exception exceptionObject)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Info,  (int?) null, message, exceptionObject);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Info,  (int?)null, message, exceptionObject);
     }
 
     /// <summary>
@@ -284,8 +284,8 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="message"]' />
     public static void Info (this ILog log, object? message)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Info, (int?) null, message, (Exception?) null);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Info, (int?)null, message, (Exception?)null);
     }
 
     /// <overloads>Log a formatted string with the <see cref="LogLevel.Info"/> level.</overloads>
@@ -296,11 +296,11 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="eventID" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void InfoFormat (this ILog log, int eventID, Exception exceptionObject, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Info, eventID, exceptionObject, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Info, eventID, exceptionObject, format, args);
     }
 
     /// <summary>
@@ -309,23 +309,23 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="eventID"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void InfoFormat (this ILog log, int eventID, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Info, eventID, (Exception?) null, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Info, eventID, (Exception?)null, format, args);
     }
-    
+
     /// <summary>
     /// Log a formatted string with the <see cref="LogLevel.Info"/> level.
     /// </summary>
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void InfoFormat (this ILog log, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Info, (int?) null, (Exception?) null, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Info, (int?)null, (Exception?)null, format, args);
     }
 
     /// <summary>
@@ -334,11 +334,11 @@ namespace Remotion.Logging
     /// </summary>
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void InfoFormat (this ILog log, Exception exceptionObject, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Info, (int?) null, exceptionObject, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Info, (int?)null, exceptionObject, format, args);
     }
 
     /// <overloads>Log a message object with the <see cref="LogLevel.Warn"/> level.</overloads>
@@ -350,8 +350,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public static void Warn (this ILog log, int eventID, object? message, Exception exceptionObject)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Warn, eventID, message, exceptionObject);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Warn, eventID, message, exceptionObject);
     }
 
     /// <summary>
@@ -361,8 +361,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public static void Warn (this ILog log, int eventID, object? message)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Warn, eventID, message, (Exception?) null);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Warn, eventID, message, (Exception?)null);
     }
 
     /// <summary>
@@ -372,8 +372,8 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="message" or @name="exceptionObject"]' />
     public static void Warn (this ILog log, object? message, Exception exceptionObject)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Warn, (int?) null, message, exceptionObject);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Warn, (int?)null, message, exceptionObject);
     }
 
     /// <summary>
@@ -382,8 +382,8 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="message"]' />
     public static void Warn (this ILog log, object? message)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Warn, (int?) null, message, (Exception?) null);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Warn, (int?)null, message, (Exception?)null);
     }
 
     /// <overloads>Log a formatted string with the <see cref="LogLevel.Warn"/> level.</overloads>
@@ -394,11 +394,11 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="eventID" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void WarnFormat (this ILog log, int eventID, Exception exceptionObject, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Warn, eventID, exceptionObject, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Warn, eventID, exceptionObject, format, args);
     }
 
     /// <summary>
@@ -407,11 +407,11 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="eventID"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void WarnFormat (this ILog log, int eventID, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Warn, eventID, (Exception?) null, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Warn, eventID, (Exception?)null, format, args);
     }
 
     /// <summary>
@@ -419,11 +419,11 @@ namespace Remotion.Logging
     /// </summary>
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void WarnFormat (this ILog log, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Warn, (int?) null, (Exception?) null, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Warn, (int?)null, (Exception?)null, format, args);
     }
 
     /// <summary>
@@ -432,11 +432,11 @@ namespace Remotion.Logging
     /// </summary>
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void WarnFormat (this ILog log, Exception exceptionObject, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Warn, (int?) null, exceptionObject, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Warn, (int?)null, exceptionObject, format, args);
     }
 
     /// <overloads>Log a message object with the <see cref="LogLevel.Error"/> level.</overloads>
@@ -448,8 +448,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public static void Error (this ILog log, int eventID, object? message, Exception exceptionObject)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Error, eventID, message, exceptionObject);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Error, eventID, message, exceptionObject);
     }
 
     /// <summary>
@@ -459,8 +459,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public static void Error (this ILog log, int eventID, object? message)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Error, eventID, message, (Exception?) null);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Error, eventID, message, (Exception?)null);
     }
 
     /// <summary>
@@ -470,8 +470,8 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="message" or @name="exceptionObject"]' />
     public static void Error (this ILog log, object? message, Exception exceptionObject)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Error, (int?) null, message, exceptionObject);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Error, (int?)null, message, exceptionObject);
     }
 
     /// <summary>
@@ -480,8 +480,8 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="message"]' />
     public static void Error (this ILog log, object? message)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Error, (int?) null, message, (Exception?) null);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Error, (int?)null, message, (Exception?)null);
     }
 
     /// <overloads>Log a formatted string with the <see cref="LogLevel.Error"/> level.</overloads>
@@ -492,11 +492,11 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="eventID" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void ErrorFormat (this ILog log, int eventID, Exception exceptionObject, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Error, eventID, exceptionObject, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Error, eventID, exceptionObject, format, args);
     }
 
     /// <summary>
@@ -505,23 +505,23 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="eventID"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void ErrorFormat (this ILog log, int eventID, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Error, eventID, (Exception?) null, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Error, eventID, (Exception?)null, format, args);
     }
-    
+
     /// <summary>
     /// Log a formatted string with the <see cref="LogLevel.Error"/> level.
     /// </summary>
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void ErrorFormat (this ILog log, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Error, (int?) null, (Exception?) null, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Error, (int?)null, (Exception?)null, format, args);
     }
 
     /// <summary>
@@ -530,11 +530,11 @@ namespace Remotion.Logging
     /// </summary>
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void ErrorFormat (this ILog log, Exception exceptionObject, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Error, (int?) null, exceptionObject, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Error, (int?)null, exceptionObject, format, args);
     }
 
     /// <overloads>Log a message object with the <see cref="LogLevel.Fatal"/> level.</overloads>
@@ -546,8 +546,8 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public static void Fatal (this ILog log, int eventID, object? message, Exception exceptionObject)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Fatal, eventID, message, exceptionObject);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Fatal, eventID, message, exceptionObject);
     }
 
     /// <summary>
@@ -557,10 +557,10 @@ namespace Remotion.Logging
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
     public static void Fatal (this ILog log, int eventID, object? message)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Fatal, eventID, message, (Exception?) null);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Fatal, eventID, message, (Exception?)null);
     }
-    
+
     /// <summary>
     /// Log a message object with the <see cref="LogLevel.Fatal"/> level,
     /// including the stack trace of <paramref name="exceptionObject"/>. 
@@ -568,8 +568,8 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="message" or @name="exceptionObject"]' />
     public static void Fatal (this ILog log, object? message, Exception exceptionObject)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Fatal, (int?) null, message, exceptionObject);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Fatal, (int?)null, message, exceptionObject);
     }
 
     /// <summary>
@@ -578,8 +578,8 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="message"]' />
     public static void Fatal (this ILog log, object? message)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.Log (LogLevel.Fatal, (int?) null, message, (Exception?) null);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.Log(LogLevel.Fatal, (int?)null, message, (Exception?)null);
     }
 
     /// <overloads>Log a formatted string with the <see cref="LogLevel.Fatal"/> level.</overloads>
@@ -590,11 +590,11 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="eventID" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void FatalFormat (this ILog log, int eventID, Exception exceptionObject, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Fatal, eventID, exceptionObject, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Fatal, eventID, exceptionObject, format, args);
     }
 
     /// <summary>
@@ -603,11 +603,11 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="eventID"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
     /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="eventID"/> is outside the range of an unsigned 16-bit integer. </exception>
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void FatalFormat (this ILog log, int eventID, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Fatal, eventID, (Exception?) null, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Fatal, eventID, (Exception?)null, format, args);
     }
 
     /// <summary>
@@ -615,11 +615,11 @@ namespace Remotion.Logging
     /// </summary>
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void FatalFormat (this ILog log, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Fatal, (int?) null, (Exception?) null, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Fatal, (int?)null, (Exception?)null, format, args);
     }
 
     /// <summary>
@@ -628,11 +628,11 @@ namespace Remotion.Logging
     /// </summary>
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="format" or @name="args"]' />
-    [StringFormatMethod ("format")]
+    [StringFormatMethod("format")]
     public static void FatalFormat (this ILog log, Exception exceptionObject, string? format, params object?[]? args)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      log.LogFormat (LogLevel.Fatal, (int?) null, exceptionObject, format, args);
+      ArgumentUtility.CheckNotNull("log", log);
+      log.LogFormat(LogLevel.Fatal, (int?)null, exceptionObject, format, args);
     }
 
     /// <summary>
@@ -640,8 +640,8 @@ namespace Remotion.Logging
     /// </summary>
     public static bool IsDebugEnabled (this ILog log)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      return log.IsEnabled (LogLevel.Debug);
+      ArgumentUtility.CheckNotNull("log", log);
+      return log.IsEnabled(LogLevel.Debug);
     }
 
     /// <summary>
@@ -649,8 +649,8 @@ namespace Remotion.Logging
     /// </summary>
     public static bool IsInfoEnabled (this ILog log)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      return log.IsEnabled (LogLevel.Info);
+      ArgumentUtility.CheckNotNull("log", log);
+      return log.IsEnabled(LogLevel.Info);
     }
 
     /// <summary>
@@ -658,8 +658,8 @@ namespace Remotion.Logging
     /// </summary>
     public static bool IsWarnEnabled (this ILog log)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      return log.IsEnabled (LogLevel.Warn);
+      ArgumentUtility.CheckNotNull("log", log);
+      return log.IsEnabled(LogLevel.Warn);
     }
 
     /// <summary>
@@ -667,8 +667,8 @@ namespace Remotion.Logging
     /// </summary>
     public static bool IsErrorEnabled (this ILog log)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      return log.IsEnabled (LogLevel.Error);
+      ArgumentUtility.CheckNotNull("log", log);
+      return log.IsEnabled(LogLevel.Error);
     }
 
     /// <summary>
@@ -676,8 +676,8 @@ namespace Remotion.Logging
     /// </summary>
     public static bool IsFatalEnabled (this ILog log)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      return log.IsEnabled (LogLevel.Fatal);
+      ArgumentUtility.CheckNotNull("log", log);
+      return log.IsEnabled(LogLevel.Fatal);
     }
   }
 }

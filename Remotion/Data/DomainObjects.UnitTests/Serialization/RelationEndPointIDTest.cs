@@ -33,43 +33,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       base.SetUp();
 
-      _id = RelationEndPointID.Create(DomainObjectIDs.Computer1, ReflectionMappingHelper.GetPropertyName (typeof (Computer), "Employee"));
+      _id = RelationEndPointID.Create(DomainObjectIDs.Computer1, ReflectionMappingHelper.GetPropertyName(typeof(Computer), "Employee"));
     }
 
 
     [Test]
     public void RelationEndPointID_IsSerializable ()
     {
-      RelationEndPointID deserializedEndPoint = Serializer.SerializeAndDeserialize (_id);
-      Assert.That (deserializedEndPoint, Is.Not.Null);
-      Assert.That (deserializedEndPoint, Is.Not.SameAs (_id));
+      RelationEndPointID deserializedEndPoint = Serializer.SerializeAndDeserialize(_id);
+      Assert.That(deserializedEndPoint, Is.Not.Null);
+      Assert.That(deserializedEndPoint, Is.Not.SameAs(_id));
 
-      Assert.That (deserializedEndPoint, Is.EqualTo (_id));
+      Assert.That(deserializedEndPoint, Is.EqualTo(_id));
     }
 
     [Test]
     public void RelationEndPointID_IsFlattenedSerializable ()
     {
-      RelationEndPointID deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_id);
-      Assert.That (deserializedEndPoint, Is.Not.Null);
-      Assert.That (deserializedEndPoint, Is.Not.SameAs (_id));
+      RelationEndPointID deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_id);
+      Assert.That(deserializedEndPoint, Is.Not.Null);
+      Assert.That(deserializedEndPoint, Is.Not.SameAs(_id));
 
-      Assert.That (deserializedEndPoint, Is.EqualTo (_id));
+      Assert.That(deserializedEndPoint, Is.EqualTo(_id));
     }
 
     [Test]
     public void RelationEndPointID_Content ()
     {
-      RelationEndPointID deserializedID = Serializer.SerializeAndDeserialize (_id);
-      Assert.That (deserializedID.ObjectID, Is.EqualTo (DomainObjectIDs.Computer1));
-      Assert.That (deserializedID.Definition, Is.SameAs (_id.Definition));
+      RelationEndPointID deserializedID = Serializer.SerializeAndDeserialize(_id);
+      Assert.That(deserializedID.ObjectID, Is.EqualTo(DomainObjectIDs.Computer1));
+      Assert.That(deserializedID.Definition, Is.SameAs(_id.Definition));
     }
 
     [Test]
     public void RelationEndPointID_GetHashCode ()
     {
-      RelationEndPointID deserializedID = Serializer.SerializeAndDeserialize (_id);
-      Assert.That (deserializedID.GetHashCode (), Is.EqualTo (_id.GetHashCode ()));
+      RelationEndPointID deserializedID = Serializer.SerializeAndDeserialize(_id);
+      Assert.That(deserializedID.GetHashCode(), Is.EqualTo(_id.GetHashCode()));
     }
   }
 }

@@ -49,7 +49,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 
     void IList.Clear ()
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public int IndexOf (object value)
@@ -69,7 +69,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 
     void IList.RemoveAt (int index)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     object IList.this [int index]
@@ -80,7 +80,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 
     bool IList.IsReadOnly
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
     }
 
     public bool IsFixedSize
@@ -90,7 +90,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 
     void ICollection<T>.Clear ()
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public bool Contains (T item)
@@ -115,7 +115,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 
     int ICollection.Count
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
     }
 
     public object SyncRoot
@@ -150,7 +150,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 
     void IList<T>.RemoveAt (int index)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public T this [int index]

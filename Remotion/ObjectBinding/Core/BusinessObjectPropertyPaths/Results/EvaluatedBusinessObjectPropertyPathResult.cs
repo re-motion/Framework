@@ -34,8 +34,8 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
 
     public EvaluatedBusinessObjectPropertyPathResult (IBusinessObject resultObject, IBusinessObjectProperty resultProperty)
     {
-      ArgumentUtility.CheckNotNull ("resultObject", resultObject);
-      ArgumentUtility.CheckNotNull ("resultProperty", resultProperty);
+      ArgumentUtility.CheckNotNull("resultObject", resultObject);
+      ArgumentUtility.CheckNotNull("resultProperty", resultProperty);
 
       _resultObject = resultObject;
       _resultProperty = resultProperty;
@@ -48,12 +48,12 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
 
     public object? GetValue ()
     {
-      if (!_resultProperty.IsAccessible (_resultObject))
+      if (!_resultProperty.IsAccessible(_resultObject))
         return null;
 
       try
       {
-        return _resultObject.GetProperty (_resultProperty);
+        return _resultObject.GetProperty(_resultProperty);
       }
       catch (BusinessObjectPropertyAccessException)
       {
@@ -63,12 +63,12 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
 
     public string GetString (string? format)
     {
-      if (!_resultProperty.IsAccessible (_resultObject))
+      if (!_resultProperty.IsAccessible(_resultObject))
         return _resultObject.BusinessObjectClass.BusinessObjectProvider.GetNotAccessiblePropertyStringPlaceHolder();
 
       try
       {
-        return _resultObject.GetPropertyString (_resultProperty, format);
+        return _resultObject.GetPropertyString(_resultProperty, format);
       }
       catch (BusinessObjectPropertyAccessException)
       {

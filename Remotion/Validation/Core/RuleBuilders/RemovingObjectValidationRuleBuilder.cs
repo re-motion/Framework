@@ -31,7 +31,7 @@ namespace Remotion.Validation.RuleBuilders
 
     public RemovingObjectValidationRuleBuilder (IRemovingObjectValidationRuleCollector removingObjectValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull ("removingObjectValidationRuleCollector", removingObjectValidationRuleCollector);
+      ArgumentUtility.CheckNotNull("removingObjectValidationRuleCollector", removingObjectValidationRuleCollector);
 
       _removingObjectValidationRuleCollector = removingObjectValidationRuleCollector;
     }
@@ -45,18 +45,18 @@ namespace Remotion.Validation.RuleBuilders
         Func<TValidator, bool>? validatorPredicate)
         where TValidator : IObjectValidator
     {
-      var typeCheckedValidatorPredicate = GetTypeCheckedValidatorPredicate (validatorPredicate);
+      var typeCheckedValidatorPredicate = GetTypeCheckedValidatorPredicate(validatorPredicate);
 
-      return Validator (typeof (TValidator), null, typeCheckedValidatorPredicate);
+      return Validator(typeof(TValidator), null, typeCheckedValidatorPredicate);
     }
 
     public IRemovingObjectValidationRuleBuilder<TValidatedType> Validator<TValidator, TCollectorTypeToRemoveFrom> (
         Func<TValidator, bool>? validatorPredicate)
         where TValidator : IObjectValidator
     {
-      var typeCheckedValidatorPredicate = GetTypeCheckedValidatorPredicate (validatorPredicate);
+      var typeCheckedValidatorPredicate = GetTypeCheckedValidatorPredicate(validatorPredicate);
 
-      return Validator (typeof (TValidator), typeof (TCollectorTypeToRemoveFrom), typeCheckedValidatorPredicate);
+      return Validator(typeof(TValidator), typeof(TCollectorTypeToRemoveFrom), typeCheckedValidatorPredicate);
     }
 
     public IRemovingObjectValidationRuleBuilder<TValidatedType> Validator (
@@ -64,12 +64,12 @@ namespace Remotion.Validation.RuleBuilders
         Type? collectorTypeToRemoveFrom,
         Func<IObjectValidator, bool>? validatorPredicate)
     {
-      ArgumentUtility.CheckNotNull ("validatorType", validatorType);
+      ArgumentUtility.CheckNotNull("validatorType", validatorType);
 
-      _removingObjectValidationRuleCollector.RegisterValidator (validatorType, collectorTypeToRemoveFrom, validatorPredicate);
+      _removingObjectValidationRuleCollector.RegisterValidator(validatorType, collectorTypeToRemoveFrom, validatorPredicate);
       return this;
     }
-    
+
     [CanBeNull]
     private static Func<IObjectValidator, bool>? GetTypeCheckedValidatorPredicate<TValidator> ([CanBeNull]Func<TValidator, bool>? validatorPredicate)
         where TValidator : IObjectValidator
@@ -77,7 +77,7 @@ namespace Remotion.Validation.RuleBuilders
       if (validatorPredicate == null)
         return null;
 
-      return validator => validatorPredicate (ArgumentUtility.CheckType<TValidator> (nameof (validator), validator));
+      return validator => validatorPredicate(ArgumentUtility.CheckType<TValidator>(nameof(validator), validator));
     }
   }
 }

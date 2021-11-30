@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public IEnumerable<Exception> GetAllExceptions ()
     {
-      return Enumerable.Empty<Exception> ();
+      return Enumerable.Empty<Exception>();
     }
 
     public void Perform ()
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     ExpandedCommand IDataManagementCommand.ExpandToAllRelatedObjects ()
     {
-      return new ExpandedCommand (this);
+      return new ExpandedCommand(this);
     }
   }
 }

@@ -105,7 +105,7 @@ namespace Remotion.Collections.DataStore
     /// <returns><see langword="true" /> if an element with the specified key was found; otherwise, <see langword="false" />.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">An attempt is made to call <see cref="TryGetValue"/> from inside the <see cref="GetOrCreateValue"/> factory method using the <paramref name="key"/>.</exception>
-    bool TryGetValue ([JetBrains.Annotations.NotNull] TKey key, [CanBeNull, AllowNull, MaybeNullWhen (false)] out TValue value);
+    bool TryGetValue ([JetBrains.Annotations.NotNull] TKey key, [CanBeNull, AllowNull, MaybeNullWhen(false)] out TValue value);
 
     /// <summary>
     /// Gets the value of the element with the specified key, creating a new one if none exists.

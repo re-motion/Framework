@@ -37,14 +37,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     public string HiddenControlID { get; private set; }
 
     public HtmlIDGenericTestPageParameter ()
-        : base (TestConstants.HtmlIDSelectorID, c_parameterCount)
+        : base(TestConstants.HtmlIDSelectorID, c_parameterCount)
     {
     }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       VisibleControlID = data.Arguments[0];
       HiddenControlID = data.Arguments[1];

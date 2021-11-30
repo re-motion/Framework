@@ -35,35 +35,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order1 = DomainObjectIDs.Order1.GetObject<Order> ();
-      _order3 = DomainObjectIDs.Order3.GetObject<Order> ();
-      _order4 = DomainObjectIDs.Order4.GetObject<Order> ();
+      _order1 = DomainObjectIDs.Order1.GetObject<Order>();
+      _order3 = DomainObjectIDs.Order3.GetObject<Order>();
+      _order4 = DomainObjectIDs.Order4.GetObject<Order>();
 
-      _currentData = new DomainObjectCollectionData (new[] { _order1, _order3 });
+      _currentData = new DomainObjectCollectionData(new[] { _order1, _order3 });
 
-      _strategy = new RootDomainObjectCollectionEndPointChangeDetectionStrategy ();
+      _strategy = new RootDomainObjectCollectionEndPointChangeDetectionStrategy();
     }
 
     [Test]
     public void HasDataChanged_False ()
     {
-      Assert.That (_strategy.HasDataChanged (_currentData, new DomainObjectCollectionData (_currentData)), Is.False);
+      Assert.That(_strategy.HasDataChanged(_currentData, new DomainObjectCollectionData(_currentData)), Is.False);
     }
 
     [Test]
     public void HasDataChanged_False_OrderOnly ()
     {
-      var originalData = new DomainObjectCollectionData (_currentData.Reverse());
-      Assert.That (_strategy.HasDataChanged (_currentData, originalData), Is.False);
+      var originalData = new DomainObjectCollectionData(_currentData.Reverse());
+      Assert.That(_strategy.HasDataChanged(_currentData, originalData), Is.False);
     }
 
     [Test]
     public void HasDataChanged_True_Content ()
     {
-      var originalData = new DomainObjectCollectionData (new[] { _order1, _order3, _order4 });
-      Assert.That (_strategy.HasDataChanged (_currentData, originalData), Is.True);
+      var originalData = new DomainObjectCollectionData(new[] { _order1, _order3, _order4 });
+      Assert.That(_strategy.HasDataChanged(_currentData, originalData), Is.True);
     }
   }
 }

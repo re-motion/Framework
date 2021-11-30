@@ -37,18 +37,18 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     public void SetUp ()
     {
       WxeContextFactory wxeContextFactory = new WxeContextFactory();
-      _context = wxeContextFactory.CreateContext (new TestFunction());
+      _context = wxeContextFactory.CreateContext(new TestFunction());
 
       _executionListenerMock = new Mock<IWxeFunctionExecutionListener>();
       _executionContextMock = new Mock<IWxeFunctionExecutionContext>();
       _outerTransactionStrategyMock = new Mock<TransactionStrategyBase>();
-      _strategy = new NoneTransactionStrategy (_outerTransactionStrategyMock.Object);
+      _strategy = new NoneTransactionStrategy(_outerTransactionStrategyMock.Object);
     }
 
     [Test]
     public void Commit ()
     {
-      Assert.That (
+      Assert.That(
           () => _strategy.Commit(),
           Throws.InstanceOf<NotSupportedException>());
     }
@@ -56,7 +56,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void Rollback ()
     {
-      Assert.That (
+      Assert.That(
           () => _strategy.Rollback(),
           Throws.InstanceOf<NotSupportedException>());
     }
@@ -64,7 +64,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void Reset ()
     {
-      Assert.That (
+      Assert.That(
           () => _strategy.Reset(),
           Throws.InstanceOf<NotSupportedException>());
     }
@@ -72,19 +72,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void GetTransaction ()
     {
-      Assert.That (_strategy.GetNativeTransaction<object> (), Is.Null);
+      Assert.That(_strategy.GetNativeTransaction<object>(), Is.Null);
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (((INullObject) _strategy).IsNull, Is.True);
+      Assert.That(((INullObject)_strategy).IsNull, Is.True);
     }
 
     [Test]
     public void CreateExecutionListener ()
     {
-      Assert.That (_strategy.CreateExecutionListener (_executionListenerMock.Object), Is.SameAs (_executionListenerMock.Object));
+      Assert.That(_strategy.CreateExecutionListener(_executionListenerMock.Object), Is.SameAs(_executionListenerMock.Object));
     }
 
     [Test]
@@ -92,34 +92,34 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     {
       var grandParentTransactionStrategyMock = new Mock<TransactionStrategyBase>();
 
-      var noneTransactionStrategy = new NoneTransactionStrategy (grandParentTransactionStrategyMock.Object);
+      var noneTransactionStrategy = new NoneTransactionStrategy(grandParentTransactionStrategyMock.Object);
 
       var childExecutionContextStub = new Mock<IWxeFunctionExecutionContext>();
-      childExecutionContextStub.Setup (stub => stub.GetInParameters()).Returns (new object[0]);
+      childExecutionContextStub.Setup(stub => stub.GetInParameters()).Returns(new object[0]);
 
       var fakeParentTransaction = new Mock<ITransaction>();
-      fakeParentTransaction.Setup (stub => stub.CreateChild()).Returns (new Mock<ITransaction>().Object);
-      var fakeChildTransactionStrategy = new ChildTransactionStrategy (
+      fakeParentTransaction.Setup(stub => stub.CreateChild()).Returns(new Mock<ITransaction>().Object);
+      var fakeChildTransactionStrategy = new ChildTransactionStrategy(
           false, grandParentTransactionStrategyMock.Object, fakeParentTransaction.Object, childExecutionContextStub.Object);
 
       grandParentTransactionStrategyMock
-          .Setup (mock => mock.CreateChildTransactionStrategy (true, childExecutionContextStub.Object, _context))
-          .Returns (fakeChildTransactionStrategy)
+          .Setup(mock => mock.CreateChildTransactionStrategy(true, childExecutionContextStub.Object, _context))
+          .Returns(fakeChildTransactionStrategy)
           .Verifiable();
-      
-      TransactionStrategyBase actual = noneTransactionStrategy.CreateChildTransactionStrategy (true, childExecutionContextStub.Object, _context);
-      Assert.That (actual, Is.SameAs (fakeChildTransactionStrategy));
+
+      TransactionStrategyBase actual = noneTransactionStrategy.CreateChildTransactionStrategy(true, childExecutionContextStub.Object, _context);
+      Assert.That(actual, Is.SameAs(fakeChildTransactionStrategy));
     }
 
     [Test]
     public void UnregisterChildTransactionStrategy ()
     {
-      Assert.That (_strategy.OuterTransactionStrategy, Is.SameAs (_outerTransactionStrategyMock.Object));
+      Assert.That(_strategy.OuterTransactionStrategy, Is.SameAs(_outerTransactionStrategyMock.Object));
       var childTransactionStrategyStub = new Mock<TransactionStrategyBase>();
 
-      _strategy.UnregisterChildTransactionStrategy (childTransactionStrategyStub.Object);
+      _strategy.UnregisterChildTransactionStrategy(childTransactionStrategyStub.Object);
 
-      _outerTransactionStrategyMock.Verify (mock => mock.UnregisterChildTransactionStrategy (childTransactionStrategyStub.Object), Times.AtLeastOnce());
+      _outerTransactionStrategyMock.Verify(mock => mock.UnregisterChildTransactionStrategy(childTransactionStrategyStub.Object), Times.AtLeastOnce());
     }
 
     [Test]
@@ -127,9 +127,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     {
       var expectedObjects = new[] { new object() };
 
-      _outerTransactionStrategyMock.Setup (mock => mock.EnsureCompatibility (expectedObjects)).Verifiable();
+      _outerTransactionStrategyMock.Setup(mock => mock.EnsureCompatibility(expectedObjects)).Verifiable();
 
-      _strategy.EnsureCompatibility (expectedObjects);
+      _strategy.EnsureCompatibility(expectedObjects);
 
       _executionContextMock.Verify();
       _outerTransactionStrategyMock.Verify();
@@ -138,30 +138,30 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void OnExecutionPlay ()
     {
-      _strategy.OnExecutionPlay (_context, _executionListenerMock.Object);
-      _executionListenerMock.Verify (mock => mock.OnExecutionPlay (_context), Times.AtLeastOnce());
+      _strategy.OnExecutionPlay(_context, _executionListenerMock.Object);
+      _executionListenerMock.Verify(mock => mock.OnExecutionPlay(_context), Times.AtLeastOnce());
     }
 
     [Test]
     public void OnExecutionStop ()
     {
-      _strategy.OnExecutionStop (_context, _executionListenerMock.Object);
-      _executionListenerMock.Verify (mock => mock.OnExecutionStop (_context), Times.AtLeastOnce());
+      _strategy.OnExecutionStop(_context, _executionListenerMock.Object);
+      _executionListenerMock.Verify(mock => mock.OnExecutionStop(_context), Times.AtLeastOnce());
     }
 
     [Test]
     public void OnExecutionPause ()
     {
-      _strategy.OnExecutionPause (_context, _executionListenerMock.Object);
-      _executionListenerMock.Verify (mock => mock.OnExecutionPause (_context), Times.AtLeastOnce());
+      _strategy.OnExecutionPause(_context, _executionListenerMock.Object);
+      _executionListenerMock.Verify(mock => mock.OnExecutionPause(_context), Times.AtLeastOnce());
     }
 
     [Test]
     public void OnExecutionFail ()
     {
       var exception = new Exception();
-      _strategy.OnExecutionFail (_context, _executionListenerMock.Object, exception);
-      _executionListenerMock.Verify (mock => mock.OnExecutionFail (_context, exception), Times.AtLeastOnce());
+      _strategy.OnExecutionFail(_context, _executionListenerMock.Object, exception);
+      _executionListenerMock.Verify(mock => mock.OnExecutionFail(_context, exception), Times.AtLeastOnce());
     }
   }
 }

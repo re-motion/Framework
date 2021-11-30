@@ -26,7 +26,7 @@ using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.ControlReplacing;
-using ExecuteByRedirect_PreProcessingSubFunctionState = 
+using ExecuteByRedirect_PreProcessingSubFunctionState =
   Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect.PreProcessingSubFunctionState;
 
 namespace Remotion.Web.ExecutionEngine
@@ -59,20 +59,20 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
     /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="page"]' />
     public WxePageStep (string page)
-      : this (new ResourceObject (ArgumentUtility.CheckNotNullOrEmpty("page", page)))
+      : this(new ResourceObject(ArgumentUtility.CheckNotNullOrEmpty("page", page)))
     {
     }
 
     /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
     /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="pageref"]' />
     public WxePageStep (WxeVariableReference pageref)
-        : this (new ResourceObjectWithVarRef (pageref))
+        : this(new ResourceObjectWithVarRef(pageref))
     {
     }
 
     protected WxePageStep (ResourceObjectBase page)
     {
-      ArgumentUtility.CheckNotNull ("page", page);
+      ArgumentUtility.CheckNotNull("page", page);
 
       _page = page;
       _pageToken = Guid.NewGuid().ToString();
@@ -81,7 +81,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> The URL of the page to be displayed by this <see cref="WxePageStep"/>. </summary>
     public string Page
     {
-      get { return _page.GetResourcePath (Variables!); } // TODO RM-8118: not null assertion
+      get { return _page.GetResourcePath(Variables!); } // TODO RM-8118: not null assertion
     }
 
     /// <summary> Gets the currently executing <see cref="WxeStep"/>. </summary>
@@ -104,7 +104,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Execute/*' />
     public override void Execute (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       if (_wxeHandler != null)
       {
@@ -126,13 +126,13 @@ namespace Remotion.Web.ExecutionEngine
       ClearReturnState();
 
       while (_executionState.IsExecuting)
-        _executionState.ExecuteSubFunction (context);
+        _executionState.ExecuteSubFunction(context);
 
-      _userControlExecutor.Execute (context);
+      _userControlExecutor.Execute(context);
 
       try
       {
-        _pageExecutor.ExecutePage (context, Page, _isPostBack);
+        _pageExecutor.ExecutePage(context, Page, _isPostBack);
       }
       finally
       {
@@ -144,47 +144,47 @@ namespace Remotion.Web.ExecutionEngine
       }
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunction (PreProcessingSubFunctionStateParameters parameters, WxeRepostOptions repostOptions)
     {
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
-      ArgumentUtility.CheckNotNull ("repostOptions", repostOptions);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("repostOptions", repostOptions);
 
       if (_executionState.IsExecuting)
-        throw new InvalidOperationException ("Cannot execute function while another function executes.");
+        throw new InvalidOperationException("Cannot execute function while another function executes.");
 
       _wxeHandler = parameters.Page.WxeHandler;
 
-      _executionState = new PreProcessingSubFunctionState (this, parameters, repostOptions);
+      _executionState = new PreProcessingSubFunctionState(this, parameters, repostOptions);
       Execute();
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunctionExternalByRedirect (PreProcessingSubFunctionStateParameters parameters, WxeReturnOptions returnOptions)
     {
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
-      ArgumentUtility.CheckNotNull ("returnOptions", returnOptions);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("returnOptions", returnOptions);
 
       if (_executionState.IsExecuting)
-        throw new InvalidOperationException ("Cannot execute function while another function executes.");
+        throw new InvalidOperationException("Cannot execute function while another function executes.");
 
       _wxeHandler = parameters.Page.WxeHandler;
 
-      _executionState = new ExecuteByRedirect_PreProcessingSubFunctionState (this, parameters, returnOptions);
+      _executionState = new ExecuteByRedirect_PreProcessingSubFunctionState(this, parameters, returnOptions);
       Execute();
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunction (WxeUserControl userControl, WxeFunction subFunction, Control sender, bool usesEventTarget)
     {
-      ArgumentUtility.CheckNotNull ("userControl", userControl);
-      ArgumentUtility.CheckNotNull ("subFunction", subFunction);
-      ArgumentUtility.CheckNotNull ("sender", sender);
+      ArgumentUtility.CheckNotNull("userControl", userControl);
+      ArgumentUtility.CheckNotNull("subFunction", subFunction);
+      ArgumentUtility.CheckNotNull("sender", sender);
 
       IWxePage wxePage = userControl.WxePage!;
       _wxeHandler = wxePage.WxeHandler;
 
-      _userControlExecutor = new UserControlExecutor (this, userControl, subFunction, sender, usesEventTarget);
+      _userControlExecutor = new UserControlExecutor(this, userControl, subFunction, sender, usesEventTarget);
 
       IReplaceableControl replaceableControl = userControl;
       replaceableControl.Replacer.Controls.Clear();
@@ -260,7 +260,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public void SetReturnState (WxeFunction returningFunction, bool isReturningPostBack, NameValueCollection? previousPostBackCollection)
     {
-      ArgumentUtility.CheckNotNull ("returningFunction", returningFunction);
+      ArgumentUtility.CheckNotNull("returningFunction", returningFunction);
 
       _returningFunction = returningFunction;
       _isReturningPostBack = isReturningPostBack;
@@ -278,7 +278,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       _isOutOfSequencePostBack = value;
     }
-    
+
     private void ClearIsOutOfSequencePostBack ()
     {
       _isOutOfSequencePostBack = false;
@@ -293,7 +293,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="state"> An <b>ASP.NET</b> viewstate object. </param>
     public void SavePageStateToPersistenceMedium (object state)
     {
-      if (s_viewStateSerializationBufferPool.TryTake (out var outputStream))
+      if (s_viewStateSerializationBufferPool.TryTake(out var outputStream))
       {
         outputStream.Position = 0;
       }
@@ -307,7 +307,7 @@ namespace Remotion.Web.ExecutionEngine
       try
       {
         var serializer = new ObjectStateFormatter();
-        serializer.Serialize (outputStream, state);
+        serializer.Serialize(outputStream, state);
 
         // For the finished page state, a new byte-array must be allocated, i.e. the original array cannot be used.
         // The reason for this is that the viewstate may be deserialized more than once if a subfunction is called from the page.
@@ -316,7 +316,7 @@ namespace Remotion.Web.ExecutionEngine
       }
       finally
       {
-        s_viewStateSerializationBufferPool.Add (outputStream);
+        s_viewStateSerializationBufferPool.Add(outputStream);
       }
     }
 
@@ -326,10 +326,10 @@ namespace Remotion.Web.ExecutionEngine
     /// <returns> An <b>ASP.NET</b> viewstate object. </returns>
     public object LoadPageStateFromPersistenceMedium ()
     {
-      using (var inputStream = new MemoryStream (_pageState!, writable: false)) // TODO RM-8118: not null assertion
+      using (var inputStream = new MemoryStream(_pageState!, writable: false)) // TODO RM-8118: not null assertion
       {
         var serializer = new ObjectStateFormatter();
-        return serializer.Deserialize (inputStream);
+        return serializer.Deserialize(inputStream);
       }
     }
 
@@ -354,17 +354,17 @@ namespace Remotion.Web.ExecutionEngine
       get { return _userControlExecutor; }
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void SetPageExecutor (IWxePageExecutor pageExecutor)
     {
-      ArgumentUtility.CheckNotNull ("pageExecutor", pageExecutor);
+      ArgumentUtility.CheckNotNull("pageExecutor", pageExecutor);
       _pageExecutor = pageExecutor;
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void SetUserControlExecutor (IUserControlExecutor userControlExecutor)
     {
-      ArgumentUtility.CheckNotNull ("userControlExecutor", userControlExecutor);
+      ArgumentUtility.CheckNotNull("userControlExecutor", userControlExecutor);
       _userControlExecutor = userControlExecutor;
     }
 
@@ -375,7 +375,7 @@ namespace Remotion.Web.ExecutionEngine
 
     WxeFunction IExecutionStateContext.CurrentFunction
     {
-      get { return ParentFunction ?? throw new WxeException ("There must be a function associated to the current step while executing."); }
+      get { return ParentFunction ?? throw new WxeException("There must be a function associated to the current step while executing."); }
     }
 
     IExecutionState IExecutionStateContext.ExecutionState
@@ -385,7 +385,7 @@ namespace Remotion.Web.ExecutionEngine
 
     void IExecutionStateContext.SetExecutionState (IExecutionState executionState)
     {
-      ArgumentUtility.CheckNotNull ("executionState", executionState);
+      ArgumentUtility.CheckNotNull("executionState", executionState);
 
       _executionState = executionState;
     }

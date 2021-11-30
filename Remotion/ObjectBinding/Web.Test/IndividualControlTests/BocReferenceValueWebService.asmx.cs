@@ -26,9 +26,9 @@ using Remotion.Web.Services;
 
 namespace OBWTest.IndividualControlTests
 {
-  [WebService (Namespace = "http://re-motion.org/ObjectBinding.Web/")]
-  [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
-  [ToolboxItem (false)]
+  [WebService(Namespace = "http://re-motion.org/ObjectBinding.Web/")]
+  [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+  [ToolboxItem(false)]
   [ScriptService]
   public class BocReferenceValueWebService : WebService, IBocReferenceValueWebService
   {
@@ -40,14 +40,14 @@ namespace OBWTest.IndividualControlTests
     }
 
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments)
     {
-      return _iconServiceImplementation.GetIcon (new HttpContextWrapper (Context), businessObjectClass, businessObject, arguments);
+      return _iconServiceImplementation.GetIcon(new HttpContextWrapper(Context), businessObjectClass, businessObject, arguments);
     }
 
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public WebMenuItemProxy[] GetMenuItemStatusForOptionsMenu (
         string controlID,
         string controlType,
@@ -57,12 +57,12 @@ namespace OBWTest.IndividualControlTests
         string arguments,
         string[] itemIDs)
     {
-      Thread.Sleep (TimeSpan.FromMilliseconds (500));
+      Thread.Sleep(TimeSpan.FromMilliseconds(500));
       string[] filteredItems = { "FilterByService" };
       string[] disabledItems = { "DisabledByService" };
       return itemIDs
-          .Where (itemID => !filteredItems.Contains (itemID))
-          .Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: disabledItems.Contains (itemID)))
+          .Where(itemID => !filteredItems.Contains(itemID))
+          .Select(itemID => WebMenuItemProxy.Create(itemID, isDisabled: disabledItems.Contains(itemID)))
           .ToArray();
     }
   }

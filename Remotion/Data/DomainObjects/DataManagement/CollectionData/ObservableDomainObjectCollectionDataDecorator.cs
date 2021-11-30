@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     public event EventHandler<DataChangeEventArgs> CollectionChanged;
 
     public ObservableDomainObjectCollectionDataDecorator (IDomainObjectCollectionData wrappedData)
-      : base (wrappedData)
+      : base(wrappedData)
     {
     }
 
@@ -52,14 +52,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
       var eventHandler = CollectionChanging;
       if (eventHandler != null)
-        eventHandler (this, new DataChangeEventArgs (operation, affectedObject, index));
+        eventHandler(this, new DataChangeEventArgs(operation, affectedObject, index));
     }
 
     protected override void OnDataChanged (OperationKind operation, DomainObject affectedObject, int index)
     {
       var eventHandler = CollectionChanged;
       if (eventHandler != null)
-        eventHandler (this, new DataChangeEventArgs (operation, affectedObject, index));
+        eventHandler(this, new DataChangeEventArgs(operation, affectedObject, index));
     }
   }
 }

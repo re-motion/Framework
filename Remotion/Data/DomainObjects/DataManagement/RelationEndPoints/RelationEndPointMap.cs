@@ -34,10 +34,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public RelationEndPointMap (IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
 
       _transactionEventSink = transactionEventSink;
-      _relationEndPoints = new Dictionary<RelationEndPointID, IRelationEndPoint> ();
+      _relationEndPoints = new Dictionary<RelationEndPointID, IRelationEndPoint>();
     }
 
     public IClientTransactionEventSink TransactionEventSink
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IRelationEndPoint this[RelationEndPointID endPointID]
     {
-      get { return _relationEndPoints.GetValueOrDefault (endPointID); }
+      get { return _relationEndPoints.GetValueOrDefault(endPointID); }
     }
 
     public int Count
@@ -68,64 +68,64 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public void CommitAllEndPoints ()
     {
       foreach (var endPoint in this)
-        endPoint.Commit ();
+        endPoint.Commit();
     }
 
     public void RollbackAllEndPoints ()
     {
       foreach (var endPoint in this)
-        endPoint.Rollback ();
+        endPoint.Rollback();
     }
 
     public void AddEndPoint (IRelationEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
 
-      _transactionEventSink.RaiseRelationEndPointMapRegisteringEvent (endPoint);
+      _transactionEventSink.RaiseRelationEndPointMapRegisteringEvent(endPoint);
       var id = endPoint.ID;
       try
       {
-        _relationEndPoints.Add (id, endPoint);
+        _relationEndPoints.Add(id, endPoint);
       }
       catch (ArgumentException ex)
       {
-        var message = string.Format ("A relation end-point with ID '{0}' has already been registered.", id);
-        throw new InvalidOperationException (message, ex);
+        var message = string.Format("A relation end-point with ID '{0}' has already been registered.", id);
+        throw new InvalidOperationException(message, ex);
       }
     }
 
     public void RemoveEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      if (!_relationEndPoints.ContainsKey (endPointID))
+      if (!_relationEndPoints.ContainsKey(endPointID))
       {
-        var message = string.Format ("End point '{0}' is not part of this map.", endPointID);
-        throw new ArgumentException (message, "endPointID");
+        var message = string.Format("End point '{0}' is not part of this map.", endPointID);
+        throw new ArgumentException(message, "endPointID");
       }
 
-      _transactionEventSink.RaiseRelationEndPointMapUnregisteringEvent (endPointID);
-      _relationEndPoints.Remove (endPointID);
+      _transactionEventSink.RaiseRelationEndPointMapUnregisteringEvent(endPointID);
+      _relationEndPoints.Remove(endPointID);
     }
 
     #region Serialization
 
     protected RelationEndPointMap (FlattenedDeserializationInfo info)
-      : this (info.GetValueForHandle<IClientTransactionEventSink>())
+      : this(info.GetValueForHandle<IClientTransactionEventSink>())
     {
-      var endPointArray = info.GetArray<IRelationEndPoint> ();
+      var endPointArray = info.GetArray<IRelationEndPoint>();
       foreach (IRelationEndPoint endPoint in endPointArray)
-        _relationEndPoints.Add (endPoint.ID, endPoint);
+        _relationEndPoints.Add(endPoint.ID, endPoint);
     }
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
-      info.AddHandle (_transactionEventSink);
+      ArgumentUtility.CheckNotNull("info", info);
+      info.AddHandle(_transactionEventSink);
 
       var endPointArray = new IRelationEndPoint[Count];
-      _relationEndPoints.Values.CopyTo (endPointArray, 0);
-      info.AddArray (endPointArray);
+      _relationEndPoints.Values.CopyTo(endPointArray, 0);
+      info.AddArray(endPointArray);
     }
 
     #endregion

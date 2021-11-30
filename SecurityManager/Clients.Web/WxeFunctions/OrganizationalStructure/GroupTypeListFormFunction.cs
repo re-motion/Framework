@@ -23,7 +23,7 @@ using Remotion.Web.Security.ExecutionEngine;
 
 namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure
 {
-  [WxeDemandTargetStaticMethodPermission (GroupType.Methods.Search)]
+  [WxeDemandTargetStaticMethodPermission(GroupType.Methods.Search)]
   [Serializable]
   public class GroupTypeListFormFunction : BaseListTransactedFunction
   {
@@ -33,10 +33,10 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
 
     // TODO: Make protected once a way is found to solve the "WxeDemandTargetStaticMethodPermission being typed on fixed class" problem
     public GroupTypeListFormFunction (ITransactionMode transactionMode, params object[] args)
-      : base (transactionMode, args)
+      : base(transactionMode, args)
     {
     }
 
-    WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (GroupTypeListForm), "UI/OrganizationalStructure/GroupTypeListForm.aspx");
+    WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof(GroupTypeListForm), "UI/OrganizationalStructure/GroupTypeListForm.aspx");
   }
 }

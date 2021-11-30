@@ -76,7 +76,7 @@ namespace JetBrains.Annotations
   ///   Multiply(123, 42); // Waring: Return value of pure method is not used
   /// }
   /// </code></example>
-  [AttributeUsage (AttributeTargets.Method)]
+  [AttributeUsage(AttributeTargets.Method)]
   sealed partial class PureAttribute : Attribute
   {
   }

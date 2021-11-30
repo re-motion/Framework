@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public MultiDataContainerSaveCommand (IEnumerable<Tuple<ObjectID, IDbCommandBuilder>> tuples)
     {
-      ArgumentUtility.CheckNotNull ("tuples", tuples);
+      ArgumentUtility.CheckNotNull("tuples", tuples);
 
       _tuples = tuples.ToArray();
     }
@@ -47,11 +47,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public void Execute (IRdbmsProviderCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull ("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
 
       foreach (var tuple in _tuples)
       {
-        using (var command = tuple.Item2.Create (executionContext))
+        using (var command = tuple.Item2.Create(executionContext))
         {
           if (command == null)
             continue;
@@ -59,15 +59,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
           int recordsAffected;
           try
           {
-            recordsAffected = executionContext.ExecuteNonQuery (command);
+            recordsAffected = executionContext.ExecuteNonQuery(command);
           }
           catch (RdbmsProviderException e)
           {
-            throw new RdbmsProviderException (string.Format ("Error while saving object '{0}'. {1}", tuple.Item1, e.Message), e);
+            throw new RdbmsProviderException(string.Format("Error while saving object '{0}'. {1}", tuple.Item1, e.Message), e);
           }
 
           if (recordsAffected != 1)
-            throw new ConcurrencyViolationException (EnumerableUtility.Singleton (tuple.Item1));
+            throw new ConcurrencyViolationException(EnumerableUtility.Singleton(tuple.Item1));
         }
       }
     }

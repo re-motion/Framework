@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
-  [UndefinedEnumValue (EnumWithUndefinedValue.UndefinedValue)]
+  [UndefinedEnumValue(EnumWithUndefinedValue.UndefinedValue)]
   public enum EnumWithUndefinedValue
   {
     Value1 = 1,

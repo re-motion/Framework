@@ -32,12 +32,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var disabledButton = home.Scope.FindId ("DisabledButton");
+      var disabledButton = home.Scope.FindId("DisabledButton");
 
-      Assert.That (disabledButton.Disabled, Is.True);
-      Assert.That (
+      Assert.That(disabledButton.Disabled, Is.True);
+      Assert.That(
           () => disabledButton.Focus(),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "Focus").Message));
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "Focus").Message));
     }
 
     [Test]
@@ -45,10 +45,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var normalButton = home.Scope.FindId ("NormalButton");
+      var normalButton = home.Scope.FindId("NormalButton");
 
-      Assert.That (normalButton.Disabled, Is.False);
-      Assert.That (() => normalButton.Focus(), Throws.Nothing);
+      Assert.That(normalButton.Disabled, Is.False);
+      Assert.That(() => normalButton.Focus(), Throws.Nothing);
     }
 
     [Test]
@@ -56,15 +56,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.Scope.FindId ("DoNotFind");
-      webButton.ElementFinder.Options.Timeout = TimeSpan.FromMinutes (5);
+      var webButton = home.Scope.FindId("DoNotFind");
+      webButton.ElementFinder.Options.Timeout = TimeSpan.FromMinutes(5);
 
       var stopwatch = Stopwatch.StartNew();
       var exists = webButton.ExistsWorkaround();
-      
-      Assert.That (exists, Is.EqualTo (false));
+
+      Assert.That(exists, Is.EqualTo(false));
       // 1 Minute should account for any slow timing issue while still assuring that not the full Timeout of 5 Minute was used.
-      Assert.That (stopwatch.Elapsed, Is.LessThan (TimeSpan.FromMinutes (1)));
+      Assert.That(stopwatch.Elapsed, Is.LessThan(TimeSpan.FromMinutes(1)));
     }
 
     [Test]
@@ -72,14 +72,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.Scope.FindId ("body_NormalButton");
-      var customTimeout = TimeSpan.FromSeconds (42);
+      var webButton = home.Scope.FindId("body_NormalButton");
+      var customTimeout = TimeSpan.FromSeconds(42);
 
       webButton.ElementFinder.Options.Timeout = customTimeout;
 
       webButton.ExistsWorkaround();
 
-      Assert.That (webButton.ElementFinder.Options.Timeout, Is.EqualTo (customTimeout));
+      Assert.That(webButton.ElementFinder.Options.Timeout, Is.EqualTo(customTimeout));
     }
 
     [Test]
@@ -87,14 +87,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.Scope.FindId ("DoNotFind");
-      var customTimeout = TimeSpan.FromSeconds (42);
+      var webButton = home.Scope.FindId("DoNotFind");
+      var customTimeout = TimeSpan.FromSeconds(42);
 
       webButton.ElementFinder.Options.Timeout = customTimeout;
 
       webButton.ExistsWorkaround();
 
-      Assert.That (webButton.ElementFinder.Options.Timeout, Is.EqualTo (customTimeout));
+      Assert.That(webButton.ElementFinder.Options.Timeout, Is.EqualTo(customTimeout));
     }
 
     [Test]
@@ -102,23 +102,23 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var toggleVisibilityButton = home.WebButtons().GetByLocalID ("ToggleVisibilityButton");
-      var visibilityButton = home.Anchors().GetByLocalID ("VisibilityButton");
-      Assert.That (visibilityButton.Scope.ExistsWorkaround(), Is.True);
+      var toggleVisibilityButton = home.WebButtons().GetByLocalID("ToggleVisibilityButton");
+      var visibilityButton = home.Anchors().GetByLocalID("VisibilityButton");
+      Assert.That(visibilityButton.Scope.ExistsWorkaround(), Is.True);
 
-      toggleVisibilityButton.Click (Opt.ContinueWhen (Wxe.PostBackCompleted));
-      Assert.That (visibilityButton.Scope.ExistsWorkaround(), Is.False);
+      toggleVisibilityButton.Click(Opt.ContinueWhen(Wxe.PostBackCompleted));
+      Assert.That(visibilityButton.Scope.ExistsWorkaround(), Is.False);
 
-      toggleVisibilityButton.Click (Opt.ContinueWhen (Wxe.PostBackCompleted));
-      Assert.That (visibilityButton.Scope.ExistsWorkaround(), Is.True);
-    
-      toggleVisibilityButton.Click (Opt.ContinueWhen (Wxe.PostBackCompleted));
-      Assert.That (visibilityButton.Scope.ExistsWorkaround(), Is.False);
+      toggleVisibilityButton.Click(Opt.ContinueWhen(Wxe.PostBackCompleted));
+      Assert.That(visibilityButton.Scope.ExistsWorkaround(), Is.True);
+
+      toggleVisibilityButton.Click(Opt.ContinueWhen(Wxe.PostBackCompleted));
+      Assert.That(visibilityButton.Scope.ExistsWorkaround(), Is.False);
     }
 
     private WebFormsTestPageObject Start ()
     {
-      return Start<WebFormsTestPageObject> ("ElementScopeTest.wxe");
+      return Start<WebFormsTestPageObject>("ElementScopeTest.wxe");
     }
   }
 }

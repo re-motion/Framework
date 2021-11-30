@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <see cref="IVirtualCollectionEndPoint"/>.
   /// </summary>
   [Serializable]
-  [System.Runtime.InteropServices.Guid ("37550759-6300-4DDC-88EB-12B0FC29703F")]
+  [System.Runtime.InteropServices.Guid("37550759-6300-4DDC-88EB-12B0FC29703F")]
   public class EndPointDelegatingVirtualCollectionData : IVirtualCollectionData
   {
     private readonly RelationEndPointID _endPointID;
@@ -44,13 +44,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         Type requiredItemType,
         IVirtualEndPointProvider virtualEndPointProvider)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      ArgumentUtility.CheckNotNull ("requiredItemType", requiredItemType);
-      ArgumentUtility.CheckNotNull ("virtualEndPointProvider", virtualEndPointProvider);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("requiredItemType", requiredItemType);
+      ArgumentUtility.CheckNotNull("virtualEndPointProvider", virtualEndPointProvider);
 
 
       if (endPointID.Definition.Cardinality != CardinalityType.Many)
-        throw new ArgumentException ("Associated end-point must be a CollectionEndPoint.", "endPointID");
+        throw new ArgumentException("Associated end-point must be a CollectionEndPoint.", "endPointID");
 
       _endPointID = endPointID;
       _requiredItemType = requiredItemType;
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public IVirtualCollectionEndPoint GetAssociatedEndPoint ()
     {
-      return (IVirtualCollectionEndPoint) _virtualEndPointProvider.GetOrCreateVirtualEndPoint (_endPointID);
+      return (IVirtualCollectionEndPoint)_virtualEndPointProvider.GetOrCreateVirtualEndPoint(_endPointID);
     }
 
     public bool IsDataComplete
@@ -101,32 +101,32 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool ContainsObjectID (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
       var data = GetAssociatedEndPoint().GetData();
-      return data.ContainsObjectID (objectID);
+      return data.ContainsObjectID(objectID);
     }
 
     public DomainObject GetObject (int index)
     {
       var data = GetAssociatedEndPoint().GetData();
-      return data.GetObject (index);
+      return data.GetObject(index);
     }
 
     public DomainObject GetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
       var data = GetAssociatedEndPoint().GetData();
-      return data.GetObject (objectID);
+      return data.GetObject(objectID);
     }
 
     public int IndexOf (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
       var data = GetAssociatedEndPoint().GetData();
-      return data.IndexOf (objectID);
+      return data.IndexOf(objectID);
     }
 
     public IEnumerator<DomainObject> GetEnumerator ()
@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void Clear ()
     {
-      DomainObjectCheckUtility.EnsureNotDeleted (GetAssociatedEndPoint().GetDomainObjectReference(), GetAssociatedEndPoint().ClientTransaction);
+      DomainObjectCheckUtility.EnsureNotDeleted(GetAssociatedEndPoint().GetDomainObjectReference(), GetAssociatedEndPoint().ClientTransaction);
 
       var combinedCommand = GetClearCommand();
       combinedCommand.NotifyAndPerform();
@@ -150,16 +150,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void Add (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      CheckItemType (domainObject, "domainObject");
-      if (ContainsObjectID (domainObject.ID))
-        throw new ArgumentException (string.Format ("The collection already contains an object with ID '{0}'.", domainObject.ID), "domainObject");
-      CheckClientTransaction (domainObject, "Cannot add DomainObject '{0}' into collection of property '{1}' of DomainObject '{2}'.");
-      DomainObjectCheckUtility.EnsureNotDeleted (domainObject, GetAssociatedEndPoint().ClientTransaction);
-      DomainObjectCheckUtility.EnsureNotDeleted (GetAssociatedEndPoint().GetDomainObjectReference(), GetAssociatedEndPoint().ClientTransaction);
+      CheckItemType(domainObject, "domainObject");
+      if (ContainsObjectID(domainObject.ID))
+        throw new ArgumentException(string.Format("The collection already contains an object with ID '{0}'.", domainObject.ID), "domainObject");
+      CheckClientTransaction(domainObject, "Cannot add DomainObject '{0}' into collection of property '{1}' of DomainObject '{2}'.");
+      DomainObjectCheckUtility.EnsureNotDeleted(domainObject, GetAssociatedEndPoint().ClientTransaction);
+      DomainObjectCheckUtility.EnsureNotDeleted(GetAssociatedEndPoint().GetDomainObjectReference(), GetAssociatedEndPoint().ClientTransaction);
 
-      var insertCommand = GetAssociatedEndPoint().CreateAddCommand (domainObject);
+      var insertCommand = GetAssociatedEndPoint().CreateAddCommand(domainObject);
       var bidirectionalModification = insertCommand.ExpandToAllRelatedObjects();
       bidirectionalModification.NotifyAndPerform();
 
@@ -168,23 +168,23 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      var existingObject = GetObject (domainObject.ID);
+      var existingObject = GetObject(domainObject.ID);
       if (existingObject != null && existingObject != domainObject)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The object to be removed has the same ID ('{0}') as an object in this collection, but is a different object reference.",
             domainObject.ID);
-        throw new ArgumentException (message, "domainObject");
+        throw new ArgumentException(message, "domainObject");
       }
-      CheckClientTransaction (domainObject, "Cannot remove DomainObject '{0}' from collection of property '{1}' of DomainObject '{2}'.");
-      DomainObjectCheckUtility.EnsureNotDeleted (domainObject, GetAssociatedEndPoint().ClientTransaction);
-      DomainObjectCheckUtility.EnsureNotDeleted (GetAssociatedEndPoint().GetDomainObjectReference(), GetAssociatedEndPoint().ClientTransaction);
+      CheckClientTransaction(domainObject, "Cannot remove DomainObject '{0}' from collection of property '{1}' of DomainObject '{2}'.");
+      DomainObjectCheckUtility.EnsureNotDeleted(domainObject, GetAssociatedEndPoint().ClientTransaction);
+      DomainObjectCheckUtility.EnsureNotDeleted(GetAssociatedEndPoint().GetDomainObjectReference(), GetAssociatedEndPoint().ClientTransaction);
 
-      var containsObjectID = ContainsObjectID (domainObject.ID);
+      var containsObjectID = ContainsObjectID(domainObject.ID);
       if (containsObjectID)
-        CreateAndExecuteRemoveCommand (domainObject);
+        CreateAndExecuteRemoveCommand(domainObject);
 
       GetAssociatedEndPoint().Touch();
       return containsObjectID;
@@ -192,7 +192,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     private void CreateAndExecuteRemoveCommand (DomainObject domainObject)
     {
-      var command = GetAssociatedEndPoint().CreateRemoveCommand (domainObject);
+      var command = GetAssociatedEndPoint().CreateRemoveCommand(domainObject);
       var bidirectionalModification = command.ExpandToAllRelatedObjects();
       bidirectionalModification.NotifyAndPerform();
     }
@@ -203,44 +203,44 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       for (int i = Count - 1; i >= 0; --i)
       {
-        var removedObject = GetObject (i);
+        var removedObject = GetObject(i);
 
         // we can rely on the fact that this object is not deleted, otherwise we wouldn't have got it
-        Assertion.IsFalse (removedObject.TransactionContext[GetAssociatedEndPoint().ClientTransaction].State.IsDeleted);
-        removeCommands.Add (GetAssociatedEndPoint().CreateRemoveCommand (removedObject).ExpandToAllRelatedObjects());
+        Assertion.IsFalse(removedObject.TransactionContext[GetAssociatedEndPoint().ClientTransaction].State.IsDeleted);
+        removeCommands.Add(GetAssociatedEndPoint().CreateRemoveCommand(removedObject).ExpandToAllRelatedObjects());
       }
 
-      return new CompositeCommand (removeCommands).CombineWith (new RelationEndPointTouchCommand (GetAssociatedEndPoint()));
+      return new CompositeCommand(removeCommands).CombineWith(new RelationEndPointTouchCommand(GetAssociatedEndPoint()));
     }
 
     private void CheckClientTransaction (DomainObject domainObject, string exceptionFormatString)
     {
-      Assertion.DebugAssert (domainObject != null);
+      Assertion.DebugAssert(domainObject != null);
 
       var endPoint = GetAssociatedEndPoint();
 
       // This uses IsEnlisted rather than a RootTransaction check because the DomainObject reference is used inside the ClientTransaction, and we
       // explicitly want to allow only objects enlisted in the transaction.
-      if (!endPoint.ClientTransaction.IsEnlisted (domainObject))
+      if (!endPoint.ClientTransaction.IsEnlisted(domainObject))
       {
-        var formattedMessage = String.Format (
+        var formattedMessage = String.Format(
             exceptionFormatString,
             domainObject.ID,
             endPoint.Definition.PropertyName,
             endPoint.ObjectID);
-        throw new ClientTransactionsDifferException (formattedMessage + " The objects do not belong to the same ClientTransaction.");
+        throw new ClientTransactionsDifferException(formattedMessage + " The objects do not belong to the same ClientTransaction.");
       }
     }
 
     private void CheckItemType (DomainObject domainObject, string argumentName)
     {
-      if (!_requiredItemType.IsInstanceOfType (domainObject))
+      if (!_requiredItemType.IsInstanceOfType(domainObject))
       {
-        string message = string.Format (
+        string message = string.Format(
             "Values of type '{0}' cannot be added to this collection. Values must be of type '{1}' or derived from '{1}'.",
             domainObject.GetPublicDomainObjectType(),
             _requiredItemType);
-        throw new ArgumentException (message, argumentName);
+        throw new ArgumentException(message, argumentName);
       }
     }
   }

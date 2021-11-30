@@ -33,63 +33,63 @@ namespace Remotion.Web.UnitTests.Core.Context
     [SetUp]
     public void SetUp ()
     {
-      _testContext = HttpContextHelper.CreateHttpContext ("x", "y", "z");
+      _testContext = HttpContextHelper.CreateHttpContext("x", "y", "z");
       HttpContext.Current = _testContext;
-      _provider = new HttpContextStorageProvider ();
+      _provider = new HttpContextStorageProvider();
     }
 
     [Test]
     public void GetData_WithoutValue ()
     {
-      Assert.That (_provider.GetData ("Foo"), Is.Null);
+      Assert.That(_provider.GetData("Foo"), Is.Null);
     }
 
     [Test]
     public void SetData ()
     {
-      _provider.SetData ("Foo", 45);
-      Assert.That (_provider.GetData ("Foo"), Is.EqualTo (45));
-      Assert.That (_testContext.Items["Foo"], Is.EqualTo (45));
+      _provider.SetData("Foo", 45);
+      Assert.That(_provider.GetData("Foo"), Is.EqualTo(45));
+      Assert.That(_testContext.Items["Foo"], Is.EqualTo(45));
     }
 
     [Test]
     public void SetData_Null ()
     {
-      _provider.SetData ("Foo", 45);
-      _provider.SetData ("Foo", null);
-      Assert.That (_provider.GetData ("Foo"), Is.Null);
-      Assert.That (_testContext.Items["Foo"], Is.Null);
+      _provider.SetData("Foo", 45);
+      _provider.SetData("Foo", null);
+      Assert.That(_provider.GetData("Foo"), Is.Null);
+      Assert.That(_testContext.Items["Foo"], Is.Null);
     }
 
     [Test]
     public void FreeData ()
     {
-      _provider.SetData ("Foo", 45);
-      _provider.FreeData ("Foo");
-      Assert.That (_provider.GetData ("Foo"), Is.Null);
-      Assert.That (_testContext.Items.Contains ("Foo"), Is.False);
+      _provider.SetData("Foo", 45);
+      _provider.FreeData("Foo");
+      Assert.That(_provider.GetData("Foo"), Is.Null);
+      Assert.That(_testContext.Items.Contains("Foo"), Is.False);
     }
 
     [Test]
     public void FreeData_WithoutValue ()
     {
-      _provider.FreeData ("Foo");
-      Assert.That (_provider.GetData ("Foo"), Is.Null);
-      Assert.That (_testContext.Items.Contains ("Foo"), Is.False);
+      _provider.FreeData("Foo");
+      Assert.That(_provider.GetData("Foo"), Is.Null);
+      Assert.That(_testContext.Items.Contains("Foo"), Is.False);
     }
 
     [Test]
     public void FallbackToAsyncLocal_IfNoCurrentHttpContext ()
     {
       HttpContext.Current = null;
-      var fallbackProvider = (AsyncLocalStorageProvider) PrivateInvoke.GetNonPublicField (_provider, "_fallbackProvider");
+      var fallbackProvider = (AsyncLocalStorageProvider)PrivateInvoke.GetNonPublicField(_provider, "_fallbackProvider");
 
-      _provider.SetData ("Foo", 123);
-      Assert.That (_provider.GetData ("Foo"), Is.EqualTo (123));
-      Assert.That (fallbackProvider.GetData ("Foo"), Is.EqualTo (123));
+      _provider.SetData("Foo", 123);
+      Assert.That(_provider.GetData("Foo"), Is.EqualTo(123));
+      Assert.That(fallbackProvider.GetData("Foo"), Is.EqualTo(123));
 
-      _provider.FreeData ("Foo");
-      Assert.That (fallbackProvider.GetData ("Foo"), Is.Null);
+      _provider.FreeData("Foo");
+      Assert.That(fallbackProvider.GetData("Foo"), Is.Null);
     }
   }
 }

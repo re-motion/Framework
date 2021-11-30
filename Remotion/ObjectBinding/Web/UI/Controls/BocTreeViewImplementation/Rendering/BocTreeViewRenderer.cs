@@ -29,14 +29,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTreeViewImplementation.Rende
   /// <see cref="BocRendererBase{TControl}.AddDiagnosticMetadataAttributes"/>. It is planned, that some time in the future the
   /// <see cref="BocTreeView"/> control is completely rendererd using the renderer at hand.
   /// </summary>
-  [ImplementationFor (typeof (IBocTreeViewRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocTreeViewRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocTreeViewRenderer : BocRendererBase<IBocTreeView>, IBocTreeViewRenderer
   {
     public BocTreeViewRenderer (
         [NotNull] IResourceUrlFactory resourceUrlFactory,
         [NotNull] IGlobalizationService globalizationService,
         [NotNull] IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
     }
 
@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTreeViewImplementation.Rende
     /// </summary>
     public new void AddDiagnosticMetadataAttributes (RenderingContext<IBocTreeView> renderingContext)
     {
-      base.AddDiagnosticMetadataAttributes (renderingContext);
+      base.AddDiagnosticMetadataAttributes(renderingContext);
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTreeViewImplementation.Rende
     {
       return control.DataSource != null && (control.DataSource.BusinessObject != null || control.DataSource.BusinessObjectClass != null);
     }
-    
+
     public override string GetCssClassBase (IBocTreeView control)
     {
       return "bocTreeView";

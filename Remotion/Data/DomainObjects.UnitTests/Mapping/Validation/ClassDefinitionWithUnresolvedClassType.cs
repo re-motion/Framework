@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
         ClassDefinition baseClass,
         IPersistentMixinFinder persistentMixinFinder,
         IDomainObjectCreator instanceCreator)
-        : base (id, classType, isAbstract, baseClass, null, DefaultStorageClass.Persistent, persistentMixinFinder, instanceCreator)
+        : base(id, classType, isAbstract, baseClass, null, DefaultStorageClass.Persistent, persistentMixinFinder, instanceCreator)
     {
     }
 

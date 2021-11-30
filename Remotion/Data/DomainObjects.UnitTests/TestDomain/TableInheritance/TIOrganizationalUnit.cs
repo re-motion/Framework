@@ -18,21 +18,21 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_OrganizationalUnit")]
-  [DBTable ("TableInheritance_OrganizationalUnit")]
+  [ClassID("TI_OrganizationalUnit")]
+  [DBTable("TableInheritance_OrganizationalUnit")]
   [Instantiable]
   public abstract class TIOrganizationalUnit: TIDomainBase
   {
-    public static TIOrganizationalUnit NewObject()
+    public static TIOrganizationalUnit NewObject ()
     {
       return NewObject<TIOrganizationalUnit>();
     }
 
-    protected TIOrganizationalUnit()
+    protected TIOrganizationalUnit ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
   }
 }

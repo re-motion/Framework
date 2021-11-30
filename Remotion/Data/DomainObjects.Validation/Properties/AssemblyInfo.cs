@@ -18,6 +18,6 @@ using System;
 using System.Reflection;
 using Remotion.Validation.Mixins;
 
-[assembly: AssemblyCulture ("")]
-[assembly: CLSCompliant (true)]
+[assembly: AssemblyCulture("")]
+[assembly: CLSCompliant(true)]
 [assembly: EnsureValidationSupportForMixins]

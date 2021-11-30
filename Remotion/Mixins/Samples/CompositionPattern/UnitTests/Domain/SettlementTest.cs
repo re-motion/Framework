@@ -27,35 +27,35 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain
     [Test]
     public void NewObject ()
     {
-      var instance = Settlement.NewObject ();
-      Assert.That (instance, Is.InstanceOf (typeof (Settlement)));
+      var instance = Settlement.NewObject();
+      Assert.That(instance, Is.InstanceOf(typeof(Settlement)));
     }
 
     [Test]
     public void SettlementProperties ()
     {
-      var instance = Settlement.NewObject ();
-      
+      var instance = Settlement.NewObject();
+
       instance.SettlementKind = "Ordinary";
-      Assert.That (instance.SettlementKind, Is.EqualTo ("Ordinary"));
+      Assert.That(instance.SettlementKind, Is.EqualTo("Ordinary"));
     }
 
     [Test]
     public void DocumentProperties ()
     {
-      var instance = Settlement.NewObject ();
+      var instance = Settlement.NewObject();
 
       instance.Title = "MySettlement";
-      Assert.That (instance.Title, Is.EqualTo ("MySettlement"));
+      Assert.That(instance.Title, Is.EqualTo("MySettlement"));
     }
 
     [Test]
     public void TenantBoundProperties ()
     {
-      var instance = Settlement.NewObject ();
+      var instance = Settlement.NewObject();
 
       instance.Tenant = "SpecialTenant";
-      Assert.That (instance.Tenant, Is.EqualTo ("SpecialTenant"));
+      Assert.That(instance.Tenant, Is.EqualTo("SpecialTenant"));
     }
 
     [Test]
@@ -63,53 +63,53 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain
     {
       var instance = Settlement.NewObject();
       instance.Tenant = "SpecialTenant";
-      Assert.That (instance.SettlementKind, Is.Null);
+      Assert.That(instance.SettlementKind, Is.Null);
 
-      Commit (instance);
+      Commit(instance);
 
-      Assert.That (instance.SettlementKind, Is.EqualTo ("Ordinary"));
+      Assert.That(instance.SettlementKind, Is.EqualTo("Ordinary"));
     }
 
     [Test]
     public void Commit_WithoutTitle ()
     {
-      var instance = Settlement.NewObject ();
+      var instance = Settlement.NewObject();
       instance.Tenant = "SpecialTenant";
-      Assert.That (instance.Title, Is.Null);
+      Assert.That(instance.Title, Is.Null);
 
-      Commit (instance);
+      Commit(instance);
 
-      Assert.That (instance.Title, Is.EqualTo ("(unnamed document of SpecialTenant)"));
+      Assert.That(instance.Title, Is.EqualTo("(unnamed document of SpecialTenant)"));
     }
 
     [Test]
     public void Commit_WithoutTenant ()
     {
-      var instance = Settlement.NewObject ();
-      Assert.That (instance.Tenant, Is.Null);
-      Assert.That (
-          () => Commit (instance),
+      var instance = Settlement.NewObject();
+      Assert.That(instance.Tenant, Is.Null);
+      Assert.That(
+          () => Commit(instance),
           Throws.InvalidOperationException
-              .With.Message.Matches (
+              .With.Message.Matches(
                   "Cannot commit tenant-bound object .* without a tenant."));
     }
 
     [Test]
     public void ToString_UsingThisProperty_AndSerialNumber ()
     {
-      var instance = Settlement.NewObject ();
+      var instance = Settlement.NewObject();
       instance.Tenant = "TheTenant";
       instance.SettlementKind = "Special";
       instance.Title = "The White Book";
 
-      var result = instance.ToString ();
+      var result = instance.ToString();
 
-      Assert.That (result, Is.EqualTo ("0: Settlement: The White Book (Special); Tenant: TheTenant"));
+      Assert.That(result, Is.EqualTo("0: Settlement: The White Book (Special); Tenant: TheTenant"));
     }
 
     private void Commit (IDomainObject instance)
     {
-      instance.Events.OnCommitting ();
+      instance.Events.OnCommitting();
     }
   }
 }

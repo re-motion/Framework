@@ -25,11 +25,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class ScreenshotTestFunction : WxeFunction
   {
     public ScreenshotTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("ScreenshotTest.aspx");
+    private WxeStep Step1 = new WxePageStep("ScreenshotTest.aspx");
   }
 }

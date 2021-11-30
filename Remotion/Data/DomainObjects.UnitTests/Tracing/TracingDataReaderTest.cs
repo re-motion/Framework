@@ -41,19 +41,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       _connectionID = Guid.NewGuid();
       _queryID = Guid.NewGuid();
 
-      _dataReader = new TracingDataReader (_innerDataReader, _extensionMock, _connectionID, _queryID);
+      _dataReader = new TracingDataReader(_innerDataReader, _extensionMock, _connectionID, _queryID);
     }
 
     [Test]
     public void GetName ()
     {
       var i = 5;
-      _innerDataReader.Expect (mock => mock.GetName (i)).Return ("test");
+      _innerDataReader.Expect(mock => mock.GetName(i)).Return("test");
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetName (i);
+      var result = _dataReader.GetName(i);
 
-      Assert.That (result, Is.EqualTo ("test"));
+      Assert.That(result, Is.EqualTo("test"));
       _mockRepository.VerifyAll();
     }
 
@@ -61,12 +61,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     public void GetDataTypeName ()
     {
       var i = 5;
-      _innerDataReader.Expect (mock => mock.GetDataTypeName (i)).Return ("test");
+      _innerDataReader.Expect(mock => mock.GetDataTypeName(i)).Return("test");
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetDataTypeName (i);
+      var result = _dataReader.GetDataTypeName(i);
 
-      Assert.That (result, Is.EqualTo ("test"));
+      Assert.That(result, Is.EqualTo("test"));
       _mockRepository.VerifyAll();
     }
 
@@ -74,14 +74,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     public void GetFieldType ()
     {
       var i = 5;
-      var expectedType = typeof (string);
+      var expectedType = typeof(string);
 
-      _innerDataReader.Expect (mock => mock.GetFieldType (i)).Return (expectedType);
+      _innerDataReader.Expect(mock => mock.GetFieldType(i)).Return(expectedType);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetFieldType (i);
+      var result = _dataReader.GetFieldType(i);
 
-      Assert.That (result, Is.EqualTo (expectedType));
+      Assert.That(result, Is.EqualTo(expectedType));
       _mockRepository.VerifyAll();
     }
 
@@ -90,12 +90,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var i = 5;
       var o = "test";
-      _innerDataReader.Expect (mock => mock.GetValue (i)).Return (o);
+      _innerDataReader.Expect(mock => mock.GetValue(i)).Return(o);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetValue (i);
+      var result = _dataReader.GetValue(i);
 
-      Assert.That (result, Is.EqualTo (o));
+      Assert.That(result, Is.EqualTo(o));
       _mockRepository.VerifyAll();
     }
 
@@ -104,12 +104,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var i = 5;
       object[] values = new object[] { "1", 2, "3" };
-      _innerDataReader.Expect (mock => mock.GetValues (values)).Return (i);
+      _innerDataReader.Expect(mock => mock.GetValues(values)).Return(i);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetValues (values);
+      var result = _dataReader.GetValues(values);
 
-      Assert.That (result, Is.EqualTo (i));
+      Assert.That(result, Is.EqualTo(i));
       _mockRepository.VerifyAll();
     }
 
@@ -118,12 +118,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var i = 5;
       var name = "test";
-      _innerDataReader.Expect (mock => mock.GetOrdinal (name)).Return (i);
+      _innerDataReader.Expect(mock => mock.GetOrdinal(name)).Return(i);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetOrdinal (name);
+      var result = _dataReader.GetOrdinal(name);
 
-      Assert.That (result, Is.EqualTo (i));
+      Assert.That(result, Is.EqualTo(i));
       _mockRepository.VerifyAll();
     }
 
@@ -131,12 +131,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     public void GetBoolean ()
     {
       var i = 5;
-      _innerDataReader.Expect (mock => mock.GetBoolean (i)).Return (true);
+      _innerDataReader.Expect(mock => mock.GetBoolean(i)).Return(true);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetBoolean (i);
+      var result = _dataReader.GetBoolean(i);
 
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
       _mockRepository.VerifyAll();
     }
 
@@ -146,12 +146,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       var i = 5;
       var b = new Byte();
 
-      _innerDataReader.Expect (mock => mock.GetByte (i)).Return (b);
+      _innerDataReader.Expect(mock => mock.GetByte(i)).Return(b);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetByte (i);
+      var result = _dataReader.GetByte(i);
 
-      Assert.That (result, Is.EqualTo (b));
+      Assert.That(result, Is.EqualTo(b));
       _mockRepository.VerifyAll();
     }
 
@@ -165,13 +165,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       int length = 128;
       long assumedResult = 10;
 
-      _innerDataReader.Expect (mock => mock.GetBytes (i, fieldOffset, buffer, bufferoffset, length)).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.GetBytes(i, fieldOffset, buffer, bufferoffset, length)).Return(assumedResult);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetBytes (i, fieldOffset, buffer, bufferoffset, length);
+      var result = _dataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
       _mockRepository.VerifyAll();
 
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
@@ -179,14 +179,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var i = 5;
       object o = "5";
-      _innerDataReader.Expect (mock => mock[i]).Return (o);
+      _innerDataReader.Expect(mock => mock[i]).Return(o);
       _mockRepository.ReplayAll();
 
       var result = _dataReader[i];
 
       _mockRepository.VerifyAll();
 
-      Assert.That (result, Is.EqualTo (o));
+      Assert.That(result, Is.EqualTo(o));
     }
 
     [Test]
@@ -194,14 +194,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var i = "test";
       object o = "5";
-      _innerDataReader.Expect (mock => mock[i]).Return (o);
+      _innerDataReader.Expect(mock => mock[i]).Return(o);
       _mockRepository.ReplayAll();
 
       var result = _dataReader[i];
 
       _mockRepository.VerifyAll();
 
-      Assert.That (result, Is.EqualTo (o));
+      Assert.That(result, Is.EqualTo(o));
     }
 
     [Test]
@@ -209,7 +209,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var wrappedInstance = _dataReader.WrappedInstance;
 
-      Assert.That (wrappedInstance, Is.EqualTo (_innerDataReader));
+      Assert.That(wrappedInstance, Is.EqualTo(_innerDataReader));
     }
 
     [Test]
@@ -217,7 +217,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var connectionID = _dataReader.ConnectionID;
 
-      Assert.That (connectionID, Is.EqualTo (_connectionID));
+      Assert.That(connectionID, Is.EqualTo(_connectionID));
     }
 
     [Test]
@@ -225,7 +225,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var queryID = _dataReader.QueryID;
 
-      Assert.That (queryID, Is.EqualTo (_queryID));
+      Assert.That(queryID, Is.EqualTo(_queryID));
     }
 
     [Test]
@@ -233,7 +233,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var persistenceListener = _dataReader.PersistenceExtension;
 
-      Assert.That (persistenceListener, Is.EqualTo (_extensionMock));
+      Assert.That(persistenceListener, Is.EqualTo(_extensionMock));
     }
 
     [Test]
@@ -241,12 +241,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var i = 5;
       var c = 't';
-      _innerDataReader.Expect (mock => mock.GetChar (i)).Return (c);
+      _innerDataReader.Expect(mock => mock.GetChar(i)).Return(c);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetChar (i);
+      var result = _dataReader.GetChar(i);
 
-      Assert.That (result, Is.EqualTo (c));
+      Assert.That(result, Is.EqualTo(c));
       _mockRepository.VerifyAll();
     }
 
@@ -261,13 +261,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       int length = 128;
 
 
-      _innerDataReader.Expect (mock => mock.GetChars (i, fieldoffset, buffer, bufferoffset, length)).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.GetChars(i, fieldoffset, buffer, bufferoffset, length)).Return(assumedResult);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetChars (i, fieldoffset, buffer, bufferoffset, length);
+      var result = _dataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
@@ -276,13 +276,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       var assumedGuid = Guid.NewGuid();
       int i = 5;
 
-      _innerDataReader.Expect (mock => mock.GetGuid (i)).Return (assumedGuid);
+      _innerDataReader.Expect(mock => mock.GetGuid(i)).Return(assumedGuid);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetGuid (i);
+      var result = _dataReader.GetGuid(i);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedGuid));
+      Assert.That(result, Is.EqualTo(assumedGuid));
     }
 
     [Test]
@@ -291,13 +291,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       int i = 5;
       short assumedResult = 1;
 
-      _innerDataReader.Expect (mock => mock.GetInt16 (i)).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.GetInt16(i)).Return(assumedResult);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetInt16 (i);
+      var result = _dataReader.GetInt16(i);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
@@ -306,13 +306,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       int i = 5;
       int assumedResult = 1;
 
-      _innerDataReader.Expect (mock => mock.GetInt32 (i)).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.GetInt32(i)).Return(assumedResult);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetInt32 (i);
+      var result = _dataReader.GetInt32(i);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
@@ -321,13 +321,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       int i = 5;
       long assumedResult = 1;
 
-      _innerDataReader.Expect (mock => mock.GetInt64 (i)).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.GetInt64(i)).Return(assumedResult);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetInt64 (i);
+      var result = _dataReader.GetInt64(i);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
@@ -336,13 +336,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       int i = 5;
       float assumedResult = 1;
 
-      _innerDataReader.Expect (mock => mock.GetFloat (i)).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.GetFloat(i)).Return(assumedResult);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetFloat (i);
+      var result = _dataReader.GetFloat(i);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
@@ -351,13 +351,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       int i = 5;
       double assumedResult = 1.0;
 
-      _innerDataReader.Expect (mock => mock.GetDouble (i)).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.GetDouble(i)).Return(assumedResult);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetDouble (i);
+      var result = _dataReader.GetDouble(i);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
@@ -366,13 +366,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       int i = 5;
       string assumedResult = "test";
 
-      _innerDataReader.Expect (mock => mock.GetString (i)).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.GetString(i)).Return(assumedResult);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetString (i);
+      var result = _dataReader.GetString(i);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
@@ -381,13 +381,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       int i = 5;
       decimal assumedResult = 1;
 
-      _innerDataReader.Expect (mock => mock.GetDecimal (i)).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.GetDecimal(i)).Return(assumedResult);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetDecimal (i);
+      var result = _dataReader.GetDecimal(i);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
@@ -396,13 +396,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       int i = 5;
       DateTime assumedResult = new DateTime();
 
-      _innerDataReader.Expect (mock => mock.GetDateTime (i)).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.GetDateTime(i)).Return(assumedResult);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetDateTime (i);
+      var result = _dataReader.GetDateTime(i);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
@@ -410,13 +410,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var dataReaderMock = _mockRepository.StrictMock<IDataReader>();
       int i = 5;
-      _innerDataReader.Expect (mock => mock.GetData (i)).Return (dataReaderMock);
+      _innerDataReader.Expect(mock => mock.GetData(i)).Return(dataReaderMock);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.GetData (i);
+      var result = _dataReader.GetData(i);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (dataReaderMock));
+      Assert.That(result, Is.EqualTo(dataReaderMock));
     }
 
     [Test]
@@ -424,91 +424,91 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var assumedResult = true;
       int i = 5;
-      _innerDataReader.Expect (mock => mock.IsDBNull (i)).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.IsDBNull(i)).Return(assumedResult);
       _mockRepository.ReplayAll();
 
-      var result = _dataReader.IsDBNull (i);
+      var result = _dataReader.IsDBNull(i);
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
     public void FieldCount ()
     {
       int assumedResult = 5;
-      _innerDataReader.Expect (mock => mock.FieldCount).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.FieldCount).Return(assumedResult);
       _mockRepository.ReplayAll();
 
       var result = _dataReader.FieldCount;
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
     public void NextResult ()
     {
       var assumedResult = true;
-      _innerDataReader.Expect (mock => mock.NextResult()).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.NextResult()).Return(assumedResult);
       _mockRepository.ReplayAll();
 
       var result = _dataReader.NextResult();
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
     public void GetSchemaTable ()
     {
       DataTable assumedResult = new DataTable();
-      _innerDataReader.Expect (mock => mock.GetSchemaTable()).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.GetSchemaTable()).Return(assumedResult);
       _mockRepository.ReplayAll();
 
       var result = _dataReader.GetSchemaTable();
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
     public void Depth ()
     {
       int assumedResult = 5;
-      _innerDataReader.Expect (mock => mock.Depth).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.Depth).Return(assumedResult);
       _mockRepository.ReplayAll();
 
       var result = _dataReader.Depth;
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
     public void IsClosed ()
     {
       var assumedResult = true;
-      _innerDataReader.Expect (mock => mock.IsClosed).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.IsClosed).Return(assumedResult);
       _mockRepository.ReplayAll();
 
       var result = _dataReader.IsClosed;
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
     public void RecordsAffected ()
     {
       int assumedResult = 5;
-      _innerDataReader.Expect (mock => mock.RecordsAffected).Return (assumedResult);
+      _innerDataReader.Expect(mock => mock.RecordsAffected).Return(assumedResult);
       _mockRepository.ReplayAll();
 
       var result = _dataReader.RecordsAffected;
 
       _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
@@ -516,14 +516,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       using (_mockRepository.Ordered())
       {
-        _extensionMock.Expect (
+        _extensionMock.Expect(
             mock =>
-            mock.QueryCompleted (
-                Arg<Guid>.Matches (p => p == _connectionID),
-                Arg<Guid>.Matches (p => p == _queryID),
-                Arg<TimeSpan>.Matches (p => p > TimeSpan.Zero),
-                Arg<int>.Matches (p => p == 0)));
-        _innerDataReader.Expect (mock => mock.Dispose());
+            mock.QueryCompleted(
+                Arg<Guid>.Matches(p => p == _connectionID),
+                Arg<Guid>.Matches(p => p == _queryID),
+                Arg<TimeSpan>.Matches(p => p > TimeSpan.Zero),
+                Arg<int>.Matches(p => p == 0)));
+        _innerDataReader.Expect(mock => mock.Dispose());
       }
       _mockRepository.ReplayAll();
 
@@ -536,14 +536,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       using (_mockRepository.Ordered())
       {
-        _extensionMock.Expect (
+        _extensionMock.Expect(
             mock =>
-            mock.QueryCompleted (
-                Arg<Guid>.Matches (p => p == _connectionID),
-                Arg<Guid>.Matches (p => p == _queryID),
-                Arg<TimeSpan>.Matches (p => p > TimeSpan.Zero),
-                Arg<int>.Matches (p => p == 0)));
-        _innerDataReader.Expect (mock => mock.Close());
+            mock.QueryCompleted(
+                Arg<Guid>.Matches(p => p == _connectionID),
+                Arg<Guid>.Matches(p => p == _queryID),
+                Arg<TimeSpan>.Matches(p => p > TimeSpan.Zero),
+                Arg<int>.Matches(p => p == 0)));
+        _innerDataReader.Expect(mock => mock.Close());
       }
       _mockRepository.ReplayAll();
 
@@ -556,15 +556,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       using (_mockRepository.Ordered())
       {
-        _extensionMock.Expect (
+        _extensionMock.Expect(
             mock =>
-            mock.QueryCompleted (
-                Arg<Guid>.Matches (p => p == _connectionID),
-                Arg<Guid>.Matches (p => p == _queryID),
-                Arg<TimeSpan>.Matches (p => p > TimeSpan.Zero),
-                Arg<int>.Matches (p => p == 0)));
-        _innerDataReader.Expect (mock => mock.Close());
-        _innerDataReader.Expect (mock => mock.Dispose());
+            mock.QueryCompleted(
+                Arg<Guid>.Matches(p => p == _connectionID),
+                Arg<Guid>.Matches(p => p == _queryID),
+                Arg<TimeSpan>.Matches(p => p > TimeSpan.Zero),
+                Arg<int>.Matches(p => p == 0)));
+        _innerDataReader.Expect(mock => mock.Close());
+        _innerDataReader.Expect(mock => mock.Dispose());
       }
       _mockRepository.ReplayAll();
 
@@ -577,44 +577,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void Read_HasRecord ()
     {
-      _innerDataReader.Expect (mock => mock.Read()).Return (true);
+      _innerDataReader.Expect(mock => mock.Read()).Return(true);
       _mockRepository.ReplayAll();
 
       var hasRecord = _dataReader.Read();
 
       _mockRepository.VerifyAll();
-      Assert.That (hasRecord, Is.True);
+      Assert.That(hasRecord, Is.True);
     }
 
     [Test]
     public void Read_NoRecord ()
     {
-      _innerDataReader.Expect (mock => mock.Read()).Return (false);
+      _innerDataReader.Expect(mock => mock.Read()).Return(false);
       _mockRepository.ReplayAll();
 
       var hasRecord = _dataReader.Read();
 
       _mockRepository.VerifyAll();
-      Assert.That (hasRecord, Is.False);
+      Assert.That(hasRecord, Is.False);
     }
     [Test]
     public void ReadAndClose ()
     {
-      _innerDataReader.Expect (mock => mock.Read ()).Return (true);
-      _extensionMock.Expect (
+      _innerDataReader.Expect(mock => mock.Read()).Return(true);
+      _extensionMock.Expect(
             mock =>
-            mock.QueryCompleted (
-                Arg<Guid>.Is.Equal (_connectionID),
-                Arg<Guid>.Matches (p => p == _queryID),
-                Arg<TimeSpan>.Matches (p => p > TimeSpan.Zero),
-                Arg<int>.Matches (p => p == 1)));
-      _innerDataReader.Expect (mock => mock.Close ());
-      _mockRepository.ReplayAll ();
-      
+            mock.QueryCompleted(
+                Arg<Guid>.Is.Equal(_connectionID),
+                Arg<Guid>.Matches(p => p == _queryID),
+                Arg<TimeSpan>.Matches(p => p > TimeSpan.Zero),
+                Arg<int>.Matches(p => p == 1)));
+      _innerDataReader.Expect(mock => mock.Close());
+      _mockRepository.ReplayAll();
+
       _dataReader.Read();
       _dataReader.Close();
 
-      _mockRepository.VerifyAll ();
+      _mockRepository.VerifyAll();
     }
 
   }

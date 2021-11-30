@@ -29,7 +29,7 @@ namespace Remotion.Web.UI.Controls
 
     public TitleTag (string title)
     {
-      ArgumentUtility.CheckNotNull ("title", title);
+      ArgumentUtility.CheckNotNull("title", title);
 
       _title = title;
     }
@@ -41,12 +41,12 @@ namespace Remotion.Web.UI.Controls
 
     public override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      writer.RenderBeginTag (HtmlTextWriterTag.Title);
-      writer.WriteEncodedText (_title);
+      writer.RenderBeginTag(HtmlTextWriterTag.Title);
+      writer.WriteEncodedText(_title);
       writer.RenderEndTag();
-      writer.WriteLine ();
+      writer.WriteLine();
     }
   }
 }

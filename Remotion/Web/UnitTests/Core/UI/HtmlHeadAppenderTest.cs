@@ -33,132 +33,132 @@ namespace Remotion.Web.UnitTests.Core.UI
     [SetUp]
     public void SetUp ()
     {
-      _htmlHeadAppender = (HtmlHeadAppender) Activator.CreateInstance (typeof (HtmlHeadAppender), nonPublic: true);
+      _htmlHeadAppender = (HtmlHeadAppender)Activator.CreateInstance(typeof(HtmlHeadAppender), nonPublic: true);
     }
 
     [Test]
     public void SetTitle ()
     {
-      _htmlHeadAppender.SetTitle ("The Title");
+      _htmlHeadAppender.SetTitle("The Title");
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      Assert.That (htmlHeadElements.Length, Is.EqualTo (1));
+      Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
 
-      Assert.That (htmlHeadElements[0], Is.InstanceOf (typeof (TitleTag)));
-      var titleTag = (TitleTag) htmlHeadElements[0];
-      Assert.That (titleTag.Title, Is.EqualTo ("The Title"));
+      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(TitleTag)));
+      var titleTag = (TitleTag)htmlHeadElements[0];
+      Assert.That(titleTag.Title, Is.EqualTo("The Title"));
     }
 
     [Test]
     public void SetTitle_Twice ()
     {
-      _htmlHeadAppender.SetTitle ("The Title1");
-      _htmlHeadAppender.SetTitle ("The Title2");
+      _htmlHeadAppender.SetTitle("The Title1");
+      _htmlHeadAppender.SetTitle("The Title2");
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      Assert.That (htmlHeadElements.Length, Is.EqualTo (1));
+      Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
 
-      var titleTag = (TitleTag) htmlHeadElements[0];
-      Assert.That (titleTag.Title, Is.EqualTo ("The Title2"));
+      var titleTag = (TitleTag)htmlHeadElements[0];
+      Assert.That(titleTag.Title, Is.EqualTo("The Title2"));
     }
 
     [Test]
     public void RegisterJavaScriptInclude_WithResourceUrl ()
     {
-      IResourceUrl resourceUrl = new StaticResourceUrl ("url.js");
-      _htmlHeadAppender.RegisterJavaScriptInclude ("key", resourceUrl);
+      IResourceUrl resourceUrl = new StaticResourceUrl("url.js");
+      _htmlHeadAppender.RegisterJavaScriptInclude("key", resourceUrl);
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      Assert.That (htmlHeadElements.Length, Is.EqualTo (1));
-      Assert.That (htmlHeadElements[0], Is.InstanceOf (typeof (JavaScriptInclude)));
-      Assert.That (((JavaScriptInclude) htmlHeadElements[0]).ResourceUrl, Is.SameAs (resourceUrl));
+      Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
+      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(JavaScriptInclude)));
+      Assert.That(((JavaScriptInclude)htmlHeadElements[0]).ResourceUrl, Is.SameAs(resourceUrl));
     }
 
     [Test]
     [Obsolete]
     public void RegisterJavaScriptInclude_WithString ()
     {
-      _htmlHeadAppender.RegisterJavaScriptInclude ("key", "url.js");
+      _htmlHeadAppender.RegisterJavaScriptInclude("key", "url.js");
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      Assert.That (htmlHeadElements.Length, Is.EqualTo (1));
-      Assert.That (htmlHeadElements[0], Is.InstanceOf (typeof (JavaScriptInclude)));
-      Assert.That (((JavaScriptInclude) htmlHeadElements[0]).ResourceUrl.GetUrl(), Is.EqualTo ("url.js"));
+      Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
+      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(JavaScriptInclude)));
+      Assert.That(((JavaScriptInclude)htmlHeadElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url.js"));
     }
 
     [Test]
     public void RegisterStylesheetLink_WithResourceUrl ()
     {
-      IResourceUrl resourceUrl = new StaticResourceUrl ("url.css");
-      _htmlHeadAppender.RegisterStylesheetLink ("key", resourceUrl);
+      IResourceUrl resourceUrl = new StaticResourceUrl("url.css");
+      _htmlHeadAppender.RegisterStylesheetLink("key", resourceUrl);
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      Assert.That (htmlHeadElements.Length, Is.EqualTo (1));
-      Assert.That (htmlHeadElements[0], Is.InstanceOf (typeof (StyleSheetBlock)));
-      var styleSheetBlock = (StyleSheetBlock) htmlHeadElements[0];
-      Assert.That (styleSheetBlock.StyleSheetElements.Count, Is.EqualTo (1));
-      Assert.That (styleSheetBlock.StyleSheetElements[0], Is.InstanceOf (typeof (StyleSheetImportRule)));
-      Assert.That (((StyleSheetImportRule) styleSheetBlock.StyleSheetElements[0]).ResourceUrl, Is.SameAs (resourceUrl));
+      Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
+      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(StyleSheetBlock)));
+      var styleSheetBlock = (StyleSheetBlock)htmlHeadElements[0];
+      Assert.That(styleSheetBlock.StyleSheetElements.Count, Is.EqualTo(1));
+      Assert.That(styleSheetBlock.StyleSheetElements[0], Is.InstanceOf(typeof(StyleSheetImportRule)));
+      Assert.That(((StyleSheetImportRule)styleSheetBlock.StyleSheetElements[0]).ResourceUrl, Is.SameAs(resourceUrl));
     }
 
     [Test]
     [Obsolete]
     public void RegisterStylesheetLink_WithString ()
     {
-      _htmlHeadAppender.RegisterStylesheetLink ("key", "url.css");
+      _htmlHeadAppender.RegisterStylesheetLink("key", "url.css");
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      Assert.That (htmlHeadElements.Length, Is.EqualTo (1));
-      Assert.That (htmlHeadElements[0], Is.InstanceOf (typeof (StyleSheetBlock)));
-      var styleSheetBlock = (StyleSheetBlock) htmlHeadElements[0];
-      Assert.That (styleSheetBlock.StyleSheetElements.Count, Is.EqualTo (1));
-      Assert.That (styleSheetBlock.StyleSheetElements[0], Is.InstanceOf (typeof (StyleSheetImportRule)));
-      Assert.That (((StyleSheetImportRule) styleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.EqualTo ("url.css"));
+      Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
+      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(StyleSheetBlock)));
+      var styleSheetBlock = (StyleSheetBlock)htmlHeadElements[0];
+      Assert.That(styleSheetBlock.StyleSheetElements.Count, Is.EqualTo(1));
+      Assert.That(styleSheetBlock.StyleSheetElements[0], Is.InstanceOf(typeof(StyleSheetImportRule)));
+      Assert.That(((StyleSheetImportRule)styleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url.css"));
     }
 
     [Test]
     public void RegisterStylesheetLink_WithResourceUrl_AndPriority ()
     {
-      IResourceUrl resourceUrl2 = new StaticResourceUrl ("url2.css");
-      _htmlHeadAppender.RegisterStylesheetLink ("key2", resourceUrl2, HtmlHeadAppender.Priority.UserControl);
-      IResourceUrl resourceUrl1 = new StaticResourceUrl ("url1.css");
-      _htmlHeadAppender.RegisterStylesheetLink ("key1", resourceUrl1, HtmlHeadAppender.Priority.Library);
+      IResourceUrl resourceUrl2 = new StaticResourceUrl("url2.css");
+      _htmlHeadAppender.RegisterStylesheetLink("key2", resourceUrl2, HtmlHeadAppender.Priority.UserControl);
+      IResourceUrl resourceUrl1 = new StaticResourceUrl("url1.css");
+      _htmlHeadAppender.RegisterStylesheetLink("key1", resourceUrl1, HtmlHeadAppender.Priority.Library);
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      Assert.That (htmlHeadElements.Length, Is.EqualTo (2));
+      Assert.That(htmlHeadElements.Length, Is.EqualTo(2));
 
-      var styleSheetBlock1 = (StyleSheetBlock) htmlHeadElements[0];
-      Assert.That (styleSheetBlock1.StyleSheetElements.Count, Is.EqualTo (1));
-      Assert.That (((StyleSheetImportRule) styleSheetBlock1.StyleSheetElements[0]).ResourceUrl, Is.SameAs (resourceUrl1));
+      var styleSheetBlock1 = (StyleSheetBlock)htmlHeadElements[0];
+      Assert.That(styleSheetBlock1.StyleSheetElements.Count, Is.EqualTo(1));
+      Assert.That(((StyleSheetImportRule)styleSheetBlock1.StyleSheetElements[0]).ResourceUrl, Is.SameAs(resourceUrl1));
 
-      var styleSheetBlock2 = (StyleSheetBlock) htmlHeadElements[1];
-      Assert.That (styleSheetBlock2.StyleSheetElements.Count, Is.EqualTo (1));
-      Assert.That (((StyleSheetImportRule) styleSheetBlock2.StyleSheetElements[0]).ResourceUrl, Is.SameAs (resourceUrl2));
+      var styleSheetBlock2 = (StyleSheetBlock)htmlHeadElements[1];
+      Assert.That(styleSheetBlock2.StyleSheetElements.Count, Is.EqualTo(1));
+      Assert.That(((StyleSheetImportRule)styleSheetBlock2.StyleSheetElements[0]).ResourceUrl, Is.SameAs(resourceUrl2));
     }
 
     [Test]
     [Obsolete]
     public void RegisterStylesheetLink_WithString_AndPriority ()
     {
-      _htmlHeadAppender.RegisterStylesheetLink ("key2", "url2.css", HtmlHeadAppender.Priority.UserControl);
-      _htmlHeadAppender.RegisterStylesheetLink ("key1", "url1.css", HtmlHeadAppender.Priority.Library);
+      _htmlHeadAppender.RegisterStylesheetLink("key2", "url2.css", HtmlHeadAppender.Priority.UserControl);
+      _htmlHeadAppender.RegisterStylesheetLink("key1", "url1.css", HtmlHeadAppender.Priority.Library);
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      Assert.That (htmlHeadElements.Length, Is.EqualTo (2));
+      Assert.That(htmlHeadElements.Length, Is.EqualTo(2));
 
-      var styleSheetBlock1 = (StyleSheetBlock) htmlHeadElements[0];
-      Assert.That (((StyleSheetImportRule) styleSheetBlock1.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.EqualTo ("url1.css"));
+      var styleSheetBlock1 = (StyleSheetBlock)htmlHeadElements[0];
+      Assert.That(((StyleSheetImportRule)styleSheetBlock1.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url1.css"));
 
-      var styleSheetBlock2 = (StyleSheetBlock) htmlHeadElements[1];
-      Assert.That (((StyleSheetImportRule) styleSheetBlock2.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.EqualTo ("url2.css"));
+      var styleSheetBlock2 = (StyleSheetBlock)htmlHeadElements[1];
+      Assert.That(((StyleSheetImportRule)styleSheetBlock2.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.EqualTo("url2.css"));
     }
 
     [Test]
@@ -168,123 +168,123 @@ namespace Remotion.Web.UnitTests.Core.UI
       List<IResourceUrl> userControlUrls = new List<IResourceUrl>();
       for (int i = 0; i < 40; i++)
       {
-        IResourceUrl libraryUrl = new StaticResourceUrl (string.Format ("Library{0}.css", i));
-        _htmlHeadAppender.RegisterStylesheetLink (string.Format ("Library{0}.css", i), libraryUrl, HtmlHeadAppender.Priority.Library);
-        libraryUrls.Add (libraryUrl);
+        IResourceUrl libraryUrl = new StaticResourceUrl(string.Format("Library{0}.css", i));
+        _htmlHeadAppender.RegisterStylesheetLink(string.Format("Library{0}.css", i), libraryUrl, HtmlHeadAppender.Priority.Library);
+        libraryUrls.Add(libraryUrl);
 
-        IResourceUrl userControlUrl = new StaticResourceUrl (string.Format ("UserControl{0}.css", i));
-        _htmlHeadAppender.RegisterStylesheetLink (string.Format ("UserControl{0}.css", i), userControlUrl, HtmlHeadAppender.Priority.UserControl);
-        userControlUrls.Add (userControlUrl);
+        IResourceUrl userControlUrl = new StaticResourceUrl(string.Format("UserControl{0}.css", i));
+        _htmlHeadAppender.RegisterStylesheetLink(string.Format("UserControl{0}.css", i), userControlUrl, HtmlHeadAppender.Priority.UserControl);
+        userControlUrls.Add(userControlUrl);
       }
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      Assert.That (htmlHeadElements.Length, Is.EqualTo (4));
+      Assert.That(htmlHeadElements.Length, Is.EqualTo(4));
 
-      var libraryBlock1 = (StyleSheetBlock) htmlHeadElements[0];
-      Assert.That (libraryBlock1.StyleSheetElements.Count, Is.EqualTo (31));
-      Assert.That (((StyleSheetImportRule) libraryBlock1.StyleSheetElements[0]).ResourceUrl, Is.SameAs (libraryUrls[0]));
-      Assert.That (((StyleSheetImportRule) libraryBlock1.StyleSheetElements[30]).ResourceUrl, Is.SameAs (libraryUrls[30]));
+      var libraryBlock1 = (StyleSheetBlock)htmlHeadElements[0];
+      Assert.That(libraryBlock1.StyleSheetElements.Count, Is.EqualTo(31));
+      Assert.That(((StyleSheetImportRule)libraryBlock1.StyleSheetElements[0]).ResourceUrl, Is.SameAs(libraryUrls[0]));
+      Assert.That(((StyleSheetImportRule)libraryBlock1.StyleSheetElements[30]).ResourceUrl, Is.SameAs(libraryUrls[30]));
 
-      var libraryBlock2 = (StyleSheetBlock) htmlHeadElements[1];
-      Assert.That (libraryBlock2.StyleSheetElements.Count, Is.EqualTo (9));
-      Assert.That (((StyleSheetImportRule) libraryBlock2.StyleSheetElements[0]).ResourceUrl, Is.SameAs (libraryUrls[31]));
-      Assert.That (((StyleSheetImportRule) libraryBlock2.StyleSheetElements[8]).ResourceUrl, Is.SameAs (libraryUrls[39]));
+      var libraryBlock2 = (StyleSheetBlock)htmlHeadElements[1];
+      Assert.That(libraryBlock2.StyleSheetElements.Count, Is.EqualTo(9));
+      Assert.That(((StyleSheetImportRule)libraryBlock2.StyleSheetElements[0]).ResourceUrl, Is.SameAs(libraryUrls[31]));
+      Assert.That(((StyleSheetImportRule)libraryBlock2.StyleSheetElements[8]).ResourceUrl, Is.SameAs(libraryUrls[39]));
 
-      var userControlBlock1 = (StyleSheetBlock) htmlHeadElements[2];
-      Assert.That (userControlBlock1.StyleSheetElements.Count, Is.EqualTo (31));
-      Assert.That (((StyleSheetImportRule) userControlBlock1.StyleSheetElements[0]).ResourceUrl, Is.SameAs (userControlUrls[0]));
-      Assert.That (((StyleSheetImportRule) userControlBlock1.StyleSheetElements[30]).ResourceUrl, Is.SameAs (userControlUrls[30]));
+      var userControlBlock1 = (StyleSheetBlock)htmlHeadElements[2];
+      Assert.That(userControlBlock1.StyleSheetElements.Count, Is.EqualTo(31));
+      Assert.That(((StyleSheetImportRule)userControlBlock1.StyleSheetElements[0]).ResourceUrl, Is.SameAs(userControlUrls[0]));
+      Assert.That(((StyleSheetImportRule)userControlBlock1.StyleSheetElements[30]).ResourceUrl, Is.SameAs(userControlUrls[30]));
 
-      var userControlBlock2 = (StyleSheetBlock) htmlHeadElements[3];
-      Assert.That (userControlBlock2.StyleSheetElements.Count, Is.EqualTo (9));
-      Assert.That (((StyleSheetImportRule) userControlBlock2.StyleSheetElements[0]).ResourceUrl, Is.SameAs (userControlUrls[31]));
-      Assert.That (((StyleSheetImportRule) userControlBlock2.StyleSheetElements[8]).ResourceUrl, Is.SameAs (userControlUrls[39]));
+      var userControlBlock2 = (StyleSheetBlock)htmlHeadElements[3];
+      Assert.That(userControlBlock2.StyleSheetElements.Count, Is.EqualTo(9));
+      Assert.That(((StyleSheetImportRule)userControlBlock2.StyleSheetElements[0]).ResourceUrl, Is.SameAs(userControlUrls[31]));
+      Assert.That(((StyleSheetImportRule)userControlBlock2.StyleSheetElements[8]).ResourceUrl, Is.SameAs(userControlUrls[39]));
     }
 
     [Test]
     public void GetHtmlHeadElements_PlacesStyleSheetImportRulesBeforeStyleSheetElements ()
     {
       var libraryElement1 = new Mock<StyleSheetElement>();
-      _htmlHeadAppender.RegisterHeadElement ("libraryElement1", libraryElement1.Object, HtmlHeadAppender.Priority.Library);
+      _htmlHeadAppender.RegisterHeadElement("libraryElement1", libraryElement1.Object, HtmlHeadAppender.Priority.Library);
 
-      var libraryRule1 = new StyleSheetImportRule (new StaticResourceUrl ("url.css"));
-      _htmlHeadAppender.RegisterHeadElement ("libraryRule1", libraryRule1, HtmlHeadAppender.Priority.Library);
+      var libraryRule1 = new StyleSheetImportRule(new StaticResourceUrl("url.css"));
+      _htmlHeadAppender.RegisterHeadElement("libraryRule1", libraryRule1, HtmlHeadAppender.Priority.Library);
 
       var libraryElement2 = new Mock<StyleSheetElement>();
-      _htmlHeadAppender.RegisterHeadElement ("libraryElement2", libraryElement2.Object, HtmlHeadAppender.Priority.Library);
+      _htmlHeadAppender.RegisterHeadElement("libraryElement2", libraryElement2.Object, HtmlHeadAppender.Priority.Library);
 
-      var libraryRule2 = new StyleSheetImportRule (new StaticResourceUrl ("url.css"));
-      _htmlHeadAppender.RegisterHeadElement ("libraryRule2", libraryRule2, HtmlHeadAppender.Priority.Library);
+      var libraryRule2 = new StyleSheetImportRule(new StaticResourceUrl("url.css"));
+      _htmlHeadAppender.RegisterHeadElement("libraryRule2", libraryRule2, HtmlHeadAppender.Priority.Library);
 
       var libraryElement3 = new Mock<StyleSheetElement>();
-      _htmlHeadAppender.RegisterHeadElement ("libraryElement3", libraryElement3.Object, HtmlHeadAppender.Priority.Library);
+      _htmlHeadAppender.RegisterHeadElement("libraryElement3", libraryElement3.Object, HtmlHeadAppender.Priority.Library);
 
-      var userControlRule1 = new StyleSheetImportRule (new StaticResourceUrl ("url.css"));
-      _htmlHeadAppender.RegisterHeadElement ("userControlRule1", userControlRule1, HtmlHeadAppender.Priority.UserControl);
+      var userControlRule1 = new StyleSheetImportRule(new StaticResourceUrl("url.css"));
+      _htmlHeadAppender.RegisterHeadElement("userControlRule1", userControlRule1, HtmlHeadAppender.Priority.UserControl);
 
       var userControlElement1 = new Mock<StyleSheetElement>();
-      _htmlHeadAppender.RegisterHeadElement ("userControlElement1", userControlElement1.Object, HtmlHeadAppender.Priority.UserControl);
+      _htmlHeadAppender.RegisterHeadElement("userControlElement1", userControlElement1.Object, HtmlHeadAppender.Priority.UserControl);
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      Assert.That (htmlHeadElements.Length, Is.EqualTo (4));
+      Assert.That(htmlHeadElements.Length, Is.EqualTo(4));
 
-      var libraryBlock1 = (StyleSheetBlock) htmlHeadElements[0];
-      Assert.That (libraryBlock1.StyleSheetElements.Count, Is.EqualTo (2));
-      Assert.That (libraryBlock1.StyleSheetElements[0], Is.SameAs (libraryRule1));
-      Assert.That (libraryBlock1.StyleSheetElements[1], Is.SameAs (libraryRule2));
+      var libraryBlock1 = (StyleSheetBlock)htmlHeadElements[0];
+      Assert.That(libraryBlock1.StyleSheetElements.Count, Is.EqualTo(2));
+      Assert.That(libraryBlock1.StyleSheetElements[0], Is.SameAs(libraryRule1));
+      Assert.That(libraryBlock1.StyleSheetElements[1], Is.SameAs(libraryRule2));
 
-      var libraryBlock2 = (StyleSheetBlock) htmlHeadElements[1];
-      Assert.That (libraryBlock2.StyleSheetElements.Count, Is.EqualTo (3));
-      Assert.That (libraryBlock2.StyleSheetElements[0], Is.SameAs (libraryElement1.Object));
-      Assert.That (libraryBlock2.StyleSheetElements[1], Is.SameAs (libraryElement2.Object));
-      Assert.That (libraryBlock2.StyleSheetElements[2], Is.SameAs (libraryElement3.Object));
+      var libraryBlock2 = (StyleSheetBlock)htmlHeadElements[1];
+      Assert.That(libraryBlock2.StyleSheetElements.Count, Is.EqualTo(3));
+      Assert.That(libraryBlock2.StyleSheetElements[0], Is.SameAs(libraryElement1.Object));
+      Assert.That(libraryBlock2.StyleSheetElements[1], Is.SameAs(libraryElement2.Object));
+      Assert.That(libraryBlock2.StyleSheetElements[2], Is.SameAs(libraryElement3.Object));
 
-      var userControlBlock1 = (StyleSheetBlock) htmlHeadElements[2];
-      Assert.That (userControlBlock1.StyleSheetElements.Count, Is.EqualTo (1));
-      Assert.That (userControlBlock1.StyleSheetElements[0], Is.SameAs (userControlRule1));
+      var userControlBlock1 = (StyleSheetBlock)htmlHeadElements[2];
+      Assert.That(userControlBlock1.StyleSheetElements.Count, Is.EqualTo(1));
+      Assert.That(userControlBlock1.StyleSheetElements[0], Is.SameAs(userControlRule1));
 
-      var userControlBlock2 = (StyleSheetBlock) htmlHeadElements[3];
-      Assert.That (userControlBlock2.StyleSheetElements.Count, Is.EqualTo (1));
-      Assert.That (userControlBlock2.StyleSheetElements[0], Is.SameAs (userControlElement1.Object));
+      var userControlBlock2 = (StyleSheetBlock)htmlHeadElements[3];
+      Assert.That(userControlBlock2.StyleSheetElements.Count, Is.EqualTo(1));
+      Assert.That(userControlBlock2.StyleSheetElements[0], Is.SameAs(userControlElement1.Object));
     }
 
     [Test]
     public void GetHtmlHeadElements_PlacesTitleFirst ()
     {
       var element1 = new Mock<HtmlHeadElement>();
-      _htmlHeadAppender.RegisterHeadElement ("element1", element1.Object, HtmlHeadAppender.Priority.Library);
+      _htmlHeadAppender.RegisterHeadElement("element1", element1.Object, HtmlHeadAppender.Priority.Library);
 
-      _htmlHeadAppender.SetTitle ("The Title");
+      _htmlHeadAppender.SetTitle("The Title");
 
       var element2 = new Mock<HtmlHeadElement>();
-      _htmlHeadAppender.RegisterHeadElement ("element2", element2.Object, HtmlHeadAppender.Priority.Library);
+      _htmlHeadAppender.RegisterHeadElement("element2", element2.Object, HtmlHeadAppender.Priority.Library);
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      Assert.That (htmlHeadElements.Length, Is.EqualTo (3));
+      Assert.That(htmlHeadElements.Length, Is.EqualTo(3));
 
-      Assert.That (htmlHeadElements[0], Is.InstanceOf (typeof (TitleTag)));
-      Assert.That (htmlHeadElements[1], Is.SameAs (element1.Object));
-      Assert.That (htmlHeadElements[2], Is.SameAs (element2.Object));
+      Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(TitleTag)));
+      Assert.That(htmlHeadElements[1], Is.SameAs(element1.Object));
+      Assert.That(htmlHeadElements[2], Is.SameAs(element2.Object));
     }
 
     [Test]
     public void RegisterHeadElement ()
     {
       var userControlElement = new Mock<HtmlHeadElement>();
-      _htmlHeadAppender.RegisterHeadElement ("userControl", userControlElement.Object, HtmlHeadAppender.Priority.UserControl);
+      _htmlHeadAppender.RegisterHeadElement("userControl", userControlElement.Object, HtmlHeadAppender.Priority.UserControl);
 
       var libraryElement = new Mock<HtmlHeadElement>();
-      _htmlHeadAppender.RegisterHeadElement ("library", libraryElement.Object, HtmlHeadAppender.Priority.Library);
+      _htmlHeadAppender.RegisterHeadElement("library", libraryElement.Object, HtmlHeadAppender.Priority.Library);
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      Assert.That (htmlHeadElements.Length, Is.EqualTo (2));
+      Assert.That(htmlHeadElements.Length, Is.EqualTo(2));
 
-      Assert.That (htmlHeadElements[0], Is.SameAs (libraryElement.Object));
-      Assert.That (htmlHeadElements[1], Is.SameAs (userControlElement.Object));
+      Assert.That(htmlHeadElements[0], Is.SameAs(libraryElement.Object));
+      Assert.That(htmlHeadElements[1], Is.SameAs(userControlElement.Object));
     }
 
     [Test]
@@ -292,10 +292,10 @@ namespace Remotion.Web.UnitTests.Core.UI
     {
       _htmlHeadAppender.SetAppended();
       var userControlElement = new Mock<HtmlHeadElement>();
-      Assert.That (
-          () => _htmlHeadAppender.RegisterHeadElement ("userControl", userControlElement.Object, HtmlHeadAppender.Priority.UserControl),
+      Assert.That(
+          () => _htmlHeadAppender.RegisterHeadElement("userControl", userControlElement.Object, HtmlHeadAppender.Priority.UserControl),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("RegisterHeadElement must not be called after SetAppended has been called."));
+              .With.Message.EqualTo("RegisterHeadElement must not be called after SetAppended has been called."));
     }
   }
 }

@@ -33,14 +33,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       {
         var screenshotDirectory = _setUpFixtureHelper.ScreenshotDirectory;
 
-        if (Directory.Exists (screenshotDirectory))
-          Directory.Delete (screenshotDirectory, true);
+        if (Directory.Exists(screenshotDirectory))
+          Directory.Delete(screenshotDirectory, true);
 
         _setUpFixtureHelper.OnSetUp();
       }
       catch (Exception e)
       {
-        Console.WriteLine ("SetUpFixture failed: " + e);
+        Console.WriteLine("SetUpFixture failed: " + e);
         Console.WriteLine();
         throw;
       }
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       }
       catch (Exception e)
       {
-        Console.WriteLine ("SetUpFixture failed: " + e);
+        Console.WriteLine("SetUpFixture failed: " + e);
         Console.WriteLine();
         throw;
       }

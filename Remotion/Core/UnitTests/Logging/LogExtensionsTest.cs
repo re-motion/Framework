@@ -31,8 +31,8 @@ namespace Remotion.UnitTests.Logging
     {
       var logMock = new Mock<ILog>();
 
-      var result = "test".LogAndReturnValue (logMock.Object, LogLevel.Debug, value => string.Format ("x{0}y", value));
-      Assert.That (result, Is.EqualTo ("test"));
+      var result = "test".LogAndReturnValue(logMock.Object, LogLevel.Debug, value => string.Format("x{0}y", value));
+      Assert.That(result, Is.EqualTo("test"));
     }
 
     [Test]
@@ -40,58 +40,58 @@ namespace Remotion.UnitTests.Logging
     {
       var logMock = new Mock<ILog>();
 
-      "test".LogAndReturnValue (logMock.Object, LogLevel.Debug, value => { throw new Exception ("Should not be called"); });
-      logMock.Verify (mock => mock.Log (It.IsAny<LogLevel>(), It.IsAny<int?>(), It.IsAny<object>(), It.IsAny<Exception>()), Times.Never());
+      "test".LogAndReturnValue(logMock.Object, LogLevel.Debug, value => { throw new Exception("Should not be called"); });
+      logMock.Verify(mock => mock.Log(It.IsAny<LogLevel>(), It.IsAny<int?>(), It.IsAny<object>(), It.IsAny<Exception>()), Times.Never());
     }
 
     [Test]
     public void LogAndReturnValue_Logs_IfConfigured ()
     {
       var logMock = new Mock<ILog>();
-      logMock.Setup (mock => mock.IsEnabled (LogLevel.Debug)).Returns (true).Verifiable();
+      logMock.Setup(mock => mock.IsEnabled(LogLevel.Debug)).Returns(true).Verifiable();
 
-      "test".LogAndReturnValue (logMock.Object, LogLevel.Debug, value => string.Format ("x{0}y", value));
-      logMock.Verify (mock => mock.Log (LogLevel.Debug, (int?) null, "xtesty", (Exception) null), Times.AtLeastOnce());
+      "test".LogAndReturnValue(logMock.Object, LogLevel.Debug, value => string.Format("x{0}y", value));
+      logMock.Verify(mock => mock.Log(LogLevel.Debug, (int?)null, "xtesty", (Exception)null), Times.AtLeastOnce());
     }
 
     [Test]
     public void LogAndReturnItems_ReturnsValue ()
     {
       var logMock = new Mock<ILog>();
-      logMock.Setup (mock => mock.IsEnabled (LogLevel.Debug)).Returns (true).Verifiable();
+      logMock.Setup(mock => mock.IsEnabled(LogLevel.Debug)).Returns(true).Verifiable();
 
       var input = new[] { "A", "B", "C" };
-      var result = input.LogAndReturnItems (logMock.Object, LogLevel.Debug, count => string.Format ("x{0}y", count));
-      Assert.That (result, Is.EqualTo (new[] { "A", "B", "C" }));
-      Assert.That (result, Is.Not.SameAs (input));
+      var result = input.LogAndReturnItems(logMock.Object, LogLevel.Debug, count => string.Format("x{0}y", count));
+      Assert.That(result, Is.EqualTo(new[] { "A", "B", "C" }));
+      Assert.That(result, Is.Not.SameAs(input));
     }
 
     [Test]
     public void LogAndReturnItems_DoesNotIterate_AndDoesNotLog_IfNotConfigured ()
     {
       var logMock = new Mock<ILog>();
-      var sequenceMock = new Mock<IEnumerable<int>> (MockBehavior.Strict);
+      var sequenceMock = new Mock<IEnumerable<int>>(MockBehavior.Strict);
 
-      var result = sequenceMock.Object.LogAndReturnItems (logMock.Object, LogLevel.Debug, value => { throw new Exception ("Should not be called"); });
-      Assert.That (result, Is.SameAs (sequenceMock.Object));
-      logMock.Verify (mock => mock.Log (It.IsAny<LogLevel>(), It.IsAny<int?>(), It.IsAny<object>(), It.IsAny<Exception>()), Times.Never());
+      var result = sequenceMock.Object.LogAndReturnItems(logMock.Object, LogLevel.Debug, value => { throw new Exception("Should not be called"); });
+      Assert.That(result, Is.SameAs(sequenceMock.Object));
+      logMock.Verify(mock => mock.Log(It.IsAny<LogLevel>(), It.IsAny<int?>(), It.IsAny<object>(), It.IsAny<Exception>()), Times.Never());
     }
 
     [Test]
     public void LogAndReturnItems_LogsAfterIterationIsComplete_IfConfigured ()
     {
       var logMock = new Mock<ILog>();
-      logMock.Setup (mock => mock.IsEnabled (LogLevel.Debug)).Returns (true).Verifiable();
+      logMock.Setup(mock => mock.IsEnabled(LogLevel.Debug)).Returns(true).Verifiable();
 
-      var result = new[] { "A", "B", "C" }.LogAndReturnItems (logMock.Object, LogLevel.Debug, count => string.Format ("x{0}y", count));
+      var result = new[] { "A", "B", "C" }.LogAndReturnItems(logMock.Object, LogLevel.Debug, count => string.Format("x{0}y", count));
       var enumerator = result.GetEnumerator();
       enumerator.MoveNext();
       enumerator.MoveNext();
       enumerator.MoveNext();
-      Assert.That (enumerator.Current, Is.EqualTo ("C"));
-      logMock.Verify (mock => mock.Log (LogLevel.Debug, null, "x3y", null), Times.Never());
+      Assert.That(enumerator.Current, Is.EqualTo("C"));
+      logMock.Verify(mock => mock.Log(LogLevel.Debug, null, "x3y", null), Times.Never());
       enumerator.MoveNext();
-      logMock.Verify (mock => mock.Log (LogLevel.Debug, null, "x3y", null), Times.AtLeastOnce());
+      logMock.Verify(mock => mock.Log(LogLevel.Debug, null, "x3y", null), Times.AtLeastOnce());
     }
   }
 }

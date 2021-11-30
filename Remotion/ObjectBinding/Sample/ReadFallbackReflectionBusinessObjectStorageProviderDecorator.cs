@@ -31,8 +31,8 @@ namespace Remotion.ObjectBinding.Sample
         IReflectionBusinessObjectStorageProvider innerBusinessObjectStorageProvider,
         IReflectionBusinessObjectStorageProvider readFallbackBusinessObjectStorageProvider)
     {
-      ArgumentUtility.CheckNotNull ("innerBusinessObjectStorageProvider", innerBusinessObjectStorageProvider);
-      ArgumentUtility.CheckNotNull ("readFallbackBusinessObjectStorageProvider", readFallbackBusinessObjectStorageProvider);
+      ArgumentUtility.CheckNotNull("innerBusinessObjectStorageProvider", innerBusinessObjectStorageProvider);
+      ArgumentUtility.CheckNotNull("readFallbackBusinessObjectStorageProvider", readFallbackBusinessObjectStorageProvider);
 
       _innerBusinessObjectStorageProvider = innerBusinessObjectStorageProvider;
       _readFallbackBusinessObjectStorageProvider = readFallbackBusinessObjectStorageProvider;
@@ -41,10 +41,10 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public IReadOnlyCollection<Guid> GetObjectIDsForType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return _readFallbackBusinessObjectStorageProvider.GetObjectIDsForType (type)
-          .Concat (_innerBusinessObjectStorageProvider.GetObjectIDsForType (type))
+      return _readFallbackBusinessObjectStorageProvider.GetObjectIDsForType(type)
+          .Concat(_innerBusinessObjectStorageProvider.GetObjectIDsForType(type))
           .Distinct()
           .ToArray();
     }
@@ -52,18 +52,18 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetReadObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return _innerBusinessObjectStorageProvider.GetReadObjectStream (type, id)
-             ?? _readFallbackBusinessObjectStorageProvider.GetReadObjectStream (type, id);
+      return _innerBusinessObjectStorageProvider.GetReadObjectStream(type, id)
+             ?? _readFallbackBusinessObjectStorageProvider.GetReadObjectStream(type, id);
     }
 
     /// <inheritdoc />
     public Stream GetWriteObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return _innerBusinessObjectStorageProvider.GetWriteObjectStream (type, id);
+      return _innerBusinessObjectStorageProvider.GetWriteObjectStream(type, id);
     }
   }
 }

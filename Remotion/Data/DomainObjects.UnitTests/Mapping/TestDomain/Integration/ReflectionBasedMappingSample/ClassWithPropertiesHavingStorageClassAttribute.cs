@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
 
     public abstract int NoAttribute { get; set; }
 
-    [StorageClass (StorageClass.Persistent)]
+    [StorageClass(StorageClass.Persistent)]
     public abstract int Persistent { get; set; }
 
     [StorageClassTransaction]
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     public abstract DateTime TransactionWithDateTimeDataType { get; set; }
 
     [StorageClassNone]
-    public object None 
+    public object None
     { get { return null; }
       set { }
     }

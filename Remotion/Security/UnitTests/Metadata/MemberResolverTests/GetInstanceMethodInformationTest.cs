@@ -37,84 +37,84 @@ namespace Remotion.Security.UnitTests.Metadata.MemberResolverTests
     [Test]
     public void Test_MethodWithoutAttributes ()
     {
-      var methodInformation = _resolver.GetMethodInformation (typeof (SecurableObject), "Save", MemberAffiliation.Instance);
+      var methodInformation = _resolver.GetMethodInformation(typeof(SecurableObject), "Save", MemberAffiliation.Instance);
 
-      Assert.That (methodInformation, Is.InstanceOf(typeof(NullMethodInformation)));
+      Assert.That(methodInformation, Is.InstanceOf(typeof(NullMethodInformation)));
     }
 
     [Test]
     public void Test_CacheForMethodWithoutAttributes ()
     {
-      var methodInformation = _resolver.GetMethodInformation (typeof (SecurableObject), "Save", MemberAffiliation.Instance);
+      var methodInformation = _resolver.GetMethodInformation(typeof(SecurableObject), "Save", MemberAffiliation.Instance);
 
-      Assert.That (_resolver.GetMethodInformation (typeof (SecurableObject), "Save", MemberAffiliation.Instance), Is.SameAs (methodInformation));
+      Assert.That(_resolver.GetMethodInformation(typeof(SecurableObject), "Save", MemberAffiliation.Instance), Is.SameAs(methodInformation));
     }
 
     [Test]
     public void Test_MethodWithOneAttribute ()
     {
-      var methodInformation = _resolver.GetMethodInformation (typeof (SecurableObject), "Load", MemberAffiliation.Instance);
-      var expectedMethodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetMethod ("Load",new Type[] {}));
+      var methodInformation = _resolver.GetMethodInformation(typeof(SecurableObject), "Load", MemberAffiliation.Instance);
+      var expectedMethodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetMethod("Load",new Type[] {}));
 
-      Assert.That (methodInformation, Is.Not.Null);
-      Assert.That (methodInformation, Is.EqualTo (expectedMethodInformation));
+      Assert.That(methodInformation, Is.Not.Null);
+      Assert.That(methodInformation, Is.EqualTo(expectedMethodInformation));
     }
 
     [Test]
     public void Test_CacheForMethodWithOneAttribute ()
     {
-      var methodInformation = _resolver.GetMethodInformation (typeof (SecurableObject), "Load", MemberAffiliation.Instance);
+      var methodInformation = _resolver.GetMethodInformation(typeof(SecurableObject), "Load", MemberAffiliation.Instance);
 
-      Assert.That (methodInformation, Is.SameAs(_resolver.GetMethodInformation (typeof (SecurableObject), "Load", MemberAffiliation.Instance)));
+      Assert.That(methodInformation, Is.SameAs(_resolver.GetMethodInformation(typeof(SecurableObject), "Load", MemberAffiliation.Instance)));
     }
 
     [Test]
     public void Test_OverloadedMethodWithOneAttribute ()
     {
-      var methodInformation = _resolver.GetMethodInformation (typeof (SecurableObject), "Delete", MemberAffiliation.Instance);
-      var expectedMethodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetMethod ("Delete", new [] {typeof(int)}));
+      var methodInformation = _resolver.GetMethodInformation(typeof(SecurableObject), "Delete", MemberAffiliation.Instance);
+      var expectedMethodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetMethod("Delete", new [] {typeof(int)}));
 
-      Assert.That (methodInformation, Is.Not.Null);
-      Assert.That (methodInformation, Is.EqualTo (expectedMethodInformation));
+      Assert.That(methodInformation, Is.Not.Null);
+      Assert.That(methodInformation, Is.EqualTo(expectedMethodInformation));
     }
 
     [Test]
     public void Test_MethodOfDerivedClass ()
     {
-      var methodInformation = _resolver.GetMethodInformation (typeof (DerivedSecurableObject), "Show", MemberAffiliation.Instance);
-      var expectedMethodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetMethod ("Show"));
+      var methodInformation = _resolver.GetMethodInformation(typeof(DerivedSecurableObject), "Show", MemberAffiliation.Instance);
+      var expectedMethodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetMethod("Show"));
 
-      Assert.That (methodInformation, Is.Not.Null);
-      Assert.That (methodInformation, Is.EqualTo (expectedMethodInformation));
+      Assert.That(methodInformation, Is.Not.Null);
+      Assert.That(methodInformation, Is.EqualTo(expectedMethodInformation));
     }
 
     [Test]
     public void Test_OverriddenMethodFromBaseMethod ()
     {
-      var methodInformation = _resolver.GetMethodInformation (typeof (DerivedSecurableObject), "Record", MemberAffiliation.Instance);
-      var expectedMethodInformation = MethodInfoAdapter.Create(typeof (SecurableObject).GetMethod ("Record"));
+      var methodInformation = _resolver.GetMethodInformation(typeof(DerivedSecurableObject), "Record", MemberAffiliation.Instance);
+      var expectedMethodInformation = MethodInfoAdapter.Create(typeof(SecurableObject).GetMethod("Record"));
 
-      Assert.That (methodInformation, Is.Not.Null);
-      Assert.That (methodInformation, Is.EqualTo (expectedMethodInformation));
+      Assert.That(methodInformation, Is.Not.Null);
+      Assert.That(methodInformation, Is.EqualTo(expectedMethodInformation));
     }
 
     [Test]
     public void Test_NotExistingMethod ()
     {
-      Assert.That (
-          () => _resolver.GetMethodInformation (typeof (SecurableObject), "Sve", MemberAffiliation.Instance),
+      Assert.That(
+          () => _resolver.GetMethodInformation(typeof(SecurableObject), "Sve", MemberAffiliation.Instance),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The method 'Sve' could not be found.", "methodName"));
     }
 
     [Test]
     public void Test_MethodDeclaredOnBaseAndDerivedClass ()
     {
-      Assert.That (
-          () => _resolver.GetMethodInformation (typeof (DerivedSecurableObject), "Send", MemberAffiliation.Instance),
+      Assert.That(
+          () => _resolver.GetMethodInformation(typeof(DerivedSecurableObject), "Send", MemberAffiliation.Instance),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The DemandPermissionAttribute must not be defined on methods overriden or redefined in derived classes. "
                   + "A method 'Send' exists in class 'Remotion.Security.UnitTests.SampleDomain.DerivedSecurableObject' and its base class.",
                   "methodName"));
@@ -123,10 +123,10 @@ namespace Remotion.Security.UnitTests.Metadata.MemberResolverTests
     [Test]
     public void Test_OverriddenMethods ()
     {
-      Assert.That (
-          () => _resolver.GetMethodInformation (typeof (DerivedSecurableObject), "Print", MemberAffiliation.Instance),
+      Assert.That(
+          () => _resolver.GetMethodInformation(typeof(DerivedSecurableObject), "Print", MemberAffiliation.Instance),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The DemandPermissionAttribute must not be defined on methods overriden or redefined in derived classes. "
                   + "A method 'Print' exists in class 'Remotion.Security.UnitTests.SampleDomain.DerivedSecurableObject' and its base class.",
                   "methodName"));

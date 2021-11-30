@@ -32,22 +32,22 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     // construction and disposing
 
     public CreateRootWithChildTestTransactedFunction (ClientTransaction previousClientTransaction, WxeFunction childFunction)
-        : base (WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit, childFunction, previousClientTransaction)
+        : base(WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit, childFunction, previousClientTransaction)
     {
-      Insert (
+      Insert(
           0,
-          new WxeMethodStep (
+          new WxeMethodStep(
               () =>
               {
-                Assert.That (ClientTransactionScope.CurrentTransaction, Is.Not.SameAs (PreviousClientTransaction));
+                Assert.That(ClientTransactionScope.CurrentTransaction, Is.Not.SameAs(PreviousClientTransaction));
                 TransactionBeforeChild = ClientTransactionScope.CurrentTransaction;
               }));
-      Add (
-          new WxeMethodStep (
+      Add(
+          new WxeMethodStep(
               () =>
               {
                 TransactionAfterChild = ClientTransactionScope.CurrentTransaction;
-                Assert.That (TransactionAfterChild, Is.SameAs (TransactionBeforeChild));
+                Assert.That(TransactionAfterChild, Is.SameAs(TransactionBeforeChild));
               }));
     }
 
@@ -56,10 +56,10 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
 
     // methods and properties
 
-    [WxeParameter (1, false, WxeParameterDirection.In)]
+    [WxeParameter(1, false, WxeParameterDirection.In)]
     public ClientTransaction PreviousClientTransaction
     {
-      get { return (ClientTransaction) Variables["PreviousClientTransaction"]; }
+      get { return (ClientTransaction)Variables["PreviousClientTransaction"]; }
       set { Variables["PreviousClientTransaction"] = value; }
     }
 

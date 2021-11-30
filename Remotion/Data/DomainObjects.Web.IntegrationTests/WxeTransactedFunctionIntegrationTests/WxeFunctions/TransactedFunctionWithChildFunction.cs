@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     public TransactedFunctionWithChildFunction (ITransactionMode mode, WxeFunction childFunction, params object[] actualParameters)
         : base(mode, actualParameters)
     {
-      Add (childFunction);
+      Add(childFunction);
       ChildFunction = childFunction;
     }
   }

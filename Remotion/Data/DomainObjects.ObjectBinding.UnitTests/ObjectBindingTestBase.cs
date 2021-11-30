@@ -24,12 +24,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public override void SetUp ()
     {
       base.SetUp();
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     public override void TearDown ()
     {
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       base.TearDown();
     }
   }

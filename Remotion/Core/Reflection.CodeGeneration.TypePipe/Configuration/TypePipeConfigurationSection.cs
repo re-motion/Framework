@@ -30,28 +30,28 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
         "  <enableSerializationWithoutAssemblySaving/>" + Environment.NewLine +
         "</remotion.reflection.codeGeneration.typePipe>";
 
-    [ConfigurationProperty ("xmlns")]
+    [ConfigurationProperty("xmlns")]
     public string XmlNamespace
     {
       get { return c_xmlNamespace; }
     }
 
-    [ConfigurationProperty ("forceStrongNaming")]
+    [ConfigurationProperty("forceStrongNaming")]
     public ForceStrongNamingConfigurationElement ForceStrongNaming
     {
-      get { return (ForceStrongNamingConfigurationElement) this["forceStrongNaming"]; }
+      get { return (ForceStrongNamingConfigurationElement)this["forceStrongNaming"]; }
     }
 
-    [ConfigurationProperty ("enableSerializationWithoutAssemblySaving")]
+    [ConfigurationProperty("enableSerializationWithoutAssemblySaving")]
     public EnableSerializationWithoutAssemblySavingConfigurationElement EnableSerializationWithoutAssemblySaving
     {
-      get { return (EnableSerializationWithoutAssemblySavingConfigurationElement) this["enableSerializationWithoutAssemblySaving"]; }
+      get { return (EnableSerializationWithoutAssemblySavingConfigurationElement)this["enableSerializationWithoutAssemblySaving"]; }
     }
 
     protected override bool OnDeserializeUnrecognizedElement (string elementName, XmlReader reader)
     {
-      var message = string.Format ("Unknown element name: {0}{2}Example configuration:{2}{1}", elementName, ExampleConfiguration, Environment.NewLine);
-      throw new ConfigurationErrorsException (message);
+      var message = string.Format("Unknown element name: {0}{2}Example configuration:{2}{1}", elementName, ExampleConfiguration, Environment.NewLine);
+      throw new ConfigurationErrorsException(message);
     }
   }
 }

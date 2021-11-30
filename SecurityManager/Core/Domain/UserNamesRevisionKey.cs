@@ -19,13 +19,13 @@ using System;
 
 namespace Remotion.SecurityManager.Domain
 {
-  [PermanentGuid (c_permanentGuid)]
+  [PermanentGuid(c_permanentGuid)]
   public sealed class UserNamesRevisionKey : IRevisionKey
   {
     public static readonly UserNamesRevisionKey Global = new UserNamesRevisionKey();
 
     private const string c_permanentGuid = "{40024F99-76E0-4DDE-BFB5-3E7CB9A50E85}";
-    private static readonly Guid s_globalKey = new Guid (c_permanentGuid);
+    private static readonly Guid s_globalKey = new Guid(c_permanentGuid);
 
     private UserNamesRevisionKey ()
     {

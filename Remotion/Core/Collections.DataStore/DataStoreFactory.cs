@@ -54,9 +54,9 @@ namespace Remotion.Collections.DataStore
     public static IDataStore<TKey, TValue> Create<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull ("comparer", comparer);
+      ArgumentUtility.CheckNotNull("comparer", comparer);
 
-      return new SimpleDataStore<TKey, TValue> (comparer);
+      return new SimpleDataStore<TKey, TValue>(comparer);
     }
 
     /// <summary>
@@ -87,9 +87,9 @@ namespace Remotion.Collections.DataStore
     public static IDataStore<TKey, TValue> CreateWithSynchronization<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull ("comparer", comparer);
+      ArgumentUtility.CheckNotNull("comparer", comparer);
 
-      return new ConcurrentDataStore<TKey, TValue> (comparer);
+      return new ConcurrentDataStore<TKey, TValue>(comparer);
     }
 
     /// <summary>
@@ -106,11 +106,11 @@ namespace Remotion.Collections.DataStore
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}()"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> ()
         where TKey : notnull
     {
-      return new LockingDataStoreDecorator<TKey, TValue> (new SimpleDataStore<TKey, TValue>());
+      return new LockingDataStoreDecorator<TKey, TValue>(new SimpleDataStore<TKey, TValue>());
     }
 
     /// <summary>
@@ -128,11 +128,11 @@ namespace Remotion.Collections.DataStore
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}()"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
     public static IDataStore<TKey, TValue> CreateWithLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer)
         where TKey : notnull
     {
-      return new LockingDataStoreDecorator<TKey, TValue> (new SimpleDataStore<TKey, TValue> (comparer ?? EqualityComparer<TKey>.Default));
+      return new LockingDataStoreDecorator<TKey, TValue>(new SimpleDataStore<TKey, TValue>(comparer ?? EqualityComparer<TKey>.Default));
     }
 
     /// <summary>
@@ -149,12 +149,12 @@ namespace Remotion.Collections.DataStore
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}()"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
-    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> () 
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ()
         where TKey : notnull
         where TValue: class?
     {
-      return new LazyLockingDataStoreAdapter<TKey, TValue> (
+      return new LazyLockingDataStoreAdapter<TKey, TValue>(
           new SimpleDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>>());
     }
 
@@ -173,13 +173,13 @@ namespace Remotion.Collections.DataStore
     /// provides better performance and contention behavior. Existing usages of <see cref="CreateWithLocking{TKey,TValue}()"/> 
     /// should therefor be replaced.
     /// </remarks>
-    [Obsolete ("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
-    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer) 
+    [Obsolete("Use CreateWithSynchronization(...) instead. (Version: 1.19.3)")]
+    public static IDataStore<TKey, TValue> CreateWithLazyLocking<TKey, TValue> ([CanBeNull] IEqualityComparer<TKey>? comparer)
         where TKey : notnull
         where TValue: class?
     {
-      return new LazyLockingDataStoreAdapter<TKey, TValue> (
-          new SimpleDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>> (comparer ?? EqualityComparer<TKey>.Default));
+      return new LazyLockingDataStoreAdapter<TKey, TValue>(
+          new SimpleDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>>(comparer ?? EqualityComparer<TKey>.Default));
     }
   }
 }

@@ -30,22 +30,22 @@ namespace Remotion.Web.IntegrationTests.TabbedMenu
     public void TabbedMenu ()
     {
       var home = Start();
-      var tabbedMenu = home.TabbedMenus().GetByLocalID ("MyTabbedMenu");
+      var tabbedMenu = home.TabbedMenus().GetByLocalID("MyTabbedMenu");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (tabbedMenu);
+      var result = analyzer.Analyze(tabbedMenu);
 
       var violations = result.Violations
-          .IgnoreByRuleIDAndXPath (AccessibilityRuleID.ColorContrast, "/a[@id='body_MyTabbedMenu_DisabledCommandTab_Command']/span/span")
-          .IgnoreByRuleIDAndXPath (AccessibilityRuleID.ColorContrast, "/a[@id='body_MyTabbedMenu_VeryLongTab_Command']/span/span")
-          .IgnoreByRuleIDAndXPath (AccessibilityRuleID.AriaRequiredChildren, "/div[@id='body_MyTabbedMenu_MainMenuTabStrip']/div")
-          .IgnoreByRuleIDAndXPath (AccessibilityRuleID.AriaRequiredChildren, "/div[@id='body_MyTabbedMenu_SubMenuTabStrip']/div");
-      Assert.That (violations, Is.Empty);
+          .IgnoreByRuleIDAndXPath(AccessibilityRuleID.ColorContrast, "/a[@id='body_MyTabbedMenu_DisabledCommandTab_Command']/span/span")
+          .IgnoreByRuleIDAndXPath(AccessibilityRuleID.ColorContrast, "/a[@id='body_MyTabbedMenu_VeryLongTab_Command']/span/span")
+          .IgnoreByRuleIDAndXPath(AccessibilityRuleID.AriaRequiredChildren, "/div[@id='body_MyTabbedMenu_MainMenuTabStrip']/div")
+          .IgnoreByRuleIDAndXPath(AccessibilityRuleID.AriaRequiredChildren, "/div[@id='body_MyTabbedMenu_SubMenuTabStrip']/div");
+      Assert.That(violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("TabbedMenuTest.wxe");
+      return Start<WxePageObject>("TabbedMenuTest.wxe");
     }
   }
 }

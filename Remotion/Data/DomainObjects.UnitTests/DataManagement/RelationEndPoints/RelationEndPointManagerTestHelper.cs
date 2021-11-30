@@ -23,25 +23,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   {
     public static void AddEndPoint (RelationEndPointManager endPointManager, IRelationEndPoint endPoint)
     {
-      var map = GetMap (endPointManager);
-      map.AddEndPoint (endPoint);
+      var map = GetMap(endPointManager);
+      map.AddEndPoint(endPoint);
     }
 
     public static void ReplaceEndPoint (RelationEndPointManager endPointManager, IRelationEndPoint endPoint)
     {
-      RemoveEndPoint (endPointManager, endPoint.ID);
-      AddEndPoint (endPointManager, endPoint);
+      RemoveEndPoint(endPointManager, endPoint.ID);
+      AddEndPoint(endPointManager, endPoint);
     }
 
     public static void RemoveEndPoint (RelationEndPointManager manager, RelationEndPointID relationEndPointID)
     {
-      var map = GetMap (manager);
-      map.RemoveEndPoint (relationEndPointID);
+      var map = GetMap(manager);
+      map.RemoveEndPoint(relationEndPointID);
     }
 
     public static RelationEndPointMap GetMap (RelationEndPointManager manager)
     {
-      return (RelationEndPointMap) manager.RelationEndPoints;
+      return (RelationEndPointMap)manager.RelationEndPoints;
     }
   }
 }

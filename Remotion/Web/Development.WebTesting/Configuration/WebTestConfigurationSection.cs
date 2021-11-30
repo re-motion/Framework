@@ -52,48 +52,48 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
     static WebTestConfigurationSection ()
     {
-      s_current = new Lazy<WebTestConfigurationSection> (
+      s_current = new Lazy<WebTestConfigurationSection>(
           () =>
           {
-            var configuration = (WebTestConfigurationSection) ConfigurationManager.GetSection ("remotion.webTesting");
-            Assertion.IsNotNull (configuration, "Configuration section 'remotion.webTesting' missing.");
+            var configuration = (WebTestConfigurationSection)ConfigurationManager.GetSection("remotion.webTesting");
+            Assertion.IsNotNull(configuration, "Configuration section 'remotion.webTesting' missing.");
             return configuration;
           });
     }
 
     private WebTestConfigurationSection ()
     {
-      var xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
-      _browserProperty = new ConfigurationProperty (
+      var xmlnsProperty = new ConfigurationProperty("xmlns", typeof(string), null, ConfigurationPropertyOptions.None);
+      _browserProperty = new ConfigurationProperty(
           "browser",
-          typeof (string),
+          typeof(string),
           null,
           null,
-          new RegexStringValidator ("(InternetExplorer|Chrome|Edge|Firefox)"),
+          new RegexStringValidator("(InternetExplorer|Chrome|Edge|Firefox)"),
           ConfigurationPropertyOptions.IsRequired);
-      _searchTimeoutProperty = new ConfigurationProperty ("searchTimeout", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
-      _commandTimeoutProperty = new ConfigurationProperty ("commandTimeout", typeof (TimeSpan), TimeSpan.FromMinutes (1));
-      _asyncJavaScriptTimeoutProperty = new ConfigurationProperty ("asyncJavaScriptTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
-      _downloadStartedTimeoutProperty = new ConfigurationProperty ("downloadStartedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
-      _downloadUpdatedTimeoutProperty = new ConfigurationProperty ("downloadUpdatedTimeout", typeof (TimeSpan), TimeSpan.FromSeconds (10));
-      _verifyWebApplicationStartedTimeoutProperty = new ConfigurationProperty ("verifyWebApplicationStartedTimeout", typeof (TimeSpan), TimeSpan.FromMinutes (1));
-      _retryIntervalProperty = new ConfigurationProperty ("retryInterval", typeof (TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
-      _webApplicationRootProperty = new ConfigurationProperty (
+      _searchTimeoutProperty = new ConfigurationProperty("searchTimeout", typeof(TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
+      _commandTimeoutProperty = new ConfigurationProperty("commandTimeout", typeof(TimeSpan), TimeSpan.FromMinutes(1));
+      _asyncJavaScriptTimeoutProperty = new ConfigurationProperty("asyncJavaScriptTimeout", typeof(TimeSpan), TimeSpan.FromSeconds(10));
+      _downloadStartedTimeoutProperty = new ConfigurationProperty("downloadStartedTimeout", typeof(TimeSpan), TimeSpan.FromSeconds(10));
+      _downloadUpdatedTimeoutProperty = new ConfigurationProperty("downloadUpdatedTimeout", typeof(TimeSpan), TimeSpan.FromSeconds(10));
+      _verifyWebApplicationStartedTimeoutProperty = new ConfigurationProperty("verifyWebApplicationStartedTimeout", typeof(TimeSpan), TimeSpan.FromMinutes(1));
+      _retryIntervalProperty = new ConfigurationProperty("retryInterval", typeof(TimeSpan), null, ConfigurationPropertyOptions.IsRequired);
+      _webApplicationRootProperty = new ConfigurationProperty(
           "webApplicationRoot",
-          typeof (string),
+          typeof(string),
           null,
           null,
-          new StringValidator (minLength: 1),
+          new StringValidator(minLength: 1),
           ConfigurationPropertyOptions.IsRequired);
-      _screenshotDirectoryProperty = new ConfigurationProperty ("screenshotDirectory", typeof (string));
-      _logsDirectoryProperty = new ConfigurationProperty ("logsDirectory", typeof (string), ".");
-      _closeBrowserWindowsOnSetUpAndTearDownProperty = new ConfigurationProperty ("closeBrowserWindowsOnSetUpAndTearDown", typeof (bool), false);
-      _cleanUpUnmatchedDownloadedFiles = new ConfigurationProperty ("cleanUpUnmatchedDownloadedFiles", typeof (bool), false);
-      _requestErrorDetectionStrategyProperty = new ConfigurationProperty ("requestErrorDetectionStrategy", typeof (string), "None");
-      _hostingProperty = new ConfigurationProperty ("hosting", typeof (ProviderSettings));
-      _testSiteLayoutProperty = new ConfigurationProperty ("testSiteLayout", typeof (TestSiteLayoutConfigurationElement));
-      _chrome = new ConfigurationProperty ("chrome", typeof (ChromiumConfigurationElement));
-      _edge = new ConfigurationProperty ("edge", typeof (ChromiumConfigurationElement));
+      _screenshotDirectoryProperty = new ConfigurationProperty("screenshotDirectory", typeof(string));
+      _logsDirectoryProperty = new ConfigurationProperty("logsDirectory", typeof(string), ".");
+      _closeBrowserWindowsOnSetUpAndTearDownProperty = new ConfigurationProperty("closeBrowserWindowsOnSetUpAndTearDown", typeof(bool), false);
+      _cleanUpUnmatchedDownloadedFiles = new ConfigurationProperty("cleanUpUnmatchedDownloadedFiles", typeof(bool), false);
+      _requestErrorDetectionStrategyProperty = new ConfigurationProperty("requestErrorDetectionStrategy", typeof(string), "None");
+      _hostingProperty = new ConfigurationProperty("hosting", typeof(ProviderSettings));
+      _testSiteLayoutProperty = new ConfigurationProperty("testSiteLayout", typeof(TestSiteLayoutConfigurationElement));
+      _chrome = new ConfigurationProperty("chrome", typeof(ChromiumConfigurationElement));
+      _edge = new ConfigurationProperty("edge", typeof(ChromiumConfigurationElement));
 
       _properties = new ConfigurationPropertyCollection
                     {
@@ -137,7 +137,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public string BrowserName
     {
-      get { return (string) this [_browserProperty]; }
+      get { return (string)this [_browserProperty]; }
     }
 
     /// <summary>
@@ -145,7 +145,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public TimeSpan SearchTimeout
     {
-      get { return (TimeSpan) this [_searchTimeoutProperty]; }
+      get { return (TimeSpan)this [_searchTimeoutProperty]; }
     }
 
     /// <summary>
@@ -153,7 +153,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public TimeSpan CommandTimeout
     {
-      get { return (TimeSpan) this [_commandTimeoutProperty]; }
+      get { return (TimeSpan)this [_commandTimeoutProperty]; }
     }
 
     /// <summary>
@@ -161,7 +161,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public TimeSpan AsyncJavaScriptTimeout
     {
-      get { return (TimeSpan) this [_asyncJavaScriptTimeoutProperty]; }
+      get { return (TimeSpan)this [_asyncJavaScriptTimeoutProperty]; }
     }
 
     /// <summary>
@@ -169,7 +169,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public TimeSpan DownloadStartedTimeout
     {
-      get { return (TimeSpan) this [_downloadStartedTimeoutProperty]; }
+      get { return (TimeSpan)this [_downloadStartedTimeoutProperty]; }
     }
 
     /// <summary>
@@ -177,15 +177,15 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public TimeSpan DownloadUpdatedTimeout
     {
-      get { return (TimeSpan) this [_downloadUpdatedTimeoutProperty]; }
+      get { return (TimeSpan)this [_downloadUpdatedTimeoutProperty]; }
     }
-    
+
     /// <summary>
     /// Specifies how long the <see cref="WebTestSetUpFixtureHelper"/> should wait for the WebApplication to return a 200 on <see cref="WebApplicationRoot"/>.
     /// </summary>
     public TimeSpan VerifyWebApplicationStartedTimeout
     {
-      get { return (TimeSpan) this [_verifyWebApplicationStartedTimeoutProperty]; }
+      get { return (TimeSpan)this [_verifyWebApplicationStartedTimeoutProperty]; }
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public TimeSpan RetryInterval
     {
-      get { return (TimeSpan) this [_retryIntervalProperty]; }
+      get { return (TimeSpan)this [_retryIntervalProperty]; }
     }
 
     /// <summary>
@@ -202,7 +202,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public string WebApplicationRoot
     {
-      get { return (string) this [_webApplicationRootProperty]; }
+      get { return (string)this [_webApplicationRootProperty]; }
     }
 
     /// <summary>
@@ -211,7 +211,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public string ScreenshotDirectory
     {
-      get { return Path.GetFullPath ((string) this [_screenshotDirectoryProperty]); }
+      get { return Path.GetFullPath((string)this [_screenshotDirectoryProperty]); }
     }
 
     /// <summary>
@@ -219,7 +219,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public string LogsDirectory
     {
-      get { return (string) this [_logsDirectoryProperty]; }
+      get { return (string)this [_logsDirectoryProperty]; }
     }
 
     /// <summary>
@@ -229,9 +229,9 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public bool CloseBrowserWindowsOnSetUpAndTearDown
     {
-      get { return (bool) this [_closeBrowserWindowsOnSetUpAndTearDownProperty]; }
+      get { return (bool)this [_closeBrowserWindowsOnSetUpAndTearDownProperty]; }
     }
-    
+
     /// <summary>
     /// Clean up the download folder on error.
     /// </summary>
@@ -245,7 +245,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </remarks>
     public bool CleanUpUnmatchedDownloadedFiles
     {
-      get { return (bool) this [_cleanUpUnmatchedDownloadedFiles]; }
+      get { return (bool)this [_cleanUpUnmatchedDownloadedFiles]; }
     }
 
     ///<summary>
@@ -256,12 +256,12 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </remarks>
     public string RequestErrorDetectionStrategyTypeName
     {
-      get { return (string) this [_requestErrorDetectionStrategyProperty]; }
+      get { return (string)this [_requestErrorDetectionStrategyProperty]; }
     }
 
     public ProviderSettings HostingProviderSettings
     {
-      get { return (ProviderSettings) this [_hostingProperty]; }
+      get { return (ProviderSettings)this [_hostingProperty]; }
     }
 
     /// <summary>
@@ -269,7 +269,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public TestSiteLayoutConfigurationElement TestSiteLayoutConfiguration
     {
-      get { return (TestSiteLayoutConfigurationElement) this [_testSiteLayoutProperty]; }
+      get { return (TestSiteLayoutConfigurationElement)this [_testSiteLayoutProperty]; }
     }
 
     /// <summary>
@@ -277,7 +277,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public ChromiumConfigurationElement Chrome
     {
-      get { return (ChromiumConfigurationElement) this[_chrome]; }
+      get { return (ChromiumConfigurationElement)this[_chrome]; }
     }
 
     /// <summary>
@@ -285,7 +285,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public ChromiumConfigurationElement Edge
     {
-      get { return (ChromiumConfigurationElement) this[_edge]; }
+      get { return (ChromiumConfigurationElement)this[_edge]; }
     }
   }
 }

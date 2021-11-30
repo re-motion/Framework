@@ -30,44 +30,44 @@ namespace Remotion.Mixins.Definitions.Building
 
     public void Apply (IEnumerable<Type> dependencyTypes)
     {
-      ArgumentUtility.CheckNotNull ("dependencyTypes", dependencyTypes);
+      ArgumentUtility.CheckNotNull("dependencyTypes", dependencyTypes);
 
       foreach (Type type in dependencyTypes)
       {
-        if (!type.Equals (typeof (object))) // dependencies to System.Object are always fulfilled and not explicitly added to the configuration
+        if (!type.Equals(typeof(object))) // dependencies to System.Object are always fulfilled and not explicitly added to the configuration
         {
-          DependencyDefinitionBase dependency = BuildDependency (type, null);
-          AddDependency (dependency);
+          DependencyDefinitionBase dependency = BuildDependency(type, null);
+          AddDependency(dependency);
         }
       }
     }
 
-    private DependencyDefinitionBase BuildDependency(Type type, DependencyDefinitionBase? aggregator)
+    private DependencyDefinitionBase BuildDependency (Type type, DependencyDefinitionBase? aggregator)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      RequirementDefinitionBase requirement = GetRequirement (type);
+      RequirementDefinitionBase requirement = GetRequirement(type);
       if (requirement == null)
       {
-        requirement = CreateRequirement (type);
+        requirement = CreateRequirement(type);
         AddRequirement(requirement);
       }
-      DependencyDefinitionBase dependency = CreateDependency (requirement, aggregator);
-      requirement.RequiringDependencies.Add (dependency);
-      CheckForAggregate (dependency);
+      DependencyDefinitionBase dependency = CreateDependency(requirement, aggregator);
+      requirement.RequiringDependencies.Add(dependency);
+      CheckForAggregate(dependency);
       return dependency;
     }
 
     private void CheckForAggregate (DependencyDefinitionBase dependency)
     {
-      ArgumentUtility.CheckNotNull ("dependency", dependency);
+      ArgumentUtility.CheckNotNull("dependency", dependency);
 
       if (dependency.RequiredType.IsAggregatorInterface)
       {
-        foreach (Type type in dependency.RequiredType.Type.GetInterfaces ())
+        foreach (Type type in dependency.RequiredType.Type.GetInterfaces())
         {
-          DependencyDefinitionBase innerDependency = BuildDependency (type, dependency);
-          dependency.AggregatedDependencies.Add (innerDependency);
+          DependencyDefinitionBase innerDependency = BuildDependency(type, dependency);
+          dependency.AggregatedDependencies.Add(innerDependency);
         }
       }
     }

@@ -23,7 +23,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
   {
     public string IfcMethod ()
     {
-      throw new Exception ("The method or operation is not implemented.");
+      throw new Exception("The method or operation is not implemented.");
     }
   }
 }

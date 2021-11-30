@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocMultilineTextValueSelector : BocControlSelectorBase<BocMultilineTextValueControlObject>
   {
     public BocMultilineTextValueSelector ()
-        : base ("BocMultilineTextValue")
+        : base("BocMultilineTextValue")
     {
     }
 
@@ -36,10 +36,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new BocMultilineTextValueControlObject (newControlObjectContext);
+      return new BocMultilineTextValueControlObject(newControlObjectContext);
     }
   }
 }

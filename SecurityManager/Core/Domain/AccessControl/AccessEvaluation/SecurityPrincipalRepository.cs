@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   /// Cache-based implementation of the <see cref="ISecurityPrincipalRepository"/> interface.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (ISecurityPrincipalRepository), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ISecurityPrincipalRepository), Lifetime = LifetimeKind.Singleton)]
   public sealed class SecurityPrincipalRepository : ISecurityPrincipalRepository
   {
     private readonly IUserRevisionProvider _revisionProvider;
@@ -38,20 +38,20 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public SecurityPrincipalRepository (IUserRevisionProvider revisionProvider)
     {
-      ArgumentUtility.CheckNotNull ("revisionProvider", revisionProvider);
+      ArgumentUtility.CheckNotNull("revisionProvider", revisionProvider);
 
       _revisionProvider = revisionProvider;
     }
 
     public User GetUser (string userName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("userName", userName);
+      ArgumentUtility.CheckNotNullOrEmpty("userName", userName);
 
       // Optimized for memory allocations
       if (_userCacheValueFactory == null)
-        _userCacheValueFactory = key => new CachedUser (_revisionProvider, key);
+        _userCacheValueFactory = key => new CachedUser(_revisionProvider, key);
 
-      var cacheItem = _cache.GetOrCreateValue (userName, _userCacheValueFactory);
+      var cacheItem = _cache.GetOrCreateValue(userName, _userCacheValueFactory);
       return cacheItem.GetValue();
     }
   }

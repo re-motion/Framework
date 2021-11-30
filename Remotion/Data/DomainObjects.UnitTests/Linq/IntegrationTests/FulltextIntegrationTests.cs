@@ -33,64 +33,64 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
   {
     public override void OneTimeSetUp ()
     {
-      base.OneTimeSetUp ();
+      base.OneTimeSetUp();
 
-      SetDatabaseModifyable ();
-      DatabaseAgent.ExecuteBatchFile ("Database\\DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
-      DatabaseAgent.ExecuteBatchFile ("Database\\DataDomainObjects_CreateFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
-      WaitForIndices ();
+      SetDatabaseModifyable();
+      DatabaseAgent.ExecuteBatchFile("Database\\DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+      DatabaseAgent.ExecuteBatchFile("Database\\DataDomainObjects_CreateFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+      WaitForIndices();
     }
 
     public override void TestFixtureTearDown ()
     {
-      DatabaseAgent.ExecuteBatchFile ("Database\\DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
-      base.TestFixtureTearDown ();
+      DatabaseAgent.ExecuteBatchFile("Database\\DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+      base.TestFixtureTearDown();
     }
 
     [Test]
     public void Fulltext_Spike ()
     {
-      ClassDefinition orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Order));
+      ClassDefinition orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
       var queryDefinition =
-          new QueryDefinition ("bla", orderClassDefinition.StorageEntityDefinition.StorageProviderDefinition, "SELECT * FROM CeoView WHERE Contains ([CeoView].[Name], 'Fischer')", QueryType.Collection);
-      var query = QueryFactory.CreateQuery (queryDefinition);
+          new QueryDefinition("bla", orderClassDefinition.StorageEntityDefinition.StorageProviderDefinition, "SELECT * FROM CeoView WHERE Contains ([CeoView].[Name], 'Fischer')", QueryType.Collection);
+      var query = QueryFactory.CreateQuery(queryDefinition);
 
-      var orders = TestableClientTransaction.QueryManager.GetCollection<Ceo> (query).AsEnumerable();
-      CheckQueryResult (orders, DomainObjectIDs.Ceo4);
+      var orders = TestableClientTransaction.QueryManager.GetCollection<Ceo>(query).AsEnumerable();
+      CheckQueryResult(orders, DomainObjectIDs.Ceo4);
     }
 
     [Test]
     public void QueryWithContainsFullText ()
     {
       var ceos = from c in QueryFactory.CreateLinqQuery<Ceo>()
-                 where c.Name.SqlContainsFulltext ("Fischer")
+                 where c.Name.SqlContainsFulltext("Fischer")
                  select c;
-      CheckQueryResult (ceos, DomainObjectIDs.Ceo4);
+      CheckQueryResult(ceos, DomainObjectIDs.Ceo4);
     }
 
     [Test]
     public void QueryWithContainsFullText_WithParamterLongerThanUpperLimit_ThrowsRdbmsProviderException ()
     {
-      var searchCondition = new string ('a', 4001);
+      var searchCondition = new string('a', 4001);
       var ceos = from c in QueryFactory.CreateLinqQuery<Ceo>()
-                 where c.Name.SqlContainsFulltext (searchCondition)
+                 where c.Name.SqlContainsFulltext(searchCondition)
                  select c;
 
-      Assert.That (
+      Assert.That(
           () => ceos.ToArray(),
           Throws.TypeOf<RdbmsProviderException>()
               // SQL Server 2008 - SQL Server 2014
-              .With.Message.EndsWith ("The argument type \"nvarchar(max)\" is invalid for argument 2 of \"CONTAINS\".")
+              .With.Message.EndsWith("The argument type \"nvarchar(max)\" is invalid for argument 2 of \"CONTAINS\".")
               // SQL Server 2005
-              .Or.Message.EndsWith ("Argument data type nvarchar(max) is invalid for argument 2 of CONTAINS function."));
+              .Or.Message.EndsWith("Argument data type nvarchar(max) is invalid for argument 2 of CONTAINS function."));
     }
 
     private void WaitForIndices ()
     {
-      var rowCount = DatabaseAgent.ExecuteScalarCommand ("SELECT COUNT(*) FROM CeoView WHERE Contains ([CeoView].[Name], 'Fischer')");
-      if (!rowCount.Equals (1))
+      var rowCount = DatabaseAgent.ExecuteScalarCommand("SELECT COUNT(*) FROM CeoView WHERE Contains ([CeoView].[Name], 'Fischer')");
+      if (!rowCount.Equals(1))
       {
-        Thread.Sleep (100);
+        Thread.Sleep(100);
         WaitForIndices();
       }
     }

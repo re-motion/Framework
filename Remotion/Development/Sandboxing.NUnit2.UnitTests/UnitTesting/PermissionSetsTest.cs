@@ -33,44 +33,44 @@ namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
     [Test]
     public void GetMediumTrust ()
     {
-      var tempDirectory = Environment.GetEnvironmentVariable ("TEMP");
-      var mediumTrustPermissions = PermissionSets.GetMediumTrust (tempDirectory, Environment.MachineName);
-      var directoryName = Path.GetDirectoryName (tempDirectory);
+      var tempDirectory = Environment.GetEnvironmentVariable("TEMP");
+      var mediumTrustPermissions = PermissionSets.GetMediumTrust(tempDirectory, Environment.MachineName);
+      var directoryName = Path.GetDirectoryName(tempDirectory);
 
-      Assert.That (mediumTrustPermissions.Length, Is.EqualTo (11));
-      Assert.That (((AspNetHostingPermission) mediumTrustPermissions[0]).Level, Is.EqualTo (AspNetHostingPermissionLevel.Medium));
-      Assert.That (((DnsPermission) mediumTrustPermissions[1]).IsUnrestricted(), Is.True);
-      Assert.That (
-          ((EnvironmentPermission) mediumTrustPermissions[2]).GetPathList (EnvironmentPermissionAccess.Read),
-          Is.EqualTo ("TEMP;TMP;USERNAME;OS;COMPUTERNAME"));
-      Assert.That (
-          Path.GetDirectoryName (((FileIOPermission) mediumTrustPermissions[3]).GetPathList (FileIOPermissionAccess.Read)[0]),
-          Is.EqualTo (directoryName));
-      Assert.That (
-          Path.GetDirectoryName (((FileIOPermission) mediumTrustPermissions[3]).GetPathList (FileIOPermissionAccess.Write)[0]),
-          Is.EqualTo (directoryName));
-      Assert.That (
-          Path.GetDirectoryName (((FileIOPermission) mediumTrustPermissions[3]).GetPathList (FileIOPermissionAccess.Append)[0]),
-          Is.EqualTo (directoryName));
-      Assert.That (
-          Path.GetDirectoryName (((FileIOPermission) mediumTrustPermissions[3]).GetPathList (FileIOPermissionAccess.PathDiscovery)[0]),
-          Is.EqualTo (directoryName));
-      Assert.That (
-          ((IsolatedStorageFilePermission) mediumTrustPermissions[4]).UsageAllowed, Is.EqualTo (IsolatedStorageContainment.AssemblyIsolationByUser));
-      Assert.That (((IsolatedStorageFilePermission) mediumTrustPermissions[4]).UserQuota, Is.EqualTo (9223372036854775807L));
-      Assert.That (((PrintingPermission) mediumTrustPermissions[5]).Level, Is.EqualTo (PrintingPermissionLevel.DefaultPrinting));
-      Assert.That (
-          ((SecurityPermission) mediumTrustPermissions[6]).Flags,
-          Is.EqualTo (
+      Assert.That(mediumTrustPermissions.Length, Is.EqualTo(11));
+      Assert.That(((AspNetHostingPermission)mediumTrustPermissions[0]).Level, Is.EqualTo(AspNetHostingPermissionLevel.Medium));
+      Assert.That(((DnsPermission)mediumTrustPermissions[1]).IsUnrestricted(), Is.True);
+      Assert.That(
+          ((EnvironmentPermission)mediumTrustPermissions[2]).GetPathList(EnvironmentPermissionAccess.Read),
+          Is.EqualTo("TEMP;TMP;USERNAME;OS;COMPUTERNAME"));
+      Assert.That(
+          Path.GetDirectoryName(((FileIOPermission)mediumTrustPermissions[3]).GetPathList(FileIOPermissionAccess.Read)[0]),
+          Is.EqualTo(directoryName));
+      Assert.That(
+          Path.GetDirectoryName(((FileIOPermission)mediumTrustPermissions[3]).GetPathList(FileIOPermissionAccess.Write)[0]),
+          Is.EqualTo(directoryName));
+      Assert.That(
+          Path.GetDirectoryName(((FileIOPermission)mediumTrustPermissions[3]).GetPathList(FileIOPermissionAccess.Append)[0]),
+          Is.EqualTo(directoryName));
+      Assert.That(
+          Path.GetDirectoryName(((FileIOPermission)mediumTrustPermissions[3]).GetPathList(FileIOPermissionAccess.PathDiscovery)[0]),
+          Is.EqualTo(directoryName));
+      Assert.That(
+          ((IsolatedStorageFilePermission)mediumTrustPermissions[4]).UsageAllowed, Is.EqualTo(IsolatedStorageContainment.AssemblyIsolationByUser));
+      Assert.That(((IsolatedStorageFilePermission)mediumTrustPermissions[4]).UserQuota, Is.EqualTo(9223372036854775807L));
+      Assert.That(((PrintingPermission)mediumTrustPermissions[5]).Level, Is.EqualTo(PrintingPermissionLevel.DefaultPrinting));
+      Assert.That(
+          ((SecurityPermission)mediumTrustPermissions[6]).Flags,
+          Is.EqualTo(
               SecurityPermissionFlag.Assertion
               | SecurityPermissionFlag.Execution
               | SecurityPermissionFlag.ControlThread
               | SecurityPermissionFlag.ControlPrincipal
               | SecurityPermissionFlag.RemotingConfiguration));
-      Assert.That (((SmtpPermission) mediumTrustPermissions[7]).Access, Is.EqualTo (SmtpAccess.Connect));
-      Assert.That (((SqlClientPermission) mediumTrustPermissions[8]).IsUnrestricted(), Is.True);
-      Assert.That (mediumTrustPermissions[9], Is.TypeOf (typeof (WebPermission)));
-      Assert.That (((ReflectionPermission) mediumTrustPermissions[10]).Flags, Is.EqualTo (ReflectionPermissionFlag.RestrictedMemberAccess));
+      Assert.That(((SmtpPermission)mediumTrustPermissions[7]).Access, Is.EqualTo(SmtpAccess.Connect));
+      Assert.That(((SqlClientPermission)mediumTrustPermissions[8]).IsUnrestricted(), Is.True);
+      Assert.That(mediumTrustPermissions[9], Is.TypeOf(typeof(WebPermission)));
+      Assert.That(((ReflectionPermission)mediumTrustPermissions[10]).Flags, Is.EqualTo(ReflectionPermissionFlag.RestrictedMemberAccess));
     }
   }
 }

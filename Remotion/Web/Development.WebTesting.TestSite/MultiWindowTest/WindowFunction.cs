@@ -23,11 +23,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
   public class WindowFunction : WxeFunction
   {
     public WindowFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("MultiWindowTest/Window.aspx");
+    private WxeStep Step1 = new WxePageStep("MultiWindowTest/Window.aspx");
   }
 }

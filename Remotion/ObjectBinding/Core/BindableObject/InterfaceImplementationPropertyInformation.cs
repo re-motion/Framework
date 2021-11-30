@@ -35,8 +35,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public InterfaceImplementationPropertyInformation (IPropertyInformation implementationPropertyInfo, IPropertyInformation declarationPropertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("implementationPropertyInfo", implementationPropertyInfo);
-      ArgumentUtility.CheckNotNull ("declarationPropertyInfo", declarationPropertyInfo);
+      ArgumentUtility.CheckNotNull("implementationPropertyInfo", implementationPropertyInfo);
+      ArgumentUtility.CheckNotNull("declarationPropertyInfo", declarationPropertyInfo);
 
       _implementationPropertyInfo = implementationPropertyInfo;
       _declarationPropertyInfo = declarationPropertyInfo;
@@ -74,29 +74,29 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public T? GetCustomAttribute<T> (bool inherited) where T: class
     {
-      return _implementationPropertyInfo.GetCustomAttribute<T> (inherited);
+      return _implementationPropertyInfo.GetCustomAttribute<T>(inherited);
     }
 
     public T[] GetCustomAttributes<T> (bool inherited) where T: class
     {
-      return _implementationPropertyInfo.GetCustomAttributes<T> (inherited);
+      return _implementationPropertyInfo.GetCustomAttributes<T>(inherited);
     }
 
     public bool IsDefined<T> (bool inherited) where T: class
     {
-      return _implementationPropertyInfo.IsDefined<T> (inherited);
+      return _implementationPropertyInfo.IsDefined<T>(inherited);
     }
 
     public IPropertyInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull ("implementationType", implementationType);
+      ArgumentUtility.CheckNotNull("implementationType", implementationType);
 
-      return _implementationPropertyInfo.FindInterfaceImplementation (implementationType);
+      return _implementationPropertyInfo.FindInterfaceImplementation(implementationType);
     }
 
     public IEnumerable<IPropertyInformation> FindInterfaceDeclarations ()
     {
-      return EnumerableUtility.Singleton (_declarationPropertyInfo);
+      return EnumerableUtility.Singleton(_declarationPropertyInfo);
     }
 
     public ParameterInfo[] GetIndexParameters ()
@@ -116,39 +116,39 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public bool CanBeSetFromOutside
     {
-      get { return GetSetMethod (false) != null; }
+      get { return GetSetMethod(false) != null; }
     }
 
     public object? GetValue (object? instance, object?[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance!);
+      ArgumentUtility.CheckNotNull("instance", instance!);
 
-      var getMethod = GetGetMethod (true);
+      var getMethod = GetGetMethod(true);
 
       if (getMethod == null)
-        throw new InvalidOperationException ($"{_implementationPropertyInfo.Name} does not declare a getter.");
+        throw new InvalidOperationException($"{_implementationPropertyInfo.Name} does not declare a getter.");
 
-      return getMethod.Invoke (instance, indexParameters);
+      return getMethod.Invoke(instance, indexParameters);
     }
 
     public void SetValue (object? instance, object? value, object?[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance!);
+      ArgumentUtility.CheckNotNull("instance", instance!);
 
-      var setMethod = GetSetMethod (true);
+      var setMethod = GetSetMethod(true);
 
       if (setMethod == null)
-        throw new InvalidOperationException ($"{_implementationPropertyInfo.Name} does not declare a setter.");
+        throw new InvalidOperationException($"{_implementationPropertyInfo.Name} does not declare a setter.");
 
       if (indexParameters != null)
       {
-        var parameters = new List<object?> (indexParameters);
-        parameters.Add (value);
-        setMethod.Invoke (instance, parameters.ToArray ());
+        var parameters = new List<object?>(indexParameters);
+        parameters.Add(value);
+        setMethod.Invoke(instance, parameters.ToArray());
       }
       else
       {
-        setMethod.Invoke (instance, new[] { value });
+        setMethod.Invoke(instance, new[] { value });
       }
     }
 
@@ -167,17 +167,17 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </returns>
     public IMethodInformation? GetGetMethod (bool nonPublic)
     {
-      var interfaceAccessor = _declarationPropertyInfo.GetGetMethod (nonPublic);
+      var interfaceAccessor = _declarationPropertyInfo.GetGetMethod(nonPublic);
 
       if (interfaceAccessor != null)
       {
-        var implementationMethodInfo = _implementationPropertyInfo.GetGetMethod (true);
-        Assertion.IsNotNull (implementationMethodInfo, "Could not get getter info of '{0}'.", _implementationPropertyInfo.Name);
-        return new InterfaceImplementationMethodInformation (implementationMethodInfo, interfaceAccessor);
+        var implementationMethodInfo = _implementationPropertyInfo.GetGetMethod(true);
+        Assertion.IsNotNull(implementationMethodInfo, "Could not get getter info of '{0}'.", _implementationPropertyInfo.Name);
+        return new InterfaceImplementationMethodInformation(implementationMethodInfo, interfaceAccessor);
       }
       else
       {
-        return _implementationPropertyInfo.GetGetMethod (nonPublic);
+        return _implementationPropertyInfo.GetGetMethod(nonPublic);
       }
     }
 
@@ -196,17 +196,17 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </returns>
     public IMethodInformation? GetSetMethod (bool nonPublic)
     {
-      var interfaceAccessor = _declarationPropertyInfo.GetSetMethod (nonPublic);
+      var interfaceAccessor = _declarationPropertyInfo.GetSetMethod(nonPublic);
 
       if (interfaceAccessor != null)
       {
-        var implementationMethodInfo = _implementationPropertyInfo.GetSetMethod (true);
-        Assertion.IsNotNull (implementationMethodInfo, "Could not get setter info of '{0}'.", _implementationPropertyInfo.Name);
-        return new InterfaceImplementationMethodInformation (implementationMethodInfo, interfaceAccessor);
+        var implementationMethodInfo = _implementationPropertyInfo.GetSetMethod(true);
+        Assertion.IsNotNull(implementationMethodInfo, "Could not get setter info of '{0}'.", _implementationPropertyInfo.Name);
+        return new InterfaceImplementationMethodInformation(implementationMethodInfo, interfaceAccessor);
       }
       else
       {
-        return _implementationPropertyInfo.GetSetMethod (nonPublic);
+        return _implementationPropertyInfo.GetSetMethod(nonPublic);
       }
     }
 
@@ -214,11 +214,11 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       if (obj == null)
         return false;
-      if (obj.GetType() != GetType()) 
+      if (obj.GetType() != GetType())
         return false;
-      
-      var other = (InterfaceImplementationPropertyInformation) obj;
-      return _implementationPropertyInfo.Equals (other._implementationPropertyInfo) && _declarationPropertyInfo.Equals(other._declarationPropertyInfo);
+
+      var other = (InterfaceImplementationPropertyInformation)obj;
+      return _implementationPropertyInfo.Equals(other._implementationPropertyInfo) && _declarationPropertyInfo.Equals(other._declarationPropertyInfo);
     }
 
     public override int GetHashCode ()
@@ -228,7 +228,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public override string ToString ()
     {
-      return string.Format ("{0} (impl of '{1}')", _implementationPropertyInfo.Name, _declarationPropertyInfo.DeclaringType!.Name);
+      return string.Format("{0} (impl of '{1}')", _implementationPropertyInfo.Name, _declarationPropertyInfo.DeclaringType!.Name);
     }
 
     bool INullObject.IsNull

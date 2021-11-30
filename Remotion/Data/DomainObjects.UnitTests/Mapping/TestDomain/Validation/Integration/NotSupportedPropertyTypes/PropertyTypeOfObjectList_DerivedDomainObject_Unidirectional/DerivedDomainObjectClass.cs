@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     PropertyTypeOfObjectList_DerivedDomainObject_Unidirectional
 {
   [DBTable]
-  [ClassID ("PropertyTypeOfObjectList_DerivedDomainObject_Unidirectional_DerivedDomainObjectClass")]
+  [ClassID("PropertyTypeOfObjectList_DerivedDomainObject_Unidirectional_DerivedDomainObjectClass")]
   public class DerivedDomainObjectClass : DomainObject
   {
 

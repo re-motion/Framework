@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
     private readonly IBrowserContentLocator _locator = new InternetExplorerBrowserContentLocator();
 
     public InternetExplorerConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
-        : base (webTestConfigurationSection)
+        : base(webTestConfigurationSection)
     {
     }
 
@@ -50,7 +50,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.In
 
     public override IBrowserFactory BrowserFactory
     {
-      get { return new InternetExplorerBrowserFactory (this); }
+      get { return new InternetExplorerBrowserFactory(this); }
     }
 
     public override IDownloadHelper DownloadHelper

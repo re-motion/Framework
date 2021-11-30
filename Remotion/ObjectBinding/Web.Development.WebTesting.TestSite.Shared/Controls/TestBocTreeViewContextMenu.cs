@@ -37,14 +37,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     public override void OnMenuItemEventCommandClick (WebMenuItem menuItem, WebTreeNode node)
     {
-      base.OnMenuItemEventCommandClick (menuItem, node);
+      base.OnMenuItemEventCommandClick(menuItem, node);
 
-      TestOutput.SetActionPerformed (node.TreeView.ID, "NodeContextMenuClick", node.ItemID + "|" + node.Text);
+      TestOutput.SetActionPerformed(node.TreeView.ID, "NodeContextMenuClick", node.ItemID + "|" + node.Text);
     }
 
     private BocTreeViewUserControlTestOutput TestOutput
     {
-      get { return (BocTreeViewUserControlTestOutput) ((Layout) OwnerControl.Page.Master).GetTestOutputControl(); }
+      get { return (BocTreeViewUserControlTestOutput)((Layout)OwnerControl.Page.Master).GetTestOutputControl(); }
     }
   }
 }

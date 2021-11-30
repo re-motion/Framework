@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding.Security
   /// <summary>
   /// Apply this <see cref="Attribute"/> to an assembly to force the inclusing of the security-extension for object binding.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Assembly)]
+  [AttributeUsage(AttributeTargets.Assembly)]
   public class EnsureSecuritySupportForObjectBindingAttribute : Attribute
   {
 

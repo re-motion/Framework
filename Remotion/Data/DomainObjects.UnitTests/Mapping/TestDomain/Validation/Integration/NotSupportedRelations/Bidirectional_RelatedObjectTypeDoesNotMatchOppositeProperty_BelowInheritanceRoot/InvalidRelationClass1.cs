@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations.
     Bidirectional_RelatedObjectTypeDoesNotMatchOppositeProperty_BelowInheritanceRoot
 {
-  [ClassID ("Bidirectional_WithInvalidPropertyReferences_InvalidRelationClass1")]
+  [ClassID("Bidirectional_WithInvalidPropertyReferences_InvalidRelationClass1")]
   public class InvalidRelationClass1 : BaseRelationClass1
   {
     [DBBidirectionalRelation("RelationProperty3", ContainsForeignKey = true)]

@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
     /// <inheritdoc />
     public override DropDownMenu CreateControl (GenericTestOptions options)
     {
-      var control = base.CreateControl (options);
+      var control = base.CreateControl(options);
       control.TitleText = options.TextContent;
       return control;
     }

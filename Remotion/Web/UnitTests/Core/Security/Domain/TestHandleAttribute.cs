@@ -19,23 +19,23 @@ using System.Linq;
 
 namespace Remotion.Web.UnitTests.Core.Security.Domain
 {
-  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
   public class TestHandleAttribute : Attribute, IHandleAttribute
   {
     public Type GetReferencedType (Type handleType)
     {
-      if (handleType.IsGenericType && handleType.GetGenericTypeDefinition() == typeof (IHandle<>))
+      if (handleType.IsGenericType && handleType.GetGenericTypeDefinition() == typeof(IHandle<>))
         return handleType.GetGenericArguments().Single();
       else
       {
-        var handleInterface = handleType.GetInterfaces().Single (i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof (IHandle<>));
-        return GetReferencedType (handleInterface);
+        var handleInterface = handleType.GetInterfaces().Single(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IHandle<>));
+        return GetReferencedType(handleInterface);
       }
     }
 
     public object GetReferencedInstance (object handleInstance)
     {
-      return ((IHandle<object>) handleInstance).GetReferencedInstance ();
+      return ((IHandle<object>)handleInstance).GetReferencedInstance();
     }
   }
 }

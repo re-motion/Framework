@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     private class TestFunction : WxeFunction
     {
       public TestFunction (WxeParameterDeclaration parameterDeclaration, object parameterValue)
-          : base (WxeTransactionMode<ClientTransactionFactory>.None, new[] { parameterDeclaration }, new[] { parameterValue })
+          : base(WxeTransactionMode<ClientTransactionFactory>.None, new[] { parameterDeclaration }, new[] { parameterValue })
       {
       }
     }
@@ -37,41 +37,41 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     public void SerializeObjectID ()
     {
       var objectID = GetObjectID();
-      var parameterDeclaration = new WxeParameterDeclaration ("name", true, WxeParameterDirection.In, typeof (ObjectID));
-      var function = new TestFunction (parameterDeclaration, objectID);
-      function.VariablesContainer.EnsureParametersInitialized (null);
+      var parameterDeclaration = new WxeParameterDeclaration("name", true, WxeParameterDirection.In, typeof(ObjectID));
+      var function = new TestFunction(parameterDeclaration, objectID);
+      function.VariablesContainer.EnsureParametersInitialized(null);
 
       var queryString = function.VariablesContainer.SerializeParametersForQueryString();
 
-      Assert.That (queryString, Is.EqualTo (new NameValueCollection { { "name", objectID.ToString() } }));
+      Assert.That(queryString, Is.EqualTo(new NameValueCollection { { "name", objectID.ToString() } }));
     }
 
     [Test]
     public void DeserializeObjectID ()
     {
       var objectID = GetObjectID();
-      var parameterDeclaration = new WxeParameterDeclaration ("name", true, WxeParameterDirection.In, typeof (ObjectID));
-      var function = new TestFunction (parameterDeclaration, null);
+      var parameterDeclaration = new WxeParameterDeclaration("name", true, WxeParameterDirection.In, typeof(ObjectID));
+      var function = new TestFunction(parameterDeclaration, null);
 
-      function.VariablesContainer.InitializeParameters (new NameValueCollection { { "name", objectID.ToString() } });
+      function.VariablesContainer.InitializeParameters(new NameValueCollection { { "name", objectID.ToString() } });
 
-      Assert.That (function.Variables["name"], Is.EqualTo (objectID));
+      Assert.That(function.Variables["name"], Is.EqualTo(objectID));
     }
 
     [Test]
     public void SerializeAndDeserializeObjectID ()
     {
       var objectID = GetObjectID();
-      var parameterDeclaration = new WxeParameterDeclaration ("name", true, WxeParameterDirection.In, typeof (ObjectID));
-      var function = new TestFunction (parameterDeclaration, objectID);
-      function.VariablesContainer.EnsureParametersInitialized (null);
+      var parameterDeclaration = new WxeParameterDeclaration("name", true, WxeParameterDirection.In, typeof(ObjectID));
+      var function = new TestFunction(parameterDeclaration, objectID);
+      function.VariablesContainer.EnsureParametersInitialized(null);
 
       var queryString = function.VariablesContainer.SerializeParametersForQueryString();
-      Assert.That (queryString.Count, Is.EqualTo (1));
+      Assert.That(queryString.Count, Is.EqualTo(1));
 
-      var deserializedfunction = new TestFunction (parameterDeclaration, null);
-      deserializedfunction.VariablesContainer.InitializeParameters (queryString);
-      Assert.That (function.Variables["name"], Is.EqualTo (objectID));
+      var deserializedfunction = new TestFunction(parameterDeclaration, null);
+      deserializedfunction.VariablesContainer.InitializeParameters(queryString);
+      Assert.That(function.Variables["name"], Is.EqualTo(objectID));
     }
 
     [Test]
@@ -79,34 +79,34 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     {
       var objectID = GetObjectID();
       var domainObjectHandle = objectID.GetHandle<SampleObject>();
-      var parameterDeclaration = new WxeParameterDeclaration (
+      var parameterDeclaration = new WxeParameterDeclaration(
           "name",
           true,
           WxeParameterDirection.In,
-          typeof (IDomainObjectHandle<SampleObject>));
-      var function = new TestFunction (parameterDeclaration, domainObjectHandle);
-      function.VariablesContainer.EnsureParametersInitialized (null);
+          typeof(IDomainObjectHandle<SampleObject>));
+      var function = new TestFunction(parameterDeclaration, domainObjectHandle);
+      function.VariablesContainer.EnsureParametersInitialized(null);
 
       var queryString = function.VariablesContainer.SerializeParametersForQueryString();
-      
-      Assert.That (queryString, Is.EqualTo (new NameValueCollection { { "name", objectID.ToString() } }));
+
+      Assert.That(queryString, Is.EqualTo(new NameValueCollection { { "name", objectID.ToString() } }));
     }
 
     [Test]
     public void DeserializeIDomainObjectHandle ()
     {
       var objectID = GetObjectID();
-      var parameterDeclaration = new WxeParameterDeclaration (
+      var parameterDeclaration = new WxeParameterDeclaration(
           "name",
           true,
           WxeParameterDirection.In,
-          typeof (IDomainObjectHandle<SampleObject>));
-      var function = new TestFunction (parameterDeclaration, null);
+          typeof(IDomainObjectHandle<SampleObject>));
+      var function = new TestFunction(parameterDeclaration, null);
 
-      function.VariablesContainer.InitializeParameters (new NameValueCollection { { "name", objectID.ToString() } });
+      function.VariablesContainer.InitializeParameters(new NameValueCollection { { "name", objectID.ToString() } });
 
-      Assert.That (function.Variables["name"], Is.InstanceOf<IDomainObjectHandle<SampleObject>> ());
-      Assert.That (((IDomainObjectHandle<SampleObject>) function.Variables["name"]).ObjectID, Is.EqualTo (objectID));
+      Assert.That(function.Variables["name"], Is.InstanceOf<IDomainObjectHandle<SampleObject>>());
+      Assert.That(((IDomainObjectHandle<SampleObject>)function.Variables["name"]).ObjectID, Is.EqualTo(objectID));
     }
 
     [Test]
@@ -114,26 +114,26 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     {
       var objectID = GetObjectID();
       var domainObjectHandle = objectID.GetHandle<SampleObject>();
-      var parameterDeclaration = new WxeParameterDeclaration (
+      var parameterDeclaration = new WxeParameterDeclaration(
           "name",
           true,
           WxeParameterDirection.In,
-          typeof (IDomainObjectHandle<SampleObject>));
-      var function = new TestFunction (parameterDeclaration, domainObjectHandle);
-      function.VariablesContainer.EnsureParametersInitialized (null);
+          typeof(IDomainObjectHandle<SampleObject>));
+      var function = new TestFunction(parameterDeclaration, domainObjectHandle);
+      function.VariablesContainer.EnsureParametersInitialized(null);
 
       var queryString = function.VariablesContainer.SerializeParametersForQueryString();
-      Assert.That (queryString.Count, Is.EqualTo (1));
+      Assert.That(queryString.Count, Is.EqualTo(1));
 
-      var deserializedfunction = new TestFunction (parameterDeclaration, null);
-      deserializedfunction.VariablesContainer.InitializeParameters (queryString);
-      Assert.That (function.Variables["name"], Is.InstanceOf<IDomainObjectHandle<SampleObject>>());
-      Assert.That (function.Variables["name"], Is.EqualTo (domainObjectHandle));
+      var deserializedfunction = new TestFunction(parameterDeclaration, null);
+      deserializedfunction.VariablesContainer.InitializeParameters(queryString);
+      Assert.That(function.Variables["name"], Is.InstanceOf<IDomainObjectHandle<SampleObject>>());
+      Assert.That(function.Variables["name"], Is.EqualTo(domainObjectHandle));
     }
 
     private static ObjectID GetObjectID ()
     {
-      return new ObjectID (typeof (SampleObject), Guid.NewGuid());
+      return new ObjectID(typeof(SampleObject), Guid.NewGuid());
     }
   }
 }

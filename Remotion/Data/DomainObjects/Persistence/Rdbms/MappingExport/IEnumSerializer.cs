@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
   /// </summary>
   public interface IEnumSerializer
   {
-    void CollectPropertyType(PropertyDefinition propertyDefinition);
+    void CollectPropertyType (PropertyDefinition propertyDefinition);
     IEnumerable<XElement> Serialize ();
   }
 }

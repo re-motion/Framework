@@ -24,7 +24,7 @@ namespace Remotion.Web.Test.Shared
   {
     protected void Button_Click (object sender, EventArgs e)
     {
-      PostBackResult.Text = ((Control) sender).ID;
+      PostBackResult.Text = ((Control)sender).ID;
     }
   }
 }

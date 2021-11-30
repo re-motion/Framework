@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           ISupportsValidationErrorsForReadOnly
   {
     public BocReferenceValueControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         return scope["data-value"] == nullIdentifier;
       }
 
-      return GetOptionDefinitions().Any (o => o.ItemID == nullIdentifier);
+      return GetOptionDefinitions().Any(o => o.ItemID == nullIdentifier);
     }
 
     /// <inheritdoc/>
@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       var scope = GetValueScope();
       if (IsReadOnly())
-        return new OptionDefinition (scope["data-value"], -1, scope.Text, true);
+        return new OptionDefinition(scope["data-value"], -1, scope.Text, true);
       else
         return scope.GetSelectedOption();
     }
@@ -77,18 +77,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
     {
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      return RetryUntilTimeout.Run (
-          () => GetValueScope().FindAllCss ("option")
-              .Select ((optionScope, i) => new OptionDefinition (optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
+      return RetryUntilTimeout.Run(
+          () => GetValueScope().FindAllCss("option")
+              .Select((optionScope, i) => new OptionDefinition(optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
               .ToList());
     }
 
     /// <inheritdoc/>
     public string GetText ()
     {
-      var scope = Scope.FindChild ("Value");
+      var scope = Scope.FindChild("Value");
       if (IsReadOnly())
         return scope.Text; // do not trim
       else
@@ -104,86 +104,86 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption(itemID)");
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption(itemID)");
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      return SelectOption().WithItemID (itemID, actionOptions);
+      return SelectOption().WithItemID(itemID, actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("itemID", itemID);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithItemID");
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithItemID");
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
       // Workaround for Marionette issue. (RM-7279)
       if (Scope.Browser.IsFirefox() && GetSelectedOption().ItemID == itemID)
         return UnspecifiedPage();
 
-      Action<ElementScope> selectAction = s => s.SelectOptionByValue (itemID);
-      return SelectOption (selectAction, actionOptions);
+      Action<ElementScope> selectAction = s => s.SelectOptionByValue(itemID);
+      return SelectOption(selectAction, actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions? actionOptions)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithIndex");
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithIndex");
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
       // Workaround for Marionette issue. (RM-7279)
       if (Scope.Browser.IsFirefox() && GetSelectedOption().Index == oneBasedIndex)
         return UnspecifiedPage();
 
-      Action<ElementScope> selectAction = s => s.SelectOptionByIndex (oneBasedIndex);
-      return SelectOption (selectAction, actionOptions);
+      Action<ElementScope> selectAction = s => s.SelectOptionByIndex(oneBasedIndex);
+      return SelectOption(selectAction, actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNull ("displayText", displayText);
+      ArgumentUtility.CheckNotNull("displayText", displayText);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver, operationName: "SelectOption.WithDisplayText");
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithDisplayText");
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
       // Workaround for Marionette issue. (RM-7279)
       if (Scope.Browser.IsFirefox() && GetSelectedOption().Text == displayText)
         return UnspecifiedPage();
 
-      Action<ElementScope> selectAction = s => s.SelectOption (displayText);
-      return SelectOption (selectAction, actionOptions);
+      Action<ElementScope> selectAction = s => s.SelectOption(displayText);
+      return SelectOption(selectAction, actionOptions);
     }
 
     private UnspecifiedPageObject SelectOption ([NotNull] Action<ElementScope> selectAction, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNull ("selectAction", selectAction);
+      ArgumentUtility.CheckNotNull("selectAction", selectAction);
 
-      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      ExecuteAction (new CustomAction (this, GetValueScope(), "Select", selectAction), actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
+      ExecuteAction(new CustomAction(this, GetValueScope(), "Select", selectAction), actualActionOptions);
       return UnspecifiedPage();
     }
 
     /// <inheritdoc/>
     public DropDownMenuControlObject GetDropDownMenu ()
     {
-      var dropDownMenuScope = Scope.FindChild ("Boc_OptionsMenu");
-      return new DropDownMenuControlObject (Context.CloneForControl (dropDownMenuScope));
+      var dropDownMenuScope = Scope.FindChild("Boc_OptionsMenu");
+      return new DropDownMenuControlObject(Context.CloneForControl(dropDownMenuScope));
     }
 
     /// <summary>
@@ -191,33 +191,33 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
-      return new[] { string.Format ("{0}_Value", GetHtmlID()) };
+      return new[] { string.Format("{0}_Value", GetHtmlID()) };
     }
 
     public IReadOnlyList<string> GetValidationErrors ()
     {
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      return GetValidationErrors (GetValueScope());
+      return GetValidationErrors(GetValueScope());
     }
 
     public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
     {
-      return GetValidationErrorsForReadOnly (GetLabeledElementScope());
+      return GetValidationErrorsForReadOnly(GetLabeledElementScope());
     }
 
     protected override ElementScope GetLabeledElementScope ()
     {
       if (IsReadOnly())
-        return Scope.FindChild ("Content");
+        return Scope.FindChild("Content");
 
       return GetValueScope();
     }
 
     private ElementScope GetValueScope ()
     {
-      return Scope.FindChild ("Value");
+      return Scope.FindChild("Value");
     }
   }
 }

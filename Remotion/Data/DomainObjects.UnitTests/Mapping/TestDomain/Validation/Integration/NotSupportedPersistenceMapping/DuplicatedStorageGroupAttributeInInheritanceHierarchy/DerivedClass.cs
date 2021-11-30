@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping.
     DuplicatedStorageGroupAttributeInInheritanceHierarchy
 {
-  [ClassID ("DuplicatedStorageGroupAttributeInInheritanceHierarchy_DerivedClass")]
+  [ClassID("DuplicatedStorageGroupAttributeInInheritanceHierarchy_DerivedClass")]
   public class DerivedClass : BaseClass
   {
   }

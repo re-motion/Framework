@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
   /// <summary>
   /// Responsible for creating the <see cref="BocBooleanValue"/> <see cref="BocBooleanValueResourceSet"/>.
   /// </summary>
-  [ImplementationFor (typeof (IBocBooleanValueResourceSetFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocBooleanValueResourceSetFactory), Lifetime = LifetimeKind.Singleton)]
   public class BocBooleanValueResourceSetFactory : IBocBooleanValueResourceSetFactory
   {
     private const string c_trueIcon = "sprite.svg#CheckBoxTrue";
@@ -40,30 +40,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
 
     public BocBooleanValueResourceSetFactory (IResourceUrlFactory resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull ("resourceUrlFactory", resourceUrlFactory);
+      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
 
       _resourceUrlFactory = resourceUrlFactory;
     }
 
     public BocBooleanValueResourceSet CreateResourceSet (IBocBooleanValue control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      
-      return control.CreateResourceSet() ?? CreateDefaultResourceSet (control);
+      ArgumentUtility.CheckNotNull("control", control);
+
+      return control.CreateResourceSet() ?? CreateDefaultResourceSet(control);
     }
 
     private BocBooleanValueResourceSet CreateDefaultResourceSet (IBocBooleanValue control)
     {
       IResourceManager resourceManager = control.GetResourceManager();
 
-      BocBooleanValueResourceSet resourceSet = new BocBooleanValueResourceSet (
+      BocBooleanValueResourceSet resourceSet = new BocBooleanValueResourceSet(
           c_defaultResourceGroup,
-          GetResourceUrl (c_trueIcon),
-          GetResourceUrl (c_falseIcon),
-          GetResourceUrl (c_nullIcon),
-          resourceManager.GetString (BocBooleanValue.ResourceIdentifier.TrueDescription),
-          resourceManager.GetString (BocBooleanValue.ResourceIdentifier.FalseDescription),
-          resourceManager.GetString (BocBooleanValue.ResourceIdentifier.NullDescription)
+          GetResourceUrl(c_trueIcon),
+          GetResourceUrl(c_falseIcon),
+          GetResourceUrl(c_nullIcon),
+          resourceManager.GetString(BocBooleanValue.ResourceIdentifier.TrueDescription),
+          resourceManager.GetString(BocBooleanValue.ResourceIdentifier.FalseDescription),
+          resourceManager.GetString(BocBooleanValue.ResourceIdentifier.NullDescription)
           );
 
       return resourceSet;
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
 
     private string GetResourceUrl (string icon)
     {
-      return _resourceUrlFactory.CreateThemedResourceUrl (typeof (HtmlHeadAppenderExtensions), ResourceType.Image, icon).GetUrl();
+      return _resourceUrlFactory.CreateThemedResourceUrl(typeof(HtmlHeadAppenderExtensions), ResourceType.Image, icon).GetUrl();
     }
   }
 }

@@ -28,23 +28,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
       SetTestOutput();
     }
 
     private void SetTestOutput ()
     {
-      TestOutput.SetCurrentValueNormal (DateOfBirthField_Normal.Value != null ? DateOfBirthField_Normal.Value.Value.ToString() : "invalid");
-      TestOutput.SetCurrentValueNoAutoPostBack (
+      TestOutput.SetCurrentValueNormal(DateOfBirthField_Normal.Value != null ? DateOfBirthField_Normal.Value.Value.ToString() : "invalid");
+      TestOutput.SetCurrentValueNoAutoPostBack(
           DateOfBirthField_NoAutoPostBack.Value != null ? DateOfBirthField_NoAutoPostBack.Value.Value.ToString() : "invalid");
-      TestOutput.SetCurrentValueDateOnly (DateOfBirthField_DateOnly.Value != null ? DateOfBirthField_DateOnly.Value.Value.ToString() : "invalid");
-      TestOutput.SetCurrentValueWithSeconds (
+      TestOutput.SetCurrentValueDateOnly(DateOfBirthField_DateOnly.Value != null ? DateOfBirthField_DateOnly.Value.Value.ToString() : "invalid");
+      TestOutput.SetCurrentValueWithSeconds(
           DateOfBirthField_WithSeconds.Value != null ? DateOfBirthField_WithSeconds.Value.Value.ToString() : "invalid");
     }
 
     private BocDateTimeValueUserControlTestOutput TestOutput
     {
-      get { return (BocDateTimeValueUserControlTestOutput) ((Layout) Page.Master).GetTestOutputControl(); }
+      get { return (BocDateTimeValueUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
     }
   }
 }

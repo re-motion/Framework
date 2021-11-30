@@ -26,18 +26,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
   {
     public static FilterViewDefinition Create (StorageProviderDefinition storageProviderDefinition)
     {
-      return Create (storageProviderDefinition, new EntityNameDefinition ("TestSchema", "Test"));
+      return Create(storageProviderDefinition, new EntityNameDefinition("TestSchema", "Test"));
     }
 
     public static FilterViewDefinition Create (StorageProviderDefinition storageProviderDefinition, EntityNameDefinition viewName)
     {
-      return Create (storageProviderDefinition, viewName, TableDefinitionObjectMother.Create (storageProviderDefinition));
+      return Create(storageProviderDefinition, viewName, TableDefinitionObjectMother.Create(storageProviderDefinition));
     }
 
     public static FilterViewDefinition Create (
         StorageProviderDefinition storageProviderDefinition, EntityNameDefinition viewName, IRdbmsStorageEntityDefinition baseEntity)
     {
-      return Create (
+      return Create(
           storageProviderDefinition,
           viewName,
           baseEntity,
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
         SimpleStoragePropertyDefinition timestampProperty,
         IEnumerable<IRdbmsStoragePropertyDefinition> dataProperties)
     {
-      return new FilterViewDefinition (
+      return new FilterViewDefinition(
           storageProviderDefinition,
           viewName,
           baseEntity,
@@ -70,10 +70,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
     public static FilterViewDefinition CreateWithIndexes (StorageProviderDefinition storageProviderDefinition, IEnumerable<IIndexDefinition> indexDefinitions)
     {
-      return new FilterViewDefinition (
+      return new FilterViewDefinition(
           storageProviderDefinition,
-          new EntityNameDefinition ("TestSchema", "TestFilterView"),
-          TableDefinitionObjectMother.Create (storageProviderDefinition),
+          new EntityNameDefinition("TestSchema", "TestFilterView"),
+          TableDefinitionObjectMother.Create(storageProviderDefinition),
           new[] { "Class1" },
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
@@ -84,10 +84,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
     public static FilterViewDefinition CreateWithSynonyms (StorageProviderDefinition storageProviderDefinition, IEnumerable<EntityNameDefinition> synonyms)
     {
-      return new FilterViewDefinition (
+      return new FilterViewDefinition(
           storageProviderDefinition,
-          new EntityNameDefinition ("TestSchema", "TestFilterView"),
-          TableDefinitionObjectMother.Create (storageProviderDefinition),
+          new EntityNameDefinition("TestSchema", "TestFilterView"),
+          TableDefinitionObjectMother.Create(storageProviderDefinition),
           new[] { "Class1" },
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,

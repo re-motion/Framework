@@ -26,9 +26,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
 
     protected User CreateUser ()
     {
-      Tenant tenant = _testHelper.CreateTenant ("TestTenant", "UID: testTenant");
-      Group group = _testHelper.CreateGroup ("TestGroup", "UID: testGroup", null, tenant);
-      User user = _testHelper.CreateUser ("test.user", "Test", "User", "Ing.", group, tenant);
+      Tenant tenant = _testHelper.CreateTenant("TestTenant", "UID: testTenant");
+      Group group = _testHelper.CreateGroup("TestGroup", "UID: testGroup", null, tenant);
+      User user = _testHelper.CreateUser("test.user", "Test", "User", "Ing.", group, tenant);
 
       return user;
     }

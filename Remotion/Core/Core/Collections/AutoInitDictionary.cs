@@ -29,7 +29,7 @@ namespace Remotion.Collections
   ///   the indexer or removing items. Getting values through the indexer will assign a new object to the specified key if none exists.
   /// </remarks>
   [Serializable]
-  [DebuggerDisplay ("Count={Count}")]
+  [DebuggerDisplay("Count={Count}")]
   public class AutoInitDictionary<TKey, TValue> : IDictionary<TKey, TValue>
       where TKey : notnull
   {
@@ -37,30 +37,30 @@ namespace Remotion.Collections
     private Func<TValue>? _createMethod;
 
     public AutoInitDictionary ()
-      : this (null, null)
+      : this(null, null)
     {
     }
 
     public AutoInitDictionary (Func<TValue>? createMethod)
-      : this (createMethod, null)
+      : this(createMethod, null)
     {
     }
 
     public AutoInitDictionary (IEqualityComparer<TKey>? comparer)
-      : this (null, comparer)
+      : this(null, comparer)
     {
     }
 
     public AutoInitDictionary (Func<TValue>? createMethod, IEqualityComparer<TKey>? comparer)
     {
       _createMethod = createMethod;
-      _dictionary = new Dictionary<TKey, TValue> (comparer);
+      _dictionary = new Dictionary<TKey, TValue>(comparer);
     }
 
     private TValue CreateValue ()
     {
       if (_createMethod != null)
-        return _createMethod ();
+        return _createMethod();
       else
         return Activator.CreateInstance<TValue>();
     }
@@ -69,16 +69,16 @@ namespace Remotion.Collections
     {
       get
       {
-        if (!_dictionary.TryGetValue (key, out var value))
+        if (!_dictionary.TryGetValue(key, out var value))
         {
           // TODO RM-7749: return value of CreateValue should be checked for null.
-          value = CreateValue ();
-          _dictionary.Add (key, value);
+          value = CreateValue();
+          _dictionary.Add(key, value);
         }
         return value;
       }
     }
-    
+
     // ICollection <KeyValuePair<TKey,TValue>> Members
 
     private ICollection<KeyValuePair<TKey, TValue>> AsCollection
@@ -88,12 +88,12 @@ namespace Remotion.Collections
 
     void IDictionary<TKey, TValue>.Add (TKey key, TValue value)
     {
-      _dictionary.Add (key, value);
+      _dictionary.Add(key, value);
     }
 
     bool IDictionary<TKey, TValue>.ContainsKey (TKey key)
     {
-      return _dictionary.ContainsKey (key);
+      return _dictionary.ContainsKey(key);
     }
 
     public ICollection<TKey> Keys
@@ -103,7 +103,7 @@ namespace Remotion.Collections
 
     bool IDictionary<TKey, TValue>.Remove (TKey key)
     {
-      return _dictionary.Remove (key);
+      return _dictionary.Remove(key);
     }
 
     bool IDictionary<TKey,TValue>.TryGetValue (TKey key, out TValue value)
@@ -125,7 +125,7 @@ namespace Remotion.Collections
 
     void ICollection<KeyValuePair<TKey,TValue>>.Add (KeyValuePair<TKey, TValue> item)
     {
-      AsCollection.Add (item);
+      AsCollection.Add(item);
     }
 
     public void Clear ()
@@ -135,17 +135,17 @@ namespace Remotion.Collections
 
     bool ICollection<KeyValuePair<TKey,TValue>>.Contains (KeyValuePair<TKey, TValue> item)
     {
-      return AsCollection.Contains (item);
+      return AsCollection.Contains(item);
     }
 
     public bool ContainsKey (TKey key)
     {
-      return _dictionary.ContainsKey (key);
+      return _dictionary.ContainsKey(key);
     }
 
     void ICollection<KeyValuePair<TKey,TValue>>.CopyTo (KeyValuePair<TKey, TValue>[] array, int arrayIndex)
     {
-      AsCollection.CopyTo (array, arrayIndex);
+      AsCollection.CopyTo(array, arrayIndex);
     }
 
     public int Count
@@ -160,21 +160,21 @@ namespace Remotion.Collections
 
     public bool Remove (KeyValuePair<TKey, TValue> item)
     {
-      return AsCollection.Remove (item);
+      return AsCollection.Remove(item);
     }
 
     // IEnumerable<KeyValuePair<TKey,TValue>> Members
 
     IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey,TValue>>.GetEnumerator ()
     {
-      return ((IEnumerable<KeyValuePair<TKey, TValue>>) _dictionary).GetEnumerator();
+      return ((IEnumerable<KeyValuePair<TKey, TValue>>)_dictionary).GetEnumerator();
     }
 
     // IEnumerable Members
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
-      return ((IEnumerable) _dictionary).GetEnumerator();
+      return ((IEnumerable)_dictionary).GetEnumerator();
     }
   }
 }

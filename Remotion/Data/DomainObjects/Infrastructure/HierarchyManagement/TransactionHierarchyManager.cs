@@ -40,15 +40,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
       public TransactionUnlocker (TransactionHierarchyManager hierarchyManager)
       {
-        ArgumentUtility.CheckNotNull ("hierarchyManager", hierarchyManager);
+        ArgumentUtility.CheckNotNull("hierarchyManager", hierarchyManager);
 
         if (hierarchyManager._isWriteable)
         {
-          string message = string.Format (
+          string message = string.Format(
               "{0} cannot be made writeable twice. A common reason for this error is that a subtransaction is accessed "
               + "while its parent transaction is engaged in an infrastructure operation. During such an operation, the subtransaction cannot be used.",
               hierarchyManager.ThisTransaction);
-          throw new InvalidOperationException (message);
+          throw new InvalidOperationException(message);
         }
 
         _hierarchyManager = hierarchyManager;
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       {
         if (!_isDisposed)
         {
-          Assertion.IsTrue (_hierarchyManager.IsWriteable);
+          Assertion.IsTrue(_hierarchyManager.IsWriteable);
           _hierarchyManager._isWriteable = false;
           _isDisposed = true;
         }
@@ -81,10 +81,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     private ClientTransaction _subTransaction;
 
     public TransactionHierarchyManager (ClientTransaction thisTransaction, IClientTransactionEventSink thisEventSink)
-        : this (
+        : this(
             thisTransaction,
             thisEventSink,
-            new ClientTransactionHierarchy (ArgumentUtility.CheckNotNull ("thisTransaction", thisTransaction)),
+            new ClientTransactionHierarchy(ArgumentUtility.CheckNotNull("thisTransaction", thisTransaction)),
             null,
             null,
             null)
@@ -97,16 +97,16 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         ClientTransaction parentTransaction,
         ITransactionHierarchyManager parentHierarchyManager,
         IClientTransactionEventSink parentEventSink)
-        : this (
+        : this(
             thisTransaction,
             thisEventSink,
             parentHierarchyManager.TransactionHierarchy,
             parentTransaction,
-            ArgumentUtility.CheckNotNull ("parentHierarchyManager", parentHierarchyManager),
+            ArgumentUtility.CheckNotNull("parentHierarchyManager", parentHierarchyManager),
             parentEventSink)
     {
-      ArgumentUtility.CheckNotNull ("parentTransaction", parentTransaction);
-      ArgumentUtility.CheckNotNull ("parentEventSink", parentEventSink);
+      ArgumentUtility.CheckNotNull("parentTransaction", parentTransaction);
+      ArgumentUtility.CheckNotNull("parentEventSink", parentEventSink);
 
       _parentTransaction = parentTransaction;
       _parentHierarchyManager = parentHierarchyManager;
@@ -121,10 +121,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         ITransactionHierarchyManager parentHierarchyManager,
         IClientTransactionEventSink parentEventSink)
     {
-      ArgumentUtility.CheckNotNull ("thisTransaction", thisTransaction);
-      ArgumentUtility.CheckNotNull ("thisEventSink", thisEventSink);
-      ArgumentUtility.CheckNotNull ("transactionHierarchy", transactionHierarchy);
-      
+      ArgumentUtility.CheckNotNull("thisTransaction", thisTransaction);
+      ArgumentUtility.CheckNotNull("thisEventSink", thisEventSink);
+      ArgumentUtility.CheckNotNull("transactionHierarchy", transactionHierarchy);
+
 
       _thisTransaction = thisTransaction;
       _thisEventSink = thisEventSink;
@@ -135,8 +135,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
       _transactionHierarchy = transactionHierarchy;
 
-      _readOnlyClientTransactionListener = new ReadOnlyClientTransactionListenerWithLoadRules ();
-      _newObjectHierarchyInvalidationClientTransactionListener = new NewObjectHierarchyInvalidationClientTransactionListener ();
+      _readOnlyClientTransactionListener = new ReadOnlyClientTransactionListenerWithLoadRules();
+      _newObjectHierarchyInvalidationClientTransactionListener = new NewObjectHierarchyInvalidationClientTransactionListener();
     }
 
     public ClientTransaction ThisTransaction
@@ -191,21 +191,21 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public void InstallListeners (IClientTransactionEventBroker eventBroker)
     {
-      ArgumentUtility.CheckNotNull ("eventBroker", eventBroker);
-      eventBroker.AddListener (_readOnlyClientTransactionListener);
-      eventBroker.AddListener (_newObjectHierarchyInvalidationClientTransactionListener);
+      ArgumentUtility.CheckNotNull("eventBroker", eventBroker);
+      eventBroker.AddListener(_readOnlyClientTransactionListener);
+      eventBroker.AddListener(_newObjectHierarchyInvalidationClientTransactionListener);
     }
 
     public void OnBeforeTransactionInitialize ()
     {
       if (_parentTransaction != null)
-        _parentEventSink.RaiseSubTransactionInitializeEvent (_thisTransaction);
+        _parentEventSink.RaiseSubTransactionInitializeEvent(_thisTransaction);
     }
 
     public void OnTransactionDiscard ()
     {
       if (_subTransaction != null)
-        _subTransaction.Discard ();
+        _subTransaction.Discard();
 
       if (_parentHierarchyManager != null)
         _parentHierarchyManager.RemoveSubTransaction();
@@ -213,45 +213,45 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs)
     {
-      ArgumentUtility.CheckNotNull ("loadedObjectIDs", loadedObjectIDs);
+      ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
       if (_parentHierarchyManager != null)
-        _parentHierarchyManager.OnBeforeSubTransactionObjectRegistration (loadedObjectIDs);
-      _readOnlyClientTransactionListener.AddCurrentlyLoadingObjectIDs (loadedObjectIDs);
+        _parentHierarchyManager.OnBeforeSubTransactionObjectRegistration(loadedObjectIDs);
+      _readOnlyClientTransactionListener.AddCurrentlyLoadingObjectIDs(loadedObjectIDs);
     }
 
     public void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> objectIDsToBeLoaded)
     {
-      ArgumentUtility.CheckNotNull ("objectIDsToBeLoaded", objectIDsToBeLoaded);
-      _readOnlyClientTransactionListener.RemoveCurrentlyLoadingObjectIDs (objectIDsToBeLoaded);
+      ArgumentUtility.CheckNotNull("objectIDsToBeLoaded", objectIDsToBeLoaded);
+      _readOnlyClientTransactionListener.RemoveCurrentlyLoadingObjectIDs(objectIDsToBeLoaded);
     }
 
     public void OnBeforeSubTransactionObjectRegistration (ICollection<ObjectID> loadedObjectIDs)
     {
-      ArgumentUtility.CheckNotNull ("loadedObjectIDs", loadedObjectIDs);
+      ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
 
-      var conflictingIDs = loadedObjectIDs.Intersect (_readOnlyClientTransactionListener.CurrentlyLoadingObjectIDs).ConvertToCollection ();
-      if (conflictingIDs.Any ())
+      var conflictingIDs = loadedObjectIDs.Intersect(_readOnlyClientTransactionListener.CurrentlyLoadingObjectIDs).ConvertToCollection();
+      if (conflictingIDs.Any())
       {
         var message =
-            string.Format (
+            string.Format(
                 "It's not possible to load objects into a subtransaction while they are being loaded into a parent transaction: {0}.",
-                string.Join (", ", conflictingIDs.Select (id => "'" + id + "'")));
-        throw new InvalidOperationException (message);
+                string.Join(", ", conflictingIDs.Select(id => "'" + id + "'")));
+        throw new InvalidOperationException(message);
       }
     }
 
     public ClientTransaction CreateSubTransaction (Func<ClientTransaction, ClientTransaction> subTransactionFactory)
     {
-      _thisEventSink.RaiseSubTransactionCreatingEvent ();
+      _thisEventSink.RaiseSubTransactionCreatingEvent();
 
       _isWriteable = false;
 
       ClientTransaction subTransaction;
       try
       {
-        subTransaction = subTransactionFactory (_thisTransaction);
+        subTransaction = subTransactionFactory(_thisTransaction);
         if (subTransaction.ParentTransaction != _thisTransaction)
-          throw new InvalidOperationException ("The given factory did not create a sub-transaction for this transaction.");
+          throw new InvalidOperationException("The given factory did not create a sub-transaction for this transaction.");
       }
       catch
       {
@@ -259,10 +259,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         throw;
       }
 
-      _transactionHierarchy.AppendLeafTransaction (subTransaction);
+      _transactionHierarchy.AppendLeafTransaction(subTransaction);
       _subTransaction = subTransaction;
 
-      _thisEventSink.RaiseSubTransactionCreatedEvent (subTransaction);
+      _thisEventSink.RaiseSubTransactionCreatedEvent(subTransaction);
       return subTransaction;
     }
 
@@ -270,7 +270,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     {
       if (_subTransaction != null)
       {
-        Assertion.IsTrue (_transactionHierarchy.LeafTransaction == _subTransaction);
+        Assertion.IsTrue(_transactionHierarchy.LeafTransaction == _subTransaction);
         _transactionHierarchy.RemoveLeafTransaction();
 
         _subTransaction = null;
@@ -280,12 +280,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public IDisposable Unlock ()
     {
-      return new TransactionUnlocker (this);
+      return new TransactionUnlocker(this);
     }
 
     public IDisposable UnlockIfRequired ()
     {
-      return IsWriteable ? null : new TransactionUnlocker (this);
+      return IsWriteable ? null : new TransactionUnlocker(this);
     }
   }
 }

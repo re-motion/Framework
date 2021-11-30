@@ -29,9 +29,9 @@ namespace Remotion.Security.UnitTests.SampleDomain
   {
     public string SecretProperty
     {
-      [DemandPermission (PropertyAccessTypes.ReadSecret)]
+      [DemandPermission(PropertyAccessTypes.ReadSecret)]
       get { return string.Empty; }
-      [DemandPermission (PropertyAccessTypes.WriteSecret)]
+      [DemandPermission(PropertyAccessTypes.WriteSecret)]
       set { }
     }
   }

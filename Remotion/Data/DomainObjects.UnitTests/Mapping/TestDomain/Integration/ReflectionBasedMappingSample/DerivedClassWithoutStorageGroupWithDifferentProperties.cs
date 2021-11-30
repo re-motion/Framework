@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
   [Instantiable]
   public abstract class DerivedClassWithoutStorageGroupWithDifferentProperties : ClassWithoutStorageGroupWithDifferentProperties
   {
-    protected DerivedClassWithoutStorageGroupWithDifferentProperties()
+    protected DerivedClassWithoutStorageGroupWithDifferentProperties ()
     {
     }
 
@@ -33,10 +33,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
 
     public abstract string OtherString { get; set; }
 
-    [DBColumn ("NewString")]
+    [DBColumn("NewString")]
     public new abstract string String { get; set; }
 
-    [DBColumn ("DerivedPrivateString")]
+    [DBColumn("DerivedPrivateString")]
     private string PrivateString
     {
       get
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
       set
       {
         Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.DerivedClassWithoutStorageGroupWithDifferentProperties.PrivateString"]
-            .SetValue (value);
+            .SetValue(value);
       }
     }
   }

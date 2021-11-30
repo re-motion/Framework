@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     SameEntityNamesInInheritanceHierarchy
 {
   [DBTable("DerivedName")]
-  [ClassID ("SameEntityNamesInInheritanceHierarchy_DerivedClass")]
+  [ClassID("SameEntityNamesInInheritanceHierarchy_DerivedClass")]
   public class DerivedClass : SameEntityNamesInInheritanceHierarchy.BaseClass
   {
   }

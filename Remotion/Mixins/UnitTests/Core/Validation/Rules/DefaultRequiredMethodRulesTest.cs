@@ -28,26 +28,26 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void FailsIfRequiredBaseMethodIsExplit ()
     {
-      using (MixinConfiguration.BuildFromActive ().ForClass<ClassFulfillingAllMemberRequirementsExplicitly> ().Clear ().AddMixins (typeof (MixinRequiringAllMembersNextCall)).EnterScope ())
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear().AddMixins(typeof(MixinRequiringAllMembersNextCall)).EnterScope())
       {
-        TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (
-            typeof (ClassFulfillingAllMemberRequirementsExplicitly), typeof (MixinRequiringAllMembersNextCall));
-        var log = Validator.Validate (definition);
+        TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(
+            typeof(ClassFulfillingAllMemberRequirementsExplicitly), typeof(MixinRequiringAllMembersNextCall));
+        var log = Validator.Validate(definition);
 
-        Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultRequiredMethodRules.RequiredNextCallMethodMustBePublicOrProtected", log), Is.True);
+        Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultRequiredMethodRules.RequiredNextCallMethodMustBePublicOrProtected", log), Is.True);
       }
     }
 
     [Test]
     public void SucceedsIfRequiredTargetCallMethodIsExplit ()
     {
-      using (MixinConfiguration.BuildFromActive ().ForClass<ClassFulfillingAllMemberRequirementsExplicitly> ().Clear ().AddMixins (typeof (MixinRequiringAllMembersTargetCall)).EnterScope ())
+      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear().AddMixins(typeof(MixinRequiringAllMembersTargetCall)).EnterScope())
       {
-        TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition (
-            typeof (ClassFulfillingAllMemberRequirementsExplicitly), typeof (MixinRequiringAllMembersTargetCall));
-        var log = Validator.Validate (definition);
+        TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(
+            typeof(ClassFulfillingAllMemberRequirementsExplicitly), typeof(MixinRequiringAllMembersTargetCall));
+        var log = Validator.Validate(definition);
 
-        AssertSuccess (log);
+        AssertSuccess(log);
       }
     }
   }

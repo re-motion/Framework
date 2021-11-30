@@ -36,31 +36,31 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       _transactionMock = new Mock<ITransaction>();
       _outerTransactionStrategyStub = new Mock<TransactionStrategyBase>();
       _executionContextStub = new Mock<IWxeFunctionExecutionContext>();
-      _executionContextStub.Setup (stub => stub.GetInParameters()).Returns (new object[0]);
+      _executionContextStub.Setup(stub => stub.GetInParameters()).Returns(new object[0]);
 
-      _strategy = new RootTransactionStrategy (true, () => _transactionMock.Object, _outerTransactionStrategyStub.Object, _executionContextStub.Object);
+      _strategy = new RootTransactionStrategy(true, () => _transactionMock.Object, _outerTransactionStrategyStub.Object, _executionContextStub.Object);
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.That (_strategy.Transaction, Is.SameAs (_transactionMock.Object));
-      Assert.That (_strategy.OuterTransactionStrategy, Is.SameAs (_outerTransactionStrategyStub.Object));
-      Assert.That (_strategy.ExecutionContext, Is.SameAs (_executionContextStub.Object));
-      Assert.That (_strategy.AutoCommit, Is.True);
-      Assert.That (_strategy.IsNull, Is.False);
+      Assert.That(_strategy.Transaction, Is.SameAs(_transactionMock.Object));
+      Assert.That(_strategy.OuterTransactionStrategy, Is.SameAs(_outerTransactionStrategyStub.Object));
+      Assert.That(_strategy.ExecutionContext, Is.SameAs(_executionContextStub.Object));
+      Assert.That(_strategy.AutoCommit, Is.True);
+      Assert.That(_strategy.IsNull, Is.False);
     }
 
     [Test]
     public void CreateExecutionListener ()
     {
       var innerExecutionListenerStub = new Mock<IWxeFunctionExecutionListener>();
-      IWxeFunctionExecutionListener executionListener = _strategy.CreateExecutionListener (innerExecutionListenerStub.Object);
+      IWxeFunctionExecutionListener executionListener = _strategy.CreateExecutionListener(innerExecutionListenerStub.Object);
 
-      Assert.That (executionListener, Is.InstanceOf (typeof (RootTransactionExecutionListener)));
-      var transactionExecutionListener = (RootTransactionExecutionListener) executionListener;
-      Assert.That (transactionExecutionListener.InnerListener, Is.SameAs (innerExecutionListenerStub.Object));
-      Assert.That (transactionExecutionListener.TransactionStrategy, Is.SameAs (_strategy));
+      Assert.That(executionListener, Is.InstanceOf(typeof(RootTransactionExecutionListener)));
+      var transactionExecutionListener = (RootTransactionExecutionListener)executionListener;
+      Assert.That(transactionExecutionListener.InnerListener, Is.SameAs(innerExecutionListenerStub.Object));
+      Assert.That(transactionExecutionListener.TransactionStrategy, Is.SameAs(_strategy));
     }
   }
 }

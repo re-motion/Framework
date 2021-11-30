@@ -28,11 +28,11 @@ namespace Remotion.Mixins.Definitions.Building
 
     public RequiredMethodDefinitionBuilder (TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
 
-      _implementedInterfaceMethodCollector = new ImplementedInterfaceRequiredMethodDefinitionCollector (targetClassDefinition);
-      _introducedInterfaceMethodCollector = new IntroducedInterfaceRequiredMethodDefinitionCollector ();
-      _duckTypingMethodCollector = new DuckTypingRequiredMethodDefinitionCollector (targetClassDefinition);
+      _implementedInterfaceMethodCollector = new ImplementedInterfaceRequiredMethodDefinitionCollector(targetClassDefinition);
+      _introducedInterfaceMethodCollector = new IntroducedInterfaceRequiredMethodDefinitionCollector();
+      _duckTypingMethodCollector = new DuckTypingRequiredMethodDefinitionCollector(targetClassDefinition);
     }
 
     public void Apply (RequirementDefinitionBase requirement)
@@ -40,20 +40,19 @@ namespace Remotion.Mixins.Definitions.Building
       if (requirement.IsEmptyInterface || !requirement.Type.IsInterface)
         return;
 
-      var methodCollector = GetMethodCollector (requirement);
-      foreach (var requiredMethodDefinition in methodCollector.CreateRequiredMethodDefinitions (requirement))
-        requirement.Methods.Add (requiredMethodDefinition);
+      var methodCollector = GetMethodCollector(requirement);
+      foreach (var requiredMethodDefinition in methodCollector.CreateRequiredMethodDefinitions(requirement))
+        requirement.Methods.Add(requiredMethodDefinition);
     }
 
     private IRequiredMethodDefinitionCollector GetMethodCollector (RequirementDefinitionBase requirement)
     {
-      if (requirement.TargetClass.ImplementedInterfaces.Contains (requirement.Type))
+      if (requirement.TargetClass.ImplementedInterfaces.Contains(requirement.Type))
         return _implementedInterfaceMethodCollector;
-      else if (requirement.TargetClass.ReceivedInterfaces.ContainsKey (requirement.Type))
+      else if (requirement.TargetClass.ReceivedInterfaces.ContainsKey(requirement.Type))
         return _introducedInterfaceMethodCollector;
       else
         return _duckTypingMethodCollector;
     }
   }
 }
-

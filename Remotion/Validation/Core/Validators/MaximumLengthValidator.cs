@@ -23,7 +23,7 @@ namespace Remotion.Validation.Validators
   public class MaximumLengthValidator : LengthValidator
   {
     public MaximumLengthValidator (int max, [NotNull] ValidationMessage validationMessage)
-        : base (0, max, $"The value must have at most {max} characters.", validationMessage)
+        : base(0, max, $"The value must have at most {max} characters.", validationMessage)
     {
     }
 

@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
     }
 
     public ClassWithIdentityAndDisplayName ()
-      : this (Guid.NewGuid().ToString())
+      : this(Guid.NewGuid().ToString())
     {
     }
 

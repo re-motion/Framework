@@ -25,18 +25,18 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     [Test]
     public void OrderingConflictIsResolved_ViaAssemblyLevelAttribute ()
     {
-      PrepareMixinConfigurationWithAttributeDeclarations (new AdditionalMixinDependencyAttribute (typeof (C), typeof (M1), typeof (M2)));
+      PrepareMixinConfigurationWithAttributeDeclarations(new AdditionalMixinDependencyAttribute(typeof(C), typeof(M1), typeof(M2)));
 
       var instance = ObjectFactory.Create<C>();
 
       var result = instance.M();
 
-      Assert.That (result, Is.EqualTo ("M1 M2 C"));
+      Assert.That(result, Is.EqualTo("M1 M2 C"));
     }
 
     public class C : IC
     {
-      public virtual string M()
+      public virtual string M ()
       {
         return "C";
       }
@@ -47,7 +47,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       string M ();
     }
 
-    [Extends (typeof (C))]
+    [Extends(typeof(C))]
     public class M1 : Mixin<C, IC>
     {
       [OverrideTarget]
@@ -57,13 +57,13 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       }
     }
 
-    [Extends (typeof (C))]
+    [Extends(typeof(C))]
     public class M2 : Mixin<C, IC>
     {
       [OverrideTarget]
       public string M ()
       {
-        return "M2 " + Next.M ();
+        return "M2 " + Next.M();
       }
     }
 

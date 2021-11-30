@@ -28,14 +28,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
   [BindableDomainObject]
   [Instantiable]
   [DBTable]
-  [Uses (typeof (BindableSecurableObjectMixin))]
+  [Uses(typeof(BindableSecurableObjectMixin))]
   public abstract class BindableSecurableObject : DomainObject, ISecurableObject, ISecurityContextFactory
   {
     public static BindableSecurableObject NewObject (ClientTransaction clientTransaction, IObjectSecurityStrategy securityStrategy)
     {
       using (clientTransaction.EnterNonDiscardingScope())
       {
-        return NewObject<BindableSecurableObject> (ParamList.Create (securityStrategy));
+        return NewObject<BindableSecurableObject>(ParamList.Create(securityStrategy));
       }
     }
 
@@ -51,8 +51,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
 
     protected override void OnLoaded (LoadMode loadMode)
     {
-      base.OnLoaded (loadMode);
-      _securityStrategy = ObjectSecurityStrategy.Create (this, InvalidationToken.Create());
+      base.OnLoaded(loadMode);
+      _securityStrategy = ObjectSecurityStrategy.Create(this, InvalidationToken.Create());
     }
 
     public IObjectSecurityStrategy GetSecurityStrategy ()
@@ -67,32 +67,32 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
 
     public DataContainer GetDataContainer (ClientTransaction transaction)
     {
-      var dataManager = (DataManager) PrivateInvoke.GetNonPublicProperty (transaction, "DataManager");
-      return dataManager.GetDataContainerWithLazyLoad (ID, true);
+      var dataManager = (DataManager)PrivateInvoke.GetNonPublicProperty(transaction, "DataManager");
+      return dataManager.GetDataContainerWithLazyLoad(ID, true);
     }
 
     public abstract string StringProperty { get; set; }
 
     public abstract string OtherStringProperty { get; set; }
 
-    [DBBidirectionalRelation ("Children")]
+    [DBBidirectionalRelation("Children")]
     public abstract BindableSecurableObject Parent { get; set; }
 
-    [DBBidirectionalRelation ("Parent")]
+    [DBBidirectionalRelation("Parent")]
     public abstract ObjectList<BindableSecurableObject> Children { get; /*no setter*/ }
 
-    [DBBidirectionalRelation ("OtherChildren")]
+    [DBBidirectionalRelation("OtherChildren")]
     public abstract BindableSecurableObject OtherParent { get; set; }
 
-    [DBBidirectionalRelation ("OtherParent")]
+    [DBBidirectionalRelation("OtherParent")]
     public abstract ObjectList<BindableSecurableObject> OtherChildren { get; }
 
     public abstract string PropertyWithDefaultPermission { get; set; }
 
-    public abstract string PropertyWithCustomPermission 
-    { 
-      [DemandPermission (TestAccessTypes.First)] get; 
-      [DemandPermission (TestAccessTypes.Second)] set; 
+    public abstract string PropertyWithCustomPermission
+    {
+      [DemandPermission(TestAccessTypes.First)] get;
+      [DemandPermission(TestAccessTypes.Second)] set;
     }
 
     public string ReadOnlyProperty
@@ -103,13 +103,13 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
     public virtual string PropertyToOverride
     {
       get { return _propertyToOverride; }
-      [DemandPermission (TestAccessTypes.Second)]
+      [DemandPermission(TestAccessTypes.Second)]
       set { _propertyToOverride = value; }
     }
 
     ISecurityContext ISecurityContextFactory.CreateSecurityContext ()
     {
-      return SecurityContext.CreateStateless (GetPublicDomainObjectType());
+      return SecurityContext.CreateStateless(GetPublicDomainObjectType());
     }
 
     public new void Delete ()

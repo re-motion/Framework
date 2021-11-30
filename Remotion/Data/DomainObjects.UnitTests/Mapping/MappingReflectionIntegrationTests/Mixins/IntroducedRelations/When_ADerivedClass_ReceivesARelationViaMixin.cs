@@ -32,27 +32,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _derivedClass = TypeDefinitions[typeof (Derived)];
-      _relationTarget = TypeDefinitions[typeof (RelationTarget)];
+      _derivedClass = TypeDefinitions[typeof(Derived)];
+      _relationTarget = TypeDefinitions[typeof(RelationTarget)];
 
-      _relationEndPointPropertyInMixin = GetPropertyInformation ((MixinAddingRelation m) => m.RelationTarget);
-      _relationEndPointPropertyInRelationTarget = GetPropertyInformation ((RelationTarget t) => t.Derived);
+      _relationEndPointPropertyInMixin = GetPropertyInformation((MixinAddingRelation m) => m.RelationTarget);
+      _relationEndPointPropertyInRelationTarget = GetPropertyInformation((RelationTarget t) => t.Derived);
     }
 
     [Test]
     public void ThereShouldBeARelationDefinition_BetweenTheDerivedClass_And_TheRelationTarget ()
     {
-      var relationEndPointInDerivedClass = _derivedClass.ResolveRelationEndPoint (_relationEndPointPropertyInMixin);
-      Assert.That (relationEndPointInDerivedClass, Is.Not.Null);
-      var relationEndPointInRelationTargetClass = _relationTarget.ResolveRelationEndPoint (_relationEndPointPropertyInRelationTarget);
-      Assert.That (relationEndPointInRelationTargetClass, Is.Not.Null);
+      var relationEndPointInDerivedClass = _derivedClass.ResolveRelationEndPoint(_relationEndPointPropertyInMixin);
+      Assert.That(relationEndPointInDerivedClass, Is.Not.Null);
+      var relationEndPointInRelationTargetClass = _relationTarget.ResolveRelationEndPoint(_relationEndPointPropertyInRelationTarget);
+      Assert.That(relationEndPointInRelationTargetClass, Is.Not.Null);
 
-      Assert.That (relationEndPointInDerivedClass.RelationDefinition, Is.SameAs (relationEndPointInRelationTargetClass.RelationDefinition));
-      Assert.That (
-          relationEndPointInDerivedClass.RelationDefinition.EndPointDefinitions, 
-          Is.EquivalentTo (new[] { relationEndPointInRelationTargetClass, relationEndPointInDerivedClass }));
+      Assert.That(relationEndPointInDerivedClass.RelationDefinition, Is.SameAs(relationEndPointInRelationTargetClass.RelationDefinition));
+      Assert.That(
+          relationEndPointInDerivedClass.RelationDefinition.EndPointDefinitions,
+          Is.EquivalentTo(new[] { relationEndPointInRelationTargetClass, relationEndPointInDerivedClass }));
     }
   }
 }

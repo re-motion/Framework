@@ -28,92 +28,92 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
   {
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
       ClassWithPublicFields.StaticReferenceTypeField = "InitialStatic";
     }
 
     [Test]
     public void LoadAndStoreStatic ()
     {
-      FieldInfo fieldInfo = typeof (ClassWithPublicFields).GetField ("StaticReferenceTypeField");
-      var methodEmitter = GetMethodEmitter (false, typeof (string), new Type[0]);
+      FieldInfo fieldInfo = typeof(ClassWithPublicFields).GetField("StaticReferenceTypeField");
+      var methodEmitter = GetMethodEmitter(false, typeof(string), new Type[0]);
 
-      LocalReference local = methodEmitter.DeclareLocal (typeof (string));
-      FieldInfoReference fieldReference = new FieldInfoReference (null, fieldInfo);
+      LocalReference local = methodEmitter.DeclareLocal(typeof(string));
+      FieldInfoReference fieldReference = new FieldInfoReference(null, fieldInfo);
       methodEmitter
-          .AddStatement (new AssignStatement (local, fieldReference.ToExpression ()))
-          .AddStatement (new AssignStatement (fieldReference, new ConstReference ("Replacement").ToExpression ()))
-          .AddStatement (new ReturnStatement (local));
+          .AddStatement(new AssignStatement(local, fieldReference.ToExpression()))
+          .AddStatement(new AssignStatement(fieldReference, new ConstReference("Replacement").ToExpression()))
+          .AddStatement(new ReturnStatement(local));
 
-      Assert.That (ClassWithPublicFields.StaticReferenceTypeField, Is.EqualTo ("InitialStatic"));
-      Assert.That (InvokeMethod (), Is.EqualTo ("InitialStatic"));
-      Assert.That (ClassWithPublicFields.StaticReferenceTypeField, Is.EqualTo ("Replacement"));
+      Assert.That(ClassWithPublicFields.StaticReferenceTypeField, Is.EqualTo("InitialStatic"));
+      Assert.That(InvokeMethod(), Is.EqualTo("InitialStatic"));
+      Assert.That(ClassWithPublicFields.StaticReferenceTypeField, Is.EqualTo("Replacement"));
     }
 
     [Test]
     public void LoadAndStoreInstance ()
     {
-      FieldInfo fieldInfo = typeof (ClassWithPublicFields).GetField ("ReferenceTypeField");
-      var methodEmitter = GetMethodEmitter (false, typeof (string), new[] { typeof (ClassWithPublicFields) });
+      FieldInfo fieldInfo = typeof(ClassWithPublicFields).GetField("ReferenceTypeField");
+      var methodEmitter = GetMethodEmitter(false, typeof(string), new[] { typeof(ClassWithPublicFields) });
 
-      LocalReference local = methodEmitter.DeclareLocal (typeof (string));
-      FieldInfoReference fieldReference = new FieldInfoReference (methodEmitter.ArgumentReferences[0], fieldInfo);
+      LocalReference local = methodEmitter.DeclareLocal(typeof(string));
+      FieldInfoReference fieldReference = new FieldInfoReference(methodEmitter.ArgumentReferences[0], fieldInfo);
       methodEmitter
-          .AddStatement (new AssignStatement (local, fieldReference.ToExpression ()))
-          .AddStatement (new AssignStatement (fieldReference, new ConstReference ("Replacement").ToExpression ()))
-          .AddStatement (new ReturnStatement (local));
+          .AddStatement(new AssignStatement(local, fieldReference.ToExpression()))
+          .AddStatement(new AssignStatement(fieldReference, new ConstReference("Replacement").ToExpression()))
+          .AddStatement(new ReturnStatement(local));
 
-      ClassWithPublicFields parameter = new ClassWithPublicFields ();
-      Assert.That (parameter.ReferenceTypeField, Is.EqualTo ("Initial"));
-      Assert.That (InvokeMethod (parameter), Is.EqualTo ("Initial"));
-      Assert.That (parameter.ReferenceTypeField, Is.EqualTo ("Replacement"));
+      ClassWithPublicFields parameter = new ClassWithPublicFields();
+      Assert.That(parameter.ReferenceTypeField, Is.EqualTo("Initial"));
+      Assert.That(InvokeMethod(parameter), Is.EqualTo("Initial"));
+      Assert.That(parameter.ReferenceTypeField, Is.EqualTo("Replacement"));
     }
 
     [Test]
     public void LoadAndStoreAddressStatic ()
     {
-      FieldInfo fieldInfo = typeof (ClassWithPublicFields).GetField ("StaticReferenceTypeField");
-      var methodEmitter = GetMethodEmitter (false, typeof (string), new Type[0]);
+      FieldInfo fieldInfo = typeof(ClassWithPublicFields).GetField("StaticReferenceTypeField");
+      var methodEmitter = GetMethodEmitter(false, typeof(string), new Type[0]);
 
-      LocalReference local = methodEmitter.DeclareLocal (typeof (string));
-      FieldInfoReference fieldReference = new FieldInfoReference (null, fieldInfo);
+      LocalReference local = methodEmitter.DeclareLocal(typeof(string));
+      FieldInfoReference fieldReference = new FieldInfoReference(null, fieldInfo);
 
-      Expression addressOfFieldExpression = fieldReference.ToAddressOfExpression ();
+      Expression addressOfFieldExpression = fieldReference.ToAddressOfExpression();
       Reference indirectReference =
-          new IndirectReference (new ExpressionReference (typeof (string).MakeByRefType(), addressOfFieldExpression, methodEmitter));
-      
-      methodEmitter
-          .AddStatement (new AssignStatement (local, indirectReference.ToExpression ()))
-          .AddStatement (new AssignStatement (indirectReference, new ConstReference ("Replacement").ToExpression ()))
-          .AddStatement (new ReturnStatement (local));
+          new IndirectReference(new ExpressionReference(typeof(string).MakeByRefType(), addressOfFieldExpression, methodEmitter));
 
-      Assert.That (ClassWithPublicFields.StaticReferenceTypeField, Is.EqualTo ("InitialStatic"));
-      Assert.That (InvokeMethod(), Is.EqualTo ("InitialStatic"));
-      Assert.That (ClassWithPublicFields.StaticReferenceTypeField, Is.EqualTo ("Replacement"));
+      methodEmitter
+          .AddStatement(new AssignStatement(local, indirectReference.ToExpression()))
+          .AddStatement(new AssignStatement(indirectReference, new ConstReference("Replacement").ToExpression()))
+          .AddStatement(new ReturnStatement(local));
+
+      Assert.That(ClassWithPublicFields.StaticReferenceTypeField, Is.EqualTo("InitialStatic"));
+      Assert.That(InvokeMethod(), Is.EqualTo("InitialStatic"));
+      Assert.That(ClassWithPublicFields.StaticReferenceTypeField, Is.EqualTo("Replacement"));
     }
 
     [Test]
     public void LoadAndStoreAddressInstance ()
     {
-      FieldInfo fieldInfo = typeof (ClassWithPublicFields).GetField ("ReferenceTypeField");
-      var methodEmitter = GetMethodEmitter (false, typeof (string), new[] { typeof (ClassWithPublicFields) });
+      FieldInfo fieldInfo = typeof(ClassWithPublicFields).GetField("ReferenceTypeField");
+      var methodEmitter = GetMethodEmitter(false, typeof(string), new[] { typeof(ClassWithPublicFields) });
 
-      LocalReference local = methodEmitter.DeclareLocal (typeof (string));
-      FieldInfoReference fieldReference = new FieldInfoReference (methodEmitter.ArgumentReferences[0], fieldInfo);
+      LocalReference local = methodEmitter.DeclareLocal(typeof(string));
+      FieldInfoReference fieldReference = new FieldInfoReference(methodEmitter.ArgumentReferences[0], fieldInfo);
 
-      Expression addressOfFieldExpression = fieldReference.ToAddressOfExpression ();
+      Expression addressOfFieldExpression = fieldReference.ToAddressOfExpression();
       Reference indirectReference =
-          new IndirectReference (new ExpressionReference (typeof (string).MakeByRefType (), addressOfFieldExpression, methodEmitter));
+          new IndirectReference(new ExpressionReference(typeof(string).MakeByRefType(), addressOfFieldExpression, methodEmitter));
 
       methodEmitter
-          .AddStatement (new AssignStatement (local, indirectReference.ToExpression ()))
-          .AddStatement (new AssignStatement (indirectReference, new ConstReference ("Replacement").ToExpression ()))
-          .AddStatement (new ReturnStatement (local));
+          .AddStatement(new AssignStatement(local, indirectReference.ToExpression()))
+          .AddStatement(new AssignStatement(indirectReference, new ConstReference("Replacement").ToExpression()))
+          .AddStatement(new ReturnStatement(local));
 
-      ClassWithPublicFields parameter = new ClassWithPublicFields ();
-      Assert.That (parameter.ReferenceTypeField, Is.EqualTo ("Initial"));
-      Assert.That (InvokeMethod (parameter), Is.EqualTo ("Initial"));
-      Assert.That (parameter.ReferenceTypeField, Is.EqualTo ("Replacement"));
+      ClassWithPublicFields parameter = new ClassWithPublicFields();
+      Assert.That(parameter.ReferenceTypeField, Is.EqualTo("Initial"));
+      Assert.That(InvokeMethod(parameter), Is.EqualTo("Initial"));
+      Assert.That(parameter.ReferenceTypeField, Is.EqualTo("Replacement"));
     }
   }
 }

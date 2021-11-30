@@ -28,32 +28,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void ExtensibleEnums_InWhereClause ()
     {
-      var query1 = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes> ()
-                  where cwadt.ExtensibleEnumProperty == Color.Values.Red ()
+      var query1 = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes>()
+                  where cwadt.ExtensibleEnumProperty == Color.Values.Red()
                   select cwadt;
 
-      var result1 = query1.ToArray ();
-      Assert.That (result1, Is.EqualTo (new[] { DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> () }));
+      var result1 = query1.ToArray();
+      Assert.That(result1, Is.EqualTo(new[] { DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>() }));
 
-      var query2 = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes> ()
-                  where cwadt.ExtensibleEnumProperty.Equals (Color.Values.Red())
+      var query2 = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes>()
+                  where cwadt.ExtensibleEnumProperty.Equals(Color.Values.Red())
                   select cwadt;
 
-      var result2 = query2.ToArray ();
-      Assert.That (result2, Is.EqualTo (new[] { DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> () }));
+      var result2 = query2.ToArray();
+      Assert.That(result2, Is.EqualTo(new[] { DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>() }));
 
-      var query3 = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes> ()
-                   where new[] { Color.Values.Red (), Color.Values.Blue () }.Contains (cwadt.ExtensibleEnumProperty)
+      var query3 = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes>()
+                   where new[] { Color.Values.Red(), Color.Values.Blue() }.Contains(cwadt.ExtensibleEnumProperty)
                    select cwadt;
 
-      var result3 = query3.ToArray ();
-      Assert.That (
+      var result3 = query3.ToArray();
+      Assert.That(
           result3,
-          Is.EquivalentTo (
+          Is.EquivalentTo(
               new[]
               {
-                  DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> (),
-                  DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes> ()
+                  DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>(),
+                  DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes>()
               }));
     }
 
@@ -66,44 +66,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
 
       var result = query.Single();
 
-      Assert.That (result, Is.EqualTo (Color.Values.Red()));
+      Assert.That(result, Is.EqualTo(Color.Values.Red()));
     }
 
     [Test]
     public void ExtensibleEnums_InOrderByClause ()
     {
-      var query1 = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes> ()
+      var query1 = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes>()
                    orderby cwadt.ExtensibleEnumProperty
                    select cwadt;
 
-      var result1 = query1.ToArray ();
+      var result1 = query1.ToArray();
       // This is in alphabetic order
-      Assert.That (result1, Is.EqualTo (
+      Assert.That(result1, Is.EqualTo(
           new[]
           {
-              DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes> (), 
-              DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ()
+              DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes>(),
+              DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>()
           }));
 
-      var query2 = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes> ()
-                   where cwadt.ExtensibleEnumProperty.Equals (Color.Values.Red ())
+      var query2 = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes>()
+                   where cwadt.ExtensibleEnumProperty.Equals(Color.Values.Red())
                    select cwadt;
 
-      var result2 = query2.ToArray ();
-      Assert.That (result2, Is.EqualTo (new[] { DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> () }));
+      var result2 = query2.ToArray();
+      Assert.That(result2, Is.EqualTo(new[] { DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>() }));
 
-      var query3 = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes> ()
-                   where new[] { Color.Values.Red (), Color.Values.Blue () }.Contains (cwadt.ExtensibleEnumProperty)
+      var query3 = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes>()
+                   where new[] { Color.Values.Red(), Color.Values.Blue() }.Contains(cwadt.ExtensibleEnumProperty)
                    select cwadt;
 
-      var result3 = query3.ToArray ();
-      Assert.That (
+      var result3 = query3.ToArray();
+      Assert.That(
           result3,
-          Is.EquivalentTo (
+          Is.EquivalentTo(
               new[]
               {
-                  DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> (),
-                  DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes> ()
+                  DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>(),
+                  DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes>()
               }));
     }
   }

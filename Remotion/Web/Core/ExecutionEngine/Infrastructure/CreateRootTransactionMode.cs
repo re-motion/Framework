@@ -29,7 +29,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public CreateRootTransactionMode (bool autoCommit, ITransactionFactory transactionFactory)
     {
-      ArgumentUtility.CheckNotNull ("transactionFactory", transactionFactory);
+      ArgumentUtility.CheckNotNull("transactionFactory", transactionFactory);
 
       _autoCommit = autoCommit;
       _transactionFactory = transactionFactory;
@@ -37,10 +37,10 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public virtual TransactionStrategyBase CreateTransactionStrategy (WxeFunction function, WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("function", function);
+      ArgumentUtility.CheckNotNull("function", function);
 
       var outerTransactionStrategy = function.ParentFunction != null ? function.ParentFunction.TransactionStrategy : NullTransactionStrategy.Null;
-      return new RootTransactionStrategy (_autoCommit, _transactionFactory.CreateRootTransaction, outerTransactionStrategy, function);
+      return new RootTransactionStrategy(_autoCommit, _transactionFactory.CreateRootTransaction, outerTransactionStrategy, function);
     }
 
     public bool AutoCommit

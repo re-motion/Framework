@@ -25,26 +25,26 @@ using Remotion.Web.Services;
 
 namespace Remotion.Web.Development.WebTesting.TestSite
 {
-  [WebService (Namespace = "http://re-motion.org/ObjectBinding.Web/")]
-  [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
-  [ToolboxItem (false)]
+  [WebService(Namespace = "http://re-motion.org/ObjectBinding.Web/")]
+  [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+  [ToolboxItem(false)]
   [ScriptService]
   public class DropDownMenuWebService : WebService
   {
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public WebMenuItemProxy[] GetMenuItemStatusWithDelay (string arguments, string[] itemIDs)
     {
-      var delayInMilliseconds = int.Parse (arguments);
-      Thread.Sleep (TimeSpan.FromMilliseconds (delayInMilliseconds));
-      return itemIDs.Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: false)).ToArray();
+      var delayInMilliseconds = int.Parse(arguments);
+      Thread.Sleep(TimeSpan.FromMilliseconds(delayInMilliseconds));
+      return itemIDs.Select(itemID => WebMenuItemProxy.Create(itemID, isDisabled: false)).ToArray();
     }
 
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public WebMenuItemProxy[] GetMenuItemStatusWithError (string[] itemIDs)
     {
-      throw new HttpException (500, "Server error");
+      throw new HttpException(500, "Server error");
     }
   }
 }

@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </summary>
     /// <param name="message">The exception message.</param>
     public ClientTransactionReadOnlyException (string message)
-        : base (message)
+        : base(message)
     {
     }
 

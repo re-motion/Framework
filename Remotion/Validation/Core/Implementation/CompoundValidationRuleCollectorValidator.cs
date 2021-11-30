@@ -28,14 +28,14 @@ namespace Remotion.Validation.Implementation
   /// is valid.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IValidationRuleCollectorValidator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IValidationRuleCollectorValidator), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundValidationRuleCollectorValidator : IValidationRuleCollectorValidator
   {
     private readonly IReadOnlyCollection<IValidationRuleCollectorValidator> _collectorValidators;
 
     public CompoundValidationRuleCollectorValidator (IEnumerable<IValidationRuleCollectorValidator> collectorValidators)
     {
-      ArgumentUtility.CheckNotNull ("collectorValidators", collectorValidators);
+      ArgumentUtility.CheckNotNull("collectorValidators", collectorValidators);
 
       _collectorValidators = collectorValidators.ToList().AsReadOnly();
     }
@@ -47,10 +47,10 @@ namespace Remotion.Validation.Implementation
 
     public void CheckValid (IValidationRuleCollector collector)
     {
-      ArgumentUtility.CheckNotNull ("collector", collector);
+      ArgumentUtility.CheckNotNull("collector", collector);
 
       foreach (var collectorValidator in _collectorValidators)
-        collectorValidator.CheckValid (collector);
+        collectorValidator.CheckValid(collector);
     }
   }
 }

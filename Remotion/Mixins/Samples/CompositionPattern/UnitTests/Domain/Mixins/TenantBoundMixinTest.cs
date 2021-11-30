@@ -30,27 +30,27 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
     [SetUp]
     public void SetUp ()
     {
-      _mixin = MixinInstanceFactory.CreateDomainObjectMixinWithTargetStub<TenantBoundMixin, IDomainObject> (out _targetStub);
+      _mixin = MixinInstanceFactory.CreateDomainObjectMixinWithTargetStub<TenantBoundMixin, IDomainObject>(out _targetStub);
     }
 
     [Test]
     public void TargetCommitting_ThrowsOnNullTenant ()
     {
-      Assert.That (_mixin.Tenant, Is.Null);
-      Assert.That (
-          () => _mixin.TargetEvents.OnCommitting (),
+      Assert.That(_mixin.Tenant, Is.Null);
+      Assert.That(
+          () => _mixin.TargetEvents.OnCommitting(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("Cannot commit tenant-bound object 00000000-0000-0000-0000-000000000000 without a tenant."));
+              .With.Message.EqualTo("Cannot commit tenant-bound object 00000000-0000-0000-0000-000000000000 without a tenant."));
     }
 
     [Test]
     public void TargetCommitting_ThrowsOnEmptyTenant ()
     {
       _mixin.Tenant = "";
-      Assert.That (
-          () => _mixin.TargetEvents.OnCommitting (),
+      Assert.That(
+          () => _mixin.TargetEvents.OnCommitting(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("Cannot commit tenant-bound object 00000000-0000-0000-0000-000000000000 without a tenant."));
+              .With.Message.EqualTo("Cannot commit tenant-bound object 00000000-0000-0000-0000-000000000000 without a tenant."));
     }
 
     [Test]
@@ -58,9 +58,9 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
     {
       _mixin.Tenant = "Blah";
 
-      _mixin.TargetEvents.OnCommitting ();
+      _mixin.TargetEvents.OnCommitting();
 
-      Assert.That (_mixin.Tenant, Is.EqualTo ("Blah"));
+      Assert.That(_mixin.Tenant, Is.EqualTo("Blah"));
     }
   }
 }

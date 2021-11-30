@@ -44,7 +44,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.Web.Globalization.WxePageInfo")]
+    [MultiLingualResources("Remotion.Web.Globalization.WxePageInfo")]
     public enum ResourceIdentifier
     {
       /// <summary> Displayed when the user attempts to submit while the page is already aborting. </summary>
@@ -65,9 +65,9 @@ namespace Remotion.Web.ExecutionEngine
     private const string c_styleFileUrl = "ExecutionEngine.css";
     private const string c_styleFileUrlForIE = "ExecutionEngineIE.css";
 
-    private static readonly string s_scriptFileKey = typeof (WxePageInfo).GetFullNameChecked() + "_Script";
-    private static readonly string s_styleFileKey = typeof (WxePageInfo).GetFullNameChecked() + "_Style";
-    private static readonly string s_styleFileKeyForIE = typeof (WxePageInfo).GetFullNameChecked() + "_StyleIE";
+    private static readonly string s_scriptFileKey = typeof(WxePageInfo).GetFullNameChecked() + "_Script";
+    private static readonly string s_styleFileKey = typeof(WxePageInfo).GetFullNameChecked() + "_Style";
+    private static readonly string s_styleFileKeyForIE = typeof(WxePageInfo).GetFullNameChecked() + "_StyleIE";
 
     private readonly IWxePage _page;
     private WxeForm? _wxeForm;
@@ -89,9 +89,9 @@ namespace Remotion.Web.ExecutionEngine
     ///   The page must be derived from <see cref="System.Web.UI.Page">System.Web.UI.Page</see>.
     /// </param>
     public WxePageInfo (IWxePage page)
-      : base (page)
+      : base(page)
     {
-      ArgumentUtility.CheckNotNull ("page", page);
+      ArgumentUtility.CheckNotNull("page", page);
       _page = page;
     }
 
@@ -100,7 +100,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     public Control? FindControl (string id, out bool callBaseMethod)
     {
-      if (_wxeForm != null && !string.IsNullOrEmpty (_wxeForm.ID) && id == _wxeForm.UniqueID)
+      if (_wxeForm != null && !string.IsNullOrEmpty(_wxeForm.ID) && id == _wxeForm.UniqueID)
       {
         callBaseMethod = false;
         return _wxeForm;
@@ -114,10 +114,10 @@ namespace Remotion.Web.ExecutionEngine
 
     public override void Initialize (HttpContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      base.Initialize (context);
+      ArgumentUtility.CheckNotNull("context", context);
+      base.Initialize(context);
 
-      _wxeExecutor = new WxeExecutor (context, _page, this);
+      _wxeExecutor = new WxeExecutor(context, _page, this);
 
       _page.PreInit += HandlePagePreInit;
       _page.Init += HandlePageInit;
@@ -125,16 +125,16 @@ namespace Remotion.Web.ExecutionEngine
 
     public NameValueCollection? EnsurePostBackModeDetermined (HttpContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       if (!_postbackCollectionInitialized)
       {
-        Initialize (context);
+        Initialize(context);
 
-        _postbackCollection = DeterminePostBackMode (context);
+        _postbackCollection = DeterminePostBackMode(context);
         _postbackCollectionInitialized = true;
         if (_postbackCollection != null)
-          EnsurePostDataHandled (_postbackCollection);
+          EnsurePostDataHandled(_postbackCollection);
       }
       return _postbackCollection;
     }
@@ -152,7 +152,7 @@ namespace Remotion.Web.ExecutionEngine
         return null;
 
       NameValueCollection collection;
-      if (StringUtility.AreEqual (httpContext.Request.HttpMethod, "POST", false))
+      if (StringUtility.AreEqual(httpContext.Request.HttpMethod, "POST", false))
         collection = httpContext.Request.Form;
       else
         collection = httpContext.Request.QueryString;
@@ -170,10 +170,10 @@ namespace Remotion.Web.ExecutionEngine
       if (existingForm == null)
         return;
 
-      _wxeForm = WxeForm.Replace (existingForm);
+      _wxeForm = WxeForm.Replace(existingForm);
 
       if (CurrentPageStep != null)
-        _page.ClientScript.RegisterHiddenField (_page, WxePageInfo.PageTokenID, CurrentPageStep.PageToken);
+        _page.ClientScript.RegisterHiddenField(_page, WxePageInfo.PageTokenID, CurrentPageStep.PageToken);
 
       _wxeForm.LoadPostData += Form_LoadPostData;
     }
@@ -184,7 +184,7 @@ namespace Remotion.Web.ExecutionEngine
       MemberInfo[] fields;
       do
       {
-        fields = page.GetType().FindMembers (
+        fields = page.GetType().FindMembers(
             MemberTypes.Field,
             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
             FindHtmlFormControlFilter,
@@ -193,56 +193,56 @@ namespace Remotion.Web.ExecutionEngine
         if (fields.Length == 0)
         {
           if (page is Page)
-            page = ((Page) page).Master;
+            page = ((Page)page).Master;
           else
-            page = ((MasterPage) page).Master;
+            page = ((MasterPage)page).Master;
         }
       } while (fields.Length == 0 && page != null);
 
       if (fields.Length == 0)
       {
-        throw new ApplicationException (
+        throw new ApplicationException(
             message: "Page class " + _page.GetType().GetFullNameSafe() + " has no field of type HtmlForm. Please add a field or override property IWxePage.HtmlForm.");
       }
       else if (fields.Length > 1)
       {
-        throw new ApplicationException (
+        throw new ApplicationException(
             "Page class " + _page.GetType().GetFullNameSafe()
             + " has more than one field of type HtmlForm. Please remove excessive fields or override property IWxePage.HtmlForm.");
       }
 
       if (fields.Length == 1) // Can only be 0 without an exception during design mode
-        return (HtmlForm?) ((FieldInfo) fields[0]).GetValue (page);
+        return (HtmlForm?)((FieldInfo)fields[0]).GetValue(page);
       else
         return null;
     }
 
     private bool FindHtmlFormControlFilter (MemberInfo member, object? filterCriteria)
     {
-      return (member is FieldInfo && ((FieldInfo) member).FieldType == typeof (HtmlForm));
+      return (member is FieldInfo && ((FieldInfo)member).FieldType == typeof(HtmlForm));
     }
     private void HandlePageInit (object? sender, EventArgs e)
     {
-      var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory> ();
-      var scriptUrl = resourceUrlFactory.CreateResourceUrl (typeof (WxePageInfo), ResourceType.Html, c_scriptFileUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+      var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
+      var scriptUrl = resourceUrlFactory.CreateResourceUrl(typeof(WxePageInfo), ResourceType.Html, c_scriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude(s_scriptFileKey, scriptUrl);
 
       var infrastructureResourceUrlFactory = SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>();
-      var styleUrl = infrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Html, c_styleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
+      var styleUrl = infrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink(s_styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }
 
     private void Form_LoadPostData (object? sender, EventArgs e)
     {
       _page.Visible = true;
 
-      NameValueCollection? postBackCollection = _page.GetPostBackCollection ();
+      NameValueCollection? postBackCollection = _page.GetPostBackCollection();
       if (postBackCollection == null)
-        throw new InvalidOperationException ("The IWxePage has no PostBackCollection even though this is a post back.");
-      EnsurePostDataHandled (postBackCollection);
+        throw new InvalidOperationException("The IWxePage has no PostBackCollection even though this is a post back.");
+      EnsurePostDataHandled(postBackCollection);
 
       if (CurrentPageStep.IsOutOfSequencePostBack && !_page.AreOutOfSequencePostBacksEnabled)
-        throw new WxePostbackOutOfSequenceException ();
+        throw new WxePostbackOutOfSequenceException();
     }
 
     protected void EnsurePostDataHandled (NameValueCollection postBackCollection)
@@ -251,7 +251,7 @@ namespace Remotion.Web.ExecutionEngine
         return;
 
       _isPostDataHandled = true;
-      HandleLoadPostData (postBackCollection);
+      HandleLoadPostData(postBackCollection);
     }
 
     /// <exception cref="WxePostbackOutOfSequenceException"> 
@@ -259,22 +259,22 @@ namespace Remotion.Web.ExecutionEngine
     /// </exception>
     protected virtual void HandleLoadPostData (NameValueCollection postBackCollection)
     {
-      ArgumentUtility.CheckNotNull ("postBackCollection", postBackCollection);
+      ArgumentUtility.CheckNotNull("postBackCollection", postBackCollection);
 
       WxeContext? wxeContext = WxeContext.Current;
 
-      int postBackID = int.Parse (postBackCollection[WxePageInfo.PostBackSequenceNumberID]!); // TODO RM-8118: debug not null assertion
+      int postBackID = int.Parse(postBackCollection[WxePageInfo.PostBackSequenceNumberID]!); // TODO RM-8118: debug not null assertion
       if (postBackID != wxeContext!.PostBackID) // TODO RM-8118: not null assertion
-        CurrentPageStep.SetIsOutOfSequencePostBack (true);
+        CurrentPageStep.SetIsOutOfSequencePostBack(true);
 
       string? returningToken = postBackCollection[WxePageInfo.ReturningTokenID];
-      if (!string.IsNullOrEmpty (returningToken))
+      if (!string.IsNullOrEmpty(returningToken))
       {
         WxeFunctionStateManager functionStates = WxeFunctionStateManager.Current;
-        WxeFunctionState? functionState = functionStates.GetItem (returningToken);
+        WxeFunctionState? functionState = functionStates.GetItem(returningToken);
         if (functionState != null)
         {
-          CurrentPageStep.SetReturnState (functionState.Function, true, null);
+          CurrentPageStep.SetReturnState(functionState.Function, true, null);
           _returningFunctionState = functionState;
         }
       }
@@ -282,47 +282,47 @@ namespace Remotion.Web.ExecutionEngine
 
     public void OnPreRenderComplete ()
     {
-      Assertion.DebugIsNotNull (_wxeForm, "_wxeForm must not be null.");
+      Assertion.DebugIsNotNull(_wxeForm, "_wxeForm must not be null.");
 
       WxeContext? wxeContext = WxeContext.Current;
 
-      _page.ClientScript.RegisterHiddenField (_page, WxeHandler.Parameters.WxeFunctionToken, wxeContext!.FunctionToken); // TODO RM-8118: not null assertion
-      _page.ClientScript.RegisterHiddenField (_page, WxePageInfo.ReturningTokenID, null);
+      _page.ClientScript.RegisterHiddenField(_page, WxeHandler.Parameters.WxeFunctionToken, wxeContext!.FunctionToken); // TODO RM-8118: not null assertion
+      _page.ClientScript.RegisterHiddenField(_page, WxePageInfo.ReturningTokenID, null);
       int currentPostBackID = wxeContext.PostBackID;
       int nextPostBackID = currentPostBackID + 1;
-      _page.ClientScript.RegisterHiddenField (_page, WxePageInfo.PostBackSequenceNumberID, nextPostBackID.ToString ());
+      _page.ClientScript.RegisterHiddenField(_page, WxePageInfo.PostBackSequenceNumberID, nextPostBackID.ToString());
 
       if (SafeServiceLocator.Current.GetInstance<IRenderingFeatures>().EnableDiagnosticMetadata)
-        _page.ClientScript.RegisterHiddenField (_page, WxePageInfo.DmaPostBackSequenceNumberID, currentPostBackID.ToString());
+        _page.ClientScript.RegisterHiddenField(_page, WxePageInfo.DmaPostBackSequenceNumberID, currentPostBackID.ToString());
 
-      _page.ClientScript.RegisterClientScriptBlock (_page, typeof (WxePageInfo),  "wxeDoSubmit",
+      _page.ClientScript.RegisterClientScriptBlock(_page, typeof(WxePageInfo),  "wxeDoSubmit",
             "function wxeDoSubmit (button, pageToken) { \r\n"
           + "  var theForm = document." + _wxeForm.ClientID + "; \r\n"
           + "  theForm." + WxePageInfo.ReturningTokenID + ".value = pageToken; \r\n"
           + "  document.getElementById(button).click(); \r\n"
           + "}");
 
-      _page.ClientScript.RegisterClientScriptBlock (_page, typeof (WxePageInfo), "wxeDoPostBack",
+      _page.ClientScript.RegisterClientScriptBlock(_page, typeof(WxePageInfo), "wxeDoPostBack",
             "function wxeDoPostBack (control, argument, returningToken) { \r\n"
           + "  var theForm = document." + _wxeForm.ClientID + "; \r\n"
           + "  theForm." + WxePageInfo.ReturningTokenID + ".value = returningToken; \r\n"
           + "  __doPostBack (control, argument); \r\n"
           + "}");
 
-      HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude ();
+      HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude();
 
-      RegisterWxeInitializationScript ();
-      SetCacheSettings ();
+      RegisterWxeInitializationScript();
+      SetCacheSettings();
     }
 
     private void SetCacheSettings ()
     {
-      WxeContext.Current!.HttpContext.Response.Cache.SetCacheability (HttpCacheability.Private); // TODO RM-8118: not null assertion
+      WxeContext.Current!.HttpContext.Response.Cache.SetCacheability(HttpCacheability.Private); // TODO RM-8118: not null assertion
     }
 
     private void RegisterWxeInitializationScript ()
     {
-      IResourceManager resourceManager = GetResourceManager ();
+      IResourceManager resourceManager = GetResourceManager();
 
       string temp;
       WxeContext wxeContext = WxeContext.Current!; // TODO RM-8118: not null assertion
@@ -333,11 +333,11 @@ namespace Remotion.Web.ExecutionEngine
       if (WxeHandler.IsSessionManagementEnabled)
       {
         //  Ensure the registration of "__doPostBack" on the page.
-        temp = _page.ClientScript.GetPostBackEventReference (_page, null);
+        temp = _page.ClientScript.GetPostBackEventReference(_page, null);
 
         bool isAbortEnabled = _page.IsAbortEnabled;
 
-        string resumePath = wxeContext.GetPath (wxeContext.FunctionToken, null);
+        string resumePath = wxeContext.GetPath(wxeContext.FunctionToken, null);
 
         if (WxeHandler.IsSessionRefreshEnabled)
         {
@@ -353,28 +353,28 @@ namespace Remotion.Web.ExecutionEngine
       string statusIsCachedMessage = "null";
       if (_page.AreStatusMessagesEnabled)
       {
-        if (string.IsNullOrEmpty (_page.StatusIsAbortingMessage))
-          temp = resourceManager.GetString (ResourceIdentifier.StatusIsAbortingMessage);
+        if (string.IsNullOrEmpty(_page.StatusIsAbortingMessage))
+          temp = resourceManager.GetString(ResourceIdentifier.StatusIsAbortingMessage);
         else
           temp = _page.StatusIsAbortingMessage;
-        statusIsAbortingMessage = "'" + ScriptUtility.EscapeClientScript (temp) + "'";
+        statusIsAbortingMessage = "'" + ScriptUtility.EscapeClientScript(temp) + "'";
 
-        if (string.IsNullOrEmpty (_page.StatusIsCachedMessage))
-          temp = resourceManager.GetString (ResourceIdentifier.StatusIsCachedMessage);
+        if (string.IsNullOrEmpty(_page.StatusIsCachedMessage))
+          temp = resourceManager.GetString(ResourceIdentifier.StatusIsCachedMessage);
         else
           temp = _page.StatusIsCachedMessage;
-        statusIsCachedMessage = "'" + ScriptUtility.EscapeClientScript (temp) + "'";
+        statusIsCachedMessage = "'" + ScriptUtility.EscapeClientScript(temp) + "'";
       }
 
-      _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnLoading, "WxePage_OnLoading", "WxePage_OnLoading");
-      _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnLoaded, "WxePage_OnLoaded", "WxePage_OnLoaded");
-      _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnAbort, "WxePage_OnAbort", "WxePage_OnAbort");
-      _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnUnload, "WxePage_OnUnload", "WxePage_OnUnload");
+      _page.RegisterClientSidePageEventHandler(SmartPageEvents.OnLoading, "WxePage_OnLoading", "WxePage_OnLoading");
+      _page.RegisterClientSidePageEventHandler(SmartPageEvents.OnLoaded, "WxePage_OnLoaded", "WxePage_OnLoaded");
+      _page.RegisterClientSidePageEventHandler(SmartPageEvents.OnAbort, "WxePage_OnAbort", "WxePage_OnAbort");
+      _page.RegisterClientSidePageEventHandler(SmartPageEvents.OnUnload, "WxePage_OnUnload", "WxePage_OnUnload");
       _page.CheckFormStateFunction = "WxePage_CheckFormState";
 
       string isCacheDetectionEnabled = _page.AreOutOfSequencePostBacksEnabled ? "false" : "true";
 
-      StringBuilder initScript = new StringBuilder (500);
+      StringBuilder initScript = new StringBuilder(500);
 
       string wxePostBackSequenceNumberFieldID = "'" + PostBackSequenceNumberID + "'";
       string dmaWxePostBackSequenceNumberFieldID = "null";
@@ -382,17 +382,17 @@ namespace Remotion.Web.ExecutionEngine
       if (SafeServiceLocator.Current.GetInstance<IRenderingFeatures>().EnableDiagnosticMetadata)
         dmaWxePostBackSequenceNumberFieldID = "'" + DmaPostBackSequenceNumberID + "'";
 
-      initScript.AppendLine ("WxePage_Context.SetInstance (new WxePage_Context (");
-      initScript.Append ("    ").Append (isCacheDetectionEnabled).AppendLine (",");
-      initScript.Append ("    ").Append (refreshInterval).AppendLine (",");
-      initScript.Append ("    ").Append (refreshPath).AppendLine (",");
-      initScript.Append ("    ").Append (abortPath).AppendLine (",");
-      initScript.Append ("    ").Append (statusIsAbortingMessage).AppendLine (",");
-      initScript.Append ("    ").Append (statusIsCachedMessage).AppendLine (",");
-      initScript.Append ("    ").Append (wxePostBackSequenceNumberFieldID).AppendLine (",");
-      initScript.Append ("    ").Append (dmaWxePostBackSequenceNumberFieldID).AppendLine ("));");
+      initScript.AppendLine("WxePage_Context.SetInstance (new WxePage_Context (");
+      initScript.Append("    ").Append(isCacheDetectionEnabled).AppendLine(",");
+      initScript.Append("    ").Append(refreshInterval).AppendLine(",");
+      initScript.Append("    ").Append(refreshPath).AppendLine(",");
+      initScript.Append("    ").Append(abortPath).AppendLine(",");
+      initScript.Append("    ").Append(statusIsAbortingMessage).AppendLine(",");
+      initScript.Append("    ").Append(statusIsCachedMessage).AppendLine(",");
+      initScript.Append("    ").Append(wxePostBackSequenceNumberFieldID).AppendLine(",");
+      initScript.Append("    ").Append(dmaWxePostBackSequenceNumberFieldID).AppendLine("));");
 
-      _page.ClientScript.RegisterClientScriptBlock (_page, typeof (WxePageInfo), "wxeInitialize", initScript.ToString ());
+      _page.ClientScript.RegisterClientScriptBlock(_page, typeof(WxePageInfo), "wxeInitialize", initScript.ToString());
     }
 
 
@@ -423,11 +423,11 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     public NameValueCollection GetPermanentUrlParameters ()
     {
-      NameValueCollection urlParameters = CurrentPageFunction.VariablesContainer.SerializeParametersForQueryString ();
+      NameValueCollection urlParameters = CurrentPageFunction.VariablesContainer.SerializeParametersForQueryString();
 
       ISmartNavigablePage? smartNavigablePage = _page as ISmartNavigablePage;
       if (smartNavigablePage != null)
-        NameValueCollectionUtility.Append (urlParameters, smartNavigablePage.GetNavigationUrlParameters ());
+        NameValueCollectionUtility.Append(urlParameters, smartNavigablePage.GetNavigationUrlParameters());
 
       return urlParameters;
     }
@@ -437,7 +437,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     public string GetPermanentUrl ()
     {
-      return GetPermanentUrl (CurrentPageFunction.GetType (), GetPermanentUrlParameters ());
+      return GetPermanentUrl(CurrentPageFunction.GetType(), GetPermanentUrlParameters());
     }
 
     /// <summary>
@@ -445,7 +445,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     public string GetPermanentUrl (NameValueCollection urlParameters)
     {
-      return GetPermanentUrl (CurrentPageFunction.GetType (), urlParameters);
+      return GetPermanentUrl(CurrentPageFunction.GetType(), urlParameters);
     }
 
     /// <summary>
@@ -453,7 +453,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     public string GetPermanentUrl (Type functionType, NameValueCollection urlParameters)
     {
-      return WxeContext.Current!.GetPermanentUrl (functionType, urlParameters); // TODO RM-8118: not null assertion
+      return WxeContext.Current!.GetPermanentUrl(functionType, urlParameters); // TODO RM-8118: not null assertion
     }
 
     /// <summary> Implements <see cref="IWxePage.IsOutOfSequencePostBack">IWxePage.IsOutOfSequencePostBack</see>. </summary>
@@ -478,14 +478,14 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="state"> An <b>ASP.NET</b> viewstate object. </param>
     public void SavePageStateToPersistenceMedium (object state)
     {
-      CurrentPageStep.SavePageStateToPersistenceMedium (state);
+      CurrentPageStep.SavePageStateToPersistenceMedium(state);
     }
 
     /// <summary> Returns the viewstate previously saved into the executing <see cref="WxePageStep"/>. </summary>
     /// <returns> An <b>ASP.NET</b> viewstate object. </returns>
     public object LoadPageStateFromPersistenceMedium ()
     {
-      return CurrentPageStep.LoadPageStateFromPersistenceMedium ();
+      return CurrentPageStep.LoadPageStateFromPersistenceMedium();
     }
 
 
@@ -516,26 +516,26 @@ namespace Remotion.Web.ExecutionEngine
       {
         bool isRootFunction = _returningFunctionState.Function == _returningFunctionState.Function.RootFunction;
         if (isRootFunction)
-          WxeFunctionStateManager.Current.Abort (_returningFunctionState);
+          WxeFunctionStateManager.Current.Abort(_returningFunctionState);
       }
 
       if (_executeNextStep)
       {
         if (httpContext != null)
-          httpContext.Response.Clear (); // throw away page trace output
-        throw new WxeExecuteNextStepException ();
+          httpContext.Response.Clear(); // throw away page trace output
+        throw new WxeExecuteNextStepException();
       }
     }
-    
+
     [NotNull]
     public Exception WrapProcessRequestException ([NotNull] HttpException exception)
     {
-      ArgumentUtility.CheckNotNull ("exception", exception);
+      ArgumentUtility.CheckNotNull("exception", exception);
 
       if (exception.GetHttpCode() == HttpStatusCode_NotFound)
-        return new WxeResourceNotFoundException ("Resource not found.", exception);
+        return new WxeResourceNotFoundException("Resource not found.", exception);
 
-      return new WxeHttpExceptionPreservingException (exception);
+      return new WxeHttpExceptionPreservingException(exception);
     }
 
     public WxeForm? WxeForm
@@ -547,7 +547,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> Find the <see cref="IResourceManager"/> for this WxePageInfo. </summary>
     protected virtual IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
 
@@ -556,10 +556,10 @@ namespace Remotion.Web.ExecutionEngine
       get
       {
         NameObjectCollection? windowState =
-            (NameObjectCollection?) CurrentPageFunction.RootFunction!.Variables["WxeWindowState"];
+            (NameObjectCollection?)CurrentPageFunction.RootFunction!.Variables["WxeWindowState"];
         if (windowState == null)
         {
-          windowState = new NameObjectCollection ();
+          windowState = new NameObjectCollection();
           CurrentPageFunction.RootFunction.Variables["WxeWindowState"] = windowState;
         }
         return windowState;
@@ -571,7 +571,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     public object? GetData (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
       return WindowState[key];
     }
 
@@ -580,7 +580,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     public void SetData (string key, object? value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
       WindowState[key] = value;
     }
 

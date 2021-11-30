@@ -31,11 +31,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// <returns></returns>
     public static GenericTestPageParameter AppendArguments (this GenericTestPageParameter parameter, params string[] additionalArguments)
     {
-      ArgumentUtility.CheckNotNull ("parameter", parameter);
-      ArgumentUtility.CheckNotNullOrItemsNull ("additionalArguments", additionalArguments);
+      ArgumentUtility.CheckNotNull("parameter", parameter);
+      ArgumentUtility.CheckNotNullOrItemsNull("additionalArguments", additionalArguments);
 
-      var newArguments = parameter.Arguments.Concat (additionalArguments).ToArray();
-      return new GenericTestPageParameter (parameter.Name, newArguments);
+      var newArguments = parameter.Arguments.Concat(additionalArguments).ToArray();
+      return new GenericTestPageParameter(parameter.Name, newArguments);
     }
   }
 }

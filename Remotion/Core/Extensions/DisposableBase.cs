@@ -31,35 +31,35 @@ namespace Remotion
 
     protected abstract void Dispose (bool disposing);
 
-    void IDisposable.Dispose()
+    void IDisposable.Dispose ()
     {
       Dispose();
     }
 
-    protected void Dispose()
+    protected void Dispose ()
     {
       if (! _disposed)
       {
-        Dispose (true);
-        GC.SuppressFinalize (this);
+        Dispose(true);
+        GC.SuppressFinalize(this);
         _disposed = true;
       }
     }
 
     ~DisposableExplicitBase()
     {
-      Dispose (false);
+      Dispose(false);
     }
 
     protected bool Disposed
-    { 
+    {
       get { return _disposed; }
     }
 
     protected void AssertNotDisposed ()
     {
       if (_disposed)
-        throw new InvalidOperationException ("Object disposed.");
+        throw new InvalidOperationException("Object disposed.");
     }
 
     protected void Resurrect ()
@@ -67,7 +67,7 @@ namespace Remotion
       if (_disposed)
       {
         _disposed = false;
-        GC.ReRegisterForFinalize (this);
+        GC.ReRegisterForFinalize(this);
       }
     }
   }
@@ -79,7 +79,7 @@ namespace Remotion
   [Serializable]
   public abstract class DisposableBase: DisposableExplicitBase
   {
-    public new void Dispose()
+    public new void Dispose ()
     {
       base.Dispose();
     }

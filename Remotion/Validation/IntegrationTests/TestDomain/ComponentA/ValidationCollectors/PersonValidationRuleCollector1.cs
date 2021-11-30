@@ -23,8 +23,8 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
   {
     public PersonValidationRuleCollector1 ()
     {
-      AddRule (p => p.LastName).CanBeRemoved().NotNull().NotEqual ("Test").NotEqual ("test");
-      AddRule().CanBeRemoved().SetValidator (p => new RealPersonValidator());
+      AddRule(p => p.LastName).CanBeRemoved().NotNull().NotEqual("Test").NotEqual("test");
+      AddRule().CanBeRemoved().SetValidator(p => new RealPersonValidator());
     }
   }
 }

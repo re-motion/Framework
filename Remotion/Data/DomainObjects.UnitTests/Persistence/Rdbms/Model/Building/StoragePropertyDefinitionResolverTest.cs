@@ -50,59 +50,59 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     public void SetUp ()
     {
       _persistenceModelProviderStub = MockRepository.GenerateStub<IRdbmsPersistenceModelProvider>();
-      _resolver = new StoragePropertyDefinitionResolver (_persistenceModelProviderStub);
-      _testModel = new RdbmsPersistenceModelLoaderTestHelper ();
-      
+      _resolver = new StoragePropertyDefinitionResolver(_persistenceModelProviderStub);
+      _testModel = new RdbmsPersistenceModelLoaderTestHelper();
+
       _fakeStorageProperyDefinition1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test1");
-      _fakeStorageProperyDefinition2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Test2");
-      _fakeStorageProperyDefinition3 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Test3");
-      _fakeStorageProperyDefinition4 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Test4");
-      _fakeStorageProperyDefinition5 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Test5");
-      _fakeStorageProperyDefinition6 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Test6");
-      _fakeStorageProperyDefinition7 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Test7");
+      _fakeStorageProperyDefinition2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test2");
+      _fakeStorageProperyDefinition3 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test3");
+      _fakeStorageProperyDefinition4 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test4");
+      _fakeStorageProperyDefinition5 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test5");
+      _fakeStorageProperyDefinition6 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test6");
+      _fakeStorageProperyDefinition7 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test7");
 
       _persistenceModelProviderStub
-          .Stub (stub => stub.GetStoragePropertyDefinition (_testModel.BaseBasePropertyDefinition))
-          .Return (_fakeStorageProperyDefinition1);
+          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.BaseBasePropertyDefinition))
+          .Return(_fakeStorageProperyDefinition1);
       _persistenceModelProviderStub
-          .Stub (stub => stub.GetStoragePropertyDefinition (_testModel.BaseBasePropertyDefinition))
-          .Return (_fakeStorageProperyDefinition1);
+          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.BaseBasePropertyDefinition))
+          .Return(_fakeStorageProperyDefinition1);
       _persistenceModelProviderStub
-          .Stub (stub => stub.GetStoragePropertyDefinition (_testModel.BasePropertyDefinition))
-          .Return (_fakeStorageProperyDefinition2);
+          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.BasePropertyDefinition))
+          .Return(_fakeStorageProperyDefinition2);
       _persistenceModelProviderStub
-          .Stub (stub => stub.GetStoragePropertyDefinition (_testModel.TablePropertyDefinition1))
-          .Return (_fakeStorageProperyDefinition3);
+          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.TablePropertyDefinition1))
+          .Return(_fakeStorageProperyDefinition3);
       _persistenceModelProviderStub
-          .Stub (stub => stub.GetStoragePropertyDefinition (_testModel.TablePropertyDefinition2))
-          .Return (_fakeStorageProperyDefinition4);
+          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.TablePropertyDefinition2))
+          .Return(_fakeStorageProperyDefinition4);
       _persistenceModelProviderStub
-          .Stub (stub => stub.GetStoragePropertyDefinition (_testModel.DerivedPropertyDefinition1))
-          .Return (_fakeStorageProperyDefinition5);
+          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.DerivedPropertyDefinition1))
+          .Return(_fakeStorageProperyDefinition5);
       _persistenceModelProviderStub
-          .Stub (stub => stub.GetStoragePropertyDefinition (_testModel.DerivedPropertyDefinition2))
-          .Return (_fakeStorageProperyDefinition6);
+          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.DerivedPropertyDefinition2))
+          .Return(_fakeStorageProperyDefinition6);
       _persistenceModelProviderStub
-          .Stub (stub => stub.GetStoragePropertyDefinition (_testModel.DerivedDerivedPropertyDefinition))
-          .Return (_fakeStorageProperyDefinition7);
+          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.DerivedDerivedPropertyDefinition))
+          .Return(_fakeStorageProperyDefinition7);
     }
 
     [Test]
     public void GetStoragePropertiesForHierarchy_GetsPropertiesFromDerivedClasses_SortedFromBaseToDerived ()
     {
-      var columns = _resolver.GetStoragePropertiesForHierarchy (_testModel.BaseBaseClassDefinition).ToArray();
+      var columns = _resolver.GetStoragePropertiesForHierarchy(_testModel.BaseBaseClassDefinition).ToArray();
 
-      Assert.That (
+      Assert.That(
           columns,
-          Is.EqualTo (
+          Is.EqualTo(
               new[]
               {
-                  _fakeStorageProperyDefinition1, 
-                  _fakeStorageProperyDefinition2, 
-                  _fakeStorageProperyDefinition3, 
-                  _fakeStorageProperyDefinition4, 
+                  _fakeStorageProperyDefinition1,
+                  _fakeStorageProperyDefinition2,
+                  _fakeStorageProperyDefinition3,
+                  _fakeStorageProperyDefinition4,
                   _fakeStorageProperyDefinition5,
-                  _fakeStorageProperyDefinition6, 
+                  _fakeStorageProperyDefinition6,
                   _fakeStorageProperyDefinition7
               }));
     }
@@ -110,9 +110,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void GetStoragePropertiesForHierarchy_AlsoGetsPropertiesFromBaseClasses_SortedFromBaseToDerived ()
     {
-      var properties = _resolver.GetStoragePropertiesForHierarchy (_testModel.DerivedClassDefinition1).ToArray ();
+      var properties = _resolver.GetStoragePropertiesForHierarchy(_testModel.DerivedClassDefinition1).ToArray();
 
-      Assert.That (properties, Is.EqualTo (
+      Assert.That(properties, Is.EqualTo(
           new[]
           {
               _fakeStorageProperyDefinition1,
@@ -123,58 +123,58 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void GetStoragePropertiesForHierarchy_NonPersistentPropertiesAreFiltered ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order), baseClass: null);
-      var nonPersistentProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo (classDefinition, "NonPersistentProperty", StorageClass.None);
-      classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[] { nonPersistentProperty }, true));
-      classDefinition.SetDerivedClasses (new ClassDefinition[0]);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
+      var nonPersistentProperty = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "NonPersistentProperty", StorageClass.None);
+      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { nonPersistentProperty }, true));
+      classDefinition.SetDerivedClasses(new ClassDefinition[0]);
 
-      var properties = _resolver.GetStoragePropertiesForHierarchy (classDefinition).ToArray ();
+      var properties = _resolver.GetStoragePropertiesForHierarchy(classDefinition).ToArray();
 
-      Assert.That (properties, Is.Empty);
+      Assert.That(properties, Is.Empty);
     }
 
     [Test]
     public void GetStoragePropertiesForHierarchy_MultipleStoragePropertiesForSamePropertyInfo_AreUnified ()
     {
-      var storageProperty1 = CreateStorageProperyDefinitionWithNameAndNullability ("Test1", false);
-      var storageProperty2 = CreateStorageProperyDefinitionWithNameAndNullability ("Test1", false);
-      var storageProperty3 = CreateStorageProperyDefinitionWithNameAndNullability ("Test1", true);
+      var storageProperty1 = CreateStorageProperyDefinitionWithNameAndNullability("Test1", false);
+      var storageProperty2 = CreateStorageProperyDefinitionWithNameAndNullability("Test1", false);
+      var storageProperty3 = CreateStorageProperyDefinitionWithNameAndNullability("Test1", true);
 
-      var propertyInfo = CreateFakePropertyInfo (typeof (Order), "OrderNumber");
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order), baseClass: null);
-      var propertyDefinition1 = CreatePropertyWithStubbedStorageProperty (classDefinition, storageProperty1, "P1", propertyInfo);
-      var propertyDefinition2 = CreatePropertyWithStubbedStorageProperty (classDefinition, storageProperty2, "P2", propertyInfo);
-      var propertyDefinition3 = CreatePropertyWithStubbedStorageProperty (classDefinition, storageProperty3, "P3", propertyInfo);
-      classDefinition.SetPropertyDefinitions (
-          new PropertyDefinitionCollection (new[] { propertyDefinition1, propertyDefinition2, propertyDefinition3 }, true));
-      classDefinition.SetDerivedClasses (new ClassDefinition[0]);
+      var propertyInfo = CreateFakePropertyInfo(typeof(Order), "OrderNumber");
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
+      var propertyDefinition1 = CreatePropertyWithStubbedStorageProperty(classDefinition, storageProperty1, "P1", propertyInfo);
+      var propertyDefinition2 = CreatePropertyWithStubbedStorageProperty(classDefinition, storageProperty2, "P2", propertyInfo);
+      var propertyDefinition3 = CreatePropertyWithStubbedStorageProperty(classDefinition, storageProperty3, "P3", propertyInfo);
+      classDefinition.SetPropertyDefinitions(
+          new PropertyDefinitionCollection(new[] { propertyDefinition1, propertyDefinition2, propertyDefinition3 }, true));
+      classDefinition.SetDerivedClasses(new ClassDefinition[0]);
 
-      var properties = _resolver.GetStoragePropertiesForHierarchy (classDefinition).ToArray ();
+      var properties = _resolver.GetStoragePropertiesForHierarchy(classDefinition).ToArray();
 
-      Assert.That (properties, Has.Length.EqualTo (1)); // instead of 2 properties
-      Assert.That (properties[0], Is.TypeOf<SimpleStoragePropertyDefinition> ());
-      Assert.That (((SimpleStoragePropertyDefinition) properties[0]).ColumnDefinition.Name, Is.EqualTo ("Test1"));
-      Assert.That (((SimpleStoragePropertyDefinition) properties[0]).ColumnDefinition.StorageTypeInfo.IsStorageTypeNullable, Is.True);
+      Assert.That(properties, Has.Length.EqualTo(1)); // instead of 2 properties
+      Assert.That(properties[0], Is.TypeOf<SimpleStoragePropertyDefinition>());
+      Assert.That(((SimpleStoragePropertyDefinition)properties[0]).ColumnDefinition.Name, Is.EqualTo("Test1"));
+      Assert.That(((SimpleStoragePropertyDefinition)properties[0]).ColumnDefinition.StorageTypeInfo.IsStorageTypeNullable, Is.True);
     }
 
     [Test]
     public void GetStoragePropertiesForHierarchy_MultipleStoragePropertiesForSamePropertyInfo_WithIncompatibilities_Throw ()
     {
-      var storageProperty1 = CreateStorageProperyDefinitionWithNameAndNullability ("Test1", false);
-      var storageProperty2 = CreateStorageProperyDefinitionWithNameAndNullability ("Test2", false);
+      var storageProperty1 = CreateStorageProperyDefinitionWithNameAndNullability("Test1", false);
+      var storageProperty2 = CreateStorageProperyDefinitionWithNameAndNullability("Test2", false);
 
-      var propertyInfo = CreateFakePropertyInfo (typeof (Order), "OrderNumber");
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order), baseClass: null);
-      var propertyDefinition1 = CreatePropertyWithStubbedStorageProperty (classDefinition, storageProperty1, "P1", propertyInfo);
-      var propertyDefinition2 = CreatePropertyWithStubbedStorageProperty (classDefinition, storageProperty2, "P2", propertyInfo);
-      classDefinition.SetPropertyDefinitions (
-          new PropertyDefinitionCollection (new[] { propertyDefinition1, propertyDefinition2 }, true));
-      classDefinition.SetDerivedClasses (new ClassDefinition[0]);
+      var propertyInfo = CreateFakePropertyInfo(typeof(Order), "OrderNumber");
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
+      var propertyDefinition1 = CreatePropertyWithStubbedStorageProperty(classDefinition, storageProperty1, "P1", propertyInfo);
+      var propertyDefinition2 = CreatePropertyWithStubbedStorageProperty(classDefinition, storageProperty2, "P2", propertyInfo);
+      classDefinition.SetPropertyDefinitions(
+          new PropertyDefinitionCollection(new[] { propertyDefinition1, propertyDefinition2 }, true));
+      classDefinition.SetDerivedClasses(new ClassDefinition[0]);
 
-      Assert.That (
-          () => _resolver.GetStoragePropertiesForHierarchy (classDefinition).ToArray(),
+      Assert.That(
+          () => _resolver.GetStoragePropertiesForHierarchy(classDefinition).ToArray(),
           Throws.TypeOf<InvalidOperationException>()
-                .With.Message.EqualTo (
+                .With.Message.EqualTo(
                     "For property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderNumber', storage properties with conflicting "
                     + "properties were created. This is not allowed, all storage properties for a .NET property must be equivalent. "
                     + "This error indicates a bug in the IValueStoragePropertyDefinitionFactor implementation."));
@@ -182,28 +182,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
 
     private static SimpleStoragePropertyDefinition CreateStorageProperyDefinitionWithNameAndNullability (string columnName, bool isStorageTypeNullable)
     {
-      return SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty (
+      return SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty(
           columnName,
-          storageTypeInformation: StorageTypeInformationObjectMother.CreateStorageTypeInformation (isStorageTypeNullable: isStorageTypeNullable));
+          storageTypeInformation: StorageTypeInformationObjectMother.CreateStorageTypeInformation(isStorageTypeNullable: isStorageTypeNullable));
     }
 
     private PropertyDefinition CreatePropertyWithStubbedStorageProperty (
         ClassDefinition classDefinition, IRdbmsStoragePropertyDefinition storagePropertyDefinition, string propertyName, IPropertyInformation propertyInfo)
     {
-      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForPropertyInformation (classDefinition, propertyName, propertyInfo);
+      PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForPropertyInformation(classDefinition, propertyName, propertyInfo);
 
       _persistenceModelProviderStub
-          .Stub (stub => stub.GetStoragePropertyDefinition (propertyDefinition))
-          .Return (storagePropertyDefinition);
+          .Stub(stub => stub.GetStoragePropertyDefinition(propertyDefinition))
+          .Return(storagePropertyDefinition);
       return propertyDefinition;
     }
 
     private IPropertyInformation CreateFakePropertyInfo (Type declaringType, string propertyName)
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation> ();
-      propertyInformationStub.Stub (stub => stub.Name).Return (propertyName);
-      propertyInformationStub.Stub (stub => stub.DeclaringType).Return (TypeAdapter.Create (declaringType));
-      propertyInformationStub.Stub (_ => _.PropertyType).Return (typeof (string));
+      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
+      propertyInformationStub.Stub(stub => stub.Name).Return(propertyName);
+      propertyInformationStub.Stub(stub => stub.DeclaringType).Return(TypeAdapter.Create(declaringType));
+      propertyInformationStub.Stub(_ => _.PropertyType).Return(typeof(string));
       return propertyInformationStub;
     }
   }

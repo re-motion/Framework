@@ -28,12 +28,12 @@ namespace Remotion.Web.Test.Shared.DoublePostBackHandling
   {
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
-      var counter = string.IsNullOrEmpty (CounterTextBox.Text) ? 0 : int.Parse (CounterTextBox.Text);
+      base.OnLoad(e);
+      var counter = string.IsNullOrEmpty(CounterTextBox.Text) ? 0 : int.Parse(CounterTextBox.Text);
       counter++;
       CounterTextBox.Text = counter.ToString();
 
-      Thread.Sleep (200);
+      Thread.Sleep(200);
     }
 
     protected void AsyncTextBox_OnTextChanged (object sender, EventArgs e)

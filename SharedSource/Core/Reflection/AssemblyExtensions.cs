@@ -30,11 +30,11 @@ namespace Remotion.Reflection
       // ReSharper disable once ConstantNullCoalescingCondition
       return assembly.FullName ?? "<undefined>";
     }
-    
+
     public static string GetFullNameChecked (this Assembly assembly)
     {
       // ReSharper disable once ConstantNullCoalescingCondition
-      return assembly.FullName ?? throw new InvalidOperationException ("Assembly name is undefined.");
+      return assembly.FullName ?? throw new InvalidOperationException("Assembly name is undefined.");
     }
   }
 }

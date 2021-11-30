@@ -24,7 +24,7 @@ namespace Remotion.Validation.UnitTests.TestDomain.Collectors
   {
     public PersonValidationRuleCollector2 ()
     {
-      AddRule (p => p.Birthday).LessThan (DateTime.MaxValue);
+      AddRule(p => p.Birthday).LessThan(DateTime.MaxValue);
     }
   }
 }

@@ -58,53 +58,53 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     [SetUp]
     public void SetUp ()
     {
-      _section = (WebTestConfigurationSection) Activator.CreateInstance (typeof (WebTestConfigurationSection), true);
+      _section = (WebTestConfigurationSection)Activator.CreateInstance(typeof(WebTestConfigurationSection), true);
     }
 
     [Test]
     public void FullConfiguration ()
     {
-      DeserializeSection (c_fullConfigurationXml);
+      DeserializeSection(c_fullConfigurationXml);
 
-      Assert.That (_section.BrowserName, Is.EqualTo ("Chrome"));
-      Assert.That (_section.CommandTimeout, Is.EqualTo (TimeSpan.FromSeconds (41)));
-      Assert.That (_section.SearchTimeout, Is.EqualTo (TimeSpan.FromSeconds (43)));
-      Assert.That (_section.RetryInterval, Is.EqualTo (TimeSpan.FromMilliseconds (42)));
-      Assert.That (_section.WebApplicationRoot, Is.EqualTo ("http://some.url:1337/"));
-      Assert.That (_section.ScreenshotDirectory, Is.EqualTo (Path.GetFullPath (@".\SomeScreenshotDirectory")));
-      Assert.That (_section.HostingProviderSettings.Name, Is.EqualTo ("IisExpress"));
-      Assert.That (_section.HostingProviderSettings.Parameters["port"], Is.EqualTo ("60042"));
-      Assert.That (_section.HostingProviderSettings.Type, Is.EqualTo ("IisExpress"));
-      Assert.That (_section.TestSiteLayoutConfiguration.RootPath, Is.EqualTo (@".\Some\Path"));
-      Assert.That (_section.TestSiteLayoutConfiguration.Resources.Count, Is.EqualTo (1));
-      Assert.That (_section.TestSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo (@".\Some\Resource"));
-      Assert.That (_section.DownloadStartedTimeout, Is.EqualTo (TimeSpan.FromSeconds (13)));
-      Assert.That (_section.DownloadUpdatedTimeout, Is.EqualTo (TimeSpan.FromSeconds (37)));
-      Assert.That (_section.AsyncJavaScriptTimeout, Is.EqualTo (TimeSpan.FromMinutes (42)));
-      Assert.That (_section.LogsDirectory, Is.EqualTo (@".\SomeLogsDirectory"));
-      Assert.That (_section.CloseBrowserWindowsOnSetUpAndTearDown, Is.EqualTo (false));
-      Assert.That (_section.CleanUpUnmatchedDownloadedFiles, Is.EqualTo (false));
-      Assert.That (_section.RequestErrorDetectionStrategyTypeName, Is.EqualTo ("requestErrorDetectionStrategy"));
-      Assert.That (_section.Chrome.DisableSecurityWarningsBehavior, Is.EqualTo (ChromiumDisableSecurityWarningsBehavior.Require));
-      Assert.That (_section.Edge.DisableSecurityWarningsBehavior, Is.EqualTo (ChromiumDisableSecurityWarningsBehavior.Automatic));
+      Assert.That(_section.BrowserName, Is.EqualTo("Chrome"));
+      Assert.That(_section.CommandTimeout, Is.EqualTo(TimeSpan.FromSeconds(41)));
+      Assert.That(_section.SearchTimeout, Is.EqualTo(TimeSpan.FromSeconds(43)));
+      Assert.That(_section.RetryInterval, Is.EqualTo(TimeSpan.FromMilliseconds(42)));
+      Assert.That(_section.WebApplicationRoot, Is.EqualTo("http://some.url:1337/"));
+      Assert.That(_section.ScreenshotDirectory, Is.EqualTo(Path.GetFullPath(@".\SomeScreenshotDirectory")));
+      Assert.That(_section.HostingProviderSettings.Name, Is.EqualTo("IisExpress"));
+      Assert.That(_section.HostingProviderSettings.Parameters["port"], Is.EqualTo("60042"));
+      Assert.That(_section.HostingProviderSettings.Type, Is.EqualTo("IisExpress"));
+      Assert.That(_section.TestSiteLayoutConfiguration.RootPath, Is.EqualTo(@".\Some\Path"));
+      Assert.That(_section.TestSiteLayoutConfiguration.Resources.Count, Is.EqualTo(1));
+      Assert.That(_section.TestSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(@".\Some\Resource"));
+      Assert.That(_section.DownloadStartedTimeout, Is.EqualTo(TimeSpan.FromSeconds(13)));
+      Assert.That(_section.DownloadUpdatedTimeout, Is.EqualTo(TimeSpan.FromSeconds(37)));
+      Assert.That(_section.AsyncJavaScriptTimeout, Is.EqualTo(TimeSpan.FromMinutes(42)));
+      Assert.That(_section.LogsDirectory, Is.EqualTo(@".\SomeLogsDirectory"));
+      Assert.That(_section.CloseBrowserWindowsOnSetUpAndTearDown, Is.EqualTo(false));
+      Assert.That(_section.CleanUpUnmatchedDownloadedFiles, Is.EqualTo(false));
+      Assert.That(_section.RequestErrorDetectionStrategyTypeName, Is.EqualTo("requestErrorDetectionStrategy"));
+      Assert.That(_section.Chrome.DisableSecurityWarningsBehavior, Is.EqualTo(ChromiumDisableSecurityWarningsBehavior.Require));
+      Assert.That(_section.Edge.DisableSecurityWarningsBehavior, Is.EqualTo(ChromiumDisableSecurityWarningsBehavior.Automatic));
     }
 
     [Test]
     public void BrowserAttribute_Required ()
     {
       const string configurationWithoutBrowser = @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" />";
-      Assert.That (
-          () => DeserializeSection (configurationWithoutBrowser),
-          Throws.InstanceOf<ConfigurationErrorsException>().With.Message.EqualTo ("Required attribute 'browser' not found."));
+      Assert.That(
+          () => DeserializeSection(configurationWithoutBrowser),
+          Throws.InstanceOf<ConfigurationErrorsException>().With.Message.EqualTo("Required attribute 'browser' not found."));
     }
 
     [Test]
     public void SearchTimeoutAttribute_Required ()
     {
       const string configurationWithoutSearchTimeout = @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" browser=""Chrome"" />";
-      Assert.That (
-          () => DeserializeSection (configurationWithoutSearchTimeout),
-          Throws.InstanceOf<ConfigurationErrorsException>().With.Message.EqualTo ("Required attribute 'searchTimeout' not found."));
+      Assert.That(
+          () => DeserializeSection(configurationWithoutSearchTimeout),
+          Throws.InstanceOf<ConfigurationErrorsException>().With.Message.EqualTo("Required attribute 'searchTimeout' not found."));
     }
 
     [Test]
@@ -112,9 +112,9 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     {
       const string configurationWithoutRetryInterval =
           @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" browser=""Chrome"" searchTimeout=""00:00:43"" />";
-      Assert.That (
-          () => DeserializeSection (configurationWithoutRetryInterval),
-          Throws.InstanceOf<ConfigurationErrorsException>().With.Message.EqualTo ("Required attribute 'retryInterval' not found."));
+      Assert.That(
+          () => DeserializeSection(configurationWithoutRetryInterval),
+          Throws.InstanceOf<ConfigurationErrorsException>().With.Message.EqualTo("Required attribute 'retryInterval' not found."));
     }
 
     [Test]
@@ -122,9 +122,9 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     {
       const string configurationWithoutWebApplicationRoot =
           @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" browser=""Chrome"" searchTimeout=""00:00:43"" retryInterval=""00:00:00.042"" />";
-      Assert.That (
-          () => DeserializeSection (configurationWithoutWebApplicationRoot),
-          Throws.InstanceOf<ConfigurationErrorsException>().With.Message.EqualTo ("Required attribute 'webApplicationRoot' not found."));
+      Assert.That(
+          () => DeserializeSection(configurationWithoutWebApplicationRoot),
+          Throws.InstanceOf<ConfigurationErrorsException>().With.Message.EqualTo("Required attribute 'webApplicationRoot' not found."));
     }
 
     [Test]
@@ -132,8 +132,8 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     {
       const string failingSchemaValidation =
           @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" browser=""Chrome"" searchTimeout=""00:00:43"" retryInterval=""00:00:00.042"" webApplicationRoot=""http://some.url:1337/"" />";
-      Assert.That (
-          () => DeserializeSection (failingSchemaValidation),
+      Assert.That(
+          () => DeserializeSection(failingSchemaValidation),
           Throws.InstanceOf<XmlSchemaValidationException>());
     }
 
@@ -142,8 +142,8 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     {
       const string configurationWithoutChromiumConfigurationElements =
           @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" browser=""Chrome"" searchTimeout=""00:00:43"" retryInterval=""00:00:00.042"" webApplicationRoot=""http://some.url:1337/""><hosting name=""IisExpress"" type=""IisExpress"" port=""60042""/><testSiteLayout rootPath="".\Some\Path""/></remotion.webTesting>";
-      Assert.That (
-          () => DeserializeSection (configurationWithoutChromiumConfigurationElements),
+      Assert.That(
+          () => DeserializeSection(configurationWithoutChromiumConfigurationElements),
           Throws.Nothing);
     }
 
@@ -152,8 +152,8 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     {
       const string configurationWithoutChromeConfigurationElement =
           @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" browser=""Chrome"" searchTimeout=""00:00:43"" retryInterval=""00:00:00.042"" webApplicationRoot=""http://some.url:1337/""><hosting name=""IisExpress"" type=""IisExpress"" port=""60042""/><testSiteLayout rootPath="".\Some\Path""/><edge /></remotion.webTesting>";
-      Assert.That (
-          () => DeserializeSection (configurationWithoutChromeConfigurationElement),
+      Assert.That(
+          () => DeserializeSection(configurationWithoutChromeConfigurationElement),
           Throws.Nothing);
     }
 
@@ -162,8 +162,8 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     {
       const string configurationWithoutEdgeConfigurationElement =
           @"<remotion.webTesting xmlns=""http://www.re-motion.org/WebTesting/Configuration/2.0"" browser=""Chrome"" searchTimeout=""00:00:43"" retryInterval=""00:00:00.042"" webApplicationRoot=""http://some.url:1337/""><hosting name=""IisExpress"" type=""IisExpress"" port=""60042""/><testSiteLayout rootPath="".\Some\Path""/><chrome /></remotion.webTesting>";
-      Assert.That (
-          () => DeserializeSection (configurationWithoutEdgeConfigurationElement),
+      Assert.That(
+          () => DeserializeSection(configurationWithoutEdgeConfigurationElement),
           Throws.Nothing);
     }
 
@@ -171,14 +171,14 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.Configuration
     {
       var xsdContent = GetSchemaContent();
 
-      ConfigurationHelper.DeserializeSection (_section, xmlFragment, xsdContent);
+      ConfigurationHelper.DeserializeSection(_section, xmlFragment, xsdContent);
     }
 
     private string GetSchemaContent ()
     {
-      var assembly = typeof (WebTestConfigurationSection).Assembly;
-      using (var resourceStream = assembly.GetManifestResourceStream ("Remotion.Web.Development.WebTesting.Schemas.WebTestingConfiguration.xsd"))
-      using (var reader = new StreamReader (resourceStream))
+      var assembly = typeof(WebTestConfigurationSection).Assembly;
+      using (var resourceStream = assembly.GetManifestResourceStream("Remotion.Web.Development.WebTesting.Schemas.WebTestingConfiguration.xsd"))
+      using (var reader = new StreamReader(resourceStream))
         return reader.ReadToEnd();
     }
   }

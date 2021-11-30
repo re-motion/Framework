@@ -26,8 +26,8 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
   {
     public string? GetPEVerifyPath (PEVerifyVersion version)
     {
-      var potentialPath = GetPotentialPEVerifyPath (version);
-      if (potentialPath != null && File.Exists (potentialPath))
+      var potentialPath = GetPotentialPEVerifyPath(version);
+      if (potentialPath != null && File.Exists(potentialPath))
         return potentialPath;
 
       return null;

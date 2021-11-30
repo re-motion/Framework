@@ -27,7 +27,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
   public class SecurableClassDefinitionTreeView : BocTreeView
   {
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.SecurityManager.Clients.Web.Globalization.Classes.SecurableClassDefinitionTreeViewResources")]
+    [MultiLingualResources("Remotion.SecurityManager.Clients.Web.Globalization.Classes.SecurableClassDefinitionTreeViewResources")]
     public enum ResourceIdentifier
     {
       NoAclsText,
@@ -41,14 +41,14 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected virtual IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     protected override string GetText (IBusinessObjectWithIdentity businessObject)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-      string text = base.GetText (businessObject);
+      string text = base.GetText(businessObject);
 
       SecurableClassDefinition classDefinition = businessObject as SecurableClassDefinition;
       if (classDefinition == null)
@@ -61,11 +61,11 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
       var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
       if (aclCount == 0)
-        return string.Format (resourceManager.GetString (ResourceIdentifier.NoAclsText), text);
+        return string.Format(resourceManager.GetString(ResourceIdentifier.NoAclsText), text);
       if (aclCount == 1)
-        return string.Format (resourceManager.GetString (ResourceIdentifier.SingleAclText), text);
+        return string.Format(resourceManager.GetString(ResourceIdentifier.SingleAclText), text);
       else
-        return string.Format (resourceManager.GetString (ResourceIdentifier.MultipleAclsText), text, aclCount);
+        return string.Format(resourceManager.GetString(ResourceIdentifier.MultipleAclsText), text, aclCount);
     }
   }
 }

@@ -68,9 +68,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
       return driver.Native switch
       {
-          ChromeDriver _ => driverWithCapabilities.Capabilities.GetCapability ("version") as string ?? c_unknown,
-          EdgeDriver _ => driverWithCapabilities.Capabilities.GetCapability ("version") as string ?? c_unknown,
-          FirefoxDriver _ => driverWithCapabilities.Capabilities.GetCapability ("browserVersion") as string ?? c_unknown,
+          ChromeDriver _ => driverWithCapabilities.Capabilities.GetCapability("version") as string ?? c_unknown,
+          EdgeDriver _ => driverWithCapabilities.Capabilities.GetCapability("version") as string ?? c_unknown,
+          FirefoxDriver _ => driverWithCapabilities.Capabilities.GetCapability("browserVersion") as string ?? c_unknown,
           _ => c_unknown
       };
     }
@@ -90,11 +90,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
       return driver.Native switch
       {
-          ChromeDriver _ when driverWithCapabilities.Capabilities.GetCapability ("chrome") is Dictionary<string, object> capabilities
-                              && capabilities.TryGetValue ("chromedriverVersion", out var driverVersion) => driverVersion as string ?? c_unknown,
-          EdgeDriver _ when driverWithCapabilities.Capabilities.GetCapability ("msedge") is Dictionary<string, object> capabilities
-                            && capabilities.TryGetValue ("msedgedriverVersion", out var driverVersion) => driverVersion as string ?? c_unknown,
-          FirefoxDriver _ => driverWithCapabilities.Capabilities.GetCapability ("moz:geckodriverVersion") as string ?? c_unknown,
+          ChromeDriver _ when driverWithCapabilities.Capabilities.GetCapability("chrome") is Dictionary<string, object> capabilities
+                              && capabilities.TryGetValue("chromedriverVersion", out var driverVersion) => driverVersion as string ?? c_unknown,
+          EdgeDriver _ when driverWithCapabilities.Capabilities.GetCapability("msedge") is Dictionary<string, object> capabilities
+                            && capabilities.TryGetValue("msedgedriverVersion", out var driverVersion) => driverVersion as string ?? c_unknown,
+          FirefoxDriver _ => driverWithCapabilities.Capabilities.GetCapability("moz:geckodriverVersion") as string ?? c_unknown,
           _ => c_unknown
       };
     }

@@ -37,8 +37,8 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var factory = _serviceLocator.GetInstance<IValidationRuleCollectorReflector>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (DiscoveryServiceBasedValidationRuleCollectorReflector)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(DiscoveryServiceBasedValidationRuleCollectorReflector)));
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       var factory1 = _serviceLocator.GetInstance<IValidationRuleCollectorReflector>();
       var factory2 = _serviceLocator.GetInstance<IValidationRuleCollectorReflector>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

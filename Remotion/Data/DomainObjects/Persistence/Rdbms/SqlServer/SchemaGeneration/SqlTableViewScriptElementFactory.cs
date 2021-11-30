@@ -27,11 +27,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     protected override string GetSelectStatements (TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
 
-      return string.Format (
+      return string.Format(
           "  SELECT {0}\r\n    FROM [{1}].[{2}]",
-          GetColumnList (tableDefinition.GetAllColumns()),
+          GetColumnList(tableDefinition.GetAllColumns()),
           tableDefinition.TableName.SchemaName ?? DefaultSchema,
           tableDefinition.TableName.EntityName);
     }

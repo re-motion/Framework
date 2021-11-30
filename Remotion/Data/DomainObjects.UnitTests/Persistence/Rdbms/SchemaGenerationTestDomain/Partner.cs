@@ -20,19 +20,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 {
   public abstract class Partner : Company
   {
-    public new static Partner NewObject()
+    public new static Partner NewObject ()
     {
-      return DomainObject.NewObject<Partner> ();
+      return DomainObject.NewObject<Partner>();
     }
 
-    protected Partner()
+    protected Partner ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 255)]
+    [StringProperty(IsNullable = false, MaximumLength = 255)]
     public abstract string Description { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     [DBColumn("PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches")]
     public abstract string PropertyWithIdenticalNameInDifferentInheritanceBranches { get; set; }
   }

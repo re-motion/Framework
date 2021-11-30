@@ -38,59 +38,59 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       SecurityManagerPrincipal.Current = SecurityManagerPrincipal.Null;
-      ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ();
+      ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
 
-      _user = User.FindByUserName ("test.user");
+      _user = User.FindByUserName("test.user");
       _tenant = _user.Tenant;
-      _roles = _user.Roles.Skip (1).Take (2).ToArray();
-      Assert.That (_roles.Length, Is.EqualTo (2));
-      _principal = CreateSecurityManagerPrincipal (_tenant, _user, _roles, null);
+      _roles = _user.Roles.Skip(1).Take(2).ToArray();
+      Assert.That(_roles.Length, Is.EqualTo(2));
+      _principal = CreateSecurityManagerPrincipal(_tenant, _user, _roles, null);
     }
 
     public override void TearDown ()
     {
-      base.TearDown ();
+      base.TearDown();
       SecurityManagerPrincipal.Current = SecurityManagerPrincipal.Null;
     }
 
     [Test]
     public void UsesCache ()
     {
-      Assert.That (_principal.Substitution, Is.SameAs (_principal.Substitution));
+      Assert.That(_principal.Substitution, Is.SameAs(_principal.Substitution));
     }
 
     [Test]
     public void SerializesCache ()
     {
-      var deserialized = Serializer.SerializeAndDeserialize (Tuple.Create (_principal, _principal.Substitution));
+      var deserialized = Serializer.SerializeAndDeserialize(Tuple.Create(_principal, _principal.Substitution));
       SecurityManagerPrincipal deserialziedSecurityManagerPrincipal = deserialized.Item1;
       SubstitutionProxy deserialziedSubstitution = deserialized.Item2;
 
-      Assert.That (deserialziedSecurityManagerPrincipal.Substitution, Is.SameAs (deserialziedSubstitution));
+      Assert.That(deserialziedSecurityManagerPrincipal.Substitution, Is.SameAs(deserialziedSubstitution));
     }
 
     [Test]
     public void UsesSecurityFreeSection ()
     {
       var securityProviderStub = new Mock<ISecurityProvider>();
-      securityProviderStub.Setup (stub => stub.IsNull).Returns (false);
+      securityProviderStub.Setup(stub => stub.IsNull).Returns(false);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => securityProviderStub);
+      serviceLocator.RegisterSingle(() => securityProviderStub);
       ISecurityManagerPrincipal refreshedInstance;
-      using (new ServiceLocatorScope (serviceLocator))
+      using (new ServiceLocatorScope(serviceLocator))
       {
         IncrementDomainRevision();
         refreshedInstance = _principal.GetRefreshedInstance();
-        Assert.That (refreshedInstance, Is.Not.SameAs (_principal));
+        Assert.That(refreshedInstance, Is.Not.SameAs(_principal));
       }
 
       var roleProxies = refreshedInstance.Roles;
 
-      Assert.That (roleProxies.Select (r=>r.ID), Is.EqualTo (_roles.Select (r=>r.ID)));
+      Assert.That(roleProxies.Select(r=>r.ID), Is.EqualTo(_roles.Select(r=>r.ID)));
     }
   }
 }

@@ -20,13 +20,13 @@ using Remotion.Development.Sandboxing.Nunit2.UnitTesting;
 
 namespace Remotion.Development.Sandboxing.NUnit2.UnitTests.UnitTesting
 {
-  [Ignore ("Ignored test")]
+  [Ignore("Ignored test")]
   public class DummyTestIgnored
   {
     [Test]
     public void TestIgnored ()
     {
-      throw new TestFailedException (typeof (DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException ());
+      throw new TestFailedException(typeof(DummyTest5), "TestIgnored", SandboxTestStatus.Failed, new NotSupportedException());
     }
   }
 }

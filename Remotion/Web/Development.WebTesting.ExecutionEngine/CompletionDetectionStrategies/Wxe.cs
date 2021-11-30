@@ -24,25 +24,25 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public static class Wxe
   {
-    public static readonly WxePostBackCompletionDetectionStrategy PostBackCompleted = new WxePostBackCompletionDetectionStrategy (1);
+    public static readonly WxePostBackCompletionDetectionStrategy PostBackCompleted = new WxePostBackCompletionDetectionStrategy(1);
 
     public static readonly Func<PageObjectContext, WxePostBackInCompletionDetectionStrategy> PostBackCompletedInContext =
-        ctx => new WxePostBackInCompletionDetectionStrategy (ctx, 1);
+        ctx => new WxePostBackInCompletionDetectionStrategy(ctx, 1);
 
     public static readonly Func<PageObject, WxePostBackInCompletionDetectionStrategy> PostBackCompletedIn =
-        po => PostBackCompletedInContext (po.Context);
+        po => PostBackCompletedInContext(po.Context);
 
     public static readonly Func<PageObject, WxePostBackInCompletionDetectionStrategy> PostBackCompletedInParent =
-        po => PostBackCompletedInContext (Assertion.IsNotNull (po.Context.ParentContext, "The parent context must not be null."));
+        po => PostBackCompletedInContext(Assertion.IsNotNull(po.Context.ParentContext, "The parent context must not be null."));
 
     public static readonly WxeResetCompletionDetectionStrategy Reset = new WxeResetCompletionDetectionStrategy();
 
     public static readonly Func<PageObjectContext, WxeResetInCompletionDetectionStrategy> ResetInContext =
-        ctx => new WxeResetInCompletionDetectionStrategy (ctx);
+        ctx => new WxeResetInCompletionDetectionStrategy(ctx);
 
-    public static readonly Func<PageObject, WxeResetInCompletionDetectionStrategy> ResetIn = po => ResetInContext (po.Context);
+    public static readonly Func<PageObject, WxeResetInCompletionDetectionStrategy> ResetIn = po => ResetInContext(po.Context);
 
     public static readonly Func<PageObject, WxeResetInCompletionDetectionStrategy> ResetInParent =
-        po => ResetInContext (Assertion.IsNotNull (po.Context.ParentContext, "The parent context must not be null."));
+        po => ResetInContext(Assertion.IsNotNull(po.Context.ParentContext, "The parent context must not be null."));
   }
 }

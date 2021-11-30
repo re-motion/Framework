@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
   public abstract class MappingReflectionIntegrationTestBase
   {
     private static readonly IEnumerable<Type> s_domainObjectTypes =
-        typeof (MappingReflectionTestBase).Assembly.GetTypes().Where (t => typeof (DomainObject).IsAssignableFrom (t)).ToArray();
+        typeof(MappingReflectionTestBase).Assembly.GetTypes().Where(t => typeof(DomainObject).IsAssignableFrom(t)).ToArray();
 
     private IDictionary<Type, ClassDefinition> _typeDefinitions;
 
@@ -42,9 +42,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     public virtual void SetUp ()
     {
       var reflectedTypes = ForTheseReflectedTypes().ToArray();
-      var mappingReflector = CreateMappingReflector (reflectedTypes);
+      var mappingReflector = CreateMappingReflector(reflectedTypes);
 
-      var typeDefinitions = GetTypeDefinitionsAndValidateMapping (mappingReflector).ToDictionary (cd => cd.ClassType);
+      var typeDefinitions = GetTypeDefinitionsAndValidateMapping(mappingReflector).ToDictionary(cd => cd.ClassType);
       _typeDefinitions = typeDefinitions;
     }
 
@@ -61,49 +61,49 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     protected IRelationEndPointDefinition GetRelationEndPointDefinition (
         ClassDefinition classDefinition, Type declaringType, string shortPropertyName)
     {
-      return classDefinition.GetRelationEndPointDefinition (declaringType.FullName + "." + shortPropertyName);
+      return classDefinition.GetRelationEndPointDefinition(declaringType.FullName + "." + shortPropertyName);
     }
 
     private IEnumerable<Type> AllDomainObjectTypesFromThisNamespace ()
     {
-      return s_domainObjectTypes.Where (t => t.Namespace == GetType().Namespace);
+      return s_domainObjectTypes.Where(t => t.Namespace == GetType().Namespace);
     }
 
     private MappingReflector CreateMappingReflector (Type[] reflectedTypes)
     {
       var typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService>();
       typeDiscoveryServiceStub
-          .Stub (stub => stub.GetTypes (Arg<Type>.Is.Anything, Arg<bool>.Is.Anything))
-          .Return (reflectedTypes);
+          .Stub(stub => stub.GetTypes(Arg<Type>.Is.Anything, Arg<bool>.Is.Anything))
+          .Return(reflectedTypes);
 
-      return MappingReflectorObjectMother.CreateMappingReflector (typeDiscoveryServiceStub);
+      return MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryServiceStub);
     }
 
     private IEnumerable<ClassDefinition> GetTypeDefinitionsAndValidateMapping (MappingReflector mappingReflector)
     {
-      var storageGroupBasedStorageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder (
+      var storageGroupBasedStorageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(
           StandardConfiguration.Instance.GetPersistenceConfiguration());
-      var persistenceModelLoader = new PersistenceModelLoader (storageGroupBasedStorageProviderDefinitionFinder);
-      return new MappingConfiguration (mappingReflector, persistenceModelLoader).GetTypeDefinitions();
+      var persistenceModelLoader = new PersistenceModelLoader(storageGroupBasedStorageProviderDefinitionFinder);
+      return new MappingConfiguration(mappingReflector, persistenceModelLoader).GetTypeDefinitions();
     }
 
     protected PropertyInfoAdapter GetPropertyInformation (Type declaringType, string propertyName)
     {
-      var propertyInfo = declaringType.GetProperty (
+      var propertyInfo = declaringType.GetProperty(
           propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-      Assert.That (propertyInfo, Is.Not.Null, "Property not found: '{0}.{1}'", declaringType, propertyName);
-      return PropertyInfoAdapter.Create (propertyInfo);
+      Assert.That(propertyInfo, Is.Not.Null, "Property not found: '{0}.{1}'", declaringType, propertyName);
+      return PropertyInfoAdapter.Create(propertyInfo);
     }
 
     protected PropertyInfoAdapter GetPropertyInformation<T, TR> (Expression<Func<T, TR>> propertyAccessExpression)
     {
-      var memberInfo = NormalizingMemberInfoFromExpressionUtility.GetProperty (propertyAccessExpression);
-      if (memberInfo.DeclaringType != typeof (T))
+      var memberInfo = NormalizingMemberInfoFromExpressionUtility.GetProperty(propertyAccessExpression);
+      if (memberInfo.DeclaringType != typeof(T))
       {
-        var message = string.Format ("Property must be declared on type '{0}', but it is declared on '{1}'.", typeof (T), memberInfo.DeclaringType);
-        throw new InvalidOperationException (message);
+        var message = string.Format("Property must be declared on type '{0}', but it is declared on '{1}'.", typeof(T), memberInfo.DeclaringType);
+        throw new InvalidOperationException(message);
       }
-      return PropertyInfoAdapter.Create (memberInfo);
+      return PropertyInfoAdapter.Create(memberInfo);
     }
   }
 }

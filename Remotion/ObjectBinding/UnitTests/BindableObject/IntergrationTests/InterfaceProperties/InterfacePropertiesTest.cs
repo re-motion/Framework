@@ -28,105 +28,105 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Inte
     public void ImplicitPropertyWithGetter_IsReadOnly ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
       var businessObjectClass = businessObject.BusinessObjectClass;
 
-      var property = businessObjectClass.GetPropertyDefinition ("ImplicitPropertyWithGetter");
-      Assert.That (property.IsReadOnly (businessObject), Is.True);
+      var property = businessObjectClass.GetPropertyDefinition("ImplicitPropertyWithGetter");
+      Assert.That(property.IsReadOnly(businessObject), Is.True);
     }
 
     [Test]
     public void ImplicitPropertyWithGetter_GetValue ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
 
-      obj.SetImplicitPropertyWithGetter ("value");
-      Assert.That (businessObject.GetProperty ("ImplicitPropertyWithGetter"), Is.EqualTo ("value"));
+      obj.SetImplicitPropertyWithGetter("value");
+      Assert.That(businessObject.GetProperty("ImplicitPropertyWithGetter"), Is.EqualTo("value"));
     }
 
     [Test]
     public void ImplicitPropertyWithGetterAndSetter_IsNotReadOnly ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
       var businessObjectClass = businessObject.BusinessObjectClass;
 
-      var property = businessObject.BusinessObjectClass.GetPropertyDefinition ("ImplicitPropertyWithGetterAndSetter");
-      Assert.That (property.IsReadOnly (businessObject), Is.False);
+      var property = businessObject.BusinessObjectClass.GetPropertyDefinition("ImplicitPropertyWithGetterAndSetter");
+      Assert.That(property.IsReadOnly(businessObject), Is.False);
     }
 
     [Test]
     public void ImplicitPropertyWithGetterAndSetter_SetValue ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
 
-      businessObject.SetProperty ("ImplicitPropertyWithGetterAndSetter", "value");
-      Assert.That (obj.ImplicitPropertyWithGetterAndSetter, Is.EqualTo ("value"));
+      businessObject.SetProperty("ImplicitPropertyWithGetterAndSetter", "value");
+      Assert.That(obj.ImplicitPropertyWithGetterAndSetter, Is.EqualTo("value"));
     }
 
     [Test]
     public void ImplicitPropertyWithGetterAndImplementationOnlySetter_IsNotReadOnly ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
       var businessObjectClass = businessObject.BusinessObjectClass;
 
-      var property = businessObjectClass.GetPropertyDefinition ("ImplicitPropertyWithGetterAndImplementationOnlySetter");
-      Assert.That (property.IsReadOnly (businessObject), Is.False);
+      var property = businessObjectClass.GetPropertyDefinition("ImplicitPropertyWithGetterAndImplementationOnlySetter");
+      Assert.That(property.IsReadOnly(businessObject), Is.False);
     }
 
     [Test]
     public void ImplicitPropertyWithGetterAndImplementationOnlySetter_SetValue ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
 
-      businessObject.SetProperty ("ImplicitPropertyWithGetterAndImplementationOnlySetter", "value");
-      Assert.That (obj.ImplicitPropertyWithGetterAndImplementationOnlySetter, Is.EqualTo ("value"));
+      businessObject.SetProperty("ImplicitPropertyWithGetterAndImplementationOnlySetter", "value");
+      Assert.That(obj.ImplicitPropertyWithGetterAndImplementationOnlySetter, Is.EqualTo("value"));
     }
 
     [Test]
     public void ExplicitPropertyWithGetter_IsReadOnly ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
       var businessObjectClass = businessObject.BusinessObjectClass;
 
-      var property = businessObjectClass.GetPropertyDefinition ("ExplicitPropertyWithGetter");
-      Assert.That (property.IsReadOnly (businessObject), Is.True);
+      var property = businessObjectClass.GetPropertyDefinition("ExplicitPropertyWithGetter");
+      Assert.That(property.IsReadOnly(businessObject), Is.True);
     }
 
     [Test]
     public void ExplicitPropertyWithGetter_GetValue ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
 
-      obj.SetExplicitPropertyWithGetter ("value");
-      Assert.That (businessObject.GetProperty ("ExplicitPropertyWithGetter"), Is.EqualTo ("value"));
+      obj.SetExplicitPropertyWithGetter("value");
+      Assert.That(businessObject.GetProperty("ExplicitPropertyWithGetter"), Is.EqualTo("value"));
     }
 
     [Test]
     public void ExplicitPropertyWithGetterAndSetter_IsNotReadOnly ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
       var businessObjectClass = businessObject.BusinessObjectClass;
 
-      var property = businessObjectClass.GetPropertyDefinition ("ExplicitPropertyWithGetterAndSetter");
-      Assert.That (property.IsReadOnly (businessObject), Is.False);
+      var property = businessObjectClass.GetPropertyDefinition("ExplicitPropertyWithGetterAndSetter");
+      Assert.That(property.IsReadOnly(businessObject), Is.False);
     }
 
     [Test]
     public void ExplicitPropertyWithGetterAndSetter_SetValue ()
     {
       var obj = ObjectFactory.Create<ClassWithInterface>();
-      var businessObject = (IBusinessObject) obj;
+      var businessObject = (IBusinessObject)obj;
 
-      businessObject.SetProperty ("ExplicitPropertyWithGetterAndSetter", "value");
-      Assert.That (((IInterface) obj).ExplicitPropertyWithGetterAndSetter, Is.EqualTo ("value"));
+      businessObject.SetProperty("ExplicitPropertyWithGetterAndSetter", "value");
+      Assert.That(((IInterface)obj).ExplicitPropertyWithGetterAndSetter, Is.EqualTo("value"));
     }
   }
 }

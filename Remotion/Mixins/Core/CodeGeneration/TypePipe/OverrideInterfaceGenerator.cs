@@ -26,20 +26,20 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     public static OverrideInterfaceGenerator CreateNestedGenerator (MutableType outerType, string typeName)
     {
-      ArgumentUtility.CheckNotNull ("outerType", outerType);
-      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
+      ArgumentUtility.CheckNotNull("outerType", outerType);
+      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
 
       var interfaceType = outerType.AddNestedType(typeName, TypeAttributes.Interface | TypeAttributes.NestedPublic | TypeAttributes.Abstract, null);
-      return new OverrideInterfaceGenerator (interfaceType);
+      return new OverrideInterfaceGenerator(interfaceType);
     }
 
     private readonly IAttributeGenerator _attributeGenerator = new AttributeGenerator();
-    private readonly Dictionary<MethodInfo, MethodInfo> _interfaceMethods = new Dictionary<MethodInfo, MethodInfo> ();
+    private readonly Dictionary<MethodInfo, MethodInfo> _interfaceMethods = new Dictionary<MethodInfo, MethodInfo>();
     private readonly MutableType _interfaceType;
 
     private OverrideInterfaceGenerator (MutableType interfaceType)
     {
-      ArgumentUtility.CheckNotNull ("interfaceType", interfaceType);
+      ArgumentUtility.CheckNotNull("interfaceType", interfaceType);
 
       _interfaceType = interfaceType;
     }
@@ -56,16 +56,16 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public MethodInfo AddOverriddenMethod (MethodInfo overriddenMethod)
     {
-      ArgumentUtility.CheckNotNull ("overriddenMethod", overriddenMethod);
+      ArgumentUtility.CheckNotNull("overriddenMethod", overriddenMethod);
 
       var name = overriddenMethod.Name;
       var attributes = MethodAttributes.Public | MethodAttributes.Abstract | MethodAttributes.Virtual;
-      var md = MethodDeclaration.CreateEquivalent (overriddenMethod);
-      var method = _interfaceType.AddMethod (name, attributes, md, bodyProvider: null);
+      var md = MethodDeclaration.CreateEquivalent(overriddenMethod);
+      var method = _interfaceType.AddMethod(name, attributes, md, bodyProvider: null);
 
-      _attributeGenerator.AddOverrideInterfaceMappingAttribute (method, overriddenMethod);
+      _attributeGenerator.AddOverrideInterfaceMappingAttribute(method, overriddenMethod);
 
-      _interfaceMethods.Add (overriddenMethod, method);
+      _interfaceMethods.Add(overriddenMethod, method);
 
       return method;
     }

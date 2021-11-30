@@ -33,11 +33,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       var connectionString = "Data Source=myServerAddress;Initial Catalog=MyDataBase;User Id=myUsername;Password=myPassword;";
-      _innerScriptBuilderMock = MockRepository.GenerateMock<IScriptBuilder> ();
-      _builder = new SqlDatabaseSelectionScriptElementBuilder (_innerScriptBuilderMock, connectionString);
+      _innerScriptBuilderMock = MockRepository.GenerateMock<IScriptBuilder>();
+      _builder = new SqlDatabaseSelectionScriptElementBuilder(_innerScriptBuilderMock, connectionString);
     }
 
     [Test]
@@ -45,10 +45,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     {
       var entityDefinitionStub = MockRepository.GenerateStub<IRdbmsStorageEntityDefinition>();
 
-      _innerScriptBuilderMock.Expect (mock => mock.AddEntityDefinition (entityDefinitionStub));
+      _innerScriptBuilderMock.Expect(mock => mock.AddEntityDefinition(entityDefinitionStub));
       _innerScriptBuilderMock.Replay();
 
-      _builder.AddEntityDefinition (entityDefinitionStub);
+      _builder.AddEntityDefinition(entityDefinitionStub);
 
       _innerScriptBuilderMock.VerifyAllExpectations();
     }
@@ -56,53 +56,53 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     [Test]
     public void GetCreateScript_GetDropScript_ValidConnectionString ()
     {
-      var statement1 = new ScriptStatement ("Test1");
-      var statement2 = new ScriptStatement ("Test2");
-      var fakeCreateResult = new ScriptElementCollection ();
-      fakeCreateResult.AddElement (statement1);
-      fakeCreateResult.AddElement (statement2);
+      var statement1 = new ScriptStatement("Test1");
+      var statement2 = new ScriptStatement("Test2");
+      var fakeCreateResult = new ScriptElementCollection();
+      fakeCreateResult.AddElement(statement1);
+      fakeCreateResult.AddElement(statement2);
       var fakeDropResult = new ScriptElementCollection();
-      fakeDropResult.AddElement (statement2);
-      fakeDropResult.AddElement (statement1);
+      fakeDropResult.AddElement(statement2);
+      fakeDropResult.AddElement(statement1);
 
-      _innerScriptBuilderMock.Expect (mock => mock.GetCreateScript()).Return(fakeCreateResult);
-      _innerScriptBuilderMock.Expect (mock => mock.GetDropScript ()).Return (fakeDropResult);
+      _innerScriptBuilderMock.Expect(mock => mock.GetCreateScript()).Return(fakeCreateResult);
+      _innerScriptBuilderMock.Expect(mock => mock.GetDropScript()).Return(fakeDropResult);
 
       var createScriptResult = _builder.GetCreateScript();
       var dropScriptResult = _builder.GetDropScript();
 
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements.Count, Is.EqualTo (2));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) createScriptResult).Elements[0]).Statement, Is.EqualTo ("USE MyDataBase"));
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements[1], Is.SameAs(fakeCreateResult));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements.Count, Is.EqualTo (2));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) dropScriptResult).Elements[0]).Statement, Is.EqualTo ("USE MyDataBase"));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements[1], Is.SameAs (fakeDropResult));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements.Count, Is.EqualTo(2));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement, Is.EqualTo("USE MyDataBase"));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements[1], Is.SameAs(fakeCreateResult));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(2));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("USE MyDataBase"));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[1], Is.SameAs(fakeDropResult));
     }
 
     [Test]
     public void GetCreateScript_WithConnectionStringMissingInitialCatalog_ThrowsInvalidOperationException ()
     {
-      var builder = new SqlDatabaseSelectionScriptElementBuilder (
+      var builder = new SqlDatabaseSelectionScriptElementBuilder(
           _innerScriptBuilderMock,
           new SqlConnectionStringBuilder { DataSource = "localhost" }.ToString());
 
-      Assert.That (
+      Assert.That(
           () => builder.GetCreateScript(),
           Throws.InvalidOperationException
-                .With.Message.EqualTo ("No database name could be found in the given connection string 'Data Source=localhost'."));
+                .With.Message.EqualTo("No database name could be found in the given connection string 'Data Source=localhost'."));
     }
 
     [Test]
     public void GetDropScript_WithConnectionStringMissingInitialCatalog_ThrowsInvalidOperationException ()
     {
-      var builder = new SqlDatabaseSelectionScriptElementBuilder (
+      var builder = new SqlDatabaseSelectionScriptElementBuilder(
           _innerScriptBuilderMock,
           new SqlConnectionStringBuilder { DataSource = "localhost" }.ToString());
 
-      Assert.That (
+      Assert.That(
           () => builder.GetDropScript(),
           Throws.InvalidOperationException
-                .With.Message.EqualTo ("No database name could be found in the given connection string 'Data Source=localhost'."));
+                .With.Message.EqualTo("No database name could be found in the given connection string 'Data Source=localhost'."));
     }
   }
 }

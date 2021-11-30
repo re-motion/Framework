@@ -30,10 +30,10 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.Validators
     {
       if (context.Instance is Person person)
       {
-        if (string.IsNullOrEmpty (person.FirstName) || string.IsNullOrEmpty (person.LastName))
+        if (string.IsNullOrEmpty(person.FirstName) || string.IsNullOrEmpty(person.LastName))
         {
-          return EnumerableUtility.Singleton (
-              new ObjectValidationFailure (
+          return EnumerableUtility.Singleton(
+              new ObjectValidationFailure(
                   person,
                   "Person must have 'FirstName' and 'LastName' properties set.",
                   "Localized validation message for 'RealPersonValidator': 'FirstName' or 'LastName' property is null or empty."));

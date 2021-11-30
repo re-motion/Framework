@@ -39,89 +39,89 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void Create ()
     {
       var user = CreateUser();
-      var proxy = UserProxy.Create (user);
+      var proxy = UserProxy.Create(user);
 
-      Assert.That (proxy.ID, Is.EqualTo (user.ID));
-      Assert.That (proxy.UniqueIdentifier, Is.EqualTo (((IBusinessObjectWithIdentity) user).UniqueIdentifier));
-      Assert.That (proxy.DisplayName, Is.EqualTo (((IBusinessObjectWithIdentity) user).DisplayName));
+      Assert.That(proxy.ID, Is.EqualTo(user.ID));
+      Assert.That(proxy.UniqueIdentifier, Is.EqualTo(((IBusinessObjectWithIdentity)user).UniqueIdentifier));
+      Assert.That(proxy.DisplayName, Is.EqualTo(((IBusinessObjectWithIdentity)user).DisplayName));
     }
 
     [Test]
     public void Serialization ()
     {
       var user = CreateUser();
-      var proxy = UserProxy.Create (user);
+      var proxy = UserProxy.Create(user);
 
-      var deserialized = Serializer.SerializeAndDeserialize (proxy);
+      var deserialized = Serializer.SerializeAndDeserialize(proxy);
 
-      Assert.That (deserialized.ID, Is.EqualTo (proxy.ID));
-      Assert.That (deserialized.UniqueIdentifier, Is.EqualTo (proxy.UniqueIdentifier));
-      Assert.That (deserialized.DisplayName, Is.EqualTo (proxy.DisplayName));
+      Assert.That(deserialized.ID, Is.EqualTo(proxy.ID));
+      Assert.That(deserialized.UniqueIdentifier, Is.EqualTo(proxy.UniqueIdentifier));
+      Assert.That(deserialized.DisplayName, Is.EqualTo(proxy.DisplayName));
     }
 
     [Test]
     public void Equals_EqualObject_True ()
     {
-      var user = CreateUser ();
-      var proxy1 = UserProxy.Create (user);
-      var proxy2 = UserProxy.Create (user);
+      var user = CreateUser();
+      var proxy1 = UserProxy.Create(user);
+      var proxy2 = UserProxy.Create(user);
 
-      Assert.That (proxy1.Equals (proxy2), Is.True);
-      Assert.That (proxy2.Equals (proxy1), Is.True);
+      Assert.That(proxy1.Equals(proxy2), Is.True);
+      Assert.That(proxy2.Equals(proxy1), Is.True);
     }
 
     [Test]
     public void Equals_SameObject_True ()
     {
-      var user = CreateUser ();
-      var proxy1 = UserProxy.Create (user);
+      var user = CreateUser();
+      var proxy1 = UserProxy.Create(user);
 
 // ReSharper disable EqualExpressionComparison
-      Assert.That (proxy1.Equals (proxy1), Is.True);
+      Assert.That(proxy1.Equals(proxy1), Is.True);
 // ReSharper restore EqualExpressionComparison
     }
 
     [Test]
     public void Equals_Null_False ()
     {
-      var user = CreateUser ();
-      var proxy1 = UserProxy.Create (user);
+      var user = CreateUser();
+      var proxy1 = UserProxy.Create(user);
 
-      Assert.That (proxy1.Equals (null), Is.False);
+      Assert.That(proxy1.Equals(null), Is.False);
     }
 
     [Test]
     public void Equals_OtherObject_False ()
     {
-      var proxy1 = UserProxy.Create (CreateUser ());
-      var proxy2 = UserProxy.Create (CreateUser ());
+      var proxy1 = UserProxy.Create(CreateUser());
+      var proxy2 = UserProxy.Create(CreateUser());
 
-      Assert.That (proxy1.Equals (proxy2), Is.False);
+      Assert.That(proxy1.Equals(proxy2), Is.False);
     }
 
     [Test]
     public void Equals_OtherType_False ()
     {
-      var proxy1 = UserProxy.Create (CreateUser ());
+      var proxy1 = UserProxy.Create(CreateUser());
 
-      Assert.That (proxy1.Equals ("other"), Is.False);
+      Assert.That(proxy1.Equals("other"), Is.False);
     }
 
     [Test]
-    public void GetHashcode_EqualObject_SameHashcode()
+    public void GetHashcode_EqualObject_SameHashcode ()
     {
-      var user = CreateUser ();
-      var proxy1 = UserProxy.Create (user);
-      var proxy2 = UserProxy.Create (user);
+      var user = CreateUser();
+      var proxy1 = UserProxy.Create(user);
+      var proxy2 = UserProxy.Create(user);
 
-      Assert.That (proxy2.GetHashCode (), Is.EqualTo (proxy1.GetHashCode()));
+      Assert.That(proxy2.GetHashCode(), Is.EqualTo(proxy1.GetHashCode()));
     }
 
     private User CreateUser ()
     {
-      var tenant = _testHelper.CreateTenant ("TheTenant", "UID");
-      var group = _testHelper.CreateGroup ("TheGroup", null, tenant);
-      return _testHelper.CreateUser ("UserName", "FN", "LN", null, group, tenant);
+      var tenant = _testHelper.CreateTenant("TheTenant", "UID");
+      var group = _testHelper.CreateGroup("TheGroup", null, tenant);
+      return _testHelper.CreateUser("UserName", "FN", "LN", null, group, tenant);
     }
   }
 }

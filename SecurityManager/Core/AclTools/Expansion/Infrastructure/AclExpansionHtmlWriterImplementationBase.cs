@@ -30,21 +30,21 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
   {
     public static string ToValidFileName (string name)
     {
-      var sb = new StringBuilder ();
-      List<char> invalidFileNameCharsSortedList = Path.GetInvalidFileNameChars ().ToList ();
-      invalidFileNameCharsSortedList.Sort ();
+      var sb = new StringBuilder();
+      List<char> invalidFileNameCharsSortedList = Path.GetInvalidFileNameChars().ToList();
+      invalidFileNameCharsSortedList.Sort();
       foreach (char c in name)
       {
-        if (invalidFileNameCharsSortedList.BinarySearch (c) >= 0)
-        { 
-          sb.Append ('_');
+        if (invalidFileNameCharsSortedList.BinarySearch(c) >= 0)
+        {
+          sb.Append('_');
         }
         else
         {
-          sb.Append (c);
+          sb.Append(c);
         }
       }
-      return sb.ToString ();
+      return sb.ToString();
     }
 
     private readonly HtmlTagWriter.HtmlTagWriter _htmlTagWriter;
@@ -53,50 +53,50 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
 
     public AclExpansionHtmlWriterImplementationBase (TextWriter textWriter, bool indentXml)
     {
-      _htmlTagWriter = new HtmlTagWriter.HtmlTagWriter (textWriter, indentXml);
+      _htmlTagWriter = new HtmlTagWriter.HtmlTagWriter(textWriter, indentXml);
     }
 
 
     public void WriteTableEnd ()
     {
-      _htmlTagWriter.Tags.tableEnd ();
+      _htmlTagWriter.Tags.tableEnd();
     }
 
     public virtual void WriteTableStart (string tableId)
     {
-      _htmlTagWriter.Tags.table ().Attribute ("style", "width: 100%;").Attribute ("class", "aclExpansionTable").Attribute ("id", tableId);
+      _htmlTagWriter.Tags.table().Attribute("style", "width: 100%;").Attribute("class", "aclExpansionTable").Attribute("id", tableId);
     }
 
 
     public virtual HtmlTagWriter.HtmlTagWriter WritePageStart (string pageTitle)
     {
-      _htmlTagWriter.WritePageHeader (pageTitle, "AclExpansion.css");
-      _htmlTagWriter.Tag ("body");
+      _htmlTagWriter.WritePageHeader(pageTitle, "AclExpansion.css");
+      _htmlTagWriter.Tag("body");
       return _htmlTagWriter;
     }
 
 
     public virtual void WritePageEnd ()
     {
-      _htmlTagWriter.TagEnd ("body");
-      _htmlTagWriter.TagEnd ("html");
+      _htmlTagWriter.TagEnd("body");
+      _htmlTagWriter.TagEnd("html");
 
-      _htmlTagWriter.Close ();
+      _htmlTagWriter.Close();
     }
 
     public virtual void WriteHeaderCell (string columnName)
     {
-      _htmlTagWriter.Tags.th ().Attribute ("class", "header");
-      _htmlTagWriter.Value (columnName);
-      _htmlTagWriter.Tags.thEnd ();
+      _htmlTagWriter.Tags.th().Attribute("class", "header");
+      _htmlTagWriter.Value(columnName);
+      _htmlTagWriter.Tags.thEnd();
     }
 
     public virtual void WriteTableData (string value)
     {
-      WriteTableRowBeginIfNotInTableRow ();
-      _htmlTagWriter.Tags.td ();
-      _htmlTagWriter.Value (value);
-      _htmlTagWriter.Tags.tdEnd ();
+      WriteTableRowBeginIfNotInTableRow();
+      _htmlTagWriter.Tags.td();
+      _htmlTagWriter.Value(value);
+      _htmlTagWriter.Tags.tdEnd();
     }
 
 
@@ -105,14 +105,14 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     {
       if (!_isInTableRow)
       {
-        _htmlTagWriter.Tags.tr ();
+        _htmlTagWriter.Tags.tr();
         _isInTableRow = true;
       }
     }
 
     public virtual void WriteTableRowEnd ()
     {
-      _htmlTagWriter.Tags.trEnd ();
+      _htmlTagWriter.Tags.trEnd();
       _isInTableRow = false;
     }
 

@@ -25,36 +25,36 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.
   {
     public string MixedPropertyWithDefaultPermission
     {
-      get { return Properties[typeof (BindableSecurableObjectMixin), "MixedPropertyWithDefaultPermission"].GetValue<string> (); }
-      set { Properties[typeof (BindableSecurableObjectMixin), "MixedPropertyWithDefaultPermission"].SetValue (value); }
+      get { return Properties[typeof(BindableSecurableObjectMixin), "MixedPropertyWithDefaultPermission"].GetValue<string>(); }
+      set { Properties[typeof(BindableSecurableObjectMixin), "MixedPropertyWithDefaultPermission"].SetValue(value); }
     }
 
     public string MixedPropertyWithReadPermission
     {
       [DemandPermission(TestAccessTypes.First)]
-      get { return Properties[typeof (BindableSecurableObjectMixin), "MixedPropertyWithReadPermission"].GetValue<string> (); }
-      set { Properties[typeof (BindableSecurableObjectMixin), "MixedPropertyWithReadPermission"].SetValue (value); }
+      get { return Properties[typeof(BindableSecurableObjectMixin), "MixedPropertyWithReadPermission"].GetValue<string>(); }
+      set { Properties[typeof(BindableSecurableObjectMixin), "MixedPropertyWithReadPermission"].SetValue(value); }
     }
 
     public string MixedPropertyWithWritePermission
     {
-      get { return Properties[typeof (BindableSecurableObjectMixin), "MixedPropertyWithWritePermission"].GetValue<string> (); }
-      [DemandPermission (TestAccessTypes.First)]
-      set { Properties[typeof (BindableSecurableObjectMixin), "MixedPropertyWithWritePermission"].SetValue (value); }
+      get { return Properties[typeof(BindableSecurableObjectMixin), "MixedPropertyWithWritePermission"].GetValue<string>(); }
+      [DemandPermission(TestAccessTypes.First)]
+      set { Properties[typeof(BindableSecurableObjectMixin), "MixedPropertyWithWritePermission"].SetValue(value); }
     }
 
     public string DefaultPermissionMixedProperty
     {
-      get { return Properties[typeof (BindableSecurableObjectMixin), "DefaultPermissionMixedProperty"].GetValue<string>(); }
-      set { Properties[typeof (BindableSecurableObjectMixin), "DefaultPermissionMixedProperty"].SetValue (value); }
+      get { return Properties[typeof(BindableSecurableObjectMixin), "DefaultPermissionMixedProperty"].GetValue<string>(); }
+      set { Properties[typeof(BindableSecurableObjectMixin), "DefaultPermissionMixedProperty"].SetValue(value); }
     }
 
     public string CustomPermissionMixedProperty
     {
-      [DemandPermission (TestAccessTypes.First)]
-      get { return Properties[typeof (BindableSecurableObjectMixin), "CustomPermissionMixedProperty"].GetValue<string>(); }
-      [DemandPermission (TestAccessTypes.Second)]
-      set { Properties[typeof (BindableSecurableObjectMixin), "CustomPermissionMixedProperty"].SetValue (value); }
+      [DemandPermission(TestAccessTypes.First)]
+      get { return Properties[typeof(BindableSecurableObjectMixin), "CustomPermissionMixedProperty"].GetValue<string>(); }
+      [DemandPermission(TestAccessTypes.Second)]
+      set { Properties[typeof(BindableSecurableObjectMixin), "CustomPermissionMixedProperty"].SetValue(value); }
     }
   }
 }

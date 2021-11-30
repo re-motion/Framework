@@ -34,24 +34,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     public void SetUp ()
     {
       _decoratedCommandMock = MockRepository.GenerateStrictMock<IDataManagementCommand>();
-      _decorator = new TestableDataManagementCommandDecoratorBase (_decoratedCommandMock);
+      _decorator = new TestableDataManagementCommandDecoratorBase(_decoratedCommandMock);
     }
 
     [Test]
     public void GetAllExceptions ()
     {
-      var exception1 = new Exception ("Test1");
-      var exception2 = new Exception ("Test2");
+      var exception1 = new Exception("Test1");
+      var exception2 = new Exception("Test2");
       var fakeExceptions = new[] { exception1, exception2 };
-      _decoratedCommandMock.Stub (stub => stub.GetAllExceptions()).Return (fakeExceptions);
+      _decoratedCommandMock.Stub(stub => stub.GetAllExceptions()).Return(fakeExceptions);
 
-      Assert.That (_decorator.GetAllExceptions(), Is.EqualTo (fakeExceptions));
+      Assert.That(_decorator.GetAllExceptions(), Is.EqualTo(fakeExceptions));
     }
 
     [Test]
     public void Begin ()
     {
-      _decoratedCommandMock.Expect (mock => mock.Begin());
+      _decoratedCommandMock.Expect(mock => mock.Begin());
 
       _decorator.Begin();
 
@@ -61,36 +61,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Perform ()
     {
-      _decoratedCommandMock.Expect (mock => mock.Perform ());
+      _decoratedCommandMock.Expect(mock => mock.Perform());
 
       _decorator.Perform();
 
-      _decoratedCommandMock.VerifyAllExpectations ();
+      _decoratedCommandMock.VerifyAllExpectations();
     }
 
     [Test]
     public void End ()
     {
-      _decoratedCommandMock.Expect (mock => mock.End ());
+      _decoratedCommandMock.Expect(mock => mock.End());
 
-      _decorator.End ();
+      _decorator.End();
 
-      _decoratedCommandMock.VerifyAllExpectations ();
+      _decoratedCommandMock.VerifyAllExpectations();
     }
 
     [Test]
     public void ExpandToAllRelatedObjects ()
     {
       var fakeExpanded = new ExpandedCommand();
-      _decoratedCommandMock.Stub (stub => stub.ExpandToAllRelatedObjects()).Return (fakeExpanded);
+      _decoratedCommandMock.Stub(stub => stub.ExpandToAllRelatedObjects()).Return(fakeExpanded);
 
       var result = _decorator.ExpandToAllRelatedObjects();
 
       var nestedCommands = result.GetNestedCommands();
-      Assert.That (nestedCommands, Has.Count.EqualTo (1));
+      Assert.That(nestedCommands, Has.Count.EqualTo(1));
       var nestedCommand = nestedCommands.Single();
-      Assert.That (nestedCommand, Is.TypeOf<TestableDataManagementCommandDecoratorBase> ());
-      Assert.That (((TestableDataManagementCommandDecoratorBase) nestedCommand).DecoratedCommand, Is.SameAs (fakeExpanded));
+      Assert.That(nestedCommand, Is.TypeOf<TestableDataManagementCommandDecoratorBase>());
+      Assert.That(((TestableDataManagementCommandDecoratorBase)nestedCommand).DecoratedCommand, Is.SameAs(fakeExpanded));
     }
   }
 
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
     protected override IDataManagementCommand Decorate (IDataManagementCommand decoratedCommand)
     {
-      return new TestableDataManagementCommandDecoratorBase (decoratedCommand);
+      return new TestableDataManagementCommandDecoratorBase(decoratedCommand);
     }
   }
 }

@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
 
     public SingleDataContainerAssociateWithIDCommand (ObjectID expectedObjectID, IStorageProviderCommand<DataContainer, TExecutionContext> innerCommand)
     {
-      ArgumentUtility.CheckNotNull ("expectedObjectID", expectedObjectID);
-      ArgumentUtility.CheckNotNull ("innerCommand", innerCommand);
+      ArgumentUtility.CheckNotNull("expectedObjectID", expectedObjectID);
+      ArgumentUtility.CheckNotNull("innerCommand", innerCommand);
 
       _expectedObjectID = expectedObjectID;
       _innerCommand = innerCommand;
@@ -50,16 +50,16 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
 
     public ObjectLookupResult<DataContainer> Execute (TExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull ("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
 
-      var dataContainer = InnerCommand.Execute (executionContext);
+      var dataContainer = InnerCommand.Execute(executionContext);
       if (dataContainer != null && dataContainer.ID != _expectedObjectID)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The ObjectID of the loaded DataContainer '{0}' and the expected ObjectID '{1}' differ.", dataContainer.ID, _expectedObjectID);
-        throw new PersistenceException (message);
+        throw new PersistenceException(message);
       }
-      return new ObjectLookupResult<DataContainer> (_expectedObjectID, dataContainer);
+      return new ObjectLookupResult<DataContainer>(_expectedObjectID, dataContainer);
     }
   }
 }

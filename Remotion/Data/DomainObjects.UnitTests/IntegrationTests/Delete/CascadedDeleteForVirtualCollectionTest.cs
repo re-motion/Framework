@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
   public class CascadedDeleteForVirtualCollectionTest : ClientTransactionBaseTest
   {
     [Test]
-    [Ignore ("TODO RM-6156: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
+    [Ignore("TODO RM-6156: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
     public void BidirectionalRelation_CascadeWithinDeleting ()
     {
       var product = Product.NewObject();
@@ -41,10 +41,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       product.Delete();
 
-      Assert.That (product.State.IsInvalid, Is.True);
-      Assert.That (productReview.State.IsInvalid, Is.True);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
-      Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+      Assert.That(product.State.IsInvalid, Is.True);
+      Assert.That(productReview.State.IsInvalid, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
 
     [Test]
@@ -61,14 +61,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       product.Delete();
 
-      Assert.That (product.State.IsInvalid, Is.True);
-      Assert.That (productReview.State.IsInvalid, Is.True);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
-      Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+      Assert.That(product.State.IsInvalid, Is.True);
+      Assert.That(productReview.State.IsInvalid, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
 
     [Test]
-    [Ignore ("TODO: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
+    [Ignore("TODO: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
     public void BidirectionalRelation_CascadeWithinDeleting_SubTransaction ()
     {
       var product = Product.NewObject();
@@ -82,16 +82,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
           review.Delete();
       };
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         product.Delete();
         ClientTransaction.Current.Commit();
       }
 
-      Assert.That (product.State.IsInvalid, Is.True);
-      Assert.That (productReview.State.IsInvalid, Is.True);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
-      Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+      Assert.That(product.State.IsInvalid, Is.True);
+      Assert.That(productReview.State.IsInvalid, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
 
     [Test]
@@ -106,16 +106,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       product.Deleting += delegate { objectToBeDeleted = product.Reviews.Single(); };
       product.Deleted += delegate { objectToBeDeleted.Delete(); };
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         product.Delete();
         ClientTransaction.Current.Commit();
       }
 
-      Assert.That (product.State.IsInvalid, Is.True);
-      Assert.That (productReview.State.IsInvalid, Is.True);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
-      Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+      Assert.That(product.State.IsInvalid, Is.True);
+      Assert.That(productReview.State.IsInvalid, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
   }
 }

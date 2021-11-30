@@ -40,9 +40,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IDefaultValueStrategy defaultValueStrategy)
     {
-      return ObjectFactory.Create<BindableDomainObjectPropertyReflector> (
+      return ObjectFactory.Create<BindableDomainObjectPropertyReflector>(
           true,
-          ParamList.Create (propertyInfo, businessObjectProvider, domainModelConstraintProvider, defaultValueStrategy));
+          ParamList.Create(propertyInfo, businessObjectProvider, domainModelConstraintProvider, defaultValueStrategy));
     }
 
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         BindableObjectProvider businessObjectProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IDefaultValueStrategy defaultValueStrategy)
-        : this (propertyInfo,
+        : this(propertyInfo,
             businessObjectProvider,
             domainModelConstraintProvider,
             defaultValueStrategy,
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         IBindablePropertyWriteAccessStrategy bindablePropertyWriteAccessStrategy,
         BindableObjectGlobalizationService bindableObjectGlobalizationService,
         IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider)
-        : base (
+        : base(
             propertyInfo,
             businessObjectProvider,
             defaultValueStrategy,
@@ -81,8 +81,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
             bindableObjectGlobalizationService,
             businessObjectPropertyConstraintProvider)
     {
-      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
-      ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
+      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
 
       _domainModelConstraintProvider = domainModelConstraintProvider;
     }
@@ -91,12 +91,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     {
       if (base.GetIsRequired())
         return true;
-      return !_domainModelConstraintProvider.IsNullable (PropertyInfo);
+      return !_domainModelConstraintProvider.IsNullable(PropertyInfo);
     }
 
     protected override int? GetMaxLength ()
     {
-      return base.GetMaxLength() ?? _domainModelConstraintProvider.GetMaxLength (PropertyInfo);
+      return base.GetMaxLength() ?? _domainModelConstraintProvider.GetMaxLength(PropertyInfo);
     }
   }
 }

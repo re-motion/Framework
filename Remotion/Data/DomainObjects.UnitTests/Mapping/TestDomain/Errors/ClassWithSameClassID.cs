@@ -18,12 +18,12 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
 {
-  [ClassID ("DefinedID")]
+  [ClassID("DefinedID")]
   public class ClassWithSameClassID : DomainObject
-  {    
+  {
   }
 
-  [ClassID ("DefinedID")]
+  [ClassID("DefinedID")]
   public class OtherClassWithSameClassID : DomainObject
   {
   }

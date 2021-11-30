@@ -35,7 +35,7 @@ namespace Remotion.Web.UI.Controls.PostBackTargets
     public void RaisePostBackEvent (string eventArgument)
     {
       if (PostBack != null)
-        PostBack (this, new PostBackEventHandlerEventArgs (eventArgument));
+        PostBack(this, new PostBackEventHandlerEventArgs(eventArgument));
     }
   }
 }

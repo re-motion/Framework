@@ -32,34 +32,34 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject SelectPerHtmlID (ControlSelectionContext context, string htmlID)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("htmlID", htmlID);
 
-      var scope = FindPerHtmlID (context, htmlID);
-      return CreateControlObject (context, scope);
+      var scope = FindPerHtmlID(context, htmlID);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public TControlObject? SelectOptionalPerHtmlID (ControlSelectionContext context, string htmlID)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("htmlID", htmlID);
 
-      var scope = FindPerHtmlID (context, htmlID);
+      var scope = FindPerHtmlID(context, htmlID);
 
       if (!scope.ExistsWorkaround())
         return null;
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public bool ExistsPerHtmlID (ControlSelectionContext context, string htmlID)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("htmlID", htmlID);
 
-      var scope = FindPerHtmlID (context, htmlID);
+      var scope = FindPerHtmlID(context, htmlID);
 
       return scope.ExistsWorkaround();
     }
@@ -67,29 +67,29 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject SelectPerLocalID (ControlSelectionContext context, string localID)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("localID", localID);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("localID", localID);
 
-      var scope = FindPerLocalID (context, localID);
+      var scope = FindPerLocalID(context, localID);
       if (!scope.ExistsWorkaround())
-        scope = FindPerHtmlID (context, localID);
+        scope = FindPerHtmlID(context, localID);
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public TControlObject? SelectOptionalPerLocalID (ControlSelectionContext context, string localID)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("localID", localID);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("localID", localID);
 
-      var scope = FindPerLocalID (context, localID);
+      var scope = FindPerLocalID(context, localID);
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
-      scope = FindPerHtmlID (context, localID);
+      scope = FindPerHtmlID(context, localID);
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -97,14 +97,14 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerLocalID (ControlSelectionContext context, string localID)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("localID", localID);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("localID", localID);
 
-      var scope = FindPerLocalID (context, localID);
+      var scope = FindPerLocalID(context, localID);
       if (scope.ExistsWorkaround())
         return true;
 
-      scope = FindPerHtmlID (context, localID);
+      scope = FindPerHtmlID(context, localID);
       return scope.ExistsWorkaround();
     }
 
@@ -114,11 +114,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// </summary>
     protected TControlObject CreateControlObject ([NotNull] ControlSelectionContext context, [NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      var newControlObjectContext = context.CloneForControl (context.PageObject, scope);
-      return CreateControlObject (newControlObjectContext, context);
+      var newControlObjectContext = context.CloneForControl(context.PageObject, scope);
+      return CreateControlObject(newControlObjectContext, context);
     }
 
     /// <summary>
@@ -130,12 +130,12 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
 
     private ElementScope FindPerHtmlID (ControlSelectionContext context, string htmlID)
     {
-      return context.Scope.FindId (htmlID);
+      return context.Scope.FindId(htmlID);
     }
 
     private ElementScope FindPerLocalID (ControlSelectionContext context, string localID)
     {
-      return context.Scope.FindIdEndingWith ("_" + localID);
+      return context.Scope.FindIdEndingWith("_" + localID);
     }
   }
 }

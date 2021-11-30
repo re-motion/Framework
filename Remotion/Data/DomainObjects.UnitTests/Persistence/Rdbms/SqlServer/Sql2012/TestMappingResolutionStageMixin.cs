@@ -30,14 +30,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     [OverrideTarget]
     public virtual SqlStatement ResolveSqlStatement (SqlStatement sqlStatement, IMappingResolutionContext context)
     {
-      Assert.That (sqlStatement.SelectProjection, Is.TypeOf (typeof (ConstantExpression)));
-      Assert.That (((ConstantExpression) sqlStatement.SelectProjection).Value, Is.EqualTo ("Value added by preparation mixin"));
+      Assert.That(sqlStatement.SelectProjection, Is.TypeOf(typeof(ConstantExpression)));
+      Assert.That(((ConstantExpression)sqlStatement.SelectProjection).Value, Is.EqualTo("Value added by preparation mixin"));
 
       var builder = new SqlStatementBuilder
                     {
-                        DataInfo = new StreamedScalarValueInfo (typeof (string)),
+                        DataInfo = new StreamedScalarValueInfo(typeof(string)),
                         SelectProjection =
-                            new SqlEntityDefinitionExpression (typeof (int), "c", "CookTable", e => e.GetColumn (typeof (int), "ID", false))
+                            new SqlEntityDefinitionExpression(typeof(int), "c", "CookTable", e => e.GetColumn(typeof(int), "ID", false))
                     };
       return builder.GetSqlStatement();
     }

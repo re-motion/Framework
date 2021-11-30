@@ -61,7 +61,7 @@ namespace Remotion.Web.UI
     ///   has values that must be persisted before the user leaves the page. 
     /// </summary>
     /// <returns> <see langword="true"/> if the page is dirty (i.e. has unpersisted changes). </returns>
-    bool EvaluateDirtyState();
+    bool EvaluateDirtyState ();
 
     /// <summary>
     ///   Gets a flag that determines whether the dirty state will be taken into account when displaying the abort 
@@ -137,7 +137,7 @@ namespace Remotion.Web.UI
     void RegisterControlForSynchronousPostBack ([NotNull] Control control);
 
     /// <summary> Saves the ControlState and the ViewState of the ASP.NET page. </summary>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     void SaveAllState ();
   }
 }

@@ -28,12 +28,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       try
       {
         // This does not set the current configuration properties, SchemaGenerationTestBase.OneTimeSetUp does this
-        SchemaGenerationConfiguration.Initialize ();
+        SchemaGenerationConfiguration.Initialize();
       }
       catch (Exception ex)
       {
-        Console.WriteLine ("SetUpFixture failed: " + ex);
-        Console.WriteLine ();
+        Console.WriteLine("SetUpFixture failed: " + ex);
+        Console.WriteLine();
         throw;
       }
     }

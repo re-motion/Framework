@@ -34,12 +34,12 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      Label elseTarget = gen.DefineLabel ();
-      _condition.Emit (member, gen);
-      gen.Emit (_condition.BranchIfFalse, elseTarget);
+      Label elseTarget = gen.DefineLabel();
+      _condition.Emit(member, gen);
+      gen.Emit(_condition.BranchIfFalse, elseTarget);
       foreach (Statement s in _thenStatements)
-        s.Emit (member, gen);
-      gen.MarkLabel (elseTarget);
+        s.Emit(member, gen);
+      gen.MarkLabel(elseTarget);
     }
   }
 }

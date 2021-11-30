@@ -23,19 +23,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [Instantiable]
   public abstract class Ceo : DomainObject
   {
-    public static Ceo NewObject()
+    public static Ceo NewObject ()
     {
-      return DomainObject.NewObject<Ceo> ();
+      return DomainObject.NewObject<Ceo>();
     }
 
-    protected Ceo()
+    protected Ceo ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("Ceo", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Ceo", ContainsForeignKey = true)]
     [Mandatory]
     public abstract Company Company { get; set; }
 

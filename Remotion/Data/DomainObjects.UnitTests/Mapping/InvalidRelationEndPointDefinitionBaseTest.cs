@@ -39,31 +39,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [SetUp]
     public void SetUp ()
     {
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (Order));
-      _invalidEndPointDefinition = new TestableInvalidRelationEndPointDefinitionBase (_classDefinition, "TestProperty", typeof(string));
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order));
+      _invalidEndPointDefinition = new TestableInvalidRelationEndPointDefinitionBase(_classDefinition, "TestProperty", typeof(string));
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_invalidEndPointDefinition.ClassDefinition, Is.SameAs (_classDefinition));
-      Assert.That (_invalidEndPointDefinition.PropertyName, Is.EqualTo ("TestProperty"));
-      Assert.That (_invalidEndPointDefinition.PropertyInfo.DeclaringType, Is.SameAs (TypeAdapter.Create (typeof (Order))));
-      Assert.That (_invalidEndPointDefinition.PropertyInfo.Name, Is.EqualTo ("TestProperty"));
-      Assert.That (_invalidEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs (typeof (string)));
-      Assert.That (_invalidEndPointDefinition.IsVirtual, Is.False);
-      Assert.That (_invalidEndPointDefinition.IsAnonymous, Is.False);
+      Assert.That(_invalidEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
+      Assert.That(_invalidEndPointDefinition.PropertyName, Is.EqualTo("TestProperty"));
+      Assert.That(_invalidEndPointDefinition.PropertyInfo.DeclaringType, Is.SameAs(TypeAdapter.Create(typeof(Order))));
+      Assert.That(_invalidEndPointDefinition.PropertyInfo.Name, Is.EqualTo("TestProperty"));
+      Assert.That(_invalidEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(string)));
+      Assert.That(_invalidEndPointDefinition.IsVirtual, Is.False);
+      Assert.That(_invalidEndPointDefinition.IsAnonymous, Is.False);
     }
 
     [Test]
     public void SetRelationDefinition ()
     {
-      var endPoint = new AnonymousRelationEndPointDefinition (_classDefinition);
-      var relationDefinition = new RelationDefinition ("Test", endPoint, endPoint);
+      var endPoint = new AnonymousRelationEndPointDefinition(_classDefinition);
+      var relationDefinition = new RelationDefinition("Test", endPoint, endPoint);
 
-      _invalidEndPointDefinition.SetRelationDefinition (relationDefinition);
+      _invalidEndPointDefinition.SetRelationDefinition(relationDefinition);
 
-      Assert.That (_invalidEndPointDefinition.RelationDefinition, Is.SameAs (relationDefinition));
+      Assert.That(_invalidEndPointDefinition.RelationDefinition, Is.SameAs(relationDefinition));
     }
 
   }

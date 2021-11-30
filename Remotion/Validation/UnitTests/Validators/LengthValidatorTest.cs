@@ -32,10 +32,10 @@ namespace Remotion.Validation.UnitTests.Validators
     {
       using (CultureScope.CreateInvariantCultureScope())
       {
-        Assert.That (
-            () => new LengthValidator (-1, 3, new InvariantValidationMessage ("Fake Message")),
+        Assert.That(
+            () => new LengthValidator(-1, 3, new InvariantValidationMessage("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
-                .With.ArgumentExceptionMessageEqualTo ("Value cannot be less than zero.", "min"));
+                .With.ArgumentExceptionMessageEqualTo("Value cannot be less than zero.", "min"));
       }
     }
 
@@ -44,94 +44,94 @@ namespace Remotion.Validation.UnitTests.Validators
     {
       using (CultureScope.CreateInvariantCultureScope())
       {
-        Assert.That (
-            () => new LengthValidator (4, 3, new InvariantValidationMessage ("Fake Message")),
+        Assert.That(
+            () => new LengthValidator(4, 3, new InvariantValidationMessage("Fake Message")),
             Throws.InstanceOf<ArgumentOutOfRangeException>()
-                .With.ArgumentExceptionMessageEqualTo ("Max should be larger than min.", "max"));
+                .With.ArgumentExceptionMessageEqualTo("Max should be larger than min.", "max"));
       }
     }
 
     [Test]
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (null);
-      var validator = new LengthValidator (0, 0, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(null);
+      var validator = new LengthValidator(0, 0, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueNonString_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (new object());
-      var validator = new LengthValidator (0, 0, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(new object());
+      var validator = new LengthValidator(0, 0, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueLengthEqualToLowerBoundary_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext ("1");
-      var validator = new LengthValidator (1, 4, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext("1");
+      var validator = new LengthValidator(1, 4, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueLengthEqualToUpperBoundary_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext ("1234");
-      var validator = new LengthValidator (1, 4, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext("1234");
+      var validator = new LengthValidator(1, 4, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueLengthBetweenBoundaries_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext ("123");
-      var validator = new LengthValidator (1, 4, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext("123");
+      var validator = new LengthValidator(1, 4, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueLengthTooShort_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext ("");
-      var validator = new LengthValidator (1, 4, new InvariantValidationMessage ("Custom validation message: '{0}', '{1}'."));
+      var propertyValidatorContext = CreatePropertyValidatorContext("");
+      var validator = new LengthValidator(1, 4, new InvariantValidationMessage("Custom validation message: '{0}', '{1}'."));
 
-      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      Assert.That (validationFailures.Length, Is.EqualTo (1));
+      Assert.That(validationFailures.Length, Is.EqualTo(1));
       //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
-      Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must have between 1 and 4 characters."));
-      Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '1', '4'."));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must have between 1 and 4 characters."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '1', '4'."));
     }
 
     [Test]
     public void Validate_WithPropertyValueLengthTooLong_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext ("");
-      var validator = new LengthValidator (1, 4, new InvariantValidationMessage ("Custom validation message: '{0}', '{1}'."));
+      var propertyValidatorContext = CreatePropertyValidatorContext("");
+      var validator = new LengthValidator(1, 4, new InvariantValidationMessage("Custom validation message: '{0}', '{1}'."));
 
-      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      Assert.That (validationFailures.Length, Is.EqualTo (1));
+      Assert.That(validationFailures.Length, Is.EqualTo(1));
       //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
-      Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must have between 1 and 4 characters."));
-      Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '1', '4'."));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must have between 1 and 4 characters."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '1', '4'."));
     }
   }
 }

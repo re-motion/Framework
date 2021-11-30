@@ -38,13 +38,13 @@ namespace Remotion.SecurityManager.Persistence
         IPersistenceExtension persistenceExtension,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory,
         Func<IDbConnection> connectionFactory)
-        : base (
+        : base(
             definition,
             persistenceExtension,
             commandFactory,
             connectionFactory)
     {
-      _revisionExtension = new RevisionStorageProviderExtension (
+      _revisionExtension = new RevisionStorageProviderExtension(
           SafeServiceLocator.Current.GetInstance<IDomainRevisionProvider>(),
           SafeServiceLocator.Current.GetInstance<IUserRevisionProvider>(),
           SafeServiceLocator.Current.GetInstance<IUserNamesRevisionProvider>(),
@@ -53,12 +53,12 @@ namespace Remotion.SecurityManager.Persistence
 
     public override void Save (IEnumerable<DataContainer> dataContainers)
     {
-      ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
 
       //TODO RM-5638: Refactor to Streaming-API
       var dataContainersList = dataContainers.ToList();
-      base.Save (dataContainersList);
-      _revisionExtension.Saved (this, dataContainersList);
+      base.Save(dataContainersList);
+      _revisionExtension.Saved(this, dataContainersList);
     }
   }
 }

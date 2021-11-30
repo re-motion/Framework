@@ -49,26 +49,26 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       get { return _composedInterfaces; }
     }
 
-    [MemberNotNull (nameof (_type))]
+    [MemberNotNull(nameof(_type))]
     public void AddClassType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       _type = type;
     }
 
-    [MemberNotNull (nameof (_mixinContexts))]
+    [MemberNotNull(nameof(_mixinContexts))]
     public void AddMixins (IEnumerable<MixinContext> mixinContexts)
     {
-      ArgumentUtility.CheckNotNull ("mixinContexts", mixinContexts);
+      ArgumentUtility.CheckNotNull("mixinContexts", mixinContexts);
 
       _mixinContexts = mixinContexts.ToList().AsReadOnly();
     }
 
-    [MemberNotNull (nameof (_composedInterfaces))]
+    [MemberNotNull(nameof(_composedInterfaces))]
     public void AddComposedInterfaces (IEnumerable<Type> composedInterfaces)
     {
-      ArgumentUtility.CheckNotNull ("composedInterfaces", composedInterfaces);
+      ArgumentUtility.CheckNotNull("composedInterfaces", composedInterfaces);
 
       _composedInterfaces = composedInterfaces.ToList().AsReadOnly();
     }

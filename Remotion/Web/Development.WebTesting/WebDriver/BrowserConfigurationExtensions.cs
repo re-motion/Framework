@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsChrome ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
 
       return browserConfiguration is IChromeConfiguration;
     }
@@ -48,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsEdge ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
 
       return browserConfiguration is IEdgeConfiguration;
     }
@@ -59,7 +59,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsChromium ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
 
       return browserConfiguration is IChromeConfiguration || browserConfiguration is IEdgeConfiguration;
     }
@@ -70,7 +70,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsFirefox ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
 
       return browserConfiguration is IFirefoxConfiguration;
     }
@@ -79,11 +79,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// Gets a flag indicating if <paramref name="browser"/> represents <b>Internet Explorer</b> by testing if the passed instance 
     /// is <see cref="Browser.InternetExplorer"/>.
     /// </summary>
-    [Obsolete ("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22, 1.21.7)")]
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [Obsolete("Support for Internet Explorer in web tests has been removed. (Version: 1.20.22, 1.21.7)")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static bool IsInternetExplorer ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull ("browser", browser);
+      ArgumentUtility.CheckNotNull("browser", browser);
 
       return browser == Browser.InternetExplorer;
     }
@@ -94,7 +94,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsChrome ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull ("browser", browser);
+      ArgumentUtility.CheckNotNull("browser", browser);
 
       return browser == Browser.Chrome;
     }
@@ -105,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsEdge ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull ("browser", browser);
+      ArgumentUtility.CheckNotNull("browser", browser);
 
       return browser == Browser.Edge;
     }
@@ -116,7 +116,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsChromium ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull ("browser", browser);
+      ArgumentUtility.CheckNotNull("browser", browser);
 
       return browser == Browser.Chrome || browser == Browser.Edge;
     }
@@ -127,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsFirefox ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull ("browser", browser);
+      ArgumentUtility.CheckNotNull("browser", browser);
 
       return browser == Browser.Firefox;
     }

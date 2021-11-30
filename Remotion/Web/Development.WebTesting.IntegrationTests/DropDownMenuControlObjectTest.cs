@@ -34,22 +34,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     // Note: the <see cref="T:DropDownMenu.Mode"/>=<see cref="T:MenuMode.ContextMenu"/> option is tested indirectly by the BocTreeViewControlObjectTest.
 
     [Test]
-    [TestCaseSource (typeof (DisabledTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
     public void GenericTests (GenericSelectorTestAction<DropDownMenuSelector, DropDownMenuControlObject> testAction)
     {
-      testAction (Helper, e => e.DropDownMenus(), "dropDownMenu");
+      testAction(Helper, e => e.DropDownMenus(), "dropDownMenu");
     }
 
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
-    [TestCaseSource (typeof (TextContentControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource(typeof(TextContentControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<DropDownMenuSelector, DropDownMenuControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<DropDownMenuSelector, DropDownMenuControlObject> testAction)
     {
-      testAction (Helper, e => e.DropDownMenus(), "dropDownMenu");
+      testAction(Helper, e => e.DropDownMenus(), "dropDownMenu");
     }
 
     [Test]
@@ -57,29 +57,29 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var disabledControl = home.DropDownMenus().GetByLocalID ("MyDropDownMenu_Disabled");
-      Assert.That (disabledControl.IsDisabled(), Is.True);
-      Assert.That (
+      var disabledControl = home.DropDownMenus().GetByLocalID("MyDropDownMenu_Disabled");
+      Assert.That(disabledControl.IsDisabled(), Is.True);
+      Assert.That(
           () => disabledControl.GetItemDefinitions(),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "GetItemDefinitions").Message));
-      Assert.That (
-          () => disabledControl.SelectItem().WithDisplayText ("EventItem"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectItem.WithDisplayText").Message));
-      Assert.That (
-          () => disabledControl.SelectItem().WithDisplayTextContains ("Href"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectItem.WithDisplayTextContains").Message));
-      Assert.That (
-          () => disabledControl.SelectItem().WithIndex (1),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectItem.WithIndex").Message));
-      Assert.That (
-          () => disabledControl.SelectItem().WithHtmlID ("body_MyDropDownMenu_Disabled_3"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectItem.WithHtmlID").Message));
-      Assert.That (
-          () => disabledControl.SelectItem().WithItemID ("ItemID4"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectItem.WithItemID").Message));
-      Assert.That (
-          () => disabledControl.SelectItem ("ItemID4"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException (Driver, "SelectItem(itemID)").Message));
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "GetItemDefinitions").Message));
+      Assert.That(
+          () => disabledControl.SelectItem().WithDisplayText("EventItem"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectItem.WithDisplayText").Message));
+      Assert.That(
+          () => disabledControl.SelectItem().WithDisplayTextContains("Href"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectItem.WithDisplayTextContains").Message));
+      Assert.That(
+          () => disabledControl.SelectItem().WithIndex(1),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectItem.WithIndex").Message));
+      Assert.That(
+          () => disabledControl.SelectItem().WithHtmlID("body_MyDropDownMenu_Disabled_3"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectItem.WithHtmlID").Message));
+      Assert.That(
+          () => disabledControl.SelectItem().WithItemID("ItemID4"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectItem.WithItemID").Message));
+      Assert.That(
+          () => disabledControl.SelectItem("ItemID4"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectItem(itemID)").Message));
     }
 
     [Test]
@@ -87,25 +87,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var enabledControl = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
-      Assert.That (
-          () => enabledControl.SelectItem ("ItemID3"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem(itemID)").Message));
-      Assert.That (
-          () => enabledControl.SelectItem().WithDisplayText ("NoneItem"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithDisplayText").Message));
-      Assert.That (
-          () => enabledControl.SelectItem().WithDisplayTextContains ("None"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithDisplayTextContains").Message));
-      Assert.That (
-          () => enabledControl.SelectItem ("ItemID6"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem(itemID)").Message));
-      Assert.That (
-          () => enabledControl.SelectItem().WithDisplayText ("DisabledItem"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithDisplayText").Message));
-      Assert.That (
-          () => enabledControl.SelectItem().WithDisplayTextContains ("Disabled"),
-          Throws.Exception.With.Message.EqualTo (AssertionExceptionUtility.CreateCommandDisabledException (Driver, "SelectItem.WithDisplayTextContains").Message));
+      var enabledControl = home.DropDownMenus().GetByLocalID("MyDropDownMenu");
+      Assert.That(
+          () => enabledControl.SelectItem("ItemID3"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem(itemID)").Message));
+      Assert.That(
+          () => enabledControl.SelectItem().WithDisplayText("NoneItem"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithDisplayText").Message));
+      Assert.That(
+          () => enabledControl.SelectItem().WithDisplayTextContains("None"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithDisplayTextContains").Message));
+      Assert.That(
+          () => enabledControl.SelectItem("ItemID6"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem(itemID)").Message));
+      Assert.That(
+          () => enabledControl.SelectItem().WithDisplayText("DisabledItem"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithDisplayText").Message));
+      Assert.That(
+          () => enabledControl.SelectItem().WithDisplayTextContains("Disabled"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "SelectItem.WithDisplayTextContains").Message));
     }
 
     [Test]
@@ -113,22 +113,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu");
 
       var items = dropDownMenu.GetItemDefinitions();
-      Assert.That (items.Count, Is.EqualTo (6));
+      Assert.That(items.Count, Is.EqualTo(6));
 
-      Assert.That (items[0].ItemID, Is.EqualTo ("ItemID1"));
-      Assert.That (items[0].Index, Is.EqualTo (1));
-      Assert.That (items[0].Text, Is.EqualTo ("EventItem"));
-      Assert.That (items[0].IsDisabled, Is.False);
+      Assert.That(items[0].ItemID, Is.EqualTo("ItemID1"));
+      Assert.That(items[0].Index, Is.EqualTo(1));
+      Assert.That(items[0].Text, Is.EqualTo("EventItem"));
+      Assert.That(items[0].IsDisabled, Is.False);
 
-      Assert.That (items[2].IsDisabled, Is.True);
+      Assert.That(items[2].IsDisabled, Is.True);
 
-      Assert.That (items[4].ItemID, Is.EqualTo ("ItemID5"));
-      Assert.That (items[4].Index, Is.EqualTo (5));
-      Assert.That (items[4].Text, Is.EqualTo (""));
-      Assert.That (items[4].IsDisabled, Is.False);
+      Assert.That(items[4].ItemID, Is.EqualTo("ItemID5"));
+      Assert.That(items[4].Index, Is.EqualTo(5));
+      Assert.That(items[4].Text, Is.EqualTo(""));
+      Assert.That(items[4].IsDisabled, Is.False);
     }
 
     [Test]
@@ -136,28 +136,28 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
-      var completionDetection = new CompletionDetectionStrategyTestHelper (dropDownMenu);
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu");
+      var completionDetection = new CompletionDetectionStrategyTestHelper(dropDownMenu);
 
-      dropDownMenu.SelectItem ("ItemID5");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID5|Event"));
+      dropDownMenu.SelectItem("ItemID5");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("ItemID5|Event"));
 
-      dropDownMenu.SelectItem().WithIndex (2);
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      dropDownMenu.SelectItem().WithIndex(2);
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.Empty);
 
-      dropDownMenu.SelectItem().WithHtmlID ("body_MyDropDownMenu_3");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID4|WxeFunction"));
+      dropDownMenu.SelectItem().WithHtmlID("body_MyDropDownMenu_3");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("ItemID4|WxeFunction"));
 
-      dropDownMenu.SelectItem().WithDisplayText ("EventItem");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID1|Event"));
+      dropDownMenu.SelectItem().WithDisplayText("EventItem");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("ItemID1|Event"));
 
-      dropDownMenu.SelectItem().WithDisplayTextContains ("xeFun");
-      Assert.That (completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("ItemID4|WxeFunction"));
+      dropDownMenu.SelectItem().WithDisplayTextContains("xeFun");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("ItemID4|WxeFunction"));
     }
 
     [Test]
@@ -165,10 +165,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu");
 
       dropDownMenu.GetItemDefinitions();
-      Assert.That (() => dropDownMenu.SelectItem ("ItemID5"), Throws.Nothing);
+      Assert.That(() => dropDownMenu.SelectItem("ItemID5"), Throws.Nothing);
     }
 
     [Test]
@@ -176,8 +176,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
-      Assert.That (dropDownMenu.IsOpen(), Is.False);
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu");
+      Assert.That(dropDownMenu.IsOpen(), Is.False);
     }
 
     [Test]
@@ -185,14 +185,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu");
 
       dropDownMenu.Open();
-      Assert.That (dropDownMenu.IsOpen(), Is.True);
+      Assert.That(dropDownMenu.IsOpen(), Is.True);
 
       //Open it a second time to ensure it stays open
       dropDownMenu.Open();
-      Assert.That (dropDownMenu.IsOpen(), Is.True);
+      Assert.That(dropDownMenu.IsOpen(), Is.True);
     }
 
     [Test]
@@ -200,25 +200,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu_Delayed");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu_Delayed");
 
       dropDownMenu.Open();
-      Assert.That (dropDownMenu.IsOpen(), Is.True);
+      Assert.That(dropDownMenu.IsOpen(), Is.True);
     }
 
     [Test]
-    [Category ("LongRunning")]
+    [Category("LongRunning")]
     public void TestDropDownMenuControlObject_OpenDropDownMenuWithDelayGreaterThanTimeout_FailsWithException ()
     {
       var home = Start();
 
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu_DelayedLongerThanTimeout");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu_DelayedLongerThanTimeout");
 
-      Assert.That (
+      Assert.That(
           () => dropDownMenu.Open(),
           Throws.TypeOf<WebTestException>()
-              .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to open the menu.").Message));
-      Assert.That (dropDownMenu.IsOpen(), Is.False);
+              .With.Message.EqualTo(AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to open the menu.").Message));
+      Assert.That(dropDownMenu.IsOpen(), Is.False);
     }
 
     [Test]
@@ -226,13 +226,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu_Error");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu_Error");
 
-      Assert.That (
+      Assert.That(
           () => dropDownMenu.Open(),
           Throws.TypeOf<WebTestException>()
-              .With.Message.EqualTo (AssertionExceptionUtility.CreateExpectationException (Driver, "Unable to open the menu.").Message));
-      Assert.That (dropDownMenu.IsOpen(), Is.False);
+              .With.Message.EqualTo(AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to open the menu.").Message));
+      Assert.That(dropDownMenu.IsOpen(), Is.False);
     }
 
     [Test]
@@ -240,16 +240,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu");
 
       dropDownMenu.Open();
 
       dropDownMenu.Close();
-      Assert.That (dropDownMenu.IsOpen(), Is.False);
+      Assert.That(dropDownMenu.IsOpen(), Is.False);
 
       //Close it a second time to ensure it stays closed
       dropDownMenu.Close();
-      Assert.That (dropDownMenu.IsOpen(), Is.False);
+      Assert.That(dropDownMenu.IsOpen(), Is.False);
     }
 
     [Test]
@@ -257,20 +257,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var myDropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
-      var myDropDownMenu2 = home.DropDownMenus().GetByLocalID ("MyDropDownMenu2");
+      var myDropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu");
+      var myDropDownMenu2 = home.DropDownMenus().GetByLocalID("MyDropDownMenu2");
 
       myDropDownMenu.Open();
-      Assert.That (myDropDownMenu2.IsOpen(), Is.False);
+      Assert.That(myDropDownMenu2.IsOpen(), Is.False);
     }
 
     [Test]
-    public void TestHasStandardButtonType()
+    public void TestHasStandardButtonType ()
     {
       var home = Start();
 
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenu");
-      Assert.That (dropDownMenu.GetButtonType(), Is.EqualTo (ButtonType.Standard));
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu");
+      Assert.That(dropDownMenu.GetButtonType(), Is.EqualTo(ButtonType.Standard));
     }
 
     [Test]
@@ -278,8 +278,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenuPrimary");
-      Assert.That (dropDownMenu.GetButtonType(), Is.EqualTo (ButtonType.Primary));
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenuPrimary");
+      Assert.That(dropDownMenu.GetButtonType(), Is.EqualTo(ButtonType.Primary));
     }
 
     [Test]
@@ -287,13 +287,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownMenu = home.DropDownMenus().GetByLocalID ("MyDropDownMenuSupplemental");
-      Assert.That (dropDownMenu.GetButtonType(), Is.EqualTo (ButtonType.Supplemental));
+      var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenuSupplemental");
+      Assert.That(dropDownMenu.GetButtonType(), Is.EqualTo(ButtonType.Supplemental));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("DropDownMenuTest.wxe");
+      return Start<WxePageObject>("DropDownMenuTest.wxe");
     }
   }
 }

@@ -34,7 +34,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// </summary>
   public class MixinTypeGenerator
   {
-    private static readonly MethodInfo s_getObjectDataForGeneratedTypesMethod = MemberInfoFromExpressionUtility.GetMethod (
+    private static readonly MethodInfo s_getObjectDataForGeneratedTypesMethod = MemberInfoFromExpressionUtility.GetMethod(
         () => MixinSerializationHelper.GetObjectDataForGeneratedTypes(null!, new StreamingContext(), null!, null!, false, null!));
 
     private readonly Dictionary<MethodInfo, MethodInfo> _publicMethodWrappers = new Dictionary<MethodInfo, MethodInfo>();
@@ -48,11 +48,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public MixinTypeGenerator (ConcreteMixinTypeIdentifier identifier, MutableType type, IAttributeGenerator attributeGenerator, string pipelineIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("identifier", identifier);
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("attributeGenerator", attributeGenerator);
-      ArgumentUtility.CheckNotNullOrEmpty ("pipelineIdentifier", pipelineIdentifier);
-      
+      ArgumentUtility.CheckNotNull("identifier", identifier);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("attributeGenerator", attributeGenerator);
+      ArgumentUtility.CheckNotNullOrEmpty("pipelineIdentifier", pipelineIdentifier);
+
       _identifier = identifier;
       _type = type;
       _attributeGenerator = attributeGenerator;
@@ -61,24 +61,24 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddInterfaces ()
     {
-      _type.AddInterface (typeof (ISerializable));
-      _type.AddInterface (typeof (IGeneratedMixinType));
+      _type.AddInterface(typeof(ISerializable));
+      _type.AddInterface(typeof(IGeneratedMixinType));
     }
 
-    [MemberNotNull (nameof (_identifierField))]
+    [MemberNotNull(nameof(_identifierField))]
     public void AddFields ()
     {
-      var field = _type.AddField ("__identifier", FieldAttributes.Public | FieldAttributes.Static, typeof (ConcreteMixinTypeIdentifier));
-      _identifierField = Expression.Field (null, field);
+      var field = _type.AddField("__identifier", FieldAttributes.Public | FieldAttributes.Static, typeof(ConcreteMixinTypeIdentifier));
+      _identifierField = Expression.Field(null, field);
     }
 
     public void AddTypeInitializer ()
     {
       var serializer = new ExpressionConcreteMixinTypeIdentifierSerializer();
-      _identifier.Serialize (serializer);
+      _identifier.Serialize(serializer);
       var newExpression = serializer.CreateExpression();
 
-      _type.AddTypeInitializer (ctx => Expression.Assign (_identifierField, newExpression));
+      _type.AddTypeInitializer(ctx => Expression.Assign(_identifierField, newExpression));
     }
 
     public void ImplementGetObjectData ()
@@ -87,90 +87,90 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       // of AssembledTypeID) and a different way to get the type back from the pipeline (GetAdditionalType instead of GetAssembledType).
       // Consider refactoring ComplexSerializationEnabler to allow this code to be replaced.
 
-      SerializationImplementer.ImplementGetObjectDataByDelegation (
+      SerializationImplementer.ImplementGetObjectDataByDelegation(
           _type,
           (ctx, baseIsISerializable) =>
-          Expression.Call (
+          Expression.Call(
               null,
               s_getObjectDataForGeneratedTypesMethod,
               ctx.Parameters[0],
               ctx.Parameters[1],
               ctx.This,
               _identifierField,
-              Expression.Constant (!baseIsISerializable),
-              Expression.Constant (_pipelineIdentifier)));
+              Expression.Constant(!baseIsISerializable),
+              Expression.Constant(_pipelineIdentifier)));
     }
 
     public void AddMixinTypeAttribute ()
     {
-      _attributeGenerator.AddConcreteMixinTypeAttribute (_type, _identifier);
+      _attributeGenerator.AddConcreteMixinTypeAttribute(_type, _identifier);
     }
 
     public void AddDebuggerAttributes ()
     {
       var debuggerDisplayString = "Derived mixin: " + _identifier;
-      _attributeGenerator.AddDebuggerDisplayAttribute (_type, debuggerDisplayString, null);
+      _attributeGenerator.AddDebuggerDisplayAttribute(_type, debuggerDisplayString, null);
     }
 
     public OverrideInterface GenerateOverrides ()
     {
-      var overrideInterfaceGenerator = OverrideInterfaceGenerator.CreateNestedGenerator (_type, "IOverriddenMethods");
+      var overrideInterfaceGenerator = OverrideInterfaceGenerator.CreateNestedGenerator(_type, "IOverriddenMethods");
 
       var targetReference = GetTargetReference();
       foreach (var method in _identifier.Overridden)
       {
-        var methodOverride = _type.GetOrAddOverride (method);
-        var methodToCall = overrideInterfaceGenerator.AddOverriddenMethod (method);
+        var methodOverride = _type.GetOrAddOverride(method);
+        var methodToCall = overrideInterfaceGenerator.AddOverriddenMethod(method);
 
-        AddCallToOverrider (methodOverride, targetReference, methodToCall);
+        AddCallToOverrider(methodOverride, targetReference, methodToCall);
       }
 
-      return new OverrideInterface (overrideInterfaceGenerator.Type, overrideInterfaceGenerator.InterfaceMethodsForOverriddenMethods);
+      return new OverrideInterface(overrideInterfaceGenerator.Type, overrideInterfaceGenerator.InterfaceMethodsForOverriddenMethods);
     }
 
     private Expression GetTargetReference ()
     {
-      var targetProperty = MixinReflector.GetTargetProperty (_type.BaseType);
+      var targetProperty = MixinReflector.GetTargetProperty(_type.BaseType);
       if (targetProperty == null)
       {
-        throw new NotSupportedException (
+        throw new NotSupportedException(
             "The code generator does not support mixins with overridden methods or non-public overriders if the mixin doesn't derive from the "
             + "generic Mixin base classes.");
       }
 
-      return Expression.Property (new ThisExpression (_type), targetProperty);
+      return Expression.Property(new ThisExpression(_type), targetProperty);
     }
 
     private void AddCallToOverrider (MutableMethodInfo methodOverride, Expression targetReference, MethodInfo targetMethod)
     {
-      var castedTargetReference = Expression.Convert (targetReference, targetMethod.DeclaringType);
-      methodOverride.SetBody (ctx => ctx.DelegateTo (castedTargetReference, targetMethod));
+      var castedTargetReference = Expression.Convert(targetReference, targetMethod.DeclaringType);
+      methodOverride.SetBody(ctx => ctx.DelegateTo(castedTargetReference, targetMethod));
     }
 
     public Dictionary<MethodInfo, MethodInfo> GenerateMethodWrappers ()
     {
       var wrappers = from m in _identifier.Overriders
                      where !m.IsPublic
-                     select new { Method = m, Wrapper = GetPublicMethodWrapper (m) };
-      return wrappers.ToDictionary (pair => pair.Method, pair => pair.Wrapper);
+                     select new { Method = m, Wrapper = GetPublicMethodWrapper(m) };
+      return wrappers.ToDictionary(pair => pair.Method, pair => pair.Wrapper);
     }
 
     private MethodInfo GetPublicMethodWrapper (MethodInfo methodToBeWrapped)
     {
-      ArgumentUtility.CheckNotNull ("methodToBeWrapped", methodToBeWrapped);
+      ArgumentUtility.CheckNotNull("methodToBeWrapped", methodToBeWrapped);
 
       // C# compiler 7.2 does not provide caching for delegate but during type generation there is already a significant amount of GC pressure so the delegate creation does not matter
-      return _publicMethodWrappers.GetOrCreateValue (methodToBeWrapped, CreatePublicMethodWrapper);
+      return _publicMethodWrappers.GetOrCreateValue(methodToBeWrapped, CreatePublicMethodWrapper);
     }
 
     private MethodInfo CreatePublicMethodWrapper (MethodInfo methodToBeWrapped)
     {
       var name = "__wrap__" + methodToBeWrapped.Name;
       var attributes = MethodAttributes.Public | MethodAttributes.HideBySig;
-      var md = MethodDeclaration.CreateEquivalent (methodToBeWrapped);
-      var wrapper = _type.AddMethod (name, attributes, md, ctx => ctx.DelegateTo (ctx.This, methodToBeWrapped));
+      var md = MethodDeclaration.CreateEquivalent(methodToBeWrapped);
+      var wrapper = _type.AddMethod(name, attributes, md, ctx => ctx.DelegateTo(ctx.This, methodToBeWrapped));
 
-      _attributeGenerator.AddGeneratedMethodWrapperAttribute (wrapper, methodToBeWrapped);
+      _attributeGenerator.AddGeneratedMethodWrapperAttribute(wrapper, methodToBeWrapped);
 
       return wrapper;
     }

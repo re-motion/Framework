@@ -39,12 +39,12 @@ namespace Remotion.Utilities
 
     public bool Equals (T? x, T? y)
     {
-      return object.ReferenceEquals (x, y);
+      return object.ReferenceEquals(x, y);
     }
 
     public int GetHashCode (T obj)
     {
-      return RuntimeHelpers.GetHashCode (obj); 
+      return RuntimeHelpers.GetHashCode(obj);
     }
   }
 }

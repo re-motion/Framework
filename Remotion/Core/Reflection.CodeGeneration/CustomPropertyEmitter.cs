@@ -43,10 +43,10 @@ namespace Remotion.Reflection.CodeGeneration
 
     public CustomPropertyEmitter (CustomClassEmitter declaringType, string name, PropertyKind propertyKind, Type propertyType, Type[] indexParameters, PropertyAttributes attributes)
     {
-      ArgumentUtility.CheckNotNull ("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
-      ArgumentUtility.CheckNotNull ("indexParameters", indexParameters);
+      ArgumentUtility.CheckNotNull("declaringType", declaringType);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull("indexParameters", indexParameters);
 
       _declaringType = declaringType;
       _name = name;
@@ -54,9 +54,9 @@ namespace Remotion.Reflection.CodeGeneration
 
       _propertyType = propertyType;
       _indexParameters = indexParameters;
-    
+
       CallingConventions callingConvention = propertyKind == PropertyKind.Instance ? CallingConventions.HasThis : CallingConventions.Standard;
-      _propertyBuilder = _declaringType.TypeBuilder.DefineProperty (
+      _propertyBuilder = _declaringType.TypeBuilder.DefineProperty(
            name, attributes, callingConvention, propertyType, null, null, indexParameters, null, null);
     }
 
@@ -78,10 +78,10 @@ namespace Remotion.Reflection.CodeGeneration
         if (value != null)
         {
           _getMethod = value;
-          _propertyBuilder.SetGetMethod (_getMethod.MethodBuilder);
+          _propertyBuilder.SetGetMethod(_getMethod.MethodBuilder);
         }
         else
-          throw new ArgumentNullException ("value", "Due to limitations in Reflection.Emit, property accessors cannot be set to null.");
+          throw new ArgumentNullException("value", "Due to limitations in Reflection.Emit, property accessors cannot be set to null.");
       }
     }
 
@@ -93,10 +93,10 @@ namespace Remotion.Reflection.CodeGeneration
         if (value != null)
         {
           _setMethod = value;
-          _propertyBuilder.SetSetMethod (_setMethod.MethodBuilder);
+          _propertyBuilder.SetSetMethod(_setMethod.MethodBuilder);
         }
         else
-          throw new ArgumentNullException ("value", "Due to limitations in Reflection.Emit, property accessors cannot be set to null.");
+          throw new ArgumentNullException("value", "Due to limitations in Reflection.Emit, property accessors cannot be set to null.");
       }
     }
 
@@ -122,31 +122,31 @@ namespace Remotion.Reflection.CodeGeneration
 
     public CustomPropertyEmitter ImplementWithBackingField ()
     {
-      string fieldName = MakeBackingFieldName (Name);
+      string fieldName = MakeBackingFieldName(Name);
       FieldReference backingField;
       if (PropertyKind == PropertyKind.Static)
-        backingField = _declaringType.CreateStaticField (fieldName, PropertyType);
+        backingField = _declaringType.CreateStaticField(fieldName, PropertyType);
       else
-        backingField = _declaringType.CreateField (fieldName, PropertyType);
-      return ImplementWithBackingField (backingField);
+        backingField = _declaringType.CreateField(fieldName, PropertyType);
+      return ImplementWithBackingField(backingField);
     }
 
     private static string MakeBackingFieldName (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
 
       return "_fieldFor" + propertyName;
     }
 
     public CustomPropertyEmitter ImplementWithBackingField (FieldReference backingField)
     {
-      ArgumentUtility.CheckNotNull ("backingField", backingField);
+      ArgumentUtility.CheckNotNull("backingField", backingField);
       if (GetMethod != null)
-        GetMethod.AddStatement (new ReturnStatement (backingField));
+        GetMethod.AddStatement(new ReturnStatement(backingField));
       if (SetMethod != null)
       {
-        SetMethod.AddStatement (
-            new AssignStatement (backingField, SetMethod.ArgumentReferences[IndexParameters.Length].ToExpression()));
+        SetMethod.AddStatement(
+            new AssignStatement(backingField, SetMethod.ArgumentReferences[IndexParameters.Length].ToExpression()));
         SetMethod.ImplementByReturningVoid();
       }
       return this;
@@ -156,14 +156,14 @@ namespace Remotion.Reflection.CodeGeneration
     public IMethodEmitter CreateGetMethod ()
     {
       if (GetMethod != null)
-        throw new InvalidOperationException ("This property already has a getter method.");
+        throw new InvalidOperationException("This property already has a getter method.");
       else
       {
         MethodAttributes flags = MethodAttributes.Public | MethodAttributes.SpecialName;
         if (PropertyKind == PropertyKind.Static)
           flags |= MethodAttributes.Static;
 
-        IMethodEmitter method = _declaringType.CreateMethod (BuildAccessorMethodName (Name, "get"), flags, PropertyType, IndexParameters);
+        IMethodEmitter method = _declaringType.CreateMethod(BuildAccessorMethodName(Name, "get"), flags, PropertyType, IndexParameters);
 
         GetMethod = method;
         return method;
@@ -171,16 +171,16 @@ namespace Remotion.Reflection.CodeGeneration
     }
 
     // TODO FS: Test
-    public static string BuildAccessorMethodName(string propertyName, string accessorName)
+    public static string BuildAccessorMethodName (string propertyName, string accessorName)
     {
       string s = propertyName;
       string sPath = "";
       string sPureName = s;
-      int iSplit = s.LastIndexOf ('.');
+      int iSplit = s.LastIndexOf('.');
       if (iSplit >= 0)
       {
-        sPath = s.Substring (0, iSplit) + ".";
-        sPureName = s.Substring (iSplit + 1, s.Length - iSplit - 1);
+        sPath = s.Substring(0, iSplit) + ".";
+        sPureName = s.Substring(iSplit + 1, s.Length - iSplit - 1);
       }
       return sPath + accessorName + "_" + sPureName;
     }
@@ -189,7 +189,7 @@ namespace Remotion.Reflection.CodeGeneration
     public IMethodEmitter CreateSetMethod ()
     {
       if (SetMethod != null)
-        throw new InvalidOperationException ("This property already has a setter method.");
+        throw new InvalidOperationException("This property already has a setter method.");
       else
       {
         MethodAttributes flags = MethodAttributes.Public | MethodAttributes.SpecialName;
@@ -197,10 +197,10 @@ namespace Remotion.Reflection.CodeGeneration
           flags |= MethodAttributes.Static;
 
         Type[] setterParameterTypes = new Type[IndexParameters.Length + 1];
-        IndexParameters.CopyTo (setterParameterTypes, 0);
+        IndexParameters.CopyTo(setterParameterTypes, 0);
         setterParameterTypes[IndexParameters.Length] = PropertyType;
 
-        IMethodEmitter method = _declaringType.CreateMethod (BuildAccessorMethodName (Name,"set"), flags, typeof (void), setterParameterTypes);
+        IMethodEmitter method = _declaringType.CreateMethod(BuildAccessorMethodName(Name,"set"), flags, typeof(void), setterParameterTypes);
 
         SetMethod = method;
         return method;
@@ -209,8 +209,8 @@ namespace Remotion.Reflection.CodeGeneration
 
     public void AddCustomAttribute (CustomAttributeBuilder customAttribute)
     {
-      ArgumentUtility.CheckNotNull ("customAttribute", customAttribute);
-      _propertyBuilder.SetCustomAttribute (customAttribute);
+      ArgumentUtility.CheckNotNull("customAttribute", customAttribute);
+      _propertyBuilder.SetCustomAttribute(customAttribute);
     }
 
   }

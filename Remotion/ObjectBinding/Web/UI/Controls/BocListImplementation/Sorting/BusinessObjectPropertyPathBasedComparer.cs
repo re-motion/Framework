@@ -29,14 +29,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
 
   public sealed class BusinessObjectPropertyPathBasedComparer : IComparer<BocListRow>
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (BusinessObjectPropertyPathBasedComparer));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(BusinessObjectPropertyPathBasedComparer));
 
     private readonly IBusinessObjectPropertyPath _propertyPath;
     private readonly Dictionary<BocListRow, CacheValue> _cache = new Dictionary<BocListRow, CacheValue>();
 
     public BusinessObjectPropertyPathBasedComparer (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
       _propertyPath = propertyPath;
     }
@@ -48,11 +48,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
 
     public int Compare (BocListRow? rowA, BocListRow? rowB)
     {
-      ArgumentUtility.CheckNotNull ("rowA", rowA!);
-      ArgumentUtility.CheckNotNull ("rowB", rowB!);
+      ArgumentUtility.CheckNotNull("rowA", rowA!);
+      ArgumentUtility.CheckNotNull("rowB", rowB!);
 
-      object? valueA = GetPropertyPathValueFromCache (rowA);
-      object? valueB = GetPropertyPathValueFromCache (rowB);
+      object? valueA = GetPropertyPathValueFromCache(rowA);
+      object? valueB = GetPropertyPathValueFromCache(rowB);
 
       if (valueA == null && valueB == null)
         return 0;
@@ -76,35 +76,35 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
       }
 
       if (valueA is IComparable && valueB is IComparable)
-        return CompareComparableValues (valueA, valueB);
+        return CompareComparableValues(valueA, valueB);
       else
-        return CompareStringValues (rowA, rowB);
+        return CompareStringValues(rowA, rowB);
     }
 
     private static int CompareComparableValues (object valueA, object valueB)
     {
-      return Comparer.Default.Compare (valueA, valueB);
+      return Comparer.Default.Compare(valueA, valueB);
     }
 
     private int CompareStringValues (BocListRow? rowA, BocListRow? rowB)
     {
-      ArgumentUtility.CheckNotNull ("rowA", rowA!);
-      ArgumentUtility.CheckNotNull ("rowB", rowB!);
+      ArgumentUtility.CheckNotNull("rowA", rowA!);
+      ArgumentUtility.CheckNotNull("rowB", rowB!);
 
-      var valueA = GetPropertyPathStringValueFromCache (rowA);
-      var valueB = GetPropertyPathStringValueFromCache (rowB);
+      var valueA = GetPropertyPathStringValueFromCache(rowA);
+      var valueB = GetPropertyPathStringValueFromCache(rowB);
 
-      return string.Compare (valueA, valueB, StringComparison.CurrentCultureIgnoreCase);
+      return string.Compare(valueA, valueB, StringComparison.CurrentCultureIgnoreCase);
     }
 
     private object? GetPropertyPathValueFromCache (BocListRow row)
     {
-      return _cache.GetOrCreateValue (row, GetPropertyPathResult).Item1;
+      return _cache.GetOrCreateValue(row, GetPropertyPathResult).Item1;
     }
 
     private string GetPropertyPathStringValueFromCache (BocListRow row)
     {
-      return _cache.GetOrCreateValue (row, GetPropertyPathResult).Item2.Value;
+      return _cache.GetOrCreateValue(row, GetPropertyPathResult).Item2.Value;
     }
 
     private CacheValue GetPropertyPathResult (BocListRow row)
@@ -112,21 +112,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
       IBusinessObjectPropertyPathResult result;
       try
       {
-        result = _propertyPath.GetResult (
+        result = _propertyPath.GetResult(
             row.BusinessObject,
             BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
             BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
       }
       catch (Exception e)
       {
-        s_log.ErrorFormat (
+        s_log.ErrorFormat(
             e, "Exception thrown while evaluating the result for property path '{0}' in row {1} of BocList.", _propertyPath.Identifier, row.Index);
-        return Tuple.Create ((object?) null, new DoubleCheckedLockingContainer<string> (() => null!));
+        return Tuple.Create((object?)null, new DoubleCheckedLockingContainer<string>(() => null!));
       }
 
-      return Tuple.Create (
-          GetResultValue (result, row),
-          new DoubleCheckedLockingContainer<string> (() => GetResultString (result, row)));
+      return Tuple.Create(
+          GetResultValue(result, row),
+          new DoubleCheckedLockingContainer<string>(() => GetResultString(result, row)));
     }
 
     private object? GetResultValue (IBusinessObjectPropertyPathResult result, BocListRow row)
@@ -137,7 +137,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
       }
       catch (Exception e)
       {
-        s_log.ErrorFormat (
+        s_log.ErrorFormat(
             e, "Exception thrown while reading the value for property path '{0}' in row {1} of BocList.", _propertyPath.Identifier, row.Index);
         return null;
       }
@@ -147,11 +147,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
     {
       try
       {
-        return result.GetString (null);
+        return result.GetString(null);
       }
       catch (Exception e)
       {
-        s_log.ErrorFormat (
+        s_log.ErrorFormat(
             e, "Exception thrown while reading string value for property path '{0}' in row {1} of BocList.", _propertyPath.Identifier, row.Index);
         return string.Empty;
       }

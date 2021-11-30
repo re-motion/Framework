@@ -31,9 +31,9 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       if (!IsPartOfMapping)
       {
-        string message = string.Format ("The {0} '{1}' cannot be serialized because is is not part of the current mapping.",
-            GetType ().Name, IDForExceptions);
-        throw new SerializationException (message);
+        string message = string.Format("The {0} '{1}' cannot be serialized because is is not part of the current mapping.",
+            GetType().Name, IDForExceptions);
+        throw new SerializationException(message);
       }
     }
   }

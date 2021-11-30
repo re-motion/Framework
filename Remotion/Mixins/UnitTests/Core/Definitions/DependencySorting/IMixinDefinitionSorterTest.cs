@@ -21,8 +21,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
     {
       var factory = _serviceLocator.GetInstance<IMixinDefinitionSorter>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (MixinDefinitionSorter)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(MixinDefinitionSorter)));
     }
 
     [Test]
@@ -31,7 +31,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting
       var factory1 = _serviceLocator.GetInstance<IMixinDefinitionSorter>();
       var factory2 = _serviceLocator.GetInstance<IMixinDefinitionSorter>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

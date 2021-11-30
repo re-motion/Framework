@@ -33,28 +33,28 @@ namespace Remotion.Mixins.Context.Serialization
 
     protected abstract ArrayMixinContextSerializer CreateMixinContextSerializer ();
 
-    public void AddClassType(Type type)
+    public void AddClassType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      SetValue (0, type);
+      ArgumentUtility.CheckNotNull("type", type);
+      SetValue(0, type);
     }
 
-    public void AddMixins(IEnumerable<MixinContext> mixinContexts)
+    public void AddMixins (IEnumerable<MixinContext> mixinContexts)
     {
-      ArgumentUtility.CheckNotNull ("mixinContexts", mixinContexts);
-      SetValue (1, mixinContexts.Select (mc => (object) SerializeMixinContext (mc)).ToArray ());
+      ArgumentUtility.CheckNotNull("mixinContexts", mixinContexts);
+      SetValue(1, mixinContexts.Select(mc => (object)SerializeMixinContext(mc)).ToArray());
     }
 
-    public void AddComposedInterfaces(IEnumerable<Type> composedInterfaces)
+    public void AddComposedInterfaces (IEnumerable<Type> composedInterfaces)
     {
-      ArgumentUtility.CheckNotNull ("composedInterfaces", composedInterfaces);
-      SetValue (2, composedInterfaces.ToArray ());
+      ArgumentUtility.CheckNotNull("composedInterfaces", composedInterfaces);
+      SetValue(2, composedInterfaces.ToArray());
     }
 
     private object[] SerializeMixinContext (MixinContext m)
     {
       var serializer = CreateMixinContextSerializer();
-      m.Serialize (serializer);
+      m.Serialize(serializer);
       return serializer.Values;
     }
   }

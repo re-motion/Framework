@@ -26,10 +26,10 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
   public class WxeParameterDeclarationTest
   {
     private static readonly WxeParameterDeclaration[] s_parameters = {
-        new WxeParameterDeclaration ("p1", true, WxeParameterDirection.In, typeof (string)),
-        new WxeParameterDeclaration ("p2", true, WxeParameterDirection.In, typeof (bool)),
-        new WxeParameterDeclaration ("p3", true, WxeParameterDirection.In, typeof (DateTime)),
-        new WxeParameterDeclaration ("p4", true, WxeParameterDirection.In, typeof (object))
+        new WxeParameterDeclaration("p1", true, WxeParameterDirection.In, typeof(string)),
+        new WxeParameterDeclaration("p2", true, WxeParameterDirection.In, typeof(bool)),
+        new WxeParameterDeclaration("p3", true, WxeParameterDirection.In, typeof(DateTime)),
+        new WxeParameterDeclaration("p4", true, WxeParameterDirection.In, typeof(object))
     };
 
     [Test]
@@ -37,12 +37,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     {
       // "this \"special\", value", "true", "2004-03-25 12:00", var1
       string args = @"""this \""special\"", value"", ""true"", ""2004-03-25 12:00"", var1";
-      object[] result = WxeVariablesContainer.ParseActualParameters (s_parameters, args, CultureInfo.InvariantCulture);
-      Assert.That (result.Length, Is.EqualTo (4));
-      Assert.That (result[0], Is.EqualTo ("this \"special\", value"));
-      Assert.That (result[1], Is.EqualTo (true));
-      Assert.That (result[2], Is.EqualTo (new DateTime (2004, 3, 25, 12, 0, 0)));
-      Assert.That (result[3], Is.EqualTo (new WxeVariableReference ("var1")));
+      object[] result = WxeVariablesContainer.ParseActualParameters(s_parameters, args, CultureInfo.InvariantCulture);
+      Assert.That(result.Length, Is.EqualTo(4));
+      Assert.That(result[0], Is.EqualTo("this \"special\", value"));
+      Assert.That(result[1], Is.EqualTo(true));
+      Assert.That(result[2], Is.EqualTo(new DateTime(2004, 3, 25, 12, 0, 0)));
+      Assert.That(result[3], Is.EqualTo(new WxeVariableReference("var1")));
     }
 
     [Test]
@@ -50,34 +50,34 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     {
       // "value", true, 2004-03-25 12:00, var1
       string args = @"""value"", true, 2004-03-25 12:00, var1";
-      object[] result = WxeVariablesContainer.ParseActualParameters (s_parameters, args, CultureInfo.InvariantCulture);
-      Assert.That (result.Length, Is.EqualTo (4));
-      Assert.That (result[0], Is.EqualTo ("value"));
-      Assert.That (result[1], Is.EqualTo (true));
-      Assert.That (result[2], Is.EqualTo (new DateTime (2004, 3, 25, 12, 0, 0)));
-      Assert.That (result[3], Is.EqualTo (new WxeVariableReference ("var1")));
+      object[] result = WxeVariablesContainer.ParseActualParameters(s_parameters, args, CultureInfo.InvariantCulture);
+      Assert.That(result.Length, Is.EqualTo(4));
+      Assert.That(result[0], Is.EqualTo("value"));
+      Assert.That(result[1], Is.EqualTo(true));
+      Assert.That(result[2], Is.EqualTo(new DateTime(2004, 3, 25, 12, 0, 0)));
+      Assert.That(result[3], Is.EqualTo(new WxeVariableReference("var1")));
     }
 
     [Test]
     public void TestParseEx1 ()
     {
-      Assert.That (
-          () => WxeVariablesContainer.ParseActualParameters (s_parameters, "a, b\"b, c", CultureInfo.InvariantCulture),
+      Assert.That(
+          () => WxeVariablesContainer.ParseActualParameters(s_parameters, "a, b\"b, c", CultureInfo.InvariantCulture),
           Throws.InstanceOf<ApplicationException>());
     }
 
     [Test]
     public void TestParseEx2 ()
     {
-      Assert.That (
-          () => WxeVariablesContainer.ParseActualParameters (s_parameters, "a, \"xyz\"", CultureInfo.InvariantCulture),
+      Assert.That(
+          () => WxeVariablesContainer.ParseActualParameters(s_parameters, "a, \"xyz\"", CultureInfo.InvariantCulture),
           Throws.InstanceOf<ApplicationException>());
     }
 
     public void g ()
     {
       WxeParameterDeclaration parameter =
-          new WxeParameterDeclaration ("param", true, WxeParameterDirection.In, typeof (string));
+          new WxeParameterDeclaration("param", true, WxeParameterDirection.In, typeof(string));
     }
   }
 }

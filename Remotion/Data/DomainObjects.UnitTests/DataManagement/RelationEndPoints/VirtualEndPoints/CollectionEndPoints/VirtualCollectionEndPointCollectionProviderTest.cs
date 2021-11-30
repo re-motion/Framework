@@ -41,26 +41,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _virtualEndPointProviderMock = MockRepository.GenerateStrictMock<IVirtualEndPointProvider>();
 
-      _provider = new VirtualCollectionEndPointCollectionProvider (_virtualEndPointProviderMock);
+      _provider = new VirtualCollectionEndPointCollectionProvider(_virtualEndPointProviderMock);
 
-      _endPointID = RelationEndPointID.Create (DomainObjectIDs.Product1, typeof (Product), "Reviews");
+      _endPointID = RelationEndPointID.Create(DomainObjectIDs.Product1, typeof(Product), "Reviews");
     }
 
     [Test]
     public void GetCollection ()
     {
-      var result = _provider.GetCollection (_endPointID);
+      var result = _provider.GetCollection(_endPointID);
 
-      Assert.That (result, Is.TypeOf<VirtualObjectList<ProductReview>>());
+      Assert.That(result, Is.TypeOf<VirtualObjectList<ProductReview>>());
 
-      var virtualCollectionData = VirtualCollectionDataTestHelper.GetDataStrategy (result);
-      Assert.That (virtualCollectionData, Is.TypeOf<EndPointDelegatingVirtualCollectionData>());
-      Assert.That (
-          ((EndPointDelegatingVirtualCollectionData) virtualCollectionData).VirtualEndPointProvider,
-          Is.SameAs (_virtualEndPointProviderMock));
-      Assert.That (virtualCollectionData.AssociatedEndPointID, Is.SameAs (_endPointID));
+      var virtualCollectionData = VirtualCollectionDataTestHelper.GetDataStrategy(result);
+      Assert.That(virtualCollectionData, Is.TypeOf<EndPointDelegatingVirtualCollectionData>());
+      Assert.That(
+          ((EndPointDelegatingVirtualCollectionData)virtualCollectionData).VirtualEndPointProvider,
+          Is.SameAs(_virtualEndPointProviderMock));
+      Assert.That(virtualCollectionData.AssociatedEndPointID, Is.SameAs(_endPointID));
 
-      Assert.That (result, Is.SameAs (_provider.GetCollection (_endPointID)));
+      Assert.That(result, Is.SameAs(_provider.GetCollection(_endPointID)));
     }
 
     [Test]
@@ -68,11 +68,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var instance = new VirtualCollectionEndPointCollectionProvider (new SerializableVirtualEndPointProviderFake());
+      var instance = new VirtualCollectionEndPointCollectionProvider(new SerializableVirtualEndPointProviderFake());
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (instance);
+      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
 
-      Assert.That (deserializedInstance.VirtualEndPointProvider, Is.Not.Null);
+      Assert.That(deserializedInstance.VirtualEndPointProvider, Is.Not.Null);
     }
   }
 }

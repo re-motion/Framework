@@ -28,11 +28,11 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     public static RelationEndPointDefinitionCollection CreateForAllRelationEndPoints (ClassDefinition classDefinition, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       return
-          new RelationEndPointDefinitionCollection (
-              classDefinition.CreateSequence (cd => cd.BaseClass).SelectMany (cd => cd.MyRelationEndPointDefinitions), makeCollectionReadOnly);
+          new RelationEndPointDefinitionCollection(
+              classDefinition.CreateSequence(cd => cd.BaseClass).SelectMany(cd => cd.MyRelationEndPointDefinitions), makeCollectionReadOnly);
     }
 
     public RelationEndPointDefinitionCollection ()
@@ -41,23 +41,23 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationEndPointDefinitionCollection (IEnumerable<IRelationEndPointDefinition> collection, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("collection", collection);
+      ArgumentUtility.CheckNotNull("collection", collection);
 
       foreach (var relationEndPoint in collection)
-        Add (relationEndPoint);
+        Add(relationEndPoint);
 
-      SetIsReadOnly (makeCollectionReadOnly);
+      SetIsReadOnly(makeCollectionReadOnly);
     }
 
     public void SetReadOnly ()
     {
-      SetIsReadOnly (true);
+      SetIsReadOnly(true);
     }
 
     public new IEnumerator<IRelationEndPointDefinition> GetEnumerator ()
     {
       // ReSharper disable LoopCanBeConvertedToQuery
-      foreach (IRelationEndPointDefinition relationEndPoint in (IEnumerable) this) // use base implementation
+      foreach (IRelationEndPointDefinition relationEndPoint in (IEnumerable)this) // use base implementation
           // ReSharper restore LoopCanBeConvertedToQuery
         yield return relationEndPoint;
     }
@@ -66,39 +66,39 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool Contains (IRelationEndPointDefinition relationEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
+      ArgumentUtility.CheckNotNull("relationEndPoint", relationEndPoint);
 
-      return BaseContains (relationEndPoint.PropertyName, relationEndPoint);
+      return BaseContains(relationEndPoint.PropertyName, relationEndPoint);
     }
 
     public bool Contains (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      return BaseContainsKey (propertyName);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      return BaseContainsKey(propertyName);
     }
 
     public IRelationEndPointDefinition this [int index]
     {
-      get { return (IRelationEndPointDefinition) BaseGetObject (index); }
+      get { return (IRelationEndPointDefinition)BaseGetObject(index); }
     }
 
     public IRelationEndPointDefinition this [string propertyName]
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-        return (IRelationEndPointDefinition) BaseGetObject (propertyName);
+        ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+        return (IRelationEndPointDefinition)BaseGetObject(propertyName);
       }
     }
 
     public int Add (IRelationEndPointDefinition value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      if (string.IsNullOrEmpty (value.PropertyName))
-        throw new InvalidOperationException ("End points without property name cannot be added to this collection.");
+      if (string.IsNullOrEmpty(value.PropertyName))
+        throw new InvalidOperationException("End points without property name cannot be added to this collection.");
 
-      int position = BaseAdd (value.PropertyName, value);
+      int position = BaseAdd(value.PropertyName, value);
 
       return position;
     }

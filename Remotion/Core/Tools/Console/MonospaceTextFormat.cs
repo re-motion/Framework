@@ -38,10 +38,10 @@ public sealed class MonospaceTextFormat
     string line;
     while (text != null)
     {
-      SplitTextOnSeparator (text, out line, out text, lineWidth, new char[] {' '});
-      sb.Append (line);
+      SplitTextOnSeparator(text, out line, out text, lineWidth, new char[] {' '});
+      sb.Append(line);
       if (text != null)
-        sb.Append ('\n');
+        sb.Append('\n');
     }
   }
 
@@ -58,13 +58,13 @@ public sealed class MonospaceTextFormat
     string line;
     while (text != null)
     {
-      SplitTextOnSeparator (text, out line, out text, lineWidth - indent, new char[] {' '});
-      sb.Append (line);
+      SplitTextOnSeparator(text, out line, out text, lineWidth - indent, new char[] {' '});
+      sb.Append(line);
       if (text != null)
       {
-        sb.Append ('\n');
+        sb.Append('\n');
         for (int i = 0; i < indent; ++i)
-          sb.Append (' ');
+          sb.Append(' ');
       }
     }
   }
@@ -79,8 +79,8 @@ public sealed class MonospaceTextFormat
   /// <param name="separators">Valid separator characters.</param>
   public static void SplitTextOnSeparator (string text, out string beforeSplit, out string? afterSplit, int splitAt, char[] separators)
   {
-    if (text == null) throw new ArgumentNullException ("text");
-    if (splitAt < 0) throw new ArgumentOutOfRangeException ("splitAt", splitAt, "Argument must not be less than zero.");
+    if (text == null) throw new ArgumentNullException("text");
+    if (splitAt < 0) throw new ArgumentOutOfRangeException("splitAt", splitAt, "Argument must not be less than zero.");
 
     if (text.Length <= splitAt)
     {
@@ -89,16 +89,16 @@ public sealed class MonospaceTextFormat
     }
     else
     {
-      int pos = text.LastIndexOfAny (separators, splitAt);
+      int pos = text.LastIndexOfAny(separators, splitAt);
       if (pos >= 0)
       {
-        beforeSplit = text.Substring (0, pos);
-        afterSplit = text.Substring (pos + 1);
+        beforeSplit = text.Substring(0, pos);
+        afterSplit = text.Substring(pos + 1);
       }
       else
       {
-        beforeSplit = text.Substring (0, splitAt);
-        afterSplit = text.Substring (splitAt);
+        beforeSplit = text.Substring(0, splitAt);
+        afterSplit = text.Substring(splitAt);
       }
       if (afterSplit.Length == 0)
         afterSplit = null;

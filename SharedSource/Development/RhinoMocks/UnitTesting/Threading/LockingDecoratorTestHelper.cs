@@ -37,9 +37,9 @@ namespace Remotion.Development.RhinoMocks.UnitTesting.Threading
 
     public LockingDecoratorTestHelper (T lockingDecorator, object lockObject, T innerMock)
     {
-      ArgumentUtility.CheckNotNull ("lockingDecorator", lockingDecorator);
-      ArgumentUtility.CheckNotNull ("lockObject", lockObject);
-      ArgumentUtility.CheckNotNull ("innerMock", innerMock);
+      ArgumentUtility.CheckNotNull("lockingDecorator", lockingDecorator);
+      ArgumentUtility.CheckNotNull("lockObject", lockObject);
+      ArgumentUtility.CheckNotNull("innerMock", innerMock);
 
       _lockingDecorator = lockingDecorator;
       _lockObject = lockObject;
@@ -49,15 +49,15 @@ namespace Remotion.Development.RhinoMocks.UnitTesting.Threading
     public void ExpectSynchronizedDelegation<TResult> (Func<T, TResult> action, TResult fakeResult)
         where TResult : notnull
     {
-      ArgumentUtility.CheckNotNull ("action", action);
-      ArgumentUtility.CheckNotNull ("fakeResult", fakeResult);
+      ArgumentUtility.CheckNotNull("action", action);
+      ArgumentUtility.CheckNotNull("fakeResult", fakeResult);
 
-      ExpectSynchronizedDelegation (action, fakeResult, r => Assert.That (r, Is.EqualTo (fakeResult)));
+      ExpectSynchronizedDelegation(action, fakeResult, r => Assert.That(r, Is.EqualTo(fakeResult)));
     }
 
     public void ExpectSynchronizedDelegation<TResult> (Func<T, TResult> action, TResult fakeResult, Action<TResult> resultChecker) where TResult : notnull
     {
-      ExpectSynchronizedDelegation (action, action, fakeResult, resultChecker);
+      ExpectSynchronizedDelegation(action, action, fakeResult, resultChecker);
     }
 
     public void ExpectSynchronizedDelegation<TResult> (Func<T, TResult> expectAction, Func<T, TResult> action, TResult fakeResult, Action<TResult> resultChecker)
@@ -65,28 +65,28 @@ namespace Remotion.Development.RhinoMocks.UnitTesting.Threading
     {
       _innerMock.BackToRecord();
       _innerMock
-          .Expect (mock => expectAction (mock))
-          .Return (fakeResult)
-          .WhenCalled (mi => LockTestHelper.CheckLockIsHeld (_lockObject));
+          .Expect(mock => expectAction(mock))
+          .Return(fakeResult)
+          .WhenCalled(mi => LockTestHelper.CheckLockIsHeld(_lockObject));
       _innerMock.Replay();
 
-      var actualResult = action (_lockingDecorator);
+      var actualResult = action(_lockingDecorator);
 
       _innerMock.VerifyAllExpectations();
-      resultChecker (actualResult);
+      resultChecker(actualResult);
     }
 
     public void ExpectSynchronizedDelegation (Action<T> action)
     {
-      ArgumentUtility.CheckNotNull ("action", action);
+      ArgumentUtility.CheckNotNull("action", action);
 
       _innerMock.BackToRecord();
       _innerMock
-          .Expect (action)
-          .WhenCalled (mi => LockTestHelper.CheckLockIsHeld (_lockObject));
-      _innerMock.Replay ();
+          .Expect(action)
+          .WhenCalled(mi => LockTestHelper.CheckLockIsHeld(_lockObject));
+      _innerMock.Replay();
 
-      action (_lockingDecorator);
+      action(_lockingDecorator);
 
       _innerMock.VerifyAllExpectations();
     }

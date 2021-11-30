@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public StateUpdateRaisingRelationEndPointFactoryDecorator (IRelationEndPointFactory innerFactory, IVirtualEndPointStateUpdateListener listener)
     {
-      ArgumentUtility.CheckNotNull ("innerFactory", innerFactory);
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("innerFactory", innerFactory);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
       _innerFactory = innerFactory;
       _listener = listener;
@@ -52,25 +52,25 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IRealObjectEndPoint CreateRealObjectEndPoint (RelationEndPointID endPointID, DataContainer dataContainer)
     {
-      return _innerFactory.CreateRealObjectEndPoint (endPointID, dataContainer);
+      return _innerFactory.CreateRealObjectEndPoint(endPointID, dataContainer);
     }
 
     public IVirtualObjectEndPoint CreateVirtualObjectEndPoint (RelationEndPointID endPointID)
     {
-      var endPoint = _innerFactory.CreateVirtualObjectEndPoint (endPointID);
-      return new StateUpdateRaisingVirtualObjectEndPointDecorator (endPoint, _listener);
+      var endPoint = _innerFactory.CreateVirtualObjectEndPoint(endPointID);
+      return new StateUpdateRaisingVirtualObjectEndPointDecorator(endPoint, _listener);
     }
 
     public IVirtualCollectionEndPoint CreateVirtualCollectionEndPoint (RelationEndPointID endPointID)
     {
-      var endPoint = _innerFactory.CreateVirtualCollectionEndPoint (endPointID);
-      return new StateUpdateRaisingVirtualCollectionEndPointDecorator (endPoint, _listener);
+      var endPoint = _innerFactory.CreateVirtualCollectionEndPoint(endPointID);
+      return new StateUpdateRaisingVirtualCollectionEndPointDecorator(endPoint, _listener);
     }
 
     public IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (RelationEndPointID endPointID)
     {
-      var endPoint = _innerFactory.CreateDomainObjectCollectionEndPoint (endPointID);
-      return new StateUpdateRaisingDomainObjectCollectionEndPointDecorator (endPoint, _listener);
+      var endPoint = _innerFactory.CreateDomainObjectCollectionEndPoint(endPointID);
+      return new StateUpdateRaisingDomainObjectCollectionEndPointDecorator(endPoint, _listener);
     }
 
     #region Serialization
@@ -83,8 +83,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddHandle (_innerFactory);
-      info.AddHandle (_listener);
+      info.AddHandle(_innerFactory);
+      info.AddHandle(_listener);
     }
 
     #endregion

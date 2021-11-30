@@ -42,7 +42,7 @@ public sealed class ResourceDispatcher
   /// <summary> Use this ID to dispatch resources to the control that provides the resource manager. </summary>
   private const string c_thisElementID = "this";
 
-	private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceDispatcher));
+	private static readonly ILog s_log = LogManager.GetLogger(typeof(ResourceDispatcher));
   private static ArrayList _registeredDispatchTargets = new ArrayList();
 
   /// <summary>
@@ -57,14 +57,14 @@ public sealed class ResourceDispatcher
   /// </param>  
   public static void Dispatch (Control control, IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("control", control);
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
- 
+    ArgumentUtility.CheckNotNull("control", control);
+    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+
     const string prefix = "auto:";
 
-    IDictionary autoElements = ResourceDispatcher.GetResources (resourceManager, prefix);
+    IDictionary autoElements = ResourceDispatcher.GetResources(resourceManager, prefix);
 
-    ResourceDispatcher.Dispatch (control, autoElements, resourceManager.Name);
+    ResourceDispatcher.Dispatch(control, autoElements, resourceManager.Name);
   }
 
   /// <summary>
@@ -78,15 +78,15 @@ public sealed class ResourceDispatcher
   ///   define a resource manager, an InvalidOperationException is thrown. </param>
   public static void Dispatch (Control control, bool throwExceptionIfNoResources)
   {
-    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (control, false);
+    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager(control, false);
     if (resourceManager == null)
     {
       if (throwExceptionIfNoResources)
-        throw new InvalidOperationException ("Control " + control.UniqueID + " has no resource managers.");
+        throw new InvalidOperationException("Control " + control.UniqueID + " has no resource managers.");
       else
         return;
     }
-    Dispatch (control, resourceManager);
+    Dispatch(control, resourceManager);
   }
 
   /// <summary>
@@ -95,35 +95,35 @@ public sealed class ResourceDispatcher
   /// <include file='..\..\doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/*' />
   public static void Dispatch (Control control, IDictionary elements, string resourceSource)
   {
-    ArgumentUtility.CheckNotNull ("control", control);
-    ArgumentUtility.CheckNotNull ("elements", elements);
+    ArgumentUtility.CheckNotNull("control", control);
+    ArgumentUtility.CheckNotNull("elements", elements);
 
     //  Dispatch the resources to the controls
     foreach (DictionaryEntry elementsEntry in elements)
     {
-      string elementID = (string) elementsEntry.Key;
+      string elementID = (string)elementsEntry.Key;
 
       Control? targetControl;
 
       if (elementID == c_thisElementID)
-        targetControl = (Control) control;
+        targetControl = (Control)control;
       else
-        targetControl = control.FindControl (elementID);
+        targetControl = control.FindControl(elementID);
 
       if (targetControl == null)
       {
-        s_log.Warn ("Control '" + control.ToString() + "': No child-control with ID '" + elementID + "' found. ID was read from \"" + resourceSource + "\".");
+        s_log.Warn("Control '" + control.ToString() + "': No child-control with ID '" + elementID + "' found. ID was read from \"" + resourceSource + "\".");
       }
       else
       {
         //  Pass the value to the control
-        IDictionary values = (IDictionary) elementsEntry.Value!; // TODO RM-8118: not null assertion
+        IDictionary values = (IDictionary)elementsEntry.Value!; // TODO RM-8118: not null assertion
         IResourceDispatchTarget? resourceDispatchTarget = targetControl as IResourceDispatchTarget;
 
         if (resourceDispatchTarget != null) //  Control knows how to dispatch
-          resourceDispatchTarget.Dispatch (values);       
+          resourceDispatchTarget.Dispatch(values);
         else
-          ResourceDispatcher.DispatchGeneric (targetControl, values);
+          ResourceDispatcher.DispatchGeneric(targetControl, values);
       }
     }
   }
@@ -134,28 +134,28 @@ public sealed class ResourceDispatcher
   /// <include file='..\..\doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/*' />
   public static void DispatchGeneric (object obj, IDictionary values)
   {
-    ArgumentUtility.CheckNotNull ("obj", obj);
-    ArgumentUtility.CheckNotNull ("values", values);
+    ArgumentUtility.CheckNotNull("obj", obj);
+    ArgumentUtility.CheckNotNull("values", values);
 
     foreach (DictionaryEntry entry in values)
     {
-      string propertyName = (string) entry.Key;
-      string? propertyValue = (string?) entry.Value;
+      string propertyName = (string)entry.Key;
+      string? propertyValue = (string?)entry.Value;
 
-      PropertyInfo? property = obj.GetType ().GetProperty (propertyName, typeof (string));
+      PropertyInfo? property = obj.GetType().GetProperty(propertyName, typeof(string));
       if (property != null)
       {
-        property.SetValue (obj, propertyValue, new object[0]); 
+        property.SetValue(obj, propertyValue, new object[0]);
       }
       else if (obj is Control)
       {
-        Control control = (Control) obj;
+        Control control = (Control)obj;
         //  Test for HtmlControl, they can take anything
         HtmlControl? genericHtmlControl = control as HtmlControl;
         if (genericHtmlControl != null)
           genericHtmlControl.Attributes[propertyName] = propertyValue;
         else //  Non-HtmlControls require valid property
-          s_log.Warn ("Control '" + control.ID + "' of type '" + control.GetType().GetFullNameSafe() + "' does not contain a public property '" + propertyName + "'.");
+          s_log.Warn("Control '" + control.ID + "' of type '" + control.GetType().GetFullNameSafe() + "' does not contain a public property '" + propertyName + "'.");
       }
     }
   }
@@ -174,15 +174,15 @@ public sealed class ResourceDispatcher
   /// </returns>
   private static IDictionary GetResources (IResourceManager resourceManager, string? prefix)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
 
     if (prefix == null)
       prefix = String.Empty;
 
     // Hashtable<string elementID, IDictionary<string property, string value> elementValues>
-    IDictionary elements = new Hashtable (); 
+    IDictionary elements = new Hashtable();
 
-    var resources = resourceManager.GetAllStrings (prefix);
+    var resources = resourceManager.GetAllStrings(prefix);
     foreach (var resourceEntry in resources)
     {
       //  Compound key: "prfx:elementID:argument"
@@ -190,34 +190,34 @@ public sealed class ResourceDispatcher
       //  resources contain only keys with the prefix "auto" because of the applied filter
 
       //  Remove the prefix and colon
-      var key = resourceEntry.Key.Substring (prefix.Length);
+      var key = resourceEntry.Key.Substring(prefix.Length);
 
       //  Test for a second colon in the key
-      int posColon = key.IndexOf (':');
+      int posColon = key.IndexOf(':');
 
       if (posColon >= 0)
       {
         //  If one is found, this indicates an argument attached to the elementID
-  
-        string elementID = key.Substring (0, posColon);
-        string property = key.Substring (posColon + 1);
+
+        string elementID = key.Substring(0, posColon);
+        string property = key.Substring(posColon + 1);
 
         //  Now there can be more than one argument provided for a specific element
         //  Create a dictonary for the element,
         //  using the argument as key and the resources' value as the value.
 
         //  Get the dictonary for the current element
-        IDictionary? elementValues = (IDictionary?) elements[elementID];
+        IDictionary? elementValues = (IDictionary?)elements[elementID];
 
         //  If no dictonary exists, create it and insert it into the elements hashtable.
         if (elementValues == null)
         {
-          elementValues = new HybridDictionary ();
+          elementValues = new HybridDictionary();
           elements[elementID] = elementValues;
         }
 
         //  Insert the argument and resource's value into the dictonary for the specified element.
-        elementValues.Add (property, resourceEntry.Value);
+        elementValues.Add(property, resourceEntry.Value);
       }
     }
 
@@ -226,7 +226,7 @@ public sealed class ResourceDispatcher
 
 
   //  construction and disposing
-  
+
   private ResourceDispatcher ()
   {
   }

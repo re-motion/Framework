@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting
     /// In order to achieve a stable testing environment, a standalone Chrome browser with a matching ChromeDriver version should be used.
     /// </summary>
     protected const string LatestTestedChromeVersion = "91";
-    
+
     /// <summary>
     /// Represents the latest version of Edge verified to be compatible with the framework.
     /// In order to achieve a stable testing environment, a standalone Edge browser with a matching MSEdgeDriver version should be used.
@@ -71,18 +71,18 @@ namespace Remotion.Web.Development.WebTesting
     {
       var configSettings = WebTestConfigurationSection.Current;
 
-      var configuredBrowser = Browser.Parse (configSettings.BrowserName);
+      var configuredBrowser = Browser.Parse(configSettings.BrowserName);
 
       if (configuredBrowser == Browser.Chrome)
-        return CreateChromeConfiguration (configSettings);
+        return CreateChromeConfiguration(configSettings);
 
       if (configuredBrowser == Browser.Edge)
-        return CreateEdgeConfiguration (configSettings);
+        return CreateEdgeConfiguration(configSettings);
 
       if (configuredBrowser == Browser.Firefox)
-        return CreateFirefoxConfiguration (configSettings);
+        return CreateFirefoxConfiguration(configSettings);
 
-      return CreateCustomBrowserConfiguration (configSettings);
+      return CreateCustomBrowserConfiguration(configSettings);
     }
 
     /// <summary>
@@ -92,7 +92,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       var configSettings = WebTestConfigurationSection.Current;
 
-      return new DriverConfiguration (
+      return new DriverConfiguration(
           configSettings.CommandTimeout,
           configSettings.SearchTimeout,
           configSettings.RetryInterval,
@@ -105,9 +105,9 @@ namespace Remotion.Web.Development.WebTesting
     public ITestInfrastructureConfiguration CreateTestInfrastructureConfiguration ()
     {
       var configSettings = WebTestConfigurationSection.Current;
-      
+
       //Not extensible as it is used in user code and test infrastructure utilities 
-      return new TestInfrastructureConfiguration (configSettings);
+      return new TestInfrastructureConfiguration(configSettings);
     }
 
     /// <summary>
@@ -118,7 +118,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       var configSettings = WebTestConfigurationSection.Current;
 
-      return CreateHostingConfiguration (configSettings);
+      return CreateHostingConfiguration(configSettings);
     }
 
     /// <summary>
@@ -128,9 +128,9 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="configSettings">Receives app.config settings when called in <see cref="CreateBrowserConfiguration"/></param>
     protected virtual IBrowserConfiguration CreateCustomBrowserConfiguration ([NotNull] WebTestConfigurationSection configSettings)
     {
-      ArgumentUtility.CheckNotNull ("configSettings", configSettings);
+      ArgumentUtility.CheckNotNull("configSettings", configSettings);
 
-      throw new NotSupportedException (string.Format ("Browser '{0}' is not supported by the '{1}'.", configSettings.BrowserName, GetType().Name));
+      throw new NotSupportedException(string.Format("Browser '{0}' is not supported by the '{1}'.", configSettings.BrowserName, GetType().Name));
     }
 
     /// <summary>
@@ -143,9 +143,9 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     protected virtual IChromeConfiguration CreateChromeConfiguration ([NotNull] WebTestConfigurationSection configSettings)
     {
-      ArgumentUtility.CheckNotNull ("configSettings", configSettings);
+      ArgumentUtility.CheckNotNull("configSettings", configSettings);
 
-      return new ChromeConfiguration (configSettings);
+      return new ChromeConfiguration(configSettings);
     }
 
     /// <summary>
@@ -158,16 +158,16 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     protected virtual IEdgeConfiguration CreateEdgeConfiguration ([NotNull] WebTestConfigurationSection configSettings)
     {
-      ArgumentUtility.CheckNotNull ("configSettings", configSettings);
+      ArgumentUtility.CheckNotNull("configSettings", configSettings);
 
-      return new EdgeConfiguration (configSettings);
+      return new EdgeConfiguration(configSettings);
     }
 
     protected virtual IFirefoxConfiguration CreateFirefoxConfiguration (WebTestConfigurationSection configSettings)
     {
-      ArgumentUtility.CheckNotNull ("configSettings", configSettings);
+      ArgumentUtility.CheckNotNull("configSettings", configSettings);
 
-      return new FirefoxConfiguration (configSettings);
+      return new FirefoxConfiguration(configSettings);
     }
 
     /// <summary>
@@ -179,11 +179,11 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     protected virtual IHostingConfiguration CreateHostingConfiguration ([NotNull] WebTestConfigurationSection configSettings)
     {
-      ArgumentUtility.CheckNotNull ("configSettings", configSettings);
+      ArgumentUtility.CheckNotNull("configSettings", configSettings);
 
       var testSiteLayoutConfiguration = CreateTestSiteLayoutConfiguration();
 
-      return new HostingConfiguration (configSettings, testSiteLayoutConfiguration);
+      return new HostingConfiguration(configSettings, testSiteLayoutConfiguration);
     }
 
     /// <summary>
@@ -198,7 +198,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       var configSettings = WebTestConfigurationSection.Current;
 
-      return new TestSiteLayoutConfiguration (configSettings);
+      return new TestSiteLayoutConfiguration(configSettings);
     }
   }
 }

@@ -24,10 +24,10 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation
   {
     public MetaValidationRuleTestClassCollector5 ()
     {
-      AddRule (c => c.Property1).AddMetaValidationRule<LengthValidator> (lengthRules => lengthRules.Count () <= 2);
-      AddRule (c => c.Property1).Length (4, 10);
-      AddRule (c => c.Property1).Length (6, 9);
-      AddRule (c => c.Property1).Length (7, 8);
+      AddRule(c => c.Property1).AddMetaValidationRule<LengthValidator>(lengthRules => lengthRules.Count() <= 2);
+      AddRule(c => c.Property1).Length(4, 10);
+      AddRule(c => c.Property1).Length(6, 9);
+      AddRule(c => c.Property1).Length(7, 8);
     }
   }
 }

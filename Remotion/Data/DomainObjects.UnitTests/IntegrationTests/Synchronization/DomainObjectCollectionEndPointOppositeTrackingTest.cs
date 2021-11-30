@@ -40,64 +40,64 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _folder1 = Folder.NewObject ();
-      
-      _fileSystemItem1 = FileSystemItem.NewObject ();
-      _fileSystemItem2 = FileSystemItem.NewObject ();
-      _fileSystemItem3 = FileSystemItem.NewObject ();
+      _folder1 = Folder.NewObject();
 
-      _folder1.FileSystemItems.Add (_fileSystemItem1);
-      _folder1.FileSystemItems.Add (_fileSystemItem2);
-      
+      _fileSystemItem1 = FileSystemItem.NewObject();
+      _fileSystemItem2 = FileSystemItem.NewObject();
+      _fileSystemItem3 = FileSystemItem.NewObject();
+
+      _folder1.FileSystemItems.Add(_fileSystemItem1);
+      _folder1.FileSystemItems.Add(_fileSystemItem2);
+
       TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope();
 
       _folder1.FileSystemItems.EnsureDataComplete();
-      _collectionEndPoint = (DomainObjectCollectionEndPoint) GetEndPoint<StateUpdateRaisingDomainObjectCollectionEndPointDecorator> (RelationEndPointID.Resolve (_folder1, o => o.FileSystemItems)).InnerEndPoint;
+      _collectionEndPoint = (DomainObjectCollectionEndPoint)GetEndPoint<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(RelationEndPointID.Resolve(_folder1, o => o.FileSystemItems)).InnerEndPoint;
 
-      _fileSystemItem1EndPoint = GetEndPoint<RealObjectEndPoint> (RelationEndPointID.Resolve (_fileSystemItem1, oi => oi.ParentFolder));
-      _fileSystemItem2EndPoint = GetEndPoint<RealObjectEndPoint> (RelationEndPointID.Resolve (_fileSystemItem2, oi => oi.ParentFolder));
-      _fileSystemItem3EndPoint = GetEndPoint<RealObjectEndPoint> (RelationEndPointID.Resolve (_fileSystemItem3, oi => oi.ParentFolder));
+      _fileSystemItem1EndPoint = GetEndPoint<RealObjectEndPoint>(RelationEndPointID.Resolve(_fileSystemItem1, oi => oi.ParentFolder));
+      _fileSystemItem2EndPoint = GetEndPoint<RealObjectEndPoint>(RelationEndPointID.Resolve(_fileSystemItem2, oi => oi.ParentFolder));
+      _fileSystemItem3EndPoint = GetEndPoint<RealObjectEndPoint>(RelationEndPointID.Resolve(_fileSystemItem3, oi => oi.ParentFolder));
     }
 
     [Test]
     public void StateAfterLoading ()
     {
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem1, _fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem1, _fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
     }
 
     [Test]
     public void Insert ()
     {
-      _folder1.FileSystemItems.Insert (1, _fileSystemItem3);
+      _folder1.FileSystemItems.Insert(1, _fileSystemItem3);
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem1, _fileSystemItem2, _fileSystemItem3);
-      CheckCurrentOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint, _fileSystemItem3EndPoint);
+      CheckCurrentData(_fileSystemItem1, _fileSystemItem2, _fileSystemItem3);
+      CheckCurrentOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint, _fileSystemItem3EndPoint);
 
       ClientTransaction.Current.Rollback();
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem1, _fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem1, _fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      _folder1.FileSystemItems.Insert (1, _fileSystemItem3);
+      _folder1.FileSystemItems.Insert(1, _fileSystemItem3);
       ClientTransaction.Current.Commit();
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2, _fileSystemItem3);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint, _fileSystemItem3EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2, _fileSystemItem3);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint, _fileSystemItem3EndPoint);
 
-      CheckCurrentData (_fileSystemItem1, _fileSystemItem2, _fileSystemItem3);
-      CheckCurrentOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint, _fileSystemItem3EndPoint);
+      CheckCurrentData(_fileSystemItem1, _fileSystemItem2, _fileSystemItem3);
+      CheckCurrentOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint, _fileSystemItem3EndPoint);
     }
 
     [Test]
@@ -105,41 +105,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       _fileSystemItem3.ParentFolder = _folder1;
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem1, _fileSystemItem2, _fileSystemItem3);
-      CheckCurrentOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint, _fileSystemItem3EndPoint);
+      CheckCurrentData(_fileSystemItem1, _fileSystemItem2, _fileSystemItem3);
+      CheckCurrentOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint, _fileSystemItem3EndPoint);
     }
 
     [Test]
     public void Remove ()
     {
-      _folder1.FileSystemItems.Remove (_fileSystemItem1);
+      _folder1.FileSystemItems.Remove(_fileSystemItem1);
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem2EndPoint);
 
       ClientTransaction.Current.Rollback();
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem1, _fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem1, _fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      _folder1.FileSystemItems.Remove (_fileSystemItem1);
+      _folder1.FileSystemItems.Remove(_fileSystemItem1);
 
       ClientTransaction.Current.Commit();
 
-      CheckOriginalData (_fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem2EndPoint);
     }
 
     [Test]
@@ -147,41 +147,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       _fileSystemItem1.ParentFolder = null;
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem2EndPoint);
     }
 
     [Test]
     public void Replace ()
     {
-      var index = _folder1.FileSystemItems.IndexOf (_fileSystemItem1);
+      var index = _folder1.FileSystemItems.IndexOf(_fileSystemItem1);
       _folder1.FileSystemItems[index] = _fileSystemItem3;
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem3, _fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem3EndPoint, _fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem3, _fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem3EndPoint, _fileSystemItem2EndPoint);
 
-      ClientTransaction.Current.Rollback ();
+      ClientTransaction.Current.Rollback();
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem1, _fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem1, _fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
       _folder1.FileSystemItems[index] = _fileSystemItem3;
       ClientTransaction.Current.Commit();
 
-      CheckOriginalData (_fileSystemItem3, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem3EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem3, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem3EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem3, _fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem3EndPoint, _fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem3, _fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem3EndPoint, _fileSystemItem2EndPoint);
     }
 
     [Test]
@@ -189,28 +189,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       _folder1.FileSystemItems.Clear();
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData ();
-      CheckCurrentOppositeEndPoints ();
+      CheckCurrentData();
+      CheckCurrentOppositeEndPoints();
 
-      ClientTransaction.Current.Rollback ();
+      ClientTransaction.Current.Rollback();
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem1, _fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem1, _fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      _folder1.FileSystemItems.Clear ();
+      _folder1.FileSystemItems.Clear();
       ClientTransaction.Current.Commit();
 
-      CheckOriginalData ();
-      CheckOriginalOppositeEndPoints ();
+      CheckOriginalData();
+      CheckOriginalOppositeEndPoints();
 
-      CheckCurrentData ();
-      CheckCurrentOppositeEndPoints ();
+      CheckCurrentData();
+      CheckCurrentOppositeEndPoints();
     }
 
     [Test]
@@ -218,28 +218,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       _folder1.FileSystemItems = new ObjectList<FileSystemItem> { _fileSystemItem3 };
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem3);
-      CheckCurrentOppositeEndPoints (_fileSystemItem3EndPoint);
+      CheckCurrentData(_fileSystemItem3);
+      CheckCurrentOppositeEndPoints(_fileSystemItem3EndPoint);
 
-      ClientTransaction.Current.Rollback ();
+      ClientTransaction.Current.Rollback();
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem1, _fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem1, _fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
       _folder1.FileSystemItems = new ObjectList<FileSystemItem> { _fileSystemItem3 };
-      ClientTransaction.Current.Commit ();
+      ClientTransaction.Current.Commit();
 
-      CheckOriginalData (_fileSystemItem3);
-      CheckOriginalOppositeEndPoints (_fileSystemItem3EndPoint);
+      CheckOriginalData(_fileSystemItem3);
+      CheckOriginalOppositeEndPoints(_fileSystemItem3EndPoint);
 
-      CheckCurrentData (_fileSystemItem3);
-      CheckCurrentOppositeEndPoints (_fileSystemItem3EndPoint);
+      CheckCurrentData(_fileSystemItem3);
+      CheckCurrentOppositeEndPoints(_fileSystemItem3EndPoint);
     }
 
     [Test]
@@ -247,110 +247,110 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       _fileSystemItem1.Delete();
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem2EndPoint);
 
-      ClientTransaction.Current.Rollback ();
+      ClientTransaction.Current.Rollback();
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem1, _fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem1, _fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
       _fileSystemItem1.Delete();
 
-      ClientTransaction.Current.Commit ();
+      ClientTransaction.Current.Commit();
 
-      CheckOriginalData (_fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem2EndPoint);
     }
 
     [Test]
     public void Delete_CollectionSide ()
     {
-      _folder1.Delete ();
+      _folder1.Delete();
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData ();
-      CheckCurrentOppositeEndPoints ();
+      CheckCurrentData();
+      CheckCurrentOppositeEndPoints();
 
-      ClientTransaction.Current.Rollback ();
+      ClientTransaction.Current.Rollback();
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem1, _fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem1, _fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      _folder1.Delete ();
+      _folder1.Delete();
 
-      ClientTransaction.Current.Commit ();
+      ClientTransaction.Current.Commit();
 
-      CheckOriginalOppositeEndPoints ();
-      CheckCurrentOppositeEndPoints ();
+      CheckOriginalOppositeEndPoints();
+      CheckCurrentOppositeEndPoints();
     }
 
     [Test]
     public void SubtransactionCommit ()
     {
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem1, _fileSystemItem2);
-      CheckCurrentOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckCurrentData(_fileSystemItem1, _fileSystemItem2);
+      CheckCurrentOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        _folder1.FileSystemItems.Remove (_fileSystemItem1);
-        _folder1.FileSystemItems.Add (_fileSystemItem3);
+        _folder1.FileSystemItems.Remove(_fileSystemItem1);
+        _folder1.FileSystemItems.Add(_fileSystemItem3);
 
         ClientTransaction.Current.Commit();
       }
 
-      CheckOriginalData (_fileSystemItem1, _fileSystemItem2);
-      CheckOriginalOppositeEndPoints (_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
+      CheckOriginalData(_fileSystemItem1, _fileSystemItem2);
+      CheckOriginalOppositeEndPoints(_fileSystemItem1EndPoint, _fileSystemItem2EndPoint);
 
-      CheckCurrentData (_fileSystemItem2, _fileSystemItem3);
-      CheckCurrentOppositeEndPoints (_fileSystemItem2EndPoint, _fileSystemItem3EndPoint);
+      CheckCurrentData(_fileSystemItem2, _fileSystemItem3);
+      CheckCurrentOppositeEndPoints(_fileSystemItem2EndPoint, _fileSystemItem3EndPoint);
     }
 
     private T GetEndPoint<T> (RelationEndPointID endPointID) where T : IRelationEndPoint
     {
       var relationEndPointID = endPointID;
-      return (T) ClientTransactionTestHelper.GetDataManager (ClientTransaction.Current).GetRelationEndPointWithLazyLoad (relationEndPointID);
+      return (T)ClientTransactionTestHelper.GetDataManager(ClientTransaction.Current).GetRelationEndPointWithLazyLoad(relationEndPointID);
     }
 
     private void CheckOriginalData (params FileSystemItem[] expected)
     {
-      Assert.That (_folder1.Properties[typeof (Folder), "FileSystemItems"].GetOriginalValue<ObjectList<FileSystemItem>> (), Is.EquivalentTo (expected));
+      Assert.That(_folder1.Properties[typeof(Folder), "FileSystemItems"].GetOriginalValue<ObjectList<FileSystemItem>>(), Is.EquivalentTo(expected));
     }
 
     private void CheckCurrentData (params FileSystemItem[] expected)
     {
-      Assert.That (_folder1.FileSystemItems, Is.EquivalentTo (expected));
+      Assert.That(_folder1.FileSystemItems, Is.EquivalentTo(expected));
     }
 
     private void CheckOriginalOppositeEndPoints (params RealObjectEndPoint[] expected)
     {
-      var loadState = (CompleteDomainObjectCollectionEndPointLoadState) DomainObjectCollectionEndPointTestHelper.GetLoadState (_collectionEndPoint);
-      var dataManager = (DomainObjectCollectionEndPointDataManager) loadState.DataManager;
-      Assert.That (dataManager.OriginalOppositeEndPoints, Is.EquivalentTo (expected));
+      var loadState = (CompleteDomainObjectCollectionEndPointLoadState)DomainObjectCollectionEndPointTestHelper.GetLoadState(_collectionEndPoint);
+      var dataManager = (DomainObjectCollectionEndPointDataManager)loadState.DataManager;
+      Assert.That(dataManager.OriginalOppositeEndPoints, Is.EquivalentTo(expected));
     }
 
     private void CheckCurrentOppositeEndPoints (params RealObjectEndPoint[] expected)
     {
-      var loadState = (CompleteDomainObjectCollectionEndPointLoadState) DomainObjectCollectionEndPointTestHelper.GetLoadState (_collectionEndPoint);
-      var dataManager = (DomainObjectCollectionEndPointDataManager) loadState.DataManager;
-      Assert.That (dataManager.CurrentOppositeEndPoints, Is.EquivalentTo (expected));
+      var loadState = (CompleteDomainObjectCollectionEndPointLoadState)DomainObjectCollectionEndPointTestHelper.GetLoadState(_collectionEndPoint);
+      var dataManager = (DomainObjectCollectionEndPointDataManager)loadState.DataManager;
+      Assert.That(dataManager.CurrentOppositeEndPoints, Is.EquivalentTo(expected));
     }
 
   }

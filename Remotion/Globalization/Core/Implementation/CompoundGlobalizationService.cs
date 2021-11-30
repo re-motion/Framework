@@ -28,7 +28,7 @@ namespace Remotion.Globalization.Implementation
   /// delegates to it to retrieve an <see cref="IResourceManager"/> for a specified type.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundGlobalizationService : IGlobalizationService
   {
     private readonly IReadOnlyList<IGlobalizationService> _globalizationServices;
@@ -39,7 +39,7 @@ namespace Remotion.Globalization.Implementation
     /// <param name="globalizationServices"> The <see cref="IGlobalizationService"/>s, starting with the least specific.</param>
     public CompoundGlobalizationService (IEnumerable<IGlobalizationService> globalizationServices)
     {
-      ArgumentUtility.CheckNotNull ("globalizationServices", globalizationServices);
+      ArgumentUtility.CheckNotNull("globalizationServices", globalizationServices);
 
       _globalizationServices = globalizationServices.Reverse().ToList().AsReadOnly();
     }
@@ -51,9 +51,9 @@ namespace Remotion.Globalization.Implementation
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
 
-      return new ResourceManagerSet (_globalizationServices.Select (s => s.GetResourceManager (typeInformation)));
+      return new ResourceManagerSet(_globalizationServices.Select(s => s.GetResourceManager(typeInformation)));
     }
   }
 }

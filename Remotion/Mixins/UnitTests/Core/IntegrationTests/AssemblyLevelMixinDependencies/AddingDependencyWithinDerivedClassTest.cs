@@ -25,25 +25,25 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     [Test]
     public void DependencyAddedToDerivedClass_FromBaseClassMixin_ToDerivedClassMixin_ViaAssemblyLevelAttribute ()
     {
-      PrepareMixinConfigurationWithAttributeDeclarations (new AdditionalMixinDependencyAttribute (typeof (D), typeof (M1), typeof (M2)));
+      PrepareMixinConfigurationWithAttributeDeclarations(new AdditionalMixinDependencyAttribute(typeof(D), typeof(M1), typeof(M2)));
 
       var instance = ObjectFactory.Create<D>();
 
       var result = instance.M();
 
-      Assert.That (result, Is.EqualTo ("M1 M2 C"));
+      Assert.That(result, Is.EqualTo("M1 M2 C"));
     }
 
     [Test]
     public void DependencyAddedToDerivedClass_HasNoEffectOnBaseClass ()
     {
-      PrepareMixinConfigurationWithAttributeDeclarations (new AdditionalMixinDependencyAttribute (typeof (D), typeof (M1), typeof (M2)));
+      PrepareMixinConfigurationWithAttributeDeclarations(new AdditionalMixinDependencyAttribute(typeof(D), typeof(M1), typeof(M2)));
 
       var instance = ObjectFactory.Create<C>();
 
       var result = instance.M();
 
-      Assert.That (result, Is.EqualTo ("M1 C"));
+      Assert.That(result, Is.EqualTo("M1 C"));
     }
 
     public class C : IC
@@ -63,7 +63,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       string M ();
     }
 
-    [Extends (typeof (C))]
+    [Extends(typeof(C))]
     public class M1 : Mixin<C, IC>
     {
       [OverrideTarget]
@@ -73,7 +73,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       }
     }
 
-    [Extends (typeof (D))]
+    [Extends(typeof(D))]
     public class M2 : Mixin<C, IC>
     {
       [OverrideTarget]

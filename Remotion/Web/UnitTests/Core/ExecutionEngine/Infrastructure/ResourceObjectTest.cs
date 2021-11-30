@@ -32,35 +32,35 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void InitializeWithResourceAssembly_WithoutAssembly ()
     {
-      var resourceObject = new ResourceObject ("path.aspx");
+      var resourceObject = new ResourceObject("path.aspx");
 
-      Assert.That (resourceObject.ResourceRoot, Is.EqualTo ("~/"));
-      Assert.That (resourceObject.Path, Is.EqualTo ("path.aspx"));
+      Assert.That(resourceObject.ResourceRoot, Is.EqualTo("~/"));
+      Assert.That(resourceObject.Path, Is.EqualTo("path.aspx"));
     }
 
     [Test]
     public void InitializeWithResourceAssembly_WithAssembly ()
     {
-      var resourceObject = new ResourceObject (new FakeResourcePathBuilder(), GetType().Assembly, "path.aspx");
+      var resourceObject = new ResourceObject(new FakeResourcePathBuilder(), GetType().Assembly, "path.aspx");
 
-      Assert.That (resourceObject.ResourceRoot, Is.EqualTo ("/fake/Remotion.Web.UnitTests"));
-      Assert.That (resourceObject.Path, Is.EqualTo ("path.aspx"));
+      Assert.That(resourceObject.ResourceRoot, Is.EqualTo("/fake/Remotion.Web.UnitTests"));
+      Assert.That(resourceObject.Path, Is.EqualTo("path.aspx"));
     }
 
     [Test]
     public void GetResourcePath_WithoutAssembly ()
     {
-      var resourceObject = new ResourceObject ("path.aspx");
+      var resourceObject = new ResourceObject("path.aspx");
 
-      Assert.That (resourceObject.GetResourcePath (null), Is.EqualTo ("~/path.aspx"));
+      Assert.That(resourceObject.GetResourcePath(null), Is.EqualTo("~/path.aspx"));
     }
 
     [Test]
     public void GetResourcePath_WithAssembly ()
     {
-      var resourceObject = new ResourceObject (new FakeResourcePathBuilder(), GetType().Assembly, "path.aspx");
+      var resourceObject = new ResourceObject(new FakeResourcePathBuilder(), GetType().Assembly, "path.aspx");
 
-      Assert.That (resourceObject.GetResourcePath (null), Is.EqualTo ("/fake/Remotion.Web.UnitTests/path.aspx"));
+      Assert.That(resourceObject.GetResourcePath(null), Is.EqualTo("/fake/Remotion.Web.UnitTests/path.aspx"));
     }
   }
 }

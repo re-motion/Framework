@@ -18,13 +18,13 @@ namespace Remotion.UnitTests.Utilities
       setup.DynamicBase = Path.GetTempPath();
       setup.PrivateBinPath = @"Custom\Relative;Search\Path";
 
-      new AppDomainRunner (
+      new AppDomainRunner(
           setup,
           delegate
           {
             var contextProvider = new AppContextProvider();
-            Assert.That (contextProvider.BaseDirectory, Is.EqualTo (@"C:\Base\"));
-            Assert.That (contextProvider.RelativeSearchPath, Is.EqualTo (@"Custom\Relative;Search\Path"));
+            Assert.That(contextProvider.BaseDirectory, Is.EqualTo(@"C:\Base\"));
+            Assert.That(contextProvider.RelativeSearchPath, Is.EqualTo(@"Custom\Relative;Search\Path"));
           }).Run();
     }
 #endif
@@ -34,8 +34,8 @@ namespace Remotion.UnitTests.Utilities
     public void ReturnsCorrectBaseDirectoryAndRelativeSearchPath ()
     {
       var contextProvider = new AppContextProvider();
-      Assert.That (contextProvider.BaseDirectory, Is.EqualTo (AppContext.BaseDirectory));
-      Assert.That (contextProvider.RelativeSearchPath, Is.EqualTo (null));
+      Assert.That(contextProvider.BaseDirectory, Is.EqualTo(AppContext.BaseDirectory));
+      Assert.That(contextProvider.RelativeSearchPath, Is.EqualTo(null));
     }
 #endif
   }

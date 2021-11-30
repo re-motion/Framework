@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
   {
     public static QueryResult<T> CreateQueryResult<T> () where T : DomainObject
     {
-      return new QueryResult<T> (QueryObjectMother.Create(), new[] { DomainObjectMother.CreateFakeObject<T>() });
+      return new QueryResult<T>(QueryObjectMother.Create(), new[] { DomainObjectMother.CreateFakeObject<T>() });
     }
   }
 }

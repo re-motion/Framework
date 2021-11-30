@@ -31,7 +31,7 @@ namespace Remotion.Mixins.Context
 
     public ReadOnlyContextCollection (Func<TValue, TKey> keyGenerator, IEnumerable<TValue> values)
     {
-      ArgumentUtility.CheckNotNull ("keyGenerator", keyGenerator);
+      ArgumentUtility.CheckNotNull("keyGenerator", keyGenerator);
       _internalCollection = new Dictionary<TKey, TValue>();
       _keyGenerator = keyGenerator;
 
@@ -44,23 +44,23 @@ namespace Remotion.Mixins.Context
     {
       foreach (TValue value in values)
       {
-        ArgumentUtility.CheckNotNull ("values[" + _internalCollection.Count + "]", value);
+        ArgumentUtility.CheckNotNull("values[" + _internalCollection.Count + "]", value);
 
-        TKey key = _keyGenerator (value);
-        if (_internalCollection.TryGetValue (key, out var existingValue))
+        TKey key = _keyGenerator(value);
+        if (_internalCollection.TryGetValue(key, out var existingValue))
         {
-          if (!value.Equals (existingValue))
+          if (!value.Equals(existingValue))
           {
-            string message = string.Format (
+            string message = string.Format(
                 "The items {0} and {1} are identified by the same key {2} and cannot both be added to the collection.",
                 existingValue,
                 value,
                 key);
-            throw new ArgumentException (message, "values");
+            throw new ArgumentException(message, "values");
           }
         }
         else
-          _internalCollection.Add (key, value);
+          _internalCollection.Add(key, value);
       }
     }
 
@@ -71,18 +71,18 @@ namespace Remotion.Mixins.Context
 
     public virtual bool ContainsKey (TKey key)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
-      return _internalCollection.ContainsKey (key);
+      ArgumentUtility.CheckNotNull("key", key);
+      return _internalCollection.ContainsKey(key);
     }
 
     public virtual bool Contains (TValue value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      TKey key = _keyGenerator (value);
-      if (!_internalCollection.TryGetValue (key, out var foundValue))
+      ArgumentUtility.CheckNotNull("value", value);
+      TKey key = _keyGenerator(value);
+      if (!_internalCollection.TryGetValue(key, out var foundValue))
         return false;
       else
-        return value.Equals (foundValue);
+        return value.Equals(foundValue);
     }
 
     // TODO RM-7703 evaluate if the indexer should be used for checking if a value exists.
@@ -90,8 +90,8 @@ namespace Remotion.Mixins.Context
     {
       get
       {
-        if (!_internalCollection.TryGetValue (key, out var value))
-          return default (TValue);
+        if (!_internalCollection.TryGetValue(key, out var value))
+          return default(TValue);
         else
           return value;
       }
@@ -104,22 +104,22 @@ namespace Remotion.Mixins.Context
 
     public virtual void CopyTo (TValue[] array, int arrayIndex)
     {
-      _internalCollection.Values.CopyTo (array, arrayIndex);
+      _internalCollection.Values.CopyTo(array, arrayIndex);
     }
 
     void ICollection<TValue>.Add (TValue item)
     {
-      throw new NotSupportedException ("This list cannot be changed.");
+      throw new NotSupportedException("This list cannot be changed.");
     }
 
     void ICollection<TValue>.Clear ()
     {
-      throw new NotSupportedException ("This list cannot be changed.");
+      throw new NotSupportedException("This list cannot be changed.");
     }
 
     bool ICollection<TValue>.Remove (TValue item)
     {
-      throw new NotSupportedException ("This list cannot be changed.");
+      throw new NotSupportedException("This list cannot be changed.");
     }
 
     bool ICollection<TValue>.IsReadOnly
@@ -129,7 +129,7 @@ namespace Remotion.Mixins.Context
 
     void ICollection.CopyTo (Array array, int index)
     {
-      ((ICollection) _internalCollection.Values).CopyTo (array, index);
+      ((ICollection)_internalCollection.Values).CopyTo(array, index);
     }
 
     object ICollection.SyncRoot

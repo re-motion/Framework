@@ -27,64 +27,64 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static Order NewObject ()
     {
-      return NewObject<Order> ();
+      return NewObject<Order>();
     }
 
-    [DBColumn ("OrderNo")]
+    [DBColumn("OrderNo")]
     public abstract int OrderNumber { get; set; }
 
     [StorageClassNone]
     public int RedirectedOrderNumber
     {
-      [LinqPropertyRedirection (typeof (Order), "OrderNumber")]
+      [LinqPropertyRedirection(typeof(Order), "OrderNumber")]
       get { return OrderNumber; }
     }
 
     [StorageClassNone]
     public int RedirectedRedirectedOrderNumber
     {
-      [LinqPropertyRedirection (typeof (Order), "RedirectedOrderNumber")]
+      [LinqPropertyRedirection(typeof(Order), "RedirectedOrderNumber")]
       get { return RedirectedOrderNumber; }
     }
-    
+
     public abstract DateTime DeliveryDate { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("Orders")]
+    [DBBidirectionalRelation("Orders")]
     public abstract Official Official { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("Order")]
+    [DBBidirectionalRelation("Order")]
     public abstract OrderTicket OrderTicket { get; set; }
 
     [StorageClassNone]
     public OrderTicket RedirectedOrderTicket
     {
-      [LinqPropertyRedirection (typeof (Order), "OrderTicket")]
+      [LinqPropertyRedirection(typeof(Order), "OrderTicket")]
       get { return OrderTicket; }
     }
 
     [Mandatory]
-    [DBBidirectionalRelation ("Orders")]
+    [DBBidirectionalRelation("Orders")]
     public abstract Customer Customer { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("Order")]
+    [DBBidirectionalRelation("Order")]
     public virtual ObjectList<OrderItem> OrderItems { get; set; }
 
     [StorageClassNone]
     public ObjectList<OrderItem> RedirectedOrderItems
     {
-      [LinqPropertyRedirection (typeof (Order), "OrderItems")]
+      [LinqPropertyRedirection(typeof(Order), "OrderItems")]
       get { return OrderItems; }
     }
 
     public void PreparePropertyAccess (string propertyName)
     {
-      CurrentPropertyManager.PreparePropertyAccess (propertyName);
+      CurrentPropertyManager.PreparePropertyAccess(propertyName);
     }
 
-    public void PropertyAccessFinished()
+    public void PropertyAccessFinished ()
     {
       CurrentPropertyManager.PropertyAccessFinished();
     }
@@ -98,27 +98,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     [StorageClassNone]
     public Customer OriginalCustomer
     {
-      get { return Properties[typeof (Order), "Customer"].GetOriginalValue<Customer>(); }
+      get { return Properties[typeof(Order), "Customer"].GetOriginalValue<Customer>(); }
     }
 
     [StorageClassNone]
     public virtual int NotInMapping
     {
-      get { return CurrentProperty.GetValue<int> (); }
-      set { CurrentProperty.SetValue (value); }
+      get { return CurrentProperty.GetValue<int>(); }
+      set { CurrentProperty.SetValue(value); }
     }
 
     [StorageClassNone]
     public virtual OrderTicket NotInMappingRelated
     {
-      get { return CurrentProperty.GetValue<OrderTicket> (); }
-      set { CurrentProperty.SetValue (value); }
+      get { return CurrentProperty.GetValue<OrderTicket>(); }
+      set { CurrentProperty.SetValue(value); }
     }
 
     [StorageClassNone]
     public virtual ObjectList<OrderItem> NotInMappingRelatedObjects
     {
-      get { return CurrentProperty.GetValue<ObjectList<OrderItem>> (); }
+      get { return CurrentProperty.GetValue<ObjectList<OrderItem>>(); }
     }
   }
 }

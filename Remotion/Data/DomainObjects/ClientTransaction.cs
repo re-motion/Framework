@@ -66,7 +66,7 @@ public class ClientTransaction
   public static ClientTransaction CreateRootTransaction ()
   {
     var componentFactory = RootClientTransactionComponentFactory.Create();
-    return ObjectFactory.Create<ClientTransaction> (true, ParamList.Create (componentFactory));
+    return ObjectFactory.Create<ClientTransaction>(true, ParamList.Create(componentFactory));
   }
 
   /// <summary>
@@ -136,31 +136,31 @@ public class ClientTransaction
 
   private bool _isDiscarded;
 
-  private readonly Guid _id = Guid.NewGuid ();
+  private readonly Guid _id = Guid.NewGuid();
 
   protected ClientTransaction (IClientTransactionComponentFactory componentFactory)
   {
-    ArgumentUtility.CheckNotNull ("componentFactory", componentFactory);
-    
-    _applicationData = componentFactory.CreateApplicationData (this);
-    _eventBroker = componentFactory.CreateEventBroker (this);
-    _hierarchyManager = componentFactory.CreateTransactionHierarchyManager (this, _eventBroker);
-    _hierarchyManager.InstallListeners (_eventBroker);
-    _enlistedDomainObjectManager = componentFactory.CreateEnlistedObjectManager (this);
-    _invalidDomainObjectManager = componentFactory.CreateInvalidDomainObjectManager (this, _eventBroker);
-    _persistenceStrategy = componentFactory.CreatePersistenceStrategy (this);
-    _dataManager = componentFactory.CreateDataManager (this, _eventBroker, _invalidDomainObjectManager, _persistenceStrategy, _hierarchyManager);
-    _objectLifetimeAgent = componentFactory.CreateObjectLifetimeAgent (
-        this, _eventBroker, _invalidDomainObjectManager, _dataManager, _enlistedDomainObjectManager, _persistenceStrategy);
-    _queryManager = componentFactory.CreateQueryManager (this, _eventBroker, _invalidDomainObjectManager, _persistenceStrategy, _dataManager, _hierarchyManager);
-    _commitRollbackAgent = componentFactory.CreateCommitRollbackAgent (this, _eventBroker, _persistenceStrategy, _dataManager);
+    ArgumentUtility.CheckNotNull("componentFactory", componentFactory);
 
-    var extensions = componentFactory.CreateExtensions (this);
+    _applicationData = componentFactory.CreateApplicationData(this);
+    _eventBroker = componentFactory.CreateEventBroker(this);
+    _hierarchyManager = componentFactory.CreateTransactionHierarchyManager(this, _eventBroker);
+    _hierarchyManager.InstallListeners(_eventBroker);
+    _enlistedDomainObjectManager = componentFactory.CreateEnlistedObjectManager(this);
+    _invalidDomainObjectManager = componentFactory.CreateInvalidDomainObjectManager(this, _eventBroker);
+    _persistenceStrategy = componentFactory.CreatePersistenceStrategy(this);
+    _dataManager = componentFactory.CreateDataManager(this, _eventBroker, _invalidDomainObjectManager, _persistenceStrategy, _hierarchyManager);
+    _objectLifetimeAgent = componentFactory.CreateObjectLifetimeAgent(
+        this, _eventBroker, _invalidDomainObjectManager, _dataManager, _enlistedDomainObjectManager, _persistenceStrategy);
+    _queryManager = componentFactory.CreateQueryManager(this, _eventBroker, _invalidDomainObjectManager, _persistenceStrategy, _dataManager, _hierarchyManager);
+    _commitRollbackAgent = componentFactory.CreateCommitRollbackAgent(this, _eventBroker, _persistenceStrategy, _dataManager);
+
+    var extensions = componentFactory.CreateExtensions(this);
     foreach (var extension in extensions)
-      _eventBroker.Extensions.Add (extension);
+      _eventBroker.Extensions.Add(extension);
 
     _hierarchyManager.OnBeforeTransactionInitialize();
-    _eventBroker.RaiseTransactionInitializeEvent ();
+    _eventBroker.RaiseTransactionInitializeEvent();
   }
 
   internal ITransactionHierarchyManager HierarchyManager
@@ -172,8 +172,8 @@ public class ClientTransaction
   /// Gets the parent transaction for this <see cref="ClientTransaction"/>, or <see langword="null" /> if this transaction is a root transaction.
   /// </summary>
   /// <value>The parent transaction, or <see langword="null" /> if this transaction is a root transaction.</value>
-  public ClientTransaction ParentTransaction 
-  { 
+  public ClientTransaction ParentTransaction
+  {
     get { return _hierarchyManager.ParentTransaction; }
   }
 
@@ -192,8 +192,8 @@ public class ClientTransaction
   /// If this <see cref="ClientTransaction"/> is itself a root transaction (i.e, it has no <see cref="ParentTransaction"/>), it is returned.
   /// </summary>
   /// <value>The root transaction of this <see cref="ClientTransaction"/>.</value>
-  public ClientTransaction RootTransaction 
-  { 
+  public ClientTransaction RootTransaction
+  {
     get { return _hierarchyManager.TransactionHierarchy.RootTransaction; }
   }
 
@@ -304,19 +304,19 @@ public class ClientTransaction
   {
     string rootOrSub = ParentTransaction == null ? "root" : "sub";
     string leafOrParent = SubTransaction == null ? "leaf" : "parent";
-    return string.Format ("ClientTransaction ({0}, {1}) {2}", rootOrSub, leafOrParent, ID);
+    return string.Format("ClientTransaction ({0}, {1}) {2}", rootOrSub, leafOrParent, ID);
   }
 
   protected internal void AddListener (IClientTransactionListener listener)
   {
-    ArgumentUtility.CheckNotNull ("listener", listener);
-    _eventBroker.AddListener (listener);
+    ArgumentUtility.CheckNotNull("listener", listener);
+    _eventBroker.AddListener(listener);
   }
 
   protected void RemoveListener (IClientTransactionListener listener)
   {
-    ArgumentUtility.CheckNotNull ("listener", listener);
-    _eventBroker.RemoveListener (listener);
+    ArgumentUtility.CheckNotNull("listener", listener);
+    _eventBroker.RemoveListener(listener);
   }
 
   /// <summary>
@@ -341,11 +341,11 @@ public class ClientTransaction
   {
     if (!_isDiscarded)
     {
-      _eventBroker.RaiseTransactionDiscardEvent ();
+      _eventBroker.RaiseTransactionDiscardEvent();
       _hierarchyManager.OnTransactionDiscard();
 
       _isDiscarded = true;
-      AddListener (new InvalidatedTransactionListener());
+      AddListener(new InvalidatedTransactionListener());
     }
   }
 
@@ -376,7 +376,7 @@ public class ClientTransaction
   /// </remarks>
   public virtual ClientTransactionScope EnterDiscardingScope ()
   {
-    return EnterScope (AutoRollbackBehavior.Discard);
+    return EnterScope(AutoRollbackBehavior.Discard);
   }
 
   /// <summary>
@@ -402,8 +402,8 @@ public class ClientTransaction
   /// </remarks>
   public virtual ClientTransactionScope EnterScope (AutoRollbackBehavior rollbackBehavior)
   {
-    var activationScope = _hierarchyManager.TransactionHierarchy.ActivateTransaction (this);
-    return new ClientTransactionScope (this, rollbackBehavior, activationScope);
+    var activationScope = _hierarchyManager.TransactionHierarchy.ActivateTransaction(this);
+    return new ClientTransactionScope(this, rollbackBehavior, activationScope);
   }
 
   /// <summary>
@@ -435,7 +435,7 @@ public class ClientTransaction
   /// </remarks>
   public virtual ClientTransactionScope EnterNonDiscardingScope ()
   {
-    return EnterScope (AutoRollbackBehavior.None);
+    return EnterScope(AutoRollbackBehavior.None);
   }
 
   /// <summary>
@@ -457,7 +457,7 @@ public class ClientTransaction
   /// </remarks>
   public IEnumerable<DomainObject> GetEnlistedDomainObjects ()
   {
-    return _enlistedDomainObjectManager.GetEnlistedDomainObjects ();
+    return _enlistedDomainObjectManager.GetEnlistedDomainObjects();
   }
 
   /// <summary>
@@ -475,8 +475,8 @@ public class ClientTransaction
   /// </remarks>
   public DomainObject GetEnlistedDomainObject (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
-    return _enlistedDomainObjectManager.GetEnlistedDomainObject (objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
+    return _enlistedDomainObjectManager.GetEnlistedDomainObject(objectID);
   }
 
   /// <summary>
@@ -493,8 +493,8 @@ public class ClientTransaction
   /// </remarks>
   public bool IsEnlisted (DomainObject domainObject)
   {
-    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    return _enlistedDomainObjectManager.IsEnlisted (domainObject);
+    ArgumentUtility.CheckNotNull("domainObject", domainObject);
+    return _enlistedDomainObjectManager.IsEnlisted(domainObject);
   }
 
   /// <summary>
@@ -513,9 +513,9 @@ public class ClientTransaction
   /// </exception>
   public void EnsureDataAvailable (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
 
-    _dataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound: true);
+    _dataManager.GetDataContainerWithLazyLoad(objectID, throwOnNotFound: true);
   }
 
   /// <summary>
@@ -536,9 +536,9 @@ public class ClientTransaction
   /// </exception>
   public void EnsureDataAvailable (IEnumerable<ObjectID> objectIDs)
   {
-    ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+    ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-    DataManager.GetDataContainersWithLazyLoad (objectIDs, throwOnNotFound: true);
+    DataManager.GetDataContainersWithLazyLoad(objectIDs, throwOnNotFound: true);
   }
 
   /// <summary>
@@ -554,9 +554,9 @@ public class ClientTransaction
   /// <exception cref="ObjectInvalidException">The given <paramref name="objectID"/> is invalid in this transaction.</exception>
   public bool TryEnsureDataAvailable (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
 
-    var dataContainer = DataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound: false);
+    var dataContainer = DataManager.GetDataContainerWithLazyLoad(objectID, throwOnNotFound: false);
     return dataContainer != null;
   }
 
@@ -576,10 +576,10 @@ public class ClientTransaction
   /// <exception cref="ObjectInvalidException">One of the given <paramref name="objectIDs"/> is invalid in this transaction.</exception>
   public bool TryEnsureDataAvailable (IEnumerable<ObjectID> objectIDs)
   {
-    ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+    ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-    var dataContainers = DataManager.GetDataContainersWithLazyLoad (objectIDs, false);
-    return dataContainers.All (dc => dc != null);
+    var dataContainers = DataManager.GetDataContainersWithLazyLoad(objectIDs, false);
+    return dataContainers.All(dc => dc != null);
   }
 
   /// <summary>
@@ -589,9 +589,9 @@ public class ClientTransaction
   /// <returns></returns>
   protected internal ObjectID CreateNewObjectID (ClassDefinition classDefinition)
   {
-    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+    ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-    return _persistenceStrategy.CreateNewObjectID (classDefinition);
+    return _persistenceStrategy.CreateNewObjectID(classDefinition);
   }
 
   /// <summary>
@@ -603,10 +603,10 @@ public class ClientTransaction
   /// <exception cref="ArgumentNullException">The <paramref name="endPointID"/> parameter is <see langword="null" />.</exception>
   public void EnsureDataComplete (RelationEndPointID endPointID)
   {
-    var endPoint = DataManager.GetRelationEndPointWithLazyLoad (endPointID);
+    var endPoint = DataManager.GetRelationEndPointWithLazyLoad(endPointID);
     endPoint.EnsureDataComplete();
 
-    Assertion.IsTrue (endPoint.IsDataComplete);
+    Assertion.IsTrue(endPoint.IsDataComplete);
   }
 
   /// <summary>
@@ -621,10 +621,10 @@ public class ClientTransaction
   /// </remarks>
   public virtual ClientTransaction CreateSubTransaction ()
   {
-    return CreateSubTransaction ((parentTx, invalidDomainObjectManager, enlistedDomainObjectManager, hierarchyManager, eventSink) =>
+    return CreateSubTransaction((parentTx, invalidDomainObjectManager, enlistedDomainObjectManager, hierarchyManager, eventSink) =>
     {
-      var componentFactory = SubClientTransactionComponentFactory.Create (parentTx, invalidDomainObjectManager, enlistedDomainObjectManager, hierarchyManager, eventSink);
-      return ObjectFactory.Create<ClientTransaction> (true, ParamList.Create (componentFactory));
+      var componentFactory = SubClientTransactionComponentFactory.Create(parentTx, invalidDomainObjectManager, enlistedDomainObjectManager, hierarchyManager, eventSink);
+      return ObjectFactory.Create<ClientTransaction>(true, ParamList.Create(componentFactory));
     });
   }
 
@@ -645,10 +645,10 @@ public class ClientTransaction
   /// </remarks>
   public virtual ClientTransaction CreateSubTransaction (SubTransactionFactory subTransactionFactory)
   {
-    ArgumentUtility.CheckNotNull ("subTransactionFactory", subTransactionFactory);
+    ArgumentUtility.CheckNotNull("subTransactionFactory", subTransactionFactory);
 
-    return _hierarchyManager.CreateSubTransaction (
-        tx => subTransactionFactory (tx, _invalidDomainObjectManager, _enlistedDomainObjectManager, _hierarchyManager, _eventBroker));
+    return _hierarchyManager.CreateSubTransaction(
+        tx => subTransactionFactory(tx, _invalidDomainObjectManager, _enlistedDomainObjectManager, _hierarchyManager, _eventBroker));
   }
 
   /// <summary>
@@ -791,9 +791,9 @@ public class ClientTransaction
   /// <see langword="false" />.</exception>
   protected internal virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
-    ArgumentUtility.CheckNotNull ("id", id);
+    ArgumentUtility.CheckNotNull("id", id);
 
-    return _objectLifetimeAgent.GetObject (id, includeDeleted);
+    return _objectLifetimeAgent.GetObject(id, includeDeleted);
   }
 
   /// <summary>
@@ -813,8 +813,8 @@ public class ClientTransaction
   /// </exception>
   protected internal virtual DomainObject TryGetObject (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
-    return _objectLifetimeAgent.TryGetObject (objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
+    return _objectLifetimeAgent.TryGetObject(objectID);
   }
 
   /// <summary>
@@ -841,8 +841,8 @@ public class ClientTransaction
   /// <exception cref="ArgumentNullException">The <paramref name="objectID"/> parameter is <see langword="null" />.</exception>
   protected internal virtual DomainObject GetObjectReference (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
-    return _objectLifetimeAgent.GetObjectReference (objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
+    return _objectLifetimeAgent.GetObjectReference(objectID);
   }
 
   /// <summary>
@@ -858,8 +858,8 @@ public class ClientTransaction
   /// </exception>
   protected internal virtual DomainObject GetInvalidObjectReference (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
-    return _invalidDomainObjectManager.GetInvalidObjectReference (objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
+    return _invalidDomainObjectManager.GetInvalidObjectReference(objectID);
   }
 
   /// <summary>
@@ -871,17 +871,17 @@ public class ClientTransaction
   /// </returns>
   public bool IsInvalid (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
-    return _invalidDomainObjectManager.IsInvalid (objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
+    return _invalidDomainObjectManager.IsInvalid(objectID);
   }
 
   protected internal virtual DomainObject NewObject (Type domainObjectType, ParamList constructorParameters)
   {
-    ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
-    ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
+    ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
+    ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
 
-    var classDefinition = MappingConfiguration.Current.GetTypeDefinition (domainObjectType);
-    return _objectLifetimeAgent.NewObject (classDefinition, constructorParameters);
+    var classDefinition = MappingConfiguration.Current.GetTypeDefinition(domainObjectType);
+    return _objectLifetimeAgent.NewObject(classDefinition, constructorParameters);
   }
 
   /// <summary>
@@ -904,8 +904,8 @@ public class ClientTransaction
   protected internal T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs)
       where T : DomainObject
   {
-    ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
-    return _objectLifetimeAgent.GetObjects<T> (objectIDs);
+    ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
+    return _objectLifetimeAgent.GetObjects<T>(objectIDs);
   }
 
   /// <summary>
@@ -923,8 +923,8 @@ public class ClientTransaction
   protected internal T[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
       where T : DomainObject
   {
-    ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
-    return _objectLifetimeAgent.TryGetObjects<T> (objectIDs);
+    ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
+    return _objectLifetimeAgent.TryGetObjects<T>(objectIDs);
   }
 
   /// <summary>
@@ -936,19 +936,19 @@ public class ClientTransaction
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to an <see cref="ObjectEndPoint"/></exception>
   protected internal virtual DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+    ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
     if (relationEndPointID.Definition.Cardinality != CardinalityType.One)
-      throw new ArgumentException ("The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID");
+      throw new ArgumentException("The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID");
 
-    var domainObject = GetOriginatingObjectForRelationAccess (relationEndPointID);
+    var domainObject = GetOriginatingObjectForRelationAccess(relationEndPointID);
 
-    _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Current);
+    _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Current);
 
-    var objectEndPoint = (IObjectEndPoint) DataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
-    DomainObject relatedObject = objectEndPoint.GetOppositeObject ();
+    var objectEndPoint = (IObjectEndPoint)DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
+    DomainObject relatedObject = objectEndPoint.GetOppositeObject();
 
-    _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Current);
+    _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Current);
 
     return relatedObject;
   }
@@ -962,19 +962,19 @@ public class ClientTransaction
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to an <see cref="ObjectEndPoint"/></exception>
   protected internal virtual DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+    ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
     if (relationEndPointID.Definition.Cardinality != CardinalityType.One)
-      throw new ArgumentException ("The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID");
+      throw new ArgumentException("The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID");
 
-    var domainObject = GetOriginatingObjectForRelationAccess (relationEndPointID);
+    var domainObject = GetOriginatingObjectForRelationAccess(relationEndPointID);
 
-    _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Original);
+    _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Original);
 
-    var objectEndPoint = (IObjectEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
-    DomainObject relatedObject = objectEndPoint.GetOriginalOppositeObject ();
+    var objectEndPoint = (IObjectEndPoint)_dataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
+    DomainObject relatedObject = objectEndPoint.GetOriginalOppositeObject();
 
-    _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Original);
+    _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Original);
 
     return relatedObject;
   }
@@ -988,32 +988,32 @@ public class ClientTransaction
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="DomainObjectCollectionEndPoint"/></exception>
   protected internal virtual IReadOnlyList<IDomainObject> GetRelatedObjects (RelationEndPointID relationEndPointID)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+    ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
     if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
-      throw new ArgumentException ("The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID");
+      throw new ArgumentException("The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID");
 
-    var domainObject = GetOriginatingObjectForRelationAccess (relationEndPointID);
+    var domainObject = GetOriginatingObjectForRelationAccess(relationEndPointID);
 
-    _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Current);
+    _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Current);
 
     IReadOnlyCollectionData<DomainObject> readOnlyRelatedObjects;
     IReadOnlyList<IDomainObject> relatedObjects;
-    var collectionEndPoint = _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
+    var collectionEndPoint = _dataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
     if (collectionEndPoint is IDomainObjectCollectionEndPoint domainObjectCollectionEndPoint)
     {
       var domainObjectCollection = domainObjectCollectionEndPoint.Collection;
-      relatedObjects = (IReadOnlyList<IDomainObject>) domainObjectCollection;
-      readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (domainObjectCollection);
+      relatedObjects = (IReadOnlyList<IDomainObject>)domainObjectCollection;
+      readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(domainObjectCollection);
     }
     else
     {
-      var virtualCollectionEndPoint = (IVirtualCollectionEndPoint) collectionEndPoint;
+      var virtualCollectionEndPoint = (IVirtualCollectionEndPoint)collectionEndPoint;
       relatedObjects = virtualCollectionEndPoint.Collection;
-      readOnlyRelatedObjects = (IReadOnlyCollectionData<DomainObject>) relatedObjects;
+      readOnlyRelatedObjects = (IReadOnlyCollectionData<DomainObject>)relatedObjects;
     }
 
-    _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current);
+    _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current);
 
     return relatedObjects;
   }
@@ -1027,35 +1027,35 @@ public class ClientTransaction
     /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="DomainObjectCollectionEndPoint"/></exception>
     protected internal virtual IReadOnlyList<IDomainObject> GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+    ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
     if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
-      throw new ArgumentException ("The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID");
+      throw new ArgumentException("The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID");
 
-    var domainObject = GetOriginatingObjectForRelationAccess (relationEndPointID);
+    var domainObject = GetOriginatingObjectForRelationAccess(relationEndPointID);
 
-    _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Original);
+    _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Original);
 
     IReadOnlyCollectionData<DomainObject> readOnlyRelatedObjects;
     IReadOnlyList<IDomainObject> relatedObjects;
-    var collectionEndPoint = _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
+    var collectionEndPoint = _dataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
     if (collectionEndPoint is IDomainObjectCollectionEndPoint domainObjectCollectionEndPoint)
     {
       var domainObjectCollection = domainObjectCollectionEndPoint.GetCollectionWithOriginalData();
-      relatedObjects = (IReadOnlyList<IDomainObject>) domainObjectCollection;
-      readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (domainObjectCollection);
+      relatedObjects = (IReadOnlyList<IDomainObject>)domainObjectCollection;
+      readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(domainObjectCollection);
     }
     else
     {
-      var virtualCollectionEndPoint = (IVirtualCollectionEndPoint) collectionEndPoint;
+      var virtualCollectionEndPoint = (IVirtualCollectionEndPoint)collectionEndPoint;
       relatedObjects = virtualCollectionEndPoint.GetCollectionWithOriginalData();
-      readOnlyRelatedObjects = (IReadOnlyCollectionData<DomainObject>) relatedObjects;
+      readOnlyRelatedObjects = (IReadOnlyCollectionData<DomainObject>)relatedObjects;
     }
 
-    _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original);
+    _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original);
 
     return relatedObjects;
-  }  
+  }
 
   /// <summary>
   /// Deletes a <see cref="DomainObject"/>.
@@ -1067,8 +1067,8 @@ public class ClientTransaction
   /// </exception>
   protected internal virtual void Delete (DomainObject domainObject)
   {
-    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    _objectLifetimeAgent.Delete (domainObject);
+    ArgumentUtility.CheckNotNull("domainObject", domainObject);
+    _objectLifetimeAgent.Delete(domainObject);
   }
 
   /// <summary>
@@ -1077,10 +1077,10 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected internal virtual void OnLoaded (ClientTransactionEventArgs args)
   {
-    ArgumentUtility.CheckNotNull ("args", args);
+    ArgumentUtility.CheckNotNull("args", args);
 
     if (Loaded != null)
-      Loaded (this, args);
+      Loaded(this, args);
   }
 
   /// <summary>
@@ -1089,10 +1089,10 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected internal virtual void OnCommitting (ClientTransactionCommittingEventArgs args)
   {
-    ArgumentUtility.CheckNotNull ("args", args);
+    ArgumentUtility.CheckNotNull("args", args);
 
     if (Committing != null)
-      Committing (this, args);
+      Committing(this, args);
   }
 
 
@@ -1102,10 +1102,10 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected internal virtual void OnCommitted (ClientTransactionEventArgs args)
   {
-    ArgumentUtility.CheckNotNull ("args", args);
+    ArgumentUtility.CheckNotNull("args", args);
 
     if (Committed != null)
-      Committed (this, args);
+      Committed(this, args);
   }
 
   /// <summary>
@@ -1114,10 +1114,10 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected internal virtual void OnRollingBack (ClientTransactionEventArgs args)
   {
-    ArgumentUtility.CheckNotNull ("args", args);
+    ArgumentUtility.CheckNotNull("args", args);
 
     if (RollingBack != null)
-      RollingBack (this, args);
+      RollingBack(this, args);
   }
 
   /// <summary>
@@ -1126,10 +1126,10 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected internal virtual void OnRolledBack (ClientTransactionEventArgs args)
   {
-    ArgumentUtility.CheckNotNull ("args", args);
+    ArgumentUtility.CheckNotNull("args", args);
 
     if (RolledBack != null)
-      RolledBack (this, args);
+      RolledBack(this, args);
   }
 
   /// <summary>
@@ -1138,10 +1138,10 @@ public class ClientTransaction
   /// <param name="eventArgs">A <see cref="Remotion.Data.DomainObjects.SubTransactionCreatedEventArgs"/> instance containing the event data.</param>
   protected internal virtual void OnSubTransactionCreated (SubTransactionCreatedEventArgs eventArgs)
   {
-    ArgumentUtility.CheckNotNull ("eventArgs", eventArgs);
-    
+    ArgumentUtility.CheckNotNull("eventArgs", eventArgs);
+
     if (SubTransactionCreated != null)
-      SubTransactionCreated (this, eventArgs);
+      SubTransactionCreated(this, eventArgs);
   }
 
   /// <summary>
@@ -1174,7 +1174,7 @@ public class ClientTransaction
   {
     // See  RM-5278 when thinking about removing the ToITransaction method.
 
-    return new ClientTransactionWrapper (this);
+    return new ClientTransactionWrapper(this);
   }
 
   private DomainObject GetOriginatingObjectForRelationAccess (RelationEndPointID relationEndPointID)
@@ -1183,7 +1183,7 @@ public class ClientTransaction
     // - the user can rely on property access triggering OnLoaded for initialization (e.g., for registering event handlers),
     // - the user gets an ObjectNotFoundException for the originating object rather than a "mandatory relation not set in database" exception (or a
     //   null result) when the originating object doesn't exist.
-    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+    DomainObject domainObject = GetObject(relationEndPointID.ObjectID, true);
     return domainObject;
   }
   // ReSharper restore UnusedParameter.Global

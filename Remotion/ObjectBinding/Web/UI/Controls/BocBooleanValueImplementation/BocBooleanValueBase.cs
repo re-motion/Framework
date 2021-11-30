@@ -53,17 +53,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// <param name="e">ignored</param>
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
-      Page!.RegisterRequiresPostBack (this);
+      base.OnInit(e);
+      Page!.RegisterRequiresPostBack(this);
     }
 
     /// <summary> Occurs when the <see cref="Value"/> property changes between postbacks. </summary>
-    [Category ("Action")]
-    [Description ("Fires when the value of the control has changed.")]
+    [Category("Action")]
+    [Description("Fires when the value of the control has changed.")]
     public event EventHandler CheckedChanged
     {
-      add { Events.AddHandler (s_checkedChangedEvent, value); }
-      remove { Events.RemoveHandler (s_checkedChangedEvent, value); }
+      add { Events.AddHandler(s_checkedChangedEvent, value); }
+      remove { Events.RemoveHandler(s_checkedChangedEvent, value); }
     }
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
@@ -82,25 +82,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
       bool? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (bool?) DataSource.BusinessObject.GetProperty (Property);
+        value = (bool?)DataSource.BusinessObject.GetProperty(Property);
 
-      LoadValueInternal (value, false);
+      LoadValueInternal(value, false);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <include file='..\..\..\doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (bool? value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
-    
+
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
     protected virtual void LoadValueInternal (bool? value, bool interim)
     {
       if (interim)
         return;
 
-      SetValue (value);
+      SetValue(value);
       IsDirty = false;
     }
 
@@ -130,23 +130,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// <summary> Gets or sets the current value. </summary>
     /// <value> The boolean value currently displayed or <see langword="null"/>. </value>
     /// <remarks> The dirty state is set when the value is set. </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public new bool? Value
     {
       get { return GetValue(); }
       set
       {
         IsDirty = true;
-        SetValue (value);
+        SetValue(value);
       }
     }
-    
+
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
     /// <value>The control's current value, which is a nullable boolean.</value>
     protected override sealed object? ValueImplementation
     {
       get { return Value; }
-      set { Value = ArgumentUtility.CheckType<bool?> ("value", value); }
+      set { Value = ArgumentUtility.CheckType<bool?>("value", value); }
     }
 
     /// <summary>
@@ -166,11 +166,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectBooleanProperty"/> object this control is bound to. </summary>
     /// <value> An instance of type <see cref="IBusinessObjectBooleanProperty"/>. </value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public new IBusinessObjectBooleanProperty? Property
     {
-      get { return (IBusinessObjectBooleanProperty?) base.Property; }
+      get { return (IBusinessObjectBooleanProperty?)base.Property; }
       set { base.Property = value; }
     }
 
@@ -179,8 +179,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     ///   Returns the <see cref="Control.ClientID"/> of the <see cref="CheckBox"/> if the control is in edit mode, 
     ///   otherwise <see langword="null"/>. 
     /// </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public abstract string? FocusID { get; }
 
     /// <summary>
@@ -208,10 +208,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// <remarks>
     ///   Use <see cref="IsAutoPostBackEnabled"/> to evaluate this property.
     /// </remarks>
-    [Description ("Automatically postback to the server after the checked state is modified. Undefined is interpreted as false.")]
-    [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
-    [NotifyParentProperty (true)]
+    [Description("Automatically postback to the server after the checked state is modified. Undefined is interpreted as false.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
+    [NotifyParentProperty(true)]
     public bool? AutoPostBack
     {
       get { return _autoPostBack; }
@@ -223,9 +223,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     ///   The text displayed for <see langword="true"/>. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("The description displayed when the checkbox is set to True.")]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
+    [Description("The description displayed when the checkbox is set to True.")]
+    [Category("Appearance")]
+    [DefaultValue("")]
     public string TrueDescription
     {
       get { return _trueDescription; }
@@ -237,9 +237,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     ///   The text displayed for <see langword="false"/>. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("The description displayed when the checkbox is set to False.")]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
+    [Description("The description displayed when the checkbox is set to False.")]
+    [Category("Appearance")]
+    [DefaultValue("")]
     public string FalseDescription
     {
       get { return _falseDescription; }
@@ -251,9 +251,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     ///   The text displayed for <see langword="null"/>. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("The description displayed when the checkbox is set to null.")]
-    [Category ("Appearance")]
-    [DefaultValue ("")]
+    [Description("The description displayed when the checkbox is set to null.")]
+    [Category("Appearance")]
+    [DefaultValue("")]
     public string NullDescription
     {
       get { return _nullDescription; }
@@ -283,9 +283,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     /// <summary> Fires the <see cref="CheckedChanged"/> event. </summary>
     protected virtual void OnCheckedChanged ()
     {
-      EventHandler? eventHandler = (EventHandler?) Events[s_checkedChangedEvent];
+      EventHandler? eventHandler = (EventHandler?)Events[s_checkedChangedEvent];
       if (eventHandler != null)
-        eventHandler (this, EventArgs.Empty);
+        eventHandler(this, EventArgs.Empty);
     }
 
     /// <summary> The <see cref="BocCheckBox"/> supports only scalar properties. </summary>
@@ -300,7 +300,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       if (RequiresLoadPostData)
-        return LoadPostData (postDataKey, postCollection);
+        return LoadPostData(postDataKey, postCollection);
 
       return false;
     }
@@ -323,7 +323,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 
     IEnumerable<string> IBocBooleanValueBase.GetValidationErrors ()
     {
-      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct();
     }
 
     protected abstract string ControlType { get; }

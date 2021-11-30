@@ -33,12 +33,12 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
     }
 
     protected EditPositionFormFunction (ITransactionMode transactionMode, params object[] args)
-        : base (transactionMode, args)
+        : base(transactionMode, args)
     {
     }
 
     public EditPositionFormFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<Position> currentObjectHandle)
-        : base (transactionMode, currentObjectHandle)
+        : base(transactionMode, currentObjectHandle)
     {
     }
 
@@ -48,6 +48,6 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
         CurrentObject = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreatePosition();
     }
 
-    private WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditPositionForm), "UI/OrganizationalStructure/EditPositionForm.aspx");
+    private WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof(EditPositionForm), "UI/OrganizationalStructure/EditPositionForm.aspx");
   }
 }

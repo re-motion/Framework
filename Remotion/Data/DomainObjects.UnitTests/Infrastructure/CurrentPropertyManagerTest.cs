@@ -25,85 +25,85 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
   {
     public override void SetUp ()
     {
-      base.SetUp ();
-      CleanupProperties ();
+      base.SetUp();
+      CleanupProperties();
     }
 
     public override void TearDown ()
     {
-      base.TearDown ();
-      CleanupProperties ();
+      base.TearDown();
+      CleanupProperties();
     }
 
     private void CleanupProperties ()
     {
       while (CurrentPropertyManager.CurrentPropertyName != null)
-        CurrentPropertyManager.PropertyAccessFinished ();
+        CurrentPropertyManager.PropertyAccessFinished();
     }
 
     [Test]
-    public void CurrentPropertyName_Null()
+    public void CurrentPropertyName_Null ()
     {
-      Assert.That (CurrentPropertyManager.CurrentPropertyName, Is.Null);
+      Assert.That(CurrentPropertyManager.CurrentPropertyName, Is.Null);
     }
 
     [Test]
-    public void PreparePropertyAccess()
+    public void PreparePropertyAccess ()
     {
-      CurrentPropertyManager.PreparePropertyAccess ("prop");
-      Assert.That (CurrentPropertyManager.CurrentPropertyName, Is.EqualTo ("prop"));
+      CurrentPropertyManager.PreparePropertyAccess("prop");
+      Assert.That(CurrentPropertyManager.CurrentPropertyName, Is.EqualTo("prop"));
     }
 
     [Test]
-    public void PropertyAccessFinished()
+    public void PropertyAccessFinished ()
     {
-      CurrentPropertyManager.PreparePropertyAccess ("prop");
-      CurrentPropertyManager.PropertyAccessFinished ();
+      CurrentPropertyManager.PreparePropertyAccess("prop");
+      CurrentPropertyManager.PropertyAccessFinished();
 
-      Assert.That (CurrentPropertyManager.CurrentPropertyName, Is.Null);
+      Assert.That(CurrentPropertyManager.CurrentPropertyName, Is.Null);
     }
 
     [Test]
     public void PropertyAccessFinished_NoCurrentProperty ()
     {
-      Assert.That (
-          () => CurrentPropertyManager.PropertyAccessFinished (),
+      Assert.That(
+          () => CurrentPropertyManager.PropertyAccessFinished(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("There is no property to finish."));
+              .With.Message.EqualTo("There is no property to finish."));
     }
 
     [Test]
     public void PropertyStack ()
     {
-      CurrentPropertyManager.PreparePropertyAccess ("1");
-      Assert.That (CurrentPropertyManager.CurrentPropertyName, Is.EqualTo ("1"));
-      CurrentPropertyManager.PreparePropertyAccess ("2");
-      Assert.That (CurrentPropertyManager.CurrentPropertyName, Is.EqualTo ("2"));
-      CurrentPropertyManager.PreparePropertyAccess ("3");
-      Assert.That (CurrentPropertyManager.CurrentPropertyName, Is.EqualTo ("3"));
+      CurrentPropertyManager.PreparePropertyAccess("1");
+      Assert.That(CurrentPropertyManager.CurrentPropertyName, Is.EqualTo("1"));
+      CurrentPropertyManager.PreparePropertyAccess("2");
+      Assert.That(CurrentPropertyManager.CurrentPropertyName, Is.EqualTo("2"));
+      CurrentPropertyManager.PreparePropertyAccess("3");
+      Assert.That(CurrentPropertyManager.CurrentPropertyName, Is.EqualTo("3"));
 
-      CurrentPropertyManager.PropertyAccessFinished ();
-      Assert.That (CurrentPropertyManager.CurrentPropertyName, Is.EqualTo ("2"));
-      CurrentPropertyManager.PropertyAccessFinished ();
-      Assert.That (CurrentPropertyManager.CurrentPropertyName, Is.EqualTo ("1"));
-      CurrentPropertyManager.PropertyAccessFinished ();
-      Assert.That (CurrentPropertyManager.CurrentPropertyName, Is.Null);
+      CurrentPropertyManager.PropertyAccessFinished();
+      Assert.That(CurrentPropertyManager.CurrentPropertyName, Is.EqualTo("2"));
+      CurrentPropertyManager.PropertyAccessFinished();
+      Assert.That(CurrentPropertyManager.CurrentPropertyName, Is.EqualTo("1"));
+      CurrentPropertyManager.PropertyAccessFinished();
+      Assert.That(CurrentPropertyManager.CurrentPropertyName, Is.Null);
     }
 
     [Test]
-    public void GetAndCheckCurrentPropertyName()
+    public void GetAndCheckCurrentPropertyName ()
     {
-      CurrentPropertyManager.PreparePropertyAccess ("prop");
-      Assert.That (CurrentPropertyManager.GetAndCheckCurrentPropertyName (), Is.EqualTo ("prop"));
+      CurrentPropertyManager.PreparePropertyAccess("prop");
+      Assert.That(CurrentPropertyManager.GetAndCheckCurrentPropertyName(), Is.EqualTo("prop"));
     }
 
     [Test]
     public void GetAndCheckCurrentPropertyName_NoCurrentProperty ()
     {
-      Assert.That (
-          () => CurrentPropertyManager.GetAndCheckCurrentPropertyName (),
+      Assert.That(
+          () => CurrentPropertyManager.GetAndCheckCurrentPropertyName(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?"));
     }
   }

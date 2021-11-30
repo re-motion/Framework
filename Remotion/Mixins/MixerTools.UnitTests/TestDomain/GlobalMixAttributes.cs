@@ -18,4 +18,4 @@ using System;
 using Remotion.Mixins;
 using Remotion.Mixins.MixerTools.UnitTests.TestDomain;
 
-[assembly: Mix (typeof (TargetClassForGlobalMix), typeof (MixinForGlobalMix))]
+[assembly: Mix(typeof(TargetClassForGlobalMix), typeof(MixinForGlobalMix))]

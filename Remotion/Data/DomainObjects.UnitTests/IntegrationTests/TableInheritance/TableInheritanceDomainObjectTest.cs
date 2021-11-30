@@ -26,32 +26,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
   {
     public override void OneTimeSetUp ()
     {
-      base.OneTimeSetUp ();
-      SetDatabaseModifyable ();
+      base.OneTimeSetUp();
+      SetDatabaseModifyable();
     }
 
     [Test]
     public void OneToManyRelationToAbstractClass ()
     {
-      TIClient client = DomainObjectIDs.Client.GetObject<TIClient> ();
+      TIClient client = DomainObjectIDs.Client.GetObject<TIClient>();
 
       DomainObjectCollection assignedObjects = client.AssignedObjects;
 
-      Assert.That (assignedObjects.Count, Is.EqualTo (4));
-      Assert.That (assignedObjects[0].ID, Is.EqualTo (DomainObjectIDs.OrganizationalUnit));
-      Assert.That (assignedObjects[1].ID, Is.EqualTo (DomainObjectIDs.Person));
-      Assert.That (assignedObjects[2].ID, Is.EqualTo (DomainObjectIDs.PersonForUnidirectionalRelationTest));
-      Assert.That (assignedObjects[3].ID, Is.EqualTo (DomainObjectIDs.Customer));
+      Assert.That(assignedObjects.Count, Is.EqualTo(4));
+      Assert.That(assignedObjects[0].ID, Is.EqualTo(DomainObjectIDs.OrganizationalUnit));
+      Assert.That(assignedObjects[1].ID, Is.EqualTo(DomainObjectIDs.Person));
+      Assert.That(assignedObjects[2].ID, Is.EqualTo(DomainObjectIDs.PersonForUnidirectionalRelationTest));
+      Assert.That(assignedObjects[3].ID, Is.EqualTo(DomainObjectIDs.Customer));
     }
 
     [Test]
     public void SameIDInDifferentConcreteTables ()
     {
-      TIPerson person = new ObjectID(typeof (TIPerson), new Guid ("{B969AFCB-2CDA-45ff-8490-EB52A86D5464}")).GetObject<TIPerson> ();
-      Assert.That (
+      TIPerson person = new ObjectID(typeof(TIPerson), new Guid("{B969AFCB-2CDA-45ff-8490-EB52A86D5464}")).GetObject<TIPerson>();
+      Assert.That(
           () => person.HistoryEntries.EnsureDataComplete(),
           Throws.InstanceOf<PersistenceException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance.TIHistoryEntry.Owner' of the loaded DataContainer "
                   + "'TI_HistoryEntry|2c7fb7b3-eb16-43f9-bdde-b8b3f23a93d2|System.Guid' refers to ClassID 'TI_OrganizationalUnit', "
                   + "but the actual ClassID is 'TI_Person'."));
@@ -60,90 +60,90 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
     [Test]
     public void RelationsFromConcreteSingle ()
     {
-      TICustomer customer = DomainObjectIDs.Customer.GetObject<TICustomer> ();
-      Assert.That (customer.CreatedBy, Is.EqualTo ("UnitTests"));
-      Assert.That (customer.FirstName, Is.EqualTo ("Zaphod"));
-      Assert.That (customer.CustomerType, Is.EqualTo (CustomerType.Premium));
+      TICustomer customer = DomainObjectIDs.Customer.GetObject<TICustomer>();
+      Assert.That(customer.CreatedBy, Is.EqualTo("UnitTests"));
+      Assert.That(customer.FirstName, Is.EqualTo("Zaphod"));
+      Assert.That(customer.CustomerType, Is.EqualTo(CustomerType.Premium));
 
       TIRegion region = customer.Region;
-      Assert.That (region, Is.Not.Null);
-      Assert.That (region.ID, Is.EqualTo (DomainObjectIDs.Region));
+      Assert.That(region, Is.Not.Null);
+      Assert.That(region.ID, Is.EqualTo(DomainObjectIDs.Region));
 
       DomainObjectCollection orders = customer.Orders;
-      Assert.That (orders.Count, Is.EqualTo (1));
-      Assert.That (orders[0].ID, Is.EqualTo (DomainObjectIDs.Order));
+      Assert.That(orders.Count, Is.EqualTo(1));
+      Assert.That(orders[0].ID, Is.EqualTo(DomainObjectIDs.Order));
 
       DomainObjectCollection historyEntries = customer.HistoryEntries;
-      Assert.That (historyEntries.Count, Is.EqualTo (2));
-      Assert.That (historyEntries[0].ID, Is.EqualTo (DomainObjectIDs.HistoryEntry2));
-      Assert.That (historyEntries[1].ID, Is.EqualTo (DomainObjectIDs.HistoryEntry1));
+      Assert.That(historyEntries.Count, Is.EqualTo(2));
+      Assert.That(historyEntries[0].ID, Is.EqualTo(DomainObjectIDs.HistoryEntry2));
+      Assert.That(historyEntries[1].ID, Is.EqualTo(DomainObjectIDs.HistoryEntry1));
 
       TIClient client = customer.Client;
-      Assert.That (client.ID, Is.EqualTo (DomainObjectIDs.Client));
+      Assert.That(client.ID, Is.EqualTo(DomainObjectIDs.Client));
 
-      Assert.That (customer.AbstractClassesWithoutDerivations, Is.Empty);
+      Assert.That(customer.AbstractClassesWithoutDerivations, Is.Empty);
     }
 
     [Test]
     public void RelationsFromConcrete ()
     {
-      TIPerson person = DomainObjectIDs.Person.GetObject<TIPerson> ();
-      Assert.That (person.Client.ID, Is.EqualTo (DomainObjectIDs.Client));
-      Assert.That (person.HistoryEntries.Count, Is.EqualTo (1));
+      TIPerson person = DomainObjectIDs.Person.GetObject<TIPerson>();
+      Assert.That(person.Client.ID, Is.EqualTo(DomainObjectIDs.Client));
+      Assert.That(person.HistoryEntries.Count, Is.EqualTo(1));
     }
 
 
     [Test]
     public void OneToManyRelationToConcreteSingle ()
     {
-      TIRegion region = DomainObjectIDs.Region.GetObject<TIRegion> ();
-      Assert.That (region.Customers.Count, Is.EqualTo (1));
-      Assert.That (region.Customers[0].ID, Is.EqualTo (DomainObjectIDs.Customer));
+      TIRegion region = DomainObjectIDs.Region.GetObject<TIRegion>();
+      Assert.That(region.Customers.Count, Is.EqualTo(1));
+      Assert.That(region.Customers[0].ID, Is.EqualTo(DomainObjectIDs.Customer));
     }
 
     [Test]
     public void ManyToOneRelationToConcreteSingle ()
     {
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         TIOrder order = DomainObjectIDs.Order.GetObject<TIOrder>();
-        Assert.That (order.Customer.ID, Is.EqualTo (DomainObjectIDs.Customer));
+        Assert.That(order.Customer.ID, Is.EqualTo(DomainObjectIDs.Customer));
       }
     }
 
     [Test]
     public void ManyToOneRelationToAbstractClass ()
     {
-      TIHistoryEntry historyEntry = DomainObjectIDs.HistoryEntry1.GetObject<TIHistoryEntry> ();
-      Assert.That (historyEntry.Owner.ID, Is.EqualTo (DomainObjectIDs.Customer));
+      TIHistoryEntry historyEntry = DomainObjectIDs.HistoryEntry1.GetObject<TIHistoryEntry>();
+      Assert.That(historyEntry.Owner.ID, Is.EqualTo(DomainObjectIDs.Customer));
     }
 
     [Test]
     public void UpdateConcreteSingle ()
     {
-      TIRegion expectedNewRegion = TIRegion.NewObject ();
+      TIRegion expectedNewRegion = TIRegion.NewObject();
       expectedNewRegion.Name = "Wachau";
 
-      TICustomer expectedCustomer = DomainObjectIDs.Customer.GetObject<TICustomer> ();
+      TICustomer expectedCustomer = DomainObjectIDs.Customer.GetObject<TICustomer>();
       expectedCustomer.LastName = "NewLastName";
       expectedCustomer.Region = expectedNewRegion;
 
-      ClientTransactionScope.CurrentTransaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit();
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        TICustomer actualCustomer = expectedCustomer.ID.GetObject<TICustomer> ();
-        Assert.That (actualCustomer.LastName, Is.EqualTo ("NewLastName"));
-        Assert.That (actualCustomer.Region.ID, Is.EqualTo (expectedNewRegion.ID));
+        TICustomer actualCustomer = expectedCustomer.ID.GetObject<TICustomer>();
+        Assert.That(actualCustomer.LastName, Is.EqualTo("NewLastName"));
+        Assert.That(actualCustomer.Region.ID, Is.EqualTo(expectedNewRegion.ID));
       }
     }
 
     [Test]
     public void InsertConcreteSingle ()
     {
-      TICustomer expectedCustomer = TICustomer.NewObject ();
+      TICustomer expectedCustomer = TICustomer.NewObject();
       expectedCustomer.FirstName = "Franz";
       expectedCustomer.LastName = "Kameramann";
-      expectedCustomer.DateOfBirth = new DateTime (1950, 1, 3);
+      expectedCustomer.DateOfBirth = new DateTime(1950, 1, 3);
       expectedCustomer.CustomerType = CustomerType.Premium;
       expectedCustomer.CustomerSince = DateTime.Now;
 
@@ -154,34 +154,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
       expectedAddress.Country = "Österreich";
       expectedAddress.Person = expectedCustomer;
 
-      ClientTransactionScope.CurrentTransaction.Commit ();
+      ClientTransactionScope.CurrentTransaction.Commit();
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        TICustomer actualCustomer = expectedCustomer.ID.GetObject<TICustomer> ();
-        Assert.That (actualCustomer, Is.Not.Null);
-        Assert.That (actualCustomer.Address.ID, Is.EqualTo (expectedAddress.ID));
+        TICustomer actualCustomer = expectedCustomer.ID.GetObject<TICustomer>();
+        Assert.That(actualCustomer, Is.Not.Null);
+        Assert.That(actualCustomer.Address.ID, Is.EqualTo(expectedAddress.ID));
       }
     }
 
     [Test]
     public void DeleteConcreteSingle ()
     {
-      var customer = DomainObjectIDs.Customer.GetObject<TICustomer> ();
-      
-      
-      foreach (var historyEntry in customer.HistoryEntries.Clone ())
-        historyEntry.Delete ();
+      var customer = DomainObjectIDs.Customer.GetObject<TICustomer>();
 
-      customer.Delete ();
-      
 
-      ClientTransactionScope.CurrentTransaction.Commit ();
+      foreach (var historyEntry in customer.HistoryEntries.Clone())
+        historyEntry.Delete();
+
+      customer.Delete();
+
+
+      ClientTransactionScope.CurrentTransaction.Commit();
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         try
         {
-          DomainObjectIDs.Customer.GetObject<TICustomer> ();
-          Assert.Fail ("ObjectsNotFoundException was expected.");
+          DomainObjectIDs.Customer.GetObject<TICustomer>();
+          Assert.Fail("ObjectsNotFoundException was expected.");
         }
         catch (ObjectsNotFoundException)
         {

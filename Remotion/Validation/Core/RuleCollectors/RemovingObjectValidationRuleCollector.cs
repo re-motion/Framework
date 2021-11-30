@@ -30,7 +30,7 @@ namespace Remotion.Validation.RuleCollectors
   {
     public static RemovingObjectValidationRuleCollector Create<TValidatedType> (Type collectorType)
     {
-      return new RemovingObjectValidationRuleCollector (TypeAdapter.Create (typeof (TValidatedType)), collectorType);
+      return new RemovingObjectValidationRuleCollector(TypeAdapter.Create(typeof(TValidatedType)), collectorType);
     }
 
     public ITypeInformation ValidatedType { get; }
@@ -40,8 +40,8 @@ namespace Remotion.Validation.RuleCollectors
 
     public RemovingObjectValidationRuleCollector (ITypeInformation validatedType, Type collectorType)
     {
-      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
-      ArgumentUtility.CheckNotNull ("collectorType", collectorType); // TODO RM-5906: Add type check for IValidationRuleCollector
+      ArgumentUtility.CheckNotNull("validatedType", validatedType);
+      ArgumentUtility.CheckNotNull("collectorType", collectorType); // TODO RM-5906: Add type check for IValidationRuleCollector
 
       ValidatedType = validatedType;
       CollectorType = collectorType;
@@ -55,16 +55,16 @@ namespace Remotion.Validation.RuleCollectors
 
     public void RegisterValidator (Type validatorType, Type? collectorTypeToRemoveFrom, Func<IObjectValidator, bool>? validatorPredicate)
     {
-      ArgumentUtility.CheckNotNull ("validatorType", validatorType);
+      ArgumentUtility.CheckNotNull("validatorType", validatorType);
 
-      _registeredValidators.Add (new RemovingObjectValidatorRegistration (validatorType, collectorTypeToRemoveFrom, validatorPredicate, this));
+      _registeredValidators.Add(new RemovingObjectValidatorRegistration(validatorType, collectorTypeToRemoveFrom, validatorPredicate, this));
     }
 
     public override string ToString ()
     {
-      var sb = new StringBuilder (GetType().Name);
-      sb.Append (": ");
-      sb.Append (ValidatedType.GetFullNameSafe());
+      var sb = new StringBuilder(GetType().Name);
+      sb.Append(": ");
+      sb.Append(ValidatedType.GetFullNameSafe());
 
       return sb.ToString();
     }

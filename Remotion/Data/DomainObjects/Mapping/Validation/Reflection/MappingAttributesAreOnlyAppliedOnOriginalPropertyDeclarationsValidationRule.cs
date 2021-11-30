@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull ("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull ("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
+      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
 
       _nameResolver = nameResolver;
       _propertyMetadataProvider = propertyMetadataProvider;
@@ -44,13 +44,13 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       if (!classDefinition.IsClassTypeResolved)
-        throw new InvalidOperationException ("Class type of '" + classDefinition.ID + "' is not resolved.");
+        throw new InvalidOperationException("Class type of '" + classDefinition.ID + "' is not resolved.");
 
       bool isInheritanceRoot = classDefinition.BaseClass == null;
-      var propertyFinder = new AllMappingPropertiesFinder (
+      var propertyFinder = new AllMappingPropertiesFinder(
           classDefinition.ClassType,
           isInheritanceRoot,
           true,
@@ -59,20 +59,20 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
           _propertyMetadataProvider);
       var propertyInfos = propertyFinder.FindPropertyInfos();
 
-      return from IPropertyInformation propertyInfo in propertyInfos 
-             select Validate (propertyInfo);
+      return from IPropertyInformation propertyInfo in propertyInfos
+             select Validate(propertyInfo);
     }
 
     private MappingValidationResult Validate (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
       if (! propertyInfo.IsOriginalDeclaration())
       {
-        var mappingAttributes = propertyInfo.GetCustomAttributes<IMappingAttribute> (false);
+        var mappingAttributes = propertyInfo.GetCustomAttributes<IMappingAttribute>(false);
         if (mappingAttributes.Any())
         {
-          return MappingValidationResult.CreateInvalidResultForProperty (
+          return MappingValidationResult.CreateInvalidResultForProperty(
               propertyInfo,
               "The '{0}' is a mapping attribute and may only be applied at the property's base definition.",
               mappingAttributes[0].GetType().Name);

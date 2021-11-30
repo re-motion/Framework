@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestPageParameter CreateValidationErrorTests ()
     {
-      return new GenericTestPageParameter (
+      return new GenericTestPageParameter(
           TestConstants.ValidationErrorTestsID,
           TestConstants.ValidateButtonHtmlID,
           TestConstants.CustomValidatedControlInFormGridHtmlID,
@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestPageParameter CreateLabelTests ()
     {
-      return new GenericTestPageParameter (
+      return new GenericTestPageParameter(
           TestConstants.LabelTestsID,
           TestConstants.ControlInFormGridHtmlID,
           TestConstants.ReadonlyControlInFormGridHtmlID,
@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestPageParameter CreateReadOnlyTests ()
     {
-      return new GenericTestPageParameter (
+      return new GenericTestPageParameter(
           TestConstants.ReadOnlyTestsID,
           TestConstants.VisibleHtmlID,
           TestConstants.ReadOnlyControlHtmlID);

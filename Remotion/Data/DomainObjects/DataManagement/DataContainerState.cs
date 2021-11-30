@@ -36,32 +36,32 @@ namespace Remotion.Data.DomainObjects.DataManagement
       private Builder (Flags flags) => _flags = flags;
 
       /// <summary>Gets the newly constructed <see cref="DataContainerState"/>.</summary>
-      public DataContainerState Value => new DataContainerState (_flags);
+      public DataContainerState Value => new DataContainerState(_flags);
 
       /// <summary>Sets <see cref="DataContainerState"/>.<see cref="DataContainerState.IsUnchanged"/></summary>
       [MustUseReturnValue]
-      public Builder SetUnchanged () => SetFlag (Flags.Unchanged);
+      public Builder SetUnchanged () => SetFlag(Flags.Unchanged);
 
       /// <summary>Sets <see cref="DataContainerState"/>.<see cref="DataContainerState.IsChanged"/></summary>
       [MustUseReturnValue]
-      public Builder SetChanged () => SetFlag (Flags.Changed);
+      public Builder SetChanged () => SetFlag(Flags.Changed);
 
       /// <summary>Sets <see cref="DataContainerState"/>.<see cref="DataContainerState.IsNew"/></summary>
       [MustUseReturnValue]
-      public Builder SetNew () => SetFlag (Flags.New);
+      public Builder SetNew () => SetFlag(Flags.New);
 
       /// <summary>Sets <see cref="DataContainerState"/>.<see cref="DataContainerState.IsDeleted"/></summary>
       [MustUseReturnValue]
-      public Builder SetDeleted () => SetFlag (Flags.Deleted);
+      public Builder SetDeleted () => SetFlag(Flags.Deleted);
 
       /// <summary>Sets <see cref="DataContainerState"/>.<see cref="DataContainerState.IsDiscarded"/></summary>
       [MustUseReturnValue]
-      public Builder SetDiscarded () => SetFlag (Flags.Discarded);
+      public Builder SetDiscarded () => SetFlag(Flags.Discarded);
 
       private Builder SetFlag (Flags flag)
       {
         _flags |= flag;
-        return new Builder (_flags);
+        return new Builder(_flags);
       }
     }
 
@@ -94,6 +94,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// </summary>
     public bool IsDiscarded => (_flags & Flags.Discarded) != 0;
 
-    public override string ToString () => nameof (DataContainerState) + " (" + _flags + ")";
+    public override string ToString () => nameof(DataContainerState) + " (" + _flags + ")";
   }
 }

@@ -30,61 +30,61 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _orderClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order));
-      _orderOrderTicketEndPoint = VirtualObjectRelationEndPointDefinitionFactory.Create (
+      _orderClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order));
+      _orderOrderTicketEndPoint = VirtualObjectRelationEndPointDefinitionFactory.Create(
           _orderClassDefinition,
           "OrderTicket",
           false,
-          typeof (OrderTicket));
+          typeof(OrderTicket));
 
     }
 
     [Test]
     public void InitializeWithPropertyType ()
     {
-      var classDefinition = CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses ();
+      var classDefinition = CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses();
       var endPoint = VirtualObjectRelationEndPointDefinitionFactory.Create(
           classDefinition,
           "VirtualEndPoint",
           true,
           typeof(OrderItem));
 
-      Assert.That (endPoint.PropertyInfo.PropertyType, Is.SameAs (typeof (OrderItem)));
+      Assert.That(endPoint.PropertyInfo.PropertyType, Is.SameAs(typeof(OrderItem)));
     }
 
     [Test]
     public void IsAnonymous ()
     {
-      Assert.That (_orderOrderTicketEndPoint.IsAnonymous, Is.False);
+      Assert.That(_orderOrderTicketEndPoint.IsAnonymous, Is.False);
     }
 
     [Test]
     public void RelationDefinition_Null ()
     {
-      Assert.That (_orderOrderTicketEndPoint.RelationDefinition, Is.Null);
+      Assert.That(_orderOrderTicketEndPoint.RelationDefinition, Is.Null);
     }
 
     [Test]
     public void RelationDefinition_NonNull ()
     {
-      _orderOrderTicketEndPoint.SetRelationDefinition (new RelationDefinition ("Test", _orderOrderTicketEndPoint, _orderOrderTicketEndPoint));
-      Assert.That (_orderOrderTicketEndPoint.RelationDefinition, Is.Not.Null);
+      _orderOrderTicketEndPoint.SetRelationDefinition(new RelationDefinition("Test", _orderOrderTicketEndPoint, _orderOrderTicketEndPoint));
+      Assert.That(_orderOrderTicketEndPoint.RelationDefinition, Is.Not.Null);
     }
 
     [Test]
     public void PropertyInfo ()
     {
-      ClassDefinition employeeClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Employee));
+      ClassDefinition employeeClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Employee));
       VirtualObjectRelationEndPointDefinition relationEndPointDefinition =
-          (VirtualObjectRelationEndPointDefinition) employeeClassDefinition.GetRelationEndPointDefinition (typeof (Employee) + ".Computer");
-      Assert.That (relationEndPointDefinition.PropertyInfo, Is.EqualTo (PropertyInfoAdapter.Create(typeof (Employee).GetProperty ("Computer"))));
+          (VirtualObjectRelationEndPointDefinition)employeeClassDefinition.GetRelationEndPointDefinition(typeof(Employee) + ".Computer");
+      Assert.That(relationEndPointDefinition.PropertyInfo, Is.EqualTo(PropertyInfoAdapter.Create(typeof(Employee).GetProperty("Computer"))));
     }
 
     private static ClassDefinition CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses ()
     {
-      return ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses ("Order", classType: typeof (Order));
+      return ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("Order", classType: typeof(Order));
     }
   }
 }

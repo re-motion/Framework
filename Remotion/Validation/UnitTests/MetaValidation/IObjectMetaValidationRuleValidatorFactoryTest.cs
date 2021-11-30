@@ -37,17 +37,17 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     {
       var factory = _serviceLocator.GetInstance<IObjectMetaValidationRuleValidatorFactory>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (ObjectMetaValidationRuleValidatorFactory)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(ObjectMetaValidationRuleValidatorFactory)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IObjectMetaValidationRuleValidatorFactory> ();
-      var factory2 = _serviceLocator.GetInstance<IObjectMetaValidationRuleValidatorFactory> ();
-      
-      Assert.That (factory1, Is.SameAs(factory2));
-    } 
+      var factory1 = _serviceLocator.GetInstance<IObjectMetaValidationRuleValidatorFactory>();
+      var factory2 = _serviceLocator.GetInstance<IObjectMetaValidationRuleValidatorFactory>();
+
+      Assert.That(factory1, Is.SameAs(factory2));
+    }
   }
 }

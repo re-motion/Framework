@@ -27,7 +27,7 @@ using Remotion.Web.UI.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes
 {
-  public abstract class BasePage : WxePage, IObjectWithResources 
+  public abstract class BasePage : WxePage, IObjectWithResources
   {
     // types
     private const string c_globalStyleFileUrl = "Style.css";
@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     public new BaseTransactedFunction CurrentFunction
     {
-      get { return (BaseTransactedFunction) base.CurrentFunction; }
+      get { return (BaseTransactedFunction)base.CurrentFunction; }
     }
 
     protected virtual IFocusableControl InitialFocusControl
@@ -53,44 +53,44 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
-      RegisterStyleSheets ();
+      RegisterStyleSheets();
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
+      ResourceDispatcher.Dispatch(this, ResourceManagerUtility.GetResourceManager(this));
 
       if (!IsPostBack && InitialFocusControl != null)
-        SetFocus (InitialFocusControl);
+        SetFocus(InitialFocusControl);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     private void RegisterStyleSheets ()
     {
-      var globalStyleFileUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BasePage), ResourceType.Html, c_globalStyleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink (c_globalStyleFileKey, globalStyleFileUrl, HtmlHeadAppender.Priority.Library);
+      var globalStyleFileUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(BasePage), ResourceType.Html, c_globalStyleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink(c_globalStyleFileKey, globalStyleFileUrl, HtmlHeadAppender.Priority.Library);
 
-      HtmlHeadAppender.Current.RegisterPageStylesheetLink ();
+      HtmlHeadAppender.Current.RegisterPageStylesheetLink();
     }
 
     IResourceManager IObjectWithResources.GetResourceManager ()
     {
-      return this.GetResourceManager ();
+      return this.GetResourceManager();
     }
 
     protected virtual IResourceManager GetResourceManager ()
     {
-      Type type = this.GetType ();
+      Type type = this.GetType();
 
-      return GlobalizationService.GetResourceManager (type);
+      return GlobalizationService.GetResourceManager(type);
     }
 
     protected IResourceUrlFactory ResourceUrlFactory
     {
-      get { return ServiceLocator.GetInstance<IResourceUrlFactory> (); }
+      get { return ServiceLocator.GetInstance<IResourceUrlFactory>(); }
     }
 
     protected IGlobalizationService GlobalizationService

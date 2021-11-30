@@ -27,28 +27,28 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
   public class InvalidDomainObjectManager : IInvalidDomainObjectManager
   {
     private readonly IClientTransactionEventSink _transactionEventSink;
-    private readonly Dictionary<ObjectID, DomainObject> _invalidObjects = new Dictionary<ObjectID, DomainObject> ();
+    private readonly Dictionary<ObjectID, DomainObject> _invalidObjects = new Dictionary<ObjectID, DomainObject>();
 
     public InvalidDomainObjectManager (IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
       _transactionEventSink = transactionEventSink;
     }
 
-    public InvalidDomainObjectManager (IClientTransactionEventSink transactionEventSink, IEnumerable<DomainObject> invalidObjects) 
-        : this (transactionEventSink)
+    public InvalidDomainObjectManager (IClientTransactionEventSink transactionEventSink, IEnumerable<DomainObject> invalidObjects)
+        : this(transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull ("invalidObjects", invalidObjects);
+      ArgumentUtility.CheckNotNull("invalidObjects", invalidObjects);
 
       foreach (var domainObject in invalidObjects)
       {
         try
         {
-          _invalidObjects.Add (domainObject.ID, domainObject);
+          _invalidObjects.Add(domainObject.ID, domainObject);
         }
         catch (ArgumentException ex)
         {
-          throw new ArgumentException ("The sequence contains multiple different objects with the same ID.", "invalidObjects", ex);
+          throw new ArgumentException("The sequence contains multiple different objects with the same ID.", "invalidObjects", ex);
         }
       }
     }
@@ -70,51 +70,51 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
 
     public bool IsInvalid (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
-      return _invalidObjects.ContainsKey (id);
+      ArgumentUtility.CheckNotNull("id", id);
+      return _invalidObjects.ContainsKey(id);
     }
 
     public DomainObject GetInvalidObjectReference (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull("id", id);
 
       DomainObject invalidDomainObject;
-      if (!_invalidObjects.TryGetValue (id, out invalidDomainObject))
-        throw new ArgumentException (String.Format ("The object '{0}' has not been marked invalid.", id), "id");
+      if (!_invalidObjects.TryGetValue(id, out invalidDomainObject))
+        throw new ArgumentException(String.Format("The object '{0}' has not been marked invalid.", id), "id");
       else
         return invalidDomainObject;
     }
 
     public bool MarkInvalid (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      
-      if (IsInvalid (domainObject.ID))
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+
+      if (IsInvalid(domainObject.ID))
       {
-        if (GetInvalidObjectReference (domainObject.ID) != domainObject)
+        if (GetInvalidObjectReference(domainObject.ID) != domainObject)
         {
-          var message = string.Format ("Cannot mark the given object invalid, another object with the same ID '{0}' has already been marked.", domainObject.ID);
-          throw new InvalidOperationException (message);
+          var message = string.Format("Cannot mark the given object invalid, another object with the same ID '{0}' has already been marked.", domainObject.ID);
+          throw new InvalidOperationException(message);
         }
 
         return false;
       }
 
-      _invalidObjects.Add (domainObject.ID, domainObject);
-      _transactionEventSink.RaiseObjectMarkedInvalidEvent (domainObject);
+      _invalidObjects.Add(domainObject.ID, domainObject);
+      _transactionEventSink.RaiseObjectMarkedInvalidEvent(domainObject);
       return true;
     }
 
     public bool MarkNotInvalid (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
       DomainObject domainObject;
-      if (!_invalidObjects.TryGetValue (objectID, out domainObject))
+      if (!_invalidObjects.TryGetValue(objectID, out domainObject))
         return false;
 
-      _invalidObjects.Remove (objectID);
-      _transactionEventSink.RaiseObjectMarkedNotInvalidEvent (domainObject);
+      _invalidObjects.Remove(objectID);
+      _transactionEventSink.RaiseObjectMarkedNotInvalidEvent(domainObject);
       return true;
     }
   }

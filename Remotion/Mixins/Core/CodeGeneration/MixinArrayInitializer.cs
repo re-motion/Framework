@@ -37,8 +37,8 @@ namespace Remotion.Mixins.CodeGeneration
     /// <param name="expectedMixinTypes">The expected mixin types. For derived mixins, these contain the concrete mixed types.</param>
     public MixinArrayInitializer (Type targetType, Type[] expectedMixinTypes)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("expectedMixinTypes", expectedMixinTypes);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull("expectedMixinTypes", expectedMixinTypes);
 
       _targetType = targetType;
       _expectedMixinTypes = expectedMixinTypes;
@@ -46,15 +46,15 @@ namespace Remotion.Mixins.CodeGeneration
 
     public void CheckMixinArray (object[] mixins)
     {
-      ArgumentUtility.CheckNotNull ("mixins", mixins);
+      ArgumentUtility.CheckNotNull("mixins", mixins);
 
       if (mixins.Length != _expectedMixinTypes.Length)
         throw CreateInvalidMixinArrayException(mixins);
 
       for (int i = 0; i < mixins.Length; ++i)
       {
-        if (!_expectedMixinTypes[i].IsAssignableFrom (mixins[i].GetType()))
-          throw CreateInvalidMixinArrayException (mixins);
+        if (!_expectedMixinTypes[i].IsAssignableFrom(mixins[i].GetType()))
+          throw CreateInvalidMixinArrayException(mixins);
       }
     }
 
@@ -62,12 +62,12 @@ namespace Remotion.Mixins.CodeGeneration
     {
       var mixins = new object[_expectedMixinTypes.Length];
 
-      FillInSuppliedMixins (mixins, suppliedMixins);
+      FillInSuppliedMixins(mixins, suppliedMixins);
 
       for (int i = 0; i < mixins.Length; i++)
       {
         if (mixins[i] == null)
-          mixins[i] = CreateMixin (_expectedMixinTypes[i]);
+          mixins[i] = CreateMixin(_expectedMixinTypes[i]);
       }
       return mixins;
     }
@@ -81,24 +81,24 @@ namespace Remotion.Mixins.CodeGeneration
       // We assume that m and especially n are very small.
       foreach (var suppliedMixin in suppliedMixins)
       {
-        int index = GetSuppliedMixinIndex (suppliedMixin);
+        int index = GetSuppliedMixinIndex(suppliedMixin);
         if (index == -1)
         {
-          string message = string.Format (
+          string message = string.Format(
               "The supplied mixin of type '{0}' is not valid for target type '{1}' in the current configuration.",
-              suppliedMixin.GetType (),
+              suppliedMixin.GetType(),
               _targetType);
-          throw new InvalidOperationException (message);
+          throw new InvalidOperationException(message);
         }
         else
         {
           if (targetArray[index] != null)
           {
-            var message = string.Format (
+            var message = string.Format(
                 "Two mixins were supplied that would match the expected mixin type '{0}' on target class '{1}'.",
                 _expectedMixinTypes[index],
                 _targetType);
-            throw new InvalidOperationException (message);
+            throw new InvalidOperationException(message);
           }
 
           targetArray[index] = suppliedMixin;
@@ -108,24 +108,24 @@ namespace Remotion.Mixins.CodeGeneration
 
     private int GetSuppliedMixinIndex (object suppliedMixin)
     {
-      var suppliedMixinType = suppliedMixin.GetType ();
+      var suppliedMixinType = suppliedMixin.GetType();
 
       for (int index = 0; index < _expectedMixinTypes.Length; ++index)
       {
         var expectedMixinType = _expectedMixinTypes[index];
-        if (expectedMixinType.IsAssignableFrom (suppliedMixinType))
+        if (expectedMixinType.IsAssignableFrom(suppliedMixinType))
         {
           return index;
         }
         // TODO RM-7816: expectedMixinType should be constrained to types with a base type.
-        else if (expectedMixinType.BaseType!.IsAssignableFrom (suppliedMixinType) && MixinTypeUtility.IsGeneratedByMixinEngine (expectedMixinType))
+        else if (expectedMixinType.BaseType!.IsAssignableFrom(suppliedMixinType) && MixinTypeUtility.IsGeneratedByMixinEngine(expectedMixinType))
         {
-          var message = string.Format (
+          var message = string.Format(
               "A mixin was supplied that would match the expected mixin type '{0}' on target class '{1}'. However, a derived type must be "
               + "generated for that mixin type, so the supplied instance cannot be used.",
               expectedMixinType.BaseType,
               _targetType);
-          throw new InvalidOperationException (message);
+          throw new InvalidOperationException(message);
         }
       }
 
@@ -137,34 +137,34 @@ namespace Remotion.Mixins.CodeGeneration
       // TODO RM-7815: Check if ValueType mixins are sensibly supportable.
       if (mixinType.IsValueType)
       {
-        return Activator.CreateInstance (mixinType)!; // there's always a public constructor for value types
+        return Activator.CreateInstance(mixinType)!; // there's always a public constructor for value types
       }
       else
       {
         try
         {
-          return ObjectFactory.Create (mixinType, ParamList.Empty);
+          return ObjectFactory.Create(mixinType, ParamList.Empty);
         }
         catch (MissingMethodException ex)
         {
-          string message = string.Format (
+          string message = string.Format(
               "Cannot instantiate mixin '{0}' applied to class '{1}', there is no visible default constructor.",
               mixinType,
               _targetType);
-          throw new MissingMethodException (message, ex);
+          throw new MissingMethodException(message, ex);
         }
       }
     }
 
     private InvalidOperationException CreateInvalidMixinArrayException (object[] mixins)
     {
-      var expectedMixinTypes = string.Join (", ", (IEnumerable<Type>) _expectedMixinTypes);
-      var givenMixinTypes = String.Join ((string) ", ", (IEnumerable<string>) mixins.Select (mixin => mixin.GetType ().ToString ()));
-      var message = string.Format (
+      var expectedMixinTypes = string.Join(", ", (IEnumerable<Type>)_expectedMixinTypes);
+      var givenMixinTypes = String.Join((string)", ", (IEnumerable<string>)mixins.Select(mixin => mixin.GetType().ToString()));
+      var message = string.Format(
           "Invalid mixin instances supplied. Expected the following mixin types (in this order): ('{0}'). The given types were: ('{1}').",
           expectedMixinTypes,
           givenMixinTypes);
-      return new InvalidOperationException (message);
+      return new InvalidOperationException(message);
     }
   }
 }

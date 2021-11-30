@@ -44,17 +44,17 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       base.SetUp();
 
       _bindableObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
-      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute> (_bindableObjectProvider);
-      BusinessObjectProvider.SetProvider<BindableObjectWithIdentityProviderAttribute> (_bindableObjectProvider);
-      _bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (SimpleBusinessObjectClass));
+      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute>(_bindableObjectProvider);
+      BusinessObjectProvider.SetProvider<BindableObjectWithIdentityProviderAttribute>(_bindableObjectProvider);
+      _bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(SimpleBusinessObjectClass));
     }
 
     [Test]
     public void Initialize ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Scalar");
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
@@ -62,22 +62,22 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isRequired: true,
               isReadOnly: true));
 
-      Assert.That (propertyBase.PropertyInfo, Is.SameAs (propertyInfo));
-      Assert.That (propertyBase.PropertyType, Is.SameAs (propertyInfo.PropertyType));
-      Assert.That (propertyBase.IsRequired, Is.True);
-      Assert.That (propertyBase.IsReadOnly (null), Is.True);
-      Assert.That (propertyBase.BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
-      Assert.That (((IBusinessObjectProperty) propertyBase).BusinessObjectProvider, Is.SameAs (_bindableObjectProvider));
+      Assert.That(propertyBase.PropertyInfo, Is.SameAs(propertyInfo));
+      Assert.That(propertyBase.PropertyType, Is.SameAs(propertyInfo.PropertyType));
+      Assert.That(propertyBase.IsRequired, Is.True);
+      Assert.That(propertyBase.IsReadOnly(null), Is.True);
+      Assert.That(propertyBase.BusinessObjectProvider, Is.SameAs(_bindableObjectProvider));
+      Assert.That(((IBusinessObjectProperty)propertyBase).BusinessObjectProvider, Is.SameAs(_bindableObjectProvider));
     }
 
     [Test]
     public void Initialize_IndexedProperty ()
     {
       IPropertyInformation propertyInfo =
-          PropertyInfoAdapter.Create (typeof (ClassWithReferenceType<SimpleReferenceType>).GetProperty ("Item", new[] { typeof (int) }));
-      Assert.That (
-          () => new StubPropertyBase (
-          CreateParameters (
+          PropertyInfoAdapter.Create(typeof(ClassWithReferenceType<SimpleReferenceType>).GetProperty("Item", new[] { typeof(int) }));
+      Assert.That(
+          () => new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
@@ -85,15 +85,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isRequired: true,
               isReadOnly: true)),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("Indexed properties are not supported."));
+              .With.Message.EqualTo("Indexed properties are not supported."));
     }
 
     [Test]
     public void GetValue ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Scalar");
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
@@ -101,20 +101,20 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isRequired: true,
               isReadOnly: true));
 
-      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
 
       var value = new SimpleReferenceType();
       instance.Scalar = value;
 
-      Assert.That (propertyBase.GetValue (((IBusinessObject) instance)), Is.SameAs (value));
+      Assert.That(propertyBase.GetValue(((IBusinessObject)instance)), Is.SameAs(value));
     }
 
     [Test]
     public void GetValue_WithPrivatAccessor ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "PrivateProperty");
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "PrivateProperty");
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
@@ -122,23 +122,23 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isRequired: true,
               isReadOnly: true));
 
-      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
 
       var value = new SimpleReferenceType();
-      PrivateInvoke.SetNonPublicProperty (instance, "PrivateProperty", value);
+      PrivateInvoke.SetNonPublicProperty(instance, "PrivateProperty", value);
 
-      Assert.That (propertyBase.GetValue (((IBusinessObject) instance)), Is.SameAs (value));
+      Assert.That(propertyBase.GetValue(((IBusinessObject)instance)), Is.SameAs(value));
     }
 
     [Test]
     public void GetValue_NoGetter ()
     {
       var propertyInfo = new Mock<IPropertyInformation>();
-      propertyInfo.Setup (stub => stub.PropertyType).Returns (typeof (bool));
-      propertyInfo.Setup (stub => stub.GetIndexParameters()).Returns (new ParameterInfo[0]);
-      propertyInfo.Setup (stub => stub.GetSetMethod (true)).Returns ((IMethodInformation) null);
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      propertyInfo.Setup(stub => stub.PropertyType).Returns(typeof(bool));
+      propertyInfo.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
+      propertyInfo.Setup(stub => stub.GetSetMethod(true)).Returns((IMethodInformation)null);
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo.Object,
               underlyingType: propertyInfo.Object.PropertyType,
               concreteType: propertyInfo.Object.PropertyType,
@@ -146,11 +146,11 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isRequired: true,
               isReadOnly: true));
 
-      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
-      Assert.That (
-          () => propertyBase.GetValue (((IBusinessObject) instance)),
+      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
+      Assert.That(
+          () => propertyBase.GetValue(((IBusinessObject)instance)),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("Property has no getter."));
+              .With.Message.EqualTo("Property has no getter."));
     }
 
     [Test]
@@ -158,78 +158,78 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var bindablePropertyReadAccessStrategyStub = new Mock<IBindablePropertyReadAccessStrategy>();
 
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
               listInfo: null,
               bindablePropertyReadAccessStrategy: bindablePropertyReadAccessStrategyStub.Object));
 
-      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
 
-      var originalException = new Exception ("The Exception");
-      var expectedException = new BusinessObjectPropertyAccessException ("The Message", null);
+      var originalException = new Exception("The Exception");
+      var expectedException = new BusinessObjectPropertyAccessException("The Message", null);
       bindablePropertyReadAccessStrategyStub
-          .Setup (
-              mock => mock.IsPropertyAccessException (
-                  (IBusinessObject) instance,
+          .Setup(
+              mock => mock.IsPropertyAccessException(
+                  (IBusinessObject)instance,
                   propertyBase,
                   originalException,
                   out expectedException))
-          .Returns (true);
+          .Returns(true);
 
-      instance.PrepareException (originalException);
+      instance.PrepareException(originalException);
 
-      var actualException = Assert.Throws<BusinessObjectPropertyAccessException> (() => propertyBase.GetValue (((IBusinessObject) instance)));
-      Assert.That (actualException, Is.SameAs (expectedException));
+      var actualException = Assert.Throws<BusinessObjectPropertyAccessException>(() => propertyBase.GetValue(((IBusinessObject)instance)));
+      Assert.That(actualException, Is.SameAs(expectedException));
     }
 
     [Test]
     public void GetValue_WithExceptionNotHandledByPropertyAccessStrategy_RethrowsOriginalException ()
     {
       var bindablePropertyReadAccessStrategyStub = new Mock<IBindablePropertyReadAccessStrategy>();
-      var expectedException = new BusinessObjectPropertyAccessException ("Unexpected", null);
+      var expectedException = new BusinessObjectPropertyAccessException("Unexpected", null);
 
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
               listInfo: null,
               bindablePropertyReadAccessStrategy: bindablePropertyReadAccessStrategyStub.Object));
 
-      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
 
-      var originalException = new Exception ("The Exception");
+      var originalException = new Exception("The Exception");
       bindablePropertyReadAccessStrategyStub
-          .Setup (
-              mock => mock.IsPropertyAccessException (
-                  (IBusinessObject) instance,
+          .Setup(
+              mock => mock.IsPropertyAccessException(
+                  (IBusinessObject)instance,
                   propertyBase,
                   originalException,
                   out expectedException))
-          .Returns (false);
+          .Returns(false);
 
-      instance.PrepareException (originalException);
+      instance.PrepareException(originalException);
 
-      var actualException = Assert.Throws<Exception> (() => propertyBase.GetValue (((IBusinessObject) instance)));
-      Assert.That (actualException, Is.SameAs (originalException));
+      var actualException = Assert.Throws<Exception>(() => propertyBase.GetValue(((IBusinessObject)instance)));
+      Assert.That(actualException, Is.SameAs(originalException));
 #if DEBUG
-      Assert.That (
+      Assert.That(
           originalException.StackTrace,
-          Does.StartWith ("   at Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithReferenceType`1.get_ThrowingProperty()"));
+          Does.StartWith("   at Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithReferenceType`1.get_ThrowingProperty()"));
 #endif
     }
 
     [Test]
     public void SetValue ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Scalar");
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
@@ -237,20 +237,20 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isRequired: true,
               isReadOnly: true));
 
-      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
 
       var value = new SimpleReferenceType();
-      propertyBase.SetValue ((IBusinessObject) instance, value);
+      propertyBase.SetValue((IBusinessObject)instance, value);
 
-      Assert.That (instance.Scalar, Is.SameAs (value));
+      Assert.That(instance.Scalar, Is.SameAs(value));
     }
 
     [Test]
     public void SetValue_PrivateAccessor ()
     {
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "PrivateProperty");
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "PrivateProperty");
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
@@ -258,23 +258,23 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isRequired: true,
               isReadOnly: true));
 
-      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
 
       var value = new SimpleReferenceType();
-      propertyBase.SetValue ((IBusinessObject) instance, value);
+      propertyBase.SetValue((IBusinessObject)instance, value);
 
-      Assert.That (PrivateInvoke.GetNonPublicProperty (instance, "PrivateProperty"), Is.SameAs (value));
+      Assert.That(PrivateInvoke.GetNonPublicProperty(instance, "PrivateProperty"), Is.SameAs(value));
     }
 
     [Test]
     public void GetValue_NoSetter ()
     {
       var propertyInfo = new Mock<IPropertyInformation>();
-      propertyInfo.Setup (stub => stub.PropertyType).Returns (typeof (bool));
-      propertyInfo.Setup (stub => stub.GetIndexParameters()).Returns (new ParameterInfo[0]);
-      propertyInfo.Setup (stub => stub.GetSetMethod (true)).Returns ((IMethodInformation) null);
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      propertyInfo.Setup(stub => stub.PropertyType).Returns(typeof(bool));
+      propertyInfo.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
+      propertyInfo.Setup(stub => stub.GetSetMethod(true)).Returns((IMethodInformation)null);
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo.Object,
               underlyingType: propertyInfo.Object.PropertyType,
               concreteType: propertyInfo.Object.PropertyType,
@@ -282,11 +282,11 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isRequired: true,
               isReadOnly: true));
 
-      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
-      Assert.That (
-          () => propertyBase.SetValue (((IBusinessObject) instance), new object()),
+      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
+      Assert.That(
+          () => propertyBase.SetValue(((IBusinessObject)instance), new object()),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("Property has no setter."));
+              .With.Message.EqualTo("Property has no setter."));
     }
 
     [Test]
@@ -294,104 +294,104 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var bindablePropertyWriteAccessStrategyStub = new Mock<IBindablePropertyWriteAccessStrategy>();
 
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
               listInfo: null,
               bindablePropertyWriteAccessStrategy: bindablePropertyWriteAccessStrategyStub.Object));
 
-      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
 
-      var originalException = new Exception ("The Exception");
-      var expectedException = new BusinessObjectPropertyAccessException ("The Message", null);
+      var originalException = new Exception("The Exception");
+      var expectedException = new BusinessObjectPropertyAccessException("The Message", null);
       bindablePropertyWriteAccessStrategyStub
-          .Setup (
-              mock => mock.IsPropertyAccessException (
-                  (IBusinessObject) instance,
+          .Setup(
+              mock => mock.IsPropertyAccessException(
+                  (IBusinessObject)instance,
                   propertyBase,
                   originalException,
                   out expectedException))
-          .Returns (true);
+          .Returns(true);
 
-      instance.PrepareException (originalException);
+      instance.PrepareException(originalException);
 
       var actualException =
-          Assert.Throws<BusinessObjectPropertyAccessException> (() => propertyBase.SetValue ((IBusinessObject) instance, new SimpleReferenceType()));
-      Assert.That (actualException, Is.SameAs (expectedException));
+          Assert.Throws<BusinessObjectPropertyAccessException>(() => propertyBase.SetValue((IBusinessObject)instance, new SimpleReferenceType()));
+      Assert.That(actualException, Is.SameAs(expectedException));
     }
 
     [Test]
     public void SetValue_WithExceptionNotHandledByPropertyAccessStrategy_RethrowsOriginalException ()
     {
       var bindablePropertyWriteAccessStrategyStub = new Mock<IBindablePropertyWriteAccessStrategy>();
-      var expectedException = new BusinessObjectPropertyAccessException ("Unexpected", null);
+      var expectedException = new BusinessObjectPropertyAccessException("Unexpected", null);
 
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
               listInfo: null,
               bindablePropertyWriteAccessStrategy: bindablePropertyWriteAccessStrategyStub.Object));
 
-      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
 
-      var originalException = new Exception ("The Exception");
+      var originalException = new Exception("The Exception");
       bindablePropertyWriteAccessStrategyStub
-          .Setup (
-              mock => mock.IsPropertyAccessException (
-                  (IBusinessObject) instance,
+          .Setup(
+              mock => mock.IsPropertyAccessException(
+                  (IBusinessObject)instance,
                   propertyBase,
                   originalException,
                   out expectedException))
-          .Returns (false);
+          .Returns(false);
 
-      instance.PrepareException (originalException);
+      instance.PrepareException(originalException);
 
-      var actualException = Assert.Throws<Exception> (() => propertyBase.SetValue ((IBusinessObject) instance, new SimpleReferenceType()));
-      Assert.That (actualException, Is.SameAs (originalException));
+      var actualException = Assert.Throws<Exception>(() => propertyBase.SetValue((IBusinessObject)instance, new SimpleReferenceType()));
+      Assert.That(actualException, Is.SameAs(originalException));
 #if DEBUG
-      Assert.That (
+      Assert.That(
           originalException.StackTrace,
-          Does.StartWith ("   at Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithReferenceType`1.set_ThrowingProperty(T value)"));
+          Does.StartWith("   at Remotion.ObjectBinding.UnitTests.TestDomain.ClassWithReferenceType`1.set_ThrowingProperty(T value)"));
 #endif
     }
-   
+
     [Test]
     public void IsAccessible_ReturnsValueFromStrategy ()
     {
       var bindablePropertyReadAccessStrategyMock = new Mock<IBindablePropertyReadAccessStrategy>();
 
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
               listInfo: null,
               bindablePropertyReadAccessStrategy: bindablePropertyReadAccessStrategyMock.Object));
 
-      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
 
       var expectedValue = BooleanObjectMother.GetRandomBoolean();
-      bindablePropertyReadAccessStrategyMock.Setup (mock => mock.CanRead ((IBusinessObject) instance, propertyBase)).Returns (expectedValue).Verifiable();
+      bindablePropertyReadAccessStrategyMock.Setup(mock => mock.CanRead((IBusinessObject)instance, propertyBase)).Returns(expectedValue).Verifiable();
 
-      Assert.That (propertyBase.IsAccessible ((IBusinessObject)instance), Is.EqualTo (expectedValue));
+      Assert.That(propertyBase.IsAccessible((IBusinessObject)instance), Is.EqualTo(expectedValue));
       bindablePropertyReadAccessStrategyMock.Verify();
     }
 
     [Test]
-    public void IsReadOnly_WithReadOnlyProperty_ReturnsTrue_DoesNotUseStrategy()
+    public void IsReadOnly_WithReadOnlyProperty_ReturnsTrue_DoesNotUseStrategy ()
     {
       var bindablePropertyWriteAccessStrategyMock = new Mock<IBindablePropertyWriteAccessStrategy>();
 
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
@@ -399,20 +399,20 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isReadOnly: true,
               bindablePropertyWriteAccessStrategy: bindablePropertyWriteAccessStrategyMock.Object));
 
-      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
 
-      Assert.That (propertyBase.IsReadOnly ((IBusinessObject)instance), Is.True);
-      bindablePropertyWriteAccessStrategyMock.Verify (mock => mock.CanWrite (null, null), Times.Never());
+      Assert.That(propertyBase.IsReadOnly((IBusinessObject)instance), Is.True);
+      bindablePropertyWriteAccessStrategyMock.Verify(mock => mock.CanWrite(null, null), Times.Never());
     }
 
     [Test]
-    public void IsReadOnly_WithWritableProperty_ReturnsValueFromStrategy()
+    public void IsReadOnly_WithWritableProperty_ReturnsValueFromStrategy ()
     {
       var bindablePropertyWriteAccessStrategyMock = new Mock<IBindablePropertyWriteAccessStrategy>();
 
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
-      PropertyBase propertyBase = new StubPropertyBase (
-          CreateParameters (
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "ThrowingProperty");
+      PropertyBase propertyBase = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
               underlyingType: propertyInfo.PropertyType,
               concreteType: propertyInfo.PropertyType,
@@ -420,12 +420,12 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               isReadOnly: false,
               bindablePropertyWriteAccessStrategy: bindablePropertyWriteAccessStrategyMock.Object));
 
-      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassWithReferenceType<SimpleReferenceType>>(ParamList.Empty);
 
       var expectedValue = BooleanObjectMother.GetRandomBoolean();
-      bindablePropertyWriteAccessStrategyMock.Setup (mock => mock.CanWrite ((IBusinessObject) instance, propertyBase)).Returns (!expectedValue).Verifiable();
+      bindablePropertyWriteAccessStrategyMock.Setup(mock => mock.CanWrite((IBusinessObject)instance, propertyBase)).Returns(!expectedValue).Verifiable();
 
-      Assert.That (propertyBase.IsReadOnly ((IBusinessObject)instance), Is.EqualTo (expectedValue));
+      Assert.That(propertyBase.IsReadOnly((IBusinessObject)instance), Is.EqualTo(expectedValue));
       bindablePropertyWriteAccessStrategyMock.Verify();
     }
 
@@ -433,51 +433,51 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void GetConstraints_WithBusinessObject_ReturnsValueFromProvider ()
     {
       var businessObject = new Mock<IBusinessObject>();
-        var propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
+        var propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Scalar");
         var constraintProviderStub = new Mock<IBusinessObjectPropertyConstraintProvider>();
         PropertyBase propertyBase =
-            new StubPropertyBase (
-                CreateParameters (
+            new StubPropertyBase(
+                CreateParameters(
                     propertyInfo: propertyInfo,
                     underlyingType: propertyInfo.PropertyType,
                     concreteType: propertyInfo.PropertyType,
                     businessObjectPropertyConstraintProvider: constraintProviderStub.Object));
-        propertyBase.SetReflectedClass (_bindableObjectClass);
+        propertyBase.SetReflectedClass(_bindableObjectClass);
 
         var result = new[] { new Mock<IBusinessObjectPropertyConstraint>().Object };
-        constraintProviderStub.Setup (_ => _.GetPropertyConstraints (_bindableObjectClass, propertyBase, businessObject.Object)).Returns (result);
+        constraintProviderStub.Setup(_ => _.GetPropertyConstraints(_bindableObjectClass, propertyBase, businessObject.Object)).Returns(result);
 
-        Assert.That (propertyBase.GetConstraints (businessObject.Object), Is.SameAs (result));
+        Assert.That(propertyBase.GetConstraints(businessObject.Object), Is.SameAs(result));
     }
 
     [Test]
     public void GetConstraints_WithoutBusinessObject_ReturnsValueFromProvider ()
     {
-      var propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
+      var propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Scalar");
       var constraintProviderStub = new Mock<IBusinessObjectPropertyConstraintProvider>();
       PropertyBase propertyBase =
-          new StubPropertyBase (
-              CreateParameters (
+          new StubPropertyBase(
+              CreateParameters(
                   propertyInfo: propertyInfo,
                   underlyingType: propertyInfo.PropertyType,
                   concreteType: propertyInfo.PropertyType,
                   businessObjectPropertyConstraintProvider: constraintProviderStub.Object));
-      propertyBase.SetReflectedClass (_bindableObjectClass);
+      propertyBase.SetReflectedClass(_bindableObjectClass);
 
       var result = new[] { new Mock<IBusinessObjectPropertyConstraint>().Object };
-      constraintProviderStub.Setup (_ => _.GetPropertyConstraints (_bindableObjectClass, propertyBase, null)).Returns (result);
+      constraintProviderStub.Setup(_ => _.GetPropertyConstraints(_bindableObjectClass, propertyBase, null)).Returns(result);
 
-      Assert.That (propertyBase.GetConstraints (null), Is.SameAs (result));
+      Assert.That(propertyBase.GetConstraints(null), Is.SameAs(result));
     }
 
     [Test]
     public void GetDefaultValueStrategy ()
     {
       var businessObject = new Mock<IBusinessObject>();
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar");
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Scalar");
       PropertyBase propertyBase =
-          new StubPropertyBase (
-              CreateParameters (
+          new StubPropertyBase(
+              CreateParameters(
                   propertyInfo: propertyInfo,
                   underlyingType: propertyInfo.PropertyType,
                   concreteType: propertyInfo.PropertyType,
@@ -485,43 +485,43 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
                   isRequired: true,
                   isReadOnly: true));
 
-      Assert.That (propertyBase.IsDefaultValue (businessObject.Object), Is.False);
+      Assert.That(propertyBase.IsDefaultValue(businessObject.Object), Is.False);
     }
 
     [Test]
     public void GetListInfo ()
     {
-      IListInfo expected = new ListInfo (typeof (SimpleReferenceType[]), typeof (SimpleReferenceType));
-      PropertyBase property = new StubPropertyBase (
-          CreateParameters (
-              propertyInfo: GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Array"),
-              underlyingType: typeof (SimpleReferenceType),
-              concreteType: typeof (SimpleReferenceType),
+      IListInfo expected = new ListInfo(typeof(SimpleReferenceType[]), typeof(SimpleReferenceType));
+      PropertyBase property = new StubPropertyBase(
+          CreateParameters(
+              propertyInfo: GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Array"),
+              underlyingType: typeof(SimpleReferenceType),
+              concreteType: typeof(SimpleReferenceType),
               listInfo: expected,
               isRequired: false,
               isReadOnly: false));
 
-      Assert.That (property.IsList, Is.True);
-      Assert.That (property.ListInfo, Is.SameAs (expected));
+      Assert.That(property.IsList, Is.True);
+      Assert.That(property.ListInfo, Is.SameAs(expected));
     }
 
     [Test]
     public void GetListInfo_WithNonListProperty ()
     {
-      PropertyBase property = new StubPropertyBase (
-          CreateParameters (
-              propertyInfo: GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
-              underlyingType: typeof (SimpleReferenceType),
-              concreteType: typeof (SimpleReferenceType),
+      PropertyBase property = new StubPropertyBase(
+          CreateParameters(
+              propertyInfo: GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
+              underlyingType: typeof(SimpleReferenceType),
+              concreteType: typeof(SimpleReferenceType),
               listInfo: null,
               isRequired: false,
               isReadOnly: false));
 
-      Assert.That (property.IsList, Is.False);
-      Assert.That (
+      Assert.That(property.IsList, Is.False);
+      Assert.That(
           () => property.ListInfo,
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Cannot access ListInfo for non-list properties.\r\nProperty: Scalar"));
     }
 
@@ -529,129 +529,129 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void ConvertFromNativePropertyType ()
     {
-      PropertyBase property = new StubPropertyBase (
-          CreateParameters (
-              propertyInfo: GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
-              underlyingType: typeof (SimpleReferenceType),
-              concreteType: typeof (SimpleReferenceType),
+      PropertyBase property = new StubPropertyBase(
+          CreateParameters(
+              propertyInfo: GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
+              underlyingType: typeof(SimpleReferenceType),
+              concreteType: typeof(SimpleReferenceType),
               listInfo: null,
               isRequired: false,
               isReadOnly: false));
       var expected = new SimpleReferenceType();
 
-      Assert.That (property.ConvertFromNativePropertyType (expected), Is.SameAs (expected));
+      Assert.That(property.ConvertFromNativePropertyType(expected), Is.SameAs(expected));
     }
 
     [Test]
     public void ConvertToNativePropertyType_Scalar ()
     {
-      PropertyBase property = new StubPropertyBase (
-          CreateParameters (
-              propertyInfo: GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
-              underlyingType: typeof (SimpleReferenceType),
-              concreteType: typeof (SimpleReferenceType),
+      PropertyBase property = new StubPropertyBase(
+          CreateParameters(
+              propertyInfo: GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
+              underlyingType: typeof(SimpleReferenceType),
+              concreteType: typeof(SimpleReferenceType),
               listInfo: null,
               isRequired: false,
               isReadOnly: false));
       var expected = new SimpleReferenceType();
 
-      Assert.That (property.ConvertToNativePropertyType (expected), Is.SameAs (expected));
+      Assert.That(property.ConvertToNativePropertyType(expected), Is.SameAs(expected));
     }
 
     [Test]
     public void GetDisplayName_ReflectedClassNotSet ()
     {
-      var propertyInfo = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
-      var property = new StubPropertyBase (
-          CreateParameters (
+      var propertyInfo = GetPropertyInfo(typeof(SimpleBusinessObjectClass), "String");
+      var property = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
-              underlyingType: typeof (string),
-              concreteType: typeof (string),
+              underlyingType: typeof(string),
+              concreteType: typeof(string),
               listInfo: null,
               isRequired: false,
               isReadOnly: false,
-              bindableObjectGlobalizationService: new BindableObjectGlobalizationService (
+              bindableObjectGlobalizationService: new BindableObjectGlobalizationService(
                   new Mock<IGlobalizationService>().Object,
                   new Mock<IMemberInformationGlobalizationService>().Object,
                   new Mock<IEnumerationGlobalizationService>().Object,
                   new Mock<IExtensibleEnumGlobalizationService>().Object)));
-      Assert.That (
+      Assert.That(
           () => property.DisplayName,
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("The reflected class for the property 'SimpleBusinessObjectClass.String' is not set."));
+              .With.Message.EqualTo("The reflected class for the property 'SimpleBusinessObjectClass.String' is not set."));
     }
 
     [Test]
     public void GetDisplayName_WithGlobalizationSerivce ()
     {
       var outValue = "MockString";
-      var mockMemberInformationGlobalizationService = new Mock<IMemberInformationGlobalizationService> (MockBehavior.Strict);
-      IPropertyInformation propertyInfo = GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String");
-      PropertyBase property = new StubPropertyBase (
-          CreateParameters (
+      var mockMemberInformationGlobalizationService = new Mock<IMemberInformationGlobalizationService>(MockBehavior.Strict);
+      IPropertyInformation propertyInfo = GetPropertyInfo(typeof(SimpleBusinessObjectClass), "String");
+      PropertyBase property = new StubPropertyBase(
+          CreateParameters(
               propertyInfo: propertyInfo,
-              underlyingType: typeof (string),
-              concreteType: typeof (string),
+              underlyingType: typeof(string),
+              concreteType: typeof(string),
               listInfo: null,
               isRequired: false,
               isReadOnly: false,
-              bindableObjectGlobalizationService: new BindableObjectGlobalizationService (
+              bindableObjectGlobalizationService: new BindableObjectGlobalizationService(
                   new Mock<IGlobalizationService>().Object,
                   mockMemberInformationGlobalizationService.Object,
                   new Mock<IEnumerationGlobalizationService>().Object,
                   new Mock<IExtensibleEnumGlobalizationService>().Object)));
-      property.SetReflectedClass (_bindableObjectClass);
+      property.SetReflectedClass(_bindableObjectClass);
 
-      mockMemberInformationGlobalizationService.Setup (_ => _.TryGetPropertyDisplayName (
+      mockMemberInformationGlobalizationService.Setup(_ => _.TryGetPropertyDisplayName(
               propertyInfo,
-              It.Is<ITypeInformation> (c => c.ConvertToRuntimeType() == _bindableObjectClass.TargetType),
+              It.Is<ITypeInformation>(c => c.ConvertToRuntimeType() == _bindableObjectClass.TargetType),
               out outValue))
-          .Returns (true)
+          .Returns(true)
           .Verifiable();
 
       string actual = property.DisplayName;
 
       mockMemberInformationGlobalizationService.Verify();
-      Assert.That (actual, Is.EqualTo ("MockString"));
+      Assert.That(actual, Is.EqualTo("MockString"));
     }
 
     [Test]
     public void SetAndGetReflectedClass ()
     {
-      PropertyBase property = new StubPropertyBase (
-          CreateParameters (
-              propertyInfo: GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String"),
-              underlyingType: typeof (string),
-              concreteType: typeof (string),
+      PropertyBase property = new StubPropertyBase(
+          CreateParameters(
+              propertyInfo: GetPropertyInfo(typeof(SimpleBusinessObjectClass), "String"),
+              underlyingType: typeof(string),
+              concreteType: typeof(string),
               listInfo: null,
               isRequired: false,
               isReadOnly: false));
 
-      property.SetReflectedClass (_bindableObjectClass);
+      property.SetReflectedClass(_bindableObjectClass);
 
-      Assert.That (property.ReflectedClass, Is.SameAs (_bindableObjectClass));
-      Assert.That (((IBusinessObjectProperty) property).ReflectedClass, Is.SameAs (_bindableObjectClass));
+      Assert.That(property.ReflectedClass, Is.SameAs(_bindableObjectClass));
+      Assert.That(((IBusinessObjectProperty)property).ReflectedClass, Is.SameAs(_bindableObjectClass));
     }
 
     [Test]
     public void SetReflectedClass_FromDifferentProviders ()
     {
       var provider = new BindableObjectProvider();
-      BindableObjectClass bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (SimpleBusinessObjectClass));
+      BindableObjectClass bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(SimpleBusinessObjectClass));
 
-      PropertyBase property = new StubPropertyBase (
-          CreateParameters (
+      PropertyBase property = new StubPropertyBase(
+          CreateParameters(
               businessObjectProvider: provider,
-              propertyInfo: GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String"),
-              underlyingType: typeof (string),
-              concreteType: typeof (string),
+              propertyInfo: GetPropertyInfo(typeof(SimpleBusinessObjectClass), "String"),
+              underlyingType: typeof(string),
+              concreteType: typeof(string),
               listInfo: null,
               isRequired: false,
               isReadOnly: false));
-      Assert.That (
-          () => property.SetReflectedClass (bindableObjectClass),
+      Assert.That(
+          () => property.SetReflectedClass(bindableObjectClass),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "The BusinessObjectProvider of property 'String' does not match the BusinessObjectProvider of class "
                   + "'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'.",
                   "reflectedClass"));
@@ -660,22 +660,22 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void SetReflectedClass_Twice ()
     {
-      BindableObjectClass bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (SimpleBusinessObjectClass));
+      BindableObjectClass bindableObjectClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(SimpleBusinessObjectClass));
 
-      PropertyBase property = new StubPropertyBase (
-          CreateParameters (
-              propertyInfo: GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String"),
-              underlyingType: typeof (string),
-              concreteType: typeof (string),
+      PropertyBase property = new StubPropertyBase(
+          CreateParameters(
+              propertyInfo: GetPropertyInfo(typeof(SimpleBusinessObjectClass), "String"),
+              underlyingType: typeof(string),
+              concreteType: typeof(string),
               listInfo: null,
               isRequired: false,
               isReadOnly: false));
 
-      property.SetReflectedClass (bindableObjectClass);
-      Assert.That (
-          () => property.SetReflectedClass (BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (ClassWithIdentity))),
+      property.SetReflectedClass(bindableObjectClass);
+      Assert.That(
+          () => property.SetReflectedClass(BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(ClassWithIdentity))),
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The ReflectedClass of a property cannot be changed after it was assigned."
                   + "\r\nClass 'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'"
                   + "\r\nProperty 'String'"));
@@ -684,18 +684,18 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void GetReflectedClass_WithoutBusinessObjectClass ()
     {
-      PropertyBase property = new StubPropertyBase (
-          CreateParameters (
-              propertyInfo: GetPropertyInfo (typeof (SimpleBusinessObjectClass), "String"),
-              underlyingType: typeof (string),
-              concreteType: typeof (string),
+      PropertyBase property = new StubPropertyBase(
+          CreateParameters(
+              propertyInfo: GetPropertyInfo(typeof(SimpleBusinessObjectClass), "String"),
+              underlyingType: typeof(string),
+              concreteType: typeof(string),
               listInfo: null,
               isRequired: false,
               isReadOnly: false));
-      Assert.That (
+      Assert.That(
           () => property.ReflectedClass,
           Throws.InvalidOperationException
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Accessing the ReflectedClass of a property is invalid until the property has been associated with a class.\r\nProperty 'String'"));
     }
 
@@ -713,7 +713,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
         BindableObjectGlobalizationService bindableObjectGlobalizationService = null,
         IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider = null)
     {
-      return base.CreateParameters (
+      return base.CreateParameters(
           businessObjectProvider ?? _bindableObjectProvider,
           propertyInfo,
           underlyingType,

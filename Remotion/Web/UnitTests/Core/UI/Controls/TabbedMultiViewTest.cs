@@ -39,9 +39,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       base.SetUpContext();
 
-      _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "default.html", null);
+      _currentHttpContext = HttpContextHelper.CreateHttpContext("GET", "default.html", null);
       _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
-      HttpContextHelper.SetCurrent (_currentHttpContext);
+      HttpContextHelper.SetCurrent(_currentHttpContext);
     }
 
     protected override void SetUpPage ()
@@ -52,26 +52,26 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       _tabbedMultiView.ID = "TabbedMultiVIew";
 
       _tabView1 = new TabView { ID = "Tab1", Title = "Tab 1" };
-      _tabbedMultiView.Views.Add (_tabView1);
+      _tabbedMultiView.Views.Add(_tabView1);
     }
 
     [Test]
     public void StylesheetRegistrationIntegrationTest ()
     {
-      NamingContainer.Controls.Add (_tabbedMultiView);
+      NamingContainer.Controls.Add(_tabbedMultiView);
 
-      Assert.That (HtmlHeadAppender.Current, Is.Not.Null);
+      Assert.That(HtmlHeadAppender.Current, Is.Not.Null);
 
       NamingContainerInvoker.InitRecursive();
 
       var htmlHeadAppender = HtmlHeadAppender.Current;
       var registeredStyleSheetBlock = htmlHeadAppender.GetHtmlHeadElements().OfType<StyleSheetBlock>().SingleOrDefault();
-      Assert.That (registeredStyleSheetBlock, Is.Not.Null);
+      Assert.That(registeredStyleSheetBlock, Is.Not.Null);
 
-      Assert.That (registeredStyleSheetBlock.StyleSheetElements.Count, Is.EqualTo (3));
-      Assert.That (((StyleSheetImportRule) registeredStyleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Does.EndWith ("Common.css"));
-      Assert.That (((StyleSheetImportRule) registeredStyleSheetBlock.StyleSheetElements[1]).ResourceUrl.GetUrl(), Does.EndWith ("TabStrip.css"));
-      Assert.That (((StyleSheetImportRule) registeredStyleSheetBlock.StyleSheetElements[2]).ResourceUrl.GetUrl(), Does.EndWith ("TabbedMultiView.css"));
+      Assert.That(registeredStyleSheetBlock.StyleSheetElements.Count, Is.EqualTo(3));
+      Assert.That(((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Does.EndWith("Common.css"));
+      Assert.That(((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[1]).ResourceUrl.GetUrl(), Does.EndWith("TabStrip.css"));
+      Assert.That(((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[2]).ResourceUrl.GetUrl(), Does.EndWith("TabbedMultiView.css"));
     }
   }
 }

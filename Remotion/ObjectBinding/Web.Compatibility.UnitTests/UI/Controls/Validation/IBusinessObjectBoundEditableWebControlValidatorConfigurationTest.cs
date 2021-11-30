@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     {
       var instance = _serviceLocator.GetInstance<IBusinessObjectBoundEditableWebControlValidatorConfiguration>();
 
-      Assert.That (instance, Is.InstanceOf<CompatibilityBusinessObjectBoundEditableWebControlValidatorConfiguration>());
+      Assert.That(instance, Is.InstanceOf<CompatibilityBusinessObjectBoundEditableWebControlValidatorConfiguration>());
     }
 
     [Test]
@@ -46,8 +46,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
       var instance1 = _serviceLocator.GetInstance<IBusinessObjectBoundEditableWebControlValidatorConfiguration>();
       var instance2 = _serviceLocator.GetInstance<IBusinessObjectBoundEditableWebControlValidatorConfiguration>();
 
-      Assert.That (instance1, Is.InstanceOf<CompatibilityBusinessObjectBoundEditableWebControlValidatorConfiguration>());
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.InstanceOf<CompatibilityBusinessObjectBoundEditableWebControlValidatorConfiguration>());
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

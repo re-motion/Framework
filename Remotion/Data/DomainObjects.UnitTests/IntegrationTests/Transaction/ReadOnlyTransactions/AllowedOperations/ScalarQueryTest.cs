@@ -28,17 +28,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void QueryInReadOnlyRootTransaction_IsAllowed ()
     {
-      var resultSet = ExecuteInReadOnlyRootTransaction (() => QueryFactory.CreateLinqQuery<Order>().Count (obj => obj.OrderNumber == 1));
+      var resultSet = ExecuteInReadOnlyRootTransaction(() => QueryFactory.CreateLinqQuery<Order>().Count(obj => obj.OrderNumber == 1));
 
-      Assert.That (resultSet, Is.EqualTo (1));
+      Assert.That(resultSet, Is.EqualTo(1));
     }
 
     [Test]
     public void QueryInReadOnlyMiddleTransaction_IsAllowed ()
     {
-      var resultSet = ExecuteInReadOnlyMiddleTransaction (() => QueryFactory.CreateLinqQuery<Order>().Count (obj => obj.OrderNumber == 1));
+      var resultSet = ExecuteInReadOnlyMiddleTransaction(() => QueryFactory.CreateLinqQuery<Order>().Count(obj => obj.OrderNumber == 1));
 
-      Assert.That (resultSet, Is.EqualTo (1));
+      Assert.That(resultSet, Is.EqualTo(1));
     }
   }
 }

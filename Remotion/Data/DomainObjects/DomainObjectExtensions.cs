@@ -36,14 +36,14 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The <paramref name="domainObjectOrNull"/>'s <see cref="DomainObject.ID"/>, or <see langword="null" /> if <paramref name="domainObjectOrNull"/>
     /// is <see langword="null" />.</returns>
     [CanBeNull]
-    [ContractAnnotation ("null => null; notnull => notnull")]
+    [ContractAnnotation("null => null; notnull => notnull")]
     public static ObjectID GetSafeID ([CanBeNull] this IDomainObject domainObjectOrNull)
     {
       if (domainObjectOrNull == null)
         return null;
 
       var objectID = domainObjectOrNull.ID;
-      Assertion.DebugIsNotNull (objectID, "domainObjectOrNull.ID must not be null.");
+      Assertion.DebugIsNotNull(objectID, "domainObjectOrNull.ID must not be null.");
 
       return domainObjectOrNull.ID;
     }
@@ -58,10 +58,10 @@ namespace Remotion.Data.DomainObjects
     [NotNull]
     public static IDomainObjectHandle<T> GetHandle<T> ([NotNull] this T domainObject) where T : IDomainObject
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       var objectID = domainObject.ID;
-      Assertion.DebugIsNotNull (objectID, "domainObject.ID must not be null.");
+      Assertion.DebugIsNotNull(objectID, "domainObject.ID must not be null.");
 
       return objectID.GetHandle<T>();
     }
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>A typed handle to the given <paramref name="domainObjectOrNull"/>, or <see langword="null" /> if <paramref name="domainObjectOrNull"/>
     /// is <see langword="null" />.</returns>
     [CanBeNull]
-    [ContractAnnotation ("null => null; notnull => notnull")]
+    [ContractAnnotation("null => null; notnull => notnull")]
     public static IDomainObjectHandle<T> GetSafeHandle<T> ([CanBeNull] this T domainObjectOrNull) where T : class, IDomainObject
     {
       return domainObjectOrNull != null ? domainObjectOrNull.GetHandle() : null;
@@ -91,9 +91,9 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
     public static DomainObjectState GetState ([NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
-      var defaultTransactionContext = GetDefaultTransactionContext (domainObject);
+      var defaultTransactionContext = GetDefaultTransactionContext(domainObject);
       return defaultTransactionContext.State;
     }
 
@@ -106,9 +106,9 @@ namespace Remotion.Data.DomainObjects
     [CanBeNull]
     public static object GetTimestamp ([NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
-      var defaultTransactionContext = GetDefaultTransactionContext (domainObject);
+      var defaultTransactionContext = GetDefaultTransactionContext(domainObject);
       return defaultTransactionContext.Timestamp;
     }
 
@@ -128,10 +128,10 @@ namespace Remotion.Data.DomainObjects
     [NotNull]
     public static IDomainObjectTransactionContext GetDefaultTransactionContext ([NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
       var rootTransaction = domainObject.RootTransaction;
-      Assertion.DebugAssert (rootTransaction != null, "domainObject.RootTransaction must not be null.");
+      Assertion.DebugAssert(rootTransaction != null, "domainObject.RootTransaction must not be null.");
 
       return domainObject.TransactionContext[rootTransaction.ActiveTransaction];
     }
@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public static void RegisterForCommit ([NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
       var defaultTransactionContext = domainObject.GetDefaultTransactionContext();
       defaultTransactionContext.RegisterForCommit();
@@ -206,7 +206,7 @@ namespace Remotion.Data.DomainObjects
     /// found in the data source.</exception>
     public static void EnsureDataAvailable ([NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
       var defaultTransactionContext = domainObject.GetDefaultTransactionContext();
       defaultTransactionContext.EnsureDataAvailable();
@@ -222,7 +222,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="ObjectInvalidException">The object is invalid in the transaction.</exception>
     public static bool TryEnsureDataAvailable ([NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
       var defaultTransactionContext = domainObject.GetDefaultTransactionContext();
       return defaultTransactionContext.TryEnsureDataAvailable();

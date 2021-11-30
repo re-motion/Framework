@@ -24,11 +24,11 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
   {
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
-      var updatePanelSutFromUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl (typeof (UpdatePanelSutForm), TestResourceType.Root, "MultiplePostbackCatching/UpdatePanelSutForm.aspx").GetUrl();
-      TestExpectationsGenerator.GenerateExpectations (this, TestTable.Rows, updatePanelSutFromUrl);
-      HtmlHeadAppender.Current.SetTitle (TestExpectationsGenerator.GetTestCaseUrlParameter (this) ?? "All Multiple Postback Catcher Tests");
+      var updatePanelSutFromUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof(UpdatePanelSutForm), TestResourceType.Root, "MultiplePostbackCatching/UpdatePanelSutForm.aspx").GetUrl();
+      TestExpectationsGenerator.GenerateExpectations(this, TestTable.Rows, updatePanelSutFromUrl);
+      HtmlHeadAppender.Current.SetTitle(TestExpectationsGenerator.GetTestCaseUrlParameter(this) ?? "All Multiple Postback Catcher Tests");
     }
   }
 }

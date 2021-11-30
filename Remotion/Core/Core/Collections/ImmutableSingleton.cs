@@ -28,7 +28,7 @@ namespace Remotion.Collections
   {
     public static ImmutableSingleton<T> Create<T> ([CanBeNull]T item)
     {
-      return new ImmutableSingleton<T> (item);
+      return new ImmutableSingleton<T>(item);
     }
   }
 
@@ -71,11 +71,11 @@ namespace Remotion.Collections
           switch (_position)
           {
             case -1:
-              throw new InvalidOperationException ("Enumeration has not started. Call MoveNext.");
+              throw new InvalidOperationException("Enumeration has not started. Call MoveNext.");
             case 0:
               return _item;
             default:
-              throw new InvalidOperationException ("Enumeration already finished.");
+              throw new InvalidOperationException("Enumeration already finished.");
           }
         }
       }
@@ -95,7 +95,7 @@ namespace Remotion.Collections
 
     public IEnumerator<T> GetEnumerator ()
     {
-      return new Enumerator (_item);
+      return new Enumerator(_item);
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
@@ -113,7 +113,7 @@ namespace Remotion.Collections
       get
       {
         if (index != 0)
-          throw new ArgumentOutOfRangeException ("index", index, "The list contains only a single item.");
+          throw new ArgumentOutOfRangeException("index", index, "The list contains only a single item.");
 
         return _item;
       }

@@ -42,14 +42,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _mockRepository = new MockRepository();
-      _realObjectAgentMock = _mockRepository.StrictMock<IFetchedRelationDataRegistrationAgent> ();
-      _virtualObjectAgentMock = _mockRepository.StrictMock<IFetchedRelationDataRegistrationAgent> ();
-      _collectionAgentMock = _mockRepository.StrictMock<IFetchedRelationDataRegistrationAgent> ();
+      _realObjectAgentMock = _mockRepository.StrictMock<IFetchedRelationDataRegistrationAgent>();
+      _virtualObjectAgentMock = _mockRepository.StrictMock<IFetchedRelationDataRegistrationAgent>();
+      _collectionAgentMock = _mockRepository.StrictMock<IFetchedRelationDataRegistrationAgent>();
 
-      _agent = new DelegatingFetchedRelationDataRegistrationAgent (_realObjectAgentMock, _virtualObjectAgentMock, _collectionAgentMock);
+      _agent = new DelegatingFetchedRelationDataRegistrationAgent(_realObjectAgentMock, _virtualObjectAgentMock, _collectionAgentMock);
 
       _originatingObjects = new[] { MockRepository.GenerateStub<ILoadedObjectData>() };
       _relatedObjects = new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData() };
@@ -59,37 +59,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     public void GroupAndRegisterRelatedObjects_AnonymousEndPoints ()
     {
       var endPointDefinition = Configuration
-          .GetTypeDefinition (typeof (Location))
+          .GetTypeDefinition(typeof(Location))
           .PropertyAccessorDataCache
-          .GetPropertyAccessorData (typeof (Location), "Client")
+          .GetPropertyAccessorData(typeof(Location), "Client")
           .RelationEndPointDefinition
           .GetOppositeEndPointDefinition();
 
       _mockRepository.ReplayAll();
 
-      Assert.That (
-          () => _agent.GroupAndRegisterRelatedObjects (
-              endPointDefinition, 
-              _originatingObjects, 
+      Assert.That(
+          () => _agent.GroupAndRegisterRelatedObjects(
+              endPointDefinition,
+              _originatingObjects,
               _relatedObjects),
-          Throws.InvalidOperationException.With.Message.EqualTo ("Anonymous relation end-points cannot have data registered."));
+          Throws.InvalidOperationException.With.Message.EqualTo("Anonymous relation end-points cannot have data registered."));
     }
 
     [Test]
     public void GroupAndRegisterRelatedObjects_RealObjectEndPoints ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (OrderItem), "Order");
+      var endPointDefinition = GetEndPointDefinition(typeof(OrderItem), "Order");
 
       _realObjectAgentMock
-          .Expect (
-              mock => mock.GroupAndRegisterRelatedObjects (
+          .Expect(
+              mock => mock.GroupAndRegisterRelatedObjects(
                   endPointDefinition,
                   _originatingObjects,
                   _relatedObjects));
 
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      _agent.GroupAndRegisterRelatedObjects (
+      _agent.GroupAndRegisterRelatedObjects(
           endPointDefinition,
           _originatingObjects,
           _relatedObjects);
@@ -100,70 +100,70 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
     [Test]
     public void GroupAndRegisterRelatedObjects_VirtualObjectEndPoints ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (Order), "OrderTicket");
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
 
       _virtualObjectAgentMock
-          .Expect (mock => mock.GroupAndRegisterRelatedObjects (
+          .Expect(mock => mock.GroupAndRegisterRelatedObjects(
               endPointDefinition,
               _originatingObjects,
               _relatedObjects));
 
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      _agent.GroupAndRegisterRelatedObjects (
+      _agent.GroupAndRegisterRelatedObjects(
           endPointDefinition, _originatingObjects, _relatedObjects);
 
-      _mockRepository.VerifyAll ();
+      _mockRepository.VerifyAll();
     }
 
     [Test]
     public void GroupAndRegisterRelatedObjects_CollectionEndPoints ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (Order), "OrderItems");
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
 
       _collectionAgentMock
-          .Expect (
+          .Expect(
               mock =>
-              mock.GroupAndRegisterRelatedObjects (
+              mock.GroupAndRegisterRelatedObjects(
                   endPointDefinition, _originatingObjects, _relatedObjects));
 
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      _agent.GroupAndRegisterRelatedObjects (
+      _agent.GroupAndRegisterRelatedObjects(
           endPointDefinition, _originatingObjects, _relatedObjects);
 
-      _mockRepository.VerifyAll ();
+      _mockRepository.VerifyAll();
     }
 
     [Test]
     public void GroupAndRegisterRelatedObjects_CollectionEndPoints_EmptyRelatedObjects ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (Order), "OrderItems");
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
 
       var relatedObjects = new LoadedObjectDataWithDataSourceData[0];
-      _collectionAgentMock.Expect (mock => mock.GroupAndRegisterRelatedObjects (endPointDefinition, _originatingObjects, relatedObjects));
+      _collectionAgentMock.Expect(mock => mock.GroupAndRegisterRelatedObjects(endPointDefinition, _originatingObjects, relatedObjects));
 
-      _mockRepository.ReplayAll ();
+      _mockRepository.ReplayAll();
 
-      _agent.GroupAndRegisterRelatedObjects (
+      _agent.GroupAndRegisterRelatedObjects(
           endPointDefinition, _originatingObjects, relatedObjects);
 
-      _mockRepository.VerifyAll ();
+      _mockRepository.VerifyAll();
     }
 
     [Test]
     public void Serialization ()
     {
-      var agent = new DelegatingFetchedRelationDataRegistrationAgent (
+      var agent = new DelegatingFetchedRelationDataRegistrationAgent(
           new FetchedRealObjectRelationDataRegistrationAgent(),
-          new FetchedVirtualObjectRelationDataRegistrationAgent (new SerializableVirtualEndPointProviderFake()),
-          new FetchedCollectionRelationDataRegistrationAgent (new SerializableVirtualEndPointProviderFake()));
+          new FetchedVirtualObjectRelationDataRegistrationAgent(new SerializableVirtualEndPointProviderFake()),
+          new FetchedCollectionRelationDataRegistrationAgent(new SerializableVirtualEndPointProviderFake()));
 
-      var deserializedAgent = Serializer.SerializeAndDeserialize (agent);
+      var deserializedAgent = Serializer.SerializeAndDeserialize(agent);
 
-      Assert.That (deserializedAgent.RealObjectDataRegistrationAgent, Is.Not.Null);
-      Assert.That (deserializedAgent.VirtualObjectDataRegistrationAgent, Is.Not.Null);
-      Assert.That (deserializedAgent.CollectionDataRegistrationAgent, Is.Not.Null);
+      Assert.That(deserializedAgent.RealObjectDataRegistrationAgent, Is.Not.Null);
+      Assert.That(deserializedAgent.VirtualObjectDataRegistrationAgent, Is.Not.Null);
+      Assert.That(deserializedAgent.CollectionDataRegistrationAgent, Is.Not.Null);
     }
   }
 }

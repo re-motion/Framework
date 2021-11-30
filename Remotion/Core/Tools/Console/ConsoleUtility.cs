@@ -36,7 +36,7 @@ namespace Remotion.Tools.Console
 
       public ColorScope (IConsoleManager consoleManager, ConsoleColor? foregroundColor, ConsoleColor? backgroundColor)
       {
-        ArgumentUtility.CheckNotNull ("consoleManager", consoleManager);
+        ArgumentUtility.CheckNotNull("consoleManager", consoleManager);
 
         _consoleManager = consoleManager;
         if (foregroundColor != null)
@@ -83,7 +83,7 @@ namespace Remotion.Tools.Console
     /// <returns>A <see cref="IDisposable"/> object representing the scope for which the new colors stays valid.</returns>
     public static IDisposable EnterColorScope (ConsoleColor? foregroundColor, ConsoleColor? backgroundColor)
     {
-      return new ColorScope (DefaultConsoleManager.Instance, foregroundColor, backgroundColor);
+      return new ColorScope(DefaultConsoleManager.Instance, foregroundColor, backgroundColor);
     }
   }
 }

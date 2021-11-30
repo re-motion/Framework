@@ -42,7 +42,7 @@ public class QueryParameter
   /// </summary>
   /// <param name="name">The name of the parameter.</param>
   /// <param name="value">The value of the parameter.</param>
-  public QueryParameter (string name, object value) : this (name, value, QueryParameterType.Value)
+  public QueryParameter (string name, object value) : this(name, value, QueryParameterType.Value)
   {
   }
 
@@ -57,8 +57,8 @@ public class QueryParameter
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="parameterType"/> is not a valid enum value.</exception>
   public QueryParameter (string name, object value, QueryParameterType parameterType)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-    ArgumentUtility.CheckValidEnumValue ("parameterType", parameterType);
+    ArgumentUtility.CheckNotNullOrEmpty("name", name);
+    ArgumentUtility.CheckValidEnumValue("parameterType", parameterType);
 
     _name = name;
     _value = value;
@@ -104,7 +104,7 @@ public class QueryParameter
 
   public override int GetHashCode ()
   {
-    return EqualityUtility.GetRotatedHashCode (_name, _value, _parameterType);
+    return EqualityUtility.GetRotatedHashCode(_name, _value, _parameterType);
   }
 }
 }

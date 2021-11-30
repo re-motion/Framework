@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         Type propertyType)
     {
       var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub (stub => stub.Name).Return (propertyName);
-      propertyInformationStub.Stub (stub => stub.PropertyType).Return (propertyType);
-      propertyInformationStub.Stub (stub => stub.DeclaringType).Return (TypeAdapter.Create (classDefinition.ClassType));
+      propertyInformationStub.Stub(stub => stub.Name).Return(propertyName);
+      propertyInformationStub.Stub(stub => stub.PropertyType).Return(propertyType);
+      propertyInformationStub.Stub(stub => stub.DeclaringType).Return(TypeAdapter.Create(classDefinition.ClassType));
 
-      return new VirtualObjectRelationEndPointDefinition (
+      return new VirtualObjectRelationEndPointDefinition(
           classDefinition, propertyName, isMandatory, propertyInformationStub);
     }
 
@@ -46,9 +46,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         Type propertyType,
         string sortExpression)
     {
-      var relationEndPointDefinition = Create (classDefinition, propertyName, isMandatory, propertyType);
+      var relationEndPointDefinition = Create(classDefinition, propertyName, isMandatory, propertyType);
       if (sortExpression != null)
-        PrivateInvoke.InvokeNonPublicMethod (relationEndPointDefinition, "SetHasSortExpressionFlag");
+        PrivateInvoke.InvokeNonPublicMethod(relationEndPointDefinition, "SetHasSortExpressionFlag");
 
       return relationEndPointDefinition;
     }

@@ -33,21 +33,21 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     protected override void Render (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
     {
-      writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      writer.RenderBeginTag(HtmlTextWriterTag.Div);
       writer.RenderEndTag();
     }
   }
 
   public class StubCustomCellControl : HtmlGenericControl, IControl
   {
-    public StubCustomCellControl () : base ("div")
+    public StubCustomCellControl () : base("div")
     {
-      Attributes.Add ("class", "mockedCustomCellControl");
+      Attributes.Add("class", "mockedCustomCellControl");
     }
 
     IPage IControl.Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
   }
 }

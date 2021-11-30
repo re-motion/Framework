@@ -21,10 +21,10 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping.PropertyWithUnsupportedStorageClass
 {
   [NonPersistentTestDomain]
-  [ClassID ("PropertyWithUnsupportedStorageClass_NonPersistentDomainObjectWithPersistentProperty")]
+  [ClassID("PropertyWithUnsupportedStorageClass_NonPersistentDomainObjectWithPersistentProperty")]
   public class NonPersistentDomainObjectWithPersistentProperty : DomainObject
   {
-    [StorageClass (StorageClass.Persistent)]
+    [StorageClass(StorageClass.Persistent)]
     public int PersistentProperty { get; set; }
 
   }

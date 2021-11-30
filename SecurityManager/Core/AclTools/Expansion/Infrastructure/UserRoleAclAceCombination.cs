@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
   public class UserRoleAclAceCombination : IEquatable<UserRoleAclAceCombination>
   {
     private static readonly CompoundValueEqualityComparer<UserRoleAclAceCombination> _userRoleAclAceCombinationsComparer =
-      new CompoundValueEqualityComparer<UserRoleAclAceCombination> (x => new object[] { x.Role, x.Ace });
+      new CompoundValueEqualityComparer<UserRoleAclAceCombination>(x => new object[] { x.Role, x.Ace });
 
 
     public UserRoleAclAceCombination (Role role, AccessControlEntry ace)
@@ -55,12 +55,12 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
 
     public override bool Equals (object obj)
     {
-      return _userRoleAclAceCombinationsComparer.Equals (this, obj);
+      return _userRoleAclAceCombinationsComparer.Equals(this, obj);
     }
 
     public bool Equals (UserRoleAclAceCombination other)
     {
-      return _userRoleAclAceCombinationsComparer.Equals (this, other);
+      return _userRoleAclAceCombinationsComparer.Equals(this, other);
     }
   }
 }

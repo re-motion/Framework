@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
   {
     public static TypeWithNumber Create ()
     {
-      return ObjectFactory.Create<TypeWithNumber> (true, ParamList.Empty);
+      return ObjectFactory.Create<TypeWithNumber>(true, ParamList.Empty);
     }
 
     private int _int32Value;

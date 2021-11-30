@@ -30,22 +30,22 @@ namespace Remotion.Reflection
 
     public InheritanceHierarchyFilter (Type[] types)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("types", types);
+      ArgumentUtility.CheckNotNullOrItemsNull("types", types);
       _types = types;
     }
 
     public Type[] GetLeafTypes ()
     {
       // TODO RM-7752: fix possible null dereference when typeof(object) is part of _types.
-      HashSet<Type> baseTypes = new HashSet<Type> ();
+      HashSet<Type> baseTypes = new HashSet<Type>();
       foreach (Type type in _types)
       {
-        baseTypes.Add (type.BaseType!);
+        baseTypes.Add(type.BaseType!);
         if (type.BaseType!.IsGenericType)
-          baseTypes.Add (type.BaseType.GetGenericTypeDefinition());
+          baseTypes.Add(type.BaseType.GetGenericTypeDefinition());
       }
 
-      return Array.FindAll (_types, delegate (Type type) { return !baseTypes.Contains (type); });
+      return Array.FindAll(_types, delegate (Type type) { return !baseTypes.Contains(type); });
     }
   }
 }

@@ -28,16 +28,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void Initialize ()
     {
-      Assert.That (Controller.IsRowEditModeActive, Is.False);
-      Assert.That (Controller.IsListEditModeActive, Is.False);
+      Assert.That(Controller.IsRowEditModeActive, Is.False);
+      Assert.That(Controller.IsListEditModeActive, Is.False);
     }
 
     [Test]
-    public void InitRecursive()
+    public void InitRecursive ()
     {
       Invoker.InitRecursive();
 
-      Assert.That (Controller.Controls.Count, Is.EqualTo (0));
+      Assert.That(Controller.Controls.Count, Is.EqualTo(0));
     }
 
     [Test]
@@ -46,22 +46,22 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Invoker.InitRecursive();
       Invoker.LoadRecursive();
 
-      Assert.That (Controller.Validate(), Is.True);
+      Assert.That(Controller.Validate(), Is.True);
     }
 
     [Test]
     public void IsRequired ()
     {
       Invoker.InitRecursive();
-      Assert.That (Controller.IsRequired (0), Is.False);
-      Assert.That (Controller.IsRequired (1), Is.False);
+      Assert.That(Controller.IsRequired(0), Is.False);
+      Assert.That(Controller.IsRequired(1), Is.False);
     }
 
     [Test]
     public void IsDirty ()
     {
       Invoker.InitRecursive();
-      Assert.That (Controller.IsDirty(), Is.False);
+      Assert.That(Controller.IsDirty(), Is.False);
     }
 
     [Test]
@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Invoker.InitRecursive();
 
-      Assert.That (Controller.GetTrackedClientIDs(), Is.EqualTo (new string[0]));
+      Assert.That(Controller.GetTrackedClientIDs(), Is.EqualTo(new string[0]));
     }
 
     [Test]
@@ -78,8 +78,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Invoker.InitRecursive();
 
       object viewState = ControllerInvoker.SaveControlState();
-      Assert.That (viewState, Is.Not.Null);
-      ControllerInvoker.LoadControlState (viewState);
+      Assert.That(viewState, Is.Not.Null);
+      ControllerInvoker.LoadControlState(viewState);
     }
 
     [Test]
@@ -87,20 +87,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Invoker.InitRecursive();
 
-      ControllerInvoker.LoadControlState (null);
+      ControllerInvoker.LoadControlState(null);
 
-      Assert.That (Controller.IsRowEditModeActive, Is.False);
-      Assert.That (Controller.IsListEditModeActive, Is.False);
+      Assert.That(Controller.IsRowEditModeActive, Is.False);
+      Assert.That(Controller.IsListEditModeActive, Is.False);
     }
 
     [Test]
     public void EnsureEditModeRestored ()
     {
-      Assert.That (Controller.IsRowEditModeActive, Is.False);
+      Assert.That(Controller.IsRowEditModeActive, Is.False);
 
-      Controller.EnsureEditModeRestored (Columns);
+      Controller.EnsureEditModeRestored(Columns);
 
-      Assert.That (Controller.IsRowEditModeActive, Is.False);
+      Assert.That(Controller.IsRowEditModeActive, Is.False);
     }
 
     [Test]
@@ -108,17 +108,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       EditModeHost.Value = null;
 
-      Assert.That (Controller.IsRowEditModeActive, Is.False);
+      Assert.That(Controller.IsRowEditModeActive, Is.False);
 
-      Controller.EnsureEditModeRestored (Columns);
+      Controller.EnsureEditModeRestored(Columns);
 
-      Assert.That (Controller.IsRowEditModeActive, Is.False);
+      Assert.That(Controller.IsRowEditModeActive, Is.False);
     }
 
     [Test]
     public void GetEditedRow ()
     {
-      Assert.Throws<InvalidOperationException> (
+      Assert.Throws<InvalidOperationException>(
           () => Controller.GetEditedRow(),
           "Cannot retrieve edited row: The BocList '{0}' is not in row edit mode.",
           EditModeHost.ID);

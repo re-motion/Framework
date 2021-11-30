@@ -21,14 +21,14 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 {
   public class ProfilingForm : WxePage
   {
-    protected override void OnPreRender(EventArgs e)
+    protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
       ExecuteNextStep();
     }
 
     #region Web Form Designer generated code
-    override protected void OnInit(EventArgs e)
+    override protected void OnInit (EventArgs e)
     {
       //
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -36,13 +36,13 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       InitializeComponent();
       base.OnInit(e);
     }
-	
+
     /// <summary>
     /// Required method for Designer support - do not modify
     /// the contents of this method with the code editor.
     /// </summary>
-    private void InitializeComponent()
-    {    
+    private void InitializeComponent ()
+    {
     }
     #endregion
   }

@@ -13,7 +13,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation
     {
       var configuration = new CompatibilityBusinessObjectBoundEditableWebControlValidatorConfiguration();
 
-      Assert.That (configuration.AreOptionalValidatorsEnabled (new Mock<IBusinessObjectBoundEditableWebControl>().Object), Is.True);
+      Assert.That(configuration.AreOptionalValidatorsEnabled(new Mock<IBusinessObjectBoundEditableWebControl>().Object), Is.True);
     }
   }
 }

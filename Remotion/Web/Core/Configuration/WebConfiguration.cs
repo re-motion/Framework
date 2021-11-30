@@ -27,7 +27,7 @@ namespace Remotion.Web.Configuration
 
 /// <summary> The configuration section for <b>Remotion.Web</b>. </summary>
 /// <include file='..\doc\include\Configuration\WebConfiguration.xml' path='WebConfiguration/Class/*' />
-[XmlType (WebConfiguration.ElementName, Namespace = WebConfiguration.SchemaUri)]
+[XmlType(WebConfiguration.ElementName, Namespace = WebConfiguration.SchemaUri)]
 public class WebConfiguration: IConfigurationSectionHandler
 {
   /// <summary> The name of the configuration section in the configuration file. </summary>
@@ -38,8 +38,8 @@ public class WebConfiguration: IConfigurationSectionHandler
   /// <remarks> <c>http://www.re-motion.org/web/configuration</c> </remarks>
   public const string SchemaUri = "http://www.re-motion.org/web/configuration";
 
-  private static readonly DoubleCheckedLockingContainer<WebConfiguration> s_current = 
-      new DoubleCheckedLockingContainer<WebConfiguration> (CreateConfig);
+  private static readonly DoubleCheckedLockingContainer<WebConfiguration> s_current =
+      new DoubleCheckedLockingContainer<WebConfiguration>(CreateConfig);
 
   /// <summary> Gets the <see cref="WebConfiguration"/>. </summary>
   public static WebConfiguration Current
@@ -54,15 +54,15 @@ public class WebConfiguration: IConfigurationSectionHandler
 
   private static WebConfiguration CreateConfig ()
   {
-    XmlNode section = (XmlNode) ConfigurationManager.GetSection (ElementName);
+    XmlNode section = (XmlNode)ConfigurationManager.GetSection(ElementName);
     if (section == null)
       return new WebConfiguration();
 
     var schema = new WebConfigurationSchema();
-    return (WebConfiguration) XmlSerializationUtility.DeserializeUsingSchema (
-        new XmlNodeReader (section),
+    return (WebConfiguration)XmlSerializationUtility.DeserializeUsingSchema(
+        new XmlNodeReader(section),
         // "web.config/configuration/" + ElementName,  // TODO: context is no longer supported, verify that node has correct BaseURI
-        typeof (WebConfiguration),
+        typeof(WebConfiguration),
         SchemaUri,
         schema.LoadSchemaSet());
   }
@@ -73,7 +73,7 @@ public class WebConfiguration: IConfigurationSectionHandler
   private SmartNavigationConfiguration _smartNavigation = new SmartNavigationConfiguration();
 
   /// <summary> Gets or sets the <see cref="ExecutionEngineConfiguration"/> entry. </summary>
-  [XmlElement ("executionEngine")]
+  [XmlElement("executionEngine")]
   public ExecutionEngineConfiguration ExecutionEngine
   {
     get { return _executionEngine; }
@@ -81,7 +81,7 @@ public class WebConfiguration: IConfigurationSectionHandler
   }
 
   /// <summary> Gets or sets the <see cref="WcagConfiguration"/> entry. </summary>
-  [XmlElement ("wcag")]
+  [XmlElement("wcag")]
   public WcagConfiguration Wcag
   {
     get { return _wcag; }
@@ -89,7 +89,7 @@ public class WebConfiguration: IConfigurationSectionHandler
   }
 
   /// <summary> Gets or sets the <see cref="ResourceConfiguration"/> entry. </summary>
-  [XmlElement ("resources")]
+  [XmlElement("resources")]
   public ResourceConfiguration Resources
   {
     get { return _resources; }
@@ -97,7 +97,7 @@ public class WebConfiguration: IConfigurationSectionHandler
   }
 
   /// <summary> Gets or sets the <see cref="SmartNavigationConfiguration"/> entry. </summary>
-  [XmlElement ("smartNavigation")]
+  [XmlElement("smartNavigation")]
   public SmartNavigationConfiguration SmartNavigation
   {
     get { return _smartNavigation; }

@@ -23,11 +23,11 @@ namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA.Coll
   {
     public CustomerValidationRuleCollector1 ()
     {
-      AddRule (c => c.LastName).CanBeRemoved().NotNull();
-      AddRule (c => c.LastName).NotEmpty().Length (2, 8);
-      AddRule (c => c.PhoneNumber).CanBeRemoved().Length (0, 20);
+      AddRule(c => c.LastName).CanBeRemoved().NotNull();
+      AddRule(c => c.LastName).NotEmpty().Length(2, 8);
+      AddRule(c => c.PhoneNumber).CanBeRemoved().Length(0, 20);
 
-      RemoveRule (c => c.LastName).Validator<NotEqualValidator, PersonValidationRuleCollector1>();
+      RemoveRule(c => c.LastName).Validator<NotEqualValidator, PersonValidationRuleCollector1>();
     }
   }
 }

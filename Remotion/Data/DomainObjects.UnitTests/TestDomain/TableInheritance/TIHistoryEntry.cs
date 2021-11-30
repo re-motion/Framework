@@ -18,27 +18,27 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_HistoryEntry")]
-  [DBTable ("TableInheritance_HistoryEntry")]
+  [ClassID("TI_HistoryEntry")]
+  [DBTable("TableInheritance_HistoryEntry")]
   [TableInheritanceTestDomain]
   [Instantiable]
   public abstract class TIHistoryEntry: DomainObject, ISupportsGetObject
   {
-    public static TIHistoryEntry NewObject()
+    public static TIHistoryEntry NewObject ()
     {
       return NewObject<TIHistoryEntry>();
     }
 
-    protected TIHistoryEntry()
+    protected TIHistoryEntry ()
     {
     }
 
     public abstract DateTime HistoryDate { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 250)]
+    [StringProperty(IsNullable = false, MaximumLength = 250)]
     public abstract string Text { get; set; }
 
-    [DBBidirectionalRelation ("HistoryEntries")]
+    [DBBidirectionalRelation("HistoryEntries")]
     [Mandatory]
     public abstract TIDomainBase Owner { get; set; }
 

@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Globalization.Mixins.UnitTests.TestDomain
 {
-  [MultiLingualResources ("OnInheritedMixin2")]
+  [MultiLingualResources("OnInheritedMixin2")]
   public class InheritedMixinAddingMultiLingualResourcesAttributes2 : MixinAddingMultiLingualResourcesAttributes2
   {
   }

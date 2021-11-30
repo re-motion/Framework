@@ -35,9 +35,9 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void Format ()
     {
-      var result = _formatter.Format (new NotNullValidator (new InvariantValidationMessage ("Fake Message")), t => t.Name);
+      var result = _formatter.Format(new NotNullValidator(new InvariantValidationMessage("Fake Message")), t => t.Name);
 
-      Assert.That (result, Is.EqualTo ("Remotion.Validation.Validators.NotNullValidator"));
+      Assert.That(result, Is.EqualTo("Remotion.Validation.Validators.NotNullValidator"));
     }
   }
 }

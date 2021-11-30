@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
 
     public void CheckPageForError (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
     }
   }
 }

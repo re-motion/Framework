@@ -25,68 +25,68 @@ namespace Remotion.Web.UnitTests.Core
   public class PlainTextStringConverterTest
   {
     [Test]
-    [TestCaseSource (nameof (TestCaseSource_ConvertFromString))]
+    [TestCaseSource(nameof(TestCaseSource_ConvertFromString))]
     public void ConvertFromString (string input, PlainTextString? expectedOutput)
     {
       var converter = new PlainTextStringConverter();
 
-      var canConvert = converter.CanConvertFrom (typeof (string));
-      Assert.That (canConvert, Is.True);
+      var canConvert = converter.CanConvertFrom(typeof(string));
+      Assert.That(canConvert, Is.True);
 
-      var result = converter.ConvertFromString (input);
-      Assert.That (result, Is.EqualTo (expectedOutput));
+      var result = converter.ConvertFromString(input);
+      Assert.That(result, Is.EqualTo(expectedOutput));
     }
 
     private static object[] TestCaseSource_ConvertFromString =
     {
         new object[] { null, null },
-        new object[] { string.Empty, PlainTextString.CreateFromText (string.Empty) },
-        new object[] { "test", PlainTextString.CreateFromText ("test") },
-        new object[] { "aoe   \" & ' < > é \r \n \r\n", PlainTextString.CreateFromText ("aoe   \" & ' < > é \r \n \r\n") }
+        new object[] { string.Empty, PlainTextString.CreateFromText(string.Empty) },
+        new object[] { "test", PlainTextString.CreateFromText("test") },
+        new object[] { "aoe   \" & ' < > é \r \n \r\n", PlainTextString.CreateFromText("aoe   \" & ' < > é \r \n \r\n") }
     };
 
     [Test]
-    [TestCaseSource (nameof (TestCaseSource_ConvertToString))]
+    [TestCaseSource(nameof(TestCaseSource_ConvertToString))]
     public void ConvertToString (PlainTextString? input, string expectedOutput)
     {
       var converter = new PlainTextStringConverter();
 
-      var canConvert = converter.CanConvertTo (typeof (string));
-      Assert.That (canConvert, Is.True);
+      var canConvert = converter.CanConvertTo(typeof(string));
+      Assert.That(canConvert, Is.True);
 
-      var result = converter.ConvertToString (input);
-      Assert.That (result, Is.EqualTo (expectedOutput));
+      var result = converter.ConvertToString(input);
+      Assert.That(result, Is.EqualTo(expectedOutput));
     }
 
     private static object[] TestCaseSource_ConvertToString =
     {
         new object[] { null, null },
-        new object[] { PlainTextString.CreateFromText (string.Empty), string.Empty },
-        new object[] { PlainTextString.CreateFromText ("test"), "test" },
-        new object[] { PlainTextString.CreateFromText ("aoe   \" & ' < > é \r \n \r\n"), "aoe   \" & ' < > é \r \n \r\n" }
+        new object[] { PlainTextString.CreateFromText(string.Empty), string.Empty },
+        new object[] { PlainTextString.CreateFromText("test"), "test" },
+        new object[] { PlainTextString.CreateFromText("aoe   \" & ' < > é \r \n \r\n"), "aoe   \" & ' < > é \r \n \r\n" }
     };
 
     [Test]
     public void ConvertToInstanceDescriptor ()
     {
       var converter = new PlainTextStringConverter();
-      var input = PlainTextString.CreateFromText ("test");
+      var input = PlainTextString.CreateFromText("test");
 
-      var canConvert = converter.CanConvertTo (typeof (InstanceDescriptor));
-      Assert.That (canConvert, Is.True);
+      var canConvert = converter.CanConvertTo(typeof(InstanceDescriptor));
+      Assert.That(canConvert, Is.True);
 
-      var result = converter.ConvertTo (input, typeof (InstanceDescriptor));
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result, Is.InstanceOf<InstanceDescriptor>());
+      var result = converter.ConvertTo(input, typeof(InstanceDescriptor));
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result, Is.InstanceOf<InstanceDescriptor>());
 
-      var instanceDescriptorResult = (InstanceDescriptor) result;
-      Assert.That (
+      var instanceDescriptorResult = (InstanceDescriptor)result;
+      Assert.That(
           instanceDescriptorResult.MemberInfo,
           Is.InstanceOf<MethodInfo>()
-              .And.Property (nameof (MethodInfo.IsPublic)).True);
+              .And.Property(nameof(MethodInfo.IsPublic)).True);
 
-      var instance = (PlainTextString) instanceDescriptorResult.Invoke();
-      Assert.That (instance.GetValue(), Is.EqualTo ("test"));
+      var instance = (PlainTextString)instanceDescriptorResult.Invoke();
+      Assert.That(instance.GetValue(), Is.EqualTo("test"));
     }
 
     [Test]
@@ -94,40 +94,40 @@ namespace Remotion.Web.UnitTests.Core
     {
       var converter = new PlainTextStringConverter();
 
-      var canConvert = converter.CanConvertTo (typeof (InstanceDescriptor));
-      Assert.That (canConvert, Is.True);
+      var canConvert = converter.CanConvertTo(typeof(InstanceDescriptor));
+      Assert.That(canConvert, Is.True);
 
-      var result = converter.ConvertTo (null!, typeof (InstanceDescriptor));
-      Assert.That (result, Is.Null);
+      var result = converter.ConvertTo(null!, typeof(InstanceDescriptor));
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void ConvertFromInstanceDescriptor ()
     {
       var converter = new PlainTextStringConverter();
-      var input = new InstanceDescriptor (
-          MemberInfoFromExpressionUtility.GetMethod (() => PlainTextString.CreateFromText (null)),
+      var input = new InstanceDescriptor(
+          MemberInfoFromExpressionUtility.GetMethod(() => PlainTextString.CreateFromText(null)),
           new[] { "test" });
 
-      var canConvert = converter.CanConvertFrom (typeof (InstanceDescriptor));
-      Assert.That (canConvert, Is.True);
+      var canConvert = converter.CanConvertFrom(typeof(InstanceDescriptor));
+      Assert.That(canConvert, Is.True);
 
-      var result = converter.ConvertFrom (input);
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result, Is.EqualTo (PlainTextString.CreateFromText ("test")));
+      var result = converter.ConvertFrom(input);
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result, Is.EqualTo(PlainTextString.CreateFromText("test")));
     }
 
     [Test]
     public void ConvertFromInstanceDescriptor_WithNull_ReturnsNull ()
     {
       var converter = new PlainTextStringConverter();
-      var input = (InstanceDescriptor) null;
+      var input = (InstanceDescriptor)null;
 
-      var canConvert = converter.CanConvertFrom (typeof (InstanceDescriptor));
-      Assert.That (canConvert, Is.True);
+      var canConvert = converter.CanConvertFrom(typeof(InstanceDescriptor));
+      Assert.That(canConvert, Is.True);
 
-      var result = converter.ConvertFrom (input);
-      Assert.That (result, Is.Null);
+      var result = converter.ConvertFrom(input);
+      Assert.That(result, Is.Null);
     }
   }
 }

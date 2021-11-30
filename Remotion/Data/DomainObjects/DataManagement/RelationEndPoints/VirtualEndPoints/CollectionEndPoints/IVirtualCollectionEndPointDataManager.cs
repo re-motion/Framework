@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
     void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
 
-    void Commit();
-    void Rollback();
+    void Commit ();
+    void Rollback ();
   }
 }

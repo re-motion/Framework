@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
   {
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator locator)
     {
-      return new StubColumnRenderer (new FakeResourceUrlFactory());
+      return new StubColumnRenderer(new FakeResourceUrlFactory());
     }
 
     public bool IsSortable

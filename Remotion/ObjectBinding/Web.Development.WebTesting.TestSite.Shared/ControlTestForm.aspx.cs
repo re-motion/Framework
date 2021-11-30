@@ -26,42 +26,42 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     private new ControlTestFunction CurrentFunction
     {
-      get { return (ControlTestFunction) base.CurrentFunction; }
+      get { return (ControlTestFunction)base.CurrentFunction; }
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       LoadUserControl();
       LoadTestOutputUserControl();
 
-      ValidateButton.Click += new EventHandler (ValidateButton_Click);
+      ValidateButton.Click += new EventHandler(ValidateButton_Click);
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       PopulateDataSources();
-      LoadValues (IsPostBack);
+      LoadValues(IsPostBack);
     }
 
     private void LoadUserControl ()
     {
-      var control = LoadControl (CurrentFunction.UserControl);
-      _dataEditControl = (IDataEditControl) control;
+      var control = LoadControl(CurrentFunction.UserControl);
+      _dataEditControl = (IDataEditControl)control;
       _dataEditControl.ID = "DataEditControl";
 
-      ControlPlaceHolder.Controls.Add (control);
+      ControlPlaceHolder.Controls.Add(control);
     }
 
     private void LoadTestOutputUserControl ()
     {
-      var testOutputControlPath = CurrentFunction.UserControl.Replace (".ascx", "TestOutput.ascx");
-      var testOutputControl = LoadControl (testOutputControlPath);
+      var testOutputControlPath = CurrentFunction.UserControl.Replace(".ascx", "TestOutput.ascx");
+      var testOutputControl = LoadControl(testOutputControlPath);
 
-      TestOutputControlPlaceHolder.Controls.Add (testOutputControl);
+      TestOutputControlPlaceHolder.Controls.Add(testOutputControl);
     }
 
     private void ValidateButton_Click (object sender, EventArgs e)
@@ -72,13 +72,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
     private void PopulateDataSources ()
     {
       if (_dataEditControl != null)
-        _dataEditControl.BusinessObject = (IBusinessObject) CurrentFunction.Person;
+        _dataEditControl.BusinessObject = (IBusinessObject)CurrentFunction.Person;
     }
 
     private void LoadValues (bool interim)
     {
       if (_dataEditControl != null)
-        _dataEditControl.LoadValues (interim);
+        _dataEditControl.LoadValues(interim);
     }
 
     private bool SaveValues (bool interim)
@@ -86,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
       if (_dataEditControl == null)
         return true;
 
-      return _dataEditControl.SaveValues (interim);
+      return _dataEditControl.SaveValues(interim);
     }
 
     private bool ValidateDataSources ()

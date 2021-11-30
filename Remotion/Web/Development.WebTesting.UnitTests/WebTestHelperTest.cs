@@ -27,10 +27,10 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
   [TestFixture]
   public class WebTestHelperTest
   {
-    private readonly TimeSpan _configCommandTimeout = TimeSpan.FromSeconds ((13 * 60) + 37);
-    private readonly TimeSpan _configSearchTimeout = TimeSpan.FromSeconds (30);
-    private readonly TimeSpan _configRetryInterval = TimeSpan.FromMilliseconds (25);
-    private readonly TimeSpan _configAsyncJavaScriptTimeout = TimeSpan.FromHours (12) + TimeSpan.FromMinutes (34);
+    private readonly TimeSpan _configCommandTimeout = TimeSpan.FromSeconds((13 * 60) + 37);
+    private readonly TimeSpan _configSearchTimeout = TimeSpan.FromSeconds(30);
+    private readonly TimeSpan _configRetryInterval = TimeSpan.FromMilliseconds(25);
+    private readonly TimeSpan _configAsyncJavaScriptTimeout = TimeSpan.FromHours(12) + TimeSpan.FromMinutes(34);
 
     [Test]
     public void CreateNewBrowserSession_ValuesFromConfiguration_WithoutOverride ()
@@ -38,82 +38,82 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       var webTestHelper = WebTestHelper.CreateFromConfiguration<TestWebTestConfigurationFactory>();
       var browserFactoryStub = webTestHelper.BrowserConfiguration.BrowserFactory;
 
-      webTestHelper.CreateNewBrowserSession (false);
+      webTestHelper.CreateNewBrowserSession(false);
 
-      var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument (browserFactoryStub);
-      Assert.That (driverConfigurationArgument.CommandTimeout, Is.EqualTo (_configCommandTimeout));
-      Assert.That (driverConfigurationArgument.SearchTimeout, Is.EqualTo (_configSearchTimeout));
-      Assert.That (driverConfigurationArgument.RetryInterval, Is.EqualTo (_configRetryInterval));
-      Assert.That (driverConfigurationArgument.AsyncJavaScriptTimeout, Is.EqualTo (_configAsyncJavaScriptTimeout));
+      var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument(browserFactoryStub);
+      Assert.That(driverConfigurationArgument.CommandTimeout, Is.EqualTo(_configCommandTimeout));
+      Assert.That(driverConfigurationArgument.SearchTimeout, Is.EqualTo(_configSearchTimeout));
+      Assert.That(driverConfigurationArgument.RetryInterval, Is.EqualTo(_configRetryInterval));
+      Assert.That(driverConfigurationArgument.AsyncJavaScriptTimeout, Is.EqualTo(_configAsyncJavaScriptTimeout));
     }
 
     [Test]
     public void CreateNewBrowserSession_CommandTimeoutOverride ()
     {
       var webTestHelper = WebTestHelper.CreateFromConfiguration<TestWebTestConfigurationFactory>();
-      var configurationOverride = new DriverConfigurationOverride { CommandTimeout = TimeSpan.FromMinutes (5) };
+      var configurationOverride = new DriverConfigurationOverride { CommandTimeout = TimeSpan.FromMinutes(5) };
       var browserFactoryStub = webTestHelper.BrowserConfiguration.BrowserFactory;
 
-      webTestHelper.CreateNewBrowserSession (false, configurationOverride);
+      webTestHelper.CreateNewBrowserSession(false, configurationOverride);
 
-      var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument (browserFactoryStub);
-      Assert.That (driverConfigurationArgument.CommandTimeout, Is.EqualTo (TimeSpan.FromMinutes (5)));
-      Assert.That (driverConfigurationArgument.SearchTimeout, Is.EqualTo (_configSearchTimeout));
-      Assert.That (driverConfigurationArgument.RetryInterval, Is.EqualTo (_configRetryInterval));
-      Assert.That (driverConfigurationArgument.AsyncJavaScriptTimeout, Is.EqualTo (_configAsyncJavaScriptTimeout));
+      var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument(browserFactoryStub);
+      Assert.That(driverConfigurationArgument.CommandTimeout, Is.EqualTo(TimeSpan.FromMinutes(5)));
+      Assert.That(driverConfigurationArgument.SearchTimeout, Is.EqualTo(_configSearchTimeout));
+      Assert.That(driverConfigurationArgument.RetryInterval, Is.EqualTo(_configRetryInterval));
+      Assert.That(driverConfigurationArgument.AsyncJavaScriptTimeout, Is.EqualTo(_configAsyncJavaScriptTimeout));
     }
 
     [Test]
     public void CreateNewBrowserSession_SearchTimeoutOverride ()
     {
       var webTestHelper = WebTestHelper.CreateFromConfiguration<TestWebTestConfigurationFactory>();
-      var configurationOverride = new DriverConfigurationOverride { SearchTimeout = TimeSpan.FromMinutes (5) };
+      var configurationOverride = new DriverConfigurationOverride { SearchTimeout = TimeSpan.FromMinutes(5) };
       var browserFactoryStub = webTestHelper.BrowserConfiguration.BrowserFactory;
 
-      webTestHelper.CreateNewBrowserSession (false, configurationOverride);
+      webTestHelper.CreateNewBrowserSession(false, configurationOverride);
 
-      var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument (browserFactoryStub);
-      Assert.That (driverConfigurationArgument.CommandTimeout, Is.EqualTo (_configCommandTimeout));
-      Assert.That (driverConfigurationArgument.SearchTimeout, Is.EqualTo (TimeSpan.FromMinutes (5)));
-      Assert.That (driverConfigurationArgument.RetryInterval, Is.EqualTo (_configRetryInterval));
-      Assert.That (driverConfigurationArgument.AsyncJavaScriptTimeout, Is.EqualTo (_configAsyncJavaScriptTimeout));
+      var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument(browserFactoryStub);
+      Assert.That(driverConfigurationArgument.CommandTimeout, Is.EqualTo(_configCommandTimeout));
+      Assert.That(driverConfigurationArgument.SearchTimeout, Is.EqualTo(TimeSpan.FromMinutes(5)));
+      Assert.That(driverConfigurationArgument.RetryInterval, Is.EqualTo(_configRetryInterval));
+      Assert.That(driverConfigurationArgument.AsyncJavaScriptTimeout, Is.EqualTo(_configAsyncJavaScriptTimeout));
     }
 
     [Test]
     public void CreateNewBrowserSession_RetryIntervalOverride ()
     {
       var webTestHelper = WebTestHelper.CreateFromConfiguration<TestWebTestConfigurationFactory>();
-      var configurationOverride = new DriverConfigurationOverride { RetryInterval = TimeSpan.FromMinutes (5) };
+      var configurationOverride = new DriverConfigurationOverride { RetryInterval = TimeSpan.FromMinutes(5) };
       var browserFactoryStub = webTestHelper.BrowserConfiguration.BrowserFactory;
 
-      webTestHelper.CreateNewBrowserSession (false, configurationOverride);
+      webTestHelper.CreateNewBrowserSession(false, configurationOverride);
 
-      var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument (browserFactoryStub);
-      Assert.That (driverConfigurationArgument.CommandTimeout, Is.EqualTo (_configCommandTimeout));
-      Assert.That (driverConfigurationArgument.SearchTimeout, Is.EqualTo (_configSearchTimeout));
-      Assert.That (driverConfigurationArgument.RetryInterval, Is.EqualTo (TimeSpan.FromMinutes (5)));
-      Assert.That (driverConfigurationArgument.AsyncJavaScriptTimeout, Is.EqualTo (_configAsyncJavaScriptTimeout));
+      var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument(browserFactoryStub);
+      Assert.That(driverConfigurationArgument.CommandTimeout, Is.EqualTo(_configCommandTimeout));
+      Assert.That(driverConfigurationArgument.SearchTimeout, Is.EqualTo(_configSearchTimeout));
+      Assert.That(driverConfigurationArgument.RetryInterval, Is.EqualTo(TimeSpan.FromMinutes(5)));
+      Assert.That(driverConfigurationArgument.AsyncJavaScriptTimeout, Is.EqualTo(_configAsyncJavaScriptTimeout));
     }
 
     [Test]
     public void CreateNewBrowserSession_AsyncJavaScriptTimeoutOverride ()
     {
       var webTestHelper = WebTestHelper.CreateFromConfiguration<TestWebTestConfigurationFactory>();
-      var configurationOverride = new DriverConfigurationOverride { AsyncJavaScriptTimeout = TimeSpan.FromMinutes (5) };
+      var configurationOverride = new DriverConfigurationOverride { AsyncJavaScriptTimeout = TimeSpan.FromMinutes(5) };
       var browserFactoryStub = webTestHelper.BrowserConfiguration.BrowserFactory;
 
-      webTestHelper.CreateNewBrowserSession (false, configurationOverride);
+      webTestHelper.CreateNewBrowserSession(false, configurationOverride);
 
-      var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument (browserFactoryStub);
-      Assert.That (driverConfigurationArgument.CommandTimeout, Is.EqualTo (_configCommandTimeout));
-      Assert.That (driverConfigurationArgument.SearchTimeout, Is.EqualTo (_configSearchTimeout));
-      Assert.That (driverConfigurationArgument.RetryInterval, Is.EqualTo (_configRetryInterval));
-      Assert.That (driverConfigurationArgument.AsyncJavaScriptTimeout, Is.EqualTo (TimeSpan.FromMinutes (5)));
+      var driverConfigurationArgument = GetBrowserFactoryStubCreateBrowserArgument(browserFactoryStub);
+      Assert.That(driverConfigurationArgument.CommandTimeout, Is.EqualTo(_configCommandTimeout));
+      Assert.That(driverConfigurationArgument.SearchTimeout, Is.EqualTo(_configSearchTimeout));
+      Assert.That(driverConfigurationArgument.RetryInterval, Is.EqualTo(_configRetryInterval));
+      Assert.That(driverConfigurationArgument.AsyncJavaScriptTimeout, Is.EqualTo(TimeSpan.FromMinutes(5)));
     }
 
     private DriverConfiguration GetBrowserFactoryStubCreateBrowserArgument (IBrowserFactory browserFactoryStub)
     {
-      return (DriverConfiguration) Mock.Get (browserFactoryStub).Invocations.Single().Arguments.Single();
+      return (DriverConfiguration)Mock.Get(browserFactoryStub).Invocations.Single().Arguments.Single();
     }
 
     private class TestWebTestConfigurationFactory : WebTestConfigurationFactory
@@ -124,8 +124,8 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
 
         var chromeConfigurationStub = new Mock<IChromeConfiguration>();
         chromeConfigurationStub
-            .Setup (_ => _.BrowserFactory)
-            .Returns (browserFactoryStub.Object);
+            .Setup(_ => _.BrowserFactory)
+            .Returns(browserFactoryStub.Object);
 
         return chromeConfigurationStub.Object;
       }

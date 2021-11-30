@@ -23,13 +23,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
   public class NoRdbmsUnitTestStorageProviderStubDefinition : StorageProviderDefinition
   {
     public NoRdbmsUnitTestStorageProviderStubDefinition (string storageProviderID)
-        : base (storageProviderID, new UnitTestStorageObjectFactoryStub())
+        : base(storageProviderID, new UnitTestStorageObjectFactoryStub())
     {
     }
 
     public override bool IsIdentityTypeSupported (Type identityType)
     {
-      ArgumentUtility.CheckNotNull ("identityType", identityType);
+      ArgumentUtility.CheckNotNull("identityType", identityType);
 
       // UnitTestStorageProviderStubDefinition supports all identity types for testing purposes.
       return true;

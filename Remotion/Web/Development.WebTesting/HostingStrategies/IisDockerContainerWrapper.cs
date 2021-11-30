@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
   /// </summary>
   public class IisDockerContainerWrapper : IDisposable
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (IisDockerContainerWrapper));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(IisDockerContainerWrapper));
 
     private readonly IDockerClient _docker;
     private readonly IisDockerContainerConfigurationParameters _configurationParameters;
@@ -40,8 +40,8 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
         [NotNull] IDockerClient docker,
         [NotNull] IisDockerContainerConfigurationParameters configurationParameters)
     {
-      ArgumentUtility.CheckNotNull ("docker", docker);
-      ArgumentUtility.CheckNotNull ("configurationParameters", configurationParameters);
+      ArgumentUtility.CheckNotNull("docker", docker);
+      ArgumentUtility.CheckNotNull("configurationParameters", configurationParameters);
 
       _docker = docker;
       _configurationParameters = configurationParameters;
@@ -54,17 +54,17 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     {
       try
       {
-        _docker.Pull (_configurationParameters.DockerImageName);
+        _docker.Pull(_configurationParameters.DockerImageName);
       }
       catch (DockerOperationException ex)
       {
-        s_log.Error ($"Pulling the docker image '{_configurationParameters.DockerImageName}' failed. Trying to proceed with a locally cached image.", ex);
+        s_log.Error($"Pulling the docker image '{_configurationParameters.DockerImageName}' failed. Trying to proceed with a locally cached image.", ex);
       }
 
-      var mounts = GetMountsWithWebApplicationPath (_configurationParameters.Mounts);
+      var mounts = GetMountsWithWebApplicationPath(_configurationParameters.Mounts);
       var portMappings = new Dictionary<int, int> { { _configurationParameters.WebApplicationPort, _configurationParameters.WebApplicationPort } };
 
-      _containerName = _docker.Run (
+      _containerName = _docker.Run(
           portMappings,
           mounts,
           _configurationParameters.DockerImageName,
@@ -81,33 +81,33 @@ C:\ServiceMonitor.exe w3svc;
     /// <inheritdoc />
     public void Dispose ()
     {
-      Assertion.DebugIsNotNull (_containerName, "No container was started.");
-      _docker.Stop (_containerName);
-      var isContainerRemovedAfterStop = IsContainerRemoved (retries: 15, interval: TimeSpan.FromMilliseconds (100));
+      Assertion.DebugIsNotNull(_containerName, "No container was started.");
+      _docker.Stop(_containerName);
+      var isContainerRemovedAfterStop = IsContainerRemoved(retries: 15, interval: TimeSpan.FromMilliseconds(100));
 
       if (isContainerRemovedAfterStop)
         return;
 
-      Assertion.DebugIsNotNull (_containerName, "No container was started.");
-      _docker.Remove (_containerName, true);
-      var isContainerRemovedAfterForceRemove = IsContainerRemoved (retries: 15, interval: TimeSpan.FromMilliseconds (100));
+      Assertion.DebugIsNotNull(_containerName, "No container was started.");
+      _docker.Remove(_containerName, true);
+      var isContainerRemovedAfterForceRemove = IsContainerRemoved(retries: 15, interval: TimeSpan.FromMilliseconds(100));
 
       if (isContainerRemovedAfterForceRemove)
         return;
 
-      throw new InvalidOperationException ($"The container with the id '{_containerName}' could not be removed.");
+      throw new InvalidOperationException($"The container with the id '{_containerName}' could not be removed.");
     }
 
     private bool IsContainerRemoved (int retries, TimeSpan interval)
     {
-      Assertion.DebugIsNotNull (_containerName, "No container was started.");
+      Assertion.DebugIsNotNull(_containerName, "No container was started.");
 
       for (var i = 0; i <= retries; i++)
       {
-        if (!_docker.ContainerExists (_containerName))
+        if (!_docker.ContainerExists(_containerName))
           return true;
 
-        Thread.Sleep ((int) interval.TotalMilliseconds);
+        Thread.Sleep((int)interval.TotalMilliseconds);
       }
 
       return false;
@@ -125,8 +125,8 @@ C:\ServiceMonitor.exe w3svc;
 
       foreach (var mount in additionalMounts)
       {
-        var absoluteMountPath = Path.Combine (_configurationParameters.AbsoluteWebApplicationPath, mount);
-        mounts.Add (absoluteMountPath, absoluteMountPath);
+        var absoluteMountPath = Path.Combine(_configurationParameters.AbsoluteWebApplicationPath, mount);
+        mounts.Add(absoluteMountPath, absoluteMountPath);
       }
 
       return mounts;

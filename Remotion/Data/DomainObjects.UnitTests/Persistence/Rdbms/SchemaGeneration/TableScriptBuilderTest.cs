@@ -36,17 +36,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     private IScriptElement _fakeElement1;
     private IScriptElement _fakeElement2;
     private IScriptElement _fakeElement3;
-    
+
     public override void SetUp ()
     {
       base.SetUp();
 
       _tableScriptfactoryStub = MockRepository.GenerateStub<ITableScriptElementFactory>();
-      _builder = new TableScriptBuilder (_tableScriptfactoryStub, new SqlCommentScriptElementFactory());
+      _builder = new TableScriptBuilder(_tableScriptfactoryStub, new SqlCommentScriptElementFactory());
 
-      _tableDefinition1 = TableDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
-      _tableDefinition2 = TableDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
-      _tableDefinition3 = TableDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
+      _tableDefinition1 = TableDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
+      _tableDefinition2 = TableDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
+      _tableDefinition3 = TableDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
 
       _fakeElement1 = MockRepository.GenerateStub<IScriptElement>();
       _fakeElement2 = MockRepository.GenerateStub<IScriptElement>();
@@ -56,108 +56,108 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     [Test]
     public void GetCreateScript_GetDropScript_NoEntitiesAdded ()
     {
-      var createScriptResult = _builder.GetCreateScript ();
-      var dropScriptResult = _builder.GetDropScript ();
+      var createScriptResult = _builder.GetCreateScript();
+      var dropScriptResult = _builder.GetDropScript();
 
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) createScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Create all tables"));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) dropScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Drop all tables"));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement, Is.EqualTo("-- Create all tables"));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop all tables"));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_OneTableDefinitionAdded ()
     {
-      _tableScriptfactoryStub.Stub(stub => stub.GetCreateElement (_tableDefinition1)).Return (_fakeElement1);
-      _tableScriptfactoryStub.Stub(stub => stub.GetDropElement (_tableDefinition1)).Return (_fakeElement2);
-      
-      _builder.AddEntityDefinition (_tableDefinition1);
+      _tableScriptfactoryStub.Stub(stub => stub.GetCreateElement(_tableDefinition1)).Return(_fakeElement1);
+      _tableScriptfactoryStub.Stub(stub => stub.GetDropElement(_tableDefinition1)).Return(_fakeElement2);
 
-      var createScriptResult = _builder.GetCreateScript ();
-      var dropScriptResult = _builder.GetDropScript ();
+      _builder.AddEntityDefinition(_tableDefinition1);
 
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements.Count, Is.EqualTo (2));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) createScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Create all tables"));
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements[1], Is.SameAs(_fakeElement1));
+      var createScriptResult = _builder.GetCreateScript();
+      var dropScriptResult = _builder.GetDropScript();
 
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements.Count, Is.EqualTo (2));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) dropScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Drop all tables"));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements[1], Is.SameAs (_fakeElement2));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements.Count, Is.EqualTo(2));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement, Is.EqualTo("-- Create all tables"));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements[1], Is.SameAs(_fakeElement1));
+
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(2));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop all tables"));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[1], Is.SameAs(_fakeElement2));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_SeveralTableDefinitionsAdded ()
     {
-      _tableScriptfactoryStub.Stub (stub => stub.GetCreateElement (_tableDefinition1)).Return (_fakeElement1);
-      _tableScriptfactoryStub.Stub (stub => stub.GetDropElement (_tableDefinition1)).Return (_fakeElement3);
-      _tableScriptfactoryStub.Stub (stub => stub.GetCreateElement (_tableDefinition2)).Return (_fakeElement2);
-      _tableScriptfactoryStub.Stub (stub => stub.GetDropElement (_tableDefinition2)).Return (_fakeElement2);
-      _tableScriptfactoryStub.Stub (stub => stub.GetCreateElement (_tableDefinition3)).Return (_fakeElement3);
-      _tableScriptfactoryStub.Stub (stub => stub.GetDropElement (_tableDefinition3)).Return (_fakeElement1);
-      
-      _builder.AddEntityDefinition (_tableDefinition1);
-      _builder.AddEntityDefinition (_tableDefinition2);
-      _builder.AddEntityDefinition (_tableDefinition3);
+      _tableScriptfactoryStub.Stub(stub => stub.GetCreateElement(_tableDefinition1)).Return(_fakeElement1);
+      _tableScriptfactoryStub.Stub(stub => stub.GetDropElement(_tableDefinition1)).Return(_fakeElement3);
+      _tableScriptfactoryStub.Stub(stub => stub.GetCreateElement(_tableDefinition2)).Return(_fakeElement2);
+      _tableScriptfactoryStub.Stub(stub => stub.GetDropElement(_tableDefinition2)).Return(_fakeElement2);
+      _tableScriptfactoryStub.Stub(stub => stub.GetCreateElement(_tableDefinition3)).Return(_fakeElement3);
+      _tableScriptfactoryStub.Stub(stub => stub.GetDropElement(_tableDefinition3)).Return(_fakeElement1);
 
-      var createScriptResult = _builder.GetCreateScript ();
-      var dropScriptResult = _builder.GetDropScript ();
+      _builder.AddEntityDefinition(_tableDefinition1);
+      _builder.AddEntityDefinition(_tableDefinition2);
+      _builder.AddEntityDefinition(_tableDefinition3);
 
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements.Count, Is.EqualTo (4));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) createScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Create all tables"));
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements[1], Is.SameAs (_fakeElement1));
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements[2], Is.SameAs (_fakeElement2));
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements[3], Is.SameAs (_fakeElement3));
+      var createScriptResult = _builder.GetCreateScript();
+      var dropScriptResult = _builder.GetDropScript();
 
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements.Count, Is.EqualTo (4));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) dropScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Drop all tables"));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements[1], Is.SameAs (_fakeElement3));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements[2], Is.SameAs (_fakeElement2));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements[3], Is.SameAs (_fakeElement1));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements.Count, Is.EqualTo(4));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement, Is.EqualTo("-- Create all tables"));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements[1], Is.SameAs(_fakeElement1));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements[2], Is.SameAs(_fakeElement2));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements[3], Is.SameAs(_fakeElement3));
+
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(4));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop all tables"));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[1], Is.SameAs(_fakeElement3));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[2], Is.SameAs(_fakeElement2));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[3], Is.SameAs(_fakeElement1));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_FilterViewDefinitionAdded ()
     {
-      var entityDefinition = FilterViewDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
-      _builder.AddEntityDefinition (entityDefinition);
+      var entityDefinition = FilterViewDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
+      _builder.AddEntityDefinition(entityDefinition);
 
-      var createScriptResult = _builder.GetCreateScript ();
-      var dropScriptResult = _builder.GetDropScript ();
+      var createScriptResult = _builder.GetCreateScript();
+      var dropScriptResult = _builder.GetDropScript();
 
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) createScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Create all tables"));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) dropScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Drop all tables"));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement, Is.EqualTo("-- Create all tables"));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop all tables"));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_UnionViewDefinitionAdded ()
     {
-      var entityDefinition = UnionViewDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
-      _builder.AddEntityDefinition (entityDefinition);
+      var entityDefinition = UnionViewDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
+      _builder.AddEntityDefinition(entityDefinition);
 
-      var createScriptResult = _builder.GetCreateScript ();
-      var dropScriptResult = _builder.GetDropScript ();
+      var createScriptResult = _builder.GetCreateScript();
+      var dropScriptResult = _builder.GetDropScript();
 
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) createScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Create all tables"));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) dropScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Drop all tables"));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement, Is.EqualTo("-- Create all tables"));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop all tables"));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_EmptyViewDefinitionAdded ()
     {
-      var entityDefinition = EmptyViewDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
-      _builder.AddEntityDefinition (entityDefinition);
+      var entityDefinition = EmptyViewDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
+      _builder.AddEntityDefinition(entityDefinition);
 
       var createScriptResult = _builder.GetCreateScript();
       var dropScriptResult = _builder.GetDropScript();
 
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements.Count, Is.EqualTo(1));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) createScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Create all tables"));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements.Count, Is.EqualTo(1));
-      Assert.That (((ScriptStatement) ((ScriptElementCollection) dropScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Drop all tables"));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement, Is.EqualTo("-- Create all tables"));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop all tables"));
 
     }
   }

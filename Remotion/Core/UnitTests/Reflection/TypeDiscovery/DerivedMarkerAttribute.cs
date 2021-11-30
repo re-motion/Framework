@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery
 {
-  [AttributeUsage (AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false, Inherited = false)]
   public class DerivedMarkerAttribute : MarkerAttribute
   {
     public DerivedMarkerAttribute ()

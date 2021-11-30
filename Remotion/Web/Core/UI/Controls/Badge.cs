@@ -24,7 +24,7 @@ namespace Remotion.Web.UI.Controls
   /// <summary>
   /// Represents a small amount of information that is displayed besides its corresponding parent element.
   /// </summary>
-  [TypeConverter (typeof (BadgeConverter))]
+  [TypeConverter(typeof(BadgeConverter))]
   public class Badge
   {
     public static bool ShouldSerialize (Badge? badge)
@@ -32,7 +32,7 @@ namespace Remotion.Web.UI.Controls
       if (badge == null)
         return false;
 
-      if (string.IsNullOrEmpty (badge.Value) && string.IsNullOrEmpty (badge.Description))
+      if (string.IsNullOrEmpty(badge.Value) && string.IsNullOrEmpty(badge.Description))
         return false;
 
       return true;
@@ -42,7 +42,7 @@ namespace Remotion.Web.UI.Controls
     private string _description;
 
     public Badge ()
-        : this (string.Empty, string.Empty)
+        : this(string.Empty, string.Empty)
     {
     }
 
@@ -55,26 +55,26 @@ namespace Remotion.Web.UI.Controls
     /// <summary>
     /// Gets or sets the text that is displayed in the badge.
     /// </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public string Value
     {
       get { return _value; }
-      [MemberNotNull (nameof (_value))]
+      [MemberNotNull(nameof(_value))]
       set { _value = value ?? string.Empty; }
     }
 
     /// <summary>
     /// Gets or sets a screen reader friendly description of <see cref="Value"/>.
     /// </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public string Description
     {
       get { return _description; }
-      [MemberNotNull (nameof (_description))]
+      [MemberNotNull(nameof(_description))]
       set { _description = value ?? string.Empty; }
     }
 

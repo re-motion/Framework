@@ -36,13 +36,13 @@ namespace Remotion.Security.Metadata
     // construction and disposing
 
     public AccessTypeReflector ()
-      : this (new EnumerationReflector ())
+      : this(new EnumerationReflector())
     {
     }
 
     public AccessTypeReflector (IEnumerationReflector enumerationReflector)
     {
-      ArgumentUtility.CheckNotNull ("enumerationReflector", enumerationReflector);
+      ArgumentUtility.CheckNotNull("enumerationReflector", enumerationReflector);
       _enumerationReflector = enumerationReflector;
     }
 
@@ -55,20 +55,20 @@ namespace Remotion.Security.Metadata
 
     public List<EnumValueInfo> GetAccessTypesFromAssembly (Assembly assembly, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
-      ArgumentUtility.CheckNotNull ("cache", cache);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull("cache", cache);
 
-      List<EnumValueInfo> accessTypes = new List<EnumValueInfo> ();
-      foreach (var type in AssemblyTypeCache.GetTypes (assembly))
+      List<EnumValueInfo> accessTypes = new List<EnumValueInfo>();
+      foreach (var type in AssemblyTypeCache.GetTypes(assembly))
       {
-        if (type.IsEnum && Attribute.IsDefined (type, typeof (AccessTypeAttribute), false))
+        if (type.IsEnum && Attribute.IsDefined(type, typeof(AccessTypeAttribute), false))
         {
-          Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues (type, cache);
+          Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues(type, cache);
           foreach (KeyValuePair<Enum, EnumValueInfo> entry in values)
           {
-            if (!cache.ContainsAccessType (entry.Key))
-              cache.AddAccessType (entry.Key, entry.Value);
-            accessTypes.Add (entry.Value);
+            if (!cache.ContainsAccessType(entry.Key))
+              cache.AddAccessType(entry.Key, entry.Value);
+            accessTypes.Add(entry.Value);
           }
         }
       }
@@ -78,34 +78,34 @@ namespace Remotion.Security.Metadata
 
     public List<EnumValueInfo> GetAccessTypesFromType (Type type, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("cache", cache);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("cache", cache);
 
-      Dictionary<Enum, EnumValueInfo> accessTypes = _enumerationReflector.GetValues (typeof (GeneralAccessTypes), cache);
+      Dictionary<Enum, EnumValueInfo> accessTypes = _enumerationReflector.GetValues(typeof(GeneralAccessTypes), cache);
       foreach (KeyValuePair<Enum, EnumValueInfo> entry in accessTypes)
       {
-        if (!cache.ContainsAccessType (entry.Key))
-          cache.AddAccessType (entry.Key, entry.Value);
+        if (!cache.ContainsAccessType(entry.Key))
+          cache.AddAccessType(entry.Key, entry.Value);
       }
 
-      AddAccessTypes (type, accessTypes, cache);
+      AddAccessTypes(type, accessTypes, cache);
 
-      return new List<EnumValueInfo> (accessTypes.Values);
+      return new List<EnumValueInfo>(accessTypes.Values);
     }
-    
+
     private void AddAccessTypes (Type type, Dictionary<Enum, EnumValueInfo> accessTypes, MetadataCache cache)
     {
-      var instanceMethods = GetInstanceMethods (type);
-      var staticMethods = GetStaticMethods (type);
+      var instanceMethods = GetInstanceMethods(type);
+      var staticMethods = GetStaticMethods(type);
 
-      var methodInformations = instanceMethods.Concat (staticMethods);
+      var methodInformations = instanceMethods.Concat(staticMethods);
 
-      AddAccessTypesFromAttribute (methodInformations, accessTypes, cache);
+      AddAccessTypesFromAttribute(methodInformations, accessTypes, cache);
     }
 
     private IEnumerable<MethodInfo> GetStaticMethods (Type type)
     {
-      MemberInfo[] staticMethods = type.FindMembers (
+      MemberInfo[] staticMethods = type.FindMembers(
           MemberTypes.Method,
           BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy,
           FindSecuredMembersFilter,
@@ -115,7 +115,7 @@ namespace Remotion.Security.Metadata
 
     private IEnumerable<MethodInfo> GetInstanceMethods (Type type)
     {
-      MemberInfo[] instanceMethods = type.FindMembers (
+      MemberInfo[] instanceMethods = type.FindMembers(
           MemberTypes.Method,
           BindingFlags.Instance | BindingFlags.Public,
           FindSecuredMembersFilter,
@@ -125,23 +125,23 @@ namespace Remotion.Security.Metadata
 
     private bool FindSecuredMembersFilter (MemberInfo member, object? filterCriteria)
     {
-      return Attribute.IsDefined (member, typeof (DemandPermissionAttribute), true);
+      return Attribute.IsDefined(member, typeof(DemandPermissionAttribute), true);
     }
 
     private void AddAccessTypesFromAttribute (IEnumerable<MethodInfo> methodInfos, Dictionary<Enum, EnumValueInfo> accessTypes, MetadataCache cache)
     {
       foreach (var methodInfo in methodInfos)
       {
-        var values = _permissionReflector.GetRequiredMethodPermissions (methodInfo.DeclaringType!, MethodInfoAdapter.Create(methodInfo));
+        var values = _permissionReflector.GetRequiredMethodPermissions(methodInfo.DeclaringType!, MethodInfoAdapter.Create(methodInfo));
         foreach (Enum value in values)
         {
-          EnumValueInfo accessType = _enumerationReflector.GetValue (value, cache);
+          EnumValueInfo accessType = _enumerationReflector.GetValue(value, cache);
 
-          if (!cache.ContainsAccessType (value))
-            cache.AddAccessType (value, accessType);
+          if (!cache.ContainsAccessType(value))
+            cache.AddAccessType(value, accessType);
 
-          if (!accessTypes.ContainsKey (value))
-            accessTypes.Add (value, accessType);
+          if (!accessTypes.ContainsKey(value))
+            accessTypes.Add(value, accessType);
         }
       }
     }

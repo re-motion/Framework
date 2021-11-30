@@ -24,7 +24,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Data.SqlClient
   {
     private readonly IDbConnection _connection;
 
-    public TestableDatabaseAgent (IDbConnection connection) : base ("blabla")
+    public TestableDatabaseAgent (IDbConnection connection) : base("blabla")
     {
       _connection = connection;
     }
@@ -36,7 +36,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Data.SqlClient
 
     public new int ExecuteBatchString (IDbConnection connection, string commandBatch, IDbTransaction transaction)
     {
-      return base.ExecuteBatchString (connection, commandBatch, transaction);
+      return base.ExecuteBatchString(connection, commandBatch, transaction);
     }
   }
 }

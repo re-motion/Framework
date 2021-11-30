@@ -28,8 +28,8 @@ namespace Remotion.ExtensibleEnums
   /// <threadsafety static="true" instance="true" />
   public static class ExtensibleEnumUtility
   {
-    private static readonly TypeAdapter s_extensibleEnumInterfaceType = TypeAdapter.Create (typeof (IExtensibleEnum));
-    private static readonly TypeAdapter s_extensibleEnumGenericBaseType = TypeAdapter.Create (typeof (ExtensibleEnum<>));
+    private static readonly TypeAdapter s_extensibleEnumInterfaceType = TypeAdapter.Create(typeof(IExtensibleEnum));
+    private static readonly TypeAdapter s_extensibleEnumGenericBaseType = TypeAdapter.Create(typeof(ExtensibleEnum<>));
 
     /// <summary>
     /// Determines whether the specified type is an <see cref="ExtensibleEnum{T}"/> type.
@@ -46,9 +46,9 @@ namespace Remotion.ExtensibleEnums
     /// </remarks>
     public static bool IsExtensibleEnumType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return IsExtensibleEnumType (TypeAdapter.Create (type));
+      return IsExtensibleEnumType(TypeAdapter.Create(type));
     }
 
     /// <summary>
@@ -66,12 +66,12 @@ namespace Remotion.ExtensibleEnums
     /// </remarks>
     public static bool IsExtensibleEnumType (ITypeInformation type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return s_extensibleEnumInterfaceType.IsAssignableFrom (type)
-             && !type.Equals (s_extensibleEnumGenericBaseType)
-             && !(type.IsGenericType && type.GetGenericTypeDefinition().Equals (s_extensibleEnumGenericBaseType))
-             && !type.Equals (s_extensibleEnumInterfaceType);
+      return s_extensibleEnumInterfaceType.IsAssignableFrom(type)
+             && !type.Equals(s_extensibleEnumGenericBaseType)
+             && !(type.IsGenericType && type.GetGenericTypeDefinition().Equals(s_extensibleEnumGenericBaseType))
+             && !type.Equals(s_extensibleEnumInterfaceType);
     }
 
     /// <summary>
@@ -83,8 +83,8 @@ namespace Remotion.ExtensibleEnums
     /// <exception cref="ArgumentException">The <paramref name="extensibleEnumType"/> is not derived from <see cref="ExtensibleEnum{T}"/>.</exception>
     public static IExtensibleEnumDefinition GetDefinition (Type extensibleEnumType)
     {
-      ArgumentUtility.CheckNotNull ("extensibleEnumType", extensibleEnumType);
-      return SafeServiceLocator.Current.GetInstance<ExtensibleEnumDefinitionCache>().GetDefinition (extensibleEnumType);
+      ArgumentUtility.CheckNotNull("extensibleEnumType", extensibleEnumType);
+      return SafeServiceLocator.Current.GetInstance<ExtensibleEnumDefinitionCache>().GetDefinition(extensibleEnumType);
     }
   }
 }

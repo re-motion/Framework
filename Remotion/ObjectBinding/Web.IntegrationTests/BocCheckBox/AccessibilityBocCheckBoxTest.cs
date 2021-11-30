@@ -30,72 +30,72 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocCheckBox
     public void Normal ()
     {
       var home = Start();
-      var bocCheckBox = home.CheckBoxes().GetByLocalID ("DeceasedField_Normal");
+      var bocCheckBox = home.CheckBoxes().GetByLocalID("DeceasedField_Normal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocCheckBox.Analyze (analyzer);
+      var result = bocCheckBox.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void AlwaysInvalid_WithValidationErrors ()
     {
       var home = Start();
-      var bocCheckBox = home.CheckBoxes().GetByLocalID ("DeceasedField_AlwaysInvalid");
+      var bocCheckBox = home.CheckBoxes().GetByLocalID("DeceasedField_AlwaysInvalid");
       var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocCheckBox.Analyze (analyzer);
+      var result = bocCheckBox.Analyze(analyzer);
 
-      Assert.That (bocCheckBox.GetValidationErrors(), Is.Not.Empty);
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(bocCheckBox.GetValidationErrors(), Is.Not.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ReadOnly ()
     {
       var home = Start();
-      var bocCheckBox = home.CheckBoxes().GetByLocalID ("DeceasedField_ReadOnly");
+      var bocCheckBox = home.CheckBoxes().GetByLocalID("DeceasedField_ReadOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocCheckBox.Analyze (analyzer);
+      var result = bocCheckBox.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Disabled ()
     {
       var home = Start();
-      var bocCheckBox = home.CheckBoxes().GetByLocalID ("DeceasedField_Disabled");
+      var bocCheckBox = home.CheckBoxes().GetByLocalID("DeceasedField_Disabled");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocCheckBox.Analyze (analyzer);
+      var result = bocCheckBox.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Disabled_Description ()
     {
       var home = Start();
-      var bocCheckBox = home.CheckBoxes().GetByLocalID ("DeceasedField_Disabled_Description");
+      var bocCheckBox = home.CheckBoxes().GetByLocalID("DeceasedField_Disabled_Description");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocCheckBox.Analyze (analyzer);
+      var result = bocCheckBox.Analyze(analyzer);
       // TODO RM-7329 remove ignore once issue is resolved
-      var violations = result.Violations.IgnoreByRuleIDAndXPath (
+      var violations = result.Violations.IgnoreByRuleIDAndXPath(
           AccessibilityRuleID.ColorContrast,
           "/span[@id='body_DataEditControl_DeceasedField_Disabled_Description_Description']");
 
-      Assert.That (violations, Is.Empty);
+      Assert.That(violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocCheckBox");
+      return Start("BocCheckBox");
     }
   }
 }

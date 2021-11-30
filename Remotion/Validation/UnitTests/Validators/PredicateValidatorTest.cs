@@ -30,43 +30,43 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void Validate_WithPredicateTrue_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (1);
-      var validator = new PredicateValidator ((instanceToValidate, propertyValue, context) => true, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(1);
+      var validator = new PredicateValidator((instanceToValidate, propertyValue, context) => true, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPredicate_GetsValidArguments ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (1);
-      var validator = new PredicateValidator (
+      var propertyValidatorContext = CreatePropertyValidatorContext(1);
+      var validator = new PredicateValidator(
           (instanceToValidate, propertyValue, context) =>
           {
-            Assert.That (context, Is.SameAs (propertyValidatorContext));
-            Assert.That (instanceToValidate, Is.SameAs (propertyValidatorContext.Instance));
-            Assert.That (propertyValue, Is.SameAs (propertyValidatorContext.PropertyValue));
+            Assert.That(context, Is.SameAs(propertyValidatorContext));
+            Assert.That(instanceToValidate, Is.SameAs(propertyValidatorContext.Instance));
+            Assert.That(propertyValue, Is.SameAs(propertyValidatorContext.PropertyValue));
             return false;
           },
-          new InvariantValidationMessage ("Fake Message"));
+          new InvariantValidationMessage("Fake Message"));
 
-      validator.Validate (propertyValidatorContext);
+      validator.Validate(propertyValidatorContext);
     }
 
     [Test]
     public void Validate_WithPredicateFalse_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (1);
-      var validator = new PredicateValidator ((instanceToValidate, propertyValue, context) => false, new InvariantValidationMessage ("Custom validation message."));
+      var propertyValidatorContext = CreatePropertyValidatorContext(1);
+      var validator = new PredicateValidator((instanceToValidate, propertyValue, context) => false, new InvariantValidationMessage("Custom validation message."));
 
-      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      Assert.That (validationFailures.Length, Is.EqualTo (1));
+      Assert.That(validationFailures.Length, Is.EqualTo(1));
       //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
-      Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must meet the specified condition."));
-      Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message."));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must meet the specified condition."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message."));
     }
 
     [Test]
@@ -74,10 +74,10 @@ namespace Remotion.Validation.UnitTests.Validators
     {
       using (CultureScope.CreateInvariantCultureScope())
       {
-        Assert.That (
-            () => new PredicateValidator (null, new InvariantValidationMessage ("Fake Message")),
+        Assert.That(
+            () => new PredicateValidator(null, new InvariantValidationMessage("Fake Message")),
             Throws.InstanceOf<ArgumentNullException>()
-                .With.ArgumentExceptionMessageEqualTo ($"Value cannot be null.", "predicate"));
+                .With.ArgumentExceptionMessageEqualTo($"Value cannot be null.", "predicate"));
       }
     }
   }

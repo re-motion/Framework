@@ -27,17 +27,17 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void AcceptValidAccessType ()
     {
-      var methodPermissionAttribute = new DemandPermissionAttribute (TestAccessTypes.Second);
-      Assert.That (methodPermissionAttribute.GetAccessTypes()[0], Is.EqualTo (TestAccessTypes.Second));
+      var methodPermissionAttribute = new DemandPermissionAttribute(TestAccessTypes.Second);
+      Assert.That(methodPermissionAttribute.GetAccessTypes()[0], Is.EqualTo(TestAccessTypes.Second));
     }
 
     [Test]
     public void RejectAccessTypeWithoutAccessTypeAttribute ()
     {
-      Assert.That (
-          () => new DemandPermissionAttribute (TestAccessTypesWithoutAccessTypeAttribute.First),
+      Assert.That(
+          () => new DemandPermissionAttribute(TestAccessTypesWithoutAccessTypeAttribute.First),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Enumerated Type 'Remotion.Security.UnitTests.SampleDomain.TestAccessTypesWithoutAccessTypeAttribute' cannot be used as an access type. "
                   + "Valid access types must have the Remotion.Security.AccessTypeAttribute applied.", "accessType"));
     }
@@ -45,10 +45,10 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void RejectOtherObjectTypes ()
     {
-      Assert.That (
-          () => new DemandPermissionAttribute (new SimpleType()),
+      Assert.That(
+          () => new DemandPermissionAttribute(new SimpleType()),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Item 0 of parameter 'accessTypes' has the type 'Remotion.Security.UnitTests.SampleDomain.SimpleType' instead of 'System.Enum'.",
                   "accessTypes"));
     }
@@ -56,11 +56,11 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void AcceptMultipleAccessTypes ()
     {
-      var methodPermissionAttribute = new DemandPermissionAttribute (TestAccessTypes.Second, TestAccessTypes.Fourth);
+      var methodPermissionAttribute = new DemandPermissionAttribute(TestAccessTypes.Second, TestAccessTypes.Fourth);
 
-      Assert.That (methodPermissionAttribute.GetAccessTypes().Length, Is.EqualTo (2));
-      Assert.That (methodPermissionAttribute.GetAccessTypes(), Has.Member (TestAccessTypes.Second));
-      Assert.That (methodPermissionAttribute.GetAccessTypes(), Has.Member (TestAccessTypes.Fourth));
+      Assert.That(methodPermissionAttribute.GetAccessTypes().Length, Is.EqualTo(2));
+      Assert.That(methodPermissionAttribute.GetAccessTypes(), Has.Member(TestAccessTypes.Second));
+      Assert.That(methodPermissionAttribute.GetAccessTypes(), Has.Member(TestAccessTypes.Fourth));
     }
   }
 }

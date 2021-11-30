@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Globalization.UnitTests.TestDomain
 {
-  [MultiLingualResources ("Remotion.Globalization.UnitTests.TestDomain.Resources.EnumWithResources")]
+  [MultiLingualResources("Remotion.Globalization.UnitTests.TestDomain.Resources.EnumWithResources")]
   public enum EnumWithResources
   {
     Value1 = 1,

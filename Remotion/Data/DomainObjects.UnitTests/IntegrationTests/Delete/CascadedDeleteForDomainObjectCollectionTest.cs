@@ -24,87 +24,87 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
   public class CascadedDeleteForDomainObjectCollectionTest : ClientTransactionBaseTest
   {
     [Test]
-    [Ignore ("TODO RM-6156: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
+    [Ignore("TODO RM-6156: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
     public void BidirectionalRelation_CascadeWithinDeleting ()
     {
-      var order = Order.NewObject ();
-      var orderTicket = OrderTicket.NewObject ();
+      var order = Order.NewObject();
+      var orderTicket = OrderTicket.NewObject();
       orderTicket.Order = order;
 
-      order.Deleting += delegate { order.OrderTicket.Delete (); };
+      order.Deleting += delegate { order.OrderTicket.Delete(); };
 
-      order.Delete ();
+      order.Delete();
 
-      Assert.That (order.State.IsInvalid, Is.True);
-      Assert.That (orderTicket.State.IsInvalid, Is.True);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
-      Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+      Assert.That(order.State.IsInvalid, Is.True);
+      Assert.That(orderTicket.State.IsInvalid, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
 
     [Test]
     public void BidirectionalRelation_CascadeWithinDeleted ()
     {
-      var order = Order.NewObject ();
-      var orderTicket = OrderTicket.NewObject ();
+      var order = Order.NewObject();
+      var orderTicket = OrderTicket.NewObject();
 
       orderTicket.Order = order;
 
       OrderTicket objectToBeDeleted = null;
       order.Deleting += delegate { objectToBeDeleted = order.OrderTicket; };
-      order.Deleted += delegate { objectToBeDeleted.Delete (); };
+      order.Deleted += delegate { objectToBeDeleted.Delete(); };
 
-      order.Delete ();
+      order.Delete();
 
-      Assert.That (order.State.IsInvalid, Is.True);
-      Assert.That (orderTicket.State.IsInvalid, Is.True);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
-      Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+      Assert.That(order.State.IsInvalid, Is.True);
+      Assert.That(orderTicket.State.IsInvalid, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
 
     [Test]
-    [Ignore ("TODO: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
+    [Ignore("TODO: Define what re-store should do here - actually, it's not allowed to modify the relations within the Deleting handler, but the exception is quite unclear.")]
     public void BidirectionalRelation_CascadeWithinDeleting_SubTransaction ()
     {
-      var order = Order.NewObject ();
-      var orderTicket = OrderTicket.NewObject ();
+      var order = Order.NewObject();
+      var orderTicket = OrderTicket.NewObject();
       orderTicket.Order = order;
 
-      order.Deleting += delegate { order.OrderTicket.Delete (); };
+      order.Deleting += delegate { order.OrderTicket.Delete(); };
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        order.Delete ();
-        ClientTransaction.Current.Commit ();
+        order.Delete();
+        ClientTransaction.Current.Commit();
       }
 
-      Assert.That (order.State.IsInvalid, Is.True);
-      Assert.That (orderTicket.State.IsInvalid, Is.True);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
-      Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+      Assert.That(order.State.IsInvalid, Is.True);
+      Assert.That(orderTicket.State.IsInvalid, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
 
     [Test]
     public void BidirectionalRelation_CascadeWithinDeleted_SubTransaction ()
     {
-      var order = Order.NewObject ();
-      var orderTicket = OrderTicket.NewObject ();
+      var order = Order.NewObject();
+      var orderTicket = OrderTicket.NewObject();
 
       orderTicket.Order = order;
 
       OrderTicket objectToBeDeleted = null;
       order.Deleting += delegate { objectToBeDeleted = order.OrderTicket; };
-      order.Deleted += delegate { objectToBeDeleted.Delete (); };
+      order.Deleted += delegate { objectToBeDeleted.Delete(); };
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        order.Delete ();
-        ClientTransaction.Current.Commit ();
+        order.Delete();
+        ClientTransaction.Current.Commit();
       }
 
-      Assert.That (order.State.IsInvalid, Is.True);
-      Assert.That (orderTicket.State.IsInvalid, Is.True);
-      Assert.That (TestableClientTransaction.DataManager.DataContainers, Is.Empty);
-      Assert.That (TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+      Assert.That(order.State.IsInvalid, Is.True);
+      Assert.That(orderTicket.State.IsInvalid, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
   }
 }

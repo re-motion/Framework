@@ -24,15 +24,15 @@ namespace Remotion.Mixins.Validation.Rules
   {
     public override void Install (ValidatingVisitor visitor)
     {
-      visitor.RequiredMethodRules.Add (new DelegateValidationRule<RequiredMethodDefinition> (RequiredNextCallMethodMustBePublicOrProtected));
+      visitor.RequiredMethodRules.Add(new DelegateValidationRule<RequiredMethodDefinition>(RequiredNextCallMethodMustBePublicOrProtected));
     }
 
-    [DelegateRuleDescription (Message = "One of the methods specified via the TNext type parameter of a mixin is not implemented as a public "
+    [DelegateRuleDescription(Message = "One of the methods specified via the TNext type parameter of a mixin is not implemented as a public "
         + "or protected method.")]
     private void RequiredNextCallMethodMustBePublicOrProtected (DelegateValidationRule<RequiredMethodDefinition>.Args args)
     {
-      SingleMust (!(args.Definition.DeclaringRequirement is RequiredNextCallTypeDefinition)
-          || ReflectionUtility.IsPublicOrProtected (args.Definition.ImplementingMethod.MethodInfo), args.Log, args.Self);
+      SingleMust(!(args.Definition.DeclaringRequirement is RequiredNextCallTypeDefinition)
+          || ReflectionUtility.IsPublicOrProtected(args.Definition.ImplementingMethod.MethodInfo), args.Log, args.Self);
     }
   }
 }

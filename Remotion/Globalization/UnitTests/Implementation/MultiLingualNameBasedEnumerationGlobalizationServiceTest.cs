@@ -29,32 +29,32 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       ValueWithoutMultiLingualNameAttribute,
 
-      [MultiLingualNameAttribute ("The Name", "")]
+      [MultiLingualNameAttribute("The Name", "")]
       ValueWithMultiLingualNameAttributeForInvariantCulture,
 
-      [MultiLingualNameAttribute ("The Name invariant", "")]
-      [MultiLingualNameAttribute ("The Name fr-FR", "fr-FR")]
-      [MultiLingualNameAttribute ("The Name en", "en")]
-      [MultiLingualNameAttribute ("The Name en-US", "en-US")]
+      [MultiLingualNameAttribute("The Name invariant", "")]
+      [MultiLingualNameAttribute("The Name fr-FR", "fr-FR")]
+      [MultiLingualNameAttribute("The Name en", "en")]
+      [MultiLingualNameAttribute("The Name en-US", "en-US")]
       ValueWithMultiLingualNameAttributes,
 
-      [MultiLingualNameAttribute ("The Name fr-FR", "fr-FR")]
+      [MultiLingualNameAttribute("The Name fr-FR", "fr-FR")]
       ValueWithoutInvariantCulture,
 
-      [MultiLingualNameAttribute ("The Name invariant", "")]
-      [MultiLingualNameAttribute ("The Name fr-FR", "fr-FR")]
-      [MultiLingualNameAttribute ("The Name fr-FR", "fr-FR")]
-      [MultiLingualNameAttribute ("The Name en-US", "en-US")]
+      [MultiLingualNameAttribute("The Name invariant", "")]
+      [MultiLingualNameAttribute("The Name fr-FR", "fr-FR")]
+      [MultiLingualNameAttribute("The Name fr-FR", "fr-FR")]
+      [MultiLingualNameAttribute("The Name en-US", "en-US")]
       ValueWithDuplicateMultiLingualNameAttributes
     }
 
     [Flags]
     private enum FlagsEnum
     {
-      [MultiLingualNameAttribute ("The Value 1", "")]
+      [MultiLingualNameAttribute("The Value 1", "")]
       Value1 = 1,
 
-      [MultiLingualNameAttribute ("The Value 2", "")]
+      [MultiLingualNameAttribute("The Value 2", "")]
       Value2 = 2
     }
 
@@ -65,10 +65,10 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
       string multiLingualName;
 
-      var result = service.TryGetEnumerationValueDisplayName (TestEnum.ValueWithMultiLingualNameAttributeForInvariantCulture, out multiLingualName);
+      var result = service.TryGetEnumerationValueDisplayName(TestEnum.ValueWithMultiLingualNameAttributeForInvariantCulture, out multiLingualName);
 
-      Assert.That (result, Is.True);
-      Assert.That (multiLingualName, Is.EqualTo ("The Name"));
+      Assert.That(result, Is.True);
+      Assert.That(multiLingualName, Is.EqualTo("The Name"));
     }
 
     [Test]
@@ -76,14 +76,14 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      using (new CultureScope ("it-IT", "en-US"))
+      using (new CultureScope("it-IT", "en-US"))
       {
         string multiLingualName;
 
-        var result = service.TryGetEnumerationValueDisplayName (TestEnum.ValueWithMultiLingualNameAttributes, out multiLingualName);
+        var result = service.TryGetEnumerationValueDisplayName(TestEnum.ValueWithMultiLingualNameAttributes, out multiLingualName);
 
-        Assert.That (result, Is.True);
-        Assert.That (multiLingualName, Is.EqualTo ("The Name en-US"));
+        Assert.That(result, Is.True);
+        Assert.That(multiLingualName, Is.EqualTo("The Name en-US"));
       }
     }
 
@@ -92,190 +92,190 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      using (new CultureScope ("it-IT", "en-GB"))
+      using (new CultureScope("it-IT", "en-GB"))
       {
         string multiLingualName;
 
-        var result = service.TryGetEnumerationValueDisplayName (TestEnum.ValueWithMultiLingualNameAttributes, out multiLingualName);
+        var result = service.TryGetEnumerationValueDisplayName(TestEnum.ValueWithMultiLingualNameAttributes, out multiLingualName);
 
-        Assert.That (result, Is.True);
-        Assert.That (multiLingualName, Is.EqualTo ("The Name en"));
+        Assert.That(result, Is.True);
+        Assert.That(multiLingualName, Is.EqualTo("The Name en"));
       }
     }
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithoutNeutralResourcesLanguageAttribute_UsesInvariantCultureForNeutralCulture ()
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      var testEnumType = TestAssemblies.En.Value.GetType ("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse (testEnumType, "ValueWithInvariantAndEn");
+      var testEnumType = TestAssemblies.En.Value.GetType("TestEnum", true, false);
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithInvariantAndEn");
 
-      using (new CultureScope ("", ""))
+      using (new CultureScope("", ""))
       {
         string multiLingualName;
 
-        var result = service.TryGetEnumerationValueDisplayName (enumValue, out multiLingualName);
+        var result = service.TryGetEnumerationValueDisplayName(enumValue, out multiLingualName);
 
-        Assert.That (result, Is.True);
-        Assert.That (multiLingualName, Is.EqualTo ("The Name invariant"));
+        Assert.That(result, Is.True);
+        Assert.That(multiLingualName, Is.EqualTo("The Name invariant"));
       }
     }
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesNeutralCulture_ReturnsTheSpecifiedCultureAsFallbackForInvariantCulture ()
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      var testEnumType = TestAssemblies.En.Value.GetType ("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse (testEnumType, "ValueWithEnAndEnUS");
+      var testEnumType = TestAssemblies.En.Value.GetType("TestEnum", true, false);
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
 
-      using (new CultureScope ("", ""))
+      using (new CultureScope("", ""))
       {
         string multiLingualName;
 
-        var result = service.TryGetEnumerationValueDisplayName (enumValue, out multiLingualName);
+        var result = service.TryGetEnumerationValueDisplayName(enumValue, out multiLingualName);
 
-        Assert.That (result, Is.True);
-        Assert.That (multiLingualName, Is.EqualTo ("The Name en"));
+        Assert.That(result, Is.True);
+        Assert.That(multiLingualName, Is.EqualTo("The Name en"));
       }
     }
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesNeutralCulture_DoesNotOverrideExistingInvariantCulture ()
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      var testEnumType = TestAssemblies.En.Value.GetType ("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse (testEnumType, "ValueWithInvariantAndEn");
+      var testEnumType = TestAssemblies.En.Value.GetType("TestEnum", true, false);
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithInvariantAndEn");
 
-      using (new CultureScope ("", ""))
+      using (new CultureScope("", ""))
       {
         string multiLingualName;
 
-        var result = service.TryGetEnumerationValueDisplayName (enumValue, out multiLingualName);
+        var result = service.TryGetEnumerationValueDisplayName(enumValue, out multiLingualName);
 
-        Assert.That (result, Is.True);
-        Assert.That (multiLingualName, Is.EqualTo ("The Name invariant"));
+        Assert.That(result, Is.True);
+        Assert.That(multiLingualName, Is.EqualTo("The Name invariant"));
       }
     }
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesNeutralCulture_ReturnsTheNeutralCultureAsFallbackForSpecificCulture ()
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      var testEnumType = TestAssemblies.En.Value.GetType ("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse (testEnumType, "ValueWithEnAndEnUS");
+      var testEnumType = TestAssemblies.En.Value.GetType("TestEnum", true, false);
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
 
-      using (new CultureScope ("en-GB", "en-GB"))
+      using (new CultureScope("en-GB", "en-GB"))
       {
         string multiLingualName;
 
-        var result = service.TryGetEnumerationValueDisplayName (enumValue, out multiLingualName);
+        var result = service.TryGetEnumerationValueDisplayName(enumValue, out multiLingualName);
 
-        Assert.That (result, Is.True);
-        Assert.That (multiLingualName, Is.EqualTo ("The Name en"));
+        Assert.That(result, Is.True);
+        Assert.That(multiLingualName, Is.EqualTo("The Name en"));
       }
     }
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesNeutralCulture_DoesNotOverrideExistingSpecificCulture ()
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      var testEnumType = TestAssemblies.En.Value.GetType ("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse (testEnumType, "ValueWithEnAndEnUS");
+      var testEnumType = TestAssemblies.En.Value.GetType("TestEnum", true, false);
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
 
-      using (new CultureScope ("en-US", "en-US"))
+      using (new CultureScope("en-US", "en-US"))
       {
         string multiLingualName;
 
-        var result = service.TryGetEnumerationValueDisplayName (enumValue, out multiLingualName);
+        var result = service.TryGetEnumerationValueDisplayName(enumValue, out multiLingualName);
 
-        Assert.That (result, Is.True);
-        Assert.That (multiLingualName, Is.EqualTo ("The Name en-US"));
+        Assert.That(result, Is.True);
+        Assert.That(multiLingualName, Is.EqualTo("The Name en-US"));
       }
     }
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesSpecificCulture_ReturnsTheSpecifiedCultureAsFallbackForInvariantCulture ()
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      var testEnumType = TestAssemblies.EnUS.Value.GetType ("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse (testEnumType, "ValueWithEnAndEnUS");
+      var testEnumType = TestAssemblies.EnUS.Value.GetType("TestEnum", true, false);
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
 
-      using (new CultureScope ("", ""))
+      using (new CultureScope("", ""))
       {
         string multiLingualName;
 
-        var result = service.TryGetEnumerationValueDisplayName (enumValue, out multiLingualName);
+        var result = service.TryGetEnumerationValueDisplayName(enumValue, out multiLingualName);
 
-        Assert.That (result, Is.True);
-        Assert.That (multiLingualName, Is.EqualTo ("The Name en-US"));
+        Assert.That(result, Is.True);
+        Assert.That(multiLingualName, Is.EqualTo("The Name en-US"));
       }
     }
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesSpecificCulture_ReturnsTheNeutralCultureAsFallbackForSpecficCulture ()
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      var testEnumType = TestAssemblies.EnUS.Value.GetType ("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse (testEnumType, "ValueWithEnAndEnUS");
+      var testEnumType = TestAssemblies.EnUS.Value.GetType("TestEnum", true, false);
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithEnAndEnUS");
 
-      using (new CultureScope ("en-GB", "en-GB"))
+      using (new CultureScope("en-GB", "en-GB"))
       {
         string multiLingualName;
 
-        var result = service.TryGetEnumerationValueDisplayName (enumValue, out multiLingualName);
+        var result = service.TryGetEnumerationValueDisplayName(enumValue, out multiLingualName);
 
-        Assert.That (result, Is.True);
-        Assert.That (multiLingualName, Is.EqualTo ("The Name en"));
+        Assert.That(result, Is.True);
+        Assert.That(multiLingualName, Is.EqualTo("The Name en"));
       }
     }
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void Test_WithNeutralResourcesLanguageAttributeSpecifiesSpecificCulture_DoesNotOverrideExistingSpecificCulture ()
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      var testEnumType = TestAssemblies.EnUS.Value.GetType ("TestEnum", true, false);
-      var enumValue = (Enum) Enum.Parse (testEnumType, "ValueWithEnAndEnUSAndEnGB");
+      var testEnumType = TestAssemblies.EnUS.Value.GetType("TestEnum", true, false);
+      var enumValue = (Enum)Enum.Parse(testEnumType, "ValueWithEnAndEnUSAndEnGB");
 
-      using (new CultureScope ("en-GB", "en-GB"))
+      using (new CultureScope("en-GB", "en-GB"))
       {
         string multiLingualName;
 
-        var result = service.TryGetEnumerationValueDisplayName (enumValue, out multiLingualName);
+        var result = service.TryGetEnumerationValueDisplayName(enumValue, out multiLingualName);
 
-        Assert.That (result, Is.True);
-        Assert.That (multiLingualName, Is.EqualTo ("The Name en-GB"));
+        Assert.That(result, Is.True);
+        Assert.That(multiLingualName, Is.EqualTo("The Name en-GB"));
       }
     }
 
@@ -284,14 +284,14 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      using (new CultureScope ("it-IT", "de-AT"))
+      using (new CultureScope("it-IT", "de-AT"))
       {
         string multiLingualName;
 
-        var result = service.TryGetEnumerationValueDisplayName (TestEnum.ValueWithMultiLingualNameAttributes, out multiLingualName);
+        var result = service.TryGetEnumerationValueDisplayName(TestEnum.ValueWithMultiLingualNameAttributes, out multiLingualName);
 
-        Assert.That (result, Is.True);
-        Assert.That (multiLingualName, Is.EqualTo ("The Name invariant"));
+        Assert.That(result, Is.True);
+        Assert.That(multiLingualName, Is.EqualTo("The Name invariant"));
       }
     }
 
@@ -300,31 +300,31 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      using (new CultureScope ("it-IT", "en-GB"))
+      using (new CultureScope("it-IT", "en-GB"))
       {
         string multiLingualName;
 
-        Assert.That (
-            () => service.TryGetEnumerationValueDisplayName (TestEnum.ValueWithoutInvariantCulture, out multiLingualName),
-            Throws.TypeOf<InvalidOperationException>().With.Message.StartsWith (
+        Assert.That(
+            () => service.TryGetEnumerationValueDisplayName(TestEnum.ValueWithoutInvariantCulture, out multiLingualName),
+            Throws.TypeOf<InvalidOperationException>().With.Message.StartsWith(
                 "The enum value 'ValueWithoutInvariantCulture' declared on type "
                 + "'Remotion.Globalization.UnitTests.Implementation.MultiLingualNameBasedEnumerationGlobalizationServiceTest+TestEnum' "
                 + "has no MultiLingualNameAttribute for the assembly's neutral resource language ('') applied."));
       }
     }
-    
+
     [Test]
     public void TryGetEnumerationValueDisplayName_WithMultipleMultiLingualNameAttributesForSameCulture_ThrowsInvalidOperationException ()
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      using (new CultureScope ("it-IT", "en-US"))
+      using (new CultureScope("it-IT", "en-US"))
       {
         string multiLingualName;
 
-        Assert.That (
-            () => service.TryGetEnumerationValueDisplayName (TestEnum.ValueWithDuplicateMultiLingualNameAttributes, out multiLingualName),
-            Throws.TypeOf<InvalidOperationException>().With.Message.EqualTo (
+        Assert.That(
+            () => service.TryGetEnumerationValueDisplayName(TestEnum.ValueWithDuplicateMultiLingualNameAttributes, out multiLingualName),
+            Throws.TypeOf<InvalidOperationException>().With.Message.EqualTo(
                 "The enum value 'ValueWithDuplicateMultiLingualNameAttributes' declared on type "
                 + "'Remotion.Globalization.UnitTests.Implementation.MultiLingualNameBasedEnumerationGlobalizationServiceTest+TestEnum' "
                 + "has more than one MultiLingualNameAttribute for the culture 'fr-FR' applied. "
@@ -339,10 +339,10 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
       string multiLingualName;
 
-      var result = service.TryGetEnumerationValueDisplayName (TestEnum.ValueWithoutMultiLingualNameAttribute, out multiLingualName);
+      var result = service.TryGetEnumerationValueDisplayName(TestEnum.ValueWithoutMultiLingualNameAttribute, out multiLingualName);
 
-      Assert.That (result, Is.False);
-      Assert.That (multiLingualName, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(multiLingualName, Is.Null);
     }
 
     [Test]
@@ -352,10 +352,10 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
       string multiLingualName;
 
-      var result = service.TryGetEnumerationValueDisplayName ((TestEnum) 100, out multiLingualName);
+      var result = service.TryGetEnumerationValueDisplayName((TestEnum)100, out multiLingualName);
 
-      Assert.That (result, Is.False);
-      Assert.That (multiLingualName, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(multiLingualName, Is.Null);
     }
 
     [Test]
@@ -365,10 +365,10 @@ namespace Remotion.Globalization.UnitTests.Implementation
 
       string multiLingualName;
 
-      var result = service.TryGetEnumerationValueDisplayName (FlagsEnum.Value1 | FlagsEnum.Value2, out multiLingualName);
+      var result = service.TryGetEnumerationValueDisplayName(FlagsEnum.Value1 | FlagsEnum.Value2, out multiLingualName);
 
-      Assert.That (result, Is.False);
-      Assert.That (multiLingualName, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(multiLingualName, Is.Null);
     }
 
     [Test]
@@ -376,22 +376,22 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       var service = new MultiLingualNameBasedEnumerationGlobalizationService();
 
-      using (new CultureScope ("", "en-US"))
+      using (new CultureScope("", "en-US"))
       {
         string multiLingualName;
-        var result = service.TryGetEnumerationValueDisplayName (TestEnum.ValueWithMultiLingualNameAttributes, out multiLingualName);
+        var result = service.TryGetEnumerationValueDisplayName(TestEnum.ValueWithMultiLingualNameAttributes, out multiLingualName);
 
-        Assert.That (result, Is.True);
-        Assert.That (multiLingualName, Is.EqualTo ("The Name en-US"));
+        Assert.That(result, Is.True);
+        Assert.That(multiLingualName, Is.EqualTo("The Name en-US"));
       }
 
-      using (new CultureScope ("", "fr-FR"))
+      using (new CultureScope("", "fr-FR"))
       {
         string multiLingualName;
-        var result = service.TryGetEnumerationValueDisplayName (TestEnum.ValueWithMultiLingualNameAttributes, out multiLingualName);
+        var result = service.TryGetEnumerationValueDisplayName(TestEnum.ValueWithMultiLingualNameAttributes, out multiLingualName);
 
-        Assert.That (result, Is.True);
-        Assert.That (multiLingualName, Is.EqualTo ("The Name fr-FR"));
+        Assert.That(result, Is.True);
+        Assert.That(multiLingualName, Is.EqualTo("The Name fr-FR"));
       }
     }
   }

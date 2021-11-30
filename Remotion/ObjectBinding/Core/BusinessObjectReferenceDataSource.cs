@@ -50,19 +50,19 @@ namespace Remotion.ObjectBinding
     ///   The <see cref="IBusinessObjectDataSource"/> providing the <see cref="IBusinessObject"/> to which this
     ///   <see cref="IBusinessObjectReferenceDataSource"/> connects.
     ///  </value>
-    [Category ("Data")]
+    [Category("Data")]
     public IBusinessObjectDataSource? DataSource
     {
       get { return _dataSource; }
       set
       {
         if (value == this)
-          throw new ArgumentException ("Assigning a reference data source as its own data source is not allowed.", "value");
+          throw new ArgumentException("Assigning a reference data source as its own data source is not allowed.", "value");
         if (_dataSource != null)
-          _dataSource.Unregister (this);
+          _dataSource.Unregister(this);
         _dataSource = value;
         if (value != null)
-          value.Register (this);
+          value.Register(this);
         _propertyDirty = true;
       }
     }
@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding
     ///   A string that can be used to query the <see cref="IBusinessObjectClass.GetPropertyDefinition"/> method for
     ///   the <see cref="IBusinessObjectReferenceProperty"/> returned by <see cref="ReferenceProperty"/>. 
     /// </value>
-    [Category ("Data")]
+    [Category("Data")]
     public string? PropertyIdentifier
     {
       get { return _propertyIdentifier; }
@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding
     IBusinessObjectProperty? IBusinessObjectBoundControl.Property
     {
       get { return ReferenceProperty; }
-      set { _property = (IBusinessObjectReferenceProperty?) value; }
+      set { _property = (IBusinessObjectReferenceProperty?)value; }
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ namespace Remotion.ObjectBinding
     ///   An <see cref="IBusinessObjectReferenceProperty"/> that is part of the 
     ///   <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>.
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public override sealed IBusinessObjectReferenceProperty? ReferenceProperty
     {
       get
@@ -136,7 +136,7 @@ namespace Remotion.ObjectBinding
         if (_propertyDirty)
         {
           if (_dataSource != null && _dataSource.BusinessObjectClass != null && _propertyIdentifier != null)
-            _property = (IBusinessObjectReferenceProperty?) _dataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier);
+            _property = (IBusinessObjectReferenceProperty?)_dataSource.BusinessObjectClass.GetPropertyDefinition(_propertyIdentifier);
           else
             _property = null;
           _propertyDirty = false;
@@ -144,10 +144,10 @@ namespace Remotion.ObjectBinding
         return _property;
       }
     }
-    
+
     protected override string GetDataSourceIdentifier ()
     {
-      return string.Format ("{0}", GetType().Name);
+      return string.Format("{0}", GetType().Name);
     }
 
     /// <summary> Gets or sets the value provided by the <see cref="BusinessObjectReferenceDataSource"/>. </summary>
@@ -155,7 +155,7 @@ namespace Remotion.ObjectBinding
     object? IBusinessObjectBoundControl.Value
     {
       get { return BusinessObject; }
-      set { BusinessObject = ArgumentUtility.CheckType<IBusinessObject> ("value", value); }
+      set { BusinessObject = ArgumentUtility.CheckType<IBusinessObject>("value", value); }
     }
 
     bool IBusinessObjectBoundControl.HasValue
@@ -171,7 +171,7 @@ namespace Remotion.ObjectBinding
     ///   <see cref="DataSource"/>'s <see cref="IBusinessObjectDataSource.BusinessObjectClass"/>
     ///   and <see cref="IBusinessObjectDataSource.BusinessObject"/>.
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     bool IBusinessObjectBoundControl.HasValidBinding
     {
       get
@@ -179,7 +179,7 @@ namespace Remotion.ObjectBinding
         if (_dataSource == null || _property == null)
           return true;
 
-        return _property.IsAccessible (_dataSource.BusinessObject);
+        return _property.IsAccessible(_dataSource.BusinessObject);
       }
     }
 

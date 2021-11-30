@@ -37,35 +37,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       base.SetUp();
 
-      _queryParserStub = MockRepository.GenerateStub<IQueryParser> ();
-      _executorStub = MockRepository.GenerateStub<IQueryExecutor> ();
+      _queryParserStub = MockRepository.GenerateStub<IQueryParser>();
+      _executorStub = MockRepository.GenerateStub<IQueryExecutor>();
     }
 
     [Test]
     public void Provider_AutoInitialized ()
     {
-      var queryableWithOrder = new DomainObjectQueryable<Order> (_queryParserStub, _executorStub);
+      var queryableWithOrder = new DomainObjectQueryable<Order>(_queryParserStub, _executorStub);
 
-      Assert.That (queryableWithOrder.Provider, Is.Not.Null);
-      Assert.That (queryableWithOrder.Provider, Is.InstanceOf (typeof (DefaultQueryProvider)));
-      Assert.That (((DefaultQueryProvider) queryableWithOrder.Provider).QueryableType, Is.SameAs (typeof (DomainObjectQueryable<>)));
-      Assert.That (queryableWithOrder.Provider.Executor, Is.SameAs (_executorStub));
-      Assert.That (queryableWithOrder.Provider.QueryParser, Is.SameAs (_queryParserStub));
+      Assert.That(queryableWithOrder.Provider, Is.Not.Null);
+      Assert.That(queryableWithOrder.Provider, Is.InstanceOf(typeof(DefaultQueryProvider)));
+      Assert.That(((DefaultQueryProvider)queryableWithOrder.Provider).QueryableType, Is.SameAs(typeof(DomainObjectQueryable<>)));
+      Assert.That(queryableWithOrder.Provider.Executor, Is.SameAs(_executorStub));
+      Assert.That(queryableWithOrder.Provider.QueryParser, Is.SameAs(_queryParserStub));
     }
-    
+
     [Test]
     public void Provider_PassedIn ()
     {
-      var expectedProvider = new DefaultQueryProvider (
-          typeof (DomainObjectQueryable<>),
+      var expectedProvider = new DefaultQueryProvider(
+          typeof(DomainObjectQueryable<>),
           _queryParserStub, _executorStub);
 
-      var queryable = new DomainObjectQueryable<Order> (expectedProvider, Expression.Constant (null, typeof (DomainObjectQueryable<Order>)));
-      
-      Assert.That (queryable.Provider, Is.Not.Null);
-      Assert.That (queryable.Provider, Is.SameAs (expectedProvider));
+      var queryable = new DomainObjectQueryable<Order>(expectedProvider, Expression.Constant(null, typeof(DomainObjectQueryable<Order>)));
+
+      Assert.That(queryable.Provider, Is.Not.Null);
+      Assert.That(queryable.Provider, Is.SameAs(expectedProvider));
     }
 
-    
+
   }
 }

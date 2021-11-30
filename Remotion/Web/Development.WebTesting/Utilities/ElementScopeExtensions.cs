@@ -38,14 +38,14 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public static Point GetScrollPosition ([NotNull] this ElementScope element)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull("element", element);
 
-      var driver = ((IWrapsDriver) element.Native).WrappedDriver;
-      var jsExecutor = (IJavaScriptExecutor) driver;
+      var driver = ((IWrapsDriver)element.Native).WrappedDriver;
+      var jsExecutor = (IJavaScriptExecutor)driver;
 
       var rawData =
-          (IReadOnlyList<object>) jsExecutor.ExecuteScript ("return [arguments[0].scrollLeft, arguments[0].scrollTop];", (IWebElement) element.Native);
-      return new Point ((int) (long) rawData[0], (int) (long) rawData[1]);
+          (IReadOnlyList<object>)jsExecutor.ExecuteScript("return [arguments[0].scrollLeft, arguments[0].scrollTop];", (IWebElement)element.Native);
+      return new Point((int)(long)rawData[0], (int)(long)rawData[1]);
     }
 
     /// <summary>
@@ -58,15 +58,15 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </remarks>
     public static void ScrollTo ([NotNull] this ElementScope element, int x, int y)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull("element", element);
 
-      var driver = ((IWrapsDriver) element.Native).WrappedDriver;
-      var jsExecutor = (IJavaScriptExecutor) driver;
+      var driver = ((IWrapsDriver)element.Native).WrappedDriver;
+      var jsExecutor = (IJavaScriptExecutor)driver;
 
-      jsExecutor.ExecuteScript ("arguments[0].scrollLeft=arguments[1];arguments[0].scrollTop=arguments[2];", (IWebElement) element.Native, x, y);
+      jsExecutor.ExecuteScript("arguments[0].scrollLeft=arguments[1];arguments[0].scrollTop=arguments[2];", (IWebElement)element.Native, x, y);
 
       // Wait a bit for the browser to catch up (redraw at the correct position)
-      Thread.Sleep (50);
+      Thread.Sleep(50);
     }
 
     /// <summary>
@@ -78,19 +78,19 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         ContentAlignment? alignment = null,
         WebPadding? padding = null)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
-      ArgumentUtility.CheckNotNull ("target", target);
+      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentUtility.CheckNotNull("target", target);
 
-      var elementBounds = ElementScopeResolver.Instance.ResolveBrowserCoordinates (element).ElementBounds;
-      var targetBounds = ElementScopeResolver.Instance.ResolveBrowserCoordinates (target).ElementBounds;
+      var elementBounds = ElementScopeResolver.Instance.ResolveBrowserCoordinates(element).ElementBounds;
+      var targetBounds = ElementScopeResolver.Instance.ResolveBrowserCoordinates(target).ElementBounds;
 
-      var position = GetScrollPoint (
+      var position = GetScrollPoint(
           elementBounds.Size,
-          new Rectangle (targetBounds.Location - new Size (elementBounds.Location) + new Size (element.GetScrollPosition()), targetBounds.Size),
+          new Rectangle(targetBounds.Location - new Size(elementBounds.Location) + new Size(element.GetScrollPosition()), targetBounds.Size),
           alignment ?? ContentAlignment.TopLeft,
           padding ?? WebPadding.None);
 
-      element.ScrollTo ((int) Math.Round (position.X), (int) Math.Round (position.Y));
+      element.ScrollTo((int)Math.Round(position.X), (int)Math.Round(position.Y));
     }
 
     private static PointF GetScrollPoint (Size scrollContainerSize, Rectangle targetElementBounds, ContentAlignment alignment, WebPadding padding)
@@ -98,43 +98,43 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       switch (alignment)
       {
         case ContentAlignment.TopLeft:
-          return new PointF (
+          return new PointF(
               targetElementBounds.X - 1 - padding.Left,
               targetElementBounds.Y - 1 - padding.Top);
         case ContentAlignment.TopCenter:
-          return new PointF (
+          return new PointF(
               targetElementBounds.X - (scrollContainerSize.Width - targetElementBounds.Width) / 2f,
               targetElementBounds.Y - 1 - padding.Top);
         case ContentAlignment.TopRight:
-          return new PointF (
+          return new PointF(
               targetElementBounds.X - (scrollContainerSize.Width - targetElementBounds.Width) + 1 + padding.Right,
               targetElementBounds.Y - 1 - padding.Top);
         case ContentAlignment.MiddleLeft:
-          return new PointF (
+          return new PointF(
               targetElementBounds.X - 1 - padding.Left,
               targetElementBounds.Y - (scrollContainerSize.Height - targetElementBounds.Height) / 2f);
         case ContentAlignment.MiddleCenter:
-          return new PointF (
+          return new PointF(
               targetElementBounds.X - (scrollContainerSize.Width - targetElementBounds.Width) / 2f,
               targetElementBounds.Y - (scrollContainerSize.Height - targetElementBounds.Height) / 2f);
         case ContentAlignment.MiddleRight:
-          return new PointF (
+          return new PointF(
               targetElementBounds.X - (scrollContainerSize.Width - targetElementBounds.Width) + 1 + padding.Right,
               targetElementBounds.Y - (scrollContainerSize.Height - targetElementBounds.Height) / 2f);
         case ContentAlignment.BottomLeft:
-          return new PointF (
+          return new PointF(
               targetElementBounds.X - 1 - padding.Left,
               targetElementBounds.Y - (scrollContainerSize.Width - targetElementBounds.Width) + 1 + padding.Bottom);
         case ContentAlignment.BottomCenter:
-          return new PointF (
+          return new PointF(
               targetElementBounds.X - (scrollContainerSize.Width - targetElementBounds.Width) / 2f,
               targetElementBounds.Y - (scrollContainerSize.Width - targetElementBounds.Width) + 1 + padding.Bottom);
         case ContentAlignment.BottomRight:
-          return new PointF (
+          return new PointF(
               targetElementBounds.X - (scrollContainerSize.Width - targetElementBounds.Width) + 1 + padding.Right,
               targetElementBounds.Y - (scrollContainerSize.Width - targetElementBounds.Width) + 1 + padding.Bottom);
         default:
-          throw new ArgumentOutOfRangeException ("alignment", alignment, null);
+          throw new ArgumentOutOfRangeException("alignment", alignment, null);
       }
     }
   }

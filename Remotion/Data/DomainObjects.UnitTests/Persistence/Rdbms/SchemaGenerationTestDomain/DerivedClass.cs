@@ -20,19 +20,19 @@ using Remotion.Mixins;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain
 {
   [Instantiable]
-  [Uses (typeof (PersistentMixin))]
+  [Uses(typeof(PersistentMixin))]
   public abstract class DerivedClass : ConcreteClass
   {
-    public new static DerivedClass NewObject()
+    public new static DerivedClass NewObject ()
     {
-      return DomainObject.NewObject<DerivedClass> ();
+      return DomainObject.NewObject<DerivedClass>();
     }
 
-    protected DerivedClass()
+    protected DerivedClass ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string PropertyInDerivedClass { get; set; }
 
     [StorageClassTransaction]

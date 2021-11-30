@@ -26,22 +26,22 @@ namespace Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain
   {
     public bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      return typeof (ReferenceDataSourceTestDomainBase).IsAssignableFrom (property.PropertyType);
+      ArgumentUtility.CheckNotNull("property", property);
+      return typeof(ReferenceDataSourceTestDomainBase).IsAssignableFrom(property.PropertyType);
     }
 
     public IBusinessObject Create (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("property", property);
 
-      return (IBusinessObject) ObjectFactory.Create (property.PropertyType);
+      return (IBusinessObject)ObjectFactory.Create(property.PropertyType);
     }
 
     public bool IsDefaultValue (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property, IBusinessObject value, IBusinessObjectProperty[] emptyProperties)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      ArgumentUtility.CheckNotNullAndType<ReferenceDataSourceTestDomainBase> ("value", value);
-      ArgumentUtility.CheckNotNull ("emptyProperties", emptyProperties);
+      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNullAndType<ReferenceDataSourceTestDomainBase>("value", value);
+      ArgumentUtility.CheckNotNull("emptyProperties", emptyProperties);
 
       // NOP
 

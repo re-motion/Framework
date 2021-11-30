@@ -46,26 +46,26 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       get { return _locaction; }
     }
 
-    [MemberNotNull (nameof (_kind))]
+    [MemberNotNull(nameof(_kind))]
     public void AddKind (string kind)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("kind", kind);
+      ArgumentUtility.CheckNotNullOrEmpty("kind", kind);
 
       _kind = kind;
     }
 
-    [MemberNotNull (nameof (_assembly))]
+    [MemberNotNull(nameof(_assembly))]
     public void AddAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
       _assembly = assembly;
     }
 
-    [MemberNotNull (nameof (_locaction))]
+    [MemberNotNull(nameof(_locaction))]
     public void AddLocation (string location)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("location", location);
+      ArgumentUtility.CheckNotNullOrEmpty("location", location);
 
       _locaction = location;
     }

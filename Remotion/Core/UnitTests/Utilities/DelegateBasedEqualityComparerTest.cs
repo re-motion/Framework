@@ -30,40 +30,40 @@ namespace Remotion.UnitTests.Utilities
     [SetUp]
     public void SetUp ()
     {
-      _comparer = new DelegateBasedEqualityComparer<object> ((o1, o2) => o1 == o2, o => o?.GetHashCode() ?? 0);
-      _obj1 = new Object ();
-      _obj2 = new Object ();
+      _comparer = new DelegateBasedEqualityComparer<object>((o1, o2) => o1 == o2, o => o?.GetHashCode() ?? 0);
+      _obj1 = new Object();
+      _obj2 = new Object();
     }
 
     [Test]
     public void Equals_DifferentObjects ()
     {
-      Assert.That (_comparer.Equals (_obj1, _obj2), Is.False);
+      Assert.That(_comparer.Equals(_obj1, _obj2), Is.False);
     }
 
     [Test]
     public void Equals_SameObjects ()
     {
-      Assert.That (_comparer.Equals(_obj1, _obj1), Is.True);
+      Assert.That(_comparer.Equals(_obj1, _obj1), Is.True);
     }
 
     [Test]
     public void Equals_ObjectWithNull ()
     {
-      Assert.That (_comparer.Equals (_obj1, null), Is.False);
+      Assert.That(_comparer.Equals(_obj1, null), Is.False);
     }
 
     [Test]
     public void Equals_NullWithNull ()
     {
-      Assert.That (_comparer.Equals (null, null), Is.True);
+      Assert.That(_comparer.Equals(null, null), Is.True);
     }
 
     [Test]
     public void GetHashcode ()
     {
-      Assert.That (_comparer.GetHashCode (_obj1), Is.EqualTo (_comparer.GetHashCode (_obj1)));
+      Assert.That(_comparer.GetHashCode(_obj1), Is.EqualTo(_comparer.GetHashCode(_obj1)));
     }
-    
+
   }
 }

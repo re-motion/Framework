@@ -21,16 +21,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var instance = _serviceLocator.GetInstance<ISortExpressionDefinitionProvider>();
 
-      Assert.That (instance, Is.TypeOf<SortExpressionDefinitionProvider>());
+      Assert.That(instance, Is.TypeOf<SortExpressionDefinitionProvider>());
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var instance1 = _serviceLocator.GetInstance<ISortExpressionDefinitionProvider> ();
-      var instance2 = _serviceLocator.GetInstance<ISortExpressionDefinitionProvider> ();
+      var instance1 = _serviceLocator.GetInstance<ISortExpressionDefinitionProvider>();
+      var instance2 = _serviceLocator.GetInstance<ISortExpressionDefinitionProvider>();
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

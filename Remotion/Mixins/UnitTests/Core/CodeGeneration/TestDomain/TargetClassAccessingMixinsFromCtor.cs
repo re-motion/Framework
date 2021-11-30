@@ -20,18 +20,18 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [Uses (typeof (NullMixin))]
+  [Uses(typeof(NullMixin))]
   public class TargetClassAccessingMixinsFromCtor
   {
     public object[] Mixins;
 
     public TargetClassAccessingMixinsFromCtor ()
     {
-      var mixinTarget = (IMixinTarget) this;
+      var mixinTarget = (IMixinTarget)this;
       Mixins = mixinTarget.Mixins;
 
-      Assert.That (Mixins.Length, Is.EqualTo (1));
-      Assert.That (Mixins[0], Is.InstanceOf (typeof (NullMixin)));
+      Assert.That(Mixins.Length, Is.EqualTo(1));
+      Assert.That(Mixins[0], Is.InstanceOf(typeof(NullMixin)));
     }
   }
 }

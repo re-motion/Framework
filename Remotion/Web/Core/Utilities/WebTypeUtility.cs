@@ -35,8 +35,8 @@ namespace Remotion.Web.Utilities
     [CanBeNull]
     public static Type? GetType (string abbreviatedTypeName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
-      return GetType (abbreviatedTypeName, false, false);
+      ArgumentUtility.CheckNotNullOrEmpty("abbreviatedTypeName", abbreviatedTypeName);
+      return GetType(abbreviatedTypeName, false, false);
     }
 
     /// <summary>
@@ -46,8 +46,8 @@ namespace Remotion.Web.Utilities
     [CanBeNull]
     public static Type? GetType (string abbreviatedTypeName, bool throwOnError)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
-      return GetType (abbreviatedTypeName, throwOnError, false);
+      ArgumentUtility.CheckNotNullOrEmpty("abbreviatedTypeName", abbreviatedTypeName);
+      return GetType(abbreviatedTypeName, throwOnError, false);
     }
 
     /// <summary>
@@ -57,22 +57,22 @@ namespace Remotion.Web.Utilities
     [CanBeNull]
     public static Type? GetType (string abbreviatedTypeName, bool throwOnError, bool ignoreCase)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
-      string typeName = TypeUtility.ParseAbbreviatedTypeName (abbreviatedTypeName);
-      return BuildManager.GetType (typeName, throwOnError, ignoreCase);
+      ArgumentUtility.CheckNotNullOrEmpty("abbreviatedTypeName", abbreviatedTypeName);
+      string typeName = TypeUtility.ParseAbbreviatedTypeName(abbreviatedTypeName);
+      return BuildManager.GetType(typeName, throwOnError, ignoreCase);
     }
 
     public static string GetQualifiedName (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      if (IsCompiledType (type))
+      ArgumentUtility.CheckNotNull("type", type);
+      if (IsCompiledType(type))
         return type.GetFullNameChecked();
-      return TypeUtility.GetPartialAssemblyQualifiedName (type);
+      return TypeUtility.GetPartialAssemblyQualifiedName(type);
     }
 
     public static bool IsCompiledType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
       IList? codeAssemblies = BuildManager.CodeAssemblies;
       if (codeAssemblies == null)
         return false;

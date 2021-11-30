@@ -82,7 +82,7 @@ public interface ISmartNavigablePage: IPage
   ///   </note>
   /// </remarks>
   string AppendNavigationUrlParameters (string url);
-  
+
   /// <summary> 
   ///   Evaluates the <see cref="INavigationControl.GetNavigationUrlParameters"/> methods of all controls registered
   ///   using <see cref="RegisterNavigationControl"/>.
@@ -91,7 +91,7 @@ public interface ISmartNavigablePage: IPage
   ///   A <see cref="NameValueCollection"/> containing the URL parameters required by this 
   ///   <see cref="ISmartNavigablePage"/> to restore its navigation state when using hyperlinks.
   /// </returns>
-  NameValueCollection GetNavigationUrlParameters();
+  NameValueCollection GetNavigationUrlParameters ();
 }
 
 }

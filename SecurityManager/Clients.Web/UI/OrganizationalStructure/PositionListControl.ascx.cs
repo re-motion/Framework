@@ -49,39 +49,39 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (!IsPostBack)
       {
-        PositionList.SetSortingOrder (
-            new BocListSortingOrderEntry ((IBocSortableColumnDefinition) PositionList.FixedColumns[0], SortingDirection.Ascending));
+        PositionList.SetSortingOrder(
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)PositionList.FixedColumns[0], SortingDirection.Ascending));
       }
-      PositionList.LoadUnboundValue (GetValues(), false);
+      PositionList.LoadUnboundValue(GetValues(), false);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
       Type positionType = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.GetPositionType();
-      NewPositionButton.Visible = securityClient.HasConstructorAccess (positionType);
+      NewPositionButton.Visible = securityClient.HasConstructorAccess(positionType);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
-      PositionListLabel.Text = resourceManager.GetString (ResourceIdentifier.PositionListLabelText);
-      NewPositionButton.Text = resourceManager.GetString (ResourceIdentifier.NewPositionButtonText);
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
+      PositionListLabel.Text = resourceManager.GetString(ResourceIdentifier.PositionListLabelText);
+      NewPositionButton.Text = resourceManager.GetString(ResourceIdentifier.NewPositionButtonText);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      ResetListOnTenantChange (PositionList);
+      ResetListOnTenantChange(PositionList);
     }
 
     protected void PositionList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
     {
-      HandleEditItemClick (PositionList, e);
+      HandleEditItemClick(PositionList, e);
     }
 
     protected void NewPositionButton_Click (object sender, EventArgs e)
     {
-      HandleNewButtonClick (PositionList);
+      HandleNewButtonClick(PositionList);
     }
 
     protected override IReadOnlyList<Position> GetValues ()
@@ -91,9 +91,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override FormFunction<Position> CreateEditFunction (ITransactionMode transactionMode, IDomainObjectHandle<Position> editedObject)
     {
-      ArgumentUtility.CheckNotNull ("transactionMode", transactionMode);
+      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
 
-      return new EditPositionFormFunction (transactionMode, editedObject);
+      return new EditPositionFormFunction(transactionMode, editedObject);
     }
   }
 }

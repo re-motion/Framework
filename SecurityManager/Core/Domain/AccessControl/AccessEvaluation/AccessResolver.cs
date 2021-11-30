@@ -32,34 +32,34 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
-  [ImplementationFor (typeof (IAccessResolver), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IAccessResolver), Lifetime = LifetimeKind.Singleton)]
   public class AccessResolver : IAccessResolver
   {
-    private static readonly ILog s_log = LogManager.GetLogger (MethodInfo.GetCurrentMethod().DeclaringType);
+    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod().DeclaringType);
     private static readonly QueryCache s_queryCache = new QueryCache();
 
     public AccessType[] GetAccessTypes (IDomainObjectHandle<AccessControlList> aclHandle, SecurityToken token)
     {
-      ArgumentUtility.CheckNotNull ("aclHandle", aclHandle);
-      ArgumentUtility.CheckNotNull ("token", token);
+      ArgumentUtility.CheckNotNull("aclHandle", aclHandle);
+      ArgumentUtility.CheckNotNull("token", token);
 
       using (SecurityFreeSection.Activate())
       {
         using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
         {
-          using (StopwatchScope.CreateScope (
+          using (StopwatchScope.CreateScope(
               s_log,
               LogLevel.Info,
-              string.Format (
+              string.Format(
                   "Evaluated access types of ACL '{0}' for principal '{1}'. Time taken: {{elapsed:ms}}ms",
                   aclHandle.ObjectID,
                   token.Principal.User != null ? token.Principal.User.ObjectID.ToString() : "<unknown>")))
           {
-            LoadAccessTypeDefinitions ();
-            var acl = LoadAccessControlList (aclHandle);
+            LoadAccessTypeDefinitions();
+            var acl = LoadAccessControlList(aclHandle);
 
-            var accessInformation = acl.GetAccessTypes (token);
-            return Array.ConvertAll (accessInformation.AllowedAccessTypes, ConvertToAccessType);
+            var accessInformation = acl.GetAccessTypes(token);
+            return Array.ConvertAll(accessInformation.AllowedAccessTypes, ConvertToAccessType);
           }
         }
       }
@@ -69,30 +69,30 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private AccessControlList LoadAccessControlList (IDomainObjectHandle<AccessControlList> aclHandle)
     {
-      using (StopwatchScope.CreateScope (
+      using (StopwatchScope.CreateScope(
           s_log,
           LogLevel.Debug,
           "Fetched ACL '" + aclHandle.ObjectID + "' for AccessResolver. Time taken: {elapsed:ms}ms"))
       {
-        var queryTemplate = s_queryCache.GetQuery<AccessControlList> (
+        var queryTemplate = s_queryCache.GetQuery<AccessControlList>(
             MethodInfo.GetCurrentMethod().Name,
-            acls => acls.Where (o => s_aclParameter.Equals (o.ID.Value))
-                        .Select (o => o)
-                        .FetchMany (o => o.AccessControlEntries)
-                        .ThenFetchMany (ace => ace.GetPermissionsForQuery()));
+            acls => acls.Where(o => s_aclParameter.Equals(o.ID.Value))
+                        .Select(o => o)
+                        .FetchMany(o => o.AccessControlEntries)
+                        .ThenFetchMany(ace => ace.GetPermissionsForQuery()));
 
-        var query = queryTemplate.CreateCopyFromTemplate (new Dictionary<object, object> { { s_aclParameter, aclHandle.ObjectID.Value } });
-        return ClientTransaction.Current.QueryManager.GetCollection<AccessControlList> (query)
+        var query = queryTemplate.CreateCopyFromTemplate(new Dictionary<object, object> { { s_aclParameter, aclHandle.ObjectID.Value } });
+        return ClientTransaction.Current.QueryManager.GetCollection<AccessControlList>(query)
                                 .AsEnumerable()
-                                .Single (() => new ObjectsNotFoundException (EnumerableUtility.Singleton (aclHandle.ObjectID)));
+                                .Single(() => new ObjectsNotFoundException(EnumerableUtility.Singleton(aclHandle.ObjectID)));
       }
     }
 
     private void LoadAccessTypeDefinitions ()
     {
-      using (StopwatchScope.CreateScope (s_log, LogLevel.Debug, "Fetched access types for AccessResolver. Time taken: {elapsed:ms}ms"))
+      using (StopwatchScope.CreateScope(s_log, LogLevel.Debug, "Fetched access types for AccessResolver. Time taken: {elapsed:ms}ms"))
       {
-        s_queryCache.ExecuteCollectionQuery<AccessTypeDefinition> (
+        s_queryCache.ExecuteCollectionQuery<AccessTypeDefinition>(
             ClientTransaction.Current,
             MethodInfo.GetCurrentMethod().Name,
             accessTypes => accessTypes);
@@ -101,7 +101,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private AccessType ConvertToAccessType (AccessTypeDefinition accessTypeDefinition)
     {
-      return AccessType.Get (EnumWrapper.Get (accessTypeDefinition.Name));
+      return AccessType.Get(EnumWrapper.Get(accessTypeDefinition.Name));
     }
   }
 }

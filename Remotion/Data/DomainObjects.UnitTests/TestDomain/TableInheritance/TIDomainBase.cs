@@ -18,39 +18,39 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_DomainBase")]
+  [ClassID("TI_DomainBase")]
   [TableInheritanceTestDomain]
   public abstract class TIDomainBase : DomainObject
   {
-    protected TIDomainBase()
+    protected TIDomainBase ()
     {
         InitializeNew();
     }
-  
-    private void InitializeNew()
+
+    private void InitializeNew ()
     {
       CreatedBy = "UnitTests";
       CreatedAt = DateTime.Now;
     }
 
     // Note: This property always returns an empty collection.
-    [DBBidirectionalRelation ("DomainBase")]
+    [DBBidirectionalRelation("DomainBase")]
     public abstract ObjectList<AbstractClassWithoutDerivations> AbstractClassesWithoutDerivations { get; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string CreatedBy { get; set; }
 
     public abstract DateTime CreatedAt { get; set; }
 
-    [DBBidirectionalRelation ("AssignedObjects")]
+    [DBBidirectionalRelation("AssignedObjects")]
     public abstract TIClient Client { get; }
 
-    [DBBidirectionalRelation ("Owner", SortExpression = "HistoryDate desc")]
+    [DBBidirectionalRelation("Owner", SortExpression = "HistoryDate desc")]
     public abstract ObjectList<TIHistoryEntry> HistoryEntries { get; }
 
     public new void Delete ()
     {
-      base.Delete ();
+      base.Delete();
     }
   }
 }

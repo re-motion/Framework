@@ -18,16 +18,16 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof (MixinImplementingSimpleInterface))]
+  [Uses(typeof(MixinImplementingSimpleInterface))]
   public class ClassWithComposedInterface
   {
-    [ComposedInterface (typeof (ClassWithComposedInterface))]
+    [ComposedInterface(typeof(ClassWithComposedInterface))]
     public interface IComposedInterface : ISimpleInterface
     {
       string M1 ();
     }
 
-    public string M1()
+    public string M1 ()
     {
       return "ClassWithComposedInterface.M1";
     }

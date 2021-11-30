@@ -34,22 +34,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         Action<DomainObject> oppositeObjectSetter,
         IClientTransactionEventSink transactionEventSink
         )
-        : base (ArgumentUtility.CheckNotNull ("modifiedEndPoint", modifiedEndPoint),
+        : base(ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
                 modifiedEndPoint.GetOppositeObject(),
                 newRelatedObject,
-                ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink))
+                ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
     {
-      ArgumentUtility.CheckNotNull ("oppositeObjectSetter", oppositeObjectSetter);
+      ArgumentUtility.CheckNotNull("oppositeObjectSetter", oppositeObjectSetter);
 
       if (modifiedEndPoint.IsNull)
-        throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
+        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _oppositeObjectSetter = oppositeObjectSetter;
     }
 
     public override void Perform ()
     {
-      _oppositeObjectSetter (NewRelatedObject);
+      _oppositeObjectSetter(NewRelatedObject);
       ModifiedEndPoint.Touch();
     }
   }

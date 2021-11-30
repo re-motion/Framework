@@ -24,7 +24,7 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation
   {
     public MetaValidationRuleTestClassCollector6 ()
     {
-      AddRule ().AddMetaValidationRule<IObjectValidator> (rules => rules.Any());
+      AddRule().AddMetaValidationRule<IObjectValidator>(rules => rules.Any());
     }
   }
 }

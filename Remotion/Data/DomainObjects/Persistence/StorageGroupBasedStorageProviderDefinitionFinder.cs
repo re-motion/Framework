@@ -31,14 +31,14 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public StorageGroupBasedStorageProviderDefinitionFinder (StorageConfiguration storageConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("storageConfiguration", storageConfiguration);
+      ArgumentUtility.CheckNotNull("storageConfiguration", storageConfiguration);
 
       _storageConfiguration = storageConfiguration;
     }
 
     public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition, string errorMessageContext)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       var storageGroupTypeOrNull = classDefinition.StorageGroupType;
 
@@ -48,21 +48,21 @@ namespace Remotion.Data.DomainObjects.Persistence
     public StorageProviderDefinition GetStorageProviderDefinition (Type storageGroupTypeOrNull, string errorMessageContext)
     {
       if (storageGroupTypeOrNull == null)
-        return GetDefaultStorageProviderDefinition (errorMessageContext);
+        return GetDefaultStorageProviderDefinition(errorMessageContext);
 
-      string storageGroupName = TypeUtility.GetPartialAssemblyQualifiedName (storageGroupTypeOrNull);
+      string storageGroupName = TypeUtility.GetPartialAssemblyQualifiedName(storageGroupTypeOrNull);
       var storageGroup = _storageConfiguration.StorageGroups[storageGroupName];
       if (storageGroup == null)
         return GetDefaultStorageProviderDefinition(errorMessageContext);
 
-      return _storageConfiguration.StorageProviderDefinitions.GetMandatory (storageGroup.StorageProviderName);
+      return _storageConfiguration.StorageProviderDefinitions.GetMandatory(storageGroup.StorageProviderName);
     }
 
     private StorageProviderDefinition GetDefaultStorageProviderDefinition (string errorMessageContext)
     {
       var defaultStorageProviderDefinition = _storageConfiguration.DefaultStorageProviderDefinition;
       if (defaultStorageProviderDefinition == null)
-        throw _storageConfiguration.CreateMissingDefaultProviderException (errorMessageContext);
+        throw _storageConfiguration.CreateMissingDefaultProviderException(errorMessageContext);
 
       return defaultStorageProviderDefinition;
     }

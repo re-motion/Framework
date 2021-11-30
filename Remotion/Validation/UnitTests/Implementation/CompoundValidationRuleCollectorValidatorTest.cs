@@ -32,25 +32,25 @@ namespace Remotion.Validation.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _collectorValidatorMock1 = new Mock<IValidationRuleCollectorValidator> (MockBehavior.Strict);
-      _collectorValidatorMock2 = new Mock<IValidationRuleCollectorValidator> (MockBehavior.Strict);
+      _collectorValidatorMock1 = new Mock<IValidationRuleCollectorValidator>(MockBehavior.Strict);
+      _collectorValidatorMock2 = new Mock<IValidationRuleCollectorValidator>(MockBehavior.Strict);
 
       _collector = new Mock<IValidationRuleCollector>();
 
-      _compoundValidationRuleCollectorValidator = new CompoundValidationRuleCollectorValidator (new[] { _collectorValidatorMock1.Object, _collectorValidatorMock2.Object });
+      _compoundValidationRuleCollectorValidator = new CompoundValidationRuleCollectorValidator(new[] { _collectorValidatorMock1.Object, _collectorValidatorMock2.Object });
     }
 
     [Test]
     public void CheckValid ()
     {
-      _collectorValidatorMock1.Setup (stub => stub.CheckValid (_collector.Object)).Verifiable();
-      _collectorValidatorMock2.Setup (stub => stub.CheckValid (_collector.Object)).Verifiable();
+      _collectorValidatorMock1.Setup(stub => stub.CheckValid(_collector.Object)).Verifiable();
+      _collectorValidatorMock2.Setup(stub => stub.CheckValid(_collector.Object)).Verifiable();
 
-      _compoundValidationRuleCollectorValidator.CheckValid (_collector.Object);
+      _compoundValidationRuleCollectorValidator.CheckValid(_collector.Object);
 
       _collectorValidatorMock1.Verify();
       _collectorValidatorMock2.Verify();
     }
-    
+
   }
 }

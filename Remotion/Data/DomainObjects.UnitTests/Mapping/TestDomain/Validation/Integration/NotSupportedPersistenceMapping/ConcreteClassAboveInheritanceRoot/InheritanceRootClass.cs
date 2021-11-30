@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     ConcreteClassAboveInheritanceRoot
 {
   [DBTable]
-  [ClassID ("ConcreteClassAboveInheritanceRoot_InheritanceRootClass")]
+  [ClassID("ConcreteClassAboveInheritanceRoot_InheritanceRootClass")]
   public class InheritanceRootClass : ClassAboveInheritanceRoot
   {
 

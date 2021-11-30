@@ -38,31 +38,31 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
       where TControlObject : BocControlObject
   {
     protected BocControlSelectorBase ([NotNull] string controlType)
-        : base (controlType)
+        : base(controlType)
     {
     }
 
     /// <inheritdoc/>
     public TControlObject SelectPerDisplayName (ControlSelectionContext context, string displayName)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("displayName", displayName);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
 
-      var scope = FindScopePerDisplayName (context, displayName);
+      var scope = FindScopePerDisplayName(context, displayName);
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public TControlObject? SelectOptionalPerDisplayName (ControlSelectionContext context, string displayName)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("displayName", displayName);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
 
-      var scope = FindScopePerDisplayName (context, displayName);
+      var scope = FindScopePerDisplayName(context, displayName);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -70,10 +70,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     /// <inheritdoc/>
     public bool ExistsPerDisplayName (ControlSelectionContext context, string displayName)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("displayName", displayName);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
 
-      var scope = FindScopePerDisplayName (context, displayName);
+      var scope = FindScopePerDisplayName(context, displayName);
 
       return scope.ExistsWorkaround();
     }
@@ -81,26 +81,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     /// <inheritdoc/>
     public TControlObject SelectPerDomainProperty (ControlSelectionContext context, string domainProperty, string? domainClass)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("domainProperty", domainProperty);
-      ArgumentUtility.CheckNotEmpty ("domainClass", domainClass);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("domainProperty", domainProperty);
+      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
 
-      var scope = FindScopePerDomainProperty (context, domainProperty, domainClass);
+      var scope = FindScopePerDomainProperty(context, domainProperty, domainClass);
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public TControlObject? SelectOptionalPerDomainProperty (ControlSelectionContext context, string domainProperty, string? domainClass)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("domainProperty", domainProperty);
-      ArgumentUtility.CheckNotEmpty ("domainClass", domainClass);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("domainProperty", domainProperty);
+      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
 
-      var scope = FindScopePerDomainProperty (context, domainProperty, domainClass);
+      var scope = FindScopePerDomainProperty(context, domainProperty, domainClass);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -108,11 +108,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     /// <inheritdoc/>
     public bool ExistsPerDomainProperty (ControlSelectionContext context, string domainProperty, string? domainClass)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("domainProperty", domainProperty);
-      ArgumentUtility.CheckNotEmpty ("domainClass", domainClass);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("domainProperty", domainProperty);
+      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
 
-      var scope = FindScopePerDomainProperty (context, domainProperty, domainClass);
+      var scope = FindScopePerDomainProperty(context, domainProperty, domainClass);
 
       return scope.ExistsWorkaround();
     }
@@ -125,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
                                    { DiagnosticMetadataAttributesForObjectBinding.DisplayName, displayName }
                                };
 
-      return context.Scope.FindTagWithAttributes ("*", diagnosticMetadata);
+      return context.Scope.FindTagWithAttributes("*", diagnosticMetadata);
     }
 
     private ElementScope FindScopePerDomainProperty (ControlSelectionContext context, string domainProperty, string? domainClass)
@@ -137,9 +137,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
                                };
 
       if (domainClass != null)
-        diagnosticMetadata.Add (DiagnosticMetadataAttributesForObjectBinding.BoundType, domainClass);
+        diagnosticMetadata.Add(DiagnosticMetadataAttributesForObjectBinding.BoundType, domainClass);
 
-      return context.Scope.FindTagWithAttributes ("*", diagnosticMetadata);
+      return context.Scope.FindTagWithAttributes("*", diagnosticMetadata);
     }
   }
 }

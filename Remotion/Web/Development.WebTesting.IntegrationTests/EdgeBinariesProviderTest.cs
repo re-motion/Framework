@@ -27,21 +27,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private const string c_guidRegex = @"(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}";
 
     [Test]
-    [Retry (3)]
+    [Retry(3)]
     public void GetInstalledExecutable ()
     {
       var provider = new EdgeBinariesProvider();
 
       var result = provider.GetInstalledExecutable();
 
-      Assert.That (result.BrowserBinaryPath, Is.EqualTo (@"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"));
-      Assert.That (
+      Assert.That(result.BrowserBinaryPath, Is.EqualTo(@"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"));
+      Assert.That(
           result.DriverBinaryPath,
-          Does.Match (
-              Regex.Escape (Path.GetTempPath()) + @"Remotion.Web.Development.WebTesting.WebDriver\\msedgedriver\\msedgedriver_v\d+\.\d+\.\d+\.\d+\\msedgedriver.exe"));
-      Assert.That (
+          Does.Match(
+              Regex.Escape(Path.GetTempPath()) + @"Remotion.Web.Development.WebTesting.WebDriver\\msedgedriver\\msedgedriver_v\d+\.\d+\.\d+\.\d+\\msedgedriver.exe"));
+      Assert.That(
           result.UserDirectory,
-          Does.Match (Regex.Escape (Path.GetTempPath()) + c_guidRegex));
+          Does.Match(Regex.Escape(Path.GetTempPath()) + c_guidRegex));
     }
   }
 }

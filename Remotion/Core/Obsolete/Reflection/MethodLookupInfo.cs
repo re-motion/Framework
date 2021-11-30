@@ -21,7 +21,7 @@ using System.Reflection;
 
 namespace Remotion.Reflection
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
   internal abstract class MethodLookupInfo
   {
     public MethodLookupInfo (

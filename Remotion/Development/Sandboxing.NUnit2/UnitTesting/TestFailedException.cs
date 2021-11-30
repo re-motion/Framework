@@ -30,16 +30,16 @@ namespace Remotion.Development.Sandboxing.Nunit2.UnitTesting
   {
     private static string CreateMessage (Type declaringType, string testName, SandboxTestStatus status)
     {
-      return string.Format ("Test '{0}.{1}' failed. Status: {2}.", declaringType, testName, status);
+      return string.Format("Test '{0}.{1}' failed. Status: {2}.", declaringType, testName, status);
     }
 
     public TestFailedException (Type declaringType, string testName, SandboxTestStatus status, Exception exception)
-      : base (CreateMessage (declaringType, testName, status), exception)
+      : base(CreateMessage(declaringType, testName, status), exception)
     {
     }
 
     protected TestFailedException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
   }

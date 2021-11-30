@@ -27,35 +27,35 @@ namespace Remotion.Web.UI.Controls.WebButtonImplementation.Rendering
   /// Implements <see cref="IWebButtonRenderer"/> for standard mode rendering of <see cref="WebButton"/> controls.
   /// <seealso cref="IWebButton"/>
   /// </summary>
-  [ImplementationFor (typeof (IWebButtonRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IWebButtonRenderer), Lifetime = LifetimeKind.Singleton)]
   public class WebButtonRenderer : RendererBase<IWebButton>, IWebButtonRenderer
   {
     public WebButtonRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string scriptKey = typeof (WebButtonRenderer).GetFullNameChecked() + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (WebButtonRenderer), ResourceType.Html, "WebButton.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (scriptKey, scriptUrl);
+      string scriptKey = typeof(WebButtonRenderer).GetFullNameChecked() + "_Script";
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(WebButtonRenderer), ResourceType.Html, "WebButton.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(scriptKey, scriptUrl);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string styleKey = typeof (WebButtonRenderer).GetFullNameChecked() + "_Style";
-      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (WebButtonRenderer), ResourceType.Html, "WebButton.css");
-      htmlHeadAppender.RegisterStylesheetLink (styleKey, styleUrl, HtmlHeadAppender.Priority.Library);
+      string styleKey = typeof(WebButtonRenderer).GetFullNameChecked() + "_Style";
+      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(WebButtonRenderer), ResourceType.Html, "WebButton.css");
+      htmlHeadAppender.RegisterStylesheetLink(styleKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }
 
     public void Render (WebButtonRenderingContext renderingContext)
     {
-      throw new NotSupportedException ("The WebButton does not support customized rendering.");
+      throw new NotSupportedException("The WebButton does not support customized rendering.");
     }
   }
 }

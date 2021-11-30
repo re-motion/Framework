@@ -27,24 +27,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       get
       {
         if (s_instance == null)
-          throw new InvalidOperationException ("TableInheritanceConfiguration has not been Initialized by invoking Initialize()");
+          throw new InvalidOperationException("TableInheritanceConfiguration has not been Initialized by invoking Initialize()");
         return s_instance;
       }
     }
 
-    public static void Initialize()
+    public static void Initialize ()
     {
       s_instance = new TableInheritanceConfiguration();
     }
 
     private readonly TableInheritanceDomainObjectIDs _domainObjectIDs;
 
-    private TableInheritanceConfiguration()
+    private TableInheritanceConfiguration ()
     {
-      _domainObjectIDs = new TableInheritanceDomainObjectIDs (GetMappingConfiguration ());
+      _domainObjectIDs = new TableInheritanceDomainObjectIDs(GetMappingConfiguration());
     }
 
-    public TableInheritanceDomainObjectIDs GetDomainObjectIDs()
+    public TableInheritanceDomainObjectIDs GetDomainObjectIDs ()
     {
       return _domainObjectIDs;
     }

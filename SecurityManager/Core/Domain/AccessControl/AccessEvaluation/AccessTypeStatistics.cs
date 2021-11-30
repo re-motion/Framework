@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   public class AccessTypeStatistics
   {
     private readonly List<AccessControlEntry> _accessTypesSupplyingAces = new List<AccessControlEntry>();
-    private readonly List<AccessControlEntry> _matchingAces = new List<AccessControlEntry> ();
+    private readonly List<AccessControlEntry> _matchingAces = new List<AccessControlEntry>();
 
     public List<AccessControlEntry> AccessTypesSupplyingAces
     {
@@ -42,10 +42,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public void AddAccessTypesContributingAce (AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull ("ace", ace);
+      ArgumentUtility.CheckNotNull("ace", ace);
       if (!IsInAccessTypesContributingAces(ace))
       {
-        AccessTypesSupplyingAces.Add (ace);
+        AccessTypesSupplyingAces.Add(ace);
       }
     }
 
@@ -55,17 +55,17 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     /// </summary>
     public virtual bool IsInAccessTypesContributingAces (AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull ("ace", ace);
+      ArgumentUtility.CheckNotNull("ace", ace);
       return AccessTypesSupplyingAces.Contains(ace);
     }
 
 
     public void AddMatchingAce (AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull ("ace", ace);
-      if (!IsInMatchingAces (ace))
+      ArgumentUtility.CheckNotNull("ace", ace);
+      if (!IsInMatchingAces(ace))
       {
-        _matchingAces.Add (ace);
+        _matchingAces.Add(ace);
       }
     }
 
@@ -79,8 +79,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     /// </remarks>
     public bool IsInMatchingAces (AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull ("ace", ace);
-      return _matchingAces.Contains (ace);
+      ArgumentUtility.CheckNotNull("ace", ace);
+      return _matchingAces.Contains(ace);
     }
   }
 }

@@ -26,30 +26,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void ClientTransactionCanBeMixed ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClientTransaction)).Clear().AddMixins (typeof (InvertingClientTransactionMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(ClientTransaction)).Clear().AddMixins(typeof(InvertingClientTransactionMixin)).EnterScope())
       {
-        ClientTransaction mixedTransaction = ClientTransaction.CreateRootTransaction ();
-        Assert.That (mixedTransaction, Is.Not.Null);
-        Assert.That (Mixin.Get<InvertingClientTransactionMixin> (mixedTransaction), Is.Not.Null);
+        ClientTransaction mixedTransaction = ClientTransaction.CreateRootTransaction();
+        Assert.That(mixedTransaction, Is.Not.Null);
+        Assert.That(Mixin.Get<InvertingClientTransactionMixin>(mixedTransaction), Is.Not.Null);
       }
     }
 
     [Test]
     public void SubTransactionsAlsoMixed ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClientTransaction)).Clear().AddMixins (typeof (InvertingClientTransactionMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(ClientTransaction)).Clear().AddMixins(typeof(InvertingClientTransactionMixin)).EnterScope())
       {
-        ClientTransaction mixedTransaction = ClientTransaction.CreateRootTransaction ();
-        ClientTransaction mixedSubTransaction = mixedTransaction.CreateSubTransaction ();
-        Assert.That (mixedSubTransaction, Is.Not.Null);
-        Assert.That (Mixin.Get<InvertingClientTransactionMixin> (mixedSubTransaction), Is.Not.Null);
+        ClientTransaction mixedTransaction = ClientTransaction.CreateRootTransaction();
+        ClientTransaction mixedSubTransaction = mixedTransaction.CreateSubTransaction();
+        Assert.That(mixedSubTransaction, Is.Not.Null);
+        Assert.That(Mixin.Get<InvertingClientTransactionMixin>(mixedSubTransaction), Is.Not.Null);
       }
     }
 
     [Test]
     public void TransactionMethodsCanBeOverridden ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClientTransaction)).Clear().AddMixins (typeof (InvertingClientTransactionMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(ClientTransaction)).Clear().AddMixins(typeof(InvertingClientTransactionMixin)).EnterScope())
       {
         ClientTransaction invertedTransaction = ClientTransaction.CreateRootTransaction();
 
@@ -58,32 +58,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         invertedTransaction.Committed += delegate { committed = true; };
         invertedTransaction.RolledBack += delegate { rolledBack = true; };
 
-        Assert.That (rolledBack, Is.False);
-        Assert.That (committed, Is.False);
+        Assert.That(rolledBack, Is.False);
+        Assert.That(committed, Is.False);
 
         invertedTransaction.Commit();
 
-        Assert.That (rolledBack, Is.True);
-        Assert.That (committed, Is.False);
+        Assert.That(rolledBack, Is.True);
+        Assert.That(committed, Is.False);
 
         rolledBack = false;
         invertedTransaction.Rollback();
 
-        Assert.That (rolledBack, Is.False);
-        Assert.That (committed, Is.True);
+        Assert.That(rolledBack, Is.False);
+        Assert.That(committed, Is.True);
       }
     }
 
     [Test]
     public void MixinCanAddInterface ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (ClientTransaction)).Clear().AddMixins (typeof (ClientTransactionWithIDMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(ClientTransaction)).Clear().AddMixins(typeof(ClientTransactionWithIDMixin)).EnterScope())
       {
-        IClientTransactionWithID transactionWithID = (IClientTransactionWithID) ClientTransaction.CreateRootTransaction ();
-        Assert.That (transactionWithID.ToString (), Is.EqualTo (transactionWithID.ID.ToString ()));
-        IClientTransactionWithID subTransactionWithID = (IClientTransactionWithID) transactionWithID.AsClientTransaction.CreateSubTransaction ();
-        Assert.That (subTransactionWithID.ID, Is.Not.EqualTo (transactionWithID.ID));
-        Assert.That (((IClientTransactionWithID) subTransactionWithID.AsClientTransaction.ParentTransaction).ID, Is.EqualTo (transactionWithID.ID));
+        IClientTransactionWithID transactionWithID = (IClientTransactionWithID)ClientTransaction.CreateRootTransaction();
+        Assert.That(transactionWithID.ToString(), Is.EqualTo(transactionWithID.ID.ToString()));
+        IClientTransactionWithID subTransactionWithID = (IClientTransactionWithID)transactionWithID.AsClientTransaction.CreateSubTransaction();
+        Assert.That(subTransactionWithID.ID, Is.Not.EqualTo(transactionWithID.ID));
+        Assert.That(((IClientTransactionWithID)subTransactionWithID.AsClientTransaction.ParentTransaction).ID, Is.EqualTo(transactionWithID.ID));
       }
     }
   }

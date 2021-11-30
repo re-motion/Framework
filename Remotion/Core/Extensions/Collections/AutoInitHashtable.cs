@@ -28,7 +28,7 @@ namespace Remotion.Collections
   ///		This collection cannot be modified using <see cref="Hashtable.Add"/> and setting values through the indexer. Getting values through the indexer
   ///		will assign a new object to the specified key if none exists.
   /// </remarks>
-  [DebuggerDisplay ("Count={Count}")]
+  [DebuggerDisplay("Count={Count}")]
   public class AutoInitHashtable : Hashtable
   {
     public delegate object CreateMethod ();
@@ -39,14 +39,14 @@ namespace Remotion.Collections
     public AutoInitHashtable (Type valueType)
     {
       // TODO RM-7789: valueType should be guarded against nullable value types.
-      ArgumentUtility.CheckNotNull ("valueType", valueType);
+      ArgumentUtility.CheckNotNull("valueType", valueType);
       _valueType = valueType;
       _createMethod = null;
     }
 
     public AutoInitHashtable (CreateMethod createMethod)
     {
-      ArgumentUtility.CheckNotNull ("createMethod", createMethod);
+      ArgumentUtility.CheckNotNull("createMethod", createMethod);
       _createMethod = createMethod;
       _valueType = null;
     }
@@ -56,7 +56,7 @@ namespace Remotion.Collections
       if (_createMethod != null)
         return _createMethod(); // TODO RM-7789: The result of _createMethod should be checked for null.
       else
-        return Activator.CreateInstance (_valueType!)!;
+        return Activator.CreateInstance(_valueType!)!;
     }
 
     public override object? this [object key]
@@ -72,14 +72,14 @@ namespace Remotion.Collections
         return obj;
       }
 
-      set { throw new NotSupportedException ("Explicitly adding or setting keys or values is not supported."); }
+      set { throw new NotSupportedException("Explicitly adding or setting keys or values is not supported."); }
     }
 
     #pragma warning disable 809 // C# 3.0: specifying obsolete for overridden methods causes a warning, but this is intended here.
-    [Obsolete ("Explicitly adding or setting keys or values is not supported.", true)]
+    [Obsolete("Explicitly adding or setting keys or values is not supported.", true)]
     public override void Add (object key, object? value)
     {
-      throw new NotSupportedException ("Explicitly adding or setting keys or values is not supported.");
+      throw new NotSupportedException("Explicitly adding or setting keys or values is not supported.");
     }
 
     #pragma warning restore 809

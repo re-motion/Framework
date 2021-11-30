@@ -27,28 +27,28 @@ namespace Remotion.Globalization
   /// localizations for this assembly, resulting in a significant performance penality. The <see cref="AvailableResourcesLanguagesAttribute"/> is
   /// only required when working with the <see cref="MultiLingualResourcesAttribute"/>.
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Assembly, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
   public class AvailableResourcesLanguagesAttribute : Attribute
   {
     private readonly string[] _cultureNames;
 
     public AvailableResourcesLanguagesAttribute (string cultureName1)
-      : this (new[] { cultureName1 })
+      : this(new[] { cultureName1 })
     {
     }
 
     public AvailableResourcesLanguagesAttribute (string cultureName1, string cultureName2)
-      : this (new[] { cultureName1, cultureName2 })
+      : this(new[] { cultureName1, cultureName2 })
     {
     }
 
     public AvailableResourcesLanguagesAttribute (string cultureName1, string cultureName2, string cultureName3)
-      : this (new[] { cultureName1, cultureName2, cultureName3 })
+      : this(new[] { cultureName1, cultureName2, cultureName3 })
     {
     }
 
     public AvailableResourcesLanguagesAttribute (string cultureName1, string cultureName2, string cultureName3, string cultureName4)
-      : this (new[] { cultureName1, cultureName2, cultureName3, cultureName4 })
+      : this(new[] { cultureName1, cultureName2, cultureName3, cultureName4 })
     {
     }
 
@@ -58,7 +58,7 @@ namespace Remotion.Globalization
         string cultureName3,
         string cultureName4,
         string cultureName5)
-      : this (new[] { cultureName1, cultureName2, cultureName3, cultureName4, cultureName5 })
+      : this(new[] { cultureName1, cultureName2, cultureName3, cultureName4, cultureName5 })
     {
     }
 
@@ -69,7 +69,7 @@ namespace Remotion.Globalization
         string cultureName4,
         string cultureName5,
         string cultureName6)
-      : this (new[] { cultureName1, cultureName2, cultureName3, cultureName4, cultureName5, cultureName6 })
+      : this(new[] { cultureName1, cultureName2, cultureName3, cultureName4, cultureName5, cultureName6 })
     {
     }
 
@@ -81,7 +81,7 @@ namespace Remotion.Globalization
         string cultureName5,
         string cultureName6,
         string cultureName7)
-      : this (new[] { cultureName1, cultureName2, cultureName3, cultureName4, cultureName5, cultureName6, cultureName7 })
+      : this(new[] { cultureName1, cultureName2, cultureName3, cultureName4, cultureName5, cultureName6, cultureName7 })
     {
     }
 
@@ -94,7 +94,7 @@ namespace Remotion.Globalization
         string cultureName6,
         string cultureName7,
         string cultureName8)
-      : this (new[] { cultureName1, cultureName2, cultureName3, cultureName4, cultureName5, cultureName6, cultureName7, cultureName8 })
+      : this(new[] { cultureName1, cultureName2, cultureName3, cultureName4, cultureName5, cultureName6, cultureName7, cultureName8 })
     {
     }
 
@@ -108,13 +108,13 @@ namespace Remotion.Globalization
         string cultureName7,
         string cultureName8,
         string cultureName9)
-      : this (new[] { cultureName1, cultureName2, cultureName3, cultureName4, cultureName5, cultureName6, cultureName7, cultureName8, cultureName9 })
+      : this(new[] { cultureName1, cultureName2, cultureName3, cultureName4, cultureName5, cultureName6, cultureName7, cultureName8, cultureName9 })
     {
     }
 
     public AvailableResourcesLanguagesAttribute (string[] cultureNames)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("cultureNames", cultureNames);
+      ArgumentUtility.CheckNotNullOrEmpty("cultureNames", cultureNames);
 
       _cultureNames = cultureNames;
     }

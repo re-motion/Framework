@@ -35,22 +35,22 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     {
       base.SetUp();
 
-      _parentStep = new WxePageStep ("page.aspx");
-      ExecutionStateContextMock.Setup (stub => stub.CurrentStep).Returns (_parentStep);
+      _parentStep = new WxePageStep("page.aspx");
+      ExecutionStateContextMock.Setup(stub => stub.CurrentStep).Returns(_parentStep);
 
-      _pageMock = new Mock<IWxePage> (MockBehavior.Strict);
+      _pageMock = new Mock<IWxePage>(MockBehavior.Strict);
 
-      PostBackCollection.Add ("Key", "Value");
-      PostBackCollection.Add (c_senderUniqueID, "Value");
-      PostBackCollection.Add (ControlHelper.PostEventSourceID, "TheEventSource");
-      PostBackCollection.Add (ControlHelper.PostEventArgumentID, "TheEventArgument");
+      PostBackCollection.Add("Key", "Value");
+      PostBackCollection.Add(c_senderUniqueID, "Value");
+      PostBackCollection.Add(ControlHelper.PostEventSourceID, "TheEventSource");
+      PostBackCollection.Add(ControlHelper.PostEventArgumentID, "TheEventArgument");
     }
 
     [Test]
     public void IsExecuting ()
     {
-      IExecutionState executionState = CreateExecutionState (WxePermaUrlOptions.Null, WxeReturnOptions.Null);
-      Assert.That (executionState.IsExecuting, Is.True);
+      IExecutionState executionState = CreateExecutionState(WxePermaUrlOptions.Null, WxeReturnOptions.Null);
+      Assert.That(executionState.IsExecuting, Is.True);
     }
 
     [Test]
@@ -58,30 +58,30 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     {
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions();
       WxeReturnOptions returnOptions = new WxeReturnOptions();
-      IExecutionState executionState = CreateExecutionState (permaUrlOptions, returnOptions);
+      IExecutionState executionState = CreateExecutionState(permaUrlOptions, returnOptions);
 
       var sequence = new MockSequence();
 
-      _pageMock.Setup (mock => mock.GetPostBackCollection()).Returns (PostBackCollection).Verifiable();
-      _pageMock.Setup (mock => mock.SaveAllState()).Verifiable();
+      _pageMock.Setup(mock => mock.GetPostBackCollection()).Returns(PostBackCollection).Verifiable();
+      _pageMock.Setup(mock => mock.SaveAllState()).Verifiable();
 
-      ExecutionStateContextMock.InSequence (sequence)
-          .Setup (mock => mock.SetExecutionState (It.IsNotNull<PreparingRedirectToSubFunctionState>()))
-          .Callback (
+      ExecutionStateContextMock.InSequence(sequence)
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<PreparingRedirectToSubFunctionState>()))
+          .Callback(
               (IExecutionState executionState) =>
               {
-                var nextState = CheckExecutionState ((PreparingRedirectToSubFunctionState) executionState);
-                Assert.That (nextState.Parameters.PostBackCollection, Is.Not.SameAs (PostBackCollection));
-                Assert.That (
+                var nextState = CheckExecutionState((PreparingRedirectToSubFunctionState)executionState);
+                Assert.That(nextState.Parameters.PostBackCollection, Is.Not.SameAs(PostBackCollection));
+                Assert.That(
                     nextState.Parameters.PostBackCollection.AllKeys,
-                    Is.EquivalentTo (new[] { "Key", c_senderUniqueID, ControlHelper.PostEventSourceID, ControlHelper.PostEventArgumentID }));
-                Assert.That (nextState.Parameters.SubFunction.ParentStep, Is.Null);
-                Assert.That (nextState.Parameters.PermaUrlOptions, Is.SameAs (permaUrlOptions));
-                Assert.That (nextState.ReturnOptions, Is.SameAs (returnOptions));
+                    Is.EquivalentTo(new[] { "Key", c_senderUniqueID, ControlHelper.PostEventSourceID, ControlHelper.PostEventArgumentID }));
+                Assert.That(nextState.Parameters.SubFunction.ParentStep, Is.Null);
+                Assert.That(nextState.Parameters.PermaUrlOptions, Is.SameAs(permaUrlOptions));
+                Assert.That(nextState.ReturnOptions, Is.SameAs(returnOptions));
               })
           .Verifiable();
 
-      executionState.ExecuteSubFunction (WxeContext);
+      executionState.ExecuteSubFunction(WxeContext);
 
       _pageMock.Verify();
       VerifyAll();
@@ -89,8 +89,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
 
     private PreProcessingSubFunctionState CreateExecutionState (WxePermaUrlOptions permaUrlOptions, WxeReturnOptions returnOptions)
     {
-      return new PreProcessingSubFunctionState (
-          ExecutionStateContextMock.Object, new PreProcessingSubFunctionStateParameters (_pageMock.Object, SubFunction.Object, permaUrlOptions), returnOptions);
+      return new PreProcessingSubFunctionState(
+          ExecutionStateContextMock.Object, new PreProcessingSubFunctionStateParameters(_pageMock.Object, SubFunction.Object, permaUrlOptions), returnOptions);
     }
   }
 }

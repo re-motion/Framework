@@ -33,30 +33,30 @@ public class ObjectDeletedException : DomainObjectException
 
   // construction and disposing
 
-  public ObjectDeletedException () : this ("Object is already deleted.") 
+  public ObjectDeletedException () : this("Object is already deleted.")
   {
   }
 
-  public ObjectDeletedException (string message) : base (message) 
-  {
-  }
-  
-  public ObjectDeletedException (string message, Exception inner) : base (message, inner) 
+  public ObjectDeletedException (string message) : base(message)
   {
   }
 
-  protected ObjectDeletedException (SerializationInfo info, StreamingContext context) : base (info, context) 
-  {
-    _id = (ObjectID) info.GetValue ("ID", typeof (ObjectID));
-  }
-
-  public ObjectDeletedException (ObjectID id) : this (string.Format ("Object '{0}' is already deleted.", id), id)
+  public ObjectDeletedException (string message, Exception inner) : base(message, inner)
   {
   }
 
-  public ObjectDeletedException (string message, ObjectID id) : base (message) 
+  protected ObjectDeletedException (SerializationInfo info, StreamingContext context) : base(info, context)
   {
-    ArgumentUtility.CheckNotNull ("id", id);
+    _id = (ObjectID)info.GetValue("ID", typeof(ObjectID));
+  }
+
+  public ObjectDeletedException (ObjectID id) : this(string.Format("Object '{0}' is already deleted.", id), id)
+  {
+  }
+
+  public ObjectDeletedException (string message, ObjectID id) : base(message)
+  {
+    ArgumentUtility.CheckNotNull("id", id);
 
     _id = id;
   }
@@ -70,9 +70,9 @@ public class ObjectDeletedException : DomainObjectException
 
   public override void GetObjectData (SerializationInfo info, StreamingContext context)
   {
-    base.GetObjectData (info, context);
+    base.GetObjectData(info, context);
 
-    info.AddValue ("ID", _id);
+    info.AddValue("ID", _id);
   }
 }
 }

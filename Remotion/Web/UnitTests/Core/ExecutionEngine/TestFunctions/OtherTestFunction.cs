@@ -28,21 +28,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     private string _lastExecutedStepID;
 
     public OtherTestFunction ()
-      : base (new NoneTransactionMode ())
+      : base(new NoneTransactionMode())
     {
       ReturnUrl = TestFunction.ReturnUrlValue;
     }
 
     public OtherTestFunction (params object[] args)
-        : base (new NoneTransactionMode (), args)
+        : base(new NoneTransactionMode(), args)
     {
       ReturnUrl = TestFunction.ReturnUrlValue;
     }
 
-    [WxeParameter (1, false, WxeParameterDirection.In)]
+    [WxeParameter(1, false, WxeParameterDirection.In)]
     public string Parameter1
     {
-      get { return (string) Variables["Parameter1"]; }
+      get { return (string)Variables["Parameter1"]; }
       set { Variables["Parameter1"] = value; }
     }
 

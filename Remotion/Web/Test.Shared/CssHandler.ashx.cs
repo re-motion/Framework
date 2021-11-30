@@ -24,17 +24,17 @@ namespace Remotion.Web.Test.Shared
   /// <summary>
   /// Summary description for $codebehindclassname$
   /// </summary>
-  [WebService (Namespace = "http://tempuri.org/")]
-  [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
+  [WebService(Namespace = "http://tempuri.org/")]
+  [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
   public class CssHandler : IHttpHandler
   {
     public void ProcessRequest (HttpContext context)
     {
       var cssClass = context.Request.QueryString["Class"];
-      if (!cssClass.EndsWith ("a"))
-        context.Response.Write ("@import url('CssHandler.ashx?Class=" + cssClass + "a');\r\n");
-      context.Response.Write ("." + cssClass + "{color:Red}\r\n");
-      Thread.Sleep (100);
+      if (!cssClass.EndsWith("a"))
+        context.Response.Write("@import url('CssHandler.ashx?Class=" + cssClass + "a');\r\n");
+      context.Response.Write("." + cssClass + "{color:Red}\r\n");
+      Thread.Sleep(100);
     }
 
     public bool IsReusable

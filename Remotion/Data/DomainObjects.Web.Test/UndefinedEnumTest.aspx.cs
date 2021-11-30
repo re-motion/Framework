@@ -35,24 +35,24 @@ public class UndefinedEnumTestPage : WxePage
   protected Remotion.Web.UI.Controls.FormGridManager FormGridManager;
   protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
-  private UndefinedEnumTestFunction MyFunction 
+  private UndefinedEnumTestFunction MyFunction
   {
-    get { return (UndefinedEnumTestFunction) CurrentFunction; }
+    get { return (UndefinedEnumTestFunction)CurrentFunction; }
   }
 
-  private void Page_Load(object sender, System.EventArgs e)
+  private void Page_Load (object sender, System.EventArgs e)
 	{
-    NewObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject) MyFunction.NewObjectWithUndefinedEnum;
-    ExistingObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject) MyFunction.ExistingObjectWithUndefinedEnum;
-    SearchObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject) MyFunction.SearchObjectWithUndefinedEnum;
+    NewObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject)MyFunction.NewObjectWithUndefinedEnum;
+    ExistingObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject)MyFunction.ExistingObjectWithUndefinedEnum;
+    SearchObjectWithUndefinedEnumDataSource.BusinessObject = (IBusinessObject)MyFunction.SearchObjectWithUndefinedEnum;
 
-    NewObjectWithUndefinedEnumDataSource.LoadValues (IsPostBack);
-    ExistingObjectWithUndefinedEnumDataSource.LoadValues (IsPostBack);
-    SearchObjectWithUndefinedEnumDataSource.LoadValues (IsPostBack);
+    NewObjectWithUndefinedEnumDataSource.LoadValues(IsPostBack);
+    ExistingObjectWithUndefinedEnumDataSource.LoadValues(IsPostBack);
+    SearchObjectWithUndefinedEnumDataSource.LoadValues(IsPostBack);
 	}
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -60,40 +60,40 @@ public class UndefinedEnumTestPage : WxePage
 		InitializeComponent();
 		base.OnInit(e);
 	}
-	
+
 	/// <summary>
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
-	{    
+	private void InitializeComponent ()
+	{
     this.TestButton.Click += new System.EventHandler(this.TestButton_Click);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
 	#endregion
 
-  private void TestButton_Click(object sender, System.EventArgs e)
+  private void TestButton_Click (object sender, System.EventArgs e)
   {
-    if (FormGridManager.Validate ())
+    if (FormGridManager.Validate())
     {
-      NewObjectWithUndefinedEnumDataSource.SaveValues (false);
-      ExistingObjectWithUndefinedEnumDataSource.SaveValues (false);
-      SearchObjectWithUndefinedEnumDataSource.SaveValues (false);
+      NewObjectWithUndefinedEnumDataSource.SaveValues(false);
+      ExistingObjectWithUndefinedEnumDataSource.SaveValues(false);
+      SearchObjectWithUndefinedEnumDataSource.SaveValues(false);
 
-      AreEqual (UndefinedEnum.Value1, MyFunction.NewObjectWithUndefinedEnum.UndefinedEnum);
-      AreEqual (UndefinedEnum.Value1, MyFunction.ExistingObjectWithUndefinedEnum.UndefinedEnum);
-      if (!Enum.IsDefined (typeof (UndefinedEnum), MyFunction.SearchObjectWithUndefinedEnum.UndefinedEnum))
-        throw new TestFailureException ("SearchObjectWithUndefinedEnum.UndefinedEnum has an invalid value.");
+      AreEqual(UndefinedEnum.Value1, MyFunction.NewObjectWithUndefinedEnum.UndefinedEnum);
+      AreEqual(UndefinedEnum.Value1, MyFunction.ExistingObjectWithUndefinedEnum.UndefinedEnum);
+      if (!Enum.IsDefined(typeof(UndefinedEnum), MyFunction.SearchObjectWithUndefinedEnum.UndefinedEnum))
+        throw new TestFailureException("SearchObjectWithUndefinedEnum.UndefinedEnum has an invalid value.");
 
-      ExecuteNextStep ();
+      ExecuteNextStep();
     }
   }
 
   private void AreEqual (UndefinedEnum expected, UndefinedEnum actual)
   {
     if (expected != actual)
-      throw new TestFailureException (string.Format ("Actual value '{0}' does not match expected value '{1}'.", actual, expected));
+      throw new TestFailureException(string.Format("Actual value '{0}' does not match expected value '{1}'.", actual, expected));
   }
 }
 }

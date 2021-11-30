@@ -36,17 +36,17 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       where TRevisionKey : IRevisionKey
       where TRevisionValue : IRevisionValue
   {
-    private static readonly ILog s_log = LogManager.GetLogger (MethodInfo.GetCurrentMethod().DeclaringType);
+    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod().DeclaringType);
     private static readonly ConcurrentDictionary<string, IQuery> s_queryCache = new ConcurrentDictionary<string, IQuery>();
 
     protected SecurityContextRevisionBasedCacheBase (IRevisionProvider<TRevisionKey, TRevisionValue> revisionProvider)
-        : base (revisionProvider)
+        : base(revisionProvider)
     {
     }
 
     private StopwatchScope CreateStopwatchScopeForQueryParsing (string queryName)
     {
-      return StopwatchScope.CreateScope (
+      return StopwatchScope.CreateScope(
           s_log,
           LogLevel.Debug,
           "Parsed query for " + GetType().Name + "." + queryName + "(). Time taken: {elapsed:ms}ms");
@@ -54,7 +54,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     protected StopwatchScope CreateStopwatchScopeForQueryExecution (string queryName)
     {
-      return StopwatchScope.CreateScope (
+      return StopwatchScope.CreateScope(
           s_log,
           LogLevel.Debug,
           "Fetched " + queryName + " into " + GetType().Name + ". Time taken: {elapsed:ms}ms");
@@ -63,10 +63,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     protected IEnumerable<T> GetOrCreateQuery<T> (MethodBase caller, Func<IQueryable<T>> queryCreator)
     {
       // C# compiler 7.2 does not provide caching for delegate but during query execution there is already a significant amount of GC pressure so the delegate creation does not matter
-      var executableQuery = 
-          (IExecutableQuery<IEnumerable<T>>) s_queryCache.GetOrAdd (caller.Name, key => CreateExecutableQuery (key, queryCreator));
+      var executableQuery =
+          (IExecutableQuery<IEnumerable<T>>)s_queryCache.GetOrAdd(caller.Name, key => CreateExecutableQuery(key, queryCreator));
 
-      return executableQuery.Execute (ClientTransaction.Current.QueryManager);
+      return executableQuery.Execute(ClientTransaction.Current.QueryManager);
     }
 
     private IExecutableQuery<IEnumerable<T>> CreateExecutableQuery<T> (string key, Func<IQueryable<T>> queryCreator)
@@ -75,12 +75,12 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       // Unfortunately, the first query also causes the initialization of various caches in re-store, 
       // an operation that cannot be easily excluded from the meassured parsing time. Therefor, the cache mainly helps to alleviate any concerns 
       // about the cost associated with this part of the cache initialization.
-      using (CreateStopwatchScopeForQueryParsing (key))
+      using (CreateStopwatchScopeForQueryParsing(key))
       {
-        var queryable = (DomainObjectQueryable<T>) queryCreator();
+        var queryable = (DomainObjectQueryable<T>)queryCreator();
         var queryExecutor = queryable.GetExecutor();
-        var queryModel = queryable.Provider.GenerateQueryModel (queryable.Expression);
-        return queryExecutor.QueryGenerator.CreateSequenceQuery<T> (
+        var queryModel = queryable.Provider.GenerateQueryModel(queryable.Expression);
+        return queryExecutor.QueryGenerator.CreateSequenceQuery<T>(
             "<dynamic query>",
             queryExecutor.StorageProviderDefinition,
             queryModel,

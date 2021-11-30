@@ -32,31 +32,31 @@ namespace Remotion.Development.Moq.UnitTesting.Threading
   {
     public static void CheckLockIsHeld (object lockObject)
     {
-      ArgumentUtility.CheckNotNull ("lockObject", lockObject);
+      ArgumentUtility.CheckNotNull("lockObject", lockObject);
 
-      var lockAcquired = CouldAcquireLockFromOtherThread (lockObject);
-      Assert.That (lockAcquired, Is.False, "Parallel thread should have been blocked.");
+      var lockAcquired = CouldAcquireLockFromOtherThread(lockObject);
+      Assert.That(lockAcquired, Is.False, "Parallel thread should have been blocked.");
     }
 
     public static void CheckLockIsNotHeld (object lockObject)
     {
-      ArgumentUtility.CheckNotNull ("lockObject", lockObject);
+      ArgumentUtility.CheckNotNull("lockObject", lockObject);
 
-      var lockAcquired = CouldAcquireLockFromOtherThread (lockObject);
-      Assert.That (lockAcquired, Is.True, "Parallel thread should NOT have been blocked.");
+      var lockAcquired = CouldAcquireLockFromOtherThread(lockObject);
+      Assert.That(lockAcquired, Is.True, "Parallel thread should NOT have been blocked.");
     }
 
     public static bool CouldAcquireLockFromOtherThread (object lockObject)
     {
-      ArgumentUtility.CheckNotNull ("lockObject", lockObject);
+      ArgumentUtility.CheckNotNull("lockObject", lockObject);
 
       var lockAcquired = false;
-      ThreadRunner.Run (
+      ThreadRunner.Run(
           () =>
           {
-            lockAcquired = Monitor.TryEnter (lockObject);
+            lockAcquired = Monitor.TryEnter(lockObject);
             if (lockAcquired)
-              Monitor.Exit (lockObject);
+              Monitor.Exit(lockObject);
           });
 
       return lockAcquired;

@@ -40,11 +40,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests
       XmlNodeExtensions.Helper = new HtmlHelper();
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<IInfrastructureResourceUrlFactory> (() => new FakeInfrastructureResourceUrlFactory());
-      serviceLocator.RegisterSingle<IScriptUtility> (() => new FakeScriptUtility());
-      serviceLocator.RegisterSingle<IResourceUrlFactory> (() => new FakeResourceUrlFactory());
+      serviceLocator.RegisterSingle<IInfrastructureResourceUrlFactory>(() => new FakeInfrastructureResourceUrlFactory());
+      serviceLocator.RegisterSingle<IScriptUtility>(() => new FakeScriptUtility());
+      serviceLocator.RegisterSingle<IResourceUrlFactory>(() => new FakeResourceUrlFactory());
 
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
     [OneTimeTearDown]

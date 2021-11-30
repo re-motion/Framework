@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// </summary>
   public class LoadedObjectDataPendingRegistrationCollector
   {
-    private readonly Dictionary<ObjectID, FreshlyLoadedObjectData> _dataPendingRegistration = new Dictionary<ObjectID, FreshlyLoadedObjectData> ();
+    private readonly Dictionary<ObjectID, FreshlyLoadedObjectData> _dataPendingRegistration = new Dictionary<ObjectID, FreshlyLoadedObjectData>();
 
     public IReadOnlyCollection<FreshlyLoadedObjectData> DataPendingRegistration
     {
@@ -40,14 +40,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public FreshlyLoadedObjectData Add (FreshlyLoadedObjectData pendingData)
     {
-      ArgumentUtility.CheckNotNull ("pendingData", pendingData);
+      ArgumentUtility.CheckNotNull("pendingData", pendingData);
 
       FreshlyLoadedObjectData existingData;
 
-      if (_dataPendingRegistration.TryGetValue (pendingData.ObjectID, out existingData))
+      if (_dataPendingRegistration.TryGetValue(pendingData.ObjectID, out existingData))
         return existingData;
 
-      _dataPendingRegistration.Add (pendingData.ObjectID, pendingData);
+      _dataPendingRegistration.Add(pendingData.ObjectID, pendingData);
       return pendingData;
     }
   }

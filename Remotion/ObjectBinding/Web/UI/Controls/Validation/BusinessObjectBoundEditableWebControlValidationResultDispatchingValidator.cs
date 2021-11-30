@@ -34,11 +34,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public void DispatchValidationFailures (IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull ("validationResult", validationResult);
+      ArgumentUtility.CheckNotNull("validationResult", validationResult);
 
       var control = GetControlToValidate();
 
-      _validationFailures = validationResult.GetValidationFailures (control, markAsHandled: true).ToArray();
+      _validationFailures = validationResult.GetValidationFailures(control, markAsHandled: true).ToArray();
 
       //TODO-RM-5906: this call could be optimized away and replaced by an explicit call to Validate() from an external source. 
       //              Possibly, we could also tweak this to only track if validate has been called before, and if so, we set the validator invalid.
@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     protected override bool EvaluateIsValid ()
     {
-      ErrorMessage = string.Join ("\r\n", _validationFailures.Select (f => f.ErrorMessage));
+      ErrorMessage = string.Join("\r\n", _validationFailures.Select(f => f.ErrorMessage));
 
       return _validationFailures.Length == 0;
     }
@@ -56,12 +56,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
     [NotNull]
     private BusinessObjectBoundEditableWebControl GetControlToValidate ()
     {
-      var control = NamingContainer.FindControl (ControlToValidate);
+      var control = NamingContainer.FindControl(ControlToValidate);
       var bocControl = control as BusinessObjectBoundEditableWebControl;
       if (bocControl == null)
       {
-        throw new InvalidOperationException (
-            $"'{nameof (BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof (BusinessObjectBoundEditableWebControl)}'.");
+        throw new InvalidOperationException(
+            $"'{nameof(BusinessObjectBoundEditableWebControlValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof(BusinessObjectBoundEditableWebControl)}'.");
       }
 
       return bocControl;

@@ -21,7 +21,7 @@ namespace Remotion.Integration.Domain
   /// <summary>
   /// Apply this <see cref="Attribute"/> to a domain assembly to force the inclusing of all domain-relevant features of re-motion.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Assembly)]
+  [AttributeUsage(AttributeTargets.Assembly)]
   public class EnsureDomainIntegrationAttribute : Attribute
   {
   }

@@ -27,9 +27,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
   {
     public static QueryModel Create (Expression selectExpression = null)
     {
-      return new QueryModel (
-          new MainFromClause ("o", typeof (Order), Expression.Constant (null, typeof (IQueryable<Order>))),
-          new SelectClause (selectExpression ?? Expression.Constant (null)));
+      return new QueryModel(
+          new MainFromClause("o", typeof(Order), Expression.Constant(null, typeof(IQueryable<Order>))),
+          new SelectClause(selectExpression ?? Expression.Constant(null)));
     }
   }
 }

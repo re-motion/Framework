@@ -34,27 +34,27 @@ namespace Remotion.Mixins.Definitions.Building
   {
     public T[] RemoveOverriddenMembers<T> (IEnumerable<T> members) where T : MemberInfo
     {
-      ArgumentUtility.CheckNotNull ("members", members);
+      ArgumentUtility.CheckNotNull("members", members);
 
       // maps the associated methods' base definitions to the most derived member in the list; we adjust this dictionary as we walk the members
-      var baseDefinitionsToMostDerivedMembers = new Dictionary<MethodInfo, T> ();
+      var baseDefinitionsToMostDerivedMembers = new Dictionary<MethodInfo, T>();
 
       foreach (var member in members)
       {
-        var associatedMethodsForMember = ReflectionUtility.GetAssociatedMethods (member);
+        var associatedMethodsForMember = ReflectionUtility.GetAssociatedMethods(member);
         foreach (var associatedMethodForMember in associatedMethodsForMember)
         {
           // check whether we already have a member for that base definition; if yes, check which one is more derived
-          var baseDefinition = MethodBaseDefinitionCache.GetBaseDefinition (associatedMethodForMember);
-          if (!baseDefinitionsToMostDerivedMembers.TryGetValue (baseDefinition, out var existingMember) // we have no member for the base definition...
-              || existingMember.DeclaringType!.IsAssignableFrom (member.DeclaringType)) // the current one is more derived...
+          var baseDefinition = MethodBaseDefinitionCache.GetBaseDefinition(associatedMethodForMember);
+          if (!baseDefinitionsToMostDerivedMembers.TryGetValue(baseDefinition, out var existingMember) // we have no member for the base definition...
+              || existingMember.DeclaringType!.IsAssignableFrom(member.DeclaringType)) // the current one is more derived...
           {
             baseDefinitionsToMostDerivedMembers[baseDefinition] = member; // ...so store the current member
           }
         }
       }
 
-      return baseDefinitionsToMostDerivedMembers.Values.Distinct ().ToArray (); // Distinct required for members that have more than one accessor
+      return baseDefinitionsToMostDerivedMembers.Values.Distinct().ToArray(); // Distinct required for members that have more than one accessor
     }
   }
 }

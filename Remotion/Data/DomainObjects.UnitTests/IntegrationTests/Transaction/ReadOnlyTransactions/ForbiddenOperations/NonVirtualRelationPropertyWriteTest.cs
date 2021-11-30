@@ -30,43 +30,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order1 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      _customer1 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Customer1.GetObject<Customer> ());
-      _customer2 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Customer2.GetObject<Customer> ());
-      _customer3 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Customer3.GetObject<Customer> ());
+      _order1 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Order1.GetObject<Order>());
+      _customer1 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Customer1.GetObject<Customer>());
+      _customer2 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Customer2.GetObject<Customer>());
+      _customer3 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Customer3.GetObject<Customer>());
 
-      ExecuteInWriteableSubTransaction (() => _order1.Customer = _customer2);
-      ExecuteInWriteableSubTransaction (() => _customer3.Orders.EnsureDataComplete());
+      ExecuteInWriteableSubTransaction(() => _order1.Customer = _customer2);
+      ExecuteInWriteableSubTransaction(() => _customer3.Orders.EnsureDataComplete());
     }
 
     [Test]
     public void RelationSetInReadOnlyRootTransaction_IsForbidden ()
     {
-      CheckProperty (ReadOnlyRootTransaction, _order1, o => o.Customer, _customer1, _customer1);
-      CheckProperty (ReadOnlyMiddleTransaction, _order1, o => o.Customer, _customer1, _customer1);
-      CheckProperty (WriteableSubTransaction, _order1, o => o.Customer, _customer2, _customer1);
+      CheckProperty(ReadOnlyRootTransaction, _order1, o => o.Customer, _customer1, _customer1);
+      CheckProperty(ReadOnlyMiddleTransaction, _order1, o => o.Customer, _customer1, _customer1);
+      CheckProperty(WriteableSubTransaction, _order1, o => o.Customer, _customer2, _customer1);
 
-      CheckForbidden (() => ExecuteInReadOnlyRootTransaction (() => _order1.Customer = _customer3), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyRootTransaction(() => _order1.Customer = _customer3), "RelationChanging");
 
-      CheckProperty (ReadOnlyRootTransaction, _order1, o => o.Customer, _customer1, _customer1);
-      CheckProperty (ReadOnlyMiddleTransaction, _order1, o => o.Customer, _customer1, _customer1);
-      CheckProperty (WriteableSubTransaction, _order1, o => o.Customer, _customer2, _customer1);
+      CheckProperty(ReadOnlyRootTransaction, _order1, o => o.Customer, _customer1, _customer1);
+      CheckProperty(ReadOnlyMiddleTransaction, _order1, o => o.Customer, _customer1, _customer1);
+      CheckProperty(WriteableSubTransaction, _order1, o => o.Customer, _customer2, _customer1);
     }
 
     [Test]
     public void RelationSetInReadOnlyMiddleTransaction_IsForbidden ()
     {
-      CheckProperty (ReadOnlyRootTransaction, _order1, o => o.Customer, _customer1, _customer1);
-      CheckProperty (ReadOnlyMiddleTransaction, _order1, o => o.Customer, _customer1, _customer1);
-      CheckProperty (WriteableSubTransaction, _order1, o => o.Customer, _customer2, _customer1);
+      CheckProperty(ReadOnlyRootTransaction, _order1, o => o.Customer, _customer1, _customer1);
+      CheckProperty(ReadOnlyMiddleTransaction, _order1, o => o.Customer, _customer1, _customer1);
+      CheckProperty(WriteableSubTransaction, _order1, o => o.Customer, _customer2, _customer1);
 
-      CheckForbidden (() => ExecuteInReadOnlyMiddleTransaction (() => _order1.Customer = _customer3), "RelationChanging");
+      CheckForbidden(() => ExecuteInReadOnlyMiddleTransaction(() => _order1.Customer = _customer3), "RelationChanging");
 
-      CheckProperty (ReadOnlyRootTransaction, _order1, o => o.Customer, _customer1, _customer1);
-      CheckProperty (ReadOnlyMiddleTransaction, _order1, o => o.Customer, _customer1, _customer1);
-      CheckProperty (WriteableSubTransaction, _order1, o => o.Customer, _customer2, _customer1);
+      CheckProperty(ReadOnlyRootTransaction, _order1, o => o.Customer, _customer1, _customer1);
+      CheckProperty(ReadOnlyMiddleTransaction, _order1, o => o.Customer, _customer1, _customer1);
+      CheckProperty(WriteableSubTransaction, _order1, o => o.Customer, _customer2, _customer1);
     }
   }
 }

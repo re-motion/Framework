@@ -23,8 +23,8 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation
   {
     public MetaValidationRuleTestClassCollector2 ()
     {
-      AddRule (p => p.Property1).AddMetaValidationRule (new MaxValidatorCountRule ()).Length (5, 60).NotNull().NotEmpty();
-      AddRule (p => p.Property1).NotEqual ("test");
+      AddRule(p => p.Property1).AddMetaValidationRule(new MaxValidatorCountRule()).Length(5, 60).NotNull().NotEmpty();
+      AddRule(p => p.Property1).NotEqual("test");
     }
   }
 }

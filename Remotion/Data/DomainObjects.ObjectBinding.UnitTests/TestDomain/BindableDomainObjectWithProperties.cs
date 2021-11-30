@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
       Second
     }
 
-    [UndefinedEnumValue (Undefined)]
+    [UndefinedEnumValue(Undefined)]
     public enum UndefinedEnum
     {
       Undefined,
@@ -52,28 +52,28 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     protected abstract string ProtectedStringProperty { get; }
 
 
-    [StringProperty (IsNullable = false)]
+    [StringProperty(IsNullable = false)]
     public abstract string RequiredStringProperty { get; set; }
-    [StringProperty (IsNullable = false)]
+    [StringProperty(IsNullable = false)]
     public abstract string RequiredStringPropertyInInterface { get; set; }
 
-    [DBColumn ("RequiredStringPropertyExplicitInInterface")]
-    [StorageClass (StorageClass.Persistent)]
+    [DBColumn("RequiredStringPropertyExplicitInInterface")]
+    [StorageClass(StorageClass.Persistent)]
     string IBindableDomainObjectWithProperties.RequiredStringPropertyExplicitInInterface
     {
-      get 
-      { 
-        return Properties[typeof (BindableDomainObjectWithProperties),
-            typeof (IBindableDomainObjectWithProperties).FullName + ".RequiredStringPropertyExplicitInInterface"].GetValue<string>(); 
-      }
-      set 
+      get
       {
-        Properties[typeof (BindableDomainObjectWithProperties), 
-            typeof (IBindableDomainObjectWithProperties).FullName + ".RequiredStringPropertyExplicitInInterface"].SetValue (value);
+        return Properties[typeof(BindableDomainObjectWithProperties),
+            typeof(IBindableDomainObjectWithProperties).FullName + ".RequiredStringPropertyExplicitInInterface"].GetValue<string>();
+      }
+      set
+      {
+        Properties[typeof(BindableDomainObjectWithProperties),
+            typeof(IBindableDomainObjectWithProperties).FullName + ".RequiredStringPropertyExplicitInInterface"].SetValue(value);
       }
     }
 
-    [StringProperty (IsNullable = true)]
+    [StringProperty(IsNullable = true)]
     public abstract string NonRequiredStringProperty { get; set; }
 
     public abstract int RequiredValueProperty { get; set; }
@@ -88,21 +88,21 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     public abstract OppositeAnonymousBindableDomainObject NonRequiredRelatedObjectProperty { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("OppositeRequiredRelatedObject")]
+    [DBBidirectionalRelation("OppositeRequiredRelatedObject")]
     public abstract OppositeBidirectionalBindableDomainObject RequiredBidirectionalRelatedObjectProperty { get; set; }
-    [DBBidirectionalRelation ("OppositeNonRequiredRelatedObject")]
+    [DBBidirectionalRelation("OppositeNonRequiredRelatedObject")]
     public abstract OppositeBidirectionalBindableDomainObject NonRequiredBidirectionalRelatedObjectProperty { get; set; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("OppositeRequiredRelatedObjectsForDomainObjectCollection")]
+    [DBBidirectionalRelation("OppositeRequiredRelatedObjectsForDomainObjectCollection")]
     public abstract ObjectList<OppositeBidirectionalBindableDomainObject> RequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection { get; }
-    [DBBidirectionalRelation ("OppositeNonRequiredRelatedObjectsForDomainObjectCollection")]
+    [DBBidirectionalRelation("OppositeNonRequiredRelatedObjectsForDomainObjectCollection")]
     public abstract ObjectList<OppositeBidirectionalBindableDomainObject> NonRequiredBidirectionalRelatedObjectsPropertyForDomainObjectCollection { get; }
 
     [Mandatory]
-    [DBBidirectionalRelation ("OppositeRequiredRelatedObjectsForVirtualCollection")]
+    [DBBidirectionalRelation("OppositeRequiredRelatedObjectsForVirtualCollection")]
     public abstract IObjectList<OppositeBidirectionalBindableDomainObject> RequiredBidirectionalRelatedObjectsPropertyForVirtualCollection { get; }
-    [DBBidirectionalRelation ("OppositeNonRequiredRelatedObjectsForVirtualCollection")]
+    [DBBidirectionalRelation("OppositeNonRequiredRelatedObjectsForVirtualCollection")]
     public abstract IObjectList<OppositeBidirectionalBindableDomainObject> NonRequiredBidirectionalRelatedObjectsPropertyForVirtualCollection { get; }
 
 
@@ -112,20 +112,20 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 
     [StorageClassNone]
     public IBusinessObject ReferencePropertyNotInMapping { get; set; }
-    
-    [StringProperty (MaximumLength = 7)]
+
+    [StringProperty(MaximumLength = 7)]
     public abstract string MaxLength7StringProperty { get; set; }
     public abstract string NoMaxLengthStringProperty { get; set; }
 
-    
 
 
-    [StringProperty (MaximumLength = 33)]
-    [DBColumn ("NewBasePropertyWithMaxLength3")]
+
+    [StringProperty(MaximumLength = 33)]
+    [DBColumn("NewBasePropertyWithMaxLength3")]
     public new virtual string BasePropertyWithMaxLength3
     {
-      get { return CurrentProperty.GetValue<string> (); }
-      set { CurrentProperty.SetValue (value); }
+      get { return CurrentProperty.GetValue<string>(); }
+      set { CurrentProperty.SetValue(value); }
     }
   }
 }

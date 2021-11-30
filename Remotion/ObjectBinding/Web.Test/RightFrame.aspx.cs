@@ -25,18 +25,18 @@ namespace OBWTest
 	/// </summary>
 	public class RightFrame : Page
 	{
-		private void Page_Load(object sender, EventArgs e)
+		private void Page_Load (object sender, EventArgs e)
 		{
-      ArrayList global = (ArrayList) Session["Global"];
+      ArrayList global = (ArrayList)Session["Global"];
       int hashcode = global.GetHashCode();
       lock (global.SyncRoot)
       {
-        global.Add (Guid.NewGuid());
+        global.Add(Guid.NewGuid());
       }
 		}
 
 		#region Web Form Designer generated code
-		override protected void OnInit(EventArgs e)
+		override protected void OnInit (EventArgs e)
 		{
 			//
 			// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -44,13 +44,13 @@ namespace OBWTest
 			InitializeComponent();
 			base.OnInit(e);
 		}
-		
+
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
-		private void InitializeComponent()
-		{    
+		private void InitializeComponent ()
+		{
 			this.Load += new System.EventHandler(this.Page_Load);
 		}
 		#endregion

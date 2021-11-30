@@ -30,8 +30,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
 
     private ClassWithOneSideRelationProperties BasePrivateUnidirectionalOneToOne
     {
-      get { throw new NotImplementedException (); }
-      set { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
+      set { throw new NotImplementedException(); }
     }
   }
 }

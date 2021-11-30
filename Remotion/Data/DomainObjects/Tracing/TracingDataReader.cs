@@ -31,112 +31,112 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public string GetName (int i)
     {
-      return _dataReader.GetName (i);
+      return _dataReader.GetName(i);
     }
 
     public string GetDataTypeName (int i)
     {
-      return _dataReader.GetDataTypeName (i);
+      return _dataReader.GetDataTypeName(i);
     }
 
     public Type GetFieldType (int i)
     {
-      return _dataReader.GetFieldType (i);
+      return _dataReader.GetFieldType(i);
     }
 
     public object GetValue (int i)
     {
-      return _dataReader.GetValue (i);
+      return _dataReader.GetValue(i);
     }
 
     public int GetValues (object[] values)
     {
-      return _dataReader.GetValues (values);
+      return _dataReader.GetValues(values);
     }
 
     public int GetOrdinal (string name)
     {
-      return _dataReader.GetOrdinal (name);
+      return _dataReader.GetOrdinal(name);
     }
 
     public bool GetBoolean (int i)
     {
-      return _dataReader.GetBoolean (i);
+      return _dataReader.GetBoolean(i);
     }
 
     public byte GetByte (int i)
     {
-      return _dataReader.GetByte (i);
+      return _dataReader.GetByte(i);
     }
 
     public long GetBytes (int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
     {
-      return _dataReader.GetBytes (i, fieldOffset, buffer, bufferoffset, length);
+      return _dataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
     }
 
     public char GetChar (int i)
     {
-      return _dataReader.GetChar (i);
+      return _dataReader.GetChar(i);
     }
 
     public long GetChars (int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
     {
-      return _dataReader.GetChars (i, fieldoffset, buffer, bufferoffset, length);
+      return _dataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
     }
 
     public Guid GetGuid (int i)
     {
-      return _dataReader.GetGuid (i);
+      return _dataReader.GetGuid(i);
     }
 
     public short GetInt16 (int i)
     {
-      return _dataReader.GetInt16 (i);
+      return _dataReader.GetInt16(i);
     }
 
     public int GetInt32 (int i)
     {
-      return _dataReader.GetInt32 (i);
+      return _dataReader.GetInt32(i);
     }
 
     public long GetInt64 (int i)
     {
-      return _dataReader.GetInt64 (i);
+      return _dataReader.GetInt64(i);
     }
 
     public float GetFloat (int i)
     {
-      return _dataReader.GetFloat (i);
+      return _dataReader.GetFloat(i);
     }
 
     public double GetDouble (int i)
     {
-      return _dataReader.GetDouble (i);
+      return _dataReader.GetDouble(i);
     }
 
     public string GetString (int i)
     {
-      return _dataReader.GetString (i);
+      return _dataReader.GetString(i);
     }
 
     public decimal GetDecimal (int i)
     {
-      return _dataReader.GetDecimal (i);
+      return _dataReader.GetDecimal(i);
     }
 
     public DateTime GetDateTime (int i)
     {
-      return _dataReader.GetDateTime (i);
+      return _dataReader.GetDateTime(i);
     }
 
     public IDataReader GetData (int i)
     {
-      return _dataReader.GetData (i);
+      return _dataReader.GetData(i);
     }
 
     public bool IsDBNull (int i)
     {
-      return _dataReader.IsDBNull (i);
+      return _dataReader.IsDBNull(i);
     }
 
     public int FieldCount
@@ -194,8 +194,8 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public TracingDataReader (IDataReader dataReader, IPersistenceExtension persistenceExtension, Guid connectionID, Guid queryID)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
-      ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
 
       _dataReader = dataReader;
       _persistenceExtension = persistenceExtension;
@@ -227,13 +227,13 @@ namespace Remotion.Data.DomainObjects.Tracing
     public void Dispose ()
     {
       TraceQueryCompleted();
-      _dataReader.Dispose ();
+      _dataReader.Dispose();
     }
 
     public void Close ()
     {
-      TraceQueryCompleted ();
-      _dataReader.Close ();
+      TraceQueryCompleted();
+      _dataReader.Close();
     }
 
     public bool Read ()
@@ -248,8 +248,8 @@ namespace Remotion.Data.DomainObjects.Tracing
     {
       if (_stopwatch.IsRunning)
       {
-        _persistenceExtension.QueryCompleted (_connectionID, _queryID, _stopwatch.Elapsed, _rowCount);
-        _stopwatch.Stop ();
+        _persistenceExtension.QueryCompleted(_connectionID, _queryID, _stopwatch.Elapsed, _rowCount);
+        _stopwatch.Stop();
       }
     }
   }

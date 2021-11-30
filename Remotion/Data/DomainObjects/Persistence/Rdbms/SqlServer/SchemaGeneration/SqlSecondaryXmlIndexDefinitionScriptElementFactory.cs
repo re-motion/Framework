@@ -30,10 +30,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public override IScriptElement GetCreateElement (SqlSecondaryXmlIndexDefinition indexDefinition, EntityNameDefinition ownerName)
     {
-      ArgumentUtility.CheckNotNull ("indexDefinition", indexDefinition);
+      ArgumentUtility.CheckNotNull("indexDefinition", indexDefinition);
 
       return new ScriptStatement(
-        string.Format (
+        string.Format(
           "CREATE XML INDEX [{0}]\r\n"
           + "  ON [{1}].[{2}] ([{3}])\r\n"
           + "  USING XML INDEX [{4}]\r\n"
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
           indexDefinition.XmlColumn.Name,
           indexDefinition.PrimaryIndexName,
           indexDefinition.Kind,
-          GetCreateIndexOptions (GetCreateIndexOptionItems (indexDefinition))));
+          GetCreateIndexOptions(GetCreateIndexOptionItems(indexDefinition))));
     }
   }
 }

@@ -30,13 +30,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
     {
       var executionContext = new object();
       var innerCommandStub = MockRepository.GenerateStub<IStorageProviderCommand<string, object>>();
-      var delegateBasedCommand = new DelegateBasedCommand<string, int, object> (innerCommandStub, s => s.Length);
+      var delegateBasedCommand = new DelegateBasedCommand<string, int, object>(innerCommandStub, s => s.Length);
 
-      innerCommandStub.Stub (stub => stub.Execute (executionContext)).Return ("Test1");
+      innerCommandStub.Stub(stub => stub.Execute(executionContext)).Return("Test1");
 
-      var result = delegateBasedCommand.Execute (executionContext);
+      var result = delegateBasedCommand.Execute(executionContext);
 
-      Assert.That (result, Is.EqualTo (5));
+      Assert.That(result, Is.EqualTo(5));
     }
 
     [Test]
@@ -44,11 +44,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
     {
       var innerCommandStub = MockRepository.GenerateStub<IStorageProviderCommand<string, object>>();
       Func<string, int> operation = s => s.Length;
-      var instance = DelegateBasedCommand.Create (innerCommandStub, operation);
+      var instance = DelegateBasedCommand.Create(innerCommandStub, operation);
 
-      Assert.That (instance, Is.TypeOf (typeof (DelegateBasedCommand<string, int, object>)));
-      Assert.That (instance.Command, Is.SameAs (innerCommandStub));
-      Assert.That (instance.Operation, Is.SameAs (operation));
+      Assert.That(instance, Is.TypeOf(typeof(DelegateBasedCommand<string, int, object>)));
+      Assert.That(instance.Command, Is.SameAs(innerCommandStub));
+      Assert.That(instance.Operation, Is.SameAs(operation));
     }
   }
 }

@@ -27,14 +27,14 @@ namespace Core.ServiceLocation.PerformanceTestConsole
   {
     private static void Main (string[] args)
     {
-      Console.WriteLine ("{0} - Application started", DateTime.Now.ToString ("yyyy-MM-dd hh:mm:ss,fff"));
+      Console.WriteLine("{0} - Application started", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss,fff"));
       XmlConfigurator.Configure();
       var typeDiscoveryService = ContextAwareTypeUtility.GetTypeDiscoveryService();
-      var domainObjectType = Type.GetType ("Remotion.Data.DomainObjects.DomainObject, Remotion.Data.DomainObjects", true, false);
-      typeDiscoveryService.GetTypes (domainObjectType, false);
-      typeDiscoveryService.GetTypes (domainObjectType, false);
+      var domainObjectType = Type.GetType("Remotion.Data.DomainObjects.DomainObject, Remotion.Data.DomainObjects", true, false);
+      typeDiscoveryService.GetTypes(domainObjectType, false);
+      typeDiscoveryService.GetTypes(domainObjectType, false);
 
-      using (StopwatchScope.CreateScope (Console.Out, "Reading IoC Configuration: {elapsed}"))
+      using (StopwatchScope.CreateScope(Console.Out, "Reading IoC Configuration: {elapsed}"))
       {
         var p = new DefaultServiceConfigurationDiscoveryService(typeDiscoveryService);
         p.GetDefaultConfiguration().ToList();

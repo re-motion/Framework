@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   /// The <see cref="UserSubstitedByListEditableRowControlFactory"/> instance is retrieved form the <see cref="IServiceLocator"/> using the type
   /// <see cref="UserSubstitedByListEditableRowControlFactory"/> as key.
   /// </remarks>
-  [ImplementationFor (typeof (UserSubstitedByListEditableRowControlFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(UserSubstitedByListEditableRowControlFactory), Lifetime = LifetimeKind.Singleton)]
   public class UserSubstitedByListEditableRowControlFactory : EditableRowAutoCompleteControlFactory
   {
     public UserSubstitedByListEditableRowControlFactory ()
@@ -42,26 +42,26 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected override IBusinessObjectBoundEditableWebControl CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
       if (propertyPath.Identifier == "SubstitutedRole")
-        return CreateControlForSubstitutedRole (propertyPath);
+        return CreateControlForSubstitutedRole(propertyPath);
       else
-        return base.CreateFromPropertyPath (propertyPath);
+        return base.CreateFromPropertyPath(propertyPath);
     }
 
     protected virtual BocReferenceValue CreateBocReferenceValue (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
       return new BocReferenceValue();
     }
 
     private IBusinessObjectBoundEditableWebControl CreateControlForSubstitutedRole (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
-      var control = CreateBocReferenceValue (propertyPath);
+      var control = CreateBocReferenceValue(propertyPath);
       control.PreRender += HandleSubstitutedRolePreRender;
       control.EnableSelectStatement = false;
       return control;
@@ -69,10 +69,10 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     private void HandleSubstitutedRolePreRender (object sender, EventArgs e)
     {
-      var substituededRoleReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue> ("sender", sender);
+      var substituededRoleReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender);
       var substitution = substituededRoleReferenceValue.DataSource.BusinessObject;
-      var roles = substituededRoleReferenceValue.Property.SearchAvailableObjects (substitution, new DefaultSearchArguments (null));
-      substituededRoleReferenceValue.SetBusinessObjectList (roles);
+      var roles = substituededRoleReferenceValue.Property.SearchAvailableObjects(substitution, new DefaultSearchArguments(null));
+      substituededRoleReferenceValue.SetBusinessObjectList(roles);
     }
   }
 }

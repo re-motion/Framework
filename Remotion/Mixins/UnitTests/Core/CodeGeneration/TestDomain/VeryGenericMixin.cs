@@ -21,7 +21,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
   public interface IVeryGenericMixin
   {
-    string GetMessage<T>(T t);
+    string GetMessage<T> (T t);
   }
 
   public interface IVeryGenericMixin<T1, T2>
@@ -40,7 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 
     public string GetMessage<T> (T t)
     {
-      return GenericIfcMethod (Target, Next, t);
+      return GenericIfcMethod(Target, Next, t);
     }
   }
 
@@ -56,22 +56,22 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
     where TTarget : class, IADUGMTargetCallDependencies
     where TNext : class, IADUGMNextCallDependencies
   {
-    protected abstract string AbstractGenericMethod<T>();
+    protected abstract string AbstractGenericMethod<T> ();
 
     public new string GetMessage<T> (T t)
     {
-      return AbstractGenericMethod<T>() + "-" + base.GenericIfcMethod (Target, Next, t);
+      return AbstractGenericMethod<T>() + "-" + base.GenericIfcMethod(Target, Next, t);
     }
   }
 
-  [Uses (typeof (AbstractDerivedUltraGenericMixin<,>), AdditionalDependencies = new Type[] { typeof (IBT3Mixin6) })]
-  [Uses (typeof (BT3Mixin4))]
+  [Uses(typeof(AbstractDerivedUltraGenericMixin<,>), AdditionalDependencies = new Type[] { typeof(IBT3Mixin6) })]
+  [Uses(typeof(BT3Mixin4))]
   public class ClassOverridingUltraGenericStuff : BaseType3
   {
     [OverrideMixin]
     public string AbstractGenericMethod<T> ()
     {
-      return typeof (T).Name;
+      return typeof(T).Name;
     }
   }
 }

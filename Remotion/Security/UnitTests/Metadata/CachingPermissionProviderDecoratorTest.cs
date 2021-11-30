@@ -35,48 +35,48 @@ namespace Remotion.Security.UnitTests.Metadata
     public void SetUp ()
     {
       _innerProviderStub = new Mock<IPermissionProvider>();
-      _cacheDecorator = new CachingPermissionProviderDecorator (_innerProviderStub.Object);
-      _type = typeof (SecurableObject);
-      _methodInformation = MethodInfoAdapter.Create (_type.GetMethod ("Save"));
+      _cacheDecorator = new CachingPermissionProviderDecorator(_innerProviderStub.Object);
+      _type = typeof(SecurableObject);
+      _methodInformation = MethodInfoAdapter.Create(_type.GetMethod("Save"));
     }
 
     [Test]
     public void GetRequiredMethodPermissions_WithoutAccessTypes_ReturnsEmptyFromCache ()
     {
       var expected = new Enum[0];
-      _innerProviderStub.Setup (_ => _.GetRequiredMethodPermissions (_type, _methodInformation)).Returns (expected);
+      _innerProviderStub.Setup(_ => _.GetRequiredMethodPermissions(_type, _methodInformation)).Returns(expected);
 
-      var result = _cacheDecorator.GetRequiredMethodPermissions (_type, _methodInformation);
+      var result = _cacheDecorator.GetRequiredMethodPermissions(_type, _methodInformation);
 
-      Assert.That (result, Is.Empty);
-      Assert.That (result, Is.Not.SameAs (expected));
-      Assert.That (_cacheDecorator.GetRequiredMethodPermissions (_type, _methodInformation), Is.SameAs (result));
+      Assert.That(result, Is.Empty);
+      Assert.That(result, Is.Not.SameAs(expected));
+      Assert.That(_cacheDecorator.GetRequiredMethodPermissions(_type, _methodInformation), Is.SameAs(result));
     }
 
     [Test]
     public void GetRequiredMethodPermissions_WithAccessTypes_ReturnsValueCopyFromCache ()
     {
       var expected = new Enum[] { GeneralAccessTypes.Read };
-      _innerProviderStub.Setup (_ => _.GetRequiredMethodPermissions (_type, _methodInformation)).Returns (expected);
+      _innerProviderStub.Setup(_ => _.GetRequiredMethodPermissions(_type, _methodInformation)).Returns(expected);
 
-      var result = _cacheDecorator.GetRequiredMethodPermissions (_type, _methodInformation);
+      var result = _cacheDecorator.GetRequiredMethodPermissions(_type, _methodInformation);
 
-      Assert.That (result, Is.EquivalentTo (expected));
-      Assert.That (result, Is.Not.SameAs (expected));
-      Assert.That (_cacheDecorator.GetRequiredMethodPermissions (_type, _methodInformation), Is.SameAs (result));
+      Assert.That(result, Is.EquivalentTo(expected));
+      Assert.That(result, Is.Not.SameAs(expected));
+      Assert.That(_cacheDecorator.GetRequiredMethodPermissions(_type, _methodInformation), Is.SameAs(result));
     }
 
     [Test]
     public void GetRequiredMethodPermissions_WithNullMethod_ReturnsValueCopyFromCache ()
     {
-      _innerProviderStub.Setup (_ => _.GetRequiredMethodPermissions (It.IsAny<Type>(), It.IsAny<IMethodInformation>())).Throws (new InvalidOperationException());
+      _innerProviderStub.Setup(_ => _.GetRequiredMethodPermissions(It.IsAny<Type>(), It.IsAny<IMethodInformation>())).Throws(new InvalidOperationException());
 
       var methodInformation = new NullMethodInformation();
 
-      var result = _cacheDecorator.GetRequiredMethodPermissions (_type, methodInformation);
+      var result = _cacheDecorator.GetRequiredMethodPermissions(_type, methodInformation);
 
-      Assert.That (result, Is.Empty);
-      Assert.That (_cacheDecorator.GetRequiredMethodPermissions (_type, methodInformation), Is.SameAs (result));
+      Assert.That(result, Is.Empty);
+      Assert.That(_cacheDecorator.GetRequiredMethodPermissions(_type, methodInformation), Is.SameAs(result));
     }
   }
 }

@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<SpecialOfficial>();
     }
 
-    protected SpecialOfficial()
+    protected SpecialOfficial ()
     {
     }
   }

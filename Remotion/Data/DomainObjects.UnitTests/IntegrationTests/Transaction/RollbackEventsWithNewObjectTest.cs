@@ -44,10 +44,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order1 = DomainObjectIDs.Order1.GetObject<Order> ();
-      _newCustomer = Customer.NewObject ();
+      _order1 = DomainObjectIDs.Order1.GetObject<Order>();
+      _newCustomer = Customer.NewObject();
     }
 
     [Test]
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _order1.Customer = _newCustomer;
       _order1.RollingBack += Order1_RollingBack;
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
       // expectation: no ObjectInvalidException
     }
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _order1.RollingBack += Order1_RollingBack;
       _newCustomer.RollingBack += NewCustomer_RollingBack_MustNotBeCalled;
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
       // expectation: NewCustomer_RollingBack_MustNotBeCalled must not throw an AssertionException
     }
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _order1.Customer = _newCustomer;
       TestableClientTransaction.RollingBack += ClientTransaction_RollingBack;
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
       // expectation: no ObjectInvalidException
     }
@@ -87,42 +87,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void RolledBackEventWithNewObject ()
     {
-      MockRepository mockRepository = new MockRepository ();
+      MockRepository mockRepository = new MockRepository();
 
-      ClientTransactionMockEventReceiver clientTransactionMockEventReceiver = 
-          mockRepository.StrictMock<ClientTransactionMockEventReceiver> (TestableClientTransaction);
+      ClientTransactionMockEventReceiver clientTransactionMockEventReceiver =
+          mockRepository.StrictMock<ClientTransactionMockEventReceiver>(TestableClientTransaction);
 
-      using (mockRepository.Ordered ())
+      using (mockRepository.Ordered())
       {
-        clientTransactionMockEventReceiver.RollingBack (_newCustomer);
-        clientTransactionMockEventReceiver.RolledBack ();
+        clientTransactionMockEventReceiver.RollingBack(_newCustomer);
+        clientTransactionMockEventReceiver.RolledBack();
       }
 
-      mockRepository.ReplayAll ();
+      mockRepository.ReplayAll();
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
-      mockRepository.VerifyAll ();
+      mockRepository.VerifyAll();
     }
 
     private void NewCustomer_RollingBack_MustNotBeCalled (object sender, EventArgs e)
     {
-      throw new AssertionException ("New customer must not throw a RollingBack event, because it has been made invalid.");
+      throw new AssertionException("New customer must not throw a RollingBack event, because it has been made invalid.");
     }
 
     private void Order1_RollingBack (object sender, EventArgs e)
     {
-      DeleteNewCustomer ();
+      DeleteNewCustomer();
     }
 
     private void ClientTransaction_RollingBack (object sender, ClientTransactionEventArgs args)
     {
-      DeleteNewCustomer ();
+      DeleteNewCustomer();
     }
 
     private void DeleteNewCustomer ()
     {
-      _newCustomer.Delete ();
+      _newCustomer.Delete();
     }
   }
 }

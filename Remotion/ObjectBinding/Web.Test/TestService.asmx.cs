@@ -22,20 +22,20 @@ using System.Web.Services;
 
 namespace OBWTest
 {
-  [WebService (Namespace = "http://tempuri.org/")]
-  [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
-  [ToolboxItem (false)]
+  [WebService(Namespace = "http://tempuri.org/")]
+  [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+  [ToolboxItem(false)]
   [ScriptService]
   public class TestService : WebService, ITestService
   {
     [WebMethod]
-    [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public string DoStuff (string stringValue, int intValue)
     {
       if (stringValue == "throw")
         throw new InvalidOperationException();
 
-      Thread.Sleep (3000);
+      Thread.Sleep(3000);
       return stringValue + " " + intValue * 2;
     }
   }

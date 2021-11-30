@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.RelationRefle
 {
   public class OppositeClass : DomainObject
   {
-    [DBBidirectionalRelation ("OppositeProperty")]
+    [DBBidirectionalRelation("OppositeProperty")]
     [StorageClassNone]
     public ClassWithOppositeProperty OppositeProperty { get; set; }
   }

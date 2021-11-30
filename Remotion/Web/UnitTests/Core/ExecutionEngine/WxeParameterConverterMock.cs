@@ -25,28 +25,28 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 public class WxeParameterConverterMock: WxeParameterConverter
 {
   public WxeParameterConverterMock (WxeParameterDeclaration parameter)
-    : base (parameter)
+    : base(parameter)
   {
   }
 
   public new string ConvertVarRefToString (WxeVariableReference varRef, NameObjectCollection callerVariables)
   {
-    return base.ConvertVarRefToString (varRef, callerVariables);
+    return base.ConvertVarRefToString(varRef, callerVariables);
   }
 
   public new string ConvertObjectToString (object value)
   {
-    return base.ConvertObjectToString (value);
+    return base.ConvertObjectToString(value);
   }
 
-  public new void CheckForRequiredOutParameter()
+  public new void CheckForRequiredOutParameter ()
   {
     base.CheckForRequiredOutParameter();
   }
 
   public new object TryConvertObjectToString (object value)
   {
-    return base.TryConvertObjectToString (value);
+    return base.TryConvertObjectToString(value);
   }
 }
 

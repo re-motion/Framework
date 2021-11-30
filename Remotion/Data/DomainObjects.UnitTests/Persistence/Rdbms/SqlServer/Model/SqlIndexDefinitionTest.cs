@@ -33,39 +33,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     [SetUp]
     public void SetUp ()
     {
-      _columns = new[] { new SqlIndexedColumnDefinition (ColumnDefinitionObjectMother.CreateColumn ("TestColumn1")) };
-      _includedColumns = new[] { ColumnDefinitionObjectMother.CreateColumn ("TestColumn2") };
+      _columns = new[] { new SqlIndexedColumnDefinition(ColumnDefinitionObjectMother.CreateColumn("TestColumn1")) };
+      _includedColumns = new[] { ColumnDefinitionObjectMother.CreateColumn("TestColumn2") };
 
-      _sqlIndexDefinition = new SqlIndexDefinition (
+      _sqlIndexDefinition = new SqlIndexDefinition(
           "IndexName", _columns, _includedColumns, true, true, true, true, true, 5, true, true, true, true, true, 2);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_sqlIndexDefinition.IndexName, Is.EqualTo ("IndexName"));
-      Assert.That (_sqlIndexDefinition.Columns, Is.EqualTo (_columns));
-      Assert.That (_sqlIndexDefinition.IncludedColumns, Is.EqualTo (_includedColumns));
-      Assert.That (_sqlIndexDefinition.IsClustered.Value, Is.True);
-      Assert.That (_sqlIndexDefinition.IsUnique.Value, Is.True);
-      Assert.That (_sqlIndexDefinition.IgnoreDupKey.Value, Is.True);
-      Assert.That (_sqlIndexDefinition.Online.Value, Is.True);
-      Assert.That (_sqlIndexDefinition.PadIndex.Value, Is.True);
-      Assert.That (_sqlIndexDefinition.SortInDb.Value, Is.True);
-      Assert.That (_sqlIndexDefinition.StatisticsNoReCompute.Value, Is.True);
-      Assert.That (_sqlIndexDefinition.AllowPageLocks.Value, Is.True);
-      Assert.That (_sqlIndexDefinition.AllowRowLocks.Value, Is.True);
-      Assert.That (_sqlIndexDefinition.DropExisiting.Value, Is.True);
-      Assert.That (_sqlIndexDefinition.FillFactor.Value, Is.EqualTo(5));
-      Assert.That (_sqlIndexDefinition.MaxDop.Value, Is.EqualTo(2));
+      Assert.That(_sqlIndexDefinition.IndexName, Is.EqualTo("IndexName"));
+      Assert.That(_sqlIndexDefinition.Columns, Is.EqualTo(_columns));
+      Assert.That(_sqlIndexDefinition.IncludedColumns, Is.EqualTo(_includedColumns));
+      Assert.That(_sqlIndexDefinition.IsClustered.Value, Is.True);
+      Assert.That(_sqlIndexDefinition.IsUnique.Value, Is.True);
+      Assert.That(_sqlIndexDefinition.IgnoreDupKey.Value, Is.True);
+      Assert.That(_sqlIndexDefinition.Online.Value, Is.True);
+      Assert.That(_sqlIndexDefinition.PadIndex.Value, Is.True);
+      Assert.That(_sqlIndexDefinition.SortInDb.Value, Is.True);
+      Assert.That(_sqlIndexDefinition.StatisticsNoReCompute.Value, Is.True);
+      Assert.That(_sqlIndexDefinition.AllowPageLocks.Value, Is.True);
+      Assert.That(_sqlIndexDefinition.AllowRowLocks.Value, Is.True);
+      Assert.That(_sqlIndexDefinition.DropExisiting.Value, Is.True);
+      Assert.That(_sqlIndexDefinition.FillFactor.Value, Is.EqualTo(5));
+      Assert.That(_sqlIndexDefinition.MaxDop.Value, Is.EqualTo(2));
     }
 
     [Test]
     public void Initialization_NoIncludedColumns ()
     {
-      _sqlIndexDefinition = new SqlIndexDefinition ("IndexName", _columns, null, true, true, true, true);
+      _sqlIndexDefinition = new SqlIndexDefinition("IndexName", _columns, null, true, true, true, true);
 
-      Assert.That (_sqlIndexDefinition.IncludedColumns, Is.Null);
+      Assert.That(_sqlIndexDefinition.IncludedColumns, Is.Null);
     }
 
     [Test]
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var visitorMock = MockRepository.GenerateStrictMock<IIndexDefinitionVisitor>();
       visitorMock.Replay();
 
-      _sqlIndexDefinition.Accept (visitorMock);
+      _sqlIndexDefinition.Accept(visitorMock);
 
       visitorMock.VerifyAllExpectations();
     }
@@ -83,10 +83,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     public void Accept_SqlIndexDefinitionVisitor ()
     {
       var visitorMock = MockRepository.GenerateStrictMock<ISqlIndexDefinitionVisitor>();
-      visitorMock.Expect (mock => mock.VisitIndexDefinition (_sqlIndexDefinition));
+      visitorMock.Expect(mock => mock.VisitIndexDefinition(_sqlIndexDefinition));
       visitorMock.Replay();
 
-      _sqlIndexDefinition.Accept (visitorMock);
+      _sqlIndexDefinition.Accept(visitorMock);
 
       visitorMock.VerifyAllExpectations();
     }

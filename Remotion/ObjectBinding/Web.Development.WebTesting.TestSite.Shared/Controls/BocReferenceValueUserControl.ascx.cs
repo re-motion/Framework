@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       PartnerField_Normal.MenuItemClick += MenuItemClickHandler;
       PartnerField_ReadOnly.MenuItemClick += MenuItemClickHandler;
@@ -48,24 +48,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
       SetTestOutput();
     }
 
     private void MenuItemClickHandler (object sender, WebMenuItemClickEventArgs e)
     {
-      TestOutput.SetActionPerformed ("MenuItemClick", e.Item.ItemID + "|" + e.Item.Text, e.Command.OwnerControl.ID);
+      TestOutput.SetActionPerformed("MenuItemClick", e.Item.ItemID + "|" + e.Item.Text, e.Command.OwnerControl.ID);
     }
 
     private void SetTestOutput ()
     {
-      TestOutput.SetBOUINormal (PartnerField_Normal.BusinessObjectUniqueIdentifier);
-      TestOutput.SetBOUINoAutoPostBack (PartnerField_NoAutoPostBack.BusinessObjectUniqueIdentifier);
+      TestOutput.SetBOUINormal(PartnerField_Normal.BusinessObjectUniqueIdentifier);
+      TestOutput.SetBOUINoAutoPostBack(PartnerField_NoAutoPostBack.BusinessObjectUniqueIdentifier);
     }
 
     private BocReferenceValueUserControlTestOutput TestOutput
     {
-      get { return (BocReferenceValueUserControlTestOutput) ((Layout) Page.Master).GetTestOutputControl(); }
+      get { return (BocReferenceValueUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
     }
   }
 }

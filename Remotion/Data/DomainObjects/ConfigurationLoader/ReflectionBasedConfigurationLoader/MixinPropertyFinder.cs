@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPersistentMixinFinder persistentMixinFinder,
         bool includeBaseMixins)
     {
-      ArgumentUtility.CheckNotNull ("propertyFinderFactory", propertyFinderFactory);
+      ArgumentUtility.CheckNotNull("propertyFinderFactory", propertyFinderFactory);
 
       _propertyFinderFactory = propertyFinderFactory;
       _persistentMixinFinder = persistentMixinFinder;
@@ -46,9 +46,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     {
       if (_persistentMixinFinder != null)
       {
-        var processedMixins = new HashSet<Type> ();
-        return from mixin in _persistentMixinFinder.GetPersistentMixins ()
-               from propertyInfo in FindPropertyInfosOnMixin (mixin, processedMixins)
+        var processedMixins = new HashSet<Type>();
+        return from mixin in _persistentMixinFinder.GetPersistentMixins()
+               from propertyInfo in FindPropertyInfosOnMixin(mixin, processedMixins)
                select propertyInfo;
       }
       else
@@ -60,16 +60,16 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     private IEnumerable<IPropertyInformation> FindPropertyInfosOnMixin (Type mixin, HashSet<Type> processedMixins)
     {
       Type current = mixin;
-      while (current != null && !IsMixinBaseClass (current))
+      while (current != null && !IsMixinBaseClass(current))
       {
-        if (!processedMixins.Contains (current) && (_includeBaseMixins || !_persistentMixinFinder.IsInParentContext (current)))
+        if (!processedMixins.Contains(current) && (_includeBaseMixins || !_persistentMixinFinder.IsInParentContext(current)))
         {
           // Note: mixins on mixins are not checked
-          var mixinPropertyFinder = _propertyFinderFactory (current, false, false);
-          foreach (var propertyInfo in mixinPropertyFinder.FindPropertyInfosDeclaredOnThisType ())
+          var mixinPropertyFinder = _propertyFinderFactory(current, false, false);
+          foreach (var propertyInfo in mixinPropertyFinder.FindPropertyInfosDeclaredOnThisType())
             yield return propertyInfo;
 
-          processedMixins.Add (current);
+          processedMixins.Add(current);
         }
         current = current.BaseType;
       }
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       if (!type.IsGenericType)
         return false;
       Type genericTypeDefinition = type.GetGenericTypeDefinition();
-      return genericTypeDefinition == typeof (Mixin<>) || genericTypeDefinition == typeof (Mixin<,>);
+      return genericTypeDefinition == typeof(Mixin<>) || genericTypeDefinition == typeof(Mixin<,>);
     }
   }
 }

@@ -20,69 +20,69 @@ using Remotion.Utilities;
 
 namespace Remotion.Security
 {
-  [AttributeUsage (AttributeTargets.Method, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
   public class DemandPermissionAttribute : Attribute
   {
     // HACK: Cannot store an Enum[] because that causes CustomAttributeData to throw an undocumented and unexpected exception 
     // (http://connect.microsoft.com/VisualStudio/feedback/details/296032/customattributedata-throws-when-attribute-has-a-public-enum-property)
     // Probably fixed in .NET 4.0
-    private readonly object[] _accessTypes; 
+    private readonly object[] _accessTypes;
 
     public DemandPermissionAttribute (object accessType1)
-        : this (new [] { accessType1 })
+        : this(new [] { accessType1 })
     {
     }
 
     public DemandPermissionAttribute (object accessType1, object accessType2)
-        : this (new [] { accessType1, accessType2 })
+        : this(new [] { accessType1, accessType2 })
     {
     }
 
     public DemandPermissionAttribute (object accessType1, object accessType2, object accessType3)
-        : this (new [] { accessType1, accessType2, accessType3 })
+        : this(new [] { accessType1, accessType2, accessType3 })
     {
     }
 
     public DemandPermissionAttribute (object accessType1, object accessType2, object accessType3, object accessType4)
-        : this (new [] { accessType1, accessType2, accessType3, accessType4 })
+        : this(new [] { accessType1, accessType2, accessType3, accessType4 })
     {
     }
 
     public DemandPermissionAttribute (object accessType1, object accessType2, object accessType3, object accessType4, object accessType5)
-        : this (new [] { accessType1, accessType2, accessType3, accessType4, accessType5 })
+        : this(new [] { accessType1, accessType2, accessType3, accessType4, accessType5 })
     {
     }
 
     private DemandPermissionAttribute (object[] accessTypes)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("accessTypes", accessTypes);
-      ArgumentUtility.CheckItemsType ("accessTypes", accessTypes, typeof (Enum));
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("accessTypes", accessTypes);
+      ArgumentUtility.CheckItemsType("accessTypes", accessTypes, typeof(Enum));
 
       Enum[] accessTypeEnums = new Enum[accessTypes.Length];
 
       for (int i = 0; i < accessTypes.Length; i++)
-        accessTypeEnums[i] = GetAccessType (accessTypes[i]);
+        accessTypeEnums[i] = GetAccessType(accessTypes[i]);
 
       _accessTypes = accessTypeEnums;
     }
 
     public Enum[] GetAccessTypes ()
     {
-      return (Enum[]) _accessTypes;
+      return (Enum[])_accessTypes;
     }
 
     private Enum GetAccessType (object accessType)
     {
-      Type permissionType = accessType.GetType ();
-      if (!permissionType.IsDefined (typeof (AccessTypeAttribute), false))
+      Type permissionType = accessType.GetType();
+      if (!permissionType.IsDefined(typeof(AccessTypeAttribute), false))
       {
-        string message = string.Format (string.Format ("Enumerated Type '{0}' cannot be used as an access type. Valid access types must have the "
+        string message = string.Format(string.Format("Enumerated Type '{0}' cannot be used as an access type. Valid access types must have the "
                 + "Remotion.Security.AccessTypeAttribute applied.", permissionType.GetFullNameSafe()));
 
-        throw new ArgumentException (message, "accessType");
+        throw new ArgumentException(message, "accessType");
       }
 
-      return (Enum) accessType;
+      return (Enum)accessType;
     }
   }
 }

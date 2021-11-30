@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
             @"<?xml version=""1.0""?>
 <XmlTransportItem ID=""Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid"">
   <Properties>
-    <Property Name=""Custom"" Type=""" + typeof (int).AssemblyQualifiedName + @""">
+    <Property Name=""Custom"" Type=""" + typeof(int).AssemblyQualifiedName + @""">
       <int>5</int>
     </Property>
   </Properties>
@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
   <Properties>
     <Property Name=""CustomExtensibleEnum"" Type=""@assemblyQualifiedName"">Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Red</Property>
   </Properties>
-</XmlTransportItem>".Replace ("@assemblyQualifiedName", typeof (Color).AssemblyQualifiedName);
+</XmlTransportItem>".Replace("@assemblyQualifiedName", typeof(Color).AssemblyQualifiedName);
       }
     }
 

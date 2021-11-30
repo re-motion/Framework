@@ -31,19 +31,19 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
     public TestSiteLayoutConfigurationElement ()
     {
-      _rootPathProperty = new ConfigurationProperty ("rootPath", typeof (string), "", ConfigurationPropertyOptions.IsRequired);
-      _resourcesProperty = new ConfigurationProperty ("resources", typeof (TestSiteResourceConfigurationElementCollection));
+      _rootPathProperty = new ConfigurationProperty("rootPath", typeof(string), "", ConfigurationPropertyOptions.IsRequired);
+      _resourcesProperty = new ConfigurationProperty("resources", typeof(TestSiteResourceConfigurationElementCollection));
     }
 
     /// <summary>
     /// Gets the path to the test site used in the integration test project.
     /// </summary>
-    public string RootPath => (string) this[_rootPathProperty];
+    public string RootPath => (string)this[_rootPathProperty];
 
     /// <summary>
     /// Gets the resources needed by the test site.
     /// </summary>
-    public IReadOnlyList<TestSiteResourceConfigurationElement> Resources => ((ConfigurationElementCollection) this[_resourcesProperty])
+    public IReadOnlyList<TestSiteResourceConfigurationElement> Resources => ((ConfigurationElementCollection)this[_resourcesProperty])
         .Cast<TestSiteResourceConfigurationElement>()
         .ToArray();
 

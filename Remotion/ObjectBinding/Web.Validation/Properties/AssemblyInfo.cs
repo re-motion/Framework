@@ -20,10 +20,10 @@ using System.Resources;
 using System.Web.UI;
 using Remotion.Globalization;
 
-[assembly: TagPrefix ("Remotion.ObjectBinding.Web.Validation.UI.Controls", "remotion")]
+[assembly: TagPrefix("Remotion.ObjectBinding.Web.Validation.UI.Controls", "remotion")]
 
-[assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
+[assembly: NeutralResourcesLanguage("en")]
+[assembly: AvailableResourcesLanguages("", "de", "fr", "it")]
 
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

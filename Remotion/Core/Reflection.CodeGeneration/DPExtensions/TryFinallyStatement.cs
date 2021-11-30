@@ -30,8 +30,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public TryFinallyStatement (IEnumerable<Statement> tryStatements, IEnumerable<Statement> finallyStatements)
     {
-      ArgumentUtility.CheckNotNull ("tryStatements", tryStatements);
-      ArgumentUtility.CheckNotNull ("finallyStatements", finallyStatements);
+      ArgumentUtility.CheckNotNull("tryStatements", tryStatements);
+      ArgumentUtility.CheckNotNull("finallyStatements", finallyStatements);
 
       _tryStatements = tryStatements;
       _finallyStatements = finallyStatements;
@@ -39,21 +39,21 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      ArgumentUtility.CheckNotNull ("member", member);
-      ArgumentUtility.CheckNotNull ("gen", gen);
+      ArgumentUtility.CheckNotNull("member", member);
+      ArgumentUtility.CheckNotNull("gen", gen);
 
-      gen.BeginExceptionBlock ();
+      gen.BeginExceptionBlock();
 
       foreach (Statement statement in _tryStatements)
-        statement.Emit (member, gen);
+        statement.Emit(member, gen);
 
-      gen.BeginFinallyBlock ();
-      
+      gen.BeginFinallyBlock();
+
       foreach (Statement statement in _finallyStatements)
-        statement.Emit (member, gen);
+        statement.Emit(member, gen);
 
-      gen.EndExceptionBlock ();
-      gen.Emit (OpCodes.Nop); // ensure a leave target for try block
+      gen.EndExceptionBlock();
+      gen.Emit(OpCodes.Nop); // ensure a leave target for try block
     }
   }
 }

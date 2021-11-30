@@ -35,65 +35,65 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
     public virtual void SetUp ()
     {
       SetupHttpContext();
-      _memberCallerMock = new Mock<IInternalControlMemberCaller> (MockBehavior.Strict);
+      _memberCallerMock = new Mock<IInternalControlMemberCaller>(MockBehavior.Strict);
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      HttpContextHelper.SetCurrent (null);
+      HttpContextHelper.SetCurrent(null);
     }
 
     protected void SetupHttpContext ()
     {
-      var httpContext = HttpContextHelper.CreateHttpContext ("GET", "default.html", null);
+      var httpContext = HttpContextHelper.CreateHttpContext("GET", "default.html", null);
       httpContext.Response.ContentEncoding = Encoding.UTF8;
-      HttpContextHelper.SetCurrent (httpContext);
+      HttpContextHelper.SetCurrent(httpContext);
     }
 
     protected ControlReplacer SetupControlReplacerForIntegrationTest (
         ReplaceableControlMock wrappedControl, IStateModificationStrategy stateModificationStrategy)
     {
-      return SetupControlReplacer (new InternalControlMemberCaller(), wrappedControl, stateModificationStrategy);
+      return SetupControlReplacer(new InternalControlMemberCaller(), wrappedControl, stateModificationStrategy);
     }
 
     protected ControlReplacer SetupControlReplacer (
         IInternalControlMemberCaller memberCaller, ReplaceableControlMock wrappedControl, IStateModificationStrategy stateModificationStrategy)
     {
-      ControlReplacer replacer = new ControlReplacer (memberCaller) { ID = "TheReplacer" };
-      wrappedControl.OnInitParameters = new Tuple<ControlReplacer, IStateModificationStrategy>  (replacer, stateModificationStrategy);
+      ControlReplacer replacer = new ControlReplacer(memberCaller) { ID = "TheReplacer" };
+      wrappedControl.OnInitParameters = new Tuple<ControlReplacer, IStateModificationStrategy>(replacer, stateModificationStrategy);
       return replacer;
     }
 
     protected object CreateViewState ()
     {
-      return CreateViewState (new TestPageHolder (true, RequestMode.Get));
+      return CreateViewState(new TestPageHolder(true, RequestMode.Get));
     }
 
     protected object CreateViewState (TestPageHolder testPageHolder)
     {
-      ControlReplacer replacer = SetupControlReplacerForIntegrationTest (testPageHolder.NamingContainer, new StateLoadingStrategy());
+      ControlReplacer replacer = SetupControlReplacerForIntegrationTest(testPageHolder.NamingContainer, new StateLoadingStrategy());
       testPageHolder.PageInvoker.InitRecursive();
       if (testPageHolder.Page.IsPostBack)
-        new ControlInvoker (testPageHolder.NamingContainer).LoadControlState (null);
-      Assertion.IsTrue (replacer.Controls.Count == 1);
+        new ControlInvoker(testPageHolder.NamingContainer).LoadControlState(null);
+      Assertion.IsTrue(replacer.Controls.Count == 1);
 
-      return testPageHolder.PageInvoker.SaveViewStateRecursive (ViewStateMode.Enabled);
+      return testPageHolder.PageInvoker.SaveViewStateRecursive(ViewStateMode.Enabled);
     }
 
     protected object CreateControlState ()
     {
-      return CreateControlState (new TestPageHolder (true, RequestMode.Get));
+      return CreateControlState(new TestPageHolder(true, RequestMode.Get));
     }
 
     protected object CreateControlState (TestPageHolder testPageHolder)
     {
-      ControlReplacer replacer = SetupControlReplacerForIntegrationTest (testPageHolder.NamingContainer, new StateLoadingStrategy ());
+      ControlReplacer replacer = SetupControlReplacerForIntegrationTest(testPageHolder.NamingContainer, new StateLoadingStrategy());
       testPageHolder.PageInvoker.InitRecursive();
       if (testPageHolder.Page.IsPostBack)
-        new ControlInvoker (testPageHolder.NamingContainer).LoadControlState (null);
-      Assertion.IsTrue (replacer.Controls.Count == 1);
-      
+        new ControlInvoker(testPageHolder.NamingContainer).LoadControlState(null);
+      Assertion.IsTrue(replacer.Controls.Count == 1);
+
       testPageHolder.Page.SaveAllState();
 
       return testPageHolder.Page.GetPageStatePersister().ControlState;

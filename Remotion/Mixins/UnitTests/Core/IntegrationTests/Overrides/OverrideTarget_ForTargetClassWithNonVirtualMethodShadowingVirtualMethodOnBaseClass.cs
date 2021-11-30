@@ -21,20 +21,20 @@ using Remotion.Mixins.Validation;
 namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
 {
   [TestFixture]
-  [Ignore ("RM-2745")]
+  [Ignore("RM-2745")]
   public class OverrideTarget_ForTargetClassWithNonVirtualMethodShadowingVirtualMethodOnBaseClass
   {
     [Test]
-    [TestCase (typeof (MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
-    [TestCase (typeof (MixinWithoutTargetSpecification), "TheMixin.M")]
-    [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [TestCase(typeof(MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [TestCase(typeof(MixinWithoutTargetSpecification), "TheMixin.M")]
+    [TestCase(typeof(MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
     public void InstantiateTargetType_ShouldThrowValidationException (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
       {
-        Assert.That (
+        Assert.That(
             () => ObjectFactory.Create<C>(),
-            Throws.TypeOf<ValidationException>().With.Message.EqualTo (
+            Throws.TypeOf<ValidationException>().With.Message.EqualTo(
                 "Some parts of the mixin configuration could not be validated.\r\n"
                 + "MethodDefinition 'Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethodShadowingVirtualMethodOnBaseClass+C.M', 6 rules executed\r\n"
                 + "Context: Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethodShadowingVirtualMethodOnBaseClass+D\r\n"
@@ -44,16 +44,16 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     }
 
     [Test]
-    [TestCase (typeof (MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
-    [TestCase (typeof (MixinWithoutTargetSpecification), "TheMixin.M")]
-    [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [TestCase(typeof(MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [TestCase(typeof(MixinWithoutTargetSpecification), "TheMixin.M")]
+    [TestCase(typeof(MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
     public void InstantiateDerivedTypeWithoutOverride_ShouldThrowValidationException (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
       {
-        Assert.That (
+        Assert.That(
           () => ObjectFactory.Create<D>(),
-          Throws.TypeOf<ValidationException>().With.Message.EqualTo (
+          Throws.TypeOf<ValidationException>().With.Message.EqualTo(
               "Some parts of the mixin configuration could not be validated.\r\n"
               + "MethodDefinition 'Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethodShadowingVirtualMethodOnBaseClass+C.M', 6 rules executed\r\n"
               + "Context: Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethodShadowingVirtualMethodOnBaseClass+D\r\n"
@@ -94,7 +94,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       [OverrideTarget]
       public string M ()
       {
-        return "TheMixin.M -> " + Next.M ();
+        return "TheMixin.M -> " + Next.M();
       }
     }
 
@@ -109,7 +109,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
       [OverrideTarget]
       public string M ()
       {
-        return "TheMixin.M -> " + Next.M ();
+        return "TheMixin.M -> " + Next.M();
       }
     }
 

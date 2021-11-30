@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _order = DomainObjectIDs.Order1.GetObjectReference<Order>();
     }
@@ -37,23 +37,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void AccessingRelatedObject_ForeignKeySide_ReturnsNonloadedReference_ButLoadsObjectCOntainingForeignKey ()
     {
-      Assert.That (_order.State.IsNotLoadedYet, Is.True);
+      Assert.That(_order.State.IsNotLoadedYet, Is.True);
 
       var customer = _order.Customer;
 
-      Assert.That (customer.ID, Is.EqualTo (DomainObjectIDs.Customer1));
-      Assert.That (customer.State.IsNotLoadedYet, Is.True);
-      Assert.That (_order.State.IsUnchanged, Is.True);
+      Assert.That(customer.ID, Is.EqualTo(DomainObjectIDs.Customer1));
+      Assert.That(customer.State.IsNotLoadedYet, Is.True);
+      Assert.That(_order.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void AccessingRelatedObject_ForeignKeySide_ReturnsNonloadedReference_DataIsLoadedOnDemand ()
     {
-      Assert.That (_order.Customer.State.IsNotLoadedYet, Is.True);
+      Assert.That(_order.Customer.State.IsNotLoadedYet, Is.True);
 
-      Assert.That (_order.Customer.Name, Is.EqualTo ("Kunde 1"));
+      Assert.That(_order.Customer.Name, Is.EqualTo("Kunde 1"));
 
-      Assert.That (_order.Customer.State.IsUnchanged, Is.True);
+      Assert.That(_order.Customer.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -62,16 +62,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       bool propertyChanged = false;
       _order.Customer.PropertyChanged += delegate { propertyChanged = true; };
 
-      Assert.That (_order.Customer.State.IsNotLoadedYet, Is.True);
+      Assert.That(_order.Customer.State.IsNotLoadedYet, Is.True);
 
       _order.Customer.EnsureDataAvailable();
 
-      Assert.That (_order.Customer.State.IsUnchanged, Is.True);
-      Assert.That (propertyChanged, Is.False);
+      Assert.That(_order.Customer.State.IsUnchanged, Is.True);
+      Assert.That(propertyChanged, Is.False);
 
       _order.Customer.Name = "John Doe";
 
-      Assert.That (propertyChanged, Is.True);
+      Assert.That(propertyChanged, Is.True);
     }
 
     [Test]
@@ -79,9 +79,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       var orderWithInvalidCustomer = DomainObjectIDs.InvalidOrder.GetObject<Order>();
 
-      Assert.That (
+      Assert.That(
           () => orderWithInvalidCustomer.Customer,
-          Throws.TypeOf<InvalidTypeException>().With.Message.StartsWith (
+          Throws.TypeOf<InvalidTypeException>().With.Message.StartsWith(
               "The property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' was expected to hold an object of type "
               + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer', but it returned an object of type "
               + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Company"));
@@ -90,12 +90,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void AccessingRelatedObject_ForeignKeySide_NotFoundKeyException_IsTriggeredOnDemand ()
     {
-      var id = new ObjectID (typeof (ClassWithInvalidRelation), new Guid ("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
-      var objectWithInvalidRelation = (ClassWithInvalidRelation) id.GetObject<TestDomainBase> ();
+      var id = new ObjectID(typeof(ClassWithInvalidRelation), new Guid("{AFA9CF46-8E77-4da8-9793-53CAA86A277C}"));
+      var objectWithInvalidRelation = (ClassWithInvalidRelation)id.GetObject<TestDomainBase>();
 
-      Assert.That (objectWithInvalidRelation.ClassWithGuidKey.State.IsNotLoadedYet, Is.True);
+      Assert.That(objectWithInvalidRelation.ClassWithGuidKey.State.IsNotLoadedYet, Is.True);
 
-      Assert.That (() => objectWithInvalidRelation.ClassWithGuidKey.EnsureDataAvailable(), Throws.TypeOf<ObjectsNotFoundException> ());
+      Assert.That(() => objectWithInvalidRelation.ClassWithGuidKey.EnsureDataAvailable(), Throws.TypeOf<ObjectsNotFoundException>());
     }
 
     [Test]
@@ -103,61 +103,61 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       DomainObjectIDs.Customer1.GetObject<Customer>();
 
-      Assert.That (_order.Customer.ID, Is.EqualTo (DomainObjectIDs.Customer1));
-      Assert.That (_order.Customer.State.IsUnchanged, Is.True);
+      Assert.That(_order.Customer.ID, Is.EqualTo(DomainObjectIDs.Customer1));
+      Assert.That(_order.Customer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void AccessingOriginalRelatedObject_ForeignKeySide_OriginalObjectIsAlsoNotLoadedOnAccess ()
     {
-      Assert.That (_order.Properties[typeof (Order), "Customer"].GetOriginalValue<Customer>().ID, Is.EqualTo (DomainObjectIDs.Customer1));
-      Assert.That (_order.Properties[typeof (Order), "Customer"].GetOriginalValue<Customer> ().State.IsNotLoadedYet, Is.True);
+      Assert.That(_order.Properties[typeof(Order), "Customer"].GetOriginalValue<Customer>().ID, Is.EqualTo(DomainObjectIDs.Customer1));
+      Assert.That(_order.Properties[typeof(Order), "Customer"].GetOriginalValue<Customer>().State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
     public void AccessingRelatedObject_VirtualSide_ReturnsLoadedObject_AndAlsoLoadsOriginatingObject ()
     {
-      Assert.That (_order.State.IsNotLoadedYet, Is.True);
+      Assert.That(_order.State.IsNotLoadedYet, Is.True);
 
       var orderTicket = _order.OrderTicket;
 
-      Assert.That (orderTicket.ID, Is.EqualTo (DomainObjectIDs.OrderTicket1));
-      Assert.That (orderTicket.State.IsUnchanged, Is.True);
-      Assert.That (_order.State.IsUnchanged, Is.True);
+      Assert.That(orderTicket.ID, Is.EqualTo(DomainObjectIDs.OrderTicket1));
+      Assert.That(orderTicket.State.IsUnchanged, Is.True);
+      Assert.That(_order.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void AccessingOriginalRelatedObject_VirtualSide_ReturnsLoadedObject_AndAlsoLoadsOriginatingObject ()
     {
-      Assert.That (_order.State.IsNotLoadedYet, Is.True);
+      Assert.That(_order.State.IsNotLoadedYet, Is.True);
 
-      var orderTicket = _order.Properties[typeof (Order), "OrderTicket"].GetOriginalValue<OrderTicket>();
+      var orderTicket = _order.Properties[typeof(Order), "OrderTicket"].GetOriginalValue<OrderTicket>();
 
-      Assert.That (orderTicket.ID, Is.EqualTo (DomainObjectIDs.OrderTicket1));
-      Assert.That (orderTicket.State.IsUnchanged, Is.True);
-      Assert.That (_order.State.IsUnchanged, Is.True);
+      Assert.That(orderTicket.ID, Is.EqualTo(DomainObjectIDs.OrderTicket1));
+      Assert.That(orderTicket.State.IsUnchanged, Is.True);
+      Assert.That(_order.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void AccessingRelatedDomainObjectCollection_ReturnsCollectionWithIncompleteContents_AndAlsoLoadsOriginatingObject ()
     {
-      Assert.That (_order.State.IsNotLoadedYet, Is.True);
+      Assert.That(_order.State.IsNotLoadedYet, Is.True);
 
       var orderItems = _order.OrderItems;
 
-      Assert.That (orderItems.AssociatedEndPointID, Is.EqualTo (RelationEndPointID.Resolve (_order, o => o.OrderItems)));
-      Assert.That (orderItems.IsDataComplete, Is.False);
-      Assert.That (_order.State.IsUnchanged, Is.True);
+      Assert.That(orderItems.AssociatedEndPointID, Is.EqualTo(RelationEndPointID.Resolve(_order, o => o.OrderItems)));
+      Assert.That(orderItems.IsDataComplete, Is.False);
+      Assert.That(_order.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void AccessingRelatedDomainObjectCollection_ReturnsCollectionWithIncompleteContents_ContentsIsLoadedWhenNeeded ()
     {
-      Assert.That (_order.OrderItems.IsDataComplete, Is.False);
+      Assert.That(_order.OrderItems.IsDataComplete, Is.False);
 
-      Assert.That (_order.OrderItems.Count, Is.EqualTo (2));
+      Assert.That(_order.OrderItems.Count, Is.EqualTo(2));
 
-      Assert.That (_order.OrderItems.IsDataComplete, Is.True);
+      Assert.That(_order.OrderItems.IsDataComplete, Is.True);
     }
 
     [Test]
@@ -166,16 +166,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       bool itemAdded = false;
       _order.OrderItems.Added += delegate { itemAdded = true; };
 
-      Assert.That (_order.OrderItems.IsDataComplete, Is.False);
+      Assert.That(_order.OrderItems.IsDataComplete, Is.False);
 
       _order.OrderItems.EnsureDataComplete();
 
-      Assert.That (_order.OrderItems.IsDataComplete, Is.True);
-      Assert.That (itemAdded, Is.False);
+      Assert.That(_order.OrderItems.IsDataComplete, Is.True);
+      Assert.That(itemAdded, Is.False);
 
-      _order.OrderItems.Add (OrderItem.NewObject());
+      _order.OrderItems.Add(OrderItem.NewObject());
 
-      Assert.That (itemAdded, Is.True);
+      Assert.That(itemAdded, Is.True);
     }
 
     [Test]
@@ -183,25 +183,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       var orderWithoutOrderItems = DomainObjectIDs.OrderWithoutOrderItems.GetObject<Order>();
 
-      Assert.That (orderWithoutOrderItems.OrderItems.IsDataComplete, Is.False);
+      Assert.That(orderWithoutOrderItems.OrderItems.IsDataComplete, Is.False);
 
-      Assert.That (() => orderWithoutOrderItems.OrderItems.Count, Throws.TypeOf<PersistenceException>());
+      Assert.That(() => orderWithoutOrderItems.OrderItems.Count, Throws.TypeOf<PersistenceException>());
     }
 
     [Test]
     public void AccessingRelatedDomainObjectCollection_ReturnsAlreadyLoadedCollection_IfAlreadyLoaded ()
     {
-      TestableClientTransaction.EnsureDataComplete (RelationEndPointID.Resolve (_order, o => o.OrderItems));
+      TestableClientTransaction.EnsureDataComplete(RelationEndPointID.Resolve(_order, o => o.OrderItems));
 
-      Assert.That (_order.OrderItems.IsDataComplete, Is.True);
+      Assert.That(_order.OrderItems.IsDataComplete, Is.True);
     }
 
     [Test]
     public void AccessingOriginalRelatedDomainObjectCollection_LoadsContentsForBothOriginalAndCurrentCollection ()
     {
-      Assert.That (_order.Properties[typeof (Order), "OrderItems"].GetOriginalValue<ObjectList<OrderItem>>().IsDataComplete, Is.True);
+      Assert.That(_order.Properties[typeof(Order), "OrderItems"].GetOriginalValue<ObjectList<OrderItem>>().IsDataComplete, Is.True);
       // Since the data had to be loaded for the original contents, it has also been loaded into the actual collection.
-      Assert.That (_order.OrderItems.IsDataComplete, Is.True);
+      Assert.That(_order.OrderItems.IsDataComplete, Is.True);
     }
 
     [Test]
@@ -210,15 +210,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       var orderItem1 = DomainObjectIDs.OrderItem1.GetObjectReference<OrderItem>();
       var order2 = DomainObjectIDs.Order2.GetObjectReference<Order>();
 
-      Assert.That (_order.OrderItems.IsDataComplete, Is.False);
-      Assert.That (order2.OrderItems.IsDataComplete, Is.False);
-      Assert.That (orderItem1.State.IsNotLoadedYet, Is.True);
+      Assert.That(_order.OrderItems.IsDataComplete, Is.False);
+      Assert.That(order2.OrderItems.IsDataComplete, Is.False);
+      Assert.That(orderItem1.State.IsNotLoadedYet, Is.True);
 
       orderItem1.Order = order2;
 
-      Assert.That (_order.OrderItems.IsDataComplete, Is.True);
-      Assert.That (order2.OrderItems.IsDataComplete, Is.True);
-      Assert.That (orderItem1.State.IsChanged, Is.True);
+      Assert.That(_order.OrderItems.IsDataComplete, Is.True);
+      Assert.That(order2.OrderItems.IsDataComplete, Is.True);
+      Assert.That(orderItem1.State.IsChanged, Is.True);
     }
   }
 }

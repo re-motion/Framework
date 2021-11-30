@@ -40,10 +40,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       SecurityManagerPrincipal.Current = SecurityManagerPrincipal.Null;
       ClientTransaction.CreateRootTransaction().EnterDiscardingScope();
 
-      _user = User.FindByUserName ("substituting.user");
+      _user = User.FindByUserName("substituting.user");
       _tenant = _user.Tenant;
 
-      _principal = CreateSecurityManagerPrincipal (_tenant, _user, null, null);
+      _principal = CreateSecurityManagerPrincipal(_tenant, _user, null, null);
     }
 
     public override void TearDown ()
@@ -57,44 +57,44 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     {
       var tenantProxy = _principal.Tenant;
 
-      Assert.That (tenantProxy.ID, Is.EqualTo (_tenant.ID));
+      Assert.That(tenantProxy.ID, Is.EqualTo(_tenant.ID));
     }
 
     [Test]
     public void UsesCache ()
     {
-      Assert.That (_principal.Tenant, Is.SameAs (_principal.Tenant));
+      Assert.That(_principal.Tenant, Is.SameAs(_principal.Tenant));
     }
 
     [Test]
     public void SerializesCache ()
     {
-      var deserialized = Serializer.SerializeAndDeserialize (Tuple.Create (_principal, _principal.Tenant));
+      var deserialized = Serializer.SerializeAndDeserialize(Tuple.Create(_principal, _principal.Tenant));
       SecurityManagerPrincipal deserialziedSecurityManagerPrincipal = deserialized.Item1;
       TenantProxy deserialziedTenant = deserialized.Item2;
 
-      Assert.That (deserialziedSecurityManagerPrincipal.Tenant, Is.SameAs (deserialziedTenant));
+      Assert.That(deserialziedSecurityManagerPrincipal.Tenant, Is.SameAs(deserialziedTenant));
     }
 
     [Test]
     public void UsesSecurityFreeSection ()
     {
       var securityProviderStub = new Mock<ISecurityProvider>();
-      securityProviderStub.Setup (stub => stub.IsNull).Returns (false);
+      securityProviderStub.Setup(stub => stub.IsNull).Returns(false);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => securityProviderStub);
+      serviceLocator.RegisterSingle(() => securityProviderStub);
       ISecurityManagerPrincipal refreshedInstance;
-      using (new ServiceLocatorScope (serviceLocator))
+      using (new ServiceLocatorScope(serviceLocator))
       {
         IncrementDomainRevision();
         refreshedInstance = _principal.GetRefreshedInstance();
-        Assert.That (refreshedInstance, Is.Not.SameAs (_principal));
+        Assert.That(refreshedInstance, Is.Not.SameAs(_principal));
       }
 
       var tenantProxy = refreshedInstance.Tenant;
 
-      Assert.That (tenantProxy.ID, Is.EqualTo (_tenant.ID));
+      Assert.That(tenantProxy.ID, Is.EqualTo(_tenant.ID));
     }
   }
 }

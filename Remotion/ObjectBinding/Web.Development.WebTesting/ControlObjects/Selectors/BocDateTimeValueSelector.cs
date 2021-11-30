@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocDateTimeValueSelector : BocControlSelectorBase<BocDateTimeValueControlObject>
   {
     public BocDateTimeValueSelector ()
-        : base ("BocDateTimeValue")
+        : base("BocDateTimeValue")
     {
     }
 
@@ -36,10 +36,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
 
-      return new BocDateTimeValueControlObject (newControlObjectContext);
+      return new BocDateTimeValueControlObject(newControlObjectContext);
     }
   }
 }

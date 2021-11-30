@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public SimpleDataType (string stringValue)
     {
-      ArgumentUtility.CheckNotNull ("stringValue", stringValue);
+      ArgumentUtility.CheckNotNull("stringValue", stringValue);
       _stringValue = stringValue;
     }
 
@@ -40,12 +40,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var otherSimpleDataType = other as SimpleDataType;
       if (otherSimpleDataType == null)
         return false;
-      return comparer.Equals (_stringValue, otherSimpleDataType._stringValue);
+      return comparer.Equals(_stringValue, otherSimpleDataType._stringValue);
     }
 
     public int GetHashCode (IEqualityComparer comparer)
     {
-      return comparer.GetHashCode (_stringValue);
+      return comparer.GetHashCode(_stringValue);
     }
   }
 }

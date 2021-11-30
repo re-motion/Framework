@@ -42,14 +42,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     public string FoundControlID { get; private set; }
 
     public TextContentGenericTestPageParameter ()
-        : base (TestConstants.TextContentSelectorID, c_parameterCount)
+        : base(TestConstants.TextContentSelectorID, c_parameterCount)
     {
     }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       VisibleControlTextContent = data.Arguments[0];
       HiddenControlTextContent = data.Arguments[1];

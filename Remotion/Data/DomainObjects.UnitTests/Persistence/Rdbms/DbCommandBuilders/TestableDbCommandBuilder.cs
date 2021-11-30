@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
   public class TestableDbCommandBuilder : DbCommandBuilder
   {
     public TestableDbCommandBuilder (ISqlDialect sqlDialect)
-        : base (sqlDialect)
+        : base(sqlDialect)
     {
     }
 
@@ -38,27 +38,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
     public new void AppendSelectClause (StringBuilder statement, IDbCommand command, ISelectedColumnsSpecification selectedColumns)
     {
-      base.AppendSelectClause (statement, command, selectedColumns);
+      base.AppendSelectClause(statement, command, selectedColumns);
     }
 
     public new void AppendFromClause (StringBuilder statement, IDbCommand command, TableDefinition tableDefinition)
     {
-      base.AppendFromClause (statement, command, tableDefinition);
+      base.AppendFromClause(statement, command, tableDefinition);
     }
 
     public new void AppendTableName (StringBuilder statement, IDbCommand command, TableDefinition tableDefinition)
     {
-      base.AppendTableName (statement, command, tableDefinition);
+      base.AppendTableName(statement, command, tableDefinition);
     }
 
     public new void AppendWhereClause (StringBuilder statement, IDbCommand command, IComparedColumnsSpecification comparedColumns)
     {
-      base.AppendWhereClause (statement, command, comparedColumns);
+      base.AppendWhereClause(statement, command, comparedColumns);
     }
 
     public new void AppendOrderByClause (StringBuilder statement, IDbCommand command, IOrderedColumnsSpecification orderedColumnsSpecification)
     {
-      base.AppendOrderByClause (statement, command, orderedColumnsSpecification);
+      base.AppendOrderByClause(statement, command, orderedColumnsSpecification);
     }
   }
 }

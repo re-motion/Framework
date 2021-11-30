@@ -32,7 +32,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 
     public string ImplementedMethod ()
     {
-      return "MixinWithAbstractMembers.ImplementedMethod-" + AbstractMethod (25);
+      return "MixinWithAbstractMembers.ImplementedMethod-" + AbstractMethod(25);
     }
 
     public string ImplementedProperty ()
@@ -44,7 +44,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     {
       Func<string> func = delegate { return "MixinWithAbstractMembers.ImplementedEvent"; };
       AbstractEvent += func;
-      string result = RaiseEvent ();
+      string result = RaiseEvent();
       AbstractEvent -= func;
       return result;
     }

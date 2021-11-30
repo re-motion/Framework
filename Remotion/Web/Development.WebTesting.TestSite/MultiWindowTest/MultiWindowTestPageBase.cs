@@ -36,20 +36,20 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       var asyncPostBackEventHandlerId = AddAsyncPostBackEventHandlerToPage();
-      RegisterExecuteCommandClientFunction (c_executeAsyncCommandClientFunctionName, asyncPostBackEventHandlerId);
+      RegisterExecuteCommandClientFunction(c_executeAsyncCommandClientFunctionName, asyncPostBackEventHandlerId);
 
       var syncPostBackEventHandlerId = AddSyncPostBackEventHandlerToPage();
-      RegisterExecuteCommandClientFunction (c_executeSyncCommandClientFunctionName, syncPostBackEventHandlerId);
+      RegisterExecuteCommandClientFunction(c_executeSyncCommandClientFunctionName, syncPostBackEventHandlerId);
     }
 
     protected abstract void AddPostBackEventHandlerToPage (PostBackEventHandler postBackEventHandler);
 
     protected void SetTestOutput (Label label)
     {
-      label.Text = string.Format (
+      label.Text = string.Format(
           "<b>{0}</b>: {1} | {2} | {3} | {4}<br/>Parent: {5} | {6} | {7}<br/>HasReturned: {8}",
           label.ID,
           CurrentFunction.GetType().Name,
@@ -58,18 +58,18 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
           CurrentPageStep.Page,
           CurrentFunction.ParentFunction != null ? CurrentFunction.ParentFunction.GetType().Name : "&lt;none&gt;",
           CurrentFunction.ParentFunction != null ? CurrentFunction.ParentFunction.FunctionToken : "&lt;none&gt;",
-          CurrentFunction.ParentFunction != null ? ((WxePageStep) CurrentFunction.ParentStep).Page : "&lt;none&gt;",
+          CurrentFunction.ParentFunction != null ? ((WxePageStep)CurrentFunction.ParentStep).Page : "&lt;none&gt;",
           IsReturningPostBack);
     }
 
     private string AddAsyncPostBackEventHandlerToPage ()
     {
       var asyncPostBackEventHandler = new PostBackEventHandler { ID = "AsyncPostBackTarget" };
-      AddPostBackEventHandlerToPage (asyncPostBackEventHandler);
+      AddPostBackEventHandlerToPage(asyncPostBackEventHandler);
 
-      var sm = ScriptManager.GetCurrent (Page);
+      var sm = ScriptManager.GetCurrent(Page);
       if (sm != null)
-        sm.RegisterAsyncPostBackControl (asyncPostBackEventHandler);
+        sm.RegisterAsyncPostBackControl(asyncPostBackEventHandler);
 
       asyncPostBackEventHandler.PostBack += HandlePostBack;
 
@@ -79,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
     private string AddSyncPostBackEventHandlerToPage ()
     {
       var syncPostBackEventHandler = new PostBackEventHandler { ID = "SyncPostBackTarget" };
-      AddPostBackEventHandlerToPage (syncPostBackEventHandler);
+      AddPostBackEventHandlerToPage(syncPostBackEventHandler);
 
       syncPostBackEventHandler.PostBack += HandlePostBack;
 
@@ -89,41 +89,41 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
     protected void ExecuteCommandOnClient_InParent (string command, bool useSyncPostBack, params string[] arguments)
     {
       const string fullQualification = "window.parent.";
-      ExecuteCommandOnClient (fullQualification, useSyncPostBack, command, arguments);
+      ExecuteCommandOnClient(fullQualification, useSyncPostBack, command, arguments);
     }
 
     protected void ExecuteCommandOnClient_InFrame (string frameName, string command, bool useSyncPostBack, params string[] arguments)
     {
-      var fullQualification = string.Format ("window.frames.{0}.", frameName);
-      ExecuteCommandOnClient (fullQualification, useSyncPostBack, command, arguments);
+      var fullQualification = string.Format("window.frames.{0}.", frameName);
+      ExecuteCommandOnClient(fullQualification, useSyncPostBack, command, arguments);
     }
 
     private void ExecuteCommandOnClient (string fullQualification, bool useSyncPostBack, string command, string[] arguments)
     {
       var functionName = fullQualification + (useSyncPostBack ? c_executeSyncCommandClientFunctionName : c_executeAsyncCommandClientFunctionName);
-      var concatenatedArguments = String.Join (":", arguments);
-      var script = String.Format ("if({0}) {0}(\"{1}\",\"{2}\");", functionName, command, concatenatedArguments);
-      ClientScript.RegisterStartupScriptBlock (this, GetType(), "CallExecuteCommandScript", script);
+      var concatenatedArguments = String.Join(":", arguments);
+      var script = String.Format("if({0}) {0}(\"{1}\",\"{2}\");", functionName, command, concatenatedArguments);
+      ClientScript.RegisterStartupScriptBlock(this, GetType(), "CallExecuteCommandScript", script);
     }
 
     private void HandlePostBack (object sender, PostBackEventHandlerEventArgs postBackEventHandlerEventArgs)
     {
-      var eventArgument = postBackEventHandlerEventArgs.EventArgument.Split (':');
+      var eventArgument = postBackEventHandlerEventArgs.EventArgument.Split(':');
       var command = eventArgument[0];
-      var arguments = eventArgument.Skip (1).ToArray();
+      var arguments = eventArgument.Skip(1).ToArray();
 
       switch (command)
       {
         case ExecuteFunctionCommand:
           var sourceFunctionToken = arguments[0];
           var variablesKey = arguments[1];
-          var shouldExecuteAsSubFunction = bool.Parse (arguments[2]);
+          var shouldExecuteAsSubFunction = bool.Parse(arguments[2]);
 
-          var sourceFunction = WxeFunctionStateManager.Current.GetItem (sourceFunctionToken).Function.ExecutingStep.ParentFunction;
+          var sourceFunction = WxeFunctionStateManager.Current.GetItem(sourceFunctionToken).Function.ExecutingStep.ParentFunction;
           var sourceFunctionVariables = sourceFunction.Variables;
           var function = sourceFunctionVariables[variablesKey] as WxeFunction;
-          sourceFunctionVariables.Remove (variablesKey);
-          ExecuteWxeFunction (function, sender, shouldExecuteAsSubFunction);
+          sourceFunctionVariables.Remove(variablesKey);
+          ExecuteWxeFunction(function, sender, shouldExecuteAsSubFunction);
           break;
 
         case RefreshCommand:
@@ -135,12 +135,12 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
     private void ExecuteWxeFunction (WxeFunction function, object sender, bool shouldExecuteAsSubFunction)
     {
       if (shouldExecuteAsSubFunction)
-        ExecuteFunction (function, new WxeCallArguments ((Control) sender, new WxeCallOptions()));
+        ExecuteFunction(function, new WxeCallArguments((Control)sender, new WxeCallOptions()));
       else
       {
         try
         {
-          ExecuteFunction (function, new WxeCallArguments ((Control) sender, new WxeCallOptionsExternal ("_self")));
+          ExecuteFunction(function, new WxeCallArguments((Control)sender, new WxeCallOptionsExternal("_self")));
         }
         catch (WxeCallExternalException)
         {
@@ -152,11 +152,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
 
     private void RegisterExecuteCommandClientFunction (string functionName, string postBackEventHandlerId)
     {
-      var script = String.Format (
+      var script = String.Format(
           "function {0} (command,argument) {{ __doPostBack(\"{1}\",command + \":\" + argument); }}",
           functionName,
           postBackEventHandlerId);
-      ClientScript.RegisterClientScriptBlock (this, GetType(), functionName + "Script", script);
+      ClientScript.RegisterClientScriptBlock(this, GetType(), functionName + "Script", script);
     }
   }
 }

@@ -28,7 +28,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
   {
     public static AccessTypeReference NewObject ()
     {
-      return NewObject<AccessTypeReference> ();
+      return NewObject<AccessTypeReference>();
     }
 
     protected AccessTypeReference ()
@@ -37,18 +37,18 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public abstract int Index { get; set; }
 
-    [DBBidirectionalRelation ("AccessTypeReferences")]
-    [DBColumn ("SecurableClassID")]
+    [DBBidirectionalRelation("AccessTypeReferences")]
+    [DBColumn("SecurableClassID")]
     [Mandatory]
     public abstract SecurableClassDefinition Class { get; }
 
-    [DBBidirectionalRelation ("AccessTypeReferences")]
+    [DBBidirectionalRelation("AccessTypeReferences")]
     [Mandatory]
     public abstract AccessTypeDefinition AccessType { get; set; }
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       if (Class != null)
         Class.RegisterForCommit();

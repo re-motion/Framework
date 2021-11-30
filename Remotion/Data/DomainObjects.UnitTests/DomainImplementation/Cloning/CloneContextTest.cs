@@ -30,72 +30,72 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
       _mockRepository = new MockRepository();
-      _clonerMock = _mockRepository.StrictMock<DomainObjectCloner> ();
+      _clonerMock = _mockRepository.StrictMock<DomainObjectCloner>();
     }
 
     [Test]
     public void Initialization ()
     {
       CloneContext context = new CloneContext(_clonerMock);
-      Assert.That (context.CloneHulls.Count, Is.EqualTo (0));
+      Assert.That(context.CloneHulls.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void GetCloneFor_CallsClonerForNewObject ()
     {
-      CloneContext context = new CloneContext (_clonerMock);
-      Order source = DomainObjectIDs.Order1.GetObject<Order> ();
-      Order clone = Order.NewObject ();
+      CloneContext context = new CloneContext(_clonerMock);
+      Order source = DomainObjectIDs.Order1.GetObject<Order>();
+      Order clone = Order.NewObject();
 
-      Expect.Call (_clonerMock.CreateCloneHull<DomainObject> (source)).Return (clone);
-      _mockRepository.ReplayAll ();
-      Assert.That (context.GetCloneFor (source), Is.SameAs (clone));
-      _mockRepository.VerifyAll ();
+      Expect.Call(_clonerMock.CreateCloneHull<DomainObject>(source)).Return(clone);
+      _mockRepository.ReplayAll();
+      Assert.That(context.GetCloneFor(source), Is.SameAs(clone));
+      _mockRepository.VerifyAll();
     }
 
     [Test]
     public void GetCloneFor_DoesntCallClonerTwiceForKnownObject ()
     {
-      CloneContext context = new CloneContext (_clonerMock);
-      Order source = DomainObjectIDs.Order1.GetObject<Order> ();
-      Order clone = Order.NewObject ();
+      CloneContext context = new CloneContext(_clonerMock);
+      Order source = DomainObjectIDs.Order1.GetObject<Order>();
+      Order clone = Order.NewObject();
 
-      Expect.Call (_clonerMock.CreateCloneHull<DomainObject> (source)).Return (clone);
-      _mockRepository.ReplayAll ();
-      Assert.That (context.GetCloneFor (source), Is.SameAs (clone));
-      Assert.That (context.GetCloneFor (source), Is.SameAs (clone));
-      _mockRepository.VerifyAll ();
+      Expect.Call(_clonerMock.CreateCloneHull<DomainObject>(source)).Return(clone);
+      _mockRepository.ReplayAll();
+      Assert.That(context.GetCloneFor(source), Is.SameAs(clone));
+      Assert.That(context.GetCloneFor(source), Is.SameAs(clone));
+      _mockRepository.VerifyAll();
     }
 
     [Test]
-    public void GetCloneFor_AddsToShallowClones()
+    public void GetCloneFor_AddsToShallowClones ()
     {
-      CloneContext context = new CloneContext (_clonerMock);
-      Order source = DomainObjectIDs.Order1.GetObject<Order> ();
-      Order clone = Order.NewObject ();
+      CloneContext context = new CloneContext(_clonerMock);
+      Order source = DomainObjectIDs.Order1.GetObject<Order>();
+      Order clone = Order.NewObject();
 
-      SetupResult.For (_clonerMock.CreateCloneHull<DomainObject> (source)).Return (clone);
-      _mockRepository.ReplayAll ();
+      SetupResult.For(_clonerMock.CreateCloneHull<DomainObject>(source)).Return(clone);
+      _mockRepository.ReplayAll();
 
-      context.GetCloneFor (source);
-      Assert.That (context.CloneHulls.Contains (new Tuple<DomainObject, DomainObject> (source, clone)));
+      context.GetCloneFor(source);
+      Assert.That(context.CloneHulls.Contains(new Tuple<DomainObject, DomainObject>(source, clone)));
     }
 
     [Test]
     public void GetCloneFor_DoesntAddToShallowClonesForKnownObject ()
     {
-      CloneContext context = new CloneContext (_clonerMock);
-      Order source = DomainObjectIDs.Order1.GetObject<Order> ();
-      Order clone = Order.NewObject ();
+      CloneContext context = new CloneContext(_clonerMock);
+      Order source = DomainObjectIDs.Order1.GetObject<Order>();
+      Order clone = Order.NewObject();
 
-      SetupResult.For (_clonerMock.CreateCloneHull<DomainObject> (source)).Return (clone);
-      _mockRepository.ReplayAll ();
+      SetupResult.For(_clonerMock.CreateCloneHull<DomainObject>(source)).Return(clone);
+      _mockRepository.ReplayAll();
 
-      context.GetCloneFor (source);
-      context.GetCloneFor (source);
-      Assert.That (context.CloneHulls.Count, Is.EqualTo(1));
+      context.GetCloneFor(source);
+      context.GetCloneFor(source);
+      Assert.That(context.CloneHulls.Count, Is.EqualTo(1));
     }
   }
 }

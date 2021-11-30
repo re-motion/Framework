@@ -39,12 +39,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public virtual void LoadValues (bool interim)
     {
-      DataSource.LoadValues (interim);
+      DataSource.LoadValues(interim);
     }
 
     public virtual bool SaveValues (bool interim)
     {
-      return DataSource.SaveValues (interim);
+      return DataSource.SaveValues(interim);
     }
 
     public virtual void CancelEdit ()
@@ -81,12 +81,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     //}
 
     ///// <summary> Gets the control's data source. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public abstract IBusinessObjectDataSourceControl DataSource { get; }
 
     IPage? IControl.Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
   }
 }

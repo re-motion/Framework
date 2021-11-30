@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _persistenceModelProvider = new RdbmsPersistenceModelProvider();
       _infrastructureStoragePropertyDefintionProviderMock = MockRepository.GenerateStrictMock<IInfrastructureStoragePropertyDefinitionProvider>();
 
-      _factory = new ForeignKeyConstraintDefinitionFactory (
+      _factory = new ForeignKeyConstraintDefinitionFactory(
           _storageNameProviderMock,
           _persistenceModelProvider,
           _infrastructureStoragePropertyDefintionProviderMock);
@@ -59,87 +59,87 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void CreateForeignKeyConstraints ()
     {
-      var orderClassDefinition = Configuration.GetTypeDefinition (typeof (Order));
-      var customerClassDefintion = Configuration.GetTypeDefinition (typeof (Customer));
+      var orderClassDefinition = Configuration.GetTypeDefinition(typeof(Order));
+      var customerClassDefintion = Configuration.GetTypeDefinition(typeof(Customer));
 
       _infrastructureStoragePropertyDefintionProviderMock
-          .Expect (mock => mock.GetObjectIDStoragePropertyDefinition())
-          .Return (_fakeObjectIDStoragePropertyDefinition);
+          .Expect(mock => mock.GetObjectIDStoragePropertyDefinition())
+          .Return(_fakeObjectIDStoragePropertyDefinition);
       _infrastructureStoragePropertyDefintionProviderMock.Replay();
 
       var customerProperty = orderClassDefinition.MyPropertyDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"];
-      var expectedComparedColumns = ((IRdbmsStoragePropertyDefinition) customerProperty.StoragePropertyDefinition).GetColumnsForComparison ();
-      
+      var expectedComparedColumns = ((IRdbmsStoragePropertyDefinition)customerProperty.StoragePropertyDefinition).GetColumnsForComparison();
+
       _storageNameProviderMock
-          .Expect (mock => mock.GetForeignKeyConstraintName (
-              Arg.Is (orderClassDefinition), 
-              Arg<IEnumerable<ColumnDefinition>>.List.Equal (expectedComparedColumns)))
-          .Return ("FakeConstraintName");
+          .Expect(mock => mock.GetForeignKeyConstraintName(
+              Arg.Is(orderClassDefinition),
+              Arg<IEnumerable<ColumnDefinition>>.List.Equal(expectedComparedColumns)))
+          .Return("FakeConstraintName");
       _storageNameProviderMock
-          .Expect (mock => mock.GetTableName (customerClassDefintion))
-          .Return (new EntityNameDefinition (null, "FakeTableName"));
+          .Expect(mock => mock.GetTableName(customerClassDefintion))
+          .Return(new EntityNameDefinition(null, "FakeTableName"));
       _storageNameProviderMock.Replay();
 
-      var foreignKeyConstraintDefinitions = _factory.CreateForeignKeyConstraints (orderClassDefinition).ToArray();
+      var foreignKeyConstraintDefinitions = _factory.CreateForeignKeyConstraints(orderClassDefinition).ToArray();
 
       _infrastructureStoragePropertyDefintionProviderMock.VerifyAllExpectations();
       _storageNameProviderMock.VerifyAllExpectations();
 
       //OrderItem and OrderTicket endpoints are virtual and Official endpoint has different storage provider
-      Assert.That (foreignKeyConstraintDefinitions.Length, Is.EqualTo (1));
+      Assert.That(foreignKeyConstraintDefinitions.Length, Is.EqualTo(1));
       var foreignKeyConstraint = foreignKeyConstraintDefinitions[0];
-      Assert.That (foreignKeyConstraint.ReferencedTableName.EntityName, Is.EqualTo ("FakeTableName"));
-      Assert.That (foreignKeyConstraint.ReferencedTableName.SchemaName, Is.Null);
-      Assert.That (foreignKeyConstraint.ConstraintName, Is.EqualTo ("FakeConstraintName"));
-      Assert.That (foreignKeyConstraint.ReferencingColumns, Is.EqualTo (expectedComparedColumns));
-      Assert.That (foreignKeyConstraint.ReferencedColumns, Is.EqualTo (_fakeObjectIDStoragePropertyDefinition.GetColumnsForComparison()));
+      Assert.That(foreignKeyConstraint.ReferencedTableName.EntityName, Is.EqualTo("FakeTableName"));
+      Assert.That(foreignKeyConstraint.ReferencedTableName.SchemaName, Is.Null);
+      Assert.That(foreignKeyConstraint.ConstraintName, Is.EqualTo("FakeConstraintName"));
+      Assert.That(foreignKeyConstraint.ReferencingColumns, Is.EqualTo(expectedComparedColumns));
+      Assert.That(foreignKeyConstraint.ReferencedColumns, Is.EqualTo(_fakeObjectIDStoragePropertyDefinition.GetColumnsForComparison()));
     }
-    
+
     [Test]
     public void CreateForeignKeyConstraints_StorageClassTransactionPropertiesAreIgnored ()
     {
-      var computerClassDefinition = Configuration.GetClassDefinition ("Computer");
-      var employeeClassDefinition = Configuration.GetClassDefinition ("Employee");
+      var computerClassDefinition = Configuration.GetClassDefinition("Computer");
+      var employeeClassDefinition = Configuration.GetClassDefinition("Employee");
 
       _infrastructureStoragePropertyDefintionProviderMock
-          .Expect (mock => mock.GetObjectIDStoragePropertyDefinition())
-          .Return (_fakeObjectIDStoragePropertyDefinition).Repeat.Any();
+          .Expect(mock => mock.GetObjectIDStoragePropertyDefinition())
+          .Return(_fakeObjectIDStoragePropertyDefinition).Repeat.Any();
       _infrastructureStoragePropertyDefintionProviderMock.Replay();
 
       var employeeProperty = computerClassDefinition.MyPropertyDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee"];
-      var expectedComparedColumns = ((IRdbmsStoragePropertyDefinition) employeeProperty.StoragePropertyDefinition).GetColumnsForComparison ();
+      var expectedComparedColumns = ((IRdbmsStoragePropertyDefinition)employeeProperty.StoragePropertyDefinition).GetColumnsForComparison();
 
       _storageNameProviderMock
-          .Expect (mock => mock.GetForeignKeyConstraintName (
-              Arg.Is (computerClassDefinition),
-              Arg<IEnumerable<ColumnDefinition>>.List.Equal (expectedComparedColumns)))
-          .Return ("FakeConstraintName");
+          .Expect(mock => mock.GetForeignKeyConstraintName(
+              Arg.Is(computerClassDefinition),
+              Arg<IEnumerable<ColumnDefinition>>.List.Equal(expectedComparedColumns)))
+          .Return("FakeConstraintName");
       _storageNameProviderMock
-          .Expect (mock => mock.GetTableName (employeeClassDefinition))
-          .Return (new EntityNameDefinition(null, "FakeTableName"));
+          .Expect(mock => mock.GetTableName(employeeClassDefinition))
+          .Return(new EntityNameDefinition(null, "FakeTableName"));
       _storageNameProviderMock.Replay();
 
-      var foreignKeyConstraintDefinitions = _factory.CreateForeignKeyConstraints (computerClassDefinition).ToArray();
+      var foreignKeyConstraintDefinitions = _factory.CreateForeignKeyConstraints(computerClassDefinition).ToArray();
 
       _infrastructureStoragePropertyDefintionProviderMock.VerifyAllExpectations();
       _storageNameProviderMock.VerifyAllExpectations();
-      Assert.That (foreignKeyConstraintDefinitions.Length, Is.EqualTo (1)); //EmployeeTransactionProperty relation property is filtered
+      Assert.That(foreignKeyConstraintDefinitions.Length, Is.EqualTo(1)); //EmployeeTransactionProperty relation property is filtered
     }
 
     [Test]
     public void CreateForeignKeyConstraints_NoEntityName_NoForeignKeyConstrainedIsCreated ()
     {
-      var orderClassDefinition = Configuration.GetClassDefinition ("Order");
+      var orderClassDefinition = Configuration.GetClassDefinition("Order");
 
       _storageNameProviderMock
-          .Expect (mock => mock.GetTableName (Arg<ClassDefinition>.Is.Anything))
-          .Return (null)
+          .Expect(mock => mock.GetTableName(Arg<ClassDefinition>.Is.Anything))
+          .Return(null)
           .Repeat.Any();
       _storageNameProviderMock.Replay();
 
-      var result = _factory.CreateForeignKeyConstraints (orderClassDefinition).ToArray();
+      var result = _factory.CreateForeignKeyConstraints(orderClassDefinition).ToArray();
 
-      Assert.That (result.Length, Is.EqualTo (0));
+      Assert.That(result.Length, Is.EqualTo(0));
     }
   }
 }

@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Gene
     /// <inheritdoc />
     public override TControl CreateControl (GenericTestOptions options)
     {
-      var control = base.CreateControl (options);
+      var control = base.CreateControl(options);
       control.ReadOnly = options.ReadOnlyState == ReadOnlyState.ReadOnly;
       return control;
     }

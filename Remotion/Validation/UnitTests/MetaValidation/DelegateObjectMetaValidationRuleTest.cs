@@ -29,11 +29,11 @@ namespace Remotion.Validation.UnitTests.MetaValidation
     public void Validate ()
     {
       var fakeResult = MetaValidationRuleValidationResult.CreateValidResult();
-      var delegateRule = new DelegateObjectMetaValidationRule<IObjectValidator> (v => fakeResult);
+      var delegateRule = new DelegateObjectMetaValidationRule<IObjectValidator>(v => fakeResult);
 
-      var result = delegateRule.Validate (new IObjectValidator[0]).First();
+      var result = delegateRule.Validate(new IObjectValidator[0]).First();
 
-      Assert.That (result, Is.SameAs (fakeResult));
+      Assert.That(result, Is.SameAs(fakeResult));
     }
   }
 }

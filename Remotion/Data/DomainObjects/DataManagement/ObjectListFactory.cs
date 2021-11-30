@@ -36,28 +36,28 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public static IObjectList<IDomainObject> Create (IVirtualCollectionData virtualCollectionData)
     {
-      ArgumentUtility.CheckNotNull ("virtualCollectionData", virtualCollectionData);
+      ArgumentUtility.CheckNotNull("virtualCollectionData", virtualCollectionData);
 
-      var ctor = GetConstructorInfoForVirtualObjectListFromCache (virtualCollectionData.RequiredItemType);
+      var ctor = GetConstructorInfoForVirtualObjectListFromCache(virtualCollectionData.RequiredItemType);
 
-      return (IObjectList<IDomainObject>) ctor.Invoke (new object[] { virtualCollectionData });
+      return (IObjectList<IDomainObject>)ctor.Invoke(new object[] { virtualCollectionData });
     }
 
     private static ConstructorInfo GetConstructorInfoForVirtualObjectListFromCache (Type domainObjectType)
     {
-      return s_virtualObjectListConstructorInfos.GetOrAdd (
+      return s_virtualObjectListConstructorInfos.GetOrAdd(
           domainObjectType,
           type =>
           {
-            var collectionType = typeof (VirtualObjectList<>).MakeGenericType (type);
+            var collectionType = typeof(VirtualObjectList<>).MakeGenericType(type);
 
-            var ctor = collectionType.GetConstructor (
+            var ctor = collectionType.GetConstructor(
                 BindingFlags.Public | BindingFlags.Instance,
                 null,
-                new[] { typeof (IVirtualCollectionData) },
+                new[] { typeof(IVirtualCollectionData) },
                 null);
 
-            Assertion.IsNotNull (ctor, "Constructor for type '{0}' not found.", collectionType);
+            Assertion.IsNotNull(ctor, "Constructor for type '{0}' not found.", collectionType);
             return ctor;
           });
     }

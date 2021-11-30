@@ -37,38 +37,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     public void SetUp ()
     {
       _fakeResult = new object();
-     
+
       _commandExecutionContextMock = MockRepository.GenerateStrictMock<IRdbmsProviderCommandExecutionContext>();
       _dbCommandMock = MockRepository.GenerateStrictMock<IDbCommand>();
       _dbCommandBuilderMock = MockRepository.GenerateStrictMock<IDbCommandBuilder>();
 
-      _command = new ScalarValueLoadCommand (_dbCommandBuilderMock);
+      _command = new ScalarValueLoadCommand(_dbCommandBuilderMock);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_command.DbCommandBuilder, Is.SameAs (_dbCommandBuilderMock));
+      Assert.That(_command.DbCommandBuilder, Is.SameAs(_dbCommandBuilderMock));
     }
 
     [Test]
     public void Execute ()
     {
-      _commandExecutionContextMock.Expect (mock => mock.ExecuteScalar (_dbCommandMock)).Return (_fakeResult);
+      _commandExecutionContextMock.Expect(mock => mock.ExecuteScalar(_dbCommandMock)).Return(_fakeResult);
       _commandExecutionContextMock.Replay();
 
-      _dbCommandBuilderMock.Expect (mock => mock.Create (_commandExecutionContextMock)).Return (_dbCommandMock);
+      _dbCommandBuilderMock.Expect(mock => mock.Create(_commandExecutionContextMock)).Return(_dbCommandMock);
       _dbCommandBuilderMock.Replay();
 
-      _dbCommandMock.Expect (mock => mock.Dispose());
+      _dbCommandMock.Expect(mock => mock.Dispose());
       _dbCommandMock.Replay();
-      
+
       var result = _command.Execute(_commandExecutionContextMock);
 
       _commandExecutionContextMock.VerifyAllExpectations();
       _dbCommandBuilderMock.VerifyAllExpectations();
       _dbCommandMock.VerifyAllExpectations();
-      Assert.That (result, Is.SameAs (_fakeResult));
+      Assert.That(result, Is.SameAs(_fakeResult));
     }
   }
 }

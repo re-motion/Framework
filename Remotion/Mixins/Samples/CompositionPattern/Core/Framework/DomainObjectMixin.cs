@@ -24,7 +24,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Framework
   /// usually introduce interfaces extending <see cref="IDomainObject"/>. Also provides infrastructure members useful to domain object mixins.
   /// </summary>
   /// <typeparam name="TTarget">The minimum type of the mixin's target class. This must at least implement <see cref="IDomainObject"/>.</typeparam>
-  [NonIntroduced (typeof (IDomainObjectMixin))]
+  [NonIntroduced(typeof(IDomainObjectMixin))]
   public abstract class DomainObjectMixin<TTarget> : Mixin<TTarget>, IDomainObject, IDomainObjectMixin
       where TTarget : class, IDomainObject
   {
@@ -38,7 +38,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Framework
       get { return Target.Events; }
     }
 
-    protected virtual void OnTargetReferenceInitializing()
+    protected virtual void OnTargetReferenceInitializing ()
     {
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.Framework
 
     void IDomainObjectMixin.OnTargetReferenceInitializing ()
     {
-      OnTargetReferenceInitializing ();
+      OnTargetReferenceInitializing();
     }
   }
 }

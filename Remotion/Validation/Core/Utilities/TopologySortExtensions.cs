@@ -40,8 +40,8 @@ namespace Remotion.Validation.Utilities
 
       public Node (T content, Func<T, IEnumerable<T>> getDependencies, bool included)
       {
-        ArgumentUtility.CheckNotNull ("content", content);
-        ArgumentUtility.CheckNotNull ("getDependencies", getDependencies);
+        ArgumentUtility.CheckNotNull("content", content);
+        ArgumentUtility.CheckNotNull("getDependencies", getDependencies);
         Content = content;
         _getDependencies = getDependencies;
         Included = included;
@@ -49,7 +49,7 @@ namespace Remotion.Validation.Utilities
 
       public override string ToString ()
       {
-        return string.Concat ("Node<T>(", ReferrerCount, ") of ", Content);
+        return string.Concat("Node<T>(", ReferrerCount, ") of ", Content);
       }
 
       public Node<T> DropDependencies ()
@@ -65,14 +65,14 @@ namespace Remotion.Validation.Utilities
 
       public bool Included { get; private set; }
 
-      [MemberNotNull (nameof (_dependencies))]
+      [MemberNotNull(nameof(_dependencies))]
       public void CalculateDependencies (Dictionary<object, Node<T>> nodes, TopologySortMissingDependencyBehavior missingDependencies)
       {
         _dependencies = new HashSet<Node<T>>();
-        foreach (T dependency in _getDependencies (Content))
+        foreach (T dependency in _getDependencies(Content))
         {
           Node<T>? node;
-          if (!nodes.TryGetValue (dependency, out node))
+          if (!nodes.TryGetValue(dependency, out node))
           {
             switch (missingDependencies)
             {
@@ -80,22 +80,22 @@ namespace Remotion.Validation.Utilities
                 node = null;
                 break;
               case TopologySortMissingDependencyBehavior.Respect:
-                node = new Node<T> (dependency, _getDependencies, false);
+                node = new Node<T>(dependency, _getDependencies, false);
                 break;
               case TopologySortMissingDependencyBehavior.Include:
-                node = new Node<T> (dependency, _getDependencies, true);
+                node = new Node<T>(dependency, _getDependencies, true);
                 break;
               default:
-                throw new ArgumentOutOfRangeException ("missingDependencies");
+                throw new ArgumentOutOfRangeException("missingDependencies");
             }
             if (node != null)
             {
-              nodes.Add (node.Content, node);
-              node.CalculateDependencies (nodes, missingDependencies);
+              nodes.Add(node.Content, node);
+              node.CalculateDependencies(nodes, missingDependencies);
             }
           }
           if (node != null)
-            AddDependency (node);
+            AddDependency(node);
         }
       }
 
@@ -105,17 +105,17 @@ namespace Remotion.Validation.Utilities
           return;
         if (node.Included)
         {
-          if (_dependencies!.Contains (node))
+          if (_dependencies!.Contains(node))
             return;
 
-          _dependencies.Add (node);
+          _dependencies.Add(node);
           if (Included)
             node.ReferrerCount++;
         }
         else
         {
           foreach (Node<T> dependencyNode in node._dependencies!)
-            AddDependency (dependencyNode);
+            AddDependency(dependencyNode);
         }
       }
 
@@ -138,7 +138,7 @@ namespace Remotion.Validation.Utilities
     public static IEnumerable<IEnumerable<T>> TopologySort<T> (this IEnumerable<T> source, Func<T, IEnumerable<T>> getDependencies)
         where T : notnull
     {
-      return TopologySort (source, getDependencies, null);
+      return TopologySort(source, getDependencies, null);
     }
 
     /// <summary>
@@ -156,7 +156,7 @@ namespace Remotion.Validation.Utilities
     public static IEnumerable<IEnumerable<T>> TopologySortDesc<T> (this IEnumerable<T> source, Func<T, IEnumerable<T>> getDependencies)
         where T : notnull
     {
-      return TopologySort (source, getDependencies, null).Reverse();
+      return TopologySort(source, getDependencies, null).Reverse();
     }
 
     /// <summary>
@@ -175,7 +175,7 @@ namespace Remotion.Validation.Utilities
         )
         where T : notnull
     {
-      return TopologySort (source, getDependencies, subSort, TopologySortMissingDependencyBehavior.Ignore);
+      return TopologySort(source, getDependencies, subSort, TopologySortMissingDependencyBehavior.Ignore);
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ namespace Remotion.Validation.Utilities
         )
         where T : notnull
     {
-      return TopologySort (source, getDependencies, subSort, TopologySortMissingDependencyBehavior.Ignore).Reverse();
+      return TopologySort(source, getDependencies, subSort, TopologySortMissingDependencyBehavior.Ignore).Reverse();
     }
 
     /// <summary>
@@ -221,23 +221,23 @@ namespace Remotion.Validation.Utilities
         )
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull ("source", source);
-      ArgumentUtility.CheckNotNull ("getDependencies", getDependencies);
+      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentUtility.CheckNotNull("getDependencies", getDependencies);
 
-      var unsorted = source.Select (content => new Node<T> (content, getDependencies, true)).ToList();
+      var unsorted = source.Select(content => new Node<T>(content, getDependencies, true)).ToList();
       Dictionary<object, Node<T>> nodes;
       try
       {
-        nodes = unsorted.ToDictionary (node => (object) node.Content);
+        nodes = unsorted.ToDictionary(node => (object)node.Content);
       }
       catch (ArgumentException e)
       {
-        throw new InvalidOperationException ("elements to topology-sort are not unique or some element is null.", e);
+        throw new InvalidOperationException("elements to topology-sort are not unique or some element is null.", e);
       }
-      unsorted.ForEach (node => node.CalculateDependencies (nodes, missingDependencies));
+      unsorted.ForEach(node => node.CalculateDependencies(nodes, missingDependencies));
 
       if (missingDependencies == TopologySortMissingDependencyBehavior.Include)
-        unsorted = nodes.Values.Where (node => node.Included).ToList();
+        unsorted = nodes.Values.Where(node => node.Included).ToList();
 
       var sorted = new List<IEnumerable<T>>();
       while (unsorted.Count > 0)
@@ -247,19 +247,19 @@ namespace Remotion.Validation.Utilities
         foreach (var node in unsorted)
         {
           if (node.ReferrerCount == 0)
-            unreferred.Add (node);
+            unreferred.Add(node);
           else
-            toBeSortedNext.Add (node);
+            toBeSortedNext.Add(node);
         }
         if (unreferred.Count == 0)
-          throw new InvalidOperationException ("Cyclic dependency detected - cannot perform topology sort");
+          throw new InvalidOperationException("Cyclic dependency detected - cannot perform topology sort");
 
         unsorted = toBeSortedNext;
 
-        var unreferredContents = unreferred.Select (node => node.DropDependencies().Content);
+        var unreferredContents = unreferred.Select(node => node.DropDependencies().Content);
         if (subSort != null)
-          unreferredContents = subSort (unreferredContents);
-        sorted.Add (unreferredContents.ToArray());
+          unreferredContents = subSort(unreferredContents);
+        sorted.Add(unreferredContents.ToArray());
       }
 
       return sorted;
@@ -273,7 +273,7 @@ namespace Remotion.Validation.Utilities
         )
         where T : notnull
     {
-      return TopologySort (source, getDependencies, subSort, missingDependencies).Reverse ();
+      return TopologySort(source, getDependencies, subSort, missingDependencies).Reverse();
     }
 
   }

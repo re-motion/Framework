@@ -36,21 +36,21 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageControlObject SelectFirst (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindCss (c_imgTag);
-      return CreateControlObject (context, scope);
+      var scope = context.Scope.FindCss(c_imgTag);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public ImageControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindCss (c_imgTag);
+      var scope = context.Scope.FindCss(c_imgTag);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -58,46 +58,46 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageControlObject SelectSingle (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindCss (c_imgTag);
+      var scope = context.Scope.FindCss(c_imgTag);
       scope.EnsureSingle();
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public ImageControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindCss (c_imgTag);
+      var scope = context.Scope.FindCss(c_imgTag);
 
       if (!scope.ExistsWithEnsureSingleWorkaround())
         return null;
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public ImageControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var xPathSelector = string.Format ("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
-      var scope = context.Scope.FindXPath (xPathSelector);
-      return CreateControlObject (context, scope);
+      var xPathSelector = string.Format("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
+      var scope = context.Scope.FindXPath(xPathSelector);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public ImageControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var xPathSelector = string.Format ("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
-      var scope = context.Scope.FindXPath (xPathSelector);
+      var xPathSelector = string.Format("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
+      var scope = context.Scope.FindXPath(xPathSelector);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -105,10 +105,10 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var xPathSelector = string.Format ("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
-      var scope = context.Scope.FindXPath (xPathSelector);
+      var xPathSelector = string.Format("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
+      var scope = context.Scope.FindXPath(xPathSelector);
 
       return scope.ExistsWorkaround();
     }
@@ -118,10 +118,10 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new ImageControlObject (newControlObjectContext);
+      return new ImageControlObject(newControlObjectContext);
     }
   }
 }

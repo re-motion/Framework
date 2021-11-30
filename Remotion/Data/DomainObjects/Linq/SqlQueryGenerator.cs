@@ -37,9 +37,9 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public SqlQueryGenerator (ISqlPreparationStage preparationStage, IMappingResolutionStage resolutionStage, ISqlGenerationStage generationStage)
     {
-      ArgumentUtility.CheckNotNull ("preparationStage", preparationStage);
-      ArgumentUtility.CheckNotNull ("resolutionStage", resolutionStage);
-      ArgumentUtility.CheckNotNull ("generationStage", generationStage);
+      ArgumentUtility.CheckNotNull("preparationStage", preparationStage);
+      ArgumentUtility.CheckNotNull("resolutionStage", resolutionStage);
+      ArgumentUtility.CheckNotNull("generationStage", generationStage);
 
       _preparationStage = preparationStage;
       _resolutionStage = resolutionStage;
@@ -70,37 +70,37 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <returns>A <see cref="SqlCommandData"/> instance containing the SQL text, parameters, and an in-memory projection for the given query model.</returns>
     public virtual SqlQueryGeneratorResult CreateSqlQuery (QueryModel queryModel)
     {
-      ArgumentUtility.CheckNotNull ("queryModel", queryModel);
+      ArgumentUtility.CheckNotNull("queryModel", queryModel);
 
       SqlStatement sqlStatement;
       try
       {
-        sqlStatement = TransformAndResolveQueryModel (queryModel);
+        sqlStatement = TransformAndResolveQueryModel(queryModel);
       }
       catch (NotSupportedException ex)
       {
-        var message = string.Format ("There was an error preparing or resolving query '{0}' for SQL generation. {1}", queryModel, ex.Message);
-        throw new NotSupportedException (message, ex);
+        var message = string.Format("There was an error preparing or resolving query '{0}' for SQL generation. {1}", queryModel, ex.Message);
+        throw new NotSupportedException(message, ex);
       }
       catch (UnmappedItemException ex)
       {
-        var message = string.Format ("Query '{0}' contains an unmapped item. {1}", queryModel, ex.Message);
-        throw new UnmappedItemException (message, ex);
+        var message = string.Format("Query '{0}' contains an unmapped item. {1}", queryModel, ex.Message);
+        throw new UnmappedItemException(message, ex);
       }
 
-      var selectedEntityTypeOrNull = GetSelectedEntityType (sqlStatement.SelectProjection);
+      var selectedEntityTypeOrNull = GetSelectedEntityType(sqlStatement.SelectProjection);
       SqlCommandData sqlCommandData;
       try
       {
-        sqlCommandData = CreateSqlCommand (sqlStatement);
+        sqlCommandData = CreateSqlCommand(sqlStatement);
       }
       catch (NotSupportedException ex)
       {
-        var message = string.Format ("There was an error generating SQL for the query '{0}'. {1}", queryModel, ex.Message);
-        throw new NotSupportedException (message, ex);
+        var message = string.Format("There was an error generating SQL for the query '{0}'. {1}", queryModel, ex.Message);
+        throw new NotSupportedException(message, ex);
       }
 
-      return new SqlQueryGeneratorResult (sqlCommandData, selectedEntityTypeOrNull);
+      return new SqlQueryGeneratorResult(sqlCommandData, selectedEntityTypeOrNull);
     }
 
     /// <summary>
@@ -110,9 +110,9 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <returns>the generated <see cref="SqlStatement"/></returns>
     protected virtual SqlStatement TransformAndResolveQueryModel (QueryModel queryModel)
     {
-      var sqlStatement = _preparationStage.PrepareSqlStatement (queryModel, null);
-      var mappingResolutionContext = new MappingResolutionContext ();
-      return _resolutionStage.ResolveSqlStatement (sqlStatement, mappingResolutionContext);
+      var sqlStatement = _preparationStage.PrepareSqlStatement(queryModel, null);
+      var mappingResolutionContext = new MappingResolutionContext();
+      return _resolutionStage.ResolveSqlStatement(sqlStatement, mappingResolutionContext);
     }
 
     /// <summary>
@@ -122,16 +122,16 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <returns><see cref="SqlCommandData"/> which represents the sql query.</returns>
     protected virtual SqlCommandData CreateSqlCommand (SqlStatement sqlStatement)
     {
-      var commandBuilder = new SqlCommandBuilder ();
-      _generationStage.GenerateTextForOuterSqlStatement (commandBuilder, sqlStatement);
-      return commandBuilder.GetCommand ();
+      var commandBuilder = new SqlCommandBuilder();
+      _generationStage.GenerateTextForOuterSqlStatement(commandBuilder, sqlStatement);
+      return commandBuilder.GetCommand();
     }
 
     private Type GetSelectedEntityType (Expression selectProjection)
     {
       var expression = selectProjection;
       while (expression is UnaryExpression)
-        expression = ((UnaryExpression) expression).Operand;
+        expression = ((UnaryExpression)expression).Operand;
       if (expression is SqlEntityExpression)
         return expression.Type;
 

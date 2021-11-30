@@ -34,10 +34,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
                                MockRepository.GenerateStub<IPersistenceExtensionFactory>(),
                                MockRepository.GenerateStub<IPersistenceExtensionFactory>()
                            };
-      var compoundFactory = new CompoundPersistenceExtensionFactory (innerFactories);
+      var compoundFactory = new CompoundPersistenceExtensionFactory(innerFactories);
 
-      Assert.That (compoundFactory.PersistenceExtensionFactories, Is.Not.SameAs (innerFactories));
-      Assert.That (compoundFactory.PersistenceExtensionFactories, Is.EqualTo (innerFactories));
+      Assert.That(compoundFactory.PersistenceExtensionFactories, Is.Not.SameAs(innerFactories));
+      Assert.That(compoundFactory.PersistenceExtensionFactories, Is.EqualTo(innerFactories));
     }
 
     [Test]
@@ -60,14 +60,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
                            };
 
       var clientTransactionID = Guid.NewGuid();
-      innerFactories[0].Stub (_ => _.CreatePersistenceExtensions (clientTransactionID)).Return (firstExtensions);
-      innerFactories[1].Stub (_ => _.CreatePersistenceExtensions (clientTransactionID)).Return (secondExtensions);
+      innerFactories[0].Stub(_ => _.CreatePersistenceExtensions(clientTransactionID)).Return(firstExtensions);
+      innerFactories[1].Stub(_ => _.CreatePersistenceExtensions(clientTransactionID)).Return(secondExtensions);
 
-      var compoundFactory = new CompoundPersistenceExtensionFactory (innerFactories);
+      var compoundFactory = new CompoundPersistenceExtensionFactory(innerFactories);
 
-      var extensions = compoundFactory.CreatePersistenceExtensions (clientTransactionID);
+      var extensions = compoundFactory.CreatePersistenceExtensions(clientTransactionID);
 
-      Assert.That (extensions, Is.EqualTo (firstExtensions.Concat (secondExtensions)));
+      Assert.That(extensions, Is.EqualTo(firstExtensions.Concat(secondExtensions)));
     }
   }
 }

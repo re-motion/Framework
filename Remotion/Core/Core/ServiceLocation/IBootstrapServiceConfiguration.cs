@@ -47,6 +47,6 @@ namespace Remotion.ServiceLocation
     /// <summary>
     /// Removes all registered <see cref="ServiceConfigurationEntry"/> data.
     /// </summary>
-    void Reset();
+    void Reset ();
   }
 }

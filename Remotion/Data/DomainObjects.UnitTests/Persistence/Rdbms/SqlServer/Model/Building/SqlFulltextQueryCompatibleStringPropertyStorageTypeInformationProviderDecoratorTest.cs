@@ -38,11 +38,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
       var isStorageTypeNullable = BooleanObjectMother.GetRandomBoolean();
-      innerStub.Stub (_ => _.GetStorageTypeForID (isStorageTypeNullable)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageTypeForID(isStorageTypeNullable)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageTypeForID (isStorageTypeNullable), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageTypeForID(isStorageTypeNullable), Is.SameAs(expectedValue));
     }
 
     [Test]
@@ -52,11 +52,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
       var isStorageTypeNullable = BooleanObjectMother.GetRandomBoolean();
-      innerStub.Stub (_ => _.GetStorageTypeForClassID (isStorageTypeNullable)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageTypeForClassID(isStorageTypeNullable)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageTypeForClassID (isStorageTypeNullable), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageTypeForClassID(isStorageTypeNullable), Is.SameAs(expectedValue));
     }
 
     [Test]
@@ -66,11 +66,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
       var isStorageTypeNullable = BooleanObjectMother.GetRandomBoolean();
-      innerStub.Stub (_ => _.GetStorageTypeForSerializedObjectID (isStorageTypeNullable)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageTypeForSerializedObjectID(isStorageTypeNullable)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageTypeForSerializedObjectID (isStorageTypeNullable), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageTypeForSerializedObjectID(isStorageTypeNullable), Is.SameAs(expectedValue));
     }
 
     [Test]
@@ -80,168 +80,168 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
       var isStorageTypeNullable = BooleanObjectMother.GetRandomBoolean();
-      innerStub.Stub (_ => _.GetStorageTypeForTimestamp (isStorageTypeNullable)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageTypeForTimestamp(isStorageTypeNullable)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageTypeForTimestamp (isStorageTypeNullable), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageTypeForTimestamp(isStorageTypeNullable), Is.SameAs(expectedValue));
     }
 
     [Test]
-    [TestCase (DbType.AnsiString, 100, TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndAnsiString_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.AnsiStringFixedLength, 100, TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.String, 100, TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndString_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.StringFixedLength, 100, TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndStringFixedLength_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.Int32, null, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndOtherDbType_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.AnsiStringFixedLength, null, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.StringFixedLength, null, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndStringFixedLength_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.AnsiString, 100, TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndAnsiString_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.AnsiStringFixedLength, 100, TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.String, 100, TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndString_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.StringFixedLength, 100, TestName = "GetStorageType_ForPropertyDefinition_WithStorageTypeLength_AndStringFixedLength_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.Int32, null, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndOtherDbType_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.AnsiStringFixedLength, null, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.StringFixedLength, null, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndStringFixedLength_ReturnsOriginalStorageTypeInformation")]
     public void GetStorageType_ForPropertyDefinition_ReturnsOriginalStorageTypeInformation (
-        DbType storageDbType, 
+        DbType storageDbType,
         int? storageTypeLength)
     {
-      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation (
+      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(
           storageDbType: storageDbType,
           storageTypeLength: storageTypeLength);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      var propertyDefinition = CreatePropertyDefinition ();
+      var propertyDefinition = CreatePropertyDefinition();
       var forceNullable = BooleanObjectMother.GetRandomBoolean();
-      innerStub.Stub (_ => _.GetStorageType (propertyDefinition, forceNullable)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageType(propertyDefinition, forceNullable)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageType (propertyDefinition, forceNullable), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageType(propertyDefinition, forceNullable), Is.SameAs(expectedValue));
     }
 
     [Test]
-    [TestCase (DbType.AnsiString, 8000, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndAnsiString_ReturnsDecoratedStorageTypeInformation")]
-    [TestCase (DbType.String, 4000, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndString_ReturnsDecoratedStorageTypeInformation")]
+    [TestCase(DbType.AnsiString, 8000, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndAnsiString_ReturnsDecoratedStorageTypeInformation")]
+    [TestCase(DbType.String, 4000, TestName = "GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_AndString_ReturnsDecoratedStorageTypeInformation")]
     public void GetStorageType_ForPropertyDefinition_WithoutStorageTypeLength_ReturnsDecoratedStorageTypeInformation (
-        DbType storageDbType, 
+        DbType storageDbType,
         int supportedMaxLength)
     {
-      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation (storageDbType: storageDbType, storageTypeLength: null);
+      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(storageDbType: storageDbType, storageTypeLength: null);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      var propertyDefinition = CreatePropertyDefinition ();
+      var propertyDefinition = CreatePropertyDefinition();
       var forceNullable = BooleanObjectMother.GetRandomBoolean();
-      innerStub.Stub (_ => _.GetStorageType (propertyDefinition, forceNullable)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageType(propertyDefinition, forceNullable)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      var result = decorator.GetStorageType (propertyDefinition, forceNullable);
+      var result = decorator.GetStorageType(propertyDefinition, forceNullable);
 
-      Assert.That (result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
-      var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator) result;
-      Assert.That (decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo (supportedMaxLength));
-      Assert.That (decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs (expectedValue));
+      Assert.That(result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
+      var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator)result;
+      Assert.That(decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo(supportedMaxLength));
+      Assert.That(decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs(expectedValue));
     }
 
     [Test]
-    [TestCase (DbType.AnsiString, 100, TestName = "GetStorageType_ForType_WithStorageTypeLength_AndAnsiString_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.AnsiStringFixedLength, 100, TestName = "GetStorageType_ForType_WithStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.String, 100, TestName = "GetStorageType_ForType_WithStorageTypeLength_AndString_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.StringFixedLength, 100, TestName = "GetStorageType_ForType_WithStorageTypeLength_AndStringFilxedLength_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.Int32, null, TestName = "GetStorageType_ForType_WithoutStorageTypeLength_AndOtherDbType_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.AnsiStringFixedLength, null, TestName = "GetStorageType_ForType_WithoutStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.StringFixedLength, null, TestName = "GetStorageType_ForType_WithoutStorageTypeLength_AndStringFixedLength_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.AnsiString, 100, TestName = "GetStorageType_ForType_WithStorageTypeLength_AndAnsiString_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.AnsiStringFixedLength, 100, TestName = "GetStorageType_ForType_WithStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.String, 100, TestName = "GetStorageType_ForType_WithStorageTypeLength_AndString_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.StringFixedLength, 100, TestName = "GetStorageType_ForType_WithStorageTypeLength_AndStringFilxedLength_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.Int32, null, TestName = "GetStorageType_ForType_WithoutStorageTypeLength_AndOtherDbType_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.AnsiStringFixedLength, null, TestName = "GetStorageType_ForType_WithoutStorageTypeLength_AndAnsiStringFixedLength_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.StringFixedLength, null, TestName = "GetStorageType_ForType_WithoutStorageTypeLength_AndStringFixedLength_ReturnsOriginalStorageTypeInformation")]
     public void GetStorageType_ForType_ReturnsOriginalStorageTypeInformation (
-        DbType storageDbType, 
+        DbType storageDbType,
         int? storageTypeLength)
     {
-      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation (
+      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(
           storageDbType: storageDbType,
           storageTypeLength: storageTypeLength);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      var type = typeof (object);
-      innerStub.Stub (_ => _.GetStorageType (type)).Return (expectedValue);
+      var type = typeof(object);
+      innerStub.Stub(_ => _.GetStorageType(type)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageType (type), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageType(type), Is.SameAs(expectedValue));
     }
 
     [Test]
-    [TestCase (DbType.AnsiString, 8000, TestName = "GetStorageType_ForType_WithoutStorageTypeLength_AndAnsiString_ReturnsDecoratedStorageTypeInformation")]
-    [TestCase (DbType.String, 4000, TestName = "GetStorageType_ForType_WithoutStorageTypeLength_AndString_ReturnsDecoratedStorageTypeInformation")]
+    [TestCase(DbType.AnsiString, 8000, TestName = "GetStorageType_ForType_WithoutStorageTypeLength_AndAnsiString_ReturnsDecoratedStorageTypeInformation")]
+    [TestCase(DbType.String, 4000, TestName = "GetStorageType_ForType_WithoutStorageTypeLength_AndString_ReturnsDecoratedStorageTypeInformation")]
     public void GetStorageType_ForType_WithoutStorageTypeLength_ReturnsDecoratedStorageTypeInformation (DbType storageDbType, int supportedMaxLength)
     {
-      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation (storageDbType: storageDbType, storageTypeLength: null);
+      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(storageDbType: storageDbType, storageTypeLength: null);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      var type = typeof (object);
-      innerStub.Stub (_ => _.GetStorageType (type)).Return (expectedValue);
+      var type = typeof(object);
+      innerStub.Stub(_ => _.GetStorageType(type)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      var result = decorator.GetStorageType (type);
+      var result = decorator.GetStorageType(type);
 
-      Assert.That (result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
-      var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator) result;
-      Assert.That (decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo (supportedMaxLength));
-      Assert.That (decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs (expectedValue));
+      Assert.That(result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
+      var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator)result;
+      Assert.That(decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo(supportedMaxLength));
+      Assert.That(decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs(expectedValue));
     }
 
     [Test]
-    [TestCase (DbType.AnsiString, 100, "value", TestName = "GetStorageType_FoValue_WithStorageTypeLength_AndAnsiString_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.AnsiStringFixedLength, 100, "value", TestName = "GetStorageType_FoValue_WithStorageTypeLength_AndAnsiStringFixedLength_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.String, 100, "value", TestName = "GetStorageType_ForValue_WithStorageTypeLength_AndString_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.StringFixedLength, 100, "value", TestName = "GetStorageType_ForValue_WithStorageTypeLength_AndStringFixedLength_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.Int32, null, 5, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndOtherDbType_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.Int32, null, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndOtherDbType_AndValueNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.AnsiStringFixedLength, null, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndAnsiStringFixedLength_AndValueNull_ReturnsOriginalStorageTypeInformation")]
-    [TestCase (DbType.StringFixedLength, null, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndStringFixedLength_AndValueNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.AnsiString, 100, "value", TestName = "GetStorageType_FoValue_WithStorageTypeLength_AndAnsiString_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.AnsiStringFixedLength, 100, "value", TestName = "GetStorageType_FoValue_WithStorageTypeLength_AndAnsiStringFixedLength_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.String, 100, "value", TestName = "GetStorageType_ForValue_WithStorageTypeLength_AndString_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.StringFixedLength, 100, "value", TestName = "GetStorageType_ForValue_WithStorageTypeLength_AndStringFixedLength_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.Int32, null, 5, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndOtherDbType_AndValueNotNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.Int32, null, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndOtherDbType_AndValueNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.AnsiStringFixedLength, null, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndAnsiStringFixedLength_AndValueNull_ReturnsOriginalStorageTypeInformation")]
+    [TestCase(DbType.StringFixedLength, null, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndStringFixedLength_AndValueNull_ReturnsOriginalStorageTypeInformation")]
     public void GetStorageType_ForValue_ReturnsOriginalStorageTypeInformation (
-        DbType storageDbType, 
+        DbType storageDbType,
         int? storageTypeLength,
         object value)
     {
-      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation (
+      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(
           storageDbType: storageDbType,
           storageTypeLength: storageTypeLength);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      innerStub.Stub (_ => _.GetStorageType (value)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageType(value)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      Assert.That (decorator.GetStorageType (value), Is.SameAs (expectedValue));
+      Assert.That(decorator.GetStorageType(value), Is.SameAs(expectedValue));
     }
 
     [Test]
-    [TestCase (DbType.AnsiString, 8000, "value", TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndAnsiString_AndValueNotNull_ReturnsDecoratedStorageTypeInformation")]
-    [TestCase (DbType.String, 4000, "value", TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndString_AndValueNotNull_ReturnsDecoratedStorageTypeInformation")]
-    [TestCase (DbType.AnsiString, 8000, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndAnsiString_AndValueNull_ReturnsDecoratedStorageTypeInformation")]
-    [TestCase (DbType.String, 4000, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndString_AndValueNull_ReturnsDecoratedStorageTypeInformation")]
+    [TestCase(DbType.AnsiString, 8000, "value", TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndAnsiString_AndValueNotNull_ReturnsDecoratedStorageTypeInformation")]
+    [TestCase(DbType.String, 4000, "value", TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndString_AndValueNotNull_ReturnsDecoratedStorageTypeInformation")]
+    [TestCase(DbType.AnsiString, 8000, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndAnsiString_AndValueNull_ReturnsDecoratedStorageTypeInformation")]
+    [TestCase(DbType.String, 4000, null, TestName = "GetStorageType_ForValue_WithoutStorageTypeLength_AndString_AndValueNull_ReturnsDecoratedStorageTypeInformation")]
     public void GetStorageType_ForValue_WithoutStorageTypeLength_ReturnsDecoratedStorageTypeInformation (
         DbType storageDbType,
         int supportedMaxLength,
         object value)
     {
-      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation (storageDbType: storageDbType, storageTypeLength: null);
+      var expectedValue = StorageTypeInformationObjectMother.CreateStorageTypeInformation(storageDbType: storageDbType, storageTypeLength: null);
       var innerStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
 
-      innerStub.Stub (_ => _.GetStorageType (value)).Return (expectedValue);
+      innerStub.Stub(_ => _.GetStorageType(value)).Return(expectedValue);
 
-      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator (innerStub);
+      var decorator = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationProviderDecorator(innerStub);
 
-      var result = decorator.GetStorageType (value);
+      var result = decorator.GetStorageType(value);
 
-      Assert.That (result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
-      var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator) result;
-      Assert.That (decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo (supportedMaxLength));
-      Assert.That (decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs (expectedValue));
+      Assert.That(result, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
+      var decoratedTypeInfo = (SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator)result;
+      Assert.That(decoratedTypeInfo.FulltextCompatibleMaxLength, Is.EqualTo(supportedMaxLength));
+      Assert.That(decoratedTypeInfo.InnerStorageTypeInformation, Is.SameAs(expectedValue));
     }
 
     private PropertyDefinition CreatePropertyDefinition ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
-      return PropertyDefinitionObjectMother.CreateForFakePropertyInfo (
+      return PropertyDefinitionObjectMother.CreateForFakePropertyInfo(
           classDefinition,
           "Name",
           false,
-          typeof (object),
+          typeof(object),
           true,
           null,
           StorageClass.Persistent);

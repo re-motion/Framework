@@ -31,10 +31,10 @@ namespace Remotion.SecurityManager.Domain
 
     // construction and disposing
 
-    public ConstraintViolationException () : this ("A constraint has been violated.") {}
-    public ConstraintViolationException (string message) : base (message) {}
-    public ConstraintViolationException (string message, Exception inner) : base (message, inner) {}
-    protected ConstraintViolationException (SerializationInfo info, StreamingContext context) : base (info, context) { }
+    public ConstraintViolationException () : this("A constraint has been violated.") {}
+    public ConstraintViolationException (string message) : base(message) {}
+    public ConstraintViolationException (string message, Exception inner) : base(message, inner) {}
+    protected ConstraintViolationException (SerializationInfo info, StreamingContext context) : base(info, context) { }
 
     // methods and properties
   }

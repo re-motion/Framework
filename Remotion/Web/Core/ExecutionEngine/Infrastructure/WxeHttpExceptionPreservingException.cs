@@ -28,8 +28,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     [CanBeNull]
     public static Exception? GetUnwrappedException ([NotNull] Exception exception)
     {
-      ArgumentUtility.CheckNotNull ("exception", exception);
-      
+      ArgumentUtility.CheckNotNull("exception", exception);
+
       var unwrappedException = exception;
       while (unwrappedException is HttpException || unwrappedException is WxeHttpExceptionPreservingException)
         unwrappedException = unwrappedException.InnerException;
@@ -37,18 +37,18 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     }
 
     public WxeHttpExceptionPreservingException (HttpException exception)
-        : base (string.Format ("{0} was thrown.", exception), ArgumentUtility.CheckNotNull("exception", exception))
+        : base(string.Format("{0} was thrown.", exception), ArgumentUtility.CheckNotNull("exception", exception))
     {
     }
 
     private WxeHttpExceptionPreservingException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
 
     public HttpException? HttpException
     {
-      get { return (HttpException?) InnerException; }
+      get { return (HttpException?)InnerException; }
     }
   }
 }

@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [SetUp]
     public virtual void SetUp ()
     {
-      _context = new WxeContextMock (WxeContextMock.CreateHttpContext());
+      _context = new WxeContextMock(WxeContextMock.CreateHttpContext());
       _transactionScope = new TransactionScope();
     }
 
@@ -49,10 +49,10 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
 
     protected void ExecuteDelegateInWxeFunction (ITransactionMode transactionMode, Action<WxeContext, DelegateExecutingTransactedFunction> testDelegate)
     {
-      var function = new DelegateExecutingTransactedFunction (transactionMode, testDelegate);
+      var function = new DelegateExecutingTransactedFunction(transactionMode, testDelegate);
 
-      function.Execute (Context);
-      Assert.That (function.DelegatesExecuted, Is.True);
+      function.Execute(Context);
+      Assert.That(function.DelegatesExecuted, Is.True);
     }
 
     protected void ExecuteDelegateInSubWxeFunction (
@@ -60,12 +60,12 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
         ITransactionMode subFunctionTransactionMode,
         Action<WxeContext, DelegateExecutingTransactedFunction> testDelegate)
     {
-      var subFunction = new DelegateExecutingTransactedFunction (subFunctionTransactionMode, testDelegate);
+      var subFunction = new DelegateExecutingTransactedFunction(subFunctionTransactionMode, testDelegate);
 
-      var rootFunction = new TransactedFunctionWithChildFunction (parentFunctionTransactionMode, subFunction);
-      rootFunction.Execute (Context);
+      var rootFunction = new TransactedFunctionWithChildFunction(parentFunctionTransactionMode, subFunction);
+      rootFunction.Execute(Context);
 
-      Assert.That (subFunction.DelegatesExecuted, Is.True);
+      Assert.That(subFunction.DelegatesExecuted, Is.True);
     }
 
     protected void ExecuteDelegateInWxeFunctionWithParameters (
@@ -76,14 +76,14 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
         out SampleObject outParameter,
         out SampleObject[] outParameterArray)
     {
-      var function = new DomainObjectParameterTestTransactedFunction (
+      var function = new DomainObjectParameterTestTransactedFunction(
           transactionMode,
           testDelegate,
           inParameter,
           inParameterArray);
-      function.Execute (Context);
+      function.Execute(Context);
 
-      Assert.That (function.DelegatesExecuted, Is.True);
+      Assert.That(function.DelegatesExecuted, Is.True);
 
       outParameter = function.OutParameter;
       outParameterArray = function.OutParameterArray;
@@ -98,16 +98,16 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
         out SampleObject outParameter,
         out SampleObject[] outParameterArray)
     {
-      var subFunction = new DomainObjectParameterTestTransactedFunction (
+      var subFunction = new DomainObjectParameterTestTransactedFunction(
           subFunctionTransactionMode,
           testDelegate,
           inParameter,
           inParameterArray);
 
-      var rootFunction = new TransactedFunctionWithChildFunction (parentFunctionTransactionMode, subFunction);
-      rootFunction.Execute (Context);
+      var rootFunction = new TransactedFunctionWithChildFunction(parentFunctionTransactionMode, subFunction);
+      rootFunction.Execute(Context);
 
-      Assert.That (subFunction.DelegatesExecuted, Is.True);
+      Assert.That(subFunction.DelegatesExecuted, Is.True);
 
       outParameter = subFunction.OutParameter;
       outParameterArray = subFunction.OutParameterArray;

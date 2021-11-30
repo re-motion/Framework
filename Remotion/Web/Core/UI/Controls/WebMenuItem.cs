@@ -26,14 +26,14 @@ using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   public class WebMenuItem : IControlItem
   {
     private const string c_separator = "-";
 
     public static WebMenuItem GetSeparator ()
     {
-      return new WebMenuItem (
+      return new WebMenuItem(
           null, null, c_separator, new IconInfo(), new IconInfo(), WebMenuItemStyle.IconAndText, RequiredSelection.Any, false, null);
     }
 
@@ -76,15 +76,15 @@ namespace Remotion.Web.UI.Controls
       _style = style;
       _requiredSelection = requiredSelection;
       _isDisabled = isDisabled;
-      _command = new SingleControlItemCollection (command, new[] { typeof (Command) });
+      _command = new SingleControlItemCollection(command, new[] { typeof(Command) });
 
-      _commandClick = new CommandClickEventHandler (Command_Click);
+      _commandClick = new CommandClickEventHandler(Command_Click);
       if (_command.ControlItem != null)
-        ((Command) _command.ControlItem).Click += _commandClick;
+        ((Command)_command.ControlItem).Click += _commandClick;
     }
 
     public WebMenuItem ()
-        : this (
+        : this(
             null,
             null,
             null,
@@ -93,7 +93,7 @@ namespace Remotion.Web.UI.Controls
             WebMenuItemStyle.IconAndText,
             RequiredSelection.Any,
             false,
-            new Command (CommandType.Event))
+            new Command(CommandType.Event))
     {
     }
 
@@ -129,12 +129,12 @@ namespace Remotion.Web.UI.Controls
     public override string ToString ()
     {
       string displayName = ItemID;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         displayName = Text;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         return DisplayedTypeName;
       else
-        return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+        return string.Format("{0}: {1}", displayName, DisplayedTypeName);
     }
 
     /// <summary> Gets the human readable name of this type. </summary>
@@ -143,11 +143,11 @@ namespace Remotion.Web.UI.Controls
       get { return "WebMenuItem"; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Description ("The ID of this menu item.")]
-    [NotifyParentProperty (true)]
-    [ParenthesizePropertyName (true)]
-    [DefaultValue ("")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Description("The ID of this menu item.")]
+    [NotifyParentProperty(true)]
+    [ParenthesizePropertyName(true)]
+    [DefaultValue("")]
     [AllowNull]
     public string ItemID
     {
@@ -155,11 +155,11 @@ namespace Remotion.Web.UI.Controls
       set { _itemID = value ?? string.Empty; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The category to which this menu item belongs. Items of the same category will be grouped in the UI.")]
-    [NotifyParentProperty (true)]
-    [DefaultValue ("")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The category to which this menu item belongs. Items of the same category will be grouped in the UI.")]
+    [NotifyParentProperty(true)]
+    [DefaultValue("")]
     [AllowNull]
     public string Category
     {
@@ -167,11 +167,11 @@ namespace Remotion.Web.UI.Controls
       set { _category = value ?? string.Empty; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The text displayed in this menu item. Use '-' for a separator menu item. The value will not be HTML encoded.")]
-    [NotifyParentProperty (true)]
-    [DefaultValue ("")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The text displayed in this menu item. Use '-' for a separator menu item. The value will not be HTML encoded.")]
+    [NotifyParentProperty(true)]
+    [DefaultValue("")]
     [AllowNull]
     public string Text
     {
@@ -179,8 +179,8 @@ namespace Remotion.Web.UI.Controls
       set { _text = value ?? string.Empty; }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public bool IsSeparator
     {
       get { return _text == c_separator; }
@@ -190,25 +190,25 @@ namespace Remotion.Web.UI.Controls
     ///   Gets or sets the image representing the menu item in the rendered page. Must not be <see langword="null"/>. 
     /// </summary>
     /// <value> An <see cref="IconInfo"/> representing the menu item. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Category ("Appearance")]
-    [Description ("The image representing the menu item in the rendered page.")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Category("Appearance")]
+    [Description("The image representing the menu item in the rendered page.")]
+    [NotifyParentProperty(true)]
     public IconInfo Icon
     {
       get { return _icon; }
-      [MemberNotNull (nameof (_icon))]
+      [MemberNotNull(nameof(_icon))]
       set
       {
-        ArgumentUtility.CheckNotNull ("Icon", value);
+        ArgumentUtility.CheckNotNull("Icon", value);
         _icon = value;
       }
     }
 
     private bool ShouldSerializeIcon ()
     {
-      return IconInfo.ShouldSerialize (_icon);
+      return IconInfo.ShouldSerialize(_icon);
     }
 
     private void ResetIcon ()
@@ -220,25 +220,25 @@ namespace Remotion.Web.UI.Controls
     ///   Gets or sets the image representing the disabled menu item in the rendered page. Must not be <see langword="null"/>. 
     /// </summary>
     /// <value> An <see cref="IconInfo"/> representing the disabled menu item. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Category ("Appearance")]
-    [Description ("The image representing the disabled menu item in the rendered page.")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Category("Appearance")]
+    [Description("The image representing the disabled menu item in the rendered page.")]
+    [NotifyParentProperty(true)]
     public IconInfo DisabledIcon
     {
       get { return _disabledIcon; }
-      [MemberNotNull (nameof (_disabledIcon))]
+      [MemberNotNull(nameof(_disabledIcon))]
       set
       {
-        ArgumentUtility.CheckNotNull ("DisabledIcon", value);
+        ArgumentUtility.CheckNotNull("DisabledIcon", value);
         _disabledIcon = value;
       }
     }
 
     private bool ShouldSerializeDisabledIcon ()
     {
-      return IconInfo.ShouldSerialize (_disabledIcon);
+      return IconInfo.ShouldSerialize(_disabledIcon);
     }
 
     private void ResetDisabledIcon ()
@@ -246,51 +246,51 @@ namespace Remotion.Web.UI.Controls
       _disabledIcon.Reset();
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("The selection state of a connected control that is required for enabling this menu item.")]
-    [NotifyParentProperty (true)]
-    [DefaultValue (RequiredSelection.Any)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("The selection state of a connected control that is required for enabling this menu item.")]
+    [NotifyParentProperty(true)]
+    [DefaultValue(RequiredSelection.Any)]
     public RequiredSelection RequiredSelection
     {
       get { return _requiredSelection; }
       set { _requiredSelection = value; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("True to manually disable the menu item.")]
-    [NotifyParentProperty (true)]
-    [DefaultValue (false)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("True to manually disable the menu item.")]
+    [NotifyParentProperty(true)]
+    [DefaultValue(false)]
     public bool IsDisabled
     {
       get { return _isDisabled; }
       set { _isDisabled = value; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("False to hide the menu item.")]
-    [NotifyParentProperty (true)]
-    [DefaultValue (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("False to hide the menu item.")]
+    [NotifyParentProperty(true)]
+    [DefaultValue(true)]
     public bool IsVisible
     {
       get { return _isVisible; }
       set { _isVisible = value; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [NotifyParentProperty (true)]
-    [DefaultValue (MissingPermissionBehavior.Invisible)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [NotifyParentProperty(true)]
+    [DefaultValue(MissingPermissionBehavior.Invisible)]
     public MissingPermissionBehavior MissingPermissionBehavior
     {
       get { return _missingPermissionBehavior; }
       set { _missingPermissionBehavior = value; }
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public ISecurableObject? SecurableObject
     {
       get { return _securableObject; }
@@ -299,13 +299,13 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Gets or sets the <see cref="Command"/> rendered for this menu item. </summary>
     /// <value> A <see cref="Command"/>. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Category ("Behavior")]
-    [Description ("The command rendered for this menu item.")]
-    [NotifyParentProperty (true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Category("Behavior")]
+    [Description("The command rendered for this menu item.")]
+    [NotifyParentProperty(true)]
     public virtual Command? Command
     {
-      get { return (Command?) _command.ControlItem; }
+      get { return (Command?)_command.ControlItem; }
       set
       {
         if (Command != null)
@@ -316,11 +316,11 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The style of this menu item.")]
-    [NotifyParentProperty (true)]
-    [DefaultValue (WebMenuItemStyle.IconAndText)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The style of this menu item.")]
+    [NotifyParentProperty(true)]
+    [DefaultValue(WebMenuItemStyle.IconAndText)]
     public WebMenuItemStyle Style
     {
       get { return _style; }
@@ -347,13 +347,13 @@ namespace Remotion.Web.UI.Controls
     {
       if (Command != null)
       {
-        Command = (Command) Activator.CreateInstance (Command.GetType())!;
+        Command = (Command)Activator.CreateInstance(Command.GetType())!;
         Command.Type = CommandType.None;
       }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [Browsable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Browsable(false)]
     public SingleControlItemCollection PersistedCommand
     {
       get { return _command; }
@@ -370,8 +370,8 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the control to which this object belongs. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public IControl? OwnerControl
     {
       get { return OwnerControlImplementation; }
@@ -404,7 +404,7 @@ namespace Remotion.Web.UI.Controls
       if (Command != null)
       {
         if (MissingPermissionBehavior == MissingPermissionBehavior.Invisible)
-          return Command.HasAccess (_securableObject);
+          return Command.HasAccess(_securableObject);
       }
 
       return true;
@@ -418,7 +418,7 @@ namespace Remotion.Web.UI.Controls
       if (Command != null)
       {
         if (MissingPermissionBehavior == MissingPermissionBehavior.Disabled)
-          return Command.HasAccess (_securableObject);
+          return Command.HasAccess(_securableObject);
       }
 
       return true;
@@ -426,22 +426,22 @@ namespace Remotion.Web.UI.Controls
 
     public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (Category);
-      if (!string.IsNullOrEmpty (key))
-        Category = resourceManager.GetString (key);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-      if (!string.IsNullOrEmpty (key))
-        Text = resourceManager.GetString (key);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(Category);
+      if (!string.IsNullOrEmpty(key))
+        Category = resourceManager.GetString(key);
 
-      Icon.LoadResources (resourceManager);
-      DisabledIcon.LoadResources (resourceManager);
+      key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+      if (!string.IsNullOrEmpty(key))
+        Text = resourceManager.GetString(key);
+
+      Icon.LoadResources(resourceManager);
+      DisabledIcon.LoadResources(resourceManager);
 
       if (Command != null)
-        Command.LoadResources (resourceManager, globalizationService);
+        Command.LoadResources(resourceManager, globalizationService);
     }
   }
 
@@ -475,7 +475,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Initializes an instance. </summary>
     public WebMenuItemClickEventArgs (WebMenuItem item)
     {
-      ArgumentUtility.CheckNotNull ("item", item);
+      ArgumentUtility.CheckNotNull("item", item);
       _item = item;
     }
 

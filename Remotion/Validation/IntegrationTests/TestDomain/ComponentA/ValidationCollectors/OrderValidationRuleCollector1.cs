@@ -23,9 +23,9 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
   {
     public OrderValidationRuleCollector1 ()
     {
-      RemoveRule (o => o.Number).Validator<LengthValidator>();
+      RemoveRule(o => o.Number).Validator<LengthValidator>();
 
-      AddRule (o => o.Number).Length (0, 15);
+      AddRule(o => o.Number).Length(0, 15);
     }
   }
 }

@@ -25,7 +25,7 @@ namespace Remotion.Reflection.CodeGeneration
   public class GeneratedMethodWrapperAttribute : MethodReferencingAttribute
   {
     public GeneratedMethodWrapperAttribute (Type declaringType, string methodName, string methodSignature)
-        : base (declaringType, methodName, methodSignature)
+        : base(declaringType, methodName, methodSignature)
     {
     }
   }

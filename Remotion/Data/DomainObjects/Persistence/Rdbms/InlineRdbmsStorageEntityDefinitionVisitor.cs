@@ -32,18 +32,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         Func<UnionViewDefinition, Func<IRdbmsStorageEntityDefinition, T>, T> unionViewDefinitionHandler,
         Func<EmptyViewDefinition, Func<IRdbmsStorageEntityDefinition, T>, T> emptyViewDefinitionHandler)
     {
-      ArgumentUtility.CheckNotNull ("entityDefinition", entityDefinition);
-      ArgumentUtility.CheckNotNull ("tableDefinitionHandler", tableDefinitionHandler);
-      ArgumentUtility.CheckNotNull ("filterViewDefinitionHandler", filterViewDefinitionHandler);
-      ArgumentUtility.CheckNotNull ("unionViewDefinitionHandler", unionViewDefinitionHandler);
-      ArgumentUtility.CheckNotNull ("emptyViewDefinitionHandler", emptyViewDefinitionHandler);
+      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentUtility.CheckNotNull("tableDefinitionHandler", tableDefinitionHandler);
+      ArgumentUtility.CheckNotNull("filterViewDefinitionHandler", filterViewDefinitionHandler);
+      ArgumentUtility.CheckNotNull("unionViewDefinitionHandler", unionViewDefinitionHandler);
+      ArgumentUtility.CheckNotNull("emptyViewDefinitionHandler", emptyViewDefinitionHandler);
 
-      var visitor = new RdbmsStorageEntityDefinitionVisitor<T> (
+      var visitor = new RdbmsStorageEntityDefinitionVisitor<T>(
           tableDefinitionHandler,
           filterViewDefinitionHandler,
           unionViewDefinitionHandler,
           emptyViewDefinitionHandler);
-      entityDefinition.Accept (visitor);
+      entityDefinition.Accept(visitor);
       return visitor.ReturnValue;
     }
 
@@ -54,19 +54,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         Action<UnionViewDefinition, Action<IRdbmsStorageEntityDefinition>> unionViewDefinitionHandler,
         Action<EmptyViewDefinition, Action<IRdbmsStorageEntityDefinition>> emptyViewDefinitionHandler)
     {
-      ArgumentUtility.CheckNotNull ("entityDefinition", entityDefinition);
-      ArgumentUtility.CheckNotNull ("tableDefinitionHandler", tableDefinitionHandler);
-      ArgumentUtility.CheckNotNull ("filterViewDefinitionHandler", filterViewDefinitionHandler);
-      ArgumentUtility.CheckNotNull ("unionViewDefinitionHandler", unionViewDefinitionHandler);
-      ArgumentUtility.CheckNotNull ("emptyViewDefinitionHandler", emptyViewDefinitionHandler);
+      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentUtility.CheckNotNull("tableDefinitionHandler", tableDefinitionHandler);
+      ArgumentUtility.CheckNotNull("filterViewDefinitionHandler", filterViewDefinitionHandler);
+      ArgumentUtility.CheckNotNull("unionViewDefinitionHandler", unionViewDefinitionHandler);
+      ArgumentUtility.CheckNotNull("emptyViewDefinitionHandler", emptyViewDefinitionHandler);
 
-      var visitor = new RdbmsStorageEntityDefinitionVisitor (
+      var visitor = new RdbmsStorageEntityDefinitionVisitor(
           tableDefinitionHandler,
           filterViewDefinitionHandler,
           unionViewDefinitionHandler,
           emptyViewDefinitionHandler);
 
-      entityDefinition.Accept (visitor);
+      entityDefinition.Accept(visitor);
     }
 
     private class RdbmsStorageEntityDefinitionVisitor<T> : IRdbmsStorageEntityDefinitionVisitor
@@ -84,10 +84,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
           Func<UnionViewDefinition, Func<IRdbmsStorageEntityDefinition, T>, T> unionViewDefinitionHandler,
           Func<EmptyViewDefinition, Func<IRdbmsStorageEntityDefinition, T>, T> emptyViewDefinitionHandler)
       {
-        ArgumentUtility.CheckNotNull ("tableDefinitionHandler", tableDefinitionHandler);
-        ArgumentUtility.CheckNotNull ("filterViewDefinitionHandler", filterViewDefinitionHandler);
-        ArgumentUtility.CheckNotNull ("unionViewDefinitionHandler", unionViewDefinitionHandler);
-        ArgumentUtility.CheckNotNull ("emptyViewDefinitionHandler", emptyViewDefinitionHandler);
+        ArgumentUtility.CheckNotNull("tableDefinitionHandler", tableDefinitionHandler);
+        ArgumentUtility.CheckNotNull("filterViewDefinitionHandler", filterViewDefinitionHandler);
+        ArgumentUtility.CheckNotNull("unionViewDefinitionHandler", unionViewDefinitionHandler);
+        ArgumentUtility.CheckNotNull("emptyViewDefinitionHandler", emptyViewDefinitionHandler);
 
         _tableDefinitionHandler = tableDefinitionHandler;
         _filterViewDefinitionHandler = filterViewDefinitionHandler;
@@ -102,35 +102,35 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
       public void VisitTableDefinition (TableDefinition tableDefinition)
       {
-        ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
+        ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
 
-        _returnValue = _tableDefinitionHandler (tableDefinition, ContinueWithNextEntity);
+        _returnValue = _tableDefinitionHandler(tableDefinition, ContinueWithNextEntity);
       }
 
       public void VisitUnionViewDefinition (UnionViewDefinition unionViewDefinition)
       {
-        ArgumentUtility.CheckNotNull ("unionViewDefinition", unionViewDefinition);
+        ArgumentUtility.CheckNotNull("unionViewDefinition", unionViewDefinition);
 
-        _returnValue = _unionViewDefinitionHandler (unionViewDefinition, ContinueWithNextEntity);
+        _returnValue = _unionViewDefinitionHandler(unionViewDefinition, ContinueWithNextEntity);
       }
 
       public void VisitFilterViewDefinition (FilterViewDefinition filterViewDefinition)
       {
-        ArgumentUtility.CheckNotNull ("filterViewDefinition", filterViewDefinition);
+        ArgumentUtility.CheckNotNull("filterViewDefinition", filterViewDefinition);
 
-        _returnValue = _filterViewDefinitionHandler (filterViewDefinition, ContinueWithNextEntity);
+        _returnValue = _filterViewDefinitionHandler(filterViewDefinition, ContinueWithNextEntity);
       }
 
       public void VisitEmptyViewDefinition (EmptyViewDefinition emptyViewDefinition)
       {
-        ArgumentUtility.CheckNotNull ("emptyViewDefinition", emptyViewDefinition);
+        ArgumentUtility.CheckNotNull("emptyViewDefinition", emptyViewDefinition);
 
-        _returnValue = _emptyViewDefinitionHandler (emptyViewDefinition, ContinueWithNextEntity);
+        _returnValue = _emptyViewDefinitionHandler(emptyViewDefinition, ContinueWithNextEntity);
       }
 
       private T ContinueWithNextEntity (IRdbmsStorageEntityDefinition entityDefinition)
       {
-        entityDefinition.Accept (this);
+        entityDefinition.Accept(this);
         return _returnValue;
       }
     }
@@ -148,10 +148,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
           Action<UnionViewDefinition, Action<IRdbmsStorageEntityDefinition>> unionViewDefinitionHandler,
           Action<EmptyViewDefinition, Action<IRdbmsStorageEntityDefinition>> emptyViewDefinitionHandler)
       {
-        ArgumentUtility.CheckNotNull ("tableDefinitionHandler", tableDefinitionHandler);
-        ArgumentUtility.CheckNotNull ("filterViewDefinitionHandler", filterViewDefinitionHandler);
-        ArgumentUtility.CheckNotNull ("unionViewDefinitionHandler", unionViewDefinitionHandler);
-        ArgumentUtility.CheckNotNull ("emptyViewDefinitionHandler", emptyViewDefinitionHandler);
+        ArgumentUtility.CheckNotNull("tableDefinitionHandler", tableDefinitionHandler);
+        ArgumentUtility.CheckNotNull("filterViewDefinitionHandler", filterViewDefinitionHandler);
+        ArgumentUtility.CheckNotNull("unionViewDefinitionHandler", unionViewDefinitionHandler);
+        ArgumentUtility.CheckNotNull("emptyViewDefinitionHandler", emptyViewDefinitionHandler);
 
         _tableDefinitionHandler = tableDefinitionHandler;
         _filterViewDefinitionHandler = filterViewDefinitionHandler;
@@ -161,35 +161,35 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
       public void VisitTableDefinition (TableDefinition tableDefinition)
       {
-        ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
+        ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
 
-        _tableDefinitionHandler (tableDefinition, ContinueWithNextEntity);
+        _tableDefinitionHandler(tableDefinition, ContinueWithNextEntity);
       }
 
       public void VisitUnionViewDefinition (UnionViewDefinition unionViewDefinition)
       {
-        ArgumentUtility.CheckNotNull ("unionViewDefinition", unionViewDefinition);
+        ArgumentUtility.CheckNotNull("unionViewDefinition", unionViewDefinition);
 
-        _unionViewDefinitionHandler (unionViewDefinition, ContinueWithNextEntity);
+        _unionViewDefinitionHandler(unionViewDefinition, ContinueWithNextEntity);
       }
 
       public void VisitFilterViewDefinition (FilterViewDefinition filterViewDefinition)
       {
-        ArgumentUtility.CheckNotNull ("filterViewDefinition", filterViewDefinition);
+        ArgumentUtility.CheckNotNull("filterViewDefinition", filterViewDefinition);
 
-        _filterViewDefinitionHandler (filterViewDefinition, ContinueWithNextEntity);
+        _filterViewDefinitionHandler(filterViewDefinition, ContinueWithNextEntity);
       }
 
       public void VisitEmptyViewDefinition (EmptyViewDefinition emptyViewDefinition)
       {
-        ArgumentUtility.CheckNotNull ("emptyViewDefinition", emptyViewDefinition);
+        ArgumentUtility.CheckNotNull("emptyViewDefinition", emptyViewDefinition);
 
-        _emptyViewDefinitionHandler (emptyViewDefinition, ContinueWithNextEntity);
+        _emptyViewDefinitionHandler(emptyViewDefinition, ContinueWithNextEntity);
       }
 
       private void ContinueWithNextEntity (IRdbmsStorageEntityDefinition entityDefinition)
       {
-        entityDefinition.Accept (this);
+        entityDefinition.Accept(this);
       }
     }
   }

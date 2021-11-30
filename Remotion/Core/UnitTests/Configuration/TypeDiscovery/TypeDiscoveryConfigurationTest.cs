@@ -54,147 +54,147 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
     [Test]
     public void Deserialization_Default ()
     {
-      var section = Deserialize (_xmlFragmentDefault);
-      Assert.That (section.Mode, Is.EqualTo (TypeDiscoveryMode.Automatic));
+      var section = Deserialize(_xmlFragmentDefault);
+      Assert.That(section.Mode, Is.EqualTo(TypeDiscoveryMode.Automatic));
     }
 
     [Test]
     public void Deserialization_Auto ()
     {
-      var section = Deserialize (_xmlFragmentWithAutoRootAssemblyFinder);
-      Assert.That (section.Mode, Is.EqualTo (TypeDiscoveryMode.Automatic));
+      var section = Deserialize(_xmlFragmentWithAutoRootAssemblyFinder);
+      Assert.That(section.Mode, Is.EqualTo(TypeDiscoveryMode.Automatic));
     }
 
     [Test]
     public void Deserialization_CustomSpecificRootAssemblyFinder ()
     {
-      var section = Deserialize (_xmlFragmentWithCustomRootAssemblyFinder);
-      Assert.That (section.Mode, Is.EqualTo (TypeDiscoveryMode.CustomRootAssemblyFinder));
-      Assert.That (section.CustomRootAssemblyFinder.Type, Is.SameAs (typeof (FakeRootAssemblyFinder)));
+      var section = Deserialize(_xmlFragmentWithCustomRootAssemblyFinder);
+      Assert.That(section.Mode, Is.EqualTo(TypeDiscoveryMode.CustomRootAssemblyFinder));
+      Assert.That(section.CustomRootAssemblyFinder.Type, Is.SameAs(typeof(FakeRootAssemblyFinder)));
     }
 
     [Test]
     public void Deserialization_SpecificRootAssemblies ()
     {
-      var section = Deserialize (_xmlFragmentWithSpecificRootAssemblies);
-      Assert.That (section.Mode, Is.EqualTo (TypeDiscoveryMode.SpecificRootAssemblies));
-      Assert.That (section.SpecificRootAssemblies.ByName.Single().Name, Is.EqualTo ("mscorlib"));
+      var section = Deserialize(_xmlFragmentWithSpecificRootAssemblies);
+      Assert.That(section.Mode, Is.EqualTo(TypeDiscoveryMode.SpecificRootAssemblies));
+      Assert.That(section.SpecificRootAssemblies.ByName.Single().Name, Is.EqualTo("mscorlib"));
     }
 
     [Test]
     public void Deserialization_SpecificEmptyRootAssemblies ()
     {
-      var section = Deserialize (_xmlFragmentWithSpecificEmptyRootAssemblies);
-      Assert.That (section.Mode, Is.EqualTo (TypeDiscoveryMode.SpecificRootAssemblies));
-      Assert.That (section.SpecificRootAssemblies.ByName.Count, Is.EqualTo (0));
-      Assert.That (section.SpecificRootAssemblies.ByFile.Count, Is.EqualTo (0));
+      var section = Deserialize(_xmlFragmentWithSpecificEmptyRootAssemblies);
+      Assert.That(section.Mode, Is.EqualTo(TypeDiscoveryMode.SpecificRootAssemblies));
+      Assert.That(section.SpecificRootAssemblies.ByName.Count, Is.EqualTo(0));
+      Assert.That(section.SpecificRootAssemblies.ByFile.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void Deserialization_CustomTypeDiscoveryService ()
     {
-      var section = Deserialize (_xmlFragmentWithCustomTypeDiscoveryService);
-      Assert.That (section.Mode, Is.EqualTo (TypeDiscoveryMode.CustomTypeDiscoveryService));
-      Assert.That (section.CustomTypeDiscoveryService.Type, Is.EqualTo (typeof (FakeTypeDiscoveryService)));
+      var section = Deserialize(_xmlFragmentWithCustomTypeDiscoveryService);
+      Assert.That(section.Mode, Is.EqualTo(TypeDiscoveryMode.CustomTypeDiscoveryService));
+      Assert.That(section.CustomTypeDiscoveryService.Type, Is.EqualTo(typeof(FakeTypeDiscoveryService)));
     }
 
     [Test]
     public void CreateTypeDiscoveryService_Auto ()
     {
-      var section = Deserialize (_xmlFragmentWithAutoRootAssemblyFinder);
+      var section = Deserialize(_xmlFragmentWithAutoRootAssemblyFinder);
 
-      var service = section.CreateTypeDiscoveryService ();
+      var service = section.CreateTypeDiscoveryService();
 
-      Assert.That (service, Is.InstanceOf (typeof (AssemblyFinderTypeDiscoveryService)));
-      Assert.That (((AssemblyFinderTypeDiscoveryService) service).AssemblyFinder, Is.TypeOf<CachingAssemblyFinderDecorator>());
-      var assemblyFinder = (AssemblyFinder) ((CachingAssemblyFinderDecorator) ((AssemblyFinderTypeDiscoveryService) service).AssemblyFinder).InnerFinder;
-      Assert.That (assemblyFinder.RootAssemblyFinder, Is.InstanceOf (typeof (SearchPathRootAssemblyFinder)));
+      Assert.That(service, Is.InstanceOf(typeof(AssemblyFinderTypeDiscoveryService)));
+      Assert.That(((AssemblyFinderTypeDiscoveryService)service).AssemblyFinder, Is.TypeOf<CachingAssemblyFinderDecorator>());
+      var assemblyFinder = (AssemblyFinder)((CachingAssemblyFinderDecorator)((AssemblyFinderTypeDiscoveryService)service).AssemblyFinder).InnerFinder;
+      Assert.That(assemblyFinder.RootAssemblyFinder, Is.InstanceOf(typeof(SearchPathRootAssemblyFinder)));
 
-      var searchPathRootAssemblyFinder = (SearchPathRootAssemblyFinder) assemblyFinder.RootAssemblyFinder;
-      Assert.That (searchPathRootAssemblyFinder.BaseDirectory, Is.EqualTo (AppContext.BaseDirectory));
-      Assert.That (searchPathRootAssemblyFinder.AssemblyLoader, Is.TypeOf<FilteringAssemblyLoader> ());
-      Assert.That (((FilteringAssemblyLoader) searchPathRootAssemblyFinder.AssemblyLoader).Filter, Is.SameAs (ApplicationAssemblyLoaderFilter.Instance));
+      var searchPathRootAssemblyFinder = (SearchPathRootAssemblyFinder)assemblyFinder.RootAssemblyFinder;
+      Assert.That(searchPathRootAssemblyFinder.BaseDirectory, Is.EqualTo(AppContext.BaseDirectory));
+      Assert.That(searchPathRootAssemblyFinder.AssemblyLoader, Is.TypeOf<FilteringAssemblyLoader>());
+      Assert.That(((FilteringAssemblyLoader)searchPathRootAssemblyFinder.AssemblyLoader).Filter, Is.SameAs(ApplicationAssemblyLoaderFilter.Instance));
 
-      Assert.That (assemblyFinder.AssemblyLoader, Is.TypeOf<FilteringAssemblyLoader>());
-      Assert.That (((FilteringAssemblyLoader) assemblyFinder.AssemblyLoader).Filter, Is.SameAs (ApplicationAssemblyLoaderFilter.Instance));
+      Assert.That(assemblyFinder.AssemblyLoader, Is.TypeOf<FilteringAssemblyLoader>());
+      Assert.That(((FilteringAssemblyLoader)assemblyFinder.AssemblyLoader).Filter, Is.SameAs(ApplicationAssemblyLoaderFilter.Instance));
     }
 
     [Test]
     public void CreateTypeDiscoveryService_CustomRootAssemblyFinder ()
     {
-      var section = Deserialize (_xmlFragmentWithCustomRootAssemblyFinder);
+      var section = Deserialize(_xmlFragmentWithCustomRootAssemblyFinder);
 
-      var service = section.CreateTypeDiscoveryService ();
+      var service = section.CreateTypeDiscoveryService();
 
-      Assert.That (service, Is.InstanceOf (typeof (AssemblyFinderTypeDiscoveryService)));
-      Assert.That (((AssemblyFinderTypeDiscoveryService) service).AssemblyFinder, Is.TypeOf<CachingAssemblyFinderDecorator>());
-      var assemblyFinder = (AssemblyFinder) ((CachingAssemblyFinderDecorator) ((AssemblyFinderTypeDiscoveryService) service).AssemblyFinder).InnerFinder;
-      Assert.That (assemblyFinder.RootAssemblyFinder, Is.InstanceOf (typeof (FakeRootAssemblyFinder)));
+      Assert.That(service, Is.InstanceOf(typeof(AssemblyFinderTypeDiscoveryService)));
+      Assert.That(((AssemblyFinderTypeDiscoveryService)service).AssemblyFinder, Is.TypeOf<CachingAssemblyFinderDecorator>());
+      var assemblyFinder = (AssemblyFinder)((CachingAssemblyFinderDecorator)((AssemblyFinderTypeDiscoveryService)service).AssemblyFinder).InnerFinder;
+      Assert.That(assemblyFinder.RootAssemblyFinder, Is.InstanceOf(typeof(FakeRootAssemblyFinder)));
     }
 
     [Test]
     public void CreateTypeDiscoveryService_CustomRootAssemblyFinder_MissingType ()
     {
-      var section = Deserialize (_xmlFragmentWithMissingCustomRootAssemblyFinder);
-      Assert.That (
-          () => section.CreateTypeDiscoveryService (),
+      var section = Deserialize(_xmlFragmentWithMissingCustomRootAssemblyFinder);
+      Assert.That(
+          () => section.CreateTypeDiscoveryService(),
           Throws.InstanceOf<ConfigurationErrorsException>()
-              .With.Message.Contains (
+              .With.Message.Contains(
                   "In CustomRootAssemblyFinder mode, a custom root assembly finder must be specified in the type discovery configuration."));
     }
 
     [Test]
     public void CreateTypeDiscoveryService_SpecificRootAssemblies ()
     {
-      var section = Deserialize (_xmlFragmentWithSpecificRootAssemblies);
+      var section = Deserialize(_xmlFragmentWithSpecificRootAssemblies);
 
-      var service = section.CreateTypeDiscoveryService ();
+      var service = section.CreateTypeDiscoveryService();
 
-      Assert.That (service, Is.InstanceOf (typeof (AssemblyFinderTypeDiscoveryService)));
-      Assert.That (((AssemblyFinderTypeDiscoveryService) service).AssemblyFinder, Is.TypeOf<CachingAssemblyFinderDecorator> ());
-      var assemblyFinder = (AssemblyFinder) ((CachingAssemblyFinderDecorator) ((AssemblyFinderTypeDiscoveryService) service).AssemblyFinder).InnerFinder;
-      Assert.That (assemblyFinder.RootAssemblyFinder, Is.InstanceOf (typeof (CompositeRootAssemblyFinder)));
+      Assert.That(service, Is.InstanceOf(typeof(AssemblyFinderTypeDiscoveryService)));
+      Assert.That(((AssemblyFinderTypeDiscoveryService)service).AssemblyFinder, Is.TypeOf<CachingAssemblyFinderDecorator>());
+      var assemblyFinder = (AssemblyFinder)((CachingAssemblyFinderDecorator)((AssemblyFinderTypeDiscoveryService)service).AssemblyFinder).InnerFinder;
+      Assert.That(assemblyFinder.RootAssemblyFinder, Is.InstanceOf(typeof(CompositeRootAssemblyFinder)));
 
-      var rootAssemblyFinder = (CompositeRootAssemblyFinder) assemblyFinder.RootAssemblyFinder;
-      Assert.That (rootAssemblyFinder.InnerFinders.Count, Is.EqualTo (2));
-      Assert.That (rootAssemblyFinder.InnerFinders[0], Is.InstanceOf (typeof (NamedRootAssemblyFinder)));
+      var rootAssemblyFinder = (CompositeRootAssemblyFinder)assemblyFinder.RootAssemblyFinder;
+      Assert.That(rootAssemblyFinder.InnerFinders.Count, Is.EqualTo(2));
+      Assert.That(rootAssemblyFinder.InnerFinders[0], Is.InstanceOf(typeof(NamedRootAssemblyFinder)));
 
-      var namedFinder = ((NamedRootAssemblyFinder) rootAssemblyFinder.InnerFinders[0]);
-      Assert.That (namedFinder.Specifications.First ().AssemblyName.ToString (), Is.EqualTo ("mscorlib"));
-      Assert.That (namedFinder.AssemblyLoader, Is.TypeOf<FilteringAssemblyLoader> ());
-      Assert.That (((FilteringAssemblyLoader) namedFinder.AssemblyLoader).Filter, Is.TypeOf<LoadAllAssemblyLoaderFilter> ());
+      var namedFinder = ((NamedRootAssemblyFinder)rootAssemblyFinder.InnerFinders[0]);
+      Assert.That(namedFinder.Specifications.First().AssemblyName.ToString(), Is.EqualTo("mscorlib"));
+      Assert.That(namedFinder.AssemblyLoader, Is.TypeOf<FilteringAssemblyLoader>());
+      Assert.That(((FilteringAssemblyLoader)namedFinder.AssemblyLoader).Filter, Is.TypeOf<LoadAllAssemblyLoaderFilter>());
 
-      var filePatternFinder = ((FilePatternRootAssemblyFinder) rootAssemblyFinder.InnerFinders[1]);
-      Assert.That (filePatternFinder.Specifications.ToArray(), Is.Empty);
-      Assert.That (filePatternFinder.AssemblyLoader, Is.TypeOf<FilteringAssemblyLoader> ());
-      Assert.That (((FilteringAssemblyLoader) filePatternFinder.AssemblyLoader).Filter, Is.TypeOf<LoadAllAssemblyLoaderFilter> ());
+      var filePatternFinder = ((FilePatternRootAssemblyFinder)rootAssemblyFinder.InnerFinders[1]);
+      Assert.That(filePatternFinder.Specifications.ToArray(), Is.Empty);
+      Assert.That(filePatternFinder.AssemblyLoader, Is.TypeOf<FilteringAssemblyLoader>());
+      Assert.That(((FilteringAssemblyLoader)filePatternFinder.AssemblyLoader).Filter, Is.TypeOf<LoadAllAssemblyLoaderFilter>());
     }
 
     [Test]
     public void CreateTypeDiscoveryService_CustomTypeDiscoveryService ()
     {
-      var section = Deserialize (_xmlFragmentWithCustomTypeDiscoveryService);
+      var section = Deserialize(_xmlFragmentWithCustomTypeDiscoveryService);
 
-      var service = section.CreateTypeDiscoveryService ();
+      var service = section.CreateTypeDiscoveryService();
 
-      Assert.That (service, Is.InstanceOf (typeof (FakeTypeDiscoveryService)));
+      Assert.That(service, Is.InstanceOf(typeof(FakeTypeDiscoveryService)));
     }
 
     [Test]
     public void CreateTypeDiscoveryService_CustomTypeDiscoveryService_MissingType ()
     {
-      var section = Deserialize (_xmlFragmentWithMissingCustomTypeDiscoveryService);
-      Assert.That (
-          () => section.CreateTypeDiscoveryService (),
+      var section = Deserialize(_xmlFragmentWithMissingCustomTypeDiscoveryService);
+      Assert.That(
+          () => section.CreateTypeDiscoveryService(),
           Throws.InstanceOf<ConfigurationErrorsException>()
-              .With.Message.Contains (
+              .With.Message.Contains(
                   "In CustomTypeDiscoveryService mode, a custom type discovery service must be specified in the type discovery configuration."));
     }
 
     private TypeDiscoveryConfiguration Deserialize (string xmlFragment)
     {
-      var section = new TypeDiscoveryConfiguration ();
-      ConfigurationHelper.DeserializeSection (section, xmlFragment);
+      var section = new TypeDiscoveryConfiguration();
+      ConfigurationHelper.DeserializeSection(section, xmlFragment);
       return section;
     }
   }

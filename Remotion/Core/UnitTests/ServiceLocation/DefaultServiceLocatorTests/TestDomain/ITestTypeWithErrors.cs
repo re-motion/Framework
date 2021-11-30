@@ -42,7 +42,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDoma
     {
     }
   }
-  
+
   public class TestTypeWithConstructorThrowingSingleDependency : ITestType
   {
     public TestTypeWithConstructorThrowingSingleDependency (ITestTypeWithErrors param)
@@ -62,7 +62,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDoma
   {
     public TestTypeWithConstructorThrowingException ()
     {
-      throw new ApplicationException ("This exception comes from the ctor.");
+      throw new ApplicationException("This exception comes from the ctor.");
     }
   }
 }

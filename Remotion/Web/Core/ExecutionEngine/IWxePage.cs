@@ -89,16 +89,16 @@ namespace Remotion.Web.ExecutionEngine
     string StatusIsCachedMessage { get; }
 
     /// <summary> Gets the permanent URL parameters the current page. </summary>
-    NameValueCollection GetPermanentUrlParameters();
+    NameValueCollection GetPermanentUrlParameters ();
 
     /// <summary> Gets the permanent URL for the current page. </summary>
-    string GetPermanentUrl();
-  
+    string GetPermanentUrl ();
+
     /// <summary> Gets the permanent URL for the current page using the specified <paramref name="queryString"/>. </summary>
     /// <include file='..\doc\include\ExecutionEngine\IWxePage.xml' 
     ///     path='IWxePage/GetPermanentUrl/param[@name="queryString"]' />
     string GetPermanentUrl (NameValueCollection queryString);
-  
+
     /// <summary> 
     ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
     ///   and using the <paramref name="queryString"/>.
@@ -108,7 +108,7 @@ namespace Remotion.Web.ExecutionEngine
     string GetPermanentUrl (Type functionType, NameValueCollection queryString);
 
     /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     WxeHandler WxeHandler { get; }
   }
 }

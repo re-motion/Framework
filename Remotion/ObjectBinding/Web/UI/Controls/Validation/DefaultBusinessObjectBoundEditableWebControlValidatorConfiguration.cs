@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
   /// <remarks>
   /// Enables optional validators for unbound business object controls.
   /// </remarks>
-  [ImplementationFor (typeof (IBusinessObjectBoundEditableWebControlValidatorConfiguration), RegistrationType = RegistrationType.Single, Position = Position, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBusinessObjectBoundEditableWebControlValidatorConfiguration), RegistrationType = RegistrationType.Single, Position = Position, Lifetime = LifetimeKind.Singleton)]
   public class DefaultBusinessObjectBoundEditableWebControlValidatorConfiguration : IBusinessObjectBoundEditableWebControlValidatorConfiguration
   {
     public const int Position = 0;
@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public bool AreOptionalValidatorsEnabled (IBusinessObjectBoundEditableWebControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (control.DataSource == null)
         return true;

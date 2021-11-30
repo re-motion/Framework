@@ -26,7 +26,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     [SpecialName]
     void PublicMethodWithSpecialName ();
   }
-  
+
   public class MixinAddingSpecialNameMethod : IMixinAddingSpecialNameMethod
   {
     public void MethodWithSpecialName ()
@@ -34,10 +34,10 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
       throw new NotImplementedException();
     }
 
-    [MemberVisibility (MemberVisibility.Public)]
+    [MemberVisibility(MemberVisibility.Public)]
     public void PublicMethodWithSpecialName ()
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
   }
 }

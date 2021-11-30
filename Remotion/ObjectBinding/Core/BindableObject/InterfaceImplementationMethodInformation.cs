@@ -34,8 +34,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public InterfaceImplementationMethodInformation (IMethodInformation implementationMethodInfo, IMethodInformation declarationMethodInfo)
     {
-      ArgumentUtility.CheckNotNull ("implementationMethodInfo", implementationMethodInfo);
-      ArgumentUtility.CheckNotNull ("declarationMethodInfo", declarationMethodInfo);
+      ArgumentUtility.CheckNotNull("implementationMethodInfo", implementationMethodInfo);
+      ArgumentUtility.CheckNotNull("declarationMethodInfo", declarationMethodInfo);
 
       _implementationMethodInfo = implementationMethodInfo;
       _declarationMethodInfo = declarationMethodInfo;
@@ -63,36 +63,36 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public T[] GetCustomAttributes<T> (bool inherited) where T: class
     {
-      return _implementationMethodInfo.GetCustomAttributes<T> (inherited);
+      return _implementationMethodInfo.GetCustomAttributes<T>(inherited);
     }
 
     public bool IsDefined<T> (bool inherited) where T: class
     {
-      return _implementationMethodInfo.IsDefined<T> (inherited);
+      return _implementationMethodInfo.IsDefined<T>(inherited);
     }
 
     public IMethodInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull ("implementationType", implementationType);
-      
-      return _implementationMethodInfo.FindInterfaceImplementation (implementationType);
+      ArgumentUtility.CheckNotNull("implementationType", implementationType);
+
+      return _implementationMethodInfo.FindInterfaceImplementation(implementationType);
     }
 
     public IEnumerable<IMethodInformation> FindInterfaceDeclarations ()
     {
-      return EnumerableUtility.Singleton (_declarationMethodInfo);
+      return EnumerableUtility.Singleton(_declarationMethodInfo);
     }
 
     public T GetFastInvoker<T> () where T: class
     {
-      return (T)(object)GetFastInvoker (typeof (T));
+      return (T)(object)GetFastInvoker(typeof(T));
     }
 
     public Delegate GetFastInvoker (Type delegateType)
     {
-      ArgumentUtility.CheckNotNull ("delegateType", delegateType);
+      ArgumentUtility.CheckNotNull("delegateType", delegateType);
 
-      return _declarationMethodInfo.GetFastInvoker (delegateType);
+      return _declarationMethodInfo.GetFastInvoker(delegateType);
     }
 
     public ParameterInfo[] GetParameters ()
@@ -117,20 +117,20 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public object? Invoke (object? instance, object?[]? parameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance!);
-      
-      return _declarationMethodInfo.Invoke (instance, parameters);
+      ArgumentUtility.CheckNotNull("instance", instance!);
+
+      return _declarationMethodInfo.Invoke(instance, parameters);
     }
 
     public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;
-      if (obj.GetType() != GetType()) 
+      if (obj.GetType() != GetType())
         return false;
 
-      var other = (InterfaceImplementationMethodInformation) obj;
-      return _implementationMethodInfo.Equals (other._implementationMethodInfo) && _declarationMethodInfo.Equals (other._declarationMethodInfo);
+      var other = (InterfaceImplementationMethodInformation)obj;
+      return _implementationMethodInfo.Equals(other._implementationMethodInfo) && _declarationMethodInfo.Equals(other._declarationMethodInfo);
     }
 
     public override int GetHashCode ()
@@ -140,7 +140,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public override string ToString ()
     {
-      return string.Format ("{0} (impl of '{1}')", _implementationMethodInfo.Name, _declarationMethodInfo.DeclaringType!.Name);
+      return string.Format("{0} (impl of '{1}')", _implementationMethodInfo.Name, _declarationMethodInfo.DeclaringType!.Name);
     }
 
     bool INullObject.IsNull

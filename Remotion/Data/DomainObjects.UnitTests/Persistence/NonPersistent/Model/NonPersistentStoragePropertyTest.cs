@@ -11,8 +11,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model
     {
       var instance = NonPersistentStorageProperty.Instance;
 
-      Assert.That (instance, Is.Not.Null);
-      Assert.That (instance, Is.SameAs (NonPersistentStorageProperty.Instance));
+      Assert.That(instance, Is.Not.Null);
+      Assert.That(instance, Is.SameAs(NonPersistentStorageProperty.Instance));
     }
   }
 }

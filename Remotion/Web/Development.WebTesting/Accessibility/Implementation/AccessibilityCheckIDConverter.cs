@@ -116,9 +116,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// </summary>
     public static AccessibilityRequirementID ConvertToEnum ([NotNull] string checkIDAsString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("checkIDAsString", checkIDAsString);
+      ArgumentUtility.CheckNotNullOrEmpty("checkIDAsString", checkIDAsString);
 
-      if (!s_dictionary.TryGetValue (checkIDAsString, out var ruleID))
+      if (!s_dictionary.TryGetValue(checkIDAsString, out var ruleID))
         return AccessibilityRequirementID.Unknown;
 
       return ruleID;

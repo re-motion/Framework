@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// <summary>
   /// Represents the many-side of a bidirectional one-to-many relationship based on <see cref="IObjectList{TDomainObject}"/>.
   /// </summary>
-  [DebuggerDisplay ("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
+  [DebuggerDisplay("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
   public class VirtualCollectionRelationEndPointDefinition : IRelationEndPointDefinition
   {
     private readonly string _propertyName;
@@ -43,10 +43,10 @@ namespace Remotion.Data.DomainObjects.Mapping
         [CanBeNull] Lazy<SortExpressionDefinition> sortExpression,
         [NotNull] IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      ArgumentUtility.CheckNotNull ("sortExpression", sortExpression);
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.CheckNotNull("sortExpression", sortExpression);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
       _classDefinition = classDefinition;
       _isMandatory = isMandatory;
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetRelationDefinition (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
       _relationDefinition = relationDefinition;
     }
 

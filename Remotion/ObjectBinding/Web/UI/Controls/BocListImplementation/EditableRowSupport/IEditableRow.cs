@@ -22,12 +22,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
   public interface IEditableRow
   {
     void CreateControls (IBusinessObject value, BocColumnDefinition[] columns);
-    void RemoveControls();
+    void RemoveControls ();
     bool HasEditControls ();
     bool HasEditControl (int columnIndex);
     void PrepareValidation ();
     bool Validate ();
-    IBusinessObjectBoundEditableWebControl[] GetEditControlsAsArray();
+    IBusinessObjectBoundEditableWebControl[] GetEditControlsAsArray ();
 
     void RenderSimpleColumnCellEditModeControl (
         HtmlTextWriter writer,

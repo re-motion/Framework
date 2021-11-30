@@ -25,7 +25,7 @@ using Remotion.Globalization;
 // associated with an assembly.
 //
 
-[assembly: AssemblyCulture ("")]
-[assembly: NeutralResourcesLanguage ("")]
-[assembly: AvailableResourcesLanguages ("")]
-[assembly: CLSCompliant (true)]
+[assembly: AssemblyCulture("")]
+[assembly: NeutralResourcesLanguage("")]
+[assembly: AvailableResourcesLanguages("")]
+[assembly: CLSCompliant(true)]

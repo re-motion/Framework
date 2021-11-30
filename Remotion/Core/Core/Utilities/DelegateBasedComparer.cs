@@ -32,13 +32,13 @@ namespace Remotion.Utilities
 
     public DelegateBasedComparer (Comparison<T?> comparison)
     {
-      ArgumentUtility.CheckNotNull ("comparison", comparison);
+      ArgumentUtility.CheckNotNull("comparison", comparison);
       _comparison = comparison;
     }
 
     public int Compare (T? x, T? y)
     {
-      return _comparison (x, y);
+      return _comparison(x, y);
     }
   }
 }

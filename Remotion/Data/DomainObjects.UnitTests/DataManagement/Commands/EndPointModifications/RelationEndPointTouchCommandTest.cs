@@ -33,59 +33,59 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _transaction = new TestableClientTransaction ();
+      _transaction = new TestableClientTransaction();
 
-      var id = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof (Order).FullName + ".Customer");
-      _endPoint = _transaction.ExecuteInScope (() => RelationEndPointObjectMother.CreateObjectEndPoint (id, null));
+      var id = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order).FullName + ".Customer");
+      _endPoint = _transaction.ExecuteInScope(() => RelationEndPointObjectMother.CreateObjectEndPoint(id, null));
 
-      _command = new RelationEndPointTouchCommand (_endPoint);
+      _command = new RelationEndPointTouchCommand(_endPoint);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_command.EndPoint, Is.SameAs (_endPoint));
+      Assert.That(_command.EndPoint, Is.SameAs(_endPoint));
     }
 
     [Test]
     public void GetAllExceptions ()
     {
-      Assert.That (_command.GetAllExceptions (), Is.Empty);
+      Assert.That(_command.GetAllExceptions(), Is.Empty);
     }
 
     [Test]
     public void Begin_DoesNothing ()
     {
-      ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents (_transaction);
+      ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents(_transaction);
 
-      _command.Begin ();
+      _command.Begin();
     }
 
     [Test]
     public void End_DoesNothing ()
     {
-      ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents (_transaction);
+      ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents(_transaction);
 
-      _command.End ();
+      _command.End();
     }
 
     [Test]
     public void Perform ()
     {
-      Assert.That (_endPoint.HasBeenTouched, Is.False);
+      Assert.That(_endPoint.HasBeenTouched, Is.False);
 
-      _command.Perform ();
+      _command.Perform();
 
-      Assert.That (_endPoint.HasBeenTouched, Is.True);
+      Assert.That(_endPoint.HasBeenTouched, Is.True);
     }
 
     [Test]
     public void ExpandToAllRelatedObjects ()
     {
-      var result = ((IDataManagementCommand) _command).ExpandToAllRelatedObjects ();
-      Assert.That (result.GetNestedCommands(), Is.EqualTo (new[] { _command }));
+      var result = ((IDataManagementCommand)_command).ExpandToAllRelatedObjects();
+      Assert.That(result.GetNestedCommands(), Is.EqualTo(new[] { _command }));
     }
   }
 }

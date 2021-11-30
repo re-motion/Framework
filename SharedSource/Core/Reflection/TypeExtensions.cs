@@ -34,7 +34,7 @@ namespace Remotion.Reflection
     {
       // ReSharper disable once ConstantNullCoalescingCondition
       return type.AssemblyQualifiedName
-             ?? throw new InvalidOperationException (string.Format ("Type '{0}' does not have an assembly qualified name.", type.FullName ?? type.Name));
+             ?? throw new InvalidOperationException(string.Format("Type '{0}' does not have an assembly qualified name.", type.FullName ?? type.Name));
     }
 
     public static string GetFullNameSafe (this Type type)
@@ -46,7 +46,7 @@ namespace Remotion.Reflection
     public static string GetFullNameChecked (this Type type)
     {
       // ReSharper disable once ConstantNullCoalescingCondition
-      return type.FullName ?? throw new InvalidOperationException (string.Format ("Type '{0}' does not have a full name.", type.Name));
+      return type.FullName ?? throw new InvalidOperationException(string.Format("Type '{0}' does not have a full name.", type.Name));
     }
 
     public static string GetNamespaceSafe (this Type type)
@@ -58,7 +58,7 @@ namespace Remotion.Reflection
     public static string GetNamespaceChecked (this Type type)
     {
       // ReSharper disable once ConstantNullCoalescingCondition
-      return type.Namespace ?? throw new InvalidOperationException (string.Format ("Type '{0}' does not have a namespace.", type.Name));
+      return type.Namespace ?? throw new InvalidOperationException(string.Format("Type '{0}' does not have a namespace.", type.Name));
     }
   }
 }

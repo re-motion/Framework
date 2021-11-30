@@ -28,14 +28,14 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Firefox
   public class FirefoxBrowserSession : BrowserSessionBase<IFirefoxConfiguration>
   {
     public FirefoxBrowserSession ([NotNull] Coypu.BrowserSession value, [NotNull] IFirefoxConfiguration browserConfiguration, int driverProcessId)
-        : base (value, browserConfiguration, driverProcessId)
+        : base(value, browserConfiguration, driverProcessId)
     {
     }
 
     /// <inheritdoc />
     public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
     {
-      return new[] { new BrowserLogEntry (LogLevel.Info, "Firefox does not support getting browser logs.", DateTime.Now) };
+      return new[] { new BrowserLogEntry(LogLevel.Info, "Firefox does not support getting browser logs.", DateTime.Now) };
     }
   }
 }

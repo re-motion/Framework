@@ -23,12 +23,12 @@ namespace Remotion.Development.UnitTesting
   {
     public static object CreateInstancePublicCtor (string typeName, params object[] arguments)
     {
-      return CreateInstancePublicCtor (TypeUtility.GetType (typeName, true)!, arguments);
+      return CreateInstancePublicCtor(TypeUtility.GetType(typeName, true)!, arguments);
     }
 
     public static object CreateInstanceNonPublicCtor (string typeName, params object[] arguments)
     {
-      return CreateInstanceNonPublicCtor (TypeUtility.GetType (typeName, true)!, arguments);
+      return CreateInstanceNonPublicCtor(TypeUtility.GetType(typeName, true)!, arguments);
     }
   }
 }

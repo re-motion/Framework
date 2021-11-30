@@ -27,23 +27,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void OneToOneRelationChangeTest ()
     {
-      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
+      Order order = DomainObjectIDs.Order1.GetObject<Order>();
       OrderTicket orderTicket = order.OrderTicket;
 
-      var orderEventReceiver = new DomainObjectRelationCheckEventReceiver (order);
-      var orderTicketEventReceiver = new DomainObjectRelationCheckEventReceiver (orderTicket);
+      var orderEventReceiver = new DomainObjectRelationCheckEventReceiver(order);
+      var orderTicketEventReceiver = new DomainObjectRelationCheckEventReceiver(orderTicket);
 
       orderTicket.Order = null;
 
-      Assert.That (orderEventReceiver.HasRelationChangingEventBeenCalled, Is.True);
-      Assert.That (orderTicketEventReceiver.HasRelationChangingEventBeenCalled, Is.True);
-      Assert.That (orderEventReceiver.GetChangingRelatedDomainObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"), Is.SameAs (orderTicket));
-      Assert.That (orderTicketEventReceiver.GetChangingRelatedDomainObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"), Is.SameAs (order));
+      Assert.That(orderEventReceiver.HasRelationChangingEventBeenCalled, Is.True);
+      Assert.That(orderTicketEventReceiver.HasRelationChangingEventBeenCalled, Is.True);
+      Assert.That(orderEventReceiver.GetChangingRelatedDomainObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"), Is.SameAs(orderTicket));
+      Assert.That(orderTicketEventReceiver.GetChangingRelatedDomainObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"), Is.SameAs(order));
 
-      Assert.That (orderEventReceiver.HasRelationChangedEventBeenCalled, Is.True);
-      Assert.That (orderTicketEventReceiver.HasRelationChangedEventBeenCalled, Is.True);
-      Assert.That (orderEventReceiver.GetChangedRelatedDomainObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"), Is.SameAs (null));
-      Assert.That (orderTicketEventReceiver.GetChangedRelatedDomainObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"), Is.SameAs (null));
+      Assert.That(orderEventReceiver.HasRelationChangedEventBeenCalled, Is.True);
+      Assert.That(orderTicketEventReceiver.HasRelationChangedEventBeenCalled, Is.True);
+      Assert.That(orderEventReceiver.GetChangedRelatedDomainObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"), Is.SameAs(null));
+      Assert.That(orderTicketEventReceiver.GetChangedRelatedDomainObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"), Is.SameAs(null));
     }
   }
 }

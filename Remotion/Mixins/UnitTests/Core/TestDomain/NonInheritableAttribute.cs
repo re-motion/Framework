@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [AttributeUsage (AttributeTargets.All, Inherited = false)]
+  [AttributeUsage(AttributeTargets.All, Inherited = false)]
   public class NonInheritableAttribute : Attribute
   {
     public NonInheritableAttribute ()

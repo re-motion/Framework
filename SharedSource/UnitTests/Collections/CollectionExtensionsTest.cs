@@ -38,7 +38,7 @@ namespace Remotion.UnitTests.Collections
     {
       ReadOnlyCollectionWrapper<int> decorator = _collection.AsReadOnly();
 
-      Assert.That (decorator, Is.EqualTo (_collection));
+      Assert.That(decorator, Is.EqualTo(_collection));
     }
   }
 }

@@ -29,12 +29,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         MappingConfiguration mappingConfiguration,
         Expression<Func<TSource, TRelated>> propertyAccessExpression)
     {
-      ArgumentUtility.CheckNotNull ("mappingConfiguration", mappingConfiguration);
-      ArgumentUtility.CheckNotNull ("propertyAccessExpression", propertyAccessExpression);
+      ArgumentUtility.CheckNotNull("mappingConfiguration", mappingConfiguration);
+      ArgumentUtility.CheckNotNull("propertyAccessExpression", propertyAccessExpression);
 
-      var typeDefinition = mappingConfiguration.GetTypeDefinition (typeof (TSource));
-      var propertyInfoAdapter = PropertyInfoAdapter.Create (NormalizingMemberInfoFromExpressionUtility.GetProperty (propertyAccessExpression));
-      return (RelationEndPointDefinition) typeDefinition.ResolveRelationEndPoint (propertyInfoAdapter);
+      var typeDefinition = mappingConfiguration.GetTypeDefinition(typeof(TSource));
+      var propertyInfoAdapter = PropertyInfoAdapter.Create(NormalizingMemberInfoFromExpressionUtility.GetProperty(propertyAccessExpression));
+      return (RelationEndPointDefinition)typeDefinition.ResolveRelationEndPoint(propertyInfoAdapter);
     }
   }
 }

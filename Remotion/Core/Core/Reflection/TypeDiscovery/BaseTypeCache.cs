@@ -29,50 +29,50 @@ namespace Remotion.Reflection.TypeDiscovery
   /// </summary>
   public sealed class BaseTypeCache
   {
-    private static readonly Lazy<ILog> s_log = new Lazy<ILog> (() => LogManager.GetLogger (typeof (BaseTypeCache)));
+    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof(BaseTypeCache)));
 
     public static BaseTypeCache Create (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull ("types", types);
+      ArgumentUtility.CheckNotNull("types", types);
 
-      s_log.Value.DebugFormat ("Beginning to build BaseTypeCache...");
-      using (StopwatchScope.CreateScope (s_log.Value, LogLevel.Debug, string.Format ("Built BaseTypeCache. Time taken: {{elapsed}}")))
+      s_log.Value.DebugFormat("Beginning to build BaseTypeCache...");
+      using (StopwatchScope.CreateScope(s_log.Value, LogLevel.Debug, string.Format("Built BaseTypeCache. Time taken: {{elapsed}}")))
       {
         // Note: there is no measurable impact when switching this code to parallel execution.
         var classes = new List<KeyValuePair<Type, Type>>();
         var interfaces = new List<KeyValuePair<Type, Type>>();
 
-        foreach (var type in types.Select (CheckTypeIsNormalized))
+        foreach (var type in types.Select(CheckTypeIsNormalized))
         {
-          classes.AddRange (
-              type.CreateSequence (t => t.BaseType)
-                  .Where (t => !t.IsInterface)
-                  .Select (GetNormalizedType)
-                  .Distinct (MemberInfoEqualityComparer<Type>.Instance)
-                  .Select (baseType => new KeyValuePair<Type, Type> (baseType, type)));
+          classes.AddRange(
+              type.CreateSequence(t => t.BaseType)
+                  .Where(t => !t.IsInterface)
+                  .Select(GetNormalizedType)
+                  .Distinct(MemberInfoEqualityComparer<Type>.Instance)
+                  .Select(baseType => new KeyValuePair<Type, Type>(baseType, type)));
 
-          interfaces.AddRange (
+          interfaces.AddRange(
               type.GetInterfaces()
-                  .Select (GetNormalizedType)
-                  .Distinct (MemberInfoEqualityComparer<Type>.Instance)
-                  .Select (interfaceType => new KeyValuePair<Type, Type> (interfaceType, type)));
+                  .Select(GetNormalizedType)
+                  .Distinct(MemberInfoEqualityComparer<Type>.Instance)
+                  .Select(interfaceType => new KeyValuePair<Type, Type>(interfaceType, type)));
 
           if (type.IsInterface)
-            interfaces.Add (new KeyValuePair<Type, Type> (type, type));
+            interfaces.Add(new KeyValuePair<Type, Type>(type, type));
         }
 
-        var classCache = classes.ToLookup (kvp => kvp.Key, kvp => kvp.Value, MemberInfoEqualityComparer<Type>.Instance);
-        var interfaceCache = interfaces.ToLookup (kvp => kvp.Key, kvp => kvp.Value, MemberInfoEqualityComparer<Type>.Instance);
+        var classCache = classes.ToLookup(kvp => kvp.Key, kvp => kvp.Value, MemberInfoEqualityComparer<Type>.Instance);
+        var interfaceCache = interfaces.ToLookup(kvp => kvp.Key, kvp => kvp.Value, MemberInfoEqualityComparer<Type>.Instance);
 
-        return new BaseTypeCache (classCache, interfaceCache);
+        return new BaseTypeCache(classCache, interfaceCache);
       }
 
       static Type CheckTypeIsNormalized (Type type)
       {
         if (type.IsConstructedGenericType)
         {
-          throw new ArgumentException (
-              string.Format (
+          throw new ArgumentException(
+              string.Format(
                   "Only non-generic types and open generic types may be used when creating a BaseTypeCache. Type '{0}' is a closed generic type.",
                   type.GetFullNameSafe()),
               "types");
@@ -100,10 +100,10 @@ namespace Remotion.Reflection.TypeDiscovery
 
     public ICollection GetTypes (Type baseType)
     {
-      ArgumentUtility.CheckNotNull ("baseType", baseType);
+      ArgumentUtility.CheckNotNull("baseType", baseType);
 
-      if (baseType == typeof (object))
-        return _classCache.Concat (_interfaceCache).Select (g => g.Key).ToArray();
+      if (baseType == typeof(object))
+        return _classCache.Concat(_interfaceCache).Select(g => g.Key).ToArray();
 
       var cache = baseType.IsInterface ? _interfaceCache : _classCache;
 

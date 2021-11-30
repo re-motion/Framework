@@ -40,14 +40,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Initialize();
 
-      List.Setup (mock => mock.Selection).Returns (RowSelection.Multiple);
+      List.Setup(mock => mock.Selection).Returns(RowSelection.Multiple);
       var stubColumnDefinition = new StubColumnDefinition();
-      List.Setup (mock => mock.AreDataRowsClickSensitive()).Returns (true);
+      List.Setup(mock => mock.AreDataRowsClickSensitive()).Returns(true);
 
       _columnRenderers = new[]
                          {
-                             new BocColumnRenderer (
-                                 new StubColumnRenderer (new FakeResourceUrlFactory()),
+                             new BocColumnRenderer(
+                                 new StubColumnRenderer(new FakeResourceUrlFactory()),
                                  stubColumnDefinition,
                                  0,
                                  0,
@@ -62,161 +62,161 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderTitlesRow ()
     {
-      IBocRowRenderer renderer = new BocRowRenderer (
+      IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
-          new BocIndexColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           RenderingFeatures.Default);
-      renderer.RenderTitlesRow (CreateRenderingContext());
+      renderer.RenderTitlesRow(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var tr = Html.GetAssertedChildElement (document, "tr", 0);
-      Html.AssertAttribute (tr, "role", "row");
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+      Html.AssertAttribute(tr, "role", "row");
 
-      Html.GetAssertedChildElement (tr, "th", 0);
+      Html.GetAssertedChildElement(tr, "th", 0);
     }
 
     [Test]
     public void RenderTitlesRowWithIndex ()
     {
-      List.Setup (mock => mock.IsIndexEnabled).Returns (true);
-      List.Setup (mock => mock.Index).Returns (RowIndex.InitialOrder);
+      List.Setup(mock => mock.IsIndexEnabled).Returns(true);
+      List.Setup(mock => mock.Index).Returns(RowIndex.InitialOrder);
 
-      IBocRowRenderer renderer = new BocRowRenderer (
+      IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
-          new BocIndexColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           RenderingFeatures.Default);
-      renderer.RenderTitlesRow (CreateRenderingContext());
+      renderer.RenderTitlesRow(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var tr = Html.GetAssertedChildElement (document, "tr", 0);
-      Html.AssertAttribute (tr, "role", "row");
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+      Html.AssertAttribute(tr, "role", "row");
 
-      var thIndex = Html.GetAssertedChildElement (tr, "th", 0);
-      Html.AssertAttribute (thIndex, "class", _bocListCssClassDefinition.TitleCell, HtmlHelperBase.AttributeValueCompareMode.Contains);
-      Html.AssertAttribute (thIndex, "class", _bocListCssClassDefinition.TitleCellIndex, HtmlHelperBase.AttributeValueCompareMode.Contains);
+      var thIndex = Html.GetAssertedChildElement(tr, "th", 0);
+      Html.AssertAttribute(thIndex, "class", _bocListCssClassDefinition.TitleCell, HtmlHelperBase.AttributeValueCompareMode.Contains);
+      Html.AssertAttribute(thIndex, "class", _bocListCssClassDefinition.TitleCellIndex, HtmlHelperBase.AttributeValueCompareMode.Contains);
 
-      Html.GetAssertedChildElement (tr, "th", 1);
+      Html.GetAssertedChildElement(tr, "th", 1);
     }
 
     [Test]
     public void RenderTitlesRowWithSelector ()
     {
-      List.Setup (mock => mock.IsSelectionEnabled).Returns (true);
-      List.Setup (mock => mock.Selection).Returns (RowSelection.Multiple);
+      List.Setup(mock => mock.IsSelectionEnabled).Returns(true);
+      List.Setup(mock => mock.Selection).Returns(RowSelection.Multiple);
 
-      IBocRowRenderer renderer = new BocRowRenderer (
+      IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
-          new BocIndexColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           RenderingFeatures.Default);
-      renderer.RenderTitlesRow (CreateRenderingContext());
+      renderer.RenderTitlesRow(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var tr = Html.GetAssertedChildElement (document, "tr", 0);
-      Html.AssertAttribute (tr, "role", "row");
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+      Html.AssertAttribute(tr, "role", "row");
 
-      Html.GetAssertedChildElement (tr, "th", 0);
+      Html.GetAssertedChildElement(tr, "th", 0);
 
-      Html.GetAssertedChildElement (tr, "th", 1);
+      Html.GetAssertedChildElement(tr, "th", 1);
     }
 
     [Test]
     public void RenderDataRow ()
     {
-      IBocRowRenderer renderer = new BocRowRenderer (
+      IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
-          new BocIndexColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           RenderingFeatures.Default);
-      renderer.RenderDataRow (
+      renderer.RenderDataRow(
           CreateRenderingContext(),
-          new BocListRowRenderingContext (new BocListRow (0, BusinessObject), 1, false),
+          new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
           0);
 
       var document = Html.GetResultDocument();
 
-      var tr = Html.GetAssertedChildElement (document, "tr", 0);
-      Html.AssertAttribute (tr, "class", _bocListCssClassDefinition.DataRow + " " + _bocListCssClassDefinition.DataRowOdd);
-      Html.AssertAttribute (tr, "role", "row");
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+      Html.AssertAttribute(tr, "class", _bocListCssClassDefinition.DataRow + " " + _bocListCssClassDefinition.DataRowOdd);
+      Html.AssertAttribute(tr, "role", "row");
 
-      Html.GetAssertedChildElement (tr, "td", 0);
+      Html.GetAssertedChildElement(tr, "td", 0);
     }
 
     [Test]
     public void RenderDataRowSelected ()
     {
-      IBocRowRenderer renderer = new BocRowRenderer (
+      IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
-          new BocIndexColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           RenderingFeatures.Default);
-      renderer.RenderDataRow (
+      renderer.RenderDataRow(
           CreateRenderingContext(),
-          new BocListRowRenderingContext (new BocListRow (0, BusinessObject), 1, true),
+          new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, true),
           0);
 
       var document = Html.GetResultDocument();
 
-      var tr = Html.GetAssertedChildElement (document, "tr", 0);
-      Html.AssertAttribute (
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+      Html.AssertAttribute(
           tr,
           "class",
           _bocListCssClassDefinition.DataRow + " " + _bocListCssClassDefinition.DataRowOdd + " " + _bocListCssClassDefinition.DataRowSelected);
-      Html.AssertAttribute (tr, "role", "row");
+      Html.AssertAttribute(tr, "role", "row");
 
-      Html.GetAssertedChildElement (tr, "td", 0);
+      Html.GetAssertedChildElement(tr, "td", 0);
     }
 
     [Test]
     public void RenderEmptyDataRow ()
     {
-      List.Setup (mock => mock.IsIndexEnabled).Returns (true);
-      List.Setup (mock => mock.IsSelectionEnabled).Returns (true);
+      List.Setup(mock => mock.IsIndexEnabled).Returns(true);
+      List.Setup(mock => mock.IsSelectionEnabled).Returns(true);
 
-      IBocRowRenderer renderer = new BocRowRenderer (
+      IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
-          new BocIndexColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer (RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
           RenderingFeatures.Default);
-      renderer.RenderEmptyListDataRow (CreateRenderingContext());
+      renderer.RenderEmptyListDataRow(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var tr = Html.GetAssertedChildElement (document, "tr", 0);
-      Html.AssertAttribute (tr, "role", "row");
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+      Html.AssertAttribute(tr, "role", "row");
 
-      Html.GetAssertedChildElement (tr, "td", 0);
+      Html.GetAssertedChildElement(tr, "td", 0);
     }
 
     [Test]
     public void TestDiagnosticMetadataRendering ()
     {
-      IBocRowRenderer renderer = new BocRowRenderer (
+      IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
-          new BocIndexColumnRenderer (RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer (RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition),
+          new BocIndexColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition),
           RenderingFeatures.WithDiagnosticMetadata);
-      renderer.RenderDataRow (
+      renderer.RenderDataRow(
           CreateRenderingContext(),
-          new BocListRowRenderingContext (new BocListRow (0, BusinessObject), 1, false),
+          new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
           0);
 
       var document = Html.GetResultDocument();
 
-      var tr = Html.GetAssertedChildElement (document, "tr", 0);
-      Html.AssertAttribute (tr, DiagnosticMetadataAttributes.ItemID, ((IBusinessObjectWithIdentity) BusinessObject).UniqueIdentifier);
-      Html.AssertAttribute (tr, DiagnosticMetadataAttributesForObjectBinding.BocListRowIndex, 1.ToString());
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+      Html.AssertAttribute(tr, DiagnosticMetadataAttributes.ItemID, ((IBusinessObjectWithIdentity)BusinessObject).UniqueIdentifier);
+      Html.AssertAttribute(tr, DiagnosticMetadataAttributesForObjectBinding.BocListRowIndex, 1.ToString());
     }
 
     private BocListRenderingContext CreateRenderingContext ()
     {
-      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create (null, null, null);
-      return new BocListRenderingContext (HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, _columnRenderers);
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      return new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, _columnRenderers);
     }
   }
 }

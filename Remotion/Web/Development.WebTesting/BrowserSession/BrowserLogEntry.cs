@@ -44,14 +44,14 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     public DateTime Timestamp { get; }
 
     public BrowserLogEntry ([NotNull] LogEntry logEntry)
-        : this (logEntry.Level, logEntry.Message, logEntry.Timestamp)
+        : this(logEntry.Level, logEntry.Message, logEntry.Timestamp)
     {
-      ArgumentUtility.CheckNotNull ("logEntry", logEntry);
+      ArgumentUtility.CheckNotNull("logEntry", logEntry);
     }
 
     public BrowserLogEntry (LogLevel level, [NotNull] string message, DateTime timestamp)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("message", message);
+      ArgumentUtility.CheckNotNullOrEmpty("message", message);
 
       Level = level;
       Message = message;
@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     /// </summary>
     public override string ToString ()
     {
-      return string.Format (CultureInfo.InvariantCulture, "[{0:yyyy-MM-ddTHH:mm:ssZ}] [{1}] {2}", Timestamp, Level, Message);
+      return string.Format(CultureInfo.InvariantCulture, "[{0:yyyy-MM-ddTHH:mm:ssZ}] [{1}] {2}", Timestamp, Level, Message);
     }
   }
 }

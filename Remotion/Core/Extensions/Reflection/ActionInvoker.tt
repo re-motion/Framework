@@ -100,7 +100,7 @@ for (int j = 0; j <= fixedArgCount; j++)
 
     public void With ()
     {
-      GetDelegateWith () (<#= fixedArguments #>);
+      GetDelegateWith ()(<#= fixedArguments #>);
     }
 
     public Action<#= fixedTypeArgumentsForAction #> GetDelegateWith ()
@@ -119,7 +119,7 @@ for (int j = 0; j <= fixedArgCount; j++)
 
     public void With<<#= typeArguments #>> (<#= signature #>)
     {
-      GetDelegateWith<<#= typeArguments #>> () (<#= fixedArguments #><#= hasFixedArgs ? ", " : "" #><#= arguments #>);
+      GetDelegateWith<<#= typeArguments #>> ()(<#= fixedArguments #><#= hasFixedArgs ? ", " : "" #><#= arguments #>);
     }
 
     public Action<<#= typeArgumentsForAction #>> GetDelegateWith<<#= typeArguments #>> ()

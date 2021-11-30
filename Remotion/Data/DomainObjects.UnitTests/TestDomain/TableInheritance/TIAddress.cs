@@ -18,34 +18,34 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_Address")]
-  [DBTable ("TableInheritance_Address")]
+  [ClassID("TI_Address")]
+  [DBTable("TableInheritance_Address")]
   [Instantiable]
   [TableInheritanceTestDomain]
   public abstract class TIAddress : DomainObject
   {
     public static TIAddress NewObject ()
     {
-      return NewObject<TIAddress> ();
+      return NewObject<TIAddress>();
     }
 
     protected TIAddress ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Street { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 10)]
+    [StringProperty(IsNullable = false, MaximumLength = 10)]
     public abstract string Zip { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string City { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Country { get; set; }
 
-    [DBBidirectionalRelation ("Address", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Address", ContainsForeignKey = true)]
     [Mandatory]
     public abstract TIPerson Person { get; set; }
   }

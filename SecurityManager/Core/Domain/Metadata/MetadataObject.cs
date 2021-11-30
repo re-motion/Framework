@@ -35,11 +35,11 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static MetadataObject Find (string metadataID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("metadataID", metadataID);
+      ArgumentUtility.CheckNotNullOrEmpty("metadataID", metadataID);
 
       FindMetadataObjectQueryBuilder queryBuilder = new FindMetadataObjectQueryBuilder();
 
-      var result = queryBuilder.CreateQuery (metadataID);
+      var result = queryBuilder.CreateQuery(metadataID);
 
       return result.ToArray().SingleOrDefault();
     }
@@ -59,11 +59,11 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public abstract Guid MetadataItemID { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 200)]
+    [StringProperty(IsNullable = false, MaximumLength = 200)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("MetadataObject")]
-    [ObjectBinding (ReadOnly = true)]
+    [DBBidirectionalRelation("MetadataObject")]
+    [ObjectBinding(ReadOnly = true)]
     public abstract ObjectList<LocalizedName> LocalizedNames { get; }
 
     public override string DisplayName
@@ -72,7 +72,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       {
         foreach (CultureInfo cultureInfo in CultureInfo.CurrentUICulture.GetCultureHierarchy())
         {
-          LocalizedName localizedName = GetLocalizedName (cultureInfo.Name);
+          LocalizedName localizedName = GetLocalizedName(cultureInfo.Name);
           if (localizedName != null)
             return localizedName.Text;
         }
@@ -83,18 +83,18 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public LocalizedName GetLocalizedName (Culture culture)
     {
-      ArgumentUtility.CheckNotNull ("culture", culture);
+      ArgumentUtility.CheckNotNull("culture", culture);
 
-      return GetLocalizedName (culture.CultureName);
+      return GetLocalizedName(culture.CultureName);
     }
 
     public LocalizedName GetLocalizedName (string cultureName)
     {
-      ArgumentUtility.CheckNotNull ("cultureName", cultureName);
+      ArgumentUtility.CheckNotNull("cultureName", cultureName);
 
       foreach (LocalizedName localizedName in LocalizedNames)
       {
-        if (localizedName.Culture.CultureName.Equals (cultureName, StringComparison.Ordinal))
+        if (localizedName.Culture.CultureName.Equals(cultureName, StringComparison.Ordinal))
           return localizedName;
       }
 
@@ -103,15 +103,15 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
+      base.OnDeleting(args);
 
       //TODO: Rewrite with test
-      _deleteHandler = new DomainObjectDeleteHandler (LocalizedNames);
+      _deleteHandler = new DomainObjectDeleteHandler(LocalizedNames);
     }
 
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
       //TODO: Rewrite with test
       _deleteHandler.Delete();

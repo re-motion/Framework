@@ -26,7 +26,7 @@ namespace Remotion.Validation.MetaValidation
   /// <summary>
   /// Default implementation of the <see cref="IPropertyMetaValidationRuleValidatorFactory"/> interface.
   /// </summary>
-  [ImplementationFor (typeof (IPropertyMetaValidationRuleValidatorFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IPropertyMetaValidationRuleValidatorFactory), Lifetime = LifetimeKind.Singleton)]
   public class PropertyMetaValidationRuleValidatorFactory : IPropertyMetaValidationRuleValidatorFactory
   {
     private readonly ISystemPropertyMetaValidationRuleProviderFactory _systemPropertyMetaValidationRuleProviderFactory;
@@ -34,7 +34,7 @@ namespace Remotion.Validation.MetaValidation
     public PropertyMetaValidationRuleValidatorFactory (
         ISystemPropertyMetaValidationRuleProviderFactory systemPropertyMetaValidationRuleProviderFactory)
     {
-      ArgumentUtility.CheckNotNull ("systemPropertyMetaValidationRuleProviderFactory", systemPropertyMetaValidationRuleProviderFactory);
+      ArgumentUtility.CheckNotNull("systemPropertyMetaValidationRuleProviderFactory", systemPropertyMetaValidationRuleProviderFactory);
 
       _systemPropertyMetaValidationRuleProviderFactory = systemPropertyMetaValidationRuleProviderFactory;
     }
@@ -42,9 +42,9 @@ namespace Remotion.Validation.MetaValidation
     public IPropertyMetaValidationRuleValidator CreatePropertyMetaValidationRuleValidator (
         IEnumerable<IPropertyMetaValidationRuleCollector> propertyMetaValidationRuleCollectors)
     {
-      ArgumentUtility.CheckNotNull ("propertyMetaValidationRuleCollectors", propertyMetaValidationRuleCollectors);
+      ArgumentUtility.CheckNotNull("propertyMetaValidationRuleCollectors", propertyMetaValidationRuleCollectors);
 
-      return new PropertyMetaValidationRuleValidator (
+      return new PropertyMetaValidationRuleValidator(
           propertyMetaValidationRuleCollectors.ToArray(),
           _systemPropertyMetaValidationRuleProviderFactory);
     }

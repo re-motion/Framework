@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
   public class ClickAction : WebTestAction
   {
     public ClickAction ([NotNull] ControlObject control, [NotNull] ElementScope scope)
-        : base (control, scope)
+        : base(control, scope)
     {
     }
 
@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     /// <inheritdoc/>
     protected override void ExecuteInteraction (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
 #pragma warning disable 618
       if (scope.Browser.IsFirefox() || scope.Browser.IsInternetExplorer())

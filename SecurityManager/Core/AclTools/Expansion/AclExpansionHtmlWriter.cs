@@ -34,12 +34,12 @@ namespace Remotion.SecurityManager.AclTools.Expansion
   /// </summary>
   public class AclExpansionHtmlWriter : IAclExpansionWriter
   {
-    private readonly AclExpansionHtmlWriterSettings _settings = new AclExpansionHtmlWriterSettings ();
+    private readonly AclExpansionHtmlWriterSettings _settings = new AclExpansionHtmlWriterSettings();
 
     private readonly AclExpansionHtmlWriterImplementation _implementation;
 
     public AclExpansionHtmlWriter (TextWriter textWriter, bool indentXml, AclExpansionHtmlWriterSettings settings) :
-      this(new AclExpansionHtmlWriterImplementation (textWriter, indentXml, settings), settings)
+      this(new AclExpansionHtmlWriterImplementation(textWriter, indentXml, settings), settings)
     {
       //_settings = settings;
       //_implementation = new AclExpansionHtmlWriterImplementation (textWriter, indentXml, settings);
@@ -50,7 +50,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       _implementation = implementation;
       _settings = settings;
     }
-   
+
 
     public AclExpansionHtmlWriterImplementation Implementation
     {
@@ -60,36 +60,36 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     public void WriteAclExpansion (List<AclExpansionEntry> aclExpansion)
     {
-      ArgumentUtility.CheckNotNull ("aclExpansion", aclExpansion);
-    
-      var aclExpansionTree = new AclExpansionTree (aclExpansion);
+      ArgumentUtility.CheckNotNull("aclExpansion", aclExpansion);
 
-      Implementation.WritePageStart (AclToolsExpansion.PageTitleSingleFile); // re-motion ACL Expansion
-      Implementation.WriteTableStart ("remotion-ACL-expansion-table");
-      WriteTableHeaders ();
-      WriteTableBody (aclExpansionTree);
-      Implementation.WriteTableEnd ();
-      Implementation.WritePageEnd ();
+      var aclExpansionTree = new AclExpansionTree(aclExpansion);
+
+      Implementation.WritePageStart(AclToolsExpansion.PageTitleSingleFile); // re-motion ACL Expansion
+      Implementation.WriteTableStart("remotion-ACL-expansion-table");
+      WriteTableHeaders();
+      WriteTableBody(aclExpansionTree);
+      Implementation.WriteTableEnd();
+      Implementation.WritePageEnd();
     }
 
 
     private void WriteTableHeaders ()
     {
-      Implementation.HtmlTagWriter.Tags.tr ();
-      Implementation.WriteHeaderCell (AclToolsExpansion.UserTableHeader); // User
-      Implementation.WriteHeaderCell (AclToolsExpansion.RoleTableHeader); // Role
-      Implementation.WriteHeaderCell (AclToolsExpansion.ClassTableHeader); // Class
-      Implementation.WriteHeaderCell (AclToolsExpansion.StatesTableHeader); // States
-      Implementation.WriteHeaderCell (AclToolsExpansion.UserMustOwnTableHeader); // User Must Own
-      Implementation.WriteHeaderCell (AclToolsExpansion.OwningGroupEqualsTableHeader); // Owning Group Equals
-      Implementation.WriteHeaderCell (AclToolsExpansion.OwningTenantEqualsTableHeader); // Owning Tenant Equals
-      Implementation.WriteHeaderCell (AclToolsExpansion.UserMustHaveAbstractRoleTableHeader); // User Must Have Abstract Role
-      Implementation.WriteHeaderCell (AclToolsExpansion.AccessRightsNameTableHeader); // Access Rights
+      Implementation.HtmlTagWriter.Tags.tr();
+      Implementation.WriteHeaderCell(AclToolsExpansion.UserTableHeader); // User
+      Implementation.WriteHeaderCell(AclToolsExpansion.RoleTableHeader); // Role
+      Implementation.WriteHeaderCell(AclToolsExpansion.ClassTableHeader); // Class
+      Implementation.WriteHeaderCell(AclToolsExpansion.StatesTableHeader); // States
+      Implementation.WriteHeaderCell(AclToolsExpansion.UserMustOwnTableHeader); // User Must Own
+      Implementation.WriteHeaderCell(AclToolsExpansion.OwningGroupEqualsTableHeader); // Owning Group Equals
+      Implementation.WriteHeaderCell(AclToolsExpansion.OwningTenantEqualsTableHeader); // Owning Tenant Equals
+      Implementation.WriteHeaderCell(AclToolsExpansion.UserMustHaveAbstractRoleTableHeader); // User Must Have Abstract Role
+      Implementation.WriteHeaderCell(AclToolsExpansion.AccessRightsNameTableHeader); // Access Rights
       if (_settings.OutputDeniedRights)
       {
-        Implementation.WriteHeaderCell (AclToolsExpansion.DeniedRightsTableHeader); // Denied Rights
+        Implementation.WriteHeaderCell(AclToolsExpansion.DeniedRightsTableHeader); // Denied Rights
       }
-      Implementation.HtmlTagWriter.Tags.trEnd ();
+      Implementation.HtmlTagWriter.Tags.trEnd();
     }
 
 
@@ -103,8 +103,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     private void WriteTableBody_ProcessUser (AclExpansionTreeNode<User, AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>> userNode)
     {
-      Implementation.WriteTableDataWithRowCount (userNode.Key.DisplayName, userNode.NumberLeafNodes);
-  
+      Implementation.WriteTableDataWithRowCount(userNode.Key.DisplayName, userNode.NumberLeafNodes);
+
       foreach (var roleNode in userNode.Children)
       {
         WriteTableBody_ProcessRole(roleNode);
@@ -113,25 +113,25 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     private void WriteTableBody_ProcessRole (AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>> roleNode)
     {
-      Implementation.WriteTableDataForRole (roleNode.Key, roleNode.NumberLeafNodes);
- 
+      Implementation.WriteTableDataForRole(roleNode.Key, roleNode.NumberLeafNodes);
+
       foreach (var classNode in roleNode.Children)
       {
         WriteTableBody_ProcessClass(classNode);
       }
     }
 
-    public virtual void WriteTableBody_ProcessClass (AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, 
+    public virtual void WriteTableBody_ProcessClass (AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry,
       AclExpansionEntry>> classNode)
     {
       if (classNode.Key != null)
       {
-        string className = _settings.ShortenNames ? classNode.Key.ShortName () : classNode.Key.DisplayName;
-        Implementation.WriteTableDataWithRowCount (className, classNode.NumberLeafNodes);
+        string className = _settings.ShortenNames ? classNode.Key.ShortName() : classNode.Key.DisplayName;
+        Implementation.WriteTableDataWithRowCount(className, classNode.NumberLeafNodes);
       }
       else
       {
-        Implementation.WriteTableDataWithRowCount (AclToolsExpansion.NO_CLASSES_DEFINED_Text, classNode.NumberLeafNodes); // _NO_CLASSES_DEFINED_
+        Implementation.WriteTableDataWithRowCount(AclToolsExpansion.NO_CLASSES_DEFINED_Text, classNode.NumberLeafNodes); // _NO_CLASSES_DEFINED_
       }
 
       WriteTableBody_ProcessStates(classNode.Children);
@@ -143,27 +143,27 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       // States Output
       foreach (var aclExpansionTreeNode in states)
       {
-        Implementation.WriteTableRowBeginIfNotInTableRow ();
+        Implementation.WriteTableRowBeginIfNotInTableRow();
 
         // Write all states combined into one cell
-        WriteTableDataForStates (aclExpansionTreeNode.Children);
+        WriteTableDataForStates(aclExpansionTreeNode.Children);
 
         AclExpansionEntry aclExpansionEntry = aclExpansionTreeNode.Key;
-        Implementation.WriteTableDataForBodyConditions (aclExpansionEntry.AccessConditions);
-        Implementation.WriteTableDataForAccessTypes (aclExpansionEntry.AllowedAccessTypes);
+        Implementation.WriteTableDataForBodyConditions(aclExpansionEntry.AccessConditions);
+        Implementation.WriteTableDataForAccessTypes(aclExpansionEntry.AllowedAccessTypes);
         if (_settings.OutputDeniedRights)
         {
-          Implementation.WriteTableDataForAccessTypes (aclExpansionEntry.DeniedAccessTypes);
+          Implementation.WriteTableDataForAccessTypes(aclExpansionEntry.DeniedAccessTypes);
         }
 
-        Implementation.WriteTableRowEnd ();
+        Implementation.WriteTableRowEnd();
       }
     }
 
 
     private void WriteTableDataForStates (IList<AclExpansionEntry> aclExpansionEntriesWhichOnlyDiffersInStates)
     {
-      Implementation.HtmlTagWriter.Tags.td ();
+      Implementation.HtmlTagWriter.Tags.td();
 
       bool firstElement = true;
 
@@ -171,13 +171,13 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       {
         if (!firstElement)
         {
-          Implementation.HtmlTagWriter.Value ("; ");
+          Implementation.HtmlTagWriter.Value("; ");
         }
 
-        Implementation.WriteTableDataBodyForSingleState (aclExpansionEntry);
+        Implementation.WriteTableDataBodyForSingleState(aclExpansionEntry);
         firstElement = false;
       }
-      Implementation.HtmlTagWriter.Tags.tdEnd ();
+      Implementation.HtmlTagWriter.Tags.tdEnd();
     }
 
   }
@@ -186,7 +186,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
   {
     public static string ShortName (this StateDefinition stateDefinition)
     {
-      return stateDefinition.Name.Split ('|').First();
+      return stateDefinition.Name.Split('|').First();
       //return stateDefinition.DisplayName;
     }
   }
@@ -195,12 +195,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion
   {
     public static string ShortName (this SecurableClassDefinition securableClassDefinition)
     {
-      return securableClassDefinition.Name.Split ('.').Last();
+      return securableClassDefinition.Name.Split('.').Last();
       //return securableClassDefinition.DisplayName;
     }
   }
 
 }
-
-
-

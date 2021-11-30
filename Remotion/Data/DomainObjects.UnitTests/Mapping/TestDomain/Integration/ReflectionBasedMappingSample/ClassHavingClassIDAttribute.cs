@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample
 {
-  [ClassID ("ClassIDForClassHavingClassIDAttribute")]
+  [ClassID("ClassIDForClassHavingClassIDAttribute")]
   [DBTable]
   [TestDomain]
   [Instantiable]

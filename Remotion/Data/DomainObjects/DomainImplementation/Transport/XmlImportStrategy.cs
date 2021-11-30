@@ -31,25 +31,25 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public IEnumerable<TransportItem> Import (Stream inputStream)
     {
-      ArgumentUtility.CheckNotNull ("inputStream", inputStream);
+      ArgumentUtility.CheckNotNull("inputStream", inputStream);
 
       try
       {
-        var formatter = new XmlSerializer (typeof (XmlTransportItem[]));
-        return XmlTransportItem.Unwrap (PerformDeserialization (inputStream, formatter));
+        var formatter = new XmlSerializer(typeof(XmlTransportItem[]));
+        return XmlTransportItem.Unwrap(PerformDeserialization(inputStream, formatter));
       }
       catch (Exception ex)
       {
-        throw new TransportationException ("Invalid data specified: " + ex.Message, ex);
+        throw new TransportationException("Invalid data specified: " + ex.Message, ex);
       }
     }
 
     protected virtual XmlTransportItem[] PerformDeserialization (Stream dataStream, XmlSerializer formatter)
     {
-      ArgumentUtility.CheckNotNull ("dataStream", dataStream);
-      ArgumentUtility.CheckNotNull ("formatter", formatter);
+      ArgumentUtility.CheckNotNull("dataStream", dataStream);
+      ArgumentUtility.CheckNotNull("formatter", formatter);
 
-      return (XmlTransportItem[]) formatter.Deserialize (dataStream);
+      return (XmlTransportItem[])formatter.Deserialize(dataStream);
     }
   }
 }

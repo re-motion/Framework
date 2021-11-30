@@ -34,161 +34,161 @@ namespace Remotion.UnitTests.ServiceLocation
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
-      _serviceLocatorProviderBackup = (ServiceLocatorProvider) PrivateInvoke.GetNonPublicStaticField (typeof (ServiceLocator), "_currentProvider");
-      PrivateInvoke.SetNonPublicStaticField (typeof (ServiceLocator), "_currentProvider", null);
+      _serviceLocatorProviderBackup = (ServiceLocatorProvider)PrivateInvoke.GetNonPublicStaticField(typeof(ServiceLocator), "_currentProvider");
+      PrivateInvoke.SetNonPublicStaticField(typeof(ServiceLocator), "_currentProvider", null);
     }
 
     [OneTimeTearDown]
     public void TestFixtureTearDown ()
     {
-      PrivateInvoke.SetNonPublicStaticField (typeof (ServiceLocator), "_currentProvider", _serviceLocatorProviderBackup);
+      PrivateInvoke.SetNonPublicStaticField(typeof(ServiceLocator), "_currentProvider", _serviceLocatorProviderBackup);
     }
 
     [SetUp]
     public void SetUp ()
     {
       _previousConfiguration = ServiceLocationConfiguration.Current;
-      ServiceLocationConfiguration.SetCurrent (null);
-      ResetDefaultServiceLocator ();
+      ServiceLocationConfiguration.SetCurrent(null);
+      ResetDefaultServiceLocator();
       SafeServiceLocator.BootstrapConfiguration.Reset();
     }
 
     [TearDown]
     public void TearDown ()
     {
-      ServiceLocationConfiguration.SetCurrent (_previousConfiguration);
+      ServiceLocationConfiguration.SetCurrent(_previousConfiguration);
       ResetDefaultServiceLocator();
       SafeServiceLocator.BootstrapConfiguration.Reset();
     }
 
     [Test]
-    public void GetCurrent_WithLocatorProvider()
+    public void GetCurrent_WithLocatorProvider ()
     {
       var serviceLocatorStub = new Mock<IServiceLocator>();
-      ServiceLocator.SetLocatorProvider (() => serviceLocatorStub.Object);
+      ServiceLocator.SetLocatorProvider(() => serviceLocatorStub.Object);
 
-      Assert.That (SafeServiceLocator.Current, Is.SameAs (serviceLocatorStub.Object));
+      Assert.That(SafeServiceLocator.Current, Is.SameAs(serviceLocatorStub.Object));
     }
 
     [Test]
     public void GetCurrent_WithLocatorProvider_IgnoresServiceConfiguration ()
     {
       var serviceLocatorStub = new Mock<IServiceLocator>();
-      ServiceLocator.SetLocatorProvider (() => serviceLocatorStub.Object);
+      ServiceLocator.SetLocatorProvider(() => serviceLocatorStub.Object);
 
-      ConfigureServiceLocatorProvider (new Mock<IServiceLocatorProvider> (MockBehavior.Strict).Object);
+      ConfigureServiceLocatorProvider(new Mock<IServiceLocatorProvider>(MockBehavior.Strict).Object);
 
-      Assert.That (SafeServiceLocator.Current, Is.SameAs (serviceLocatorStub.Object));
+      Assert.That(SafeServiceLocator.Current, Is.SameAs(serviceLocatorStub.Object));
     }
 
     [Test]
     public void GetCurrent_WithoutLocatorProvider_ReturnsDefaultServiceLocator ()
     {
-      ServiceLocator.SetLocatorProvider (null);
+      ServiceLocator.SetLocatorProvider(null);
 
-      Assert.That (SafeServiceLocator.Current, Is.TypeOf (typeof (DefaultServiceLocator)));
+      Assert.That(SafeServiceLocator.Current, Is.TypeOf(typeof(DefaultServiceLocator)));
     }
 
     [Test]
     public void GetCurrent_WithoutLocatorProvider_ReturnsConfiguredServiceLocator ()
     {
-      ServiceLocator.SetLocatorProvider (null);
+      ServiceLocator.SetLocatorProvider(null);
 
       var serviceLocatorProviderStub = new Mock<IServiceLocatorProvider>();
       var fakeServiceLocator = new Mock<IServiceLocator>();
       serviceLocatorProviderStub
-          .Setup (stub => stub.GetServiceLocator (It.IsAny<ReadOnlyCollection<ServiceConfigurationEntry>>()))
-          .Returns (fakeServiceLocator.Object);
-      
-      ConfigureServiceLocatorProvider (serviceLocatorProviderStub.Object);
+          .Setup(stub => stub.GetServiceLocator(It.IsAny<ReadOnlyCollection<ServiceConfigurationEntry>>()))
+          .Returns(fakeServiceLocator.Object);
 
-      Assert.That (SafeServiceLocator.Current, Is.SameAs (fakeServiceLocator.Object));
+      ConfigureServiceLocatorProvider(serviceLocatorProviderStub.Object);
+
+      Assert.That(SafeServiceLocator.Current, Is.SameAs(fakeServiceLocator.Object));
     }
 
     [Test]
     public void GetCurrent_WithoutLocatorProvider_ReturnsConfiguredServiceLocator_WithBootstrapConfigurationEntries ()
     {
-      ServiceLocator.SetLocatorProvider (null);
+      ServiceLocator.SetLocatorProvider(null);
 
-      var entry1 = new ServiceConfigurationEntry (
-          typeof (IService1),
-          new ServiceImplementationInfo (typeof (Service1), LifetimeKind.InstancePerDependency));
-      var entry2 = new ServiceConfigurationEntry (
-          typeof (IService2),
-          new ServiceImplementationInfo (typeof (Service2), LifetimeKind.InstancePerDependency));
+      var entry1 = new ServiceConfigurationEntry(
+          typeof(IService1),
+          new ServiceImplementationInfo(typeof(Service1), LifetimeKind.InstancePerDependency));
+      var entry2 = new ServiceConfigurationEntry(
+          typeof(IService2),
+          new ServiceImplementationInfo(typeof(Service2), LifetimeKind.InstancePerDependency));
 
-      SafeServiceLocator.BootstrapConfiguration.Register (entry1);
-      SafeServiceLocator.BootstrapConfiguration.Register (entry2);
+      SafeServiceLocator.BootstrapConfiguration.Register(entry1);
+      SafeServiceLocator.BootstrapConfiguration.Register(entry2);
 
-      var serviceLocatorProviderMock = new Mock<IServiceLocatorProvider> (MockBehavior.Strict);
+      var serviceLocatorProviderMock = new Mock<IServiceLocatorProvider>(MockBehavior.Strict);
       var fakeServiceLocator = new Mock<IServiceLocator>();
       serviceLocatorProviderMock
-          .Setup (mock => mock.GetServiceLocator (new ReadOnlyCollection<ServiceConfigurationEntry>(new[] { entry1, entry2 })))
-          .Returns (fakeServiceLocator.Object)
+          .Setup(mock => mock.GetServiceLocator(new ReadOnlyCollection<ServiceConfigurationEntry>(new[] { entry1, entry2 })))
+          .Returns(fakeServiceLocator.Object)
           .Verifiable();
 
-      ConfigureServiceLocatorProvider (serviceLocatorProviderMock.Object);
+      ConfigureServiceLocatorProvider(serviceLocatorProviderMock.Object);
 
       var result = SafeServiceLocator.Current;
 
       serviceLocatorProviderMock.Verify();
-      Assert.That (result, Is.SameAs (fakeServiceLocator.Object));
+      Assert.That(result, Is.SameAs(fakeServiceLocator.Object));
     }
 
     [Test]
     public void GetCurrent_WithoutLocatorProvider_SetsServiceLocatorCurrent ()
     {
-      ServiceLocator.SetLocatorProvider (null);
+      ServiceLocator.SetLocatorProvider(null);
 
       var safeCurrent = SafeServiceLocator.Current;
-      Assert.That (ServiceLocator.Current, Is.Not.Null.And.SameAs (safeCurrent));
+      Assert.That(ServiceLocator.Current, Is.Not.Null.And.SameAs(safeCurrent));
     }
 
     [Test]
     public void GetCurrent_WithLocatorProviderReturningNull_ReturnsDefaultServiceLocator ()
     {
-      ServiceLocator.SetLocatorProvider (() => null);
+      ServiceLocator.SetLocatorProvider(() => null);
 
-      Assert.That (SafeServiceLocator.Current, Is.TypeOf(typeof(DefaultServiceLocator)));
+      Assert.That(SafeServiceLocator.Current, Is.TypeOf(typeof(DefaultServiceLocator)));
     }
 
     [Test]
     public void GetCurrent_WithLocatorProviderReturningNull_ReturnsConfiguredServiceLocator ()
     {
-      ServiceLocator.SetLocatorProvider (() => null);
+      ServiceLocator.SetLocatorProvider(() => null);
 
       var serviceLocatorProviderStub = new Mock<IServiceLocatorProvider>();
       var fakeServiceLocator = new Mock<IServiceLocator>();
       serviceLocatorProviderStub
-          .Setup (stub => stub.GetServiceLocator (It.IsAny<ReadOnlyCollection<ServiceConfigurationEntry>>()))
-          .Returns (fakeServiceLocator.Object);
+          .Setup(stub => stub.GetServiceLocator(It.IsAny<ReadOnlyCollection<ServiceConfigurationEntry>>()))
+          .Returns(fakeServiceLocator.Object);
 
-      ConfigureServiceLocatorProvider (serviceLocatorProviderStub.Object);
+      ConfigureServiceLocatorProvider(serviceLocatorProviderStub.Object);
 
-      Assert.That (SafeServiceLocator.Current, Is.SameAs (fakeServiceLocator.Object));
+      Assert.That(SafeServiceLocator.Current, Is.SameAs(fakeServiceLocator.Object));
     }
 
     [Test]
     public void GetCurrent_WithLocatorProviderReturningNull_DoesNotSetServiceLocatorCurrent ()
     {
-      ServiceLocator.SetLocatorProvider (() => null);
+      ServiceLocator.SetLocatorProvider(() => null);
 
       Dev.Null = SafeServiceLocator.Current;
-      Assert.That (ServiceLocator.Current, Is.Null);
+      Assert.That(ServiceLocator.Current, Is.Null);
     }
 
     [Test]
     public void GetCurrent_WithInvalidServiceLocationConfiguration ()
     {
-      ServiceLocator.SetLocatorProvider (() => null);
+      ServiceLocator.SetLocatorProvider(() => null);
 
-      var exception = new Exception ();
+      var exception = new Exception();
       var serviceLocatorProvider = new Mock<IServiceLocatorProvider>();
-      serviceLocatorProvider.Setup (mock => mock.GetServiceLocator (It.IsAny<ReadOnlyCollection<ServiceConfigurationEntry>>())).Throws (exception).Verifiable();
+      serviceLocatorProvider.Setup(mock => mock.GetServiceLocator(It.IsAny<ReadOnlyCollection<ServiceConfigurationEntry>>())).Throws(exception).Verifiable();
 
-      ConfigureServiceLocatorProvider (serviceLocatorProvider.Object);
+      ConfigureServiceLocatorProvider(serviceLocatorProvider.Object);
 
-      Assert.That (() => SafeServiceLocator.Current, Throws.Exception.SameAs (exception));
+      Assert.That(() => SafeServiceLocator.Current, Throws.Exception.SameAs(exception));
     }
 
     [Test]
@@ -197,46 +197,46 @@ namespace Remotion.UnitTests.ServiceLocation
       var serviceLocatorProvider = new Mock<IServiceLocatorProvider>();
       var fakeServiceLocator = new Mock<IServiceLocator>();
       serviceLocatorProvider
-          .Setup (stub => stub.GetServiceLocator (It.IsAny<ReadOnlyCollection<ServiceConfigurationEntry>>()))
-          .Returns (fakeServiceLocator.Object)
-          .Callback (
+          .Setup(stub => stub.GetServiceLocator(It.IsAny<ReadOnlyCollection<ServiceConfigurationEntry>>()))
+          .Returns(fakeServiceLocator.Object)
+          .Callback(
               (ReadOnlyCollection<ServiceConfigurationEntry> bootstrapConfiguration) =>
               {
-                Assert.That (
+                Assert.That(
                     SafeServiceLocator.Current,
-                    Is.Not.Null.And.SameAs (((BootstrapServiceConfiguration) SafeServiceLocator.BootstrapConfiguration).BootstrapServiceLocator));
+                    Is.Not.Null.And.SameAs(((BootstrapServiceConfiguration)SafeServiceLocator.BootstrapConfiguration).BootstrapServiceLocator));
               });
-      
-      ConfigureServiceLocatorProvider (serviceLocatorProvider.Object);
+
+      ConfigureServiceLocatorProvider(serviceLocatorProvider.Object);
 
       var result = SafeServiceLocator.Current;
 
-      Assert.That (result, Is.SameAs (fakeServiceLocator.Object));
+      Assert.That(result, Is.SameAs(fakeServiceLocator.Object));
     }
 
     [Test]
     public void DefaultConfiguration_IntegrationTest ()
     {
-      SafeServiceLocator.BootstrapConfiguration.Register (typeof (IService1), typeof (Service1), LifetimeKind.InstancePerDependency);
+      SafeServiceLocator.BootstrapConfiguration.Register(typeof(IService1), typeof(Service1), LifetimeKind.InstancePerDependency);
 
-      Assert.That (SafeServiceLocator.Current, Is.TypeOf<DefaultServiceLocator> ());
-      Assert.That (SafeServiceLocator.Current.GetInstance<IServiceWithAttribute> (), Is.Not.Null.And.TypeOf<ServiceWithAttribute> ());
-      Assert.That (SafeServiceLocator.Current.GetInstance<IService1> (), Is.Not.Null.And.TypeOf<Service1> ());
-      Assert.That (() => SafeServiceLocator.Current.GetInstance<IService2> (), Throws.TypeOf<ActivationException>());
+      Assert.That(SafeServiceLocator.Current, Is.TypeOf<DefaultServiceLocator>());
+      Assert.That(SafeServiceLocator.Current.GetInstance<IServiceWithAttribute>(), Is.Not.Null.And.TypeOf<ServiceWithAttribute>());
+      Assert.That(SafeServiceLocator.Current.GetInstance<IService1>(), Is.Not.Null.And.TypeOf<Service1>());
+      Assert.That(() => SafeServiceLocator.Current.GetInstance<IService2>(), Throws.TypeOf<ActivationException>());
     }
 
     private void ConfigureServiceLocatorProvider (IServiceLocatorProvider serviceLocatorProvider)
     {
       var serviceLocationConfiguration = new Mock<IServiceLocationConfiguration>();
-      serviceLocationConfiguration.Setup (stub => stub.CreateServiceLocatorProvider()).Returns (serviceLocatorProvider);
-      ServiceLocationConfiguration.SetCurrent (serviceLocationConfiguration.Object);
+      serviceLocationConfiguration.Setup(stub => stub.CreateServiceLocatorProvider()).Returns(serviceLocatorProvider);
+      ServiceLocationConfiguration.SetCurrent(serviceLocationConfiguration.Object);
       ResetDefaultServiceLocator();
     }
 
     private void ResetDefaultServiceLocator ()
     {
-      var defaultServiceLocatorContainer = 
-          (DoubleCheckedLockingContainer<IServiceLocator>) PrivateInvoke.GetNonPublicStaticField (typeof (SafeServiceLocator), "s_defaultServiceLocator");
+      var defaultServiceLocatorContainer =
+          (DoubleCheckedLockingContainer<IServiceLocator>)PrivateInvoke.GetNonPublicStaticField(typeof(SafeServiceLocator), "s_defaultServiceLocator");
       defaultServiceLocatorContainer.Value = null;
     }
 
@@ -247,7 +247,7 @@ namespace Remotion.UnitTests.ServiceLocation
     class Service2 : IService2 { }
 
     interface IServiceWithAttribute { }
-    [ImplementationFor (typeof (IServiceWithAttribute))]
+    [ImplementationFor(typeof(IServiceWithAttribute))]
     class ServiceWithAttribute : IServiceWithAttribute { }
   }
 }

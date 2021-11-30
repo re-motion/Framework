@@ -46,18 +46,18 @@ namespace Remotion.Globalization.UnitTests
       _memoryAppender = new MemoryAppender();
 
       LoggerMatchFilter acceptFilter = new LoggerMatchFilter();
-      acceptFilter.LoggerToMatch = typeof (ResourceLogger).FullName;
+      acceptFilter.LoggerToMatch = typeof(ResourceLogger).FullName;
       acceptFilter.AcceptOnMatch = true;
-      _memoryAppender.AddFilter (acceptFilter);
+      _memoryAppender.AddFilter(acceptFilter);
 
       DenyAllFilter denyFilter = new DenyAllFilter();
-      _memoryAppender.AddFilter (denyFilter);
+      _memoryAppender.AddFilter(denyFilter);
 
-      BasicConfigurator.Configure (_memoryAppender);
+      BasicConfigurator.Configure(_memoryAppender);
     }
 
     [TearDown]
-    public void TearDown()
+    public void TearDown ()
     {
       LogManager.ResetConfiguration();
     }
@@ -67,14 +67,14 @@ namespace Remotion.Globalization.UnitTests
     {
       var fakeResult = new Dictionary<string, string>();
       _resourceManagerMock
-          .Setup (mock => mock.GetAllStrings (null))
-          .Returns (fakeResult)
+          .Setup(mock => mock.GetAllStrings(null))
+          .Returns(fakeResult)
           .Verifiable();
 
       var result = _resourceManagerMock.Object.GetAllStrings();
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.SameAs (fakeResult));
+      Assert.That(result, Is.SameAs(fakeResult));
     }
 
     [Test]
@@ -83,14 +83,14 @@ namespace Remotion.Globalization.UnitTests
       var outValue = "Test";
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (_fakeResourceID, out outValue))
-          .Returns (true)
+          .Setup(mock => mock.TryGetString(_fakeResourceID, out outValue))
+          .Returns(true)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetString (_fakeResourceID);
+      var result = _resourceManagerMock.Object.GetString(_fakeResourceID);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.EqualTo ("Test"));
+      Assert.That(result, Is.EqualTo("Test"));
     }
 
     [Test]
@@ -99,21 +99,21 @@ namespace Remotion.Globalization.UnitTests
       string outValue = null;
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (_fakeResourceID, out outValue))
-          .Returns (false)
+          .Setup(mock => mock.TryGetString(_fakeResourceID, out outValue))
+          .Returns(false)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetString (_fakeResourceID);
+      var result = _resourceManagerMock.Object.GetString(_fakeResourceID);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.EqualTo (_fakeResourceID));
+      Assert.That(result, Is.EqualTo(_fakeResourceID));
 
       LoggingEvent[] events = _memoryAppender.GetEvents();
-      Assert.That (events.Length, Is.EqualTo (1));
-      Assert.That (events[0].Level, Is.EqualTo (Level.Debug));
-      Assert.That (
+      Assert.That(events.Length, Is.EqualTo(1));
+      Assert.That(events[0].Level, Is.EqualTo(Level.Debug));
+      Assert.That(
           events[0].RenderedMessage,
-          Is.EqualTo ("No resource entry exists for the following element: ID: 'fakeID'"));
+          Is.EqualTo("No resource entry exists for the following element: ID: 'fakeID'"));
     }
 
     [Test]
@@ -121,12 +121,12 @@ namespace Remotion.Globalization.UnitTests
     {
       var outValue = "Test";
 
-      _resourceManagerMock.Setup (mock => mock.TryGetString (_fakeResourceID, out outValue)).Returns (true).Verifiable();
+      _resourceManagerMock.Setup(mock => mock.TryGetString(_fakeResourceID, out outValue)).Returns(true).Verifiable();
 
-      var result = _resourceManagerMock.Object.GetStringOrDefault (_fakeResourceID);
+      var result = _resourceManagerMock.Object.GetStringOrDefault(_fakeResourceID);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.EqualTo ("Test"));
+      Assert.That(result, Is.EqualTo("Test"));
     }
 
     [Test]
@@ -135,86 +135,86 @@ namespace Remotion.Globalization.UnitTests
       string outValue = null;
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (_fakeResourceID, out outValue))
-          .Returns (false)
+          .Setup(mock => mock.TryGetString(_fakeResourceID, out outValue))
+          .Returns(false)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetStringOrDefault (_fakeResourceID);
+      var result = _resourceManagerMock.Object.GetStringOrDefault(_fakeResourceID);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void GetString_EnumOverload_ResourceExists ()
     {
       var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
-      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier(enumValue);
       var outValue = "Test";
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (enumResourceID, out outValue))
-          .Returns (true)
+          .Setup(mock => mock.TryGetString(enumResourceID, out outValue))
+          .Returns(true)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetString (enumValue);
+      var result = _resourceManagerMock.Object.GetString(enumValue);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.EqualTo ("Test"));
+      Assert.That(result, Is.EqualTo("Test"));
     }
 
     [Test]
     public void GetString_EnumOverload_ResourceDoesNotExist ()
     {
       var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
-      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier(enumValue);
       var outValue = "Test";
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (enumResourceID, out outValue))
-          .Returns (false)
+          .Setup(mock => mock.TryGetString(enumResourceID, out outValue))
+          .Returns(false)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetString (enumValue);
+      var result = _resourceManagerMock.Object.GetString(enumValue);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.EqualTo (enumResourceID));
+      Assert.That(result, Is.EqualTo(enumResourceID));
     }
 
     [Test]
     public void GetStringOrDefault_EnumOverload_ResourceExists ()
     {
       var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
-      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier(enumValue);
       var outValue = "Test";
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (enumResourceID, out outValue))
-          .Returns (true)
+          .Setup(mock => mock.TryGetString(enumResourceID, out outValue))
+          .Returns(true)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetStringOrDefault (enumValue);
+      var result = _resourceManagerMock.Object.GetStringOrDefault(enumValue);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.EqualTo ("Test"));
+      Assert.That(result, Is.EqualTo("Test"));
     }
 
     [Test]
     public void GetStringOrDefault_EnumOverload_ResourceDoesNotExist ()
     {
       var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
-      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier(enumValue);
       var outValue = "Test";
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (enumResourceID, out outValue))
-          .Returns (false)
+          .Setup(mock => mock.TryGetString(enumResourceID, out outValue))
+          .Returns(false)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.GetStringOrDefault (enumValue);
+      var result = _resourceManagerMock.Object.GetStringOrDefault(enumValue);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
@@ -223,14 +223,14 @@ namespace Remotion.Globalization.UnitTests
       var outValue = "Test";
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (_fakeResourceID, out outValue))
-          .Returns (true)
+          .Setup(mock => mock.TryGetString(_fakeResourceID, out outValue))
+          .Returns(true)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.ContainsString (_fakeResourceID);
+      var result = _resourceManagerMock.Object.ContainsString(_fakeResourceID);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
     }
 
     [Test]
@@ -239,50 +239,50 @@ namespace Remotion.Globalization.UnitTests
       string outValue = null;
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (_fakeResourceID, out outValue))
-          .Returns (false)
+          .Setup(mock => mock.TryGetString(_fakeResourceID, out outValue))
+          .Returns(false)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.ContainsString (_fakeResourceID);
+      var result = _resourceManagerMock.Object.ContainsString(_fakeResourceID);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
 
     [Test]
     public void ContainsString_EnumOverload_ResourceExists ()
     {
       var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
-      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier(enumValue);
       var outValue = "Test";
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (enumResourceID, out outValue))
-          .Returns (true)
+          .Setup(mock => mock.TryGetString(enumResourceID, out outValue))
+          .Returns(true)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.ContainsString (enumValue);
+      var result = _resourceManagerMock.Object.ContainsString(enumValue);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
     }
 
     [Test]
     public void ContainsString_EnumOverload_ResourceDoesNotExist ()
     {
       var enumValue = EnumWithMultiLingualNameAttribute.ValueWithLocalizedName;
-      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue);
+      var enumResourceID = ResourceIdentifiersAttribute.GetResourceIdentifier(enumValue);
       var outValue = "Test";
 
       _resourceManagerMock
-          .Setup (mock => mock.TryGetString (enumResourceID, out outValue))
-          .Returns (false)
+          .Setup(mock => mock.TryGetString(enumResourceID, out outValue))
+          .Returns(false)
           .Verifiable();
 
-      var result = _resourceManagerMock.Object.ContainsString (enumValue);
+      var result = _resourceManagerMock.Object.ContainsString(enumValue);
 
       _resourceManagerMock.Verify();
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
   }
 }

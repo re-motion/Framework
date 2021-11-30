@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocListRowRenderingContext (BocListRow row, int sortedIndex, bool isSelected)
     {
-      ArgumentUtility.CheckNotNull ("row", row);
+      ArgumentUtility.CheckNotNull("row", row);
 
       _row = row;
       _sortedIndex = sortedIndex;

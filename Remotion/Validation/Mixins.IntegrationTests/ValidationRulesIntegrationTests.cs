@@ -37,49 +37,49 @@ namespace Remotion.Validation.Mixins.IntegrationTests
     [Test]
     public void BuildCustomerValidator_PersonLastNameEqualsValidatorRemovedByCollector ()
     {
-      var customer = ObjectFactory.Create<Customer> (ParamList.Empty);
+      var customer = ObjectFactory.Create<Customer>(ParamList.Empty);
       customer.UserName = "cust1";
       customer.LastName = "Test";
       customer.FirstName = "Firstname";
 
       var validator = ValidationBuilder.BuildValidator<Customer>();
 
-      var result = validator.Validate (customer);
+      var result = validator.Validate(customer);
 
-      Assert.That (result.IsValid, Is.True);
-      Assert.That (result.Errors.Any(), Is.False);
+      Assert.That(result.IsValid, Is.True);
+      Assert.That(result.Errors.Any(), Is.False);
     }
 
     [Test]
     public void BuildSpecialCustomerValidator_CustomerUsernameMaxLengthAndAllFirstNameNotNullValidatorsRemoved ()
         //2 NotNull Validators removed (IPerson + CustomerValidationCollector!)
     {
-      var specialCustomer = ObjectFactory.Create<SpecialCustomer1> (ParamList.Empty);
+      var specialCustomer = ObjectFactory.Create<SpecialCustomer1>(ParamList.Empty);
       specialCustomer.UserName = "Test123456";
       specialCustomer.LastName = "Test1234";
       specialCustomer.FirstName = "Test456";
       var validator = ValidationBuilder.BuildValidator<SpecialCustomer1>();
 
-      var result = validator.Validate (specialCustomer);
+      var result = validator.Validate(specialCustomer);
 
-      Assert.That (result.IsValid, Is.True);
-      Assert.That (result.Errors.Any(), Is.False);
+      Assert.That(result.IsValid, Is.True);
+      Assert.That(result.Errors.Any(), Is.False);
     }
 
     [Test]
     public void BuildCustomerValidator_CustomerMixinIntroducedValidator_MixinInterfaceIntroducedValidatorIsRemovedByApplyWithMixinCollector ()
     {
-      var customer = ObjectFactory.Create<Customer> (ParamList.Empty);
+      var customer = ObjectFactory.Create<Customer>(ParamList.Empty);
       customer.FirstName = "Ralf";
       customer.LastName = "Mayr";
       customer.UserName = "mm2";
-      ((ICustomerIntroduced) customer).Title = "Chef3";
+      ((ICustomerIntroduced)customer).Title = "Chef3";
 
       var validator = ValidationBuilder.BuildValidator<Customer>();
 
-      var result = validator.Validate (customer);
+      var result = validator.Validate(customer);
 
-      Assert.That (result.IsValid, Is.True);
+      Assert.That(result.IsValid, Is.True);
     }
   }
 }

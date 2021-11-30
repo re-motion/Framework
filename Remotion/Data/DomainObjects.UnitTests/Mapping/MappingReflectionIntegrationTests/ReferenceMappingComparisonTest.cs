@@ -34,47 +34,47 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     {
       MappingReflector mappingReflector = MappingReflectorObjectMother.CreateMappingReflector(TestMappingConfiguration.GetTypeDiscoveryService());
 
-      var actualClassDefinitions = mappingReflector.GetClassDefinitions().ToDictionary (cd => cd.ClassType);
-      mappingReflector.GetRelationDefinitions (actualClassDefinitions);
-      Assert.That (actualClassDefinitions, Is.Not.Null);
+      var actualClassDefinitions = mappingReflector.GetClassDefinitions().ToDictionary(cd => cd.ClassType);
+      mappingReflector.GetRelationDefinitions(actualClassDefinitions);
+      Assert.That(actualClassDefinitions, Is.Not.Null);
 
-      var inheritanceRootClasses = actualClassDefinitions.Values.Select (cd => cd.GetInheritanceRootClass()).Distinct();
+      var inheritanceRootClasses = actualClassDefinitions.Values.Select(cd => cd.GetInheritanceRootClass()).Distinct();
 
       // Pretend that all classes have the storage provider definition used by FakeMappingConfiguration
       var defaultStorageProviderDefinition = FakeMappingConfiguration.Current.DefaultStorageProviderDefinition;
       var defaultStorageProviderDefinitionFinderStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder>();
       defaultStorageProviderDefinitionFinderStub
-          .Stub (stub => stub.GetStorageProviderDefinition (Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
-          .Return (defaultStorageProviderDefinition);
+          .Stub(stub => stub.GetStorageProviderDefinition(Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
+          .Return(defaultStorageProviderDefinition);
 
       var nonPersistentStorageProviderDefinition = FakeMappingConfiguration.Current.NonPersistentStorageProviderDefinition;
       var nonPersistentStorageProviderDefinitionFinderStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder>();
       nonPersistentStorageProviderDefinitionFinderStub
-          .Stub (stub => stub.GetStorageProviderDefinition (Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
-          .Return (nonPersistentStorageProviderDefinition);
+          .Stub(stub => stub.GetStorageProviderDefinition(Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
+          .Return(nonPersistentStorageProviderDefinition);
 
       foreach (ClassDefinition classDefinition in inheritanceRootClasses)
       {
-        if (typeof (OrderViewModel).IsAssignableFrom (classDefinition.ClassType))
+        if (typeof(OrderViewModel).IsAssignableFrom(classDefinition.ClassType))
         {
-          var persistenceModelLoader = nonPersistentStorageProviderDefinition.Factory.CreatePersistenceModelLoader (
+          var persistenceModelLoader = nonPersistentStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
               nonPersistentStorageProviderDefinition,
               nonPersistentStorageProviderDefinitionFinderStub);
-          persistenceModelLoader.ApplyPersistenceModelToHierarchy (classDefinition);
+          persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);
         }
         else
         {
-          var persistenceModelLoader = defaultStorageProviderDefinition.Factory.CreatePersistenceModelLoader (
+          var persistenceModelLoader = defaultStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
               defaultStorageProviderDefinition,
               defaultStorageProviderDefinitionFinderStub);
-          persistenceModelLoader.ApplyPersistenceModelToHierarchy (classDefinition);
+          persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);
         }
       }
 
       var classDefinitionChecker = new ClassDefinitionChecker();
-      classDefinitionChecker.Check (FakeMappingConfiguration.Current.TypeDefinitions.Values, actualClassDefinitions, false, true);
-      classDefinitionChecker.CheckPersistenceModel (FakeMappingConfiguration.Current.TypeDefinitions.Values, actualClassDefinitions);
-      Assert.That (actualClassDefinitions.ContainsKey (typeof (TestDomainBase)), Is.False);
+      classDefinitionChecker.Check(FakeMappingConfiguration.Current.TypeDefinitions.Values, actualClassDefinitions, false, true);
+      classDefinitionChecker.CheckPersistenceModel(FakeMappingConfiguration.Current.TypeDefinitions.Values, actualClassDefinitions);
+      Assert.That(actualClassDefinitions.ContainsKey(typeof(TestDomainBase)), Is.False);
     }
   }
 }

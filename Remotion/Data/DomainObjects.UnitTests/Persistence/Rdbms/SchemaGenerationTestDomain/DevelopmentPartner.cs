@@ -21,19 +21,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 {
   [DBTable]
   [Instantiable]
-  [Uses (typeof (ProductLicenseMixin))]
+  [Uses(typeof(ProductLicenseMixin))]
   public abstract class DevelopmentPartner : Partner
   {
-    public new static DevelopmentPartner NewObject()
+    public new static DevelopmentPartner NewObject ()
     {
-      return DomainObject.NewObject<DevelopmentPartner> ();
+      return DomainObject.NewObject<DevelopmentPartner>();
     }
 
-    protected DevelopmentPartner()
+    protected DevelopmentPartner ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 255)]
+    [StringProperty(IsNullable = false, MaximumLength = 255)]
     public abstract string Competences { get; set; }
   }
 }

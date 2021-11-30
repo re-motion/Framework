@@ -22,14 +22,14 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
   public class TestableBusinessObjectPropertyPathPropertyEnumeratorBase : BusinessObjectPropertyPathPropertyEnumeratorBase
   {
     public TestableBusinessObjectPropertyPathPropertyEnumeratorBase (string propertyPathIdentifier)
-        : base (propertyPathIdentifier)
+        : base(propertyPathIdentifier)
     {
     }
 
     protected override void HandlePropertyNotFound (IBusinessObjectClass businessObjectClass, string propertyIdentifier)
     {
-      throw new Exception (
-          string.Format (
+      throw new Exception(
+          string.Format(
               "HandlePropertyNotFound, class: {0}, property: {1}",
               businessObjectClass.Identifier,
               propertyIdentifier));
@@ -38,8 +38,8 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.Enumerato
     protected override void HandlePropertyNotLastPropertyAndNotReferenceProperty (
         IBusinessObjectClass businessObjectClass, IBusinessObjectProperty property)
     {
-      throw new Exception (
-          string.Format (
+      throw new Exception(
+          string.Format(
               "HandlePropertyNotLastPropertyAndNotReferenceProperty, class: {0}, property: {1}",
               businessObjectClass.Identifier,
               property.Identifier));

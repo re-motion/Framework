@@ -29,8 +29,8 @@ public class BocListSortingOrderChangeEventArgs: EventArgs
   public BocListSortingOrderChangeEventArgs (
       BocListSortingOrderEntry[] oldSortingOrder, BocListSortingOrderEntry[] newSortingOrder)
   {
-    ArgumentUtility.CheckNotNullOrItemsNull ("oldSortingOrder", oldSortingOrder);
-    ArgumentUtility.CheckNotNullOrItemsNull ("newSortingOrder", newSortingOrder);
+    ArgumentUtility.CheckNotNullOrItemsNull("oldSortingOrder", oldSortingOrder);
+    ArgumentUtility.CheckNotNullOrItemsNull("newSortingOrder", newSortingOrder);
 
     _oldSortingOrder = oldSortingOrder;
     _newSortingOrder = newSortingOrder;
@@ -57,7 +57,7 @@ public class BocListItemEventArgs: EventArgs
   private IBusinessObject _businessObject;
 
   public BocListItemEventArgs (
-      int listIndex, 
+      int listIndex,
       IBusinessObject businessObject)
   {
     _listIndex = listIndex;
@@ -87,11 +87,11 @@ public class BocListEditableRowChangesEventArgs : BocListItemEventArgs
   private IBusinessObjectDataSource _dataSource;
 
   public BocListEditableRowChangesEventArgs (
-      int listIndex, 
+      int listIndex,
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
       IBusinessObjectBoundEditableWebControl[] controls)
-    : base (listIndex, businessObject)
+    : base(listIndex, businessObject)
   {
     _dataSource = dataSource;
     _controls = controls;
@@ -117,7 +117,7 @@ public class BocListDataRowRenderEventArgs: BocListItemEventArgs
   private string? _additionalCssClassForDataRow;
 
   public BocListDataRowRenderEventArgs (int listIndex, IBusinessObject businessObject, bool isEditableRow, bool isOddRow)
-    : base (listIndex, businessObject)
+    : base(listIndex, businessObject)
   {
     _isEditableRow = isEditableRow;
     _isOddRow = isOddRow;
@@ -150,7 +150,7 @@ public class BocListDataRowRenderEventArgs: BocListItemEventArgs
 
   public void SetAdditionalCssClassForDataRow (string cssClass)
   {
-    ArgumentUtility.CheckNotEmpty ("cssClass", cssClass);
+    ArgumentUtility.CheckNotEmpty("cssClass", cssClass);
     _additionalCssClassForDataRow = cssClass;
   }
 }

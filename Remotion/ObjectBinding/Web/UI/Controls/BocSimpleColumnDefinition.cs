@@ -45,14 +45,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public BocSimpleColumnDefinition ()
     {
       _formatString = string.Empty;
-      _propertyPathBinding = new PropertyPathBinding ();
+      _propertyPathBinding = new PropertyPathBinding();
     }
 
     /// <summary> Passes the new OwnerControl to the <see cref="PropertyPathBindingCollection"/>. </summary>
     protected override void OnOwnerControlChanged ()
     {
       _propertyPathBinding.OwnerControl = OwnerControl;
-      base.OnOwnerControlChanged ();
+      base.OnOwnerControlChanged();
     }
 
     /// <summary> Creates a string representation of the data displayed in this column. </summary>
@@ -60,16 +60,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
     public override string GetStringValue (IBusinessObject obj)
     {
-      ArgumentUtility.CheckNotNull ("obj", obj);
+      ArgumentUtility.CheckNotNull("obj", obj);
 
-      var propertyPath = _propertyPathBinding.GetPropertyPath ();
+      var propertyPath = _propertyPathBinding.GetPropertyPath();
 
-      var result = propertyPath.GetResult (
+      var result = propertyPath.GetResult(
           obj,
           BusinessObjectPropertyPath.UnreachableValueBehavior.ReturnNullForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
 
-      return result.GetString (_formatString);
+      return result.GetString(_formatString);
     }
 
     /// <summary>
@@ -79,11 +79,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <value> 
     ///   A <see cref="string"/> representing a valid format string. 
     /// </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Format")]
-    [Description ("A format string describing how the value accessed through the Property Path is formatted.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Format")]
+    [Description("A format string describing how the value accessed through the Property Path is formatted.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public string FormatString
     {
       get { return _formatString; }
@@ -92,16 +92,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public IBusinessObjectPropertyPath GetPropertyPath ()
     {
-      return _propertyPathBinding.GetPropertyPath ();
+      return _propertyPathBinding.GetPropertyPath();
     }
 
     public void SetPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
-      _propertyPathBinding.SetPropertyPath (propertyPath);
+      _propertyPathBinding.SetPropertyPath(propertyPath);
     }
 
-    [DefaultValue (false)]
-    [Category ("Data")]
+    [DefaultValue(false)]
+    [Category("Data")]
     public bool IsDynamic
     {
       get { return _propertyPathBinding.IsDynamic; }
@@ -113,11 +113,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Must not be <see langword="null"/> or emtpy.
     /// </summary>
     /// <value> A <see cref="string"/> representing the <see cref="GetPropertyPath"/>. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Data")]
-    [Description ("The string representation of the Property Path. Must not be emtpy.")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Data")]
+    [Description("The string representation of the Property Path. Must not be emtpy.")]
     //  No default value
-    [NotifyParentProperty (true)]
+    [NotifyParentProperty(true)]
     public string? PropertyPathIdentifier
     {
       get { return _propertyPathBinding.PropertyPathIdentifier; }
@@ -130,11 +130,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </summary>
     public IBusinessObjectBoundEditableWebControl? CreateEditModeControl ()
     {
-      if (string.IsNullOrEmpty (_editModeControlType))
+      if (string.IsNullOrEmpty(_editModeControlType))
         return null;
 
-      Type type = WebTypeUtility.GetType (_editModeControlType, true)!;
-      return (IBusinessObjectBoundEditableWebControl) ObjectFactory.Create (type, ParamList.Empty);
+      Type type = WebTypeUtility.GetType(_editModeControlType, true)!;
+      return (IBusinessObjectBoundEditableWebControl)ObjectFactory.Create(type, ParamList.Empty);
     }
 
     /// <summary>
@@ -144,11 +144,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     ///    Optionally uses the abbreviated type name as defined in <see cref="TypeUtility.ParseAbbreviatedTypeName"/>. 
     /// </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("The IBusinessObjectBoundEditableWebControl to be used for editing the value of this column during edit mode.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("The IBusinessObjectBoundEditableWebControl to be used for editing the value of this column during edit mode.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public string EditModeControlType
     {
       get { return _editModeControlType; }
@@ -159,21 +159,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a flag that determines whether the displayed value can be edited if the row is in edit mode.
     /// </summary>
     /// <remarks> It is only possible to explicitly disable the editing of the value. </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("A flag that determines whether the displayed value can be edited if the row is in edit mode.")]
-    [DefaultValue (false)]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("A flag that determines whether the displayed value can be edited if the row is in edit mode.")]
+    [DefaultValue(false)]
+    [NotifyParentProperty(true)]
     public bool IsReadOnly
     {
       get { return _isReadOnly; }
       set { _isReadOnly = value; }
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("Flag that determines whether to show the icon in front of the value. Only allowed for reference properties")]
-    [DefaultValue (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("Flag that determines whether to show the icon in front of the value. Only allowed for reference properties")]
+    [DefaultValue(true)]
     public bool EnableIcon
     {
       get { return _enableIcon; }
@@ -182,9 +182,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
-      
-      return serviceLocator.GetInstance<IBocSimpleColumnRenderer> ();
+      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
+
+      return serviceLocator.GetInstance<IBocSimpleColumnRenderer>();
     }
 
     /// <summary> Gets the displayed value of the column title. </summary>
@@ -197,7 +197,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        bool isTitleEmpty = string.IsNullOrEmpty (ColumnTitle);
+        bool isTitleEmpty = string.IsNullOrEmpty(ColumnTitle);
 
         if (!isTitleEmpty)
           return ColumnTitle;

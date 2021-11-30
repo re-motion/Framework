@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   public class BocBooleanValueControlObject : BocControlObject, IControlObjectWithFormElements, ISupportsValidationErrors, ISupportsValidationErrorsForReadOnly
   {
     public BocBooleanValueControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -41,9 +41,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public bool? GetState ()
     {
       if (IsReadOnly())
-        return ParseState (Scope.FindChild ("Value")["data-value"]);
+        return ParseState(Scope.FindChild("Value")["data-value"]);
 
-      return ParseState (Scope.FindChild ("Value").Value);
+      return ParseState(Scope.FindChild("Value").Value);
     }
 
     /// <summary>
@@ -61,14 +61,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public UnspecifiedPageObject SetTo (bool? newState, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException (Driver);
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException (Driver);
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
       var isTriState = IsTriState();
       if (!isTriState && !newState.HasValue)
-        throw new ArgumentException ("Must not be null for non-tri-state BocBooleanValue controls.", "newState");
+        throw new ArgumentException("Must not be null for non-tri-state BocBooleanValue controls.", "newState");
 
       var currentState = GetState();
       if (currentState == newState)
@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (isTriState)
       {
         var states = new bool?[] { false, null, true, false, null };
-        numberOfClicks = Array.LastIndexOf (states, newState) - Array.IndexOf (states, currentState);
+        numberOfClicks = Array.LastIndexOf(states, newState) - Array.IndexOf(states, currentState);
       }
       else if (currentState == null && newState == false)
       {
@@ -89,17 +89,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         numberOfClicks = 1;
       }
 
-      return Click (numberOfClicks, actionOptions);
+      return Click(numberOfClicks, actionOptions);
     }
 
     public IReadOnlyList<string> GetValidationErrors ()
     {
-      return GetValidationErrors (GetLinkScope());
+      return GetValidationErrors(GetLinkScope());
     }
 
     public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
     {
-      return GetValidationErrorsForReadOnly (GetLinkScope());
+      return GetValidationErrorsForReadOnly(GetLinkScope());
     }
 
     protected override ElementScope GetLabeledElementScope ()
@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
-      return new[] { string.Format ("{0}_Value", GetHtmlID()) };
+      return new[] { string.Format("{0}_Value", GetHtmlID()) };
     }
 
     private UnspecifiedPageObject Click (int numberOfClicks, IWebTestActionOptions? actionOptions)
@@ -121,8 +121,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       for (var i = 0; i < numberOfClicks; ++i)
       {
-        var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-        ExecuteAction (new ClickAction (this, linkScope), actualActionOptions);
+        var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
+        ExecuteAction(new ClickAction(this, linkScope), actualActionOptions);
       }
 
       return UnspecifiedPage();
@@ -130,7 +130,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private ElementScope GetLinkScope ()
     {
-      return Scope.FindChild ("DisplayValue");
+      return Scope.FindChild("DisplayValue");
     }
 
     private bool? ParseState (string state)

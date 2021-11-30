@@ -37,25 +37,25 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
     [Test]
     public void PropertyDisplayName_NotInherited_NotOverridden_NotMixed ()
     {
-      var resourceString = GetResourceStringForType (typeof (TargetClassForGlobalizationViaAttributes), "Property2");
+      var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaAttributes), "Property2");
 
-      Assert.That (resourceString, Is.EqualTo ("Property2 display name from TargetClassForGlobalizationViaAttributes"));
+      Assert.That(resourceString, Is.EqualTo("Property2 display name from TargetClassForGlobalizationViaAttributes"));
     }
 
     [Test]
     public void PropertyDisplayName_InheritedAndOverridden_NotMixed_PropertyEvaluatedForBaseClass ()
     {
-      var resourceString = GetResourceStringForType (typeof (TargetClassForGlobalizationViaAttributes), "Property1");
+      var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaAttributes), "Property1");
 
-      Assert.That (resourceString, Is.EqualTo ("Property1 display name from TargetClassForGlobalizationViaAttributes"));
+      Assert.That(resourceString, Is.EqualTo("Property1 display name from TargetClassForGlobalizationViaAttributes"));
     }
 
     [Test]
     public void PropertyDisplayName_InheritedAndOverridden_NotMixed_PropertyEvaluatedForDerivedClass ()
     {
-      var resourceString = GetResourceStringForType (typeof (TargetClassForGlobalizationViaAttributes), "Property1");
+      var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaAttributes), "Property1");
 
-      Assert.That (resourceString, Is.EqualTo ("Property1 display name from TargetClassForGlobalizationViaAttributes"));
+      Assert.That(resourceString, Is.EqualTo("Property1 display name from TargetClassForGlobalizationViaAttributes"));
     }
 
     [Test]
@@ -66,11 +66,11 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<MixinForGlobalizationViaAttributes>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType (
-            typeof (TargetClassWithOverrideMixinForGlobalizationViaAttributes),
+        var resourceString = GetResourceStringForType(
+            typeof(TargetClassWithOverrideMixinForGlobalizationViaAttributes),
             "PropertyForOverrideTarget");
 
-        Assert.That (resourceString, Is.EqualTo ("PropertyForOverrideTarget display name from TargetClassForGlobalizationViaAttributes"));
+        Assert.That(resourceString, Is.EqualTo("PropertyForOverrideTarget display name from TargetClassForGlobalizationViaAttributes"));
       }
     }
 
@@ -82,13 +82,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<MixinForGlobalizationViaAttributes>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType (
-            typeof (TargetClassWithOverrideMixinForGlobalizationViaAttributes),
+        var resourceString = GetResourceStringForType(
+            typeof(TargetClassWithOverrideMixinForGlobalizationViaAttributes),
             "ImplicitImplementedPropertyForOverrideTarget");
 
-        Assert.That (
+        Assert.That(
             resourceString,
-            Is.EqualTo ("ImplicitImplementedPropertyForOverrideTarget display name from TargetClassForGlobalizationViaAttributes"));
+            Is.EqualTo("ImplicitImplementedPropertyForOverrideTarget display name from TargetClassForGlobalizationViaAttributes"));
       }
     }
 
@@ -100,9 +100,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<MixinForGlobalizationViaAttributes>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType (typeof (TargetClassWithOverrideMixinForGlobalizationViaAttributes), "PropertyForOverrideMixin");
+        var resourceString = GetResourceStringForType(typeof(TargetClassWithOverrideMixinForGlobalizationViaAttributes), "PropertyForOverrideMixin");
 
-        Assert.That (resourceString, Is.EqualTo ("PropertyForOverrideMixin display name from MixinForGlobalizationViaAttributes"));
+        Assert.That(resourceString, Is.EqualTo("PropertyForOverrideMixin display name from MixinForGlobalizationViaAttributes"));
       }
     }
 
@@ -114,9 +114,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<MixinForGlobalizationViaAttributes>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType (typeof (TargetClassWithOverrideMixinForGlobalizationViaAttributes), "MixedProperty1");
+        var resourceString = GetResourceStringForType(typeof(TargetClassWithOverrideMixinForGlobalizationViaAttributes), "MixedProperty1");
 
-        Assert.That (resourceString, Is.EqualTo ("MixedProperty1 display name from MixinForGlobalizationViaAttributes"));
+        Assert.That(resourceString, Is.EqualTo("MixedProperty1 display name from MixinForGlobalizationViaAttributes"));
       }
     }
 
@@ -128,26 +128,26 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<MixinForGlobalizationViaAttributes>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType (typeof (TargetClassWithOverrideMixinForGlobalizationViaAttributes), "MixedProperty2");
+        var resourceString = GetResourceStringForType(typeof(TargetClassWithOverrideMixinForGlobalizationViaAttributes), "MixedProperty2");
 
-        Assert.That (resourceString, Is.EqualTo ("MixedProperty2 display name from MixinForGlobalizationViaAttributes"));
+        Assert.That(resourceString, Is.EqualTo("MixedProperty2 display name from MixinForGlobalizationViaAttributes"));
       }
     }
 
     [Test]
     public void PropertyDisplayName_ImplicitInterfaceProperty ()
     {
-      var resourceString = GetResourceStringForType (typeof (TargetClassForGlobalizationViaAttributes), "ImplicitImplementedProperty");
+      var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaAttributes), "ImplicitImplementedProperty");
 
-      Assert.That (resourceString, Is.EqualTo ("ImplicitImplementedProperty display name from TargetClassForGlobalizationViaAttributes"));
+      Assert.That(resourceString, Is.EqualTo("ImplicitImplementedProperty display name from TargetClassForGlobalizationViaAttributes"));
     }
 
     [Test]
     public void PropertyDisplayName_ExplicitInterfaceProperty ()
     {
-      var resourceString = GetResourceStringForType (typeof (TargetClassForGlobalizationViaAttributes), "ExplicitImplementedProperty");
+      var resourceString = GetResourceStringForType(typeof(TargetClassForGlobalizationViaAttributes), "ExplicitImplementedProperty");
 
-      Assert.That (resourceString, Is.EqualTo ("ExplicitImplementedProperty display name from TargetClassForGlobalizationViaAttributes"));
+      Assert.That(resourceString, Is.EqualTo("ExplicitImplementedProperty display name from TargetClassForGlobalizationViaAttributes"));
     }
 
     [Test]
@@ -158,9 +158,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<MixinForGlobalizationViaAttributes>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType (typeof (TargetClassWithOverrideMixinForGlobalizationViaAttributes), "MixedExplicitProperty");
+        var resourceString = GetResourceStringForType(typeof(TargetClassWithOverrideMixinForGlobalizationViaAttributes), "MixedExplicitProperty");
 
-        Assert.That (resourceString, Is.EqualTo ("MixedExplicitProperty display name from MixinForGlobalizationViaAttributes"));
+        Assert.That(resourceString, Is.EqualTo("MixedExplicitProperty display name from MixinForGlobalizationViaAttributes"));
       }
     }
 
@@ -172,33 +172,33 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
           .AddMixin<DerivedMixinForGlobalizationViaAttributes>()
           .EnterScope())
       {
-        var resourceString = GetResourceStringForType (typeof (DerivedTargetClassWithOverrideMixinForGlobalizationViaAttributes), "MixedProperty3");
+        var resourceString = GetResourceStringForType(typeof(DerivedTargetClassWithOverrideMixinForGlobalizationViaAttributes), "MixedProperty3");
 
-        Assert.That (resourceString, Is.EqualTo ("MixedProperty3 display name from DerivedMixinForGlobalizationViaAttributes"));
+        Assert.That(resourceString, Is.EqualTo("MixedProperty3 display name from DerivedMixinForGlobalizationViaAttributes"));
       }
     }
 
     [Test]
     public void PropertyDisplayName_PropertyAddedInBaseClass_NotMixed ()
     {
-      var resourceString = GetResourceStringForType (typeof (DerivedTargetClassForGlobalizationViaAttributes), "Property2");
+      var resourceString = GetResourceStringForType(typeof(DerivedTargetClassForGlobalizationViaAttributes), "Property2");
 
-      Assert.That (resourceString, Is.EqualTo ("Property2 display name from TargetClassForGlobalizationViaAttributes"));
+      Assert.That(resourceString, Is.EqualTo("Property2 display name from TargetClassForGlobalizationViaAttributes"));
     }
 
     [Test]
     public void PropertyDisplayName_PropertyAddedInDerivedClass_NotMixed ()
     {
-      var resourceString = GetResourceStringForType (typeof (DerivedTargetClassForGlobalizationViaAttributes), "Property4");
+      var resourceString = GetResourceStringForType(typeof(DerivedTargetClassForGlobalizationViaAttributes), "Property4");
 
-      Assert.That (resourceString, Is.EqualTo ("Property4 display name from DerivedTargetClassForGlobalizationViaAttributes"));
+      Assert.That(resourceString, Is.EqualTo("Property4 display name from DerivedTargetClassForGlobalizationViaAttributes"));
     }
 
     private string GetResourceStringForType (Type targetType, string propertyName)
     {
-      var classReflector = _factory.CreateClassReflector (targetType, new BindableObjectProvider());
+      var classReflector = _factory.CreateClassReflector(targetType, new BindableObjectProvider());
       var @class = classReflector.GetMetadata();
-      return @class.GetPropertyDefinition (propertyName).DisplayName;
+      return @class.GetPropertyDefinition(propertyName).DisplayName;
     }
   }
 }

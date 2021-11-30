@@ -21,7 +21,7 @@ using Remotion.Security;
 namespace Remotion.ObjectBinding.Security.UnitTests.TestDomain
 {
   [BindableObject]
-  [Uses (typeof (MixinSecurableClassWithProperties))]
+  [Uses(typeof(MixinSecurableClassWithProperties))]
   public class SecurableClassWithProperties : ISecurableObject
   {
     private readonly IObjectSecurityStrategy _securityStrategy;
@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.TestDomain
     public string PropertyWithWritePermission
     {
       get { return _accessibleProperty; }
-      [DemandPermission (TestAccessTypes.Second)]
+      [DemandPermission(TestAccessTypes.Second)]
       set { _accessibleProperty = value; }
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.TestDomain
     public virtual string PropertyToOverrideWithWritePermission
     {
       get { return _accessibleProperty; }
-      [DemandPermission (TestAccessTypes.First)]
+      [DemandPermission(TestAccessTypes.First)]
       set { _accessibleProperty = value; }
     }
 

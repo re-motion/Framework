@@ -19,6 +19,6 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
 {
   public class NoDomainObject
   {
-    public string Name { get; set; } 
+    public string Name { get; set; }
   }
 }

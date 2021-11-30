@@ -23,7 +23,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       CurrentPlatform.InnerText = Environment.Is64BitProcess ? "x64" : "x86";
     }

@@ -29,13 +29,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public FreshlyLoadedObjectData (DataContainer freshlyLoadedDataContainer)
     {
-      ArgumentUtility.CheckNotNull ("freshlyLoadedDataContainer", freshlyLoadedDataContainer);
+      ArgumentUtility.CheckNotNull("freshlyLoadedDataContainer", freshlyLoadedDataContainer);
 
       if (freshlyLoadedDataContainer.IsRegistered)
-        throw new ArgumentException ("The DataContainer must not have been registered with a ClientTransaction.", "freshlyLoadedDataContainer");
+        throw new ArgumentException("The DataContainer must not have been registered with a ClientTransaction.", "freshlyLoadedDataContainer");
 
       if (freshlyLoadedDataContainer.HasDomainObject)
-        throw new ArgumentException ("The DataContainer must not have been registered with a DomainObject.", "freshlyLoadedDataContainer");
+        throw new ArgumentException("The DataContainer must not have been registered with a DomainObject.", "freshlyLoadedDataContainer");
 
       _freshlyLoadedDataContainer = freshlyLoadedDataContainer;
     }
@@ -53,15 +53,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     public DomainObject GetDomainObjectReference ()
     {
       if (!_freshlyLoadedDataContainer.HasDomainObject)
-        throw new InvalidOperationException ("Cannot obtain a DomainObject reference for a freshly loaded object that has not yet been registered.");
-      
+        throw new InvalidOperationException("Cannot obtain a DomainObject reference for a freshly loaded object that has not yet been registered.");
+
       return _freshlyLoadedDataContainer.DomainObject;
     }
 
     public void Accept (ILoadedObjectVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.VisitFreshlyLoadedObject (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.VisitFreshlyLoadedObject(this);
     }
 
     bool INullObject.IsNull

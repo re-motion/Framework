@@ -43,67 +43,67 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Metadat
       _testHelper.Transaction.EnterNonDiscardingScope();
 
       _searchService = new AbstractRoleDefinitionPropertyTypeSearchService();
-      IBusinessObjectClass aceClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (AccessControlEntry));
-      _property = (IBusinessObjectReferenceProperty) aceClass.GetPropertyDefinition ("SpecificAbstractRole");
-      Assert.That (_property, Is.Not.Null);
+      IBusinessObjectClass aceClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(AccessControlEntry));
+      _property = (IBusinessObjectReferenceProperty)aceClass.GetPropertyDefinition("SpecificAbstractRole");
+      Assert.That(_property, Is.Not.Null);
     }
 
     [Test]
     public void SupportsProperty ()
     {
-      Assert.That (_searchService.SupportsProperty (_property), Is.True);
+      Assert.That(_searchService.SupportsProperty(_property), Is.True);
     }
 
     [Test]
     public void Search ()
     {
       var expected = AbstractRoleDefinition.FindAll().ToArray();
-      Assert.That (expected, Is.Not.Empty);
+      Assert.That(expected, Is.Not.Empty);
 
-      IBusinessObject[] actual = _searchService.Search (null, _property, CreateSecurityManagerSearchArguments (null));
+      IBusinessObject[] actual = _searchService.Search(null, _property, CreateSecurityManagerSearchArguments(null));
 
-      Assert.That (actual, Is.EqualTo (expected));
+      Assert.That(actual, Is.EqualTo(expected));
     }
 
     [Test]
     public void Search_WithDisplayNameConstraint_FindDisplayNameContainingPrefix ()
     {
-      var expected = AbstractRoleDefinition.FindAll().AsEnumerable().Where (r => r.DisplayName.Contains ("QualityManager")).ToArray();
-      Assert.That (expected.Length, Is.EqualTo (1));
+      var expected = AbstractRoleDefinition.FindAll().AsEnumerable().Where(r => r.DisplayName.Contains("QualityManager")).ToArray();
+      Assert.That(expected.Length, Is.EqualTo(1));
 
-      var actual = _searchService.Search (null, _property, CreateSecurityManagerSearchArguments ("Manager|"));
+      var actual = _searchService.Search(null, _property, CreateSecurityManagerSearchArguments("Manager|"));
 
-      Assert.That (actual, Is.EquivalentTo (expected));
+      Assert.That(actual, Is.EquivalentTo(expected));
     }
 
     [Test]
     public void Search_WithDisplayNameConstraint_FindDisplayNameCaseInsensitive ()
     {
-      var expected = AbstractRoleDefinition.FindAll().AsEnumerable().Where (r => r.DisplayName.Contains ("QualityManager")).ToArray();
-      Assert.That (expected.Length, Is.EqualTo (1));
+      var expected = AbstractRoleDefinition.FindAll().AsEnumerable().Where(r => r.DisplayName.Contains("QualityManager")).ToArray();
+      Assert.That(expected.Length, Is.EqualTo(1));
 
-      var actual = _searchService.Search (null, _property, CreateSecurityManagerSearchArguments ("qualitymanager"));
+      var actual = _searchService.Search(null, _property, CreateSecurityManagerSearchArguments("qualitymanager"));
 
-      Assert.That (actual, Is.EquivalentTo (expected));
+      Assert.That(actual, Is.EquivalentTo(expected));
     }
 
     [Test]
     public void Search_WithDisplayNameConstraint_DontMatchOtherValue ()
     {
       var expected = AbstractRoleDefinition.FindAll().AsEnumerable().ToArray();
-      Assert.That (expected.Length, Is.EqualTo (2));
+      Assert.That(expected.Length, Is.EqualTo(2));
 
-      var actual = _searchService.Search (null, _property, CreateSecurityManagerSearchArguments ("QualityManager"));
+      var actual = _searchService.Search(null, _property, CreateSecurityManagerSearchArguments("QualityManager"));
 
-      Assert.That (actual.Length, Is.EqualTo (1));
+      Assert.That(actual.Length, Is.EqualTo(1));
     }
 
     private SecurityManagerSearchArguments CreateSecurityManagerSearchArguments (string displayName)
     {
-      return new SecurityManagerSearchArguments (
+      return new SecurityManagerSearchArguments(
           null,
           null,
-          !string.IsNullOrEmpty (displayName) ? new DisplayNameConstraint (displayName) : null);
+          !string.IsNullOrEmpty(displayName) ? new DisplayNameConstraint(displayName) : null);
     }
   }
 }

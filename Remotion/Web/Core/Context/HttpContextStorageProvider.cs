@@ -22,42 +22,42 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.Context
 {
-  [ImplementationFor (typeof (ISafeContextStorageProvider), Position = 0)]
+  [ImplementationFor(typeof(ISafeContextStorageProvider), Position = 0)]
   public class HttpContextStorageProvider : ISafeContextStorageProvider
   {
     private readonly AsyncLocalStorageProvider _fallbackProvider = new();
 
     public object? GetData (string key)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull("key", key);
 
       var httpContext = HttpContext.Current;
       if (httpContext != null)
         return httpContext.Items[key];
       else
-        return _fallbackProvider.GetData (key);
+        return _fallbackProvider.GetData(key);
     }
 
     public void SetData (string key, object? value)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull("key", key);
 
       var httpContext = HttpContext.Current;
       if (httpContext != null)
         httpContext.Items[key] = value;
-      else 
-        _fallbackProvider.SetData (key, value);
+      else
+        _fallbackProvider.SetData(key, value);
     }
 
     public void FreeData (string key)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull("key", key);
 
       var httpContext = HttpContext.Current;
       if (httpContext != null)
-        httpContext.Items.Remove (key);
+        httpContext.Items.Remove(key);
       else
-        _fallbackProvider.FreeData (key);
+        _fallbackProvider.FreeData(key);
     }
   }
 }

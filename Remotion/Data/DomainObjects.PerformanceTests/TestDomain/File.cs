@@ -22,19 +22,19 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
   [DBTable]
   public abstract class File : DomainObject
   {
-    public static File NewObject()
+    public static File NewObject ()
     {
       return DomainObject.NewObject<File>();
     }
 
-    protected File()
+    protected File ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Number { get; set; }
 
-    [DBBidirectionalRelation ("Files")]
+    [DBBidirectionalRelation("Files")]
     [Mandatory]
     public abstract Client Client { get; set; }
   }

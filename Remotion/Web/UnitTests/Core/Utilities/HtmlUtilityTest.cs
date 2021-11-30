@@ -27,55 +27,55 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [Test]
     public void HtmlEncode_DoubleQuote ()
     {
-      Assert.That (HtmlUtility.HtmlEncode ("a\"b"), Is.EqualTo ("a&quot;b"));
+      Assert.That(HtmlUtility.HtmlEncode("a\"b"), Is.EqualTo("a&quot;b"));
     }
 
     [Test]
     public void HtmlEncode_SingleQuote ()
     {
-      Assert.That (HtmlUtility.HtmlEncode ("a'b"), Is.EqualTo ("a&#39;b"));
+      Assert.That(HtmlUtility.HtmlEncode("a'b"), Is.EqualTo("a&#39;b"));
     }
 
     [Test]
     public void HtmlEncode_NewLine ()
     {
-      Assert.That (HtmlUtility.HtmlEncode ("a\nb"), Is.EqualTo ("a<br />b"));
+      Assert.That(HtmlUtility.HtmlEncode("a\nb"), Is.EqualTo("a<br />b"));
     }
 
     [Test]
     public void HtmlEncode_LineFeed ()
     {
-      Assert.That (HtmlUtility.HtmlEncode ("a\rb"), Is.EqualTo ("a<br />b"));
+      Assert.That(HtmlUtility.HtmlEncode("a\rb"), Is.EqualTo("a<br />b"));
     }
 
     [Test]
     public void HtmlEncode_LineFeedNewLine ()
     {
-      Assert.That (HtmlUtility.HtmlEncode ("a\r\nb"), Is.EqualTo ("a<br />b"));
+      Assert.That(HtmlUtility.HtmlEncode("a\r\nb"), Is.EqualTo("a<br />b"));
     }
 
     [Test]
     public void StripHtmlTags ()
     {
-      Assert.That (HtmlUtility.StripHtmlTags ("SimpleString"), Is.EqualTo ("SimpleString"));
+      Assert.That(HtmlUtility.StripHtmlTags("SimpleString"), Is.EqualTo("SimpleString"));
     }
 
     [Test]
     public void StripHtmlTags_Empty ()
     {
-      Assert.That (HtmlUtility.StripHtmlTags (""), Is.EqualTo (""));
+      Assert.That(HtmlUtility.StripHtmlTags(""), Is.EqualTo(""));
     }
 
     [Test]
     public void StripHtmlTags_OpenedAndClosedTagRemoval ()
     {
-      Assert.That (HtmlUtility.StripHtmlTags ("<span>SimpleS<i>tr<b>i</b>n</i></span>g"), Is.EqualTo ("SimpleString"));
+      Assert.That(HtmlUtility.StripHtmlTags("<span>SimpleS<i>tr<b>i</b>n</i></span>g"), Is.EqualTo("SimpleString"));
     }
 
     [Test]
     public void StripHtmlTags_SelfClosingTagRemoval ()
     {
-      Assert.That (HtmlUtility.StripHtmlTags ("Simple<br/>Stri<img src=\"WithAttributes.html\"/>ng"), Is.EqualTo ("SimpleString"));
+      Assert.That(HtmlUtility.StripHtmlTags("Simple<br/>Stri<img src=\"WithAttributes.html\"/>ng"), Is.EqualTo("SimpleString"));
     }
   }
 }

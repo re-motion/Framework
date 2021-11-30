@@ -45,14 +45,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     {
       var control = Selector.First();
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.HiddenElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.HiddenElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void Get_Throws_WebTestException ()
     {
-      Assert.That (
+      Assert.That(
           () => Selector.First(),
           Throws.InstanceOf<WebTestException>());
     }
@@ -62,8 +62,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     {
       var control = Selector.FirstOrNull();
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
     [GenericPageTestMethod]
@@ -73,16 +73,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
 
       var control = Selector.FirstOrNull();
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.HiddenElements)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.HiddenElements)]
     public void GetOrNull_Returns_Null ()
     {
       var control = Selector.FirstOrNull();
 
-      Assert.That (control, Is.Null);
+      Assert.That(control, Is.Null);
     }
   }
 }

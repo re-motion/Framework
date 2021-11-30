@@ -40,24 +40,24 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Metadat
       _testHelper.Transaction.EnterNonDiscardingScope();
 
       _searchService = new AbstractRoleDefinitionPropertyTypeSearchService();
-      IBusinessObjectClass aceClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (AccessControlEntry));
-      _property = (IBusinessObjectReferenceProperty) aceClass.GetPropertyDefinition ("AccessControlList");
-      Assert.That (_property, Is.Not.Null);
+      IBusinessObjectClass aceClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(AccessControlEntry));
+      _property = (IBusinessObjectReferenceProperty)aceClass.GetPropertyDefinition("AccessControlList");
+      Assert.That(_property, Is.Not.Null);
     }
 
     [Test]
     public void SupportsProperty_WithInvalidProperty ()
     {
-      Assert.That (_searchService.SupportsProperty (_property), Is.False);
+      Assert.That(_searchService.SupportsProperty(_property), Is.False);
     }
 
     [Test]
     public void Search_WithInvalidProperty ()
     {
-      Assert.That (
-          () => _searchService.Search (null, _property, null),
+      Assert.That(
+          () => _searchService.Search(null, _property, null),
           Throws.ArgumentException
-              .With.Message.Contains (
+              .With.Message.Contains(
                   "The type of the property 'AccessControlList', declared on "
                   + "'Remotion.SecurityManager.Domain.AccessControl.AccessControlEntry, Remotion.SecurityManager', is not supported by the "
                   + "'Remotion.SecurityManager.Domain.SearchInfrastructure.Metadata.AbstractRoleDefinitionPropertyTypeSearchService' type."));

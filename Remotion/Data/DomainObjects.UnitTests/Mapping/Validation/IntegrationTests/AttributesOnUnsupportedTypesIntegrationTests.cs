@@ -27,14 +27,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
     [Test]
     public void AttributesOnUnsupportedTypes ()
     {
-      Assert.That (
-          () => ValidateMapping ("AttributesOnUnsupportedTypes"),
+      Assert.That(
+          () => ValidateMapping("AttributesOnUnsupportedTypes"),
           Throws.InstanceOf<MappingException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The 'StringPropertyAttribute' may be only applied to properties of type 'String'.\r\n\r\n"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes\r\n"
                   + "Property: IntPropertyWithStringPropertyAttribute\r\n"
-                  +"----------\r\n" 
+                  +"----------\r\n"
                   +"The 'BinaryPropertyAttribute' may be only applied to properties of type 'Byte[]'.\r\n\r\n"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes\r\n"
                   + "Property: BoolPropertyWithBinaryPropertyAttribute\r\n"

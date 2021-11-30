@@ -30,7 +30,7 @@ namespace Remotion.Validation.Merging
   /// based on the order of precedence established during retrieval of the <see cref="IValidationRuleCollector"/>s.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IValidationRuleCollectorMerger), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IValidationRuleCollectorMerger), Lifetime = LifetimeKind.Singleton)]
   public class OrderPrecedenceValidationRuleCollectorMerger : ValidationRuleCollectorMergerBase
   {
     private readonly IPropertyValidatorExtractorFactory _propertyValidatorExtractorFactory;
@@ -40,8 +40,8 @@ namespace Remotion.Validation.Merging
         IPropertyValidatorExtractorFactory propertyValidatorExtractorFactory,
         IObjectValidatorExtractorFactory objectValidatorExtractorFactory)
     {
-      ArgumentUtility.CheckNotNull ("propertyValidatorExtractorFactory", propertyValidatorExtractorFactory);
-      ArgumentUtility.CheckNotNull ("objectValidatorExtractorFactory", objectValidatorExtractorFactory);
+      ArgumentUtility.CheckNotNull("propertyValidatorExtractorFactory", propertyValidatorExtractorFactory);
+      ArgumentUtility.CheckNotNull("objectValidatorExtractorFactory", objectValidatorExtractorFactory);
 
       _propertyValidatorExtractorFactory = propertyValidatorExtractorFactory;
       _objectValidatorExtractorFactory = objectValidatorExtractorFactory;
@@ -58,20 +58,20 @@ namespace Remotion.Validation.Merging
         List<IAddingObjectValidationRuleCollector> collectedObjectValidationRules,
         ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull ("collectorGroup", collectorGroup);
-      ArgumentUtility.CheckNotNull ("collectedPropertyValidationRules", collectedPropertyValidationRules);
-      ArgumentUtility.CheckNotNull ("collectedObjectValidationRules", collectedObjectValidationRules);
-      ArgumentUtility.CheckNotNull ("logContext", logContext);
+      ArgumentUtility.CheckNotNull("collectorGroup", collectorGroup);
+      ArgumentUtility.CheckNotNull("collectedPropertyValidationRules", collectedPropertyValidationRules);
+      ArgumentUtility.CheckNotNull("collectedObjectValidationRules", collectedObjectValidationRules);
+      ArgumentUtility.CheckNotNull("logContext", logContext);
 
       var collectorInfos = collectorGroup.ToArray();
 
       //first: remove registered validator types for all collectors in same group (provider is responsible for order of collectors!)
-      ApplyRemovingPropertyValidationRules (collectedPropertyValidationRules, logContext, collectorInfos);
-      ApplyRemovingObjectValidationRules (collectedObjectValidationRules, logContext, collectorInfos);
+      ApplyRemovingPropertyValidationRules(collectedPropertyValidationRules, logContext, collectorInfos);
+      ApplyRemovingObjectValidationRules(collectedObjectValidationRules, logContext, collectorInfos);
 
       //second: add new rules
-      ApplyAddingPropertyValidationRules (collectedPropertyValidationRules, collectorInfos);
-      ApplyObjectValidationRules (collectedObjectValidationRules, collectorInfos);
+      ApplyAddingPropertyValidationRules(collectedPropertyValidationRules, collectorInfos);
+      ApplyObjectValidationRules(collectedObjectValidationRules, collectorInfos);
     }
 
     private void ApplyRemovingPropertyValidationRules (
@@ -82,13 +82,13 @@ namespace Remotion.Validation.Merging
       if (collectedPropertyValidationRules.Any())
       {
         var removingPropertyValidatorRegistrations = collectorInfos
-            .Select (ci => ci.Collector)
-            .SelectMany (c => c.RemovedPropertyRules)
-            .SelectMany (r => r.Validators);
+            .Select(ci => ci.Collector)
+            .SelectMany(c => c.RemovedPropertyRules)
+            .SelectMany(r => r.Validators);
 
-        var validatorExtractor = _propertyValidatorExtractorFactory.Create (removingPropertyValidatorRegistrations, logContext);
+        var validatorExtractor = _propertyValidatorExtractorFactory.Create(removingPropertyValidatorRegistrations, logContext);
         foreach (var validationRule in collectedPropertyValidationRules)
-          validationRule.ApplyRemoveValidatorRegistrations (validatorExtractor);
+          validationRule.ApplyRemoveValidatorRegistrations(validatorExtractor);
       }
     }
 
@@ -100,13 +100,13 @@ namespace Remotion.Validation.Merging
       if (collectedObjectValidationRules.Any())
       {
         var removingObjectValidatorRegistrations = collectorInfos
-            .Select (ci => ci.Collector)
-            .SelectMany (c => c.RemovedObjectRules)
-            .SelectMany (r => r.Validators);
+            .Select(ci => ci.Collector)
+            .SelectMany(c => c.RemovedObjectRules)
+            .SelectMany(r => r.Validators);
 
-        var validatorExtractor = _objectValidatorExtractorFactory.Create (removingObjectValidatorRegistrations, logContext);
+        var validatorExtractor = _objectValidatorExtractorFactory.Create(removingObjectValidatorRegistrations, logContext);
         foreach (var validationRule in collectedObjectValidationRules)
-          validationRule.ApplyRemoveValidatorRegistrations (validatorExtractor);
+          validationRule.ApplyRemoveValidatorRegistrations(validatorExtractor);
       }
     }
 
@@ -114,14 +114,14 @@ namespace Remotion.Validation.Merging
         List<IAddingPropertyValidationRuleCollector> collectedPropertyValidationRules,
         IReadOnlyCollection<ValidationRuleCollectorInfo> collectorInfos)
     {
-      collectedPropertyValidationRules.AddRange (collectorInfos.SelectMany (g => g.Collector.AddedPropertyRules));
+      collectedPropertyValidationRules.AddRange(collectorInfos.SelectMany(g => g.Collector.AddedPropertyRules));
     }
 
     private void ApplyObjectValidationRules (
         List<IAddingObjectValidationRuleCollector> collectedObjectValidationRules,
         IReadOnlyCollection<ValidationRuleCollectorInfo> collectorInfos)
     {
-      collectedObjectValidationRules.AddRange (collectorInfos.SelectMany (g => g.Collector.AddedObjectRules));
+      collectedObjectValidationRules.AddRange(collectorInfos.SelectMany(g => g.Collector.AddedObjectRules));
     }
   }
 }

@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.BindableObject
         Type concreteType,
         BindableObjectProvider businessObjectProvider,
         IEnumerable<PropertyBase> properties)
-        : this (concreteType, businessObjectProvider, SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(), properties)
+        : this(concreteType, businessObjectProvider, SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(), properties)
     {
     }
 
@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.BindableObject
         BindableObjectProvider businessObjectProvider,
         BindableObjectGlobalizationService bindableObjectGlobalizationService,
         IEnumerable<PropertyBase> properties)
-        : base (concreteType, businessObjectProvider, bindableObjectGlobalizationService, properties)
+        : base(concreteType, businessObjectProvider, bindableObjectGlobalizationService, properties)
     {
       _getObjectServiceType = GetGetObjectServiceType();
     }
@@ -49,29 +49,29 @@ namespace Remotion.ObjectBinding.BindableObject
     public IBusinessObjectWithIdentity GetObject (string uniqueIdentifier)
     {
       IGetObjectService service = GetGetObjectService();
-      return service.GetObject (this, uniqueIdentifier);
+      return service.GetObject(this, uniqueIdentifier);
     }
 
     private IGetObjectService GetGetObjectService ()
     {
-      var service = (IGetObjectService?) BusinessObjectProvider.GetService (_getObjectServiceType);
+      var service = (IGetObjectService?)BusinessObjectProvider.GetService(_getObjectServiceType);
       if (service == null)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The '{0}' required for loading objectes of type '{1}' is not registered with the '{2}' associated with this type.",
                 _getObjectServiceType.GetFullNameSafe(),
                 TargetType.GetFullNameSafe(),
-                typeof (BusinessObjectProvider).GetFullNameSafe()));
+                typeof(BusinessObjectProvider).GetFullNameSafe()));
       }
       return service;
     }
 
     private Type GetGetObjectServiceType ()
     {
-      var attribute = AttributeUtility.GetCustomAttribute<IBusinessObjectServiceTypeAttribute<IGetObjectService>> (ConcreteType, true);
+      var attribute = AttributeUtility.GetCustomAttribute<IBusinessObjectServiceTypeAttribute<IGetObjectService>>(ConcreteType, true);
       if (attribute == null)
-        return typeof (IGetObjectService);
+        return typeof(IGetObjectService);
       return attribute.Type;
     }
   }

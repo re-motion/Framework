@@ -23,14 +23,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
   public class TestBaseFunctionWithParameters: WxeFunction
   {
     public TestBaseFunctionWithParameters ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
-    [WxeParameter (1)]
+    [WxeParameter(1)]
     public string Parameter2 { get; set; }
 
-    [WxeParameter (0)]
+    [WxeParameter(0)]
     public virtual string Parameter1 { get; set; }
 
     public virtual string Variable { get; set; }

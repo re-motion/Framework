@@ -49,10 +49,10 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected new EditGroupFormFunction CurrentFunction
     {
-      get { return (EditGroupFormFunction) base.CurrentFunction; }
+      get { return (EditGroupFormFunction)base.CurrentFunction; }
     }
 
-    protected override FormGridManager GetFormGridManager()
+    protected override FormGridManager GetFormGridManager ()
     {
       return FormGridManager;
     }
@@ -64,34 +64,34 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
-      _parentField = GetControl<BocAutoCompleteReferenceValue> ("ParentField", "Parent");
-      _groupTypeField = GetControl<BocAutoCompleteReferenceValue> ("GroupTypeField", "GroupType");
+      _parentField = GetControl<BocAutoCompleteReferenceValue>("ParentField", "Parent");
+      _groupTypeField = GetControl<BocAutoCompleteReferenceValue>("GroupTypeField", "GroupType");
       _groupTypeField.SelectionChanged += GroupTypeField_SelectionChanged;
       _groupTypeField.TextBoxStyle.AutoPostBack = true;
 
       var bocListInlineEditingConfigurator = ServiceLocator.GetInstance<BocListInlineEditingConfigurator>();
 
       RolesList.EditModeControlFactory = ServiceLocator.GetInstance<GroupRolesListEditableRowControlFactory>();
-      bocListInlineEditingConfigurator.Configure (RolesList, Role.NewObject);
+      bocListInlineEditingConfigurator.Configure(RolesList, Role.NewObject);
 
-      if (string.IsNullOrEmpty (_parentField.ControlServicePath))
-        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (_parentField);
+      if (string.IsNullOrEmpty(_parentField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(_parentField);
 
-      if (string.IsNullOrEmpty (_groupTypeField.ControlServicePath))
-        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl (_groupTypeField);
+      if (string.IsNullOrEmpty(_groupTypeField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(_groupTypeField);
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (!IsPostBack)
       {
-        RolesList.SetSortingOrder (
-            new BocListSortingOrderEntry ((IBocSortableColumnDefinition) RolesList.FixedColumns.Find ("User"), SortingDirection.Ascending),
-            new BocListSortingOrderEntry ((IBocSortableColumnDefinition) RolesList.FixedColumns.Find ("Position"), SortingDirection.Ascending));
+        RolesList.SetSortingOrder(
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.Find("User"), SortingDirection.Ascending),
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.Find("Position"), SortingDirection.Ascending));
       }
 
       if (ChildrenList.IsReadOnly)
@@ -103,31 +103,31 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
 
-      GroupLabel.Text = resourceManager.GetString (ResourceIdentifier.GroupLabelText);
-      ParentValidator.ErrorMessage = resourceManager.GetString (ResourceIdentifier.ParentValidatorErrorMessage);
+      GroupLabel.Text = resourceManager.GetString(ResourceIdentifier.GroupLabelText);
+      ParentValidator.ErrorMessage = resourceManager.GetString(ResourceIdentifier.ParentValidatorErrorMessage);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       _parentField.ControlServiceArguments = CurrentFunction.TenantHandle.AsArgument();
     }
 
     protected void ParentValidator_ServerValidate (object source, ServerValidateEventArgs args)
     {
-      args.IsValid = IsParentHierarchyValid ((Group) _parentField.Value);
+      args.IsValid = IsParentHierarchyValid((Group)_parentField.Value);
     }
 
     private void GroupTypeField_SelectionChanged (object sender, EventArgs e)
     {
-      var referenceValue = ((BocAutoCompleteReferenceValue) sender);
-      referenceValue.SaveValue (false);
+      var referenceValue = ((BocAutoCompleteReferenceValue)sender);
+      referenceValue.SaveValue(false);
       referenceValue.IsDirty = true;
     }
 
     private bool IsParentHierarchyValid (Group group)
     {
-      var groups = group.CreateSequence (g => g.Parent, g => g != null && g != CurrentFunction.CurrentObject && g.Parent != group).ToArray();
+      var groups = group.CreateSequence(g => g.Parent, g => g != null && g != CurrentFunction.CurrentObject && g.Parent != group).ToArray();
       if (groups.Length == 0)
         return false;
       if (groups.Last().Parent != null)

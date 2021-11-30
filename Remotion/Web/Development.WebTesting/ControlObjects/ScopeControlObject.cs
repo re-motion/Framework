@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class ScopeControlObject : ControlObject, IControlHost
   {
     public ScopeControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -38,32 +38,32 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public TControlObject GetControl<TControlObject> (IControlSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return Children.GetControl (controlSelectionCommand);
+      return Children.GetControl(controlSelectionCommand);
     }
 
     /// <inheritdoc/>
     public TControlObject? GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return Children.GetControlOrNull (controlSelectionCommand);
+      return Children.GetControlOrNull(controlSelectionCommand);
     }
 
     /// <inheritdoc/>
     public bool HasControl (IControlExistsCommand controlSelectionCommand)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return Children.HasControl (controlSelectionCommand);
+      return Children.HasControl(controlSelectionCommand);
     }
 
     /// <inheritdoc/>
     protected override ICompletionDetectionStrategy GetDefaultCompletionDetectionStrategy (ElementScope scope)
     {
-      throw new NotSupportedException ("The ScopeControlObject does not support any interaction.");
+      throw new NotSupportedException("The ScopeControlObject does not support any interaction.");
     }
   }
 }

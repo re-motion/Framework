@@ -40,7 +40,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation.TestDomain
   }
 
   [AcceptsAlphabeticOrdering]
-  [Extends (typeof (DerivedConcreteTypeForMixin))]
+  [Extends(typeof(DerivedConcreteTypeForMixin))]
   public class MixinForDerivedType1 : BaseMixinForDerivedType, IIntroducedFromMixinForDerivedType1
   {
     [OverrideTarget]

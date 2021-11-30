@@ -34,14 +34,14 @@ namespace Remotion.Mixins.Validation
 
     public ValidationResult (IVisitableDefinition validatedDefinition)
     {
-      ArgumentUtility.CheckNotNull ("validatedDefinition", validatedDefinition);
+      ArgumentUtility.CheckNotNull("validatedDefinition", validatedDefinition);
 
       _validatedDefinition = validatedDefinition;
 
-      _successes = new List<ValidationResultItem> ();
-      _warnings = new List<ValidationResultItem> ();
-      _failures = new List<ValidationResultItem> ();
-      _exceptions = new List<ValidationExceptionResultItem> ();
+      _successes = new List<ValidationResultItem>();
+      _warnings = new List<ValidationResultItem>();
+      _failures = new List<ValidationResultItem>();
+      _exceptions = new List<ValidationExceptionResultItem>();
     }
 
     public IVisitableDefinition ValidatedDefinition
@@ -49,9 +49,9 @@ namespace Remotion.Mixins.Validation
       get { return _validatedDefinition; }
     }
 
-    public string GetDefinitionContextPath()
+    public string GetDefinitionContextPath ()
     {
-      return string.Join (" -> ", ValidatedDefinition.Parent.CreateSequence (d => d.Parent).Select (d => d.FullName));
+      return string.Join(" -> ", ValidatedDefinition.Parent.CreateSequence(d => d.Parent).Select(d => d.FullName));
     }
 
     public int TotalRulesExecuted

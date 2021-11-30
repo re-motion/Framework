@@ -39,7 +39,7 @@ namespace Remotion.Mixins
   /// apply the same mixin multiple times to the same target class.
   /// </para>
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true, Inherited = false)]
   public class UsesAttribute : MixinRelationshipAttribute, IMixinConfigurationAttribute<Type>
   {
     private readonly Type _mixinType;
@@ -50,7 +50,7 @@ namespace Remotion.Mixins
     /// <param name="mixinType">The mixin type the class depends on.</param>
     public UsesAttribute (Type mixinType)
     {
-      _mixinType = ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      _mixinType = ArgumentUtility.CheckNotNull("mixinType", mixinType);
     }
 
     /// <summary>
@@ -69,11 +69,11 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder configurationBuilder, Type attributeTarget)
     {
-      ArgumentUtility.CheckNotNull ("configurationBuilder", configurationBuilder);
-      ArgumentUtility.CheckNotNull ("attributeTarget", attributeTarget);
+      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
+      ArgumentUtility.CheckNotNull("attributeTarget", attributeTarget);
 
-      var origin = MixinContextOrigin.CreateForCustomAttribute (this, attributeTarget);
-      Apply (configurationBuilder, MixinKind.Used, attributeTarget, MixinType, origin);
+      var origin = MixinContextOrigin.CreateForCustomAttribute(this, attributeTarget);
+      Apply(configurationBuilder, MixinKind.Used, attributeTarget, MixinType, origin);
     }
   }
 }

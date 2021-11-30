@@ -23,7 +23,7 @@ namespace Remotion.Web.Schemas
 
 public class UrlMappingSchema: SchemaLoaderBase
 {
-  public UrlMappingSchema()
+  public UrlMappingSchema ()
   {
   }
 

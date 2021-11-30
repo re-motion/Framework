@@ -34,16 +34,16 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   {
     public static TenantProxy Create (Tenant tenant)
     {
-      ArgumentUtility.CheckNotNull ("tenant", tenant);
+      ArgumentUtility.CheckNotNull("tenant", tenant);
 
-      return new TenantProxy (
+      return new TenantProxy(
           tenant.GetHandle(),
-          ((IBusinessObjectWithIdentity) tenant).UniqueIdentifier,
-          ((IBusinessObjectWithIdentity) tenant).DisplayName);
+          ((IBusinessObjectWithIdentity)tenant).UniqueIdentifier,
+          ((IBusinessObjectWithIdentity)tenant).DisplayName);
     }
 
     private TenantProxy (IDomainObjectHandle<Tenant> handle, string uniqueIdentifier, string displayName)
-        : base (handle, uniqueIdentifier, displayName)
+        : base(handle, uniqueIdentifier, displayName)
     {
     }
   }

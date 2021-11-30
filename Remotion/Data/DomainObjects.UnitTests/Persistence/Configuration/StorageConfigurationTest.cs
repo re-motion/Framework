@@ -39,49 +39,49 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
       _sqlStorageObjectFactory = new SqlStorageObjectFactory();
 
       FakeConfigurationWrapper configurationWrapper = new FakeConfigurationWrapper();
-      configurationWrapper.SetUpConnectionString ("Rdbms", "ConnectionString", null);
-      ConfigurationWrapper.SetCurrent (configurationWrapper);
+      configurationWrapper.SetUpConnectionString("Rdbms", "ConnectionString", null);
+      ConfigurationWrapper.SetCurrent(configurationWrapper);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      ConfigurationWrapper.SetCurrent (null);
+      ConfigurationWrapper.SetCurrent(null);
     }
 
     [Test]
     public void Initialize_WithProviderCollectionAndProvider ()
     {
-      StorageProviderDefinition providerDefinition1 = new RdbmsProviderDefinition (
+      StorageProviderDefinition providerDefinition1 = new RdbmsProviderDefinition(
           "ProviderDefinition1", _sqlStorageObjectFactory, "ConnectionString");
-      StorageProviderDefinition providerDefinition2 = new RdbmsProviderDefinition (
+      StorageProviderDefinition providerDefinition2 = new RdbmsProviderDefinition(
           "ProviderDefinition2", _sqlStorageObjectFactory, "ConnectionString");
-      StorageProviderDefinition providerDefinition3 = new RdbmsProviderDefinition (
+      StorageProviderDefinition providerDefinition3 = new RdbmsProviderDefinition(
           "ProviderDefinition3", _sqlStorageObjectFactory, "ConnectionString");
       ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();
-      providers.Add (providerDefinition1);
-      providers.Add (providerDefinition2);
+      providers.Add(providerDefinition1);
+      providers.Add(providerDefinition2);
 
-      StorageConfiguration configuration = new StorageConfiguration (providers, providerDefinition3);
-      Assert.That (configuration.DefaultStorageProviderDefinition, Is.SameAs (providerDefinition3));
-      Assert.That (configuration.StorageProviderDefinitions, Is.Not.SameAs (providers));
-      Assert.That (configuration.StorageProviderDefinitions.Count, Is.EqualTo (2));
-      Assert.That (providers["ProviderDefinition1"], Is.SameAs (providerDefinition1));
-      Assert.That (providers["ProviderDefinition2"], Is.SameAs (providerDefinition2));
+      StorageConfiguration configuration = new StorageConfiguration(providers, providerDefinition3);
+      Assert.That(configuration.DefaultStorageProviderDefinition, Is.SameAs(providerDefinition3));
+      Assert.That(configuration.StorageProviderDefinitions, Is.Not.SameAs(providers));
+      Assert.That(configuration.StorageProviderDefinitions.Count, Is.EqualTo(2));
+      Assert.That(providers["ProviderDefinition1"], Is.SameAs(providerDefinition1));
+      Assert.That(providers["ProviderDefinition2"], Is.SameAs(providerDefinition2));
     }
 
     [Test]
     public void Initialize_WithProviderCollectionAndProvider_Expect ()
     {
-      StorageProviderDefinition providerDefinition = new RdbmsProviderDefinition (
+      StorageProviderDefinition providerDefinition = new RdbmsProviderDefinition(
           "ProviderDefinition", _sqlStorageObjectFactory, "ConnectionString");
       ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();
 
-      StorageConfiguration configuration = new StorageConfiguration (providers, providerDefinition);
-      Assert.That (
-          () => configuration.StorageProviderDefinitions.Add (providerDefinition),
+      StorageConfiguration configuration = new StorageConfiguration(providers, providerDefinition);
+      Assert.That(
+          () => configuration.StorageProviderDefinitions.Add(providerDefinition),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo ("Collection is read-only."));
+              .With.Message.EqualTo("Collection is read-only."));
     }
 
     [Test]
@@ -97,12 +97,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
             </providerDefinitions>
           </storage>";
 
-      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
+      ConfigurationHelper.DeserializeSection(_configuration, xmlFragment);
 
-      Assert.That (_configuration.DefaultStorageProviderDefinition, Is.InstanceOf (typeof (RdbmsProviderDefinition)));
-      Assert.That (_configuration.StorageProviderDefinitions.Count, Is.EqualTo (1));
-      Assert.That (_configuration.StorageProviderDefinitions["Rdbms"], Is.SameAs (_configuration.DefaultStorageProviderDefinition));
-      Assert.That (((RdbmsProviderDefinition) _configuration.DefaultStorageProviderDefinition).ConnectionString, Is.EqualTo ("ConnectionString"));
+      Assert.That(_configuration.DefaultStorageProviderDefinition, Is.InstanceOf(typeof(RdbmsProviderDefinition)));
+      Assert.That(_configuration.StorageProviderDefinitions.Count, Is.EqualTo(1));
+      Assert.That(_configuration.StorageProviderDefinitions["Rdbms"], Is.SameAs(_configuration.DefaultStorageProviderDefinition));
+      Assert.That(((RdbmsProviderDefinition)_configuration.DefaultStorageProviderDefinition).ConnectionString, Is.EqualTo("ConnectionString"));
     }
 
     [Test]
@@ -118,11 +118,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
             </providerDefinitions>
           </storage>";
 
-      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
+      ConfigurationHelper.DeserializeSection(_configuration, xmlFragment);
 
-      Assert.That (_configuration.DefaultStorageProviderDefinition, Is.Null);
-      Assert.That (_configuration.StorageProviderDefinitions.Count, Is.EqualTo (1));
-      Assert.That (((RdbmsProviderDefinition) _configuration.StorageProviderDefinitions["Rdbms"]).ConnectionString, Is.EqualTo ("ConnectionString"));
+      Assert.That(_configuration.DefaultStorageProviderDefinition, Is.Null);
+      Assert.That(_configuration.StorageProviderDefinitions.Count, Is.EqualTo(1));
+      Assert.That(((RdbmsProviderDefinition)_configuration.StorageProviderDefinitions["Rdbms"]).ConnectionString, Is.EqualTo("ConnectionString"));
     }
 
     [Test]
@@ -138,11 +138,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
             </providerDefinitions>
           </storage>";
 
-      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
-      Assert.That (
+      ConfigurationHelper.DeserializeSection(_configuration, xmlFragment);
+      Assert.That(
           () => _configuration.DefaultStorageProviderDefinition,
           Throws.InstanceOf<ConfigurationErrorsException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "The provider 'Invalid' specified for the defaultProviderDefinition does not exist in the providers collection."));
     }
 
@@ -165,13 +165,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
             </providerDefinitions>
           </storage>";
 
-      ConfigurationHelper.DeserializeSection (_configuration, xmlFragment);
+      ConfigurationHelper.DeserializeSection(_configuration, xmlFragment);
 
-      Assert.That (_configuration.StorageGroups.Count, Is.EqualTo (2));
-      Assert.That (_configuration.StorageGroups[0].StorageGroup, Is.InstanceOf (typeof (StubStorageGroup1Attribute)));
-      Assert.That (_configuration.StorageGroups[0].StorageProviderName, Is.EqualTo ("Rdbms"));
-      Assert.That (_configuration.StorageGroups[1].StorageGroup, Is.InstanceOf (typeof (StubStorageGroup2Attribute)));
-      Assert.That (_configuration.StorageGroups[1].StorageProviderName, Is.EqualTo ("Rdbms"));
+      Assert.That(_configuration.StorageGroups.Count, Is.EqualTo(2));
+      Assert.That(_configuration.StorageGroups[0].StorageGroup, Is.InstanceOf(typeof(StubStorageGroup1Attribute)));
+      Assert.That(_configuration.StorageGroups[0].StorageProviderName, Is.EqualTo("Rdbms"));
+      Assert.That(_configuration.StorageGroups[1].StorageGroup, Is.InstanceOf(typeof(StubStorageGroup2Attribute)));
+      Assert.That(_configuration.StorageGroups[1].StorageProviderName, Is.EqualTo("Rdbms"));
     }
 
     [Test]
@@ -190,10 +190,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
             </providerDefinitions>
           </storage>";
 
-      Assert.That (
-          () => ConfigurationHelper.DeserializeSection (_configuration, xmlFragment),
+      Assert.That(
+          () => ConfigurationHelper.DeserializeSection(_configuration, xmlFragment),
           Throws.InstanceOf<ConfigurationErrorsException>()
-              .With.Message.Contains ("The value of the property 'type' cannot be parsed."));
+              .With.Message.Contains("The value of the property 'type' cannot be parsed."));
     }
   }
 }

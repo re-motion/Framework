@@ -27,12 +27,12 @@ namespace Remotion.Web.ExecutionEngine
 public class WxePermanentUrlTooLongException: WxeException
 {
 	public WxePermanentUrlTooLongException (string message)
-    : base (message)
+    : base(message)
 	{
   }
 
   public WxePermanentUrlTooLongException (SerializationInfo info, StreamingContext context)
-    : base (info, context)
+    : base(info, context)
   {
   }
 }

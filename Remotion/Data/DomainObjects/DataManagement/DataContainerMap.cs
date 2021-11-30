@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public DataContainerMap (IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);
-      
+      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+
       _transactionEventSink = transactionEventSink;
       _dataContainers = new DataContainerCollection();
     }
@@ -70,24 +70,24 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void Register (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-      _transactionEventSink.RaiseDataContainerMapRegisteringEvent (dataContainer);
-      _dataContainers.Add (dataContainer);
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      _transactionEventSink.RaiseDataContainerMapRegisteringEvent(dataContainer);
+      _dataContainers.Add(dataContainer);
     }
 
     public void Remove (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull("id", id);
 
       var dataContainer = this[id];
       if (dataContainer == null)
       {
-        var message = string.Format ("Data container '{0}' is not part of this map.", id);
-        throw new ArgumentException (message, "id");
+        var message = string.Format("Data container '{0}' is not part of this map.", id);
+        throw new ArgumentException(message, "id");
       }
 
-      _transactionEventSink.RaiseDataContainerMapUnregisteringEvent (dataContainer);
-      _dataContainers.Remove (dataContainer);
+      _transactionEventSink.RaiseDataContainerMapUnregisteringEvent(dataContainer);
+      _dataContainers.Remove(dataContainer);
     }
 
     public IEnumerator<DataContainer> GetEnumerator ()
@@ -103,20 +103,20 @@ namespace Remotion.Data.DomainObjects.DataManagement
     #region Serialization
 
     protected DataContainerMap (FlattenedDeserializationInfo info)
-        : this (info.GetValueForHandle<IClientTransactionEventSink>())
+        : this(info.GetValueForHandle<IClientTransactionEventSink>())
     {
       var dataContainerCount = info.GetIntValue();
       for (int i = 0; i < dataContainerCount; ++i)
-        _dataContainers.Add (info.GetValueForHandle<DataContainer>());
+        _dataContainers.Add(info.GetValueForHandle<DataContainer>());
     }
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddHandle (_transactionEventSink);
+      info.AddHandle(_transactionEventSink);
 
-      info.AddIntValue (_dataContainers.Count);
+      info.AddIntValue(_dataContainers.Count);
       foreach (DataContainer dataContainer in _dataContainers)
-        info.AddHandle (dataContainer);
+        info.AddHandle(dataContainer);
     }
 
     #endregion

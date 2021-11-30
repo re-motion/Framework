@@ -30,7 +30,7 @@ namespace Remotion.Validation.Merging
         IValidationRuleCollectorMerger validationRuleCollectorMerger,
         IValidatorFormatter validatorFormatter,
         ILogManager logManager)
-        : base (validationRuleCollectorMerger, validatorFormatter, logManager)
+        : base(validationRuleCollectorMerger, validatorFormatter, logManager)
     {
     }
 

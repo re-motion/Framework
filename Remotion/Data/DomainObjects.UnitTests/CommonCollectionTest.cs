@@ -27,13 +27,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      _collection = new TestableCommonCollection ();
+      _collection = new TestableCommonCollection();
     }
 
     [Test]
     public void ContainsNullForKeyNotInCollection ()
     {
-      Assert.That (_collection.BaseContains ("invalidKey", null), Is.False);
+      Assert.That(_collection.BaseContains("invalidKey", null), Is.False);
     }
   }
 }

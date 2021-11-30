@@ -37,11 +37,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       base.SetUp();
 
-      _customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
+      _customer = DomainObjectIDs.Customer1.GetObject<Customer>();
       _eventReceiverMock = MockRepository.GenerateStrictMock<OrderCollection.ICollectionEventReceiver>();
 
-      _itemA = DomainObjectIDs.Order1.GetObject<Order> ();
-      _itemB = DomainObjectIDs.Order2.GetObject<Order> ();
+      _itemA = DomainObjectIDs.Order1.GetObject<Order>();
+      _itemB = DomainObjectIDs.Order2.GetObject<Order>();
     }
 
     [Test]
@@ -49,12 +49,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       var orderCollection = _customer.Orders;
       _eventReceiverMock
-          .Expect (mock => mock.OnReplaceData())
-          .WhenCalled (mi => Assert.That (orderCollection, Is.EqualTo (new[] { _itemA, _itemB })));
+          .Expect(mock => mock.OnReplaceData())
+          .WhenCalled(mi => Assert.That(orderCollection, Is.EqualTo(new[] { _itemA, _itemB })));
       _eventReceiverMock.Replay();
 
-      UnloadService.UnloadVirtualEndPoint (TestableClientTransaction, _customer.Orders.AssociatedEndPointID);
-      orderCollection.SetEventReceiver (_eventReceiverMock);
+      UnloadService.UnloadVirtualEndPoint(TestableClientTransaction, _customer.Orders.AssociatedEndPointID);
+      orderCollection.SetEventReceiver(_eventReceiverMock);
 
       _customer.Orders.EnsureDataComplete();
 
@@ -68,10 +68,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
       var orderCollection = _customer.Orders;
       _eventReceiverMock
-          .Expect (mock => mock.OnReplaceData())
-          .WhenCalled (mi => Assert.That (orderCollection, Is.EqualTo (new[] { _itemA, _itemB })));
+          .Expect(mock => mock.OnReplaceData())
+          .WhenCalled(mi => Assert.That(orderCollection, Is.EqualTo(new[] { _itemA, _itemB })));
       _eventReceiverMock.Replay();
-      _customer.Orders.SetEventReceiver (_eventReceiverMock);
+      _customer.Orders.SetEventReceiver(_eventReceiverMock);
 
       TestableClientTransaction.Rollback();
 
@@ -85,12 +85,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       _customer.Orders.EnsureDataComplete();
 
       _eventReceiverMock
-          .Expect (mock => mock.OnReplaceData())
-          .WhenCalled (mi => Assert.That (orderCollection, Is.EqualTo (new[] { _itemA, _itemB })));
+          .Expect(mock => mock.OnReplaceData())
+          .WhenCalled(mi => Assert.That(orderCollection, Is.EqualTo(new[] { _itemA, _itemB })));
       _eventReceiverMock.Replay();
-      _customer.Orders.SetEventReceiver (_eventReceiverMock);
+      _customer.Orders.SetEventReceiver(_eventReceiverMock);
 
-      BidirectionalRelationSyncService.Synchronize (TestableClientTransaction, _customer.Orders.AssociatedEndPointID);
+      BidirectionalRelationSyncService.Synchronize(TestableClientTransaction, _customer.Orders.AssociatedEndPointID);
 
       _eventReceiverMock.VerifyAllExpectations();
     }
@@ -105,12 +105,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       orderCollection.EnsureDataComplete();
 
       _eventReceiverMock
-          .Expect (mock => mock.OnReplaceData())
-          .WhenCalled (mi => Assert.That (orderCollection, Is.EqualTo (new[] { _itemA, _itemB, unsynchronizedOrder })));
+          .Expect(mock => mock.OnReplaceData())
+          .WhenCalled(mi => Assert.That(orderCollection, Is.EqualTo(new[] { _itemA, _itemB, unsynchronizedOrder })));
       _eventReceiverMock.Replay();
-      _customer.Orders.SetEventReceiver (_eventReceiverMock);
+      _customer.Orders.SetEventReceiver(_eventReceiverMock);
 
-      BidirectionalRelationSyncService.Synchronize (TestableClientTransaction, RelationEndPointID.Resolve (unsynchronizedOrder, o => o.Customer));
+      BidirectionalRelationSyncService.Synchronize(TestableClientTransaction, RelationEndPointID.Resolve(unsynchronizedOrder, o => o.Customer));
 
       _eventReceiverMock.VerifyAllExpectations();
     }
@@ -122,19 +122,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
       var orderCollection = _customer.Orders;
       _eventReceiverMock
-          .Expect (mock => mock.OnReplaceData())
-          .WhenCalled (mi => Assert.That (orderCollection.Count, Is.EqualTo (3)));
+          .Expect(mock => mock.OnReplaceData())
+          .WhenCalled(mi => Assert.That(orderCollection.Count, Is.EqualTo(3)));
       _eventReceiverMock.Replay();
-      _customer.Orders.SetEventReceiver (_eventReceiverMock);
+      _customer.Orders.SetEventReceiver(_eventReceiverMock);
 
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         var newOrder = Order.NewObject();
         newOrder.OrderTicket = OrderTicket.NewObject();
-        newOrder.OrderItems.Add (OrderItem.NewObject ());
+        newOrder.OrderItems.Add(OrderItem.NewObject());
         newOrder.Official = Official.NewObject();
 
-        _customer.Orders.Add (newOrder);
+        _customer.Orders.Add(newOrder);
         ClientTransaction.Current.Commit();
       }
 
@@ -143,22 +143,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
     private Order PrepareUnsynchronizedOrder (ObjectID orderID, ObjectID relatedCustomerID)
     {
-      var unsynchronizedOrder = (Order) LifetimeService.GetObjectReference (TestableClientTransaction, orderID);
-      var dataContainer = DataContainer.CreateForExisting (
+      var unsynchronizedOrder = (Order)LifetimeService.GetObjectReference(TestableClientTransaction, orderID);
+      var dataContainer = DataContainer.CreateForExisting(
           unsynchronizedOrder.ID,
           null,
-          pd => pd.PropertyName.EndsWith ("Customer") ? relatedCustomerID : pd.DefaultValue);
-      dataContainer.SetDomainObject (unsynchronizedOrder);
-      TestableClientTransaction.DataManager.RegisterDataContainer (dataContainer);
+          pd => pd.PropertyName.EndsWith("Customer") ? relatedCustomerID : pd.DefaultValue);
+      dataContainer.SetDomainObject(unsynchronizedOrder);
+      TestableClientTransaction.DataManager.RegisterDataContainer(dataContainer);
 
-      var endPointID = RelationEndPointID.Resolve (unsynchronizedOrder, o => o.Customer);
-      var endPoint = (IRealObjectEndPoint) TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading (endPointID);
+      var endPointID = RelationEndPointID.Resolve(unsynchronizedOrder, o => o.Customer);
+      var endPoint = (IRealObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID);
 
-      var oppositeID = RelationEndPointID.CreateOpposite (endPoint.Definition, relatedCustomerID);
-      var oppositeEndPoint = TestableClientTransaction.DataManager.GetOrCreateVirtualEndPoint (oppositeID);
-      oppositeEndPoint.EnsureDataComplete ();
+      var oppositeID = RelationEndPointID.CreateOpposite(endPoint.Definition, relatedCustomerID);
+      var oppositeEndPoint = TestableClientTransaction.DataManager.GetOrCreateVirtualEndPoint(oppositeID);
+      oppositeEndPoint.EnsureDataComplete();
 
-      Assert.That (endPoint.IsSynchronized, Is.False);
+      Assert.That(endPoint.IsSynchronized, Is.False);
       return unsynchronizedOrder;
     }
   }

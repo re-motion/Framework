@@ -33,7 +33,7 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDoma
     {
     }
   }
-  
+
   public class TestDecoratorWithConstructorWithoutArguments : ITestDecoratorWithErrors
   {
     private TestDecoratorWithConstructorWithoutArguments ()

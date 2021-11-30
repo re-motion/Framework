@@ -44,14 +44,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     public string VisibleDisplayName { get; private set; }
 
     public DisplayNameGenericTestPageParameter ()
-        : base (TestConstants.DisplayNameSelectorID, c_parameterCount)
+        : base(TestConstants.DisplayNameSelectorID, c_parameterCount)
     {
     }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       VisibleDisplayName = data.Arguments[0];
       HiddenDisplayName = data.Arguments[1];

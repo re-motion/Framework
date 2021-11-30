@@ -34,18 +34,18 @@ namespace Remotion.Reflection.TypeResolution
 
     public Assembly? GetAssembly (AssemblyName name)
     {
-      ArgumentUtility.CheckNotNull ("name", name);
+      ArgumentUtility.CheckNotNull("name", name);
 
-      return GetAssembly (name, false);
+      return GetAssembly(name, false);
     }
 
     public Assembly? GetAssembly (AssemblyName name, bool throwOnError)
     {
-      ArgumentUtility.CheckNotNull ("name", name);
+      ArgumentUtility.CheckNotNull("name", name);
 
       try
       {
-        return Assembly.Load (name);
+        return Assembly.Load(name);
       }
       catch (FileNotFoundException)
       {
@@ -58,23 +58,23 @@ namespace Remotion.Reflection.TypeResolution
 
     public Type? GetType (string name)
     {
-      ArgumentUtility.DebugCheckNotNull ("name", name);
+      ArgumentUtility.DebugCheckNotNull("name", name);
 
-      return GetType (name, throwOnError: false, ignoreCase: false);
+      return GetType(name, throwOnError: false, ignoreCase: false);
     }
 
     public Type? GetType (string name, bool throwOnError)
     {
-      ArgumentUtility.DebugCheckNotNull ("name", name);
+      ArgumentUtility.DebugCheckNotNull("name", name);
 
-      return GetType (name, throwOnError, ignoreCase: false);
+      return GetType(name, throwOnError, ignoreCase: false);
     }
 
     public Type? GetType (string name, bool throwOnError, bool ignoreCase)
     {
-      ArgumentUtility.DebugCheckNotNull ("name", name);
+      ArgumentUtility.DebugCheckNotNull("name", name);
 
-      return Type.GetType (name, throwOnError, ignoreCase);
+      return Type.GetType(name, throwOnError, ignoreCase);
     }
 
     public void ReferenceAssembly (AssemblyName name)
@@ -84,18 +84,18 @@ namespace Remotion.Reflection.TypeResolution
 
     public string? GetPathOfAssembly (AssemblyName name)
     {
-      ArgumentUtility.CheckNotNull ("name", name);
+      ArgumentUtility.CheckNotNull("name", name);
 
-      var assembly = GetAssembly (name, throwOnError: false);
+      var assembly = GetAssembly(name, throwOnError: false);
       if (assembly == null)
         return null;
 
-      var assemblyNameWithoutShadowCopy = assembly.GetName (copiedName: false);
+      var assemblyNameWithoutShadowCopy = assembly.GetName(copiedName: false);
       var escapedCodeBase = assemblyNameWithoutShadowCopy.EscapedCodeBase;
       if (escapedCodeBase == null)
         return null;
 
-      var codeBaseUri = new Uri (escapedCodeBase);
+      var codeBaseUri = new Uri(escapedCodeBase);
       if (codeBaseUri.IsFile)
       {
         return codeBaseUri.LocalPath;

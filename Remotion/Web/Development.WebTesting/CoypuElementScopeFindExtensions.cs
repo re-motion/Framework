@@ -34,11 +34,11 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public static ElementScope FindChild ([NotNull] this ElementScope scope, [NotNull] string idSuffix, [CanBeNull] Options? options = null)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNullOrEmpty ("idSuffix", idSuffix);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNullOrEmpty("idSuffix", idSuffix);
 
-      var fullId = string.Format ("{0}_{1}", scope.Id, idSuffix);
-      return scope.FindId (fullId, options);
+      var fullId = string.Format("{0}_{1}", scope.Id, idSuffix);
+      return scope.FindId(fullId, options);
     }
 
     /// <summary>
@@ -55,13 +55,13 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string attributeName,
         [NotNull] string attributeValue)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNullOrEmpty ("tagSelector", tagSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("attributeName", attributeName);
-      ArgumentUtility.CheckNotNullOrEmpty ("attributeValue", attributeValue);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNullOrEmpty("tagSelector", tagSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
+      ArgumentUtility.CheckNotNullOrEmpty("attributeValue", attributeValue);
 
-      var cssSelector = string.Format ("{0}[{1}={2}]", tagSelector, attributeName, DomSelectorUtility.CreateMatchValueForCssSelector (attributeValue));
-      return scope.FindCss (cssSelector);
+      var cssSelector = string.Format("{0}[{1}={2}]", tagSelector, attributeName, DomSelectorUtility.CreateMatchValueForCssSelector(attributeValue));
+      return scope.FindCss(cssSelector);
     }
 
     /// <summary>
@@ -78,13 +78,13 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string attributeName,
         [NotNull] string attributeValue)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNullOrEmpty ("tagSelector", tagSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("attributeName", attributeName);
-      ArgumentUtility.CheckNotNullOrEmpty ("attributeValue", attributeValue);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNullOrEmpty("tagSelector", tagSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
+      ArgumentUtility.CheckNotNullOrEmpty("attributeValue", attributeValue);
 
-      var cssSelector = string.Format ("{0}[{1}={2}]", tagSelector, attributeName, DomSelectorUtility.CreateMatchValueForCssSelector (attributeValue));
-      return scope.FindAllCss (cssSelector);
+      var cssSelector = string.Format("{0}[{1}={2}]", tagSelector, attributeName, DomSelectorUtility.CreateMatchValueForCssSelector(attributeValue));
+      return scope.FindAllCss(cssSelector);
     }
 
     /// <summary>
@@ -104,13 +104,13 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string attributeName,
         [NotNull] string attributeValue)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNullOrEmpty ("tagSelector", tagSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("attributeName", attributeName);
-      ArgumentUtility.CheckNotNullOrEmpty ("attributeValue", attributeValue);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNullOrEmpty("tagSelector", tagSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
+      ArgumentUtility.CheckNotNullOrEmpty("attributeValue", attributeValue);
 
-      var cssSelector = string.Format ("{0}[{1}{2}{3}]", tagSelector, attributeName, op.ToCssString(), DomSelectorUtility.CreateMatchValueForCssSelector (attributeValue));
-      return scope.FindCss (cssSelector);
+      var cssSelector = string.Format("{0}[{1}{2}{3}]", tagSelector, attributeName, op.ToCssString(), DomSelectorUtility.CreateMatchValueForCssSelector(attributeValue));
+      return scope.FindCss(cssSelector);
     }
 
     /// <summary>
@@ -125,15 +125,15 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string tagSelector,
         [NotNull] IDictionary<string, string> attributes)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNull ("tagSelector", tagSelector);
-      ArgumentUtility.CheckNotNull ("attributes", attributes);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("tagSelector", tagSelector);
+      ArgumentUtility.CheckNotNull("attributes", attributes);
 
       const string dmaCheckPattern = "[{0}={1}]";
-      var dmaCheck = string.Concat (
-          attributes.Select (dm => string.Format (dmaCheckPattern, dm.Key, DomSelectorUtility.CreateMatchValueForCssSelector (dm.Value))));
+      var dmaCheck = string.Concat(
+          attributes.Select(dm => string.Format(dmaCheckPattern, dm.Key, DomSelectorUtility.CreateMatchValueForCssSelector(dm.Value))));
       var cssSelector = tagSelector + dmaCheck;
-      return scope.FindCss (cssSelector);
+      return scope.FindCss(cssSelector);
     }
 
     /// <summary>
@@ -143,9 +143,9 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>The <see cref="ElementScope"/> of the found element.</returns>
     public static ElementScope FindLink ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      return scope.FindCss ("a");
+      return scope.FindCss("a");
     }
   }
 }

@@ -32,58 +32,58 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     public void SetUp ()
     {
       _testHelper = new BusinessObjectPropertyPathTestHelper();
-      _path = new TestableBusinessObjectPropertyPathBase (_testHelper.ReferenceListProperty, _testHelper.Property);
+      _path = new TestableBusinessObjectPropertyPathBase(_testHelper.ReferenceListProperty, _testHelper.Property);
     }
 
     [Test]
     public void GetValue_ListProperty_ReturnsFirstItem ()
     {
       var sequence = new MockSequence();
-      ExpectOnceOnReferenceListPropertyIsAccessible (true, sequence);
-      ExpectOnceOnBusinessObjectGetProperty (_testHelper.BusinessObjectWithIdentityList, sequence);
+      ExpectOnceOnReferenceListPropertyIsAccessible(true, sequence);
+      ExpectOnceOnBusinessObjectGetProperty(_testHelper.BusinessObjectWithIdentityList, sequence);
 
-      var actual = _path.GetResult (
+      var actual = _path.GetResult(
           _testHelper.BusinessObject,
           BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
 
       _testHelper.VerifyAll();
 
-      Assert.That (actual, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
-      Assert.That (actual.ResultObject, Is.SameAs (_testHelper.BusinessObjectWithIdentity));
-      Assert.That (actual.ResultProperty, Is.SameAs (_testHelper.Property));
+      Assert.That(actual, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
+      Assert.That(actual.ResultObject, Is.SameAs(_testHelper.BusinessObjectWithIdentity));
+      Assert.That(actual.ResultProperty, Is.SameAs(_testHelper.Property));
     }
 
     [Test]
     public void GetValue_ListProperty_ThrowsInvalidOperationException ()
     {
       var sequence = new MockSequence();
-      ExpectOnceOnReferenceListPropertyIsAccessible (true, sequence);
-      ExpectOnceOnBusinessObjectGetProperty (_testHelper.BusinessObjectWithIdentityList, sequence);
+      ExpectOnceOnReferenceListPropertyIsAccessible(true, sequence);
+      ExpectOnceOnBusinessObjectGetProperty(_testHelper.BusinessObjectWithIdentityList, sequence);
 
-      Assert.That (
+      Assert.That(
           () =>
-          _path.GetResult (
+          _path.GetResult(
               _testHelper.BusinessObject,
               BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
               BusinessObjectPropertyPath.ListValueBehavior.FailForListProperties),
           Throws.InvalidOperationException.With.Message
-                .EqualTo ("Property #0 of property path 'Identifier' is not a single-value property."));
+                .EqualTo("Property #0 of property path 'Identifier' is not a single-value property."));
     }
 
     private void ExpectOnceOnReferenceListPropertyIsAccessible (bool returnValue, MockSequence sequence)
     {
-      _testHelper.ExpectOnceOnIsAccessible (
+      _testHelper.ExpectOnceOnIsAccessible(
           _testHelper.BusinessObjectClass,
           _testHelper.BusinessObject,
-          Mock.Get (_testHelper.ReferenceListProperty).As<IBusinessObjectProperty>(),
+          Mock.Get(_testHelper.ReferenceListProperty).As<IBusinessObjectProperty>(),
           returnValue,
           sequence);
     }
 
     private void ExpectOnceOnBusinessObjectGetProperty (IBusinessObjectWithIdentity[] businessObjectsWithIdentity, MockSequence sequence)
     {
-      _testHelper.ExpectOnceOnGetProperty (Mock.Get (_testHelper.BusinessObject), _testHelper.ReferenceListProperty, businessObjectsWithIdentity, sequence);
+      _testHelper.ExpectOnceOnGetProperty(Mock.Get(_testHelper.BusinessObject), _testHelper.ReferenceListProperty, businessObjectsWithIdentity, sequence);
     }
   }
 }

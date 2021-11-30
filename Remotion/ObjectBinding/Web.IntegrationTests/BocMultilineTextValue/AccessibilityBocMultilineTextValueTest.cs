@@ -32,60 +32,60 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocMultilineTextValue
     public void Normal ()
     {
       var home = Start();
-      var bocMultilineTextValue = home.MultilineTextValues().GetByLocalID ("CVField_Normal");
+      var bocMultilineTextValue = home.MultilineTextValues().GetByLocalID("CVField_Normal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocMultilineTextValue.Analyze (analyzer);
+      var result = bocMultilineTextValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ReadOnly ()
     {
       var home = Start();
-      var bocMultilineTextValue = home.MultilineTextValues().GetByLocalID ("CVField_ReadOnly");
+      var bocMultilineTextValue = home.MultilineTextValues().GetByLocalID("CVField_ReadOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocMultilineTextValue.Analyze (analyzer);
+      var result = bocMultilineTextValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Disabled ()
     {
       var home = Start();
-      var bocMultilineTextValue = home.MultilineTextValues().GetByLocalID ("CVField_Disabled");
+      var bocMultilineTextValue = home.MultilineTextValues().GetByLocalID("CVField_Disabled");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocMultilineTextValue.Analyze (analyzer);
+      var result = bocMultilineTextValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void NormalRequired_WithValidationErrors ()
     {
       if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore ("RM-7412 This test currently does not work in Internet Explorer.");
+        Assert.Ignore("RM-7412 This test currently does not work in Internet Explorer.");
 
       var home = Start();
-      var bocMultilineTextValue = home.MultilineTextValues().GetByLocalID ("CVField_Normal_Required");
+      var bocMultilineTextValue = home.MultilineTextValues().GetByLocalID("CVField_Normal_Required");
       var validateButton = home.GetValidateButton();
-      bocMultilineTextValue.FillWith ("");
+      bocMultilineTextValue.FillWith("");
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocMultilineTextValue.Analyze (analyzer);
+      var result = bocMultilineTextValue.Analyze(analyzer);
 
-      Assert.That (bocMultilineTextValue.GetValidationErrors(), Is.Not.Empty);
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(bocMultilineTextValue.GetValidationErrors(), Is.Not.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocMultilineTextValue");
+      return Start("BocMultilineTextValue");
     }
   }
 }

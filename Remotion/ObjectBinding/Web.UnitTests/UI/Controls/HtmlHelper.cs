@@ -24,22 +24,22 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
   public class HtmlHelper : HtmlHelperBase
   {
     public HtmlHelper ()
-        : base (Assert.AreEqual, Assert.Greater, Assert.IsNotNull, Assert.IsNull, Assert.IsTrue)
+        : base(Assert.AreEqual, Assert.Greater, Assert.IsNotNull, Assert.IsNull, Assert.IsTrue)
     {
     }
 
     public void AssertIcon (XmlNode parentNode, IBusinessObject businessObject, string imageSourcePart)
     {
-      XmlNode img = GetAssertedChildElement (parentNode, "img", 0);
+      XmlNode img = GetAssertedChildElement(parentNode, "img", 0);
       if (imageSourcePart == null)
       {
         string businessObjectClass = businessObject.BusinessObjectClass.Identifier;
-        imageSourcePart = businessObjectClass.Substring (0, businessObjectClass.IndexOf (", "));
+        imageSourcePart = businessObjectClass.Substring(0, businessObjectClass.IndexOf(", "));
       }
-      AssertAttribute (img, "src", imageSourcePart, AttributeValueCompareMode.Contains);
-      AssertStyleAttribute (img, "width", "16px");
-      AssertStyleAttribute (img, "height", "16px");
-      AssertAttribute (img, "alt", "");
+      AssertAttribute(img, "src", imageSourcePart, AttributeValueCompareMode.Contains);
+      AssertStyleAttribute(img, "width", "16px");
+      AssertStyleAttribute(img, "height", "16px");
+      AssertAttribute(img, "alt", "");
     }
   }
 }

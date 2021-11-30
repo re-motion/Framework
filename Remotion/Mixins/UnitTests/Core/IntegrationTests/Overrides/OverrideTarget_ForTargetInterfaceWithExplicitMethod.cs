@@ -23,31 +23,31 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
   public class OverrideTarget_ForTargetInterfaceWithExplicitMethod
   {
     [Test]
-    [TestCase (typeof (MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
-    [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M", IgnoreReason = "RM-2745")]
+    [TestCase(typeof(MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [TestCase(typeof(MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M", IgnoreReason = "RM-2745")]
     public void InstantiateTargetType_ShouldThrowConfigurationException (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
       {
-        Assert.That (
+        Assert.That(
             () => ObjectFactory.Create<C>(),
-            Throws.TypeOf<ConfigurationException>().With.Message.EqualTo (
+            Throws.TypeOf<ConfigurationException>().With.Message.EqualTo(
                 $"The member overridden by 'System.String M()' declared by type '{mixinType.FullName}' could not be found. "
                 + "Candidates: ."));
       }
     }
 
     [Test]
-    [Ignore ("RM-2745")]
-    [TestCase (typeof (MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
-    [TestCase (typeof (MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [Ignore("RM-2745")]
+    [TestCase(typeof(MixinWithImplicitTargetSpecification), "TheMixin.M -> C.M")]
+    [TestCase(typeof(MixinWithExplicitTargetSpecification), "TheMixin.M -> C.M")]
     public void InstantiateShadowOfTargetType_ShouldThrowConfigurationException (Type mixinType, string expectedMethodOutput)
     {
-      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin (mixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<C>().AddMixin(mixinType).EnterScope())
       {
-        Assert.That (
+        Assert.That(
             () => ObjectFactory.Create<C_Shadow>(),
-            Throws.TypeOf<ConfigurationException>().With.Message.EqualTo (
+            Throws.TypeOf<ConfigurationException>().With.Message.EqualTo(
                 $"The member overridden by 'System.String M()' declared by type '{mixinType.FullName}' could not be found. "
                 + "Candidates: ."));
       }

@@ -27,14 +27,14 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
   public sealed class StaticBusinessObjectPropertyPathPropertyEnumerator : BusinessObjectPropertyPathPropertyEnumeratorBase
   {
     public StaticBusinessObjectPropertyPathPropertyEnumerator (string propertyPathIdentifier)
-        : base (propertyPathIdentifier)
+        : base(propertyPathIdentifier)
     {
     }
 
     protected override void HandlePropertyNotFound (IBusinessObjectClass businessObjectClass, string propertyIdentifier)
     {
-      throw new ParseException (
-          string.Format (
+      throw new ParseException(
+          string.Format(
               "BusinessObjectClass '{0}' does not contain a property named '{1}'.",
               businessObjectClass.Identifier,
               propertyIdentifier));
@@ -43,8 +43,8 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
     protected override void HandlePropertyNotLastPropertyAndNotReferenceProperty (
         IBusinessObjectClass businessObjectClass, IBusinessObjectProperty property)
     {
-      throw new ParseException (
-          string.Format (
+      throw new ParseException(
+          string.Format(
               "Each property in a property path except the last one must be a reference property. Property '{0}' is of type '{1}'.",
               property.Identifier,
               property.GetType().Name));

@@ -34,12 +34,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public CompositeScriptBuilder (RdbmsProviderDefinition rdbmsProviderDefinition, IEnumerable<IScriptBuilder> scriptBuilders)
     {
-      ArgumentUtility.CheckNotNull ("rdbmsProviderDefinition", rdbmsProviderDefinition);
-      ArgumentUtility.CheckNotNull ("scriptBuilders", scriptBuilders);
+      ArgumentUtility.CheckNotNull("rdbmsProviderDefinition", rdbmsProviderDefinition);
+      ArgumentUtility.CheckNotNull("scriptBuilders", scriptBuilders);
 
       _rdbmsProviderDefinition = rdbmsProviderDefinition;
 
-      _scriptBuilders = CreateFlattenedScriptBuilderList (scriptBuilders).AsReadOnly();
+      _scriptBuilders = CreateFlattenedScriptBuilderList(scriptBuilders).AsReadOnly();
     }
 
     public RdbmsProviderDefinition RdbmsProviderDefinition
@@ -54,25 +54,25 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull ("entityDefinition", entityDefinition);
+      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
 
       foreach (var scriptBuilder in _scriptBuilders)
-        scriptBuilder.AddEntityDefinition (entityDefinition);
+        scriptBuilder.AddEntityDefinition(entityDefinition);
     }
 
     public IScriptElement GetCreateScript ()
     {
-      var scriptElementCollection = new ScriptElementCollection ();
+      var scriptElementCollection = new ScriptElementCollection();
       foreach (var scriptBuilder in _scriptBuilders)
-        scriptElementCollection.AddElement (scriptBuilder.GetCreateScript());
+        scriptElementCollection.AddElement(scriptBuilder.GetCreateScript());
       return scriptElementCollection;
     }
 
     public IScriptElement GetDropScript ()
     {
-      var scriptElementCollection = new ScriptElementCollection ();
-      foreach (var scriptBuilder in _scriptBuilders.Reverse ())
-        scriptElementCollection.AddElement (scriptBuilder.GetDropScript ());
+      var scriptElementCollection = new ScriptElementCollection();
+      foreach (var scriptBuilder in _scriptBuilders.Reverse())
+        scriptElementCollection.AddElement(scriptBuilder.GetDropScript());
       return scriptElementCollection;
     }
 
@@ -84,20 +84,20 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
         var compositeScriptBuilder = scriptBuilder as CompositeScriptBuilder;
         if (compositeScriptBuilder == null)
         {
-          scriptBuilderList.Add (scriptBuilder);
+          scriptBuilderList.Add(scriptBuilder);
         }
         else
         {
-          if (!ReferenceEquals (compositeScriptBuilder.RdbmsProviderDefinition, _rdbmsProviderDefinition))
+          if (!ReferenceEquals(compositeScriptBuilder.RdbmsProviderDefinition, _rdbmsProviderDefinition))
           {
-            throw new ArgumentException (
-                string.Format (
+            throw new ArgumentException(
+                string.Format(
                     "The scriptBuilder sequence contains a CompositeScriptBuilder that references a different RdbmsProviderDefinition ('{0}') than the current CompositeScriptBuilder ('{1}').",
                     compositeScriptBuilder.RdbmsProviderDefinition.Name,
                     _rdbmsProviderDefinition.Name),
                 "scriptBuilders");
           }
-          scriptBuilderList.AddRange (compositeScriptBuilder.ScriptBuilders);
+          scriptBuilderList.AddRange(compositeScriptBuilder.ScriptBuilders);
         }
       }
       return scriptBuilderList;

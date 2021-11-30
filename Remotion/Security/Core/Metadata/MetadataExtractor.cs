@@ -28,35 +28,35 @@ namespace Remotion.Security.Metadata
 
     public MetadataExtractor (IMetadataConverter converter)
     {
-      ArgumentUtility.CheckNotNull ("converter", converter);
+      ArgumentUtility.CheckNotNull("converter", converter);
 
-      _assemblies = new List<Assembly> ();
+      _assemblies = new List<Assembly>();
       _converter = converter;
     }
 
     public void AddAssembly (Assembly assembly)
     {
-      _assemblies.Add (assembly);
+      _assemblies.Add(assembly);
     }
 
     public void AddAssembly (string assemblyPath)
     {
-      if (!assemblyPath.EndsWith (".dll"))
+      if (!assemblyPath.EndsWith(".dll"))
         assemblyPath = assemblyPath + ".dll";
 
-      Assembly assembly = Assembly.LoadFrom (assemblyPath);
-      AddAssembly (assembly);
+      Assembly assembly = Assembly.LoadFrom(assemblyPath);
+      AddAssembly(assembly);
     }
 
     public void Save (string filename)
     {
-      MetadataCache metadata = new MetadataCache ();
-      AssemblyReflector reflector = new AssemblyReflector ();
+      MetadataCache metadata = new MetadataCache();
+      AssemblyReflector reflector = new AssemblyReflector();
 
       foreach (Assembly assembly in _assemblies)
-        reflector.GetMetadata (assembly, metadata);
+        reflector.GetMetadata(assembly, metadata);
 
-      _converter.ConvertAndSave (metadata, filename);
+      _converter.ConvertAndSave(metadata, filename);
     }
   }
 }

@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Firefox
 
     public FirefoxBrowserFactory ([NotNull] IFirefoxConfiguration firefoxConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("firefoxConfiguration", firefoxConfiguration);
+      ArgumentUtility.CheckNotNull("firefoxConfiguration", firefoxConfiguration);
 
       _firefoxConfiguration = firefoxConfiguration;
     }
@@ -45,25 +45,25 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Firefox
     /// <inheritdoc />
     public IBrowserSession CreateBrowser (DriverConfiguration driverConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("driverConfiguration", driverConfiguration);
+      ArgumentUtility.CheckNotNull("driverConfiguration", driverConfiguration);
 
-      var sessionConfiguration = CreateSessionConfiguration (driverConfiguration);
+      var sessionConfiguration = CreateSessionConfiguration(driverConfiguration);
       var commandTimeout = driverConfiguration.CommandTimeout;
 
       var firefoxDriverService = GetFirefoxDriverService();
-      var driver = new FirefoxDriver (firefoxDriverService, _firefoxConfiguration.CreateFirefoxOptions(), commandTimeout);
+      var driver = new FirefoxDriver(firefoxDriverService, _firefoxConfiguration.CreateFirefoxOptions(), commandTimeout);
       driver.Manage().Timeouts().AsynchronousJavaScript = driverConfiguration.AsyncJavaScriptTimeout;
-      var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Firefox));
+      var session = new Coypu.BrowserSession(sessionConfiguration, new CustomSeleniumWebDriver(driver, Browser.Firefox));
 
-      return new FirefoxBrowserSession (session, _firefoxConfiguration, firefoxDriverService.ProcessId);
+      return new FirefoxBrowserSession(session, _firefoxConfiguration, firefoxDriverService.ProcessId);
     }
 
     private FirefoxDriverService GetFirefoxDriverService ()
     {
-      var driverDirectory = Path.GetDirectoryName (_firefoxConfiguration.DriverBinaryPath);
-      var driverExecutable = Path.GetFileName (_firefoxConfiguration.DriverBinaryPath);
+      var driverDirectory = Path.GetDirectoryName(_firefoxConfiguration.DriverBinaryPath);
+      var driverExecutable = Path.GetFileName(_firefoxConfiguration.DriverBinaryPath);
 
-      var firefoxDriverService = FirefoxDriverService.CreateDefaultService (driverDirectory, driverExecutable);
+      var firefoxDriverService = FirefoxDriverService.CreateDefaultService(driverDirectory, driverExecutable);
       firefoxDriverService.FirefoxBinaryPath = _firefoxConfiguration.BrowserBinaryPath;
 
       return firefoxDriverService;
@@ -79,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Firefox
                  ConsiderInvisibleElements = WebTestingConstants.ShouldConsiderInvisibleElements,
                  Match = WebTestingConstants.DefaultMatchStrategy,
                  TextPrecision = WebTestingConstants.DefaultTextPrecision,
-                 Driver = typeof (CustomSeleniumWebDriver)
+                 Driver = typeof(CustomSeleniumWebDriver)
              };
     }
   }

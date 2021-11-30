@@ -61,12 +61,12 @@ namespace Remotion.SecurityManager.UnitTests
     {
       base.SetUp();
 
-      _mockAclFinder = new Mock<IAccessControlListFinder> (MockBehavior.Strict);
-      _mockTokenBuilder = new Mock<ISecurityTokenBuilder> (MockBehavior.Strict);
-      _mockAccessResolver = new Mock<IAccessResolver> (MockBehavior.Strict);
+      _mockAclFinder = new Mock<IAccessControlListFinder>(MockBehavior.Strict);
+      _mockTokenBuilder = new Mock<ISecurityTokenBuilder>(MockBehavior.Strict);
+      _mockAccessResolver = new Mock<IAccessResolver>(MockBehavior.Strict);
 
-      _service = new SecurityService (_mockAclFinder.Object, _mockTokenBuilder.Object, _mockAccessResolver.Object);
-      _context = SecurityContext.Create (typeof (Order), "Owner", "UID: OwnerGroup", "OwnerTenant", new Dictionary<string, Enum>(), new Enum[0]);
+      _service = new SecurityService(_mockAclFinder.Object, _mockTokenBuilder.Object, _mockAccessResolver.Object);
+      _context = SecurityContext.Create(typeof(Order), "Owner", "UID: OwnerGroup", "OwnerTenant", new Dictionary<string, Enum>(), new Enum[0]);
 
       _clientTransaction = ClientTransaction.CreateRootTransaction();
       using (_clientTransaction.EnterNonDiscardingScope())
@@ -76,22 +76,22 @@ namespace Remotion.SecurityManager.UnitTests
       }
 
       _principalStub = new Mock<ISecurityPrincipal>();
-      _principalStub.Setup (_ => _.User).Returns ("group0/user1");
+      _principalStub.Setup(_ => _.User).Returns("group0/user1");
 
       _memoryAppender = new MemoryAppender();
 
       LoggerMatchFilter acceptFilter = new LoggerMatchFilter();
       acceptFilter.LoggerToMatch = "Remotion.SecurityManager";
       acceptFilter.AcceptOnMatch = true;
-      _memoryAppender.AddFilter (acceptFilter);
+      _memoryAppender.AddFilter(acceptFilter);
 
       DenyAllFilter denyFilter = new DenyAllFilter();
-      _memoryAppender.AddFilter (denyFilter);
+      _memoryAppender.AddFilter(denyFilter);
 
-      BasicConfigurator.Configure (_memoryAppender);
+      BasicConfigurator.Configure(_memoryAppender);
     }
 
-    public override void TearDown()
+    public override void TearDown ()
     {
       base.TearDown();
       LogManager.ResetConfiguration();
@@ -102,88 +102,88 @@ namespace Remotion.SecurityManager.UnitTests
     {
       AccessType[] expectedAccessTypes = new AccessType[1];
 
-      SecurityToken token = SecurityToken.Create (
-          PrincipalTestHelper.Create (_tenant, null, new Role[0]),
+      SecurityToken token = SecurityToken.Create(
+          PrincipalTestHelper.Create(_tenant, null, new Role[0]),
           null,
           null,
           null,
           Enumerable.Empty<IDomainObjectHandle<AbstractRoleDefinition>>());
 
       var aclHandle = CreateAccessControlListHandle();
-      _mockAclFinder.Setup (_ => _.Find (_context)).Returns (aclHandle).Verifiable();
-      _mockTokenBuilder.Setup (_ => _.CreateToken (_principalStub.Object, _context)).Returns (token).Verifiable();
-      _mockAccessResolver.Setup (_ => _.GetAccessTypes (aclHandle, token)).Returns (expectedAccessTypes).Verifiable();
+      _mockAclFinder.Setup(_ => _.Find(_context)).Returns(aclHandle).Verifiable();
+      _mockTokenBuilder.Setup(_ => _.CreateToken(_principalStub.Object, _context)).Returns(token).Verifiable();
+      _mockAccessResolver.Setup(_ => _.GetAccessTypes(aclHandle, token)).Returns(expectedAccessTypes).Verifiable();
 
-      AccessType[] actualAccessTypes = _service.GetAccess (_context, _principalStub.Object);
+      AccessType[] actualAccessTypes = _service.GetAccess(_context, _principalStub.Object);
 
-      Assert.That (actualAccessTypes, Is.SameAs (expectedAccessTypes));
+      Assert.That(actualAccessTypes, Is.SameAs(expectedAccessTypes));
     }
 
 
     [Test]
     public void GetAccess_ContextDoesNotMatchAcl_ReturnsEmptyAccessTypes ()
     {
-      SecurityToken token = SecurityToken.Create (
-          PrincipalTestHelper.Create (_tenant, null, new Role[0]),
+      SecurityToken token = SecurityToken.Create(
+          PrincipalTestHelper.Create(_tenant, null, new Role[0]),
           null,
           null,
           null,
           Enumerable.Empty<IDomainObjectHandle<AbstractRoleDefinition>>());
 
-      _mockAclFinder.Setup (_ => _.Find (_context)).Returns ((IDomainObjectHandle<AccessControlList>) null).Verifiable();
-      _mockTokenBuilder.Setup (_ => _.CreateToken (_principalStub.Object, _context)).Returns (token).Verifiable();
+      _mockAclFinder.Setup(_ => _.Find(_context)).Returns((IDomainObjectHandle<AccessControlList>)null).Verifiable();
+      _mockTokenBuilder.Setup(_ => _.CreateToken(_principalStub.Object, _context)).Returns(token).Verifiable();
 
-      AccessType[] actualAccessTypes = _service.GetAccess (_context, _principalStub.Object);
+      AccessType[] actualAccessTypes = _service.GetAccess(_context, _principalStub.Object);
 
-      Assert.That (actualAccessTypes, Is.Empty);
+      Assert.That(actualAccessTypes, Is.Empty);
     }
 
     [Test]
     public void GetAccess_WithAccessControlExcptionFromAccessControlListFinder ()
     {
       AccessControlException expectedException = new AccessControlException();
-      using (_clientTransaction.EnterNonDiscardingScope ())
+      using (_clientTransaction.EnterNonDiscardingScope())
       {
-        _mockAclFinder.Setup (_ => _.Find (_context)).Throws (expectedException).Verifiable();
+        _mockAclFinder.Setup(_ => _.Find(_context)).Throws(expectedException).Verifiable();
       }
 
-      AccessType[] accessTypes = _service.GetAccess (_context, _principalStub.Object);
+      AccessType[] accessTypes = _service.GetAccess(_context, _principalStub.Object);
 
       _mockAclFinder.Verify();
       _mockTokenBuilder.Verify();
       _mockAccessResolver.Verify();
-      Assert.That (accessTypes.Length, Is.EqualTo (0));
-      LoggingEvent[] events = _memoryAppender.GetEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
-      Assert.That (events[0].ExceptionObject, Is.SameAs (expectedException));
-      Assert.That (events[0].Level, Is.EqualTo (Level.Error));
+      Assert.That(accessTypes.Length, Is.EqualTo(0));
+      LoggingEvent[] events = _memoryAppender.GetEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
+      Assert.That(events[0].ExceptionObject, Is.SameAs(expectedException));
+      Assert.That(events[0].Level, Is.EqualTo(Level.Error));
     }
 
     [Test]
     public void GetAccess_WithAccessControlExcptionFromSecurityTokenBuilder ()
     {
       AccessControlException expectedException = new AccessControlException();
-      using (_clientTransaction.EnterNonDiscardingScope ())
+      using (_clientTransaction.EnterNonDiscardingScope())
       {
         var aclHandle = CreateAccessControlListHandle();
-        _mockAclFinder.Setup (_ => _.Find (_context)).Returns (aclHandle).Verifiable();
-        _mockTokenBuilder.Setup (_ => _.CreateToken (_principalStub.Object, _context)).Throws (expectedException).Verifiable();
+        _mockAclFinder.Setup(_ => _.Find(_context)).Returns(aclHandle).Verifiable();
+        _mockTokenBuilder.Setup(_ => _.CreateToken(_principalStub.Object, _context)).Throws(expectedException).Verifiable();
       }
 
-      AccessType[] accessTypes = _service.GetAccess (_context, _principalStub.Object);
+      AccessType[] accessTypes = _service.GetAccess(_context, _principalStub.Object);
 
       _mockAclFinder.Verify();
       _mockTokenBuilder.Verify();
       _mockAccessResolver.Verify();
-      Assert.That (accessTypes.Length, Is.EqualTo (0));
-      LoggingEvent[] events = _memoryAppender.GetEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
-      Assert.That (events[0].ExceptionObject, Is.SameAs (expectedException));
-      Assert.That (events[0].Level, Is.EqualTo (Level.Error));
+      Assert.That(accessTypes.Length, Is.EqualTo(0));
+      LoggingEvent[] events = _memoryAppender.GetEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
+      Assert.That(events[0].ExceptionObject, Is.SameAs(expectedException));
+      Assert.That(events[0].Level, Is.EqualTo(Level.Error));
     }
 
     [Test]
-    [Ignore ("RM-5633: Temporarily disabled")]
+    [Ignore("RM-5633: Temporarily disabled")]
     public void GetAccess_UsesSecurityFreeSection ()
     {
       ClientTransaction subTransaction;
@@ -200,30 +200,30 @@ namespace Remotion.SecurityManager.UnitTests
         role.Group.Tenant = _tenant;
         role.Position = organizationalStructureFactory.CreatePosition();
 
-        var token = SecurityToken.Create (PrincipalTestHelper.Create (_tenant, null, new[] { role }), null, null, null, abstractRoles);
+        var token = SecurityToken.Create(PrincipalTestHelper.Create(_tenant, null, new[] { role }), null, null, null, abstractRoles);
 
         subTransaction = _clientTransaction.CreateSubTransaction();
         using (subTransaction.EnterNonDiscardingScope())
         {
           var aclHandle = CreateAccessControlListHandle();
-          _mockAclFinder.Setup (_ => _.Find (_context))
-              .Callback ((ISecurityContext context) => Assert.That (SecurityFreeSection.IsActive, Is.True))
-              .Returns (aclHandle)
+          _mockAclFinder.Setup(_ => _.Find(_context))
+              .Callback((ISecurityContext context) => Assert.That(SecurityFreeSection.IsActive, Is.True))
+              .Returns(aclHandle)
               .Verifiable();
-          _mockTokenBuilder.Setup (_ => _.CreateToken (_principalStub.Object, _context))
-              .Callback ((ISecurityPrincipal principal, ISecurityContext context) => Assert.That (SecurityFreeSection.IsActive, Is.True))
-              .Returns (token)
+          _mockTokenBuilder.Setup(_ => _.CreateToken(_principalStub.Object, _context))
+              .Callback((ISecurityPrincipal principal, ISecurityContext context) => Assert.That(SecurityFreeSection.IsActive, Is.True))
+              .Returns(token)
               .Verifiable();
         }
       }
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => new Mock<ISecurityProvider>());
-      using (new ServiceLocatorScope (serviceLocator))
+      serviceLocator.RegisterSingle(() => new Mock<ISecurityProvider>());
+      using (new ServiceLocatorScope(serviceLocator))
       {
-        _clientTransaction.Extensions.Add (new SecurityClientTransactionExtension());
+        _clientTransaction.Extensions.Add(new SecurityClientTransactionExtension());
 
-        _service.GetAccess (_context, _principalStub.Object);
+        _service.GetAccess(_context, _principalStub.Object);
 
         _mockAclFinder.Verify();
         _mockTokenBuilder.Verify();
@@ -234,12 +234,12 @@ namespace Remotion.SecurityManager.UnitTests
     [Test]
     public void GetIsNull ()
     {
-      Assert.That (((ISecurityProvider) _service).IsNull, Is.False);
+      Assert.That(((ISecurityProvider)_service).IsNull, Is.False);
     }
 
     private IDomainObjectHandle<AccessControlList> CreateAccessControlListHandle ()
     {
-      return new DomainObjectHandle<StatefulAccessControlList> (new ObjectID (typeof (StatefulAccessControlList), Guid.NewGuid()));
+      return new DomainObjectHandle<StatefulAccessControlList>(new ObjectID(typeof(StatefulAccessControlList), Guid.NewGuid()));
     }
   }
 }

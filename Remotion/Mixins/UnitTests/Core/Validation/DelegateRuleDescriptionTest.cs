@@ -33,7 +33,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
     {
     }
 
-    [DelegateRuleDescription (RuleName = "Fritz", Message = "Echo?")]
+    [DelegateRuleDescription(RuleName = "Fritz", Message = "Echo?")]
     private void DescribedSampleRule_Changes (DelegateValidationRule<TargetClassDefinition>.Args args)
     {
     }
@@ -41,25 +41,25 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
     [Test]
     public void DefaultDescription ()
     {
-      IValidationRule rule = new DelegateValidationRule<TargetClassDefinition> (NonDescribedSampleRule);
-      Assert.That (rule.RuleName, Is.EqualTo ("Remotion.Mixins.UnitTests.Core.Validation.DelegateRuleDescriptionTest.NonDescribedSampleRule"));
-      Assert.That (rule.Message, Is.EqualTo ("Non described sample rule"));
+      IValidationRule rule = new DelegateValidationRule<TargetClassDefinition>(NonDescribedSampleRule);
+      Assert.That(rule.RuleName, Is.EqualTo("Remotion.Mixins.UnitTests.Core.Validation.DelegateRuleDescriptionTest.NonDescribedSampleRule"));
+      Assert.That(rule.Message, Is.EqualTo("Non described sample rule"));
     }
 
     [Test]
     public void DescriptionAttribute_NoChanges ()
     {
-      IValidationRule rule = new DelegateValidationRule<TargetClassDefinition> (DescribedSampleRule_NoChanges);
-      Assert.That (rule.RuleName, Is.EqualTo ("Remotion.Mixins.UnitTests.Core.Validation.DelegateRuleDescriptionTest.DescribedSampleRule_NoChanges"));
-      Assert.That (rule.Message, Is.EqualTo ("Described sample rule_ no changes"));
+      IValidationRule rule = new DelegateValidationRule<TargetClassDefinition>(DescribedSampleRule_NoChanges);
+      Assert.That(rule.RuleName, Is.EqualTo("Remotion.Mixins.UnitTests.Core.Validation.DelegateRuleDescriptionTest.DescribedSampleRule_NoChanges"));
+      Assert.That(rule.Message, Is.EqualTo("Described sample rule_ no changes"));
     }
 
     [Test]
     public void DescriptionAttribute_Changes ()
     {
-      IValidationRule rule = new DelegateValidationRule<TargetClassDefinition> (DescribedSampleRule_Changes);
-      Assert.That (rule.RuleName, Is.EqualTo ("Fritz"));
-      Assert.That (rule.Message, Is.EqualTo ("Echo?"));
+      IValidationRule rule = new DelegateValidationRule<TargetClassDefinition>(DescribedSampleRule_Changes);
+      Assert.That(rule.RuleName, Is.EqualTo("Fritz"));
+      Assert.That(rule.Message, Is.EqualTo("Echo?"));
     }
   }
 }

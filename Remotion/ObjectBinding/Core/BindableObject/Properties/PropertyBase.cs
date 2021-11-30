@@ -80,27 +80,27 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
           [NotNull] BindableObjectGlobalizationService bindableObjectGlobalizationService,
           [NotNull]IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider)
       {
-        ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
-        ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-        ArgumentUtility.CheckNotNull ("underlyingType", underlyingType);
-        ArgumentUtility.CheckNotNull ("concreteType", concreteType);
-        ArgumentUtility.CheckNotNull ("defaultValueStrategy", defaultValueStrategy);
-        ArgumentUtility.CheckNotNull ("bindablePropertyReadAccessStrategy", bindablePropertyReadAccessStrategy);
-        ArgumentUtility.CheckNotNull ("bindablePropertyWriteAccessStrategy", bindablePropertyWriteAccessStrategy);
-        ArgumentUtility.CheckNotNull ("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
-        ArgumentUtility.CheckNotNull ("businessObjectPropertyConstraintProvider", businessObjectPropertyConstraintProvider);
+        ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
+        ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+        ArgumentUtility.CheckNotNull("underlyingType", underlyingType);
+        ArgumentUtility.CheckNotNull("concreteType", concreteType);
+        ArgumentUtility.CheckNotNull("defaultValueStrategy", defaultValueStrategy);
+        ArgumentUtility.CheckNotNull("bindablePropertyReadAccessStrategy", bindablePropertyReadAccessStrategy);
+        ArgumentUtility.CheckNotNull("bindablePropertyWriteAccessStrategy", bindablePropertyWriteAccessStrategy);
+        ArgumentUtility.CheckNotNull("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
+        ArgumentUtility.CheckNotNull("businessObjectPropertyConstraintProvider", businessObjectPropertyConstraintProvider);
 
         BusinessObjectProvider = businessObjectProvider;
         PropertyInfo = propertyInfo;
         UnderlyingType = underlyingType;
-        ConcreteType = new Lazy<Type> (
+        ConcreteType = new Lazy<Type>(
             () =>
             {
               var actualConcreteType = concreteType.Value;
-              if (!underlyingType.IsAssignableFrom (actualConcreteType))
+              if (!underlyingType.IsAssignableFrom(actualConcreteType))
               {
-                throw new InvalidOperationException (
-                    string.Format (
+                throw new InvalidOperationException(
+                    string.Format(
                         "The concrete type must be assignable to the underlying type '{0}'.\r\nConcrete type: {1}",
                         underlyingType.GetFullNameSafe(),
                         actualConcreteType.GetFullNameSafe()));
@@ -139,10 +139,10 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     protected PropertyBase (Parameters parameters)
     {
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       if (parameters.PropertyInfo.GetIndexParameters().Length > 0)
-        throw new InvalidOperationException ("Indexed properties are not supported.");
+        throw new InvalidOperationException("Indexed properties are not supported.");
 
       _businessObjectProvider = parameters.BusinessObjectProvider;
       _propertyInfo = parameters.PropertyInfo;
@@ -157,8 +157,8 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       _bindableObjectGlobalizationService = parameters.BindableObjectGlobalizationService;
       _businessObjectPropertyConstraintProvider = parameters.BusinessObjectPropertyConstraintProvider;
       _isNullableDotNetType = GetNullabilityForDotNetType();
-      _valueGetter = _propertyInfo.GetGetMethod (true)?.GetFastInvoker<Func<object, object>>();
-      _valueSetter = _propertyInfo.GetSetMethod (true)?.GetFastInvoker<Action<object, object?>>();
+      _valueGetter = _propertyInfo.GetGetMethod(true)?.GetFastInvoker<Func<object, object>>();
+      _valueSetter = _propertyInfo.GetSetMethod(true)?.GetFastInvoker<Action<object, object?>>();
     }
 
     /// <summary> Gets a flag indicating whether this property contains multiple values. </summary>
@@ -177,7 +177,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       get
       {
         if (_listInfo == null)
-          throw new InvalidOperationException (string.Format ("Cannot access ListInfo for non-list properties.\r\nProperty: {0}", Identifier));
+          throw new InvalidOperationException(string.Format("Cannot access ListInfo for non-list properties.\r\nProperty: {0}", Identifier));
         return _listInfo;
       }
     }
@@ -201,13 +201,13 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <value> A <see cref="String"/> by which this property can be found within its <see cref="IBusinessObjectClass"/>. </value>
     public string Identifier
     {
-      get { return ShortenName (_propertyInfo.Name); }
+      get { return ShortenName(_propertyInfo.Name); }
     }
 
     // Truncates the name to the part to the right of the last '.', if any.
     private string ShortenName (string name)
     {
-      return name.Substring (name.LastIndexOf ('.') + 1);
+      return name.Substring(name.LastIndexOf('.') + 1);
     }
 
     /// <summary> Gets the property name as presented to the user. </summary>
@@ -219,11 +219,11 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       {
         if (_reflectedClass == null)
         {
-          throw new InvalidOperationException (
-              string.Format ("The reflected class for the property '{0}.{1}' is not set.", _propertyInfo.DeclaringType!.Name, _propertyInfo.Name));
+          throw new InvalidOperationException(
+              string.Format("The reflected class for the property '{0}.{1}' is not set.", _propertyInfo.DeclaringType!.Name, _propertyInfo.Name));
         }
 
-        return _bindableObjectGlobalizationService.GetPropertyDisplayName (_propertyInfo, TypeAdapter.Create(_reflectedClass.TargetType));
+        return _bindableObjectGlobalizationService.GetPropertyDisplayName(_propertyInfo, TypeAdapter.Create(_reflectedClass.TargetType));
       }
     }
 
@@ -251,23 +251,23 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     {
       // obj can be null
 
-      return _bindablePropertyReadAccessStrategy.CanRead (obj, this);
+      return _bindablePropertyReadAccessStrategy.CanRead(obj, this);
     }
 
     public object GetValue (IBusinessObject obj)
     {
-      ArgumentUtility.CheckNotNull ("obj", obj);
+      ArgumentUtility.CheckNotNull("obj", obj);
 
       if (_valueGetter == null)
-        throw new InvalidOperationException ("Property has no getter.");
+        throw new InvalidOperationException("Property has no getter.");
 
       try
       {
-        return _valueGetter (obj);
+        return _valueGetter(obj);
       }
       catch (Exception ex)
       {
-        if (_bindablePropertyReadAccessStrategy.IsPropertyAccessException (obj, this, ex, out var propertyAccessException))
+        if (_bindablePropertyReadAccessStrategy.IsPropertyAccessException(obj, this, ex, out var propertyAccessException))
           throw propertyAccessException;
         throw;
       }
@@ -275,18 +275,18 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public void SetValue (IBusinessObject obj, object? value)
     {
-      ArgumentUtility.CheckNotNull ("obj", obj);
+      ArgumentUtility.CheckNotNull("obj", obj);
 
       if (_valueSetter == null)
-        throw new InvalidOperationException ("Property has no setter.");
+        throw new InvalidOperationException("Property has no setter.");
 
       try
       {
-        _valueSetter (obj, value);
+        _valueSetter(obj, value);
       }
       catch (Exception ex)
       {
-        if (_bindablePropertyWriteAccessStrategy.IsPropertyAccessException (obj, this, ex, out var propertyAccessException))
+        if (_bindablePropertyWriteAccessStrategy.IsPropertyAccessException(obj, this, ex, out var propertyAccessException))
           throw propertyAccessException;
         throw;
       }
@@ -294,9 +294,9 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public bool IsDefaultValue (IBusinessObject obj)
     {
-      ArgumentUtility.CheckNotNull ("obj", obj);
+      ArgumentUtility.CheckNotNull("obj", obj);
 
-      return _defaultValueStrategy.IsDefaultValue (obj, this);
+      return _defaultValueStrategy.IsDefaultValue(obj, this);
     }
 
     /// <summary> Indicates whether this property can be modified by the user. </summary>
@@ -310,14 +310,14 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       if (_isReadOnly)
         return true;
 
-      return !_bindablePropertyWriteAccessStrategy.CanWrite (obj, this);
+      return !_bindablePropertyWriteAccessStrategy.CanWrite(obj, this);
     }
 
     public IEnumerable<IBusinessObjectPropertyConstraint> GetConstraints (IBusinessObject? obj)
     {
       // obj can be null
 
-      return _businessObjectPropertyConstraintProvider.GetPropertyConstraints (ReflectedClass, this, obj);
+      return _businessObjectPropertyConstraintProvider.GetPropertyConstraints(ReflectedClass, this, obj);
     }
 
     /// <summary> Gets the <see cref="BindableObjectProvider"/> for this property. </summary>
@@ -349,8 +349,8 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       {
         if (_reflectedClass == null)
         {
-          throw new InvalidOperationException (
-              string.Format (
+          throw new InvalidOperationException(
+              string.Format(
                   "Accessing the ReflectedClass of a property is invalid until the property has been associated with a class.\r\nProperty '{0}'",
                   Identifier));
         }
@@ -376,11 +376,11 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public void SetReflectedClass (BindableObjectClass reflectedClass)
     {
-      ArgumentUtility.CheckNotNull ("reflectedClass", reflectedClass);
+      ArgumentUtility.CheckNotNull("reflectedClass", reflectedClass);
       if (BusinessObjectProvider != reflectedClass.BusinessObjectProvider)
       {
-        throw new ArgumentException (
-            string.Format (
+        throw new ArgumentException(
+            string.Format(
                 "The BusinessObjectProvider of property '{0}' does not match the BusinessObjectProvider of class '{1}'.",
                 Identifier,
                 reflectedClass.Identifier),
@@ -389,8 +389,8 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
       if (_reflectedClass != null)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The ReflectedClass of a property cannot be changed after it was assigned.\r\nClass '{0}'\r\nProperty '{1}'",
                 _reflectedClass.Identifier,
                 Identifier));
@@ -416,7 +416,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     private bool GetNullabilityForDotNetType ()
     {
-      return Nullable.GetUnderlyingType (IsList ? ListInfo.ItemType : PropertyType) != null;
+      return Nullable.GetUnderlyingType(IsList ? ListInfo.ItemType : PropertyType) != null;
     }
   }
 }

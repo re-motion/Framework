@@ -31,23 +31,23 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void Validate_WithPropertyValueNoString_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (new object());
-      var validator = new RegularExpressionValidator (new Regex (@"^\d$"), new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(new object());
+      var validator = new RegularExpressionValidator(new Regex(@"^\d$"), new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (null);
-      var validator = new RegularExpressionValidator (new Regex (@"^\d$"), new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(null);
+      var validator = new RegularExpressionValidator(new Regex(@"^\d$"), new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
@@ -55,47 +55,47 @@ namespace Remotion.Validation.UnitTests.Validators
     {
       using (CultureScope.CreateInvariantCultureScope())
       {
-        Assert.That (
-            () => new RegularExpressionValidator (null, new InvariantValidationMessage ("Fake Message")),
+        Assert.That(
+            () => new RegularExpressionValidator(null, new InvariantValidationMessage("Fake Message")),
             Throws.InstanceOf<ArgumentNullException>()
-                .With.ArgumentExceptionMessageEqualTo ($"Value cannot be null.", "regex"));
+                .With.ArgumentExceptionMessageEqualTo($"Value cannot be null.", "regex"));
       }
     }
 
     [Test]
     public void Validate_WithPatternEmpty_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext ("some string");
-      var validator = new RegularExpressionValidator (new Regex (""), new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext("some string");
+      var validator = new RegularExpressionValidator(new Regex(""), new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueMatchingPattern_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext ("1");
-      var validator = new RegularExpressionValidator (new Regex (@"^\d{1}$"), new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext("1");
+      var validator = new RegularExpressionValidator(new Regex(@"^\d{1}$"), new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueNotMatchingPattern_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext ("a");
-      var validator = new RegularExpressionValidator (new Regex (@"^\d{1}$"), new InvariantValidationMessage ("Custom validation message."));
+      var propertyValidatorContext = CreatePropertyValidatorContext("a");
+      var validator = new RegularExpressionValidator(new Regex(@"^\d{1}$"), new InvariantValidationMessage("Custom validation message."));
 
-      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      Assert.That (validationFailures.Length, Is.EqualTo (1));
+      Assert.That(validationFailures.Length, Is.EqualTo(1));
       //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
-      Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must be in the correct format (^\\d{1}$)."));
-      Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message."));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must be in the correct format (^\\d{1}$)."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message."));
     }
   }
 }

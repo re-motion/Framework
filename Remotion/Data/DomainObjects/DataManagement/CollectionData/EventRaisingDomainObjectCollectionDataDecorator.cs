@@ -32,9 +32,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     private readonly IDomainObjectCollectionEventRaiser _eventRaiser;
 
     public EventRaisingDomainObjectCollectionDataDecorator (IDomainObjectCollectionEventRaiser eventRaiser, IDomainObjectCollectionData wrappedData)
-      : base (wrappedData)
+      : base(wrappedData)
     {
-      ArgumentUtility.CheckNotNull ("eventRaiser", eventRaiser);
+      ArgumentUtility.CheckNotNull("eventRaiser", eventRaiser);
       _eventRaiser = eventRaiser;
     }
 
@@ -48,15 +48,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       switch (operation)
       {
         case OperationKind.Insert:
-          _eventRaiser.BeginAdd (index, affectedObject);
+          _eventRaiser.BeginAdd(index, affectedObject);
           break;
         case OperationKind.Remove:
-          _eventRaiser.BeginRemove (index, affectedObject);
+          _eventRaiser.BeginRemove(index, affectedObject);
           break;
         case OperationKind.Sort:
           break;
         default:
-          throw new InvalidOperationException ("Invalid operation: " + operation);
+          throw new InvalidOperationException("Invalid operation: " + operation);
       }
     }
 
@@ -65,16 +65,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       switch (operation)
       {
         case OperationKind.Insert:
-          _eventRaiser.EndAdd (index, affectedObject);
+          _eventRaiser.EndAdd(index, affectedObject);
           break;
         case OperationKind.Remove:
-          _eventRaiser.EndRemove (index, affectedObject);
+          _eventRaiser.EndRemove(index, affectedObject);
           break;
         case OperationKind.Sort:
           _eventRaiser.WithinReplaceData();
           break;
         default:
-          throw new InvalidOperationException ("Invalid operation: " + operation);
+          throw new InvalidOperationException("Invalid operation: " + operation);
       }
     }
   }

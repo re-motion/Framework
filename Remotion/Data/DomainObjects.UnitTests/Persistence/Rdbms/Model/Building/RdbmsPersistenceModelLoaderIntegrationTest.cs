@@ -52,58 +52,58 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     {
       base.SetUp();
 
-      _storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage);
-      _storageProviderDefinition = (RdbmsProviderDefinition) _storageProviderDefinitionFinder.GetStorageProviderDefinition (
+      _storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
+      _storageProviderDefinition = (RdbmsProviderDefinition)_storageProviderDefinitionFinder.GetStorageProviderDefinition(
           storageGroupTypeOrNull: null, errorMessageContext: "SetUp");
 
       var factory = _storageProviderDefinition.Factory;
       _rdbmsPersistenceModelLoader =
-          (RdbmsPersistenceModelLoader) factory.CreatePersistenceModelLoader (_storageProviderDefinition, _storageProviderDefinitionFinder);
+          (RdbmsPersistenceModelLoader)factory.CreatePersistenceModelLoader(_storageProviderDefinition, _storageProviderDefinitionFinder);
 
       _testModel = new RdbmsPersistenceModelLoaderTestHelper();
 
       var infrastructureStoragePropertyDefinitionProvider =
-          ((RdbmsStorageEntityDefinitionFactory) _rdbmsPersistenceModelLoader.EntityDefinitionFactory).InfrastructureStoragePropertyDefinitionProvider;
-      _infrastructureObjectIDStoragePropertyDefinition = infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition ();
-      _infrastructureIDStoragePropertyDefinition = (SimpleStoragePropertyDefinition) _infrastructureObjectIDStoragePropertyDefinition.ValueProperty;
-      _infrastructureClassIDStoragePropertyDefinition = (SimpleStoragePropertyDefinition) _infrastructureObjectIDStoragePropertyDefinition.ClassIDProperty;
+          ((RdbmsStorageEntityDefinitionFactory)_rdbmsPersistenceModelLoader.EntityDefinitionFactory).InfrastructureStoragePropertyDefinitionProvider;
+      _infrastructureObjectIDStoragePropertyDefinition = infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition();
+      _infrastructureIDStoragePropertyDefinition = (SimpleStoragePropertyDefinition)_infrastructureObjectIDStoragePropertyDefinition.ValueProperty;
+      _infrastructureClassIDStoragePropertyDefinition = (SimpleStoragePropertyDefinition)_infrastructureObjectIDStoragePropertyDefinition.ClassIDProperty;
       _infrastructureTimestampStoragePropertyDefinition =
-          (SimpleStoragePropertyDefinition) infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition ();
+          (SimpleStoragePropertyDefinition)infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition();
 
-      _fakeBaseBaseStoragePropertyDefinition = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("BaseBaseProperty");
-      _fakeBaseStoragePropertyDefinition = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("BaseProperty");
-      _fakeTableStoragePropertyDefinition1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("TableProperty1");
-      _fakeTableStoragePropertyDefinition2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("TableProperty2");
-      _fakeDerivedStoragePropertyDefinition1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("DerivedProperty1");
-      _fakeDerivedStoragePropertyDefinition2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("DerivedProperty2");
-      _fakeDerivedDerivedStoragePropertyDefinition = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("DerivedDerivedProperty");
+      _fakeBaseBaseStoragePropertyDefinition = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("BaseBaseProperty");
+      _fakeBaseStoragePropertyDefinition = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("BaseProperty");
+      _fakeTableStoragePropertyDefinition1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("TableProperty1");
+      _fakeTableStoragePropertyDefinition2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("TableProperty2");
+      _fakeDerivedStoragePropertyDefinition1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("DerivedProperty1");
+      _fakeDerivedStoragePropertyDefinition2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("DerivedProperty2");
+      _fakeDerivedDerivedStoragePropertyDefinition = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("DerivedDerivedProperty");
 
-      _testModel.BaseBasePropertyDefinition.SetStorageProperty (_fakeBaseBaseStoragePropertyDefinition);
-      _testModel.BasePropertyDefinition.SetStorageProperty (_fakeBaseStoragePropertyDefinition);
-      _testModel.TablePropertyDefinition1.SetStorageProperty (_fakeTableStoragePropertyDefinition1);
-      _testModel.TablePropertyDefinition2.SetStorageProperty (_fakeTableStoragePropertyDefinition2);
-      _testModel.DerivedPropertyDefinition1.SetStorageProperty (_fakeDerivedStoragePropertyDefinition1);
-      _testModel.DerivedPropertyDefinition2.SetStorageProperty (_fakeDerivedStoragePropertyDefinition2);
-      _testModel.DerivedDerivedPropertyDefinition.SetStorageProperty (_fakeDerivedDerivedStoragePropertyDefinition);
+      _testModel.BaseBasePropertyDefinition.SetStorageProperty(_fakeBaseBaseStoragePropertyDefinition);
+      _testModel.BasePropertyDefinition.SetStorageProperty(_fakeBaseStoragePropertyDefinition);
+      _testModel.TablePropertyDefinition1.SetStorageProperty(_fakeTableStoragePropertyDefinition1);
+      _testModel.TablePropertyDefinition2.SetStorageProperty(_fakeTableStoragePropertyDefinition2);
+      _testModel.DerivedPropertyDefinition1.SetStorageProperty(_fakeDerivedStoragePropertyDefinition1);
+      _testModel.DerivedPropertyDefinition2.SetStorageProperty(_fakeDerivedStoragePropertyDefinition2);
+      _testModel.DerivedDerivedPropertyDefinition.SetStorageProperty(_fakeDerivedDerivedStoragePropertyDefinition);
     }
 
     [Test]
     public void ApplyPersistenceModelToHierarchy_BaseBaseClassDefinition ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy (_testModel.BaseBaseClassDefinition);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.BaseBaseClassDefinition);
 
-      AssertUnionViewDefinition (
+      AssertUnionViewDefinition(
           _testModel.BaseBaseClassDefinition,
           "BaseBaseClassView",
           new[] { _testModel.BaseClassDefinition.StorageEntityDefinition },
           new[]
           {
-              _infrastructureIDStoragePropertyDefinition.ColumnDefinition, 
+              _infrastructureIDStoragePropertyDefinition.ColumnDefinition,
               _infrastructureClassIDStoragePropertyDefinition.ColumnDefinition,
               _infrastructureTimestampStoragePropertyDefinition.ColumnDefinition,
               _fakeBaseBaseStoragePropertyDefinition.ColumnDefinition,
               _fakeBaseStoragePropertyDefinition.ColumnDefinition,
-              _fakeTableStoragePropertyDefinition1.ColumnDefinition, 
+              _fakeTableStoragePropertyDefinition1.ColumnDefinition,
               _fakeTableStoragePropertyDefinition2.ColumnDefinition,
               _fakeDerivedStoragePropertyDefinition1.ColumnDefinition,
               _fakeDerivedStoragePropertyDefinition2.ColumnDefinition,
@@ -114,15 +114,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_BaseClassDefinition ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy (_testModel.BaseClassDefinition);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.BaseClassDefinition);
 
-      AssertUnionViewDefinition (
+      AssertUnionViewDefinition(
           _testModel.BaseClassDefinition,
           "BaseClassView",
           new[] { _testModel.TableClassDefinition1.StorageEntityDefinition, _testModel.TableClassDefinition2.StorageEntityDefinition },
           new[]
           {
-              _infrastructureIDStoragePropertyDefinition.ColumnDefinition, 
+              _infrastructureIDStoragePropertyDefinition.ColumnDefinition,
               _infrastructureClassIDStoragePropertyDefinition.ColumnDefinition,
               _infrastructureTimestampStoragePropertyDefinition.ColumnDefinition,
               _fakeBaseBaseStoragePropertyDefinition.ColumnDefinition,
@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
               _fakeTableStoragePropertyDefinition1.ColumnDefinition,
               _fakeTableStoragePropertyDefinition2.ColumnDefinition,
               _fakeDerivedStoragePropertyDefinition1.ColumnDefinition,
-              _fakeDerivedStoragePropertyDefinition2.ColumnDefinition, 
+              _fakeDerivedStoragePropertyDefinition2.ColumnDefinition,
               _fakeDerivedDerivedStoragePropertyDefinition.ColumnDefinition
           });
     }
@@ -138,9 +138,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_TableClassDefinition1 ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy (_testModel.TableClassDefinition1);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.TableClassDefinition1);
 
-      AssertTableDefinition (
+      AssertTableDefinition(
           _testModel.TableClassDefinition1,
           "Table1Class",
           "Table1ClassView",
@@ -153,48 +153,48 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
               _fakeBaseStoragePropertyDefinition.ColumnDefinition,
               _fakeTableStoragePropertyDefinition1.ColumnDefinition
           },
-          new PrimaryKeyConstraintDefinition ("PK_Table1Class", true, _infrastructureObjectIDStoragePropertyDefinition.GetColumnsForComparison())
+          new PrimaryKeyConstraintDefinition("PK_Table1Class", true, _infrastructureObjectIDStoragePropertyDefinition.GetColumnsForComparison())
           );
     }
 
     [Test]
     public void ApplyPersistenceModelToHierarchy_TableClassDefinition2 ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy (_testModel.TableClassDefinition2);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.TableClassDefinition2);
 
-      AssertTableDefinition (
+      AssertTableDefinition(
           _testModel.TableClassDefinition2,
           "Table2Class",
           "Table2ClassView",
           new[]
           {
-              _infrastructureIDStoragePropertyDefinition.ColumnDefinition, 
+              _infrastructureIDStoragePropertyDefinition.ColumnDefinition,
               _infrastructureClassIDStoragePropertyDefinition.ColumnDefinition,
               _infrastructureTimestampStoragePropertyDefinition.ColumnDefinition,
               _fakeBaseBaseStoragePropertyDefinition.ColumnDefinition,
               _fakeBaseStoragePropertyDefinition.ColumnDefinition,
               _fakeTableStoragePropertyDefinition2.ColumnDefinition,
-              _fakeDerivedStoragePropertyDefinition1.ColumnDefinition, 
+              _fakeDerivedStoragePropertyDefinition1.ColumnDefinition,
               _fakeDerivedStoragePropertyDefinition2.ColumnDefinition,
               _fakeDerivedDerivedStoragePropertyDefinition.ColumnDefinition
           },
-          new PrimaryKeyConstraintDefinition ("PK_Table2Class", true, _infrastructureObjectIDStoragePropertyDefinition.GetColumnsForComparison())
+          new PrimaryKeyConstraintDefinition("PK_Table2Class", true, _infrastructureObjectIDStoragePropertyDefinition.GetColumnsForComparison())
           );
     }
 
     [Test]
     public void ApplyPersistenceModelToHierarchy_DerivedClassDefinition1 ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy (_testModel.DerivedClassDefinition1);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedClassDefinition1);
 
-      AssertFilterViewDefinition (
+      AssertFilterViewDefinition(
           _testModel.DerivedClassDefinition1,
           "Derived1ClassView",
           _testModel.TableClassDefinition2.StorageEntityDefinition,
           new[] { "Derived1Class" },
           new[]
           {
-              _infrastructureIDStoragePropertyDefinition.ColumnDefinition, 
+              _infrastructureIDStoragePropertyDefinition.ColumnDefinition,
               _infrastructureClassIDStoragePropertyDefinition.ColumnDefinition,
               _infrastructureTimestampStoragePropertyDefinition.ColumnDefinition,
               _fakeBaseBaseStoragePropertyDefinition.ColumnDefinition,
@@ -207,9 +207,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_DerivedClassDefinition2 ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy (_testModel.DerivedClassDefinition2);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedClassDefinition2);
 
-      AssertFilterViewDefinition (
+      AssertFilterViewDefinition(
           _testModel.DerivedClassDefinition2,
           "Derived2ClassView",
           _testModel.TableClassDefinition2.StorageEntityDefinition,
@@ -230,9 +230,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_DerivedDerivedClassDefinition ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy (_testModel.DerivedDerivedClassDefinition);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedDerivedClassDefinition);
 
-      AssertFilterViewDefinition (
+      AssertFilterViewDefinition(
           _testModel.DerivedDerivedClassDefinition,
           "DerivedDerivedClassView",
           _testModel.DerivedClassDefinition2.StorageEntityDefinition,
@@ -257,17 +257,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
         ColumnDefinition[] columnDefinitions,
         PrimaryKeyConstraintDefinition primaryKeyConstraintDefinition)
     {
-      Assert.That (classDefinition.StorageEntityDefinition, Is.TypeOf (typeof (TableDefinition)));
-      Assert.That (classDefinition.StorageEntityDefinition.StorageProviderDefinition, Is.SameAs (_storageProviderDefinition));
-      Assert.That (((TableDefinition) classDefinition.StorageEntityDefinition).TableName.EntityName, Is.EqualTo (tableName));
-      Assert.That (((TableDefinition) classDefinition.StorageEntityDefinition).TableName.SchemaName, Is.Null);
-      Assert.That (((TableDefinition) classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo (viewName));
-      Assert.That (((TableDefinition) classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
-      Assert.That (((TableDefinition) classDefinition.StorageEntityDefinition).GetAllColumns(), Is.EqualTo (columnDefinitions));
-      Assert.That (((TableDefinition) classDefinition.StorageEntityDefinition).Constraints[0], Is.TypeOf (typeof (PrimaryKeyConstraintDefinition)));
-      var primaryKey = (PrimaryKeyConstraintDefinition) ((TableDefinition) classDefinition.StorageEntityDefinition).Constraints[0];
-      Assert.That (primaryKey.ConstraintName, Is.EqualTo (primaryKeyConstraintDefinition.ConstraintName));
-      Assert.That (primaryKey.Columns, Is.EqualTo (primaryKeyConstraintDefinition.Columns));
+      Assert.That(classDefinition.StorageEntityDefinition, Is.TypeOf(typeof(TableDefinition)));
+      Assert.That(classDefinition.StorageEntityDefinition.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
+      Assert.That(((TableDefinition)classDefinition.StorageEntityDefinition).TableName.EntityName, Is.EqualTo(tableName));
+      Assert.That(((TableDefinition)classDefinition.StorageEntityDefinition).TableName.SchemaName, Is.Null);
+      Assert.That(((TableDefinition)classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo(viewName));
+      Assert.That(((TableDefinition)classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
+      Assert.That(((TableDefinition)classDefinition.StorageEntityDefinition).GetAllColumns(), Is.EqualTo(columnDefinitions));
+      Assert.That(((TableDefinition)classDefinition.StorageEntityDefinition).Constraints[0], Is.TypeOf(typeof(PrimaryKeyConstraintDefinition)));
+      var primaryKey = (PrimaryKeyConstraintDefinition)((TableDefinition)classDefinition.StorageEntityDefinition).Constraints[0];
+      Assert.That(primaryKey.ConstraintName, Is.EqualTo(primaryKeyConstraintDefinition.ConstraintName));
+      Assert.That(primaryKey.Columns, Is.EqualTo(primaryKeyConstraintDefinition.Columns));
     }
 
     private void AssertFilterViewDefinition (
@@ -277,13 +277,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
         string[] classIDs,
         ColumnDefinition[] columnDefinitions)
     {
-      Assert.That (classDefinition.StorageEntityDefinition, Is.TypeOf (typeof (FilterViewDefinition)));
-      Assert.That (classDefinition.StorageEntityDefinition.StorageProviderDefinition, Is.SameAs (_storageProviderDefinition));
-      Assert.That (((FilterViewDefinition) classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo (viewName));
-      Assert.That (((FilterViewDefinition) classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
-      Assert.That (((FilterViewDefinition) classDefinition.StorageEntityDefinition).BaseEntity, Is.SameAs (baseEntity));
-      Assert.That (((FilterViewDefinition) classDefinition.StorageEntityDefinition).ClassIDs, Is.EqualTo (classIDs));
-      Assert.That (((FilterViewDefinition) classDefinition.StorageEntityDefinition).GetAllColumns(), Is.EqualTo (columnDefinitions));
+      Assert.That(classDefinition.StorageEntityDefinition, Is.TypeOf(typeof(FilterViewDefinition)));
+      Assert.That(classDefinition.StorageEntityDefinition.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
+      Assert.That(((FilterViewDefinition)classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo(viewName));
+      Assert.That(((FilterViewDefinition)classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
+      Assert.That(((FilterViewDefinition)classDefinition.StorageEntityDefinition).BaseEntity, Is.SameAs(baseEntity));
+      Assert.That(((FilterViewDefinition)classDefinition.StorageEntityDefinition).ClassIDs, Is.EqualTo(classIDs));
+      Assert.That(((FilterViewDefinition)classDefinition.StorageEntityDefinition).GetAllColumns(), Is.EqualTo(columnDefinitions));
     }
 
     private void AssertUnionViewDefinition (
@@ -292,12 +292,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
         IStorageEntityDefinition[] storageEntityDefinitions,
         ColumnDefinition[] columnDefinitions)
     {
-      Assert.That (classDefinition.StorageEntityDefinition, Is.TypeOf (typeof (UnionViewDefinition)));
-      Assert.That (classDefinition.StorageEntityDefinition.StorageProviderDefinition, Is.SameAs (_storageProviderDefinition));
-      Assert.That (((UnionViewDefinition) classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo (viewName));
-      Assert.That (((UnionViewDefinition) classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
-      Assert.That (((UnionViewDefinition) classDefinition.StorageEntityDefinition).UnionedEntities, Is.EqualTo (storageEntityDefinitions));
-      Assert.That (((UnionViewDefinition) classDefinition.StorageEntityDefinition).GetAllColumns(), Is.EqualTo (columnDefinitions));
+      Assert.That(classDefinition.StorageEntityDefinition, Is.TypeOf(typeof(UnionViewDefinition)));
+      Assert.That(classDefinition.StorageEntityDefinition.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
+      Assert.That(((UnionViewDefinition)classDefinition.StorageEntityDefinition).ViewName.EntityName, Is.EqualTo(viewName));
+      Assert.That(((UnionViewDefinition)classDefinition.StorageEntityDefinition).ViewName.SchemaName, Is.Null);
+      Assert.That(((UnionViewDefinition)classDefinition.StorageEntityDefinition).UnionedEntities, Is.EqualTo(storageEntityDefinitions));
+      Assert.That(((UnionViewDefinition)classDefinition.StorageEntityDefinition).GetAllColumns(), Is.EqualTo(columnDefinitions));
     }
   }
 }

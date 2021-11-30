@@ -34,21 +34,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
     protected void ValidateMapping (string testDomainNamespaceSuffix)
     {
       var testDomainNamespace = "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration." + testDomainNamespaceSuffix;
-      var typeDiscoveryService = GetTypeDiscoveryService (testDomainNamespace, GetType ().Assembly);
-      Assert.That (typeDiscoveryService.GetTypes (typeof (DomainObject), true), Is.Not.Empty, "Namespace '{0}' has no DomainObjects.", testDomainNamespaceSuffix);
-      new MappingConfiguration (
-          MappingReflectorObjectMother.CreateMappingReflector (typeDiscoveryService),
-          new PersistenceModelLoader (new StorageGroupBasedStorageProviderDefinitionFinder (StandardConfiguration.Instance.GetPersistenceConfiguration())));
+      var typeDiscoveryService = GetTypeDiscoveryService(testDomainNamespace, GetType().Assembly);
+      Assert.That(typeDiscoveryService.GetTypes(typeof(DomainObject), true), Is.Not.Empty, "Namespace '{0}' has no DomainObjects.", testDomainNamespaceSuffix);
+      new MappingConfiguration(
+          MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
+          new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(StandardConfiguration.Instance.GetPersistenceConfiguration())));
     }
 
     private ITypeDiscoveryService GetTypeDiscoveryService (string testDomainNamespace, params Assembly[] rootAssemblies)
     {
-      var rootAssemblyFinder = new FixedRootAssemblyFinder (rootAssemblies.Select (asm => new RootAssembly (asm, true)).ToArray());
-      var assemblyLoader = new FilteringAssemblyLoader (ApplicationAssemblyLoaderFilter.Instance);
-      var assemblyFinder = new CachingAssemblyFinderDecorator (new AssemblyFinder (rootAssemblyFinder, assemblyLoader));
-      ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService (assemblyFinder);
+      var rootAssemblyFinder = new FixedRootAssemblyFinder(rootAssemblies.Select(asm => new RootAssembly(asm, true)).ToArray());
+      var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
+      var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
+      ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
 
-      return FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist (typeDiscoveryService, testDomainNamespace);
+      return FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist(typeDiscoveryService, testDomainNamespace);
     }
   }
 }

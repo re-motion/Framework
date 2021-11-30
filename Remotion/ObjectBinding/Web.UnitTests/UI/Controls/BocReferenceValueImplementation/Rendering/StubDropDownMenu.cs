@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     protected override void Render (HtmlTextWriter writer)
     {
-      writer.WriteLine ("DropDownMenu");
+      writer.WriteLine("DropDownMenu");
     }
   }
 }

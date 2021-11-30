@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
 {
   [BindableObject]
   [Serializable]
-  [MultiLingualResources ("Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.Resources.TargetClassForGlobalizationViaResources")]
+  [MultiLingualResources("Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Globalization.Resources.TargetClassForGlobalizationViaResources")]
   public class TargetClassForGlobalizationViaResources : ITargetClassForGlobalizationViaResources
   {
     public TargetClassForGlobalizationViaResources ()
@@ -29,9 +29,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Glob
     }
 
     public string Property1 { get; set; }
-   
+
     public string Property2 { get; set; }
-    
+
     public string PropertyForMixinOverrideTest
     {
       get { return Property1; }

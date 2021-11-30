@@ -38,8 +38,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
-      
+      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
+
       return serviceLocator.GetInstance<IBocCommandColumnRenderer>();
     }
 
@@ -48,24 +48,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override string ToString ()
     {
       string? displayName = ItemID;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         displayName = ColumnTitle;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         displayName = Text;
-      if (string.IsNullOrEmpty (displayName))
+      if (string.IsNullOrEmpty(displayName))
         return DisplayedTypeName;
       else
-        return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+        return string.Format("{0}: {1}", displayName, DisplayedTypeName);
     }
 
     /// <summary> Gets or sets the text representing the command in the rendered page. </summary>
     /// <value> A <see cref="string"/> representing the command. </value>
     /// <remarks> The value will not be HTML encoded. </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The text representing the command in the rendered page. The value will not be HTML encoded.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The text representing the command in the rendered page. The value will not be HTML encoded.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public string Text
     {
       get { return _text; }
@@ -76,24 +76,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets the image representing the  command in the rendered page. Must not be <see langword="null"/>. 
     /// </summary>
     /// <value> An <see cref="IconInfo"/> representing the command. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Category ("Appearance")]
-    [Description ("The image representing the command in the rendered page.")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Category("Appearance")]
+    [Description("The image representing the command in the rendered page.")]
+    [NotifyParentProperty(true)]
     public IconInfo Icon
     {
       get { return _icon; }
       set
       {
-        ArgumentUtility.CheckNotNull ("Icon", value);
+        ArgumentUtility.CheckNotNull("Icon", value);
         _icon = value;
       }
     }
 
     private bool ShouldSerializeIcon ()
     {
-      return IconInfo.ShouldSerialize (_icon);
+      return IconInfo.ShouldSerialize(_icon);
     }
 
     private void ResetIcon ()
@@ -109,16 +109,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
-      base.LoadResources (resourceManager, globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-      if (!string.IsNullOrEmpty (key))
-        Text = resourceManager.GetString (key);
+      base.LoadResources(resourceManager, globalizationService);
 
-      Icon.LoadResources (resourceManager);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+      if (!string.IsNullOrEmpty(key))
+        Text = resourceManager.GetString(key);
+
+      Icon.LoadResources(resourceManager);
     }
   }
 }

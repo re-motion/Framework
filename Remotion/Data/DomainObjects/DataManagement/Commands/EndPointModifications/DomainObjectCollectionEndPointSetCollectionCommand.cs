@@ -43,28 +43,28 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IDomainObjectCollectionData modifiedCollectionData,
         IDomainObjectCollectionEndPointCollectionManager collectionEndPointCollectionManager,
         IClientTransactionEventSink transactionEventSink)
-      : base (
-          ArgumentUtility.CheckNotNull ("modifiedEndPoint", modifiedEndPoint),
+      : base(
+          ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
           null,
           null,
-          ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink))
+          ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
     {
-      ArgumentUtility.CheckNotNull ("newCollection", newCollection);
-      ArgumentUtility.CheckNotNull ("modifiedCollectionData", modifiedCollectionData);
-      ArgumentUtility.CheckNotNull ("collectionEndPointCollectionManager", collectionEndPointCollectionManager);
+      ArgumentUtility.CheckNotNull("newCollection", newCollection);
+      ArgumentUtility.CheckNotNull("modifiedCollectionData", modifiedCollectionData);
+      ArgumentUtility.CheckNotNull("collectionEndPointCollectionManager", collectionEndPointCollectionManager);
 
       if (modifiedEndPoint.IsNull)
-        throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
+        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _newCollection = newCollection;
       _modifiedCollectionData = modifiedCollectionData;
       _collectionEndPointCollectionManager = collectionEndPointCollectionManager;
 
       var oldOppositeObjects = ModifiedCollectionData;
-      _removedObjects = oldOppositeObjects.Where (oldObject => !NewCollection.Contains (oldObject.ID)).ToArray ();
+      _removedObjects = oldOppositeObjects.Where(oldObject => !NewCollection.Contains(oldObject.ID)).ToArray();
 
-      var newOppositeObjects = NewCollection.Cast<DomainObject> ();
-      _addedObjects = newOppositeObjects.Where (newObject => !ModifiedCollectionData.ContainsObjectID (newObject.ID)).ToArray ();
+      var newOppositeObjects = NewCollection.Cast<DomainObject>();
+      _addedObjects = newOppositeObjects.Where(newObject => !ModifiedCollectionData.ContainsObjectID(newObject.ID)).ToArray();
     }
 
     public DomainObjectCollection NewCollection
@@ -95,29 +95,29 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public override void Begin ()
     {
       for (int i = 0; i < RemovedObjects.Length; i++)
-        RaiseClientTransactionBeginNotification (RemovedObjects[i], null);
+        RaiseClientTransactionBeginNotification(RemovedObjects[i], null);
       for (int i = 0; i < AddedObjects.Length; i++)
-        RaiseClientTransactionBeginNotification (null, AddedObjects[i]);
+        RaiseClientTransactionBeginNotification(null, AddedObjects[i]);
     }
 
     public override void Perform ()
     {
       // After this operation, NewCollection will be associated with the end-point and ModifiedEndPoint.Collection will return NewCollection.
       // The previous ModifiedEndPoint.Collection will be a standalone copy of the end-point data.
-      var oldDataStrategyOfNewCollection = CollectionEndPointCollectionManager.AssociateCollectionWithEndPoint (NewCollection);
+      var oldDataStrategyOfNewCollection = CollectionEndPointCollectionManager.AssociateCollectionWithEndPoint(NewCollection);
 
       // Now, replace end-point's data with the data that was held by NewCollection before it was associated.
-      ModifiedCollectionData.ReplaceContents (oldDataStrategyOfNewCollection);
-      
+      ModifiedCollectionData.ReplaceContents(oldDataStrategyOfNewCollection);
+
       ModifiedEndPoint.Touch();
     }
 
     public override void End ()
     {
       for (int i = AddedObjects.Length - 1; i >= 0; i--)
-        RaiseClientTransactionEndNotification (null, AddedObjects[i]);
+        RaiseClientTransactionEndNotification(null, AddedObjects[i]);
       for (int i = RemovedObjects.Length - 1; i >= 0; i--)
-        RaiseClientTransactionEndNotification (RemovedObjects[i], null);
+        RaiseClientTransactionEndNotification(RemovedObjects[i], null);
     }
 
     /// <summary>
@@ -134,22 +134,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     /// </remarks>
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      var domainObjectOfCollectionEndPoint = ModifiedEndPoint.GetDomainObject ();
+      var domainObjectOfCollectionEndPoint = ModifiedEndPoint.GetDomainObject();
 
       var commandsForRemoved = from oldObject in RemovedObjects
-                               let endPoint = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint> (oldObject)
-                               select endPoint.CreateRemoveCommand (domainObjectOfCollectionEndPoint); // oldOrder.Customer = null
-      
+                               let endPoint = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint>(oldObject)
+                               select endPoint.CreateRemoveCommand(domainObjectOfCollectionEndPoint); // oldOrder.Customer = null
+
       var commandsForAdded = from newObject in AddedObjects
-                             let endPointOfNewObject = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint> (newObject) // newOrder.Customer
-                             let oldRelatedOfNewObject = endPointOfNewObject.GetOppositeObject () // newOrder.Customer
-                             let endPointOfOldRelatedOfNewObject = endPointOfNewObject.GetEndPointWithOppositeDefinition<IDomainObjectCollectionEndPoint> (oldRelatedOfNewObject) // newOrder.Customer.Orders
-                             let removeCommand = endPointOfOldRelatedOfNewObject.CreateRemoveCommand (newObject) // newOrder.Customer.Orders.Remove (newOrder)
-                             let setCommand = endPointOfNewObject.CreateSetCommand (domainObjectOfCollectionEndPoint) // newOrder.Customer = customer
+                             let endPointOfNewObject = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint>(newObject) // newOrder.Customer
+                             let oldRelatedOfNewObject = endPointOfNewObject.GetOppositeObject() // newOrder.Customer
+                             let endPointOfOldRelatedOfNewObject = endPointOfNewObject.GetEndPointWithOppositeDefinition<IDomainObjectCollectionEndPoint>(oldRelatedOfNewObject) // newOrder.Customer.Orders
+                             let removeCommand = endPointOfOldRelatedOfNewObject.CreateRemoveCommand(newObject) // newOrder.Customer.Orders.Remove (newOrder)
+                             let setCommand = endPointOfNewObject.CreateSetCommand(domainObjectOfCollectionEndPoint) // newOrder.Customer = customer
                              from command in new[] { removeCommand, setCommand }
                              select command;
 
-      return new ExpandedCommand (commandsForRemoved).CombineWith (commandsForAdded).CombineWith (this);
+      return new ExpandedCommand(commandsForRemoved).CombineWith(commandsForAdded).CombineWith(this);
     }
   }
 }

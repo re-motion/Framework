@@ -27,30 +27,30 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   {
     public static IVirtualEndPoint CreateVirtualEndPoint (this IRelationEndPointFactory endPointFactory, RelationEndPointID endPointID, bool markDataComplete)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
       if (!endPointID.Definition.IsVirtual)
-        throw new ArgumentException ("The RelationEndPointID must identify a virtual end-point.", "endPointID");
+        throw new ArgumentException("The RelationEndPointID must identify a virtual end-point.", "endPointID");
 
       if (endPointID.Definition.Cardinality == CardinalityType.One)
       {
-        var virtualObjectEndPoint = endPointFactory.CreateVirtualObjectEndPoint (endPointID);
+        var virtualObjectEndPoint = endPointFactory.CreateVirtualObjectEndPoint(endPointID);
         if (markDataComplete)
-          virtualObjectEndPoint.MarkDataComplete (null);
+          virtualObjectEndPoint.MarkDataComplete(null);
         return virtualObjectEndPoint;
       }
       else if (endPointID.Definition is DomainObjectCollectionRelationEndPointDefinition)
       {
-        var collectionEndPoint = endPointFactory.CreateDomainObjectCollectionEndPoint (endPointID);
+        var collectionEndPoint = endPointFactory.CreateDomainObjectCollectionEndPoint(endPointID);
         if (markDataComplete)
-          collectionEndPoint.MarkDataComplete (new DomainObject[0]);
+          collectionEndPoint.MarkDataComplete(new DomainObject[0]);
         return collectionEndPoint;
       }
       else
       {
-        var collectionEndPoint = endPointFactory.CreateVirtualCollectionEndPoint (endPointID);
+        var collectionEndPoint = endPointFactory.CreateVirtualCollectionEndPoint(endPointID);
         if (markDataComplete)
-          collectionEndPoint.MarkDataComplete (new DomainObject[0]);
+          collectionEndPoint.MarkDataComplete(new DomainObject[0]);
         return collectionEndPoint;
       }
     }

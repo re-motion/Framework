@@ -26,18 +26,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class FirefoxBinariesProviderTest
   {
     [Test]
-    [Retry (3)]
+    [Retry(3)]
     public void GetInstalledExecutable ()
     {
       var provider = new FirefoxBinariesProvider();
 
       var result = provider.GetInstalledExecutable();
 
-      Assert.That (result.BrowserBinaryPath, Is.EqualTo (@"C:\Program Files\Mozilla Firefox\firefox.exe"));
-      Assert.That (
+      Assert.That(result.BrowserBinaryPath, Is.EqualTo(@"C:\Program Files\Mozilla Firefox\firefox.exe"));
+      Assert.That(
           result.DriverBinaryPath,
-          Does.Match (
-              Regex.Escape (Path.GetTempPath()) + @"Remotion.Web.Development.WebTesting.WebDriver\\geckodriver\\geckodriver_v\d+\.\d+\.\d+\\geckodriver.exe"));
+          Does.Match(
+              Regex.Escape(Path.GetTempPath()) + @"Remotion.Web.Development.WebTesting.WebDriver\\geckodriver\\geckodriver_v\d+\.\d+\.\d+\\geckodriver.exe"));
     }
   }
 }

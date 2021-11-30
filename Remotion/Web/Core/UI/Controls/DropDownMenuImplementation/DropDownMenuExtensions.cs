@@ -14,31 +14,31 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation
         string serviceMethodName,
         Dictionary<string, string?> stringValueParametersDictionary)
     {
-      var resolvedServicePath = dropDownMenu.ResolveClientUrl (servicePath);
+      var resolvedServicePath = dropDownMenu.ResolveClientUrl(servicePath);
 
       var visibleMenuItemIDs = dropDownMenu.MenuItems.Cast<WebMenuItem>()
-          .Where (m => m.IsVisible)
-          .Where (m => !string.IsNullOrEmpty (m.ItemID))
-          .Select (m => m.ItemID);
+          .Where(m => m.IsVisible)
+          .Where(m => !string.IsNullOrEmpty(m.ItemID))
+          .Select(m => m.ItemID);
       var stringArrayParametersDictionary = new Dictionary<string, IReadOnlyCollection<string>?>();
-      stringArrayParametersDictionary.Add ("itemIDs", visibleMenuItemIDs.ToArray());
+      stringArrayParametersDictionary.Add("itemIDs", visibleMenuItemIDs.ToArray());
 
 
       var script = new StringBuilder();
-      script.Append ("function (onSuccess, onError)").AppendLine();
-      script.Append ("{").AppendLine();
-      script.Append ("  const serviceUrl = '").Append (resolvedServicePath).Append ("';").AppendLine();
-      script.Append ("  const serviceMethod = '").Append (serviceMethodName).Append ("';").AppendLine();
+      script.Append("function (onSuccess, onError)").AppendLine();
+      script.Append("{").AppendLine();
+      script.Append("  const serviceUrl = '").Append(resolvedServicePath).Append("';").AppendLine();
+      script.Append("  const serviceMethod = '").Append(serviceMethodName).Append("';").AppendLine();
 
-      script.Append ("  const params = ");
-      script.WriteDictionaryAsJson (stringValueParametersDictionary, stringArrayParametersDictionary);
-      script.Append (";").AppendLine();
+      script.Append("  const params = ");
+      script.WriteDictionaryAsJson(stringValueParametersDictionary, stringArrayParametersDictionary);
+      script.Append(";").AppendLine();
 
-      script.Append ("  WebServiceUtility.Execute (serviceUrl, serviceMethod, params, onSuccess, onError)").AppendLine();
-      script.Append ("}");
+      script.Append("  WebServiceUtility.Execute (serviceUrl, serviceMethod, params, onSuccess, onError)").AppendLine();
+      script.Append("}");
 
       var scriptComplete = script.ToString();
-      dropDownMenu.SetLoadMenuItemStatus (scriptComplete);
+      dropDownMenu.SetLoadMenuItemStatus(scriptComplete);
     }
   }
 }

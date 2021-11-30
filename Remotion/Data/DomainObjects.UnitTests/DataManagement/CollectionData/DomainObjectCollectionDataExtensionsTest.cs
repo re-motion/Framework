@@ -35,56 +35,56 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order1 = DomainObjectIDs.Order1.GetObject<Order> ();
-      _order2 = DomainObjectIDs.Order2.GetObject<Order> ();
-      _order3 = DomainObjectIDs.Order3.GetObject<Order> ();
-      _order4 = DomainObjectIDs.Order4.GetObject<Order> ();
+      _order1 = DomainObjectIDs.Order1.GetObject<Order>();
+      _order2 = DomainObjectIDs.Order2.GetObject<Order>();
+      _order3 = DomainObjectIDs.Order3.GetObject<Order>();
+      _order4 = DomainObjectIDs.Order4.GetObject<Order>();
 
-      _data = new DomainObjectCollectionData (new[] { _order1, _order2 });
+      _data = new DomainObjectCollectionData(new[] { _order1, _order2 });
     }
 
     [Test]
     public void Add ()
     {
-      _data.Add (_order3);
+      _data.Add(_order3);
 
-      Assert.That (_data.ToArray (), Is.EqualTo (new[] { _order1, _order2, _order3 }));
+      Assert.That(_data.ToArray(), Is.EqualTo(new[] { _order1, _order2, _order3 }));
     }
 
     [Test]
     public void AddRange ()
     {
-      _data.AddRange (new[] { _order3, _order4 });
+      _data.AddRange(new[] { _order3, _order4 });
 
-      Assert.That (_data.ToArray (), Is.EqualTo (new[] { _order1, _order2, _order3, _order4 }));
+      Assert.That(_data.ToArray(), Is.EqualTo(new[] { _order1, _order2, _order3, _order4 }));
     }
 
     [Test]
     public void AddRangeAndCheckItems ()
     {
-      _data.AddRangeAndCheckItems (new[] { _order3, _order4 }, typeof (Order));
+      _data.AddRangeAndCheckItems(new[] { _order3, _order4 }, typeof(Order));
 
-      Assert.That (_data.ToArray (), Is.EqualTo (new[] { _order1, _order2, _order3, _order4 }));
+      Assert.That(_data.ToArray(), Is.EqualTo(new[] { _order1, _order2, _order3, _order4 }));
     }
 
     [Test]
     public void AddRangeAndCheckItems_NullItem ()
     {
-      Assert.That (
-          () => _data.AddRangeAndCheckItems (new[] { _order3, null }, typeof (Order)),
+      Assert.That(
+          () => _data.AddRangeAndCheckItems(new[] { _order3, null }, typeof(Order)),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.ArgumentExceptionMessageEqualTo ("Item 1 of parameter 'domainObjects' is null.", "domainObjects"));
+              .With.ArgumentExceptionMessageEqualTo("Item 1 of parameter 'domainObjects' is null.", "domainObjects"));
     }
 
     [Test]
     public void AddRangeAndCheckItems_DuplicateItem ()
     {
-      Assert.That (
-          () => _data.AddRangeAndCheckItems (new[] { _order3, _order3 }, typeof (Order)),
+      Assert.That(
+          () => _data.AddRangeAndCheckItems(new[] { _order3, _order3 }, typeof(Order)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Item 1 of parameter 'domainObjects' is a duplicate ('Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid').",
                   "domainObjects"));
     }
@@ -92,10 +92,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void AddRangeAndCheckItems_InvalidType ()
     {
-      Assert.That (
-          () => _data.AddRangeAndCheckItems (new[] { _order3 }, typeof (Customer)),
+      Assert.That(
+          () => _data.AddRangeAndCheckItems(new[] { _order3 }, typeof(Customer)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Item 0 of parameter 'domainObjects' has the type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' " +
                   "instead of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer'.", "domainObjects"));
     }
@@ -105,28 +105,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       _data.ReplaceContents(new[] { _order3, _order4, _order1 });
 
-      Assert.That (_data.ToArray (), Is.EqualTo (new[] { _order3, _order4, _order1 }));
+      Assert.That(_data.ToArray(), Is.EqualTo(new[] { _order3, _order4, _order1 }));
     }
 
     [Test]
     public void SetEquals ()
     {
-      Assert.That (_data.SetEquals (new[] { _order1, _order2 }), Is.True);
-      Assert.That (_data.SetEquals (new[] { _order2, _order1 }), Is.True);
-      Assert.That (_data.SetEquals (new[] { _order1, _order2, _order3 }), Is.False);
+      Assert.That(_data.SetEquals(new[] { _order1, _order2 }), Is.True);
+      Assert.That(_data.SetEquals(new[] { _order2, _order1 }), Is.True);
+      Assert.That(_data.SetEquals(new[] { _order1, _order2, _order3 }), Is.False);
     }
 
     [Test]
     public void SetEquals_UsesReferenceComparison ()
     {
-      var order1FromOtherTransaction = DomainObjectMother.GetObjectInOtherTransaction<Order> (_order1.ID);
-      Assert.That (_data.SetEquals (new[] { order1FromOtherTransaction, _order2 }), Is.False);
+      var order1FromOtherTransaction = DomainObjectMother.GetObjectInOtherTransaction<Order>(_order1.ID);
+      Assert.That(_data.SetEquals(new[] { order1FromOtherTransaction, _order2 }), Is.False);
     }
 
     [Test]
     public void SetEquals_HandlesDuplicates ()
     {
-      Assert.That (_data.SetEquals (new[] { _order1, _order2, _order2, _order1 }), Is.True);
+      Assert.That(_data.SetEquals(new[] { _order1, _order2, _order2, _order1 }), Is.True);
     }
   }
 }

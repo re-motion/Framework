@@ -64,14 +64,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
     public string ReadOnlyControlHtmlId { get; private set; }
 
     public ValidationErrorTestPageParameters ()
-        : base (TestConstants.ValidationErrorTestsID, c_parameterCount)
+        : base(TestConstants.ValidationErrorTestsID, c_parameterCount)
     {
     }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
       ValidateButtonId = data.Arguments[0];
       CustomValidatedControlHtmlId = data.Arguments[1];

@@ -33,17 +33,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public void DispatchValidationFailures (IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull ("validationResult", validationResult);
+      ArgumentUtility.CheckNotNull("validationResult", validationResult);
 
       var bocListControl = GetControlToValidate();
 
-      var validatorsMatchingToControls = EnumerableUtility.SelectRecursiveDepthFirst (
+      var validatorsMatchingToControls = EnumerableUtility.SelectRecursiveDepthFirst(
               bocListControl as Control,
-              child => child.Controls.Cast<Control>().Where (item => !(item is INamingContainer)))
+              child => child.Controls.Cast<Control>().Where(item => !(item is INamingContainer)))
           .OfType<IBusinessObjectBoundEditableWebControlValidationResultDispatcher>();
 
       foreach (var validator in validatorsMatchingToControls)
-        validator.DispatchValidationFailures (validationResult);
+        validator.DispatchValidationFailures(validationResult);
     }
 
 
@@ -56,21 +56,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
     protected override bool ControlPropertiesValid ()
     {
       string controlToValidate = ControlToValidate;
-      if (string.IsNullOrEmpty (controlToValidate))
+      if (string.IsNullOrEmpty(controlToValidate))
         return base.ControlPropertiesValid();
       else
-        return NamingContainer.FindControl (controlToValidate) != null;
+        return NamingContainer.FindControl(controlToValidate) != null;
     }
 
     [NotNull]
     private BocList GetControlToValidate ()
     {
-      var control = NamingContainer.FindControl (ControlToValidate);
+      var control = NamingContainer.FindControl(ControlToValidate);
       var bocListControl = control as BocList;
       if (bocListControl == null)
       {
-        throw new InvalidOperationException (
-            $"'{nameof (BocListValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof (BocList)}'.");
+        throw new InvalidOperationException(
+            $"'{nameof(BocListValidationResultDispatchingValidator)}' may only be applied to controls of type '{nameof(BocList)}'.");
       }
 
       return bocListControl;

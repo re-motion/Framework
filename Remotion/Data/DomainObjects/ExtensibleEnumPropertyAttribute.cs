@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects
   /// Apply the <see cref="ExtensibleEnumPropertyAttribute"/> to extensible enum properties to set additional
   /// options.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public class ExtensibleEnumPropertyAttribute : NullablePropertyAttribute
   {
     public ExtensibleEnumPropertyAttribute ()

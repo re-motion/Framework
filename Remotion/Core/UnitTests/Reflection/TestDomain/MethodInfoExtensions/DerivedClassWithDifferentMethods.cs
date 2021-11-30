@@ -20,7 +20,7 @@ namespace Remotion.UnitTests.Reflection.TestDomain.MethodInfoExtensions
 {
   public abstract class DerivedClassWithDifferentMethods : ClassWithDifferentMethods
   {
-    public override int GetInt32()
+    public override int GetInt32 ()
     {
       return 0;
     }

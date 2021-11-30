@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
     protected void Application_Start (Object sender, EventArgs e)
     {
       var mappingConfiguration = MappingConfiguration.Current;
-      Trace.WriteLine (mappingConfiguration.GetTypeDefinitions().Length);
+      Trace.WriteLine(mappingConfiguration.GetTypeDefinitions().Length);
 
 #if DEBUG
       const string configuration = "Debug";
@@ -54,24 +54,24 @@ namespace Remotion.Data.DomainObjects.Web.Test
       const string configuration = "Release";
 #endif
 
-      _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
+      _resourceVirtualPathProvider = new ResourceVirtualPathProvider(
           new[]
           {
-              new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
-              new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
-              new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
-              new ResourcePathMapping ("Remotion.Web.Legacy", @"..\..\Web\Legacy\Res"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web.Legacy", @"..\..\ObjectBinding\Web.Legacy\Res")
+              new ResourcePathMapping("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
+              new ResourcePathMapping("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
+              new ResourcePathMapping("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
+              new ResourcePathMapping("Remotion.Web.Legacy", @"..\..\Web\Legacy\Res"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Web.Legacy", @"..\..\ObjectBinding\Web.Legacy\Res")
           },
           FileExtensionHandlerMapping.Default);
       _resourceVirtualPathProvider.Register();
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<ISecurityProvider> (() => new StubSecurityProvider());
-      ServiceLocator.SetLocatorProvider (()=> serviceLocator);
+      serviceLocator.RegisterSingle<ISecurityProvider>(() => new StubSecurityProvider());
+      ServiceLocator.SetLocatorProvider(()=> serviceLocator);
     }
 
     protected void Session_Start (Object sender, EventArgs e)

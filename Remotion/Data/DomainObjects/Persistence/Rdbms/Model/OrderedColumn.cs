@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public OrderedColumn (ColumnDefinition columnDefinition, SortOrder sortOrder)
     {
-      ArgumentUtility.CheckNotNull ("columnDefinition", columnDefinition);
+      ArgumentUtility.CheckNotNull("columnDefinition", columnDefinition);
 
       _columnDefinition = columnDefinition;
       _sortOrder = sortOrder;

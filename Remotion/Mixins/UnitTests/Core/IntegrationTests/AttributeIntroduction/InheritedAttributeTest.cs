@@ -25,18 +25,18 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AttributeIntroduction
     [Test]
     public void AttributeNotFoundFromDerivedMixin ()
     {
-      var obj = ObjectFactory.Create<TargetTypeWithDerivedMixin> ();
-      Assert.That (obj.GetType ().IsDefined (typeof (InheritableAttribute), true), Is.True);
+      var obj = ObjectFactory.Create<TargetTypeWithDerivedMixin>();
+      Assert.That(obj.GetType().IsDefined(typeof(InheritableAttribute), true), Is.True);
     }
 
     [Test]
     public void AttributeFoundFromBaseMixin ()
     {
-      var obj = ObjectFactory.Create<TargetTypeWithBaseMixin> ();
-      Assert.That (obj.GetType ().IsDefined (typeof (InheritableAttribute), true), Is.True);
+      var obj = ObjectFactory.Create<TargetTypeWithBaseMixin>();
+      Assert.That(obj.GetType().IsDefined(typeof(InheritableAttribute), true), Is.True);
     }
 
-    [AttributeUsage (AttributeTargets.All, Inherited = true)]
+    [AttributeUsage(AttributeTargets.All, Inherited = true)]
     public class InheritableAttribute : Attribute { }
 
     [Inheritable]
@@ -46,11 +46,11 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AttributeIntroduction
     public class DerivedMixinType : BaseMixinType
     { }
 
-    [Uses (typeof (BaseMixinType))]
+    [Uses(typeof(BaseMixinType))]
     public class TargetTypeWithBaseMixin
     { }
 
-    [Uses (typeof (DerivedMixinType))]
+    [Uses(typeof(DerivedMixinType))]
     public class TargetTypeWithDerivedMixin
     { }
   }

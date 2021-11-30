@@ -37,29 +37,29 @@ namespace Remotion.UnitTests.Development.Moq.UnitTesting.Threading
     [TearDown]
     public void TearDown ()
     {
-      Assert.That (Monitor.TryEnter (_lockObject), Is.True, "Lock should have been released.");
+      Assert.That(Monitor.TryEnter(_lockObject), Is.True, "Lock should have been released.");
     }
 
     [Test]
     public void CheckLockIsHeld ()
     {
       lock (_lockObject)
-        LockTestHelper.CheckLockIsHeld (_lockObject);
+        LockTestHelper.CheckLockIsHeld(_lockObject);
     }
 
     [Test]
     public void CheckLockIsHeld_Throws ()
     {
-      Assert.That (
-          () => LockTestHelper.CheckLockIsHeld (_lockObject),
+      Assert.That(
+          () => LockTestHelper.CheckLockIsHeld(_lockObject),
           Throws.InstanceOf<AssertionException>()
-              .With.Message.Contains ("Parallel thread should have been blocked."));
+              .With.Message.Contains("Parallel thread should have been blocked."));
     }
 
     [Test]
     public void CheckLockIsNotHeld ()
     {
-      LockTestHelper.CheckLockIsNotHeld (_lockObject);
+      LockTestHelper.CheckLockIsNotHeld(_lockObject);
     }
 
     [Test]
@@ -67,24 +67,24 @@ namespace Remotion.UnitTests.Development.Moq.UnitTesting.Threading
     {
       lock (_lockObject)
       {
-        Assert.That (
-            () => LockTestHelper.CheckLockIsNotHeld (_lockObject),
+        Assert.That(
+            () => LockTestHelper.CheckLockIsNotHeld(_lockObject),
             Throws.InstanceOf<AssertionException>()
-                .With.Message.Contains ("Parallel thread should NOT have been blocked."));
+                .With.Message.Contains("Parallel thread should NOT have been blocked."));
       }
     }
 
     [Test]
     public void CouldAcquireLockFromOtherThread_True ()
     {
-      Assert.That (LockTestHelper.CouldAcquireLockFromOtherThread (_lockObject), Is.True);
+      Assert.That(LockTestHelper.CouldAcquireLockFromOtherThread(_lockObject), Is.True);
     }
 
     [Test]
     public void CouldAcquireLockFromOtherThread_False ()
     {
       lock (_lockObject)
-        Assert.That (LockTestHelper.CouldAcquireLockFromOtherThread (_lockObject), Is.False);
+        Assert.That(LockTestHelper.CouldAcquireLockFromOtherThread(_lockObject), Is.False);
     }
   }
 }

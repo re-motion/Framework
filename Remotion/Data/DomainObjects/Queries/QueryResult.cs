@@ -52,8 +52,8 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <param name="queryResult">The elements making up the query result. The <see cref="IEnumerable{T}"/> is enumerated exactly once by this class.</param>
     public QueryResult (IQuery query, T[] queryResult)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
-      ArgumentUtility.CheckNotNull ("queryResult", queryResult);
+      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull("queryResult", queryResult);
 
       _query = query;
       _queryResult = queryResult;
@@ -87,17 +87,17 @@ namespace Remotion.Data.DomainObjects.Queries
     /// This method needs additional memory to hold up to <see cref="Count"/> elements to check for duplicates, and it iterates over the result 
     /// elements, visiting each at most once.
     /// </remarks>
-    [Obsolete ("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
+    [Obsolete("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
     public bool ContainsDuplicates ()
     {
-      var visitedElements = new HashSet<T> ();
+      var visitedElements = new HashSet<T>();
 
       foreach (var resultElement in _queryResult)
       {
-        if (visitedElements.Contains (resultElement))
+        if (visitedElements.Contains(resultElement))
           return true;
 
-        visitedElements.Add (resultElement);
+        visitedElements.Add(resultElement);
       }
 
       return false;
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </remarks>
     public bool ContainsNulls ()
     {
-      return _queryResult.Contains (null);
+      return _queryResult.Contains(null);
     }
 
     /// <summary>
@@ -141,12 +141,12 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </returns>
     public T[] ToArray ()
     {
-      return (T[]) _queryResult.Clone();
+      return (T[])_queryResult.Clone();
     }
 
     DomainObject[] IQueryResult.ToArray ()
     {
-      return ToArray ();
+      return ToArray();
     }
 
     /// <summary>
@@ -159,12 +159,12 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <exception cref="UnexpectedQueryResultException">The query contains <see langword="null"/> values or duplicates.</exception>
     public ObjectList<T> ToObjectList ()
     {
-      return ToObjectList (_queryResult);
+      return ToObjectList(_queryResult);
     }
 
     ObjectList<DomainObject> IQueryResult.ToObjectList ()
     {
-      return ToObjectList<DomainObject> (_queryResult);
+      return ToObjectList<DomainObject>(_queryResult);
     }
 
     /// <summary>
@@ -179,15 +179,15 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <exception cref="UnexpectedQueryResultException">The query contains <see langword="null"/> values or duplicates.</exception>
     public DomainObjectCollection ToCustomCollection ()
     {
-      var collectionType = Query.CollectionType ?? typeof (DomainObjectCollection);
+      var collectionType = Query.CollectionType ?? typeof(DomainObjectCollection);
       try
       {
-        return DomainObjectCollectionFactory.Instance.CreateCollection (collectionType, _queryResult);
+        return DomainObjectCollectionFactory.Instance.CreateCollection(collectionType, _queryResult);
       }
       catch (Exception ex)
       {
-        var message = string.Format ("Cannot create a custom collection of type '{0}' for the query result: {1}", collectionType.Name, ex.Message);
-        throw new UnexpectedQueryResultException (message, ex);
+        var message = string.Format("Cannot create a custom collection of type '{0}' for the query result: {1}", collectionType.Name, ex.Message);
+        throw new UnexpectedQueryResultException(message, ex);
       }
     }
 
@@ -196,11 +196,11 @@ namespace Remotion.Data.DomainObjects.Queries
     {
       try
       {
-        return new ObjectList<TResult> (values);
+        return new ObjectList<TResult>(values);
       }
       catch (Exception ex)
       {
-        throw new UnexpectedQueryResultException ("Cannot create an ObjectList for the query result: " + ex.Message, ex);
+        throw new UnexpectedQueryResultException("Cannot create an ObjectList for the query result: " + ex.Message, ex);
       }
     }
   }

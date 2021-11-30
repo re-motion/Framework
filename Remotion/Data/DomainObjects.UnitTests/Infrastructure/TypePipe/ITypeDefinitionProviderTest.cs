@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       var instance = _serviceLocator.GetInstance<ITypeDefinitionProvider>();
 
-      Assert.That (instance, Is.TypeOf<TypeDefinitionProvider>());
+      Assert.That(instance, Is.TypeOf<TypeDefinitionProvider>());
     }
 
     [Test]
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       var instance1 = _serviceLocator.GetInstance<ITypeDefinitionProvider>();
       var instance2 = _serviceLocator.GetInstance<ITypeDefinitionProvider>();
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

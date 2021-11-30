@@ -28,12 +28,12 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void CircularTargetCallDependenciesWork ()
     {
       using (MixinConfiguration.BuildFromActive()
-          .ForClass<NullTarget> ().Clear().AddMixins (typeof (MixinWithCircularTargetCallDependency1), typeof (MixinWithCircularTargetCallDependency2))
+          .ForClass<NullTarget>().Clear().AddMixins(typeof(MixinWithCircularTargetCallDependency1), typeof(MixinWithCircularTargetCallDependency2))
           .EnterScope())
       {
-        object o = ObjectFactory.Create<NullTarget> (ParamList.Empty);
-        var c1 = (ICircular2) o;
-        Assert.That (c1.Circular12 (), Is.EqualTo ("MixinWithCircularTargetCallDependency2.Circular12-MixinWithCircularTargetCallDependency1.Circular1-"
+        object o = ObjectFactory.Create<NullTarget>(ParamList.Empty);
+        var c1 = (ICircular2)o;
+        Assert.That(c1.Circular12(), Is.EqualTo("MixinWithCircularTargetCallDependency2.Circular12-MixinWithCircularTargetCallDependency1.Circular1-"
                                                    + "MixinWithCircularTargetCallDependency2.Circular2"));
       }
     }
@@ -41,17 +41,17 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void ThisCallToClassImplementingInternalInterface ()
     {
-      ClassImplementingInternalInterface ciii = ObjectFactory.Create<ClassImplementingInternalInterface> (ParamList.Empty);
-      var mixin = Mixin.Get<MixinWithClassTargetCallImplementingInternalInterface> (ciii);
-      Assert.That (mixin.GetStringViaThis (), Is.EqualTo ("ClassImplementingInternalInterface.Foo"));
+      ClassImplementingInternalInterface ciii = ObjectFactory.Create<ClassImplementingInternalInterface>(ParamList.Empty);
+      var mixin = Mixin.Get<MixinWithClassTargetCallImplementingInternalInterface>(ciii);
+      Assert.That(mixin.GetStringViaThis(), Is.EqualTo("ClassImplementingInternalInterface.Foo"));
     }
 
     [Test]
     public void ThisCallsToIndirectlyRequiredInterfaces ()
     {
-      ClassImplementingIndirectRequirements ciir = ObjectFactory.Create<ClassImplementingIndirectRequirements> (ParamList.Empty);
-      var mixin = Mixin.Get<MixinWithIndirectRequirements> (ciir);
-      Assert.That (mixin.GetStuffViaThis (), Is.EqualTo ("ClassImplementingIndirectRequirements.Method1-ClassImplementingIndirectRequirements.BaseMethod1-"
+      ClassImplementingIndirectRequirements ciir = ObjectFactory.Create<ClassImplementingIndirectRequirements>(ParamList.Empty);
+      var mixin = Mixin.Get<MixinWithIndirectRequirements>(ciir);
+      Assert.That(mixin.GetStuffViaThis(), Is.EqualTo("ClassImplementingIndirectRequirements.Method1-ClassImplementingIndirectRequirements.BaseMethod1-"
                                                          + "ClassImplementingIndirectRequirements.Method3"));
     }
   }

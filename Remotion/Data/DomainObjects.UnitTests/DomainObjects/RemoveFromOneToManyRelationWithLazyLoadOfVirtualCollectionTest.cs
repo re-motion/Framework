@@ -37,12 +37,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       _product = DomainObjectIDs.Product1.GetObject<Product>();
       _productReview = DomainObjectIDs.ProductReview1.GetObject<ProductReview>();
 
-      _productEventReceiver = new DomainObjectEventReceiver (_product);
-      _productReviewEventReceiver = new DomainObjectEventReceiver (_productReview);
+      _productEventReceiver = new DomainObjectEventReceiver(_product);
+      _productReviewEventReceiver = new DomainObjectEventReceiver(_productReview);
 
       _product.EnsureDataAvailable();
       _productReview.EnsureDataAvailable();
-      Assert.That (_product.Reviews.IsDataComplete, Is.False);
+      Assert.That(_product.Reviews.IsDataComplete, Is.False);
     }
 
     [Test]
@@ -53,36 +53,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       _productReview.Product = null;
 
-      Assert.That (_productReviewEventReceiver.HasRelationChangingEventBeenCalled, Is.EqualTo (true));
-      Assert.That (_productReviewEventReceiver.HasRelationChangedEventBeenCalled, Is.EqualTo (true));
-      Assert.That (
+      Assert.That(_productReviewEventReceiver.HasRelationChangingEventBeenCalled, Is.EqualTo(true));
+      Assert.That(_productReviewEventReceiver.HasRelationChangedEventBeenCalled, Is.EqualTo(true));
+      Assert.That(
           _productReviewEventReceiver.ChangingRelationPropertyName,
-          Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product"));
-      Assert.That (
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product"));
+      Assert.That(
           _productReviewEventReceiver.ChangedRelationPropertyName,
-          Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product"));
-      Assert.That (_productReviewEventReceiver.ChangingOldRelatedObject, Is.SameAs (_product));
-      Assert.That (_productReviewEventReceiver.ChangingNewRelatedObject, Is.Null);
-      Assert.That (_productReviewEventReceiver.ChangedOldRelatedObject, Is.SameAs (_product));
-      Assert.That (_productReviewEventReceiver.ChangedNewRelatedObject, Is.Null);
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product"));
+      Assert.That(_productReviewEventReceiver.ChangingOldRelatedObject, Is.SameAs(_product));
+      Assert.That(_productReviewEventReceiver.ChangingNewRelatedObject, Is.Null);
+      Assert.That(_productReviewEventReceiver.ChangedOldRelatedObject, Is.SameAs(_product));
+      Assert.That(_productReviewEventReceiver.ChangedNewRelatedObject, Is.Null);
 
-      Assert.That (_productEventReceiver.HasRelationChangingEventBeenCalled, Is.EqualTo (true));
-      Assert.That (_productEventReceiver.HasRelationChangedEventBeenCalled, Is.EqualTo (true));
-      Assert.That (
+      Assert.That(_productEventReceiver.HasRelationChangingEventBeenCalled, Is.EqualTo(true));
+      Assert.That(_productEventReceiver.HasRelationChangedEventBeenCalled, Is.EqualTo(true));
+      Assert.That(
           _productEventReceiver.ChangingRelationPropertyName,
-          Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"));
-      Assert.That (
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"));
+      Assert.That(
           _productEventReceiver.ChangedRelationPropertyName,
-          Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"));
-      Assert.That (_productEventReceiver.ChangingOldRelatedObject, Is.SameAs (_productReview));
-      Assert.That (_productEventReceiver.ChangingNewRelatedObject, Is.Null);
-      Assert.That (_productEventReceiver.ChangedOldRelatedObject, Is.SameAs (_productReview));
-      Assert.That (_productEventReceiver.ChangedNewRelatedObject, Is.Null);
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"));
+      Assert.That(_productEventReceiver.ChangingOldRelatedObject, Is.SameAs(_productReview));
+      Assert.That(_productEventReceiver.ChangingNewRelatedObject, Is.Null);
+      Assert.That(_productEventReceiver.ChangedOldRelatedObject, Is.SameAs(_productReview));
+      Assert.That(_productEventReceiver.ChangedNewRelatedObject, Is.Null);
 
-      Assert.That (_productReview.State.IsChanged, Is.True);
-      Assert.That (_product.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
-      Assert.That (_product.Reviews.GetObject (_productReview.ID), Is.Null);
-      Assert.That (_productReview.Product, Is.Null);
+      Assert.That(_productReview.State.IsChanged, Is.True);
+      Assert.That(_product.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_product.Reviews.GetObject(_productReview.ID), Is.Null);
+      Assert.That(_productReview.Product, Is.Null);
     }
 
     [Test]
@@ -91,28 +91,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       _productReviewEventReceiver.Cancel = true;
       _productEventReceiver.Cancel = false;
 
-      Assert.That (() => _productReview.Product = null, Throws.TypeOf<EventReceiverCancelException>());
+      Assert.That(() => _productReview.Product = null, Throws.TypeOf<EventReceiverCancelException>());
 
-      Assert.That (_productReviewEventReceiver.HasRelationChangingEventBeenCalled, Is.True);
-      Assert.That (_productReviewEventReceiver.HasRelationChangedEventBeenCalled, Is.False);
-      Assert.That (
+      Assert.That(_productReviewEventReceiver.HasRelationChangingEventBeenCalled, Is.True);
+      Assert.That(_productReviewEventReceiver.HasRelationChangedEventBeenCalled, Is.False);
+      Assert.That(
           _productReviewEventReceiver.ChangingRelationPropertyName,
-          Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product"));
-      Assert.That (_productReviewEventReceiver.ChangedRelationPropertyName, Is.Null);
-      Assert.That (_productReviewEventReceiver.ChangingOldRelatedObject, Is.SameAs (_product));
-      Assert.That (_productReviewEventReceiver.ChangingNewRelatedObject, Is.Null);
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product"));
+      Assert.That(_productReviewEventReceiver.ChangedRelationPropertyName, Is.Null);
+      Assert.That(_productReviewEventReceiver.ChangingOldRelatedObject, Is.SameAs(_product));
+      Assert.That(_productReviewEventReceiver.ChangingNewRelatedObject, Is.Null);
 
-      Assert.That (_productEventReceiver.HasRelationChangingEventBeenCalled, Is.False);
-      Assert.That (_productEventReceiver.HasRelationChangedEventBeenCalled, Is.False);
-      Assert.That (_productEventReceiver.ChangingRelationPropertyName, Is.Null);
-      Assert.That (_productEventReceiver.ChangedRelationPropertyName, Is.Null);
-      Assert.That (_productEventReceiver.ChangingOldRelatedObject, Is.Null);
-      Assert.That (_productEventReceiver.ChangingNewRelatedObject, Is.Null);
+      Assert.That(_productEventReceiver.HasRelationChangingEventBeenCalled, Is.False);
+      Assert.That(_productEventReceiver.HasRelationChangedEventBeenCalled, Is.False);
+      Assert.That(_productEventReceiver.ChangingRelationPropertyName, Is.Null);
+      Assert.That(_productEventReceiver.ChangedRelationPropertyName, Is.Null);
+      Assert.That(_productEventReceiver.ChangingOldRelatedObject, Is.Null);
+      Assert.That(_productEventReceiver.ChangingNewRelatedObject, Is.Null);
 
-      Assert.That (_productReview.State.IsUnchanged, Is.True);
-      Assert.That (_product.State.IsUnchanged, Is.True); // TODO: RM-7294: IsRelationChanged
-      Assert.That (_product.Reviews.GetObject (_productReview.ID), Is.EqualTo (_productReview));
-      Assert.That (_productReview.Product, Is.SameAs (_product));
+      Assert.That(_productReview.State.IsUnchanged, Is.True);
+      Assert.That(_product.State.IsUnchanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_product.Reviews.GetObject(_productReview.ID), Is.EqualTo(_productReview));
+      Assert.That(_productReview.Product, Is.SameAs(_product));
     }
 
     [Test]
@@ -121,42 +121,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       _productReviewEventReceiver.Cancel = false;
       _productEventReceiver.Cancel = true;
 
-      Assert.That (() => _productReview.Product = null, Throws.TypeOf<EventReceiverCancelException>());
+      Assert.That(() => _productReview.Product = null, Throws.TypeOf<EventReceiverCancelException>());
 
-      Assert.That (_productReviewEventReceiver.HasRelationChangingEventBeenCalled, Is.True);
-      Assert.That (_productReviewEventReceiver.HasRelationChangedEventBeenCalled, Is.False);
-      Assert.That (
+      Assert.That(_productReviewEventReceiver.HasRelationChangingEventBeenCalled, Is.True);
+      Assert.That(_productReviewEventReceiver.HasRelationChangedEventBeenCalled, Is.False);
+      Assert.That(
           _productReviewEventReceiver.ChangingRelationPropertyName,
-          Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product"));
-      Assert.That (_productReviewEventReceiver.ChangedRelationPropertyName, Is.Null);
-      Assert.That (_productReviewEventReceiver.ChangingOldRelatedObject, Is.SameAs (_product));
-      Assert.That (_productReviewEventReceiver.ChangingNewRelatedObject, Is.Null);
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product"));
+      Assert.That(_productReviewEventReceiver.ChangedRelationPropertyName, Is.Null);
+      Assert.That(_productReviewEventReceiver.ChangingOldRelatedObject, Is.SameAs(_product));
+      Assert.That(_productReviewEventReceiver.ChangingNewRelatedObject, Is.Null);
 
-      Assert.That (_productEventReceiver.HasRelationChangingEventBeenCalled, Is.EqualTo (true));
-      Assert.That (_productEventReceiver.HasRelationChangedEventBeenCalled, Is.False);
-      Assert.That (
+      Assert.That(_productEventReceiver.HasRelationChangingEventBeenCalled, Is.EqualTo(true));
+      Assert.That(_productEventReceiver.HasRelationChangedEventBeenCalled, Is.False);
+      Assert.That(
           _productEventReceiver.ChangingRelationPropertyName,
-          Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"));
-      Assert.That (_productEventReceiver.ChangedRelationPropertyName, Is.Null);
-      Assert.That (_productEventReceiver.ChangingOldRelatedObject, Is.SameAs (_productReview));
-      Assert.That (_productEventReceiver.ChangingNewRelatedObject, Is.Null);
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"));
+      Assert.That(_productEventReceiver.ChangedRelationPropertyName, Is.Null);
+      Assert.That(_productEventReceiver.ChangingOldRelatedObject, Is.SameAs(_productReview));
+      Assert.That(_productEventReceiver.ChangingNewRelatedObject, Is.Null);
 
-      Assert.That (_productReview.State.IsUnchanged, Is.True);
-      Assert.That (_product.State.IsUnchanged, Is.True); // TODO: RM-7294: IsRelationChanged
-      Assert.That (_product.Reviews.GetObject (_productReview.ID), Is.EqualTo (_productReview));
-      Assert.That (_productReview.Product, Is.SameAs (_product));
+      Assert.That(_productReview.State.IsUnchanged, Is.True);
+      Assert.That(_product.State.IsUnchanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_product.Reviews.GetObject(_productReview.ID), Is.EqualTo(_productReview));
+      Assert.That(_productReview.Product, Is.SameAs(_product));
     }
 
     [Test]
     public void StateTracking ()
     {
-      Assert.That (_product.State.IsUnchanged, Is.True);
-      Assert.That (_productReview.State.IsUnchanged, Is.True);
+      Assert.That(_product.State.IsUnchanged, Is.True);
+      Assert.That(_productReview.State.IsUnchanged, Is.True);
 
       _productReview.Product = null;
 
-      Assert.That (_product.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
-      Assert.That (_productReview.State.IsChanged, Is.True);
+      Assert.That(_product.State.IsChanged, Is.True); // TODO: RM-7294: IsRelationChanged
+      Assert.That(_productReview.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _productReview.Product = null;
 
-      Assert.That (_productReview.Product, Is.Null);
+      Assert.That(_productReview.Product, Is.Null);
     }
 
     [Test]
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _productReview.Product = null;
 
-      Assert.That (_productReview.Properties[typeof (ProductReview), "Product"].GetRelatedObjectID(), Is.Null);
+      Assert.That(_productReview.Properties[typeof(ProductReview), "Product"].GetRelatedObjectID(), Is.Null);
     }
 
     [Test]
@@ -180,11 +180,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _productReview.Product = null;
 
-      Assert.That (_productReview.Product, Is.Null);
-      Assert.That (_product.Reviews.IsDataComplete, Is.False);
-      Assert.That (_product.Reviews.Count, Is.EqualTo (2));
-      Assert.That (_product.Reviews.IsDataComplete, Is.True);
-      Assert.That (_product.Reviews.GetObject (_productReview.ID), Is.Null);
+      Assert.That(_productReview.Product, Is.Null);
+      Assert.That(_product.Reviews.IsDataComplete, Is.False);
+      Assert.That(_product.Reviews.Count, Is.EqualTo(2));
+      Assert.That(_product.Reviews.IsDataComplete, Is.True);
+      Assert.That(_product.Reviews.GetObject(_productReview.ID), Is.Null);
     }
   }
 }

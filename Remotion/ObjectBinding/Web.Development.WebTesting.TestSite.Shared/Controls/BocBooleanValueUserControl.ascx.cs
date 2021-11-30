@@ -28,28 +28,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     public override void LoadValues (bool interim)
     {
-      base.LoadValues (interim);
+      base.LoadValues(interim);
       if (!interim)
-        DeceasedField_NormalAndUnitialized.LoadUnboundValue (null, false);
+        DeceasedField_NormalAndUnitialized.LoadUnboundValue(null, false);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
       SetTestOutput();
     }
 
     private void SetTestOutput ()
     {
-      TestOutput.SetCurrentValueNormal (DeceasedField_Normal.Value.ToString());
-      TestOutput.SetCurrentValueNormalAndUnitialized (DeceasedField_NormalAndUnitialized.Value.ToString());
-      TestOutput.SetCurrentValueNoAutoPostBack (DeceasedField_NoAutoPostBack.Value.ToString());
-      TestOutput.SetCurrentValueTriState (DeceasedField_TriState.Value.ToString());
+      TestOutput.SetCurrentValueNormal(DeceasedField_Normal.Value.ToString());
+      TestOutput.SetCurrentValueNormalAndUnitialized(DeceasedField_NormalAndUnitialized.Value.ToString());
+      TestOutput.SetCurrentValueNoAutoPostBack(DeceasedField_NoAutoPostBack.Value.ToString());
+      TestOutput.SetCurrentValueTriState(DeceasedField_TriState.Value.ToString());
     }
 
     private BocBooleanValueUserControlTestOutput TestOutput
     {
-      get { return (BocBooleanValueUserControlTestOutput) ((Layout) Page.Master).GetTestOutputControl(); }
+      get { return (BocBooleanValueUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
     }
   }
 }

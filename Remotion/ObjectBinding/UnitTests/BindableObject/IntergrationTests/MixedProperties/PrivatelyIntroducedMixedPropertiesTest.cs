@@ -27,100 +27,100 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Mixe
     [Test]
     public void ImplicitPropertyWithGetter_IsReadOnly ()
     {
-      var businessObject = (IBusinessObject) ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
+      var businessObject = (IBusinessObject)ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
       var businessObjectClass = businessObject.BusinessObjectClass;
 
-      var property = businessObjectClass.GetPropertyDefinition ("ImplicitPropertyWithGetter");
-      Assert.That (property.IsReadOnly (businessObject), Is.True);
+      var property = businessObjectClass.GetPropertyDefinition("ImplicitPropertyWithGetter");
+      Assert.That(property.IsReadOnly(businessObject), Is.True);
     }
 
     [Test]
     public void ImplicitPropertyWithGetter_GetValue ()
     {
-      var businessObject = (IBusinessObject) ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
-      var mixin = Mixin.Get<MixinClass> (businessObject);
+      var businessObject = (IBusinessObject)ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
+      var mixin = Mixin.Get<MixinClass>(businessObject);
 
-      mixin.SetImplicitPropertyWithGetter ("value");
-      Assert.That (businessObject.GetProperty ("ImplicitPropertyWithGetter"), Is.EqualTo ("value"));
+      mixin.SetImplicitPropertyWithGetter("value");
+      Assert.That(businessObject.GetProperty("ImplicitPropertyWithGetter"), Is.EqualTo("value"));
     }
 
     [Test]
     public void ImplicitPropertyWithGetterAndSetter_IsNotReadOnly ()
     {
-      var businessObject = (IBusinessObject) ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
+      var businessObject = (IBusinessObject)ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
       var businessObjectClass = businessObject.BusinessObjectClass;
 
-      var property = businessObjectClass.GetPropertyDefinition ("ImplicitPropertyWithGetterAndSetter");
-      Assert.That (property.IsReadOnly (businessObject), Is.False);
+      var property = businessObjectClass.GetPropertyDefinition("ImplicitPropertyWithGetterAndSetter");
+      Assert.That(property.IsReadOnly(businessObject), Is.False);
     }
 
     [Test]
     public void ImplicitPropertyWithGetterAndSetter_SetValue ()
     {
-      var businessObject = (IBusinessObject) ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
-      var mixin = Mixin.Get<MixinClass> (businessObject);
+      var businessObject = (IBusinessObject)ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
+      var mixin = Mixin.Get<MixinClass>(businessObject);
 
-      businessObject.SetProperty ("ImplicitPropertyWithGetterAndSetter", "value");
-      Assert.That (mixin.ImplicitPropertyWithGetterAndSetter, Is.EqualTo ("value"));
+      businessObject.SetProperty("ImplicitPropertyWithGetterAndSetter", "value");
+      Assert.That(mixin.ImplicitPropertyWithGetterAndSetter, Is.EqualTo("value"));
     }
 
     [Test]
     public void ImplicitPropertyWithGetterAndImplementationOnlySetter_IsReadOnly ()
     {
-      var businessObject = (IBusinessObject) ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
+      var businessObject = (IBusinessObject)ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
 
-      var property = businessObject.BusinessObjectClass.GetPropertyDefinition ("ImplicitPropertyWithGetterAndImplementationOnlySetter");
-      Assert.That (property.IsReadOnly (businessObject), Is.True);
+      var property = businessObject.BusinessObjectClass.GetPropertyDefinition("ImplicitPropertyWithGetterAndImplementationOnlySetter");
+      Assert.That(property.IsReadOnly(businessObject), Is.True);
     }
 
     [Test]
     public void ImplicitPropertyWithGetterAndImplementationOnlySetter_SetValueThrowsInvalidOperationException ()
     {
-      var businessObject = (IBusinessObject) ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
+      var businessObject = (IBusinessObject)ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
 
-      Assert.That (
-          () => businessObject.SetProperty ("ImplicitPropertyWithGetterAndImplementationOnlySetter", "value"),
+      Assert.That(
+          () => businessObject.SetProperty("ImplicitPropertyWithGetterAndImplementationOnlySetter", "value"),
           Throws.TypeOf<InvalidOperationException>());
     }
 
     [Test]
     public void ExplicitPropertyWithGetter_IsReadOnly ()
     {
-      var businessObject = (IBusinessObject) ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
+      var businessObject = (IBusinessObject)ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
       var businessObjectClass = businessObject.BusinessObjectClass;
 
-      var property = businessObjectClass.GetPropertyDefinition ("ExplicitPropertyWithGetter");
-      Assert.That (property.IsReadOnly (businessObject), Is.True);
+      var property = businessObjectClass.GetPropertyDefinition("ExplicitPropertyWithGetter");
+      Assert.That(property.IsReadOnly(businessObject), Is.True);
     }
 
     [Test]
     public void ExplicitPropertyWithGetter_GetValue ()
     {
-      var businessObject = (IBusinessObject) ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
-      var mixin = Mixin.Get<MixinClass> (businessObject);
+      var businessObject = (IBusinessObject)ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
+      var mixin = Mixin.Get<MixinClass>(businessObject);
 
-      mixin.SetExplicitPropertyWithGetter ("value");
-      Assert.That (businessObject.GetProperty ("ExplicitPropertyWithGetter"), Is.EqualTo ("value"));
+      mixin.SetExplicitPropertyWithGetter("value");
+      Assert.That(businessObject.GetProperty("ExplicitPropertyWithGetter"), Is.EqualTo("value"));
     }
 
     [Test]
     public void ExplicitPropertyWithGetterAndSetter_IsNotReadOnly ()
     {
-      var businessObject = (IBusinessObject) ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
+      var businessObject = (IBusinessObject)ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
       var businessObjectClass = businessObject.BusinessObjectClass;
 
-      var property = businessObjectClass.GetPropertyDefinition ("ExplicitPropertyWithGetterAndSetter");
-      Assert.That (property.IsReadOnly (businessObject), Is.False);
+      var property = businessObjectClass.GetPropertyDefinition("ExplicitPropertyWithGetterAndSetter");
+      Assert.That(property.IsReadOnly(businessObject), Is.False);
     }
 
     [Test]
     public void ExplicitPropertyWithGetterAndSetter_SetValue ()
     {
-      var businessObject = (IBusinessObject) ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
-      var mixin = Mixin.Get<MixinClass> (businessObject);
+      var businessObject = (IBusinessObject)ObjectFactory.Create<TargetClassWithPrivatelyIntroducedMembers>();
+      var mixin = Mixin.Get<MixinClass>(businessObject);
 
-      businessObject.SetProperty ("ExplicitPropertyWithGetterAndSetter", "value");
-      Assert.That (((IMixinInterface) mixin).ExplicitPropertyWithGetterAndSetter, Is.EqualTo ("value"));
+      businessObject.SetProperty("ExplicitPropertyWithGetterAndSetter", "value");
+      Assert.That(((IMixinInterface)mixin).ExplicitPropertyWithGetterAndSetter, Is.EqualTo("value"));
     }
   }
 }

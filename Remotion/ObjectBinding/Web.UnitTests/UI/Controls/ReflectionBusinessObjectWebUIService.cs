@@ -30,12 +30,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       if (obj == null)
       {
         string url = "~/Images/NullIcon.gif";
-        return new IconInfo (url, Unit.Pixel (16), Unit.Pixel (16));
+        return new IconInfo(url, Unit.Pixel(16), Unit.Pixel(16));
       }
       else
       {
-        string url = "~/Images/" + ((BindableObjectClass) obj.BusinessObjectClass).TargetType.FullName + ".gif";
-        return new IconInfo (url, Unit.Pixel (16), Unit.Pixel (16));
+        string url = "~/Images/" + ((BindableObjectClass)obj.BusinessObjectClass).TargetType.FullName + ".gif";
+        return new IconInfo(url, Unit.Pixel(16), Unit.Pixel(16));
       }
     }
 
@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       if (obj == null)
         return "No ToolTip";
       else
-        return "ToolTip: " + ((BindableObjectClass) obj.BusinessObjectClass).TargetType.FullName;
+        return "ToolTip: " + ((BindableObjectClass)obj.BusinessObjectClass).TargetType.FullName;
     }
 
     public HelpInfo GetHelpInfo (
@@ -53,18 +53,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
         IBusinessObjectProperty businessObjectProperty,
         IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNull ("businessObjectClass", businessObjectClass);
+      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull("businessObjectClass", businessObjectClass);
 
-      return new HelpInfo (
+      return new HelpInfo(
           "#",
           null,
-          string.Format (
+          string.Format(
               "{0}\r\n{1}\r\n{2}\r\n{3}",
               control.ID,
               businessObjectClass.Identifier,
               (businessObjectProperty != null ? businessObjectProperty.Identifier : "prop"),
-              (businessObject is IBusinessObjectWithIdentity ? ((IBusinessObjectWithIdentity) businessObject).DisplayName : "obj")),
+              (businessObject is IBusinessObjectWithIdentity ? ((IBusinessObjectWithIdentity)businessObject).DisplayName : "obj")),
           "return false;");
     }
   }

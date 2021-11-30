@@ -24,23 +24,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
   {
     public static void ExpectNotifyAndPerform (IDataManagementCommand commandMock)
     {
-      using (commandMock.GetMockRepository ().Ordered ())
+      using (commandMock.GetMockRepository().Ordered())
       {
-        commandMock.Expect (mock => mock.Begin());
-        commandMock.Expect (mock => mock.Begin());
-        commandMock.Expect (mock => mock.Perform());
-        commandMock.Expect (mock => mock.End());
-        commandMock.Expect (mock => mock.End());
+        commandMock.Expect(mock => mock.Begin());
+        commandMock.Expect(mock => mock.Begin());
+        commandMock.Expect(mock => mock.Perform());
+        commandMock.Expect(mock => mock.End());
+        commandMock.Expect(mock => mock.End());
       }
     }
 
     public static void AssertNotifyAndPerformWasCalled (IDataManagementCommand commandMock)
     {
-      commandMock.AssertWasCalled (mock => mock.Begin ());
-      commandMock.AssertWasCalled (mock => mock.Begin ());
-      commandMock.AssertWasCalled (mock => mock.Perform ());
-      commandMock.AssertWasCalled (mock => mock.End ());
-      commandMock.AssertWasCalled (mock => mock.End ());
+      commandMock.AssertWasCalled(mock => mock.Begin());
+      commandMock.AssertWasCalled(mock => mock.Begin());
+      commandMock.AssertWasCalled(mock => mock.Perform());
+      commandMock.AssertWasCalled(mock => mock.End());
+      commandMock.AssertWasCalled(mock => mock.End());
     }
   }
 }

@@ -28,41 +28,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void AllowedMembers ()
     {
-      CheckAllowed (ctx => ctx.ClientTransaction, ClientTransaction.CreateRootTransaction());
+      CheckAllowed(ctx => ctx.ClientTransaction, ClientTransaction.CreateRootTransaction());
     }
 
     [Test]
     public void ForbiddenMembers ()
     {
-      CheckForbidden (ctx => Dev.Null = ctx.State);
-      CheckForbidden (ctx => Dev.Null = ctx.Timestamp);
-      CheckForbidden (ctx => ctx.RegisterForCommit ());
-      CheckForbidden (ctx => ctx.EnsureDataAvailable ());
-      CheckForbidden (ctx => ctx.TryEnsureDataAvailable ());
+      CheckForbidden(ctx => Dev.Null = ctx.State);
+      CheckForbidden(ctx => Dev.Null = ctx.Timestamp);
+      CheckForbidden(ctx => ctx.RegisterForCommit());
+      CheckForbidden(ctx => ctx.EnsureDataAvailable());
+      CheckForbidden(ctx => ctx.TryEnsureDataAvailable());
     }
 
     private void CheckAllowed<T> (Func<IDomainObjectTransactionContext, T> func, T mockResult)
     {
-      var contextMock = MockRepository.GenerateMock<IDomainObjectTransactionContext> ();
-      contextMock.Expect (mock => func (mock)).Return (mockResult);
-      contextMock.Replay ();
+      var contextMock = MockRepository.GenerateMock<IDomainObjectTransactionContext>();
+      contextMock.Expect(mock => func(mock)).Return(mockResult);
+      contextMock.Replay();
 
-      var result = func (new InitializedEventDomainObjectTransactionContextDecorator (contextMock));
+      var result = func(new InitializedEventDomainObjectTransactionContextDecorator(contextMock));
 
       contextMock.VerifyAllExpectations();
-      Assert.That (result, Is.EqualTo (result));
+      Assert.That(result, Is.EqualTo(result));
     }
 
     private void CheckForbidden (Action<IDomainObjectTransactionContext> action)
     {
-      var contextMock = MockRepository.GenerateMock<IDomainObjectTransactionContext> ();
+      var contextMock = MockRepository.GenerateMock<IDomainObjectTransactionContext>();
 
-      Assert.That (
-          () => action (new InitializedEventDomainObjectTransactionContextDecorator (contextMock)), 
-          Throws.InvalidOperationException.With.Message.EqualTo (
+      Assert.That(
+          () => action(new InitializedEventDomainObjectTransactionContextDecorator(contextMock)),
+          Throws.InvalidOperationException.With.Message.EqualTo(
               "While the OnReferenceInitializing event is executing, this member cannot be used."));
 
-      contextMock.AssertWasNotCalled (action);
+      contextMock.AssertWasNotCalled(action);
     }
   }
 }

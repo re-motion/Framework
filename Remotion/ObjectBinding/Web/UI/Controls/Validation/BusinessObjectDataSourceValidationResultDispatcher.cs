@@ -12,23 +12,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
   {
     public static void DispatchValidationResultForBoundControls (IBusinessObjectDataSourceControl dataSource, IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull ("validationResult", validationResult);
+      ArgumentUtility.CheckNotNull("validationResult", validationResult);
 
-      var allControlsInsideNamingContainer = EnumerableUtility.SelectRecursiveDepthFirst (
+      var allControlsInsideNamingContainer = EnumerableUtility.SelectRecursiveDepthFirst(
           dataSource.NamingContainer,
-          child => child.Controls.Cast<Control>().Where (item => !(item is INamingContainer) && (item != dataSource)));
+          child => child.Controls.Cast<Control>().Where(item => !(item is INamingContainer) && (item != dataSource)));
       var validators = allControlsInsideNamingContainer.OfType<IBusinessObjectBoundEditableWebControlValidationResultDispatcher>();
 
       var controlsWithValidBinding = dataSource.GetBoundControlsWithValidBinding().Cast<Control>();
 
-      var validatorsMatchingToControls = controlsWithValidBinding.Join (
+      var validatorsMatchingToControls = controlsWithValidBinding.Join(
           validators,
           c => c.ID,
-          v => ((BaseValidator) v).ControlToValidate,
+          v => ((BaseValidator)v).ControlToValidate,
           (c, v) => v);
 
       foreach (var validator in validatorsMatchingToControls)
-        validator.DispatchValidationFailures (validationResult);
+        validator.DispatchValidationFailures(validationResult);
     }
   }
 }

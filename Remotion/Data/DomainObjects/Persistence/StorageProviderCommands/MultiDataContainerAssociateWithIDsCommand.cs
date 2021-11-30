@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
         IEnumerable<ObjectID> objectIDs,
         IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> command)
     {
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
-      ArgumentUtility.CheckNotNull ("command", command);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("command", command);
 
       _objectIDs = objectIDs.ToArray();
       _command = command;
@@ -58,48 +58,48 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
 
     public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull ("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
 
-      var dataContainers = _command.Execute (executionContext);
+      var dataContainers = _command.Execute(executionContext);
 
-      var dataContainersByID =  new Dictionary<ObjectID, DataContainer> ();
-      foreach (var dataContainer in dataContainers.Where (dc => dc != null))
+      var dataContainersByID =  new Dictionary<ObjectID, DataContainer>();
+      foreach (var dataContainer in dataContainers.Where(dc => dc != null))
       {
         // Duplicates overwrite the previous DataContainer
         dataContainersByID[dataContainer.ID] = dataContainer;
       }
 
-      var unassociatedDataContainerIDs = new HashSet<ObjectID> (dataContainersByID.Keys);
+      var unassociatedDataContainerIDs = new HashSet<ObjectID>(dataContainersByID.Keys);
       foreach (var objectID in _objectIDs)
       {
-        var lookupResult = CreateLookupResult (objectID, dataContainersByID);
-        unassociatedDataContainerIDs.Remove (lookupResult.ObjectID);
+        var lookupResult = CreateLookupResult(objectID, dataContainersByID);
+        unassociatedDataContainerIDs.Remove(lookupResult.ObjectID);
         yield return lookupResult;
       }
 
       if (unassociatedDataContainerIDs.Count > 0)
       {
-        var objectIDsByValue = _objectIDs.ToLookup (id => id.Value);
+        var objectIDsByValue = _objectIDs.ToLookup(id => id.Value);
         var nonMatchingIDDescriptions = unassociatedDataContainerIDs
-            .Select (loadedID => new { LoadedID = loadedID, ExpectedIDs = objectIDsByValue[loadedID.Value] })
-            .Select (
-                t => string.Format (
+            .Select(loadedID => new { LoadedID = loadedID, ExpectedIDs = objectIDsByValue[loadedID.Value] })
+            .Select(
+                t => string.Format(
                     "Loaded DataContainer ID: {0}, expected ObjectID(s): {1}",
                     t.LoadedID,
-                    t.ExpectedIDs.Any() ? string.Join (", ", t.ExpectedIDs.Distinct()) : "none"));
-        var message = string.Format (
+                    t.ExpectedIDs.Any() ? string.Join(", ", t.ExpectedIDs.Distinct()) : "none"));
+        var message = string.Format(
             "The ObjectID of one or more loaded DataContainers does not match the expected ObjectIDs:{0}{1}",
             Environment.NewLine,
-            string.Join (Environment.NewLine, nonMatchingIDDescriptions));
-        throw new PersistenceException (message);
+            string.Join(Environment.NewLine, nonMatchingIDDescriptions));
+        throw new PersistenceException(message);
       }
     }
 
     private ObjectLookupResult<DataContainer> CreateLookupResult (ObjectID id, Dictionary<ObjectID, DataContainer> dataContainersByID)
     {
       return id != null
-                 ? new ObjectLookupResult<DataContainer> (id, dataContainersByID.GetValueOrDefault (id))
-                 : new ObjectLookupResult<DataContainer> (null, null);
+                 ? new ObjectLookupResult<DataContainer>(id, dataContainersByID.GetValueOrDefault(id))
+                 : new ObjectLookupResult<DataContainer>(null, null);
     }
   }
 }

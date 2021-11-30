@@ -28,13 +28,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   public class DomainObjectCollectionEndPointCollectionProvider : IDomainObjectCollectionEndPointCollectionProvider
   {
     private readonly IAssociatedDomainObjectCollectionDataStrategyFactory _dataStrategyFactory;
-    
+
     private readonly Dictionary<RelationEndPointID, DomainObjectCollection> _collections = new Dictionary<RelationEndPointID, DomainObjectCollection>();
     private readonly Func<RelationEndPointID, DomainObjectCollection> _getCollectionWithoutCacheFunc;
 
     public DomainObjectCollectionEndPointCollectionProvider (IAssociatedDomainObjectCollectionDataStrategyFactory dataStrategyFactory)
     {
-      ArgumentUtility.CheckNotNull ("dataStrategyFactory", dataStrategyFactory);
+      ArgumentUtility.CheckNotNull("dataStrategyFactory", dataStrategyFactory);
       _dataStrategyFactory = dataStrategyFactory;
 
       // Optimized for memory allocations
@@ -48,25 +48,25 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public DomainObjectCollection GetCollection (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      var collection = _collections.GetOrCreateValue (endPointID, _getCollectionWithoutCacheFunc);
-      Assertion.IsTrue (collection.AssociatedEndPointID == endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      var collection = _collections.GetOrCreateValue(endPointID, _getCollectionWithoutCacheFunc);
+      Assertion.IsTrue(collection.AssociatedEndPointID == endPointID);
       return collection;
     }
 
     private DomainObjectCollection GetCollectionWithoutCache (RelationEndPointID id)
     {
-      var dataStrategy = _dataStrategyFactory.CreateDataStrategyForEndPoint (id);
-      return DomainObjectCollectionFactory.Instance.CreateCollection (id.Definition.PropertyInfo.PropertyType, dataStrategy);
+      var dataStrategy = _dataStrategyFactory.CreateDataStrategyForEndPoint(id);
+      return DomainObjectCollectionFactory.Instance.CreateCollection(id.Definition.PropertyInfo.PropertyType, dataStrategy);
     }
 
     public void RegisterCollection (RelationEndPointID endPointID, DomainObjectCollection collection)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      ArgumentUtility.CheckNotNull ("collection", collection);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("collection", collection);
 
       if (collection.AssociatedEndPointID != endPointID)
-        throw new ArgumentException ("The collection must be associated with the given endPointID.", "collection");
+        throw new ArgumentException("The collection must be associated with the given endPointID.", "collection");
 
       _collections[endPointID] = collection;
     }

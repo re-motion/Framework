@@ -25,11 +25,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class PlatformTestFunction : WxeFunction
   {
     public PlatformTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("PlatformTest.aspx");
+    private WxeStep Step1 = new WxePageStep("PlatformTest.aspx");
   }
 }

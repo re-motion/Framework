@@ -28,31 +28,31 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     [Test]
     public void TokenWithAbstractRole_Matches ()
     {
-      AccessControlEntry entry = TestHelper.CreateAceWithAbstractRole ();
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (entry);
-      SecurityToken token = TestHelper.CreateTokenWithAbstractRole (entry.SpecificAbstractRole);
+      AccessControlEntry entry = TestHelper.CreateAceWithAbstractRole();
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(entry);
+      SecurityToken token = TestHelper.CreateTokenWithAbstractRole(entry.SpecificAbstractRole);
 
-      Assert.That (matcher.MatchesToken (token), Is.True);
+      Assert.That(matcher.MatchesToken(token), Is.True);
     }
 
     [Test]
     public void TokenWithOtherAbstractRole_DoesNotMatch ()
     {
-      AccessControlEntry entry = TestHelper.CreateAceWithAbstractRole ();
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (entry);
-      SecurityToken token = TestHelper.CreateTokenWithAbstractRole (TestHelper.CreateTestAbstractRole ());
+      AccessControlEntry entry = TestHelper.CreateAceWithAbstractRole();
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(entry);
+      SecurityToken token = TestHelper.CreateTokenWithAbstractRole(TestHelper.CreateTestAbstractRole());
 
-      Assert.That (matcher.MatchesToken (token), Is.False);
+      Assert.That(matcher.MatchesToken(token), Is.False);
     }
 
     [Test]
     public void EmptyToken_DoesNotMatch ()
     {
-      AccessControlEntry entry = TestHelper.CreateAceWithAbstractRole ();
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (entry);
-      SecurityToken token = TestHelper.CreateTokenWithoutUser ();
+      AccessControlEntry entry = TestHelper.CreateAceWithAbstractRole();
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(entry);
+      SecurityToken token = TestHelper.CreateTokenWithoutUser();
 
-      Assert.That (matcher.MatchesToken (token), Is.False);
+      Assert.That(matcher.MatchesToken(token), Is.False);
     }
   }
 }

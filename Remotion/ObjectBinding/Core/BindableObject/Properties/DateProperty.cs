@@ -21,7 +21,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
   public class DateProperty : DateTimePropertyBase
   {
     public DateProperty (Parameters parameters)
-        : base (parameters)
+        : base(parameters)
     {
     }
 

@@ -38,11 +38,11 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
         ++ s_counter;
         ViewState["Counter"] = s_counter.ToString();
       }
-      Label1.Text = (string) ViewState["Counter"];		
+      Label1.Text = (string)ViewState["Counter"];
     }
 
     #region Web Form Designer generated code
-    override protected void OnInitComplete(EventArgs e)
+    override protected void OnInitComplete (EventArgs e)
     {
       //
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -50,12 +50,12 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
       InitializeComponent();
       base.OnInitComplete(e);
     }
-	
+
     /// <summary>
     ///		Required method for Designer support - do not modify
     ///		the contents of this method with the code editor.
     /// </summary>
-    private void InitializeComponent()
+    private void InitializeComponent ()
     {
       this.Stay.Click += new System.EventHandler(this.Stay_Click);
       this.Sub.Click += new System.EventHandler(this.Sub_Click);
@@ -67,18 +67,18 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     private void Stay_Click (object sender, System.EventArgs e)
     {
-  
+
     }
 
     private void Sub_Click (object sender, System.EventArgs e)
     {
       ViewState["Counter"] += " Sub_Click";
-      WxePage.ExecuteFunctionNoRepost (new WebForm1.SubFunction ("usercontrol var1", "usercontrol var2"), (Control) sender);  
+      WxePage.ExecuteFunctionNoRepost(new WebForm1.SubFunction("usercontrol var1", "usercontrol var2"), (Control)sender);
     }
 
     private void Next_Click (object sender, System.EventArgs e)
     {
-      WxePage.ExecuteNextStep ();
+      WxePage.ExecuteNextStep();
     }
 
   }

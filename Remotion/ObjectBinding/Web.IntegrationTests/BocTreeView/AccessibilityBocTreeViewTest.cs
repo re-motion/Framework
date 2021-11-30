@@ -30,59 +30,59 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocTreeView
     public void Normal ()
     {
       var home = Start();
-      var bocTreeView = home.TreeViews().GetByLocalID ("Normal");
+      var bocTreeView = home.TreeViews().GetByLocalID("Normal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocTreeView.Analyze (analyzer);
+      var result = bocTreeView.Analyze(analyzer);
 
       // TODO RM-7335 remove ignore once issue is resolved
-      var violations = result.Violations.IgnoreByRuleIDAndXPath (AccessibilityRuleID.AriaAllowedAttr, "/a[@id='Head_E56F9F6BC665123527D1124D63684664']");
-      Assert.That (violations, Is.Empty);
+      var violations = result.Violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.AriaAllowedAttr, "/a[@id='Head_E56F9F6BC665123527D1124D63684664']");
+      Assert.That(violations, Is.Empty);
     }
 
     [Test]
     public void NoTopLevelExpander ()
     {
       var home = Start();
-      var bocTreeView = home.TreeViews().GetByLocalID ("NoTopLevelExpander");
+      var bocTreeView = home.TreeViews().GetByLocalID("NoTopLevelExpander");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocTreeView.Analyze (analyzer);
+      var result = bocTreeView.Analyze(analyzer);
 
       // TODO RM-7335 remove ignore once issue is resolved
-      var violations = result.Violations.IgnoreByRuleID (AccessibilityRuleID.AriaAllowedAttr);
-      Assert.That (violations, Is.Empty);
+      var violations = result.Violations.IgnoreByRuleID(AccessibilityRuleID.AriaAllowedAttr);
+      Assert.That(violations, Is.Empty);
     }
 
     [Test]
     public void NoPropertyIdentifier ()
     {
       var home = Start();
-      var bocTreeView = home.TreeViews().GetByLocalID ("NoPropertyIdentifier");
+      var bocTreeView = home.TreeViews().GetByLocalID("NoPropertyIdentifier");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocTreeView.Analyze (analyzer);
+      var result = bocTreeView.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ContextMenu ()
     {
       var home = Start();
-      var bocTreeView = home.TreeViews().GetByLocalID ("ContextMenu_Delayed");
+      var bocTreeView = home.TreeViews().GetByLocalID("ContextMenu_Delayed");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocTreeView.Analyze (analyzer);
+      var result = bocTreeView.Analyze(analyzer);
 
       // TODO RM-7335 remove ignore once issue is resolved
-      var violations = result.Violations.IgnoreByRuleIDAndXPath (AccessibilityRuleID.AriaAllowedAttr, "/a[@id='Head_639FA12F26E70352535ED937F171C296']");
-      Assert.That (violations, Is.Empty);
+      var violations = result.Violations.IgnoreByRuleIDAndXPath(AccessibilityRuleID.AriaAllowedAttr, "/a[@id='Head_639FA12F26E70352535ED937F171C296']");
+      Assert.That(violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocTreeView");
+      return Start("BocTreeView");
     }
   }
 }

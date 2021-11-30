@@ -38,7 +38,7 @@ namespace Remotion.Data.UnitTests.UnitTesting
     public static RootPersistenceStrategyMockFacade CreateWithStrictMock ()
     {
       var persistenceStrategyMock = MockRepository.GenerateStrictMock<IFetchEnabledPersistenceStrategy>();
-      var facade = new RootPersistenceStrategyMockFacade (persistenceStrategyMock);
+      var facade = new RootPersistenceStrategyMockFacade(persistenceStrategyMock);
       return facade;
     }
 
@@ -46,7 +46,7 @@ namespace Remotion.Data.UnitTests.UnitTesting
 
     public RootPersistenceStrategyMockFacade (IFetchEnabledPersistenceStrategy mock)
     {
-      ArgumentUtility.CheckNotNull ("mock", mock);
+      ArgumentUtility.CheckNotNull("mock", mock);
       _mock = mock;
     }
 
@@ -61,26 +61,26 @@ namespace Remotion.Data.UnitTests.UnitTesting
     /// </summary>
     public IDisposable CreateScope ()
     {
-      return RootClientTransactionComponentFactoryMixin.CreatePersistenceStrategyScope (Mock);
+      return RootClientTransactionComponentFactoryMixin.CreatePersistenceStrategyScope(Mock);
     }
 
     public IMethodOptions<IEnumerable<ILoadedObjectData>> ExpectLoadObjectData (IEnumerable<ObjectID> loadedObjectIDs)
     {
       return Mock
-          .Expect (mock => mock.LoadObjectData (Arg<IEnumerable<ObjectID>>.List.Equal (loadedObjectIDs)))
-          .Return (loadedObjectIDs.Select (id => (ILoadedObjectData) new FreshlyLoadedObjectData (DataContainerObjectMother.CreateExisting (id))));
+          .Expect(mock => mock.LoadObjectData(Arg<IEnumerable<ObjectID>>.List.Equal(loadedObjectIDs)))
+          .Return(loadedObjectIDs.Select(id => (ILoadedObjectData)new FreshlyLoadedObjectData(DataContainerObjectMother.CreateExisting(id))));
     }
 
     public class RootClientTransactionComponentFactoryMixin : Mixin<RootClientTransactionComponentFactory>
     {
       public static IDisposable CreatePersistenceStrategyScope (IFetchEnabledPersistenceStrategy persistenceStrategy)
       {
-        var mixinConfigurationScope = MixinConfiguration.BuildFromActive ()
-                                                        .ForClass<RootClientTransactionComponentFactory> ()
-                                                        .AddMixin<RootClientTransactionComponentFactoryMixin> ()
-                                                        .EnterScope ();
+        var mixinConfigurationScope = MixinConfiguration.BuildFromActive()
+                                                        .ForClass<RootClientTransactionComponentFactory>()
+                                                        .AddMixin<RootClientTransactionComponentFactoryMixin>()
+                                                        .EnterScope();
         s_persistenceStrategy = persistenceStrategy;
-        return new PostActionDisposableDecorator (mixinConfigurationScope, () => { s_persistenceStrategy = null; });
+        return new PostActionDisposableDecorator(mixinConfigurationScope, () => { s_persistenceStrategy = null; });
       }
 
       [ThreadStatic]
@@ -94,7 +94,7 @@ namespace Remotion.Data.UnitTests.UnitTesting
       public IPersistenceStrategy CreatePersistenceStrategy ([UsedImplicitly] ClientTransaction constructedTransaction)
       {
         if (s_persistenceStrategy == null)
-          throw new InvalidOperationException ("No persistence strategy has been given.");
+          throw new InvalidOperationException("No persistence strategy has been given.");
         return s_persistenceStrategy;
       }
     }

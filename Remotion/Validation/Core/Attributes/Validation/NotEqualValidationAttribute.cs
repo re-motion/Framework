@@ -37,7 +37,7 @@ namespace Remotion.Validation.Attributes.Validation
     /// <param name="value">The value the string property must not be equal to. Must not be <see langword="null" /> or empty.</param>
     public NotEqualValidationAttribute (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty("value", value);
 
       _value = value;
     }
@@ -49,23 +49,23 @@ namespace Remotion.Validation.Attributes.Validation
 
     protected override IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      ArgumentUtility.CheckNotNull ("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
       NotEqualValidator validator;
-      if (string.IsNullOrEmpty (ErrorMessage))
+      if (string.IsNullOrEmpty(ErrorMessage))
       {
-        validator = PropertyValidatorFactory.Create (
+        validator = PropertyValidatorFactory.Create(
             property,
-            parameters => new NotEqualValidator (Value, parameters.ValidationMessage),
+            parameters => new NotEqualValidator(Value, parameters.ValidationMessage),
             validationMessageFactory);
       }
       else
       {
-        validator = new NotEqualValidator (Value, new InvariantValidationMessage (ErrorMessage));
+        validator = new NotEqualValidator(Value, new InvariantValidationMessage(ErrorMessage));
       }
 
-      return EnumerableUtility.Singleton (validator);
+      return EnumerableUtility.Singleton(validator);
     }
   }
 }

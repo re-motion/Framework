@@ -29,17 +29,17 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 
     public SortedPropertySpecification (PropertyDefinition propertyDefinition, SortOrder order)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
-      var underlyingType = Nullable.GetUnderlyingType (propertyDefinition.PropertyType) ?? propertyDefinition.PropertyType;
+      var underlyingType = Nullable.GetUnderlyingType(propertyDefinition.PropertyType) ?? propertyDefinition.PropertyType;
 
-      if (underlyingType != null && !typeof (IComparable).IsAssignableFrom (underlyingType))
+      if (underlyingType != null && !typeof(IComparable).IsAssignableFrom(underlyingType))
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot sort by property '{0}' - its property type ('{1}') does not implement IComparable.",
             propertyDefinition.PropertyName,
             propertyDefinition.PropertyType.Name);
-        throw new MappingException (message);
+        throw new MappingException(message);
       }
 
       PropertyDefinition = propertyDefinition;
@@ -51,16 +51,16 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
       if (obj == null)
         return false;
 
-      if (obj.GetType () != GetType ())
+      if (obj.GetType() != GetType())
         return false;
 
-      var other = (SortedPropertySpecification) obj;
+      var other = (SortedPropertySpecification)obj;
       return PropertyDefinition == other.PropertyDefinition && Order == other.Order;
     }
 
     public override int GetHashCode ()
     {
-      return (PropertyDefinition.GetHashCode () << 1) ^ Order.GetHashCode ();
+      return (PropertyDefinition.GetHashCode() << 1) ^ Order.GetHashCode();
     }
 
     public override string ToString ()

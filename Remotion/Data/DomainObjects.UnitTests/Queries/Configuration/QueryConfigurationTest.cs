@@ -42,22 +42,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     {
       base.OneTimeSetUp();
 
-      var queriesFile = Path.Combine (TestContext.CurrentContext.TestDirectory, "queries.xml");
+      var queriesFile = Path.Combine(TestContext.CurrentContext.TestDirectory, "queries.xml");
       _tempQueriesDirectory = Path.GetTempPath();
-      _tempQueriesFilePath = Path.Combine (_tempQueriesDirectory, "queries.xml");
-      File.Copy (queriesFile, _tempQueriesFilePath, true);
+      _tempQueriesFilePath = Path.Combine(_tempQueriesDirectory, "queries.xml");
+      File.Copy(queriesFile, _tempQueriesFilePath, true);
     }
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage);
+      _storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
     }
 
     public override void TestFixtureTearDown ()
     {
-      File.Delete (_tempQueriesFilePath);
+      File.Delete(_tempQueriesFilePath);
 
       base.TestFixtureTearDown();
     }
@@ -65,22 +65,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void Loading ()
     {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"QueriesForLoaderTest.xml", _storageProviderDefinitionFinder);
-      QueryDefinitionCollection actualQueries = loader.GetQueryDefinitions ();
-      QueryDefinitionCollection expectedQueries = CreateExpectedQueryDefinitions ();
+      QueryConfigurationLoader loader = new QueryConfigurationLoader(@"QueriesForLoaderTest.xml", _storageProviderDefinitionFinder);
+      QueryDefinitionCollection actualQueries = loader.GetQueryDefinitions();
+      QueryDefinitionCollection expectedQueries = CreateExpectedQueryDefinitions();
 
-      QueryDefinitionChecker checker = new QueryDefinitionChecker ();
-      checker.Check (expectedQueries, actualQueries);
+      QueryDefinitionChecker checker = new QueryDefinitionChecker();
+      checker.Check(expectedQueries, actualQueries);
     }
 
     [Test]
     public void ScalarQueryWithCollectionType ()
     {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"ScalarQueryWithCollectionType.xml", _storageProviderDefinitionFinder);
-      Assert.That (
-          () => loader.GetQueryDefinitions (),
+      QueryConfigurationLoader loader = new QueryConfigurationLoader(@"ScalarQueryWithCollectionType.xml", _storageProviderDefinitionFinder);
+      Assert.That(
+          () => loader.GetQueryDefinitions(),
           Throws.InstanceOf<QueryConfigurationException>()
-              .With.Message.EqualTo ("A scalar query 'OrderSumQuery' must not specify a collectionType."));
+              .With.Message.EqualTo("A scalar query 'OrderSumQuery' must not specify a collectionType."));
     }
 
     [Test]
@@ -89,18 +89,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
       string configurationFile = "QueriesWithInvalidNamespace.xml";
       try
       {
-        QueryConfigurationLoader loader = new QueryConfigurationLoader (configurationFile, _storageProviderDefinitionFinder);
+        QueryConfigurationLoader loader = new QueryConfigurationLoader(configurationFile, _storageProviderDefinitionFinder);
 
-        Assert.Fail ("QueryConfigurationException was expected");
+        Assert.Fail("QueryConfigurationException was expected");
       }
       catch (QueryConfigurationException ex)
       {
-        string expectedMessage = string.Format (
+        string expectedMessage = string.Format(
             "Error while reading query configuration: The namespace 'http://www.re-motion.org/Data/DomainObjects/InvalidNamespace' of"
             + " the root element is invalid. Expected namespace: 'http://www.re-motion.org/Data/DomainObjects/Queries/1.0'. File: '{0}'.",
-            Path.GetFullPath (configurationFile));
+            Path.GetFullPath(configurationFile));
 
-        Assert.That (ex.Message, Is.EqualTo (expectedMessage));
+        Assert.That(ex.Message, Is.EqualTo(expectedMessage));
       }
     }
 
@@ -115,69 +115,69 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
               </queryFiles>
             </query>";
 
-      QueryConfiguration configuration = new QueryConfiguration ();
+      QueryConfiguration configuration = new QueryConfiguration();
 
-      ConfigurationHelper.DeserializeSection (configuration, xmlFragment);
+      ConfigurationHelper.DeserializeSection(configuration, xmlFragment);
 
-      Assert.That (configuration.QueryFiles.Count, Is.EqualTo (2));
-      Assert.That (configuration.QueryFiles[0].FileName, Is.EqualTo (@"..\..\myqueries1.xml"));
-      Assert.That (configuration.QueryFiles[0].RootedFileName, Is.SamePath (Path.Combine (AppContext.BaseDirectory, @"..\..\myqueries1.xml")));
-      Assert.That (configuration.QueryFiles[1].FileName, Is.EqualTo (@"..\..\myqueries2.xml"));
-      Assert.That (configuration.QueryFiles[1].RootedFileName, Is.SamePath (Path.Combine (AppContext.BaseDirectory, @"..\..\myqueries2.xml")));
+      Assert.That(configuration.QueryFiles.Count, Is.EqualTo(2));
+      Assert.That(configuration.QueryFiles[0].FileName, Is.EqualTo(@"..\..\myqueries1.xml"));
+      Assert.That(configuration.QueryFiles[0].RootedFileName, Is.SamePath(Path.Combine(AppContext.BaseDirectory, @"..\..\myqueries1.xml")));
+      Assert.That(configuration.QueryFiles[1].FileName, Is.EqualTo(@"..\..\myqueries2.xml"));
+      Assert.That(configuration.QueryFiles[1].RootedFileName, Is.SamePath(Path.Combine(AppContext.BaseDirectory, @"..\..\myqueries2.xml")));
     }
 
     [Test]
     public void GetDefaultQueryFilePath_BaseDirectory ()
     {
-      QueryConfiguration configuration = new QueryConfiguration ();
+      QueryConfiguration configuration = new QueryConfiguration();
 
-      Assert.That (configuration.QueryFiles.Count, Is.EqualTo (0));
-      Assert.That (configuration.QueryDefinitions.Count, Is.GreaterThan (0));
+      Assert.That(configuration.QueryFiles.Count, Is.EqualTo(0));
+      Assert.That(configuration.QueryDefinitions.Count, Is.GreaterThan(0));
 
-      Assert.That (configuration.GetDefaultQueryFilePath (), Is.EqualTo (Path.Combine (AppContext.BaseDirectory, "queries.xml")));
+      Assert.That(configuration.GetDefaultQueryFilePath(), Is.EqualTo(Path.Combine(AppContext.BaseDirectory, "queries.xml")));
 
-      QueryConfigurationLoader loader = new QueryConfigurationLoader (configuration.GetDefaultQueryFilePath (), _storageProviderDefinitionFinder);
-      QueryDefinitionChecker checker = new QueryDefinitionChecker ();
-      checker.Check (loader.GetQueryDefinitions (), configuration.QueryDefinitions);
+      QueryConfigurationLoader loader = new QueryConfigurationLoader(configuration.GetDefaultQueryFilePath(), _storageProviderDefinitionFinder);
+      QueryDefinitionChecker checker = new QueryDefinitionChecker();
+      checker.Check(loader.GetQueryDefinitions(), configuration.QueryDefinitions);
     }
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore ("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+    [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
 #endif
     public void GetDefaultQueryFilePath_WithRelativeSearchPath ()
     {
       IAppContextProvider providerStub = MockRepository.GenerateStub<IAppContextProvider>();
-      providerStub.Stub (_ => _.BaseDirectory).Return (Path.GetPathRoot (_tempQueriesDirectory));
-      providerStub.Stub (_ => _.RelativeSearchPath)
-          .Return (Path.GetFullPath (_tempQueriesDirectory).Substring (Path.GetPathRoot (_tempQueriesDirectory).Length)); // make a relative path
+      providerStub.Stub(_ => _.BaseDirectory).Return(Path.GetPathRoot(_tempQueriesDirectory));
+      providerStub.Stub(_ => _.RelativeSearchPath)
+          .Return(Path.GetFullPath(_tempQueriesDirectory).Substring(Path.GetPathRoot(_tempQueriesDirectory).Length)); // make a relative path
 
-      QueryConfiguration configuration = new QueryConfiguration (providerStub);
-      Assert.That (configuration.GetDefaultQueryFilePath (), Is.EqualTo (Path.Combine (_tempQueriesDirectory, "queries.xml")));
+      QueryConfiguration configuration = new QueryConfiguration(providerStub);
+      Assert.That(configuration.GetDefaultQueryFilePath(), Is.EqualTo(Path.Combine(_tempQueriesDirectory, "queries.xml")));
     }
 
     [Test]
     public void GetDefaultQueryFilePath_WithMultipleRelativeSearchPaths ()
     {
       IAppContextProvider providerStub = MockRepository.GenerateStub<IAppContextProvider>();
-      providerStub.Stub (_ => _.BaseDirectory).Return (Path.GetPathRoot (_tempQueriesDirectory));
-      providerStub.Stub (_ => _.RelativeSearchPath)
-          .Return (@"A;B;C;Foo;" + Path.GetFullPath (_tempQueriesDirectory).Substring (Path.GetPathRoot (_tempQueriesDirectory).Length)); // make a relative path
+      providerStub.Stub(_ => _.BaseDirectory).Return(Path.GetPathRoot(_tempQueriesDirectory));
+      providerStub.Stub(_ => _.RelativeSearchPath)
+          .Return(@"A;B;C;Foo;" + Path.GetFullPath(_tempQueriesDirectory).Substring(Path.GetPathRoot(_tempQueriesDirectory).Length)); // make a relative path
 
-      QueryConfiguration configuration = new QueryConfiguration (providerStub);
-      Assert.That (configuration.GetDefaultQueryFilePath (), Is.EqualTo (Path.Combine (_tempQueriesDirectory, "queries.xml")));
+      QueryConfiguration configuration = new QueryConfiguration(providerStub);
+      Assert.That(configuration.GetDefaultQueryFilePath(), Is.EqualTo(Path.Combine(_tempQueriesDirectory, "queries.xml")));
     }
 
     [Test]
     public void GetDefaultQueryFilePath_ThrowsIfNoQueryFileExists ()
     {
       IAppContextProvider providerStub = MockRepository.GenerateStub<IAppContextProvider>();
-      providerStub.Stub (_ => _.BaseDirectory).Return (@"C:\");
+      providerStub.Stub(_ => _.BaseDirectory).Return(@"C:\");
 
-      QueryConfiguration config = new QueryConfiguration (providerStub);
-      Assert.That (
+      QueryConfiguration config = new QueryConfiguration(providerStub);
+      Assert.That(
           () => config.GetDefaultQueryFilePath(),
-          Throws.InstanceOf<ConfigurationException>().With.Message.EqualTo (
+          Throws.InstanceOf<ConfigurationException>().With.Message.EqualTo(
               "No default query file found. Searched for one of the following files:\nC:\\queries.xml"));
     }
 
@@ -185,13 +185,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void GetDefaultQueryFilePath_ThrowsIfNoQueryFileExists_WithMultipleRelativeSearchPaths ()
     {
       IAppContextProvider providerStub = MockRepository.GenerateStub<IAppContextProvider>();
-      providerStub.Stub (_ => _.BaseDirectory).Return (@"C:\");
-      providerStub.Stub (_ => _.RelativeSearchPath).Return (@"Bin;Foo");
+      providerStub.Stub(_ => _.BaseDirectory).Return(@"C:\");
+      providerStub.Stub(_ => _.RelativeSearchPath).Return(@"Bin;Foo");
 
-      QueryConfiguration configuration = new QueryConfiguration (providerStub);
-      Assert.That (
+      QueryConfiguration configuration = new QueryConfiguration(providerStub);
+      Assert.That(
           () => configuration.GetDefaultQueryFilePath(),
-          Throws.InstanceOf<ConfigurationException>().With.Message.EqualTo (
+          Throws.InstanceOf<ConfigurationException>().With.Message.EqualTo(
               "No default query file found. Searched for one of the following files:\nC:\\queries.xml\nC:\\Bin\\queries.xml\nC:\\Foo\\queries.xml"));
     }
 
@@ -199,24 +199,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void GetDefaultQueryFilePath_ThrowsIfMultipleQueryFilesExist ()
     {
       IAppContextProvider providerStub = MockRepository.GenerateStub<IAppContextProvider>();
-      providerStub.Stub (_ => _.BaseDirectory).Return (_tempQueriesDirectory);
-      providerStub.Stub (_ => _.RelativeSearchPath).Return ("."); // simulate multiple files by searching the same directory twice
+      providerStub.Stub(_ => _.BaseDirectory).Return(_tempQueriesDirectory);
+      providerStub.Stub(_ => _.RelativeSearchPath).Return("."); // simulate multiple files by searching the same directory twice
 
-      QueryConfiguration configuration = new QueryConfiguration (providerStub);
-      Assert.That (
+      QueryConfiguration configuration = new QueryConfiguration(providerStub);
+      Assert.That(
           () => configuration.GetDefaultQueryFilePath(),
-          Throws.InstanceOf<ConfigurationException>().With.Message.Contains (@"Two default query configuration files found"));
+          Throws.InstanceOf<ConfigurationException>().With.Message.Contains(@"Two default query configuration files found"));
     }
 
     [Test]
     public void GetDefaultQueryFilePath_WithEmptyRelativeSearchPath ()
     {
       IAppContextProvider providerStub = MockRepository.GenerateStub<IAppContextProvider>();
-      providerStub.Stub (_ => _.BaseDirectory).Return (_tempQueriesDirectory);
-      providerStub.Stub (_ => _.RelativeSearchPath).Return ("");
+      providerStub.Stub(_ => _.BaseDirectory).Return(_tempQueriesDirectory);
+      providerStub.Stub(_ => _.RelativeSearchPath).Return("");
 
-      QueryConfiguration configuration = new QueryConfiguration (providerStub);
-      Assert.That (configuration.GetDefaultQueryFilePath (), Is.EqualTo (Path.Combine (_tempQueriesDirectory, "queries.xml")));
+      QueryConfiguration configuration = new QueryConfiguration(providerStub);
+      Assert.That(configuration.GetDefaultQueryFilePath(), Is.EqualTo(Path.Combine(_tempQueriesDirectory, "queries.xml")));
     }
 
     [Test]
@@ -230,9 +230,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
               </queryFiles>
             </query>";
 
-      QueryConfiguration configuration = new QueryConfiguration ();
+      QueryConfiguration configuration = new QueryConfiguration();
 
-      ConfigurationHelper.DeserializeSection (configuration, xmlFragment);
+      ConfigurationHelper.DeserializeSection(configuration, xmlFragment);
 
       // unfortunately, this silently works because identical elements are not considered duplicates
     }
@@ -240,75 +240,75 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void QueryConfiguration_WithFileName ()
     {
-      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml");
+      QueryConfiguration configuration = new QueryConfiguration("QueriesForLoaderTest.xml");
 
-      Assert.That (configuration.QueryFiles.Count, Is.EqualTo (1));
-      Assert.That (configuration.QueryFiles[0].FileName, Is.EqualTo ("QueriesForLoaderTest.xml"));
-      Assert.That (configuration.QueryFiles[0].RootedFileName, Is.EqualTo (Path.Combine (AppContext.BaseDirectory, "QueriesForLoaderTest.xml")));
+      Assert.That(configuration.QueryFiles.Count, Is.EqualTo(1));
+      Assert.That(configuration.QueryFiles[0].FileName, Is.EqualTo("QueriesForLoaderTest.xml"));
+      Assert.That(configuration.QueryFiles[0].RootedFileName, Is.EqualTo(Path.Combine(AppContext.BaseDirectory, "QueriesForLoaderTest.xml")));
     }
 
     [Test]
     public void QueryConfiguration_WithRootedFileName ()
     {
-      QueryConfiguration configuration = new QueryConfiguration (@"c:\QueriesForLoaderTest.xml");
+      QueryConfiguration configuration = new QueryConfiguration(@"c:\QueriesForLoaderTest.xml");
 
-      Assert.That (configuration.QueryFiles.Count, Is.EqualTo (1));
-      Assert.That (configuration.QueryFiles[0].FileName, Is.EqualTo (@"c:\QueriesForLoaderTest.xml"));
+      Assert.That(configuration.QueryFiles.Count, Is.EqualTo(1));
+      Assert.That(configuration.QueryFiles[0].FileName, Is.EqualTo(@"c:\QueriesForLoaderTest.xml"));
     }
 
     [Test]
     public void QueryConfiguration_WithMultipleFileNames ()
     {
-      QueryConfiguration configuration = new QueryConfiguration ("Q1.xml", "Q2.xml");
+      QueryConfiguration configuration = new QueryConfiguration("Q1.xml", "Q2.xml");
 
-      Assert.That (configuration.QueryFiles.Count, Is.EqualTo (2));
-      Assert.That (configuration.QueryFiles[0].FileName, Is.EqualTo ("Q1.xml"));
-      Assert.That (configuration.QueryFiles[0].RootedFileName, Is.EqualTo (Path.Combine (AppContext.BaseDirectory, "Q1.xml")));
-      Assert.That (configuration.QueryFiles[1].FileName, Is.EqualTo ("Q2.xml"));
-      Assert.That (configuration.QueryFiles[1].RootedFileName, Is.EqualTo (Path.Combine (AppContext.BaseDirectory, "Q2.xml")));
+      Assert.That(configuration.QueryFiles.Count, Is.EqualTo(2));
+      Assert.That(configuration.QueryFiles[0].FileName, Is.EqualTo("Q1.xml"));
+      Assert.That(configuration.QueryFiles[0].RootedFileName, Is.EqualTo(Path.Combine(AppContext.BaseDirectory, "Q1.xml")));
+      Assert.That(configuration.QueryFiles[1].FileName, Is.EqualTo("Q2.xml"));
+      Assert.That(configuration.QueryFiles[1].RootedFileName, Is.EqualTo(Path.Combine(AppContext.BaseDirectory, "Q2.xml")));
     }
 
     [Test]
     public void GetDefinitions ()
     {
-      QueryConfiguration configuration = new QueryConfiguration (Path.Combine (TestContext.CurrentContext.TestDirectory, "QueriesForLoaderTest.xml"));
+      QueryConfiguration configuration = new QueryConfiguration(Path.Combine(TestContext.CurrentContext.TestDirectory, "QueriesForLoaderTest.xml"));
 
-      QueryConfigurationLoader loader = new QueryConfigurationLoader (
-          Path.Combine (TestContext.CurrentContext.TestDirectory, "QueriesForLoaderTest.xml"),
+      QueryConfigurationLoader loader = new QueryConfigurationLoader(
+          Path.Combine(TestContext.CurrentContext.TestDirectory, "QueriesForLoaderTest.xml"),
           _storageProviderDefinitionFinder);
-      QueryDefinitionCollection expectedQueries = loader.GetQueryDefinitions ();
+      QueryDefinitionCollection expectedQueries = loader.GetQueryDefinitions();
 
-      QueryDefinitionChecker checker = new QueryDefinitionChecker ();
-      checker.Check (expectedQueries, configuration.QueryDefinitions);
+      QueryDefinitionChecker checker = new QueryDefinitionChecker();
+      checker.Check(expectedQueries, configuration.QueryDefinitions);
     }
 
     [Test]
     public void GetDefinitions_WithMultipleFiles ()
     {
-      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml", "QueriesForLoaderTest2.xml");
+      QueryConfiguration configuration = new QueryConfiguration("QueriesForLoaderTest.xml", "QueriesForLoaderTest2.xml");
 
-      QueryConfigurationLoader loader1 = new QueryConfigurationLoader (@"QueriesForLoaderTest.xml", _storageProviderDefinitionFinder);
-      QueryConfigurationLoader loader2 = new QueryConfigurationLoader (@"QueriesForLoaderTest2.xml", _storageProviderDefinitionFinder);
-      QueryDefinitionCollection expectedQueries = loader1.GetQueryDefinitions ();
-      expectedQueries.Merge (loader2.GetQueryDefinitions());
+      QueryConfigurationLoader loader1 = new QueryConfigurationLoader(@"QueriesForLoaderTest.xml", _storageProviderDefinitionFinder);
+      QueryConfigurationLoader loader2 = new QueryConfigurationLoader(@"QueriesForLoaderTest2.xml", _storageProviderDefinitionFinder);
+      QueryDefinitionCollection expectedQueries = loader1.GetQueryDefinitions();
+      expectedQueries.Merge(loader2.GetQueryDefinitions());
 
-      Assert.That (expectedQueries.Count > loader1.GetQueryDefinitions ().Count, Is.True);
+      Assert.That(expectedQueries.Count > loader1.GetQueryDefinitions().Count, Is.True);
 
-      QueryDefinitionChecker checker = new QueryDefinitionChecker ();
-      checker.Check (expectedQueries, configuration.QueryDefinitions);
+      QueryDefinitionChecker checker = new QueryDefinitionChecker();
+      checker.Check(expectedQueries, configuration.QueryDefinitions);
     }
 
     [Test]
-    public void RootedPath_UnaffectedByDirectoryChange()
+    public void RootedPath_UnaffectedByDirectoryChange ()
     {
-      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml");
+      QueryConfiguration configuration = new QueryConfiguration("QueriesForLoaderTest.xml");
       string pathBefore = configuration.QueryFiles[0].RootedFileName;
 
       string oldDirectory = AppContext.BaseDirectory;
       try
       {
         Environment.CurrentDirectory = @"c:\";
-        Assert.That (configuration.QueryFiles[0].RootedFileName, Is.EqualTo (pathBefore));
+        Assert.That(configuration.QueryFiles[0].RootedFileName, Is.EqualTo(pathBefore));
       }
       finally
       {
@@ -319,12 +319,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void GetDefinitions_UsesRootedPath ()
     {
-      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml");
+      QueryConfiguration configuration = new QueryConfiguration("QueriesForLoaderTest.xml");
       string oldDirectory = AppContext.BaseDirectory;
       try
       {
         Environment.CurrentDirectory = @"c:\";
-        Assert.IsNotEmpty (configuration.QueryDefinitions);
+        Assert.IsNotEmpty(configuration.QueryDefinitions);
       }
       finally
       {
@@ -335,30 +335,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void CollectionType_SupportsTypeUtilityNotation ()
     {
-      QueryDefinitionCollection queries = new QueryConfiguration ("QueriesForStandardMapping.xml").QueryDefinitions;
-      Assert.That (queries["QueryWithSpecificCollectionType"].CollectionType, Is.SameAs (typeof (SpecificOrderCollection)));
+      QueryDefinitionCollection queries = new QueryConfiguration("QueriesForStandardMapping.xml").QueryDefinitions;
+      Assert.That(queries["QueryWithSpecificCollectionType"].CollectionType, Is.SameAs(typeof(SpecificOrderCollection)));
     }
 
     [Test]
     public void DifferentQueryFiles_SpecifyingDuplicates ()
     {
-      QueryConfiguration configuration = new QueryConfiguration ("QueriesForLoaderTest.xml", "QueriesForLoaderTestDuplicate.xml");
-      Assert.That (
+      QueryConfiguration configuration = new QueryConfiguration("QueriesForLoaderTest.xml", "QueriesForLoaderTestDuplicate.xml");
+      Assert.That(
           () => configuration.QueryDefinitions,
           Throws.InstanceOf<ConfigurationException>()
-              .With.Message.Matches (
+              .With.Message.Matches(
                   @"File '.*QueriesForLoaderTestDuplicate.xml' defines a duplicate "
                   + @"for query definition 'OrderQueryWithCustomCollectionType'."));
     }
 
     private QueryDefinitionCollection CreateExpectedQueryDefinitions ()
     {
-      QueryDefinitionCollection queries = new QueryDefinitionCollection ();
+      QueryDefinitionCollection queries = new QueryDefinitionCollection();
 
-      queries.Add (TestQueryFactory.CreateOrderQueryWithCustomCollectionType ());
-      queries.Add (TestQueryFactory.CreateOrderQueryDefinitionWithObjectListOfOrder ());
-      queries.Add (TestQueryFactory.CreateCustomerTypeQueryDefinition ());
-      queries.Add (TestQueryFactory.CreateOrderSumQueryDefinition ());
+      queries.Add(TestQueryFactory.CreateOrderQueryWithCustomCollectionType());
+      queries.Add(TestQueryFactory.CreateOrderQueryDefinitionWithObjectListOfOrder());
+      queries.Add(TestQueryFactory.CreateCustomerTypeQueryDefinition());
+      queries.Add(TestQueryFactory.CreateOrderSumQueryDefinition());
 
       return queries;
     }
@@ -366,10 +366,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void Load_ProviderFromDefaultStorageProvider ()
     {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"QueriesForStorageGroupTest.xml", _storageProviderDefinitionFinder);
-      QueryDefinitionCollection queries = loader.GetQueryDefinitions ();
+      QueryConfigurationLoader loader = new QueryConfigurationLoader(@"QueriesForStorageGroupTest.xml", _storageProviderDefinitionFinder);
+      QueryDefinitionCollection queries = loader.GetQueryDefinitions();
 
-      Assert.That (
+      Assert.That(
           queries["QueryFromDefaultStorageProvider"].StorageProviderDefinition,
           Is.SameAs(DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition));
     }
@@ -377,13 +377,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void Load_ProviderFromCustomStorageGroup ()
     {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"QueriesForStorageGroupTest.xml", _storageProviderDefinitionFinder);
-      QueryDefinitionCollection queries = loader.GetQueryDefinitions ();
+      QueryConfigurationLoader loader = new QueryConfigurationLoader(@"QueriesForStorageGroupTest.xml", _storageProviderDefinitionFinder);
+      QueryDefinitionCollection queries = loader.GetQueryDefinitions();
 
-      Assert.That (
+      Assert.That(
           queries["QueryFromCustomStorageGroup"].StorageProviderDefinition,
           Is.SameAs(DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions["TestDomain"]));
-      Assert.That (
+      Assert.That(
          queries["QueryFromCustomStorageGroup"].StorageProviderDefinition,
          Is.Not.SameAs(DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition));
     }
@@ -391,10 +391,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void Load_ProviderFromUndefinedStorageGroup ()
     {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"QueriesForStorageGroupTest.xml", _storageProviderDefinitionFinder);
-      QueryDefinitionCollection queries = loader.GetQueryDefinitions ();
+      QueryConfigurationLoader loader = new QueryConfigurationLoader(@"QueriesForStorageGroupTest.xml", _storageProviderDefinitionFinder);
+      QueryDefinitionCollection queries = loader.GetQueryDefinitions();
 
-      Assert.That (
+      Assert.That(
           queries["QueryFromUndefinedStorageGroup"].StorageProviderDefinition,
           Is.SameAs(DomainObjectsConfiguration.Current.Storage.DefaultStorageProviderDefinition));
     }

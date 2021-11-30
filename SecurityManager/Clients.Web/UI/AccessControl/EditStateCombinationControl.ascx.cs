@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       DeleteStateCombinationButtonText,
     }
 
-    private static readonly object s_deleteEvent = new object ();
+    private static readonly object s_deleteEvent = new object();
 
     public override IBusinessObjectDataSourceControl DataSource
     {
@@ -48,30 +48,30 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected StateCombination CurrentStateCombination
     {
-      get { return (StateCombination) CurrentObject.BusinessObject; }
+      get { return (StateCombination)CurrentObject.BusinessObject; }
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
-      DeleteStateDefinitionButton.Icon = new IconInfo (
-          ResourceUrlFactory.CreateThemedResourceUrl (typeof (EditStateCombinationControl), ResourceType.Image, "sprite.svg#DeleteItem").GetUrl());
+      DeleteStateDefinitionButton.Icon = new IconInfo(
+          ResourceUrlFactory.CreateThemedResourceUrl(typeof(EditStateCombinationControl), ResourceType.Image, "sprite.svg#DeleteItem").GetUrl());
       DeleteStateDefinitionButton.Icon.AlternateText =
-          GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.DeleteStateCombinationButtonText);
+          GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.DeleteStateCombinationButtonText);
     }
 
     public override void LoadValues (bool interim)
     {
-      base.LoadValues (interim);
+      base.LoadValues(interim);
 
       if (CurrentStateCombination.Class.StateProperties.Count == 1)
       {
         if (!interim)
           FillStateDefinitionField();
 
-        var currentStateDefinition = GetStateDefinition (CurrentStateCombination);
-        StateDefinitionField.LoadUnboundValue (currentStateDefinition, interim);
+        var currentStateDefinition = GetStateDefinition(CurrentStateCombination);
+        StateDefinitionField.LoadUnboundValue(currentStateDefinition, interim);
         StateDefinitionContainer.Visible = true;
       }
       else
@@ -83,21 +83,21 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnPreRender (EventArgs e)
     {
       RequiredStateCombinationValidator.ErrorMessage =
-          GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.RequiredStateCombinationValidatorErrorMessage);
-      
-      base.OnPreRender (e);
+          GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.RequiredStateCombinationValidatorErrorMessage);
+
+      base.OnPreRender(e);
     }
 
     private void FillStateDefinitionField ()
     {
       var stateProperties = CurrentStateCombination.Class.StateProperties;
       if (stateProperties.Count > 1)
-        throw new NotSupportedException ("Only classes with a zero or one StatePropertyDefinition are supported.");
+        throw new NotSupportedException("Only classes with a zero or one StatePropertyDefinition are supported.");
 
-      var possibleStateDefinitions = new List<StateDefinition> ();
+      var possibleStateDefinitions = new List<StateDefinition>();
       if (stateProperties.Count > 0)
-        possibleStateDefinitions.AddRange (stateProperties[0].DefinedStates);
-      StateDefinitionField.SetBusinessObjectList (possibleStateDefinitions);
+        possibleStateDefinitions.AddRange(stateProperties[0].DefinedStates);
+      StateDefinitionField.SetBusinessObjectList(possibleStateDefinitions);
     }
 
     private StateDefinition GetStateDefinition (StateCombination stateCombination)
@@ -107,9 +107,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     public override bool Validate ()
     {
-      bool isValid = base.Validate ();
+      bool isValid = base.Validate();
 
-      isValid &= ValidateStateCombination ();
+      isValid &= ValidateStateCombination();
 
       return isValid;
     }
@@ -127,13 +127,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     public override bool SaveValues (bool interim)
     {
-      var hasSaved = base.SaveValues (interim);
+      var hasSaved = base.SaveValues(interim);
 
       if (CurrentStateCombination.Class.StateProperties.Count == 1)
       {
-        var stateDefinition = (StateDefinition) StateDefinitionField.Value;
+        var stateDefinition = (StateDefinition)StateDefinitionField.Value;
         CurrentStateCombination.ClearStates();
-        CurrentStateCombination.AttachState (stateDefinition);
+        CurrentStateCombination.AttachState(stateDefinition);
       }
 
       return hasSaved;
@@ -141,20 +141,20 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected void DeleteStateDefinitionButton_Click (object sender, EventArgs e)
     {
-      var handler = (EventHandler) Events[s_deleteEvent];
+      var handler = (EventHandler)Events[s_deleteEvent];
       if (handler != null)
-        handler (this, EventArgs.Empty);
+        handler(this, EventArgs.Empty);
     }
 
     public event EventHandler Delete
     {
-      add { Events.AddHandler (s_deleteEvent, value); }
-      remove { Events.RemoveHandler (s_deleteEvent, value); }
+      add { Events.AddHandler(s_deleteEvent, value); }
+      remove { Events.RemoveHandler(s_deleteEvent, value); }
     }
 
     protected void RequiredStateCombinationValidator_ServerValidate (object source, ServerValidateEventArgs args)
     {
-      args.IsValid = !string.IsNullOrEmpty (StateDefinitionField.BusinessObjectUniqueIdentifier);
+      args.IsValid = !string.IsNullOrEmpty(StateDefinitionField.BusinessObjectUniqueIdentifier);
     }
   }
 }

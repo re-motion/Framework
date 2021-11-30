@@ -29,13 +29,13 @@ namespace Remotion.Web.Test
 {
   public class Global : HttpApplication
   {
-    private static ILog s_log = LogManager.GetLogger (typeof (Global));
+    private static ILog s_log = LogManager.GetLogger(typeof(Global));
     private static ResourceVirtualPathProvider _resourceVirtualPathProvider;
 
     protected void Application_Start (Object sender, EventArgs e)
     {
       var defaultServiceLocator = DefaultServiceLocator.Create();
-      ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
+      ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
       LogManager.Initialize();
 
 #if DEBUG
@@ -44,17 +44,17 @@ namespace Remotion.Web.Test
       const string configuration = "Release";
 #endif
 
-      _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
+      _resourceVirtualPathProvider = new ResourceVirtualPathProvider(
           new[]
           {
-              new ResourcePathMapping ("Remotion.Web.Test.Shared", @"..\..\Web\Test.Shared"),
-              new ResourcePathMapping ("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping ("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
-              new ResourcePathMapping ("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
-              new ResourcePathMapping ("Remotion.Web/UI", @"..\..\Web\Core\res\UI")
+              new ResourcePathMapping("Remotion.Web.Test.Shared", @"..\..\Web\Test.Shared"),
+              new ResourcePathMapping("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
+              new ResourcePathMapping("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
+              new ResourcePathMapping("Remotion.Web/UI", @"..\..\Web\Core\res\UI")
           },
           FileExtensionHandlerMapping.Default);
-      _resourceVirtualPathProvider.Register ();
+      _resourceVirtualPathProvider.Register();
     }
 
     protected void Session_Start (Object sender, EventArgs e)
@@ -68,15 +68,15 @@ namespace Remotion.Web.Test
 
     protected void Application_PostRequestHandlerExecute (Object sender, EventArgs e)
     {
-      var mimeType = GetMimeType (Path.GetExtension ((ReadOnlySpan<char>) Request.PhysicalPath));
+      var mimeType = GetMimeType(Path.GetExtension((ReadOnlySpan<char>)Request.PhysicalPath));
 
       if (mimeType != null)
         Response.ContentType = mimeType;
 
       static string GetMimeType (ReadOnlySpan<char> extension)
       {
-        var svg = (ReadOnlySpan<char>) ".svg";
-        if (extension.Equals (svg, StringComparison.OrdinalIgnoreCase))
+        var svg = (ReadOnlySpan<char>)".svg";
+        if (extension.Equals(svg, StringComparison.OrdinalIgnoreCase))
           return "image/svg+xml";
 
         return null;
@@ -99,19 +99,19 @@ namespace Remotion.Web.Test
     {
       var exception = Server.GetLastError();
 
-      s_log.Error ("Application Error:", exception);
+      s_log.Error("Application Error:", exception);
 
       if (exception is AsyncUnhandledException)
       {
         Server.ClearError();
-        Response.Redirect (VirtualPathUtility.ToAbsolute ("~/ErrorHandling/ErrorForm.aspx"));
+        Response.Redirect(VirtualPathUtility.ToAbsolute("~/ErrorHandling/ErrorForm.aspx"));
         return;
       }
       if (!Context.IsCustomErrorEnabled)
         return;
 
       if (exception is HttpUnhandledException && exception.InnerException is ErrorHandlingException)
-        Server.Transfer ("~/ErrorHandling/ErrorForm.aspx");
+        Server.Transfer("~/ErrorHandling/ErrorForm.aspx");
     }
 
     protected void Session_End (Object sender, EventArgs e)

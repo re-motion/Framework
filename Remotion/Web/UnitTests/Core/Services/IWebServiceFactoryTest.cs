@@ -20,8 +20,8 @@ namespace Remotion.Web.UnitTests.Core.Services
     {
       var instance = _serviceLocator.GetInstance<IWebServiceFactory>();
 
-      Assert.That (instance, Is.Not.Null);
-      Assert.That (instance, Is.TypeOf (typeof (WebServiceFactory)));
+      Assert.That(instance, Is.Not.Null);
+      Assert.That(instance, Is.TypeOf(typeof(WebServiceFactory)));
     }
 
     [Test]
@@ -30,7 +30,7 @@ namespace Remotion.Web.UnitTests.Core.Services
       var instance1 = _serviceLocator.GetInstance<IWebServiceFactory>();
       var instance2 = _serviceLocator.GetInstance<IWebServiceFactory>();
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

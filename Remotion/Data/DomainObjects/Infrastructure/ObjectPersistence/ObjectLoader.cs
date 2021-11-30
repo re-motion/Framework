@@ -47,9 +47,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         ILoadedObjectDataRegistrationAgent loadedObjectDataRegistrationAgent,
         ILoadedObjectDataProvider loadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull ("persistenceStrategy", persistenceStrategy);
-      ArgumentUtility.CheckNotNull ("loadedObjectDataRegistrationAgent", loadedObjectDataRegistrationAgent);
-      ArgumentUtility.CheckNotNull ("loadedObjectDataProvider", loadedObjectDataProvider);
+      ArgumentUtility.CheckNotNull("persistenceStrategy", persistenceStrategy);
+      ArgumentUtility.CheckNotNull("loadedObjectDataRegistrationAgent", loadedObjectDataRegistrationAgent);
+      ArgumentUtility.CheckNotNull("loadedObjectDataProvider", loadedObjectDataProvider);
 
       _persistenceStrategy = persistenceStrategy;
       _loadedObjectDataRegistrationAgent = loadedObjectDataRegistrationAgent;
@@ -73,63 +73,63 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual ILoadedObjectData LoadObject (ObjectID id, bool throwOnNotFound)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull("id", id);
 
-      var loadedObjectData = _persistenceStrategy.LoadObjectData (id);
-      _loadedObjectDataRegistrationAgent.RegisterIfRequired (new[] { loadedObjectData }, throwOnNotFound);
+      var loadedObjectData = _persistenceStrategy.LoadObjectData(id);
+      _loadedObjectDataRegistrationAgent.RegisterIfRequired(new[] { loadedObjectData }, throwOnNotFound);
       return loadedObjectData;
     }
 
     public virtual ICollection<ILoadedObjectData> LoadObjects (IEnumerable<ObjectID> idsToBeLoaded, bool throwOnNotFound)
     {
-      ArgumentUtility.CheckNotNull ("idsToBeLoaded", idsToBeLoaded);
+      ArgumentUtility.CheckNotNull("idsToBeLoaded", idsToBeLoaded);
 
       var idsToBeLoadedAsCollection = idsToBeLoaded.ConvertToCollection();
-      var loadedObjectData = _persistenceStrategy.LoadObjectData (idsToBeLoadedAsCollection).ConvertToCollection();
+      var loadedObjectData = _persistenceStrategy.LoadObjectData(idsToBeLoadedAsCollection).ConvertToCollection();
 
-      Assertion.IsTrue (loadedObjectData.Count == idsToBeLoadedAsCollection.Count, "Persistence strategy must return exactly as many items as requested.");
-      Assertion.DebugAssert (
-          loadedObjectData.Zip (idsToBeLoadedAsCollection).All (tuple => tuple.Item1.ObjectID == tuple.Item2), 
+      Assertion.IsTrue(loadedObjectData.Count == idsToBeLoadedAsCollection.Count, "Persistence strategy must return exactly as many items as requested.");
+      Assertion.DebugAssert(
+          loadedObjectData.Zip(idsToBeLoadedAsCollection).All(tuple => tuple.Item1.ObjectID == tuple.Item2),
           "Persistence strategy result must be in the same order as the input IDs.");
 
-      _loadedObjectDataRegistrationAgent.RegisterIfRequired (loadedObjectData, throwOnNotFound);
-      
+      _loadedObjectDataRegistrationAgent.RegisterIfRequired(loadedObjectData, throwOnNotFound);
+
       return loadedObjectData;
     }
 
     public virtual ILoadedObjectData GetOrLoadRelatedObject (RelationEndPointID relationEndPointID)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-      
+      ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
+
       if (!relationEndPointID.Definition.IsVirtual)
-        throw new ArgumentException ("GetOrLoadRelatedObject can only be used with virtual end points.", "relationEndPointID");
+        throw new ArgumentException("GetOrLoadRelatedObject can only be used with virtual end points.", "relationEndPointID");
 
       if (relationEndPointID.Definition.Cardinality != CardinalityType.One)
-        throw new ArgumentException ("GetOrLoadRelatedObject can only be used with one-valued end points.", "relationEndPointID");
+        throw new ArgumentException("GetOrLoadRelatedObject can only be used with one-valued end points.", "relationEndPointID");
 
-      var loadedObjectData = _persistenceStrategy.ResolveObjectRelationData (relationEndPointID, _loadedObjectDataProvider);
-      _loadedObjectDataRegistrationAgent.RegisterIfRequired (new[] { loadedObjectData }, true);
+      var loadedObjectData = _persistenceStrategy.ResolveObjectRelationData(relationEndPointID, _loadedObjectDataProvider);
+      _loadedObjectDataRegistrationAgent.RegisterIfRequired(new[] { loadedObjectData }, true);
       return loadedObjectData;
     }
 
     public virtual ICollection<ILoadedObjectData> GetOrLoadRelatedObjects (RelationEndPointID relationEndPointID)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+      ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
       if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
-        throw new ArgumentException ("GetOrLoadRelatedObjects can only be used with many-valued end points.", "relationEndPointID");
+        throw new ArgumentException("GetOrLoadRelatedObjects can only be used with many-valued end points.", "relationEndPointID");
 
-      var loadedObjectData = _persistenceStrategy.ResolveCollectionRelationData (relationEndPointID, _loadedObjectDataProvider).ConvertToCollection();
-      _loadedObjectDataRegistrationAgent.RegisterIfRequired (loadedObjectData, true);
+      var loadedObjectData = _persistenceStrategy.ResolveCollectionRelationData(relationEndPointID, _loadedObjectDataProvider).ConvertToCollection();
+      _loadedObjectDataRegistrationAgent.RegisterIfRequired(loadedObjectData, true);
       return loadedObjectData;
     }
 
     public virtual ICollection<ILoadedObjectData> GetOrLoadCollectionQueryResult (IQuery query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
-      var loadedObjectData = _persistenceStrategy.ExecuteCollectionQuery (query, _loadedObjectDataProvider).ConvertToCollection();
-      _loadedObjectDataRegistrationAgent.RegisterIfRequired (loadedObjectData, true);
+      var loadedObjectData = _persistenceStrategy.ExecuteCollectionQuery(query, _loadedObjectDataProvider).ConvertToCollection();
+      _loadedObjectDataRegistrationAgent.RegisterIfRequired(loadedObjectData, true);
       return loadedObjectData;
     }
   }

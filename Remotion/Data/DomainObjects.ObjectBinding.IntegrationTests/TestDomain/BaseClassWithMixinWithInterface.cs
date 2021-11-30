@@ -19,14 +19,14 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
 {
-  [Uses (typeof (MixinAddingPropertyBase))]
-  [DBTable ("BaseClassWithMixinWithInterface")]
+  [Uses(typeof(MixinAddingPropertyBase))]
+  [DBTable("BaseClassWithMixinWithInterface")]
   [BindableDomainObject]
   public class BaseClassWithMixinWithInterface : DomainObject
   {
     public static BaseClassWithMixinWithInterface NewObject ()
     {
-      return NewObject<BaseClassWithMixinWithInterface> ();
+      return NewObject<BaseClassWithMixinWithInterface>();
     }
   }
 }

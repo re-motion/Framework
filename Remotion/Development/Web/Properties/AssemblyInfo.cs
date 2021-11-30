@@ -19,8 +19,7 @@ using System.Reflection;
 
 [assembly: AssemblyCulture("")]
 #if NETFRAMEWORK
-[assembly: CLSCompliant (true)]
+[assembly: CLSCompliant(true)]
 #else
-[assembly: CLSCompliant (false)]
+[assembly: CLSCompliant(false)]
 #endif
-

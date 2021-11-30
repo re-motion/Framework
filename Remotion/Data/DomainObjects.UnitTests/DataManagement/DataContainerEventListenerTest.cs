@@ -36,13 +36,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _eventListener = new DataContainerEventListener (EventSinkWithMock);
+      _eventListener = new DataContainerEventListener(EventSinkWithMock);
 
       _domainObject = DomainObjectMother.CreateFakeObject();
-      _dataContainer = DataContainerObjectMother.Create (domainObject: _domainObject);
-      _propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo ();
+      _dataContainer = DataContainerObjectMother.Create(domainObject: _domainObject);
+      _propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo();
     }
 
     protected override DataContainerEventListener EventListener
@@ -53,10 +53,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void PropertyValueReading ()
     {
-      EventSinkWithMock.Expect (mock => mock.RaisePropertyValueReadingEvent ( _domainObject, _propertyDefinition, ValueAccess.Original));
+      EventSinkWithMock.Expect(mock => mock.RaisePropertyValueReadingEvent( _domainObject, _propertyDefinition, ValueAccess.Original));
       EventSinkWithMock.Replay();
 
-      EventListener.PropertyValueReading (_dataContainer, _propertyDefinition, ValueAccess.Original);
+      EventListener.PropertyValueReading(_dataContainer, _propertyDefinition, ValueAccess.Original);
 
       EventSinkWithMock.VerifyAllExpectations();
     }
@@ -64,10 +64,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void PropertyValueRead ()
     {
-      EventSinkWithMock.Expect (mock => mock.RaisePropertyValueReadEvent ( _domainObject, _propertyDefinition, "value", ValueAccess.Original));
+      EventSinkWithMock.Expect(mock => mock.RaisePropertyValueReadEvent( _domainObject, _propertyDefinition, "value", ValueAccess.Original));
       EventSinkWithMock.Replay();
 
-      EventListener.PropertyValueRead (_dataContainer, _propertyDefinition, "value", ValueAccess.Original);
+      EventListener.PropertyValueRead(_dataContainer, _propertyDefinition, "value", ValueAccess.Original);
 
       EventSinkWithMock.VerifyAllExpectations();
     }
@@ -75,10 +75,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void PropertyValueChanging ()
     {
-      EventSinkWithMock.Expect (mock1 => mock1.RaisePropertyValueChangingEvent ( _domainObject, _propertyDefinition, "oldValue", "newValue"));
+      EventSinkWithMock.Expect(mock1 => mock1.RaisePropertyValueChangingEvent( _domainObject, _propertyDefinition, "oldValue", "newValue"));
       EventSinkWithMock.Replay();
 
-      EventListener.PropertyValueChanging (_dataContainer, _propertyDefinition, "oldValue", "newValue");
+      EventListener.PropertyValueChanging(_dataContainer, _propertyDefinition, "oldValue", "newValue");
 
       EventSinkWithMock.VerifyAllExpectations();
     }
@@ -86,10 +86,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void PropertyValueChanging_WithObjectIDProperty_DoesNotRaiseEvent ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID ();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID();
       EventSinkWithMock.Replay();
 
-      EventListener.PropertyValueChanging (_dataContainer, propertyDefinition, "oldValue", "newValue");
+      EventListener.PropertyValueChanging(_dataContainer, propertyDefinition, "oldValue", "newValue");
 
       EventSinkWithMock.VerifyAllExpectations();
     }
@@ -97,10 +97,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void PropertyValueChanged ()
     {
-      EventSinkWithMock.Expect (mock => mock.RaisePropertyValueChangedEvent ( _domainObject, _propertyDefinition, "oldValue", "newValue"));
+      EventSinkWithMock.Expect(mock => mock.RaisePropertyValueChangedEvent( _domainObject, _propertyDefinition, "oldValue", "newValue"));
       EventSinkWithMock.Replay();
 
-      EventListener.PropertyValueChanged (_dataContainer, _propertyDefinition, "oldValue", "newValue");
+      EventListener.PropertyValueChanged(_dataContainer, _propertyDefinition, "oldValue", "newValue");
 
       EventSinkWithMock.VerifyAllExpectations();
     }
@@ -108,10 +108,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void PropertyValueChanged_WithObjectIDProperty_DoesNotRaiseEvent ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID ();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID();
       EventSinkWithMock.Replay();
 
-      EventListener.PropertyValueChanged (_dataContainer, propertyDefinition, "oldValue", "newValue");
+      EventListener.PropertyValueChanged(_dataContainer, propertyDefinition, "oldValue", "newValue");
 
       EventSinkWithMock.VerifyAllExpectations();
     }
@@ -120,22 +120,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void StateUpdated ()
     {
       var state = new DataContainerState.Builder().SetChanged().Value;
-      EventSinkWithMock.Expect (mock => mock.RaiseDataContainerStateUpdatedEvent ( _dataContainer, state));
+      EventSinkWithMock.Expect(mock => mock.RaiseDataContainerStateUpdatedEvent( _dataContainer, state));
       EventSinkWithMock.Replay();
 
-      EventListener.StateUpdated (_dataContainer, state);
+      EventListener.StateUpdated(_dataContainer, state);
 
       EventSinkWithMock.VerifyAllExpectations();
     }
-    
+
     [Test]
     public void Serializable ()
     {
-      var instance = new DataContainerEventListener (new SerializableClientTransactionEventSinkFake());
+      var instance = new DataContainerEventListener(new SerializableClientTransactionEventSinkFake());
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (instance);
+      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
 
-      Assert.That (deserializedInstance.EventSink, Is.Not.Null);
+      Assert.That(deserializedInstance.EventSink, Is.Not.Null);
     }
   }
 }

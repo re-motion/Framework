@@ -33,19 +33,19 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
-      var generator = new AdHocCodeGenerator (TestContext.CurrentContext.TestDirectory, "MixinTypeCodeGeneration.GeneratedTypeInConfigurationTest");
+      var generator = new AdHocCodeGenerator(TestContext.CurrentContext.TestDirectory, "MixinTypeCodeGeneration.GeneratedTypeInConfigurationTest");
       generator.AddCustomAttribute(typeof(NonApplicationAssemblyAttribute));
 
-      var generatedMixinTypeBuilder = generator.CreateType("GeneratedMixinType", typeof (Mixin<object>));
+      var generatedMixinTypeBuilder = generator.CreateType("GeneratedMixinType", typeof(Mixin<object>));
       _generatedMixinType = generatedMixinTypeBuilder.CreateType();
 
-      var generatedTargetTypeWithMethodOverrideBuilder = generator.CreateType ("GeneratedTargetType");
-      var methodBuilder = generator.CreateMethod (
-          generatedTargetTypeWithMethodOverrideBuilder, "ToString", MethodAttributes.Public, typeof (string), Type.EmptyTypes);
+      var generatedTargetTypeWithMethodOverrideBuilder = generator.CreateType("GeneratedTargetType");
+      var methodBuilder = generator.CreateMethod(
+          generatedTargetTypeWithMethodOverrideBuilder, "ToString", MethodAttributes.Public, typeof(string), Type.EmptyTypes);
       var gen = methodBuilder.GetILGenerator();
-      gen.Emit (OpCodes.Ldstr, "Generated _and_ overridden");
-      gen.Emit (OpCodes.Ret);
-      methodBuilder.SetCustomAttribute (generator.CreateCustomAttributeBuilder (typeof (OverrideMixinAttribute)));
+      gen.Emit(OpCodes.Ldstr, "Generated _and_ overridden");
+      gen.Emit(OpCodes.Ret);
+      methodBuilder.SetCustomAttribute(generator.CreateCustomAttributeBuilder(typeof(OverrideMixinAttribute)));
       _generatedTargetTypeWithMethodOverride = generatedTargetTypeWithMethodOverrideBuilder.CreateType();
 
       var generatedAssemblyPath = generator.Save();
@@ -55,10 +55,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     [Test]
     public void GeneratedMixinTypeWithOverriddenMethodWorks ()
     {
-      using (MixinConfiguration.BuildNew().ForClass<ClassOverridingMixinMethod> ().Clear().AddMixins (_generatedMixinType).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<ClassOverridingMixinMethod>().Clear().AddMixins(_generatedMixinType).EnterScope())
       {
-        object instance = ObjectFactory.Create (typeof (ClassOverridingMixinMethod), ParamList.Empty);
-        Assert.That (Mixin.Get (_generatedMixinType, instance).ToString (), Is.EqualTo ("Overridden!"));
+        object instance = ObjectFactory.Create(typeof(ClassOverridingMixinMethod), ParamList.Empty);
+        Assert.That(Mixin.Get(_generatedMixinType, instance).ToString(), Is.EqualTo("Overridden!"));
       }
     }
 
@@ -68,7 +68,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
       using (MixinConfiguration.BuildNew().ForClass(_generatedTargetTypeWithMethodOverride).Clear().AddMixins(typeof(SimpleMixin)).EnterScope())
       {
         object instance = ObjectFactory.Create(_generatedTargetTypeWithMethodOverride, ParamList.Empty);
-        Assert.That (Mixin.Get<SimpleMixin> (instance).ToString (), Is.EqualTo ("Generated _and_ overridden"));
+        Assert.That(Mixin.Get<SimpleMixin>(instance).ToString(), Is.EqualTo("Generated _and_ overridden"));
       }
     }
   }

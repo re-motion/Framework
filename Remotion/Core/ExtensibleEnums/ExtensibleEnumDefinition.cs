@@ -40,17 +40,17 @@ namespace Remotion.ExtensibleEnums
     {
       private static Dictionary<string, ExtensibleEnumInfo<T>> CreateValueDictionary (ExtensibleEnumInfo<T>[] valueInfoArray)
       {
-        var dictionary = new Dictionary<string, ExtensibleEnumInfo<T>> ();
+        var dictionary = new Dictionary<string, ExtensibleEnumInfo<T>>();
         foreach (var valueInfo in valueInfoArray)
         {
           try
           {
-            dictionary.Add (valueInfo.Value.ID, valueInfo);
+            dictionary.Add(valueInfo.Value.ID, valueInfo);
           }
           catch (ArgumentException ex)
           {
-            string message = string.Format ("Extensible enum '{0}' defines two values with ID '{1}'.", typeof (T), valueInfo.Value.ID);
-            throw new InvalidExtensibleEnumDefinitionException (message, ex);
+            string message = string.Format("Extensible enum '{0}' defines two values with ID '{1}'.", typeof(T), valueInfo.Value.ID);
+            throw new InvalidExtensibleEnumDefinitionException(message, ex);
           }
         }
         return dictionary;
@@ -58,10 +58,10 @@ namespace Remotion.ExtensibleEnums
 
       public CacheItem (ExtensibleEnumInfo<T>[] valueInfoArray)
       {
-        var orderedValueInfos = valueInfoArray.OrderBy (info => info, ExtensibleEnumInfoComparer<ExtensibleEnumInfo<T>>.Instance);
+        var orderedValueInfos = valueInfoArray.OrderBy(info => info, ExtensibleEnumInfoComparer<ExtensibleEnumInfo<T>>.Instance);
 
-        Collection = new ReadOnlyCollection<ExtensibleEnumInfo<T>> (orderedValueInfos.ToArray ());
-        Dictionary = new ReadOnlyDictionary<string, ExtensibleEnumInfo<T>> (CreateValueDictionary (valueInfoArray));
+        Collection = new ReadOnlyCollection<ExtensibleEnumInfo<T>>(orderedValueInfos.ToArray());
+        Dictionary = new ReadOnlyDictionary<string, ExtensibleEnumInfo<T>>(CreateValueDictionary(valueInfoArray));
       }
 
       public ReadOnlyCollection<ExtensibleEnumInfo<T>> Collection { get; private set; }
@@ -79,30 +79,30 @@ namespace Remotion.ExtensibleEnums
     /// for this <see cref="ExtensibleEnumDefinition{T}"/>.</param>
     public ExtensibleEnumDefinition (IExtensibleEnumValueDiscoveryService valueDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull ("valueDiscoveryService", valueDiscoveryService);
+      ArgumentUtility.CheckNotNull("valueDiscoveryService", valueDiscoveryService);
 
       _valueDiscoveryService = valueDiscoveryService;
-      _cache = new DoubleCheckedLockingContainer<CacheItem> (RetrieveValues);
+      _cache = new DoubleCheckedLockingContainer<CacheItem>(RetrieveValues);
     }
 
     /// <inheritdoc />
     public Type GetEnumType ()
     {
-      return typeof (T);
+      return typeof(T);
     }
 
     /// <inheritdoc />
     public bool IsDefined (string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-      return _cache.Value.Dictionary.ContainsKey (id);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      return _cache.Value.Dictionary.ContainsKey(id);
     }
 
     /// <inheritdoc />
     public bool IsDefined (IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      return value.GetEnumType () == GetEnumType () && IsDefined (value.ID);
+      ArgumentUtility.CheckNotNull("value", value);
+      return value.GetEnumType() == GetEnumType() && IsDefined(value.ID);
     }
 
     /// <summary>
@@ -124,17 +124,17 @@ namespace Remotion.ExtensibleEnums
     /// <exception cref="KeyNotFoundException">No enum value with the given <paramref name="id"/> exists.</exception>
     public ExtensibleEnumInfo<T> GetValueInfoByID (string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
 
       ExtensibleEnumInfo<T>? value;
-      if (TryGetValueInfoByID (id, out value))
+      if (TryGetValueInfoByID(id, out value))
       {
         return value;
       }
       else
       {
-        var message = string.Format ("The extensible enum type '{0}' does not define a value called '{1}'.", typeof (T), id);
-        throw new KeyNotFoundException (message);
+        var message = string.Format("The extensible enum type '{0}' does not define a value called '{1}'.", typeof(T), id);
+        throw new KeyNotFoundException(message);
       }
     }
 
@@ -148,63 +148,63 @@ namespace Remotion.ExtensibleEnums
     /// <returns>
     /// <see langword="true" /> if a value with the given <paramref name="id"/> could be found; <see langword="false" /> otherwise.
     /// </returns>
-    public bool TryGetValueInfoByID (string id, [MaybeNullWhen (false)] out ExtensibleEnumInfo<T> value)
+    public bool TryGetValueInfoByID (string id, [MaybeNullWhen(false)] out ExtensibleEnumInfo<T> value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
 
-      return _cache.Value.Dictionary.TryGetValue (id, out value);
+      return _cache.Value.Dictionary.TryGetValue(id, out value);
     }
 
     /// <inheritdoc />
     public object[] GetCustomAttributes (Type attributeType)
     {
-      ArgumentUtility.CheckNotNull ("attributeType", attributeType);
+      ArgumentUtility.CheckNotNull("attributeType", attributeType);
 
       var extensionTypes = (from info in GetValueInfos()
                            select info.DefiningMethod.DeclaringType).Distinct();
       var attributes = from extensionType in extensionTypes
-                       from attribute in AttributeUtility.GetCustomAttributes (extensionType, attributeType, false)
+                       from attribute in AttributeUtility.GetCustomAttributes(extensionType, attributeType, false)
                        select attribute;
-      var list = attributes.ToList ();
-      
-      var array = (object[]) Array.CreateInstance (attributeType, list.Count);
-      list.CopyTo (array);
+      var list = attributes.ToList();
+
+      var array = (object[])Array.CreateInstance(attributeType, list.Count);
+      list.CopyTo(array);
       return array;
     }
 
     /// <inheritdoc cref="IExtensibleEnumDefinition.GetCustomAttributes{TAttribute}" />
     public TAttribute[] GetCustomAttributes<TAttribute> () where TAttribute : class
     {
-      return (TAttribute[]) GetCustomAttributes (typeof(TAttribute));
+      return (TAttribute[])GetCustomAttributes(typeof(TAttribute));
     }
 
     private CacheItem RetrieveValues ()
     {
-      var valueArray = _valueDiscoveryService.GetValueInfos (this).ToArray();
+      var valueArray = _valueDiscoveryService.GetValueInfos(this).ToArray();
       //if (valueArray.Length == 0)
       //{
       //  string message = string.Format ("Extensible enum '{0}' does not define any values.", typeof (T));
       //  throw new InvalidExtensibleEnumDefinitionException (message);
       //}
-      return new CacheItem (valueArray);
+      return new CacheItem(valueArray);
     }
 
     IExtensibleEnumInfo IExtensibleEnumDefinition.GetValueInfoByID (string id)
     {
-      return GetValueInfoByID (id);
+      return GetValueInfoByID(id);
     }
 
-    bool IExtensibleEnumDefinition.TryGetValueInfoByID (string id, [MaybeNullWhen (false)] out IExtensibleEnumInfo valueInfo)
+    bool IExtensibleEnumDefinition.TryGetValueInfoByID (string id, [MaybeNullWhen(false)] out IExtensibleEnumInfo valueInfo)
     {
       ExtensibleEnumInfo<T>? typedValue;
-      var success = TryGetValueInfoByID (id, out typedValue);
+      var success = TryGetValueInfoByID(id, out typedValue);
       valueInfo = typedValue;
       return success;
     }
 
     ReadOnlyCollection<IExtensibleEnumInfo> IExtensibleEnumDefinition.GetValueInfos ()
     {
-      return new ReadOnlyCollection<IExtensibleEnumInfo> (GetValueInfos().ToArray());
+      return new ReadOnlyCollection<IExtensibleEnumInfo>(GetValueInfos().ToArray());
     }
   }
 }

@@ -26,92 +26,92 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     [Test]
     public void DomainObjectWithOneToOneRelationAndNonVirtualProperty ()
     {
-      OrderTicket orderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
-      orderTicket.Delete ();
+      OrderTicket orderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
+      orderTicket.Delete();
 
-      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
+      Order order = DomainObjectIDs.Order1.GetObject<Order>();
 
-      Assert.That (orderTicket.Order, Is.Null);
-      Assert.That (order.OrderTicket, Is.Null);
-      Assert.That (orderTicket.Properties[typeof (OrderTicket), "Order"].GetRelatedObjectID(), Is.Null);
-      Assert.That (order.State.IsChanged, Is.True);
-      Assert.That (order.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(orderTicket.Order, Is.Null);
+      Assert.That(order.OrderTicket, Is.Null);
+      Assert.That(orderTicket.Properties[typeof(OrderTicket), "Order"].GetRelatedObjectID(), Is.Null);
+      Assert.That(order.State.IsChanged, Is.True);
+      Assert.That(order.InternalDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void DomainObjectWithOneToOneRelationAndNonVirtualNullProperty ()
     {
-      Computer computerWithoutEmployee = DomainObjectIDs.Computer4.GetObject<Computer> ();
-      computerWithoutEmployee.Delete ();
+      Computer computerWithoutEmployee = DomainObjectIDs.Computer4.GetObject<Computer>();
+      computerWithoutEmployee.Delete();
 
-      Assert.That (computerWithoutEmployee.Employee, Is.Null);
-      Assert.That (computerWithoutEmployee.Properties[typeof (Computer), "Employee"].GetRelatedObjectID (), Is.Null);
+      Assert.That(computerWithoutEmployee.Employee, Is.Null);
+      Assert.That(computerWithoutEmployee.Properties[typeof(Computer), "Employee"].GetRelatedObjectID(), Is.Null);
     }
 
     [Test]
     public void DomainObjectWithOneToOneRelationAndVirtualProperty ()
     {
-      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
-      order.Delete ();
+      Order order = DomainObjectIDs.Order1.GetObject<Order>();
+      order.Delete();
 
-      OrderTicket orderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
+      OrderTicket orderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
 
-      Assert.That (orderTicket.Order, Is.Null);
-      Assert.That (order.OrderTicket, Is.Null);
-      Assert.That (orderTicket.Properties[typeof (OrderTicket), "Order"].GetRelatedObjectID (), Is.Null);
-      Assert.That (orderTicket.InternalDataContainer.State.IsChanged, Is.True);
+      Assert.That(orderTicket.Order, Is.Null);
+      Assert.That(order.OrderTicket, Is.Null);
+      Assert.That(orderTicket.Properties[typeof(OrderTicket), "Order"].GetRelatedObjectID(), Is.Null);
+      Assert.That(orderTicket.InternalDataContainer.State.IsChanged, Is.True);
     }
 
     [Test]
     public void DomainObjectWithOneToOneRelationAndVirtualNullProperty ()
     {
-      Employee employeeWithoutComputer = DomainObjectIDs.Employee1.GetObject<Employee> ();
-      employeeWithoutComputer.Delete ();
+      Employee employeeWithoutComputer = DomainObjectIDs.Employee1.GetObject<Employee>();
+      employeeWithoutComputer.Delete();
 
-      Assert.That (employeeWithoutComputer.Computer, Is.Null);
+      Assert.That(employeeWithoutComputer.Computer, Is.Null);
     }
 
     [Test]
     public void DomainObjectWithOneToManyRelation ()
     {
-      Employee supervisor = DomainObjectIDs.Employee1.GetObject<Employee> ();
-      supervisor.Delete ();
+      Employee supervisor = DomainObjectIDs.Employee1.GetObject<Employee>();
+      supervisor.Delete();
 
-      Employee subordinate1 = DomainObjectIDs.Employee4.GetObject<Employee> ();
-      Employee subordinate2 = DomainObjectIDs.Employee5.GetObject<Employee> ();
+      Employee subordinate1 = DomainObjectIDs.Employee4.GetObject<Employee>();
+      Employee subordinate2 = DomainObjectIDs.Employee5.GetObject<Employee>();
 
-      Assert.That (supervisor.Subordinates.Count, Is.EqualTo (0));
-      Assert.That (subordinate1.Supervisor, Is.Null);
-      Assert.That (subordinate2.Supervisor, Is.Null);
-      Assert.That (subordinate1.Properties[typeof (Employee), "Supervisor"].GetRelatedObjectID (), Is.Null);
-      Assert.That (subordinate2.Properties[typeof (Employee), "Supervisor"].GetRelatedObjectID (), Is.Null);
-      Assert.That (subordinate1.InternalDataContainer.State.IsChanged, Is.True);
-      Assert.That (subordinate2.InternalDataContainer.State.IsChanged, Is.True);
+      Assert.That(supervisor.Subordinates.Count, Is.EqualTo(0));
+      Assert.That(subordinate1.Supervisor, Is.Null);
+      Assert.That(subordinate2.Supervisor, Is.Null);
+      Assert.That(subordinate1.Properties[typeof(Employee), "Supervisor"].GetRelatedObjectID(), Is.Null);
+      Assert.That(subordinate2.Properties[typeof(Employee), "Supervisor"].GetRelatedObjectID(), Is.Null);
+      Assert.That(subordinate1.InternalDataContainer.State.IsChanged, Is.True);
+      Assert.That(subordinate2.InternalDataContainer.State.IsChanged, Is.True);
     }
 
     [Test]
     public void DomainObjectWithEmptyOneToManyRelation ()
     {
-      Employee supervisor = DomainObjectIDs.Employee3.GetObject<Employee> ();
-      supervisor.Delete ();
+      Employee supervisor = DomainObjectIDs.Employee3.GetObject<Employee>();
+      supervisor.Delete();
 
-      Assert.That (supervisor.Subordinates.Count, Is.EqualTo (0));
+      Assert.That(supervisor.Subordinates.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void DomainObjectWithManyToOneRelation ()
     {
       OrderItem orderItem = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
-      orderItem.Delete ();
+      orderItem.Delete();
 
-      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
+      Order order = DomainObjectIDs.Order1.GetObject<Order>();
 
-      Assert.That (orderItem.Order, Is.Null);
-      Assert.That (order.OrderItems.Count, Is.EqualTo (1));
-      Assert.That (order.OrderItems.Contains (orderItem.ID), Is.False);
-      Assert.That (orderItem.Properties[typeof (OrderItem), "Order"].GetRelatedObjectID (), Is.Null);
-      Assert.That (order.State.IsChanged, Is.True);
-      Assert.That (order.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(orderItem.Order, Is.Null);
+      Assert.That(order.OrderItems.Count, Is.EqualTo(1));
+      Assert.That(order.OrderItems.Contains(orderItem.ID), Is.False);
+      Assert.That(orderItem.Properties[typeof(OrderItem), "Order"].GetRelatedObjectID(), Is.Null);
+      Assert.That(order.State.IsChanged, Is.True);
+      Assert.That(order.InternalDataContainer.State.IsUnchanged, Is.True);
     }
   }
 }

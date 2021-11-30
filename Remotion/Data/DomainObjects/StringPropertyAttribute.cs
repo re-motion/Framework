@@ -22,10 +22,10 @@ namespace Remotion.Data.DomainObjects
   /// <summary>
   /// Apply the <see cref="StringPropertyAttribute"/> to properties of type <see cref="string"/>.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public class StringPropertyAttribute: NullableLengthConstrainedPropertyAttribute
   {
-    public StringPropertyAttribute()
+    public StringPropertyAttribute ()
     {
     }
   }

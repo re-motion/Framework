@@ -31,30 +31,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _orderItem = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
       _order = _orderItem.Order;
 
-      _eventReceiver = CreateEventReceiver ();
+      _eventReceiver = CreateEventReceiver();
     }
 
     [Test]
     public void DeleteOrderItemEvents ()
     {
-      _orderItem.Delete ();
+      _orderItem.Delete();
 
       ChangeState[] expectedStates = new ChangeState[]
     {
-      new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem"),
-      new CollectionChangeState (_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems"),
-      new RelationChangeState (_order, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", _orderItem, null, "3. Relation changing event of order"),
-      new RelationChangeState (_order, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, null, "4. Relation changed event of order"),
-      new CollectionChangeState (_order.OrderItems, _orderItem, "5. Removed event of order.OrderItems"),
-      new ObjectDeletionState (_orderItem, "6. Deleted event of orderItem"),
+      new ObjectDeletionState(_orderItem, "1. Deleting event of orderItem"),
+      new CollectionChangeState(_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems"),
+      new RelationChangeState(_order, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", _orderItem, null, "3. Relation changing event of order"),
+      new RelationChangeState(_order, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", null, null, "4. Relation changed event of order"),
+      new CollectionChangeState(_order.OrderItems, _orderItem, "5. Removed event of order.OrderItems"),
+      new ObjectDeletionState(_orderItem, "6. Deleted event of orderItem"),
     };
 
-      _eventReceiver.Check (expectedStates);
+      _eventReceiver.Check(expectedStates);
     }
 
     [Test]
@@ -64,14 +64,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       try
       {
-        _orderItem.Delete ();
-        Assert.Fail ("EventReceiverCancelException should be raised.");
+        _orderItem.Delete();
+        Assert.Fail("EventReceiverCancelException should be raised.");
       }
       catch (EventReceiverCancelException)
       {
-        ChangeState[] expectedStates = new ChangeState[] { new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem") };
+        ChangeState[] expectedStates = new ChangeState[] { new ObjectDeletionState(_orderItem, "1. Deleting event of orderItem") };
 
-        _eventReceiver.Check (expectedStates);
+        _eventReceiver.Check(expectedStates);
       }
     }
 
@@ -82,18 +82,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       try
       {
-        _orderItem.Delete ();
-        Assert.Fail ("EventReceiverCancelException should be raised.");
+        _orderItem.Delete();
+        Assert.Fail("EventReceiverCancelException should be raised.");
       }
       catch (EventReceiverCancelException)
       {
         ChangeState[] expectedStates = new ChangeState[]
-            { 
-              new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem"),
-              new CollectionChangeState (_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems") 
+            {
+              new ObjectDeletionState(_orderItem, "1. Deleting event of orderItem"),
+              new CollectionChangeState(_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems")
             };
 
-        _eventReceiver.Check (expectedStates);
+        _eventReceiver.Check(expectedStates);
       }
     }
 
@@ -104,19 +104,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       try
       {
-        _orderItem.Delete ();
-        Assert.Fail ("EventReceiverCancelException should be raised.");
+        _orderItem.Delete();
+        Assert.Fail("EventReceiverCancelException should be raised.");
       }
       catch (EventReceiverCancelException)
       {
         ChangeState[] expectedStates = new ChangeState[]
             {
-              new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem"),
-              new CollectionChangeState (_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems"),
-              new RelationChangeState (_order, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", _orderItem, null, "3. Relation changing event of order")
+              new ObjectDeletionState(_orderItem, "1. Deleting event of orderItem"),
+              new CollectionChangeState(_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems"),
+              new RelationChangeState(_order, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems", _orderItem, null, "3. Relation changing event of order")
             };
 
-        _eventReceiver.Check (expectedStates);
+        _eventReceiver.Check(expectedStates);
       }
     }
 
@@ -124,50 +124,50 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     public void Relations ()
     {
       int numberOfOrderItemsBeforeDelete = _order.OrderItems.Count;
-      _orderItem.Delete ();
+      _orderItem.Delete();
 
-      Assert.That (_orderItem.Order, Is.Null);
-      Assert.That (_order.OrderItems.Count, Is.EqualTo (numberOfOrderItemsBeforeDelete - 1));
-      Assert.That (_order.OrderItems.Contains (_orderItem.ID), Is.False);
-      Assert.That (_orderItem.Properties[typeof (OrderItem), "Order"].GetRelatedObjectID (), Is.Null);
-      Assert.That (_order.State.IsChanged, Is.True);
-      Assert.That (_order.InternalDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(_orderItem.Order, Is.Null);
+      Assert.That(_order.OrderItems.Count, Is.EqualTo(numberOfOrderItemsBeforeDelete - 1));
+      Assert.That(_order.OrderItems.Contains(_orderItem.ID), Is.False);
+      Assert.That(_orderItem.Properties[typeof(OrderItem), "Order"].GetRelatedObjectID(), Is.Null);
+      Assert.That(_order.State.IsChanged, Is.True);
+      Assert.That(_order.InternalDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void ChangePropertyBeforeDeletion ()
     {
       _orderItem.Order = null;
-      _eventReceiver = CreateEventReceiver ();
+      _eventReceiver = CreateEventReceiver();
 
-      _orderItem.Delete ();
+      _orderItem.Delete();
 
       ChangeState[] expectedStates = new ChangeState[]
           {
-            new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem"),
-            new ObjectDeletionState (_orderItem, "2. Deleted event of orderItem"),
+            new ObjectDeletionState(_orderItem, "1. Deleting event of orderItem"),
+            new ObjectDeletionState(_orderItem, "2. Deleted event of orderItem"),
           };
 
-      _eventReceiver.Check (expectedStates);
+      _eventReceiver.Check(expectedStates);
     }
 
     [Test]
     public void GetOriginalRelatedObjects ()
     {
-      _orderItem.Delete ();
+      _orderItem.Delete();
 
-      DomainObjectCollection originalOrderItems = _order.GetOriginalRelatedObjectsAsDomainObjectCollection ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      DomainObjectCollection originalOrderItems = _order.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
-      Assert.That (originalOrderItems, Is.Not.Null);
-      Assert.That (originalOrderItems.Count, Is.EqualTo (2));
-      Assert.That (originalOrderItems[_orderItem.ID], Is.SameAs (_orderItem));
+      Assert.That(originalOrderItems, Is.Not.Null);
+      Assert.That(originalOrderItems.Count, Is.EqualTo(2));
+      Assert.That(originalOrderItems[_orderItem.ID], Is.SameAs(_orderItem));
     }
 
     [Test]
     public void SetRelatedObjectOfDeletedObject ()
     {
-      _orderItem.Delete ();
-      Assert.That (
+      _orderItem.Delete();
+      Assert.That(
           () => _orderItem.Order = _order,
           Throws.InstanceOf<ObjectDeletedException>());
     }
@@ -175,28 +175,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     [Test]
     public void ReassignDeletedObject ()
     {
-      _orderItem.Delete ();
-      Assert.That (
-          () => _order.OrderItems.Add (_orderItem),
+      _orderItem.Delete();
+      Assert.That(
+          () => _order.OrderItems.Add(_orderItem),
           Throws.InstanceOf<ObjectDeletedException>());
     }
 
     [Test]
     public void DeleteOrderEvents ()
     {
-      _order.Delete ();
+      _order.Delete();
 
       var expectedStates = new ChangeState[]
     {
-      new ObjectDeletionState (_order, "1. Deleting event of order"),
-      new CollectionDeletionState (_order.OrderItems, "2. Deleting event of order.OrderItems"),
-      new RelationChangeState (_orderItem, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", _order, null, "3. Relation changing event of orderItem"),
-      new RelationChangeState (_orderItem, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, null, "4. Relation changed event of orderItem"),
-      new CollectionDeletionState (_order.OrderItems, "5. Deleted event of order.OrderItems"),
-      new ObjectDeletionState (_order, "6. Deleted event of order"),
+      new ObjectDeletionState(_order, "1. Deleting event of order"),
+      new CollectionDeletionState(_order.OrderItems, "2. Deleting event of order.OrderItems"),
+      new RelationChangeState(_orderItem, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", _order, null, "3. Relation changing event of orderItem"),
+      new RelationChangeState(_orderItem, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", null, null, "4. Relation changed event of orderItem"),
+      new CollectionDeletionState(_order.OrderItems, "5. Deleted event of order.OrderItems"),
+      new ObjectDeletionState(_order, "6. Deleted event of order"),
     };
 
-      _eventReceiver.Check (expectedStates);
+      _eventReceiver.Check(expectedStates);
     }
 
     [Test]
@@ -206,22 +206,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       try
       {
-        _order.Delete ();
-        Assert.Fail ("EventReceiverCancelException should be raised.");
+        _order.Delete();
+        Assert.Fail("EventReceiverCancelException should be raised.");
       }
       catch (EventReceiverCancelException)
       {
         var expectedStates = new ChangeState[]
             {
-              new ObjectDeletionState (_order, "1. Deleting event of order"),
-              new CollectionDeletionState (_order.OrderItems, "2. Deleting event of order.OrderItems"),
+              new ObjectDeletionState(_order, "1. Deleting event of order"),
+              new CollectionDeletionState(_order.OrderItems, "2. Deleting event of order.OrderItems"),
             };
 
-        _eventReceiver.Check (expectedStates);
+        _eventReceiver.Check(expectedStates);
       }
 
-      Assert.That (_order.State.IsDeleted, Is.False);
-      Assert.That (_order.OrderItems, Is.Not.Empty);
+      Assert.That(_order.State.IsDeleted, Is.False);
+      Assert.That(_order.OrderItems, Is.Not.Empty);
     }
 
     [Test]
@@ -231,28 +231,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
       try
       {
-        _order.Delete ();
-        Assert.Fail ("EventReceiverCancelException should be raised.");
+        _order.Delete();
+        Assert.Fail("EventReceiverCancelException should be raised.");
       }
       catch (EventReceiverCancelException)
       {
         var expectedStates = new ChangeState[]
             {
-              new ObjectDeletionState (_order, "1. Deleting event of order"),
-              new CollectionDeletionState (_order.OrderItems, "2. Deleting event of order.OrderItems"),
-              new RelationChangeState (_orderItem, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", _order, null, "3. Relation changing event of orderItem"),
+              new ObjectDeletionState(_order, "1. Deleting event of order"),
+              new CollectionDeletionState(_order.OrderItems, "2. Deleting event of order.OrderItems"),
+              new RelationChangeState(_orderItem, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order", _order, null, "3. Relation changing event of orderItem"),
             };
 
-        _eventReceiver.Check (expectedStates);
+        _eventReceiver.Check(expectedStates);
       }
 
-      Assert.That (_order.State.IsDeleted, Is.False);
-      Assert.That (_order.OrderItems, Is.Not.Empty);
+      Assert.That(_order.State.IsDeleted, Is.False);
+      Assert.That(_order.OrderItems, Is.Not.Empty);
     }
 
     private SequenceEventReceiver CreateEventReceiver ()
     {
-      return new SequenceEventReceiver (
+      return new SequenceEventReceiver(
           new DomainObject[] { _orderItem, _order },
           new DomainObjectCollection[] { _order.OrderItems });
     }

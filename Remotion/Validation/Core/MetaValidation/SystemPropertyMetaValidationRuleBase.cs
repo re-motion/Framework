@@ -32,7 +32,7 @@ namespace Remotion.Validation.MetaValidation
 
     protected SystemPropertyMetaValidationRuleBase (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
       _propertyInfo = propertyInfo;
     }
@@ -47,7 +47,7 @@ namespace Remotion.Validation.MetaValidation
       if (isValid)
         return MetaValidationRuleValidationResult.CreateValidResult();
 
-      return MetaValidationRuleValidationResult.CreateInvalidResult (
+      return MetaValidationRuleValidationResult.CreateInvalidResult(
           "'{0}' failed for member '{1}.{2}'.",
           GetType().Name,
           PropertyInfo.DeclaringType!.GetFullNameSafe(),

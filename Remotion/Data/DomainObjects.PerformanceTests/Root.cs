@@ -61,14 +61,14 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       //LinqTest();
       //InstantiationTest ();
-      
+
       // RelationQuerySyncSpike ();
 
       //ClassDefinitionTest();
 
       setUpFixture.OneTimeTearDown();
 
-      Console.WriteLine ("Tests complete");
+      Console.WriteLine("Tests complete");
       //Console.ReadLine();
     }
 #endif
@@ -88,15 +88,15 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     private static void RunCommitTest ()
     {
       var test = new CommitTest();
-      test.OneTimeSetUp ();
+      test.OneTimeSetUp();
 
-      test.SetUp ();
+      test.SetUp();
       test.CommitSubTransaction_Relations();
-      test.CommitSubTransaction_ValueProperties ();
+      test.CommitSubTransaction_ValueProperties();
       test.CommitTransactionToDatabase_NewProperties();
-      test.TearDown ();
+      test.TearDown();
 
-      test.TestFixtureTearDown ();
+      test.TestFixtureTearDown();
     }
 
     private static void RunLoadObjectsTest ()
@@ -120,14 +120,14 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       var test = new SerializationTest();
       test.OneTimeSetUp();
 
-      var testMethods = from m in test.GetType().GetMethods (BindingFlags.Public | BindingFlags.Instance)
-                        where m.IsDefined (typeof (TestAttribute), true) && !m.IsDefined (typeof (IgnoreAttribute), true)
+      var testMethods = from m in test.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                        where m.IsDefined(typeof(TestAttribute), true) && !m.IsDefined(typeof(IgnoreAttribute), true)
                         orderby m.Name
                         select m;
       foreach (MethodInfo testMethod in testMethods)
       {
         test.SetUp();
-        testMethod.Invoke (test, new object[0]);
+        testMethod.Invoke(test, new object[0]);
         test.TearDown();
       }
 
@@ -161,11 +161,11 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       test.SetUp();
       test.BusinessObject_Property_IsAccessible();
       test.BusinessObject_GetProperty();
-      test.DynamicMethod_GetProperty ();
-      test.DomainObject_GetProperty ();
-      test.BusinessObject_SetProperty ();
-      test.DomainObject_SetProperty ();
-      test.TearDown ();
+      test.DynamicMethod_GetProperty();
+      test.DomainObject_GetProperty();
+      test.BusinessObject_SetProperty();
+      test.DomainObject_SetProperty();
+      test.TearDown();
     }
 
     private static void BindableObjectWithoutSecurityTest ()
@@ -175,44 +175,44 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       test.SetUp();
       test.BusinessObject_Property_IsAccessible();
       test.BusinessObject_GetProperty();
-      test.DynamicMethod_GetProperty ();
-      test.DomainObject_GetProperty ();
-      test.BusinessObject_SetProperty ();
-      test.DomainObject_SetProperty ();
-      test.TearDown ();
+      test.DynamicMethod_GetProperty();
+      test.DomainObject_GetProperty();
+      test.BusinessObject_SetProperty();
+      test.DomainObject_SetProperty();
+      test.TearDown();
     }
 
     private static void LinqTest ()
     {
       var test = new LinqTest();
-      test.SetUp ();
-      test.WithTinyResultSet ();
-      test.WithSmallResultSet ();
-      test.WithLargeResultSet ();
-      test.WithComplexQuery_Subqueries ();
-      test.WithComplexQuery_SubqueriesInSecondFromClauseAndMultiplyOrderByClauses ();
-      test.WithComplexQuery_JoinsAndSubquery ();
+      test.SetUp();
+      test.WithTinyResultSet();
+      test.WithSmallResultSet();
+      test.WithLargeResultSet();
+      test.WithComplexQuery_Subqueries();
+      test.WithComplexQuery_SubqueriesInSecondFromClauseAndMultiplyOrderByClauses();
+      test.WithComplexQuery_JoinsAndSubquery();
       test.WithComplexQuery_GroupBy();
-      test.TearDown ();
+      test.TearDown();
     }
 
     private static void InstantiationTest ()
     {
-      var test = new InstantiationTest ();
-      test.SetUp ();
+      var test = new InstantiationTest();
+      test.SetUp();
       test.GetObjectReference();
-      test.TearDown ();
+      test.TearDown();
     }
 
     private static void ClassDefinitionTest ()
     {
       var test = new ClassDefinitionTest();
-      test.SetUp ();
-      test.GetOppositeClassDefinition ();
-      test.GetMandatoryOppositeClassDefinition ();
-      test.GetOppositeEndPointDefinition ();
-      test.GetMandatoryOppositeEndPointDefinition ();
-      test.TearDown ();
+      test.SetUp();
+      test.GetOppositeClassDefinition();
+      test.GetMandatoryOppositeClassDefinition();
+      test.GetOppositeEndPointDefinition();
+      test.GetMandatoryOppositeEndPointDefinition();
+      test.TearDown();
     }
   }
 }

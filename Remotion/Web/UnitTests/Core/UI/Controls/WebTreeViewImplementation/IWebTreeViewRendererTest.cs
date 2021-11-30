@@ -35,19 +35,19 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTreeViewImplementation
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IWebTreeViewRenderer> ();
+      var factory = _serviceLocator.GetInstance<IWebTreeViewRenderer>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (WebTreeViewRenderer)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(WebTreeViewRenderer)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IWebTreeViewRenderer> ();
-      var factory2 = _serviceLocator.GetInstance<IWebTreeViewRenderer> ();
+      var factory1 = _serviceLocator.GetInstance<IWebTreeViewRenderer>();
+      var factory2 = _serviceLocator.GetInstance<IWebTreeViewRenderer>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

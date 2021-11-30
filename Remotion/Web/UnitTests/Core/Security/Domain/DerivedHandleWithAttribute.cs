@@ -22,7 +22,7 @@ namespace Remotion.Web.UnitTests.Core.Security.Domain
   public class DerivedHandleWithAttribute<T> : Handle<T>
   {
     public DerivedHandleWithAttribute (T referencedInstance)
-        : base (referencedInstance)
+        : base(referencedInstance)
     {
     }
   }

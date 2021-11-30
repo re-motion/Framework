@@ -42,15 +42,15 @@ namespace Remotion.Validation.Validators
         [NotNull] ValidationMessage validationMessage,
         [CanBeNull] IComparer? comparer = null)
     {
-      ArgumentUtility.CheckNotNull ("from", from);
-      ArgumentUtility.CheckNotNull ("to", to);
-      ArgumentUtility.CheckNotNull ("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull("from", from);
+      ArgumentUtility.CheckNotNull("to", to);
+      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
       if (from.GetType() != to.GetType())
-        throw new ArgumentException ("'from' must have the same type as 'to'.", "to");
+        throw new ArgumentException("'from' must have the same type as 'to'.", "to");
 
-      if (to.CompareTo (from) < 0)
-        throw new ArgumentOutOfRangeException ("to", "'to' should be larger than 'from'.");
+      if (to.CompareTo(from) < 0)
+        throw new ArgumentOutOfRangeException("to", "'to' should be larger than 'from'.");
 
       To = to;
       From = from;
@@ -61,10 +61,10 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
-      if (IsValid (context))
+      if (IsValid(context))
         return Enumerable.Empty<PropertyValidationFailure>();
 
-      return EnumerableUtility.Singleton (CreateValidationError (context));
+      return EnumerableUtility.Singleton(CreateValidationError(context));
     }
 
     private bool IsValid (PropertyValidatorContext context)
@@ -75,23 +75,23 @@ namespace Remotion.Validation.Validators
         return true;
 
       if (Comparer != null)
-        return Comparer.Compare (propertyValue, From) > 0 && Comparer.Compare (propertyValue, To) < 0;
-      
+        return Comparer.Compare(propertyValue, From) > 0 && Comparer.Compare(propertyValue, To) < 0;
+
       if (propertyValue.GetType() != From.GetType())
         return true;
 
-      return ((IComparable) propertyValue).CompareTo (From) > 0 && ((IComparable) propertyValue).CompareTo (To) < 0;
+      return ((IComparable)propertyValue).CompareTo(From) > 0 && ((IComparable)propertyValue).CompareTo(To) < 0;
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
     {
-      string localizedValidationMessage = ValidationMessage.Format (
+      string localizedValidationMessage = ValidationMessage.Format(
           CultureInfo.CurrentUICulture,
-          (IFormatProvider) CultureInfo.CurrentCulture,
+          (IFormatProvider)CultureInfo.CurrentCulture,
           From,
           To);
 
-      return new PropertyValidationFailure (
+      return new PropertyValidationFailure(
           context.Instance,
           context.Property,
           context.PropertyValue,

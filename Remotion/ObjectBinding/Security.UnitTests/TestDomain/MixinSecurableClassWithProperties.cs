@@ -32,7 +32,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.TestDomain
 
     public string MixedPropertyWithReadPermission
     {
-      [DemandPermission (TestAccessTypes.First)]
+      [DemandPermission(TestAccessTypes.First)]
       get { return _mixedProperty; }
       set { _mixedProperty = value; }
     }
@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.TestDomain
     public string MixedPropertyWithWritePermission
     {
       get { return _mixedProperty; }
-      [DemandPermission (TestAccessTypes.First)]
+      [DemandPermission(TestAccessTypes.First)]
       set { _mixedProperty = value; }
     }
   }

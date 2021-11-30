@@ -37,7 +37,7 @@ namespace Remotion.UnitTests.Context
     {
       var instance = _serviceLocator.GetInstance<ISafeContextStorageProvider>();
 
-      Assert.That (instance, Is.InstanceOf(typeof (AsyncLocalStorageProvider)));
+      Assert.That(instance, Is.InstanceOf(typeof(AsyncLocalStorageProvider)));
     }
 
     [Test]
@@ -46,7 +46,7 @@ namespace Remotion.UnitTests.Context
       var instance1 = _serviceLocator.GetInstance<ISafeContextStorageProvider>();
       var instance2 = _serviceLocator.GetInstance<ISafeContextStorageProvider>();
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

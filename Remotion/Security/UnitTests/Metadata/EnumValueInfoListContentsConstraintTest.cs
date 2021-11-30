@@ -37,45 +37,45 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _enumValueInfo1 = new EnumValueInfo ("TypeName", "First", 1);
-      _enumValueInfo2 = new EnumValueInfo ("TypeName", "Second", 2);
+      _enumValueInfo1 = new EnumValueInfo("TypeName", "First", 1);
+      _enumValueInfo2 = new EnumValueInfo("TypeName", "Second", 2);
       _list = new List<EnumValueInfo>();
-      _list.Add (_enumValueInfo1);
-      _list.Add (_enumValueInfo2);
+      _list.Add(_enumValueInfo1);
+      _list.Add(_enumValueInfo2);
     }
 
     [Test]
     public void AssertWithValidValue ()
     {
-      var constraint = new EnumValueInfoListContentsConstraint ("First");
-      Assert.That (_list, constraint);
+      var constraint = new EnumValueInfoListContentsConstraint("First");
+      Assert.That(_list, constraint);
     }
 
     [Test]
     public void AssertWithListEmpty ()
     {
-      var constraint = new EnumValueInfoListContentsConstraint ("First");
-      Assert.That (constraint.ApplyTo (new List<EnumValueInfo> ()).IsSuccess, Is.False);
+      var constraint = new EnumValueInfoListContentsConstraint("First");
+      Assert.That(constraint.ApplyTo(new List<EnumValueInfo>()).IsSuccess, Is.False);
     }
 
     [Test]
     public void AssertWithInvalidValue ()
     {
-      var constraint = new EnumValueInfoListContentsConstraint ("Other");
-      Assert.That (constraint.ApplyTo(_list).IsSuccess, Is.False);
+      var constraint = new EnumValueInfoListContentsConstraint("Other");
+      Assert.That(constraint.ApplyTo(_list).IsSuccess, Is.False);
     }
 
     [Test]
     public void GetMessage ()
     {
       var writerMock = new Mock<MessageWriter>();
-      writerMock.Setup (mock => mock.Write ("Expected: ExpectedName	 but was: First, Second")).Verifiable();
+      writerMock.Setup(mock => mock.Write("Expected: ExpectedName	 but was: First, Second")).Verifiable();
 
-      var constraint = new EnumValueInfoListContentsConstraintResult (null, _list, "ExpectedName", false);
-      constraint.WriteMessageTo (writerMock.Object);
-      
+      var constraint = new EnumValueInfoListContentsConstraintResult(null, _list, "ExpectedName", false);
+      constraint.WriteMessageTo(writerMock.Object);
+
       writerMock.Verify();
     }
-    
+
   }
 }

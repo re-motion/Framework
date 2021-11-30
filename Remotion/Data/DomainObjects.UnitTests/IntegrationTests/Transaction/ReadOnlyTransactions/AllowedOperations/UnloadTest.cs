@@ -30,67 +30,67 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order1 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      ExecuteInWriteableSubTransaction (() => _order1.OrderItems.EnsureDataComplete());
-      _endPointID = ExecuteInWriteableSubTransaction (() => _order1.OrderItems.AssociatedEndPointID);
+      _order1 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Order1.GetObject<Order>());
+      ExecuteInWriteableSubTransaction(() => _order1.OrderItems.EnsureDataComplete());
+      _endPointID = ExecuteInWriteableSubTransaction(() => _order1.OrderItems.AssociatedEndPointID);
     }
 
     [Test]
     public void UnloadDataInReadOnlyRootTransaction_IsAllowed ()
     {
-      CheckDataLoaded (ReadOnlyRootTransaction, _order1);
-      CheckDataLoaded (ReadOnlyMiddleTransaction, _order1);
-      CheckDataLoaded (WriteableSubTransaction, _order1);
+      CheckDataLoaded(ReadOnlyRootTransaction, _order1);
+      CheckDataLoaded(ReadOnlyMiddleTransaction, _order1);
+      CheckDataLoaded(WriteableSubTransaction, _order1);
 
-      UnloadService.UnloadData (ReadOnlyRootTransaction, DomainObjectIDs.Order1);
+      UnloadService.UnloadData(ReadOnlyRootTransaction, DomainObjectIDs.Order1);
 
-      CheckDataNotLoaded (ReadOnlyRootTransaction, _order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, _order1);
-      CheckDataNotLoaded (WriteableSubTransaction, _order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, _order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, _order1);
+      CheckDataNotLoaded(WriteableSubTransaction, _order1);
     }
 
     [Test]
     public void UnloadDataInReadOnlyMiddleTransaction_IsAllowed ()
     {
-      CheckDataLoaded (ReadOnlyRootTransaction, _order1);
-      CheckDataLoaded (ReadOnlyMiddleTransaction, _order1);
-      CheckDataLoaded (WriteableSubTransaction, _order1);
+      CheckDataLoaded(ReadOnlyRootTransaction, _order1);
+      CheckDataLoaded(ReadOnlyMiddleTransaction, _order1);
+      CheckDataLoaded(WriteableSubTransaction, _order1);
 
-      UnloadService.UnloadData (ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
+      UnloadService.UnloadData(ReadOnlyMiddleTransaction, DomainObjectIDs.Order1);
 
-      CheckDataNotLoaded (ReadOnlyRootTransaction, _order1);
-      CheckDataNotLoaded (ReadOnlyMiddleTransaction, _order1);
-      CheckDataNotLoaded (WriteableSubTransaction, _order1);
+      CheckDataNotLoaded(ReadOnlyRootTransaction, _order1);
+      CheckDataNotLoaded(ReadOnlyMiddleTransaction, _order1);
+      CheckDataNotLoaded(WriteableSubTransaction, _order1);
     }
 
     [Test]
     public void UnloadVirtualEndPointInReadOnlyRootTransaction_IsAllowed ()
     {
-      CheckEndPointComplete (ReadOnlyRootTransaction, _endPointID);
-      CheckEndPointComplete (ReadOnlyMiddleTransaction, _endPointID);
-      CheckEndPointComplete (WriteableSubTransaction, _endPointID);
+      CheckEndPointComplete(ReadOnlyRootTransaction, _endPointID);
+      CheckEndPointComplete(ReadOnlyMiddleTransaction, _endPointID);
+      CheckEndPointComplete(WriteableSubTransaction, _endPointID);
 
-      UnloadService.UnloadVirtualEndPoint (ReadOnlyRootTransaction, _endPointID);
+      UnloadService.UnloadVirtualEndPoint(ReadOnlyRootTransaction, _endPointID);
 
-      CheckEndPointUnloaded (ReadOnlyRootTransaction, _endPointID);
-      CheckEndPointUnloaded (ReadOnlyMiddleTransaction, _endPointID);
-      CheckEndPointUnloaded (WriteableSubTransaction, _endPointID);
+      CheckEndPointUnloaded(ReadOnlyRootTransaction, _endPointID);
+      CheckEndPointUnloaded(ReadOnlyMiddleTransaction, _endPointID);
+      CheckEndPointUnloaded(WriteableSubTransaction, _endPointID);
     }
 
     [Test]
     public void UnloadVirtualRelationEndPointInReadOnlyMiddleTransaction_IsAllowed ()
     {
-      CheckEndPointComplete (ReadOnlyRootTransaction, _endPointID);
-      CheckEndPointComplete (ReadOnlyMiddleTransaction, _endPointID);
-      CheckEndPointComplete (WriteableSubTransaction, _endPointID);
+      CheckEndPointComplete(ReadOnlyRootTransaction, _endPointID);
+      CheckEndPointComplete(ReadOnlyMiddleTransaction, _endPointID);
+      CheckEndPointComplete(WriteableSubTransaction, _endPointID);
 
-      UnloadService.UnloadVirtualEndPoint (ReadOnlyMiddleTransaction, _endPointID);
+      UnloadService.UnloadVirtualEndPoint(ReadOnlyMiddleTransaction, _endPointID);
 
-      CheckEndPointUnloaded (ReadOnlyRootTransaction, _endPointID);
-      CheckEndPointUnloaded (ReadOnlyMiddleTransaction, _endPointID);
-      CheckEndPointUnloaded (WriteableSubTransaction, _endPointID);
+      CheckEndPointUnloaded(ReadOnlyRootTransaction, _endPointID);
+      CheckEndPointUnloaded(ReadOnlyMiddleTransaction, _endPointID);
+      CheckEndPointUnloaded(WriteableSubTransaction, _endPointID);
     }
 
     protected void CheckEndPointUnloaded (ClientTransaction clientTransaction, RelationEndPointID relationEndPointID)

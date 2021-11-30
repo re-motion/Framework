@@ -25,38 +25,38 @@ namespace Remotion.Web.Utilities
 {
   public class HtmlUtility
   {
-    [Obsolete ("HtmlUtility.Format(string, params string[]) is obsolete. (Version 3.0.0)")]
+    [Obsolete("HtmlUtility.Format(string, params string[]) is obsolete. (Version 3.0.0)")]
     public static string Format (string htmlFormatString, params object[] nonHtmlParameters)
     {
       string[] htmlParameters = new string[nonHtmlParameters.Length];
       for (int i = 0; i < nonHtmlParameters.Length; ++i)
-        htmlParameters[i] = WebString.CreateFromText (nonHtmlParameters[i].ToString()).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
-      return string.Format (htmlFormatString, (object[]) htmlParameters);
+        htmlParameters[i] = WebString.CreateFromText(nonHtmlParameters[i].ToString()).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
+      return string.Format(htmlFormatString, (object[])htmlParameters);
     }
 
 #if !NETFRAMEWORK
-    [Obsolete (
+    [Obsolete(
         "HtmlUtility.HtmlEncode(string) is obsolete. Use WebString.CreateFromText(string).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks) instead. (Version 3.0.0)",
         DiagnosticId = ObsoleteDiagnosticIDs.HtmlUtility)]
 #endif
     public static string HtmlEncode (string nonHtmlString)
     {
-      return WebString.CreateFromText (nonHtmlString).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+      return WebString.CreateFromText(nonHtmlString).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
     }
 
-    [Obsolete ("HtmlUtility.HtmlEncode(string, HtmlTextWriter) is obsolete. Use WebString.CreateFromText(string).Write(HtmlTextWriter) instead. (Version 3.0.0)")]
+    [Obsolete("HtmlUtility.HtmlEncode(string, HtmlTextWriter) is obsolete. Use WebString.CreateFromText(string).Write(HtmlTextWriter) instead. (Version 3.0.0)")]
     public static void HtmlEncode (string nonHtmlString, HtmlTextWriter writer)
     {
-      WebString.CreateFromText (nonHtmlString).Write (writer);
+      WebString.CreateFromText(nonHtmlString).Write(writer);
     }
 
-    private static readonly Regex s_stripHtmlTagsRegex = new Regex ("<.*?>", RegexOptions.Compiled);
+    private static readonly Regex s_stripHtmlTagsRegex = new Regex("<.*?>", RegexOptions.Compiled);
 
     public static string StripHtmlTags ([NotNull] string text)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
+      ArgumentUtility.CheckNotNull("text", text);
 
-      return s_stripHtmlTagsRegex.Replace (text, string.Empty);
+      return s_stripHtmlTagsRegex.Replace(text, string.Empty);
     }
 
     private HtmlUtility ()

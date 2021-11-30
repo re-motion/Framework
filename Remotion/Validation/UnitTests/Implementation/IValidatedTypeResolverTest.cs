@@ -37,13 +37,13 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var factory = _serviceLocator.GetInstance<IValidatedTypeResolver>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf<ClassTypeAwareValidatedTypeResolverDecorator>());
-      Assert.That (
-          ((ClassTypeAwareValidatedTypeResolverDecorator) factory).InnerResolver,
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf<ClassTypeAwareValidatedTypeResolverDecorator>());
+      Assert.That(
+          ((ClassTypeAwareValidatedTypeResolverDecorator)factory).InnerResolver,
           Is.TypeOf<GenericTypeAwareValidatedTypeResolverDecorator>());
-      Assert.That (
-          ((GenericTypeAwareValidatedTypeResolverDecorator) ((ClassTypeAwareValidatedTypeResolverDecorator) factory).InnerResolver).InnerResolver,
+      Assert.That(
+          ((GenericTypeAwareValidatedTypeResolverDecorator)((ClassTypeAwareValidatedTypeResolverDecorator)factory).InnerResolver).InnerResolver,
           Is.TypeOf<NullValidatedTypeResolver>());
     }
 
@@ -53,7 +53,7 @@ namespace Remotion.Validation.UnitTests.Implementation
       var factory1 = _serviceLocator.GetInstance<IValidatedTypeResolver>();
       var factory2 = _serviceLocator.GetInstance<IValidatedTypeResolver>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

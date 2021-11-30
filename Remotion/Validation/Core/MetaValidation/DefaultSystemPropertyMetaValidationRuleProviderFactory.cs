@@ -20,14 +20,14 @@ using Remotion.Utilities;
 
 namespace Remotion.Validation.MetaValidation
 {
-  [ImplementationFor (typeof (ISystemPropertyMetaValidationRuleProviderFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ISystemPropertyMetaValidationRuleProviderFactory), Lifetime = LifetimeKind.Singleton)]
   public class DefaultSystemPropertyMetaValidationRuleProviderFactory : ISystemPropertyMetaValidationRuleProviderFactory
   {
     public ISystemPropertyMetaValidationRuleProvider Create (IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
 
-      return new DefaultSystemPropertyMetaValidationRuleProvider (propertyInformation);
+      return new DefaultSystemPropertyMetaValidationRuleProvider(propertyInformation);
     }
   }
 }

@@ -38,16 +38,16 @@ namespace Remotion.Web.UI.Controls.Hotkey
 
     public TextWithHotkey ([NotNull] string text, int? hotkeyIndex)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
+      ArgumentUtility.CheckNotNull("text", text);
 
       if (hotkeyIndex.HasValue && hotkeyIndex.Value < 0)
-        throw new ArgumentOutOfRangeException ("hotkeyIndex", "The hotkeyIndex must not be a negative number.");
+        throw new ArgumentOutOfRangeException("hotkeyIndex", "The hotkeyIndex must not be a negative number.");
 
       if (hotkeyIndex.HasValue && hotkeyIndex.Value >= text.Length)
-        throw new ArgumentOutOfRangeException ("hotkeyIndex", "The hotkeyIndex must be less then the length of the 'text' argument.");
+        throw new ArgumentOutOfRangeException("hotkeyIndex", "The hotkeyIndex must be less then the length of the 'text' argument.");
 
       if (hotkeyIndex.HasValue && !HotkeyParser.IsValidHotkeyCharacter(text, hotkeyIndex.Value))
-        throw new ArgumentException ("The hotkeyIndex must indicate a letter or digit character.", "hotkeyIndex");
+        throw new ArgumentException("The hotkeyIndex must indicate a letter or digit character.", "hotkeyIndex");
 
       _text = text;
       _hotkeyIndex = hotkeyIndex;
@@ -57,9 +57,9 @@ namespace Remotion.Web.UI.Controls.Hotkey
 
     public TextWithHotkey ([NotNull] string text, char hotkey)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
-      if (!HotkeyParser.IsValidHotkeyCharacter(char.ToString (hotkey), 0))
-        throw new ArgumentException ("The hotkey must be a letter or digit character.", "hotkey");
+      ArgumentUtility.CheckNotNull("text", text);
+      if (!HotkeyParser.IsValidHotkeyCharacter(char.ToString(hotkey), 0))
+        throw new ArgumentException("The hotkey must be a letter or digit character.", "hotkey");
 
       _text = text;
       _hotkeyIndex = null;

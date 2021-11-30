@@ -34,7 +34,7 @@ namespace Remotion.Collections.DataStore
   /// instances. This leads to the effect that the lock used for the synchronization of the data store is always held for a very short time only,
   /// even if the factory delegate for a specific value takes a long time to execute.
   /// </remarks>
-  [Obsolete ("This type is only used in conjunction by obsolete factory method DataStoreFactory.CreateWithLazyLocking(...). (Version: 1.19.3)")]
+  [Obsolete("This type is only used in conjunction by obsolete factory method DataStoreFactory.CreateWithLazyLocking(...). (Version: 1.19.3)")]
   [Serializable]
   public class LazyLockingDataStoreAdapter<TKey, TValue> : IDataStore<TKey, TValue>
       where TKey : notnull
@@ -54,8 +54,8 @@ namespace Remotion.Collections.DataStore
 
     public LazyLockingDataStoreAdapter (IDataStore<TKey, Lazy<Wrapper>> innerDataStore)
     {
-      ArgumentUtility.CheckNotNull ("innerDataStore", innerDataStore);
-      _innerDataStore = new LockingDataStoreDecorator<TKey, Lazy<Wrapper>> (innerDataStore);
+      ArgumentUtility.CheckNotNull("innerDataStore", innerDataStore);
+      _innerDataStore = new LockingDataStoreDecorator<TKey, Lazy<Wrapper>>(innerDataStore);
     }
 
     public bool IsNull
@@ -65,20 +65,20 @@ namespace Remotion.Collections.DataStore
 
     public bool ContainsKey (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      return _innerDataStore.ContainsKey (key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
+      return _innerDataStore.ContainsKey(key);
     }
 
     public void Add (TKey key, TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      _innerDataStore.Add (key, new Lazy<Wrapper> (() => new Wrapper (value), LazyThreadSafetyMode.PublicationOnly));
+      ArgumentUtility.DebugCheckNotNull("key", key);
+      _innerDataStore.Add(key, new Lazy<Wrapper>(() => new Wrapper(value), LazyThreadSafetyMode.PublicationOnly));
     }
 
     public bool Remove (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      return _innerDataStore.Remove (key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
+      return _innerDataStore.Remove(key);
     }
 
     public void Clear ()
@@ -90,31 +90,31 @@ namespace Remotion.Collections.DataStore
     {
       get
       {
-        ArgumentUtility.DebugCheckNotNull ("key", key);
+        ArgumentUtility.DebugCheckNotNull("key", key);
         return _innerDataStore[key].Value.Value;
       }
       set
       {
-        ArgumentUtility.DebugCheckNotNull ("key", key);
-        _innerDataStore[key] = new Lazy<Wrapper> (() => new Wrapper (value), LazyThreadSafetyMode.PublicationOnly);
+        ArgumentUtility.DebugCheckNotNull("key", key);
+        _innerDataStore[key] = new Lazy<Wrapper>(() => new Wrapper(value), LazyThreadSafetyMode.PublicationOnly);
       }
     }
 
     [return: MaybeNull]
     public TValue GetValueOrDefault (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
-      var result = _innerDataStore.GetValueOrDefault (key);
+      var result = _innerDataStore.GetValueOrDefault(key);
       return result != null ? result.Value.Value : null!;
     }
 
-    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen (false)] out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
-      if (_innerDataStore.TryGetValue (key, out var result))
+
+      if (_innerDataStore.TryGetValue(key, out var result))
       {
         value = result.Value.Value;
         return true;
@@ -125,24 +125,24 @@ namespace Remotion.Collections.DataStore
 
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
 
       Wrapper wrapper;
-      if (_innerDataStore.TryGetValue (key, out var value))
+      if (_innerDataStore.TryGetValue(key, out var value))
         wrapper = value.Value;
       else
-        wrapper = GetOrCreateValueWithClosure (key, valueFactory); // Split to prevent closure being created during the TryGetValue-operation
+        wrapper = GetOrCreateValueWithClosure(key, valueFactory); // Split to prevent closure being created during the TryGetValue-operation
 
       return wrapper.Value;
     }
 
     private Wrapper GetOrCreateValueWithClosure (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
-      var result = _innerDataStore.GetOrCreateValue (
+      ArgumentUtility.CheckNotNull("valueFactory", valueFactory);
+      var result = _innerDataStore.GetOrCreateValue(
           key,
-          k => new Lazy<Wrapper> (() => new Wrapper (valueFactory (k)), LazyThreadSafetyMode.ExecutionAndPublication));
+          k => new Lazy<Wrapper>(() => new Wrapper(valueFactory(k)), LazyThreadSafetyMode.ExecutionAndPublication));
       return result.Value;
     }
   }

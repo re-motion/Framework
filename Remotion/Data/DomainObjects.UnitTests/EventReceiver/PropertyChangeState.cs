@@ -36,9 +36,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     // construction and disposing
 
     public PropertyChangeState (object sender, PropertyDefinition propertyDefinition, object oldValue, object newValue, string message = null)
-      : base (sender, message)
+      : base(sender, message)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       _propertyDefinition = propertyDefinition;
       _oldValue = oldValue;
@@ -64,29 +64,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public override void Check (ChangeState expectedState)
     {
-      base.Check (expectedState);
+      base.Check(expectedState);
 
-      PropertyChangeState propertyChangeState = (PropertyChangeState) expectedState;
+      PropertyChangeState propertyChangeState = (PropertyChangeState)expectedState;
 
       if (_propertyDefinition != propertyChangeState.PropertyDefinition)
       {
-        throw CreateApplicationException (
+        throw CreateApplicationException(
             "Actual PropertyName '{0}' and expected PropertyName '{1}' do not match.",
             _propertyDefinition.PropertyName,
             propertyChangeState.PropertyDefinition.PropertyName);
       }
 
-      if (!Equals (_oldValue, propertyChangeState.OldValue))
+      if (!Equals(_oldValue, propertyChangeState.OldValue))
       {
-        throw CreateApplicationException (
+        throw CreateApplicationException(
             "Actual old value '{0}' and expected old value '{1}' do not match.",
             _oldValue,
             propertyChangeState.OldValue);
       }
 
-      if (!Equals (_newValue, propertyChangeState.NewValue))
+      if (!Equals(_newValue, propertyChangeState.NewValue))
       {
-        throw CreateApplicationException (
+        throw CreateApplicationException(
             "Actual new value '{0}' and expected new value '{1}' do not match.",
             _newValue,
             propertyChangeState.NewValue);

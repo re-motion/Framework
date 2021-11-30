@@ -26,19 +26,19 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
   public class CodeGenerationMixinContextSerializerTest : CodeGenerationBaseTest
   {
     [Test]
-    public void IntegrationTest()
+    public void IntegrationTest ()
     {
       var referenceContext = MixinContextObjectMother.Create();
 
       var serializer = new CodeGenerationMixinContextSerializer();
-      referenceContext.Serialize (serializer);
+      referenceContext.Serialize(serializer);
 
       var expression = serializer.GetConstructorInvocationExpression();
 
-      var compiledExpression = Expression.Lambda<Func<MixinContext>> (expression).Compile ();
+      var compiledExpression = Expression.Lambda<Func<MixinContext>>(expression).Compile();
       var result = compiledExpression();
-      Assert.That (result, Is.EqualTo (referenceContext));
-      Assert.That (result.Origin, Is.EqualTo (referenceContext.Origin));
+      Assert.That(result, Is.EqualTo(referenceContext));
+      Assert.That(result.Origin, Is.EqualTo(referenceContext.Origin));
     }
   }
 }

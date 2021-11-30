@@ -24,8 +24,8 @@ namespace Remotion.Mixins.UnitTests.Core
   [TestFixture]
   public class IgnoresMixinAttributeTest
   {
-    private static readonly Type s_targetClassType = typeof (string);
-    private static readonly Type s_mixinType = typeof (int);
+    private static readonly Type s_targetClassType = typeof(string);
+    private static readonly Type s_mixinType = typeof(int);
 
     private MockRepository _mockRepository;
     private MixinConfigurationBuilder _configurationBuilderMock;
@@ -34,29 +34,29 @@ namespace Remotion.Mixins.UnitTests.Core
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository ();
-      _configurationBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder> ((MixinConfiguration) null);
-      _classBuilderMock = _mockRepository.StrictMock<ClassContextBuilder> (_configurationBuilderMock, s_targetClassType);
+      _mockRepository = new MockRepository();
+      _configurationBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration)null);
+      _classBuilderMock = _mockRepository.StrictMock<ClassContextBuilder>(_configurationBuilderMock, s_targetClassType);
     }
 
     [Test]
     public void IgnoresDuplicates ()
     {
-      var attribute = new IgnoresMixinAttribute (typeof (string));
-      Assert.That (attribute.IgnoresDuplicates, Is.False);
+      var attribute = new IgnoresMixinAttribute(typeof(string));
+      Assert.That(attribute.IgnoresDuplicates, Is.False);
     }
-    
+
     [Test]
     public void AnalyzeIgnoresMixinAttribute ()
     {
-      IgnoresMixinAttribute attribute = new IgnoresMixinAttribute (s_mixinType);
+      IgnoresMixinAttribute attribute = new IgnoresMixinAttribute(s_mixinType);
 
-      _configurationBuilderMock.Expect (mock => mock.ForClass (s_targetClassType)).Return (_classBuilderMock);
-      _classBuilderMock.Expect (mock => mock.SuppressMixin (s_mixinType)).Return (_classBuilderMock);
+      _configurationBuilderMock.Expect(mock => mock.ForClass(s_targetClassType)).Return(_classBuilderMock);
+      _classBuilderMock.Expect(mock => mock.SuppressMixin(s_mixinType)).Return(_classBuilderMock);
 
-      _mockRepository.ReplayAll ();
-      attribute.Apply (_configurationBuilderMock, s_targetClassType);
-      _mockRepository.VerifyAll ();
+      _mockRepository.ReplayAll();
+      attribute.Apply(_configurationBuilderMock, s_targetClassType);
+      _mockRepository.VerifyAll();
     }
   }
 }

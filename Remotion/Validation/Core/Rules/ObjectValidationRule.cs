@@ -36,7 +36,7 @@ namespace Remotion.Validation.Rules
         [CanBeNull] Func<TValidatedType, bool>? condition,
         [NotNull] IReadOnlyCollection<IObjectValidator> validators)
     {
-      ArgumentUtility.CheckNotNull ("validators", validators);
+      ArgumentUtility.CheckNotNull("validators", validators);
 
       Condition = condition;
       Validators = validators;
@@ -44,32 +44,32 @@ namespace Remotion.Validation.Rules
 
     public IEnumerable<ValidationFailure> Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var instanceToValidate = (TValidatedType?) context.InstanceToValidate;
+      var instanceToValidate = (TValidatedType?)context.InstanceToValidate;
       if (instanceToValidate == null)
         return Enumerable.Empty<ValidationFailure>();
 
-      if (Condition != null && !Condition (instanceToValidate))
+      if (Condition != null && !Condition(instanceToValidate))
         return Enumerable.Empty<ValidationFailure>();
 
-      var objectValidatorContext = new ObjectValidatorContext (context, instanceToValidate);
+      var objectValidatorContext = new ObjectValidatorContext(context, instanceToValidate);
 
-      return Validators.SelectMany (validator => validator.Validate (objectValidatorContext));
+      return Validators.SelectMany(validator => validator.Validate(objectValidatorContext));
     }
 
     public bool IsActive (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       if (Condition == null)
         return true;
 
-      var instanceToValidate = (TValidatedType?) context.InstanceToValidate;
+      var instanceToValidate = (TValidatedType?)context.InstanceToValidate;
       if (instanceToValidate == null)
         return false;
 
-      return Condition (instanceToValidate);
+      return Condition(instanceToValidate);
     }
   }
 }

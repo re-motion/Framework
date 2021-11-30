@@ -53,12 +53,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         ITableDefinitionFinder tableDefinitionFinder,
         IDataStoragePropertyDefinitionFactory dataStoragePropertyDefinitionFactory)
     {
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull ("dbCommandBuilderFactory", dbCommandBuilderFactory);
-      ArgumentUtility.CheckNotNull ("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
-      ArgumentUtility.CheckNotNull ("objectReaderFactory", objectReaderFactory);
-      ArgumentUtility.CheckNotNull ("tableDefinitionFinder", tableDefinitionFinder);
-      ArgumentUtility.CheckNotNull ("dataStoragePropertyDefinitionFactory", dataStoragePropertyDefinitionFactory);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("dbCommandBuilderFactory", dbCommandBuilderFactory);
+      ArgumentUtility.CheckNotNull("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
+      ArgumentUtility.CheckNotNull("objectReaderFactory", objectReaderFactory);
+      ArgumentUtility.CheckNotNull("tableDefinitionFinder", tableDefinitionFinder);
+      ArgumentUtility.CheckNotNull("dataStoragePropertyDefinitionFactory", dataStoragePropertyDefinitionFactory);
 
       _storageProviderDefinition = storageProviderDefinition;
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
@@ -68,10 +68,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       _dataStoragePropertyDefinitionFactory = dataStoragePropertyDefinitionFactory;
 
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
-      _lookupCommandFactory = CreateLookupCommandFactory ();
-      _relationLookupCommandFactory = CreateRelationLookupCommandFactory ();
-      _saveCommandFactory = CreateSaveCommandFactory ();
-      _queryCommandFactory = CreateQueryCommandFactory ();
+      _lookupCommandFactory = CreateLookupCommandFactory();
+      _relationLookupCommandFactory = CreateRelationLookupCommandFactory();
+      _saveCommandFactory = CreateSaveCommandFactory();
+      _queryCommandFactory = CreateQueryCommandFactory();
 // ReSharper restore DoNotCallOverridableMethodsInConstructor
     }
 
@@ -128,80 +128,79 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     public IStorageProviderCommand<ObjectLookupResult<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForSingleIDLookup (
         ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      return _lookupCommandFactory.CreateForSingleIDLookup (objectID);
+      return _lookupCommandFactory.CreateForSingleIDLookup(objectID);
     }
 
-    public IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext> CreateForSortedMultiIDLookup
-        (
+    public IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext> CreateForSortedMultiIDLookup (
         IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-      return _lookupCommandFactory.CreateForSortedMultiIDLookup (objectIDs);
+      return _lookupCommandFactory.CreateForSortedMultiIDLookup(objectIDs);
     }
 
     public IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForRelationLookup (
         RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition sortExpressionDefinition)
     {
-      ArgumentUtility.CheckNotNull ("foreignKeyEndPoint", foreignKeyEndPoint);
-      ArgumentUtility.CheckNotNull ("foreignKeyValue", foreignKeyValue);
+      ArgumentUtility.CheckNotNull("foreignKeyEndPoint", foreignKeyEndPoint);
+      ArgumentUtility.CheckNotNull("foreignKeyValue", foreignKeyValue);
 
-      return _relationLookupCommandFactory.CreateForRelationLookup (foreignKeyEndPoint, foreignKeyValue, sortExpressionDefinition);
+      return _relationLookupCommandFactory.CreateForRelationLookup(foreignKeyEndPoint, foreignKeyValue, sortExpressionDefinition);
     }
 
     public IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForDataContainerQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
-      return _queryCommandFactory.CreateForDataContainerQuery (query);
+      ArgumentUtility.CheckNotNull("query", query);
+      return _queryCommandFactory.CreateForDataContainerQuery(query);
     }
 
     public IStorageProviderCommand<IEnumerable<IQueryResultRow>, IRdbmsProviderCommandExecutionContext> CreateForCustomQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
-      return _queryCommandFactory.CreateForCustomQuery (query);
+      ArgumentUtility.CheckNotNull("query", query);
+      return _queryCommandFactory.CreateForCustomQuery(query);
     }
 
     public IStorageProviderCommand<object, IRdbmsProviderCommandExecutionContext> CreateForScalarQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
-      return _queryCommandFactory.CreateForScalarQuery (query);
+      ArgumentUtility.CheckNotNull("query", query);
+      return _queryCommandFactory.CreateForScalarQuery(query);
     }
 
     public IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>, IRdbmsProviderCommandExecutionContext> CreateForMultiTimestampLookup (
         IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-      return _lookupCommandFactory.CreateForMultiTimestampLookup (objectIDs);
+      return _lookupCommandFactory.CreateForMultiTimestampLookup(objectIDs);
     }
 
     public IStorageProviderCommand<IRdbmsProviderCommandExecutionContext> CreateForSave (IEnumerable<DataContainer> dataContainers)
     {
-      ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
 
-      return _saveCommandFactory.CreateForSave (dataContainers);
+      return _saveCommandFactory.CreateForSave(dataContainers);
     }
 
     protected virtual LookupCommandFactory CreateLookupCommandFactory ()
     {
-      return new LookupCommandFactory (_storageProviderDefinition, _dbCommandBuilderFactory, _objectReaderFactory, _tableDefinitionFinder);
+      return new LookupCommandFactory(_storageProviderDefinition, _dbCommandBuilderFactory, _objectReaderFactory, _tableDefinitionFinder);
     }
 
     protected virtual RelationLookupCommandFactory CreateRelationLookupCommandFactory ()
     {
-      return new RelationLookupCommandFactory (this, _dbCommandBuilderFactory, _rdbmsPersistenceModelProvider, _objectReaderFactory);
+      return new RelationLookupCommandFactory(this, _dbCommandBuilderFactory, _rdbmsPersistenceModelProvider, _objectReaderFactory);
     }
 
     protected virtual SaveCommandFactory CreateSaveCommandFactory ()
     {
-      return new SaveCommandFactory (_dbCommandBuilderFactory, _rdbmsPersistenceModelProvider, _tableDefinitionFinder);
+      return new SaveCommandFactory(_dbCommandBuilderFactory, _rdbmsPersistenceModelProvider, _tableDefinitionFinder);
     }
 
     protected virtual QueryCommandFactory CreateQueryCommandFactory ()
     {
-      return new QueryCommandFactory (_objectReaderFactory, _dbCommandBuilderFactory, _dataStoragePropertyDefinitionFactory);
+      return new QueryCommandFactory(_objectReaderFactory, _dbCommandBuilderFactory, _dataStoragePropertyDefinitionFactory);
     }
   }
 }

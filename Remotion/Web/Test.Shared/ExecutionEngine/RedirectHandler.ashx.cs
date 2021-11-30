@@ -25,11 +25,11 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
     public void ProcessRequest (HttpContext context)
     {
       string target = context.Request.QueryString["RedirectTo"];
-      if (string.IsNullOrEmpty (target))
-        throw new InvalidOperationException ("Url-Parameter 'RedirectTo' is missing.");
+      if (string.IsNullOrEmpty(target))
+        throw new InvalidOperationException("Url-Parameter 'RedirectTo' is missing.");
 
 
-      context.Response.Redirect (UrlUtility.ResolveUrlCaseSensitive (new HttpContextWrapper (context), target));
+      context.Response.Redirect(UrlUtility.ResolveUrlCaseSensitive(new HttpContextWrapper(context), target));
     }
 
     public bool IsReusable

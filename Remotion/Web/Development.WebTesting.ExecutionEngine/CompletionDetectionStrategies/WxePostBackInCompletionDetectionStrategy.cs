@@ -26,14 +26,14 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxePostBackInCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (WxePostBackInCompletionDetectionStrategy));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxePostBackInCompletionDetectionStrategy));
     private readonly PageObjectContext _context;
     private readonly int _expectedWxePostBackSequenceNumberIncrease;
     private readonly TimeSpan? _timeout;
 
     public WxePostBackInCompletionDetectionStrategy ([NotNull] PageObjectContext context, int expectedWxePostBackSequenceNumberIncrease, TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       _context = context;
       _expectedWxePostBackSequenceNumberIncrease = expectedWxePostBackSequenceNumberIncrease;
@@ -43,20 +43,20 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     /// <inheritdoc/>
     public object? PrepareWaitForCompletion (PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return WxeCompletionDetectionHelpers.GetWxePostBackSequenceNumber (_context);
+      return WxeCompletionDetectionHelpers.GetWxePostBackSequenceNumber(_context);
     }
 
     /// <inheritdoc/>
     public void WaitForCompletion (PageObjectContext context, object? state)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("state", state!);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("state", state!);
 
-      var oldWxePostBackSequenceNumber = (int) state;
+      var oldWxePostBackSequenceNumber = (int)state;
 
-      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber (
+      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(
           s_log,
           _context,
           oldWxePostBackSequenceNumber,

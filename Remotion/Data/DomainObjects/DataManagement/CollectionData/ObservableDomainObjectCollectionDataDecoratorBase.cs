@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     };
 
     protected ObservableDomainObjectCollectionDataDecoratorBase (IDomainObjectCollectionData wrappedData)
-        : base (wrappedData)
+        : base(wrappedData)
     {
     }
 
@@ -50,89 +50,89 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       int index = 0;
       foreach (var domainObject in this)
       {
-        OnDataChanging (OperationKind.Remove, domainObject, index);
-        removedObjects.Push (domainObject);
+        OnDataChanging(OperationKind.Remove, domainObject, index);
+        removedObjects.Push(domainObject);
         ++index;
       }
 
-      Assertion.IsTrue (index == Count);
+      Assertion.IsTrue(index == Count);
 
       WrappedData.Clear();
 
       foreach (var domainObject in removedObjects)
       {
         --index;
-        OnDataChanged (OperationKind.Remove, domainObject, index);
+        OnDataChanged(OperationKind.Remove, domainObject, index);
       }
 
-      Assertion.IsTrue (index == 0);
+      Assertion.IsTrue(index == 0);
     }
 
     public override void Insert (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      OnDataChanging (OperationKind.Insert, domainObject, index);
-      WrappedData.Insert (index, domainObject);
-      OnDataChanged (OperationKind.Insert, domainObject, index);
+      OnDataChanging(OperationKind.Insert, domainObject, index);
+      WrappedData.Insert(index, domainObject);
+      OnDataChanged(OperationKind.Insert, domainObject, index);
     }
 
     public override bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      int index = IndexOf (domainObject.ID);
+      int index = IndexOf(domainObject.ID);
       if (index == -1)
         return false;
 
-      OnDataChanging (OperationKind.Remove, domainObject, index);
-      WrappedData.Remove (domainObject);
-      OnDataChanged (OperationKind.Remove, domainObject, index);
+      OnDataChanging(OperationKind.Remove, domainObject, index);
+      WrappedData.Remove(domainObject);
+      OnDataChanged(OperationKind.Remove, domainObject, index);
 
       return true;
     }
 
     public override bool Remove (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      int index = IndexOf (objectID);
+      int index = IndexOf(objectID);
       if (index == -1)
         return false;
 
-      var domainObject = GetObject (objectID);
-      OnDataChanging (OperationKind.Remove, domainObject, index);
-      WrappedData.Remove (objectID);
-      OnDataChanged (OperationKind.Remove, domainObject, index);
+      var domainObject = GetObject(objectID);
+      OnDataChanging(OperationKind.Remove, domainObject, index);
+      WrappedData.Remove(objectID);
+      OnDataChanged(OperationKind.Remove, domainObject, index);
 
       return true;
     }
 
     public override void Replace (int index, DomainObject value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      var oldDomainObject = GetObject (index);
+      var oldDomainObject = GetObject(index);
       if (oldDomainObject != value)
       {
-        OnDataChanging (OperationKind.Remove, oldDomainObject, index);
-        OnDataChanging (OperationKind.Insert, value, index);
-        WrappedData.Replace (index, value);
-        OnDataChanged (OperationKind.Remove, oldDomainObject, index);
-        OnDataChanged (OperationKind.Insert, value, index);
+        OnDataChanging(OperationKind.Remove, oldDomainObject, index);
+        OnDataChanging(OperationKind.Insert, value, index);
+        WrappedData.Replace(index, value);
+        OnDataChanged(OperationKind.Remove, oldDomainObject, index);
+        OnDataChanged(OperationKind.Insert, value, index);
       }
     }
 
     public override void Sort (Comparison<DomainObject> comparison)
     {
-      OnDataChanging (OperationKind.Sort, null, -1);
+      OnDataChanging(OperationKind.Sort, null, -1);
       try
       {
-        base.Sort (comparison);
+        base.Sort(comparison);
       }
       finally
       {
-        OnDataChanged (OperationKind.Sort, null, -1);
+        OnDataChanged(OperationKind.Sort, null, -1);
       }
     }
   }

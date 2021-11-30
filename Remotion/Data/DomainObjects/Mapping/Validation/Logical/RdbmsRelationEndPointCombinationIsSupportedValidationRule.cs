@@ -27,17 +27,17 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     public override MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       var endPointDefinition1 = relationDefinition.EndPointDefinitions[0];
       var endPointDefinition2 = relationDefinition.EndPointDefinitions[1];
 
-      if (IsInvalidEndPointDefinition (endPointDefinition1) || IsInvalidEndPointDefinition (endPointDefinition2))
+      if (IsInvalidEndPointDefinition(endPointDefinition1) || IsInvalidEndPointDefinition(endPointDefinition2))
         return MappingValidationResult.CreateValidResult();
 
       if (endPointDefinition1.IsAnonymous && endPointDefinition2.IsAnonymous)
       {
-        return MappingValidationResult.CreateInvalidResult ("Relation '{0}' cannot have two anonymous end points.", relationDefinition.ID);
+        return MappingValidationResult.CreateInvalidResult("Relation '{0}' cannot have two anonymous end points.", relationDefinition.ID);
       }
 
       if (endPointDefinition1.IsVirtual && endPointDefinition2.IsVirtual)
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
         var property2 = endPointDefinition2.PropertyInfo;
         if (property1 != null && property2 != null)
         {
-          return MappingValidationResult.CreateInvalidResultForRelation (
+          return MappingValidationResult.CreateInvalidResultForRelation(
               relationDefinition.ID,
               endPointDefinition1.PropertyInfo,
               "The relation between property '{0}', declared on type '{1}', and property '{2}' declared on type '{3}', contains two virtual end points. "
@@ -55,11 +55,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
               endPointDefinition1.ClassDefinition.ClassType.Name,
               property2.Name,
               endPointDefinition2.ClassDefinition.ClassType.Name,
-              typeof (DBBidirectionalRelationAttribute).Name);
+              typeof(DBBidirectionalRelationAttribute).Name);
         }
         else
         {
-          return MappingValidationResult.CreateInvalidResultForRelation (
+          return MappingValidationResult.CreateInvalidResultForRelation(
               relationDefinition.ID,
               endPointDefinition1.PropertyInfo,
               "Relation '{0}' cannot have two virtual end points.",
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
       if (!endPointDefinition1.IsVirtual && !endPointDefinition2.IsVirtual)
       {
-        return MappingValidationResult.CreateInvalidResultForRelation (
+        return MappingValidationResult.CreateInvalidResultForRelation(
             relationDefinition.ID,
             endPointDefinition1.PropertyInfo,
             "The relation between property '{0}', declared on type '{1}', and property '{2}' declared on type '{3}', contains two non-virtual end points. "
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
             endPointDefinition1.ClassDefinition.ClassType.Name,
             endPointDefinition2.PropertyInfo.Name,
             endPointDefinition2.ClassDefinition.ClassType.Name,
-            typeof (DBBidirectionalRelationAttribute).Name);
+            typeof(DBBidirectionalRelationAttribute).Name);
       }
 
       return MappingValidationResult.CreateValidResult();

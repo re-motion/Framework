@@ -36,10 +36,10 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         [NotNull] params string[] cssSelector)
     {
-      ArgumentUtility.CheckNotNull ("violations", violations);
-      ArgumentUtility.CheckNotNullOrItemsNull ("cssSelector", cssSelector);
+      ArgumentUtility.CheckNotNull("violations", violations);
+      ArgumentUtility.CheckNotNullOrItemsNull("cssSelector", cssSelector);
 
-      return violations.Where (x => !ArrayEquals (x.TargetPath.Select (p => p.CssSelector).ToArray(), cssSelector));
+      return violations.Where(x => !ArrayEquals(x.TargetPath.Select(p => p.CssSelector).ToArray(), cssSelector));
     }
 
     /// <summary>
@@ -49,9 +49,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         AccessibilityTestImpact ruleImpact)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
+      ArgumentUtility.CheckNotNullOrItemsNull("violations", violations);
 
-      return violations.Where (x => ruleImpact != x.Rule.Impact);
+      return violations.Where(x => ruleImpact != x.Rule.Impact);
     }
 
     /// <summary>
@@ -61,9 +61,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         AccessibilityRuleID ruleID)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
+      ArgumentUtility.CheckNotNullOrItemsNull("violations", violations);
 
-      return violations.Where (x => ruleID != x.Rule.ID);
+      return violations.Where(x => ruleID != x.Rule.ID);
     }
 
     /// <summary>
@@ -73,9 +73,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         AccessibilityTestSuccessCriteria successCriteria)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
+      ArgumentUtility.CheckNotNullOrItemsNull("violations", violations);
 
-      return violations.Where (v => v.Rule.SuccessCriteria.All (s => successCriteria != s));
+      return violations.Where(v => v.Rule.SuccessCriteria.All(s => successCriteria != s));
     }
 
     /// <summary>
@@ -85,13 +85,13 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         [NotNull] params AccessibilityRequirementID[] checkIDs)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
-      ArgumentUtility.CheckNotNullOrEmpty ("checkIDs", checkIDs);
+      ArgumentUtility.CheckNotNullOrItemsNull("violations", violations);
+      ArgumentUtility.CheckNotNullOrEmpty("checkIDs", checkIDs);
 
-      return violations.Where (
-          x => checkIDs.Except (x.Any.Select (a => a.ID)).Any()
-               && checkIDs.Except (x.All.Select (a => a.ID)).Any()
-               && checkIDs.Except (x.None.Select (a => a.ID)).Any());
+      return violations.Where(
+          x => checkIDs.Except(x.Any.Select(a => a.ID)).Any()
+               && checkIDs.Except(x.All.Select(a => a.ID)).Any()
+               && checkIDs.Except(x.None.Select(a => a.ID)).Any());
     }
 
     /// <summary>
@@ -101,13 +101,13 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         [NotNull] AccessibilityResultFilter filter)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
-      ArgumentUtility.CheckNotNull ("filter", filter);
+      ArgumentUtility.CheckNotNullOrItemsNull("violations", violations);
+      ArgumentUtility.CheckNotNull("filter", filter);
 
-      return violations.Where (
-          v => !(v.TargetPath.Select (p => p.CssSelector).Any (s => filter.IgnoreCssSelectors.Contains (s))
-                 || filter.IgnoreRuleID.Contains (v.Rule.ID)
-                 || v.Rule.SuccessCriteria.All (s => filter.IgnoreSuccessCriteria.Contains (s))
+      return violations.Where(
+          v => !(v.TargetPath.Select(p => p.CssSelector).Any(s => filter.IgnoreCssSelectors.Contains(s))
+                 || filter.IgnoreRuleID.Contains(v.Rule.ID)
+                 || v.Rule.SuccessCriteria.All(s => filter.IgnoreSuccessCriteria.Contains(s))
                  || filter.IncludeImpact != null && v.Rule.Impact != filter.IncludeImpact.Value)
           );
     }
@@ -120,10 +120,10 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         AccessibilityRuleID ruleID,
         params string[] xPath)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("violations", violations);
-      ArgumentUtility.CheckNotNullOrEmpty ("xPath", xPath);
+      ArgumentUtility.CheckNotNullOrItemsNull("violations", violations);
+      ArgumentUtility.CheckNotNullOrEmpty("xPath", xPath);
 
-      return violations.Where (v => v.Rule.ID != ruleID || !ArrayEquals (v.TargetPath.Select (p => p.XPath).ToArray(), xPath)).ToArray();
+      return violations.Where(v => v.Rule.ID != ruleID || !ArrayEquals(v.TargetPath.Select(p => p.XPath).ToArray(), xPath)).ToArray();
     }
 
     private static bool ArrayEquals (string[] arrayA, string[] arrayB)

@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Gene
     /// <inheritdoc />
     public override BocEnumValue CreateControl (GenericTestOptions options)
     {
-      var control = base.CreateControl (options);
+      var control = base.CreateControl(options);
       control.ListControlStyle.ControlType = _controlType;
       return control;
     }

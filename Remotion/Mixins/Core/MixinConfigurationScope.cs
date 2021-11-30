@@ -41,7 +41,7 @@ namespace Remotion.Mixins
     {
       if (!_disposed)
       {
-        MixinConfiguration.SetActiveConfiguration (_previousContext);
+        MixinConfiguration.SetActiveConfiguration(_previousContext);
         _disposed = true;
       }
     }

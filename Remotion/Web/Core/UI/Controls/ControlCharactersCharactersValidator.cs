@@ -36,9 +36,9 @@ namespace Remotion.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to ignore line feed and line break characters during validation. 
     /// </summary>
     /// <value> <see langword="true"/> to ignore line feed and line break characters. Defaults to <see langword="false"/>. </value>
-    [Category ("Behavior")]
-    [Description ("Set this flag to allow line feed and line break characters in the text.")]
-    [DefaultValue (false)]
+    [Category("Behavior")]
+    [Description("Set this flag to allow line feed and line break characters in the text.")]
+    [DefaultValue(false)]
     public bool EnableMultilineText { get; set; }
 
     /// <summary>
@@ -46,31 +46,31 @@ namespace Remotion.Web.UI.Controls
     /// Use <c>{0}</c> for the text fragment where the error occurred. Use <c>{1}</c> for the line position and <c>{2}</c> for the line number.
     /// </summary>
     [Category("Appearance")]
-    [Description ("Set this property to specify a format string to be used as ErrorMessage. Use '{0}' for the text fragment where the error occurred. Use '{1}' for the line position and '{2}' for the line number.")]
-    [DefaultValue ("")]
+    [Description("Set this property to specify a format string to be used as ErrorMessage. Use '{0}' for the text fragment where the error occurred. Use '{1}' for the line position and '{2}' for the line number.")]
+    [DefaultValue("")]
 
     public string? ErrorMessageFormat { get; set; }
-    
+
     /// <summary>
     /// Gets or sets length of the leading and trailing text sample to be included in the <see cref="BaseValidator.ErrorMessage"/>.
     /// </summary>
     /// <value> Defaults to <c>5</c>. </value>
     [Category("Appearance")]
-    [Description ("Set length of the leading and trailing text sample to be included in the error message.")]
-    [DefaultValue (c_sampleTextLengthDefaultValue)]
+    [Description("Set length of the leading and trailing text sample to be included in the error message.")]
+    [DefaultValue(c_sampleTextLengthDefaultValue)]
 
     public int SampleTextLength { get; set; }
 
     protected override bool EvaluateIsValid ()
     {
-      string text = base.GetControlValidationValue (base.ControlToValidate);
+      string text = base.GetControlValidationValue(base.ControlToValidate);
 
-      return EvaluateIsTextValid (text);
+      return EvaluateIsTextValid(text);
     }
 
     protected bool EvaluateIsTextValid (string text)
     {
-      if (string.IsNullOrEmpty (text))
+      if (string.IsNullOrEmpty(text))
         return true;
 
       int linePosition = 0;
@@ -81,7 +81,7 @@ namespace Remotion.Web.UI.Controls
         linePosition++;
 
         var c = text[textPosition];
-        if (char.IsControl (c))
+        if (char.IsControl(c))
         {
           if (c == '\t')
             continue;
@@ -99,7 +99,7 @@ namespace Remotion.Web.UI.Controls
               continue;
           }
 
-          return HandleError (textPosition);
+          return HandleError(textPosition);
         }
       }
 
@@ -107,25 +107,25 @@ namespace Remotion.Web.UI.Controls
 
       bool HandleError (int textPosition)
       {
-        if (!string.IsNullOrEmpty (ErrorMessageFormat))
+        if (!string.IsNullOrEmpty(ErrorMessageFormat))
         {
-          var sampleTextLength = Math.Max (0, SampleTextLength);
-          var sampleTextStart = Math.Max (0, textPosition - sampleTextLength);
-          var sampleTextEnd = Math.Min (textPosition + sampleTextLength, text.Length - 1);
-          var sampleText = text.Substring (sampleTextStart, sampleTextEnd + 1 - sampleTextStart);
+          var sampleTextLength = Math.Max(0, SampleTextLength);
+          var sampleTextStart = Math.Max(0, textPosition - sampleTextLength);
+          var sampleTextEnd = Math.Min(textPosition + sampleTextLength, text.Length - 1);
+          var sampleText = text.Substring(sampleTextStart, sampleTextEnd + 1 - sampleTextStart);
 
           if (EnableMultilineText)
           {
-            var indexOfLastLeadingLineBreak = sampleText.LastIndexOf ('\n', textPosition - sampleTextStart) + 1;
+            var indexOfLastLeadingLineBreak = sampleText.LastIndexOf('\n', textPosition - sampleTextStart) + 1;
 
-            var indexOfFirstTrailingLineBreak = sampleText.IndexOf ('\n', textPosition - sampleTextStart);
+            var indexOfFirstTrailingLineBreak = sampleText.IndexOf('\n', textPosition - sampleTextStart);
             if (indexOfFirstTrailingLineBreak == -1)
               indexOfFirstTrailingLineBreak = sampleText.Length;
 
-            sampleText = sampleText.Substring (indexOfLastLeadingLineBreak, indexOfFirstTrailingLineBreak - indexOfLastLeadingLineBreak);
+            sampleText = sampleText.Substring(indexOfLastLeadingLineBreak, indexOfFirstTrailingLineBreak - indexOfLastLeadingLineBreak);
           }
 
-          ErrorMessage = string.Format (ErrorMessageFormat, sampleText, linePosition, lineNumber);
+          ErrorMessage = string.Format(ErrorMessageFormat, sampleText, linePosition, lineNumber);
         }
 
         return false;

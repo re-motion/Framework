@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
-        : base (classDefinition, propertyInfo, nameResolver, propertyMetadataProvider, domainModelConstraintProvider, sortExpressionDefinitionProvider)
+        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider, domainModelConstraintProvider, sortExpressionDefinitionProvider)
     {
     }
 
@@ -41,10 +41,10 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       if (!IsBidirectionalRelation)
         return false;
 
-      if (ReflectionUtility.IsObjectList (PropertyInfo.PropertyType))
+      if (ReflectionUtility.IsObjectList(PropertyInfo.PropertyType))
         return true;
 
-      if (ReflectionUtility.IsIObjectList (PropertyInfo.PropertyType))
+      if (ReflectionUtility.IsIObjectList(PropertyInfo.PropertyType))
         return true;
 
       if (BidirectionalRelationAttribute.ContainsForeignKey)
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       if (oppositePropertyInfo == null)
         return false;
 
-      if (ReflectionUtility.IsDomainObject (oppositePropertyInfo.PropertyType))
+      if (ReflectionUtility.IsDomainObject(oppositePropertyInfo.PropertyType))
         return true;
 
       return false;

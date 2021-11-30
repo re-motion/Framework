@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     private FlatClassContextSerializer _serializer;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _serializer = new FlatClassContextSerializer();
     }
@@ -35,39 +35,39 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     [Test]
     public void AddClassType ()
     {
-      _serializer.AddClassType (typeof (DateTime));
-      Assert.That (_serializer.Values[0], Is.EqualTo (typeof (DateTime).AssemblyQualifiedName));
+      _serializer.AddClassType(typeof(DateTime));
+      Assert.That(_serializer.Values[0], Is.EqualTo(typeof(DateTime).AssemblyQualifiedName));
 
-      var deserializer = new FlatClassContextDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetClassType (), Is.SameAs (typeof (DateTime)));
+      var deserializer = new FlatClassContextDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetClassType(), Is.SameAs(typeof(DateTime)));
     }
 
     [Test]
     public void AddMixins ()
     {
-      var mixinContext1 = MixinContextObjectMother.Create (mixinType: typeof (DateTime));
-      var mixinContext2 = MixinContextObjectMother.Create (mixinType: typeof (int));
+      var mixinContext1 = MixinContextObjectMother.Create(mixinType: typeof(DateTime));
+      var mixinContext2 = MixinContextObjectMother.Create(mixinType: typeof(int));
       var mixinContexts = new[] { mixinContext1, mixinContext2 };
-      _serializer.AddMixins (mixinContexts);
+      _serializer.AddMixins(mixinContexts);
 
       // Check that the chain of serializers correctly sets up the FlatMixinContextOriginSerializer
-      var serializedMixins = ((object[]) _serializer.Values[1]);
-      Assert.That (serializedMixins, Has.Length.EqualTo (2));
-      var serializedMixin1 = (object[]) serializedMixins[0];
-      Assert.That (serializedMixin1[0], Is.EqualTo (typeof (DateTime).AssemblyQualifiedName));
+      var serializedMixins = ((object[])_serializer.Values[1]);
+      Assert.That(serializedMixins, Has.Length.EqualTo(2));
+      var serializedMixin1 = (object[])serializedMixins[0];
+      Assert.That(serializedMixin1[0], Is.EqualTo(typeof(DateTime).AssemblyQualifiedName));
 
-      var deserializer = new FlatClassContextDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetMixins ().ToArray (), Is.EqualTo (mixinContexts));
+      var deserializer = new FlatClassContextDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetMixins().ToArray(), Is.EqualTo(mixinContexts));
     }
 
     [Test]
     public void AddComposedInterfaces ()
     {
-      _serializer.AddComposedInterfaces (new[] {typeof (int), typeof (string)});
-      Assert.That (_serializer.Values[2], Is.EqualTo (new[] {typeof (int).AssemblyQualifiedName, typeof (string).AssemblyQualifiedName}));
+      _serializer.AddComposedInterfaces(new[] {typeof(int), typeof(string)});
+      Assert.That(_serializer.Values[2], Is.EqualTo(new[] {typeof(int).AssemblyQualifiedName, typeof(string).AssemblyQualifiedName}));
 
-      var deserializer = new FlatClassContextDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetComposedInterfaces ().ToArray (), Is.EqualTo (new[] { typeof (int), typeof (string) }));
+      var deserializer = new FlatClassContextDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetComposedInterfaces().ToArray(), Is.EqualTo(new[] { typeof(int), typeof(string) }));
     }
   }
 }

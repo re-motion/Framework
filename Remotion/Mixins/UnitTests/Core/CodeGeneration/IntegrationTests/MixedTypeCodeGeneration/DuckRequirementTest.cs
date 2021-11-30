@@ -27,36 +27,36 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     [Test]
     public void GeneratedTypeImplementsRequiredDuckInterfaces ()
     {
-      ClassFulfillingAllMemberRequirementsDuck cfrd = ObjectFactory.Create<ClassFulfillingAllMemberRequirementsDuck> (ParamList.Empty);
-      Assert.That (cfrd is IMixinRequiringAllMembersRequirements, Is.True);
-      var mixin = Mixin.Get<MixinRequiringAllMembersTargetCall> (cfrd);
-      Assert.That (mixin, Is.Not.Null);
-      Assert.That (mixin.PropertyViaThis, Is.EqualTo (42));
+      ClassFulfillingAllMemberRequirementsDuck cfrd = ObjectFactory.Create<ClassFulfillingAllMemberRequirementsDuck>(ParamList.Empty);
+      Assert.That(cfrd is IMixinRequiringAllMembersRequirements, Is.True);
+      var mixin = Mixin.Get<MixinRequiringAllMembersTargetCall>(cfrd);
+      Assert.That(mixin, Is.Not.Null);
+      Assert.That(mixin.PropertyViaThis, Is.EqualTo(42));
     }
 
     [Test]
     public void RequiredTargetCallInterfaceViaDuck ()
     {
-      ClassFulfillingAllMemberRequirementsExplicitly cfamre = ObjectFactory.Create<ClassFulfillingAllMemberRequirementsExplicitly> (ParamList.Empty);
-      var mixin = Mixin.Get<MixinRequiringAllMembersTargetCall> (cfamre);
-      Assert.That (mixin, Is.Not.Null);
-      Assert.That (mixin.PropertyViaThis, Is.EqualTo (37));
+      ClassFulfillingAllMemberRequirementsExplicitly cfamre = ObjectFactory.Create<ClassFulfillingAllMemberRequirementsExplicitly>(ParamList.Empty);
+      var mixin = Mixin.Get<MixinRequiringAllMembersTargetCall>(cfamre);
+      Assert.That(mixin, Is.Not.Null);
+      Assert.That(mixin.PropertyViaThis, Is.EqualTo(37));
     }
 
     [Test]
     public void RequiredBaseInterfaceViaDuck ()
     {
-      ClassFulfillingAllMemberRequirements cfamr = ObjectFactory.Create<ClassFulfillingAllMemberRequirements> (ParamList.Empty);
-      var mixin = Mixin.Get<MixinRequiringAllMembersNextCall> (cfamr);
-      Assert.That (mixin, Is.Not.Null);
-      Assert.That (mixin.PropertyViaBase, Is.EqualTo (11));
+      ClassFulfillingAllMemberRequirements cfamr = ObjectFactory.Create<ClassFulfillingAllMemberRequirements>(ParamList.Empty);
+      var mixin = Mixin.Get<MixinRequiringAllMembersNextCall>(cfamr);
+      Assert.That(mixin, Is.Not.Null);
+      Assert.That(mixin.PropertyViaBase, Is.EqualTo(11));
     }
 
     [Test]
     public void ThisCallToDuckInterface ()
     {
-      BaseTypeWithDuckTargetCallMixin duckTargetCall = ObjectFactory.Create<BaseTypeWithDuckTargetCallMixin> (ParamList.Empty);
-      Assert.That (Mixin.Get<DuckTargetCallMixin> (duckTargetCall).CallMethodsOnThis (), Is.EqualTo ("DuckTargetCallMixin.CallMethodsOnThis-DuckTargetCallMixin.MethodImplementedOnBase-BaseTypeWithDuckTargetCallMixin.ProtectedMethodImplementedOnBase"));
+      BaseTypeWithDuckTargetCallMixin duckTargetCall = ObjectFactory.Create<BaseTypeWithDuckTargetCallMixin>(ParamList.Empty);
+      Assert.That(Mixin.Get<DuckTargetCallMixin>(duckTargetCall).CallMethodsOnThis(), Is.EqualTo("DuckTargetCallMixin.CallMethodsOnThis-DuckTargetCallMixin.MethodImplementedOnBase-BaseTypeWithDuckTargetCallMixin.ProtectedMethodImplementedOnBase"));
     }
 
   }

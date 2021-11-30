@@ -32,7 +32,7 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
       switch (version)
       {
         case PEVerifyVersion.DotNet4:
-          return string.Format (
+          return string.Format(
               "Windows SDK 8.1A: Registry: HKEY_LOCAL_MACHINE\\{0}\\{1}\\PEVerify.exe",
               WindowsSdkRegistryKey40,
               WindowsSdkRegistryInstallationFolderValue);
@@ -48,14 +48,14 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
       {
         case PEVerifyVersion.DotNet4:
         {
-          var sdkPath = RegistryKey.OpenBaseKey (RegistryHive.LocalMachine, RegistryView.Registry32)
-              .OpenSubKey (WindowsSdkRegistryKey40, false)
-              ?.GetValue (WindowsSdkRegistryInstallationFolderValue) as string;
+          var sdkPath = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32)
+              .OpenSubKey(WindowsSdkRegistryKey40, false)
+              ?.GetValue(WindowsSdkRegistryInstallationFolderValue) as string;
 
           if (sdkPath == null)
             return null;
 
-          return Path.Combine (sdkPath, "PEVerify.exe");
+          return Path.Combine(sdkPath, "PEVerify.exe");
         }
 
         default:

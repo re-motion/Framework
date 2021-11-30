@@ -34,11 +34,11 @@ namespace Remotion.Web.Resources
 
     public ThemedResourceUrl (IResourcePathBuilder resourcePathBuilder, Type definingType, ResourceType resourceType, ResourceTheme resourceTheme, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull ("resourcePathBuilder", resourcePathBuilder);
-      ArgumentUtility.CheckNotNull ("definingType", definingType);
-      ArgumentUtility.CheckNotNull ("resourceType", resourceType);
-      ArgumentUtility.CheckNotNull ("resourceTheme", resourceTheme);
-      ArgumentUtility.CheckNotNullOrEmpty ("relativeUrl", relativeUrl);
+      ArgumentUtility.CheckNotNull("resourcePathBuilder", resourcePathBuilder);
+      ArgumentUtility.CheckNotNull("definingType", definingType);
+      ArgumentUtility.CheckNotNull("resourceType", resourceType);
+      ArgumentUtility.CheckNotNull("resourceTheme", resourceTheme);
+      ArgumentUtility.CheckNotNullOrEmpty("relativeUrl", relativeUrl);
 
       _resourcePathBuilder = resourcePathBuilder;
       _definingType = definingType;
@@ -74,7 +74,7 @@ namespace Remotion.Web.Resources
 
     public virtual string GetUrl ()
     {
-      return _resourcePathBuilder.BuildAbsolutePath (DefiningType.Assembly, ThemesFolder, ResourceTheme.Name, ResourceType.Name, RelativeUrl);
+      return _resourcePathBuilder.BuildAbsolutePath(DefiningType.Assembly, ThemesFolder, ResourceTheme.Name, ResourceType.Name, RelativeUrl);
     }
   }
 }

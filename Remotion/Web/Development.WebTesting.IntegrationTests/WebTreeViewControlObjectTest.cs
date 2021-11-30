@@ -31,14 +31,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     // Note: functionality is integration tested via BocTreeViewControlObject in BocTreeViewControlObjectTest.
 
     [Test]
-    [TestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
-    [TestCaseSource (typeof (IndexControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
-    [TestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
-    [TestCaseSource (typeof (FirstControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
-    [TestCaseSource (typeof (SingleControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<WebTreeViewSelector, WebTreeViewControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<WebTreeViewSelector, WebTreeViewControlObject> testAction)
     {
-      testAction (Helper, e => e.WebTreeViews(), "webTreeView");
+      testAction(Helper, e => e.WebTreeViews(), "webTreeView");
     }
 
     [Test]
@@ -46,10 +46,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeView3");
-      var treeViewNode = treeView.GetNode ("Node2");
+      var treeView = home.WebTreeViews().GetByLocalID("MyWebTreeView3");
+      var treeViewNode = treeView.GetNode("Node2");
 
-      Assert.That (treeViewNode.GetBadgeText(), Is.EqualTo ("1"));
+      Assert.That(treeViewNode.GetBadgeText(), Is.EqualTo("1"));
     }
 
     [Test]
@@ -57,10 +57,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeView3");
-      var treeViewNode = treeView.GetNode ("Node1");
+      var treeView = home.WebTreeViews().GetByLocalID("MyWebTreeView3");
+      var treeViewNode = treeView.GetNode("Node1");
 
-      Assert.That (treeViewNode.GetBadgeText(), Is.Empty);
+      Assert.That(treeViewNode.GetBadgeText(), Is.Empty);
     }
 
     [Test]
@@ -68,10 +68,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeView3");
-      var treeViewNode = treeView.GetNode ("Node3");
+      var treeView = home.WebTreeViews().GetByLocalID("MyWebTreeView3");
+      var treeViewNode = treeView.GetNode("Node3");
 
-      Assert.That (treeViewNode.GetBadgeDescription(), Is.EqualTo ("2 description"));
+      Assert.That(treeViewNode.GetBadgeDescription(), Is.EqualTo("2 description"));
     }
 
     [Test]
@@ -79,17 +79,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeView3");
-      var treeViewNode = treeView.GetNode ("Node2");
+      var treeView = home.WebTreeViews().GetByLocalID("MyWebTreeView3");
+      var treeViewNode = treeView.GetNode("Node2");
 
-      Assert.That (treeViewNode.GetBadgeDescription(), Is.Empty);
+      Assert.That(treeViewNode.GetBadgeDescription(), Is.Empty);
     }
 
     // Exists as unused member for future WebTreeView tests.
     // ReSharper disable once UnusedMember.Local
     private WebFormsTestPageObject Start ()
     {
-      return Start<WebFormsTestPageObject> ("WebTreeViewTest.aspx");
+      return Start<WebFormsTestPageObject>("WebTreeViewTest.aspx");
     }
 
     [Test]
@@ -97,15 +97,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.WebTreeViews().GetByLocalID ("MyOrderedWebTreeView");
+      var treeView = home.WebTreeViews().GetByLocalID("MyOrderedWebTreeView");
       var nodeTexts = new List<string>();
       for (var i = 1; i <= 7; i++)
       {
-        nodeTexts.Add (treeView.GetNode (i).GetText());
+        nodeTexts.Add(treeView.GetNode(i).GetText());
       }
 
       var expectedNodeTexts = new[] { "1", "7", "2", "4", "3", "5", "6" };
-      Assert.That (nodeTexts, Is.EqualTo (expectedNodeTexts));
+      Assert.That(nodeTexts, Is.EqualTo(expectedNodeTexts));
     }
 
     [Test]
@@ -113,15 +113,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.WebTreeViews().GetByLocalID ("MyUnorderedWebTreeView");
+      var treeView = home.WebTreeViews().GetByLocalID("MyUnorderedWebTreeView");
       var nodeTexts = new List<string>();
       for (var i = 1; i <= 7; i++)
       {
-        nodeTexts.Add (treeView.GetNode (i).GetText());
+        nodeTexts.Add(treeView.GetNode(i).GetText());
       }
 
       var expectedNodeTexts = new[] { "1", "2", "3", "4", "5", "6", "7" };
-      Assert.That (nodeTexts, Is.EqualTo (expectedNodeTexts));
+      Assert.That(nodeTexts, Is.EqualTo(expectedNodeTexts));
     }
 
     [Test]
@@ -129,10 +129,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeViewWithCategories");
-      var treeViewNode = treeView.GetNode (1);
+      var treeView = home.WebTreeViews().GetByLocalID("MyWebTreeViewWithCategories");
+      var treeViewNode = treeView.GetNode(1);
 
-      Assert.That (treeViewNode.GetCategory(), Is.EqualTo ("a category"));
+      Assert.That(treeViewNode.GetCategory(), Is.EqualTo("a category"));
     }
 
     [Test]
@@ -140,10 +140,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var treeView = home.WebTreeViews().GetByLocalID ("MyWebTreeViewWithoutCategories");
-      var treeViewNode = treeView.GetNode (1);
+      var treeView = home.WebTreeViews().GetByLocalID("MyWebTreeViewWithoutCategories");
+      var treeViewNode = treeView.GetNode(1);
 
-      Assert.That (treeViewNode.GetCategory(), Is.Empty);
+      Assert.That(treeViewNode.GetCategory(), Is.Empty);
     }
   }
 }

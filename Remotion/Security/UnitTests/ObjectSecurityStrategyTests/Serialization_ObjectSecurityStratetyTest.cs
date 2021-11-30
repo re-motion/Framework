@@ -51,37 +51,37 @@ namespace Remotion.Security.UnitTests.ObjectSecurityStrategyTests
     [SetUp]
     public void SetUp ()
     {
-      _context = SecurityContext.Create (typeof (SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
+      _context = SecurityContext.Create(typeof(SecurableObject), "owner", "group", "tenant", new Dictionary<string, Enum>(), new Enum[0]);
 
       _invalidationToken = InvalidationToken.Create();
-      _strategy = ObjectSecurityStrategy.Create (new SerializableSecurityContextFactory (_context), _invalidationToken);
+      _strategy = ObjectSecurityStrategy.Create(new SerializableSecurityContextFactory(_context), _invalidationToken);
     }
 
     [Test]
     public void Serialization ()
     {
-      var securityProviderMock = new Mock<ISecurityProvider> (MockBehavior.Strict);
+      var securityProviderMock = new Mock<ISecurityProvider>(MockBehavior.Strict);
       securityProviderMock
-          .Setup (_ => _.GetAccess (_context, new SecurityPrincipal ("foo", null, null, null)))
-          .Returns (new[] { AccessType.Get (GeneralAccessTypes.Read) })
+          .Setup(_ => _.GetAccess(_context, new SecurityPrincipal("foo", null, null, null)))
+          .Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) })
           .Verifiable();
 
-      bool hasAccess = _strategy.HasAccess (
+      bool hasAccess = _strategy.HasAccess(
           securityProviderMock.Object,
-          new SecurityPrincipal ("foo", null, null, null),
-          new[] { AccessType.Get (GeneralAccessTypes.Read) });
+          new SecurityPrincipal("foo", null, null, null),
+          new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
 
-      var deserializedStrategy = Serializer.SerializeAndDeserialize (_strategy);
-      Assert.That (deserializedStrategy, Is.Not.SameAs (_strategy));
+      var deserializedStrategy = Serializer.SerializeAndDeserialize(_strategy);
+      Assert.That(deserializedStrategy, Is.Not.SameAs(_strategy));
 
-      bool hasAccessAfterDeserialization = _strategy.HasAccess (
-          new Mock<ISecurityProvider> (MockBehavior.Strict).Object,
-          new SecurityPrincipal ("foo", null, null, null),
-          new[] { AccessType.Get (GeneralAccessTypes.Read) });
+      bool hasAccessAfterDeserialization = _strategy.HasAccess(
+          new Mock<ISecurityProvider>(MockBehavior.Strict).Object,
+          new SecurityPrincipal("foo", null, null, null),
+          new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
-      Assert.That (hasAccessAfterDeserialization, Is.True);
+      Assert.That(hasAccessAfterDeserialization, Is.True);
     }
   }
 }

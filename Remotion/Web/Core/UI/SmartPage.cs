@@ -100,7 +100,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <include file='..\doc\include\UI\SmartPage.xml' path='SmartPage/RegisterClientSidePageEventHandler/*' />
   public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
   {
-    _smartPageInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
+    _smartPageInfo.RegisterClientSidePageEventHandler(pageEvent, key, function);
   }
 
   string? ISmartPage.CheckFormStateFunction
@@ -114,9 +114,9 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
   /// </remarks>
   [Description("The message displayed when the user attempts to leave the page.")]
-  [Category ("Appearance")]
-  [DefaultValue ("")]
-  public virtual string? AbortMessage 
+  [Category("Appearance")]
+  [DefaultValue("")]
+  public virtual string? AbortMessage
   {
     get { return _smartPageInfo.AbortMessage; }
     set { _smartPageInfo.AbortMessage = value; }
@@ -129,8 +129,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
   /// </remarks>
   [Description("The message displayed when the user attempts to submit while the page is already submitting.")]
-  [Category ("Appearance")]
-  [DefaultValue ("")]
+  [Category("Appearance")]
+  [DefaultValue("")]
   public virtual string StatusIsSubmittingMessage
   {
     get { return _smartPageInfo.StatusIsSubmittingMessage; }
@@ -144,7 +144,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <param name="control"> A control implementing <see cref="IEditableControl"/> that will be tracked.  </param>
   public void RegisterControlForDirtyStateTracking (IEditableControl control)
   {
-    _smartPageInfo.RegisterControlForDirtyStateTracking (control);
+    _smartPageInfo.RegisterControlForDirtyStateTracking(control);
   }
 
   /// <summary>
@@ -153,17 +153,17 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <param name="clientID"> The ID of an HTML input/textarea/select element. </param>
   public void RegisterControlForClientSideDirtyStateTracking (string clientID)
   {
-    _smartPageInfo.RegisterControlForDirtyStateTracking (clientID);
+    _smartPageInfo.RegisterControlForDirtyStateTracking(clientID);
   }
 
   public void RegisterCommandForSynchronousPostBack (Control control, string eventArguments)
   {
-    _smartPageInfo.RegisterCommandForSynchronousPostBack (control, eventArguments);
+    _smartPageInfo.RegisterCommandForSynchronousPostBack(control, eventArguments);
   }
 
     public void RegisterControlForSynchronousPostBack (Control control)
     {
-      _smartPageInfo.RegisterControlForSynchronousPostBack (control);
+      _smartPageInfo.RegisterControlForSynchronousPostBack(control);
     }
 
     #endregion
@@ -173,7 +173,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <summary> Clears scrolling and focus information on the page. </summary>
   public void DiscardSmartNavigationData (SmartNavigationData smartNavigationData = SmartNavigationData.All)
   {
-    _smartPageInfo.DiscardSmartNavigationData (smartNavigationData);
+    _smartPageInfo.DiscardSmartNavigationData(smartNavigationData);
   }
 
   /// <summary> Sets the focus to the passed control. </summary>
@@ -182,7 +182,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// </param>
   public void SetFocus (IFocusableControl control)
   {
-    _smartPageInfo.SetFocus (control);
+    _smartPageInfo.SetFocus(control);
   }
 
   /// <summary> Sets the focus to the passed control ID. </summary>
@@ -191,14 +191,14 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// </param>
   public new void SetFocus (string id)
   {
-    _smartPageInfo.SetFocus (id);
+    _smartPageInfo.SetFocus(id);
   }
 
   /// <summary> Registers a <see cref="INavigationControl"/> with the <see cref="ISmartNavigablePage"/>. </summary>
   /// <param name="control"> The <see cref="INavigationControl"/> to register. Must not be <see langword="null"/>. </param>
   public void RegisterNavigationControl (INavigationControl control)
   {
-    _smartPageInfo.RegisterNavigationControl (control);
+    _smartPageInfo.RegisterNavigationControl(control);
   }
 
   /// <summary> 
@@ -211,7 +211,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// </returns>
   public string AppendNavigationUrlParameters (string url)
   {
-    return _smartPageInfo.AppendNavigationUrlParameters (url);
+    return _smartPageInfo.AppendNavigationUrlParameters(url);
   }
 
   /// <summary> 
@@ -222,7 +222,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   A <see cref="NameValueCollection"/> containing the URL parameters required by this 
   ///   <see cref="ISmartNavigablePage"/> to restore its navigation state when using hyperlinks.
   /// </returns>
-  public NameValueCollection GetNavigationUrlParameters()
+  public NameValueCollection GetNavigationUrlParameters ()
   {
     return _smartPageInfo.GetNavigationUrlParameters();
   }
@@ -241,15 +241,15 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   private bool? _enableSmartFocusing;
   private readonly SmartPageClientScriptManager _clientScriptManager;
 
-  public SmartPage()
+  public SmartPage ()
   {
-    _smartPageInfo = new SmartPageInfo (this);
-    _validatableControlInitializer = new ValidatableControlInitializer (this);
-    _postLoadInvoker = new PostLoadInvoker (this);
-    _clientScriptManager = new SmartPageClientScriptManager (base.ClientScript);
+    _smartPageInfo = new SmartPageInfo(this);
+    _validatableControlInitializer = new ValidatableControlInitializer(this);
+    _postLoadInvoker = new PostLoadInvoker(this);
+    _clientScriptManager = new SmartPageClientScriptManager(base.ClientScript);
   }
 
-  protected override NameValueCollection? DeterminePostBackMode()
+  protected override NameValueCollection? DeterminePostBackMode ()
   {
     NameValueCollection? result = base.DeterminePostBackMode();
     return result;
@@ -265,7 +265,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <remarks> Application developers should only rely on this collection for accessing the post-back data. </remarks>
   protected virtual NameValueCollection? GetPostBackCollection ()
   {
-    if (string.Compare (Request.HttpMethod, "POST", true) == 0)
+    if (string.Compare(Request.HttpMethod, "POST", true) == 0)
       return Request.Form;
     else
       return Request.QueryString;
@@ -275,7 +275,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   Call this method before validating when using <see cref="Remotion.Web.UI.Controls.FormGridManager"/> 
   ///   and <see cref="M:Remotion.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl.Validate()"/>.
   /// </summary>
-  public void PrepareValidation()
+  public void PrepareValidation ()
   {
     EnsurePostLoadInvoked();
     EnsureValidatableControlsInitialized();
@@ -290,7 +290,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <summary> Ensures that all validators are registered with their <see cref="IValidatableControl"/> controls. </summary>
   public void EnsureValidatableControlsInitialized ()
   {
-    _validatableControlInitializer.EnsureValidatableControlsInitialized ();
+    _validatableControlInitializer.EnsureValidatableControlsInitialized();
   }
 
 
@@ -308,7 +308,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   has values that must be persisted before the user leaves the page. 
   /// </summary>
   /// <value> The value returned by <see cref="IsDirty"/>. </value>
-  public virtual bool EvaluateDirtyState()
+  public virtual bool EvaluateDirtyState ()
   {
     if (_isDirty)
       return true;
@@ -341,8 +341,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   Defaults to <see cref="F:ShowAbortConfirmation.OnlyIfDirty"/>.
   /// </value>
   [Description("Determines whether to display a confirmation dialog before leaving the page.")]
-  [Category ("Behavior")]
-  [DefaultValue (ShowAbortConfirmation.OnlyIfDirty)]
+  [Category("Behavior")]
+  [DefaultValue(ShowAbortConfirmation.OnlyIfDirty)]
   public virtual ShowAbortConfirmation ShowAbortConfirmation
   {
     get { return _showAbortConfirmation; }
@@ -386,8 +386,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// </remarks>
   [Description("The flag that determines whether to display a status message when the user attempts to start a "
              + "second request. Undefined is interpreted as true.")]
-  [Category ("Behavior")]
-  [DefaultValue (null)]
+  [Category("Behavior")]
+  [DefaultValue(null)]
   public virtual bool? EnableStatusIsSubmittingMessage
   {
     get { return _enableStatusIsSubmittingMessage; }
@@ -418,10 +418,10 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <remarks>
   ///   Use <see cref="IsQueuedSubmitToBeAborted"/> to evaluate this property.
   /// </remarks>
-  [Description (
+  [Description(
       "The flag that determines whether to continue or abort a queued submit upon completion of the postback. Undefined is interpreted as false.")]
-  [Category ("Behavior")]
-  [DefaultValue (null)]
+  [Category("Behavior")]
+  [DefaultValue(null)]
   public bool? AbortQueuedSubmit
   {
     get { return _abortQueuedSubmit; }
@@ -451,8 +451,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   Use <see cref="IsSmartScrollingEnabled"/> to evaluate this property.
   /// </remarks>
   [Description("The flag that determines whether to use smart scrolling. Undefined is interpreted as true.")]
-  [Category ("Behavior")]
-  [DefaultValue (null)]
+  [Category("Behavior")]
+  [DefaultValue(null)]
   public virtual bool? EnableSmartScrolling
   {
     get { return _enableSmartScrolling; }
@@ -471,7 +471,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     {
       if (! WebConfiguration.Current.SmartNavigation.EnableScrolling)
         return false;
-      return _enableSmartScrolling != false; 
+      return _enableSmartScrolling != false;
     }
   }
 
@@ -491,8 +491,8 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   Use <see cref="IsSmartFocusingEnabled"/> to evaluate this property.
   /// </remarks>
   [Description("The flag that determines whether to use smart navigation. Undefined is interpreted as true.")]
-  [Category ("Behavior")]
-  [DefaultValue (null)]
+  [Category("Behavior")]
+  [DefaultValue(null)]
   public virtual bool? EnableSmartFocusing
   {
     get { return _enableSmartFocusing; }
@@ -511,7 +511,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     {
       if (! WebConfiguration.Current.SmartNavigation.EnableFocusing)
         return false;
-      return _enableSmartFocusing != false; 
+      return _enableSmartFocusing != false;
     }
   }
 
@@ -523,18 +523,18 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   protected override void OnInit (EventArgs e)
   {
-    base.OnInit (e);
-    RegisterRequiresControlState (this);
+    base.OnInit(e);
+    RegisterRequiresControlState(this);
   }
 
-  protected override void LoadControlState(object? savedState)
+  protected override void LoadControlState (object? savedState)
   {
-    object?[] values = (object?[]) savedState!;
-    base.LoadControlState (values[0]);
-    _isDirty = (bool) values[1]!;
+    object?[] values = (object?[])savedState!;
+    base.LoadControlState(values[0]);
+    _isDirty = (bool)values[1]!;
   }
 
-  protected override object? SaveControlState()
+  protected override object? SaveControlState ()
   {
     object?[] values = new object?[2];
     values[0] = base.SaveControlState();
@@ -544,7 +544,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   void ISmartPage.SaveAllState ()
   {
-    MemberCaller.SaveAllState (this);
+    MemberCaller.SaveAllState(this);
   }
 
   /// <summary>
@@ -552,16 +552,16 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// </summary>
   public sealed override void ProcessRequest (HttpContext httpContext)
   {
-    ArgumentUtility.CheckNotNull ("httpContext", httpContext);
-    _httpContext = new HttpContextWrapper (httpContext);
-    ProcessRequestImplementation (httpContext);
+    ArgumentUtility.CheckNotNull("httpContext", httpContext);
+    _httpContext = new HttpContextWrapper(httpContext);
+    ProcessRequestImplementation(httpContext);
   }
 
   /// <inheritdoc cref="Page.ProcessRequest"/>
   protected virtual void ProcessRequestImplementation (HttpContext httpContext)
   {
-    ArgumentUtility.CheckNotNull ("httpContext", httpContext);
-    base.ProcessRequest (httpContext);
+    ArgumentUtility.CheckNotNull("httpContext", httpContext);
+    base.ProcessRequest(httpContext);
   }
 
   protected virtual IServiceLocator ServiceLocator

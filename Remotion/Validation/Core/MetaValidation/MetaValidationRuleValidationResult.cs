@@ -26,18 +26,18 @@ namespace Remotion.Validation.MetaValidation
   {
     public static MetaValidationRuleValidationResult CreateValidResult ()
     {
-      return new MetaValidationRuleValidationResult (true, null);
+      return new MetaValidationRuleValidationResult(true, null);
     }
 
-    [JetBrains.Annotations.StringFormatMethod ("messageFormat")]
+    [JetBrains.Annotations.StringFormatMethod("messageFormat")]
     public static MetaValidationRuleValidationResult CreateInvalidResult (string messageFormat, params object?[] args)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("messageFormat", messageFormat);
-      ArgumentUtility.CheckNotNull ("args", args);
+      ArgumentUtility.CheckNotNullOrEmpty("messageFormat", messageFormat);
+      ArgumentUtility.CheckNotNull("args", args);
 
-      return new MetaValidationRuleValidationResult (false, string.Format (messageFormat, args));
+      return new MetaValidationRuleValidationResult(false, string.Format(messageFormat, args));
     }
-    
+
     private readonly bool _isValid;
     private readonly string? _message;
 

@@ -37,23 +37,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       IEnumerable<DataContainer> containers = new[] { GetDeletedOrderTicketContainer() };
       Provider.Connect();
-      Provider.Save (containers);
+      Provider.Save(containers);
 
-      Assert.That (Provider.LoadDataContainer (DomainObjectIDs.OrderTicket1).LocatedObject, Is.Null);
+      Assert.That(Provider.LoadDataContainer(DomainObjectIDs.OrderTicket1).LocatedObject, Is.Null);
     }
 
     [Test]
     public void DeleteRelatedDataContainers ()
     {
-      Employee supervisor = DomainObjectIDs.Employee2.GetObject<Employee> ();
-      Employee subordinate = DomainObjectIDs.Employee3.GetObject<Employee> ();
-      Computer computer = DomainObjectIDs.Computer1.GetObject<Computer> ();
+      Employee supervisor = DomainObjectIDs.Employee2.GetObject<Employee>();
+      Employee subordinate = DomainObjectIDs.Employee3.GetObject<Employee>();
+      Computer computer = DomainObjectIDs.Computer1.GetObject<Computer>();
 
       supervisor.Delete();
       subordinate.Delete();
       computer.Delete();
 
-      IEnumerable<DataContainer> containers = new[] 
+      IEnumerable<DataContainer> containers = new[]
                                               {
                                                   supervisor.InternalDataContainer,
                                                   subordinate.InternalDataContainer,
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
                                               };
 
       Provider.Connect();
-      Provider.Save (containers);
+      Provider.Save(containers);
     }
 
     [Test]
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       DataContainer changedDataContainer;
       using (clientTransaction1.EnterDiscardingScope())
       {
-        changedOrderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
+        changedOrderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
         changedOrderTicket.FileName = @"C:\NewFile.jpg";
         changedDataContainer = changedOrderTicket.InternalDataContainer;
       }
@@ -83,15 +83,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       DataContainer deletedDataContainer;
       using (clientTransaction2.EnterDiscardingScope())
       {
-        deletedOrderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
+        deletedOrderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
         deletedOrderTicket.Delete();
         deletedDataContainer = deletedOrderTicket.InternalDataContainer;
       }
 
       Provider.Connect();
-      Provider.Save (new[] { changedDataContainer });
-      Assert.That (
-          () => Provider.Save (new[] { deletedDataContainer }),
+      Provider.Save(new[] { changedDataContainer });
+      Assert.That(
+          () => Provider.Save(new[] { deletedDataContainer }),
           Throws.InstanceOf<ConcurrencyViolationException>());
     }
 
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       using (clientTransaction1.EnterDiscardingScope())
       {
-        changedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
+        changedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
         changedDataContainer = changedObject.InternalDataContainer;
         changedObject.StringProperty = "New text";
       }
@@ -116,21 +116,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       using (clientTransaction2.EnterDiscardingScope())
       {
-        deletedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
+        deletedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
         deletedDataContainer = deletedObject.InternalDataContainer;
         deletedObject.Delete();
       }
 
       Provider.Connect();
-      Provider.Save (new[] { changedDataContainer });
-      Assert.That (
-          () => Provider.Save (new[] { deletedDataContainer }),
+      Provider.Save(new[] { changedDataContainer });
+      Assert.That(
+          () => Provider.Save(new[] { deletedDataContainer }),
           Throws.InstanceOf<ConcurrencyViolationException>());
     }
 
     private DataContainer GetDeletedOrderTicketContainer ()
     {
-      OrderTicket orderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
+      OrderTicket orderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
       orderTicket.Delete();
       return orderTicket.InternalDataContainer;
     }

@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Sample
   public class InMemoryReflectionBusinessObjectStorageProvider : IReflectionBusinessObjectStorageProvider
   {
     private readonly AutoInitDictionary<Type, Dictionary<Guid, MemoryStream>> _reflectionBusinessObjectData =
-        new AutoInitDictionary<Type, Dictionary<Guid, MemoryStream>> (() => new Dictionary<Guid, MemoryStream>());
+        new AutoInitDictionary<Type, Dictionary<Guid, MemoryStream>>(() => new Dictionary<Guid, MemoryStream>());
 
     public InMemoryReflectionBusinessObjectStorageProvider ()
     {
@@ -35,24 +35,24 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public IReadOnlyCollection<Guid> GetObjectIDsForType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       return _reflectionBusinessObjectData
-          .SelectMany (e => e.Value.Keys)
+          .SelectMany(e => e.Value.Keys)
           .ToArray();
     }
 
     /// <inheritdoc />
     public Stream GetReadObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var oldMemoryStream = _reflectionBusinessObjectData[type].GetValueOrDefault (id);
+      var oldMemoryStream = _reflectionBusinessObjectData[type].GetValueOrDefault(id);
       if (oldMemoryStream == null)
         return null;
 
       // Create a new MemoryStream because the old one might have been disposed
-      var newMemoryStream = new MemoryStream (oldMemoryStream.ToArray(), false);
+      var newMemoryStream = new MemoryStream(oldMemoryStream.ToArray(), false);
       _reflectionBusinessObjectData[type][id] = newMemoryStream;
 
       oldMemoryStream.Dispose();
@@ -63,9 +63,9 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetWriteObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      _reflectionBusinessObjectData[type].GetValueOrDefault (id)?.Dispose();
+      _reflectionBusinessObjectData[type].GetValueOrDefault(id)?.Dispose();
 
       var newMemoryStream = new MemoryStream();
       _reflectionBusinessObjectData[type][id] = newMemoryStream;

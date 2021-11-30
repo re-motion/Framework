@@ -28,16 +28,16 @@ namespace Remotion.Web.Test.Shared
 
     protected override void CreateChildControls ()
     {
-      base.CreateChildControls ();
+      base.CreateChildControls();
 
       EditableEnabled.MenuItems.Clear();
-      EditableEnabled.MenuItems.Add (
-          new WebMenuItem (
+      EditableEnabled.MenuItems.Add(
+          new WebMenuItem(
               "First",
               "FirstCategory",
               "The first item",
-              new IconInfo ("~/res/Remotion.Web/Image/Help.gif"),
-              new IconInfo ("~/res/Remotion.Web/Image/Help.gif"),
+              new IconInfo("~/res/Remotion.Web/Image/Help.gif"),
+              new IconInfo("~/res/Remotion.Web/Image/Help.gif"),
               WebMenuItemStyle.Text,
               RequiredSelection.Any,
               false,

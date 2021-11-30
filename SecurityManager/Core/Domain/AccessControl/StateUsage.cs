@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   {
     public static StateUsage NewObject ()
     {
-      return NewObject<StateUsage> ();
+      return NewObject<StateUsage>();
     }
 
     protected StateUsage ()
@@ -39,10 +39,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [Mandatory]
     public abstract StateDefinition StateDefinition { get; set; }
 
-    [DBBidirectionalRelation ("StateUsages")]
+    [DBBidirectionalRelation("StateUsages")]
     [Mandatory]
     protected abstract StateCombination StateCombination { get; }
-    
+
     [StorageClassNone]
     public SecurableClassDefinition Class
     {
@@ -56,10 +56,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       if (Class != null)
-        Class.RegisterForCommit ();
+        Class.RegisterForCommit();
     }
   }
 }

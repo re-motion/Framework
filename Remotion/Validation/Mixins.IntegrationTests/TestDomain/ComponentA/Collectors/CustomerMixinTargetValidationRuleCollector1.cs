@@ -24,7 +24,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA.Coll
   {
     public CustomerMixinTargetValidationRuleCollector1 ()
     {
-      AddRule (c => c.FirstName).NotEqual ("something");
+      AddRule(c => c.FirstName).NotEqual("something");
     }
   }
 }

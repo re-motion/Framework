@@ -42,18 +42,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
       get { return "ReadOnly"; }
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledReadOnly)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledReadOnly)]
     public void IsEditable ()
     {
-      var control = Selector.GetByID (Parameter.EnabledHtmlID);
-      Assert.That (control.IsReadOnly(), Is.False);
+      var control = Selector.GetByID(Parameter.EnabledHtmlID);
+      Assert.That(control.IsReadOnly(), Is.False);
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledReadOnly)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledReadOnly)]
     public void IsReadOnly ()
     {
-      var control = Selector.GetByID (Parameter.ReadOnlyHtmlID);
-      Assert.That (control.IsReadOnly(), Is.True);
+      var control = Selector.GetByID(Parameter.ReadOnlyHtmlID);
+      Assert.That(control.IsReadOnly(), Is.True);
     }
   }
 }

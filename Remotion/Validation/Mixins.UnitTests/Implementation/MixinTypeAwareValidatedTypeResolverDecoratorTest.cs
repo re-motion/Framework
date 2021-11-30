@@ -33,30 +33,30 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _decoratedResolverMock = new Mock<IValidatedTypeResolver> (MockBehavior.Strict);
-      _resolver = new MixinTypeAwareValidatedTypeResolverDecorator (_decoratedResolverMock.Object);
+      _decoratedResolverMock = new Mock<IValidatedTypeResolver>(MockBehavior.Strict);
+      _resolver = new MixinTypeAwareValidatedTypeResolverDecorator(_decoratedResolverMock.Object);
     }
 
     [Test]
     public void GetValidatedType_CollectorWitApplyWithMixinAttribute ()
     {
-      var result = _resolver.GetValidatedType (typeof (CustomerMixinIntroducedValidationRuleCollector1));
+      var result = _resolver.GetValidatedType(typeof(CustomerMixinIntroducedValidationRuleCollector1));
 
       _decoratedResolverMock.Verify();
-      Assert.That (result, Is.EqualTo (typeof (CustomerMixin)));
+      Assert.That(result, Is.EqualTo(typeof(CustomerMixin)));
     }
 
     [Test]
     public void GetValidatedType_CollectorWithoutApplyWithMixinAttribute ()
     {
-      var collectorTypeWithApplyWithClassAttribute = typeof (PersonValidationRuleCollector1);
+      var collectorTypeWithApplyWithClassAttribute = typeof(PersonValidationRuleCollector1);
 
-      _decoratedResolverMock.Setup (mock => mock.GetValidatedType (collectorTypeWithApplyWithClassAttribute)).Returns (typeof (Person)).Verifiable();
+      _decoratedResolverMock.Setup(mock => mock.GetValidatedType(collectorTypeWithApplyWithClassAttribute)).Returns(typeof(Person)).Verifiable();
 
-      var result = _resolver.GetValidatedType (collectorTypeWithApplyWithClassAttribute);
+      var result = _resolver.GetValidatedType(collectorTypeWithApplyWithClassAttribute);
 
       _decoratedResolverMock.Verify();
-      Assert.That (result, Is.EqualTo (typeof (Person)));
+      Assert.That(result, Is.EqualTo(typeof(Person)));
     }
   }
 }

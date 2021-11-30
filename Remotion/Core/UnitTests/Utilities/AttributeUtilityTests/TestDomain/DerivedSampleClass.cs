@@ -53,7 +53,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
       get { return null; }
     }
 
-    [InheritedNotMultiple ("Derived")]
+    [InheritedNotMultiple("Derived")]
     public override string PropertyWithInheritedNotMultipleAttribute
     {
       get { return null; }
@@ -64,37 +64,37 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
     [Multiple]
     public override event System.EventHandler EventWithMultipleAttribute;
     public override event System.EventHandler EventWithNotInheritedAttribute;
-    [InheritedNotMultiple ("Derived")]
+    [InheritedNotMultiple("Derived")]
     public override event System.EventHandler EventWithInheritedNotMultipleAttribute;
 
     [UsedImplicitly]
     public override string MethodWithSingleAttribute ()
     {
-      return base.MethodWithSingleAttribute ();
+      return base.MethodWithSingleAttribute();
     }
 
     [UsedImplicitly]
     protected override string ProtectedMethodWithAttribute ()
     {
-      return base.ProtectedMethodWithAttribute ();
+      return base.ProtectedMethodWithAttribute();
     }
 
     [Multiple]
     public override string MethodWithMultipleAttribute ()
     {
-      return base.MethodWithMultipleAttribute ();
+      return base.MethodWithMultipleAttribute();
     }
 
     [UsedImplicitly]
     public override string MethodWithNotInheritedAttribute ()
     {
-      return base.MethodWithNotInheritedAttribute ();
+      return base.MethodWithNotInheritedAttribute();
     }
 
-    [InheritedNotMultiple ("Derived")]
+    [InheritedNotMultiple("Derived")]
     public override string MethodWithInheritedNotMultipleAttribute ()
     {
-      return base.MethodWithInheritedNotMultipleAttribute ();
+      return base.MethodWithInheritedNotMultipleAttribute();
     }
   }
 }

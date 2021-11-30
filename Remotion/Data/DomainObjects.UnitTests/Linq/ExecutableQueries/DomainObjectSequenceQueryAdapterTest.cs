@@ -35,35 +35,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
     {
       base.SetUp();
 
-      _queryStub = MockRepository.GenerateStub<IQuery> ();
+      _queryStub = MockRepository.GenerateStub<IQuery>();
     }
 
     [Test]
     public void Initialization_QueryTypeNotCollection ()
     {
-      _queryStub.Stub (stub => stub.QueryType).Return (QueryType.Scalar);
-      Assert.That (
-          () => new DomainObjectSequenceQueryAdapter<string> (_queryStub),
+      _queryStub.Stub(stub => stub.QueryType).Return(QueryType.Scalar);
+      Assert.That(
+          () => new DomainObjectSequenceQueryAdapter<string>(_queryStub),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo ("Only collection queries can be used to load data containers.", "query"));
+              .With.ArgumentExceptionMessageEqualTo("Only collection queries can be used to load data containers.", "query"));
     }
 
     [Test]
     public void Execute ()
     {
-      _queryStub.Stub (stub => stub.QueryType).Return (QueryType.Collection);
-      var queryAdapter = new DomainObjectSequenceQueryAdapter<object> (_queryStub);
+      _queryStub.Stub(stub => stub.QueryType).Return(QueryType.Collection);
+      var queryAdapter = new DomainObjectSequenceQueryAdapter<object>(_queryStub);
 
-      var order1 = DomainObjectMother.CreateFakeObject<Order> ();
-      var order3 = DomainObjectMother.CreateFakeObject<Order> ();
-      var fakeResult = new QueryResult<DomainObject> (_queryStub, new[] { order1, order3 });
+      var order1 = DomainObjectMother.CreateFakeObject<Order>();
+      var order3 = DomainObjectMother.CreateFakeObject<Order>();
+      var fakeResult = new QueryResult<DomainObject>(_queryStub, new[] { order1, order3 });
 
       var queryManagerMock = MockRepository.GenerateStrictMock<IQueryManager>();
-      queryManagerMock.Expect (mock => mock.GetCollection (queryAdapter)).Return (fakeResult);
+      queryManagerMock.Expect(mock => mock.GetCollection(queryAdapter)).Return(fakeResult);
 
-      var result = queryAdapter.Execute (queryManagerMock);
+      var result = queryAdapter.Execute(queryManagerMock);
 
-      Assert.That (result, Is.EqualTo (new[] { order1, order3 }));
+      Assert.That(result, Is.EqualTo(new[] { order1, order3 }));
     }
   }
 }

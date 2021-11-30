@@ -33,86 +33,86 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       _html = new HtmlHelper();
       _controlStub = new Mock<IControl>();
-      _controlStub.Setup (stub => stub.ResolveClientUrl(It.IsAny<string>())).Returns ((string relativeUrl) => relativeUrl.TrimStart ('~'));
+      _controlStub.Setup(stub => stub.ResolveClientUrl(It.IsAny<string>())).Returns((string relativeUrl) => relativeUrl.TrimStart('~'));
     }
 
     [Test]
     public void Render_HeightInPixels ()
     {
-      IconInfo iconInfo = new IconInfo ("/image.gif") { Height = Unit.Pixel (20) };
+      IconInfo iconInfo = new IconInfo("/image.gif") { Height = Unit.Pixel(20) };
 
-      iconInfo.Render (_html.Writer, _controlStub.Object);
+      iconInfo.Render(_html.Writer, _controlStub.Object);
 
       var document = _html.GetResultDocument();
-      var imgTag = _html.GetAssertedChildElement (document, "img", 0);
+      var imgTag = _html.GetAssertedChildElement(document, "img", 0);
 
-      _html.AssertStyleAttribute (imgTag, "height", "20px");
+      _html.AssertStyleAttribute(imgTag, "height", "20px");
     }
 
     [Test]
     public void Render_WidthInPixels ()
     {
-      IconInfo iconInfo = new IconInfo ("/image.gif") { Width = Unit.Pixel (10) };
+      IconInfo iconInfo = new IconInfo("/image.gif") { Width = Unit.Pixel(10) };
 
-      iconInfo.Render (_html.Writer, _controlStub.Object);
+      iconInfo.Render(_html.Writer, _controlStub.Object);
 
-      var document = _html.GetResultDocument ();
-      var imgTag = _html.GetAssertedChildElement (document, "img", 0);
+      var document = _html.GetResultDocument();
+      var imgTag = _html.GetAssertedChildElement(document, "img", 0);
 
-      _html.AssertStyleAttribute (imgTag, "width", "10px");
+      _html.AssertStyleAttribute(imgTag, "width", "10px");
     }
 
     [Test]
     public void Render_HeightInPercent ()
     {
-      IconInfo iconInfo = new IconInfo ("/image.gif") {  Height = Unit.Percentage (20) };
+      IconInfo iconInfo = new IconInfo("/image.gif") {  Height = Unit.Percentage(20) };
 
-      iconInfo.Render (_html.Writer, _controlStub.Object);
+      iconInfo.Render(_html.Writer, _controlStub.Object);
 
-      var document = _html.GetResultDocument ();
-      var imgTag = _html.GetAssertedChildElement (document, "img", 0);
+      var document = _html.GetResultDocument();
+      var imgTag = _html.GetAssertedChildElement(document, "img", 0);
 
-      _html.AssertStyleAttribute (imgTag, "height", "20%");
+      _html.AssertStyleAttribute(imgTag, "height", "20%");
     }
 
 
     [Test]
     public void Render_WidthInPercent ()
     {
-      IconInfo iconInfo = new IconInfo ("/image.gif") { Width = Unit.Percentage (10) };
+      IconInfo iconInfo = new IconInfo("/image.gif") { Width = Unit.Percentage(10) };
 
-      iconInfo.Render (_html.Writer, _controlStub.Object);
+      iconInfo.Render(_html.Writer, _controlStub.Object);
 
       var document = _html.GetResultDocument();
-      var imgTag = _html.GetAssertedChildElement (document, "img", 0);
+      var imgTag = _html.GetAssertedChildElement(document, "img", 0);
 
-      _html.AssertStyleAttribute (imgTag, "width", "10%");
+      _html.AssertStyleAttribute(imgTag, "width", "10%");
     }
 
     [Test]
     public void Render_HeightInPoint ()
     {
-      IconInfo iconInfo = new IconInfo ("/image.gif") { Height = Unit.Point (20) };
+      IconInfo iconInfo = new IconInfo("/image.gif") { Height = Unit.Point(20) };
 
-      iconInfo.Render (_html.Writer, _controlStub.Object);
+      iconInfo.Render(_html.Writer, _controlStub.Object);
 
       var document = _html.GetResultDocument();
-      var imgTag = _html.GetAssertedChildElement (document, "img", 0);
+      var imgTag = _html.GetAssertedChildElement(document, "img", 0);
 
-      _html.AssertStyleAttribute (imgTag, "height", "20pt");
+      _html.AssertStyleAttribute(imgTag, "height", "20pt");
     }
 
     [Test]
     public void Render_WidthInEm ()
     {
-      IconInfo iconInfo = new IconInfo ("/image.gif") { Width = Unit.Parse ("20em") };
+      IconInfo iconInfo = new IconInfo("/image.gif") { Width = Unit.Parse("20em") };
 
-      iconInfo.Render (_html.Writer, _controlStub.Object);
+      iconInfo.Render(_html.Writer, _controlStub.Object);
 
-      var document = _html.GetResultDocument ();
-      var imgTag = _html.GetAssertedChildElement (document, "img", 0);
+      var document = _html.GetResultDocument();
+      var imgTag = _html.GetAssertedChildElement(document, "img", 0);
 
-      _html.AssertStyleAttribute (imgTag, "width", "20em");
+      _html.AssertStyleAttribute(imgTag, "width", "20em");
     }
   }
 }

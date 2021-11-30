@@ -36,44 +36,44 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [SetUp]
     public void SetUp ()
     {
-      _objA = CreateObject ("A");
-      _objB = CreateObject ("B");
-      _objC = CreateObject ("C");
-      _objD = CreateObject ("D");
-      _objE = CreateObject ("E");
+      _objA = CreateObject("A");
+      _objB = CreateObject("B");
+      _objC = CreateObject("C");
+      _objD = CreateObject("D");
+      _objE = CreateObject("E");
 
       _list = new List<IBusinessObject>();
-      _list.Add (_objA);
-      _list.Add (_objB);
-      _list.Add (_objC);
-      _list.Add (_objD);
+      _list.Add(_objA);
+      _list.Add(_objB);
+      _list.Add(_objC);
+      _list.Add(_objD);
 
       _values = new List<IBusinessObject>();
-      _values.Add (_objB);
-      _values.Add (_objE);
-      _values.Add (_objD);
-      _values.Add (_objA);
+      _values.Add(_objB);
+      _values.Add(_objE);
+      _values.Add(_objD);
+      _values.Add(_objA);
     }
 
     [Test]
     public void IndicesOf_AscendingValues ()
     {
-      var rows = ListUtility.IndicesOf (_list, _values).ToArray();
+      var rows = ListUtility.IndicesOf(_list, _values).ToArray();
 
-      Assert.That (rows, Is.Not.Null);
-      Assert.That (rows.Length, Is.EqualTo (3));
-      Assert.That (rows[0].Index, Is.EqualTo (1));
-      Assert.That (rows[1].Index, Is.EqualTo (3));
-      Assert.That (rows[2].Index, Is.EqualTo (0));
+      Assert.That(rows, Is.Not.Null);
+      Assert.That(rows.Length, Is.EqualTo(3));
+      Assert.That(rows[0].Index, Is.EqualTo(1));
+      Assert.That(rows[1].Index, Is.EqualTo(3));
+      Assert.That(rows[2].Index, Is.EqualTo(0));
 
-      Assert.That (rows[0].BusinessObject, Is.EqualTo (_objB));
-      Assert.That (rows[1].BusinessObject, Is.EqualTo (_objD));
-      Assert.That (rows[2].BusinessObject, Is.EqualTo (_objA));
+      Assert.That(rows[0].BusinessObject, Is.EqualTo(_objB));
+      Assert.That(rows[1].BusinessObject, Is.EqualTo(_objD));
+      Assert.That(rows[2].BusinessObject, Is.EqualTo(_objA));
     }
 
     private IBusinessObject CreateObject (string value)
     {
-      var businessObject = (IBusinessObject) Domain.TypeWithString.Create (value, null);
+      var businessObject = (IBusinessObject)Domain.TypeWithString.Create(value, null);
       return businessObject;
     }
   }

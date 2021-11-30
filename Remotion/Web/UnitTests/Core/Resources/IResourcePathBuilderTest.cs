@@ -37,8 +37,8 @@ namespace Remotion.Web.UnitTests.Core.Resources
     {
       var factory = _serviceLocator.GetInstance<IResourcePathBuilder>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (ResourcePathBuilder)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(ResourcePathBuilder)));
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
       var factory1 = _serviceLocator.GetInstance<IResourcePathBuilder>();
       var factory2 = _serviceLocator.GetInstance<IResourcePathBuilder>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

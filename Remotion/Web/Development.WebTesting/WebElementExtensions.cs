@@ -36,18 +36,18 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="timeout">A maximum timeout until the IFrame must be visible.</param>
     public static void WaitUntilFrameIsVisible ([NotNull] this IWebElement frame, [NotNull] string elementCssSelector, TimeSpan timeout)
     {
-      ArgumentUtility.CheckNotNull ("frame", frame);
-      ArgumentUtility.CheckNotNull ("elementCssSelector", elementCssSelector);
+      ArgumentUtility.CheckNotNull("frame", frame);
+      ArgumentUtility.CheckNotNull("elementCssSelector", elementCssSelector);
 
-      var webDriver = ((IWrapsDriver) frame).WrappedDriver;
-      var webDriverWait = new WebDriverWait (webDriver, timeout)
+      var webDriver = ((IWrapsDriver)frame).WrappedDriver;
+      var webDriverWait = new WebDriverWait(webDriver, timeout)
                           {
-                              PollingInterval = TimeSpan.FromMilliseconds (timeout.TotalMilliseconds / 100)
+                              PollingInterval = TimeSpan.FromMilliseconds(timeout.TotalMilliseconds / 100)
                           };
 
       try
       {
-        webDriverWait.Until (driver => FrameElementLoaded (driver, frame, elementCssSelector));
+        webDriverWait.Until(driver => FrameElementLoaded(driver, frame, elementCssSelector));
       }
       finally
       {
@@ -62,10 +62,10 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="timeout">A maximum timeout until the IFrame must be visible.</param>
     public static void WaitUntilFrameIsVisible ([NotNull] this IWebElement frame, TimeSpan timeout)
     {
-      ArgumentUtility.CheckNotNull ("frame", frame);
+      ArgumentUtility.CheckNotNull("frame", frame);
 
       // a body is always present in an IFrame
-      WaitUntilFrameIsVisible (frame, "body", timeout);
+      WaitUntilFrameIsVisible(frame, "body", timeout);
     }
 
     /// <summary>
@@ -75,9 +75,9 @@ namespace Remotion.Web.Development.WebTesting
     private static bool FrameElementLoaded (IWebDriver driver, IWebElement frame, string elementCssSelector)
     {
       driver.SwitchTo().DefaultContent();
-      driver.SwitchTo().Frame (frame);
+      driver.SwitchTo().Frame(frame);
 
-      return driver.FindElements (By.CssSelector (elementCssSelector)).Count > 0;
+      return driver.FindElements(By.CssSelector(elementCssSelector)).Count > 0;
     }
   }
 }

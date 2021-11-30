@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
   {
     public static TypeWithDateTime Create ()
     {
-      return ObjectFactory.Create<TypeWithDateTime> (true, ParamList.Empty);
+      return ObjectFactory.Create<TypeWithDateTime>(true, ParamList.Empty);
     }
 
     private DateTime _dateTimeValue;

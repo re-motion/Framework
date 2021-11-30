@@ -272,7 +272,7 @@ namespace Remotion.Data.DomainObjects
     /// <note type="inotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     /// </remarks>
     void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess);
-    
+
     /// <summary>
     /// Invoked when a relation property with cardinality <see cref="Mapping.CardinalityType.One"/> was read. 
     /// </summary>
@@ -459,7 +459,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="DomainObjectValidationException">The set of <paramref name="committedData"/> was not valid. 
     /// (Subclasses of this exception may be thrown.)</exception>
     void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData);
-    
+
     /// <summary>
     /// Invoked after a <see cref="ClientTransaction"/> was executed.
     /// </summary>

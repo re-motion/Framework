@@ -28,22 +28,22 @@ namespace Remotion.Data.DomainObjects.Web.Test
   {
     public static ClassWithAllDataTypes Call (IWxePage page, WxeUserControl userControl, Control sender, ITransactionMode transactionMode, ClassWithAllDataTypes inParameter)
     {
-      ArgumentUtility.CheckNotNull ("page", page);
-      ArgumentUtility.CheckNotNull ("userControl", userControl);
-      ArgumentUtility.CheckNotNull ("sender", sender);
+      ArgumentUtility.CheckNotNull("page", page);
+      ArgumentUtility.CheckNotNull("userControl", userControl);
+      ArgumentUtility.CheckNotNull("sender", sender);
 
       if (page.IsReturningPostBack == false)
       {
-        var function = new ShowSecondUserControlFunction (transactionMode, inParameter);
-        function.ExceptionHandler.SetCatchExceptionTypes (typeof (System.Exception));
-        var actualUserControl = (WxeUserControl) page.FindControl (userControl.PermanentUniqueID);
-        Assertion.IsNotNull (actualUserControl);
-        actualUserControl.ExecuteFunction (function, sender, null);
-        throw new Exception ("(Unreachable code)");
+        var function = new ShowSecondUserControlFunction(transactionMode, inParameter);
+        function.ExceptionHandler.SetCatchExceptionTypes(typeof(System.Exception));
+        var actualUserControl = (WxeUserControl)page.FindControl(userControl.PermanentUniqueID);
+        Assertion.IsNotNull(actualUserControl);
+        actualUserControl.ExecuteFunction(function, sender, null);
+        throw new Exception("(Unreachable code)");
       }
       else
       {
-        var function = (ShowSecondUserControlFunction) page.ReturningFunction;
+        var function = (ShowSecondUserControlFunction)page.ReturningFunction;
         if (function.ExceptionHandler.Exception != null)
           throw function.ExceptionHandler.Exception;
         return function.ReturnedObjectWithAllDataTypes;
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
     {
       get
       {
-        return (ShowSecondUserControlFunction) CurrentFunction;
+        return (ShowSecondUserControlFunction)CurrentFunction;
       }
     }
 
@@ -65,23 +65,23 @@ namespace Remotion.Data.DomainObjects.Web.Test
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
-      LoadObjectFromFunction (CurrentUserControlStep.IsPostBack);
-      RefreshText ();
+      base.OnLoad(e);
+      LoadObjectFromFunction(CurrentUserControlStep.IsPostBack);
+      RefreshText();
     }
 
-    private void LoadObjectFromFunction(bool interim)
+    private void LoadObjectFromFunction (bool interim)
     {
       ControlWithAllDataTypes.ObjectWithAllDataTypes = MyFunction.ObjectWithAllDataTypes;
-      ControlWithAllDataTypes.LoadValues (interim);
+      ControlWithAllDataTypes.LoadValues(interim);
     }
 
-    private void RefreshText()
+    private void RefreshText ()
     {
-      GuidInLabel.Text = GetObjectString (MyFunction.ObjectWithAllDataTypes);
+      GuidInLabel.Text = GetObjectString(MyFunction.ObjectWithAllDataTypes);
       var outObject = MyFunction.ReturnedObjectWithAllDataTypes;
-      GuidOutLabel.Text = GetObjectString (outObject);
-      ClientTransactionLabel.Text = ClientTransaction.Current.ToString ();
+      GuidOutLabel.Text = GetObjectString(outObject);
+      ClientTransactionLabel.Text = ClientTransaction.Current.ToString();
     }
 
      private string GetObjectString (ClassWithAllDataTypes obj)
@@ -91,33 +91,33 @@ namespace Remotion.Data.DomainObjects.Web.Test
 
     protected void ReturnButton_Click (object sender, EventArgs e)
     {
-      ExecuteNextStep ();
+      ExecuteNextStep();
     }
 
     protected void ControlWithAllDataTypes_Saved (object sender, EventArgs e)
     {
       MyFunction.ReturnedObjectWithAllDataTypes = ControlWithAllDataTypes.ObjectWithAllDataTypes;
-      RefreshText ();
+      RefreshText();
     }
 
     protected void NewObjectButton_Click (object sender, EventArgs e)
     {
       MyFunction.ObjectWithAllDataTypes = CreateSaveableNewObject();
-      LoadObjectFromFunction (false);
+      LoadObjectFromFunction(false);
       MyFunction.ReturnedObjectWithAllDataTypes = ControlWithAllDataTypes.ObjectWithAllDataTypes;
-      RefreshText ();
+      RefreshText();
     }
 
-    private ClassWithAllDataTypes CreateSaveableNewObject()
+    private ClassWithAllDataTypes CreateSaveableNewObject ()
     {
-      var result = ClassWithAllDataTypes.NewObject ();
+      var result = ClassWithAllDataTypes.NewObject();
       result.FillMandatoryProperties();
       return result;
     }
 
     protected void RefreshButton_Click (object sender, EventArgs e)
     {
-      RefreshText ();
+      RefreshText();
     }
   }
 }

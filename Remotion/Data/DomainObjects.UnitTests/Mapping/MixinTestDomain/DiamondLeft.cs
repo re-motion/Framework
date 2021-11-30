@@ -20,6 +20,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain
 {
   public class DiamondLeft : DiamondBase
   {
-    
+
   }
 }

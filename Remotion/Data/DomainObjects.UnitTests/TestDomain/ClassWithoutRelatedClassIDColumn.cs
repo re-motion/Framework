@@ -18,20 +18,20 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
-  [DBTable ("TableWithoutRelatedClassIDColumn")]
+  [DBTable("TableWithoutRelatedClassIDColumn")]
   [TestDomain]
   [Instantiable]
   public abstract class ClassWithoutRelatedClassIDColumn : TestDomainBase
   {
         public static ClassWithoutRelatedClassIDColumn NewObject ()
     {
-      return NewObject<ClassWithoutRelatedClassIDColumn> ();
+      return NewObject<ClassWithoutRelatedClassIDColumn>();
     }
 
-    protected ClassWithoutRelatedClassIDColumn()
+    protected ClassWithoutRelatedClassIDColumn ()
     {
     }
-  
+
     public abstract Distributor Distributor { get; set; }
   }
 }

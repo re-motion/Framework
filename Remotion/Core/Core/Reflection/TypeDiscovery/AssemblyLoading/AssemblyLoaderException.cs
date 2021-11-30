@@ -27,12 +27,12 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
   public class AssemblyLoaderException : Exception
   {
     public AssemblyLoaderException (string message, Exception innerException)
-        : base (message, innerException)
+        : base(message, innerException)
     {
     }
 
     protected AssemblyLoaderException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
   }

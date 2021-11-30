@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     }
 
     [Test]
-    public void RemovesAccessType()
+    public void RemovesAccessType ()
     {
       var accessType0 = AccessTypeDefinition.NewObject();
       var accessType1 = AccessTypeDefinition.NewObject();
@@ -45,49 +45,49 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
       var accessType4 = AccessTypeDefinition.NewObject();
 
       var securableClassDefinition = SecurableClassDefinition.NewObject();
-      securableClassDefinition.AddAccessType (accessType0);
-      securableClassDefinition.AddAccessType (accessType1);
-      securableClassDefinition.AddAccessType (accessType2);
-      securableClassDefinition.AddAccessType (accessType3);
-      securableClassDefinition.AddAccessType (accessType4);
+      securableClassDefinition.AddAccessType(accessType0);
+      securableClassDefinition.AddAccessType(accessType1);
+      securableClassDefinition.AddAccessType(accessType2);
+      securableClassDefinition.AddAccessType(accessType3);
+      securableClassDefinition.AddAccessType(accessType4);
 
-      securableClassDefinition.RemoveAccessType (accessType2);
+      securableClassDefinition.RemoveAccessType(accessType2);
 
-      Assert.That (securableClassDefinition.AccessTypes, Is.EqualTo (new[] { accessType0, accessType1, accessType3, accessType4 }));
-      var references = new SecurableClassDefinitionWrapper (securableClassDefinition).AccessTypeReferences;
-      Assert.That (((AccessTypeReference) references[0]).Index, Is.EqualTo (0));
-      Assert.That (((AccessTypeReference) references[1]).Index, Is.EqualTo (1));
-      Assert.That (((AccessTypeReference) references[2]).Index, Is.EqualTo (2));
-      Assert.That (((AccessTypeReference) references[3]).Index, Is.EqualTo (3));
+      Assert.That(securableClassDefinition.AccessTypes, Is.EqualTo(new[] { accessType0, accessType1, accessType3, accessType4 }));
+      var references = new SecurableClassDefinitionWrapper(securableClassDefinition).AccessTypeReferences;
+      Assert.That(((AccessTypeReference)references[0]).Index, Is.EqualTo(0));
+      Assert.That(((AccessTypeReference)references[1]).Index, Is.EqualTo(1));
+      Assert.That(((AccessTypeReference)references[2]).Index, Is.EqualTo(2));
+      Assert.That(((AccessTypeReference)references[3]).Index, Is.EqualTo(3));
     }
 
     [Test]
-    public void RemovesPermissionsForRemovedAccessType()
+    public void RemovesPermissionsForRemovedAccessType ()
     {
       var accessType0 = AccessTypeDefinition.NewObject();
       var accessType1 = AccessTypeDefinition.NewObject();
       var accessType2 = AccessTypeDefinition.NewObject();
 
       var securableClassDefinition = SecurableClassDefinition.NewObject();
-      securableClassDefinition.AddAccessType (accessType0);
-      securableClassDefinition.AddAccessType (accessType1);
-      securableClassDefinition.AddAccessType (accessType2);
+      securableClassDefinition.AddAccessType(accessType0);
+      securableClassDefinition.AddAccessType(accessType1);
+      securableClassDefinition.AddAccessType(accessType2);
 
-      var testHelper = new AccessControlTestHelper (ClientTransaction.Current);
+      var testHelper = new AccessControlTestHelper(ClientTransaction.Current);
       var acls = new List<AccessControlList>();
-      acls.Add (testHelper.CreateStatefulAcl (securableClassDefinition));
-      acls.Add (testHelper.CreateStatelessAcl (securableClassDefinition));
+      acls.Add(testHelper.CreateStatefulAcl(securableClassDefinition));
+      acls.Add(testHelper.CreateStatelessAcl(securableClassDefinition));
 
       foreach (var acl in acls)
         acl.CreateAccessControlEntry();
 
-      securableClassDefinition.RemoveAccessType (accessType1);
+      securableClassDefinition.RemoveAccessType(accessType1);
       foreach (var acl in acls)
       {
         var permissions = acl.AccessControlEntries[0].GetPermissions();
-        Assert.That (permissions.Count, Is.EqualTo (2));
-        Assert.That (permissions[0].AccessType, Is.SameAs (accessType0));
-        Assert.That (permissions[1].AccessType, Is.SameAs (accessType2));
+        Assert.That(permissions.Count, Is.EqualTo(2));
+        Assert.That(permissions[0].AccessType, Is.SameAs(accessType0));
+        Assert.That(permissions[1].AccessType, Is.SameAs(accessType2));
       }
     }
 
@@ -96,16 +96,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     {
       var accessType = AccessTypeDefinition.NewObject();
       var securableClassDefinition = SecurableClassDefinition.NewObject();
-      securableClassDefinition.AddAccessType (accessType);
+      securableClassDefinition.AddAccessType(accessType);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         securableClassDefinition.EnsureDataAvailable();
-        Assert.That (securableClassDefinition.State.IsUnchanged, Is.True);
+        Assert.That(securableClassDefinition.State.IsUnchanged, Is.True);
 
-        securableClassDefinition.RemoveAccessType (accessType);
+        securableClassDefinition.RemoveAccessType(accessType);
 
-        Assert.That (securableClassDefinition.State.IsChanged, Is.True);
+        Assert.That(securableClassDefinition.State.IsChanged, Is.True);
       }
     }
 
@@ -114,12 +114,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
     {
       var securableClassDefinition = SecurableClassDefinition.NewObject();
       securableClassDefinition.Name = "Class";
-      securableClassDefinition.AddAccessType (AccessTypeDefinition.NewObject());
-      securableClassDefinition.AddAccessType (AccessTypeDefinition.NewObject());
-      Assert.That (
-          () => securableClassDefinition.RemoveAccessType (AccessTypeDefinition.NewObject (Guid.NewGuid(), "Test", 42)),
+      securableClassDefinition.AddAccessType(AccessTypeDefinition.NewObject());
+      securableClassDefinition.AddAccessType(AccessTypeDefinition.NewObject());
+      Assert.That(
+          () => securableClassDefinition.RemoveAccessType(AccessTypeDefinition.NewObject(Guid.NewGuid(), "Test", 42)),
           Throws.ArgumentException
-              .And.Message.StartsWith ("The access type 'Test' is not associated with the securable class definition."));
+              .And.Message.StartsWith("The access type 'Test' is not associated with the securable class definition."));
     }
   }
 }

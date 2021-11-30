@@ -22,8 +22,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   {
     public string PersistentProperty
     {
-      get { return Properties[typeof (ProductLicenseMixin), "PersistentProperty"].GetValue<string> (); }
-      set { Properties[typeof (ProductLicenseMixin), "PersistentProperty"].SetValue (value); }
+      get { return Properties[typeof(ProductLicenseMixin), "PersistentProperty"].GetValue<string>(); }
+      set { Properties[typeof(ProductLicenseMixin), "PersistentProperty"].SetValue(value); }
     }
   }
 }

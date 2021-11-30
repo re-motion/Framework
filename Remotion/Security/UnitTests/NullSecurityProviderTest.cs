@@ -33,27 +33,27 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void GetAccess_ReturnsEmptyList ()
     {
-      AccessType[] accessTypes = _securityProvider.GetAccess (null, null);
-      Assert.That (accessTypes, Is.Not.Null);
-      Assert.That (accessTypes.Length, Is.EqualTo (0));
+      AccessType[] accessTypes = _securityProvider.GetAccess(null, null);
+      Assert.That(accessTypes, Is.Not.Null);
+      Assert.That(accessTypes.Length, Is.EqualTo(0));
     }
 
     [Test]
     public void GetIsNull ()
     {
-      Assert.That (_securityProvider.IsNull, Is.True);
+      Assert.That(_securityProvider.IsNull, Is.True);
     }
 
     [Test]
     public void GetHashcode_DifferentInstancesAreEqual ()
     {
-      Assert.That (new NullSecurityPrincipal().GetHashCode(), Is.EqualTo (new NullSecurityPrincipal().GetHashCode()));
+      Assert.That(new NullSecurityPrincipal().GetHashCode(), Is.EqualTo(new NullSecurityPrincipal().GetHashCode()));
     }
 
     [Test]
     public void Equals_DifferentInstancesAreEqual ()
     {
-      Assert.That (new NullSecurityPrincipal().Equals (new NullSecurityPrincipal()), Is.True);
+      Assert.That(new NullSecurityPrincipal().Equals(new NullSecurityPrincipal()), Is.True);
     }
   }
 }

@@ -32,21 +32,21 @@ namespace Remotion.Development.UnitTesting
     public static T SerializeAndDeserialize<T> (T t) where T : notnull
     {
       if (t == null)
-        throw new ArgumentNullException ("t");
+        throw new ArgumentNullException("t");
 
-      return (T) Serializer.Deserialize (Serializer.Serialize ((object) t));
+      return (T)Serializer.Deserialize(Serializer.Serialize((object)t));
     }
 
     public static byte[] Serialize (object? o)
     {
       if (o == null)
-        throw new ArgumentNullException ("o");
+        throw new ArgumentNullException("o");
 
-      using (MemoryStream stream = new MemoryStream ())
+      using (MemoryStream stream = new MemoryStream())
       {
-        BinaryFormatter formatter = new BinaryFormatter ();
+        BinaryFormatter formatter = new BinaryFormatter();
 #pragma warning disable SYSLIB0011
-        formatter.Serialize (stream, o);
+        formatter.Serialize(stream, o);
 #pragma warning restore SYSLIB0011
         return stream.ToArray();
       }
@@ -55,13 +55,13 @@ namespace Remotion.Development.UnitTesting
     public static object Deserialize (byte[] bytes)
     {
       if (bytes == null)
-        throw new ArgumentNullException ("bytes");
+        throw new ArgumentNullException("bytes");
 
-      using (MemoryStream stream = new MemoryStream (bytes))
+      using (MemoryStream stream = new MemoryStream(bytes))
       {
-        BinaryFormatter formatter = new BinaryFormatter ();
+        BinaryFormatter formatter = new BinaryFormatter();
 #pragma warning disable SYSLIB0011
-        return formatter.Deserialize (stream);
+        return formatter.Deserialize(stream);
 #pragma warning restore SYSLIB0011
       }
     }

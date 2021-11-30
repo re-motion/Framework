@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.Samples.GenericMixins.Core
 {
-  [Extends (typeof (BaseTargetClass<>))]
+  [Extends(typeof(BaseTargetClass<>))]
   public class GenericMixin<[BindToGenericTargetParameter] T> : Mixin<BaseTargetClass<T>, GenericMixin<T>.IBaseMethods>
       where T : BaseParameterClass
   {

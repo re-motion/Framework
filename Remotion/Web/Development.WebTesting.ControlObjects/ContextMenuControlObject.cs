@@ -26,11 +26,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class ContextMenuControlObject : DropDownMenuControlObjectBase
   {
     public ContextMenuControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
-    [Obsolete ("Use the Open() method instead. (Version 1.17.15.0)", false)]
+    [Obsolete("Use the Open() method instead. (Version 1.17.15.0)", false)]
     protected void OpenDropDownMenu ()
     {
       Open();
@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     protected override void PerformOpen (ElementScope menuButtonScope)
     {
-      menuButtonScope.ContextClick (Context);
+      menuButtonScope.ContextClick(Context);
     }
   }
 }

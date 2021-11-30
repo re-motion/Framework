@@ -25,28 +25,28 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class InfrastructureTests : IntegrationTest
   {
     [Test]
-    [TestCase (null, "New Input")]
-    [TestCase ("TODO RM-6402: Chrome Bug", "^   ! \" § $ % & / ( ) = ? ²   { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
-    [TestCase ("TODO RM-6402: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
-    [TestCase ("TODO RM-6402: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9 ^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
+    [TestCase(null, "New Input")]
+    [TestCase("TODO RM-6402: Chrome Bug", "^   ! \" § $ % & / ( ) = ? ²   { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
+    [TestCase("TODO RM-6402: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
+    [TestCase("TODO RM-6402: Chrome Bug", "^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9 ^ ° ! \" § $ % & / ( ) = ? ² ³ { [ ] } \\ + * ~ ' # @ < > | A Z a z 0 1 8 9")]
     public void TestCoypuElementScopeFillInWithAndSendKeysExtensions_FillWithAndWait (string ignore, string input)
     {
       if (ignore != null)
-        Assert.Ignore (ignore);
+        Assert.Ignore(ignore);
 
       var home = Start();
 
-      var textBox = home.TextBoxes().GetByLocalID ("MyTextBox");
+      var textBox = home.TextBoxes().GetByLocalID("MyTextBox");
 
-      textBox.FillWith (input, FinishInput.WithTab);
+      textBox.FillWith(input, FinishInput.WithTab);
 
-      Assert.That (home.Scope.FindId ("dmaWxePostBackSequenceNumberField").Value, Is.EqualTo ("3"));
-      Assert.That (textBox.GetText(), Is.EqualTo (input));
+      Assert.That(home.Scope.FindId("dmaWxePostBackSequenceNumberField").Value, Is.EqualTo("3"));
+      Assert.That(textBox.GetText(), Is.EqualTo(input));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("InfrastructureTests.wxe");
+      return Start<WxePageObject>("InfrastructureTests.wxe");
     }
   }
 }

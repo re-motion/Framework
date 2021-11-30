@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof (MixinWithInheritedMethod))]
+  [Uses(typeof(MixinWithInheritedMethod))]
   public class ClassOverridingInheritedMixinMethod
   {
     [OverrideMixin]
@@ -62,7 +62,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
     public string InvokeInheritedMethods ()
     {
-      return ProtectedInheritedMethod () + "-" + ProtectedInternalInheritedMethod() + "-" + PublicInheritedMethod();
+      return ProtectedInheritedMethod() + "-" + ProtectedInternalInheritedMethod() + "-" + PublicInheritedMethod();
     }
   }
 }

@@ -40,7 +40,7 @@ namespace Remotion.Security
 
       internal Scope (int currentSectionCount, bool previousIsActive)
       {
-        Assertion.DebugAssert (currentSectionCount > 0);
+        Assertion.DebugAssert(currentSectionCount > 0);
 
         _currentSectionCount = currentSectionCount;
         _previousIsActive = previousIsActive;
@@ -60,17 +60,17 @@ namespace Remotion.Security
         if (!_isDisposed)
         {
           if (_currentSectionCount == 0)
-            throw new InvalidOperationException ("The SecurityFreeSection scope has not been entered by invoking SecurityFreeSection.Create().");
+            throw new InvalidOperationException("The SecurityFreeSection scope has not been entered by invoking SecurityFreeSection.Create().");
 
-          PopSectionState (_currentSectionCount, _previousIsActive);
+          PopSectionState(_currentSectionCount, _previousIsActive);
           _isDisposed = true;
         }
       }
 
-      [Obsolete ("Use Dispose() instead. (Version 1.15.21.0)", true)]
+      [Obsolete("Use Dispose() instead. (Version 1.15.21.0)", true)]
       public void Leave ()
       {
-        throw new NotSupportedException ("Use Dispose() instead. (Version 1.15.21.0)");
+        throw new NotSupportedException("Use Dispose() instead. (Version 1.15.21.0)");
       }
     }
 
@@ -112,7 +112,7 @@ namespace Remotion.Security
     }
 
     private static readonly SafeContextSingleton<State> s_sectionState =
-        new SafeContextSingleton<State> (SafeContextKeys.SecuritySecurityFreeSection, () => new State());
+        new SafeContextSingleton<State>(SafeContextKeys.SecuritySecurityFreeSection, () => new State());
 
     /// <summary>
     /// Enables a <see cref="SecurityFreeSection"/> until the <see cref="Scope"/> is disabled. 
@@ -121,10 +121,10 @@ namespace Remotion.Security
     [MustUseReturnValue]
     public static Scope Activate ()
     {
-      var result = PushSectionState (newIsActive: true);
-      return new Scope (result.CurrentSectionCount, result.PreviousIsActive);
+      var result = PushSectionState(newIsActive: true);
+      return new Scope(result.CurrentSectionCount, result.PreviousIsActive);
     }
-    
+
     /// <summary>
     /// Disables any active <see cref="SecurityFreeSection"/> until the <see cref="Scope"/> is disposed. 
     /// The <see cref="Scope"/> should always be used via a using-block, or if that is not possible, disposed inside a finally-block.
@@ -132,18 +132,18 @@ namespace Remotion.Security
     [MustUseReturnValue]
     public static Scope Deactivate ()
     {
-      var result = PushSectionState (newIsActive: false);
-      return new Scope (result.CurrentSectionCount, result.PreviousIsActive);
+      var result = PushSectionState(newIsActive: false);
+      return new Scope(result.CurrentSectionCount, result.PreviousIsActive);
     }
 
     /// <summary>
     /// Enters a new <see cref="SecurityFreeSection"/> <see cref="Scope"/>. 
     /// The <see cref="Scope"/> should always be used via a using-block, or if that is not possible, disposed inside a finally-block.
     /// </summary>
-    [Obsolete ("Use Activate() instead. (Version 1.15.26.0)", true)]
+    [Obsolete("Use Activate() instead. (Version 1.15.26.0)", true)]
     public static Scope Create ()
     {
-      throw new NotSupportedException ("Use Activate() instead. (Version 1.15.26.0)");
+      throw new NotSupportedException("Use Activate() instead. (Version 1.15.26.0)");
     }
 
     public static bool IsActive
@@ -170,7 +170,7 @@ namespace Remotion.Security
       sectionState.CurrentSectionCount = newSectionCount;
       sectionState.IsActive = newIsActive;
 
-      return new PushResult (newSectionCount, previousIsActive);
+      return new PushResult(newSectionCount, previousIsActive);
     }
 
     private static void PopSectionState (int numberOfSectionsExpected, bool previousIsActive)
@@ -179,7 +179,7 @@ namespace Remotion.Security
 
       if (sectionState.CurrentSectionCount != numberOfSectionsExpected)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "Nested SecurityFreeSection scopes have been exited out-of-sequence. "
             + "Entering a SecurityFreeSection should always be combined with a using-block for the scope, or if this is not possible, a finally-block for leaving the scope.");
       }

@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   public class BindableDomainObjectProviderAttribute : BusinessObjectProviderAttribute
   {
     public BindableDomainObjectProviderAttribute ()
-        : base (typeof (BindableDomainObjectProvider))
+        : base(typeof(BindableDomainObjectProvider))
     {
     }
   }

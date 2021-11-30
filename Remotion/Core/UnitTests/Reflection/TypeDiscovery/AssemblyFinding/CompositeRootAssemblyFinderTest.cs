@@ -32,59 +32,59 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     [SetUp]
     public void SetUp ()
     {
-      _root1 = new RootAssembly (typeof (object).Assembly, true);
-      _root2 = new RootAssembly (typeof (CompositeRootAssemblyFinder).Assembly, true);
-      _root3 = new RootAssembly (typeof (CompositeRootAssemblyFinderTest).Assembly, true);
+      _root1 = new RootAssembly(typeof(object).Assembly, true);
+      _root2 = new RootAssembly(typeof(CompositeRootAssemblyFinder).Assembly, true);
+      _root3 = new RootAssembly(typeof(CompositeRootAssemblyFinderTest).Assembly, true);
     }
 
     [Test]
     public void FindRootAssemblies_NoInnerFinders ()
     {
-      var finder = new CompositeRootAssemblyFinder (new IRootAssemblyFinder[0]);
+      var finder = new CompositeRootAssemblyFinder(new IRootAssemblyFinder[0]);
 
       var rootAssemblies = finder.FindRootAssemblies();
-      Assert.That (rootAssemblies, Is.Empty);
+      Assert.That(rootAssemblies, Is.Empty);
     }
 
     [Test]
     public void FindRootAssemblies_InnerFinder ()
     {
-      IRootAssemblyFinder innerFinderStub = CreateInnerFinderStub (_root1, _root2);
-      var finder = new CompositeRootAssemblyFinder (new[] { innerFinderStub });
+      IRootAssemblyFinder innerFinderStub = CreateInnerFinderStub(_root1, _root2);
+      var finder = new CompositeRootAssemblyFinder(new[] { innerFinderStub });
 
-      var rootAssemblies = finder.FindRootAssemblies ();
-      Assert.That (rootAssemblies, Is.EquivalentTo (new[] { _root1, _root2 }));
+      var rootAssemblies = finder.FindRootAssemblies();
+      Assert.That(rootAssemblies, Is.EquivalentTo(new[] { _root1, _root2 }));
     }
 
     [Test]
     public void FindRootAssemblies_MultipleInnerFinders ()
     {
-      IRootAssemblyFinder innerFinderStub1 = CreateInnerFinderStub (_root1, _root2);
-      IRootAssemblyFinder innerFinderStub2 = CreateInnerFinderStub (_root3);
+      IRootAssemblyFinder innerFinderStub1 = CreateInnerFinderStub(_root1, _root2);
+      IRootAssemblyFinder innerFinderStub2 = CreateInnerFinderStub(_root3);
 
-      var finder = new CompositeRootAssemblyFinder (new[] { innerFinderStub1, innerFinderStub2 });
+      var finder = new CompositeRootAssemblyFinder(new[] { innerFinderStub1, innerFinderStub2 });
 
-      var rootAssemblies = finder.FindRootAssemblies ();
-      Assert.That (rootAssemblies, Is.EquivalentTo (new[] { _root1, _root2, _root3 }));
+      var rootAssemblies = finder.FindRootAssemblies();
+      Assert.That(rootAssemblies, Is.EquivalentTo(new[] { _root1, _root2, _root3 }));
     }
 
     [Test]
     public void FindRootAssemblies_RemovesAreNotDuplicates ()
     {
-      IRootAssemblyFinder innerFinderStub1 = CreateInnerFinderStub (_root1, _root2, _root2);
-      IRootAssemblyFinder innerFinderStub2 = CreateInnerFinderStub (_root3, _root2, _root1);
+      IRootAssemblyFinder innerFinderStub1 = CreateInnerFinderStub(_root1, _root2, _root2);
+      IRootAssemblyFinder innerFinderStub2 = CreateInnerFinderStub(_root3, _root2, _root1);
 
-      var finder = new CompositeRootAssemblyFinder (new[] { innerFinderStub1, innerFinderStub2 });
+      var finder = new CompositeRootAssemblyFinder(new[] { innerFinderStub1, innerFinderStub2 });
 
-      var rootAssemblies = finder.FindRootAssemblies ().ToArray();
-      Assert.That (rootAssemblies.Length, Is.EqualTo (6));
-      Assert.That (rootAssemblies.Distinct(), Is.EquivalentTo (new[] { _root1, _root2, _root3 }));
+      var rootAssemblies = finder.FindRootAssemblies().ToArray();
+      Assert.That(rootAssemblies.Length, Is.EqualTo(6));
+      Assert.That(rootAssemblies.Distinct(), Is.EquivalentTo(new[] { _root1, _root2, _root3 }));
     }
 
     private IRootAssemblyFinder CreateInnerFinderStub (params RootAssembly[] assemblies)
     {
       var innerFinderStub = new Mock<IRootAssemblyFinder>();
-      innerFinderStub.Setup (stub => stub.FindRootAssemblies ()).Returns (assemblies);
+      innerFinderStub.Setup(stub => stub.FindRootAssemblies()).Returns(assemblies);
       return innerFinderStub.Object;
     }
   }

@@ -30,95 +30,95 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocDateTimeValue
     public void Normal ()
     {
       var home = Start();
-      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID("DateOfBirthField_Normal");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocDateTimeValue.Analyze (analyzer);
+      var result = bocDateTimeValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Normal_WithValidationErrors ()
     {
       var home = Start();
-      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Normal");
-      bocDateTimeValue.SetDate ("InvDate");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID("DateOfBirthField_Normal");
+      bocDateTimeValue.SetDate("InvDate");
       var validateButton = home.GetValidateButton();
       validateButton.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocDateTimeValue.Analyze (analyzer);
+      var result = bocDateTimeValue.Analyze(analyzer);
 
-      Assert.That (bocDateTimeValue.GetValidationErrors(), Is.Not.Empty);
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(bocDateTimeValue.GetValidationErrors(), Is.Not.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ReadOnly ()
     {
       var home = Start();
-      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_ReadOnly");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID("DateOfBirthField_ReadOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocDateTimeValue.Analyze (analyzer);
+      var result = bocDateTimeValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void Disabled ()
     {
       var home = Start();
-      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_Disabled");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID("DateOfBirthField_Disabled");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocDateTimeValue.Analyze (analyzer);
+      var result = bocDateTimeValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void DateOnly ()
     {
       var home = Start();
-      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_DateOnly");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID("DateOfBirthField_DateOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocDateTimeValue.Analyze (analyzer);
+      var result = bocDateTimeValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void ReadOnlyDateOnly ()
     {
       var home = Start();
-      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_ReadOnlyDateOnly");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID("DateOfBirthField_ReadOnlyDateOnly");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocDateTimeValue.Analyze (analyzer);
+      var result = bocDateTimeValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
     public void DateOnly_ExpandedDatePicker ()
     {
       var home = Start();
-      var bocDateTimeValue = home.DateTimeValues().GetByLocalID ("DateOfBirthField_DateOnly");
-      var datePicker = bocDateTimeValue.Children.WebButtons().GetByLocalID ("DatePicker");
+      var bocDateTimeValue = home.DateTimeValues().GetByLocalID("DateOfBirthField_DateOnly");
+      var datePicker = bocDateTimeValue.Children.WebButtons().GetByLocalID("DatePicker");
       datePicker.Click();
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = bocDateTimeValue.Analyze (analyzer);
+      var result = bocDateTimeValue.Analyze(analyzer);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocDateTimeValue");
+      return Start("BocDateTimeValue");
     }
   }
 }

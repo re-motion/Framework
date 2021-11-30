@@ -40,65 +40,65 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
     private readonly IAppContextProvider _contextProvider;
 
-    public QueryConfiguration () : this (new AppContextProvider(), new string[0])
+    public QueryConfiguration () : this(new AppContextProvider(), new string[0])
     {
     }
 
-    public QueryConfiguration (IAppContextProvider provider) : this (provider, new string[0])
+    public QueryConfiguration (IAppContextProvider provider) : this(provider, new string[0])
     {
     }
 
-    public QueryConfiguration (params string[] configurationFiles) : this (new AppContextProvider(), configurationFiles)
+    public QueryConfiguration (params string[] configurationFiles) : this(new AppContextProvider(), configurationFiles)
     {
     }
 
     public QueryConfiguration (IAppContextProvider provider, params string[] configurationFiles)
     {
-      ArgumentUtility.CheckNotNull ("provider", provider);
-      ArgumentUtility.CheckNotNull ("configurationFiles", configurationFiles);
+      ArgumentUtility.CheckNotNull("provider", provider);
+      ArgumentUtility.CheckNotNull("configurationFiles", configurationFiles);
 
       _contextProvider = provider;
-      _queries = new DoubleCheckedLockingContainer<QueryDefinitionCollection> (LoadAllQueryDefinitions);
+      _queries = new DoubleCheckedLockingContainer<QueryDefinitionCollection>(LoadAllQueryDefinitions);
 
-      _queryFilesProperty = new ConfigurationProperty (
+      _queryFilesProperty = new ConfigurationProperty(
           "queryFiles",
-          typeof (ConfigurationElementCollection<QueryFileElement>),
+          typeof(ConfigurationElementCollection<QueryFileElement>),
           null,
           ConfigurationPropertyOptions.None);
 
-      _properties.Add (_queryFilesProperty);
+      _properties.Add(_queryFilesProperty);
 
       for (int i = 0; i < configurationFiles.Length; i++)
       {
         string configurationFile = configurationFiles[i];
-        QueryFileElement element = new QueryFileElement (configurationFile);
-        QueryFiles.Add (element);
+        QueryFileElement element = new QueryFileElement(configurationFile);
+        QueryFiles.Add(element);
       }
     }
 
     private QueryDefinitionCollection LoadAllQueryDefinitions ()
     {
-      var storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage);
+      var storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
 
       if (QueryFiles.Count == 0)
-        return new QueryConfigurationLoader (GetDefaultQueryFilePath(), storageProviderDefinitionFinder).GetQueryDefinitions ();
+        return new QueryConfigurationLoader(GetDefaultQueryFilePath(), storageProviderDefinitionFinder).GetQueryDefinitions();
       else
       {
-        QueryDefinitionCollection result = new QueryDefinitionCollection ();
+        QueryDefinitionCollection result = new QueryDefinitionCollection();
 
         for (int i = 0; i < QueryFiles.Count; i++)
         {
-          QueryConfigurationLoader loader = new QueryConfigurationLoader (QueryFiles[i].RootedFileName, storageProviderDefinitionFinder);
-            QueryDefinitionCollection queryDefinitions = loader.GetQueryDefinitions ();
+          QueryConfigurationLoader loader = new QueryConfigurationLoader(QueryFiles[i].RootedFileName, storageProviderDefinitionFinder);
+            QueryDefinitionCollection queryDefinitions = loader.GetQueryDefinitions();
           try
           {
-            result.Merge (queryDefinitions);
+            result.Merge(queryDefinitions);
           }
           catch (DuplicateQueryDefinitionException ex)
           {
-            string message = string.Format ("File '{0}' defines a duplicate for query definition '{1}'.", QueryFiles[i].RootedFileName,
+            string message = string.Format("File '{0}' defines a duplicate for query definition '{1}'.", QueryFiles[i].RootedFileName,
               ex.QueryDefinition.ID);
-            throw new ConfigurationException (message);
+            throw new ConfigurationException(message);
           }
         }
         return result;
@@ -112,12 +112,12 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
       string path = null;
       foreach (string potentialPath in potentialPaths)
       {
-        if (File.Exists (potentialPath))
+        if (File.Exists(potentialPath))
         {
           if (path != null)
           {
-            string message = string.Format ("Two default query configuration files found: '{0}' and '{1}'.", path, potentialPath);
-            throw new ConfigurationException (message);
+            string message = string.Format("Two default query configuration files found: '{0}' and '{1}'.", path, potentialPath);
+            throw new ConfigurationException(message);
           }
           path = potentialPath;
         }
@@ -125,23 +125,23 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
       if (path == null)
       {
-        string message = string.Format ("No default query file found. Searched for one of the following files:\n{0}",
-            string.Join ("\n", potentialPaths));
-        throw new ConfigurationException (message);
+        string message = string.Format("No default query file found. Searched for one of the following files:\n{0}",
+            string.Join("\n", potentialPaths));
+        throw new ConfigurationException(message);
       }
       return path;
     }
 
     private List<string> GetPotentialDefaultQueryFilePaths ()
     {
-      List<string> potentialPaths = new List<string> ();
-      potentialPaths.Add (Path.Combine (_contextProvider.BaseDirectory, c_defaultConfigurationFile));
+      List<string> potentialPaths = new List<string>();
+      potentialPaths.Add(Path.Combine(_contextProvider.BaseDirectory, c_defaultConfigurationFile));
       if (_contextProvider.RelativeSearchPath != null)
       {
-        foreach (string part in _contextProvider.RelativeSearchPath.Split (new[] {';'}, StringSplitOptions.RemoveEmptyEntries))
+        foreach (string part in _contextProvider.RelativeSearchPath.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries))
         {
-          string absoluteSearchPath = Path.GetFullPath (Path.Combine (_contextProvider.BaseDirectory, part));
-          potentialPaths.Add (Path.Combine (absoluteSearchPath, c_defaultConfigurationFile));
+          string absoluteSearchPath = Path.GetFullPath(Path.Combine(_contextProvider.BaseDirectory, part));
+          potentialPaths.Add(Path.Combine(absoluteSearchPath, c_defaultConfigurationFile));
         }
       }
       return potentialPaths;
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
     public ConfigurationElementCollection<QueryFileElement> QueryFiles
     {
-      get { return (ConfigurationElementCollection<QueryFileElement>) this[_queryFilesProperty]; }
+      get { return (ConfigurationElementCollection<QueryFileElement>)this[_queryFilesProperty]; }
     }
 
     protected override ConfigurationPropertyCollection Properties

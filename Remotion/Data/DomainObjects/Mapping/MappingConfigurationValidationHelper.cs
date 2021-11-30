@@ -35,105 +35,105 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly IPersistenceModelValidatorFactory _persistenceModelValidatorFactory;
 
     public MappingConfigurationValidationHelper (
-        IMappingValidatorFactory mappingValidatorFactory, 
+        IMappingValidatorFactory mappingValidatorFactory,
         IPersistenceModelValidatorFactory persistenceModelValidatorFactory)
     {
-      ArgumentUtility.CheckNotNull ("mappingValidatorFactory", mappingValidatorFactory);
-      ArgumentUtility.CheckNotNull ("persistenceModelValidatorFactory", persistenceModelValidatorFactory);
-      
+      ArgumentUtility.CheckNotNull("mappingValidatorFactory", mappingValidatorFactory);
+      ArgumentUtility.CheckNotNull("persistenceModelValidatorFactory", persistenceModelValidatorFactory);
+
       _mappingValidatorFactory = mappingValidatorFactory;
       _persistenceModelValidatorFactory = persistenceModelValidatorFactory;
     }
 
     public void VerifyPersistenceModelApplied (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       if (classDefinition.StorageEntityDefinition == null)
       {
-        var message = String.Format ("The persistence model loader did not assign a storage entity to class '{0}'.", classDefinition.ID);
-        throw new InvalidOperationException (message);
+        var message = String.Format("The persistence model loader did not assign a storage entity to class '{0}'.", classDefinition.ID);
+        throw new InvalidOperationException(message);
       }
 
       foreach (PropertyDefinition propDef in classDefinition.MyPropertyDefinitions)
       {
         if (propDef.StorageClass == StorageClass.Persistent && propDef.StoragePropertyDefinition == null)
         {
-          var message = String.Format (
+          var message = String.Format(
               "The persistence model loader did not assign a storage property to property '{0}' of class '{1}'.",
               propDef.PropertyName,
               classDefinition.ID);
-          throw new InvalidOperationException (message);
+          throw new InvalidOperationException(message);
         }
       }
 
       foreach (var derivedClass in classDefinition.DerivedClasses)
-        VerifyPersistenceModelApplied (derivedClass);
+        VerifyPersistenceModelApplied(derivedClass);
     }
 
     public void ValidateClassDefinitions (IEnumerable<ClassDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("typeDefinitions", typeDefinitions);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
       var typeDefinitionValidator = _mappingValidatorFactory.CreateClassDefinitionValidator();
-      AnalyzeMappingValidationResults (typeDefinitionValidator.Validate (typeDefinitions));
+      AnalyzeMappingValidationResults(typeDefinitionValidator.Validate(typeDefinitions));
     }
 
     public void ValidatePropertyDefinitions (IEnumerable<ClassDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("typeDefinitions", typeDefinitions);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
       var propertyDefinitionValidator = _mappingValidatorFactory.CreatePropertyDefinitionValidator();
-      AnalyzeMappingValidationResults (propertyDefinitionValidator.Validate (typeDefinitions));
+      AnalyzeMappingValidationResults(propertyDefinitionValidator.Validate(typeDefinitions));
     }
 
     public void ValidateRelationDefinitions (IEnumerable<RelationDefinition> relationDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinitions", relationDefinitions);
+      ArgumentUtility.CheckNotNull("relationDefinitions", relationDefinitions);
 
       var relationDefinitionValidator = _mappingValidatorFactory.CreateRelationDefinitionValidator();
-      AnalyzeMappingValidationResults (relationDefinitionValidator.Validate (relationDefinitions));
+      AnalyzeMappingValidationResults(relationDefinitionValidator.Validate(relationDefinitions));
     }
 
     public void ValidateSortExpression (IEnumerable<RelationDefinition> relationDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinitions", relationDefinitions);
+      ArgumentUtility.CheckNotNull("relationDefinitions", relationDefinitions);
 
       var sortExpressionValidator = _mappingValidatorFactory.CreateSortExpressionValidator();
-      AnalyzeMappingValidationResults (sortExpressionValidator.Validate (relationDefinitions));
+      AnalyzeMappingValidationResults(sortExpressionValidator.Validate(relationDefinitions));
     }
 
     public void ValidatePersistenceMapping (ClassDefinition rootClass)
     {
-      ArgumentUtility.CheckNotNull ("rootClass", rootClass);
+      ArgumentUtility.CheckNotNull("rootClass", rootClass);
 
-      var validator = _persistenceModelValidatorFactory.CreatePersistenceMappingValidator (rootClass);
-      var classDefinitionsToValidate = new[] { rootClass }.Concat (rootClass.GetAllDerivedClasses());
-      AnalyzeMappingValidationResults (validator.Validate (classDefinitionsToValidate));
+      var validator = _persistenceModelValidatorFactory.CreatePersistenceMappingValidator(rootClass);
+      var classDefinitionsToValidate = new[] { rootClass }.Concat(rootClass.GetAllDerivedClasses());
+      AnalyzeMappingValidationResults(validator.Validate(classDefinitionsToValidate));
     }
 
     public void AnalyzeMappingValidationResults (IEnumerable<MappingValidationResult> mappingValidationResults)
     {
-      ArgumentUtility.CheckNotNull ("mappingValidationResults", mappingValidationResults);
+      ArgumentUtility.CheckNotNull("mappingValidationResults", mappingValidationResults);
 
       var mappingValidationResultsArray = mappingValidationResults.ToArray();
       if (mappingValidationResultsArray.Any())
-        throw CreateMappingException (mappingValidationResultsArray);
+        throw CreateMappingException(mappingValidationResultsArray);
     }
 
     public void ValidateDuplicateClassIDs (IEnumerable<ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
 
       var duplicateGroups = from cd in classDefinitions
                             group cd by cd.ID
                             into cdGroups
-                            where cdGroups.Count () > 1
+                            where cdGroups.Count() > 1
                             select cdGroups;
       foreach (var duplicateGroup in duplicateGroups)
       {
-        var duplicates = duplicateGroup.ToArray ();
-        throw CreateMappingException (
+        var duplicates = duplicateGroup.ToArray();
+        throw CreateMappingException(
             "Class '{0}' and '{1}' both have the same class ID '{2}'. Use the ClassIDAttribute to define unique IDs for these "
             + "classes. The assemblies involved are '{3}' and '{4}'.",
             duplicates[0].ClassType.GetFullNameSafe(),
@@ -146,20 +146,20 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     private MappingException CreateMappingException (IEnumerable<MappingValidationResult> mappingValidationResults)
     {
-      var messages = new StringBuilder ();
+      var messages = new StringBuilder();
       foreach (var validationResult in mappingValidationResults)
       {
         if (messages.Length > 0)
-          messages.AppendLine (new string ('-', 10));
-        messages.AppendLine (validationResult.Message);
+          messages.AppendLine(new string('-', 10));
+        messages.AppendLine(validationResult.Message);
       }
 
-      return CreateMappingException (messages.ToString ().Trim ());
+      return CreateMappingException(messages.ToString().Trim());
     }
 
     private MappingException CreateMappingException (string message, params object[] args)
     {
-      return new MappingException (String.Format (message, args));
+      return new MappingException(String.Format(message, args));
     }
   }
 }

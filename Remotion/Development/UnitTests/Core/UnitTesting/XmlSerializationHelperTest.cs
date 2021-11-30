@@ -28,32 +28,32 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     public void XmlSerialize ()
     {
       int[] array = new int[] { 1, 2, 3 };
-      byte[] serializedArray = XmlSerializationHelper.XmlSerialize (array);
-      var serializedArrayString = ReplaceKnownXmlNamespaceDeclarations (Encoding.UTF8.GetString (serializedArray));
+      byte[] serializedArray = XmlSerializationHelper.XmlSerialize(array);
+      var serializedArrayString = ReplaceKnownXmlNamespaceDeclarations(Encoding.UTF8.GetString(serializedArray));
 
-      Assert.That (serializedArrayString, Is.EqualTo (ReplaceKnownXmlNamespaceDeclarations (GetExpectedXmlString())));
+      Assert.That(serializedArrayString, Is.EqualTo(ReplaceKnownXmlNamespaceDeclarations(GetExpectedXmlString())));
     }
 
     [Test]
     public void XmlDeserialize ()
     {
-      byte[] serializedArray = Encoding.UTF8.GetBytes (GetExpectedXmlString());
-      int[] array = XmlSerializationHelper.XmlDeserialize<int[]> (serializedArray);
-      Assert.That (array, Is.EqualTo (new int[] { 1, 2, 3 }));
+      byte[] serializedArray = Encoding.UTF8.GetBytes(GetExpectedXmlString());
+      int[] array = XmlSerializationHelper.XmlDeserialize<int[]>(serializedArray);
+      Assert.That(array, Is.EqualTo(new int[] { 1, 2, 3 }));
     }
 
     [Test]
     public void XmlSerializeAndDeserialize ()
     {
-      string[] array = XmlSerializationHelper.XmlSerializeAndDeserialize (new string[] { "1", "2", "3" });
-      Assert.That (array, Is.EqualTo (new string[] { "1", "2", "3" }));
+      string[] array = XmlSerializationHelper.XmlSerializeAndDeserialize(new string[] { "1", "2", "3" });
+      Assert.That(array, Is.EqualTo(new string[] { "1", "2", "3" }));
     }
 
     private string ReplaceKnownXmlNamespaceDeclarations (string xml)
     {
       return xml
-          .Replace (@"xmlns:xsd=""http://www.w3.org/2001/XMLSchema""", "XmlnsDeclaration")
-          .Replace (@"xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""", "XmlnsDeclaration");
+          .Replace(@"xmlns:xsd=""http://www.w3.org/2001/XMLSchema""", "XmlnsDeclaration")
+          .Replace(@"xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""", "XmlnsDeclaration");
     }
 
 

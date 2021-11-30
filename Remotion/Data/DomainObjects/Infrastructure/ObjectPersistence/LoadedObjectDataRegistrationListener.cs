@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// <see cref="ITransactionHierarchyManager"/> implementations.
   /// </summary>
   [Serializable]
-  public class LoadedObjectDataRegistrationListener : ILoadedObjectDataRegistrationListener 
+  public class LoadedObjectDataRegistrationListener : ILoadedObjectDataRegistrationListener
   {
     private readonly IClientTransactionEventSink _eventSink;
     private readonly ITransactionHierarchyManager _hierarchyManager;
@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     public LoadedObjectDataRegistrationListener (
         IClientTransactionEventSink eventSink, ITransactionHierarchyManager hierarchyManager)
     {
-      ArgumentUtility.CheckNotNull ("eventSink", eventSink);
-      ArgumentUtility.CheckNotNull ("hierarchyManager", hierarchyManager);
+      ArgumentUtility.CheckNotNull("eventSink", eventSink);
+      ArgumentUtility.CheckNotNull("hierarchyManager", hierarchyManager);
 
       _eventSink = eventSink;
       _hierarchyManager = hierarchyManager;
@@ -53,44 +53,44 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs)
     {
-      ArgumentUtility.CheckNotNull ("loadedObjectIDs", loadedObjectIDs);
+      ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
 
       // The ObjectsLoadingEvent is allowed to cancel; therefore, we execute it before indicating that we're starting to register objects.
       // _eventSink.RaiseObjectsLoadingEvent (loadedObjectIDs);
 
-      _hierarchyManager.OnBeforeObjectRegistration (loadedObjectIDs);
+      _hierarchyManager.OnBeforeObjectRegistration(loadedObjectIDs);
       try
       {
-        _eventSink.RaiseObjectsLoadingEvent (loadedObjectIDs);
+        _eventSink.RaiseObjectsLoadingEvent(loadedObjectIDs);
       }
       catch
       {
-        _hierarchyManager.OnAfterObjectRegistration (loadedObjectIDs);
+        _hierarchyManager.OnAfterObjectRegistration(loadedObjectIDs);
         throw;
       }
     }
 
     public void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs, ReadOnlyCollection<DomainObject> actuallyLoadedDomainObjects)
     {
-      ArgumentUtility.CheckNotNull ("loadedObjectIDs", loadedObjectIDs);
-      ArgumentUtility.CheckNotNull ("actuallyLoadedDomainObjects", actuallyLoadedDomainObjects);
+      ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
+      ArgumentUtility.CheckNotNull("actuallyLoadedDomainObjects", actuallyLoadedDomainObjects);
 
       try
       {
         if (actuallyLoadedDomainObjects.Count > 0)
-          _eventSink.RaiseObjectsLoadedEvent (actuallyLoadedDomainObjects);
+          _eventSink.RaiseObjectsLoadedEvent(actuallyLoadedDomainObjects);
       }
       finally
       {
-        _hierarchyManager.OnAfterObjectRegistration (loadedObjectIDs);
+        _hierarchyManager.OnAfterObjectRegistration(loadedObjectIDs);
       }
     }
 
     public void OnObjectsNotFound (ReadOnlyCollection<ObjectID> notFoundObjectIDs)
     {
-      ArgumentUtility.CheckNotNull ("notFoundObjectIDs", notFoundObjectIDs);
+      ArgumentUtility.CheckNotNull("notFoundObjectIDs", notFoundObjectIDs);
 
-      _eventSink.RaiseObjectsNotFoundEvent (notFoundObjectIDs);
+      _eventSink.RaiseObjectsNotFoundEvent(notFoundObjectIDs);
     }
   }
 }

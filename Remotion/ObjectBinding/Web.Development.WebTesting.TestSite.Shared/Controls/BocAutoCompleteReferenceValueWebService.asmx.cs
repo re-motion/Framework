@@ -30,9 +30,9 @@ using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls
 {
-  [WebService (Namespace = "http://re-motion.org/ObjectBinding.Web/")]
-  [WebServiceBinding (ConformsTo = WsiProfiles.BasicProfile1_1)]
-  [ToolboxItem (false)]
+  [WebService(Namespace = "http://re-motion.org/ObjectBinding.Web/")]
+  [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+  [ToolboxItem(false)]
   [ScriptService]
   public class BocAutoCompleteReferenceValueWebService : WebService, IBocAutoCompleteReferenceValueWebService
   {
@@ -44,14 +44,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     }
 
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments)
     {
-      return _iconServiceImplementation.GetIcon (new HttpContextWrapper (Context), businessObjectClass, businessObject, arguments);
+      return _iconServiceImplementation.GetIcon(new HttpContextWrapper(Context), businessObjectClass, businessObject, arguments);
     }
 
     [WebMethod]
-    [ScriptMethod (ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
     public WebMenuItemProxy[] GetMenuItemStatusForOptionsMenu (
         string controlID,
         string controlType,
@@ -61,11 +61,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         string arguments,
         string[] itemIDs)
     {
-      return itemIDs.Select (itemID => WebMenuItemProxy.Create (itemID, isDisabled: false)).ToArray();
+      return itemIDs.Select(itemID => WebMenuItemProxy.Create(itemID, isDisabled: false)).ToArray();
     }
 
     [WebMethod]
-    [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public BusinessObjectWithIdentityProxy[] Search (
         string searchString,
         int? completionSetCount,
@@ -75,26 +75,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         string args)
     {
       if (searchString == "throw")
-        throw new InvalidOperationException ("I'm always going to throw an exception if you search for 'throw'!");
+        throw new InvalidOperationException("I'm always going to throw an exception if you search for 'throw'!");
 
       var persons = new List<BusinessObjectWithIdentityProxy>();
-      foreach (var person in XmlReflectionBusinessObjectStorageProvider.Current.GetObjects (typeof (Person)))
+      foreach (var person in XmlReflectionBusinessObjectStorageProvider.Current.GetObjects(typeof(Person)))
       {
-        persons.Add (
-            new BusinessObjectWithIdentityProxy ((IBusinessObjectWithIdentity) person) { IconUrl = GetUrl (GetIcon ((IBusinessObject) person)) });
+        persons.Add(
+            new BusinessObjectWithIdentityProxy((IBusinessObjectWithIdentity)person) { IconUrl = GetUrl(GetIcon((IBusinessObject)person)) });
       }
 
-      var filteredPersons = persons.FindAll (person => person.DisplayName.StartsWith (searchString, StringComparison.OrdinalIgnoreCase));
+      var filteredPersons = persons.FindAll(person => person.DisplayName.StartsWith(searchString, StringComparison.OrdinalIgnoreCase));
       if (filteredPersons.Count == 0)
-        filteredPersons = persons.FindAll (person => person.DisplayName.IndexOf (searchString, StringComparison.OrdinalIgnoreCase) != -1);
+        filteredPersons = persons.FindAll(person => person.DisplayName.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) != -1);
 
-      filteredPersons.Sort ((left, right) => string.Compare (left.DisplayName, right.DisplayName, StringComparison.OrdinalIgnoreCase));
+      filteredPersons.Sort((left, right) => string.Compare(left.DisplayName, right.DisplayName, StringComparison.OrdinalIgnoreCase));
 
       return filteredPersons.Take(completionSetCount ?? int.MaxValue).ToArray();
     }
 
     [WebMethod]
-    [ScriptMethod (UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
+    [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
     public BusinessObjectWithIdentityProxy SearchExact (
         string searchString,
         string businessObjectClass,
@@ -103,24 +103,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         string args)
     {
       if (searchString == "throw")
-        throw new InvalidOperationException ("I'm always going to throw an exception if you search for 'throw'!");
+        throw new InvalidOperationException("I'm always going to throw an exception if you search for 'throw'!");
 
-      var result = Search (searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var result = Search(searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
       if (result.Length == 0)
         return null;
-      if (!string.Equals (result[0].DisplayName, searchString, StringComparison.CurrentCultureIgnoreCase))
+      if (!string.Equals(result[0].DisplayName, searchString, StringComparison.CurrentCultureIgnoreCase))
         return null;
       return result[0];
     }
 
     private string GetUrl (IconInfo iconInfo)
     {
-      return UrlUtility.ResolveUrlCaseSensitive (new HttpContextWrapper (Context), iconInfo.Url);
+      return UrlUtility.ResolveUrlCaseSensitive(new HttpContextWrapper(Context), iconInfo.Url);
     }
 
     private IconInfo GetIcon (IBusinessObject businessObject)
     {
-      return BusinessObjectBoundWebControl.GetIcon (businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
+      return BusinessObjectBoundWebControl.GetIcon(businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
     }
   }
 }

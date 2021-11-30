@@ -24,40 +24,40 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
-      var node = new WebTreeNode (
+      var node = new WebTreeNode(
           "Item1",
           "This is the beginning of very long text that should be placed correctly beside the icon",
           "~/Images/SampleIcon.gif");
-      MyWebTreeView2.Nodes.Add (node);
+      MyWebTreeView2.Nodes.Add(node);
 
-      var webTreeNodeNoBadge = new WebTreeNode ("Node1", "No badge");
-      MyWebTreeView3.Nodes.Add (webTreeNodeNoBadge);
+      var webTreeNodeNoBadge = new WebTreeNode("Node1", "No badge");
+      MyWebTreeView3.Nodes.Add(webTreeNodeNoBadge);
 
-      var webTreeNodeBadgeNoDescription = new WebTreeNode ("Node2", "Badge with value");
-      webTreeNodeBadgeNoDescription.Badge = new Badge ("1", string.Empty);
-      MyWebTreeView3.Nodes.Add (webTreeNodeBadgeNoDescription);
+      var webTreeNodeBadgeNoDescription = new WebTreeNode("Node2", "Badge with value");
+      webTreeNodeBadgeNoDescription.Badge = new Badge("1", string.Empty);
+      MyWebTreeView3.Nodes.Add(webTreeNodeBadgeNoDescription);
 
-      var webTreeNodeBadge = new WebTreeNode ("Node3", "Badge with value and description");
-      webTreeNodeBadge.Badge = new Badge ("2", "2 description");
-      MyWebTreeView3.Nodes.Add (webTreeNodeBadge);
+      var webTreeNodeBadge = new WebTreeNode("Node3", "Badge with value and description");
+      webTreeNodeBadge.Badge = new Badge("2", "2 description");
+      MyWebTreeView3.Nodes.Add(webTreeNodeBadge);
 
       var treeViewNodes = new IControlItem[]
                           {
-                              new WebTreeNode ("Node1", "1") { Category = "first category" },
-                              new WebTreeNode ("Node2", "2") { Category = "second category" },
-                              new WebTreeNode ("Node3", "3") { Category = "third category" },
-                              new WebTreeNode ("Node4", "4") { Category = "second category" },
-                              new WebTreeNode ("Node5", "5") { Category = "third category" },
-                              new WebTreeNode ("Node6", "6") { Category = "third category" },
-                              new WebTreeNode ("Node7", "7") { Category = "first category" }
+                              new WebTreeNode("Node1", "1") { Category = "first category" },
+                              new WebTreeNode("Node2", "2") { Category = "second category" },
+                              new WebTreeNode("Node3", "3") { Category = "third category" },
+                              new WebTreeNode("Node4", "4") { Category = "second category" },
+                              new WebTreeNode("Node5", "5") { Category = "third category" },
+                              new WebTreeNode("Node6", "6") { Category = "third category" },
+                              new WebTreeNode("Node7", "7") { Category = "first category" }
                           };
 
-      MyOrderedWebTreeView.Nodes.AddRange (treeViewNodes);
-      MyUnorderedWebTreeView.Nodes.AddRange (treeViewNodes);
-      MyWebTreeViewWithCategories.Nodes.Add (new WebTreeNode ("Node1", "1") { Category = "a category" });
-      MyWebTreeViewWithoutCategories.Nodes.Add (new WebTreeNode ("Node1", "1"));
+      MyOrderedWebTreeView.Nodes.AddRange(treeViewNodes);
+      MyUnorderedWebTreeView.Nodes.AddRange(treeViewNodes);
+      MyWebTreeViewWithCategories.Nodes.Add(new WebTreeNode("Node1", "1") { Category = "a category" });
+      MyWebTreeViewWithoutCategories.Nodes.Add(new WebTreeNode("Node1", "1"));
     }
   }
 }

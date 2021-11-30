@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
     /// </summary>
     [CanBeNull]
     IBusinessObjectProperty? ResultProperty { get; }
-    
+
     /// <summary>
     /// Gets the <see cref="IBusinessObject"/> that holds the value of the property path.
     /// </summary>

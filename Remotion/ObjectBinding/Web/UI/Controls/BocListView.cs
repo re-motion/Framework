@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> A BocListView is a named collection of column definitions. </summary>
-[ParseChildren (true, "ColumnDefinitionCollection")]
+[ParseChildren(true, "ColumnDefinitionCollection")]
 public class BocListView: BusinessObjectControlItem
 {
   private string? _itemID;
@@ -36,55 +36,55 @@ public class BocListView: BusinessObjectControlItem
   /// <summary> Initialize a new instance. </summary>
   public BocListView (
       IBusinessObjectBoundWebControl? ownerControl,
-      object title, 
+      object title,
       BocColumnDefinition[]? columnDefinitions)
   {
     _title = title;
-    _columnDefinitions = new BocColumnDefinitionCollection (
+    _columnDefinitions = new BocColumnDefinitionCollection(
       ownerControl);
-    
+
     if (columnDefinitions != null)
-      _columnDefinitions.AddRange (columnDefinitions);
+      _columnDefinitions.AddRange(columnDefinitions);
   }
 
   /// <summary> Initialize a new instance. </summary>
   public BocListView (object title, BocColumnDefinition[] columnDefinitions)
-    : this (null, title, columnDefinitions)
+    : this(null, title, columnDefinitions)
   {
   }
 
   /// <summary> Initialize a new instance. </summary>
-  public BocListView()
-    : this (null, string.Empty, null)
+  public BocListView ()
+    : this(null, string.Empty, null)
   {
   }
 
-  protected override void OnOwnerControlChanged()
+  protected override void OnOwnerControlChanged ()
   {
     base.OnOwnerControlChanged();
     _columnDefinitions.OwnerControl = OwnerControl;
   }
 
-  public override string ToString()
+  public override string ToString ()
   {
     string? displayName = ItemID;
-    if (string.IsNullOrEmpty (displayName))
+    if (string.IsNullOrEmpty(displayName))
       displayName = Title;
-    if (string.IsNullOrEmpty (displayName))
+    if (string.IsNullOrEmpty(displayName))
       return DisplayedTypeName;
     else
-      return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+      return string.Format("{0}: {1}", displayName, DisplayedTypeName);
   }
 
   /// <summary> Gets or sets the programmatic name of the <see cref="BocListView"/>. </summary>
   /// <value> A <see cref="string"/> providing an identifier for this <see cref="BocListView"/>. </value>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("The ID of this view.")]
-  [Category ("Misc")]
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [Description("The ID of this view.")]
+  [Category("Misc")]
   [DefaultValue("")]
-  [NotifyParentProperty (true)]
-  [Browsable (true)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Visible)]
+  [NotifyParentProperty(true)]
+  [Browsable(true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
   public override string? ItemID
   {
     get { return _itemID; }
@@ -93,10 +93,10 @@ public class BocListView: BusinessObjectControlItem
 
   /// <summary> Gets or sets the displayed name of the <see cref="BocListView"/>. </summary>
   /// <value> A <see cref="string"/> representing this <see cref="BocListView"/> on the rendered page. </value>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Appearance")]
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [Category("Appearance")]
   [DefaultValue("")]
-  [NotifyParentProperty (true)]
+  [NotifyParentProperty(true)]
   [AllowNull]
   public string Title
   {
@@ -110,10 +110,10 @@ public class BocListView: BusinessObjectControlItem
   /// <value>
   ///   An array of <see cref="BocColumnDefinition"/> objects that comprise this <see cref="BocListView"/>.
   /// </value>
-  [PersistenceMode (PersistenceMode.InnerDefaultProperty)]
-  [Category ("Data")]
-  [DefaultValue((string?) null)]
-  [NotifyParentProperty (true)]
+  [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
+  [Category("Data")]
+  [DefaultValue((string?)null)]
+  [NotifyParentProperty(true)]
   public BocColumnDefinitionCollection ColumnDefinitions
   {
     get { return _columnDefinitions; }
@@ -126,5 +126,5 @@ public class BocListView: BusinessObjectControlItem
   }
 }
 
-  
+
 }

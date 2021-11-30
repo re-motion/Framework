@@ -29,15 +29,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly BocListCellFunctionality _impl;
 
     public BocListCellControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
-      _impl = new BocListCellFunctionality (context);
+      _impl = new BocListCellFunctionality(context);
     }
 
     /// <inheritdoc/>
     public IStyleInformation StyleInfo
     {
-      get { return new DefaultStyleInformation (this, Scope); }
+      get { return new DefaultStyleInformation(this, Scope); }
     }
 
     /// <inheritdoc/>
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject ExecuteCommand (IWebTestActionOptions? actionOptions = null)
     {
-      return _impl.ExecuteCommand (actionOptions);
+      return _impl.ExecuteCommand(actionOptions);
     }
   }
 }

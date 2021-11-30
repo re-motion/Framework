@@ -27,30 +27,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void NotFoundObject ()
     {
-      var notFoundID = new ObjectID(typeof (Order), Guid.NewGuid());
-      var notFoundObject = LifetimeService.GetObjectReference (TestableClientTransaction, notFoundID);
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
+      var notFoundObject = LifetimeService.GetObjectReference(TestableClientTransaction, notFoundID);
       notFoundObject.TryEnsureDataAvailable();
 
-      CheckStateIsInvalid (notFoundObject, TestableClientTransaction);
+      CheckStateIsInvalid(notFoundObject, TestableClientTransaction);
 
-      ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, notFoundID);
+      ResurrectionService.ResurrectInvalidObject(TestableClientTransaction, notFoundID);
 
-      CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+      CheckStateIsNotInvalid(notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
     }
 
     [Test]
     public void NotFoundObject_TryResurrect ()
     {
-      var notFoundID = new ObjectID(typeof (Order), Guid.NewGuid ());
-      var notFoundObject = LifetimeService.GetObjectReference (TestableClientTransaction, notFoundID);
-      notFoundObject.TryEnsureDataAvailable ();
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
+      var notFoundObject = LifetimeService.GetObjectReference(TestableClientTransaction, notFoundID);
+      notFoundObject.TryEnsureDataAvailable();
 
-      CheckStateIsInvalid (notFoundObject, TestableClientTransaction);
+      CheckStateIsInvalid(notFoundObject, TestableClientTransaction);
 
-      var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, notFoundID);
+      var result = ResurrectionService.TryResurrectInvalidObject(TestableClientTransaction, notFoundID);
 
-      Assert.That (result, Is.True);
-      CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+      Assert.That(result, Is.True);
+      CheckStateIsNotInvalid(notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
     }
 
     [Test]
@@ -59,25 +59,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var newObject = Order.NewObject();
       newObject.Delete();
 
-      CheckStateIsInvalid (newObject, TestableClientTransaction);
+      CheckStateIsInvalid(newObject, TestableClientTransaction);
 
-      ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, newObject.ID);
+      ResurrectionService.ResurrectInvalidObject(TestableClientTransaction, newObject.ID);
 
-      CheckStateIsNotInvalid (newObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+      CheckStateIsNotInvalid(newObject, TestableClientTransaction, state => state.IsNotLoadedYet);
     }
 
     [Test]
     public void DiscardedNewObject_TryResurrect ()
     {
-      var newObject = Order.NewObject ();
-      newObject.Delete ();
+      var newObject = Order.NewObject();
+      newObject.Delete();
 
-      CheckStateIsInvalid (newObject, TestableClientTransaction);
+      CheckStateIsInvalid(newObject, TestableClientTransaction);
 
-      var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, newObject.ID);
+      var result = ResurrectionService.TryResurrectInvalidObject(TestableClientTransaction, newObject.ID);
 
-      Assert.That (result, Is.True);
-      CheckStateIsNotInvalid (newObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+      Assert.That(result, Is.True);
+      CheckStateIsNotInvalid(newObject, TestableClientTransaction, state => state.IsNotLoadedYet);
     }
 
     [Test]
@@ -85,184 +85,184 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       SetDatabaseModifyable();
 
-      var deletedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
-      deletedObject.Delete ();
+      var deletedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
+      deletedObject.Delete();
       TestableClientTransaction.Commit();
 
-      CheckStateIsInvalid (deletedObject, TestableClientTransaction);
+      CheckStateIsInvalid(deletedObject, TestableClientTransaction);
 
-      ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, deletedObject.ID);
+      ResurrectionService.ResurrectInvalidObject(TestableClientTransaction, deletedObject.ID);
 
-      CheckStateIsNotInvalid (deletedObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+      CheckStateIsNotInvalid(deletedObject, TestableClientTransaction, state => state.IsNotLoadedYet);
     }
 
     [Test]
     public void DiscardedDeletedObject_TryResurrect ()
     {
-      SetDatabaseModifyable ();
+      SetDatabaseModifyable();
 
-      var deletedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
-      deletedObject.Delete ();
-      TestableClientTransaction.Commit ();
+      var deletedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
+      deletedObject.Delete();
+      TestableClientTransaction.Commit();
 
-      CheckStateIsInvalid (deletedObject, TestableClientTransaction);
+      CheckStateIsInvalid(deletedObject, TestableClientTransaction);
 
-      var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, deletedObject.ID);
+      var result = ResurrectionService.TryResurrectInvalidObject(TestableClientTransaction, deletedObject.ID);
 
-      Assert.That (result, Is.True);
-      CheckStateIsNotInvalid (deletedObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+      Assert.That(result, Is.True);
+      CheckStateIsNotInvalid(deletedObject, TestableClientTransaction, state => state.IsNotLoadedYet);
     }
 
     [Test]
     public void NewInDescendant ()
     {
       var subTransaction = TestableClientTransaction.CreateSubTransaction();
-      using (subTransaction.EnterDiscardingScope ())
+      using (subTransaction.EnterDiscardingScope())
       {
         var newObject = Order.NewObject();
 
-        CheckStateIsInvalid (newObject, TestableClientTransaction);
-        CheckStateIsNotInvalid (newObject, subTransaction, state => state.IsNew);
+        CheckStateIsInvalid(newObject, TestableClientTransaction);
+        CheckStateIsNotInvalid(newObject, subTransaction, state => state.IsNew);
 
-        Assert.That (
-            () => ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, newObject.ID),
-            Throws.InvalidOperationException.With.Message.EqualTo (
+        Assert.That(
+            () => ResurrectionService.ResurrectInvalidObject(TestableClientTransaction, newObject.ID),
+            Throws.InvalidOperationException.With.Message.EqualTo(
                 "Cannot resurrect object '" + newObject.ID + "' because it is not invalid within the whole transaction hierarchy. "
                 + "In transaction '" + subTransaction + "', the object has DomainObjectState (New)."));
 
-        var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, newObject.ID);
-        Assert.That (result, Is.False);
+        var result = ResurrectionService.TryResurrectInvalidObject(TestableClientTransaction, newObject.ID);
+        Assert.That(result, Is.False);
       }
     }
 
     [Test]
     public void DeletedInParent ()
     {
-      var deletedObject = DomainObjectIDs.Order1.GetObject<Order> ();
+      var deletedObject = DomainObjectIDs.Order1.GetObject<Order>();
       deletedObject.Delete();
 
-      var subTransaction = TestableClientTransaction.CreateSubTransaction ();
-      using (subTransaction.EnterDiscardingScope ())
+      var subTransaction = TestableClientTransaction.CreateSubTransaction();
+      using (subTransaction.EnterDiscardingScope())
       {
-        CheckStateIsInvalid (deletedObject, subTransaction);
-        CheckStateIsNotInvalid (deletedObject, TestableClientTransaction, state => state.IsDeleted);
+        CheckStateIsInvalid(deletedObject, subTransaction);
+        CheckStateIsNotInvalid(deletedObject, TestableClientTransaction, state => state.IsDeleted);
 
-        Assert.That (
-            () => ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, deletedObject.ID),
-            Throws.InvalidOperationException.With.Message.EqualTo (
+        Assert.That(
+            () => ResurrectionService.ResurrectInvalidObject(TestableClientTransaction, deletedObject.ID),
+            Throws.InvalidOperationException.With.Message.EqualTo(
                 "Cannot resurrect object '" + deletedObject.ID + "' because it is not invalid within the whole transaction hierarchy. "
                 + "In transaction '" + TestableClientTransaction + "', the object has DomainObjectState (Deleted)."));
 
-        var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, deletedObject.ID);
-        Assert.That (result, Is.False);
+        var result = ResurrectionService.TryResurrectInvalidObject(TestableClientTransaction, deletedObject.ID);
+        Assert.That(result, Is.False);
       }
     }
 
     [Test]
     public void NotInvalidAtAll ()
     {
-      var notInvalidObject = DomainObjectIDs.Order1.GetObject<Order> ();
+      var notInvalidObject = DomainObjectIDs.Order1.GetObject<Order>();
 
-      var subTransaction = TestableClientTransaction.CreateSubTransaction ();
-      using (subTransaction.EnterDiscardingScope ())
+      var subTransaction = TestableClientTransaction.CreateSubTransaction();
+      using (subTransaction.EnterDiscardingScope())
       {
-        CheckStateIsNotInvalid (notInvalidObject, TestableClientTransaction, state => state.IsUnchanged);
-        CheckStateIsNotInvalid (notInvalidObject, subTransaction, state => state.IsNotLoadedYet);
+        CheckStateIsNotInvalid(notInvalidObject, TestableClientTransaction, state => state.IsUnchanged);
+        CheckStateIsNotInvalid(notInvalidObject, subTransaction, state => state.IsNotLoadedYet);
 
-        Assert.That (
-            () => ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, notInvalidObject.ID),
-            Throws.InvalidOperationException.With.Message.EqualTo (
+        Assert.That(
+            () => ResurrectionService.ResurrectInvalidObject(TestableClientTransaction, notInvalidObject.ID),
+            Throws.InvalidOperationException.With.Message.EqualTo(
                 "Cannot resurrect object '" + notInvalidObject.ID + "' because it is not invalid within the whole transaction hierarchy. "
                 + "In transaction '" + subTransaction + "', the object has DomainObjectState (NotLoadedYet)."));
 
-        var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, notInvalidObject.ID);
-        Assert.That (result, Is.False);
+        var result = ResurrectionService.TryResurrectInvalidObject(TestableClientTransaction, notInvalidObject.ID);
+        Assert.That(result, Is.False);
       }
     }
 
     [Test]
     public void ResurrectObject_ViaParentTransaction ()
     {
-      var notFoundID = new ObjectID(typeof (Order), Guid.NewGuid ());
-      var notFoundObject = LifetimeService.GetObjectReference (TestableClientTransaction, notFoundID);
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
+      var notFoundObject = LifetimeService.GetObjectReference(TestableClientTransaction, notFoundID);
 
-      var subTransaction = TestableClientTransaction.CreateSubTransaction ();
-      using (subTransaction.EnterDiscardingScope ())
+      var subTransaction = TestableClientTransaction.CreateSubTransaction();
+      using (subTransaction.EnterDiscardingScope())
       {
         notFoundObject.TryEnsureDataAvailable();
 
-        CheckStateIsInvalid (notFoundObject, TestableClientTransaction);
-        CheckStateIsInvalid (notFoundObject, subTransaction);
+        CheckStateIsInvalid(notFoundObject, TestableClientTransaction);
+        CheckStateIsInvalid(notFoundObject, subTransaction);
 
-        ResurrectionService.ResurrectInvalidObject (TestableClientTransaction, notFoundID);
+        ResurrectionService.ResurrectInvalidObject(TestableClientTransaction, notFoundID);
 
-        CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
-        CheckStateIsNotInvalid (notFoundObject, subTransaction, state => state.IsNotLoadedYet);
+        CheckStateIsNotInvalid(notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+        CheckStateIsNotInvalid(notFoundObject, subTransaction, state => state.IsNotLoadedYet);
       }
     }
 
     [Test]
     public void ResurrectObject_ViaSubTransaction ()
     {
-      var notFoundID = new ObjectID(typeof (Order), Guid.NewGuid ());
-      var notFoundObject = LifetimeService.GetObjectReference (TestableClientTransaction, notFoundID);
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
+      var notFoundObject = LifetimeService.GetObjectReference(TestableClientTransaction, notFoundID);
 
-      var subTransaction = TestableClientTransaction.CreateSubTransaction ();
-      using (subTransaction.EnterDiscardingScope ())
+      var subTransaction = TestableClientTransaction.CreateSubTransaction();
+      using (subTransaction.EnterDiscardingScope())
       {
-        notFoundObject.TryEnsureDataAvailable ();
+        notFoundObject.TryEnsureDataAvailable();
 
-        CheckStateIsInvalid (notFoundObject, TestableClientTransaction);
-        CheckStateIsInvalid (notFoundObject, subTransaction);
+        CheckStateIsInvalid(notFoundObject, TestableClientTransaction);
+        CheckStateIsInvalid(notFoundObject, subTransaction);
 
-        ResurrectionService.ResurrectInvalidObject (subTransaction, notFoundID);
+        ResurrectionService.ResurrectInvalidObject(subTransaction, notFoundID);
 
-        CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
-        CheckStateIsNotInvalid (notFoundObject, subTransaction, state => state.IsNotLoadedYet);
+        CheckStateIsNotInvalid(notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+        CheckStateIsNotInvalid(notFoundObject, subTransaction, state => state.IsNotLoadedYet);
       }
     }
 
     [Test]
     public void TryResurrectObject_ViaParentTransaction ()
     {
-      var notFoundID = new ObjectID(typeof (Order), Guid.NewGuid ());
-      var notFoundObject = LifetimeService.GetObjectReference (TestableClientTransaction, notFoundID);
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
+      var notFoundObject = LifetimeService.GetObjectReference(TestableClientTransaction, notFoundID);
 
-      var subTransaction = TestableClientTransaction.CreateSubTransaction ();
-      using (subTransaction.EnterDiscardingScope ())
+      var subTransaction = TestableClientTransaction.CreateSubTransaction();
+      using (subTransaction.EnterDiscardingScope())
       {
-        notFoundObject.TryEnsureDataAvailable ();
+        notFoundObject.TryEnsureDataAvailable();
 
-        CheckStateIsInvalid (notFoundObject, TestableClientTransaction);
-        CheckStateIsInvalid (notFoundObject, subTransaction);
+        CheckStateIsInvalid(notFoundObject, TestableClientTransaction);
+        CheckStateIsInvalid(notFoundObject, subTransaction);
 
-        var result = ResurrectionService.TryResurrectInvalidObject (TestableClientTransaction, notFoundID);
+        var result = ResurrectionService.TryResurrectInvalidObject(TestableClientTransaction, notFoundID);
 
-        Assert.That (result, Is.True);
-        CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
-        CheckStateIsNotInvalid (notFoundObject, subTransaction, state => state.IsNotLoadedYet);
+        Assert.That(result, Is.True);
+        CheckStateIsNotInvalid(notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+        CheckStateIsNotInvalid(notFoundObject, subTransaction, state => state.IsNotLoadedYet);
       }
     }
 
     [Test]
     public void TryResurrectObject_ViaSubTransaction ()
     {
-      var notFoundID = new ObjectID(typeof (Order), Guid.NewGuid ());
-      var notFoundObject = LifetimeService.GetObjectReference (TestableClientTransaction, notFoundID);
+      var notFoundID = new ObjectID(typeof(Order), Guid.NewGuid());
+      var notFoundObject = LifetimeService.GetObjectReference(TestableClientTransaction, notFoundID);
 
-      var subTransaction = TestableClientTransaction.CreateSubTransaction ();
-      using (subTransaction.EnterDiscardingScope ())
+      var subTransaction = TestableClientTransaction.CreateSubTransaction();
+      using (subTransaction.EnterDiscardingScope())
       {
-        notFoundObject.TryEnsureDataAvailable ();
+        notFoundObject.TryEnsureDataAvailable();
 
-        CheckStateIsInvalid (notFoundObject, TestableClientTransaction);
-        CheckStateIsInvalid (notFoundObject, subTransaction);
+        CheckStateIsInvalid(notFoundObject, TestableClientTransaction);
+        CheckStateIsInvalid(notFoundObject, subTransaction);
 
-        var result = ResurrectionService.TryResurrectInvalidObject (subTransaction, notFoundID);
+        var result = ResurrectionService.TryResurrectInvalidObject(subTransaction, notFoundID);
 
-        Assert.That (result, Is.True);
-        CheckStateIsNotInvalid (notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
-        CheckStateIsNotInvalid (notFoundObject, subTransaction, state => state.IsNotLoadedYet);
+        Assert.That(result, Is.True);
+        CheckStateIsNotInvalid(notFoundObject, TestableClientTransaction, state => state.IsNotLoadedYet);
+        CheckStateIsNotInvalid(notFoundObject, subTransaction, state => state.IsNotLoadedYet);
       }
     }
 
@@ -271,16 +271,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         ClientTransaction clientTransaction,
         Func<DomainObjectState, bool> expectedStatePredicate)
     {
-      Assert.That (clientTransaction.IsInvalid (domainObject.ID), Is.False);
+      Assert.That(clientTransaction.IsInvalid(domainObject.ID), Is.False);
       var domainObjectState = domainObject.TransactionContext[clientTransaction].State;
-      Assert.That (domainObjectState.IsInvalid, Is.False);
-      Assert.That (expectedStatePredicate (domainObjectState), Is.True);
+      Assert.That(domainObjectState.IsInvalid, Is.False);
+      Assert.That(expectedStatePredicate(domainObjectState), Is.True);
     }
 
     private void CheckStateIsInvalid (DomainObject domainObject, ClientTransaction clientTransaction)
     {
-      Assert.That (clientTransaction.IsInvalid (domainObject.ID), Is.True);
-      Assert.That (domainObject.TransactionContext[clientTransaction].State.IsInvalid, Is.True);
+      Assert.That(clientTransaction.IsInvalid(domainObject.ID), Is.True);
+      Assert.That(domainObject.TransactionContext[clientTransaction].State.IsInvalid, Is.True);
     }
   }
 }

@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
   public class TestDomainWithStorageClassTransactionAttribute : StorageGroupAttribute
   {
     public TestDomainWithStorageClassTransactionAttribute ()
-        : base (DefaultStorageClass.Transaction)
+        : base(DefaultStorageClass.Transaction)
     {
     }
   }

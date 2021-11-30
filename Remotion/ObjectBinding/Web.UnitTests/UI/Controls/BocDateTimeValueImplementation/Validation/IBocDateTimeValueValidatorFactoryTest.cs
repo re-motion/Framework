@@ -25,12 +25,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
     {
       var instance = _serviceLocator.GetInstance<IBocDateTimeValueValidatorFactory>();
 
-      Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocDateTimeValue>>());
+      Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<IBocDateTimeValue>>());
 
-      var factories = ((CompoundValidatorFactory<IBocDateTimeValue>) instance).VlidatorFactories;
-      Assert.That (
-          factories.Select (f => f.GetType()),
-          Is.EqualTo (new[] { typeof (BocDateTimeValueValidatorFactory), typeof (ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
+      var factories = ((CompoundValidatorFactory<IBocDateTimeValue>)instance).VlidatorFactories;
+      Assert.That(
+          factories.Select(f => f.GetType()),
+          Is.EqualTo(new[] { typeof(BocDateTimeValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) }));
     }
 
     [Test]
@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
       var instance1 = _serviceLocator.GetInstance<IBocDateTimeValueValidatorFactory>();
       var instance2 = _serviceLocator.GetInstance<IBocDateTimeValueValidatorFactory>();
 
-      Assert.That (instance1, Is.InstanceOf<CompoundValidatorFactory<IBocDateTimeValue>>());
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.InstanceOf<CompoundValidatorFactory<IBocDateTimeValue>>());
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

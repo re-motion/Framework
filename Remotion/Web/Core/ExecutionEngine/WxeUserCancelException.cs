@@ -31,17 +31,17 @@ namespace Remotion.Web.ExecutionEngine
   public class WxeUserCancelException : WxeIgnorableException
   {
     public WxeUserCancelException ()
-      : this ("User cancelled this step.")
+      : this("User cancelled this step.")
     {
     }
 
     public WxeUserCancelException (string message)
-      : base (message)
+      : base(message)
     {
     }
 
     protected WxeUserCancelException (SerializationInfo info, StreamingContext context)
-      : base (info, context)
+      : base(info, context)
     {
     }
   }

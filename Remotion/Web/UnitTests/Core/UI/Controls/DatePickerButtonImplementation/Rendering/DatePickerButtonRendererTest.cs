@@ -38,17 +38,17 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
     [SetUp]
     public void SetUp ()
     {
-      _htmlHelper = new HtmlHelper ();
+      _htmlHelper = new HtmlHelper();
       _httpContext = new Mock<HttpContextBase>();
 
       _datePickerButton = new Mock<IDatePickerButton>();
-      _datePickerButton.SetupProperty (_ => _.ID);
+      _datePickerButton.SetupProperty(_ => _.ID);
       _datePickerButton.Object.ID = "_Boc_DatePickerButton";
-      _datePickerButton.Setup (mock => mock.ContainerControlID).Returns ("Container");
-      _datePickerButton.Setup (mock => mock.TargetControlID).Returns ("Target");
-      _datePickerButton.Setup (mock => mock.ClientID).Returns (_datePickerButton.Object.ID);
+      _datePickerButton.Setup(mock => mock.ContainerControlID).Returns("Container");
+      _datePickerButton.Setup(mock => mock.TargetControlID).Returns("Target");
+      _datePickerButton.Setup(mock => mock.ClientID).Returns(_datePickerButton.Object.ID);
 
-      _cultureScope = new CultureScope ("de-DE", "de-CH");
+      _cultureScope = new CultureScope("de-DE", "de-CH");
     }
 
     [TearDown]
@@ -60,43 +60,43 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
     [Test]
     public void RenderButton ()
     {
-      _datePickerButton.Setup (mock => mock.Enabled).Returns (true);
-      _datePickerButton.Setup (mock => mock.EnableClientScript).Returns (true);
+      _datePickerButton.Setup(mock => mock.Enabled).Returns(true);
+      _datePickerButton.Setup(mock => mock.EnableClientScript).Returns(true);
 
-      AssertDateTimePickerButton (false, true);
+      AssertDateTimePickerButton(false, true);
     }
 
     [Test]
     public void RenderButtonNoClientScript ()
     {
-      _datePickerButton.Setup (mock => mock.Enabled).Returns (true);
+      _datePickerButton.Setup(mock => mock.Enabled).Returns(true);
 
-      AssertDateTimePickerButton (false, false);
+      AssertDateTimePickerButton(false, false);
     }
 
     [Test]
     public void RenderButtonDisabled ()
     {
-      _datePickerButton.Setup (mock => mock.EnableClientScript).Returns (true);
+      _datePickerButton.Setup(mock => mock.EnableClientScript).Returns(true);
 
-      AssertDateTimePickerButton (true, true);
+      AssertDateTimePickerButton(true, true);
     }
 
     [Test]
     public void RenderButtonDisabledNoClientScript ()
     {
-      AssertDateTimePickerButton (true, false);
+      AssertDateTimePickerButton(true, false);
     }
 
     private void AssertDateTimePickerButton (bool isDisabled, bool hasClientScript)
     {
-      var renderer = new DatePickerButtonRenderer (new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default);
-      renderer.Render (new DatePickerButtonRenderingContext (_httpContext.Object, _htmlHelper.Writer, _datePickerButton.Object));
+      var renderer = new DatePickerButtonRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default);
+      renderer.Render(new DatePickerButtonRenderingContext(_httpContext.Object, _htmlHelper.Writer, _datePickerButton.Object));
       var buttonDocument = _htmlHelper.GetResultDocument();
 
-      var button = _htmlHelper.GetAssertedChildElement (buttonDocument, "a", 0);
-      _htmlHelper.AssertAttribute (button, "id", "_Boc_DatePickerButton");
-      string script = string.Format (
+      var button = _htmlHelper.GetAssertedChildElement(buttonDocument, "a", 0);
+      _htmlHelper.AssertAttribute(button, "id", "_Boc_DatePickerButton");
+      string script = string.Format(
           "DatePicker.ShowDatePicker(this, document.getElementById ('{0}'), " +
           "document.getElementById ('{1}'), '{2}', '{3}', '{4}');return false;",
           _datePickerButton.Object.ContainerControlID,
@@ -109,18 +109,18 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
       if (isDisabled)
       {
         script = "return false;";
-        _htmlHelper.AssertAttribute (button, "disabled", "disabled");
+        _htmlHelper.AssertAttribute(button, "disabled", "disabled");
       }
 
-      _htmlHelper.AssertAttribute (button, "onclick", script);
-      _htmlHelper.AssertAttribute (button, "href", "#");
-      _htmlHelper.AssertAttribute (button, "tabindex", "-1");
+      _htmlHelper.AssertAttribute(button, "onclick", script);
+      _htmlHelper.AssertAttribute(button, "href", "#");
+      _htmlHelper.AssertAttribute(button, "tabindex", "-1");
 
       if (hasClientScript)
       {
-        var image = _htmlHelper.GetAssertedChildElement (button, "img", 0);
-        _htmlHelper.AssertAttribute (image, "alt", _datePickerButton.Object.AlternateText);
-        _htmlHelper.AssertAttribute (image, "src", renderer.GetResolvedImageUrl().GetUrl());
+        var image = _htmlHelper.GetAssertedChildElement(button, "img", 0);
+        _htmlHelper.AssertAttribute(image, "alt", _datePickerButton.Object.AlternateText);
+        _htmlHelper.AssertAttribute(image, "src", renderer.GetResolvedImageUrl().GetUrl());
       }
     }
   }

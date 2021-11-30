@@ -32,43 +32,43 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public override void SetUp ()
     {
       base.SetUp();
-      _executionState = new PostProcessingSubFunctionState (ExecutionStateContextMock.Object, new ExecutionStateParameters (SubFunction.Object, PostBackCollection));
+      _executionState = new PostProcessingSubFunctionState(ExecutionStateContextMock.Object, new ExecutionStateParameters(SubFunction.Object, PostBackCollection));
     }
 
     [Test]
     public void IsExecuting ()
     {
-      Assert.That (_executionState.IsExecuting, Is.True);
+      Assert.That(_executionState.IsExecuting, Is.True);
     }
 
     [Test]
     public void ExecuteSubFunction_WithGetRequest ()
     {
-      PrivateInvoke.SetNonPublicField (FunctionState, "_postBackID", 100);
-      RequestMock.Setup (stub => stub.HttpMethod).Returns ("GET");
+      PrivateInvoke.SetNonPublicField(FunctionState, "_postBackID", 100);
+      RequestMock.Setup(stub => stub.HttpMethod).Returns("GET");
 
       var sequence = new MockSequence();
-      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetReturnState (SubFunction.Object, true, PostBackCollection)).Verifiable();
-      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetExecutionState (NullExecutionState.Null)).Verifiable();
+      ExecutionStateContextMock.InSequence(sequence).Setup(mock => mock.SetReturnState(SubFunction.Object, true, PostBackCollection)).Verifiable();
+      ExecutionStateContextMock.InSequence(sequence).Setup(mock => mock.SetExecutionState(NullExecutionState.Null)).Verifiable();
 
-      _executionState.ExecuteSubFunction (WxeContext);
+      _executionState.ExecuteSubFunction(WxeContext);
 
       VerifyAll();
 
-      Assert.That (PostBackCollection[WxePageInfo.PostBackSequenceNumberID], Is.EqualTo ("100"));
+      Assert.That(PostBackCollection[WxePageInfo.PostBackSequenceNumberID], Is.EqualTo("100"));
     }
 
     [Test]
     public void ExecuteSubFunction_WithPostRequest ()
     {
-      PrivateInvoke.SetNonPublicField (FunctionState, "_postBackID", 100);
-      RequestMock.Setup (stub => stub.HttpMethod).Returns ("POST");
+      PrivateInvoke.SetNonPublicField(FunctionState, "_postBackID", 100);
+      RequestMock.Setup(stub => stub.HttpMethod).Returns("POST");
 
       var sequence = new MockSequence();
-      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetReturnState (SubFunction.Object, false, null)).Verifiable();
-      ExecutionStateContextMock.InSequence (sequence).Setup (mock => mock.SetExecutionState (NullExecutionState.Null)).Verifiable();
+      ExecutionStateContextMock.InSequence(sequence).Setup(mock => mock.SetReturnState(SubFunction.Object, false, null)).Verifiable();
+      ExecutionStateContextMock.InSequence(sequence).Setup(mock => mock.SetExecutionState(NullExecutionState.Null)).Verifiable();
 
-      _executionState.ExecuteSubFunction (WxeContext);
+      _executionState.ExecuteSubFunction(WxeContext);
 
       VerifyAll();
     }

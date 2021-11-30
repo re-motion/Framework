@@ -37,52 +37,52 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
 
     public void Synchronize (IRealObjectEndPoint endPoint, IVirtualEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
-      oppositeEndPoint.SynchronizeOppositeEndPoint (endPoint);
+      oppositeEndPoint.SynchronizeOppositeEndPoint(endPoint);
     }
 
     public IDataManagementCommand CreateDeleteCommand (IRealObjectEndPoint endPoint, Action oppositeObjectNullSetter)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull ("oppositeObjectNullSetter", oppositeObjectNullSetter);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("oppositeObjectNullSetter", oppositeObjectNullSetter);
 
-      throw new InvalidOperationException (
-          string.Format (
+      throw new InvalidOperationException(
+          string.Format(
               "The domain object '{0}' cannot be deleted because its relation property '{1}' is out of sync with the opposite property '{2}'. "
               + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method "
               + "on the '{1}' property.",
               endPoint.ObjectID,
               endPoint.Definition.PropertyName,
-              endPoint.Definition.GetOppositeEndPointDefinition ().PropertyName));
+              endPoint.Definition.GetOppositeEndPointDefinition().PropertyName));
     }
 
     public IDataManagementCommand CreateSetCommand (IRealObjectEndPoint endPoint, DomainObject newRelatedObject, Action<DomainObject> oppositeObjectIDSetter)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull ("oppositeObjectIDSetter", oppositeObjectIDSetter);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("oppositeObjectIDSetter", oppositeObjectIDSetter);
 
-      throw new InvalidOperationException (
-          string.Format (
+      throw new InvalidOperationException(
+          string.Format(
               "The relation property '{0}' of object '{1}' cannot be changed because it is out of sync with the opposite property '{2}'. "
               + "To make this change, synchronize the two properties by calling the 'BidirectionalRelationSyncService.Synchronize' method "
               + "on the '{0}' property.",
               endPoint.Definition.PropertyName,
               endPoint.ObjectID,
-              endPoint.Definition.GetOppositeEndPointDefinition ().PropertyName));
+              endPoint.Definition.GetOppositeEndPointDefinition().PropertyName));
     }
 
     #region Serialization
 
     public UnsynchronizedRealObjectEndPointSyncState (FlattenedDeserializationInfo info)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
     }
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
     }
 
     #endregion Serialization

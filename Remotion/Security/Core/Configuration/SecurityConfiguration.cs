@@ -28,8 +28,8 @@ namespace Remotion.Security.Configuration
     private class Fields
     {
       // ReSharper disable once MemberHidesStaticFromOuterClass
-      public readonly Lazy<SecurityConfiguration> Current = new Lazy<SecurityConfiguration> (
-          () => (SecurityConfiguration) ConfigurationManager.GetSection ("remotion.security") ?? new SecurityConfiguration());
+      public readonly Lazy<SecurityConfiguration> Current = new Lazy<SecurityConfiguration>(
+          () => (SecurityConfiguration)ConfigurationManager.GetSection("remotion.security") ?? new SecurityConfiguration());
     }
 
     private static readonly Fields s_fields = new Fields();
@@ -44,11 +44,11 @@ namespace Remotion.Security.Configuration
 
     public SecurityConfiguration ()
     {
-      _disableAccessChecksProperty = new ConfigurationProperty ("disableAccessChecks", typeof (bool), false, ConfigurationPropertyOptions.None);
+      _disableAccessChecksProperty = new ConfigurationProperty("disableAccessChecks", typeof(bool), false, ConfigurationPropertyOptions.None);
 
-      _properties.Add (_disableAccessChecksProperty);
+      _properties.Add(_disableAccessChecksProperty);
 
-      _properties.Add (new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None));
+      _properties.Add(new ConfigurationProperty("xmlns", typeof(string), null, ConfigurationPropertyOptions.None));
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -62,7 +62,7 @@ namespace Remotion.Security.Configuration
     /// </summary>
     public bool DisableAccessChecks
     {
-      get { return (bool) this[_disableAccessChecksProperty]; }
+      get { return (bool)this[_disableAccessChecksProperty]; }
       set { this[_disableAccessChecksProperty] = value; }
     }
   }

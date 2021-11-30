@@ -31,16 +31,16 @@ namespace Remotion.Reflection
 
     public static bool IsGacAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
-      return s_typeCache.GetOrAdd (assembly, GetTypeCacheValue).IsGacAssembly;
+      return s_typeCache.GetOrAdd(assembly, GetTypeCacheValue).IsGacAssembly;
     }
 
     public static IReadOnlyCollection<Type> GetTypes (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
-      return s_typeCache.GetOrAdd (assembly, GetTypeCacheValue).Types;
+      return s_typeCache.GetOrAdd(assembly, GetTypeCacheValue).Types;
     }
 
     private static (IReadOnlyCollection<Type> Types, bool IsGacAssembly) GetTypeCacheValue (Assembly assembly)
@@ -51,7 +51,7 @@ namespace Remotion.Reflection
       var isGacAssembly = false;
 #endif
 
-      var types = Array.AsReadOnly (assembly.GetTypes());
+      var types = Array.AsReadOnly(assembly.GetTypes());
 
       return (types, isGacAssembly);
     }

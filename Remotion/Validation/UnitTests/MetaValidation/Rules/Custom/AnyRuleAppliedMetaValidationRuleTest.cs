@@ -37,18 +37,18 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
       _propertyValidatorStub1 = new Mock<IPropertyValidator>();
       _propertyValidatorStub2 = new Mock<IPropertyValidator>();
 
-      _rule = new AnyRuleAppliedPropertyMetaValidationRule (typeof (Customer).GetProperty ("UserName"));
+      _rule = new AnyRuleAppliedPropertyMetaValidationRule(typeof(Customer).GetProperty("UserName"));
     }
 
     [Test]
     public void Validate_NoValidators ()
     {
-      var result = _rule.Validate (new IPropertyValidator[0]).Single();
+      var result = _rule.Validate(new IPropertyValidator[0]).Single();
 
-      Assert.That (result.IsValid, Is.False);
-      Assert.That (
+      Assert.That(result.IsValid, Is.False);
+      Assert.That(
           result.Message,
-          Is.EqualTo (
+          Is.EqualTo(
               "'AnyRuleAppliedPropertyMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': "
               + "No validation rules defined."));
     }
@@ -56,9 +56,9 @@ namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
     [Test]
     public void Validate_WithValidators ()
     {
-      var result = _rule.Validate (new[] { _propertyValidatorStub1.Object, _propertyValidatorStub2.Object }).Single();
+      var result = _rule.Validate(new[] { _propertyValidatorStub1.Object, _propertyValidatorStub2.Object }).Single();
 
-      Assert.That (result.IsValid, Is.True);
+      Assert.That(result.IsValid, Is.True);
     }
   }
 }

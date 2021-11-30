@@ -36,18 +36,18 @@ namespace Remotion.Mixins.Context
   {
     public static ClassContext Deserialize (IClassContextDeserializer deserializer)
     {
-      ArgumentUtility.CheckNotNull ("deserializer", deserializer);
-      return new ClassContext (
-          deserializer.GetClassType (),
-          deserializer.GetMixins (),
-          deserializer.GetComposedInterfaces ());
+      ArgumentUtility.CheckNotNull("deserializer", deserializer);
+      return new ClassContext(
+          deserializer.GetClassType(),
+          deserializer.GetMixins(),
+          deserializer.GetComposedInterfaces());
     }
 
     private static int CalculateHashCode (ClassContext classContext)
     {
-      return classContext.Type.GetHashCode ()
-          ^ EqualityUtility.GetXorHashCode (classContext.Mixins)
-          ^ EqualityUtility.GetXorHashCode (classContext.ComposedInterfaces);
+      return classContext.Type.GetHashCode()
+          ^ EqualityUtility.GetXorHashCode(classContext.Mixins)
+          ^ EqualityUtility.GetXorHashCode(classContext.ComposedInterfaces);
     }
 
     private readonly Type _type;
@@ -63,10 +63,10 @@ namespace Remotion.Mixins.Context
     /// <param name="composedInterfaces">The composed interfaces supported by the class.</param>
     /// <exception cref="ArgumentNullException">The <paramref name="type"/> parameter is <see langword="null"/>.</exception>
     public ClassContext (Type type, IEnumerable<MixinContext> mixins, IEnumerable<Type> composedInterfaces)
-        : this (
-            ArgumentUtility.CheckNotNull ("type", type),
-            new MixinContextCollection (ArgumentUtility.CheckNotNull ("mixins", mixins)),
-            new HashSet<Type> (ArgumentUtility.CheckNotNull ("composedInterfaces", composedInterfaces)).AsReadOnly())
+        : this(
+            ArgumentUtility.CheckNotNull("type", type),
+            new MixinContextCollection(ArgumentUtility.CheckNotNull("mixins", mixins)),
+            new HashSet<Type>(ArgumentUtility.CheckNotNull("composedInterfaces", composedInterfaces)).AsReadOnly())
     {
     }
 
@@ -76,7 +76,7 @@ namespace Remotion.Mixins.Context
       _mixins = mixins;
       _composedInterfaces = composedInterfaces;
 
-      _cachedHashCode = CalculateHashCode (this);
+      _cachedHashCode = CalculateHashCode(this);
     }
 
     /// <summary>
@@ -127,16 +127,16 @@ namespace Remotion.Mixins.Context
     /// </returns>
     public override bool Equals (object? obj)
     {
-      if (object.ReferenceEquals (this, obj))
+      if (object.ReferenceEquals(this, obj))
         return true;
 
       var other = obj as ClassContext;
       if (other == null)
         return false;
 
-      if (other._cachedHashCode != _cachedHashCode 
-          || other.Type != Type 
-          || other._mixins.Count != _mixins.Count 
+      if (other._cachedHashCode != _cachedHashCode
+          || other.Type != Type
+          || other._mixins.Count != _mixins.Count
           || other._composedInterfaces.Count != _composedInterfaces.Count)
         return false;
 
@@ -145,13 +145,13 @@ namespace Remotion.Mixins.Context
       foreach (var mixinContext in _mixins)
       {
         var otherMixinContext = other._mixins[mixinContext.MixinType];
-        if (otherMixinContext == null || !otherMixinContext.Equals (mixinContext))
+        if (otherMixinContext == null || !otherMixinContext.Equals(mixinContext))
           return false;
       }
 
       foreach (var composedInterface in _composedInterfaces)
       {
-        if (!other._composedInterfaces.Contains (composedInterface))
+        if (!other._composedInterfaces.Contains(composedInterface))
           return false;
       }
       // ReSharper restore LoopCanBeConvertedToQuery
@@ -179,12 +179,12 @@ namespace Remotion.Mixins.Context
     /// </returns>
     public override string ToString ()
     {
-      return string.Format (
+      return string.Format(
           "ClassContext: '{0}'{1}  Mixins: {2}{1}  ComposedInterfaces: ({3})",
           Type,
           Environment.NewLine,
-          string.Join ("", Mixins.Select (mc => Environment.NewLine + "    " + mc)), 
-          string.Join (",", ComposedInterfaces.Select (ifc => ifc.Name)));
+          string.Join("", Mixins.Select(mc => Environment.NewLine + "    " + mc)),
+          string.Join(",", ComposedInterfaces.Select(ifc => ifc.Name)));
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ namespace Remotion.Mixins.Context
     /// <returns>A clone of this <see cref="ClassContext"/> for a different target type.</returns>
     public ClassContext CloneForSpecificType (Type type)
     {
-      var newInstance = new ClassContext (type, Mixins, ComposedInterfaces);
+      var newInstance = new ClassContext(type, Mixins, ComposedInterfaces);
       return newInstance;
     }
 
@@ -209,12 +209,12 @@ namespace Remotion.Mixins.Context
     /// <exception cref="InvalidOperationException"><see cref="Type"/> is not a generic type definition.</exception>
     public ClassContext SpecializeWithTypeArguments (Type[] genericArguments)
     {
-      ArgumentUtility.CheckNotNull ("genericArguments", genericArguments);
+      ArgumentUtility.CheckNotNull("genericArguments", genericArguments);
 
       if (!Type.IsGenericTypeDefinition)
-        throw new InvalidOperationException ("This method is only allowed on generic type definitions.");
+        throw new InvalidOperationException("This method is only allowed on generic type definitions.");
 
-      return CloneForSpecificType (Type.MakeGenericType (genericArguments));
+      return CloneForSpecificType(Type.MakeGenericType(genericArguments));
     }
 
     /// <summary>
@@ -229,8 +229,8 @@ namespace Remotion.Mixins.Context
     /// </exception>
     public ClassContext InheritFrom (IEnumerable<ClassContext> baseContexts)
     {
-      ArgumentUtility.CheckNotNull ("baseContexts", baseContexts);
-      return ClassContextDeriver.Instance.DeriveContext (this, baseContexts);
+      ArgumentUtility.CheckNotNull("baseContexts", baseContexts);
+      return ClassContextDeriver.Instance.DeriveContext(this, baseContexts);
     }
 
     /// <summary>
@@ -243,11 +243,11 @@ namespace Remotion.Mixins.Context
     /// </returns>
     public ClassContext SuppressMixins (IEnumerable<IMixinSuppressionRule> suppressionRules)
     {
-      var mixinsAfterSuppression = _mixins.ToDictionary (mc => mc.MixinType);
+      var mixinsAfterSuppression = _mixins.ToDictionary(mc => mc.MixinType);
       foreach (var rule in suppressionRules)
-        rule.RemoveAffectedMixins (mixinsAfterSuppression);
+        rule.RemoveAffectedMixins(mixinsAfterSuppression);
 
-      return new ClassContext (_type, new MixinContextCollection (mixinsAfterSuppression.Values), _composedInterfaces);
+      return new ClassContext(_type, new MixinContextCollection(mixinsAfterSuppression.Values), _composedInterfaces);
     }
 
     /// <summary>
@@ -264,57 +264,57 @@ namespace Remotion.Mixins.Context
     /// </exception>
     public ClassContext ApplyMixinDependencies (IEnumerable<MixinDependencySpecification> dependencySpecifications)
     {
-      ArgumentUtility.CheckNotNull ("dependencySpecifications", dependencySpecifications);
+      ArgumentUtility.CheckNotNull("dependencySpecifications", dependencySpecifications);
 
-      var newMixinContexts = _mixins.ToDictionary (mc => mc.MixinType);
+      var newMixinContexts = _mixins.ToDictionary(mc => mc.MixinType);
       foreach (var dependencySpecification in dependencySpecifications)
       {
         var mixinType = dependencySpecification.MixinType;
-        var originalMixinContext = GetMatchingMixin (mixinType, newMixinContexts);
+        var originalMixinContext = GetMatchingMixin(mixinType, newMixinContexts);
 
-        var newMixinContext = originalMixinContext.ApplyAdditionalExplicitDependencies (dependencySpecification.Dependencies);
+        var newMixinContext = originalMixinContext.ApplyAdditionalExplicitDependencies(dependencySpecification.Dependencies);
         newMixinContexts[originalMixinContext.MixinType] = newMixinContext;
       }
 
-      return new ClassContext (_type, new MixinContextCollection (newMixinContexts.Values), _composedInterfaces);
+      return new ClassContext(_type, new MixinContextCollection(newMixinContexts.Values), _composedInterfaces);
     }
 
     public void Serialize (IClassContextSerializer serializer)
     {
-      ArgumentUtility.CheckNotNull ("serializer", serializer);
+      ArgumentUtility.CheckNotNull("serializer", serializer);
 
-      serializer.AddClassType (Type);
-      serializer.AddMixins (Mixins);
-      serializer.AddComposedInterfaces (ComposedInterfaces);
+      serializer.AddClassType(Type);
+      serializer.AddMixins(Mixins);
+      serializer.AddComposedInterfaces(ComposedInterfaces);
     }
 
     private MixinContext GetMatchingMixin (Type mixinType, Dictionary<Type, MixinContext> mixinContexts)
     {
-      var originalMixinContext = mixinContexts.GetValueOrDefault (mixinType);
+      var originalMixinContext = mixinContexts.GetValueOrDefault(mixinType);
       if (originalMixinContext == null && mixinType.IsGenericTypeDefinition)
       {
         var matchingMixins = mixinContexts.Values
-            .Where (mc => mc.MixinType.IsGenericType && mc.MixinType.GetGenericTypeDefinition () == mixinType)
-            .ConvertToCollection ();
+            .Where(mc => mc.MixinType.IsGenericType && mc.MixinType.GetGenericTypeDefinition() == mixinType)
+            .ConvertToCollection();
         try
         {
-          originalMixinContext = matchingMixins.SingleOrDefault ();
+          originalMixinContext = matchingMixins.SingleOrDefault();
         }
         catch (InvalidOperationException ex)
         {
-          var message = string.Format (
+          var message = string.Format(
               "The dependency specification for '{0}' applied to class '{1}' is ambiguous; matching mixins: {2}.",
               mixinType,
               Type,
-              string.Join (", ", matchingMixins.Select (mc => "'" + mc.MixinType + "'")));
-          throw new InvalidOperationException (message, ex);
+              string.Join(", ", matchingMixins.Select(mc => "'" + mc.MixinType + "'")));
+          throw new InvalidOperationException(message, ex);
         }
       }
 
       if (originalMixinContext == null)
       {
-        var message = string.Format ("The mixin '{0}' is not configured for class '{1}'.", mixinType, Type);
-        throw new InvalidOperationException (message);
+        var message = string.Format("The mixin '{0}' is not configured for class '{1}'.", mixinType, Type);
+        throw new InvalidOperationException(message);
       }
       return originalMixinContext;
     }

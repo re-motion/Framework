@@ -22,16 +22,16 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
   [DBTable]
   public abstract class Company: ClientBoundBaseClass
   {
-    public static Company NewObject()
+    public static Company NewObject ()
     {
       return DomainObject.NewObject<Company>();
     }
 
-    protected Company()
+    protected Company ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
   }
 }

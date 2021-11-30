@@ -29,62 +29,62 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueNoString_ReturnsNoValidationFailures ()
     {
       var instanceToValidate = new object();
-      var propertyValidatorContext = CreatePropertyValidatorContext (instanceToValidate);
-      var validator = new ExactLengthValidator (0, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(instanceToValidate);
+      var validator = new ExactLengthValidator(0, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext (null);
-      var validator = new ExactLengthValidator (0, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(null);
+      var validator = new ExactLengthValidator(0, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithStringAndStringLengthEqualsExactLength_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext ("some string");
-      var validator = new ExactLengthValidator ("some string".Length, new InvariantValidationMessage ("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext("some string");
+      var validator = new ExactLengthValidator("some string".Length, new InvariantValidationMessage("Fake Message"));
 
-      var validationFailures = validator.Validate (propertyValidatorContext);
+      var validationFailures = validator.Validate(propertyValidatorContext);
 
-      Assert.That (validationFailures, Is.Empty);
+      Assert.That(validationFailures, Is.Empty);
     }
 
     [Test]
     public void Validate_WithStringAndStringLengthShorterThanExactLength_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext ("1234");
-      var validator = new ExactLengthValidator ("12345".Length, new InvariantValidationMessage ("Custom validation message: '{0}'."));
+      var propertyValidatorContext = CreatePropertyValidatorContext("1234");
+      var validator = new ExactLengthValidator("12345".Length, new InvariantValidationMessage("Custom validation message: '{0}'."));
 
-      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      Assert.That (validationFailures.Length, Is.EqualTo (1));
+      Assert.That(validationFailures.Length, Is.EqualTo(1));
       //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
-      Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must have exactly 5 characters."));
-      Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '5'."));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must have exactly 5 characters."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '5'."));
     }
 
     [Test]
     public void Validate_WithStringAndStringLengthGreaterThanExactLength_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext ("1234");
-      var validator = new ExactLengthValidator ("123".Length, new InvariantValidationMessage ("Custom validation message: '{0}'."));
+      var propertyValidatorContext = CreatePropertyValidatorContext("1234");
+      var validator = new ExactLengthValidator("123".Length, new InvariantValidationMessage("Custom validation message: '{0}'."));
 
-      var validationFailures = validator.Validate (propertyValidatorContext).ToArray();
+      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
-      Assert.That (validationFailures.Length, Is.EqualTo (1));
+      Assert.That(validationFailures.Length, Is.EqualTo(1));
       //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
-      Assert.That (validationFailures[0].ErrorMessage, Is.EqualTo ("The value must have exactly 3 characters."));
-      Assert.That (validationFailures[0].LocalizedValidationMessage, Is.EqualTo ("Custom validation message: '3'."));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must have exactly 3 characters."));
+      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message: '3'."));
     }
   }
 }

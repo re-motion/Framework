@@ -27,45 +27,45 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.WebDriver.Configuration.
     [Test]
     public void Cleanup_UserDirectoryRootContainsMultipleFolders_DeletesOnlyUserDirectory ()
     {
-      var userDirectoryRootPath = Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString ("N"));
-      var userDirectoryPath = Path.Combine (userDirectoryRootPath, "0");
-      var anotherUserDirectoryPath = Path.Combine (userDirectoryRootPath, "1");
-      Directory.CreateDirectory (userDirectoryPath);
-      Directory.CreateDirectory (anotherUserDirectoryPath);
-      var cleanUpStrategy = new ChromiumUserDirectoryCleanUpStrategy (userDirectoryRootPath, userDirectoryPath);
+      var userDirectoryRootPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+      var userDirectoryPath = Path.Combine(userDirectoryRootPath, "0");
+      var anotherUserDirectoryPath = Path.Combine(userDirectoryRootPath, "1");
+      Directory.CreateDirectory(userDirectoryPath);
+      Directory.CreateDirectory(anotherUserDirectoryPath);
+      var cleanUpStrategy = new ChromiumUserDirectoryCleanUpStrategy(userDirectoryRootPath, userDirectoryPath);
 
       try
       {
         cleanUpStrategy.CleanUp();
 
-        Assert.That (Directory.Exists (userDirectoryPath), Is.False);
-        Assert.That (Directory.Exists (anotherUserDirectoryPath), Is.True);
+        Assert.That(Directory.Exists(userDirectoryPath), Is.False);
+        Assert.That(Directory.Exists(anotherUserDirectoryPath), Is.True);
       }
       finally
       {
-        if (Directory.Exists (userDirectoryRootPath))
-          Directory.Delete (userDirectoryRootPath, true);
+        if (Directory.Exists(userDirectoryRootPath))
+          Directory.Delete(userDirectoryRootPath, true);
       }
     }
 
     [Test]
     public void Cleanup_UserDirectoryRootContainsOnlyUserDirectory_DeletesUserDirectoryRoot ()
     {
-      var userDirectoryRootPath = Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString ("N"));
-      var userDirectoryPath = Path.Combine (userDirectoryRootPath, "0");
-      Directory.CreateDirectory (userDirectoryPath);
-      var cleanUpStrategy = new ChromiumUserDirectoryCleanUpStrategy (userDirectoryRootPath, userDirectoryPath);
+      var userDirectoryRootPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
+      var userDirectoryPath = Path.Combine(userDirectoryRootPath, "0");
+      Directory.CreateDirectory(userDirectoryPath);
+      var cleanUpStrategy = new ChromiumUserDirectoryCleanUpStrategy(userDirectoryRootPath, userDirectoryPath);
 
       try
       {
         cleanUpStrategy.CleanUp();
 
-        Assert.That (Directory.Exists (userDirectoryRootPath), Is.False);
+        Assert.That(Directory.Exists(userDirectoryRootPath), Is.False);
       }
       finally
       {
-        if (Directory.Exists (userDirectoryRootPath))
-          Directory.Delete (userDirectoryRootPath, true);
+        if (Directory.Exists(userDirectoryRootPath))
+          Directory.Delete(userDirectoryRootPath, true);
       }
     }
   }

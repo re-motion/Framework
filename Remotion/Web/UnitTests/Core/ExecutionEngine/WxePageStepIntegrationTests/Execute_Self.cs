@@ -44,60 +44,60 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _subFunction = new Mock<TestFunction>() { CallBase = true };
 
       _httpContextMock = new Mock<HttpContextBase>();
-      _pageExecutorMock = new Mock<IWxePageExecutor> (MockBehavior.Strict);
-      _functionState = new WxeFunctionState (_rootFunction, true);
+      _pageExecutorMock = new Mock<IWxePageExecutor>(MockBehavior.Strict);
+      _functionState = new WxeFunctionState(_rootFunction, true);
 
-      _pageStep = new Mock<WxePageStep> ("ThePage") { CallBase = true };
-      _pageStep.Object.SetPageExecutor (_pageExecutorMock.Object);
+      _pageStep = new Mock<WxePageStep>("ThePage") { CallBase = true };
+      _pageStep.Object.SetPageExecutor(_pageExecutorMock.Object);
 
-      _functionStateManager = new WxeFunctionStateManager (new FakeHttpSessionStateBase());
-      _wxeContext = new WxeContext (_httpContextMock.Object, _functionStateManager, _functionState, new NameValueCollection ());
+      _functionStateManager = new WxeFunctionStateManager(new FakeHttpSessionStateBase());
+      _wxeContext = new WxeContext(_httpContextMock.Object, _functionStateManager, _functionState, new NameValueCollection());
     }
 
     [Test]
     public void Execute ()
     {
-      _pageExecutorMock.Setup (mock => mock.ExecutePage (_wxeContext, "~/ThePage", false)).Callback (
+      _pageExecutorMock.Setup(mock => mock.ExecutePage(_wxeContext, "~/ThePage", false)).Callback(
           (WxeContext context, string page, bool isPostBack) =>
           {
-            Assert.That (_pageStep.Object.PostBackCollection, Is.Null);
-            Assert.That (_pageStep.Object.IsReturningPostBack, Is.False);
+            Assert.That(_pageStep.Object.PostBackCollection, Is.Null);
+            Assert.That(_pageStep.Object.IsReturningPostBack, Is.False);
           }).Verifiable();
 
-      _pageStep.Object.Execute (_wxeContext);
+      _pageStep.Object.Execute(_wxeContext);
       _subFunction.Verify();
       _httpContextMock.Verify();
       _pageExecutorMock.Verify();
       _pageStep.Verify();
 
-      Assert.That (_pageStep.Object.IsPostBack, Is.False);
+      Assert.That(_pageStep.Object.IsPostBack, Is.False);
     }
 
     [Test]
     public void Execute_WithPostBack ()
     {
-      _pageExecutorMock.Setup (stub => stub.ExecutePage (_wxeContext, "~/ThePage", false));
-      _pageStep.Object.Execute (_wxeContext);
+      _pageExecutorMock.Setup(stub => stub.ExecutePage(_wxeContext, "~/ThePage", false));
+      _pageStep.Object.Execute(_wxeContext);
       _subFunction.Reset();
       _httpContextMock.Reset();
       _pageExecutorMock.Reset();
       _pageStep.Reset();
 
-      _pageExecutorMock.Setup (mock => mock.ExecutePage (_wxeContext, "~/ThePage", true)).Callback (
+      _pageExecutorMock.Setup(mock => mock.ExecutePage(_wxeContext, "~/ThePage", true)).Callback(
           (WxeContext context, string page, bool isPostBack) =>
           {
-            Assert.That (_pageStep.Object.PostBackCollection, Is.Null);
-            Assert.That (_pageStep.Object.IsReturningPostBack, Is.False);
+            Assert.That(_pageStep.Object.PostBackCollection, Is.Null);
+            Assert.That(_pageStep.Object.IsReturningPostBack, Is.False);
           }).Verifiable();
 
-      _pageStep.Object.Execute (_wxeContext);
+      _pageStep.Object.Execute(_wxeContext);
 
       _subFunction.Verify();
       _httpContextMock.Verify();
       _pageExecutorMock.Verify();
       _pageStep.Verify();
 
-      Assert.That (_pageStep.Object.IsPostBack, Is.True);
+      Assert.That(_pageStep.Object.IsPostBack, Is.True);
     }
   }
 }

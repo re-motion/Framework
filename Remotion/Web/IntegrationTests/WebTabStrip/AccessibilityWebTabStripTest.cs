@@ -29,17 +29,17 @@ namespace Remotion.Web.IntegrationTests.WebTabStrip
     public void TabStrip ()
     {
       var home = Start();
-      var webTabStrip = home.WebTabStrips().GetByLocalID ("MyTabStrip1");
+      var webTabStrip = home.WebTabStrips().GetByLocalID("MyTabStrip1");
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
-      var result = analyzer.Analyze (webTabStrip);
+      var result = analyzer.Analyze(webTabStrip);
 
-      Assert.That (result.Violations, Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("WebTabStripTest.wxe");
+      return Start<WxePageObject>("WebTabStripTest.wxe");
     }
   }
 }

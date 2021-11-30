@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
 {
   [DBStorageGroup]
   [DBTable]
-  [ClassID ("PropertyTypeOfObjectList_DomainObjectAboveInheritanceRoot_ClassWithInvalidProperty")]
+  [ClassID("PropertyTypeOfObjectList_DomainObjectAboveInheritanceRoot_ClassWithInvalidProperty")]
   public class ClassWithInvalidProperty : ClassAboveInheritanceRoot
   {
     public ObjectList<ClassAboveInheritanceRoot> InvalidProperty { get; set; }

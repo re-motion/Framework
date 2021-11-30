@@ -30,19 +30,19 @@ namespace Remotion.Web.ExecutionEngine
   [Serializable]
   public sealed class WxeReturnOptions : INullObject
   {
-    public static readonly WxeReturnOptions Null = new WxeReturnOptions (false, null);
+    public static readonly WxeReturnOptions Null = new WxeReturnOptions(false, null);
 
     private readonly bool _isReturning;
     private readonly NameValueCollection? _callerUrlParameters;
 
     public WxeReturnOptions ()
-      : this (true, new NameValueCollection())
+      : this(true, new NameValueCollection())
     {
     }
 
     public WxeReturnOptions (NameValueCollection callerUrlParameters)
-      : this (true, ArgumentUtility.CheckNotNull ("callerUrlParameters", callerUrlParameters))
-    {      
+      : this(true, ArgumentUtility.CheckNotNull("callerUrlParameters", callerUrlParameters))
+    {
     }
 
     private WxeReturnOptions (bool isReturning, NameValueCollection? callerUrlParameters)
@@ -51,7 +51,7 @@ namespace Remotion.Web.ExecutionEngine
       _callerUrlParameters = callerUrlParameters;
     }
 
-    [MemberNotNullWhen (true, nameof (CallerUrlParameters))]
+    [MemberNotNullWhen(true, nameof(CallerUrlParameters))]
     public bool IsReturning
     {
       get { return _isReturning; }

@@ -32,9 +32,9 @@ namespace Remotion.Reflection.CodeGeneration
 
     protected MethodReferencingAttribute (Type declaringType, string methodName, string methodSignature)
     {
-      ArgumentUtility.CheckNotNull ("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
-      ArgumentUtility.CheckNotNullOrEmpty ("methodSignature", methodSignature);
+      ArgumentUtility.CheckNotNull("declaringType", declaringType);
+      ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
+      ArgumentUtility.CheckNotNullOrEmpty("methodSignature", methodSignature);
 
       _declaringType = declaringType;
       _methodName = methodName;
@@ -58,7 +58,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     public MethodInfo ResolveReferencedMethod ()
     {
-      return MethodResolver.ResolveMethod (DeclaringType, MethodName, MethodSignature);
+      return MethodResolver.ResolveMethod(DeclaringType, MethodName, MethodSignature);
     }
   }
 }

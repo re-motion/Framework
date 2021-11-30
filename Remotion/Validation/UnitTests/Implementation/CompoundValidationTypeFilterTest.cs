@@ -32,45 +32,45 @@ namespace Remotion.Validation.UnitTests.Implementation
     [SetUp]
     public void SetUp ()
     {
-      _type = typeof (string);
+      _type = typeof(string);
 
       _validationTypeFilter1 = new Mock<IValidationTypeFilter>();
       _validationTypeFilter2 = new Mock<IValidationTypeFilter>();
 
-      _compoundValidationTypeFilter = new CompoundValidationTypeFilter (new[] { _validationTypeFilter1.Object, _validationTypeFilter2.Object });
+      _compoundValidationTypeFilter = new CompoundValidationTypeFilter(new[] { _validationTypeFilter1.Object, _validationTypeFilter2.Object });
     }
 
     [Test]
     public void IsValid_AllValid ()
     {
-      _validationTypeFilter1.Setup (stub => stub.IsValidatableType (_type)).Returns (true);
-      _validationTypeFilter2.Setup (stub => stub.IsValidatableType (_type)).Returns (true);
+      _validationTypeFilter1.Setup(stub => stub.IsValidatableType(_type)).Returns(true);
+      _validationTypeFilter2.Setup(stub => stub.IsValidatableType(_type)).Returns(true);
 
-      var result = _compoundValidationTypeFilter.IsValidatableType (_type);
+      var result = _compoundValidationTypeFilter.IsValidatableType(_type);
 
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
     }
 
     [Test]
     public void IsValid_NoneValid ()
     {
-      _validationTypeFilter1.Setup (stub => stub.IsValidatableType (_type)).Returns (false);
-      _validationTypeFilter2.Setup (stub => stub.IsValidatableType (_type)).Returns (false);
+      _validationTypeFilter1.Setup(stub => stub.IsValidatableType(_type)).Returns(false);
+      _validationTypeFilter2.Setup(stub => stub.IsValidatableType(_type)).Returns(false);
 
-      var result = _compoundValidationTypeFilter.IsValidatableType (_type);
+      var result = _compoundValidationTypeFilter.IsValidatableType(_type);
 
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
 
     [Test]
     public void IsValid_OneValid ()
     {
-      _validationTypeFilter1.Setup (stub => stub.IsValidatableType (_type)).Returns (false);
-      _validationTypeFilter2.Setup (stub => stub.IsValidatableType (_type)).Returns (true);
+      _validationTypeFilter1.Setup(stub => stub.IsValidatableType(_type)).Returns(false);
+      _validationTypeFilter2.Setup(stub => stub.IsValidatableType(_type)).Returns(true);
 
-      var result = _compoundValidationTypeFilter.IsValidatableType (_type);
+      var result = _compoundValidationTypeFilter.IsValidatableType(_type);
 
-      Assert.That (result, Is.False);
+      Assert.That(result, Is.False);
     }
   }
 }

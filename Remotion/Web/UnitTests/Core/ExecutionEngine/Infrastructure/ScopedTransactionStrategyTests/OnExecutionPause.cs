@@ -30,128 +30,128 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     public override void SetUp ()
     {
       base.SetUp();
-      _strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null).Object;
+      _strategy = CreateScopedTransactionStrategy(true, NullTransactionStrategy.Null).Object;
     }
 
     [Test]
     public void Test ()
     {
-      InvokeOnExecutionPlay (_strategy);
+      InvokeOnExecutionPlay(_strategy);
 
       var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.OnExecutionPause (Context, ExecutionListenerStub.Object)).Verifiable();
-      ScopeMock.InSequence (sequence).Setup (mock => mock.Leave ()).Verifiable();
+      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionPause(Context, ExecutionListenerStub.Object)).Verifiable();
+      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
 
-      _strategy.OnExecutionPause (Context, ExecutionListenerStub.Object);
+      _strategy.OnExecutionPause(Context, ExecutionListenerStub.Object);
 
       VerifyAll();
-      Assert.That (_strategy.Scope, Is.Null);
+      Assert.That(_strategy.Scope, Is.Null);
     }
 
     [Test]
     public void Test_WithNullScope ()
     {
-      Assert.That (_strategy.Scope, Is.Null);
-      Assert.That (
-          () => _strategy.OnExecutionPause (Context, ExecutionListenerStub.Object),
+      Assert.That(_strategy.Scope, Is.Null);
+      Assert.That(
+          () => _strategy.OnExecutionPause(Context, ExecutionListenerStub.Object),
           Throws.InvalidOperationException
-              .With.Message.EqualTo ("OnExecutionPause may not be invoked unless OnExecutionPlay was called first."));
+              .With.Message.EqualTo("OnExecutionPause may not be invoked unless OnExecutionPlay was called first."));
     }
 
     [Test]
     public void Test_ChildStrategyThrows ()
     {
-      var innerException = new ApplicationException ("InnerListener Exception");
+      var innerException = new ApplicationException("InnerListener Exception");
 
-      InvokeOnExecutionPlay (_strategy);
+      InvokeOnExecutionPlay(_strategy);
       var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.OnExecutionPause (Context, ExecutionListenerStub.Object)).Throws (innerException).Verifiable();
-      ScopeMock.InSequence (sequence).Setup (mock => mock.Leave ()).Verifiable();
+      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionPause(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();
+      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
 
       try
       {
-        _strategy.OnExecutionPause (Context, ExecutionListenerStub.Object);
-        Assert.Fail ("Expected Exception");
+        _strategy.OnExecutionPause(Context, ExecutionListenerStub.Object);
+        Assert.Fail("Expected Exception");
       }
       catch (ApplicationException actualException)
       {
-        Assert.That (actualException, Is.SameAs (innerException));
+        Assert.That(actualException, Is.SameAs(innerException));
       }
 
       VerifyAll();
-      Assert.That (_strategy.Scope, Is.Null);
+      Assert.That(_strategy.Scope, Is.Null);
     }
 
     [Test]
     public void Test_ChildStrategyThrowsFatalException ()
     {
-      var innerException = new WxeFatalExecutionException (new Exception ("ChildStrategy Exception"), null);
+      var innerException = new WxeFatalExecutionException(new Exception("ChildStrategy Exception"), null);
 
-      InvokeOnExecutionPlay (_strategy);
-      ChildTransactionStrategyMock.Setup (mock => mock.OnExecutionPause (Context, ExecutionListenerStub.Object)).Throws (innerException).Verifiable();
+      InvokeOnExecutionPlay(_strategy);
+      ChildTransactionStrategyMock.Setup(mock => mock.OnExecutionPause(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();
 
       try
       {
-        _strategy.OnExecutionPause (Context, ExecutionListenerStub.Object);
-        Assert.Fail ("Expected Exception");
+        _strategy.OnExecutionPause(Context, ExecutionListenerStub.Object);
+        Assert.Fail("Expected Exception");
       }
       catch (WxeFatalExecutionException actualException)
       {
-        Assert.That (actualException, Is.SameAs (innerException));
+        Assert.That(actualException, Is.SameAs(innerException));
       }
 
       VerifyAll();
-      Assert.That (_strategy.Scope, Is.Not.Null);
+      Assert.That(_strategy.Scope, Is.Not.Null);
     }
 
     [Test]
     public void Test_LeaveThrows ()
     {
-      var innerException = new Exception ("Leave Exception");
+      var innerException = new Exception("Leave Exception");
 
-      InvokeOnExecutionPlay (_strategy);
+      InvokeOnExecutionPlay(_strategy);
       var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.OnExecutionPause (Context, ExecutionListenerStub.Object)).Verifiable();
-      ScopeMock.InSequence (sequence).Setup (mock => mock.Leave ()).Throws (innerException).Verifiable();
+      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionPause(Context, ExecutionListenerStub.Object)).Verifiable();
+      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Throws(innerException).Verifiable();
 
       try
       {
-        _strategy.OnExecutionPause (Context, ExecutionListenerStub.Object);
-        Assert.Fail ("Expected Exception");
+        _strategy.OnExecutionPause(Context, ExecutionListenerStub.Object);
+        Assert.Fail("Expected Exception");
       }
       catch (WxeFatalExecutionException actualException)
       {
-        Assert.That (actualException.InnerException, Is.SameAs (innerException));
+        Assert.That(actualException.InnerException, Is.SameAs(innerException));
       }
 
       VerifyAll();
-      Assert.That (_strategy.Scope, Is.Not.Null);
+      Assert.That(_strategy.Scope, Is.Not.Null);
     }
 
     [Test]
     public void Test_ChildStrategyThrows_And_LeaveThrows ()
     {
-      var innerException = new Exception ("InnerListener Exception");
-      var outerException = new Exception ("Leave Exception");
+      var innerException = new Exception("InnerListener Exception");
+      var outerException = new Exception("Leave Exception");
 
-      InvokeOnExecutionPlay (_strategy);
+      InvokeOnExecutionPlay(_strategy);
       var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence (sequence).Setup (mock => mock.OnExecutionPause (Context, ExecutionListenerStub.Object)).Throws (innerException).Verifiable();
-      ScopeMock.InSequence (sequence).Setup (mock => mock.Leave ()).Throws (outerException).Verifiable();
+      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionPause(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();
+      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Throws(outerException).Verifiable();
 
       try
       {
-        _strategy.OnExecutionPause (Context, ExecutionListenerStub.Object);
-        Assert.Fail ("Expected Exception");
+        _strategy.OnExecutionPause(Context, ExecutionListenerStub.Object);
+        Assert.Fail("Expected Exception");
       }
       catch (WxeFatalExecutionException actualException)
       {
-        Assert.That (actualException.InnerException, Is.SameAs (innerException));
-        Assert.That (actualException.OuterException, Is.SameAs (outerException));
+        Assert.That(actualException.InnerException, Is.SameAs(innerException));
+        Assert.That(actualException.OuterException, Is.SameAs(outerException));
       }
 
       VerifyAll();
-      Assert.That (_strategy.Scope, Is.Not.Null);
+      Assert.That(_strategy.Scope, Is.Not.Null);
     }
   }
 }

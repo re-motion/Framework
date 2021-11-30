@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.BindableObject
   public class BindableObjectProviderAttribute : BusinessObjectProviderAttribute
   {
     public BindableObjectProviderAttribute ()
-        : base (typeof (BindableObjectProvider))
+        : base(typeof(BindableObjectProvider))
     {
     }
   }

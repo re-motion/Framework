@@ -27,7 +27,7 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     public XmlDocumentSimilarConstraint (XmlDocument expected)
         : base(expected)
     {
-      _nodeStackToXPathConverter = new NodeStackToXPathConverter ();
+      _nodeStackToXPathConverter = new NodeStackToXPathConverter();
       _nodeStackToXPathConverter.IncludeNamespaces = true;
     }
 
@@ -37,44 +37,44 @@ namespace Remotion.Security.UnitTests.XmlAsserter
       if (expectedFirstChild.NodeType == XmlNodeType.XmlDeclaration)
         expectedFirstChild = expectedDocument.ChildNodes[1];
 
-      if (!ContainsNodeStack (expectedFirstChild, actualDocument))
+      if (!ContainsNodeStack(expectedFirstChild, actualDocument))
         return false;
 
       XmlNode actualFirstChild = actualDocument.FirstChild;
       if (actualFirstChild.NodeType == XmlNodeType.XmlDeclaration)
         actualFirstChild = actualDocument.ChildNodes[1];
 
-      return ContainsNodeStack (actualFirstChild, expectedDocument);
+      return ContainsNodeStack(actualFirstChild, expectedDocument);
     }
 
     private bool ContainsNodeStack (XmlNode node, XmlDocument testDocument)
     {
-      Stack<XmlNode> nodeStack = GetNodeStack (node);
-      string xPathExpression = _nodeStackToXPathConverter.GetXPathExpression (nodeStack);
-      if (string.IsNullOrEmpty (xPathExpression))
+      Stack<XmlNode> nodeStack = GetNodeStack(node);
+      string xPathExpression = _nodeStackToXPathConverter.GetXPathExpression(nodeStack);
+      if (string.IsNullOrEmpty(xPathExpression))
         return true;
 
-      XmlNodeList nodes = testDocument.SelectNodes (xPathExpression, _nodeStackToXPathConverter.NamespaceManager);
+      XmlNodeList nodes = testDocument.SelectNodes(xPathExpression, _nodeStackToXPathConverter.NamespaceManager);
       if (nodes.Count == 0)
       {
         Messages.Add(xPathExpression + " Evaluation failed.");
         Messages.Add("Node missing in actual document:");
-        ShowNodeStack (node, Messages.Add);
+        ShowNodeStack(node, Messages.Add);
 
         if (node.ParentNode != null)
         {
-          Stack<XmlNode> parentNodeStack = GetNodeStack (node.ParentNode);
-          xPathExpression = _nodeStackToXPathConverter.GetXPathExpression (parentNodeStack);
-          XmlNodeList actualNodes = testDocument.SelectNodes (xPathExpression, _nodeStackToXPathConverter.NamespaceManager);
+          Stack<XmlNode> parentNodeStack = GetNodeStack(node.ParentNode);
+          xPathExpression = _nodeStackToXPathConverter.GetXPathExpression(parentNodeStack);
+          XmlNodeList actualNodes = testDocument.SelectNodes(xPathExpression, _nodeStackToXPathConverter.NamespaceManager);
           if (actualNodes.Count > 0)
-            ShowNodeStack (actualNodes[0], Messages.Add);
+            ShowNodeStack(actualNodes[0], Messages.Add);
         }
         return false;
       }
 
       foreach (XmlNode childNode in node.ChildNodes)
       {
-        if (!ContainsNodeStack (childNode, testDocument))
+        if (!ContainsNodeStack(childNode, testDocument))
           return false;
       }
 

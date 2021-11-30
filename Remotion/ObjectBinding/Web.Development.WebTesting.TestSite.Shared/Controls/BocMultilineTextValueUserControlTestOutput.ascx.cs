@@ -23,12 +23,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
   {
     public void SetCurrentValueNormal (string value)
     {
-      NormalCurrentValueLabel.Text = Server.HtmlEncode (value);
+      NormalCurrentValueLabel.Text = Server.HtmlEncode(value);
     }
 
     public void SetCurrentValueNoAutoPostBack (string value)
     {
-      NoAutoPostBackCurrentValueLabel.Text = Server.HtmlEncode (value);
+      NoAutoPostBackCurrentValueLabel.Text = Server.HtmlEncode(value);
     }
   }
 }

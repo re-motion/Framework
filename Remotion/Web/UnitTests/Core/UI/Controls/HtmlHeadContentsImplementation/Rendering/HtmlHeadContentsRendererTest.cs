@@ -34,28 +34,28 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.HtmlHeadContentsImplementation
     {
       var htmlHeadElements = new List<HtmlHeadElement>
                              {
-                                 new StubStyleSheetElement ("stylesheet-1"),
-                                 new JavaScriptInclude (new StaticResourceUrl ("javscript-1")),
-                                 new TitleTag ("title"),
-                                 new StubHtmlHeadElement ("head-1"),
-                                 new StubStyleSheetElement ("stylesheet-2"),
-                                 new JavaScriptInclude (new StaticResourceUrl ("javscript-2")),
-                                 new StubHtmlHeadElement ("head-2"),
+                                 new StubStyleSheetElement("stylesheet-1"),
+                                 new JavaScriptInclude(new StaticResourceUrl("javscript-1")),
+                                 new TitleTag("title"),
+                                 new StubHtmlHeadElement("head-1"),
+                                 new StubStyleSheetElement("stylesheet-2"),
+                                 new JavaScriptInclude(new StaticResourceUrl("javscript-2")),
+                                 new StubHtmlHeadElement("head-2"),
                              };
       var renderer = new HtmlHeadContentsRenderer();
       var htmlHelper = new HtmlHelper();
 
-      var htmlHeadContentsRenderingContext = new HtmlHeadContentsRenderingContext (
+      var htmlHeadContentsRenderingContext = new HtmlHeadContentsRenderingContext(
           new Mock<HttpContextBase>().Object,
           htmlHelper.Writer,
           new Mock<IHtmlHeadContents>().Object,
           htmlHeadElements);
 
-      renderer.Render (htmlHeadContentsRenderingContext);
+      renderer.Render(htmlHeadContentsRenderingContext);
 
       var content = htmlHelper.GetDocumentText();
 
-      Assert.That (content, Is.EqualTo (@"<title>
+      Assert.That(content, Is.EqualTo(@"<title>
 	title
 </title>
 <script src=""javscript-1"" type=""text/javascript""></script>
@@ -72,23 +72,23 @@ head-2
     {
       var htmlHeadElements = new List<HtmlHeadElement>
                              {
-                                 new TitleTag ("title-1"),
-                                 new TitleTag ("title-2"),
+                                 new TitleTag("title-1"),
+                                 new TitleTag("title-2"),
                              };
       var renderer = new HtmlHeadContentsRenderer();
       var htmlHelper = new HtmlHelper();
 
-      var htmlHeadContentsRenderingContext = new HtmlHeadContentsRenderingContext (
+      var htmlHeadContentsRenderingContext = new HtmlHeadContentsRenderingContext(
           new Mock<HttpContextBase>().Object,
           htmlHelper.Writer,
           new Mock<IHtmlHeadContents>().Object,
           htmlHeadElements);
 
-      renderer.Render (htmlHeadContentsRenderingContext);
+      renderer.Render(htmlHeadContentsRenderingContext);
 
       var content = htmlHelper.GetDocumentText();
 
-      Assert.That (content, Is.EqualTo (@"<title>
+      Assert.That(content, Is.EqualTo(@"<title>
 	title-1
 </title>
 "));

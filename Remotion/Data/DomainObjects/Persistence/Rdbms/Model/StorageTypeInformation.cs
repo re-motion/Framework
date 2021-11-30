@@ -53,10 +53,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         Type dotNetType,
         TypeConverter dotNetTypeConverter)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("storageTypeName", storageTypeName);
-      ArgumentUtility.CheckNotNull ("storageType", storageType);
-      ArgumentUtility.CheckNotNull ("dotNetType", dotNetType);
-      ArgumentUtility.CheckNotNull ("dotNetTypeConverter", dotNetTypeConverter);
+      ArgumentUtility.CheckNotNullOrEmpty("storageTypeName", storageTypeName);
+      ArgumentUtility.CheckNotNull("storageType", storageType);
+      ArgumentUtility.CheckNotNull("dotNetType", dotNetType);
+      ArgumentUtility.CheckNotNull("dotNetTypeConverter", dotNetTypeConverter);
 
       _storageType = storageType;
       _storageTypeName = storageTypeName;
@@ -122,9 +122,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IDbDataParameter CreateDataParameter (IDbCommand command, object value)
     {
-      ArgumentUtility.CheckNotNull ("command", command);
+      ArgumentUtility.CheckNotNull("command", command);
 
-      var convertedValue = ConvertToStorageType (value);
+      var convertedValue = ConvertToStorageType(value);
 
       var parameter = command.CreateParameter();
       parameter.Value = convertedValue;
@@ -138,9 +138,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         }
         else
         {
-          var isStringAndValueExceedsParameterSize = convertedValue is string && ((string) convertedValue).Length > parameterSize;
-          var isCharArrayAndValueExceedsParameterSize = convertedValue is char[] && ((char[]) convertedValue).Length > parameterSize;
-          var isByteArrayAndValueExceedsParameterSize = convertedValue is byte[] && ((byte[]) convertedValue).Length > parameterSize;
+          var isStringAndValueExceedsParameterSize = convertedValue is string && ((string)convertedValue).Length > parameterSize;
+          var isCharArrayAndValueExceedsParameterSize = convertedValue is char[] && ((char[])convertedValue).Length > parameterSize;
+          var isByteArrayAndValueExceedsParameterSize = convertedValue is byte[] && ((byte[])convertedValue).Length > parameterSize;
 
           if (! (isStringAndValueExceedsParameterSize || isCharArrayAndValueExceedsParameterSize || isByteArrayAndValueExceedsParameterSize))
             parameter.Size = parameterSize;
@@ -152,16 +152,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public object Read (IDataReader dataReader, int ordinal)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
       var value = dataReader[ordinal];
-      return ConvertFromStorageType (value);
+      return ConvertFromStorageType(value);
     }
 
     /// <inheritdoc />
     public object ConvertToStorageType (object dotNetValue)
     {
-      return DotNetTypeConverter.ConvertTo (dotNetValue, StorageType) ?? DBNull.Value;
+      return DotNetTypeConverter.ConvertTo(dotNetValue, StorageType) ?? DBNull.Value;
     }
 
     /// <inheritdoc />
@@ -170,32 +170,32 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       if (storageValue == DBNull.Value)
         storageValue = null;
 
-      return DotNetTypeConverter.ConvertFrom (storageValue);
+      return DotNetTypeConverter.ConvertFrom(storageValue);
     }
 
     public IStorageTypeInformation UnifyForEquivalentProperties (IEnumerable<IStorageTypeInformation> equivalentStorageTypes)
     {
-      ArgumentUtility.CheckNotNull ("equivalentStorageTypes", equivalentStorageTypes);
+      ArgumentUtility.CheckNotNull("equivalentStorageTypes", equivalentStorageTypes);
       var castStorageTypes =
-          equivalentStorageTypes.Select (
+          equivalentStorageTypes.Select(
               equivalentInfo =>
-                  StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
+                  StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
                       this,
                       equivalentInfo,
                       "equivalentStorageTypes",
-                      info => Tuple.Create<string, object> ("storage type", info.StorageType),
-                      info => Tuple.Create<string, object> ("storage type name", info.StorageTypeName),
-                      info => Tuple.Create<string, object> ("storage DbType", info.StorageDbType),
-                      info => Tuple.Create<string, object> ("storage type length", info.StorageTypeLength),
-                      info => Tuple.Create<string, object> (".NET type", info.DotNetType),
-                      info => Tuple.Create<string, object> (".NET type converter type", info.DotNetTypeConverter.GetType())))
+                      info => Tuple.Create<string, object>("storage type", info.StorageType),
+                      info => Tuple.Create<string, object>("storage type name", info.StorageTypeName),
+                      info => Tuple.Create<string, object>("storage DbType", info.StorageDbType),
+                      info => Tuple.Create<string, object>("storage type length", info.StorageTypeLength),
+                      info => Tuple.Create<string, object>(".NET type", info.DotNetType),
+                      info => Tuple.Create<string, object>(".NET type converter type", info.DotNetTypeConverter.GetType())))
               .ToArray();
 
-      return new StorageTypeInformation (
+      return new StorageTypeInformation(
           _storageType,
           _storageTypeName,
           _storageDbType,
-          _isStorageTypeNullable || castStorageTypes.Any (x => x._isStorageTypeNullable),
+          _isStorageTypeNullable || castStorageTypes.Any(x => x._isStorageTypeNullable),
           _storageTypeLength,
           _dotNetType,
           _dotNetTypeConverter);

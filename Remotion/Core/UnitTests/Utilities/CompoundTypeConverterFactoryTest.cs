@@ -31,10 +31,10 @@ namespace Remotion.UnitTests.Utilities
     {
       var factories = new[] { new Mock<ITypeConverterFactory>().Object, new Mock<ITypeConverterFactory>().Object };
 
-      var compoundFactory = new CompoundTypeConverterFactory (factories);
+      var compoundFactory = new CompoundTypeConverterFactory(factories);
 
-      Assert.That (compoundFactory.TypeConverterFactories, Is.Not.SameAs (factories));
-      Assert.That (compoundFactory.TypeConverterFactories, Is.EqualTo (factories));
+      Assert.That(compoundFactory.TypeConverterFactories, Is.Not.SameAs(factories));
+      Assert.That(compoundFactory.TypeConverterFactories, Is.EqualTo(factories));
     }
 
     [Test]
@@ -44,14 +44,14 @@ namespace Remotion.UnitTests.Utilities
       var doubleTypeConverter = new TypeConverter();
 
       var factories = new[] { new Mock<ITypeConverterFactory>(), new Mock<ITypeConverterFactory>() };
-      factories[0].Setup (_ => _.CreateTypeConverterOrDefault (typeof (int))).Returns (intTypeConverter);
-      factories[1].Setup (_ => _.CreateTypeConverterOrDefault (typeof (double))).Returns (doubleTypeConverter);
+      factories[0].Setup(_ => _.CreateTypeConverterOrDefault(typeof(int))).Returns(intTypeConverter);
+      factories[1].Setup(_ => _.CreateTypeConverterOrDefault(typeof(double))).Returns(doubleTypeConverter);
 
-      var compoundFactory = new CompoundTypeConverterFactory (factories.Select (_ => _.Object));
+      var compoundFactory = new CompoundTypeConverterFactory(factories.Select(_ => _.Object));
 
-      Assert.That (compoundFactory.CreateTypeConverterOrDefault (typeof (int)), Is.SameAs (intTypeConverter));
-      Assert.That (compoundFactory.CreateTypeConverterOrDefault (typeof (double)), Is.SameAs (doubleTypeConverter));
-      Assert.That (compoundFactory.CreateTypeConverterOrDefault (typeof (object)), Is.Null);
+      Assert.That(compoundFactory.CreateTypeConverterOrDefault(typeof(int)), Is.SameAs(intTypeConverter));
+      Assert.That(compoundFactory.CreateTypeConverterOrDefault(typeof(double)), Is.SameAs(doubleTypeConverter));
+      Assert.That(compoundFactory.CreateTypeConverterOrDefault(typeof(object)), Is.Null);
     }
   }
 }

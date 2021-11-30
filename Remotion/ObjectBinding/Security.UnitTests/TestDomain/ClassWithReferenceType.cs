@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.Security.UnitTests.TestDomain
       where T : class
   {
     private T _explicitInterfaceScalar;
-    private readonly T _readOnlyScalar = default (T);
+    private readonly T _readOnlyScalar = default(T);
 
     protected string NonPublicProperty { get; set; }
 
@@ -72,12 +72,12 @@ namespace Remotion.ObjectBinding.Security.UnitTests.TestDomain
 
     public T ReadOnlyNonPublicSetterScalar { get; protected set; }
 
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public T NotVisibleAttributeScalar { get; set; }
 
     public T NotVisibleNonPublicGetterScalar { protected get; set; }
 
-    [ObjectBinding (ReadOnly = true)]
+    [ObjectBinding(ReadOnly = true)]
     public T ReadOnlyAttributeScalar { get; set; }
 
     public T[] Array { get; set; }

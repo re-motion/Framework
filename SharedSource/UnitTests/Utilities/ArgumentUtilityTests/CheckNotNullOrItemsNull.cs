@@ -33,8 +33,8 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Succeed_ICollection ()
     {
       ArrayList list = new ArrayList();
-      ArrayList result = ArgumentUtility.CheckNotNullOrItemsNull ("arg", list);
-      Assert.That (result, Is.SameAs (list));
+      ArrayList result = ArgumentUtility.CheckNotNullOrItemsNull("arg", list);
+      Assert.That(result, Is.SameAs(list));
     }
 
     [Test]
@@ -42,7 +42,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       ICollection<string> value = new List<string> { "test" };
 
-      ArgumentUtility.CheckNotNullOrItemsNull ("arg", value);
+      ArgumentUtility.CheckNotNullOrItemsNull("arg", value);
     }
 
     [Test]
@@ -50,7 +50,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       IReadOnlyCollection<string> value = new List<string> { "test" };
 
-      ArgumentUtility.CheckNotNullOrItemsNull ("arg", value);
+      ArgumentUtility.CheckNotNullOrItemsNull("arg", value);
     }
 
     [Test]
@@ -58,44 +58,44 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       List<string> value = new List<string> { "test" };
 
-      ArgumentUtility.CheckNotNullOrItemsNull ("arg", value);
+      ArgumentUtility.CheckNotNullOrItemsNull("arg", value);
     }
 
     [Test]
     public void Fail_NullICollection ()
     {
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrItemsNull ("arg", (ICollection) null),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrItemsNull("arg", (ICollection)null),
           Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
     public void Fail_NullICollectionOfT ()
     {
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrItemsNull ("arg", (ICollection<object>) null),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrItemsNull("arg", (ICollection<object>)null),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Value cannot be null.", "arg"));
     }
 
     [Test]
     public void Fail_NullIReadOnlyCollectionOfT ()
     {
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrItemsNull ("arg", (IReadOnlyCollection<object>) null),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrItemsNull("arg", (IReadOnlyCollection<object>)null),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Value cannot be null.", "arg"));
     }
 
     [Test]
     public void Fail_NullListOfT ()
     {
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrItemsNull ("arg", (List<object>) null),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrItemsNull("arg", (List<object>)null),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Value cannot be null.", "arg"));
     }
 
@@ -103,11 +103,11 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     public void Fail_ItemNullICollection ()
     {
       ArrayList list = new ArrayList();
-      list.Add (null);
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrItemsNull ("arg", list),
+      list.Add(null);
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrItemsNull("arg", list),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Item 0 of parameter 'arg' is null.", "arg"));
     }
 
@@ -116,10 +116,10 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       ICollection<object> list = new List<object> { null };
 
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrItemsNull ("arg", list),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrItemsNull("arg", list),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Item 0 of parameter 'arg' is null.", "arg"));
     }
 
@@ -128,10 +128,10 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       IReadOnlyCollection<object> list = new List<object> { null };
 
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrItemsNull ("arg", list),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrItemsNull("arg", list),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Item 0 of parameter 'arg' is null.", "arg"));
     }
 
@@ -140,10 +140,10 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
     {
       List<object> list = new List<object> { null };
 
-      Assert.That (
-          () => ArgumentUtility.CheckNotNullOrItemsNull ("arg", list),
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrItemsNull("arg", list),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.ArgumentExceptionMessageEqualTo (
+              .With.ArgumentExceptionMessageEqualTo(
                   "Item 0 of parameter 'arg' is null.", "arg"));
     }
   }

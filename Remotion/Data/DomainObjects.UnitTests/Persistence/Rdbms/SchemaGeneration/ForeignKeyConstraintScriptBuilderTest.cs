@@ -46,19 +46,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
 
       _factoryStub = MockRepository.GenerateStub<IForeignKeyConstraintScriptElementFactory>();
 
-      _builder = new ForeignKeyConstraintScriptBuilder (_factoryStub, new SqlCommentScriptElementFactory());
+      _builder = new ForeignKeyConstraintScriptBuilder(_factoryStub, new SqlCommentScriptElementFactory());
 
-      _tableName = new EntityNameDefinition (null, "Table");
-      _constraint1 = new ForeignKeyConstraintDefinition ("FK1", _tableName, new ColumnDefinition[0], new ColumnDefinition[0]);
-      _constraint2 = new ForeignKeyConstraintDefinition ("FK2", _tableName, new ColumnDefinition[0], new ColumnDefinition[0]);
-      _constraint3 = new ForeignKeyConstraintDefinition ("FK3", _tableName, new ColumnDefinition[0], new ColumnDefinition[0]);
+      _tableName = new EntityNameDefinition(null, "Table");
+      _constraint1 = new ForeignKeyConstraintDefinition("FK1", _tableName, new ColumnDefinition[0], new ColumnDefinition[0]);
+      _constraint2 = new ForeignKeyConstraintDefinition("FK2", _tableName, new ColumnDefinition[0], new ColumnDefinition[0]);
+      _constraint3 = new ForeignKeyConstraintDefinition("FK3", _tableName, new ColumnDefinition[0], new ColumnDefinition[0]);
 
-      _tableDefinition1 = TableDefinitionObjectMother.Create (
+      _tableDefinition1 = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
           _tableName,
           null,
           new[] { _constraint1 });
-      _tableDefinition2 = TableDefinitionObjectMother.Create (
+      _tableDefinition2 = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
           _tableName,
           null,
@@ -75,68 +75,68 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       var createScriptResult = _builder.GetCreateScript();
       var dropScriptResult = _builder.GetDropScript();
 
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (
-          ((ScriptStatement) ((ScriptElementCollection) createScriptResult).Elements[0]).Statement,
-          Is.EqualTo ("-- Create foreign key constraints for tables that were created above"));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (
-          ((ScriptStatement) ((ScriptElementCollection) dropScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Drop foreign keys of all tables"));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(
+          ((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement,
+          Is.EqualTo("-- Create foreign key constraints for tables that were created above"));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(
+          ((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop foreign keys of all tables"));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_OneTableDefinitionAdded ()
     {
-      _factoryStub.Stub (mock => mock.GetCreateElement (_constraint1, _tableName)).Return (_fakeElement1);
-      _factoryStub.Stub (mock => mock.GetDropElement (_constraint1, _tableName)).Return (_fakeElement2);
+      _factoryStub.Stub(mock => mock.GetCreateElement(_constraint1, _tableName)).Return(_fakeElement1);
+      _factoryStub.Stub(mock => mock.GetDropElement(_constraint1, _tableName)).Return(_fakeElement2);
 
-      _builder.AddEntityDefinition (_tableDefinition1);
+      _builder.AddEntityDefinition(_tableDefinition1);
 
       var createScriptResult = _builder.GetCreateScript();
       var dropScriptResult = _builder.GetDropScript();
 
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements.Count, Is.EqualTo (2));
-      Assert.That (
-          ((ScriptStatement) ((ScriptElementCollection) createScriptResult).Elements[0]).Statement,
-          Is.EqualTo ("-- Create foreign key constraints for tables that were created above"));
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements[1], Is.SameAs (_fakeElement1));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements.Count, Is.EqualTo(2));
+      Assert.That(
+          ((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement,
+          Is.EqualTo("-- Create foreign key constraints for tables that were created above"));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements[1], Is.SameAs(_fakeElement1));
 
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements.Count, Is.EqualTo (2));
-      Assert.That (
-          ((ScriptStatement) ((ScriptElementCollection) dropScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Drop foreign keys of all tables"));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements[1], Is.SameAs (_fakeElement2));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(2));
+      Assert.That(
+          ((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop foreign keys of all tables"));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[1], Is.SameAs(_fakeElement2));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_SeveralTableDefinitionsAdded ()
     {
-      _factoryStub.Stub (mock => mock.GetCreateElement (_constraint1, _tableName)).Return (_fakeElement1);
-      _factoryStub.Stub (mock => mock.GetDropElement (_constraint1, _tableName)).Return (_fakeElement3);
-      _factoryStub.Stub (mock => mock.GetCreateElement (_constraint2, _tableName)).Return (_fakeElement2);
-      _factoryStub.Stub (mock => mock.GetDropElement (_constraint2, _tableName)).Return (_fakeElement2);
-      _factoryStub.Stub (mock => mock.GetCreateElement (_constraint3, _tableName)).Return (_fakeElement3);
-      _factoryStub.Stub (mock => mock.GetDropElement (_constraint3, _tableName)).Return (_fakeElement1);
+      _factoryStub.Stub(mock => mock.GetCreateElement(_constraint1, _tableName)).Return(_fakeElement1);
+      _factoryStub.Stub(mock => mock.GetDropElement(_constraint1, _tableName)).Return(_fakeElement3);
+      _factoryStub.Stub(mock => mock.GetCreateElement(_constraint2, _tableName)).Return(_fakeElement2);
+      _factoryStub.Stub(mock => mock.GetDropElement(_constraint2, _tableName)).Return(_fakeElement2);
+      _factoryStub.Stub(mock => mock.GetCreateElement(_constraint3, _tableName)).Return(_fakeElement3);
+      _factoryStub.Stub(mock => mock.GetDropElement(_constraint3, _tableName)).Return(_fakeElement1);
 
-      _builder.AddEntityDefinition (_tableDefinition1);
-      _builder.AddEntityDefinition (_tableDefinition2);
+      _builder.AddEntityDefinition(_tableDefinition1);
+      _builder.AddEntityDefinition(_tableDefinition2);
 
       var createScriptResult = _builder.GetCreateScript();
       var dropScriptResult = _builder.GetDropScript();
 
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements.Count, Is.EqualTo (4));
-      Assert.That (
-          ((ScriptStatement) ((ScriptElementCollection) createScriptResult).Elements[0]).Statement,
-          Is.EqualTo ("-- Create foreign key constraints for tables that were created above"));
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements[1], Is.SameAs (_fakeElement1));
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements[2], Is.SameAs (_fakeElement2));
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements[3], Is.SameAs (_fakeElement3));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements.Count, Is.EqualTo(4));
+      Assert.That(
+          ((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement,
+          Is.EqualTo("-- Create foreign key constraints for tables that were created above"));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements[1], Is.SameAs(_fakeElement1));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements[2], Is.SameAs(_fakeElement2));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements[3], Is.SameAs(_fakeElement3));
 
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements.Count, Is.EqualTo (4));
-      Assert.That (
-          ((ScriptStatement) ((ScriptElementCollection) dropScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Drop foreign keys of all tables"));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements[1], Is.SameAs (_fakeElement3));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements[2], Is.SameAs (_fakeElement2));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements[3], Is.SameAs (_fakeElement1));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(4));
+      Assert.That(
+          ((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop foreign keys of all tables"));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[1], Is.SameAs(_fakeElement3));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[2], Is.SameAs(_fakeElement2));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[3], Is.SameAs(_fakeElement1));
     }
 
     [Test]
@@ -144,59 +144,59 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
       var entityDefinition = FilterViewDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition (null, "FilterView"),
+          new EntityNameDefinition(null, "FilterView"),
           _tableDefinition1);
-      _builder.AddEntityDefinition (entityDefinition);
+      _builder.AddEntityDefinition(entityDefinition);
 
       var createScriptResult = _builder.GetCreateScript();
       var dropScriptResult = _builder.GetDropScript();
 
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (
-          ((ScriptStatement) ((ScriptElementCollection) createScriptResult).Elements[0]).Statement,
-          Is.EqualTo ("-- Create foreign key constraints for tables that were created above"));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (
-          ((ScriptStatement) ((ScriptElementCollection) dropScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Drop foreign keys of all tables"));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(
+          ((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement,
+          Is.EqualTo("-- Create foreign key constraints for tables that were created above"));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(
+          ((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop foreign keys of all tables"));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_UnionViewDefinitionAdded ()
     {
-      var entityDefinition = UnionViewDefinitionObjectMother.Create (
+      var entityDefinition = UnionViewDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition (null, "UnionView"),
+          new EntityNameDefinition(null, "UnionView"),
            _tableDefinition1);
-      _builder.AddEntityDefinition (entityDefinition);
+      _builder.AddEntityDefinition(entityDefinition);
 
       var createScriptResult = _builder.GetCreateScript();
       var dropScriptResult = _builder.GetDropScript();
 
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (
-          ((ScriptStatement) ((ScriptElementCollection) createScriptResult).Elements[0]).Statement,
-          Is.EqualTo ("-- Create foreign key constraints for tables that were created above"));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (
-          ((ScriptStatement) ((ScriptElementCollection) dropScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Drop foreign keys of all tables"));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(
+          ((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement,
+          Is.EqualTo("-- Create foreign key constraints for tables that were created above"));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(
+          ((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop foreign keys of all tables"));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_EmptyViewDefinitionAdded ()
     {
-      var entityDefinition = EmptyViewDefinitionObjectMother.Create (SchemaGenerationFirstStorageProviderDefinition);
-      _builder.AddEntityDefinition (entityDefinition);
+      var entityDefinition = EmptyViewDefinitionObjectMother.Create(SchemaGenerationFirstStorageProviderDefinition);
+      _builder.AddEntityDefinition(entityDefinition);
 
       var createScriptResult = _builder.GetCreateScript();
       var dropScriptResult = _builder.GetDropScript();
 
-      Assert.That (((ScriptElementCollection) createScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (
-          ((ScriptStatement) ((ScriptElementCollection) createScriptResult).Elements[0]).Statement,
-          Is.EqualTo ("-- Create foreign key constraints for tables that were created above"));
-      Assert.That (((ScriptElementCollection) dropScriptResult).Elements.Count, Is.EqualTo (1));
-      Assert.That (
-          ((ScriptStatement) ((ScriptElementCollection) dropScriptResult).Elements[0]).Statement, Is.EqualTo ("-- Drop foreign keys of all tables"));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(
+          ((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement,
+          Is.EqualTo("-- Create foreign key constraints for tables that were created above"));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(1));
+      Assert.That(
+          ((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop foreign keys of all tables"));
     }
   }
 }

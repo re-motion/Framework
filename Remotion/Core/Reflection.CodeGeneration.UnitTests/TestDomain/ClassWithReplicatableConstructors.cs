@@ -21,7 +21,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests.TestDomain
   public class ClassWithReplicatableConstructors
   {
     public string CtorString;
-    
+
     public ClassWithReplicatableConstructors ()
     {
       CtorString += "ClassWithReplicatableConstructors()";

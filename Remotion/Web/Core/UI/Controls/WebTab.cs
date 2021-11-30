@@ -29,7 +29,7 @@ using Remotion.Web.UI.Globalization;
 namespace Remotion.Web.UI.Controls
 {
 
-[TypeConverter (typeof (ExpandableObjectConverter))]
+[TypeConverter(typeof(ExpandableObjectConverter))]
 public class WebTab: IWebTab, IControlStateManager
 {
   /// <summary> The control to which this object belongs. </summary>
@@ -47,53 +47,53 @@ public class WebTab: IWebTab, IControlStateManager
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text, IconInfo? icon)
   {
-    ArgumentUtility.CheckNotNull ("itemID", itemID);
-    ArgumentUtility.CheckNotNull ("text", text);
+    ArgumentUtility.CheckNotNull("itemID", itemID);
+    ArgumentUtility.CheckNotNull("text", text);
 
     _itemID = itemID;
     _text = text;
-    _icon = icon ?? new IconInfo (string.Empty);
+    _icon = icon ?? new IconInfo(string.Empty);
   }
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text, string iconUrl)
-    : this (itemID, text, new IconInfo (iconUrl))
+    : this(itemID, text, new IconInfo(iconUrl))
   {
   }
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text)
-    : this (itemID, text, (IconInfo?) null)
+    : this(itemID, text, (IconInfo?)null)
   {
   }
 
   /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
   /// <exclude/>
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public WebTab()
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  public WebTab ()
   {
     _icon = new IconInfo();
   }
 
   /// <summary> Is called when the value of <see cref="OwnerControl"/> has changed. </summary>
-  protected virtual void OnOwnerControlChanged()
+  protected virtual void OnOwnerControlChanged ()
   {
   }
 
-  private void OwnerControl_PreRender(object? sender, EventArgs e)
+  private void OwnerControl_PreRender (object? sender, EventArgs e)
   {
     PreRender();
   }
 
   /// <summary> Is called when the <see cref="OwnerControl"/> is Pre-Rendered. </summary>
-  protected virtual void PreRender()
+  protected virtual void PreRender ()
   {
   }
 
   /// <summary> Sets this tab's <see cref="WebTabStrip"/>. </summary>
   protected internal virtual void SetTabStrip (WebTabStrip? tabStrip)
   {
-    _tabStrip = tabStrip; 
+    _tabStrip = tabStrip;
     if (_selectDesired == 1)
     {
       _selectDesired = 0;
@@ -113,9 +113,9 @@ public class WebTab: IWebTab, IControlStateManager
   protected internal void SetSelected (bool value)
   {
     if (value && ! _isVisible)
-      throw new InvalidOperationException (string.Format ("Cannot select tab '{0}' because it is invisible.", _itemID));
+      throw new InvalidOperationException(string.Format("Cannot select tab '{0}' because it is invisible.", _itemID));
     if (value && _isDisabled)
-      throw new InvalidOperationException (string.Format ("Cannot select tab '{0}' because it is disabled.", _itemID));
+      throw new InvalidOperationException(string.Format("Cannot select tab '{0}' because it is disabled.", _itemID));
     _isSelected = value;
     if (_tabStrip == null)
       _selectDesired = value ? 1 : -1;
@@ -123,138 +123,138 @@ public class WebTab: IWebTab, IControlStateManager
 
   internal void OnSelectionChangedInternal ()
   {
-    OnSelectionChanged ();
+    OnSelectionChanged();
   }
 
   protected virtual void OnSelectionChanged ()
   {
   }
 
-  public override string ToString()
+  public override string ToString ()
   {
     string displayName = ItemID;
-    if (string.IsNullOrEmpty (displayName))
+    if (string.IsNullOrEmpty(displayName))
       displayName = Text;
-    if (string.IsNullOrEmpty (displayName))
+    if (string.IsNullOrEmpty(displayName))
       return DisplayedTypeName;
     else
-      return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+      return string.Format("{0}: {1}", displayName, DisplayedTypeName);
   }
 
   /// <summary> Gets or sets the ID of this tab. </summary>
   /// <remarks> Must be unique within the collection of tabs. Must not be <see langword="null"/> or emtpy. </remarks>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Description ("The ID of this tab.")]
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [Description("The ID of this tab.")]
   //No Default value
-  [NotifyParentProperty (true)]
-  [ParenthesizePropertyName (true)]
+  [NotifyParentProperty(true)]
+  [ParenthesizePropertyName(true)]
   public virtual string ItemID
   {
     get { return _itemID; }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-      if (! string.IsNullOrEmpty (value))
+      ArgumentUtility.CheckNotNullOrEmpty("value", value);
+      if (! string.IsNullOrEmpty(value))
       {
         WebTabCollection? tabs = null;
         if (_tabStrip != null)
           tabs = _tabStrip.Tabs;
         if (tabs != null)
         {
-          if (tabs.Find (value) != null)
-            throw new ArgumentException (string.Format ("The collection already contains a tab with ItemID '{0}'.", value), "value");
+          if (tabs.Find(value) != null)
+            throw new ArgumentException(string.Format("The collection already contains a tab with ItemID '{0}'.", value), "value");
         }
       }
-      _itemID = value; 
+      _itemID = value;
     }
   }
 
   // TODO: Test if still required in VS 2005. Workaround for Designer bug: Get Accessor does not evalute.
-  internal bool HasItemID()
+  internal bool HasItemID ()
   {
-    return ! string.IsNullOrEmpty (_itemID);
+    return ! string.IsNullOrEmpty(_itemID);
   }
 
   /// <summary> Gets or sets the text displayed in this tab. </summary>
   /// <remarks> Must not be <see langword="null"/> or emtpy. The value will not be HTML encoded. </remarks>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Appearance")]
-  [Description ("The text displayed in this tab. Use '-' for a separator tab. The value will not be HTML encoded.")]
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [Category("Appearance")]
+  [Description("The text displayed in this tab. Use '-' for a separator tab. The value will not be HTML encoded.")]
   //No Default value
-  [NotifyParentProperty (true)]
+  [NotifyParentProperty(true)]
   public virtual string Text
   {
     get { return _text; }
-    set 
+    set
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-      _text = value; 
+      ArgumentUtility.CheckNotNullOrEmpty("value", value);
+      _text = value;
     }
   }
 
   /// <summary> Gets or sets the icon displayed in this tab. </summary>
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-  [Category ("Appearance")]
-  [Description ("The icon displayed in this tab.")]
-  [NotifyParentProperty (true)]
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [Category("Appearance")]
+  [Description("The icon displayed in this tab.")]
+  [NotifyParentProperty(true)]
   public virtual IconInfo Icon
   {
     get { return _icon; }
     set { _icon = value; }
   }
 
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Behavior")]
-  [Description ("False to hide the tab.")]
-  [NotifyParentProperty (true)]
-  [DefaultValue (true)]
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [Category("Behavior")]
+  [Description("False to hide the tab.")]
+  [NotifyParentProperty(true)]
+  [DefaultValue(true)]
   public bool IsVisible
   {
-    get 
-    { 
-      return _isVisible; 
-    }
-    set 
+    get
     {
-      _isVisible = value; 
-      if (! _isVisible && _tabStrip != null)
-        _tabStrip.Tabs.DeselectTabInternal (this);
-    }
-  }
-
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Behavior")]
-  [Description ("True to manually disable the tab.")]
-  [NotifyParentProperty (true)]
-  [DefaultValue (false)]
-  public bool IsDisabled
-  {
-    get 
-    {
-      return _isDisabled; 
+      return _isVisible;
     }
     set
     {
-      _isDisabled = value; 
-      if (_isDisabled && _tabStrip != null)
-        _tabStrip.Tabs.DeselectTabInternal (this);
+      _isVisible = value;
+      if (! _isVisible && _tabStrip != null)
+        _tabStrip.Tabs.DeselectTabInternal(this);
     }
   }
 
-  private bool ShouldSerializeIcon()
+  [PersistenceMode(PersistenceMode.Attribute)]
+  [Category("Behavior")]
+  [Description("True to manually disable the tab.")]
+  [NotifyParentProperty(true)]
+  [DefaultValue(false)]
+  public bool IsDisabled
   {
-    return IconInfo.ShouldSerialize (_icon);
+    get
+    {
+      return _isDisabled;
+    }
+    set
+    {
+      _isDisabled = value;
+      if (_isDisabled && _tabStrip != null)
+        _tabStrip.Tabs.DeselectTabInternal(this);
+    }
   }
 
-  private void ResetIcon()
+  private bool ShouldSerializeIcon ()
+  {
+    return IconInfo.ShouldSerialize(_icon);
+  }
+
+  private void ResetIcon ()
   {
     _icon.Reset();
   }
 
   /// <summary> Gets the <see cref="WebTabStrip"/> to which this tab belongs. </summary>
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public WebTabStrip? TabStrip
   {
     get { return _tabStrip; }
@@ -264,20 +264,20 @@ public class WebTab: IWebTab, IControlStateManager
   /// <exception cref="InvalidOperationException"> 
   ///   Thrown if <see cref="IsVisible"/> is <see langword="false"/> but <paramref name="value"/> is <see langword="true"/>.
   /// </exception>
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public bool IsSelected
   {
     get { return _isSelected; }
-    set 
+    set
     {
-      SetSelected (value);
+      SetSelected(value);
       if (_tabStrip != null)
       {
         if (value)
-          _tabStrip.SetSelectedTabInternal (this);
+          _tabStrip.SetSelectedTabInternal(this);
         else if (this == _tabStrip.SelectedTab)
-          _tabStrip.SetSelectedTabInternal (null);
+          _tabStrip.SetSelectedTabInternal(null);
       }
     }
   }
@@ -289,8 +289,8 @@ public class WebTab: IWebTab, IControlStateManager
   }
 
   /// <summary> Gets or sets the control to which this object belongs. </summary>
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public IControl? OwnerControl
   {
     get { return OwnerControlImplementation;  }
@@ -301,7 +301,7 @@ public class WebTab: IWebTab, IControlStateManager
   {
     get { return _ownerControl;  }
     set
-    { 
+    {
       if (_ownerControl != value)
       {
         if (OwnerControl != null)
@@ -326,23 +326,23 @@ public class WebTab: IWebTab, IControlStateManager
 
   public virtual IWebTabRenderer GetRenderer ()
   {
-    return SafeServiceLocator.Current.GetInstance<IWebTabRenderer> ();
+    return SafeServiceLocator.Current.GetInstance<IWebTabRenderer>();
   }
 
   protected string GetPostBackClientEvent ()
   {
     try
     {
-      if (_tabStrip == null) 
-        throw new InvalidOperationException ("The WebTab is not part of a WebTabStrip.");
-      if (_tabStrip.Page == null) 
-        throw new InvalidOperationException (string.Format ("WebTabStrip '{0}' is not part of a page.", _tabStrip.ID));
+      if (_tabStrip == null)
+        throw new InvalidOperationException("The WebTab is not part of a WebTabStrip.");
+      if (_tabStrip.Page == null)
+        throw new InvalidOperationException(string.Format("WebTabStrip '{0}' is not part of a page.", _tabStrip.ID));
     }
     catch (NullReferenceException)
     {
       return string.Empty;
     }
-    return _tabStrip.Page.ClientScript.GetPostBackClientHyperlink (_tabStrip, ItemID);
+    return _tabStrip.Page.ClientScript.GetPostBackClientHyperlink(_tabStrip, ItemID);
   }
 
   string IWebTab.GetPostBackClientEvent ()
@@ -350,21 +350,21 @@ public class WebTab: IWebTab, IControlStateManager
     return GetPostBackClientEvent();
   }
 
-  public virtual void OnClick()
+  public virtual void OnClick ()
   {
   }
 
   public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-    ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-    
-    var key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-    if (! string.IsNullOrEmpty (key))
-      Text = resourceManager.GetString (key);
-    
+    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+    ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+
+    var key = ResourceManagerUtility.GetGlobalResourceKey(Text);
+    if (! string.IsNullOrEmpty(key))
+      Text = resourceManager.GetString(key);
+
     if (Icon != null)
-      Icon.LoadResources (resourceManager);
+      Icon.LoadResources(resourceManager);
   }
 
   void IControlStateManager.LoadControlState (object? state)
@@ -372,7 +372,7 @@ public class WebTab: IWebTab, IControlStateManager
     if (_isControlStateRestored)
       return;
     _isControlStateRestored = true;
-    LoadControlState (state);
+    LoadControlState(state);
   }
 
   protected virtual void LoadControlState (object? state)
@@ -380,7 +380,7 @@ public class WebTab: IWebTab, IControlStateManager
     if (state == null)
       return;
 
-    IsSelected = (bool) state;
+    IsSelected = (bool)state;
   }
 
   object? IControlStateManager.SaveControlState ()
@@ -388,7 +388,7 @@ public class WebTab: IWebTab, IControlStateManager
     return SaveControlState();
   }
 
-  protected virtual object? SaveControlState()
+  protected virtual object? SaveControlState ()
   {
     if (! IsSelected)
       return null;
@@ -412,7 +412,7 @@ public class WebTabClickEventArgs: EventArgs
   /// <summary> Initializes an instance. </summary>
   public WebTabClickEventArgs (WebTab tab)
   {
-    ArgumentUtility.CheckNotNull ("tab", tab);
+    ArgumentUtility.CheckNotNull("tab", tab);
     _tab = tab;
   }
 
@@ -426,19 +426,19 @@ public class WebTabClickEventArgs: EventArgs
 public class WebTabStyle: Style
 {
   /// <exclude />
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
-  public new Color BorderColor 
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
+  public new Color BorderColor
   {
     get { return base.BorderColor; }
     set { base.BorderColor = value; }
   }
 
   /// <exclude />
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public new BorderStyle BorderStyle
   {
     get { return base.BorderStyle; }
@@ -446,9 +446,9 @@ public class WebTabStyle: Style
   }
 
   /// <exclude />
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public new Unit BorderWidth
   {
     get { return base.BorderWidth; }
@@ -456,9 +456,9 @@ public class WebTabStyle: Style
   }
 
   /// <exclude />
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public new Unit Width
   {
     get { return base.Width; }
@@ -466,9 +466,9 @@ public class WebTabStyle: Style
   }
 
   /// <exclude />
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
   public new Unit Height
   {
     get { return base.Height; }

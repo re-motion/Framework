@@ -31,21 +31,21 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class ExpressionMixinContextOriginSerializer : MixinContextOriginSerializerBase
   {
     private static readonly ConstructorInfo s_constructor =
-        MemberInfoFromExpressionUtility.GetConstructor (() => new MixinContextOrigin ("kind", null!, "location"));
+        MemberInfoFromExpressionUtility.GetConstructor(() => new MixinContextOrigin("kind", null!, "location"));
 
     private static readonly MethodInfo s_assemblyLoadMethod =
-        MemberInfoFromExpressionUtility.GetMethod (() => Assembly.Load ("assemblyName"));
-      
+        MemberInfoFromExpressionUtility.GetMethod(() => Assembly.Load("assemblyName"));
+
 
     public Expression CreateNewExpression ()
     {
       // new MixinContextOrigin (Kind, Assembly.Load (Assembly.FullName), Location)
 
-      return Expression.New (
+      return Expression.New(
           s_constructor,
-          Expression.Constant (Kind),
-          Expression.Call (s_assemblyLoadMethod, Expression.Constant (Assembly!.GetFullNameChecked())), // TODO RM-7691 Change serializer properties to non-nullable return values
-          Expression.Constant (Locaction));
+          Expression.Constant(Kind),
+          Expression.Call(s_assemblyLoadMethod, Expression.Constant(Assembly!.GetFullNameChecked())), // TODO RM-7691 Change serializer properties to non-nullable return values
+          Expression.Constant(Locaction));
     }
   }
 }

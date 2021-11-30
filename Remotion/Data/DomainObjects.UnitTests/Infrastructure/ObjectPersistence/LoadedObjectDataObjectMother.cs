@@ -28,48 +28,48 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     public static ILoadedObjectData CreateLoadedObjectDataStub (DomainObject domainObjectReference = null)
     {
       domainObjectReference = domainObjectReference ?? DomainObjectMother.CreateFakeObject<Order>();
-      var loadedObjectDataStub = CreateLoadedObjectDataStub (domainObjectReference.ID);
-      loadedObjectDataStub.Stub (stub => stub.GetDomainObjectReference ()).Return (domainObjectReference);
+      var loadedObjectDataStub = CreateLoadedObjectDataStub(domainObjectReference.ID);
+      loadedObjectDataStub.Stub(stub => stub.GetDomainObjectReference()).Return(domainObjectReference);
       return loadedObjectDataStub;
     }
 
     public static ILoadedObjectData CreateLoadedObjectDataStub (ObjectID objectID)
     {
-      var loadedObjectDataStub = MockRepository.GenerateStub<ILoadedObjectData> ();
-      loadedObjectDataStub.Stub (stub => stub.ObjectID).Return (objectID);
+      var loadedObjectDataStub = MockRepository.GenerateStub<ILoadedObjectData>();
+      loadedObjectDataStub.Stub(stub => stub.ObjectID).Return(objectID);
       return loadedObjectDataStub;
     }
 
     public static LoadedObjectDataWithDataSourceData CreateLoadedObjectDataWithDataSourceData (DomainObject domainObjectReference)
     {
-      var loadedObjectDataStub = CreateLoadedObjectDataStub (domainObjectReference);
-      return CreateLoadedObjectDataWithDataSourceData (loadedObjectDataStub);
+      var loadedObjectDataStub = CreateLoadedObjectDataStub(domainObjectReference);
+      return CreateLoadedObjectDataWithDataSourceData(loadedObjectDataStub);
     }
 
     public static LoadedObjectDataWithDataSourceData CreateLoadedObjectDataWithDataSourceData (ILoadedObjectData loadedObjectData)
     {
-      var dataContainer = DataContainer.CreateForExisting (loadedObjectData.ObjectID, null, pd => pd.DefaultValue);
-      return new LoadedObjectDataWithDataSourceData (loadedObjectData, dataContainer);
+      var dataContainer = DataContainer.CreateForExisting(loadedObjectData.ObjectID, null, pd => pd.DefaultValue);
+      return new LoadedObjectDataWithDataSourceData(loadedObjectData, dataContainer);
     }
 
     public static LoadedObjectDataWithDataSourceData CreateLoadedObjectDataWithDataSourceData ()
     {
-      return CreateLoadedObjectDataWithDataSourceData (DomainObjectMother.CreateFakeObject<Order>());
+      return CreateLoadedObjectDataWithDataSourceData(DomainObjectMother.CreateFakeObject<Order>());
     }
 
     public static LoadedObjectDataWithDataSourceData CreateLoadedObjectDataWithDataSourceData (ObjectID objectID)
     {
-      return CreateLoadedObjectDataWithDataSourceData (DomainObjectMother.CreateFakeObject (objectID));
+      return CreateLoadedObjectDataWithDataSourceData(DomainObjectMother.CreateFakeObject(objectID));
     }
 
     public static LoadedObjectDataWithDataSourceData CreateNullLoadedObjectDataWithDataSourceData ()
     {
-      return new LoadedObjectDataWithDataSourceData (new NullLoadedObjectData(), null);
+      return new LoadedObjectDataWithDataSourceData(new NullLoadedObjectData(), null);
     }
 
     public static FreshlyLoadedObjectData CreateFreshlyLoadedObjectData (ObjectID objectID)
     {
-      return new FreshlyLoadedObjectData (DataContainerObjectMother.Create (objectID));
+      return new FreshlyLoadedObjectData(DataContainerObjectMother.Create(objectID));
     }
   }
 }

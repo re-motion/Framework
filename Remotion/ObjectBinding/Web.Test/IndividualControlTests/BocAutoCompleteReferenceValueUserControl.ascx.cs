@@ -29,7 +29,7 @@ using Remotion.Web.UI.Globalization;
 namespace OBWTest.IndividualControlTests
 {
 
-[WebMultiLingualResources ("OBWTest.Globalization.IndividualControlTests.BocAutoCompleteReferenceValueUserControl")]
+[WebMultiLingualResources("OBWTest.Globalization.IndividualControlTests.BocAutoCompleteReferenceValueUserControl")]
 public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
 {
   protected HtmlGenericControl NonVisualControls;
@@ -85,24 +85,24 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
     get { return CurrentObjectValidationResultDispatchingValidator; }
   }
 
-  override protected void OnInit(EventArgs e)
+  override protected void OnInit (EventArgs e)
   {
     InitializeComponent();
 
-    base.OnInit (e);
+    base.OnInit(e);
 
     WebMenuItem menuItem = new WebMenuItem();
     menuItem.ItemID = "webmenuitem";
     menuItem.Text = "webmenuitem";
-    PartnerField.OptionsMenuItems.Add (menuItem);
+    PartnerField.OptionsMenuItems.Add(menuItem);
 
-    InitalizeReferenceValueMenuItems (PartnerField);
-    InitalizeReferenceValueMenuItems (ReadOnlyPartnerField);
-    InitalizeReferenceValueMenuItems (UnboundPartnerField);
-    InitalizeReferenceValueMenuItems (UnboundReadOnlyPartnerField);
-    InitalizeReferenceValueMenuItems (DisabledPartnerField);
-    InitalizeReferenceValueMenuItems (DisabledReadOnlyPartnerField);
-    InitalizeReferenceValueMenuItems (DisabledUnboundPartnerField);
+    InitalizeReferenceValueMenuItems(PartnerField);
+    InitalizeReferenceValueMenuItems(ReadOnlyPartnerField);
+    InitalizeReferenceValueMenuItems(UnboundPartnerField);
+    InitalizeReferenceValueMenuItems(UnboundReadOnlyPartnerField);
+    InitalizeReferenceValueMenuItems(DisabledPartnerField);
+    InitalizeReferenceValueMenuItems(DisabledReadOnlyPartnerField);
+    InitalizeReferenceValueMenuItems(DisabledUnboundPartnerField);
   }
 
   private void InitalizeReferenceValueMenuItems (BocAutoCompleteReferenceValue referenceValue)
@@ -112,7 +112,7 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
     menuItem = new BocMenuItem();
     menuItem.Text = "Invisible Item";
     menuItem.IsVisible = false;
-    referenceValue.OptionsMenuItems.Add (menuItem);
+    referenceValue.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Open";
@@ -122,7 +122,7 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
     menuItem.Command.Type = CommandType.WxeFunction;
     menuItem.Command.WxeFunctionCommand.Parameters = "objects";
     menuItem.Command.WxeFunctionCommand.MappingID = "ViewPersons";
-    referenceValue.OptionsMenuItems.Add (menuItem);
+    referenceValue.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
@@ -131,7 +131,7 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
     menuItem.Icon.Url = "~/Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
-    referenceValue.OptionsMenuItems.Add (menuItem);
+    referenceValue.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Cut";
@@ -139,14 +139,14 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
     menuItem.Category = "Edit";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
-    referenceValue.OptionsMenuItems.Add (menuItem);
+    referenceValue.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
     menuItem.Text = "Paste";
     menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
-    referenceValue.OptionsMenuItems.Add (menuItem);
+    referenceValue.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
@@ -157,61 +157,61 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Style = WebMenuItemStyle.Icon;
     menuItem.Command.Type = CommandType.Event;
-    referenceValue.OptionsMenuItems.Add (menuItem);
+    referenceValue.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.Text = "Invisible Item";
     menuItem.IsVisible = false;
-    referenceValue.OptionsMenuItems.Add (menuItem);
+    referenceValue.OptionsMenuItems.Add(menuItem);
 
-    if (!string.IsNullOrEmpty (referenceValue.ControlServicePath))
+    if (!string.IsNullOrEmpty(referenceValue.ControlServicePath))
     {
-      referenceValue.OptionsMenuItems.Add (WebMenuItem.GetSeparator());
+      referenceValue.OptionsMenuItems.Add(WebMenuItem.GetSeparator());
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "FilterByService";
       menuItem.Text = "Should be filtered";
       menuItem.IsVisible = true;
-      referenceValue.OptionsMenuItems.Add (menuItem);
+      referenceValue.OptionsMenuItems.Add(menuItem);
 
-      referenceValue.OptionsMenuItems.Add (WebMenuItem.GetSeparator());
+      referenceValue.OptionsMenuItems.Add(WebMenuItem.GetSeparator());
 
       menuItem = new BocMenuItem();
       menuItem.ItemID = "DisabledByService";
       menuItem.Text = "Should be disabled";
       menuItem.IsDisabled = false;
-      referenceValue.OptionsMenuItems.Add (menuItem);
+      referenceValue.OptionsMenuItems.Add(menuItem);
     }
   }
 
   override protected void OnLoad (EventArgs e)
   {
-    base.OnLoad (e);
+    base.OnLoad(e);
 
-    Person person = (Person) CurrentObject.BusinessObject;
+    Person person = (Person)CurrentObject.BusinessObject;
 
     //UnboundPartnerField.LoadUnboundValue (person.Partner, IsPostBack);
-    UnboundReadOnlyPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity)person.Partner, IsPostBack);
-    DisabledUnboundPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
-    DisabledUnboundReadOnlyPartnerField.LoadUnboundValue ((IBusinessObjectWithIdentity) person.Partner, IsPostBack);
-  
+    UnboundReadOnlyPartnerField.LoadUnboundValue((IBusinessObjectWithIdentity)person.Partner, IsPostBack);
+    DisabledUnboundPartnerField.LoadUnboundValue((IBusinessObjectWithIdentity)person.Partner, IsPostBack);
+    DisabledUnboundReadOnlyPartnerField.LoadUnboundValue((IBusinessObjectWithIdentity)person.Partner, IsPostBack);
+
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus (PartnerField);
+        ((ISmartNavigablePage)Page).SetFocus(PartnerField);
     }
   }
 
   public override bool Validate ()
   {
-    bool isValid = base.Validate ();
-    isValid &= FormGridManager.Validate ();
+    bool isValid = base.Validate();
+    isValid &= FormGridManager.Validate();
     return isValid;
   }
 
   override protected void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
     var delay = ((TestFunction)((IWxePage)Page).CurrentFunction).Delay;
     if (delay.HasValue)
@@ -221,14 +221,14 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
       UnboundPartnerField.ControlServiceArguments = args;
     }
 
-    SetDebugLabel (PartnerField, PartnerFieldValueLabel);
-    SetDebugLabel (ReadOnlyPartnerField, ReadOnlyPartnerFieldValueLabel);
-    SetDebugLabel (UnboundPartnerField, UnboundPartnerFieldValueLabel);
-    SetDebugLabel (UnboundReadOnlyPartnerField, UnboundReadOnlyPartnerFieldValueLabel);
-    SetDebugLabel (DisabledPartnerField, DisabledPartnerFieldValueLabel);
-    SetDebugLabel (DisabledReadOnlyPartnerField, DisabledReadOnlyPartnerFieldValueLabel);
-    SetDebugLabel (DisabledUnboundPartnerField, DisabledUnboundPartnerFieldValueLabel);
-    SetDebugLabel (DisabledUnboundReadOnlyPartnerField, DisabledUnboundReadOnlyPartnerFieldValueLabel);
+    SetDebugLabel(PartnerField, PartnerFieldValueLabel);
+    SetDebugLabel(ReadOnlyPartnerField, ReadOnlyPartnerFieldValueLabel);
+    SetDebugLabel(UnboundPartnerField, UnboundPartnerFieldValueLabel);
+    SetDebugLabel(UnboundReadOnlyPartnerField, UnboundReadOnlyPartnerFieldValueLabel);
+    SetDebugLabel(DisabledPartnerField, DisabledPartnerFieldValueLabel);
+    SetDebugLabel(DisabledReadOnlyPartnerField, DisabledReadOnlyPartnerFieldValueLabel);
+    SetDebugLabel(DisabledUnboundPartnerField, DisabledUnboundPartnerFieldValueLabel);
+    SetDebugLabel(DisabledUnboundReadOnlyPartnerField, DisabledUnboundReadOnlyPartnerFieldValueLabel);
   }
 
   private void SetDebugLabel (IBusinessObjectBoundWebControl control, Label label)
@@ -241,40 +241,40 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
 
   protected void Control_SelectionChanged (object sender, EventArgs e)
   {
-    ((SmartPage) Page).PrepareValidation();
-    if (!((IValidatableControl) sender).Validate())
-      ((ISmartNavigablePage) Page).SetFocus (((IFocusableControl)sender));
+    ((SmartPage)Page).PrepareValidation();
+    if (!((IValidatableControl)sender).Validate())
+      ((ISmartNavigablePage)Page).SetFocus(((IFocusableControl)sender));
   }
 
-  private void PartnerTestSetNullButton_Click(object sender, EventArgs e)
+  private void PartnerTestSetNullButton_Click (object sender, EventArgs e)
   {
     PartnerField.Value = null;
   }
 
-  private void PartnerTestSetNewItemButton_Click(object sender, EventArgs e)
+  private void PartnerTestSetNewItemButton_Click (object sender, EventArgs e)
   {
-    Person person = Person.CreateObject (Guid.NewGuid());
+    Person person = Person.CreateObject(Guid.NewGuid());
     person.LastName = person.ID.ToByteArray()[15].ToString();
     person.FirstName = "--";
 
-    PartnerField.Value = (IBusinessObjectWithIdentity) person;
+    PartnerField.Value = (IBusinessObjectWithIdentity)person;
   }
 
-  private void ReadOnlyPartnerTestSetNullButton_Click(object sender, EventArgs e)
+  private void ReadOnlyPartnerTestSetNullButton_Click (object sender, EventArgs e)
   {
     ReadOnlyPartnerField.Value = null;
   }
 
-  private void ReadOnlyPartnerTestSetNewItemButton_Click(object sender, EventArgs e)
+  private void ReadOnlyPartnerTestSetNewItemButton_Click (object sender, EventArgs e)
   {
-    Person person = Person.CreateObject (Guid.NewGuid());
+    Person person = Person.CreateObject(Guid.NewGuid());
     person.LastName = person.ID.ToByteArray()[15].ToString();
     person.FirstName = "--";
 
-    ReadOnlyPartnerField.Value = (IBusinessObjectWithIdentity) person;
+    ReadOnlyPartnerField.Value = (IBusinessObjectWithIdentity)person;
   }
 
-  private void PartnerField_SelectionChanged(object sender, EventArgs e)
+  private void PartnerField_SelectionChanged (object sender, EventArgs e)
   {
     if (PartnerField.Value != null)
       PartnerFieldSelectionChangedLabel.Text = PartnerField.Value.ToString();
@@ -282,7 +282,7 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
       PartnerFieldSelectionChangedLabel.Text = "not set";
   }
 
-  private void PartnerField_MenuItemClick(object sender, WebMenuItemClickEventArgs e)
+  private void PartnerField_MenuItemClick (object sender, WebMenuItemClickEventArgs e)
   {
     PartnerFieldMenuClickEventArgsLabel.Text = e.Item.Text;
   }
@@ -292,7 +292,7 @@ public class BocAutoCompleteReferenceValueUserControl : BaseUserControl
   ///		Required method for Designer support - do not modify
   ///		the contents of this method with the code editor.
   /// </summary>
-  private void InitializeComponent()
+  private void InitializeComponent ()
   {
 
   }

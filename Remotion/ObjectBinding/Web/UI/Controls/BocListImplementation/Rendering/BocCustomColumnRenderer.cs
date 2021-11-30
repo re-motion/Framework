@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering table cells of <see cref="BocCustomColumnDefinition"/> columns.
   /// </summary>
-  [ImplementationFor (typeof (IBocCustomColumnRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocCustomColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocCustomColumnRenderer : BocColumnRendererBase<BocCustomColumnDefinition>, IBocCustomColumnRenderer
   {
     private readonly IRenderingFeatures _renderingFeatures;
@@ -47,9 +47,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
         BocListCssClassDefinition cssClasses)
-        : base (resourceUrlFactory, renderingFeatures, cssClasses)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses)
     {
-      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 
       _renderingFeatures = renderingFeatures;
     }
@@ -73,18 +73,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         int rowIndex,
         bool showIcon)
     {
-      ArgumentUtility.CheckNotNull ("dataRowRenderEventArgs", dataRowRenderEventArgs);
+      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
       int originalRowIndex = dataRowRenderEventArgs.ListIndex;
       IBusinessObject businessObject = dataRowRenderEventArgs.BusinessObject;
       bool isEditedRow = renderingContext.Control.EditModeController.IsRowEditModeActive &&
-                         renderingContext.Control.EditModeController.GetEditableRow (originalRowIndex) != null;
+                         renderingContext.Control.EditModeController.GetEditableRow(originalRowIndex) != null;
 
       if (renderingContext.ColumnDefinition.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
           || (renderingContext.ColumnDefinition.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow && isEditedRow))
-        RenderCustomCellInnerControls (renderingContext, originalRowIndex, rowIndex);
+        RenderCustomCellInnerControls(renderingContext, originalRowIndex, rowIndex);
       else
-        RenderCustomCellDirectly (renderingContext, businessObject, originalRowIndex);
+        RenderCustomCellDirectly(renderingContext, businessObject, originalRowIndex);
     }
 
     /// <summary>
@@ -99,20 +99,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       {
         var boundPropertyPath = renderingContext.ColumnDefinition.PropertyPathIdentifier;
 
-        if (!string.IsNullOrEmpty (boundPropertyPath))
+        if (!string.IsNullOrEmpty(boundPropertyPath))
         {
-          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
-          renderingContext.Writer.AddAttribute (
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
+          renderingContext.Writer.AddAttribute(
               DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths,
               boundPropertyPath);
         }
         else
         {
-          renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
         }
       }
 
-      base.RenderTitleCell (renderingContext, sortingDirection, orderIndex);
+      base.RenderTitleCell(renderingContext, sortingDirection, orderIndex);
     }
 
     private void RenderCustomCellInnerControls (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, int originalRowIndex, int rowIndex)
@@ -122,31 +122,31 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (customColumnTuples.Length > rowIndex && customColumnTuples[rowIndex].Item2 == originalRowIndex)
         customColumnTuple = customColumnTuples[rowIndex];
       else
-        customColumnTuple = customColumnTuples.FirstOrDefault (t => t.Item2 == originalRowIndex);
+        customColumnTuple = customColumnTuples.FirstOrDefault(t => t.Item2 == originalRowIndex);
 
       if (customColumnTuple == null)
       {
-        renderingContext.Writer.Write (c_whiteSpace);
+        renderingContext.Writer.Write(c_whiteSpace);
         return;
       }
 
-      RenderClickWrapperBeginTag (renderingContext);
+      RenderClickWrapperBeginTag(renderingContext);
 
       Control control = customColumnTuple.Item3;
       if (control != null)
       {
-        ApplyStyleDefaults (control);
-        control.RenderControl (renderingContext.Writer);
+        ApplyStyleDefaults(control);
+        control.RenderControl(renderingContext.Writer);
       }
 
-      RenderClickWrapperEndTag (renderingContext);
+      RenderClickWrapperEndTag(renderingContext);
     }
 
     private void RenderClickWrapperBeginTag (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext)
     {
       string onClick = renderingContext.Control.HasClientScript ? c_onCommandClickScript : string.Empty;
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
     }
 
     private void RenderClickWrapperEndTag (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext)
@@ -157,13 +157,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void ApplyStyleDefaults (Control control)
     {
       bool isControlWidthEmpty;
-      CssStyleCollection? controlStyle = GetControlStyle (control, out isControlWidthEmpty);
+      CssStyleCollection? controlStyle = GetControlStyle(control, out isControlWidthEmpty);
       if (controlStyle == null)
         return;
 
-      if (string.IsNullOrEmpty (controlStyle["width"]) && isControlWidthEmpty)
+      if (string.IsNullOrEmpty(controlStyle["width"]) && isControlWidthEmpty)
         controlStyle["width"] = "100%";
-      if (string.IsNullOrEmpty (controlStyle["vertical-align"]))
+      if (string.IsNullOrEmpty(controlStyle["vertical-align"]))
         controlStyle["vertical-align"] = "middle";
     }
 
@@ -173,11 +173,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       isControlWidthEmpty = true;
       if (control is WebControl)
       {
-        controlStyle = ((WebControl) control).Style;
-        isControlWidthEmpty = ((WebControl) control).Width.IsEmpty;
+        controlStyle = ((WebControl)control).Style;
+        isControlWidthEmpty = ((WebControl)control).Width.IsEmpty;
       }
       else if (control is HtmlControl)
-        controlStyle = ((HtmlControl) control).Style;
+        controlStyle = ((HtmlControl)control).Style;
       return controlStyle;
     }
 
@@ -185,14 +185,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, IBusinessObject businessObject, int originalRowIndex)
     {
       string onClick = renderingContext.Control.HasClientScript ? c_onCommandClickScript : string.Empty;
-      BocCustomCellRenderArguments arguments = new BocCustomCellRenderArguments (
+      BocCustomCellRenderArguments arguments = new BocCustomCellRenderArguments(
           renderingContext.Control,
           businessObject,
           renderingContext.ColumnDefinition,
           renderingContext.ColumnIndex,
           originalRowIndex,
           onClick);
-      renderingContext.ColumnDefinition.CustomCell.RenderInternal (renderingContext.Writer, arguments);
+      renderingContext.ColumnDefinition.CustomCell.RenderInternal(renderingContext.Writer, arguments);
     }
   }
 }

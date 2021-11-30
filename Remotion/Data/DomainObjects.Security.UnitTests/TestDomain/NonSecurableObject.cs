@@ -36,10 +36,10 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
 
     public abstract string StringProperty { get; set; }
 
-    [DBBidirectionalRelation ("Children")]
+    [DBBidirectionalRelation("Children")]
     public abstract NonSecurableObject Parent { get; set; }
 
-    [DBBidirectionalRelation ("Parent")]
+    [DBBidirectionalRelation("Parent")]
     public abstract ObjectList<NonSecurableObject> Children { get; }
   }
 }

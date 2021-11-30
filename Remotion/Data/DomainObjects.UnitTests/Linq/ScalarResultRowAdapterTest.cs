@@ -39,37 +39,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _storageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
 
       _scalarValue = "5";
-      _queryResultRowAdapter = new ScalarResultRowAdapter (_scalarValue, _storageTypeInformationProviderStub);
+      _queryResultRowAdapter = new ScalarResultRowAdapter(_scalarValue, _storageTypeInformationProviderStub);
     }
 
     [Test]
     public void GetValue ()
     {
-      _storageTypeInformationProviderStub.Stub (stub => stub.GetStorageType (typeof(int))).Return (_storageTypeInformationStub);
-      _storageTypeInformationStub.Stub (stub => stub.ConvertFromStorageType (_scalarValue)).Return (1);
+      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof(int))).Return(_storageTypeInformationStub);
+      _storageTypeInformationStub.Stub(stub => stub.ConvertFromStorageType(_scalarValue)).Return(1);
 
-      var result = _queryResultRowAdapter.GetValue<int> (new ColumnID ("column1", 0));
+      var result = _queryResultRowAdapter.GetValue<int>(new ColumnID("column1", 0));
 
-      Assert.That (result, Is.EqualTo (1));
+      Assert.That(result, Is.EqualTo(1));
     }
 
     [Test]
     public void GetValue_InvalidColumnID ()
     {
-      Assert.That (
-          () => _queryResultRowAdapter.GetValue<int> (new ColumnID ("test", 4)),
+      Assert.That(
+          () => _queryResultRowAdapter.GetValue<int>(new ColumnID("test", 4)),
           Throws.InstanceOf<IndexOutOfRangeException>()
-              .With.Message.EqualTo (
+              .With.Message.EqualTo(
                   "Only one scalar value is available, column ID 'col: test (4)' is invalid."));
     }
 
     [Test]
     public void GetEntity ()
     {
-      Assert.That (
-          () => _queryResultRowAdapter.GetEntity<int> (),
+      Assert.That(
+          () => _queryResultRowAdapter.GetEntity<int>(),
           Throws.InstanceOf<NotSupportedException>()
-              .With.Message.EqualTo ("Scalar queries cannot return entities."));
+              .With.Message.EqualTo("Scalar queries cannot return entities."));
     }
   }
 }

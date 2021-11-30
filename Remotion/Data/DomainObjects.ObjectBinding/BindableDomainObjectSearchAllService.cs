@@ -29,45 +29,45 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   public class BindableDomainObjectSearchAllService : ISearchAvailableObjectsService
   {
-    private static readonly QueryCache s_queryCache = new QueryCache ();
-    private static readonly MethodInfo s_getQueryMethod = 
-        typeof (BindableDomainObjectSearchAllService).GetMethod ("GetQuery", BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
+    private static readonly QueryCache s_queryCache = new QueryCache();
+    private static readonly MethodInfo s_getQueryMethod =
+        typeof(BindableDomainObjectSearchAllService).GetMethod("GetQuery", BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
 
     private readonly ConcurrentDictionary<Type, bool> _bindableObjectTypeCache = new ConcurrentDictionary<Type, bool>();
 
     public bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      var domainObjectType = GetDomainObjectType (property);
+      ArgumentUtility.CheckNotNull("property", property);
+      var domainObjectType = GetDomainObjectType(property);
       return domainObjectType != null;
     }
 
     public IBusinessObject[] Search (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property, ISearchAvailableObjectsArguments searchArguments)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      if (!SupportsProperty (property))
+      ArgumentUtility.CheckNotNull("property", property);
+      if (!SupportsProperty(property))
       {
-        var message = string.Format ("The property '{0}' on type '{1}' is not supported by the BindableDomainObjectSearchAllService: The service "
-            + "only supports relation properties (ie. references to other DomainObject instances).", property.Identifier, 
+        var message = string.Format("The property '{0}' on type '{1}' is not supported by the BindableDomainObjectSearchAllService: The service "
+            + "only supports relation properties (ie. references to other DomainObject instances).", property.Identifier,
             property.ReflectedClass.Identifier);
-        throw new ArgumentException (message, "property");
+        throw new ArgumentException(message, "property");
       }
 
-      var referencedDomainObjectType = GetDomainObjectType (property);
+      var referencedDomainObjectType = GetDomainObjectType(property);
       var referencingDomainObject = referencingObject as DomainObject;
-      
+
       var clientTransaction = referencingDomainObject != null ? referencingDomainObject.DefaultTransactionContext.ClientTransaction : ClientTransaction.Current;
       if (clientTransaction == null)
-        throw new InvalidOperationException ("No ClientTransaction has been associated with the current thread or the referencing object.");
+        throw new InvalidOperationException("No ClientTransaction has been associated with the current thread or the referencing object.");
 
-      return GetAllObjects (clientTransaction, referencedDomainObjectType);
+      return GetAllObjects(clientTransaction, referencedDomainObjectType);
     }
 
     private Type GetDomainObjectType (IBusinessObjectReferenceProperty property)
     {
-      if (ReflectionUtility.IsDomainObject (property.PropertyType))
+      if (ReflectionUtility.IsDomainObject(property.PropertyType))
         return property.PropertyType;
-      else if (property.IsList && ReflectionUtility.IsDomainObject (property.ListInfo.ItemType))
+      else if (property.IsList && ReflectionUtility.IsDomainObject(property.ListInfo.ItemType))
         return property.ListInfo.ItemType;
       else
         return null;
@@ -75,35 +75,35 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
     public IBusinessObject[] GetAllObjects (ClientTransaction clientTransaction, Type type)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var query = GetQuery (type);
-      return clientTransaction.QueryManager.GetCollection (query).AsEnumerable().Cast<IBusinessObject>().ToArray();
+      var query = GetQuery(type);
+      return clientTransaction.QueryManager.GetCollection(query).AsEnumerable().Cast<IBusinessObject>().ToArray();
     }
 
     private IQuery GetQuery (Type type)
     {
-      if (!ReflectionUtility.IsDomainObject (type))
-        throw new ArgumentException ("This service only supports queries for DomainObject types.", "type");
+      if (!ReflectionUtility.IsDomainObject(type))
+        throw new ArgumentException("This service only supports queries for DomainObject types.", "type");
 
       // C# compiler 7.2 does not provide caching for delegate but during query execution there is already a significant amount of GC pressure so the delegate creation does not matter
-      if (!_bindableObjectTypeCache.GetOrAdd (type, BindableObjectProvider.IsBindableObjectImplementation))
+      if (!_bindableObjectTypeCache.GetOrAdd(type, BindableObjectProvider.IsBindableObjectImplementation))
       {
-        var message = string.Format ("This service only supports queries for bindable DomainObject types, the given type '{0}' is not a bindable "
+        var message = string.Format("This service only supports queries for bindable DomainObject types, the given type '{0}' is not a bindable "
             + "type. Derive from BindableDomainObject or apply the BindableDomainObjectAttribute.", type.GetFullNameSafe());
-        throw new ArgumentException (message, "type");
+        throw new ArgumentException(message, "type");
       }
 
-      Assertion.IsNotNull (s_getQueryMethod);
+      Assertion.IsNotNull(s_getQueryMethod);
 
-      return (IQuery) s_getQueryMethod.MakeGenericMethod (type).Invoke (this, null);
+      return (IQuery)s_getQueryMethod.MakeGenericMethod(type).Invoke(this, null);
     }
 
     [ReflectionAPI]
     private IQuery GetQuery<T> () where T : DomainObject
     {
-      return s_queryCache.GetQuery<T> (typeof (T).GetAssemblyQualifiedNameChecked(), source => from x in source select x);
+      return s_queryCache.GetQuery<T>(typeof(T).GetAssemblyQualifiedNameChecked(), source => from x in source select x);
     }
   }
 }
