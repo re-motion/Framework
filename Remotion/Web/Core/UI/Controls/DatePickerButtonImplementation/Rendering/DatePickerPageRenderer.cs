@@ -42,6 +42,7 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
       htmlHeadAppender.RegisterJavaScriptInclude(key, scriptUrl);
 
       htmlHeadAppender.RegisterPageStylesheetLink();
+      htmlHeadAppender.RegisterCommonStyleSheet();
     }
 
     protected IResourceUrlFactory ResourceUrlFactory
