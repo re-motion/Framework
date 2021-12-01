@@ -27,6 +27,7 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -223,7 +224,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, dateTextBoxLabelID);
           renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
           renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-          renderingContext.Writer.Write (resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.DateLabelText));
+          resourceManager.GetText (BocDateTimeValue.ResourceIdentifier.DateLabelText).Write (renderingContext.Writer);
           renderingContext.Writer.RenderEndTag();
         }
 
@@ -251,7 +252,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, timeTextBoxLabelID);
           renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
           renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-          renderingContext.Writer.Write (resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.TimeLabelText));
+          resourceManager.GetText (BocDateTimeValue.ResourceIdentifier.TimeLabelText).Write (renderingContext.Writer);
           renderingContext.Writer.RenderEndTag();
         }
 
@@ -360,14 +361,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
                       {
                         ID = renderingContext.Control.GetDateValueName(),
                         ClientIDMode = ClientIDMode.Static,
-                        ToolTip = hasTimeField ? resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.DateLabelText) : null,
+                        ToolTip = hasTimeField
+                            ? resourceManager.GetText (BocDateTimeValue.ResourceIdentifier.DateLabelText).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)
+                            : null,
                         AssociatedControlID = hasTimeField ? renderingContext.Control.ClientID + "_DateLabel" : null
                       };
       var timeLabel = new Label
                       {
                         ID = renderingContext.Control.GetTimeValueName(),
                         ClientIDMode = ClientIDMode.Static,
-                        ToolTip = hasDateField ? resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.TimeLabelText) : null,
+                        ToolTip = hasDateField
+                            ? resourceManager.GetText (BocDateTimeValue.ResourceIdentifier.TimeLabelText).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)
+                            : null,
                         AssociatedControlID = hasDateField ? renderingContext.Control.ClientID + "_TimeLabel" : null
                       };
 

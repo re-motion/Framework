@@ -96,7 +96,7 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
       var imageUrl = GetResolvedImageUrl ();
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Src, imageUrl.GetUrl ());
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Alt, renderingContext.Control.AlternateText ?? string.Empty);
+      renderingContext.Control.AlternateText.AddAttribute (renderingContext.Writer, HtmlTextWriterAttribute.Alt);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Img);
       renderingContext.Writer.RenderEndTag ();
 

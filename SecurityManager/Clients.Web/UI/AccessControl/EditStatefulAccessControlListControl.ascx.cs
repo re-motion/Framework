@@ -23,6 +23,7 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.Web;
 using Remotion.Web.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
@@ -70,8 +71,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
       {// This
         var resourceManager = GetResourceManager (typeof (StatefulAccessResourceIdentifier));
-        MissingStateCombinationsValidator.ErrorMessage =
-            resourceManager.GetString (StatefulAccessResourceIdentifier.MissingStateCombinationsValidatorErrorMessage);
+        MissingStateCombinationsValidator.ErrorMessage = resourceManager
+            .GetText (StatefulAccessResourceIdentifier.MissingStateCombinationsValidatorErrorMessage)
+            .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
         NewStateCombinationButton.Text = resourceManager.GetText (StatefulAccessResourceIdentifier.NewStateCombinationButtonText);
       }
 

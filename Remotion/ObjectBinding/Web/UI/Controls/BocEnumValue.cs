@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly ListControlStyle _listControlStyle;
     private readonly Style _labelStyle;
 
-    private string _undefinedItemText = string.Empty;
+    private WebString _undefinedItemText = WebString.Empty;
 
     private PlainTextString _errorMessage;
     private ReadOnlyCollection<BaseValidator> _validators;
@@ -483,8 +483,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Description ("The description displayed for the undefined item.")]
     [Category ("Appearance")]
-    [DefaultValue ("")]
-    public string UndefinedItemText
+    [DefaultValue (typeof (WebString), "")]
+    public WebString UndefinedItemText
     {
       get { return _undefinedItemText; }
       set { _undefinedItemText = value; }
@@ -640,9 +640,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (! string.IsNullOrEmpty (key))
         ErrorMessage = resourceManager.GetText (key);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (UndefinedItemText);
+      key = ResourceManagerUtility.GetGlobalResourceKey (UndefinedItemText.GetValue());
       if (! string.IsNullOrEmpty (key))
-        UndefinedItemText = resourceManager.GetString (key);
+        UndefinedItemText = resourceManager.GetWebString (key, UndefinedItemText.Type);
     }
 
     /// <summary> Gets the current value. </summary>
@@ -693,11 +693,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return (Property != null && DataSource != null) ? DataSource.BusinessObject : null;
     }
 
-    private string GetNullItemText ()
+    private WebString GetNullItemText ()
     {
-      string nullDisplayName = _undefinedItemText;
-      if (string.IsNullOrEmpty (nullDisplayName))
-        nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.UndefinedItemText);
+      var nullDisplayName = _undefinedItemText;
+      if (nullDisplayName.IsEmpty)
+        nullDisplayName = GetResourceManager().GetText (ResourceIdentifier.UndefinedItemText);
       return nullDisplayName;
     }
 
@@ -732,7 +732,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return EnumerationValueInfo; }
     }
 
-    string IBocEnumValue.GetNullItemText ()
+    WebString IBocEnumValue.GetNullItemText ()
     {
       return GetNullItemText();
     }

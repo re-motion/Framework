@@ -25,6 +25,7 @@ using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
@@ -82,8 +83,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected override void OnPreRender (EventArgs e)
     {
-      RequiredStateCombinationValidator.ErrorMessage =
-          GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.RequiredStateCombinationValidatorErrorMessage);
+      RequiredStateCombinationValidator.ErrorMessage = GetResourceManager (typeof (ResourceIdentifier))
+              .GetText (ResourceIdentifier.RequiredStateCombinationValidatorErrorMessage)
+              .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
       
       base.OnPreRender (e);
     }

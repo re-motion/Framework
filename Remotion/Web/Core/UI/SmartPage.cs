@@ -116,7 +116,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   [Description("The message displayed when the user attempts to leave the page.")]
   [Category ("Appearance")]
   [DefaultValue ("")]
-  public virtual string? AbortMessage 
+  public virtual WebString AbortMessage
   {
     get { return _smartPageInfo.AbortMessage; }
     set { _smartPageInfo.AbortMessage = value; }
@@ -131,7 +131,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   [Description("The message displayed when the user attempts to submit while the page is already submitting.")]
   [Category ("Appearance")]
   [DefaultValue ("")]
-  public virtual string StatusIsSubmittingMessage
+  public virtual WebString StatusIsSubmittingMessage
   {
     get { return _smartPageInfo.StatusIsSubmittingMessage; }
     set { _smartPageInfo.StatusIsSubmittingMessage = value; }

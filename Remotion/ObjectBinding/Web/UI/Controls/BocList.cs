@@ -1306,7 +1306,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       IResourceManager resourceManager = GetResourceManager();
       requiredIcon.AlternateText = "*";
-      requiredIcon.ToolTip = resourceManager.GetString (ResourceIdentifier.RequiredFieldTitle);
+      requiredIcon.ToolTip = resourceManager.GetText (ResourceIdentifier.RequiredFieldTitle).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
       requiredIcon.Attributes.Add (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
 
       requiredIcon.CssClass = "validationRequiredMarker";
@@ -1327,7 +1327,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       var validationErrorMarker = new HtmlGenericControl("span");
       validationErrorMarker.Controls.Add (validationErrorIcon);
       validationErrorMarker.Attributes["class"] = "validationErrorMarker";
-      validationErrorMarker.Attributes["title"] = resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoTitle);
+      validationErrorMarker.Attributes["title"] = resourceManager
+          .GetText (ResourceIdentifier.ValidationErrorInfoTitle)
+          .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
 
       return validationErrorMarker;
     }

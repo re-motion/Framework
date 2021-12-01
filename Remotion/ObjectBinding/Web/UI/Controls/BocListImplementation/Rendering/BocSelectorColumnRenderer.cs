@@ -20,6 +20,7 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -112,7 +113,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
-      string labelText = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.SelectAllRowsLabelText);
+      var labelText = renderingContext.Control.GetResourceManager().GetText (BocList.ResourceIdentifier.SelectAllRowsLabelText);
 
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "checkbox");
 
@@ -121,7 +122,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (renderingContext.Control.EditModeController.IsRowEditModeActive)
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Disabled, "disabled");
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Title, labelText);
+      labelText.AddAttribute (renderingContext.Writer, HtmlTextWriterAttribute.Title);
 
       if (renderingContext.Control.HasClientScript)
       {
@@ -149,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNullOrEmpty ("id", id);
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
-      string labelText = renderingContext.Control.GetResourceManager().GetString (BocList.ResourceIdentifier.SelectRowLabelText);
+      var labelText = renderingContext.Control.GetResourceManager().GetText (BocList.ResourceIdentifier.SelectRowLabelText);
 
       if (renderingContext.Control.Selection == RowSelection.SingleRadioButton)
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "radio");
@@ -165,7 +166,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Disabled, "disabled");
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Value, value);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Title, labelText);
+      labelText.AddAttribute (renderingContext.Writer, HtmlTextWriterAttribute.Title);
 
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
       renderingContext.Writer.RenderEndTag();

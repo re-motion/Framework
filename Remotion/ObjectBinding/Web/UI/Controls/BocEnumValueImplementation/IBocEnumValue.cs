@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation
     ListControlStyle ListControlStyle { get; }
     string NullIdentifier { get; }
     IEnumerationValueInfo[] GetEnabledValues();
-    string GetNullItemText ();
+    WebString GetNullItemText ();
     string GetValueName ();
 
     /// <summary>

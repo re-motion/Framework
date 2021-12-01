@@ -31,6 +31,7 @@ using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.WebTreeViewImplementation;
@@ -473,7 +474,7 @@ namespace Remotion.Web.UI.Controls
 
       key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
       if (!string.IsNullOrEmpty (key))
-        ToolTip = resourceManager.GetString (key);
+        ToolTip = resourceManager.GetText (key).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
 
       Nodes.LoadResources (resourceManager, globalizationService);
     }
@@ -737,7 +738,7 @@ namespace Remotion.Web.UI.Controls
         writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
         var resourceManager= GetResourceManager();
-        writer.Write (resourceManager.GetString (ResourceIdentifier.ScreenReaderNodeSelectedLabelText));
+        resourceManager.GetText (ResourceIdentifier.ScreenReaderNodeSelectedLabelText).Write (writer);
 
         writer.RenderEndTag();
       }

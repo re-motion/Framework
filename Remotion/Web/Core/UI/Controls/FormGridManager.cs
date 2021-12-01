@@ -31,6 +31,7 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.FormGridManagerImplementation;
 using Remotion.Web.UI.Controls.Rendering;
@@ -2949,7 +2950,7 @@ namespace Remotion.Web.UI.Controls
       IResourceManager resourceManager = GetResourceManager();
 
       requiredIcon.AlternateText = "*";
-      requiredIcon.ToolTip = resourceManager.GetString (ResourceIdentifier.RequiredFieldTitle);
+      requiredIcon.ToolTip = resourceManager.GetText (ResourceIdentifier.RequiredFieldTitle).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
       requiredIcon.Attributes.Add (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
 
       return requiredIcon;
@@ -2978,7 +2979,7 @@ namespace Remotion.Web.UI.Controls
         helpAnchor.Attributes.Add ("onclick", helpInfo.OnClick);
 
       if (helpInfo.ToolTip == null)
-        helpAnchor.Title = resourceManager.GetString (ResourceIdentifier.HelpTitle);
+        helpAnchor.Title = resourceManager.GetText (ResourceIdentifier.HelpTitle).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
       else
         helpAnchor.Attributes.Add (HtmlTextWriterAttribute2.AriaLabel, helpInfo.ToolTip);
 
@@ -3006,7 +3007,7 @@ namespace Remotion.Web.UI.Controls
       }
       else
       {
-        validationAnchor.Title = resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoTitle);
+        validationAnchor.Title = resourceManager.GetText (ResourceIdentifier.ValidationErrorInfoTitle).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
       }
       return validationAnchor;
     }

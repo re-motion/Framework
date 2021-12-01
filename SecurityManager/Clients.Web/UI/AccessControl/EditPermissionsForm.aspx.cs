@@ -53,7 +53,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnPreRenderComplete (EventArgs e)
     {
       string title = string.Format (
-          GlobalizationService.GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.Title),
+          GlobalizationService.GetResourceManager (typeof (ResourceIdentifier)).GetText (ResourceIdentifier.Title).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks),
           CurrentSecurableClassDefinition.DisplayName);
       TitleLabel.InnerText = title;
       HtmlHeadAppender.Current.SetTitle (title);
@@ -127,7 +127,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
           if (statelessAccessControlListsPlaceHolder.Controls.Count == 0)
           {
             statelessAccessControlListsPlaceHolder.Controls.Add (
-                CreateAccessControlListTitle(resourceManager.GetString (ResourceIdentifier.StatelessAccessControlListTitle)));
+                CreateAccessControlListTitle(resourceManager.GetText (ResourceIdentifier.StatelessAccessControlListTitle)));
           }
           statelessAccessControlListsPlaceHolder.Controls.Add (updatePanel);
         }
@@ -136,7 +136,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
           if (statefulAccessControlListsPlaceHolder.Controls.Count == 0)
           {
             statefulAccessControlListsPlaceHolder.Controls.Add (
-                CreateAccessControlListTitle (resourceManager.GetString (ResourceIdentifier.StatefulAccessControlListsTitle)));
+                CreateAccessControlListTitle (resourceManager.GetText (ResourceIdentifier.StatefulAccessControlListsTitle)));
           }
           statefulAccessControlListsPlaceHolder.Controls.Add (updatePanel);
         }
@@ -287,8 +287,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnPreRender (EventArgs e)
     {
       var resourceManager = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier));
-      DuplicateStateCombinationsValidator.ErrorMessage = resourceManager.GetString (
-          ResourceIdentifier.DuplicateStateCombinationsValidatorErrorMessage);
+      DuplicateStateCombinationsValidator.ErrorMessage = resourceManager
+          .GetText (ResourceIdentifier.DuplicateStateCombinationsValidatorErrorMessage)
+          .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
 
       NewStatefulAccessControlListButton.Text = resourceManager.GetText (ResourceIdentifier.NewStatefulAccessControlListButtonText);
 
@@ -312,10 +313,10 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       NewStatelessAccessControlListButton.Enabled = CurrentSecurableClassDefinition.StatelessAccessControlList == null;
     }
 
-    private HtmlGenericControl CreateAccessControlListTitle (string title)
+    private HtmlGenericControl CreateAccessControlListTitle (WebString title)
     {
       var control = new HtmlGenericControl ("h2");
-      control.InnerText = title;
+      control.InnerText = title.ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
       control.Attributes["class"] = "accessControlListTitle";
       return control;
     }

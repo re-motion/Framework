@@ -28,6 +28,7 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
@@ -80,8 +81,8 @@ namespace Remotion.Web.ExecutionEngine
 
     private bool _executeNextStep = false;
 
-    private string _statusIsAbortingMessage = string.Empty;
-    private string _statusIsCachedMessage = string.Empty;
+    private WebString _statusIsAbortingMessage = WebString.Empty;
+    private WebString _statusIsCachedMessage = WebString.Empty;
 
     /// <summary> Initializes a new instance of the <b>WxePageInfo</b> type. </summary>
     /// <param name="page"> 
@@ -324,7 +325,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       IResourceManager resourceManager = GetResourceManager ();
 
-      string temp;
+      WebString temp;
       WxeContext wxeContext = WxeContext.Current!; // TODO RM-8118: not null assertion
 
       int refreshInterval = 0;
@@ -333,7 +334,7 @@ namespace Remotion.Web.ExecutionEngine
       if (WxeHandler.IsSessionManagementEnabled)
       {
         //  Ensure the registration of "__doPostBack" on the page.
-        temp = _page.ClientScript.GetPostBackEventReference (_page, null);
+        _ = _page.ClientScript.GetPostBackEventReference (_page, null);
 
         bool isAbortEnabled = _page.IsAbortEnabled;
 
@@ -353,14 +354,14 @@ namespace Remotion.Web.ExecutionEngine
       string statusIsCachedMessage = "null";
       if (_page.AreStatusMessagesEnabled)
       {
-        if (string.IsNullOrEmpty (_page.StatusIsAbortingMessage))
-          temp = resourceManager.GetString (ResourceIdentifier.StatusIsAbortingMessage);
+        if (_page.StatusIsAbortingMessage.IsEmpty)
+          temp = resourceManager.GetHtml (ResourceIdentifier.StatusIsAbortingMessage);
         else
           temp = _page.StatusIsAbortingMessage;
         statusIsAbortingMessage = "'" + ScriptUtility.EscapeClientScript (temp) + "'";
 
-        if (string.IsNullOrEmpty (_page.StatusIsCachedMessage))
-          temp = resourceManager.GetString (ResourceIdentifier.StatusIsCachedMessage);
+        if (_page.StatusIsCachedMessage.IsEmpty)
+          temp = resourceManager.GetHtml (ResourceIdentifier.StatusIsCachedMessage);
         else
           temp = _page.StatusIsCachedMessage;
         statusIsCachedMessage = "'" + ScriptUtility.EscapeClientScript (temp) + "'";
@@ -397,17 +398,17 @@ namespace Remotion.Web.ExecutionEngine
 
 
     /// <summary> Implements <see cref="IWxePage.StatusIsCachedMessage">IWxePage.StatusIsCachedMessage</see>. </summary>
-    public string StatusIsCachedMessage
+    public WebString StatusIsCachedMessage
     {
       get { return _statusIsCachedMessage; }
-      set { _statusIsCachedMessage = value ?? string.Empty; }
+      set { _statusIsCachedMessage = value; }
     }
 
     /// <summary> Implements <see cref="IWxePage.StatusIsAbortingMessage">IWxePage.StatusIsAbortingMessage</see>. </summary>
-    public string StatusIsAbortingMessage
+    public WebString StatusIsAbortingMessage
     {
       get { return _statusIsAbortingMessage; }
-      set { _statusIsAbortingMessage = value ?? string.Empty; }
+      set { _statusIsAbortingMessage = value; }
     }
 
     /// <summary> Implements <see cref="IWxePage.ExecuteNextStep">IWxePage.ExecuteNextStep</see>. </summary>

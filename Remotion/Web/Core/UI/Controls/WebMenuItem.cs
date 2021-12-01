@@ -35,7 +35,7 @@ namespace Remotion.Web.UI.Controls
     {
       return new WebMenuItem (
           null,
-          null,
+          WebString.Empty,
           WebString.CreateFromText (c_separator),
           new IconInfo(),
           new IconInfo(),
@@ -46,8 +46,8 @@ namespace Remotion.Web.UI.Controls
     }
 
     private string _itemID = string.Empty;
-    private string _category = string.Empty;
-    private WebString _text;
+    private WebString _category = WebString.Empty;
+    private WebString _text = WebString.Empty;
     private IconInfo _icon;
     private IconInfo _disabledIcon;
     private WebMenuItemStyle _style = WebMenuItemStyle.IconAndText;
@@ -67,7 +67,7 @@ namespace Remotion.Web.UI.Controls
 
     public WebMenuItem (
         string? itemID,
-        string? category,
+        WebString category,
         WebString text,
         IconInfo icon,
         IconInfo disabledIcon,
@@ -94,7 +94,7 @@ namespace Remotion.Web.UI.Controls
     public WebMenuItem ()
         : this (
             null,
-            null,
+            WebString.Empty,
             WebString.Empty,
             new IconInfo(),
             new IconInfo(),
@@ -167,12 +167,11 @@ namespace Remotion.Web.UI.Controls
     [Category ("Appearance")]
     [Description ("The category to which this menu item belongs. Items of the same category will be grouped in the UI.")]
     [NotifyParentProperty (true)]
-    [DefaultValue ("")]
-    [AllowNull]
-    public string Category
+    [DefaultValue (typeof (WebString), "")]
+    public WebString Category
     {
       get { return _category; }
-      set { _category = value ?? string.Empty; }
+      set { _category = value; }
     }
 
     [PersistenceMode (PersistenceMode.Attribute)]
@@ -436,9 +435,9 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
       ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
       
-      string? key = ResourceManagerUtility.GetGlobalResourceKey (Category);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey (Category.GetValue());
       if (!string.IsNullOrEmpty (key))
-        Category = resourceManager.GetString (key);
+        Category = resourceManager.GetWebString (key, Category.Type);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (Text.GetValue());
       if (!string.IsNullOrEmpty (key))

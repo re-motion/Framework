@@ -374,7 +374,7 @@ namespace Remotion.Web.UI.Controls
 
       key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
       if (!string.IsNullOrEmpty (key))
-        ToolTip = resourceManager.GetString (key);
+        ToolTip = resourceManager.GetText (key).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
 
       if (Icon != null)
         Icon.LoadResources (resourceManager);

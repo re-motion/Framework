@@ -263,7 +263,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
     /// <returns> A <see cref="ListItem"/>. </returns>
     private ListItem CreateNullItem (BocEnumValueRenderingContext renderingContext)
     {
-      ListItem emptyItem = new ListItem (renderingContext.Control.GetNullItemText(), renderingContext.Control.NullIdentifier);
+      ListItem emptyItem = new ListItem (
+          renderingContext.Control.GetNullItemText().ToString (WebStringEncoding.HtmlWithTransformedLineBreaks),
+          renderingContext.Control.NullIdentifier);
+
       if (renderingContext.Control.Value == null)
       {
         if (renderingContext.Control.Value == null)

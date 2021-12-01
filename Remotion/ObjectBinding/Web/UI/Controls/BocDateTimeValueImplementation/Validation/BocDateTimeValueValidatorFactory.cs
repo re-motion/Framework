@@ -20,6 +20,8 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation
 {

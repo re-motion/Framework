@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Utilities;
 
@@ -33,17 +34,17 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNullOrItemsNull ("menuItems", menuItems);
 
       //  <string category, ArrayList menuItems>
-      NameObjectCollection groupedMenuItems = new NameObjectCollection();
-      ArrayList categories = new ArrayList();
+      var groupedMenuItems = new Dictionary<WebString, ArrayList>();
+      var categories = new List<WebString>();
 
       for (int i = 0; i < menuItems.Length; i++)
       {
         WebMenuItem menuItem = menuItems[i];
 
-        string category = menuItem.Category ?? string.Empty;
+        var category = menuItem.Category;
         ArrayList menuItemsForCategory;
-        if (groupedMenuItems.Contains (category))
-          menuItemsForCategory = (ArrayList) groupedMenuItems[category]!;
+        if (groupedMenuItems.ContainsKey (category))
+          menuItemsForCategory = groupedMenuItems[category]!;
         else
         {
           menuItemsForCategory = new ArrayList();
@@ -57,7 +58,7 @@ namespace Remotion.Web.UI.Controls
       bool isFirst = true;
       for (int i = 0; i < categories.Count; i++)
       {
-        string category = (string) categories[i]!;
+        var category = categories[i]!;
         if (generateSeparators)
         {
           if (isFirst)
@@ -65,7 +66,7 @@ namespace Remotion.Web.UI.Controls
           else
             arrayList.Add (WebMenuItem.GetSeparator());
         }
-        arrayList.AddRange ((ArrayList) groupedMenuItems[category]!);
+        arrayList.AddRange (groupedMenuItems[category]!);
       }
       return (WebMenuItem[]) arrayList.ToArray (typeof (WebMenuItem));
     }

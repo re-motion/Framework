@@ -23,6 +23,7 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 
@@ -323,7 +324,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         else
           menuItems = renderingContext.Control.MenuItems.ToArray();
 
-        string? category = null;
+        var category = WebString.Empty;
         bool isCategoryVisible = false;
         List<WebMenuItem> visibleMenuItems = new List<WebMenuItem>();
         for (int i = 0; i < menuItems.Length; i++)
@@ -485,10 +486,10 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       jsonBuilder.Append ("{ ");
       jsonBuilder.Append ("LoadFailedErrorMessage : ");
-      AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetString (ResourceIdentifier.LoadFailedErrorMessage));
+      AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetText (ResourceIdentifier.LoadFailedErrorMessage));
       jsonBuilder.Append (", ");
       jsonBuilder.Append ("LoadingStatusMessage : ");
-      AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetString (ResourceIdentifier.LoadingStatusMessage));
+      AppendStringValueOrNullToScript (jsonBuilder, resourceManager.GetText (ResourceIdentifier.LoadingStatusMessage));
       jsonBuilder.Append (", ");
       jsonBuilder.Append (" }");
 

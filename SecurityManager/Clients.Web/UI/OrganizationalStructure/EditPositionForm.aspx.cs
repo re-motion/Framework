@@ -21,6 +21,7 @@ using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
@@ -48,7 +49,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnPreRender (EventArgs e)
     {
-      Title = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.Title);
+      Title = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier))
+          .GetText (ResourceIdentifier.Title)
+          .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
 
       SaveButton.Text = GlobalResourcesHelper.GetText (GlobalResources.Save);
       CancelButton.Text = GlobalResourcesHelper.GetText (GlobalResources.Cancel);

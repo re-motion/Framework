@@ -477,7 +477,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       if (hasIcon)
       {
         string url = tab.Icon.Url.TrimStart ('~');
-        string alt = tab.Icon.AlternateText ?? string.Empty;
+        var alt = tab.Icon.AlternateText;
 
         var image = anchorBody.GetAssertedChildElement ("img", childIndex);
         image.AssertAttributeValueEquals ("src", url);

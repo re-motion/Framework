@@ -33,13 +33,13 @@ namespace Remotion.Web.UI.Controls
     public DatePickerButton ()
     {
       EnableClientScript = true;
-      AlternateText = string.Empty;
+      AlternateText = WebString.Empty;
       _datePickerButtonStyle = new Style();
     }
 
     public bool EnableClientScript { get; set; }
 
-    public string AlternateText { get; set; }
+    public WebString AlternateText { get; set; }
 
     public Style DatePickerButtonStyle
     {

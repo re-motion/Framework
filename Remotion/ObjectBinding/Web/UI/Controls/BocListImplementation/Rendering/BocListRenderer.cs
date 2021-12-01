@@ -25,6 +25,7 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -207,7 +208,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
       var resourceManager = GetResourceManager (renderingContext);
-      renderingContext.Writer.Write (resourceManager.GetString (ResourceIdentifier.ControlTypeScreenReaderLabelText));
+      resourceManager.GetText (ResourceIdentifier.ControlTypeScreenReaderLabelText).Write (renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
 
       //  Menu Block

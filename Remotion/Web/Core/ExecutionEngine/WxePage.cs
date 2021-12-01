@@ -103,7 +103,7 @@ namespace Remotion.Web.ExecutionEngine
     [Description ("The message displayed when the user attempts to submit while the page is already aborting.")]
     [Category ("Appearance")]
     [DefaultValue ("")]
-    public virtual string StatusIsAbortingMessage
+    public virtual WebString StatusIsAbortingMessage
     {
       get { return _wxePageInfo.StatusIsAbortingMessage; }
       set { _wxePageInfo.StatusIsAbortingMessage = value; }
@@ -119,7 +119,7 @@ namespace Remotion.Web.ExecutionEngine
     [Description ("The message displayed when the user returnes to a cached page that has already been submitted or aborted.")]
     [Category ("Appearance")]
     [DefaultValue ("")]
-    public virtual string StatusIsCachedMessage
+    public virtual WebString StatusIsCachedMessage
     {
       get { return _wxePageInfo.StatusIsCachedMessage; }
       set { _wxePageInfo.StatusIsCachedMessage = value; }

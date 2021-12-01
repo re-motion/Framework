@@ -22,6 +22,7 @@ using Remotion.ObjectBinding;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
@@ -83,7 +84,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
       switch (_accessControlEntry.TenantCondition)
       {
         case TenantCondition.None:
-          writer.WriteEncodedText (ResourceManager.GetString (ResourceIdentifier.TenantCondition_None));
+          ResourceManager.GetText (ResourceIdentifier.TenantCondition_None).Write (writer);
           break;
         case TenantCondition.OwningTenant:
           RenderTenantHierarchyIcon (writer, container);
@@ -106,7 +107,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
       switch (_accessControlEntry.GroupCondition)
       {
         case GroupCondition.None:
-          writer.WriteEncodedText (ResourceManager.GetString (ResourceIdentifier.GroupCondition_None));
+          ResourceManager.GetText (ResourceIdentifier.GroupCondition_None).Write (writer);
           break;
         case GroupCondition.OwningGroup:
           RenderGroupHierarchyIcon (writer, container);
@@ -117,7 +118,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
           RenderLabelAfterPropertyPathString (writer, "SpecificGroup.ShortName");
           break;
         case GroupCondition.BranchOfOwningGroup:
-          RenderLabelBeforePropertyPathString (writer, ResourceManager.GetString (ResourceIdentifier.BranchOfOwningGroupLabel), "SpecificGroupType.DisplayName");
+          RenderLabelBeforePropertyPathString (writer, ResourceManager.GetText (ResourceIdentifier.BranchOfOwningGroupLabel), "SpecificGroupType.DisplayName");
           break;
         case GroupCondition.AnyGroupWithSpecificGroupType:
           RenderLabelAfterPropertyPathString (writer, "SpecificGroupType.DisplayName");
@@ -135,7 +136,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
       switch (_accessControlEntry.UserCondition)
       {
         case UserCondition.None:
-          writer.WriteEncodedText (ResourceManager.GetString (ResourceIdentifier.UserCondition_None));
+          ResourceManager.GetText (ResourceIdentifier.UserCondition_None).Write (writer);
           break;
         case UserCondition.Owner:
           RenderPropertyPathString (writer, "UserCondition");
@@ -156,7 +157,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
       ArgumentUtility.CheckNotNull ("writer", writer);
       ArgumentUtility.CheckNotNull ("container", container);
 
-      RenderLabelBeforePropertyPathString (writer, string.Empty, "SpecificAbstractRole.DisplayName");
+      RenderLabelBeforePropertyPathString (writer, WebString.Empty, "SpecificAbstractRole.DisplayName");
     }
 
     private void RenderLabelAfterPropertyPathString (HtmlTextWriter writer, string propertyPathIdentifier)
@@ -170,9 +171,9 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
       writer.Write (")");
     }
 
-    private void RenderLabelBeforePropertyPathString (HtmlTextWriter writer, string label, string propertyPathIdentifier)
+    private void RenderLabelBeforePropertyPathString (HtmlTextWriter writer, WebString label, string propertyPathIdentifier)
     {
-      writer.WriteEncodedText (label);
+      label.Write (writer);
       writer.Write (" ");
       writer.RenderBeginTag (HtmlTextWriterTag.Em);
       RenderPropertyPathString (writer, propertyPathIdentifier);

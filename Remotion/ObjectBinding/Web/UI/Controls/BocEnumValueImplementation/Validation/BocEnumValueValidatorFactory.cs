@@ -20,6 +20,8 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation
 {
@@ -61,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Vali
         var requiredValidator = new RequiredFieldValidator();
         requiredValidator.ID = control.ID + "_ValidatorRequried";
         requiredValidator.ControlToValidate = control.TargetControl.ID;
-        requiredValidator.ErrorMessage = resourceManager.GetString (BocEnumValue.ResourceIdentifier.NullItemValidationMessage);
+        requiredValidator.ErrorMessage = resourceManager.GetText (BocEnumValue.ResourceIdentifier.NullItemValidationMessage).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
         requiredValidator.EnableViewState = false;
 
         return requiredValidator;

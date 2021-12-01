@@ -19,6 +19,8 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation
@@ -66,7 +68,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
         requiredValidator.ID = control.ID + "_ValidatorRequired";
         requiredValidator.ControlToValidate = control.TargetControl.ID;
-        requiredValidator.ErrorMessage = resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.RequiredValidationMessage);
+        requiredValidator.ErrorMessage = resourceManager
+            .GetText (BocMultilineTextValue.ResourceIdentifier.RequiredValidationMessage)
+            .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
         requiredValidator.EnableViewState = false;
 
         return requiredValidator;
@@ -89,7 +93,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         lengthValidator.ControlToValidate = control.TargetControl.ID;
         lengthValidator.MaximumLength = maxLength.Value;
         lengthValidator.ErrorMessage = string.Format (
-            resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.MaxLengthValidationMessage),
+            resourceManager.GetText (BocMultilineTextValue.ResourceIdentifier.MaxLengthValidationMessage).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks),
             maxLength.Value);
         lengthValidator.EnableViewState = false;
 
@@ -108,7 +112,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       typeValidator.ControlToValidate = control.TargetControl.ID;
       typeValidator.SampleTextLength = 5;
       typeValidator.EnableMultilineText = true;
-      typeValidator.ErrorMessageFormat = resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.InvalidCharactersErrorMessage);
+      typeValidator.ErrorMessageFormat = resourceManager
+          .GetText (BocMultilineTextValue.ResourceIdentifier.InvalidCharactersErrorMessage)
+          .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
       typeValidator.EnableViewState = false;
 
       return typeValidator;

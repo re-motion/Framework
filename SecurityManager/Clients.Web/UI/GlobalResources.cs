@@ -17,7 +17,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
     public static string GetString(IGlobalizationService service, GlobalResources value)
     {
       var resourceManager = service.GetResourceManager(typeof(GlobalResources));
-      return resourceManager.GetString(value);
+      return resourceManager.GetString (value);
     }
 
     public static WebString GetText (GlobalResources value)

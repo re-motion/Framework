@@ -685,9 +685,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return ClientID + c_hiddenFieldIDPostfix;
     }
 
-    protected override sealed string GetNullItemErrorMessage ()
+    protected override sealed WebString GetNullItemErrorMessage ()
     {
-      return GetResourceManager().GetString (ResourceIdentifier.NullItemErrorMessage);
+      return GetResourceManager().GetText (ResourceIdentifier.NullItemErrorMessage);
     }
 
     protected override sealed WebString GetOptionsMenuTitle ()

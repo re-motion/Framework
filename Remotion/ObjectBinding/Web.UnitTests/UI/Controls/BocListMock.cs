@@ -69,7 +69,7 @@ public class BocListMock: BocList
            {
                new WebMenuItem (
                    "item0",
-                   null,
+                   WebString.Empty,
                    WebString.CreateFromText ( "WebMenuItem1"),
                    new IconInfo ("~/Images/RowMenuItem.gif", 16, 16),
                    new IconInfo ("~/Images/RowMenuItemDisabled.gif", 16, 16),

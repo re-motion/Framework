@@ -206,7 +206,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     protected abstract IResourceManager GetResourceManager ();
 
-    protected abstract string GetNullItemErrorMessage ();
+    protected abstract WebString GetNullItemErrorMessage ();
 
     protected abstract WebString GetOptionsMenuTitle ();
 

@@ -34,7 +34,7 @@ namespace Remotion.Web.Test.Shared
       EditableEnabled.MenuItems.Add (
           new WebMenuItem (
               "First",
-              "FirstCategory",
+              WebString.CreateFromText ("FirstCategory"),
               WebString.CreateFromText ("The first item"),
               new IconInfo ("~/res/Remotion.Web/Image/Help.gif"),
               new IconInfo ("~/res/Remotion.Web/Image/Help.gif"),

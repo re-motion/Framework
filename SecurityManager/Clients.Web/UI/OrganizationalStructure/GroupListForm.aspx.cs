@@ -18,6 +18,8 @@
 using System;
 using Remotion.Globalization;
 using Remotion.SecurityManager.Clients.Web.Classes;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
@@ -32,7 +34,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnPreRender (EventArgs e)
     {
-      Title = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.Title);
+      Title = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier))
+          .GetText (ResourceIdentifier.Title)
+          .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
 
       base.OnPreRender (e);
     }

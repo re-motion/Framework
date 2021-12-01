@@ -26,7 +26,9 @@ using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
@@ -57,7 +59,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected override void OnPreRenderComplete (EventArgs e)
     {
-      var title = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.Title);
+      var title = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier)).GetText (ResourceIdentifier.Title).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
       HtmlHeadAppender.Current.SetTitle (title);
       base.OnPreRenderComplete (e);
     }

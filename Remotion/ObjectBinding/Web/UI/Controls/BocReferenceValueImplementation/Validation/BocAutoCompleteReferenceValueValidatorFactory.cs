@@ -19,6 +19,8 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation
 {
@@ -62,7 +64,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         var requiredFieldValidator = new RequiredFieldValidator();
         requiredFieldValidator.ID = control.ID + "_ValidatorNotNullItem";
         requiredFieldValidator.ControlToValidate = control.ID;
-        requiredFieldValidator.ErrorMessage = resourceManage.GetString (BocAutoCompleteReferenceValue.ResourceIdentifier.NullItemErrorMessage);
+        requiredFieldValidator.ErrorMessage = resourceManage
+            .GetText (BocAutoCompleteReferenceValue.ResourceIdentifier.NullItemErrorMessage)
+            .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
         requiredFieldValidator.EnableViewState = false;
 
         return requiredFieldValidator;
@@ -78,7 +82,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       var invalidDisplayNameValidator = new BocAutoCompleteReferenceValueInvalidDisplayNameValidator ();
       invalidDisplayNameValidator.ID = control.ID + "_ValidatorValidDisplayName";
       invalidDisplayNameValidator.ControlToValidate = control.ID;
-      invalidDisplayNameValidator.ErrorMessage = resourceManage.GetString (BocAutoCompleteReferenceValue.ResourceIdentifier.InvalidItemErrorMessage);
+      invalidDisplayNameValidator.ErrorMessage = resourceManage
+          .GetText (BocAutoCompleteReferenceValue.ResourceIdentifier.InvalidItemErrorMessage)
+          .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
       invalidDisplayNameValidator.EnableViewState = false;
 
       return invalidDisplayNameValidator;

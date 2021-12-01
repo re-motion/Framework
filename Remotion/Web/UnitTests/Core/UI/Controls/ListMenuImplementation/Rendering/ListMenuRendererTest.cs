@@ -168,9 +168,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
 
       _control.Object.MenuItems.Clear();
       var textItemContent = WebString.CreateFromText ("this should be <b>text</b>");
-      AddMenuItem ("item text", "category 1", textItemContent, WebMenuItemStyle.Text, RequiredSelection.Any, CommandType.None);
+      AddMenuItem ("item text", WebString.CreateFromText ("category 1"), textItemContent, WebMenuItemStyle.Text, RequiredSelection.Any, CommandType.None);
       var htmlItemContent = WebString.CreateFromHtml ("this should be <b>text</b>");
-      AddMenuItem ("item html", "category 1", htmlItemContent, WebMenuItemStyle.Text, RequiredSelection.Any, CommandType.None);
+      AddMenuItem ("item html", WebString.CreateFromText ("category 1"), htmlItemContent, WebMenuItemStyle.Text, RequiredSelection.Any, CommandType.None);
 
       var table = GetAssertedTable();
       var tr = table.GetAssertedChildElement ("tr", 0);
@@ -289,14 +289,14 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
 
     private void PopulateMenu ()
     {
-      AddMenuItem ("item 1", "category 1", WebString.CreateFromText ("Event"), WebMenuItemStyle.IconAndText, RequiredSelection.Any, CommandType.Event);
-      AddMenuItem ("item 2", "category 1", WebString.CreateFromText ("WxeFunction"), WebMenuItemStyle.Text, RequiredSelection.OneOrMore, CommandType.WxeFunction);
-      AddMenuItem ("item 3", "category 2", WebString.CreateFromText ("Href"), WebMenuItemStyle.Icon, RequiredSelection.ExactlyOne, CommandType.Href);
+      AddMenuItem ("item 1", WebString.CreateFromText ("category 1"), WebString.CreateFromText ("Event"), WebMenuItemStyle.IconAndText, RequiredSelection.Any, CommandType.Event);
+      AddMenuItem ("item 2", WebString.CreateFromText ("category 1"), WebString.CreateFromText ("WxeFunction"), WebMenuItemStyle.Text, RequiredSelection.OneOrMore, CommandType.WxeFunction);
+      AddMenuItem ("item 3", WebString.CreateFromText ("category 2"), WebString.CreateFromText ("Href"), WebMenuItemStyle.Icon, RequiredSelection.ExactlyOne, CommandType.Href);
       ((WebMenuItem) _control.Object.MenuItems[2]).Command.HrefCommand.Href = "/LinkedPage.html";
       ((WebMenuItem) _control.Object.MenuItems[2]).Command.HrefCommand.Target = "_blank";
-      AddMenuItem ("invisible item", "category 2", WebString.CreateFromText ("Href"), WebMenuItemStyle.IconAndText, RequiredSelection.ExactlyOne, CommandType.Href);
+      AddMenuItem ("invisible item", WebString.CreateFromText ("category 2"), WebString.CreateFromText ("Href"), WebMenuItemStyle.IconAndText, RequiredSelection.ExactlyOne, CommandType.Href);
       ((WebMenuItem) _control.Object.MenuItems[3]).IsVisible = false;
-      AddMenuItem ("disabled item", "category 2", WebString.CreateFromText ("Href"), WebMenuItemStyle.IconAndText, RequiredSelection.ExactlyOne, CommandType.Href);
+      AddMenuItem ("disabled item", WebString.CreateFromText ("category 2"), WebString.CreateFromText ("Href"), WebMenuItemStyle.IconAndText, RequiredSelection.ExactlyOne, CommandType.Href);
       ((WebMenuItem) _control.Object.MenuItems[4]).IsDisabled = true;
     }
 
@@ -310,7 +310,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
 
     private void AddMenuItem (
         string itemID,
-        string category,
+        WebString category,
         WebString text,
         WebMenuItemStyle style,
         RequiredSelection selection,

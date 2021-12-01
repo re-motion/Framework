@@ -909,9 +909,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return ClientID + c_timeTextBoxIDPostfix;
     }
 
-    string IBocDateTimeValue.GetDatePickerText ()
+    WebString IBocDateTimeValue.GetDatePickerText ()
     {
-      return GetResourceManager().GetString (ResourceIdentifier.DataPickerButtonAlternateText);
+      return GetResourceManager().GetText (ResourceIdentifier.DataPickerButtonAlternateText);
     }
 
     /// <summary> Gets the <see cref="BocDateTimeValueType"/> actually used by the cotnrol. </summary>
