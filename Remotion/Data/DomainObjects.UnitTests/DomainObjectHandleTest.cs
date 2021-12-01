@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -22,7 +24,6 @@ using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -123,8 +124,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void Equals_Object_False_WrongType ()
     {
       var handle1 = new DomainObjectHandle<Order>(DomainObjectIDs.Order1);
-      var handle2 = MockRepository.GenerateStub<IDomainObjectHandle<DomainObject>>();
-      handle2.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order1);
+      var handle2 = new Mock<IDomainObjectHandle<DomainObject>>();
+      handle2.Setup (stub => stub.ObjectID).Returns (DomainObjectIDs.Order1);
 
       Assert.That(handle1.Equals((object)handle2), Is.False);
     }
@@ -161,10 +162,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void Equals_Equatable_False_WrongType ()
     {
       var handle1 = new DomainObjectHandle<Order>(DomainObjectIDs.Order1);
-      var handle2 = MockRepository.GenerateStub<IDomainObjectHandle<DomainObject>>();
-      handle2.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order1);
+      var handle2 = new Mock<IDomainObjectHandle<DomainObject>>();
+      handle2.Setup (stub => stub.ObjectID).Returns (DomainObjectIDs.Order1);
 
-      Assert.That(handle1.Equals(handle2), Is.False);
+      Assert.That(handle1.Equals(handle2.Object), Is.False);
     }
 
     [Test]

@@ -18,24 +18,25 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
 {
   public class SqlProviderGeneratedSqlTestHelper : IDisposable
   {
     private readonly RdbmsProviderDefinition _rdbmsProviderDefinition;
-    private readonly ObservableRdbmsProvider.ICommandExecutionListener _executionListenerStrictMock;
+    private readonly Mock<ObservableRdbmsProvider.ICommandExecutionListener> _executionListenerStrictMock;
     private readonly RdbmsProvider _provider;
 
     public SqlProviderGeneratedSqlTestHelper (RdbmsProviderDefinition rdbmsProviderDefinition)
     {
       _rdbmsProviderDefinition = rdbmsProviderDefinition;
-      _executionListenerStrictMock = MockRepository.GenerateStrictMock<ObservableRdbmsProvider.ICommandExecutionListener>();
+      _executionListenerStrictMock = new Mock<ObservableRdbmsProvider.ICommandExecutionListener> (MockBehavior.Strict);
       _provider = RdbmsProviderObjectMother.CreateForIntegrationTest(
           rdbmsProviderDefinition,
           (providerDefinition, persistenceListener, commandFactory) =>
@@ -44,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
               NullPersistenceExtension.Instance,
               commandFactory,
               () => new SqlConnection(),
-              _executionListenerStrictMock));
+              _executionListenerStrictMock.Object));
     }
 
     public void Dispose ()
@@ -59,12 +60,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public void Replay ()
     {
-      _executionListenerStrictMock.Replay();
     }
 
     public void VerifyAllExpectations ()
     {
-      _executionListenerStrictMock.VerifyAllExpectations();
+      _executionListenerStrictMock.Verify();
     }
 
     public void ExpectExecuteReader (
@@ -73,9 +73,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         params Tuple<string, DbType, object>[] expectedParametersData)
     {
       _executionListenerStrictMock
-          .Expect(mock => mock.OnExecuteReader(Arg<IDbCommand>.Is.Anything, Arg.Is(expectedCommandBehavior)))
-          .WhenCalled(mi => CheckCommand((IDbCommand)mi.Arguments[0], expectedSql, expectedParametersData))
-          .Repeat.Once();
+          .Setup(mock => mock.OnExecuteReader(It.IsAny<IDbCommand>(), expectedCommandBehavior))
+          .Callback((IDbCommand command, CommandBehavior behavior) => CheckCommand((IDbCommand)mi.Arguments[0], expectedSql, expectedParametersData))
+          .Verifiable();
     }
 
     public void ExpectExecuteScalar (
@@ -83,9 +83,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         params Tuple<string, DbType, object>[] expectedParametersData)
     {
       _executionListenerStrictMock
-          .Expect(mock => mock.OnExecuteScalar(Arg<IDbCommand>.Is.Anything))
-          .WhenCalled(mi => CheckCommand((IDbCommand)mi.Arguments[0], expectedSql, expectedParametersData))
-          .Repeat.Once();
+          .Setup(mock => mock.OnExecuteScalar(It.IsAny<IDbCommand>()))
+          .Callback((IDbCommand command) => CheckCommand((IDbCommand)mi.Arguments[0], expectedSql, expectedParametersData))
+          .Verifiable();
     }
 
     public void ExpectExecuteNonQuery (
@@ -93,9 +93,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         params Tuple<string, DbType, object>[] expectedParametersData)
     {
       _executionListenerStrictMock
-          .Expect(mock => mock.OnExecuteNonQuery(Arg<IDbCommand>.Is.Anything))
-          .WhenCalled(mi => CheckCommand((IDbCommand)mi.Arguments[0], expectedSql, expectedParametersData))
-          .Repeat.Once();
+          .Setup(mock => mock.OnExecuteNonQuery(It.IsAny<IDbCommand>()))
+          .Callback((IDbCommand command) => CheckCommand((IDbCommand)mi.Arguments[0], expectedSql, expectedParametersData))
+          .Verifiable();
     }
 
     public void CheckCommand (IDbCommand sqlCommand, string expectedSql, params Tuple<string, DbType, object>[] expectedParametersData)
@@ -168,7 +168,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       {
         return provider.LoadDataContainer(objectID).LocatedObject;
       }
-
     }
   }
 }

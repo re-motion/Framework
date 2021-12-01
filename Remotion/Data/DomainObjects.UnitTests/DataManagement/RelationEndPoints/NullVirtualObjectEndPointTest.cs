@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -28,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   {
     private IRelationEndPointDefinition _definition;
     private NullVirtualObjectEndPoint _nullEndPoint;
-    private IRealObjectEndPoint _oppositeEndPointStub;
+    private Mock<IRealObjectEndPoint> _oppositeEndPointStub;
 
     public override void SetUp ()
     {
@@ -37,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _definition = DomainObjectIDs.Order1.ClassDefinition.GetRelationEndPointDefinition(typeof(Order).FullName + ".OrderTicket");
       _nullEndPoint = new NullVirtualObjectEndPoint(TestableClientTransaction, _definition);
 
-      _oppositeEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      _oppositeEndPointStub = new Mock<IRealObjectEndPoint>();
     }
 
     [Test]
@@ -55,9 +56,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void SynchronizeOppositeEndPoint ()
     {
-      var objectEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      var objectEndPointStub = new Mock<IRealObjectEndPoint>();
       Assert.That(
-          () => _nullEndPoint.SynchronizeOppositeEndPoint(objectEndPointStub),
+          () => _nullEndPoint.SynchronizeOppositeEndPoint(objectEndPointStub.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo("A NullObjectEndPoint cannot be used to synchronize an opposite end-point."));
     }
@@ -73,37 +74,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void RegisterOriginalOppositeEndPoint ()
     {
-      var relatedEndPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
-      relatedEndPointMock.Expect(mock => mock.MarkSynchronized());
-      relatedEndPointMock.Replay();
+      var relatedEndPointMock = new Mock<IRealObjectEndPoint> (MockBehavior.Strict);
+      relatedEndPointMock.Setup (mock => mock.MarkSynchronized()).Verifiable();
 
-      _nullEndPoint.RegisterOriginalOppositeEndPoint(relatedEndPointMock);
+      _nullEndPoint.RegisterOriginalOppositeEndPoint(relatedEndPointMock.Object);
 
-      relatedEndPointMock.VerifyAllExpectations();
+      relatedEndPointMock.Verify();
     }
 
     [Test]
     public void UnregisterOriginalOppositeEndPoint ()
     {
-      var relatedEndPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
-      relatedEndPointMock.Expect(mock => mock.ResetSyncState());
-      relatedEndPointMock.Replay();
+      var relatedEndPointMock = new Mock<IRealObjectEndPoint> (MockBehavior.Strict);
+      relatedEndPointMock.Setup (mock => mock.ResetSyncState()).Verifiable();
 
-      _nullEndPoint.UnregisterOriginalOppositeEndPoint(relatedEndPointMock);
+      _nullEndPoint.UnregisterOriginalOppositeEndPoint(relatedEndPointMock.Object);
 
-      relatedEndPointMock.VerifyAllExpectations();
+      relatedEndPointMock.Verify();
     }
 
     [Test]
     public void RegisterCurrentOppositeEndPoint ()
     {
-      _nullEndPoint.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub);
+      _nullEndPoint.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object);
     }
 
     [Test]
     public void UnregisterCurrentOppositeEndPoint ()
     {
-      _nullEndPoint.UnregisterCurrentOppositeEndPoint(_oppositeEndPointStub);
+      _nullEndPoint.UnregisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object);
     }
   }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
@@ -9,7 +11,6 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
 {
@@ -222,9 +223,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     [Test]
     public void ExecuteCollectionQuery ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery>();
+      var queryStub = new Mock<IQuery>();
 
-      var result = _provider.ExecuteCollectionQuery(queryStub);
+      var result = _provider.ExecuteCollectionQuery(queryStub.Object);
 
       Assert.That(result, Is.Empty);
     }
@@ -232,11 +233,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     [Test]
     public void ExecuteCollectionQuery_Disposed ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery>();
+      var queryStub = new Mock<IQuery>();
       _provider.Dispose();
 
       Assert.That(
-          () => _provider.ExecuteCollectionQuery(queryStub),
+          () => _provider.ExecuteCollectionQuery(queryStub.Object),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
               "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
     }
@@ -245,9 +246,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     [Test]
     public void ExecuteCustomQuery ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery>();
+      var queryStub = new Mock<IQuery>();
 
-      var result = _provider.ExecuteCustomQuery(queryStub);
+      var result = _provider.ExecuteCustomQuery(queryStub.Object);
 
       Assert.That(result, Is.Empty);
     }
@@ -255,11 +256,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     [Test]
     public void ExecuteCustomQuery_Disposed ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery>();
+      var queryStub = new Mock<IQuery>();
       _provider.Dispose();
 
       Assert.That(
-          () => _provider.ExecuteCustomQuery(queryStub),
+          () => _provider.ExecuteCustomQuery(queryStub.Object),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
               "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
     }
@@ -267,9 +268,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     [Test]
     public void ExecuteScalarQuery ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery>();
+      var queryStub = new Mock<IQuery>();
 
-      var result = _provider.ExecuteScalarQuery(queryStub);
+      var result = _provider.ExecuteScalarQuery(queryStub.Object);
 
       Assert.That(result, Is.Null);
     }
@@ -277,11 +278,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     [Test]
     public void ExecuteScalarQuery_Disposed ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery>();
+      var queryStub = new Mock<IQuery>();
       _provider.Dispose();
 
       Assert.That(
-          () => _provider.ExecuteScalarQuery(queryStub),
+          () => _provider.ExecuteScalarQuery(queryStub.Object),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
               "A disposed StorageProvider cannot be accessed.\r\nObject name: 'StorageProvider'."));
     }

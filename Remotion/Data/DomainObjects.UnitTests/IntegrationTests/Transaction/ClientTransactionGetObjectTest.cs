@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
@@ -25,7 +27,6 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -196,8 +197,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void GetObjects_UnloadedObjects_Events ()
     {
-      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
-      TestableClientTransaction.AddListener(listenerMock);
+      var listenerMock = new Mock<IClientTransactionListener>();
+      TestableClientTransaction.AddListener(listenerMock.Object);
 
       DomainObject[] objects = LifetimeService.GetObjects<DomainObject>(
           TestableClientTransaction,
@@ -207,13 +208,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That(_eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(1));
       Assert.That(_eventReceiver.LoadedDomainObjectLists[0], Is.EqualTo(objects));
 
-      listenerMock.AssertWasCalled(mock => mock.ObjectsLoading(
-          Arg.Is(TestableClientTransaction),
-          Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 })));
+      listenerMock.Verify (mock => mock.ObjectsLoading(
+          TestableClientTransaction,
+          new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 }), Times.AtLeastOnce());
 
-      listenerMock.AssertWasCalled(mock => mock.ObjectsLoaded(
-          Arg.Is(TestableClientTransaction),
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equal(objects)));
+      listenerMock.Verify (mock => mock.ObjectsLoaded(
+          TestableClientTransaction,
+          objects), Times.AtLeastOnce());
     }
 
     [Test]
@@ -238,18 +239,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       _eventReceiver.Clear();
 
-      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
-      TestableClientTransaction.AddListener(listenerMock);
+      var listenerMock = new Mock<IClientTransactionListener>();
+      TestableClientTransaction.AddListener(listenerMock.Object);
 
       LifetimeService.GetObjects<DomainObject>(TestableClientTransaction, DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1);
       Assert.That(_eventReceiver.LoadedDomainObjectLists, Is.Empty);
 
-      listenerMock.AssertWasNotCalled(mock => mock.ObjectsLoading(
-          Arg<ClientTransaction>.Is.Anything,
-          Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
-      listenerMock.AssertWasNotCalled(mock => mock.ObjectsLoaded(
-          Arg<ClientTransaction>.Is.Anything,
-          Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));
+      listenerMock.Verify (mock => mock.ObjectsLoading(
+          It.IsAny<ClientTransaction>(),
+          It.IsAny<ReadOnlyCollection<ObjectID>>()), Times.Never());
+      listenerMock.Verify (mock => mock.ObjectsLoaded(
+          It.IsAny<ClientTransaction>(),
+          It.IsAny<ReadOnlyCollection<DomainObject>>()), Times.Never());
     }
 
     [Test]
@@ -266,18 +267,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var expectedObjects = new DomainObject[] { Order.NewObject(), OrderItem.NewObject() };
       _eventReceiver.Clear();
 
-      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
-      TestableClientTransaction.AddListener(listenerMock);
+      var listenerMock = new Mock<IClientTransactionListener>();
+      TestableClientTransaction.AddListener(listenerMock.Object);
 
       LifetimeService.GetObjects<DomainObject>(TestableClientTransaction, expectedObjects[0].ID, expectedObjects[1].ID);
       Assert.That(_eventReceiver.LoadedDomainObjectLists, Is.Empty);
 
-      listenerMock.AssertWasNotCalled(mock => mock.ObjectsLoading(
-          Arg<ClientTransaction>.Is.Anything,
-          Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
-      listenerMock.AssertWasNotCalled(mock => mock.ObjectsLoaded(
-          Arg<ClientTransaction>.Is.Anything,
-          Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));
+      listenerMock.Verify (mock => mock.ObjectsLoading(
+          It.IsAny<ClientTransaction>(),
+          It.IsAny<ReadOnlyCollection<ObjectID>>()), Times.Never());
+      listenerMock.Verify (mock => mock.ObjectsLoaded(
+          It.IsAny<ClientTransaction>(),
+          It.IsAny<ReadOnlyCollection<DomainObject>>()), Times.Never());
     }
 
     [Test]

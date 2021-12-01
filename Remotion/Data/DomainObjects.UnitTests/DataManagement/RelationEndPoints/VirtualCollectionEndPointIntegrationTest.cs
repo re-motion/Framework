@@ -15,12 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -306,7 +307,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       newProductReview.Product = _product1;
 
-      listener.AssertWasCalled(mock => mock.VirtualRelationEndPointStateUpdated(_productEndPoint.ClientTransaction, _productEndPoint.ID, true));
+      listener.Verify (mock => mock.VirtualRelationEndPointStateUpdated(_productEndPoint.ClientTransaction, _productEndPoint.ID, true), Times.AtLeastOnce());
     }
 
     [Test]

@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -23,7 +25,6 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.IntegrationTests;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Validation
 {
@@ -79,12 +80,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
 
       var dataContainer = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
       dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "NullableBinaryProperty"), new byte [10]);
-      var eventListenerStub = MockRepository.GenerateStub<IDataContainerEventListener>();
-      dataContainer.SetEventListener(eventListenerStub);
+      var eventListenerStub = new Mock<IDataContainerEventListener>();
+      dataContainer.SetEventListener(eventListenerStub.Object);
 
       _validator.Validate(dataContainer);
 
-      eventListenerStub.AssertWasNotCalled(_ => _.PropertyValueReading(null, null, ValueAccess.Current), mo => mo.IgnoreArguments());
+      eventListenerStub.Verify (_ => _.PropertyValueReading(null, null, ValueAccess.Current), Times.Never(), mo => mo.IgnoreArguments());
     }
 
     [Test]

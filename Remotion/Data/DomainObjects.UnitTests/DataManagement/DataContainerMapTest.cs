@@ -15,26 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
   public class DataContainerMapTest : StandardMappingTest
   {
-    private IClientTransactionEventSink _eventSinkWithDynamicMock;
+    private Mock<IClientTransactionEventSink> _eventSinkWithDynamicMock;
     private DataContainerMap _map;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _eventSinkWithDynamicMock = MockRepository.GenerateMock<IClientTransactionEventSink>();
-      _map = new DataContainerMap(_eventSinkWithDynamicMock);
+      _eventSinkWithDynamicMock = new Mock<IClientTransactionEventSink>();
+      _map = new DataContainerMap(_eventSinkWithDynamicMock.Object);
     }
 
     [Test]
@@ -82,12 +83,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       Assert.That(_map[dataContainer.ID], Is.Not.Null);
 
-      _eventSinkWithDynamicMock.Expect(mock => mock.RaiseDataContainerMapUnregisteringEvent( dataContainer))
-          .WhenCalled(mi => Assert.That(_map[dataContainer.ID], Is.Not.Null));
+      _eventSinkWithDynamicMock.Setup(mock => mock.RaiseDataContainerMapUnregisteringEvent( dataContainer))
+          .Callback((DataContainer container) => Assert.That(_map[dataContainer.ID], Is.Not.Null))
+          .Verifiable();
 
       _map.Remove(dataContainer.ID);
 
-      _eventSinkWithDynamicMock.VerifyAllExpectations();
+      _eventSinkWithDynamicMock.Verify();
     }
 
     [Test]

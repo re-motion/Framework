@@ -20,6 +20,8 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
@@ -27,7 +29,6 @@ using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegrationTests
 {
@@ -71,12 +72,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
 
     private MappingReflector CreateMappingReflector (Type[] reflectedTypes)
     {
-      var typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService>();
+      var typeDiscoveryServiceStub = new Mock<ITypeDiscoveryService>();
       typeDiscoveryServiceStub
-          .Stub(stub => stub.GetTypes(Arg<Type>.Is.Anything, Arg<bool>.Is.Anything))
-          .Return(reflectedTypes);
+          .Setup(stub => stub.GetTypes(It.IsAny<Type>(), It.IsAny<bool>()))
+          .Returns(reflectedTypes);
 
-      return MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryServiceStub);
+      return MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryServiceStub.Object);
     }
 
     private IEnumerable<ClassDefinition> GetTypeDefinitionsAndValidateMapping (MappingReflector mappingReflector)

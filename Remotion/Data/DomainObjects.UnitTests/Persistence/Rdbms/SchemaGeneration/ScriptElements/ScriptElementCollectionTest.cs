@@ -16,9 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGeneration.ScriptElements
 {
@@ -26,18 +27,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   public class ScriptElementCollectionTest
   {
     private ScriptElementCollection _elementCollection;
-    private IScriptElement _elementMock1;
-    private IScriptElement _elementMock2;
-    private IScriptElement _elementMock3;
+    private Mock<IScriptElement> _elementMock1;
+    private Mock<IScriptElement> _elementMock2;
+    private Mock<IScriptElement> _elementMock3;
 
     [SetUp]
     public void SetUp ()
     {
       _elementCollection = new ScriptElementCollection();
 
-      _elementMock1 = MockRepository.GenerateStrictMock<IScriptElement>();
-      _elementMock2 = MockRepository.GenerateStrictMock<IScriptElement>();
-      _elementMock3 = MockRepository.GenerateStrictMock<IScriptElement>();
+      _elementMock1 = new Mock<IScriptElement> (MockBehavior.Strict);
+      _elementMock2 = new Mock<IScriptElement> (MockBehavior.Strict);
+      _elementMock3 = new Mock<IScriptElement> (MockBehavior.Strict);
     }
 
     [Test]
@@ -60,14 +61,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     public void AppendToScript_OneElement ()
     {
       var script = new List<ScriptStatement>();
-      _elementCollection.AddElement(_elementMock1);
+      _elementCollection.AddElement(_elementMock1.Object);
 
-      _elementMock1.Expect(mock => mock.AppendToScript(script));
-      _elementMock1.Replay();
+      _elementMock1.Setup (mock => mock.AppendToScript (script)).Verifiable();
 
       _elementCollection.AppendToScript(script);
 
-      _elementMock1.VerifyAllExpectations();
+      _elementMock1.Verify();
       Assert.That(script, Is.Empty);
     }
 
@@ -75,41 +75,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     public void AppendToScript_SeveralElements ()
     {
       var script = new List<ScriptStatement>();
-      _elementCollection.AddElement(_elementMock1);
-      _elementCollection.AddElement(_elementMock2);
-      _elementCollection.AddElement(_elementMock3);
+      _elementCollection.AddElement(_elementMock1.Object);
+      _elementCollection.AddElement(_elementMock2.Object);
+      _elementCollection.AddElement(_elementMock3.Object);
 
-      _elementMock1.Expect(mock => mock.AppendToScript(script));
-      _elementMock2.Expect(mock => mock.AppendToScript(script));
-      _elementMock3.Expect(mock => mock.AppendToScript(script));
-      _elementMock1.Replay();
-      _elementMock2.Replay();
-      _elementMock3.Replay();
+      _elementMock1.Setup (mock => mock.AppendToScript (script)).Verifiable();
+      _elementMock2.Setup (mock => mock.AppendToScript (script)).Verifiable();
+      _elementMock3.Setup (mock => mock.AppendToScript (script)).Verifiable();
 
       _elementCollection.AppendToScript(script);
 
-      _elementMock1.VerifyAllExpectations();
-      _elementMock2.VerifyAllExpectations();
-      _elementMock3.VerifyAllExpectations();
+      _elementMock1.Verify();
+      _elementMock2.Verify();
+      _elementMock3.Verify();
       Assert.That(script, Is.Empty);
     }
 
     [Test]
     public void AddElement_OneElement ()
     {
-      _elementCollection.AddElement(_elementMock1);
+      _elementCollection.AddElement(_elementMock1.Object);
 
-      Assert.That(_elementCollection.Elements, Is.EqualTo(new[] { _elementMock1 }));
+      Assert.That(_elementCollection.Elements, Is.EqualTo(new[] { _elementMock1.Object }));
     }
 
     [Test]
     public void AddElement_SeveralElements ()
     {
-      _elementCollection.AddElement(_elementMock1);
-      _elementCollection.AddElement(_elementMock2);
-      _elementCollection.AddElement(_elementMock3);
+      _elementCollection.AddElement(_elementMock1.Object);
+      _elementCollection.AddElement(_elementMock2.Object);
+      _elementCollection.AddElement(_elementMock3.Object);
 
-      Assert.That(_elementCollection.Elements, Is.EqualTo(new[] { _elementMock1, _elementMock2, _elementMock3 }));
+      Assert.That(_elementCollection.Elements, Is.EqualTo(new[] { _elementMock1.Object, _elementMock2.Object, _elementMock3.Object }));
     }
 
   }

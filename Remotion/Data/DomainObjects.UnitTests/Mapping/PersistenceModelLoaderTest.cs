@@ -15,27 +15,28 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
   [TestFixture]
   public class PersistenceModelLoaderTest
   {
-    private IStorageProviderDefinitionFinder _storageProviderDefinitionStub;
+    private Mock<IStorageProviderDefinitionFinder> _storageProviderDefinitionStub;
     private PersistenceModelLoader _persistenceModelLoader;
     private ClassDefinition _classDefinition;
 
     [SetUp]
     public void SetUp ()
     {
-      _storageProviderDefinitionStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder>();
-      _persistenceModelLoader = new PersistenceModelLoader(_storageProviderDefinitionStub);
+      _storageProviderDefinitionStub = new Mock<IStorageProviderDefinitionFinder>();
+      _persistenceModelLoader = new PersistenceModelLoader(_storageProviderDefinitionStub.Object);
       _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
     }
 
@@ -47,8 +48,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
       Assert.That(_classDefinition.StorageEntityDefinition, Is.Null);
 
-      _storageProviderDefinitionStub.Stub(stub => stub.GetStorageProviderDefinition(_classDefinition, null)).Return(
-          new UnitTestStorageProviderStubDefinition("DefaultStorageProvider"));
+      _storageProviderDefinitionStub.Setup (stub => stub.GetStorageProviderDefinition (_classDefinition, null)).Returns (
+          new UnitTestStorageProviderStubDefinition ("DefaultStorageProvider"));
 
       _persistenceModelLoader.ApplyPersistenceModelToHierarchy(_classDefinition);
 
@@ -58,8 +59,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreatePersistenceMappingValidator ()
     {
-      _storageProviderDefinitionStub.Stub(stub => stub.GetStorageProviderDefinition(_classDefinition, null)).Return(
-          new UnitTestStorageProviderStubDefinition("DefaultStorageProvider"));
+      _storageProviderDefinitionStub.Setup (stub => stub.GetStorageProviderDefinition (_classDefinition, null)).Returns (
+          new UnitTestStorageProviderStubDefinition ("DefaultStorageProvider"));
 
       var result = _persistenceModelLoader.CreatePersistenceMappingValidator(_classDefinition);
 

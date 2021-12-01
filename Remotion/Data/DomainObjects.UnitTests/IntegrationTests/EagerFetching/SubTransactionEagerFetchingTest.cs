@@ -15,13 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
 {
@@ -96,19 +97,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
           typeof(DomainObjectCollection));
       outerQuery.EagerFetchQueries.Add(relationEndPointDefinition, fetchQuery);
 
-      var persistenceStrategyMock = MockRepository.GenerateStrictMock<IFetchEnabledPersistenceStrategy>();
+      var persistenceStrategyMock = new Mock<IFetchEnabledPersistenceStrategy> (MockBehavior.Strict);
       var customerDataContainer = TestDataContainerObjectMother.CreateCustomer1DataContainer();
       var orderDataContainer = TestDataContainerObjectMother.CreateOrder1DataContainer();
       persistenceStrategyMock
-          .Expect(mock => mock.ExecuteCollectionQuery(Arg.Is(outerQuery), Arg<ILoadedObjectDataProvider>.Is.Anything))
-          .Return(new[] { new FreshlyLoadedObjectData(customerDataContainer) });
+          .Setup(mock => mock.ExecuteCollectionQuery(outerQuery, It.IsAny<ILoadedObjectDataProvider>()))
+          .Returns(new[] { new FreshlyLoadedObjectData(customerDataContainer) })
+          .Verifiable();
       persistenceStrategyMock
-          .Expect(mock => mock.ExecuteFetchQuery(Arg.Is(fetchQuery), Arg<ILoadedObjectDataProvider>.Is.Anything))
-          .Return(new[] { new LoadedObjectDataWithDataSourceData(new FreshlyLoadedObjectData(orderDataContainer), orderDataContainer) })
-          .Repeat.Once();
-      persistenceStrategyMock.Replay();
+          .Setup(mock => mock.ExecuteFetchQuery(fetchQuery, It.IsAny<ILoadedObjectDataProvider>()))
+          .Returns(new[] { new LoadedObjectDataWithDataSourceData(new FreshlyLoadedObjectData(orderDataContainer), orderDataContainer) })
+          .Verifiable();
 
-      var clientTransaction = ClientTransactionObjectMother.CreateTransactionWithPersistenceStrategy<ClientTransaction>(persistenceStrategyMock);
+      var clientTransaction = ClientTransactionObjectMother.CreateTransactionWithPersistenceStrategy<ClientTransaction>(persistenceStrategyMock.Object);
       using (clientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         var result = ClientTransaction.Current.QueryManager.GetCollection<Customer>(outerQuery).ToArray();
@@ -116,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
         Assert.That(result[0].Orders, Is.EquivalentTo(new[] { DomainObjectIDs.Order1.GetObject<Order>() }));
       }
 
-      persistenceStrategyMock.VerifyAllExpectations();
+      persistenceStrategyMock.Verify (mock => mock.ExecuteFetchQuery(fetchQuery, It.IsAny<ILoadedObjectDataProvider>()), Times.Once());
     }
 
     [Test]

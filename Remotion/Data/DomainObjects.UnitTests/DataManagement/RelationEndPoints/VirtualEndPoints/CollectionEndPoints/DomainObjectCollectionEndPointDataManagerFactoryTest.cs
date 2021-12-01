@@ -15,19 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   [TestFixture]
   public class DomainObjectCollectionEndPointDataManagerFactoryTest : StandardMappingTest
   {
-    private IDomainObjectCollectionEndPointChangeDetectionStrategy _changeDetectionStrategy;
+    private Mock<IDomainObjectCollectionEndPointChangeDetectionStrategy> _changeDetectionStrategy;
 
     private DomainObjectCollectionEndPointDataManagerFactory _factory;
 
@@ -35,9 +36,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _changeDetectionStrategy = MockRepository.GenerateStub<IDomainObjectCollectionEndPointChangeDetectionStrategy>();
+      _changeDetectionStrategy = new Mock<IDomainObjectCollectionEndPointChangeDetectionStrategy>();
 
-      _factory = new DomainObjectCollectionEndPointDataManagerFactory(_changeDetectionStrategy);
+      _factory = new DomainObjectCollectionEndPointDataManagerFactory(_changeDetectionStrategy.Object);
     }
 
     [Test]
@@ -51,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That(result, Is.TypeOf(typeof(DomainObjectCollectionEndPointDataManager)));
       Assert.That(((DomainObjectCollectionEndPointDataManager)result).EndPointID, Is.SameAs(relationEndPointID));
-      Assert.That(((DomainObjectCollectionEndPointDataManager)result).ChangeDetectionStrategy, Is.SameAs(_changeDetectionStrategy));
+      Assert.That(((DomainObjectCollectionEndPointDataManager)result).ChangeDetectionStrategy, Is.SameAs(_changeDetectionStrategy.Object));
     }
 
     [Test]

@@ -15,12 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation.Reflection;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
 {
@@ -40,12 +41,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void RelationDefinitionWithAnonymousEndPointDefinitions ()
     {
-      var endPoint1Stub = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      var endPoint2Stub = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      var relationDefinition = new RelationDefinition("Test", endPoint1Stub, endPoint2Stub);
+      var endPoint1Stub = new Mock<IRelationEndPointDefinition>();
+      var endPoint2Stub = new Mock<IRelationEndPointDefinition>();
+      var relationDefinition = new RelationDefinition("Test", endPoint1Stub.Object, endPoint2Stub.Object);
 
-      endPoint1Stub.Stub(stub => stub.IsAnonymous).Return(true);
-      endPoint2Stub.Stub(stub => stub.IsAnonymous).Return(true);
+      endPoint1Stub.Setup (stub => stub.IsAnonymous).Returns (true);
+      endPoint2Stub.Setup (stub => stub.IsAnonymous).Returns (true);
 
       var validationResult = _validationRule.Validate(relationDefinition);
 
@@ -55,12 +56,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void RelationDefinitionPropertyInfoIsNotResolved ()
     {
-      var endPoint1Stub = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      var endPoint2Stub = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      var relationDefinition = new RelationDefinition("Test", endPoint1Stub, endPoint2Stub);
+      var endPoint1Stub = new Mock<IRelationEndPointDefinition>();
+      var endPoint2Stub = new Mock<IRelationEndPointDefinition>();
+      var relationDefinition = new RelationDefinition("Test", endPoint1Stub.Object, endPoint2Stub.Object);
 
-      endPoint1Stub.Stub(stub => stub.PropertyInfo).Return(null);
-      endPoint2Stub.Stub(stub => stub.PropertyInfo).Return(null);
+      endPoint1Stub.Setup (stub => stub.PropertyInfo).Returns ((IPropertyInformation) null);
+      endPoint2Stub.Setup (stub => stub.PropertyInfo).Returns ((IPropertyInformation) null);
 
       var validationResult = _validationRule.Validate(relationDefinition);
 

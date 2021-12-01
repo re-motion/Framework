@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -23,7 +25,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
@@ -142,31 +143,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public virtual void Begin ()
     {
-      TransactionEventSinkWithMock.Expect(mock => mock.RaiseRelationChangingEvent(
+      TransactionEventSinkWithMock.Setup (mock => mock.RaiseRelationChangingEvent (
           _endPoint.GetDomainObject(),
           _endPoint.Definition,
           _oldRelatedObject,
-          _newRelatedObject));
-      TransactionEventSinkWithMock.Replay();
+          _newRelatedObject)).Verifiable();
 
       _command.Begin();
 
-      TransactionEventSinkWithMock.VerifyAllExpectations();
+      TransactionEventSinkWithMock.Verify();
     }
 
     [Test]
     public virtual void End ()
     {
-      TransactionEventSinkWithMock.Expect(mock => mock.RaiseRelationChangedEvent(
+      TransactionEventSinkWithMock.Setup (mock => mock.RaiseRelationChangedEvent (
           _endPoint.GetDomainObject(),
           _endPoint.Definition,
           _oldRelatedObject,
-          _newRelatedObject));
-      TransactionEventSinkWithMock.Replay();
+          _newRelatedObject)).Verifiable();
 
       _command.End();
 
-      TransactionEventSinkWithMock.VerifyAllExpectations();
+      TransactionEventSinkWithMock.Verify();
     }
 
     [Test]

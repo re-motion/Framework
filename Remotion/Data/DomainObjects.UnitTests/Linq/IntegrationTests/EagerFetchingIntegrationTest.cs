@@ -18,13 +18,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 using EagerFetching_BaseClass = Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching.BaseClass;
 using EagerFetching_DerivedClass1 = Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching.DerivedClass1;
 using EagerFetching_DerivedClass2 = Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching.DerivedClass2;
@@ -485,13 +486,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void EagerFetching_TransparentlyIgnoreFetchClausesOnNonRelinqBasedQueries_ ()
     {
       var orders = new[] { (Order)LifetimeService.GetObject(ClientTransaction.Current, DomainObjectIDs.Order1, false) };
-      var queryProviderStub = MockRepository.GenerateStub<IQueryProvider>();
-      queryProviderStub.Stub(_ => _.Execute<IEnumerable<Order>>(Arg<Expression>.Is.Anything)).Return(orders);
+      var queryProviderStub = new Mock<IQueryProvider>();
+      queryProviderStub.Setup (_ => _.Execute<IEnumerable<Order>> (It.IsAny<Expression>())).Returns (orders);
 
-      var queryableStub = MockRepository.GenerateStub<IQueryable<Order>>();
-      queryableStub.Stub(_ => _.Expression).Return(Expression.Constant(null, typeof(IQueryable<Order>)));
-      queryableStub.Stub(_ => _.Provider).Return(queryProviderStub);
-      var queryableWithFetch = queryableStub.FetchOne(o => o.Customer);
+      var queryableStub = new Mock<IQueryable<Order>>();
+      queryableStub.Setup (_ => _.Expression).Returns (Expression.Constant (null, typeof(IQueryable<Order>)));
+      queryableStub.Setup (_ => _.Provider).Returns (queryProviderStub.Object);
+      var queryableWithFetch = queryableStub.Object.FetchOne(o => o.Customer);
 
       var result = queryableWithFetch.ToArray();
 

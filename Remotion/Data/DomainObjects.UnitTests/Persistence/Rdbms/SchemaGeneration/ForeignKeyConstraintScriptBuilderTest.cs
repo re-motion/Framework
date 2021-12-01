@@ -15,25 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGeneration
 {
   [TestFixture]
   public class ForeignKeyConstraintScriptBuilderTest : SchemaGenerationTestBase
   {
-    private IForeignKeyConstraintScriptElementFactory _factoryStub;
+    private Mock<IForeignKeyConstraintScriptElementFactory> _factoryStub;
     private ForeignKeyConstraintScriptBuilder _builder;
     private TableDefinition _tableDefinition1;
-    private IScriptElement _fakeElement1;
-    private IScriptElement _fakeElement2;
-    private IScriptElement _fakeElement3;
+    private Mock<IScriptElement> _fakeElement1;
+    private Mock<IScriptElement> _fakeElement2;
+    private Mock<IScriptElement> _fakeElement3;
     private EntityNameDefinition _tableName;
     private ForeignKeyConstraintDefinition _constraint1;
     private ForeignKeyConstraintDefinition _constraint2;
@@ -44,9 +45,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
       base.SetUp();
 
-      _factoryStub = MockRepository.GenerateStub<IForeignKeyConstraintScriptElementFactory>();
+      _factoryStub = new Mock<IForeignKeyConstraintScriptElementFactory>();
 
-      _builder = new ForeignKeyConstraintScriptBuilder(_factoryStub, new SqlCommentScriptElementFactory());
+      _builder = new ForeignKeyConstraintScriptBuilder(_factoryStub.Object, new SqlCommentScriptElementFactory());
 
       _tableName = new EntityNameDefinition(null, "Table");
       _constraint1 = new ForeignKeyConstraintDefinition("FK1", _tableName, new ColumnDefinition[0], new ColumnDefinition[0]);
@@ -64,9 +65,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
           null,
           new[] { _constraint2, _constraint3 });
 
-      _fakeElement1 = MockRepository.GenerateStub<IScriptElement>();
-      _fakeElement2 = MockRepository.GenerateStub<IScriptElement>();
-      _fakeElement3 = MockRepository.GenerateStub<IScriptElement>();
+      _fakeElement1 = new Mock<IScriptElement>();
+      _fakeElement2 = new Mock<IScriptElement>();
+      _fakeElement3 = new Mock<IScriptElement>();
     }
 
     [Test]
@@ -87,8 +88,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     [Test]
     public void GetCreateScript_GetDropScript_OneTableDefinitionAdded ()
     {
-      _factoryStub.Stub(mock => mock.GetCreateElement(_constraint1, _tableName)).Return(_fakeElement1);
-      _factoryStub.Stub(mock => mock.GetDropElement(_constraint1, _tableName)).Return(_fakeElement2);
+      _factoryStub.Setup (mock => mock.GetCreateElement (_constraint1, _tableName)).Returns (_fakeElement1.Object);
+      _factoryStub.Setup (mock => mock.GetDropElement (_constraint1, _tableName)).Returns (_fakeElement2.Object);
 
       _builder.AddEntityDefinition(_tableDefinition1);
 
@@ -99,23 +100,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       Assert.That(
           ((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement,
           Is.EqualTo("-- Create foreign key constraints for tables that were created above"));
-      Assert.That(((ScriptElementCollection)createScriptResult).Elements[1], Is.SameAs(_fakeElement1));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements[1], Is.SameAs(_fakeElement1.Object));
 
       Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(2));
       Assert.That(
           ((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop foreign keys of all tables"));
-      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[1], Is.SameAs(_fakeElement2));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[1], Is.SameAs(_fakeElement2.Object));
     }
 
     [Test]
     public void GetCreateScript_GetDropScript_SeveralTableDefinitionsAdded ()
     {
-      _factoryStub.Stub(mock => mock.GetCreateElement(_constraint1, _tableName)).Return(_fakeElement1);
-      _factoryStub.Stub(mock => mock.GetDropElement(_constraint1, _tableName)).Return(_fakeElement3);
-      _factoryStub.Stub(mock => mock.GetCreateElement(_constraint2, _tableName)).Return(_fakeElement2);
-      _factoryStub.Stub(mock => mock.GetDropElement(_constraint2, _tableName)).Return(_fakeElement2);
-      _factoryStub.Stub(mock => mock.GetCreateElement(_constraint3, _tableName)).Return(_fakeElement3);
-      _factoryStub.Stub(mock => mock.GetDropElement(_constraint3, _tableName)).Return(_fakeElement1);
+      _factoryStub.Setup (mock => mock.GetCreateElement (_constraint1, _tableName)).Returns (_fakeElement1.Object);
+      _factoryStub.Setup (mock => mock.GetDropElement (_constraint1, _tableName)).Returns (_fakeElement3.Object);
+      _factoryStub.Setup (mock => mock.GetCreateElement (_constraint2, _tableName)).Returns (_fakeElement2.Object);
+      _factoryStub.Setup (mock => mock.GetDropElement (_constraint2, _tableName)).Returns (_fakeElement2.Object);
+      _factoryStub.Setup (mock => mock.GetCreateElement (_constraint3, _tableName)).Returns (_fakeElement3.Object);
+      _factoryStub.Setup (mock => mock.GetDropElement (_constraint3, _tableName)).Returns (_fakeElement1.Object);
 
       _builder.AddEntityDefinition(_tableDefinition1);
       _builder.AddEntityDefinition(_tableDefinition2);
@@ -127,16 +128,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       Assert.That(
           ((ScriptStatement)((ScriptElementCollection)createScriptResult).Elements[0]).Statement,
           Is.EqualTo("-- Create foreign key constraints for tables that were created above"));
-      Assert.That(((ScriptElementCollection)createScriptResult).Elements[1], Is.SameAs(_fakeElement1));
-      Assert.That(((ScriptElementCollection)createScriptResult).Elements[2], Is.SameAs(_fakeElement2));
-      Assert.That(((ScriptElementCollection)createScriptResult).Elements[3], Is.SameAs(_fakeElement3));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements[1], Is.SameAs(_fakeElement1.Object));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements[2], Is.SameAs(_fakeElement2.Object));
+      Assert.That(((ScriptElementCollection)createScriptResult).Elements[3], Is.SameAs(_fakeElement3.Object));
 
       Assert.That(((ScriptElementCollection)dropScriptResult).Elements.Count, Is.EqualTo(4));
       Assert.That(
           ((ScriptStatement)((ScriptElementCollection)dropScriptResult).Elements[0]).Statement, Is.EqualTo("-- Drop foreign keys of all tables"));
-      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[1], Is.SameAs(_fakeElement3));
-      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[2], Is.SameAs(_fakeElement2));
-      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[3], Is.SameAs(_fakeElement1));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[1], Is.SameAs(_fakeElement3.Object));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[2], Is.SameAs(_fakeElement2.Object));
+      Assert.That(((ScriptElementCollection)dropScriptResult).Elements[3], Is.SameAs(_fakeElement1.Object));
     }
 
     [Test]

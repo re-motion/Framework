@@ -17,12 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -30,11 +31,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   {
     public static IRealObjectEndPoint GetFakeOppositeEndPoint (DomainObject item)
     {
-      var fakeEndPoint = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      fakeEndPoint.Stub(stub => stub.ObjectID).Return(item.ID);
-      fakeEndPoint.Stub(stub => stub.GetDomainObject()).Return(item);
-      fakeEndPoint.Stub(stub => stub.GetDomainObjectReference()).Return(item);
-      return fakeEndPoint;
+      var fakeEndPoint = new Mock<IRealObjectEndPoint>();
+      fakeEndPoint.Setup (stub => stub.ObjectID).Returns (item.ID);
+      fakeEndPoint.Setup (stub => stub.GetDomainObject()).Returns (item);
+      fakeEndPoint.Setup (stub => stub.GetDomainObjectReference()).Returns (item);
+      return fakeEndPoint.Object;
     }
 
     public static void FillCollectionEndPointWithInitialContents (DomainObjectCollectionEndPoint endPoint, IEnumerable<DomainObject> initialContents)

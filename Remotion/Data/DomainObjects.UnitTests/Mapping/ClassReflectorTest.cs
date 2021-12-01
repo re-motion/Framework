@@ -17,6 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
@@ -25,7 +27,6 @@ using Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -47,25 +48,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetMetadata_ForBaseClass ()
     {
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BaseString")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BaseString")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BaseUnidirectionalOneToOne")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BaseUnidirectionalOneToOne")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BasePrivateUnidirectionalOneToOne")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BasePrivateUnidirectionalOneToOne")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "String")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "String")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "UnidirectionalOneToOne")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "UnidirectionalOneToOne")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "PrivateString")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "PrivateString")))
+          .Returns(true);
 
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(ClassWithDifferentProperties))).Return("ClassWithDifferentProperties");
+      ClassIDProviderStub.Setup (stub => stub.GetClassID (typeof(ClassWithDifferentProperties))).Returns ("ClassWithDifferentProperties");
 
       var classReflector = CreateClassReflector(typeof(ClassWithDifferentProperties));
       var expected = CreateClassWithDifferentPropertiesClassDefinition();
@@ -81,16 +82,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetMetadata_ForDerivedClass ()
     {
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "OtherString")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "OtherString")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "String")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "String")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "PrivateString")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "PrivateString")))
+          .Returns(true);
 
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(DerivedClassWithDifferentProperties))).Return("DerivedClassWithDifferentProperties");
+      ClassIDProviderStub.Setup (stub => stub.GetClassID (typeof(DerivedClassWithDifferentProperties))).Returns ("DerivedClassWithDifferentProperties");
 
       var classReflector = CreateClassReflector(typeof(DerivedClassWithDifferentProperties));
       var expected = CreateDerivedClassWithDifferentPropertiesClassDefinition();
@@ -106,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_ForMixedClass ()
     {
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(TargetClassA))).Return("ClassID");
+      ClassIDProviderStub.Setup (stub => stub.GetClassID (typeof(TargetClassA))).Returns ("ClassID");
 
       var classReflector = CreateClassReflector(typeof(TargetClassA));
       var actual = classReflector.GetMetadata(null);
@@ -116,8 +117,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_ForDerivedMixedClass ()
     {
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(TargetClassA))).Return("ClassID");
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(TargetClassB))).Return("ClassID");
+      ClassIDProviderStub.Setup (stub => stub.GetClassID (typeof(TargetClassA))).Returns ("ClassID");
+      ClassIDProviderStub.Setup (stub => stub.GetClassID (typeof(TargetClassB))).Returns ("ClassID");
 
       var classReflectorForBaseClass = CreateClassReflector(typeof(TargetClassA));
       var baseClass = classReflectorForBaseClass.GetMetadata(null);
@@ -131,55 +132,55 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetMetadata_ForClassWithVirtualRelationEndPoints ()
     {
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BaseBidirectionalOneToOne")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BaseBidirectionalOneToOne")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BaseBidirectionalOneToManyForDomainObjectCollection")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BaseBidirectionalOneToManyForDomainObjectCollection")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BaseBidirectionalOneToManyForVirtualCollection")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BaseBidirectionalOneToManyForVirtualCollection")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BasePrivateBidirectionalOneToOne")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BasePrivateBidirectionalOneToOne")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BasePrivateBidirectionalOneToManyForDomainObjectCollection")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BasePrivateBidirectionalOneToManyForDomainObjectCollection")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BasePrivateBidirectionalOneToManyForVirtualCollection")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BasePrivateBidirectionalOneToManyForVirtualCollection")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "NoAttributeForDomainObjectCollection")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "NoAttributeForDomainObjectCollection")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "NoAttributeForVirtualCollection")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "NoAttributeForVirtualCollection")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "NotNullableForDomainObjectCollection")))
-          .Return(false);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "NotNullableForDomainObjectCollection")))
+          .Returns(false);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "NotNullableForVirtualCollection")))
-          .Return(false);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "NotNullableForVirtualCollection")))
+          .Returns(false);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BidirectionalOneToOne")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BidirectionalOneToOne")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BidirectionalOneToManyForDomainObjectCollection")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BidirectionalOneToManyForDomainObjectCollection")))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BidirectionalOneToManyForVirtualCollection")))
-          .Return(true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BidirectionalOneToManyForVirtualCollection")))
+          .Returns(true);
 
       var classDefinitionFake = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
 
       SortExpressionDefinitionProviderStub
-          .Stub(_ => _.GetSortExpression(Arg<IPropertyInformation>.Is.Anything, Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Null))
-          .Return(null);
+          .Setup(_ => _.GetSortExpression(It.IsAny<IPropertyInformation>(), It.IsAny<ClassDefinition>(), null))
+          .Returns((SortExpressionDefinition) null);
       SortExpressionDefinitionProviderStub
-          .Stub(_ => _.GetSortExpression(Arg<IPropertyInformation>.Is.Anything, Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.NotNull))
-          .Return(null)
-          .WhenCalled(
-              mi =>
+          .Setup(_ => _.GetSortExpression(It.IsAny<IPropertyInformation>(), It.IsAny<ClassDefinition>(), It.IsNotNull<string>()))
+          .Returns((SortExpressionDefinition) null)
+          .Callback(
+              (IPropertyInformation propertyInfo, ClassDefinition referencedClassDefinition, string sortExpressionText) =>
               {
                 var propertyInformation = (IPropertyInformation)mi.Arguments[0];
                 var referencedClassDefinition = (ClassDefinition)mi.Arguments[1];
@@ -192,7 +193,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
                 mi.ReturnValue = sortExpressionDefinition;
               });
 
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(ClassWithVirtualRelationEndPoints))).Return("ClassWithVirtualRelationEndPoints");
+      ClassIDProviderStub.Setup (stub => stub.GetClassID (typeof(ClassWithVirtualRelationEndPoints))).Returns ("ClassWithVirtualRelationEndPoints");
 
       var classReflector = CreateClassReflector(typeof(ClassWithVirtualRelationEndPoints));
       var expected = CreateClassWithVirtualRelationEndPointsClassDefinition();
@@ -202,9 +203,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var actual = classReflector.GetMetadata(null);
       foreach (var actualEndPoint in actual.MyRelationEndPointDefinitions)
       {
-        var endPointStub = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-        endPointStub.Stub(stub => stub.ClassDefinition).Return(classDefinitionFake);
-        actualEndPoint.SetRelationDefinition(new RelationDefinition("fake: " + actualEndPoint.PropertyName, actualEndPoint, endPointStub));
+        var endPointStub = new Mock<IRelationEndPointDefinition>();
+        endPointStub.Setup (stub => stub.ClassDefinition).Returns (classDefinitionFake);
+        actualEndPoint.SetRelationDefinition(new RelationDefinition("fake: " + actualEndPoint.PropertyName, actualEndPoint, endPointStub.Object));
       }
 
       Assert.That(actual, Is.Not.Null);
@@ -215,7 +216,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_GetClassID ()
     {
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(ClassHavingClassIDAttribute))).Return("ClassIDForClassHavingClassIDAttribute");
+      ClassIDProviderStub.Setup (stub => stub.GetClassID (typeof(ClassHavingClassIDAttribute))).Returns ("ClassIDForClassHavingClassIDAttribute");
 
       var classReflector = CreateClassReflector(typeof(ClassHavingClassIDAttribute));
 
@@ -228,7 +229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_ForClosedGenericClass ()
     {
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(ClosedGenericClass))).Return("ClassID");
+      ClassIDProviderStub.Setup (stub => stub.GetClassID (typeof(ClosedGenericClass))).Returns ("ClassID");
 
       var classReflector = CreateClassReflector(typeof(ClosedGenericClass));
 
@@ -239,7 +240,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetMetadata_ForClassWithoutStorageGroupAttribute ()
     {
       var type = typeof(ClassWithoutStorageGroupWithDifferentProperties);
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(type)).Return("ClassID");
+      ClassIDProviderStub.Setup (stub => stub.GetClassID (type)).Returns ("ClassID");
       Assert.That(type.IsDefined(typeof(DBStorageGroupAttribute), false), Is.False);
 
       var classReflector = CreateClassReflector(type);
@@ -255,7 +256,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetMetadata_ForClassWithStorageGroupAttribute ()
     {
       var type = typeof(ClassWithStorageGroupAttributeAndBaseClass);
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(type)).Return("ClassID");
+      ClassIDProviderStub.Setup (stub => stub.GetClassID (type)).Returns ("ClassID");
       Assert.That(type.IsDefined(typeof(DBStorageGroupAttribute), false), Is.True);
 
       var classReflector = CreateClassReflector(type);
@@ -271,7 +272,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetMetadata_ForClassWithStorageGroupAttributeSupplyingANonDefaultStorageGroup ()
     {
       var type = typeof(ClassWithNonDefaultStorageClass);
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(type)).Return("ClassID");
+      ClassIDProviderStub.Setup (stub => stub.GetClassID (type)).Returns ("ClassID");
 
       var classReflector = CreateClassReflector(type);
 
@@ -286,8 +287,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_PersistentMixinFinder_ForBaseClass ()
     {
-
-      ClassIDProviderStub.Stub(mock => mock.GetClassID(typeof(ClassWithDifferentProperties))).Return("ClassID");
+      ClassIDProviderStub.Setup (mock => mock.GetClassID (typeof(ClassWithDifferentProperties))).Returns ("ClassID");
 
       var classReflector = CreateClassReflector(typeof(ClassWithDifferentProperties));
 
@@ -299,7 +299,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_PersistentMixinFinder_ForDerivedClass ()
     {
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(DerivedClassWithDifferentProperties))).Return("ClassID");
+      ClassIDProviderStub.Setup (stub => stub.GetClassID (typeof(DerivedClassWithDifferentProperties))).Returns ("ClassID");
 
       var classReflector = CreateClassReflector(typeof(DerivedClassWithDifferentProperties));
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses();
@@ -312,7 +312,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_InstanceCreator ()
     {
-      ClassIDProviderStub.Stub(stub => stub.GetClassID(typeof(ClassWithDifferentProperties))).Return("ClassID");
+      ClassIDProviderStub.Setup (stub => stub.GetClassID (typeof(ClassWithDifferentProperties))).Returns ("ClassID");
 
       var classReflector = CreateClassReflector(typeof(ClassWithDifferentProperties));
 
@@ -524,9 +524,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classDefinitionFake = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
       foreach (var endPoint in endPoints)
       {
-        var endPointStub = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-        endPointStub.Stub(stub => stub.ClassDefinition).Return(classDefinitionFake);
-        endPoint.SetRelationDefinition(new RelationDefinition("fake: " + endPoint.PropertyName, endPoint, endPointStub));
+        var endPointStub = new Mock<IRelationEndPointDefinition>();
+        endPointStub.Setup (stub => stub.ClassDefinition).Returns (classDefinitionFake);
+        endPoint.SetRelationDefinition(new RelationDefinition("fake: " + endPoint.PropertyName, endPoint, endPointStub.Object));
       }
 
       classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(endPoints, true));

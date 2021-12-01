@@ -1,4 +1,6 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿using Moq;
+using Moq.Protected;
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -25,7 +27,6 @@ using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.Validation;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.Validation
 {
@@ -34,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
   {
     private PropertyStorageClassIsSupportedByStorageProviderValidationRule _validationRule;
     private ClassDefinition _classDefinition;
-    private IStorageEntityDefinition _persistentStorageEntityDefinition;
+    private Mock<IStorageEntityDefinition> _persistentStorageEntityDefinition;
     private IStorageEntityDefinition _nonPersistentStorageEntityDefinition;
 
     [SetUp]
@@ -42,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     {
       _validationRule = new PropertyStorageClassIsSupportedByStorageProviderValidationRule();
       _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
-      _persistentStorageEntityDefinition = MockRepository.GenerateStub<IStorageEntityDefinition>();
+      _persistentStorageEntityDefinition = new Mock<IStorageEntityDefinition>();
       _nonPersistentStorageEntityDefinition =
           new NonPersistentStorageEntity(new NonPersistentProviderDefinition("NonPersistent", new NonPersistentStorageObjectFactory()));
     }
@@ -99,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           20,
           StorageClass.Persistent);
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
-      _classDefinition.SetStorageEntity(_persistentStorageEntityDefinition);
+      _classDefinition.SetStorageEntity(_persistentStorageEntityDefinition.Object);
       _classDefinition.SetReadOnly();
 
       var validationResult = _validationRule.Validate(_classDefinition);

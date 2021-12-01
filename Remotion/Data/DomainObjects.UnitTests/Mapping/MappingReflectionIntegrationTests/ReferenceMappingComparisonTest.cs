@@ -16,13 +16,14 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegrationTests
 {
@@ -42,16 +43,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
 
       // Pretend that all classes have the storage provider definition used by FakeMappingConfiguration
       var defaultStorageProviderDefinition = FakeMappingConfiguration.Current.DefaultStorageProviderDefinition;
-      var defaultStorageProviderDefinitionFinderStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder>();
+      var defaultStorageProviderDefinitionFinderStub = new Mock<IStorageProviderDefinitionFinder>();
       defaultStorageProviderDefinitionFinderStub
-          .Stub(stub => stub.GetStorageProviderDefinition(Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
-          .Return(defaultStorageProviderDefinition);
+          .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<ClassDefinition>(), It.IsAny<string>()))
+          .Returns(defaultStorageProviderDefinition);
 
       var nonPersistentStorageProviderDefinition = FakeMappingConfiguration.Current.NonPersistentStorageProviderDefinition;
-      var nonPersistentStorageProviderDefinitionFinderStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder>();
+      var nonPersistentStorageProviderDefinitionFinderStub = new Mock<IStorageProviderDefinitionFinder>();
       nonPersistentStorageProviderDefinitionFinderStub
-          .Stub(stub => stub.GetStorageProviderDefinition(Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
-          .Return(nonPersistentStorageProviderDefinition);
+          .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<ClassDefinition>(), It.IsAny<string>()))
+          .Returns(nonPersistentStorageProviderDefinition);
 
       foreach (ClassDefinition classDefinition in inheritanceRootClasses)
       {
@@ -59,14 +60,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
         {
           var persistenceModelLoader = nonPersistentStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
               nonPersistentStorageProviderDefinition,
-              nonPersistentStorageProviderDefinitionFinderStub);
+              nonPersistentStorageProviderDefinitionFinderStub.Object);
           persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);
         }
         else
         {
           var persistenceModelLoader = defaultStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
               defaultStorageProviderDefinition,
-              defaultStorageProviderDefinitionFinderStub);
+              defaultStorageProviderDefinitionFinderStub.Object);
           persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);
         }
       }

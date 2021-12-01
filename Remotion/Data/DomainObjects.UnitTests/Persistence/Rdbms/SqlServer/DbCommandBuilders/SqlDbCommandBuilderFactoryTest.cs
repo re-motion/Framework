@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -26,14 +28,13 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders.
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCommandBuilders
 {
   [TestFixture]
   public class SqlDbCommandBuilderFactoryTest : StandardMappingTest
   {
-    private ISqlDialect _sqlDialectStub;
+    private Mock<ISqlDialect> _sqlDialectStub;
     private SqlDbCommandBuilderFactory _factory;
     private TableDefinition _tableDefinition;
     private ColumnDefinition _column1;
@@ -47,8 +48,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
     {
       base.SetUp();
 
-      _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect>();
-      _factory = new SqlDbCommandBuilderFactory(_sqlDialectStub);
+      _sqlDialectStub = new Mock<ISqlDialect>();
+      _factory = new SqlDbCommandBuilderFactory(_sqlDialectStub.Object);
 
       _tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table"));
 
@@ -151,7 +152,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
       var result = _factory.CreateForQuery("statement", new QueryParameterWithType[0]);
 
       Assert.That(result, Is.TypeOf(typeof(QueryDbCommandBuilder)));
-      Assert.That(((QueryDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub));
+      Assert.That(((QueryDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub.Object));
     }
 
     [Test]
@@ -160,7 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
       var result = _factory.CreateForInsert(_tableDefinition, new[] { _columnValue1, _columnValue2 });
 
       Assert.That(result, Is.TypeOf(typeof(InsertDbCommandBuilder)));
-      Assert.That(((InsertDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub));
+      Assert.That(((InsertDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub.Object));
       Assert.That(((InsertDbCommandBuilder)result).TableDefinition, Is.SameAs(_tableDefinition));
       Assert.That(
           ((InsertedColumnsSpecification)((InsertDbCommandBuilder)result).InsertedColumnsSpecification).ColumnValues,
@@ -173,7 +174,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
       var result = _factory.CreateForUpdate(_tableDefinition, new[] { _columnValue1, _columnValue2 }, new[] { _columnValue2, _columnValue1 });
 
       Assert.That(result, Is.TypeOf(typeof(UpdateDbCommandBuilder)));
-      Assert.That(((UpdateDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub));
+      Assert.That(((UpdateDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub.Object));
       Assert.That(((UpdateDbCommandBuilder)result).TableDefinition, Is.SameAs(_tableDefinition));
       Assert.That(
           ((UpdatedColumnsSpecification)((UpdateDbCommandBuilder)result).UpdatedColumnsSpecification).ColumnValues,
@@ -189,7 +190,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
       var result = _factory.CreateForDelete(_tableDefinition, new[] { _columnValue1, _columnValue2 });
 
       Assert.That(result, Is.TypeOf(typeof(DeleteDbCommandBuilder)));
-      Assert.That(((DeleteDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub));
+      Assert.That(((DeleteDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub.Object));
       Assert.That(((DeleteDbCommandBuilder)result).TableDefinition, Is.SameAs(_tableDefinition));
       Assert.That(
           ((ComparedColumnsSpecification)((DeleteDbCommandBuilder)result).ComparedColumnsSpecification).ComparedColumnValues,

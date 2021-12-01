@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;
@@ -22,7 +24,6 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -48,10 +49,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       MappingConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent(null);
 
-      ClassIDProviderStub = MockRepository.GenerateStub<IClassIDProvider>();
-      DomainModelConstraintProviderStub = MockRepository.GenerateStub<IDomainModelConstraintProvider>();
-      DomainObjectCreatorStub = MockRepository.GenerateStub<IDomainObjectCreator>();
-      SortExpressionDefinitionProviderStub = MockRepository.GenerateStub<ISortExpressionDefinitionProvider>();
+      ClassIDProviderStub = new Mock<IClassIDProvider>().Object;
+      DomainModelConstraintProviderStub = new Mock<IDomainModelConstraintProvider>().Object;
+      DomainObjectCreatorStub = new Mock<IDomainObjectCreator>().Object;
+      SortExpressionDefinitionProviderStub = new Mock<ISortExpressionDefinitionProvider>().Object;
       PropertyMetadataProvider = new PropertyMetadataReflector();
 
       MappingObjectFactory = new ReflectionBasedMappingObjectFactory(

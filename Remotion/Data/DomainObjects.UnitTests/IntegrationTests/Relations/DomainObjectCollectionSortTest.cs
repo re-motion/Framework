@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 {
@@ -126,28 +127,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void Sort_TriggersOnReplaceDataEvent_ButNoRelationChangeEvents ()
     {
-      var eventReceiverMock = MockRepository.GenerateStrictMock<OrderCollection.ICollectionEventReceiver>();
-      eventReceiverMock.Expect(mock => mock.OnReplaceData());
-      eventReceiverMock.Replay();
+      var eventReceiverMock = new Mock<OrderCollection.ICollectionEventReceiver> (MockBehavior.Strict);
+      eventReceiverMock.Setup (mock => mock.OnReplaceData()).Verifiable();
 
       var orderCollection = _owningCustomer.Orders;
-      orderCollection.SetEventReceiver(eventReceiverMock);
+      orderCollection.SetEventReceiver(eventReceiverMock.Object);
 
       var eventListenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(TestableClientTransaction);
       try
       {
         eventListenerMock
-            .Expect(
+            .Setup(
                 mock => mock.VirtualRelationEndPointStateUpdated(
                     TestableClientTransaction,
                     RelationEndPointID.Resolve(_owningCustomer, c => c.Orders),
-                    null));
-        eventListenerMock.Replay();
+                    null))
+            .Verifiable();
 
         orderCollection.Sort(_reversingComparison);
 
-        eventReceiverMock.VerifyAllExpectations();
-        eventListenerMock.VerifyAllExpectations();
+        eventReceiverMock.Verify();
+        eventListenerMock.Verify();
       }
       finally
       {

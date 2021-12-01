@@ -16,20 +16,20 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
   [TestFixture]
   public class ObservableDomainObjectCollectionDataDecoratorBaseTest : ClientTransactionBaseTest
   {
-    private MockRepository _mockRepository;
-    private TestableObservableDomainObjectCollectionDataDecorator.IEventSink _eventSinkMock;
+    private Mock<TestableObservableDomainObjectCollectionDataDecorator.IEventSink> _eventSinkMock;
 
     private TestableObservableDomainObjectCollectionDataDecorator _observableDomainObjectDecoratorWithRealContent;
 
@@ -42,8 +42,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       base.SetUp();
 
-      _mockRepository = new MockRepository();
-
       _order1 = DomainObjectIDs.Order1.GetObject<Order>();
       _order3 = DomainObjectIDs.Order3.GetObject<Order>();
       _order4 = DomainObjectIDs.Order4.GetObject<Order>();
@@ -51,103 +49,108 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 
       var realContent = new DomainObjectCollectionData(new[] { _order1, _order3, _order4 });
 
-      _eventSinkMock = _mockRepository.StrictMock<TestableObservableDomainObjectCollectionDataDecorator.IEventSink>();
-      _observableDomainObjectDecoratorWithRealContent = new TestableObservableDomainObjectCollectionDataDecorator(realContent, _eventSinkMock);
-
-      _eventSinkMock.Replay();
+      _eventSinkMock = new Mock<TestableObservableDomainObjectCollectionDataDecorator.IEventSink> (MockBehavior.Strict);
+      _observableDomainObjectDecoratorWithRealContent = new TestableObservableDomainObjectCollectionDataDecorator(realContent, _eventSinkMock.Object);
     }
 
     [Test]
     public void Clear ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _eventSinkMock
-            .Expect(
+      var sequence = new MockSequence();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order1, 0))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)));
-        _eventSinkMock
-            .Expect(
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
+            .Verifiable();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)));
-        _eventSinkMock
-            .Expect(
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
+            .Verifiable();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order4, 2))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)));
-
-        _eventSinkMock
-            .Expect(
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
+            .Verifiable();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order4, 2))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)));
-        _eventSinkMock
-            .Expect(
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)))
+            .Verifiable();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)));
-        _eventSinkMock
-            .Expect(
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)))
+            .Verifiable();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order1, 0))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)));
-      }
-
-      _eventSinkMock.Replay();
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)))
+            .Verifiable();
 
       _observableDomainObjectDecoratorWithRealContent.Clear();
 
-      _eventSinkMock.VerifyAllExpectations();
+      _eventSinkMock.Verify();
     }
 
     [Test]
     public void Insert ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _eventSinkMock
-            .Expect(
+      var sequence = new MockSequence();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert, _order5, 2))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)));
-        _eventSinkMock
-            .Expect(
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
+            .Verifiable();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert, _order5, 2))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(4)));
-      }
-
-      _eventSinkMock.Replay();
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(4)))
+            .Verifiable();
 
       _observableDomainObjectDecoratorWithRealContent.Insert(2, _order5);
 
-      _eventSinkMock.VerifyAllExpectations();
+      _eventSinkMock.Verify();
     }
 
     [Test]
     public void Remove ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _eventSinkMock
-            .Expect(
+      var sequence = new MockSequence();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)));
-        _eventSinkMock
-            .Expect(
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
+            .Verifiable();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(2)));
-      }
-
-      _eventSinkMock.Replay();
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(2)))
+            .Verifiable();
 
       var result = _observableDomainObjectDecoratorWithRealContent.Remove(_order3);
 
-      _eventSinkMock.VerifyAllExpectations();
+      _eventSinkMock.Verify();
 
       Assert.That(result, Is.True);
     }
@@ -155,22 +158,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Remove_NoEventIfNoRemove ()
     {
-      _eventSinkMock.Replay();
-
       var result = _observableDomainObjectDecoratorWithRealContent.Remove(_order5);
 
-      _eventSinkMock.AssertWasNotCalled(
-          mock =>
+      _eventSinkMock.Verify (          mock =>
           mock.CollectionChanging(
-              Arg <ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>.Is.Anything,
-              Arg<DomainObject>.Is.Anything,
-              Arg<int>.Is.Anything));
-      _eventSinkMock.AssertWasNotCalled(
-          mock =>
+              It.IsAny<ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>(),
+              It.IsAny<DomainObject>(),
+              It.IsAny<int>()), Times.Never());
+      _eventSinkMock.Verify (          mock =>
           mock.CollectionChanged(
-              Arg<ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>.Is.Anything,
-              Arg<DomainObject>.Is.Anything,
-              Arg<int>.Is.Anything));
+              It.IsAny<ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>(),
+              It.IsAny<DomainObject>(),
+              It.IsAny<int>()), Times.Never());
 
       Assert.That(result, Is.False);
     }
@@ -178,25 +177,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Remove_ID ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _eventSinkMock
-            .Expect(
+      var sequence = new MockSequence();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)));
-        _eventSinkMock
-            .Expect(
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
+            .Verifiable();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(2)));
-      }
-
-      _eventSinkMock.Replay();
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(2)))
+            .Verifiable();
 
       var result = _observableDomainObjectDecoratorWithRealContent.Remove(_order3.ID);
 
-      _eventSinkMock.VerifyAllExpectations();
+      _eventSinkMock.Verify();
 
       Assert.That(result, Is.True);
     }
@@ -204,22 +203,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Remove_ID_NoEventIfNoRemove ()
     {
-      _eventSinkMock.Replay();
-
       var result = _observableDomainObjectDecoratorWithRealContent.Remove(_order5.ID);
 
-      _eventSinkMock.AssertWasNotCalled(
-          mock =>
+      _eventSinkMock.Verify (          mock =>
           mock.CollectionChanging(
-              Arg<ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>.Is.Anything,
-              Arg<DomainObject>.Is.Anything,
-              Arg<int>.Is.Anything));
-      _eventSinkMock.AssertWasNotCalled(
-          mock =>
+              It.IsAny<ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>(),
+              It.IsAny<DomainObject>(),
+              It.IsAny<int>()), Times.Never());
+      _eventSinkMock.Verify (          mock =>
           mock.CollectionChanged(
-              Arg<ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>.Is.Anything,
-              Arg<DomainObject>.Is.Anything,
-              Arg<int>.Is.Anything));
+              It.IsAny<ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>(),
+              It.IsAny<DomainObject>(),
+              It.IsAny<int>()), Times.Never());
 
       Assert.That(result, Is.False);
     }
@@ -227,109 +222,106 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Replace ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _eventSinkMock
-            .Expect(
+      var sequence = new MockSequence();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order3)));
-        _eventSinkMock
-            .Expect(
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order3)))
+            .Verifiable();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert, _order5, 1))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order3)));
-        _eventSinkMock
-            .Expect(
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order3)))
+            .Verifiable();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order5)));
-        _eventSinkMock
-            .Expect(
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order5)))
+            .Verifiable();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert, _order5, 1))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order5)));
-      }
-
-      _eventSinkMock.Replay();
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order5)))
+            .Verifiable();
 
       _observableDomainObjectDecoratorWithRealContent.Replace(1, _order5);
 
-      _eventSinkMock.VerifyAllExpectations();
+      _eventSinkMock.Verify();
     }
 
     [Test]
     public void Replace_NoEventsOnSelfReplace ()
     {
-      _eventSinkMock.Replay();
-
       _observableDomainObjectDecoratorWithRealContent.Replace(1, _order3);
 
-      _eventSinkMock.AssertWasNotCalled(
-          mock =>
+      _eventSinkMock.Verify (          mock =>
           mock.CollectionChanging(
-              Arg < ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>.Is.Anything,
-              Arg<DomainObject>.Is.Anything,
-              Arg<int>.Is.Anything));
-      _eventSinkMock.AssertWasNotCalled(
-          mock =>
+              It.IsAny< ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>(),
+              It.IsAny<DomainObject>(),
+              It.IsAny<int>()), Times.Never());
+      _eventSinkMock.Verify (          mock =>
           mock.CollectionChanged(
-              Arg<ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>.Is.Anything,
-              Arg<DomainObject>.Is.Anything,
-              Arg<int>.Is.Anything));
-      _eventSinkMock.AssertWasNotCalled(
-          mock =>
+              It.IsAny<ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>(),
+              It.IsAny<DomainObject>(),
+              It.IsAny<int>()), Times.Never());
+      _eventSinkMock.Verify (          mock =>
           mock.CollectionChanging(
-              Arg<ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>.Is.Anything,
-              Arg<DomainObject>.Is.Anything,
-              Arg<int>.Is.Anything));
-      _eventSinkMock.AssertWasNotCalled(
-          mock =>
+              It.IsAny<ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>(),
+              It.IsAny<DomainObject>(),
+              It.IsAny<int>()), Times.Never());
+      _eventSinkMock.Verify (          mock =>
           mock.CollectionChanged(
-              Arg<ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>.Is.Anything,
-              Arg<DomainObject>.Is.Anything,
-              Arg<int>.Is.Anything));
+              It.IsAny<ObservableDomainObjectCollectionDataDecoratorBase.OperationKind>(),
+              It.IsAny<DomainObject>(),
+              It.IsAny<int>()), Times.Never());
     }
 
     [Test]
     public void Sort ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _eventSinkMock
-            .Expect(
+      var sequence = new MockSequence();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Sort, null, -1))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent, Is.EqualTo(new[] { _order1, _order3, _order4 })));
-        _eventSinkMock
-            .Expect(
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent, Is.EqualTo(new[] { _order1, _order3, _order4 })))
+            .Verifiable();
+      _eventSinkMock
+            .InSequence (sequence)
+            .Setup(
                 mock =>
                 mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Sort, null, -1))
-            .WhenCalled(mi => Assert.That(_observableDomainObjectDecoratorWithRealContent, Is.EqualTo(new[] { _order4, _order3, _order1 })));
-      }
-
-      _eventSinkMock.Replay();
+            .Callback((OperationKind operation, DomainObject affectedObject, int index) => Assert.That(_observableDomainObjectDecoratorWithRealContent, Is.EqualTo(new[] { _order4, _order3, _order1 })))
+            .Verifiable();
 
       var weights = new Dictionary<DomainObject, int> { { _order1, 3 }, { _order3, 2 }, { _order4, 1 } };
       Comparison<DomainObject> comparison = (one, two) => weights[one].CompareTo(weights[two]);
 
       _observableDomainObjectDecoratorWithRealContent.Sort(comparison);
 
-      _eventSinkMock.VerifyAllExpectations();
+      _eventSinkMock.Verify();
     }
 
     [Test]
     public void Sort_WithException ()
     {
-      _eventSinkMock.Expect(mock => mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Sort, null, -1));
-      _eventSinkMock.Expect(mock => mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Sort, null, -1));
-      _eventSinkMock.Replay();
+      _eventSinkMock.Setup (mock => mock.CollectionChanging (ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Sort, null, -1)).Verifiable();
+      _eventSinkMock.Setup (mock => mock.CollectionChanged (ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Sort, null, -1)).Verifiable();
 
       Comparison<DomainObject> comparison = (one, two) => { throw new Exception(); };
 
       Assert.That(() => _observableDomainObjectDecoratorWithRealContent.Sort(comparison), Throws.Exception);
 
-      _eventSinkMock.VerifyAllExpectations();
+      _eventSinkMock.Verify();
     }
 
     [Test]

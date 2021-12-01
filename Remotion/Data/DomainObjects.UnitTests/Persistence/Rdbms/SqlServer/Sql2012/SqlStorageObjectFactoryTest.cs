@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Linq;
@@ -41,7 +43,6 @@ using Remotion.Linq.SqlBackend.MappingResolution;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Mixins;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2012
 {
@@ -50,82 +51,82 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
   {
     private IRdbmsStorageObjectFactory _sqlProviderFactory;
     private RdbmsProviderDefinition _rdbmsProviderDefinition;
-    private IPersistenceExtension _persistenceExtensionStub;
+    private Mock<IPersistenceExtension> _persistenceExtensionStub;
     private StorageGroupBasedStorageProviderDefinitionFinder _storageProviderDefinitionFinder;
-    private TableScriptBuilder _tableBuilderStub;
-    private ViewScriptBuilder _viewBuilderStub;
-    private ForeignKeyConstraintScriptBuilder _constraintBuilderStub;
-    private SqlIndexScriptElementFactory _indexScriptElementFactoryStub;
-    private IndexScriptBuilder _indexBuilderStub;
-    private SynonymScriptBuilder _synonymBuilderStub;
-    private IRdbmsPersistenceModelProvider _rdbmsPersistenceModelProviderStub;
-    private IStorageTypeInformationProvider _storageTypeInformationProviderStub;
-    private IDbCommandBuilderFactory _dbCommandBuilderFactoryStub;
-    private IStorageNameProvider _storageNameProviderStub;
-    private IInfrastructureStoragePropertyDefinitionProvider _infrastructureStoragePropertyDefinitionProviderStub;
-    private IDataStoragePropertyDefinitionFactory _dataStoragePropertyDefinitionFactoryStub;
-    private IValueStoragePropertyDefinitionFactory _valueStoragePropertyDefinitonFactoryStub;
-    private IRelationStoragePropertyDefinitionFactory _relationStoragePropertyDefiniitonFactoryStub;
-    private IMethodCallTransformerProvider _methodCallTransformerProviderStub;
-    private ResultOperatorHandlerRegistry _resultOpertatorHandlerRegistryStub;
-    private ISqlQueryGenerator _sqlQueryGeneratorStub;
-    private IForeignKeyConstraintDefinitionFactory _foreignKeyConstraintDefinitionFactoryStub;
-    private IStoragePropertyDefinitionResolver _storagePropertyDefinitionResolverStub;
+    private Mock<TableScriptBuilder> _tableBuilderStub;
+    private Mock<ViewScriptBuilder> _viewBuilderStub;
+    private Mock<ForeignKeyConstraintScriptBuilder> _constraintBuilderStub;
+    private Mock<SqlIndexScriptElementFactory> _indexScriptElementFactoryStub;
+    private Mock<IndexScriptBuilder> _indexBuilderStub;
+    private Mock<SynonymScriptBuilder> _synonymBuilderStub;
+    private Mock<IRdbmsPersistenceModelProvider> _rdbmsPersistenceModelProviderStub;
+    private Mock<IStorageTypeInformationProvider> _storageTypeInformationProviderStub;
+    private Mock<IDbCommandBuilderFactory> _dbCommandBuilderFactoryStub;
+    private Mock<IStorageNameProvider> _storageNameProviderStub;
+    private Mock<IInfrastructureStoragePropertyDefinitionProvider> _infrastructureStoragePropertyDefinitionProviderStub;
+    private Mock<IDataStoragePropertyDefinitionFactory> _dataStoragePropertyDefinitionFactoryStub;
+    private Mock<IValueStoragePropertyDefinitionFactory> _valueStoragePropertyDefinitonFactoryStub;
+    private Mock<IRelationStoragePropertyDefinitionFactory> _relationStoragePropertyDefiniitonFactoryStub;
+    private Mock<IMethodCallTransformerProvider> _methodCallTransformerProviderStub;
+    private Mock<ResultOperatorHandlerRegistry> _resultOpertatorHandlerRegistryStub;
+    private Mock<ISqlQueryGenerator> _sqlQueryGeneratorStub;
+    private Mock<IForeignKeyConstraintDefinitionFactory> _foreignKeyConstraintDefinitionFactoryStub;
+    private Mock<IStoragePropertyDefinitionResolver> _storagePropertyDefinitionResolverStub;
 
     [SetUp]
     public void SetUp ()
     {
       _rdbmsProviderDefinition = new RdbmsProviderDefinition("TestDomain", new SqlStorageObjectFactory(), "ConnectionString");
       _sqlProviderFactory = new SqlStorageObjectFactory();
-      _persistenceExtensionStub = MockRepository.GenerateStub<IPersistenceExtension>();
+      _persistenceExtensionStub = new Mock<IPersistenceExtension>();
       _storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
 
-      _tableBuilderStub = MockRepository.GenerateStub<TableScriptBuilder>(
-          MockRepository.GenerateStub<ITableScriptElementFactory>(), new SqlCommentScriptElementFactory());
-      _viewBuilderStub = MockRepository.GenerateStub<ViewScriptBuilder>(
-          MockRepository.GenerateStub<IViewScriptElementFactory<TableDefinition>>(),
-          MockRepository.GenerateStub<IViewScriptElementFactory<UnionViewDefinition>>(),
-          MockRepository.GenerateStub<IViewScriptElementFactory<FilterViewDefinition>>(),
-          MockRepository.GenerateStub<IViewScriptElementFactory<EmptyViewDefinition>>(),
+      _tableBuilderStub = new Mock<TableScriptBuilder> (
+new Mock<ITableScriptElementFactory>().Object, new SqlCommentScriptElementFactory());
+      _viewBuilderStub = new Mock<ViewScriptBuilder> (
+          new Mock<IViewScriptElementFactory<TableDefinition>>().Object,
+          new Mock<IViewScriptElementFactory<UnionViewDefinition>>().Object,
+          new Mock<IViewScriptElementFactory<FilterViewDefinition>>().Object,
+          new Mock<IViewScriptElementFactory<EmptyViewDefinition>>().Object,
           new SqlCommentScriptElementFactory());
       _constraintBuilderStub =
-          MockRepository.GenerateStub<ForeignKeyConstraintScriptBuilder>(
-              MockRepository.GenerateStub<IForeignKeyConstraintScriptElementFactory>(), new SqlCommentScriptElementFactory());
-      _indexScriptElementFactoryStub = MockRepository.GenerateStub<SqlIndexScriptElementFactory>(
-          MockRepository.GenerateStub<ISqlIndexDefinitionScriptElementFactory<SqlIndexDefinition>>(),
-          MockRepository.GenerateStub<ISqlIndexDefinitionScriptElementFactory<SqlPrimaryXmlIndexDefinition>>(),
-          MockRepository.GenerateStub<ISqlIndexDefinitionScriptElementFactory<SqlSecondaryXmlIndexDefinition>>());
-      _indexBuilderStub = MockRepository.GenerateStub<IndexScriptBuilder>(_indexScriptElementFactoryStub, new SqlCommentScriptElementFactory());
+          new Mock<ForeignKeyConstraintScriptBuilder> (
+new Mock<IForeignKeyConstraintScriptElementFactory>().Object, new SqlCommentScriptElementFactory());
+      _indexScriptElementFactoryStub = new Mock<SqlIndexScriptElementFactory> (
+ new Mock<ISqlIndexDefinitionScriptElementFactory<SqlIndexDefinition>>().Object,
+ new Mock<ISqlIndexDefinitionScriptElementFactory<SqlPrimaryXmlIndexDefinition>>().Object,
+ new Mock<ISqlIndexDefinitionScriptElementFactory<SqlSecondaryXmlIndexDefinition>>().Object);
+      _indexBuilderStub = new Mock<IndexScriptBuilder> (_indexScriptElementFactoryStub.Object, new SqlCommentScriptElementFactory());
       _synonymBuilderStub =
-          MockRepository.GenerateStub<SynonymScriptBuilder>(
-              MockRepository.GenerateStub<ISynonymScriptElementFactory<TableDefinition>>(),
-              MockRepository.GenerateStub<ISynonymScriptElementFactory<UnionViewDefinition>>(),
-              MockRepository.GenerateStub<ISynonymScriptElementFactory<FilterViewDefinition>>(),
-              MockRepository.GenerateStub<ISynonymScriptElementFactory<EmptyViewDefinition>>(),
+          new Mock<SynonymScriptBuilder> (
+              new Mock<ISynonymScriptElementFactory<TableDefinition>>().Object,
+              new Mock<ISynonymScriptElementFactory<UnionViewDefinition>>().Object,
+              new Mock<ISynonymScriptElementFactory<FilterViewDefinition>>().Object,
+              new Mock<ISynonymScriptElementFactory<EmptyViewDefinition>>().Object,
               new SqlCommentScriptElementFactory());
-      _rdbmsPersistenceModelProviderStub = MockRepository.GenerateStub<IRdbmsPersistenceModelProvider>();
-      _storageTypeInformationProviderStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
-      _dbCommandBuilderFactoryStub = MockRepository.GenerateStub<IDbCommandBuilderFactory>();
-      MockRepository.GeneratePartialMock<SqlSynonymScriptElementFactory>();
-      _storageNameProviderStub = MockRepository.GenerateStub<IStorageNameProvider>();
-      _infrastructureStoragePropertyDefinitionProviderStub = MockRepository.GenerateStub<IInfrastructureStoragePropertyDefinitionProvider>();
-      _dataStoragePropertyDefinitionFactoryStub = MockRepository.GenerateStub<IDataStoragePropertyDefinitionFactory>();
-      _valueStoragePropertyDefinitonFactoryStub = MockRepository.GenerateStub<IValueStoragePropertyDefinitionFactory>();
-      _relationStoragePropertyDefiniitonFactoryStub = MockRepository.GenerateStub<IRelationStoragePropertyDefinitionFactory>();
-      _methodCallTransformerProviderStub = MockRepository.GenerateStub<IMethodCallTransformerProvider>();
-      _resultOpertatorHandlerRegistryStub = MockRepository.GeneratePartialMock<ResultOperatorHandlerRegistry>();
-      _sqlQueryGeneratorStub = MockRepository.GenerateStub<ISqlQueryGenerator>();
-      _foreignKeyConstraintDefinitionFactoryStub = MockRepository.GenerateStub<IForeignKeyConstraintDefinitionFactory>();
-      _storagePropertyDefinitionResolverStub = MockRepository.GenerateStub<IStoragePropertyDefinitionResolver>();
+      _rdbmsPersistenceModelProviderStub = new Mock<IRdbmsPersistenceModelProvider>();
+      _storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();
+      _dbCommandBuilderFactoryStub = new Mock<IDbCommandBuilderFactory>();
+      new Mock<SqlSynonymScriptElementFactory>() { CallBase = true }.Object;
+      _storageNameProviderStub = new Mock<IStorageNameProvider>();
+      _infrastructureStoragePropertyDefinitionProviderStub = new Mock<IInfrastructureStoragePropertyDefinitionProvider>();
+      _dataStoragePropertyDefinitionFactoryStub = new Mock<IDataStoragePropertyDefinitionFactory>();
+      _valueStoragePropertyDefinitonFactoryStub = new Mock<IValueStoragePropertyDefinitionFactory>();
+      _relationStoragePropertyDefiniitonFactoryStub = new Mock<IRelationStoragePropertyDefinitionFactory>();
+      _methodCallTransformerProviderStub = new Mock<IMethodCallTransformerProvider>();
+      _resultOpertatorHandlerRegistryStub = new Mock<ResultOperatorHandlerRegistry>() { CallBase = true };
+      _sqlQueryGeneratorStub = new Mock<ISqlQueryGenerator>();
+      _foreignKeyConstraintDefinitionFactoryStub = new Mock<IForeignKeyConstraintDefinitionFactory>();
+      _storagePropertyDefinitionResolverStub = new Mock<IStoragePropertyDefinitionResolver>();
     }
 
     [Test]
     public void CreateStorageProvider ()
     {
-      var result = _sqlProviderFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub);
+      var result = _sqlProviderFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
       Assert.That(result, Is.TypeOf(typeof(RdbmsProvider)));
-      Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub));
+      Assert.That(result.PersistenceExtension, Is.SameAs(_persistenceExtensionStub.Object));
       Assert.That(result.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
 
       var commandFactory = (RdbmsProviderCommandFactory)PrivateInvoke.GetNonPublicProperty(result, "StorageProviderCommandFactory");
@@ -144,7 +145,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     {
       using (MixinConfiguration.BuildFromActive().ForClass(typeof(RdbmsProvider)).Clear().AddMixins(typeof(SqlProviderTestMixin)).EnterScope())
       {
-        var result = _sqlProviderFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub);
+        var result = _sqlProviderFactory.CreateStorageProvider(_rdbmsProviderDefinition, _persistenceExtensionStub.Object);
 
         Assert.That(Mixin.Get<SqlProviderTestMixin>(result), Is.Not.Null);
       }
@@ -185,14 +186,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
           null,
           null,
           null,
-          _storageNameProviderStub,
-          _infrastructureStoragePropertyDefinitionProviderStub,
+          _storageNameProviderStub.Object,
+          _infrastructureStoragePropertyDefinitionProviderStub.Object,
           null,
           null,
           null,
           null,
-          _foreignKeyConstraintDefinitionFactoryStub,
-          _storagePropertyDefinitionResolverStub);
+          _foreignKeyConstraintDefinitionFactoryStub.Object,
+          _storagePropertyDefinitionResolverStub.Object);
 
       var result = testableSqlProviderFactory.CreateEntityDefinitionFactory(_rdbmsProviderDefinition);
 
@@ -201,38 +202,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That(resultAsRdmsStorageEntityDefinitionFactory.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
       Assert.That(
           resultAsRdmsStorageEntityDefinitionFactory.InfrastructureStoragePropertyDefinitionProvider,
-          Is.SameAs(_infrastructureStoragePropertyDefinitionProviderStub));
-      Assert.That(resultAsRdmsStorageEntityDefinitionFactory.StorageNameProvider, Is.SameAs(_storageNameProviderStub));
+          Is.SameAs(_infrastructureStoragePropertyDefinitionProviderStub.Object));
+      Assert.That(resultAsRdmsStorageEntityDefinitionFactory.StorageNameProvider, Is.SameAs(_storageNameProviderStub.Object));
       Assert.That(
-          resultAsRdmsStorageEntityDefinitionFactory.ForeignKeyConstraintDefinitionFactory, Is.SameAs(_foreignKeyConstraintDefinitionFactoryStub));
-      Assert.That(resultAsRdmsStorageEntityDefinitionFactory.StoragePropertyDefinitionResolver, Is.SameAs(_storagePropertyDefinitionResolverStub));
+          resultAsRdmsStorageEntityDefinitionFactory.ForeignKeyConstraintDefinitionFactory, Is.SameAs(_foreignKeyConstraintDefinitionFactoryStub.Object));
+      Assert.That(resultAsRdmsStorageEntityDefinitionFactory.StoragePropertyDefinitionResolver, Is.SameAs(_storagePropertyDefinitionResolverStub.Object));
     }
 
     [Test]
     public void CreateDomainObjectQueryGenerator ()
     {
       IRdbmsStorageObjectFactory testableSqlProviderFactory = new TestableSqlStorageObjectFactory(
-          null, _storageTypeInformationProviderStub, null, null, null, null, null, null, _sqlQueryGeneratorStub, null, null);
-      var mappingConfiguration = MockRepository.GenerateStub<IMappingConfiguration>();
+          null, _storageTypeInformationProviderStub.Object, null, null, null, null, null, null, _sqlQueryGeneratorStub.Object, null, null);
+      var mappingConfiguration = new Mock<IMappingConfiguration>();
 
       var result = testableSqlProviderFactory.CreateDomainObjectQueryGenerator(
           _rdbmsProviderDefinition,
-          _methodCallTransformerProviderStub,
-          _resultOpertatorHandlerRegistryStub,
-          mappingConfiguration);
+          _methodCallTransformerProviderStub.Object,
+          _resultOpertatorHandlerRegistryStub.Object,
+          mappingConfiguration.Object);
 
       Assert.That(result, Is.InstanceOf<DomainObjectQueryGenerator>());
       var resultAsDomainObjectQueryGenerator = (DomainObjectQueryGenerator)result;
-      Assert.That(resultAsDomainObjectQueryGenerator.SqlQueryGenerator, Is.SameAs(_sqlQueryGeneratorStub));
-      Assert.That(resultAsDomainObjectQueryGenerator.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
-      Assert.That(resultAsDomainObjectQueryGenerator.MappingConfiguration, Is.SameAs(mappingConfiguration));
+      Assert.That(resultAsDomainObjectQueryGenerator.SqlQueryGenerator, Is.SameAs(_sqlQueryGeneratorStub.Object));
+      Assert.That(resultAsDomainObjectQueryGenerator.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub.Object));
+      Assert.That(resultAsDomainObjectQueryGenerator.MappingConfiguration, Is.SameAs(mappingConfiguration.Object));
     }
 
     [Test]
     public void CreateSqlQueryGenerator ()
     {
       var result = _sqlProviderFactory.CreateSqlQueryGenerator(
-          _rdbmsProviderDefinition, _methodCallTransformerProviderStub, _resultOpertatorHandlerRegistryStub);
+          _rdbmsProviderDefinition, _methodCallTransformerProviderStub.Object, _resultOpertatorHandlerRegistryStub.Object);
 
       Assert.That(result, Is.TypeOf<SqlQueryGenerator>());
 
@@ -240,8 +241,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That(sqlQueryGenerator.PreparationStage, Is.TypeOf(typeof(DefaultSqlPreparationStage)));
 
       var defaultSqlPreparationStage = ((DefaultSqlPreparationStage)sqlQueryGenerator.PreparationStage);
-      Assert.That(defaultSqlPreparationStage.MethodCallTransformerProvider, Is.SameAs(_methodCallTransformerProviderStub));
-      Assert.That(defaultSqlPreparationStage.ResultOperatorHandlerRegistry, Is.SameAs(_resultOpertatorHandlerRegistryStub));
+      Assert.That(defaultSqlPreparationStage.MethodCallTransformerProvider, Is.SameAs(_methodCallTransformerProviderStub.Object));
+      Assert.That(defaultSqlPreparationStage.ResultOperatorHandlerRegistry, Is.SameAs(_resultOpertatorHandlerRegistryStub.Object));
       Assert.That(defaultSqlPreparationStage.UniqueIdentifierGenerator, Is.TypeOf<UniqueIdentifierGenerator>());
 
       Assert.That(sqlQueryGenerator.ResolutionStage, Is.TypeOf<DefaultMappingResolutionStage>());
@@ -268,8 +269,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
           null,
           null,
           null,
-          _valueStoragePropertyDefinitonFactoryStub,
-          _relationStoragePropertyDefiniitonFactoryStub,
+          _valueStoragePropertyDefinitonFactoryStub.Object,
+          _relationStoragePropertyDefiniitonFactoryStub.Object,
           null,
           null,
           null);
@@ -280,21 +281,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       var resultAsDataStoragePropertyDefinitionFactory = (DataStoragePropertyDefinitionFactory)result;
       Assert.That(
           resultAsDataStoragePropertyDefinitionFactory.RelationStoragePropertyDefinitionFactory,
-          Is.SameAs(_relationStoragePropertyDefiniitonFactoryStub));
+          Is.SameAs(_relationStoragePropertyDefiniitonFactoryStub.Object));
       Assert.That(
-          resultAsDataStoragePropertyDefinitionFactory.ValueStoragePropertyDefinitionFactory, Is.SameAs(_valueStoragePropertyDefinitonFactoryStub));
+          resultAsDataStoragePropertyDefinitionFactory.ValueStoragePropertyDefinitionFactory, Is.SameAs(_valueStoragePropertyDefinitonFactoryStub.Object));
     }
 
     [Test]
     public void CreateStorageProviderCommandFactory ()
     {
       IRdbmsStorageObjectFactory testableSqlProviderFactory = new TestableSqlStorageObjectFactory(
-          _rdbmsPersistenceModelProviderStub,
+          _rdbmsPersistenceModelProviderStub.Object,
           null,
-          _dbCommandBuilderFactoryStub,
+          _dbCommandBuilderFactoryStub.Object,
           null,
           null,
-          _dataStoragePropertyDefinitionFactoryStub,
+          _dataStoragePropertyDefinitionFactoryStub.Object,
           null,
           null,
           null,
@@ -306,9 +307,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That(result, Is.TypeOf(typeof(RdbmsProviderCommandFactory)));
       var resultAsRdbmsProviderCommandFactory = (RdbmsProviderCommandFactory)result;
       Assert.That(resultAsRdbmsProviderCommandFactory.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
-      Assert.That(resultAsRdbmsProviderCommandFactory.DbCommandBuilderFactory, Is.SameAs(_dbCommandBuilderFactoryStub));
-      Assert.That(resultAsRdbmsProviderCommandFactory.RdbmsPersistenceModelProvider, Is.SameAs(_rdbmsPersistenceModelProviderStub));
-      Assert.That(resultAsRdbmsProviderCommandFactory.DataStoragePropertyDefinitionFactory, Is.SameAs(_dataStoragePropertyDefinitionFactoryStub));
+      Assert.That(resultAsRdbmsProviderCommandFactory.DbCommandBuilderFactory, Is.SameAs(_dbCommandBuilderFactoryStub.Object));
+      Assert.That(resultAsRdbmsProviderCommandFactory.RdbmsPersistenceModelProvider, Is.SameAs(_rdbmsPersistenceModelProviderStub.Object));
+      Assert.That(resultAsRdbmsProviderCommandFactory.DataStoragePropertyDefinitionFactory, Is.SameAs(_dataStoragePropertyDefinitionFactoryStub.Object));
       var objectReader = resultAsRdbmsProviderCommandFactory.ObjectReaderFactory.CreateDataContainerReader();
       Assert.That(objectReader, Is.TypeOf(typeof(DataContainerReader)));
       var expectedDataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();
@@ -319,7 +320,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     public void CreateRelationStoragePropertyDefinitionFactory ()
     {
       IRdbmsStorageObjectFactory testableSqlProviderFactory = new TestableSqlStorageObjectFactory(
-          null, _storageTypeInformationProviderStub, null, _storageNameProviderStub, null, null, null, null, null, null, null);
+          null, _storageTypeInformationProviderStub.Object, null, _storageNameProviderStub.Object, null, null, null, null, null, null, null);
 
       var result = testableSqlProviderFactory.CreateRelationStoragePropertyDefinitionFactory(
           _rdbmsProviderDefinition);
@@ -327,33 +328,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       Assert.That(result, Is.TypeOf(typeof(RelationStoragePropertyDefinitionFactory)));
       var resultAsRelationStoragePropertyDefinitionFactory = (RelationStoragePropertyDefinitionFactory)result;
       Assert.That(resultAsRelationStoragePropertyDefinitionFactory.StorageProviderDefinition, Is.SameAs(_rdbmsProviderDefinition));
-      Assert.That(resultAsRelationStoragePropertyDefinitionFactory.StorageNameProvider, Is.SameAs(_storageNameProviderStub));
-      Assert.That(resultAsRelationStoragePropertyDefinitionFactory.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
+      Assert.That(resultAsRelationStoragePropertyDefinitionFactory.StorageNameProvider, Is.SameAs(_storageNameProviderStub.Object));
+      Assert.That(resultAsRelationStoragePropertyDefinitionFactory.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub.Object));
     }
 
     [Test]
     public void CreateValueStoragePropertyDefinitionFactory ()
     {
       IRdbmsStorageObjectFactory testableSqlProviderFactory = new TestableSqlStorageObjectFactory(
-          null, _storageTypeInformationProviderStub, null, _storageNameProviderStub, null, null, null, null, null, null, null);
+          null, _storageTypeInformationProviderStub.Object, null, _storageNameProviderStub.Object, null, null, null, null, null, null, null);
 
       var result = testableSqlProviderFactory.CreateValueStoragePropertyDefinitionFactory(_rdbmsProviderDefinition);
 
       Assert.That(result, Is.TypeOf(typeof(ValueStoragePropertyDefinitionFactory)));
       var resultAsValueStoragePropertyDefinitionFactory = (ValueStoragePropertyDefinitionFactory)result;
-      Assert.That(resultAsValueStoragePropertyDefinitionFactory.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
-      Assert.That(resultAsValueStoragePropertyDefinitionFactory.StorageNameProvider, Is.SameAs(_storageNameProviderStub));
+      Assert.That(resultAsValueStoragePropertyDefinitionFactory.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub.Object));
+      Assert.That(resultAsValueStoragePropertyDefinitionFactory.StorageNameProvider, Is.SameAs(_storageNameProviderStub.Object));
     }
 
     [Test]
     public void CreateForeignKeyConstraintDefinitionsFactory ()
     {
       IRdbmsStorageObjectFactory testableSqlProviderFactory = new TestableSqlStorageObjectFactory(
-          _rdbmsPersistenceModelProviderStub,
+          _rdbmsPersistenceModelProviderStub.Object,
           null,
           null,
-          _storageNameProviderStub,
-          _infrastructureStoragePropertyDefinitionProviderStub,
+          _storageNameProviderStub.Object,
+          _infrastructureStoragePropertyDefinitionProviderStub.Object,
           null,
           null,
           null,
@@ -365,11 +366,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
 
       Assert.That(result, Is.TypeOf(typeof(ForeignKeyConstraintDefinitionFactory)));
       var resultAsForeignKeyConstraintDefinitionFactory = (ForeignKeyConstraintDefinitionFactory)result;
-      Assert.That(resultAsForeignKeyConstraintDefinitionFactory.StorageNameProvider, Is.SameAs(_storageNameProviderStub));
+      Assert.That(resultAsForeignKeyConstraintDefinitionFactory.StorageNameProvider, Is.SameAs(_storageNameProviderStub.Object));
       Assert.That(
           resultAsForeignKeyConstraintDefinitionFactory.InfrastructureStoragePropertyDefinitionProvider,
-          Is.SameAs(_infrastructureStoragePropertyDefinitionProviderStub));
-      Assert.That(resultAsForeignKeyConstraintDefinitionFactory.PersistenceModelProvider, Is.SameAs(_rdbmsPersistenceModelProviderStub));
+          Is.SameAs(_infrastructureStoragePropertyDefinitionProviderStub.Object));
+      Assert.That(resultAsForeignKeyConstraintDefinitionFactory.PersistenceModelProvider, Is.SameAs(_rdbmsPersistenceModelProviderStub.Object));
     }
 
     [Test]
@@ -479,7 +480,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     public void CreateSchemaScriptBuilder ()
     {
       IRdbmsStorageObjectFactory testableSqlProviderFactory = new TestableSqlStorageObjectFactory(
-          _tableBuilderStub, _viewBuilderStub, _constraintBuilderStub, _indexBuilderStub, _synonymBuilderStub);
+          _tableBuilderStub.Object, _viewBuilderStub.Object, _constraintBuilderStub.Object, _indexBuilderStub.Object, _synonymBuilderStub.Object);
 
       var result = testableSqlProviderFactory.CreateSchemaScriptBuilder(_rdbmsProviderDefinition);
 
@@ -493,22 +494,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
           Is.EqualTo(
               new IScriptBuilder[]
               {
-                  _tableBuilderStub,
-                  _constraintBuilderStub,
-                  _viewBuilderStub,
-                  _indexBuilderStub,
-                  _synonymBuilderStub
+                  _tableBuilderStub.Object,
+                  _constraintBuilderStub.Object,
+                  _viewBuilderStub.Object,
+                  _indexBuilderStub.Object,
+                  _synonymBuilderStub.Object
               }));
     }
 
     [Test]
     public void CreateStorageProviderSerializer ()
     {
-      var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
+      var enumSerializerStub = new Mock<IEnumSerializer>();
       var testableSqlProviderFactory = new TestableSqlStorageObjectFactory(null,
-          enumSerializerStub);
+          enumSerializerStub.Object);
 
-      var storageProviderSerializer = testableSqlProviderFactory.CreateStorageProviderSerializer(enumSerializerStub);
+      var storageProviderSerializer = testableSqlProviderFactory.CreateStorageProviderSerializer(enumSerializerStub.Object);
       Assert.That(storageProviderSerializer, Is.InstanceOf<StorageProviderSerializer>());
       Assert.That(
           ((StorageProviderSerializer)storageProviderSerializer).ClassSerializer,

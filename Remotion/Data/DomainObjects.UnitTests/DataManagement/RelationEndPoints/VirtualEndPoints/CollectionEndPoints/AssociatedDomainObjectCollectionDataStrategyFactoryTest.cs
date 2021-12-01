@@ -15,27 +15,28 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   [TestFixture]
   public class AssociatedDomainObjectCollectionDataStrategyFactoryTest : StandardMappingTest
   {
-    private IVirtualEndPointProvider _virtualEndPointProviderStub;
+    private Mock<IVirtualEndPointProvider> _virtualEndPointProviderStub;
     private AssociatedDomainObjectCollectionDataStrategyFactory _factory;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _virtualEndPointProviderStub = MockRepository.GenerateStub<IVirtualEndPointProvider>();
-      _factory = new AssociatedDomainObjectCollectionDataStrategyFactory(_virtualEndPointProviderStub);
+      _virtualEndPointProviderStub = new Mock<IVirtualEndPointProvider>();
+      _factory = new AssociatedDomainObjectCollectionDataStrategyFactory(_virtualEndPointProviderStub.Object);
     }
 
     [Test]
@@ -51,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var delegator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EndPointDelegatingDomainObjectCollectionData>(checkingDecorator);
       Assert.That(delegator.AssociatedEndPointID, Is.EqualTo(ordersEndPointID));
-      Assert.That(delegator.VirtualEndPointProvider, Is.SameAs(_virtualEndPointProviderStub));
+      Assert.That(delegator.VirtualEndPointProvider, Is.SameAs(_virtualEndPointProviderStub.Object));
     }
   }
 }

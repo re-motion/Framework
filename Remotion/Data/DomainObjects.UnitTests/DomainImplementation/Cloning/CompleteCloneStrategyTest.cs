@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation.Cloning;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
 {
@@ -36,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
 
     protected override void HandleReference_OneOne_RealSide_Checks (Employee sourceRelated, PropertyAccessor sourceReference, Employee cloneRelated, PropertyAccessor cloneReference)
     {
-      Expect.Call(ContextMock.GetCloneFor<DomainObject>(sourceRelated)).Return(cloneRelated);
+      ContextMock.Setup (_ => _.GetCloneFor<DomainObject> (sourceRelated)).Returns (cloneRelated).Verifiable();
 
       MockRepository.ReplayAll();
       _strategy.HandleReference(sourceReference, cloneReference, ContextMock);
@@ -58,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
 
     protected override void HandleReference_OneOne_VirtualSide_Checks (Computer sourceRelated, PropertyAccessor sourceReference, Computer cloneRelated, PropertyAccessor cloneReference)
     {
-      Expect.Call(ContextMock.GetCloneFor<DomainObject>(sourceRelated)).Return(cloneRelated);
+      ContextMock.Setup (_ => _.GetCloneFor<DomainObject> (sourceRelated)).Returns (cloneRelated).Verifiable();
 
       MockRepository.ReplayAll();
       _strategy.HandleReference(sourceReference, cloneReference, ContextMock);
@@ -80,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
 
     protected override void HandleReference_OneMany_RealSide_Checks (Order sourceRelated, PropertyAccessor sourceReference, Order cloneRelated, PropertyAccessor cloneReference)
     {
-      Expect.Call(ContextMock.GetCloneFor<DomainObject>(sourceRelated)).Return(cloneRelated);
+      ContextMock.Setup (_ => _.GetCloneFor<DomainObject> (sourceRelated)).Returns (cloneRelated).Verifiable();
 
       MockRepository.ReplayAll();
       _strategy.HandleReference(sourceReference, cloneReference, ContextMock);
@@ -102,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
 
     protected override void HandleReference_OneMany_VirtualSide_Checks (OrderItem sourceRelated, PropertyAccessor sourceReference, OrderItem cloneRelated, PropertyAccessor cloneReference)
     {
-      Expect.Call(ContextMock.GetCloneFor<DomainObject>(sourceRelated)).Return(cloneRelated);
+      ContextMock.Setup (_ => _.GetCloneFor<DomainObject> (sourceRelated)).Returns (cloneRelated).Verifiable();
 
       MockRepository.ReplayAll();
       _strategy.HandleReference(sourceReference, cloneReference, ContextMock);

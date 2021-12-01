@@ -16,20 +16,21 @@
 // 
 using System;
 using System.Data;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Queries;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuilders
 {
   [TestFixture]
   public class QueryDbCommandBuilderTest
   {
-    private IStorageTypeInformation _valueParameterStorageTypeInformationMock;
-    private IStorageTypeInformation _textParameterStorageTypeInformationMock;
+    private Mock<IStorageTypeInformation> _valueParameterStorageTypeInformationMock;
+    private Mock<IStorageTypeInformation> _textParameterStorageTypeInformationMock;
     private QueryParameter _valueQueryParameter;
     private QueryParameter _textQueryParameter;
     private QueryParameterWithType _valueQueryParameterWithType;
@@ -39,47 +40,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     [SetUp]
     public void SetUp ()
     {
-      _valueParameterStorageTypeInformationMock = MockRepository.GenerateStrictMock<IStorageTypeInformation>();
-      _textParameterStorageTypeInformationMock = MockRepository.GenerateStrictMock<IStorageTypeInformation>();
+      _valueParameterStorageTypeInformationMock = new Mock<IStorageTypeInformation> (MockBehavior.Strict);
+      _textParameterStorageTypeInformationMock = new Mock<IStorageTypeInformation> (MockBehavior.Strict);
 
       _valueQueryParameter = new QueryParameter("@param1", 5,QueryParameterType.Value);
       _textQueryParameter = new QueryParameter("@param2", "test", QueryParameterType.Text);
 
-      _valueQueryParameterWithType = new QueryParameterWithType(_valueQueryParameter, _valueParameterStorageTypeInformationMock);
-      _textQueryParameterWithType = new QueryParameterWithType(_textQueryParameter, _textParameterStorageTypeInformationMock);
+      _valueQueryParameterWithType = new QueryParameterWithType(_valueQueryParameter, _valueParameterStorageTypeInformationMock.Object);
+      _textQueryParameterWithType = new QueryParameterWithType(_textQueryParameter, _textParameterStorageTypeInformationMock.Object);
 
       _commandBuilder = new QueryDbCommandBuilder(
-          "Statement @param1 @param2", new[] { _valueQueryParameterWithType, _textQueryParameterWithType }, MockRepository.GenerateStub<ISqlDialect>());
+          "Statement @param1 @param2", new[] { _valueQueryParameterWithType, _textQueryParameterWithType }, new Mock<ISqlDialect>().Object);
     }
 
     [Test]
     public void Create ()
     {
-      var dataParameterCollectionStrictMock = MockRepository.GenerateStrictMock<IDataParameterCollection>();
+      var dataParameterCollectionStrictMock = new Mock<IDataParameterCollection> (MockBehavior.Strict);
 
-      var dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      dbCommandStub.Stub(stub => stub.Parameters).Return(dataParameterCollectionStrictMock);
+      var dbCommandStub = new Mock<IDbCommand>();
+      dbCommandStub.Setup (stub => stub.Parameters).Returns (dataParameterCollectionStrictMock.Object);
 
-      var executionContextStub = MockRepository.GenerateStub<IRdbmsProviderCommandExecutionContext>();
-      executionContextStub.Stub(stub => stub.CreateDbCommand()).Return(dbCommandStub);
+      var executionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
+      executionContextStub.Setup (stub => stub.CreateDbCommand()).Returns (dbCommandStub.Object);
 
-      var dbDataParameterStub = MockRepository.GenerateStub<IDbDataParameter>();
+      var dbDataParameterStub = new Mock<IDbDataParameter>();
       _valueParameterStorageTypeInformationMock
-        .Expect(mock => mock.CreateDataParameter(dbCommandStub, 5))
-        .Return(dbDataParameterStub);
-      _valueParameterStorageTypeInformationMock.Replay();
+        .Setup(mock => mock.CreateDataParameter(dbCommandStub.Object, 5))
+        .Returns(dbDataParameterStub.Object)
+        .Verifiable();
 
-      _textParameterStorageTypeInformationMock.Replay();
+      dataParameterCollectionStrictMock.Setup (mock => mock.Add (dbDataParameterStub.Object)).Returns (0).Verifiable();
 
-      dataParameterCollectionStrictMock.Expect(mock => mock.Add(dbDataParameterStub)).Return(0);
-      dataParameterCollectionStrictMock.Replay();
+      var result = _commandBuilder.Create(executionContextStub.Object);
 
-      var result = _commandBuilder.Create(executionContextStub);
-
-      dataParameterCollectionStrictMock.VerifyAllExpectations();
-      _valueParameterStorageTypeInformationMock.VerifyAllExpectations();
-      _textParameterStorageTypeInformationMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(dbCommandStub));
+      dataParameterCollectionStrictMock.Verify();
+      _valueParameterStorageTypeInformationMock.Verify();
+      _textParameterStorageTypeInformationMock.Verify();
+      Assert.That(result, Is.SameAs(dbCommandStub.Object));
       Assert.That(result.CommandText, Is.EqualTo("Statement @param1 test"));
     }
   }

@@ -17,13 +17,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
@@ -31,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
   public class ReadOnlyDomainObjectCollectionDataDecoratorTest : ClientTransactionBaseTest
   {
     private ReadOnlyDomainObjectCollectionDataDecorator _readOnlyDecorator;
-    private IDomainObjectCollectionData _wrappedDataStub;
+    private Mock<IDomainObjectCollectionData> _wrappedDataStub;
 
     private Order _order1;
     private Order _order3;
@@ -41,8 +42,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     public override void SetUp ()
     {
       base.SetUp();
-      _wrappedDataStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
-      _readOnlyDecorator = new ReadOnlyDomainObjectCollectionDataDecorator(_wrappedDataStub);
+      _wrappedDataStub = new Mock<IDomainObjectCollectionData>();
+      _readOnlyDecorator = new ReadOnlyDomainObjectCollectionDataDecorator(_wrappedDataStub.Object);
 
       _order1 = DomainObjectIDs.Order1.GetObject<Order>();
       _order3 = DomainObjectIDs.Order3.GetObject<Order>();
@@ -74,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     public void AssociatedEndPointID ()
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
-      _wrappedDataStub.Stub(stub => stub.AssociatedEndPointID).Return(endPointID);
+      _wrappedDataStub.Setup (stub => stub.AssociatedEndPointID).Returns (endPointID);
 
       Assert.That(_readOnlyDecorator.AssociatedEndPointID, Is.SameAs(endPointID));
     }
@@ -82,11 +83,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void IsDataComplete ()
     {
-      _wrappedDataStub.Stub(stub => stub.IsDataComplete).Return(true);
+      _wrappedDataStub.Setup (stub => stub.IsDataComplete).Returns (true);
       Assert.That(_readOnlyDecorator.IsDataComplete, Is.True);
 
       _wrappedDataStub.BackToRecord();
-      _wrappedDataStub.Stub(stub => stub.IsDataComplete).Return(false);
+      _wrappedDataStub.Setup (stub => stub.IsDataComplete).Returns (false);
       Assert.That(_readOnlyDecorator.IsDataComplete, Is.False);
     }
 
@@ -94,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     public void EnsureDataComplete ()
     {
       _readOnlyDecorator.EnsureDataComplete();
-      _wrappedDataStub.AssertWasCalled(stub => stub.EnsureDataComplete());
+      _wrappedDataStub.Verify (stub => stub.EnsureDataComplete(), Times.AtLeastOnce());
     }
 
     [Test]
@@ -200,16 +201,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 
     private void StubInnerData (params DomainObject[] contents)
     {
-      _wrappedDataStub.Stub(stub => stub.Count).Return(contents.Length);
-      _wrappedDataStub.Stub(stub => stub.GetEnumerator()).Return(((IEnumerable<DomainObject>)contents).GetEnumerator());
+      _wrappedDataStub.Setup (stub => stub.Count).Returns (contents.Length);
+      _wrappedDataStub.Setup (stub => stub.GetEnumerator()).Returns (((IEnumerable<DomainObject>)contents).GetEnumerator());
 
       for (int i = 0; i < contents.Length; i++)
       {
         int currentIndex = i; // required because Stub creates a closure
-        _wrappedDataStub.Stub(stub => stub.ContainsObjectID(contents[currentIndex].ID)).Return(true);
-        _wrappedDataStub.Stub(stub => stub.GetObject(contents[currentIndex].ID)).Return(contents[currentIndex]);
-        _wrappedDataStub.Stub(stub => stub.GetObject(currentIndex)).Return(contents[currentIndex]);
-        _wrappedDataStub.Stub(stub => stub.IndexOf(contents[currentIndex].ID)).Return(currentIndex);
+        _wrappedDataStub.Setup (stub => stub.ContainsObjectID (contents[currentIndex].ID)).Returns (true);
+        _wrappedDataStub.Setup (stub => stub.GetObject (contents[currentIndex].ID)).Returns (contents[currentIndex]);
+        _wrappedDataStub.Setup (stub => stub.GetObject (currentIndex)).Returns (contents[currentIndex]);
+        _wrappedDataStub.Setup (stub => stub.IndexOf (contents[currentIndex].ID)).Returns (currentIndex);
       }
     }
   }

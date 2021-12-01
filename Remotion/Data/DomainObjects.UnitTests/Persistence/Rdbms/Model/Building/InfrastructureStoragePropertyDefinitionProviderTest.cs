@@ -15,23 +15,24 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
 {
   [TestFixture]
   public class InfrastructureStoragePropertyDefinitionProviderTest : StandardMappingTest
   {
-    private IStorageTypeInformationProvider _storageTypeInformationProviderStub;
+    private Mock<IStorageTypeInformationProvider> _storageTypeInformationProviderStub;
     private StorageTypeInformation _idStorageTypeInformation;
     private StorageTypeInformation _classIDStorageTypeInformation;
     private StorageTypeInformation _timestampStorageTypeInformation;
 
-    private IStorageNameProvider _storageNameProviderStub;
+    private Mock<IStorageNameProvider> _storageNameProviderStub;
 
     private InfrastructureStoragePropertyDefinitionProvider _infrastructureStoragePropertyDefinitionProvider;
 
@@ -40,30 +41,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     {
       base.SetUp();
 
-      _storageTypeInformationProviderStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
+      _storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();
 
       _idStorageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
       _storageTypeInformationProviderStub
-          .Stub(stub => stub.GetStorageTypeForID(false))
-          .Return(_idStorageTypeInformation);
+          .Setup(stub => stub.GetStorageTypeForID(false))
+          .Returns(_idStorageTypeInformation);
 
       _classIDStorageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
       _storageTypeInformationProviderStub
-          .Stub(stub => stub.GetStorageTypeForClassID(false))
-          .Return(_classIDStorageTypeInformation);
+          .Setup(stub => stub.GetStorageTypeForClassID(false))
+          .Returns(_classIDStorageTypeInformation);
 
       _timestampStorageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
       _storageTypeInformationProviderStub
-          .Stub(stub => stub.GetStorageTypeForTimestamp(false))
-          .Return(_timestampStorageTypeInformation);
+          .Setup(stub => stub.GetStorageTypeForTimestamp(false))
+          .Returns(_timestampStorageTypeInformation);
 
-      _storageNameProviderStub = MockRepository.GenerateStub<IStorageNameProvider>();
-      _storageNameProviderStub.Stub(stub => stub.GetIDColumnName()).Return("ID");
-      _storageNameProviderStub.Stub(stub => stub.GetClassIDColumnName()).Return("ClassID");
-      _storageNameProviderStub.Stub(stub => stub.GetTimestampColumnName()).Return("Timestamp");
+      _storageNameProviderStub = new Mock<IStorageNameProvider>();
+      _storageNameProviderStub.Setup (stub => stub.GetIDColumnName()).Returns ("ID");
+      _storageNameProviderStub.Setup (stub => stub.GetClassIDColumnName()).Returns ("ClassID");
+      _storageNameProviderStub.Setup (stub => stub.GetTimestampColumnName()).Returns ("Timestamp");
 
       _infrastructureStoragePropertyDefinitionProvider =
-          new InfrastructureStoragePropertyDefinitionProvider(_storageTypeInformationProviderStub, _storageNameProviderStub);
+          new InfrastructureStoragePropertyDefinitionProvider(_storageTypeInformationProviderStub.Object, _storageNameProviderStub.Object);
     }
 
     [Test]

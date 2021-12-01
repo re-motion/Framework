@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -172,12 +173,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var extensionMock = MockRepository.GenerateMock<IClientTransactionExtension>();
+        var extensionMock = new Mock<IClientTransactionExtension>();
 
         DomainObjectIDs.Order1.GetObject<Order>();
-        extensionMock.Stub(stub => stub.Key).Return("stub");
-        extensionMock.Replay();
-        TestableClientTransaction.Extensions.Add(extensionMock);
+        extensionMock.Setup (stub => stub.Key).Returns ("stub");
+        TestableClientTransaction.Extensions.Add(extensionMock.Object);
         try
         {
           extensionMock.BackToRecord();
@@ -188,13 +188,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           var newQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>();
 
           extensionMock
-              .Expect(mock => mock.FilterQueryResult(Arg<ClientTransaction>.Is.Anything, Arg<QueryResult<DomainObject>>.Is.Anything))
-              .WhenCalled(mi => DomainObjectIDs.Order1.GetObject<Order>())
-              .Return(newQueryResult);
+              .Setup(mock => mock.FilterQueryResult(It.IsAny<ClientTransaction>(), It.IsAny<QueryResult<DomainObject>>()))
+              .Callback((ClientTransaction clientTransaction, QueryResult<DomainObject> queryResult) => DomainObjectIDs.Order1.GetObject<Order>())
+              .Returns(newQueryResult)
+              .Verifiable();
 
-          extensionMock.Replay();
           ClientTransaction.Current.QueryManager.GetCollection(query);
-          extensionMock.VerifyAllExpectations();
+          extensionMock.Verify();
         }
         finally
         {

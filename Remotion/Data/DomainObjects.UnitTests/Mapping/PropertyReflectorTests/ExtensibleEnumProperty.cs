@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
 {
@@ -33,8 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
           "NoAttribute", DomainModelConstraintProviderStub);
 
       DomainModelConstraintProviderStub
-         .Stub(stub => stub.IsNullable(propertyReflector.PropertyInfo))
-         .Return(true);
+         .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+         .Returns(true);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
@@ -52,8 +53,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
           "NullableFromAttribute", DomainModelConstraintProviderStub);
 
       DomainModelConstraintProviderStub
-         .Stub(stub => stub.IsNullable(propertyReflector.PropertyInfo))
-         .Return(true);
+         .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+         .Returns(true);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
@@ -71,8 +72,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
           "NotNullable", DomainModelConstraintProviderStub);
 
       DomainModelConstraintProviderStub
-         .Stub(stub => stub.IsNullable(propertyReflector.PropertyInfo))
-         .Return(false);
+         .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+         .Returns(false);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 

@@ -15,12 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 {
@@ -28,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
   public class DomainObjectCollectionReplaceDataEventTest : ClientTransactionBaseTest
   {
     private Customer _customer;
-    private OrderCollection.ICollectionEventReceiver _eventReceiverMock;
+    private Mock<OrderCollection.ICollectionEventReceiver> _eventReceiverMock;
 
     private Order _itemA;
     private Order _itemB;
@@ -38,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       base.SetUp();
 
       _customer = DomainObjectIDs.Customer1.GetObject<Customer>();
-      _eventReceiverMock = MockRepository.GenerateStrictMock<OrderCollection.ICollectionEventReceiver>();
+      _eventReceiverMock = new Mock<OrderCollection.ICollectionEventReceiver> (MockBehavior.Strict);
 
       _itemA = DomainObjectIDs.Order1.GetObject<Order>();
       _itemB = DomainObjectIDs.Order2.GetObject<Order>();
@@ -49,16 +50,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       var orderCollection = _customer.Orders;
       _eventReceiverMock
-          .Expect(mock => mock.OnReplaceData())
-          .WhenCalled(mi => Assert.That(orderCollection, Is.EqualTo(new[] { _itemA, _itemB })));
-      _eventReceiverMock.Replay();
+          .Setup(mock => mock.OnReplaceData())
+          .Callback(() => Assert.That(orderCollection, Is.EqualTo(new[] { _itemA, _itemB })))
+          .Verifiable();
 
       UnloadService.UnloadVirtualEndPoint(TestableClientTransaction, _customer.Orders.AssociatedEndPointID);
-      orderCollection.SetEventReceiver(_eventReceiverMock);
+      orderCollection.SetEventReceiver(_eventReceiverMock.Object);
 
       _customer.Orders.EnsureDataComplete();
 
-      _eventReceiverMock.VerifyAllExpectations();
+      _eventReceiverMock.Verify();
     }
 
     [Test]
@@ -68,14 +69,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
       var orderCollection = _customer.Orders;
       _eventReceiverMock
-          .Expect(mock => mock.OnReplaceData())
-          .WhenCalled(mi => Assert.That(orderCollection, Is.EqualTo(new[] { _itemA, _itemB })));
-      _eventReceiverMock.Replay();
-      _customer.Orders.SetEventReceiver(_eventReceiverMock);
+          .Setup(mock => mock.OnReplaceData())
+          .Callback(() => Assert.That(orderCollection, Is.EqualTo(new[] { _itemA, _itemB })))
+          .Verifiable();
+      _customer.Orders.SetEventReceiver(_eventReceiverMock.Object);
 
       TestableClientTransaction.Rollback();
 
-      _eventReceiverMock.VerifyAllExpectations();
+      _eventReceiverMock.Verify();
     }
 
     [Test]
@@ -85,14 +86,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       _customer.Orders.EnsureDataComplete();
 
       _eventReceiverMock
-          .Expect(mock => mock.OnReplaceData())
-          .WhenCalled(mi => Assert.That(orderCollection, Is.EqualTo(new[] { _itemA, _itemB })));
-      _eventReceiverMock.Replay();
-      _customer.Orders.SetEventReceiver(_eventReceiverMock);
+          .Setup(mock => mock.OnReplaceData())
+          .Callback(() => Assert.That(orderCollection, Is.EqualTo(new[] { _itemA, _itemB })))
+          .Verifiable();
+      _customer.Orders.SetEventReceiver(_eventReceiverMock.Object);
 
       BidirectionalRelationSyncService.Synchronize(TestableClientTransaction, _customer.Orders.AssociatedEndPointID);
 
-      _eventReceiverMock.VerifyAllExpectations();
+      _eventReceiverMock.Verify();
     }
 
     [Test]
@@ -105,14 +106,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       orderCollection.EnsureDataComplete();
 
       _eventReceiverMock
-          .Expect(mock => mock.OnReplaceData())
-          .WhenCalled(mi => Assert.That(orderCollection, Is.EqualTo(new[] { _itemA, _itemB, unsynchronizedOrder })));
-      _eventReceiverMock.Replay();
-      _customer.Orders.SetEventReceiver(_eventReceiverMock);
+          .Setup(mock => mock.OnReplaceData())
+          .Callback(() => Assert.That(orderCollection, Is.EqualTo(new[] { _itemA, _itemB, unsynchronizedOrder })))
+          .Verifiable();
+      _customer.Orders.SetEventReceiver(_eventReceiverMock.Object);
 
       BidirectionalRelationSyncService.Synchronize(TestableClientTransaction, RelationEndPointID.Resolve(unsynchronizedOrder, o => o.Customer));
 
-      _eventReceiverMock.VerifyAllExpectations();
+      _eventReceiverMock.Verify();
     }
 
     [Test]
@@ -122,10 +123,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 
       var orderCollection = _customer.Orders;
       _eventReceiverMock
-          .Expect(mock => mock.OnReplaceData())
-          .WhenCalled(mi => Assert.That(orderCollection.Count, Is.EqualTo(3)));
-      _eventReceiverMock.Replay();
-      _customer.Orders.SetEventReceiver(_eventReceiverMock);
+          .Setup(mock => mock.OnReplaceData())
+          .Callback(() => Assert.That(orderCollection.Count, Is.EqualTo(3)))
+          .Verifiable();
+      _customer.Orders.SetEventReceiver(_eventReceiverMock.Object);
 
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -138,7 +139,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
         ClientTransaction.Current.Commit();
       }
 
-      _eventReceiverMock.VerifyAllExpectations();
+      _eventReceiverMock.Verify();
     }
 
     private Order PrepareUnsynchronizedOrder (ObjectID orderID, ObjectID relatedCustomerID)

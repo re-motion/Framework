@@ -16,11 +16,12 @@
 // 
 using System;
 using System.Xml.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
 {
@@ -32,21 +33,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_DelegatesToPropertySerializer ()
     {
       var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty);
-      var propertySerializerMock = MockRepository.GenerateMock<IPropertySerializer>();
-      var enumPropertySerializerDecorator = new EnumPropertySerializerDecorator(MockRepository.GenerateStub<IEnumSerializer>(), propertySerializerMock);
+      var propertySerializerMock = new Mock<IPropertySerializer>();
+      var enumPropertySerializerDecorator = new EnumPropertySerializerDecorator(new Mock<IEnumSerializer>().Object, propertySerializerMock.Object);
 
       var expected = new XElement("expected");
-      propertySerializerMock.Expect(
-          _ => _.Serialize(Arg.Is(sampleProperty), Arg<IRdbmsPersistenceModelProvider>.Is.Anything))
-          .Return(expected);
-
-      propertySerializerMock.Replay();
+      propertySerializerMock.Setup(
+          _ => _.Serialize(sampleProperty, It.IsAny<IRdbmsPersistenceModelProvider>()))
+          .Returns(expected)
+          .Verifiable();
 
       var actual = enumPropertySerializerDecorator.Serialize(
           sampleProperty,
-          MockRepository.GenerateStub<IRdbmsPersistenceModelProvider>());
+          new Mock<IRdbmsPersistenceModelProvider>().Object);
 
-      propertySerializerMock.VerifyAllExpectations();
+      propertySerializerMock.Verify();
 
       Assert.That(actual, Is.SameAs(expected));
     }
@@ -55,17 +55,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_PassesPropertyToEnumSerializer ()
     {
       var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.EnumProperty);
-      var enumSerializerMock = MockRepository.GenerateMock<IEnumSerializer>();
-      var enumPropertySerializerDecorator = new EnumPropertySerializerDecorator(enumSerializerMock, MockRepository.GenerateStub<IPropertySerializer>());
+      var enumSerializerMock = new Mock<IEnumSerializer>();
+      var enumPropertySerializerDecorator = new EnumPropertySerializerDecorator(enumSerializerMock.Object, new Mock<IPropertySerializer>().Object);
 
-      enumSerializerMock.Expect(_ => _.CollectPropertyType(sampleProperty));
-      enumSerializerMock.Replay();
+      enumSerializerMock.Setup (_ => _.CollectPropertyType (sampleProperty)).Verifiable();
 
       enumPropertySerializerDecorator.Serialize(
           sampleProperty,
-          MockRepository.GenerateStub<IRdbmsPersistenceModelProvider>());
+          new Mock<IRdbmsPersistenceModelProvider>().Object);
 
-      enumSerializerMock.VerifyAllExpectations();
+      enumSerializerMock.Verify();
     }
 
 

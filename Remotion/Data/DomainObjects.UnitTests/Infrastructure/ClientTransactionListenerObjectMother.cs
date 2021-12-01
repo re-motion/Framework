@@ -15,8 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
@@ -24,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
   {
     public static IClientTransactionListener Create ()
     {
-      return MockRepository.GenerateStub<IClientTransactionListener>();
+      return new Mock<IClientTransactionListener>().Object;
     }
   }
 }

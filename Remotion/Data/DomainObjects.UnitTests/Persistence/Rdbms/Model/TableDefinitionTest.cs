@@ -15,10 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
@@ -52,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       _constraints = new[]
                      { new PrimaryKeyConstraintDefinition("PK_Table", true, new[] { ColumnDefinitionObjectMother.IDColumn }) };
-      _indexes = new[] { MockRepository.GenerateStub<IIndexDefinition>() };
+      _indexes = new[] { new Mock<IIndexDefinition>().Object };
       _synonyms = new[] { new EntityNameDefinition(null, "Test") };
 
       _tableDefinition = new TableDefinition(
@@ -102,14 +103,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void Accept ()
     {
-      var visitorMock = MockRepository.GenerateStrictMock<IRdbmsStorageEntityDefinitionVisitor>();
+      var visitorMock = new Mock<IRdbmsStorageEntityDefinitionVisitor> (MockBehavior.Strict);
 
-      visitorMock.Expect(mock => mock.VisitTableDefinition(_tableDefinition));
-      visitorMock.Replay();
+      visitorMock.Setup (mock => mock.VisitTableDefinition (_tableDefinition)).Verifiable();
 
-      _tableDefinition.Accept(visitorMock);
+      _tableDefinition.Accept(visitorMock.Object);
 
-      visitorMock.VerifyAllExpectations();
+      visitorMock.Verify();
     }
 
     [Test]

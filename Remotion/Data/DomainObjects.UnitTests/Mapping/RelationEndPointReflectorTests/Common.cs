@@ -15,13 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflectorTests
 {
@@ -116,13 +117,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
           PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "Unidirectional", typeof(string));
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
 
-      var mappingNameResolverMock = MockRepository.GenerateStub<IMemberInformationNameResolver>();
-      mappingNameResolverMock.Stub(mock => mock.GetPropertyName(propertyDefinition.PropertyInfo)).Return(propertyDefinition.PropertyName);
+      var mappingNameResolverMock = new Mock<IMemberInformationNameResolver>();
+      mappingNameResolverMock.Setup (mock => mock.GetPropertyName (propertyDefinition.PropertyInfo)).Returns (propertyDefinition.PropertyName);
 
       var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector(
           classDefinition,
           propertyDefinition.PropertyInfo,
-          mappingNameResolverMock,
+          mappingNameResolverMock.Object,
           PropertyMetadataProvider,
           DomainModelConstraintProviderStub,
           SortExpressionDefinitionProviderStub);
@@ -140,20 +141,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
           PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "BidirectionalOneToManyForDomainObjectCollection", typeof(string));
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
 
-      var mappingNameResolverMock = MockRepository.GenerateStub<IMemberInformationNameResolver>();
-      mappingNameResolverMock.Stub(mock => mock.GetPropertyName(propertyDefinition.PropertyInfo)).Return(propertyDefinition.PropertyName);
+      var mappingNameResolverMock = new Mock<IMemberInformationNameResolver>();
+      mappingNameResolverMock.Setup (mock => mock.GetPropertyName (propertyDefinition.PropertyInfo)).Returns (propertyDefinition.PropertyName);
 
-      var relationEndPointReflector = MockRepository.GeneratePartialMock<RelationEndPointReflector<BidirectionalRelationAttribute>>(
+      var relationEndPointReflector = new Mock<RelationEndPointReflector<BidirectionalRelationAttribute>> (
           classDefinition,
           propertyDefinition.PropertyInfo,
-          mappingNameResolverMock,
+          mappingNameResolverMock.Object,
           PropertyMetadataProvider,
           DomainModelConstraintProviderStub,
-          SortExpressionDefinitionProviderStub);
+          SortExpressionDefinitionProviderStub)
+          { CallBase = true };
 
-      relationEndPointReflector.Stub(_ => _.IsVirtualEndRelationEndpoint()).Return(true);
+      relationEndPointReflector.Setup (_ => _.IsVirtualEndRelationEndpoint()).Returns (true);
 
-      var result = relationEndPointReflector.GetMetadata();
+      var result = relationEndPointReflector.Object.GetMetadata();
 
       Assert.That(result, Is.TypeOf(typeof(TypeNotCompatibleWithVirtualRelationEndPointDefinition)));
     }

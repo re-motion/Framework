@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
@@ -23,7 +25,6 @@ using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManagement
 {
@@ -31,52 +32,52 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
   public class TransactionHierarchyManagerTest : StandardMappingTest
   {
     private ClientTransaction _thisTransaction;
-    private IClientTransactionEventSink _thisEventSinkWithStrictMock;
+    private Mock<IClientTransactionEventSink> _thisEventSinkWithStrictMock;
 
     private ClientTransaction _parentTransaction;
-    private ITransactionHierarchyManager _parentHierarchyManagerStrictMock;
-    private IClientTransactionEventSink _parentEventSinkWithStrictMock;
+    private Mock<ITransactionHierarchyManager> _parentHierarchyManagerStrictMock;
+    private Mock<IClientTransactionEventSink> _parentEventSinkWithStrictMock;
 
     private TransactionHierarchyManager _manager;
     private TransactionHierarchyManager _managerWithoutParent;
-    private IClientTransactionHierarchy _hierarchyStrictMock;
+    private Mock<IClientTransactionHierarchy> _hierarchyStrictMock;
 
     public override void SetUp ()
     {
       base.SetUp();
 
       _thisTransaction = ClientTransactionObjectMother.Create();
-      _thisEventSinkWithStrictMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
-      _hierarchyStrictMock = MockRepository.GenerateStrictMock<IClientTransactionHierarchy>();
+      _thisEventSinkWithStrictMock = new Mock<IClientTransactionEventSink> (MockBehavior.Strict);
+      _hierarchyStrictMock = new Mock<IClientTransactionHierarchy> (MockBehavior.Strict);
 
       _parentTransaction = ClientTransactionObjectMother.Create();
-      _parentHierarchyManagerStrictMock = MockRepository.GenerateStrictMock<ITransactionHierarchyManager>();
-      _parentHierarchyManagerStrictMock.Stub(stub => stub.TransactionHierarchy).Return(_hierarchyStrictMock);
-      _parentEventSinkWithStrictMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
+      _parentHierarchyManagerStrictMock = new Mock<ITransactionHierarchyManager> (MockBehavior.Strict);
+      _parentHierarchyManagerStrictMock.Setup (stub => stub.TransactionHierarchy).Returns (_hierarchyStrictMock.Object);
+      _parentEventSinkWithStrictMock = new Mock<IClientTransactionEventSink> (MockBehavior.Strict);
 
       _manager = new TransactionHierarchyManager(
-          _thisTransaction, _thisEventSinkWithStrictMock, _parentTransaction, _parentHierarchyManagerStrictMock, _parentEventSinkWithStrictMock);
-      _managerWithoutParent = new TransactionHierarchyManager(_thisTransaction, _thisEventSinkWithStrictMock);
+          _thisTransaction, _thisEventSinkWithStrictMock.Object, _parentTransaction, _parentHierarchyManagerStrictMock.Object, _parentEventSinkWithStrictMock.Object);
+      _managerWithoutParent = new TransactionHierarchyManager(_thisTransaction, _thisEventSinkWithStrictMock.Object);
     }
 
     [Test]
     public void Initialization_WithParent ()
     {
       Assert.That(_manager.ThisTransaction, Is.SameAs(_thisTransaction));
-      Assert.That(_manager.ThisEventSink, Is.SameAs(_thisEventSinkWithStrictMock));
+      Assert.That(_manager.ThisEventSink, Is.SameAs(_thisEventSinkWithStrictMock.Object));
       Assert.That(_manager.ParentTransaction, Is.SameAs(_parentTransaction));
-      Assert.That(_manager.ParentHierarchyManager, Is.SameAs(_parentHierarchyManagerStrictMock));
-      Assert.That(_manager.ParentEventSink, Is.SameAs(_parentEventSinkWithStrictMock));
+      Assert.That(_manager.ParentHierarchyManager, Is.SameAs(_parentHierarchyManagerStrictMock.Object));
+      Assert.That(_manager.ParentEventSink, Is.SameAs(_parentEventSinkWithStrictMock.Object));
       Assert.That(_manager.IsWriteable, Is.True);
       Assert.That(_manager.SubTransaction, Is.Null);
-      Assert.That(_manager.TransactionHierarchy, Is.SameAs(_hierarchyStrictMock));
+      Assert.That(_manager.TransactionHierarchy, Is.SameAs(_hierarchyStrictMock.Object));
     }
 
     [Test]
     public void Initialization_WithoutParent ()
     {
       Assert.That(_managerWithoutParent.ThisTransaction, Is.SameAs(_thisTransaction));
-      Assert.That(_managerWithoutParent.ThisEventSink, Is.SameAs(_thisEventSinkWithStrictMock));
+      Assert.That(_managerWithoutParent.ThisEventSink, Is.SameAs(_thisEventSinkWithStrictMock.Object));
       Assert.That(_managerWithoutParent.ParentTransaction, Is.Null);
       Assert.That(_managerWithoutParent.ParentHierarchyManager, Is.Null);
       Assert.That(_managerWithoutParent.ParentEventSink, Is.Null);
@@ -90,22 +91,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     [Test]
     public void InstallListeners ()
     {
-      var eventBrokerMock = MockRepository.GenerateStrictMock<IClientTransactionEventBroker>();
-      eventBrokerMock.Expect(mock => mock.AddListener(Arg<ReadOnlyClientTransactionListener>.Is.TypeOf));
-      eventBrokerMock.Expect(mock => mock.AddListener(Arg<NewObjectHierarchyInvalidationClientTransactionListener>.Is.TypeOf));
+      var eventBrokerMock = new Mock<IClientTransactionEventBroker> (MockBehavior.Strict);
+      eventBrokerMock.Setup (mock => mock.AddListener (Arg<ReadOnlyClientTransactionListener>.Is.TypeOf)).Verifiable();
+      eventBrokerMock.Setup (mock => mock.AddListener (Arg<NewObjectHierarchyInvalidationClientTransactionListener>.Is.TypeOf)).Verifiable();
 
-      _manager.InstallListeners(eventBrokerMock);
+      _manager.InstallListeners(eventBrokerMock.Object);
     }
 
     [Test]
     public void OnBeforeTransactionInitialize ()
     {
-      _parentEventSinkWithStrictMock.Expect(mock => mock.RaiseSubTransactionInitializeEvent( _thisTransaction));
+      _parentEventSinkWithStrictMock.Setup (mock => mock.RaiseSubTransactionInitializeEvent ( _thisTransaction)).Verifiable();
       ClientTransactionTestHelper.SetIsWriteable(_parentTransaction, false); // required by assertion in ReadOnlyClientTransactionListener
 
       _manager.OnBeforeTransactionInitialize();
 
-      _parentEventSinkWithStrictMock.VerifyAllExpectations();
+      _parentEventSinkWithStrictMock.Verify();
     }
 
     [Test]
@@ -117,11 +118,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     [Test]
     public void OnTransactionDiscard ()
     {
-      _parentHierarchyManagerStrictMock.Expect(mock => mock.RemoveSubTransaction());
+      _parentHierarchyManagerStrictMock.Setup (mock => mock.RemoveSubTransaction()).Verifiable();
 
       _manager.OnTransactionDiscard();
 
-      _parentHierarchyManagerStrictMock.VerifyAllExpectations();
+      _parentHierarchyManagerStrictMock.Verify();
     }
 
     [Test]
@@ -140,14 +141,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       Assert.That(fakeSubTransaction.IsDiscarded, Is.False);
 
       _parentHierarchyManagerStrictMock
-          .Expect(mock => mock.RemoveSubTransaction())
-          .WhenCalled(
-              mi =>
+          .Setup(mock => mock.RemoveSubTransaction())
+          .Callback(
+              () =>
               Assert.That(
                   fakeSubTransaction.IsDiscarded,
                   Is.True,
                   "Subtransaction should be discarded before this transaction is removed from the parent tx, so that the hierarchy is still intact "
-                  + "within SubTransaction's Discard listener."));
+                  + "within SubTransaction's Discard listener."))
+          .Verifiable();
 
       _manager.OnTransactionDiscard();
 
@@ -178,12 +180,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       Assert.That(_manager.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs, Is.Empty);
 
       _parentHierarchyManagerStrictMock
-          .Expect(mock => mock.OnBeforeSubTransactionObjectRegistration(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }))
-          .WhenCalled(mi => Assert.That(_manager.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs, Is.Empty));
+          .Setup(mock => mock.OnBeforeSubTransactionObjectRegistration(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }))
+          .Callback((ICollection<ObjectID> loadedObjectIDs) => Assert.That(_manager.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs, Is.Empty))
+          .Verifiable();
 
       _manager.OnBeforeObjectRegistration(Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }));
 
-      _parentHierarchyManagerStrictMock.VerifyAllExpectations();
+      _parentHierarchyManagerStrictMock.Verify();
       Assert.That(
           _manager.ReadOnlyClientTransactionListener.CurrentlyLoadingObjectIDs,
           Is.EquivalentTo(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }));
@@ -238,7 +241,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     {
       var counter = new OrderedExpectationCounter();
       bool subTransactionCreatingCalled = false;
-      _thisEventSinkWithStrictMock.Expect(mock => mock.RaiseSubTransactionCreatingEvent())
+_thisEventSinkWithStrictMock.Setup(mock => mock.RaiseSubTransactionCreatingEvent())
           .WhenCalledOrdered(counter, mi =>
           {
             Assert.That(_manager.IsWriteable, Is.True);
@@ -254,9 +257,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
         ClientTransactionTestHelper.SetIsWriteable(_thisTransaction, false); // required by assertion in ReadOnlyClientTransactionListener
         return fakeSubTransaction;
       };
-
-      _hierarchyStrictMock.Expect(mock => mock.AppendLeafTransaction(fakeSubTransaction)).Ordered(counter);
-      _thisEventSinkWithStrictMock.Expect(mock => mock.RaiseSubTransactionCreatedEvent(fakeSubTransaction)).Ordered(counter);
+_hierarchyStrictMock.Setup(mock => mock.AppendLeafTransaction(fakeSubTransaction)).Ordered(counter);
+_thisEventSinkWithStrictMock.Setup(mock => mock.RaiseSubTransactionCreatedEvent(fakeSubTransaction)).Ordered(counter);
 
       var result = _manager.CreateSubTransaction(factory);
 
@@ -264,13 +266,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       Assert.That(_manager.SubTransaction, Is.SameAs(fakeSubTransaction));
       Assert.That(_manager.IsWriteable, Is.False);
 
-      _hierarchyStrictMock.VerifyAllExpectations();
+      _hierarchyStrictMock.Verify();
     }
 
     [Test]
     public void CreateSubTransaction_InvalidFactory ()
     {
-      _thisEventSinkWithStrictMock.Expect(mock => mock.RaiseSubTransactionCreatingEvent());
+      _thisEventSinkWithStrictMock.Setup (mock => mock.RaiseSubTransactionCreatingEvent()).Verifiable();
 
       var fakeSubTransaction = ClientTransactionObjectMother.CreateWithParent(null);
       Func<ClientTransaction, ClientTransaction> factory = tx => fakeSubTransaction;
@@ -279,8 +281,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
           () => _manager.CreateSubTransaction(factory),
           Throws.InvalidOperationException.With.Message.EqualTo("The given factory did not create a sub-transaction for this transaction."));
 
-      _thisEventSinkWithStrictMock.AssertWasNotCalled(mock => mock.RaiseSubTransactionCreatedEvent( Arg<ClientTransaction>.Is.Anything));
-      _thisEventSinkWithStrictMock.VerifyAllExpectations();
+      _thisEventSinkWithStrictMock.Verify (mock => mock.RaiseSubTransactionCreatedEvent( It.IsAny<ClientTransaction>()), Times.Never());
+      _thisEventSinkWithStrictMock.Verify();
 
       Assert.That(_manager.SubTransaction, Is.Null);
       Assert.That(_manager.IsWriteable, Is.True);
@@ -289,7 +291,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     [Test]
     public void CreateSubTransaction_ThrowingFactory ()
     {
-      _thisEventSinkWithStrictMock.Expect(mock => mock.RaiseSubTransactionCreatingEvent());
+      _thisEventSinkWithStrictMock.Setup (mock => mock.RaiseSubTransactionCreatingEvent()).Verifiable();
 
       var exception = new Exception();
       Func<ClientTransaction, ClientTransaction> factory = tx => { throw exception; };
@@ -298,8 +300,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
           () => _manager.CreateSubTransaction(factory),
           Throws.Exception.SameAs(exception));
 
-      _thisEventSinkWithStrictMock.AssertWasNotCalled(mock => mock.RaiseSubTransactionCreatedEvent( Arg<ClientTransaction>.Is.Anything));
-      _thisEventSinkWithStrictMock.VerifyAllExpectations();
+      _thisEventSinkWithStrictMock.Verify (mock => mock.RaiseSubTransactionCreatedEvent( It.IsAny<ClientTransaction>()), Times.Never());
+      _thisEventSinkWithStrictMock.Verify();
 
       Assert.That(_manager.SubTransaction, Is.Null);
       Assert.That(_manager.IsWriteable, Is.True);
@@ -309,7 +311,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     public void CreateSubTransaction_BeginEventAbortsOperation ()
     {
       var exception = new Exception();
-      _thisEventSinkWithStrictMock.Expect(mock => mock.RaiseSubTransactionCreatingEvent()).Throw(exception);
+      _thisEventSinkWithStrictMock.Setup (mock => mock.RaiseSubTransactionCreatingEvent()).Throws (exception).Verifiable();
 
       Func<ClientTransaction, ClientTransaction> factory = tx => { Assert.Fail("Must not be called."); return null; };
 
@@ -317,8 +319,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
           () => _manager.CreateSubTransaction(factory),
           Throws.Exception.SameAs(exception));
 
-      _thisEventSinkWithStrictMock.AssertWasNotCalled(mock => mock.RaiseSubTransactionCreatedEvent( Arg<ClientTransaction>.Is.Anything));
-      _thisEventSinkWithStrictMock.VerifyAllExpectations();
+      _thisEventSinkWithStrictMock.Verify (mock => mock.RaiseSubTransactionCreatedEvent( It.IsAny<ClientTransaction>()), Times.Never());
+      _thisEventSinkWithStrictMock.Verify();
 
       Assert.That(_manager.SubTransaction, Is.Null);
       Assert.That(_manager.IsWriteable, Is.True);
@@ -329,7 +331,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     {
       Assert.That(_manager.IsWriteable, Is.True);
       Assert.That(_manager.SubTransaction, Is.Null);
-      _hierarchyStrictMock.Stub(stub => stub.LeafTransaction).Return(_thisTransaction);
+      _hierarchyStrictMock.Setup (stub => stub.LeafTransaction).Returns (_thisTransaction);
 
       _manager.RemoveSubTransaction();
 
@@ -345,14 +347,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       Assert.That(_manager.IsWriteable, Is.False);
       Assert.That(_manager.SubTransaction, Is.Not.Null);
 
-      _hierarchyStrictMock.Stub(stub => stub.LeafTransaction).Return(_manager.SubTransaction);
-      _hierarchyStrictMock.Expect(mock => mock.RemoveLeafTransaction());
+      _hierarchyStrictMock.Setup (stub => stub.LeafTransaction).Returns (_manager.SubTransaction);
+      _hierarchyStrictMock.Setup (mock => mock.RemoveLeafTransaction()).Verifiable();
 
       _manager.RemoveSubTransaction();
 
       Assert.That(_manager.IsWriteable, Is.True);
       Assert.That(_manager.SubTransaction, Is.Null);
-      _hierarchyStrictMock.VerifyAllExpectations();
+      _hierarchyStrictMock.Verify();
     }
 
     [Test]

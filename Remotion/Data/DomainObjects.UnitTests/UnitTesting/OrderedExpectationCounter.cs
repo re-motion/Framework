@@ -15,8 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Remotion.Data.UnitTests.UnitTesting
 {

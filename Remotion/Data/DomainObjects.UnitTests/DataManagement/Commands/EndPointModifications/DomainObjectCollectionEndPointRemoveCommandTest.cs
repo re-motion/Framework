@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -23,7 +25,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
@@ -69,49 +70,48 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     public void Begin ()
     {
       var counter = new OrderedExpectationCounter();
-      CollectionMockEventReceiver
-          .Expect(mock => mock.Removing(_removedRelatedObject))
+CollectionMockEventReceiver
+          .Setup(mock => mock.Removing(_removedRelatedObject))
           .WhenCalledOrdered(counter, mi => Assert.That(ClientTransaction.Current, Is.SameAs(Transaction)));
-      TransactionEventSinkMock
-          .Expect(mock => mock.RaiseRelationChangingEvent(DomainObject, CollectionEndPoint.Definition, _removedRelatedObject, null))
+TransactionEventSinkMock
+          .Setup(mock => mock.RaiseRelationChangingEvent(DomainObject, CollectionEndPoint.Definition, _removedRelatedObject, null))
           .Ordered(counter);
 
       _command.Begin();
 
-      CollectionMockEventReceiver.VerifyAllExpectations();
-      TransactionEventSinkMock.VerifyAllExpectations();
+      CollectionMockEventReceiver.Verify();
+      TransactionEventSinkMock.Verify();
     }
 
     [Test]
     public void End ()
     {
       var counter = new OrderedExpectationCounter();
-      TransactionEventSinkMock
-          .Expect(mock => mock.RaiseRelationChangedEvent(DomainObject, CollectionEndPoint.Definition, _removedRelatedObject, null))
+TransactionEventSinkMock
+          .Setup(mock => mock.RaiseRelationChangedEvent(DomainObject, CollectionEndPoint.Definition, _removedRelatedObject, null))
           .Ordered(counter);
-      CollectionMockEventReceiver
-          .Expect(mock => mock.Removed(_removedRelatedObject))
+CollectionMockEventReceiver
+          .Setup(mock => mock.Removed(_removedRelatedObject))
           .WhenCalledOrdered(counter, mi => Assert.That(ClientTransaction.Current, Is.SameAs(Transaction)));
 
       _command.End();
 
-      TransactionEventSinkMock.VerifyAllExpectations();
-      CollectionMockEventReceiver.VerifyAllExpectations();
+      TransactionEventSinkMock.Verify();
+      CollectionMockEventReceiver.Verify();
     }
 
     [Test]
     public void Perform ()
     {
       CollectionDataMock.BackToRecord();
-      CollectionDataMock.Expect(mock => mock.Remove(_removedRelatedObject)).Return(true);
-      CollectionDataMock.Replay();
+      CollectionDataMock.Setup (mock => mock.Remove (_removedRelatedObject)).Returns (true).Verifiable();
 
       _command.Perform();
 
-      CollectionDataMock.VerifyAllExpectations();
+      CollectionDataMock.Verify();
 
-      CollectionMockEventReceiver.AssertWasNotCalled(mock => mock.Removing());
-      CollectionMockEventReceiver.AssertWasNotCalled(mock => mock.Removed());
+      CollectionMockEventReceiver.Verify (mock => mock.Removing(), Times.Never());
+      CollectionMockEventReceiver.Verify (mock => mock.Removed(), Times.Never());
       Assert.That(CollectionEndPoint.HasBeenTouched, Is.True);
     }
 
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var removedEndPoint = (IObjectEndPoint)DataManager.GetRelationEndPointWithoutLoading(removedEndPointID);
       Assert.That(removedEndPoint, Is.Not.Null);
 
-      EndPointProviderStub.Stub(stub => stub.GetRelationEndPointWithLazyLoad(removedEndPoint.ID)).Return(removedEndPoint);
+      EndPointProviderStub.Setup (stub => stub.GetRelationEndPointWithLazyLoad (removedEndPoint.ID)).Returns (removedEndPoint);
 
       var bidirectionalModification = _command.ExpandToAllRelatedObjects();
 

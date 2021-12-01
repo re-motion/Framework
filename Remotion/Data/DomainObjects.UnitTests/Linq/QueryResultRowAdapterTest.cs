@@ -15,32 +15,33 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Linq.SqlBackend.SqlGeneration;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq
 {
   [TestFixture]
   public class QueryResultRowAdapterTest
   {
-    private IQueryResultRow _queryResultRowStub;
+    private Mock<IQueryResultRow> _queryResultRowStub;
     private QueryResultRowAdapter _queryResultRowAdapter;
 
     [SetUp]
     public void SetUp ()
     {
-      _queryResultRowStub = MockRepository.GenerateStub<IQueryResultRow>();
+      _queryResultRowStub = new Mock<IQueryResultRow>();
 
-      _queryResultRowAdapter = new QueryResultRowAdapter(_queryResultRowStub);
+      _queryResultRowAdapter = new QueryResultRowAdapter(_queryResultRowStub.Object);
     }
 
     [Test]
     public void GetValue ()
     {
-      _queryResultRowStub.Stub(stub => stub.GetConvertedValue<int>(4)).Return(10);
+      _queryResultRowStub.Setup (stub => stub.GetConvertedValue<int> (4)).Returns (10);
 
       var result = _queryResultRowAdapter.GetValue<int>(new ColumnID("test", 4));
 

@@ -15,14 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
@@ -34,10 +34,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     private Order _domainObject;
     private IRelationEndPointDefinition _endPointDefinition;
 
-    private IRelationEndPoint _endPointMock;
+    private Mock<IRelationEndPoint> _endPointMock;
     private OrderTicket _oldRelatedObject;
     private OrderTicket _newRelatedObject;
-    private IClientTransactionEventSink _transactionEventSinkWithMock;
+    private Mock<IClientTransactionEventSink> _transactionEventSinkWithMock;
 
     private RelationEndPointModificationCommand _command;
     private RelationEndPointModificationCommand _commandPartialMock;
@@ -51,16 +51,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       _domainObject = _transaction.ExecuteInScope(() => Order.NewObject());
       _endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
 
-      _endPointMock = MockRepository.GenerateMock<IRelationEndPoint>();
-      _endPointMock.Stub(mock => mock.ClientTransaction).Return(_transaction);
-      _endPointMock.Stub(mock => mock.ObjectID).Return(_objectID);
-      _endPointMock.Stub(mock => mock.Definition).Return(_endPointDefinition);
-      _endPointMock.Stub(mock => mock.GetDomainObject()).Return(_domainObject);
+      _endPointMock = new Mock<IRelationEndPoint>();
+      _endPointMock.Setup (mock => mock.ClientTransaction).Returns (_transaction);
+      _endPointMock.Setup (mock => mock.ObjectID).Returns (_objectID);
+      _endPointMock.Setup (mock => mock.Definition).Returns (_endPointDefinition);
+      _endPointMock.Setup (mock => mock.GetDomainObject()).Returns (_domainObject);
 
       _oldRelatedObject = _transaction.ExecuteInScope(() => OrderTicket.NewObject());
       _newRelatedObject = _transaction.ExecuteInScope(() => OrderTicket.NewObject());
 
-      _transactionEventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
+      _transactionEventSinkWithMock = new Mock<IClientTransactionEventSink> (MockBehavior.Strict);
 
       _command = CreateTestableCommand();
       _commandPartialMock = CreateCommandPartialMock();
@@ -76,46 +76,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     public void Begin ()
     {
       _commandPartialMock
-          .Expect(mock => mock.Begin())
-         .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _commandPartialMock.Replay();
+          .Setup(mock => mock.Begin())
+         .CallOriginalMethod(OriginalCallOptions.CreateExpectation)
+          .Verifiable();
 
       _transactionEventSinkWithMock
-          .Expect(mock => mock.RaiseRelationChangingEvent(_domainObject, _endPointDefinition, _oldRelatedObject, _newRelatedObject));
-      _transactionEventSinkWithMock.Replay();
+          .Setup(mock => mock.RaiseRelationChangingEvent(_domainObject, _endPointDefinition, _oldRelatedObject, _newRelatedObject))
+          .Verifiable();
 
       _commandPartialMock.Begin();
 
-      _commandPartialMock.VerifyAllExpectations();
-      _transactionEventSinkWithMock.VerifyAllExpectations();
+      _commandPartialMock.Verify();
+      _transactionEventSinkWithMock.Verify();
     }
 
     [Test]
     public void End ()
     {
       _commandPartialMock
-          .Expect(mock => mock.End())
-          .CallOriginalMethod(OriginalCallOptions.CreateExpectation);
-      _commandPartialMock.Replay();
+          .Setup(mock => mock.End())
+          .CallOriginalMethod(OriginalCallOptions.CreateExpectation)
+          .Verifiable();
 
       _transactionEventSinkWithMock
-          .Expect(mock => mock.RaiseRelationChangedEvent(_domainObject, _endPointDefinition, _oldRelatedObject, _newRelatedObject));
-      _transactionEventSinkWithMock.Replay();
+          .Setup(mock => mock.RaiseRelationChangedEvent(_domainObject, _endPointDefinition, _oldRelatedObject, _newRelatedObject))
+          .Verifiable();
 
       _commandPartialMock.End();
 
-      _commandPartialMock.VerifyAllExpectations();
-      _transactionEventSinkWithMock.VerifyAllExpectations();
+      _commandPartialMock.Verify();
+      _transactionEventSinkWithMock.Verify();
     }
 
     private RelationEndPointModificationCommand CreateCommandPartialMock ()
     {
-      return MockRepository.GeneratePartialMock<RelationEndPointModificationCommand>(_endPointMock, _oldRelatedObject, _newRelatedObject, _transactionEventSinkWithMock);
+      return new Mock<RelationEndPointModificationCommand> (_endPointMock.Object, _oldRelatedObject, _newRelatedObject, _transactionEventSinkWithMock.Object) { CallBase = true }.Object;
     }
 
     private RelationEndPointModificationCommand CreateTestableCommand ()
     {
-      return new TestableRelationEndPointModificationCommand(_endPointMock, _oldRelatedObject, _newRelatedObject, _transactionEventSinkWithMock);
+      return new TestableRelationEndPointModificationCommand(_endPointMock.Object, _oldRelatedObject, _newRelatedObject, _transactionEventSinkWithMock.Object);
     }
   }
 }

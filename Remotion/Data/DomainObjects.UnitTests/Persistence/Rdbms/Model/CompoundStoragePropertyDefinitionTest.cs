@@ -17,11 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
@@ -29,9 +30,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
   public class CompoundStoragePropertyDefinitionTest
   {
     private CompoundStoragePropertyDefinition _compoundStoragePropertyDefinition;
-    private IRdbmsStoragePropertyDefinition _property1Stub;
-    private IRdbmsStoragePropertyDefinition _property2Stub;
-    private IRdbmsStoragePropertyDefinition _property3Stub;
+    private Mock<IRdbmsStoragePropertyDefinition> _property1Stub;
+    private Mock<IRdbmsStoragePropertyDefinition> _property2Stub;
+    private Mock<IRdbmsStoragePropertyDefinition> _property3Stub;
     private CompoundStoragePropertyDefinition.NestedPropertyInfo _yearProperty;
     private CompoundStoragePropertyDefinition.NestedPropertyInfo _monthProperty;
     private CompoundStoragePropertyDefinition.NestedPropertyInfo _dayProperty;
@@ -47,13 +48,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       _columnDefinition2 = ColumnDefinitionObjectMother.CreateColumn(storageTypeInformation: storageTypeInformation);
       _columnDefinition3 = ColumnDefinitionObjectMother.CreateColumn(storageTypeInformation: storageTypeInformation);
 
-      _property1Stub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
-      _property2Stub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
-      _property3Stub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
+      _property1Stub = new Mock<IRdbmsStoragePropertyDefinition>();
+      _property2Stub = new Mock<IRdbmsStoragePropertyDefinition>();
+      _property3Stub = new Mock<IRdbmsStoragePropertyDefinition>();
 
-      _yearProperty = new CompoundStoragePropertyDefinition.NestedPropertyInfo(_property1Stub, o => ((DateTime)o).Year);
-      _monthProperty = new CompoundStoragePropertyDefinition.NestedPropertyInfo(_property2Stub, o => ((DateTime)o).Month);
-      _dayProperty = new CompoundStoragePropertyDefinition.NestedPropertyInfo(_property3Stub, o => ((DateTime)o).Day);
+      _yearProperty = new CompoundStoragePropertyDefinition.NestedPropertyInfo(_property1Stub.Object, o => ((DateTime)o).Year);
+      _monthProperty = new CompoundStoragePropertyDefinition.NestedPropertyInfo(_property2Stub.Object, o => ((DateTime)o).Month);
+      _dayProperty = new CompoundStoragePropertyDefinition.NestedPropertyInfo(_property3Stub.Object, o => ((DateTime)o).Day);
 
       _compoundStoragePropertyDefinition = new CompoundStoragePropertyDefinition(
           typeof(DateTime),
@@ -64,9 +65,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void GetColumns ()
     {
-      _property1Stub.Stub(stub => stub.GetColumns()).Return(new[] { _columnDefinition1 });
-      _property2Stub.Stub(stub => stub.GetColumns()).Return(new[] { _columnDefinition2 });
-      _property3Stub.Stub(stub => stub.GetColumns()).Return(new[] { _columnDefinition3 });
+      _property1Stub.Setup (stub => stub.GetColumns()).Returns (new[] { _columnDefinition1 });
+      _property2Stub.Setup (stub => stub.GetColumns()).Returns (new[] { _columnDefinition2 });
+      _property3Stub.Setup (stub => stub.GetColumns()).Returns (new[] { _columnDefinition3 });
 
       var result = _compoundStoragePropertyDefinition.GetColumns();
 
@@ -76,9 +77,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void GetColumnsForComparison ()
     {
-      _property1Stub.Stub(stub => stub.GetColumnsForComparison()).Return(new[] { _columnDefinition1 });
-      _property2Stub.Stub(stub => stub.GetColumnsForComparison()).Return(new[] { _columnDefinition2 });
-      _property3Stub.Stub(stub => stub.GetColumnsForComparison()).Return(new[] { _columnDefinition3 });
+      _property1Stub.Setup (stub => stub.GetColumnsForComparison()).Returns (new[] { _columnDefinition1 });
+      _property2Stub.Setup (stub => stub.GetColumnsForComparison()).Returns (new[] { _columnDefinition2 });
+      _property3Stub.Setup (stub => stub.GetColumnsForComparison()).Returns (new[] { _columnDefinition3 });
 
       var result = _compoundStoragePropertyDefinition.GetColumnsForComparison();
 
@@ -93,9 +94,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var columnValue2 = new ColumnValue(_columnDefinition2, dateTime);
       var columnValue3 = new ColumnValue(_columnDefinition3, dateTime);
 
-      _property1Stub.Stub(stub => stub.SplitValue(2011)).Return(new[] { columnValue1 });
-      _property2Stub.Stub(stub => stub.SplitValue(7)).Return(new[] { columnValue2 });
-      _property3Stub.Stub(stub => stub.SplitValue(18)).Return(new[] { columnValue3 });
+      _property1Stub.Setup (stub => stub.SplitValue (2011)).Returns (new[] { columnValue1 });
+      _property2Stub.Setup (stub => stub.SplitValue (7)).Returns (new[] { columnValue2 });
+      _property3Stub.Setup (stub => stub.SplitValue (18)).Returns (new[] { columnValue3 });
 
       var result = _compoundStoragePropertyDefinition.SplitValue(dateTime).ToArray();
 
@@ -110,9 +111,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var columnValue2 = new ColumnValue(_columnDefinition2, dateTime);
       var columnValue3 = new ColumnValue(_columnDefinition3, dateTime);
 
-      _property1Stub.Stub(stub => stub.SplitValueForComparison(2011)).Return(new[] { columnValue1 });
-      _property2Stub.Stub(stub => stub.SplitValueForComparison(7)).Return(new[] { columnValue2 });
-      _property3Stub.Stub(stub => stub.SplitValueForComparison(18)).Return(new[] { columnValue3 });
+      _property1Stub.Setup (stub => stub.SplitValueForComparison (2011)).Returns (new[] { columnValue1 });
+      _property2Stub.Setup (stub => stub.SplitValueForComparison (7)).Returns (new[] { columnValue2 });
+      _property3Stub.Setup (stub => stub.SplitValueForComparison (18)).Returns (new[] { columnValue3 });
 
       var result = _compoundStoragePropertyDefinition.SplitValueForComparison(dateTime).ToArray();
 
@@ -133,14 +134,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       var row6 = new ColumnValueTable.Row(new object[] { "19" });
 
       _property1Stub
-          .Stub(stub => stub.SplitValuesForComparison(Arg<IEnumerable<object>>.List.Equal(new object[] { 2011, 2012 })))
-          .Return(new ColumnValueTable(new[] { _columnDefinition1}, new[] { row1, row2 }));
+          .Setup(stub => stub.SplitValuesForComparison(new object[] { 2011, 2012 }))
+          .Returns(new ColumnValueTable(new[] { _columnDefinition1}, new[] { row1, row2 }));
       _property2Stub
-          .Stub(stub => stub.SplitValuesForComparison(Arg<IEnumerable<object>>.List.Equal(new object[] { 7, 8 })))
-          .Return(new ColumnValueTable(new[] { _columnDefinition2}, new[] { row3, row4 }));
+          .Setup(stub => stub.SplitValuesForComparison(new object[] { 7, 8 }))
+          .Returns(new ColumnValueTable(new[] { _columnDefinition2}, new[] { row3, row4 }));
       _property3Stub
-          .Stub(stub => stub.SplitValuesForComparison(Arg<IEnumerable<object>>.List.Equal(new object[] { 18, 19 })))
-          .Return(new ColumnValueTable(new[] { _columnDefinition3 }, new[] { row5, row6 }));
+          .Setup(stub => stub.SplitValuesForComparison(new object[] { 18, 19 }))
+          .Returns(new ColumnValueTable(new[] { _columnDefinition3 }, new[] { row5, row6 }));
 
       var result = _compoundStoragePropertyDefinition.SplitValuesForComparison(new object[] { dateTime1, dateTime2 });
 
@@ -158,13 +159,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void CombineValue ()
     {
-      var columnValueProviderStub = MockRepository.GenerateStub<IColumnValueProvider>();
+      var columnValueProviderStub = new Mock<IColumnValueProvider>();
 
-      _property1Stub.Stub(stub => stub.CombineValue(columnValueProviderStub)).Return(2011);
-      _property2Stub.Stub(stub => stub.CombineValue(columnValueProviderStub)).Return(5);
-      _property3Stub.Stub(stub => stub.CombineValue(columnValueProviderStub)).Return(17);
+      _property1Stub.Setup (stub => stub.CombineValue (columnValueProviderStub.Object)).Returns (2011);
+      _property2Stub.Setup (stub => stub.CombineValue (columnValueProviderStub.Object)).Returns (5);
+      _property3Stub.Setup (stub => stub.CombineValue (columnValueProviderStub.Object)).Returns (17);
 
-      var result = _compoundStoragePropertyDefinition.CombineValue(columnValueProviderStub);
+      var result = _compoundStoragePropertyDefinition.CombineValue(columnValueProviderStub.Object);
 
       Assert.That(result, Is.EqualTo(new DateTime(2011, 5, 17)));
     }
@@ -172,44 +173,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyWithEquivalentProperties_CombinesNestedProperties ()
     {
-      var property1aMock = MockRepository.GenerateStrictMock<IRdbmsStoragePropertyDefinition>();
-      var property1bMock = MockRepository.GenerateStrictMock<IRdbmsStoragePropertyDefinition>();
-      var property1 = CreateDefinedCompoundStoragePropertyDefinition(property1aMock, property1bMock);
+      var property1aMock = new Mock<IRdbmsStoragePropertyDefinition> (MockBehavior.Strict);
+      var property1bMock = new Mock<IRdbmsStoragePropertyDefinition> (MockBehavior.Strict);
+      var property1 = CreateDefinedCompoundStoragePropertyDefinition(property1aMock.Object, property1bMock.Object);
 
-      var property2aStub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
-      var property2bStub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
-      var property2 = CreateDefinedCompoundStoragePropertyDefinition(property2aStub, property2bStub);
+      var property2aStub = new Mock<IRdbmsStoragePropertyDefinition>();
+      var property2bStub = new Mock<IRdbmsStoragePropertyDefinition>();
+      var property2 = CreateDefinedCompoundStoragePropertyDefinition(property2aStub.Object, property2bStub.Object);
 
-      var property3aStub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
-      var property3bStub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
-      var property3 = CreateDefinedCompoundStoragePropertyDefinition(property3aStub, property3bStub);
+      var property3aStub = new Mock<IRdbmsStoragePropertyDefinition>();
+      var property3bStub = new Mock<IRdbmsStoragePropertyDefinition>();
+      var property3 = CreateDefinedCompoundStoragePropertyDefinition(property3aStub.Object, property3bStub.Object);
 
-      var fakeUnifiedPropertyA = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
+      var fakeUnifiedPropertyA = new Mock<IRdbmsStoragePropertyDefinition>();
       property1aMock
-          .Expect(
+          .Setup(
               mock => mock.UnifyWithEquivalentProperties(
-                  Arg<IEnumerable<IRdbmsStoragePropertyDefinition>>.List.Equal(new[] { property2aStub, property3aStub })))
-          .Return(fakeUnifiedPropertyA);
+                  new[] { property2aStub.Object, property3aStub.Object }))
+          .Returns(fakeUnifiedPropertyA.Object)
+          .Verifiable();
 
-      var fakeUnifiedPropertyB = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
+      var fakeUnifiedPropertyB = new Mock<IRdbmsStoragePropertyDefinition>();
       property1bMock
-          .Expect(
+          .Setup(
               mock => mock.UnifyWithEquivalentProperties(
-                  Arg<IEnumerable<IRdbmsStoragePropertyDefinition>>.List.Equal(new[] { property2bStub, property3bStub })))
-          .Return(fakeUnifiedPropertyB);
+                  new[] { property2bStub.Object, property3bStub.Object }))
+          .Returns(fakeUnifiedPropertyB.Object)
+          .Verifiable();
 
       var result = property1.UnifyWithEquivalentProperties(new[] { property2, property3 });
 
-      property1aMock.VerifyAllExpectations();
-      property1bMock.VerifyAllExpectations();
+      property1aMock.Verify();
+      property1bMock.Verify();
 
       Assert.That(result, Is.TypeOf<CompoundStoragePropertyDefinition>().With.Property("PropertyType").SameAs(typeof(int)));
       Assert.That(((CompoundStoragePropertyDefinition)result).ValueCombinator, Is.SameAs(property1.ValueCombinator));
       Assert.That(((CompoundStoragePropertyDefinition)result).Properties, Has.Count.EqualTo(2));
       Assert.That(((CompoundStoragePropertyDefinition)result).Properties[0].ValueAccessor, Is.SameAs(property1.Properties[0].ValueAccessor));
-      Assert.That(((CompoundStoragePropertyDefinition)result).Properties[0].StoragePropertyDefinition, Is.SameAs(fakeUnifiedPropertyA));
+      Assert.That(((CompoundStoragePropertyDefinition)result).Properties[0].StoragePropertyDefinition, Is.SameAs(fakeUnifiedPropertyA.Object));
       Assert.That(((CompoundStoragePropertyDefinition)result).Properties[1].ValueAccessor, Is.SameAs(property1.Properties[1].ValueAccessor));
-      Assert.That(((CompoundStoragePropertyDefinition)result).Properties[1].StoragePropertyDefinition, Is.SameAs(fakeUnifiedPropertyB));
+      Assert.That(((CompoundStoragePropertyDefinition)result).Properties[1].StoragePropertyDefinition, Is.SameAs(fakeUnifiedPropertyB.Object));
     }
 
     [Test]

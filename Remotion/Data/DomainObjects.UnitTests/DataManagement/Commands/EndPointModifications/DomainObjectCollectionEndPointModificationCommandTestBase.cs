@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -23,7 +25,6 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
@@ -31,14 +32,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
   {
     private ClientTransaction _transaction;
     private DomainObjectCollectionEndPoint _collectionEndPoint;
-    private IDomainObjectCollectionData _collectionDataMock;
-    private IRelationEndPointProvider _endPointProviderStub;
+    private Mock<IDomainObjectCollectionData> _collectionDataMock;
+    private Mock<IRelationEndPointProvider> _endPointProviderStub;
     private Customer _domainObject;
-    private DomainObjectCollectionMockEventReceiver _collectionMockEventReceiver;
+    private Mock<DomainObjectCollectionMockEventReceiver> _collectionMockEventReceiver;
     private RelationEndPointID _relationEndPointID;
     private Order _order1;
     private Order _order2;
-    private IClientTransactionEventSink _transactionEventSinkMock;
+    private Mock<IClientTransactionEventSink> _transactionEventSinkMock;
 
     public ClientTransaction Transaction
     {
@@ -52,12 +53,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
     public IDomainObjectCollectionData CollectionDataMock
     {
-      get { return _collectionDataMock; }
+      get { return _collectionDataMock.Object; }
     }
 
     public IRelationEndPointProvider EndPointProviderStub
     {
-      get { return _endPointProviderStub; }
+      get { return _endPointProviderStub.Object; }
     }
 
     public Customer DomainObject
@@ -67,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
     public DomainObjectCollectionMockEventReceiver CollectionMockEventReceiver
     {
-      get { return _collectionMockEventReceiver; }
+      get { return _collectionMockEventReceiver.Object; }
     }
 
     public RelationEndPointID RelationEndPointID
@@ -77,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
     public IClientTransactionEventSink TransactionEventSinkMock
     {
-      get { return _transactionEventSinkMock; }
+      get { return _transactionEventSinkMock.Object; }
     }
 
     protected IDataManager DataManager
@@ -99,13 +100,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       _relationEndPointID = RelationEndPointID.Create(DomainObject.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders");
       _collectionEndPoint = RelationEndPointObjectMother.CreateDomainObjectCollectionEndPoint(
           _relationEndPointID, new[] { _order1, _order2 }, _transaction);
-      _collectionMockEventReceiver = MockRepository.GenerateStrictMock<DomainObjectCollectionMockEventReceiver>(_collectionEndPoint.Collection);
+      _collectionMockEventReceiver = new Mock<DomainObjectCollectionMockEventReceiver> (MockBehavior.Strict, _collectionEndPoint.Collection);
 
-      _collectionDataMock = new MockRepository().StrictMock<IDomainObjectCollectionData>();
-      CollectionDataMock.Replay();
+      _collectionDataMock = new Mock<IDomainObjectCollectionData> (MockBehavior.Strict);
 
-      _endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider>();
-      _transactionEventSinkMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
+      _endPointProviderStub = new Mock<IRelationEndPointProvider>();
+      _transactionEventSinkMock = new Mock<IClientTransactionEventSink> (MockBehavior.Strict);
     }
   }
 }

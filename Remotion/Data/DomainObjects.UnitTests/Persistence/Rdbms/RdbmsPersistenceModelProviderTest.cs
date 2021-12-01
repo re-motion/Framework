@@ -15,13 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -42,12 +43,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void GetEntityDefinition ()
     {
-      var entityDefinition = MockRepository.GenerateStub<IRdbmsStorageEntityDefinition>();
-      _classDefinition.SetStorageEntity(entityDefinition);
+      var entityDefinition = new Mock<IRdbmsStorageEntityDefinition>();
+      _classDefinition.SetStorageEntity(entityDefinition.Object);
 
       var result = _provider.GetEntityDefinition(_classDefinition);
 
-      Assert.That(result, Is.SameAs(entityDefinition));
+      Assert.That(result, Is.SameAs(entityDefinition.Object));
     }
 
     [Test]
@@ -79,13 +80,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void GetStoragePropertyDefinition ()
     {
-      var storagePropertyDefinition = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
+      var storagePropertyDefinition = new Mock<IRdbmsStoragePropertyDefinition>();
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo();
-      propertyDefinition.SetStorageProperty(storagePropertyDefinition);
+      propertyDefinition.SetStorageProperty(storagePropertyDefinition.Object);
 
       var result = _provider.GetStoragePropertyDefinition(propertyDefinition);
 
-      Assert.That(result, Is.SameAs(storagePropertyDefinition));
+      Assert.That(result, Is.SameAs(storagePropertyDefinition.Object));
     }
 
     [Test]

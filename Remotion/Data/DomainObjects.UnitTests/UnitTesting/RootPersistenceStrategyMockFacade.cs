@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Moq;
+using Moq.Protected;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
@@ -25,8 +27,6 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport;
 using Remotion.Mixins;
 using Remotion.Utilities;
-using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
 
 namespace Remotion.Data.UnitTests.UnitTesting
 {
@@ -37,8 +37,8 @@ namespace Remotion.Data.UnitTests.UnitTesting
   {
     public static RootPersistenceStrategyMockFacade CreateWithStrictMock ()
     {
-      var persistenceStrategyMock = MockRepository.GenerateStrictMock<IFetchEnabledPersistenceStrategy>();
-      var facade = new RootPersistenceStrategyMockFacade(persistenceStrategyMock);
+      var persistenceStrategyMock = new Mock<IFetchEnabledPersistenceStrategy> (MockBehavior.Strict);
+      var facade = new RootPersistenceStrategyMockFacade(persistenceStrategyMock.Object);
       return facade;
     }
 
@@ -67,8 +67,8 @@ namespace Remotion.Data.UnitTests.UnitTesting
     public IMethodOptions<IEnumerable<ILoadedObjectData>> ExpectLoadObjectData (IEnumerable<ObjectID> loadedObjectIDs)
     {
       return Mock
-          .Expect(mock => mock.LoadObjectData(Arg<IEnumerable<ObjectID>>.List.Equal(loadedObjectIDs)))
-          .Return(loadedObjectIDs.Select(id => (ILoadedObjectData)new FreshlyLoadedObjectData(DataContainerObjectMother.CreateExisting(id))));
+          .Setup(mock => mock.LoadObjectData(loadedObjectIDs))
+          .Returns(loadedObjectIDs.Select(id => (ILoadedObjectData)new FreshlyLoadedObjectData(DataContainerObjectMother.CreateExisting(id))));
     }
 
     public class RootClientTransactionComponentFactoryMixin : Mixin<RootClientTransactionComponentFactory>

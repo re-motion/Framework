@@ -16,20 +16,21 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
   [TestFixture]
   public class ModificationCheckingDomainObjectCollectionDataDecoratorTest : ClientTransactionBaseTest
   {
-    private IDomainObjectCollectionData _wrappedDataMock;
+    private Mock<IDomainObjectCollectionData> _wrappedDataMock;
     private ModificationCheckingDomainObjectCollectionDataDecorator _modificationCheckingDecorator;
     private ModificationCheckingDomainObjectCollectionDataDecorator _modificationCheckingDecoratorWithoutRequiredItemType;
 
@@ -41,9 +42,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       base.SetUp();
 
-      _wrappedDataMock = MockRepository.GenerateMock<IDomainObjectCollectionData>();
-      _modificationCheckingDecorator = new ModificationCheckingDomainObjectCollectionDataDecorator(typeof(Order), _wrappedDataMock);
-      _modificationCheckingDecoratorWithoutRequiredItemType = new ModificationCheckingDomainObjectCollectionDataDecorator(null, _wrappedDataMock);
+      _wrappedDataMock = new Mock<IDomainObjectCollectionData>();
+      _modificationCheckingDecorator = new ModificationCheckingDomainObjectCollectionDataDecorator(typeof(Order), _wrappedDataMock.Object);
+      _modificationCheckingDecoratorWithoutRequiredItemType = new ModificationCheckingDomainObjectCollectionDataDecorator(null, _wrappedDataMock.Object);
 
       _order1 = DomainObjectIDs.Order1.GetObject<Order>();
       _order3 = DomainObjectIDs.Order3.GetObject<Order>();
@@ -64,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 
       _modificationCheckingDecorator.Insert(0, _order3);
 
-      _wrappedDataMock.AssertWasCalled(mock => mock.Insert(0, _order3));
+      _wrappedDataMock.Verify (mock => mock.Insert(0, _order3), Times.AtLeastOnce());
     }
 
     [Test]
@@ -78,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
               .With.ArgumentExceptionMessageEqualTo(
                   "The collection already contains an object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'.", "domainObject"));
 
-      _wrappedDataMock.AssertWasNotCalled(mock => mock.Insert(Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
+      _wrappedDataMock.Verify (mock => mock.Insert(It.IsAny<int>(), It.IsAny<DomainObject>()), Times.Never());
     }
 
     [Test]
@@ -90,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
               .With.ArgumentOutOfRangeExceptionMessageEqualTo(
                   "Index is out of range. Must be non-negative and less than or equal to the size of the collection.", "index", 1));
 
-      _wrappedDataMock.AssertWasNotCalled(mock => mock.Insert(Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
+      _wrappedDataMock.Verify (mock => mock.Insert(It.IsAny<int>(), It.IsAny<DomainObject>()), Times.Never());
     }
 
     [Test]
@@ -102,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
               .With.ArgumentOutOfRangeExceptionMessageEqualTo(
                   "Index is out of range. Must be non-negative and less than or equal to the size of the collection.", "index", -1));
 
-      _wrappedDataMock.AssertWasNotCalled(mock => mock.Insert(Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
+      _wrappedDataMock.Verify (mock => mock.Insert(It.IsAny<int>(), It.IsAny<DomainObject>()), Times.Never());
     }
 
     [Test]
@@ -116,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
                   + " cannot be added to this collection. Values must be of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' or derived from "
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order'.", "domainObject"));
 
-      _wrappedDataMock.AssertWasNotCalled(mock => mock.Insert(Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
+      _wrappedDataMock.Verify (mock => mock.Insert(It.IsAny<int>(), It.IsAny<DomainObject>()), Times.Never());
     }
 
     [Test]
@@ -125,8 +126,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _modificationCheckingDecoratorWithoutRequiredItemType.Insert(0, _order1);
       _modificationCheckingDecoratorWithoutRequiredItemType.Insert(0, _orderItem1);
 
-      _wrappedDataMock.AssertWasCalled(mock => mock.Insert(0, _order1));
-      _wrappedDataMock.AssertWasCalled(mock => mock.Insert(0, _orderItem1));
+      _wrappedDataMock.Verify (mock => mock.Insert(0, _order1), Times.AtLeastOnce());
+      _wrappedDataMock.Verify (mock => mock.Insert(0, _orderItem1), Times.AtLeastOnce());
     }
 
     [Test]
@@ -136,13 +137,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 
       _modificationCheckingDecorator.Remove(_order1);
 
-      _wrappedDataMock.AssertWasCalled(mock => mock.Remove(_order1));
+      _wrappedDataMock.Verify (mock => mock.Remove(_order1), Times.AtLeastOnce());
     }
 
     [Test]
     public void Remove_HoldsObjectFromOtherTransaction ()
     {
-      _wrappedDataMock.Stub(stub => stub.GetObject(DomainObjectIDs.Order1)).Return(_order3);
+      _wrappedDataMock.Setup (stub => stub.GetObject (DomainObjectIDs.Order1)).Returns (_order3);
 
       Assert.That(
           () => _modificationCheckingDecorator.Remove(_order1),
@@ -150,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
               .With.ArgumentExceptionMessageEqualTo(
                   "The object to be removed has the same ID as an object in this collection, but is a different object reference.", "domainObject"));
 
-      _wrappedDataMock.AssertWasNotCalled(mock => mock.Remove(Arg<DomainObject>.Is.Anything));
+      _wrappedDataMock.Verify (mock => mock.Remove(It.IsAny<DomainObject>()), Times.Never());
     }
 
     [Test]
@@ -160,7 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 
       _modificationCheckingDecorator.Replace(0, _order3);
 
-      _wrappedDataMock.AssertWasCalled(mock => mock.Replace(0, _order3));
+      _wrappedDataMock.Verify (mock => mock.Replace(0, _order3), Times.AtLeastOnce());
     }
 
     [Test]
@@ -170,7 +171,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 
       _modificationCheckingDecorator.Replace(0, _order1);
 
-      _wrappedDataMock.AssertWasCalled(mock => mock.Replace(0, _order1));
+      _wrappedDataMock.Verify (mock => mock.Replace(0, _order1), Times.AtLeastOnce());
     }
 
     [Test]
@@ -184,7 +185,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
               .With.Message.EqualTo(
                   "The collection already contains an object with ID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'."));
 
-      _wrappedDataMock.AssertWasNotCalled(mock => mock.Replace(Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
+      _wrappedDataMock.Verify (mock => mock.Replace(It.IsAny<int>(), It.IsAny<DomainObject>()), Times.Never());
     }
 
     [Test]
@@ -198,7 +199,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
               .With.ArgumentOutOfRangeExceptionMessageEqualTo(
                   "Index is out of range. Must be non-negative and less than the size of the collection.", "index", -1));
 
-      _wrappedDataMock.AssertWasNotCalled(mock => mock.Replace(Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
+      _wrappedDataMock.Verify (mock => mock.Replace(It.IsAny<int>(), It.IsAny<DomainObject>()), Times.Never());
     }
 
     [Test]
@@ -212,7 +213,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
               .With.ArgumentOutOfRangeExceptionMessageEqualTo(
                   "Index is out of range. Must be non-negative and less than the size of the collection.", "index", 1));
 
-      _wrappedDataMock.AssertWasNotCalled(mock => mock.Replace(Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
+      _wrappedDataMock.Verify (mock => mock.Replace(It.IsAny<int>(), It.IsAny<DomainObject>()), Times.Never());
     }
 
     [Test]
@@ -228,7 +229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
                   + " cannot be added to this collection. Values must be of type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' or derived from "
                   + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order'.", "value"));
 
-      _wrappedDataMock.AssertWasNotCalled(mock => mock.Replace(Arg<int>.Is.Anything, Arg<DomainObject>.Is.Anything));
+      _wrappedDataMock.Verify (mock => mock.Replace(It.IsAny<int>(), It.IsAny<DomainObject>()), Times.Never());
     }
 
     [Test]
@@ -239,8 +240,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _modificationCheckingDecoratorWithoutRequiredItemType.Replace(0, _order3);
       _modificationCheckingDecoratorWithoutRequiredItemType.Replace(0, _orderItem1);
 
-      _wrappedDataMock.AssertWasCalled(mock => mock.Replace(0, _order3));
-      _wrappedDataMock.AssertWasCalled(mock => mock.Replace(0, _orderItem1));
+      _wrappedDataMock.Verify (mock => mock.Replace(0, _order3), Times.AtLeastOnce());
+      _wrappedDataMock.Verify (mock => mock.Replace(0, _orderItem1), Times.AtLeastOnce());
     }
 
     [Test]
@@ -256,15 +257,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 
     private void StubInnerData (params DomainObject[] contents)
     {
-      _wrappedDataMock.Stub(stub => stub.Count).Return(contents.Length);
+      _wrappedDataMock.Setup (stub => stub.Count).Returns (contents.Length);
 
       for (int i = 0; i < contents.Length; i++)
       {
         int currentIndex = i; // required because Stub creates a closure
-        _wrappedDataMock.Stub(stub => stub.ContainsObjectID(contents[currentIndex].ID)).Return(true);
-        _wrappedDataMock.Stub(stub => stub.GetObject(contents[currentIndex].ID)).Return(contents[currentIndex]);
-        _wrappedDataMock.Stub(stub => stub.GetObject(currentIndex)).Return(contents[currentIndex]);
-        _wrappedDataMock.Stub(stub => stub.IndexOf(contents[currentIndex].ID)).Return(currentIndex);
+        _wrappedDataMock.Setup (stub => stub.ContainsObjectID (contents[currentIndex].ID)).Returns (true);
+        _wrappedDataMock.Setup (stub => stub.GetObject (contents[currentIndex].ID)).Returns (contents[currentIndex]);
+        _wrappedDataMock.Setup (stub => stub.GetObject (currentIndex)).Returns (contents[currentIndex]);
+        _wrappedDataMock.Setup (stub => stub.IndexOf (contents[currentIndex].ID)).Returns (currentIndex);
       }
     }
   }

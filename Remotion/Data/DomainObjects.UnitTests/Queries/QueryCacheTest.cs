@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
@@ -61,16 +62,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     {
       IQuery query = _cache.GetQuery<Order>("id", orders => from o in orders where o.OrderNumber > 1 select o);
 
-      var queryManagerMock = MockRepository.GenerateMock<IQueryManager>();
-      var clientTransactionStub = ClientTransactionObjectMother.CreateWithComponents<ClientTransaction>(queryManager: queryManagerMock);
+      var queryManagerMock = new Mock<IQueryManager>();
+      var clientTransactionStub = ClientTransactionObjectMother.CreateWithComponents<ClientTransaction>(queryManager: queryManagerMock.Object);
 
       var expectedResult = new QueryResult<Order>(query, new Order[0]);
-      queryManagerMock.Expect(mock => mock.GetCollection<Order>(query)).Return(expectedResult);
-      queryManagerMock.Replay();
+      queryManagerMock.Setup (mock => mock.GetCollection<Order> (query)).Returns (expectedResult).Verifiable();
 
       var result = _cache.ExecuteCollectionQuery<Order>(clientTransactionStub, "id", orders => from o in orders where o.OrderNumber > 1 select o);
 
-      queryManagerMock.VerifyAllExpectations();
+      queryManagerMock.Verify();
       Assert.That(result, Is.SameAs(expectedResult));
     }
   }

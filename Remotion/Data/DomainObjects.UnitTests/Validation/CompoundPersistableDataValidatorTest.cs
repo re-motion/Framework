@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -23,7 +25,6 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.IntegrationTests;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Validation
 {
@@ -35,8 +36,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var validators = new[]
                        {
-                           MockRepository.GenerateStub<IPersistableDataValidator>(),
-                           MockRepository.GenerateStub<IPersistableDataValidator>()
+                           new Mock<IPersistableDataValidator>().Object,
+                           new Mock<IPersistableDataValidator>().Object
                        };
       var compoundValidator = new CompoundPersistableDataValidator(validators);
 
@@ -48,8 +49,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var validators = new[]
                        {
-                           MockRepository.GenerateStub<IPersistableDataValidator>(),
-                           MockRepository.GenerateStub<IPersistableDataValidator>()
+                           new Mock<IPersistableDataValidator>().Object,
+                           new Mock<IPersistableDataValidator>().Object
                        };
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
@@ -65,8 +66,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
 
         compoundValidator.Validate(ClientTransaction.Current, persistableData);
 
-        validators[0].AssertWasCalled(_ => _.Validate(ClientTransaction.Current, persistableData));
-        validators[1].AssertWasCalled(_ => _.Validate(ClientTransaction.Current, persistableData));
+        validators.Verify (_ => _.Validate(ClientTransaction.Current, persistableData), Times.AtLeastOnce());
+        validators.Verify (_ => _.Validate(ClientTransaction.Current, persistableData), Times.AtLeastOnce());
       }
     }
   }

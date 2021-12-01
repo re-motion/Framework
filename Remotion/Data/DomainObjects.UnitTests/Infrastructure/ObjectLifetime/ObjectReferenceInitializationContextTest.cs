@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
 {
@@ -27,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
   public class ObjectReferenceInitializationContextTest : StandardMappingTest
   {
     private ObjectID _objectID;
-    private IEnlistedDomainObjectManager _enlistedDomainObjectManagerMock;
+    private Mock<IEnlistedDomainObjectManager> _enlistedDomainObjectManagerMock;
     private ClientTransaction _rootTransaction;
 
     private ObjectReferenceInitializationContext _context;
@@ -39,10 +40,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       base.SetUp();
 
       _objectID = DomainObjectIDs.Order1;
-      _enlistedDomainObjectManagerMock = MockRepository.GenerateStrictMock<IEnlistedDomainObjectManager>();
+      _enlistedDomainObjectManagerMock = new Mock<IEnlistedDomainObjectManager> (MockBehavior.Strict);
       _rootTransaction = ClientTransaction.CreateRootTransaction();
 
-      _context = new ObjectReferenceInitializationContext(_objectID, _rootTransaction, _enlistedDomainObjectManagerMock);
+      _context = new ObjectReferenceInitializationContext(_objectID, _rootTransaction, _enlistedDomainObjectManagerMock.Object);
 
       _domainObject = DomainObjectMother.CreateFakeObject(_objectID);
     }
@@ -51,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     public void Initialization ()
     {
       Assert.That(_context.ObjectID, Is.EqualTo(_objectID));
-      Assert.That(_context.EnlistedDomainObjectManager, Is.SameAs(_enlistedDomainObjectManagerMock));
+      Assert.That(_context.EnlistedDomainObjectManager, Is.SameAs(_enlistedDomainObjectManagerMock.Object));
       Assert.That(_context.RootTransaction, Is.SameAs(_rootTransaction));
       Assert.That(_context.RegisteredObject, Is.Null);
     }
@@ -60,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     public void Initialization_NonRootTransaction ()
     {
       Assert.That(
-          () => new ObjectReferenceInitializationContext(_objectID, _rootTransaction.CreateSubTransaction(), _enlistedDomainObjectManagerMock),
+          () => new ObjectReferenceInitializationContext(_objectID, _rootTransaction.CreateSubTransaction(), _enlistedDomainObjectManagerMock.Object),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "The rootTransaction parameter must be passed a root transaction.", "rootTransaction"));
     }
@@ -68,11 +69,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void RegisterObject ()
     {
-      _enlistedDomainObjectManagerMock.Expect(mock => mock.EnlistDomainObject(_domainObject));
+      _enlistedDomainObjectManagerMock.Setup (mock => mock.EnlistDomainObject (_domainObject)).Verifiable();
 
       _context.RegisterObject(_domainObject);
 
-      _enlistedDomainObjectManagerMock.VerifyAllExpectations();
+      _enlistedDomainObjectManagerMock.Verify();
 
       Assert.That(_context.RegisteredObject, Is.SameAs(_domainObject));
     }
@@ -80,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void RegisterObject_Twice ()
     {
-      _enlistedDomainObjectManagerMock.Stub(mock => mock.EnlistDomainObject(_domainObject));
+      _enlistedDomainObjectManagerMock.Setup (mock => mock.EnlistDomainObject (_domainObject));
 
       _context.RegisterObject(_domainObject);
 
@@ -88,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
           () => _context.RegisterObject(_domainObject),
           Throws.InvalidOperationException.With.Message.EqualTo("Only one object can be registered using this context."));
 
-      _enlistedDomainObjectManagerMock.VerifyAllExpectations();
+      _enlistedDomainObjectManagerMock.Verify();
 
       Assert.That(_context.RegisteredObject, Is.SameAs(_domainObject));
     }

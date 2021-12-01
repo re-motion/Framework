@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
@@ -27,7 +29,6 @@ using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 {
@@ -38,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     private string _propertyName;
     private Type _propertyType;
 
-    private ImplementingAccessorInterceptorBase _interceptorPartialMock;
+    private Mock<ImplementingAccessorInterceptorBase> _interceptorPartialMock;
 
     private MutableType _proxyType;
 
@@ -49,8 +50,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       _propertyName = "abc";
       _propertyType = typeof(int);
 
-      _interceptorPartialMock = MockRepository.GeneratePartialMock<ImplementingAccessorInterceptorBase>(
-          _interceptedMethod, _propertyName, _propertyType);
+      _interceptorPartialMock = new Mock<ImplementingAccessorInterceptorBase> (
+          _interceptedMethod, _propertyName, _propertyType)          { CallBase = true };
 
       _proxyType = MutableTypeObjectMother.Create(typeof(DomainObject));
     }
@@ -63,14 +64,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       var arguments = new Expression[] { Expression.Parameter(typeof(int), "param") };
       var ctx = new MethodBodyModificationContext(_proxyType, false, new ParameterExpression[0], Type.EmptyTypes, typeof(int), null, null);
       _interceptorPartialMock
-          .Stub(stub => PrivateInvoke.GetNonPublicProperty(stub, "AccessorImplementationMethod"))
-          .Return(accessorImplementationMethod);
+          .Setup(stub => PrivateInvoke.GetNonPublicProperty(stub, "AccessorImplementationMethod"))
+          .Returns(accessorImplementationMethod);
       _interceptorPartialMock
-          .Stub(stub => PrivateInvoke.InvokeNonPublicMethod(stub, "GetArguments", Arg<MethodBaseBodyContextBase>.Is.Anything))
-          .WhenCalled(mi => Assert.That(mi.Arguments[0], Is.SameAs(ctx)))
-          .Return(arguments);
+.Protected()          .Setup ("GetArguments", true, It.IsAny<MethodBaseBodyContextBase>())          .Callback((object target, string methodName, object?[] arguments) => Assert.That(mi.Arguments[0], Is.SameAs(ctx)))
+          .Returns(arguments);
 
-      var result = (Expression)PrivateInvoke.InvokeNonPublicMethod(_interceptorPartialMock, "CreateBody", ctx);
+      var result = (Expression)PrivateInvoke.InvokeNonPublicMethod(_interceptorPartialMock.Object, "CreateBody", ctx);
 
       var expectedbody =
           Expression.Call(

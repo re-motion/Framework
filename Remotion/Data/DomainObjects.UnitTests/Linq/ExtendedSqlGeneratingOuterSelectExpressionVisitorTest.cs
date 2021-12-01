@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Linq.Expressions;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -26,14 +28,13 @@ using Remotion.Linq.SqlBackend.SqlGeneration;
 using Remotion.Linq.SqlBackend.SqlStatementModel;
 using Remotion.Linq.SqlBackend.SqlStatementModel.Resolved;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq
 {
   [TestFixture]
   public class ExtendedSqlGeneratingOuterSelectExpressionVisitorTest : StandardMappingTest
   {
-    private ISqlGenerationStage _stageMock;
+    private Mock<ISqlGenerationStage> _stageMock;
     private SqlCommandBuilder _commandBuilder;
     private SetOperationsMode _someSetOperationsMode;
 
@@ -41,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       base.SetUp();
 
-      _stageMock = MockRepository.GenerateStrictMock<ISqlGenerationStage>();
+      _stageMock = new Mock<ISqlGenerationStage> (MockBehavior.Strict);
       _commandBuilder = new SqlCommandBuilder();
 
       _someSetOperationsMode = SetOperationsMode.StatementIsSetCombined;
@@ -52,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       var expression = Expression.Constant(new Order[] { });
       Assert.That(
-          () => ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql(expression, _commandBuilder, _stageMock, _someSetOperationsMode),
+          () => ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql(expression, _commandBuilder, _stageMock.Object, _someSetOperationsMode),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.Contains("Queries selecting collections are not supported because SQL is not well-suited to returning collections."));
     }
@@ -84,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           Expression.Convert(new SqlColumnDefinitionExpression(typeof(Guid), "t0", "CustomerID", false), typeof(object)));
       var compoundExpression = NamedExpression.CreateNewExpressionWithNamedArguments(newObjectIDExpression);
 
-      ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql(compoundExpression, _commandBuilder, _stageMock, _someSetOperationsMode);
+      ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql(compoundExpression, _commandBuilder, _stageMock.Object, _someSetOperationsMode);
 
       Assert.That(_commandBuilder.GetCommandText(), Is.EqualTo("[t0].[CustomerClassID] AS [m0],[t0].[CustomerID] AS [m1]"));
 

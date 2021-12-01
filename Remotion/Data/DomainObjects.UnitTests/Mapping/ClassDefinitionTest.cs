@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
@@ -32,7 +34,6 @@ using Remotion.Development.UnitTesting.Enumerables;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -75,8 +76,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void Initialize ()
     {
-      var persistentMixinFinder = MockRepository.GenerateStub<IPersistentMixinFinder>();
-      var instanceCreator = MockRepository.GenerateStub<IDomainObjectCreator>();
+      var persistentMixinFinder = new Mock<IPersistentMixinFinder>();
+      var instanceCreator = new Mock<IDomainObjectCreator>();
 
       var actual = new ClassDefinition(
               "Order",
@@ -85,8 +86,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               null,
               null,
               DefaultStorageClass.Transaction,
-              persistentMixinFinder,
-              instanceCreator);
+              persistentMixinFinder.Object,
+              instanceCreator.Object);
       actual.SetDerivedClasses(new ClassDefinition[0]);
 
       Assert.That(actual.ID, Is.EqualTo("Order"));
@@ -96,15 +97,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(actual.DefaultStorageClass, Is.EqualTo(DefaultStorageClass.Transaction));
       //Assert.That (actual.DerivedClasses.AreResolvedTypesRequired, Is.True);
       Assert.That(actual.IsReadOnly, Is.False);
-      Assert.That(actual.PersistentMixinFinder, Is.SameAs(persistentMixinFinder));
-      Assert.That(actual.InstanceCreator, Is.SameAs(instanceCreator));
+      Assert.That(actual.PersistentMixinFinder, Is.SameAs(persistentMixinFinder.Object));
+      Assert.That(actual.InstanceCreator, Is.SameAs(instanceCreator.Object));
     }
 
     [Test]
     public void Initialize_IDCreator_CreatesGenericObjectIDs ()
     {
-      var persistentMixinFinder = MockRepository.GenerateStub<IPersistentMixinFinder>();
-      var instanceCreator = MockRepository.GenerateStub<IDomainObjectCreator>();
+      var persistentMixinFinder = new Mock<IPersistentMixinFinder>();
+      var instanceCreator = new Mock<IDomainObjectCreator>();
 
       var classDefinition = new ClassDefinition(
               "Order",
@@ -113,8 +114,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               null,
               null,
               DefaultStorageClass.Persistent,
-              persistentMixinFinder,
-              instanceCreator);
+              persistentMixinFinder.Object,
+              instanceCreator.Object);
 
       Assert.That(classDefinition.HandleCreator, Is.Not.Null);
 
@@ -129,8 +130,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void Initialize_IDCreator_ThrowsWhenNoDomainObject ()
     {
-      var persistentMixinFinder = MockRepository.GenerateStub<IPersistentMixinFinder>();
-      var instanceCreator = MockRepository.GenerateStub<IDomainObjectCreator>();
+      var persistentMixinFinder = new Mock<IPersistentMixinFinder>();
+      var instanceCreator = new Mock<IDomainObjectCreator>();
 
       var classDefinition = new ClassDefinition(
               "Order",
@@ -139,8 +140,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               null,
               null,
               DefaultStorageClass.Persistent,
-              persistentMixinFinder,
-              instanceCreator);
+              persistentMixinFinder.Object,
+              instanceCreator.Object);
 
       Assert.That(classDefinition.HandleCreator, Is.Not.Null);
       Assert.That(
@@ -227,7 +228,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void SetRelationEndPointDefinitions ()
     {
       var endPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          _domainBaseClass, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          _domainBaseClass, "Test", false, new Mock<IPropertyInformation>().Object);
 
       _domainBaseClass.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointDefinition }, false));
 
@@ -240,7 +241,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void SetRelationEndPointDefinitions_DifferentClassDefinition_ThrowsException ()
     {
       var endPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          _distributorClass, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          _distributorClass, "Test", false, new Mock<IPropertyInformation>().Object);
       Assert.That(
           () => _domainBaseClass.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointDefinition }, false)),
           Throws.InstanceOf<MappingException>()
@@ -252,9 +253,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void SetRelationEndPointDefinitions_EndPointWithSamePropertyNameWasAlreadyAdded_ThrowsException ()
     {
       var baseEndPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          _domainBaseClass, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          _domainBaseClass, "Test", false, new Mock<IPropertyInformation>().Object);
       var derivedEndPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          _personClass, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          _personClass, "Test", false, new Mock<IPropertyInformation>().Object);
 
       _domainBaseClass.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { baseEndPointDefinition }, true));
       Assert.That(
@@ -269,7 +270,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void SetRelationEndPointDefinitions_Twice_ThrowsException ()
     {
       var endPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          _domainBaseClass, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          _domainBaseClass, "Test", false, new Mock<IPropertyInformation>().Object);
 
       _domainBaseClass.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointDefinition }, false));
       Assert.That(
@@ -593,8 +594,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ConstructorWithoutBaseClass ()
     {
-      var persistentMixinFinder = MockRepository.GenerateStub<IPersistentMixinFinder>();
-      var instanceCreator = MockRepository.GenerateStub<IDomainObjectCreator>();
+      var persistentMixinFinder = new Mock<IPersistentMixinFinder>();
+      var instanceCreator = new Mock<IDomainObjectCreator>();
 
       Assert.That(
               () => new ClassDefinition(
@@ -604,8 +605,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
                       null,
                       null,
                       DefaultStorageClass.Persistent,
-                      persistentMixinFinder,
-                      instanceCreator),
+                      persistentMixinFinder.Object,
+                      instanceCreator.Object),
               Throws.Nothing);
     }
 
@@ -625,7 +626,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       classDefinition.SetDerivedClasses(new ClassDefinition[0]);
       var endPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          classDefinition, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          classDefinition, "Test", false, new Mock<IPropertyInformation>().Object);
       classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointDefinition }, true));
       classDefinition.SetReadOnly();
 
@@ -651,7 +652,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       classDefinition.SetDerivedClasses(new ClassDefinition[0]);
       var endPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          classDefinition, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          classDefinition, "Test", false, new Mock<IPropertyInformation>().Object);
       classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointDefinition }, true));
       classDefinition.SetReadOnly();
 
@@ -667,7 +668,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       classDefinition.SetDerivedClasses(new ClassDefinition[0]);
       var endPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          classDefinition, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          classDefinition, "Test", false, new Mock<IPropertyInformation>().Object);
       classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointDefinition }, true));
       classDefinition.SetReadOnly();
 

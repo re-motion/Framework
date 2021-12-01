@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
@@ -29,7 +31,6 @@ using Remotion.Data.DomainObjects.Validation;
 using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -41,16 +42,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private Order _order3; // Customer3
 
     private OrderCollection _fakeCollection;
-    private IDomainObjectCollectionEndPointCollectionManager _collectionManagerMock;
-    private ILazyLoader _lazyLoaderMock;
-    private IRelationEndPointProvider _endPointProviderStub;
-    private IClientTransactionEventSink _transactionEventSinkStub;
-    private IDomainObjectCollectionEndPointDataManagerFactory _dataManagerFactoryStub;
-    private IDomainObjectCollectionEndPointLoadState _loadStateMock;
+    private Mock<IDomainObjectCollectionEndPointCollectionManager> _collectionManagerMock;
+    private Mock<ILazyLoader> _lazyLoaderMock;
+    private Mock<IRelationEndPointProvider> _endPointProviderStub;
+    private Mock<IClientTransactionEventSink> _transactionEventSinkStub;
+    private Mock<IDomainObjectCollectionEndPointDataManagerFactory> _dataManagerFactoryStub;
+    private Mock<IDomainObjectCollectionEndPointLoadState> _loadStateMock;
 
     private DomainObjectCollectionEndPoint _endPoint;
 
-    private IRealObjectEndPoint _relatedEndPointStub;
+    private Mock<IRealObjectEndPoint> _relatedEndPointStub;
 
     public override void SetUp ()
     {
@@ -61,25 +62,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _order3 = DomainObjectIDs.Order3.GetObject<Order>();
 
       _fakeCollection = new OrderCollection();
-      _collectionManagerMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPointCollectionManager>();
-      _lazyLoaderMock = MockRepository.GenerateMock<ILazyLoader>();
-      _endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider>();
-      _transactionEventSinkStub = MockRepository.GenerateStub<IClientTransactionEventSink>();
-      _dataManagerFactoryStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPointDataManagerFactory>();
-      _loadStateMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPointLoadState>();
+      _collectionManagerMock = new Mock<IDomainObjectCollectionEndPointCollectionManager> (MockBehavior.Strict);
+      _lazyLoaderMock = new Mock<ILazyLoader>();
+      _endPointProviderStub = new Mock<IRelationEndPointProvider>();
+      _transactionEventSinkStub = new Mock<IClientTransactionEventSink>();
+      _dataManagerFactoryStub = new Mock<IDomainObjectCollectionEndPointDataManagerFactory>();
+      _loadStateMock = new Mock<IDomainObjectCollectionEndPointLoadState> (MockBehavior.Strict);
 
       _endPoint = new DomainObjectCollectionEndPoint(
           TestableClientTransaction,
           _customerEndPointID,
-          _collectionManagerMock,
-          _lazyLoaderMock,
-          _endPointProviderStub,
-          _transactionEventSinkStub,
-          _dataManagerFactoryStub);
-      PrivateInvoke.SetNonPublicField(_endPoint, "_loadState", _loadStateMock);
-      _endPointProviderStub.Stub(stub => stub.GetOrCreateVirtualEndPoint(_customerEndPointID)).Return(_endPoint);
+          _collectionManagerMock.Object,
+          _lazyLoaderMock.Object,
+          _endPointProviderStub.Object,
+          _transactionEventSinkStub.Object,
+          _dataManagerFactoryStub.Object);
+      PrivateInvoke.SetNonPublicField(_endPoint, "_loadState", _loadStateMock.Object);
+      _endPointProviderStub.Setup (stub => stub.GetOrCreateVirtualEndPoint (_customerEndPointID)).Returns (_endPoint);
 
-      _relatedEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      _relatedEndPointStub = new Mock<IRealObjectEndPoint>();
     }
 
     [Test]
@@ -88,25 +89,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var endPoint = new DomainObjectCollectionEndPoint(
           TestableClientTransaction,
           _customerEndPointID,
-          _collectionManagerMock,
-          _lazyLoaderMock,
-          _endPointProviderStub,
-          _transactionEventSinkStub,
-          _dataManagerFactoryStub);
+          _collectionManagerMock.Object,
+          _lazyLoaderMock.Object,
+          _endPointProviderStub.Object,
+          _transactionEventSinkStub.Object,
+          _dataManagerFactoryStub.Object);
 
       Assert.That(endPoint.ID, Is.EqualTo(_customerEndPointID));
-      Assert.That(endPoint.CollectionManager, Is.SameAs(_collectionManagerMock));
-      Assert.That(endPoint.LazyLoader, Is.SameAs(_lazyLoaderMock));
-      Assert.That(endPoint.EndPointProvider, Is.SameAs(_endPointProviderStub));
-      Assert.That(endPoint.TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
-      Assert.That(endPoint.DataManagerFactory, Is.SameAs(_dataManagerFactoryStub));
+      Assert.That(endPoint.CollectionManager, Is.SameAs(_collectionManagerMock.Object));
+      Assert.That(endPoint.LazyLoader, Is.SameAs(_lazyLoaderMock.Object));
+      Assert.That(endPoint.EndPointProvider, Is.SameAs(_endPointProviderStub.Object));
+      Assert.That(endPoint.TransactionEventSink, Is.SameAs(_transactionEventSinkStub.Object));
+      Assert.That(endPoint.DataManagerFactory, Is.SameAs(_dataManagerFactoryStub.Object));
 
       var loadState = DomainObjectCollectionEndPointTestHelper.GetLoadState(endPoint);
       Assert.That(loadState, Is.TypeOf(typeof(IncompleteDomainObjectCollectionEndPointLoadState)));
-      Assert.That(((IncompleteDomainObjectCollectionEndPointLoadState)loadState).DataManagerFactory, Is.SameAs(_dataManagerFactoryStub));
+      Assert.That(((IncompleteDomainObjectCollectionEndPointLoadState)loadState).DataManagerFactory, Is.SameAs(_dataManagerFactoryStub.Object));
       Assert.That(
           ((IncompleteDomainObjectCollectionEndPointLoadState)loadState).EndPointLoader,
-          Is.TypeOf<DomainObjectCollectionEndPoint.EndPointLoader>().With.Property<DomainObjectCollectionEndPoint.EndPointLoader>(l => l.LazyLoader).SameAs(_lazyLoaderMock));
+          Is.TypeOf<DomainObjectCollectionEndPoint.EndPointLoader>().With.Property<DomainObjectCollectionEndPoint.EndPointLoader>(l => l.LazyLoader).SameAs(_lazyLoaderMock.Object));
     }
 
     [Test]
@@ -117,11 +118,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => new DomainObjectCollectionEndPoint(
           TestableClientTransaction,
           endPointID,
-          _collectionManagerMock,
-          _lazyLoaderMock,
-          _endPointProviderStub,
-          _transactionEventSinkStub,
-          _dataManagerFactoryStub),
+          _collectionManagerMock.Object,
+          _lazyLoaderMock.Object,
+          _endPointProviderStub.Object,
+          _transactionEventSinkStub.Object,
+          _dataManagerFactoryStub.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "End point ID must refer to an end point with cardinality 'Many'.", "id"));
@@ -135,11 +136,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => new DomainObjectCollectionEndPoint(
           TestableClientTransaction,
           endPointID,
-          _collectionManagerMock,
-          _lazyLoaderMock,
-          _endPointProviderStub,
-          _transactionEventSinkStub,
-          _dataManagerFactoryStub),
+          _collectionManagerMock.Object,
+          _lazyLoaderMock.Object,
+          _endPointProviderStub.Object,
+          _transactionEventSinkStub.Object,
+          _dataManagerFactoryStub.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "End point ID must not refer to an anonymous end point.", "id"));
@@ -148,7 +149,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Collection ()
     {
-      _collectionManagerMock.Stub(stub => stub.GetCurrentCollectionReference()).Return(_fakeCollection);
+      _collectionManagerMock.Setup (stub => stub.GetCurrentCollectionReference()).Returns (_fakeCollection);
 
       Assert.That(_endPoint.Collection, Is.SameAs(_fakeCollection));
     }
@@ -156,7 +157,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void OriginalCollection ()
     {
-      _collectionManagerMock.Stub(stub => stub.GetOriginalCollectionReference()).Return(_fakeCollection);
+      _collectionManagerMock.Setup (stub => stub.GetOriginalCollectionReference()).Returns (_fakeCollection);
 
       Assert.That(_endPoint.OriginalCollection, Is.SameAs(_fakeCollection));
     }
@@ -164,7 +165,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetCollectionEventRaiser ()
     {
-      _collectionManagerMock.Stub(stub => stub.GetCurrentCollectionReference()).Return(_fakeCollection);
+      _collectionManagerMock.Setup (stub => stub.GetCurrentCollectionReference()).Returns (_fakeCollection);
 
       var result = _endPoint.GetCollectionEventRaiser();
 
@@ -174,12 +175,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetCollectionWithOriginalData ()
     {
-      var collectionDataStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
-      collectionDataStub.Stub(stub => stub.RequiredItemType).Return(typeof(Order));
-      var readOnlyCollectionDataDecorator = new ReadOnlyDomainObjectCollectionDataDecorator(collectionDataStub);
+      var collectionDataStub = new Mock<IDomainObjectCollectionData>();
+      collectionDataStub.Setup (stub => stub.RequiredItemType).Returns (typeof(Order));
+      var readOnlyCollectionDataDecorator = new ReadOnlyDomainObjectCollectionDataDecorator(collectionDataStub.Object);
 
-      _loadStateMock.Stub(stub => stub.GetOriginalData(_endPoint)).Return(readOnlyCollectionDataDecorator);
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (stub => stub.GetOriginalData (_endPoint)).Returns (readOnlyCollectionDataDecorator);
 
       var result = _endPoint.GetCollectionWithOriginalData();
 
@@ -192,12 +192,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetData ()
     {
       var fakeResult = new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData());
-      _loadStateMock.Expect(mock => mock.GetData(_endPoint)).Return(fakeResult);
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.GetData (_endPoint)).Returns (fakeResult).Verifiable();
 
       var result = _endPoint.GetData();
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
       Assert.That(result, Is.SameAs(fakeResult));
     }
 
@@ -205,21 +204,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetOriginalData ()
     {
       var fakeResult = new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData());
-      _loadStateMock.Expect(mock => mock.GetOriginalData(_endPoint)).Return(fakeResult);
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.GetOriginalData (_endPoint)).Returns (fakeResult).Verifiable();
 
       var result = _endPoint.GetOriginalData();
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
       Assert.That(result, Is.SameAs(fakeResult));
     }
 
     [Test]
     public void CanBeCollected ()
     {
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
-      _loadStateMock.Stub(stub => stub.CanEndPointBeCollected(_endPoint)).Return(true).Repeat.Once();
-      _loadStateMock.Stub(stub => stub.CanEndPointBeCollected(_endPoint)).Return(false).Repeat.Once();
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
+      _loadStateMock.Setup (stub => stub.CanEndPointBeCollected (_endPoint)).Returns (true);
+      _loadStateMock.Setup (stub => stub.CanEndPointBeCollected (_endPoint)).Returns (false);
 
       var result1 = _endPoint.CanBeCollected;
       var result2 = _endPoint.CanBeCollected;
@@ -231,8 +229,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CanBeCollected_WithChangedCollectionReference ()
     {
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(true);
-      _loadStateMock.Stub(stub => stub.CanEndPointBeCollected(_endPoint)).Return(true);
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (true);
+      _loadStateMock.Setup (stub => stub.CanEndPointBeCollected (_endPoint)).Returns (true);
 
       var result = _endPoint.CanBeCollected;
 
@@ -242,9 +240,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CanBeMarkedIncomplete ()
     {
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
-      _loadStateMock.Stub(stub => stub.CanDataBeMarkedIncomplete(_endPoint)).Return(true).Repeat.Once();
-      _loadStateMock.Stub(stub => stub.CanDataBeMarkedIncomplete(_endPoint)).Return(false).Repeat.Once();
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
+      _loadStateMock.Setup (stub => stub.CanDataBeMarkedIncomplete (_endPoint)).Returns (true);
+      _loadStateMock.Setup (stub => stub.CanDataBeMarkedIncomplete (_endPoint)).Returns (false);
 
       var result1 = _endPoint.CanBeMarkedIncomplete;
       var result2 = _endPoint.CanBeMarkedIncomplete;
@@ -256,8 +254,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CanBeMarkedIncomplete_WithChangedCollectionReference ()
     {
-      _collectionManagerMock.Stub(mock => mock.HasCollectionReferenceChanged()).Return(true);
-      _loadStateMock.Stub(mock => mock.CanDataBeMarkedIncomplete(_endPoint)).Return(true);
+      _collectionManagerMock.Setup (mock => mock.HasCollectionReferenceChanged()).Returns (true);
+      _loadStateMock.Setup (mock => mock.CanDataBeMarkedIncomplete (_endPoint)).Returns (true);
 
       var result = _endPoint.CanBeMarkedIncomplete;
 
@@ -267,20 +265,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void HasChanged_True_CollectionChanged ()
     {
-      _loadStateMock.Replay();
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(true);
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (true);
 
       var result = _endPoint.HasChanged;
 
-      _loadStateMock.AssertWasNotCalled(mock => mock.HasChanged());
+      _loadStateMock.Verify (mock => mock.HasChanged(), Times.Never());
       Assert.That(result, Is.True);
     }
 
     [Test]
     public void HasChanged_True_LoadState ()
     {
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
-      _loadStateMock.Stub(stub => stub.HasChanged()).Return(true);
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
+      _loadStateMock.Setup (stub => stub.HasChanged()).Returns (true);
 
       var result = _endPoint.HasChanged;
 
@@ -290,8 +287,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void HasChanged_False ()
     {
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
-      _loadStateMock.Stub(stub => stub.HasChanged()).Return(false);
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
+      _loadStateMock.Setup (stub => stub.HasChanged()).Returns (false);
 
       var result = _endPoint.HasChanged;
 
@@ -301,20 +298,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void HasChangedFast_True_CollectionChanged ()
     {
-      _loadStateMock.Replay();
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(true);
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (true);
 
       var result = _endPoint.HasChangedFast;
 
-      _loadStateMock.AssertWasNotCalled(mock => mock.HasChangedFast());
+      _loadStateMock.Verify (mock => mock.HasChangedFast(), Times.Never());
       Assert.That(result, Is.True);
     }
 
     [Test]
     public void HasChangedFast_True_LoadState ()
     {
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
-      _loadStateMock.Stub(stub => stub.HasChangedFast()).Return(true);
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
+      _loadStateMock.Setup (stub => stub.HasChangedFast()).Returns (true);
 
       var result = _endPoint.HasChangedFast;
 
@@ -324,8 +320,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void HasChangedFast_False ()
     {
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
-      _loadStateMock.Stub(stub => stub.HasChangedFast()).Return(false);
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
+      _loadStateMock.Setup (stub => stub.HasChangedFast()).Returns (false);
 
       var result = _endPoint.HasChangedFast;
 
@@ -335,12 +331,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void EnsureDataComplete ()
     {
-      _loadStateMock.Expect(mock => mock.EnsureDataComplete(_endPoint));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.EnsureDataComplete (_endPoint)).Verifiable();
 
       _endPoint.EnsureDataComplete();
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
     }
 
     [Test]
@@ -351,25 +346,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var items = new DomainObject[0];
 
       _loadStateMock
-          .Expect(mock => mock.MarkDataComplete(Arg.Is(_endPoint), Arg.Is(items), Arg<Action<IDomainObjectCollectionEndPointDataManager>>.Is.Anything))
-          .WhenCalled(mi => { stateSetter = (Action<IDomainObjectCollectionEndPointDataManager>)mi.Arguments[2]; });
-      _loadStateMock.Replay();
+          .Setup(mock => mock.MarkDataComplete(_endPoint, items, It.IsAny<Action<IDomainObjectCollectionEndPointDataManager>>()))
+          .Callback((IDomainObjectCollectionEndPoint collectionEndPoint, IEnumerable<DomainObject> items, Action<IDomainObjectCollectionEndPointDataManager> stateSetter) => { stateSetter = (Action<IDomainObjectCollectionEndPointDataManager>)mi.Arguments[2]; })
+          .Verifiable();
 
       _endPoint.MarkDataComplete(items);
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
 
-      Assert.That(DomainObjectCollectionEndPointTestHelper.GetLoadState(_endPoint), Is.SameAs(_loadStateMock));
+      Assert.That(DomainObjectCollectionEndPointTestHelper.GetLoadState(_endPoint), Is.SameAs(_loadStateMock.Object));
 
-      var dataManagerStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPointDataManager>();
-      stateSetter(dataManagerStub);
+      var dataManagerStub = new Mock<IDomainObjectCollectionEndPointDataManager>();
+      stateSetter(dataManagerStub.Object);
 
       var newLoadState = DomainObjectCollectionEndPointTestHelper.GetLoadState(_endPoint);
       Assert.That(newLoadState, Is.TypeOf(typeof(CompleteDomainObjectCollectionEndPointLoadState)));
 
-      Assert.That(((CompleteDomainObjectCollectionEndPointLoadState)newLoadState).DataManager, Is.SameAs(dataManagerStub));
-      Assert.That(((CompleteDomainObjectCollectionEndPointLoadState)newLoadState).TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
-      Assert.That(((CompleteDomainObjectCollectionEndPointLoadState)newLoadState).EndPointProvider, Is.SameAs(_endPointProviderStub));
+      Assert.That(((CompleteDomainObjectCollectionEndPointLoadState)newLoadState).DataManager, Is.SameAs(dataManagerStub.Object));
+      Assert.That(((CompleteDomainObjectCollectionEndPointLoadState)newLoadState).TransactionEventSink, Is.SameAs(_transactionEventSinkStub.Object));
+      Assert.That(((CompleteDomainObjectCollectionEndPointLoadState)newLoadState).EndPointProvider, Is.SameAs(_endPointProviderStub.Object));
     }
 
     [Test]
@@ -378,15 +373,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Action stateSetter = null;
 
       _loadStateMock
-          .Expect(mock => mock.MarkDataIncomplete(Arg.Is(_endPoint), Arg<Action>.Is.Anything))
-          .WhenCalled(mi => { stateSetter = (Action)mi.Arguments[1]; });
-      _loadStateMock.Replay();
+          .Setup(mock => mock.MarkDataIncomplete(_endPoint, It.IsAny<Action>()))
+          .Callback((IDomainObjectCollectionEndPoint endPoint, Action stateSetter) => { stateSetter = (Action)mi.Arguments[1]; })
+          .Verifiable();
+      _loadStateMock.Object.Replay();
 
       _endPoint.MarkDataIncomplete();
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
 
-      Assert.That(DomainObjectCollectionEndPointTestHelper.GetLoadState(_endPoint), Is.SameAs(_loadStateMock));
+      Assert.That(DomainObjectCollectionEndPointTestHelper.GetLoadState(_endPoint), Is.SameAs(_loadStateMock.Object));
 
       stateSetter();
 
@@ -394,7 +390,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(newLoadState, Is.TypeOf(typeof(IncompleteDomainObjectCollectionEndPointLoadState)));
       Assert.That(
           ((IncompleteDomainObjectCollectionEndPointLoadState)newLoadState).EndPointLoader,
-          Is.TypeOf<DomainObjectCollectionEndPoint.EndPointLoader>().With.Property<DomainObjectCollectionEndPoint.EndPointLoader>(l => l.LazyLoader).SameAs(_lazyLoaderMock));
+          Is.TypeOf<DomainObjectCollectionEndPoint.EndPointLoader>().With.Property<DomainObjectCollectionEndPoint.EndPointLoader>(l => l.LazyLoader).SameAs(_lazyLoaderMock.Object));
     }
 
     [Test]
@@ -408,11 +404,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Commit_TouchedUnchanged ()
     {
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
-      _collectionManagerMock.Replay();
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
 
-      _loadStateMock.Stub(stub => stub.HasChanged()).Return(false);
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (stub => stub.HasChanged()).Returns (false);
 
       _endPoint.Touch();
       Assert.That(_endPoint.HasBeenTouched, Is.True);
@@ -420,21 +414,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _endPoint.Commit();
 
-      _collectionManagerMock.AssertWasNotCalled(mock => mock.CommitCollectionReference());
-      _loadStateMock.AssertWasNotCalled(mock => mock.Commit(_endPoint));
+      _collectionManagerMock.Verify (mock => mock.CommitCollectionReference(), Times.Never());
+      _loadStateMock.Verify (mock => mock.Commit(_endPoint), Times.Never());
       Assert.That(_endPoint.HasBeenTouched, Is.False);
     }
 
     [Test]
     public void Commit_ChangedCollectionReference ()
     {
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(true);
-      _collectionManagerMock.Expect(mock => mock.CommitCollectionReference());
-      _collectionManagerMock.Replay();
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (true);
+      _collectionManagerMock.Setup (mock => mock.CommitCollectionReference()).Verifiable();
 
-      _loadStateMock.Stub(stub => stub.HasChanged()).Return(false);
-      _loadStateMock.Expect(mock => mock.Commit(_endPoint));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (stub => stub.HasChanged()).Returns (false);
+      _loadStateMock.Setup (mock => mock.Commit (_endPoint)).Verifiable();
 
       _endPoint.Touch();
 
@@ -443,21 +435,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _endPoint.Commit();
 
-      _collectionManagerMock.VerifyAllExpectations();
-      _loadStateMock.VerifyAllExpectations();
+      _collectionManagerMock.Verify();
+      _loadStateMock.Verify();
       Assert.That(_endPoint.HasBeenTouched, Is.False);
     }
 
     [Test]
     public void Commit_ChangedLoadState ()
     {
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
-      _collectionManagerMock.Expect(mock => mock.CommitCollectionReference());
-      _collectionManagerMock.Replay();
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
+      _collectionManagerMock.Setup (mock => mock.CommitCollectionReference()).Verifiable();
 
-      _loadStateMock.Stub(stub => stub.HasChanged()).Return(true);
-      _loadStateMock.Expect(mock => mock.Commit(_endPoint));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (stub => stub.HasChanged()).Returns (true);
+      _loadStateMock.Setup (mock => mock.Commit (_endPoint)).Verifiable();
 
       _endPoint.Touch();
 
@@ -466,50 +456,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _endPoint.Commit();
 
-      _collectionManagerMock.VerifyAllExpectations();
-      _loadStateMock.VerifyAllExpectations();
+      _collectionManagerMock.Verify();
+      _loadStateMock.Verify();
       Assert.That(_endPoint.HasBeenTouched, Is.False);
     }
 
     [Test]
     public void Rollback_ChangedCollectionReference ()
     {
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(true);
-      _collectionManagerMock.Expect(mock => mock.RollbackCollectionReference());
-      _collectionManagerMock.Replay();
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (true);
+      _collectionManagerMock.Setup (mock => mock.RollbackCollectionReference()).Verifiable();
 
-      _loadStateMock.Stub(stub => stub.HasChanged()).Return(false);
-      _loadStateMock.Expect(mock => mock.Rollback(_endPoint));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (stub => stub.HasChanged()).Returns (false);
+      _loadStateMock.Setup (mock => mock.Rollback (_endPoint)).Verifiable();
 
       _endPoint.Touch();
       Assert.That(_endPoint.HasBeenTouched, Is.True);
 
       _endPoint.Rollback();
 
-      _collectionManagerMock.VerifyAllExpectations();
-      _loadStateMock.VerifyAllExpectations();
+      _collectionManagerMock.Verify();
+      _loadStateMock.Verify();
       Assert.That(_endPoint.HasBeenTouched, Is.False);
     }
 
     [Test]
     public void Rollback_ChangedLoadState ()
     {
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
-      _collectionManagerMock.Expect(mock => mock.RollbackCollectionReference());
-      _collectionManagerMock.Replay();
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
+      _collectionManagerMock.Setup (mock => mock.RollbackCollectionReference()).Verifiable();
 
-      _loadStateMock.Stub(stub => stub.HasChanged()).Return(true);
-      _loadStateMock.Expect(mock => mock.Rollback(_endPoint));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (stub => stub.HasChanged()).Returns (true);
+      _loadStateMock.Setup (mock => mock.Rollback (_endPoint)).Verifiable();
 
       _endPoint.Touch();
       Assert.That(_endPoint.HasBeenTouched, Is.True);
 
       _endPoint.Rollback();
 
-      _collectionManagerMock.VerifyAllExpectations();
-      _loadStateMock.VerifyAllExpectations();
+      _collectionManagerMock.Verify();
+      _loadStateMock.Verify();
       Assert.That(_endPoint.HasBeenTouched, Is.False);
     }
 
@@ -518,16 +504,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       _endPoint.Touch();
 
-      _loadStateMock.Stub(stub => stub.HasChanged()).Return(false);
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
+      _loadStateMock.Setup (stub => stub.HasChanged()).Returns (false);
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
 
       Assert.That(_endPoint.HasChanged, Is.False);
       Assert.That(_endPoint.HasBeenTouched, Is.True);
 
       _endPoint.Rollback();
 
-      _collectionManagerMock.AssertWasNotCalled(mock => mock.RollbackCollectionReference());
-      _loadStateMock.AssertWasNotCalled(mock => mock.Rollback(_endPoint));
+      _collectionManagerMock.Verify (mock => mock.RollbackCollectionReference(), Times.Never());
+      _loadStateMock.Verify (mock => mock.Rollback(_endPoint), Times.Never());
       Assert.That(_endPoint.HasChanged, Is.False);
       Assert.That(_endPoint.HasBeenTouched, Is.False);
     }
@@ -537,9 +523,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var domainObjectCollectionData = new DomainObjectCollectionData(new[] { DomainObjectMother.CreateFakeObject<Order>() });
       _loadStateMock
-          .Stub(stub => stub.GetData(_endPoint))
-          .Return(new ReadOnlyDomainObjectCollectionDataDecorator(domainObjectCollectionData));
-      _loadStateMock.Replay();
+          .Setup(stub => stub.GetData(_endPoint))
+          .Returns(new ReadOnlyDomainObjectCollectionDataDecorator(domainObjectCollectionData));
 
       _endPoint.ValidateMandatory();
     }
@@ -549,9 +534,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var domainObjectCollectionData = new DomainObjectCollectionData();
       _loadStateMock
-          .Stub(stub => stub.GetData(_endPoint))
-          .Return(new ReadOnlyDomainObjectCollectionDataDecorator(domainObjectCollectionData));
-      _loadStateMock.Replay();
+          .Setup(stub => stub.GetData(_endPoint))
+          .Returns(new ReadOnlyDomainObjectCollectionDataDecorator(domainObjectCollectionData));
       Assert.That(
           () => _endPoint.ValidateMandatory(),
           Throws.InstanceOf<MandatoryRelationNotSetException>()
@@ -564,183 +548,170 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void SortCurrentData ()
     {
       Comparison<DomainObject> comparison = (one, two) => 0;
-      _loadStateMock.Expect(mock => mock.SortCurrentData(_endPoint, comparison));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.SortCurrentData (_endPoint, comparison)).Verifiable();
 
       _endPoint.SortCurrentData(comparison);
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
       Assert.That(_endPoint.HasBeenTouched, Is.True);
     }
 
     [Test]
     public void RegisterOriginalOppositeEndPoint ()
     {
-      _loadStateMock.Expect(mock => mock.RegisterOriginalOppositeEndPoint(_endPoint, _relatedEndPointStub));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.RegisterOriginalOppositeEndPoint (_endPoint, _relatedEndPointStub.Object)).Verifiable();
 
-      _endPoint.RegisterOriginalOppositeEndPoint(_relatedEndPointStub);
+      _endPoint.RegisterOriginalOppositeEndPoint(_relatedEndPointStub.Object);
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
     }
 
     [Test]
     public void UnregisterOriginalOppositeEndPoint ()
     {
-      _loadStateMock.Expect(mock => mock.UnregisterOriginalOppositeEndPoint(_endPoint, _relatedEndPointStub));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.UnregisterOriginalOppositeEndPoint (_endPoint, _relatedEndPointStub.Object)).Verifiable();
 
-      _endPoint.UnregisterOriginalOppositeEndPoint(_relatedEndPointStub);
+      _endPoint.UnregisterOriginalOppositeEndPoint(_relatedEndPointStub.Object);
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
     }
 
     [Test]
     public void RegisterCurrentOppositeEndPoint ()
     {
-      _loadStateMock.Expect(mock => mock.RegisterCurrentOppositeEndPoint(_endPoint, _relatedEndPointStub));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.RegisterCurrentOppositeEndPoint (_endPoint, _relatedEndPointStub.Object)).Verifiable();
 
-      _endPoint.RegisterCurrentOppositeEndPoint(_relatedEndPointStub);
+      _endPoint.RegisterCurrentOppositeEndPoint(_relatedEndPointStub.Object);
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
     }
 
     [Test]
     public void UnregisterCurrentOppositeEndPoint ()
     {
-      _loadStateMock.Expect(mock => mock.UnregisterCurrentOppositeEndPoint(_endPoint, _relatedEndPointStub));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.UnregisterCurrentOppositeEndPoint (_endPoint, _relatedEndPointStub.Object)).Verifiable();
 
-      _endPoint.UnregisterCurrentOppositeEndPoint(_relatedEndPointStub);
+      _endPoint.UnregisterCurrentOppositeEndPoint(_relatedEndPointStub.Object);
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
     }
 
     [Test]
     public void IsSynchronized ()
     {
-      _loadStateMock.Expect(mock => mock.IsSynchronized(_endPoint)).Return(true);
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.IsSynchronized (_endPoint)).Returns (true).Verifiable();
 
       var result = _endPoint.IsSynchronized;
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
       Assert.That(result, Is.True);
     }
 
     [Test]
     public void Synchronize ()
     {
-      _loadStateMock.Expect(mock => mock.Synchronize(_endPoint));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.Synchronize (_endPoint)).Verifiable();
 
       _endPoint.Synchronize();
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
     }
 
     [Test]
     public void SynchronizeOppositeEndPoint ()
     {
       var fakeEndPoint = _relatedEndPointStub;
-      _loadStateMock.Expect(mock => mock.SynchronizeOppositeEndPoint(_endPoint, fakeEndPoint));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.SynchronizeOppositeEndPoint (_endPoint, fakeEndPoint.Object)).Verifiable();
 
-      _endPoint.SynchronizeOppositeEndPoint(fakeEndPoint);
+      _endPoint.SynchronizeOppositeEndPoint(fakeEndPoint.Object);
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
     }
 
     [Test]
     public void CreateSetCollectionCommand ()
     {
       var oppositeDomainObjects = new OrderCollection();
-      var fakeResult = MockRepository.GenerateStub<IDataManagementCommand>();
+      var fakeResult = new Mock<IDataManagementCommand>();
 
       _loadStateMock
-          .Expect(
+          .Setup(
               mock => mock.CreateSetCollectionCommand(
-                  Arg.Is(_endPoint),
-                  Arg.Is(oppositeDomainObjects),
-                  Arg.Is(_collectionManagerMock)))
-          .Return(fakeResult);
-      _loadStateMock.Replay();
+                  _endPoint,
+                  oppositeDomainObjects,
+                  _collectionManagerMock.Object))
+          .Returns(fakeResult.Object)
+          .Verifiable();
 
       var result = _endPoint.CreateSetCollectionCommand(oppositeDomainObjects);
 
-      _loadStateMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(fakeResult));
+      _loadStateMock.Verify();
+      Assert.That(result, Is.SameAs(fakeResult.Object));
     }
 
     [Test]
     public void CreateRemoveCommand ()
     {
-      var fakeResult = MockRepository.GenerateStub<IDataManagementCommand>();
+      var fakeResult = new Mock<IDataManagementCommand>();
 
-      _loadStateMock.Expect(mock => mock.CreateRemoveCommand(_endPoint, _order1)).Return(fakeResult);
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.CreateRemoveCommand (_endPoint, _order1)).Returns (fakeResult.Object).Verifiable();
 
       var result = _endPoint.CreateRemoveCommand(_order1);
 
-      _loadStateMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(fakeResult));
+      _loadStateMock.Verify();
+      Assert.That(result, Is.SameAs(fakeResult.Object));
     }
 
     [Test]
     public void CreateDeleteCommand ()
     {
-      var fakeResult = MockRepository.GenerateStub<IDataManagementCommand>();
+      var fakeResult = new Mock<IDataManagementCommand>();
 
-      _loadStateMock.Expect(mock => mock.CreateDeleteCommand(_endPoint)).Return(fakeResult);
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.CreateDeleteCommand (_endPoint)).Returns (fakeResult.Object).Verifiable();
 
       var result = _endPoint.CreateDeleteCommand();
 
-      _loadStateMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(fakeResult));
+      _loadStateMock.Verify();
+      Assert.That(result, Is.SameAs(fakeResult.Object));
     }
 
     [Test]
     public void CreateInsertCommand ()
     {
-      var fakeResult = MockRepository.GenerateStub<IDataManagementCommand>();
+      var fakeResult = new Mock<IDataManagementCommand>();
 
-      _loadStateMock.Expect(mock => mock.CreateInsertCommand(_endPoint, _order1, 0)).Return(fakeResult);
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.CreateInsertCommand (_endPoint, _order1, 0)).Returns (fakeResult.Object).Verifiable();
 
       var result = _endPoint.CreateInsertCommand(_order1, 0);
 
-      _loadStateMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(fakeResult));
+      _loadStateMock.Verify();
+      Assert.That(result, Is.SameAs(fakeResult.Object));
     }
 
     [Test]
     public void CreateAddCommand ()
     {
-      var fakeResult = MockRepository.GenerateStub<IDataManagementCommand>();
+      var fakeResult = new Mock<IDataManagementCommand>();
 
-      _loadStateMock.Expect(mock => mock.CreateAddCommand(_endPoint, _order1)).Return(fakeResult);
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.CreateAddCommand (_endPoint, _order1)).Returns (fakeResult.Object).Verifiable();
 
       var result = _endPoint.CreateAddCommand(_order1);
 
-      _loadStateMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(fakeResult));
+      _loadStateMock.Verify();
+      Assert.That(result, Is.SameAs(fakeResult.Object));
     }
 
     [Test]
     public void CreateReplaceCommand ()
     {
-      var fakeResult = MockRepository.GenerateStub<IDataManagementCommand>();
+      var fakeResult = new Mock<IDataManagementCommand>();
 
-      _loadStateMock.Expect(mock => mock.CreateReplaceCommand(_endPoint, 0, _order1)).Return(fakeResult);
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (mock => mock.CreateReplaceCommand (_endPoint, 0, _order1)).Returns (fakeResult.Object).Verifiable();
 
       var result = _endPoint.CreateReplaceCommand(0, _order1);
 
-      _loadStateMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(fakeResult));
+      _loadStateMock.Verify();
+      Assert.That(result, Is.SameAs(fakeResult.Object));
     }
 
     [Test]
@@ -750,8 +721,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var relatedObject2 = DomainObjectMother.CreateFakeObject<Order>();
       var collectionData = new DomainObjectCollectionData(new[] { relatedObject1, relatedObject2 });
 
-      _loadStateMock.Stub(stub => stub.GetData(_endPoint)).Return(new ReadOnlyDomainObjectCollectionDataDecorator(collectionData));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (stub => stub.GetData (_endPoint)).Returns (new ReadOnlyDomainObjectCollectionDataDecorator (collectionData));
 
       var oppositeEndPoints = _endPoint.GetOppositeRelationEndPointIDs().ToArray();
 
@@ -765,15 +735,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var source = RelationEndPointObjectMother.CreateDomainObjectCollectionEndPoint(_customerEndPointID, new[] { _order3 });
 
-      _loadStateMock.Stub(stub => stub.HasChanged()).Return(false);
-      _loadStateMock.Expect(mock => mock.SetDataFromSubTransaction(_endPoint, DomainObjectCollectionEndPointTestHelper.GetLoadState(source)));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (stub => stub.HasChanged()).Returns (false);
+      _loadStateMock.Setup (mock => mock.SetDataFromSubTransaction (_endPoint, DomainObjectCollectionEndPointTestHelper.GetLoadState (source))).Verifiable();
 
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
 
       _endPoint.SetDataFromSubTransaction(source);
 
-      _loadStateMock.VerifyAllExpectations();
+      _loadStateMock.Verify();
     }
 
     [Test]
@@ -782,11 +751,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var source = RelationEndPointObjectMother.CreateDomainObjectCollectionEndPoint(_customerEndPointID, new[] { _order3 });
       source.Touch();
 
-      _loadStateMock.Stub(stub => stub.HasChanged()).Return(false);
-      _loadStateMock.Stub(stub => stub.SetDataFromSubTransaction(_endPoint, DomainObjectCollectionEndPointTestHelper.GetLoadState(source)));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (stub => stub.HasChanged()).Returns (false);
+      _loadStateMock.Setup (stub => stub.SetDataFromSubTransaction (_endPoint, DomainObjectCollectionEndPointTestHelper.GetLoadState (source)));
 
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
 
       Assert.That(_endPoint.HasBeenTouched, Is.False);
 
@@ -800,11 +768,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var source = RelationEndPointObjectMother.CreateDomainObjectCollectionEndPoint(_customerEndPointID, new[] { _order3 });
 
-      _loadStateMock.Stub(stub => stub.HasChanged()).Return(true);
-      _loadStateMock.Stub(stub => stub.SetDataFromSubTransaction(_endPoint, DomainObjectCollectionEndPointTestHelper.GetLoadState(source)));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (stub => stub.HasChanged()).Returns (true);
+      _loadStateMock.Setup (stub => stub.SetDataFromSubTransaction (_endPoint, DomainObjectCollectionEndPointTestHelper.GetLoadState (source)));
 
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
 
       Assert.That(_endPoint.HasBeenTouched, Is.False);
 
@@ -818,11 +785,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var source = RelationEndPointObjectMother.CreateDomainObjectCollectionEndPoint(_customerEndPointID, new[] { _order3 });
 
-      _loadStateMock.Stub(stub => stub.HasChanged()).Return(false);
-      _loadStateMock.Stub(stub => stub.SetDataFromSubTransaction(_endPoint, DomainObjectCollectionEndPointTestHelper.GetLoadState(source)));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (stub => stub.HasChanged()).Returns (false);
+      _loadStateMock.Setup (stub => stub.SetDataFromSubTransaction (_endPoint, DomainObjectCollectionEndPointTestHelper.GetLoadState (source)));
 
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(true);
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (true);
 
       Assert.That(_endPoint.HasBeenTouched, Is.False);
 
@@ -836,11 +802,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var source = RelationEndPointObjectMother.CreateDomainObjectCollectionEndPoint(_customerEndPointID, new[] { _order3 });
 
-      _loadStateMock.Stub(stub => stub.HasChanged()).Return(false);
-      _loadStateMock.Stub(stub => stub.SetDataFromSubTransaction(_endPoint, DomainObjectCollectionEndPointTestHelper.GetLoadState(source)));
-      _loadStateMock.Replay();
+      _loadStateMock.Setup (stub => stub.HasChanged()).Returns (false);
+      _loadStateMock.Setup (stub => stub.SetDataFromSubTransaction (_endPoint, DomainObjectCollectionEndPointTestHelper.GetLoadState (source)));
 
-      _collectionManagerMock.Stub(stub => stub.HasCollectionReferenceChanged()).Return(false);
+      _collectionManagerMock.Setup (stub => stub.HasCollectionReferenceChanged()).Returns (false);
 
       Assert.That(_endPoint.HasBeenTouched, Is.False);
 
@@ -866,18 +831,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void EndPointLoader_LoadEndPointAndGetNewState ()
     {
-      var endPointLoader = new DomainObjectCollectionEndPoint.EndPointLoader(_lazyLoaderMock);
-      var loadStateFake = MockRepository.GenerateStub<IDomainObjectCollectionEndPointLoadState>();
+      var endPointLoader = new DomainObjectCollectionEndPoint.EndPointLoader(_lazyLoaderMock.Object);
+      var loadStateFake = new Mock<IDomainObjectCollectionEndPointLoadState>();
       _lazyLoaderMock
-          .Expect(mock => mock.LoadLazyCollectionEndPoint(_customerEndPointID))
-          .WhenCalled(mi => DomainObjectCollectionEndPointTestHelper.SetLoadState(_endPoint, loadStateFake));
-
-      _lazyLoaderMock.Replay();
+          .Setup(mock => mock.LoadLazyCollectionEndPoint(_customerEndPointID))
+          .Callback((RelationEndPointID endPointID) => DomainObjectCollectionEndPointTestHelper.SetLoadState(_endPoint, loadStateFake.Object))
+          .Verifiable();
 
       var result = endPointLoader.LoadEndPointAndGetNewState(_endPoint);
 
-      _lazyLoaderMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(loadStateFake));
+      _lazyLoaderMock.Verify();
+      Assert.That(result, Is.SameAs(loadStateFake.Object));
     }
 
     [Test]

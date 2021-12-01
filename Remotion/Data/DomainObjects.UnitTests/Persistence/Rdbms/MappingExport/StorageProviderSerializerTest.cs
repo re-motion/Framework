@@ -17,11 +17,12 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
 {
@@ -37,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
           .GroupBy(c => (RdbmsProviderDefinition)c.StorageEntityDefinition.StorageProviderDefinition)
           .First();
 
-      var storageProviderSerializer = new StorageProviderSerializer(MockRepository.GenerateStub<IClassSerializer>());
+      var storageProviderSerializer = new StorageProviderSerializer(new Mock<IClassSerializer>().Object);
       var actual = storageProviderSerializer.Serialize(groupedByStorageProvider, groupedByStorageProvider.Key);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("name"));
@@ -52,13 +53,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
           .GroupBy(c => (RdbmsProviderDefinition)c.StorageEntityDefinition.StorageProviderDefinition)
           .First();
 
-      var classSerializerStub = MockRepository.GenerateStub<IClassSerializer>();
+      var classSerializerStub = new Mock<IClassSerializer>();
       var expectedElement = new XElement("class");
-      classSerializerStub.Stub(_ => _.Serialize(Arg<ClassDefinition>.Is.NotNull))
-          .Return(expectedElement)
-          .Repeat.Any();
+      classSerializerStub.Setup(_ => _.Serialize(It.IsNotNull<ClassDefinition>()))
+          .Returns(expectedElement);
 
-      var storageProviderSerializer = new StorageProviderSerializer(classSerializerStub);
+      var storageProviderSerializer = new StorageProviderSerializer(classSerializerStub.Object);
       var actual = storageProviderSerializer.Serialize(groupedByStorageProvider, groupedByStorageProvider.Key);
 
       Assert.That(actual.Elements(), Is.Not.Empty);

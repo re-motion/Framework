@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -26,7 +28,6 @@ using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -34,9 +35,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   public class RealObjectEndPointTest : ClientTransactionBaseTest
   {
     private DataContainer _foreignKeyDataContainer;
-    private IRelationEndPointProvider _endPointProviderStub;
-    private IClientTransactionEventSink _transactionEventSinkStub;
-    private IRealObjectEndPointSyncState _syncStateMock;
+    private Mock<IRelationEndPointProvider> _endPointProviderStub;
+    private Mock<IClientTransactionEventSink> _transactionEventSinkStub;
+    private Mock<IRealObjectEndPointSyncState> _syncStateMock;
 
     private RealObjectEndPoint _endPoint;
     private RelationEndPointID _endPointID;
@@ -47,13 +48,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.OrderTicket1, "Order");
       _foreignKeyDataContainer = DataContainer.CreateForExisting(_endPointID.ObjectID, null, pd => pd.DefaultValue);
-      _endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider>();
-      _transactionEventSinkStub = MockRepository.GenerateStub<IClientTransactionEventSink>();
-      _syncStateMock = MockRepository.GenerateStrictMock<IRealObjectEndPointSyncState>();
+      _endPointProviderStub = new Mock<IRelationEndPointProvider>();
+      _transactionEventSinkStub = new Mock<IClientTransactionEventSink>();
+      _syncStateMock = new Mock<IRealObjectEndPointSyncState> (MockBehavior.Strict);
 
       _endPoint = new RealObjectEndPoint(
-          TestableClientTransaction, _endPointID, _foreignKeyDataContainer, _endPointProviderStub, _transactionEventSinkStub);
-      PrivateInvoke.SetNonPublicField(_endPoint, "_syncState", _syncStateMock);
+          TestableClientTransaction, _endPointID, _foreignKeyDataContainer, _endPointProviderStub.Object, _transactionEventSinkStub.Object);
+      PrivateInvoke.SetNonPublicField(_endPoint, "_syncState", _syncStateMock.Object);
     }
 
     [Test]
@@ -62,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var id = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
       var foreignKeyDataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
       Assert.That(
-          () => new RealObjectEndPoint(TestableClientTransaction, id, foreignKeyDataContainer, _endPointProviderStub, _transactionEventSinkStub),
+          () => new RealObjectEndPoint(TestableClientTransaction, id, foreignKeyDataContainer, _endPointProviderStub.Object, _transactionEventSinkStub.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("End point ID must refer to a non-virtual end point.", "id"));
     }
@@ -73,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var id = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.OrderTicket1, "Order");
       var foreignKeyDataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
       Assert.That(
-          () => new RealObjectEndPoint(TestableClientTransaction, id, foreignKeyDataContainer, _endPointProviderStub, _transactionEventSinkStub),
+          () => new RealObjectEndPoint(TestableClientTransaction, id, foreignKeyDataContainer, _endPointProviderStub.Object, _transactionEventSinkStub.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "The foreign key data container must be from the same object as the end point definition.", "foreignKeyDataContainer"));
@@ -82,11 +83,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Initialization_SyncState ()
     {
-      var endPoint = new RealObjectEndPoint(TestableClientTransaction, _endPointID, _foreignKeyDataContainer, _endPointProviderStub, _transactionEventSinkStub);
+      var endPoint = new RealObjectEndPoint(TestableClientTransaction, _endPointID, _foreignKeyDataContainer, _endPointProviderStub.Object, _transactionEventSinkStub.Object);
 
       var syncState = RealObjectEndPointTestHelper.GetSyncState(endPoint);
       Assert.That(syncState, Is.TypeOf(typeof(UnknownRealObjectEndPointSyncState)));
-      Assert.That(((UnknownRealObjectEndPointSyncState)syncState).VirtualEndPointProvider, Is.SameAs(_endPointProviderStub));
+      Assert.That(((UnknownRealObjectEndPointSyncState)syncState).VirtualEndPointProvider, Is.SameAs(_endPointProviderStub.Object));
     }
 
     [Test]
@@ -99,13 +100,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void IsSynchronized ()
     {
       _syncStateMock
-          .Expect(mock => mock.IsSynchronized(_endPoint))
-          .Return(true);
-      _syncStateMock.Replay();
+          .Setup(mock => mock.IsSynchronized(_endPoint))
+          .Returns(true)
+          .Verifiable();
 
       var result = _endPoint.IsSynchronized;
 
-      _syncStateMock.VerifyAllExpectations();
+      _syncStateMock.Verify();
       Assert.That(result, Is.True);
     }
 
@@ -121,22 +122,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void OppositeObjectID_Get_DoesNotRaisePropertyReadEvents ()
     {
-      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
-      TestableClientTransaction.AddListener(listenerMock);
+      var listenerMock = new Mock<IClientTransactionListener>();
+      TestableClientTransaction.AddListener(listenerMock.Object);
 
       Dev.Null = _endPoint.OppositeObjectID;
 
-      listenerMock.AssertWasNotCalled(mock => mock.PropertyValueReading(
-          Arg<ClientTransaction>.Is.Anything,
-          Arg<DomainObject>.Is.Anything,
-          Arg<PropertyDefinition>.Is.Anything,
-          Arg<ValueAccess>.Is.Anything));
-      listenerMock.AssertWasNotCalled(mock => mock.PropertyValueRead(
-          Arg<ClientTransaction>.Is.Anything,
-          Arg<DomainObject>.Is.Anything,
-          Arg<PropertyDefinition>.Is.Anything,
-          Arg<object>.Is.Anything,
-          Arg<ValueAccess>.Is.Anything));
+      listenerMock.Verify (mock => mock.PropertyValueReading(
+          It.IsAny<ClientTransaction>(),
+          It.IsAny<DomainObject>(),
+          It.IsAny<PropertyDefinition>(),
+          It.IsAny<ValueAccess>()), Times.Never());
+      listenerMock.Verify (mock => mock.PropertyValueRead(
+          It.IsAny<ClientTransaction>(),
+          It.IsAny<DomainObject>(),
+          It.IsAny<PropertyDefinition>(),
+          It.IsAny<object>(),
+          It.IsAny<ValueAccess>()), Times.Never());
     }
 
     [Test]
@@ -289,37 +290,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Synchronize ()
     {
-      var oppositeEndPointStub = MockRepository.GenerateStub<IVirtualEndPoint>();
+      var oppositeEndPointStub = new Mock<IVirtualEndPoint>();
       var oppositeEndPointID = RelationEndPointID.Create(_endPoint.OppositeObjectID, _endPointID.Definition.GetOppositeEndPointDefinition());
       _endPointProviderStub
-          .Stub(stub => stub.GetRelationEndPointWithLazyLoad(oppositeEndPointID))
-          .Return(oppositeEndPointStub);
+          .Setup(stub => stub.GetRelationEndPointWithLazyLoad(oppositeEndPointID))
+          .Returns(oppositeEndPointStub.Object);
 
       _syncStateMock
-          .Expect(mock => mock.Synchronize(_endPoint, oppositeEndPointStub));
-      _syncStateMock.Replay();
+          .Setup(mock => mock.Synchronize(_endPoint, oppositeEndPointStub.Object))
+          .Verifiable();
 
       _endPoint.Synchronize();
 
-      _syncStateMock.VerifyAllExpectations();
+      _syncStateMock.Verify();
     }
 
     [Test]
     public void MarkSynchronized ()
     {
-      Assert.That(RealObjectEndPointTestHelper.GetSyncState(_endPoint), Is.SameAs(_syncStateMock));
+      Assert.That(RealObjectEndPointTestHelper.GetSyncState(_endPoint), Is.SameAs(_syncStateMock.Object));
 
       _endPoint.MarkSynchronized();
 
       Assert.That(RealObjectEndPointTestHelper.GetSyncState(_endPoint), Is.TypeOf(typeof(SynchronizedRealObjectEndPointSyncState)));
-      Assert.That(_endPoint.EndPointProvider, Is.SameAs(_endPointProviderStub));
-      Assert.That(_endPoint.TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
+      Assert.That(_endPoint.EndPointProvider, Is.SameAs(_endPointProviderStub.Object));
+      Assert.That(_endPoint.TransactionEventSink, Is.SameAs(_transactionEventSinkStub.Object));
     }
 
     [Test]
     public void MarkUnsynchronized ()
     {
-      Assert.That(RealObjectEndPointTestHelper.GetSyncState(_endPoint), Is.SameAs(_syncStateMock));
+      Assert.That(RealObjectEndPointTestHelper.GetSyncState(_endPoint), Is.SameAs(_syncStateMock.Object));
 
       _endPoint.MarkUnsynchronized();
       Assert.That(RealObjectEndPointTestHelper.GetSyncState(_endPoint), Is.TypeOf(typeof(UnsynchronizedRealObjectEndPointSyncState)));
@@ -328,33 +329,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void ResetSyncState ()
     {
-      Assert.That(RealObjectEndPointTestHelper.GetSyncState(_endPoint), Is.SameAs(_syncStateMock));
+      Assert.That(RealObjectEndPointTestHelper.GetSyncState(_endPoint), Is.SameAs(_syncStateMock.Object));
 
       _endPoint.ResetSyncState();
 
       var syncState = RealObjectEndPointTestHelper.GetSyncState(_endPoint);
       Assert.That(syncState, Is.TypeOf(typeof(UnknownRealObjectEndPointSyncState)));
-      Assert.That(((UnknownRealObjectEndPointSyncState)syncState).VirtualEndPointProvider, Is.SameAs(_endPointProviderStub));
+      Assert.That(((UnknownRealObjectEndPointSyncState)syncState).VirtualEndPointProvider, Is.SameAs(_endPointProviderStub.Object));
     }
 
     [Test]
     public void CreateSetCommand ()
     {
-      var fakeResult = MockRepository.GenerateStub<IDataManagementCommand>();
+      var fakeResult = new Mock<IDataManagementCommand>();
       var relatedObject = DomainObjectMother.CreateFakeObject<Order>();
 
       Action<DomainObject> oppositeObjectSetter = null;
 
       _syncStateMock
-          .Expect(mock => mock.CreateSetCommand(Arg.Is(_endPoint), Arg.Is(relatedObject), Arg<Action<DomainObject>>.Is.Anything))
-          .Return(fakeResult)
-          .WhenCalled(mi => { oppositeObjectSetter = (Action<DomainObject>)mi.Arguments[2]; });
-      _syncStateMock.Replay();
+          .Setup(mock => mock.CreateSetCommand(_endPoint, relatedObject, It.IsAny<Action<DomainObject>>()))
+          .Returns(fakeResult.Object)
+          .Callback((IRealObjectEndPoint endPoint, DomainObject newRelatedObject, Action<DomainObject> oppositeObjectSetter) => { oppositeObjectSetter = (Action<DomainObject>)mi.Arguments[2]; })
+          .Verifiable();
 
       var result = _endPoint.CreateSetCommand(relatedObject);
 
-      _syncStateMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(fakeResult));
+      _syncStateMock.Verify();
+      Assert.That(result, Is.SameAs(fakeResult.Object));
 
       Assert.That(_endPoint.OppositeObjectID, Is.Not.EqualTo(DomainObjectIDs.Order3));
       var newRelatedObject = DomainObjectMother.CreateFakeObject<Order>();
@@ -365,19 +366,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateDeleteCommand ()
     {
-      var fakeResult = MockRepository.GenerateStub<IDataManagementCommand>();
+      var fakeResult = new Mock<IDataManagementCommand>();
 
       Action oppositeObjectSetter = null;
       _syncStateMock
-          .Expect(mock => mock.CreateDeleteCommand(Arg.Is(_endPoint), Arg<Action>.Is.Anything))
-          .Return(fakeResult)
-          .WhenCalled(mi => { oppositeObjectSetter = (Action)mi.Arguments[1]; });
-      _syncStateMock.Replay();
+          .Setup(mock => mock.CreateDeleteCommand(_endPoint, It.IsAny<Action>()))
+          .Returns(fakeResult.Object)
+          .Callback((IRealObjectEndPoint endPoint, Action oppositeObjectNullSetter) => { oppositeObjectSetter = (Action)mi.Arguments[1]; })
+          .Verifiable();
 
       var result = _endPoint.CreateDeleteCommand();
 
-      _syncStateMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(fakeResult));
+      _syncStateMock.Verify();
+      Assert.That(result, Is.SameAs(fakeResult.Object));
 
       RealObjectEndPointTestHelper.SetValueViaDataContainer(_endPoint, DomainObjectIDs.Order1);
 
@@ -430,7 +431,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(_endPoint.OppositeObjectID, Is.Not.EqualTo(DomainObjectIDs.Order3));
       var sourceDataContainer = DataContainer.CreateForExisting(_endPointID.ObjectID, null, pd => pd.DefaultValue);
 
-      var source = new RealObjectEndPoint(TestableClientTransaction, _endPointID, sourceDataContainer, _endPointProviderStub, _transactionEventSinkStub);
+      var source = new RealObjectEndPoint(TestableClientTransaction, _endPointID, sourceDataContainer, _endPointProviderStub.Object, _transactionEventSinkStub.Object);
       RealObjectEndPointTestHelper.SetValueViaDataContainer(source, DomainObjectIDs.Order3);
 
       PrivateInvoke.InvokeNonPublicMethod(_endPoint, "SetOppositeObjectDataFromSubTransaction", source);

@@ -15,9 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -26,8 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public static void EnsureTransactionThrowsOnEvents (ClientTransaction clientTransaction)
     {
       IClientTransactionListener listenerMock = CreateAndAddListenerStrictMock(clientTransaction);
-      listenerMock.Stub(stub => stub.TransactionDiscard(clientTransaction)); // allow TransactionDicarding to be called
-      listenerMock.Replay(); // no events expected
+      listenerMock.Setup (stub => stub.TransactionDiscard (clientTransaction)); // allow TransactionDicarding to be called
     }
 
     public static void EnsureTransactionThrowsOnEvent (
@@ -35,22 +35,21 @@ namespace Remotion.Data.DomainObjects.UnitTests
         Action<IClientTransactionListener> forbiddenEventExpectation)
     {
       IClientTransactionListener listenerMock = CreateAndAddListenerMock(clientTransaction);
-      listenerMock.Expect(forbiddenEventExpectation).WhenCalled(mi => { throw new InvalidOperationException("Forbidden event raised."); });
-      listenerMock.Replay();
+      listenerMock.Setup (forbiddenEventExpectation).Callback (()=> { throw new InvalidOperationException ("Forbidden event raised."); }).Verifiable();
     }
 
     public static IClientTransactionListener CreateAndAddListenerMock (ClientTransaction clientTransaction)
     {
-      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
-      ClientTransactionTestHelper.AddListener(clientTransaction, listenerMock);
-      return listenerMock;
+      var listenerMock = new Mock<IClientTransactionListener>();
+      ClientTransactionTestHelper.AddListener(clientTransaction, listenerMock.Object);
+      return listenerMock.Object;
     }
 
     public static IClientTransactionListener CreateAndAddListenerStrictMock (ClientTransaction clientTransaction)
     {
-      var listenerMock = MockRepository.GenerateStrictMock<IClientTransactionListener>();
-      ClientTransactionTestHelper.AddListener(clientTransaction, listenerMock);
-      return listenerMock;
+      var listenerMock = new Mock<IClientTransactionListener> (MockBehavior.Strict);
+      ClientTransactionTestHelper.AddListener(clientTransaction, listenerMock.Object);
+      return listenerMock.Object;
     }
   }
 }

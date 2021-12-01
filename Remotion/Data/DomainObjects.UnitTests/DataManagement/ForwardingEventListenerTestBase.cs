@@ -15,27 +15,28 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   public abstract class ForwardingEventListenerTestBase<TEventListener> : StandardMappingTest
   {
-    private IClientTransactionEventSink _eventSinkWithMock;
+    private Mock<IClientTransactionEventSink> _eventSinkWithMock;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _eventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
+      _eventSinkWithMock = new Mock<IClientTransactionEventSink> (MockBehavior.Strict);
     }
 
     protected abstract TEventListener EventListener { get; }
 
     public IClientTransactionEventSink EventSinkWithMock
     {
-      get { return _eventSinkWithMock; }
+      get { return _eventSinkWithMock.Object; }
     }
   }
 }

@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -31,7 +33,6 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Fact
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -103,11 +104,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void CreateForDataContainerQuery ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery>();
-      queryStub.Stub(stub => stub.Statement).Return("Statement");
-      queryStub.Stub(stub => stub.Parameters).Return(new QueryParameterCollection());
+      var queryStub = new Mock<IQuery>();
+      queryStub.Setup (stub => stub.Statement).Returns ("Statement");
+      queryStub.Setup (stub => stub.Parameters).Returns (new QueryParameterCollection());
 
-      var result = _factory.CreateForDataContainerQuery(queryStub);
+      var result = _factory.CreateForDataContainerQuery(queryStub.Object);
 
       Assert.That(result, Is.Not.Null);
     }
@@ -115,11 +116,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void CreateForCustomQuery ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery>();
-      queryStub.Stub(stub => stub.Statement).Return("Statement");
-      queryStub.Stub(stub => stub.Parameters).Return(new QueryParameterCollection());
+      var queryStub = new Mock<IQuery>();
+      queryStub.Setup (stub => stub.Statement).Returns ("Statement");
+      queryStub.Setup (stub => stub.Parameters).Returns (new QueryParameterCollection());
 
-      var result = _factory.CreateForCustomQuery(queryStub);
+      var result = _factory.CreateForCustomQuery(queryStub.Object);
 
       Assert.That(result, Is.Not.Null);
     }
@@ -127,11 +128,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void CreateForScalarQuery ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery>();
-      queryStub.Stub(stub => stub.Statement).Return("Statement");
-      queryStub.Stub(stub => stub.Parameters).Return(new QueryParameterCollection());
+      var queryStub = new Mock<IQuery>();
+      queryStub.Setup (stub => stub.Statement).Returns ("Statement");
+      queryStub.Setup (stub => stub.Parameters).Returns (new QueryParameterCollection());
 
-      var result = _factory.CreateForScalarQuery(queryStub);
+      var result = _factory.CreateForScalarQuery(queryStub.Object);
 
       Assert.That(result, Is.Not.Null);
     }

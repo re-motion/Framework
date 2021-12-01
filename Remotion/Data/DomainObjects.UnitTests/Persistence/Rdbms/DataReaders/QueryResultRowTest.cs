@@ -16,44 +16,45 @@
 // 
 using System;
 using System.Data;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
 {
   [TestFixture]
   public class QueryResultRowTest
   {
-    private IDataReader _dataReaderStub;
-    private IStorageTypeInformationProvider _storageTypeInformationProviderStub;
+    private Mock<IDataReader> _dataReaderStub;
+    private Mock<IStorageTypeInformationProvider> _storageTypeInformationProviderStub;
     private QueryResultRow _queryResultRow;
-    private IStorageTypeInformation _storageTypeInformationMock;
+    private Mock<IStorageTypeInformation> _storageTypeInformationMock;
 
     [SetUp]
     public void SetUp ()
     {
-      _dataReaderStub = MockRepository.GenerateStub<IDataReader>();
-      _storageTypeInformationProviderStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
-      _queryResultRow = new QueryResultRow(_dataReaderStub, _storageTypeInformationProviderStub);
+      _dataReaderStub = new Mock<IDataReader>();
+      _storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();
+      _queryResultRow = new QueryResultRow(_dataReaderStub.Object, _storageTypeInformationProviderStub.Object);
 
-      _storageTypeInformationMock = MockRepository.GenerateStrictMock<IStorageTypeInformation>();
+      _storageTypeInformationMock = new Mock<IStorageTypeInformation> (MockBehavior.Strict);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That(_queryResultRow.DataReader, Is.SameAs(_dataReaderStub));
-      Assert.That(_queryResultRow.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
+      Assert.That(_queryResultRow.DataReader, Is.SameAs(_dataReaderStub.Object));
+      Assert.That(_queryResultRow.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub.Object));
     }
 
     [Test]
     public void ValueCount ()
     {
       int fakeFieldCount = 10;
-      _dataReaderStub.Stub(stub => stub.FieldCount).Return(fakeFieldCount);
+      _dataReaderStub.Setup (stub => stub.FieldCount).Returns (fakeFieldCount);
 
       var result = _queryResultRow.ValueCount;
 
@@ -67,9 +68,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       var value2 = true;
       var value3 = 45;
 
-      _dataReaderStub.Stub(stub => stub.GetValue(0)).Return(value1);
-      _dataReaderStub.Stub(stub => stub.GetValue(1)).Return(value2);
-      _dataReaderStub.Stub(stub => stub.GetValue(2)).Return(value3);
+      _dataReaderStub.Setup (stub => stub.GetValue (0)).Returns (value1);
+      _dataReaderStub.Setup (stub => stub.GetValue (1)).Returns (value2);
+      _dataReaderStub.Setup (stub => stub.GetValue (2)).Returns (value3);
 
       Assert.That( _queryResultRow.GetRawValue(0), Is.EqualTo(value1));
       Assert.That(_queryResultRow.GetRawValue(1), Is.EqualTo(value2));
@@ -79,23 +80,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [Test]
     public void GetConvertedValue_ValidType ()
     {
-      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof(string))).Return(_storageTypeInformationMock);
+      _storageTypeInformationProviderStub.Setup (stub => stub.GetStorageType (typeof(string))).Returns (_storageTypeInformationMock.Object);
 
       var fakeResult = "fake";
-      _storageTypeInformationMock.Expect(mock => mock.Read(_dataReaderStub, 1)).Return(fakeResult);
+      _storageTypeInformationMock.Setup (mock => mock.Read (_dataReaderStub.Object, 1)).Returns (fakeResult).Verifiable();
 
       var result = _queryResultRow.GetConvertedValue(1, typeof(string));
 
       Assert.That(result, Is.EqualTo(fakeResult));
-      _storageTypeInformationMock.VerifyAllExpectations();
+      _storageTypeInformationMock.Verify();
     }
 
     [Test]
     public void GetConvertedValue_ThrowsNotSupportedException_TypeNotObjectID ()
     {
       _storageTypeInformationProviderStub
-        .Stub(stub => stub.GetStorageType(typeof(int)))
-        .Throw(new NotSupportedException("Type not supported."));
+        .Setup(stub => stub.GetStorageType(typeof(int)))
+        .Throws(new NotSupportedException("Type not supported."));
       Assert.That(
           () => _queryResultRow.GetConvertedValue(1, typeof(int)),
           Throws.InstanceOf<NotSupportedException>()
@@ -106,8 +107,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     public void GetConvertedValue_ThrowsNotSupportedException_TypeObjectID ()
     {
       _storageTypeInformationProviderStub
-        .Stub(stub => stub.GetStorageType(typeof(ObjectID)))
-        .Throw(new NotSupportedException("Type not supported."));
+        .Setup(stub => stub.GetStorageType(typeof(ObjectID)))
+        .Throws(new NotSupportedException("Type not supported."));
       Assert.That(
           () => _queryResultRow.GetConvertedValue(1, typeof(ObjectID)),
           Throws.InstanceOf<NotSupportedException>()
@@ -120,16 +121,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [Test]
     public void GetConvertedValue_GenericOverload_DelegatesToNoGenericOverload ()
     {
-      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof(string))).Return(_storageTypeInformationMock);
+      _storageTypeInformationProviderStub.Setup (stub => stub.GetStorageType (typeof(string))).Returns (_storageTypeInformationMock.Object);
 
       var fakeResult = "fake";
-      _storageTypeInformationMock.Expect(mock => mock.Read(_dataReaderStub, 1)).Return(fakeResult);
-      _storageTypeInformationMock.Replay();
+      _storageTypeInformationMock.Setup (mock => mock.Read (_dataReaderStub.Object, 1)).Returns (fakeResult).Verifiable();
 
       var result = _queryResultRow.GetConvertedValue<string>(1);
 
       Assert.That(result, Is.EqualTo(fakeResult));
-      _storageTypeInformationMock.VerifyAllExpectations();
+      _storageTypeInformationMock.Verify();
     }
   }
 }

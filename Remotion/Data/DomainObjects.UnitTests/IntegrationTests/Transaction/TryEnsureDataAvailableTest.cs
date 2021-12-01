@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Collections.ObjectModel;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Development.RhinoMocks.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -33,9 +34,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       var result = TestableClientTransaction.TryEnsureDataAvailable(LoadedObject1.ID);
 
-      ListenerMock.AssertWasNotCalled(mock => mock.ObjectsLoading(
-          Arg<ClientTransaction>.Is.Anything,
-          Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
+      ListenerMock.Verify (mock => mock.ObjectsLoading(
+          It.IsAny<ClientTransaction>(),
+          It.IsAny<ReadOnlyCollection<ObjectID>>()), Times.Never());
       CheckLoaded(LoadedObject1);
       Assert.That(result, Is.True);
     }
@@ -47,12 +48,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       var result = TestableClientTransaction.TryEnsureDataAvailable(NotLoadedObject1.ID);
 
-      ListenerMock.AssertWasCalled(mock => mock.ObjectsLoading(
-          Arg.Is(TestableClientTransaction),
-          Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll(new[] { NotLoadedObject1.ID })));
-      ListenerMock.AssertWasCalled(mock => mock.ObjectsLoaded(
-          Arg.Is(TestableClientTransaction),
-          Arg<ReadOnlyCollection<DomainObject>>.List.ContainsAll(new[] { NotLoadedObject1 })));
+      ListenerMock.Verify (mock => mock.ObjectsLoading(
+          TestableClientTransaction,
+          It.Is<ReadOnlyCollection<ObjectID>> (_ => new[] { NotLoadedObject1.ID }.All (_.Contains))), Times.AtLeastOnce());
+      ListenerMock.Verify (mock => mock.ObjectsLoaded(
+          TestableClientTransaction,
+          It.Is<ReadOnlyCollection<DomainObject>> (_ => new[] { NotLoadedObject1 }.All (_.Contains))), Times.AtLeastOnce());
       CheckLoaded(NotLoadedObject1);
       Assert.That(result, Is.True);
     }
@@ -95,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       var result = TestableClientTransaction.TryEnsureDataAvailable(new[] { LoadedObject1.ID, LoadedObject2.ID });
 
-      ListenerMock.AssertWasNotCalled(mock => mock.ObjectsLoading(Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
+      ListenerMock.Verify (mock => mock.ObjectsLoading(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<ObjectID>>()), Times.Never());
       Assert.That(result, Is.True);
     }
 
@@ -104,9 +105,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var result = TestableClientTransaction.TryEnsureDataAvailable(new[] { NotLoadedObject1.ID, NotLoadedObject2.ID });
 
-      ListenerMock.AssertWasCalled(mock => mock.ObjectsLoading(
-          Arg.Is(TestableClientTransaction),
-          Arg<ReadOnlyCollection<ObjectID>>.List.Equivalent(new[] { NotLoadedObject1.ID, NotLoadedObject2.ID })));
+      ListenerMock.Verify (mock => mock.ObjectsLoading(
+          TestableClientTransaction,
+          Arg<ReadOnlyCollection<ObjectID>>.List.Equivalent(new[] { NotLoadedObject1.ID, NotLoadedObject2.ID })), Times.AtLeastOnce());
       Assert.That(result, Is.True);
     }
 
@@ -115,16 +116,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var result = TestableClientTransaction.TryEnsureDataAvailable(new[] { NotLoadedObject1.ID, NotLoadedObject2.ID, LoadedObject1.ID });
 
-      ListenerMock.AssertWasCalled(mock => mock.ObjectsLoading(
-          Arg.Is(TestableClientTransaction),
-          Arg<ReadOnlyCollection<ObjectID>>.List.Equivalent(new[] { NotLoadedObject1.ID, NotLoadedObject2.ID })));
-      ListenerMock.AssertWasCalled(mock => mock.ObjectsLoaded(
-          Arg.Is(TestableClientTransaction),
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent(new[] { NotLoadedObject1, NotLoadedObject2 })));
+      ListenerMock.Verify (mock => mock.ObjectsLoading(
+          TestableClientTransaction,
+          Arg<ReadOnlyCollection<ObjectID>>.List.Equivalent(new[] { NotLoadedObject1.ID, NotLoadedObject2.ID })), Times.AtLeastOnce());
+      ListenerMock.Verify (mock => mock.ObjectsLoaded(
+          TestableClientTransaction,
+          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent(new[] { NotLoadedObject1, NotLoadedObject2 })), Times.AtLeastOnce());
 
-      ListenerMock.AssertWasNotCalled(mock => mock.ObjectsLoading(
-          Arg<ClientTransaction>.Is.Anything,
-          Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll(new[] { LoadedObject1.ID })));
+      ListenerMock.Verify (mock => mock.ObjectsLoading(
+          It.IsAny<ClientTransaction>(),
+          It.Is<ReadOnlyCollection<ObjectID>> (_ => new[] { LoadedObject1.ID }.All (_.Contains))), Times.Never());
 
       Assert.That(result, Is.True);
     }

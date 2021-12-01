@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
@@ -23,7 +25,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
@@ -64,10 +65,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Initialization_FromNullEndPoint ()
     {
-      var endPoint = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPoint.Stub(stub => stub.IsNull).Return(true);
+      var endPoint = new Mock<IRealObjectEndPoint>();
+      endPoint.Setup (stub => stub.IsNull).Returns (true);
       Assert.That(
-          () => new ObjectEndPointSetOneManyCommand(endPoint, _newRelatedObject, OppositeObjectSetter, EndPointProviderStub, TransactionEventSinkWithMock),
+          () => new ObjectEndPointSetOneManyCommand(endPoint.Object, _newRelatedObject, OppositeObjectSetter, EndPointProviderStub, TransactionEventSinkWithMock),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Modified end point is null, a NullEndPointModificationCommand is needed.",
@@ -138,31 +139,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public virtual void Begin ()
     {
-      TransactionEventSinkWithMock.Expect(mock => mock.RaiseRelationChangingEvent(
+      TransactionEventSinkWithMock.Setup (mock => mock.RaiseRelationChangingEvent (
           _endPoint.GetDomainObject(),
           _endPoint.Definition,
           _oldRelatedObject,
-          _newRelatedObject));
-      TransactionEventSinkWithMock.Replay();
+          _newRelatedObject)).Verifiable();
 
       _command.Begin();
 
-      TransactionEventSinkWithMock.VerifyAllExpectations();
+      TransactionEventSinkWithMock.Verify();
     }
 
     [Test]
     public virtual void End ()
     {
-      TransactionEventSinkWithMock.Expect(mock => mock.RaiseRelationChangedEvent(
+      TransactionEventSinkWithMock.Setup (mock => mock.RaiseRelationChangedEvent (
           _endPoint.GetDomainObject(),
           _endPoint.Definition,
           _oldRelatedObject,
-          _newRelatedObject));
-      TransactionEventSinkWithMock.Replay();
+          _newRelatedObject)).Verifiable();
 
       _command.End();
 
-      TransactionEventSinkWithMock.VerifyAllExpectations();
+      TransactionEventSinkWithMock.Verify();
     }
 
     [Test]
@@ -171,31 +170,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       // Scenario: orderItem.Order = newOrder;
 
       var oldRelatedEndPointID = RelationEndPointID.Resolve(_oldRelatedObject, o => o.OrderItems);
-      var oldRelatedEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
+      var oldRelatedEndPointMock = new Mock<ICollectionEndPoint<ICollectionEndPointData>> (MockBehavior.Strict);
 
       var newRelatedEndPointID = RelationEndPointID.Resolve(_newRelatedObject, o => o.OrderItems);
-      var newRelatedEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
+      var newRelatedEndPointMock = new Mock<ICollectionEndPoint<ICollectionEndPointData>> (MockBehavior.Strict);
 
-      EndPointProviderStub.Stub(stub => stub.GetRelationEndPointWithLazyLoad(oldRelatedEndPointID)).Return(oldRelatedEndPointMock);
-      EndPointProviderStub.Stub(stub => stub.GetRelationEndPointWithLazyLoad(newRelatedEndPointID)).Return(newRelatedEndPointMock);
-
+      EndPointProviderStub.Setup (stub => stub.GetRelationEndPointWithLazyLoad (oldRelatedEndPointID)).Returns (oldRelatedEndPointMock.Object);
+      EndPointProviderStub.Setup (stub => stub.GetRelationEndPointWithLazyLoad (newRelatedEndPointID)).Returns (newRelatedEndPointMock.Object);
 
       // oldOrder.OrderItems.Remove (orderItem)
-      var fakeRemoveCommand = MockRepository.GenerateStub<IDataManagementCommand>();
-      fakeRemoveCommand.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-      oldRelatedEndPointMock.Expect(mock => mock.CreateRemoveCommand(_domainObject)).Return(fakeRemoveCommand);
-      oldRelatedEndPointMock.Replay();
+      var fakeRemoveCommand = new Mock<IDataManagementCommand>();
+      fakeRemoveCommand.Setup (stub => stub.GetAllExceptions()).Returns (new Exception[0]);
+      oldRelatedEndPointMock.Setup (mock => mock.CreateRemoveCommand (_domainObject)).Returns (fakeRemoveCommand.Object).Verifiable();
 
       // newOrder.OrderItems.Add (orderItem);
-      var fakeAddCommand = MockRepository.GenerateStub<IDataManagementCommand>();
-      fakeAddCommand.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-      newRelatedEndPointMock.Expect(mock => mock.CreateAddCommand(_domainObject)).Return(fakeAddCommand);
-      newRelatedEndPointMock.Replay();
+      var fakeAddCommand = new Mock<IDataManagementCommand>();
+      fakeAddCommand.Setup (stub => stub.GetAllExceptions()).Returns (new Exception[0]);
+      newRelatedEndPointMock.Setup (mock => mock.CreateAddCommand (_domainObject)).Returns (fakeAddCommand.Object).Verifiable();
 
       var bidirectionalModification = _command.ExpandToAllRelatedObjects();
 
-      oldRelatedEndPointMock.VerifyAllExpectations();
-      newRelatedEndPointMock.VerifyAllExpectations();
+      oldRelatedEndPointMock.Verify();
+      newRelatedEndPointMock.Verify();
 
       var steps = bidirectionalModification.GetNestedCommands();
       Assert.That(steps.Count, Is.EqualTo(3));
@@ -204,10 +200,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That(steps[0], Is.SameAs(_command));
 
       // newOrder.OrderItems.Add (orderItem);
-      Assert.That(steps[1], Is.SameAs(fakeAddCommand));
+      Assert.That(steps[1], Is.SameAs(fakeAddCommand.Object));
 
       // oldOrder.OrderItems.Remove (orderItem)
-      Assert.That(steps[2], Is.SameAs(fakeRemoveCommand));
+      Assert.That(steps[2], Is.SameAs(fakeRemoveCommand.Object));
     }
   }
 }

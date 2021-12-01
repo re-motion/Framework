@@ -17,6 +17,8 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
@@ -33,7 +35,6 @@ using Remotion.Linq.SqlBackend.SqlStatementModel;
 using Remotion.Linq.SqlBackend.SqlStatementModel.Resolved;
 using Remotion.Linq.SqlBackend.SqlStatementModel.SqlSpecificExpressions;
 using Remotion.Linq.SqlBackend.SqlStatementModel.Unresolved;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq
 {
@@ -43,21 +44,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     private MappingResolver _resolver;
     private UniqueIdentifierGenerator _generator;
     private SqlTable _orderTable;
-    private IStorageSpecificExpressionResolver _storageSpecificExpressionResolverStub;
+    private Mock<IStorageSpecificExpressionResolver> _storageSpecificExpressionResolverStub;
     private ResolvedSimpleTableInfo _fakeSimpleTableInfo;
     private SqlColumnDefinitionExpression _fakeColumnDefinitionExpression;
     private ResolvedJoinInfo _fakeJoinInfo;
-    private IStorageNameProvider _storageNameProviderStub;
+    private Mock<IStorageNameProvider> _storageNameProviderStub;
 
     public override void SetUp ()
     {
       base.SetUp();
-      _storageSpecificExpressionResolverStub = MockRepository.GenerateStub<IStorageSpecificExpressionResolver>();
-      _storageNameProviderStub = MockRepository.GenerateStub<IStorageNameProvider>();
-      _storageNameProviderStub.Stub(stub => stub.GetIDColumnName()).Return("ID");
-      _storageNameProviderStub.Stub(stub => stub.GetClassIDColumnName()).Return("ClassID");
-      _storageNameProviderStub.Stub(stub => stub.GetTimestampColumnName()).Return("Timestamp");
-      _resolver = new MappingResolver(_storageSpecificExpressionResolverStub);
+      _storageSpecificExpressionResolverStub = new Mock<IStorageSpecificExpressionResolver>();
+      _storageNameProviderStub = new Mock<IStorageNameProvider>();
+      _storageNameProviderStub.Setup (stub => stub.GetIDColumnName()).Returns ("ID");
+      _storageNameProviderStub.Setup (stub => stub.GetClassIDColumnName()).Returns ("ClassID");
+      _storageNameProviderStub.Setup (stub => stub.GetTimestampColumnName()).Returns ("Timestamp");
+      _resolver = new MappingResolver(_storageSpecificExpressionResolverStub.Object);
       _generator = new UniqueIdentifierGenerator();
       _orderTable = new SqlTable(new ResolvedSimpleTableInfo(typeof(Order), "Order", "o"), JoinSemantics.Inner);
       _fakeSimpleTableInfo = new ResolvedSimpleTableInfo(typeof(Order), "OrderTable", "o");
@@ -71,8 +72,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var fakeEntityExpression = CreateFakeEntityExpression(typeof(Order));
 
       _storageSpecificExpressionResolverStub
-          .Stub(stub => stub.ResolveEntity(MappingConfiguration.Current.GetTypeDefinition(typeof(Order)), "o"))
-          .Return(fakeEntityExpression);
+          .Setup(stub => stub.ResolveEntity(MappingConfiguration.Current.GetTypeDefinition(typeof(Order)), "o"))
+          .Returns(fakeEntityExpression);
 
       var sqlEntityExpression =
           (SqlEntityExpression)_resolver.ResolveSimpleTableInfo(_orderTable.GetResolvedTableInfo(), _generator);
@@ -94,8 +95,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       var unresolvedTableInfo = new UnresolvedTableInfo(typeof(Order));
       _storageSpecificExpressionResolverStub
-          .Stub(stub => stub.ResolveTable(MappingConfiguration.Current.GetTypeDefinition(typeof(Order)), "t0"))
-          .Return(_fakeSimpleTableInfo);
+          .Setup(stub => stub.ResolveTable(MappingConfiguration.Current.GetTypeDefinition(typeof(Order)), "t0"))
+          .Returns(_fakeSimpleTableInfo);
 
       var resolvedTableInfo = (ResolvedSimpleTableInfo)_resolver.ResolveTableInfo(unresolvedTableInfo, _generator);
 
@@ -120,8 +121,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var leftEndPoint = GetEndPointDefinition(property);
 
       _storageSpecificExpressionResolverStub
-          .Stub(stub => stub.ResolveJoin(entityExpression, leftEndPoint, leftEndPoint.GetOppositeEndPointDefinition(), "t0"))
-          .Return(_fakeJoinInfo);
+          .Setup(stub => stub.ResolveJoin(entityExpression, leftEndPoint, leftEndPoint.GetOppositeEndPointDefinition(), "t0"))
+          .Returns(_fakeJoinInfo);
 
       var result = _resolver.ResolveJoinInfo(unresolvedJoinInfo, _generator);
 
@@ -137,8 +138,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var leftEndPoint = GetEndPointDefinition(typeof(TargetClassForPersistentMixin), typeof(MixinAddingPersistentProperties), memberInfo.Name);
 
       _storageSpecificExpressionResolverStub
-          .Stub(stub => stub.ResolveJoin(entityExpression, leftEndPoint, leftEndPoint.GetOppositeEndPointDefinition(), "t0"))
-          .Return(_fakeJoinInfo);
+          .Setup(stub => stub.ResolveJoin(entityExpression, leftEndPoint, leftEndPoint.GetOppositeEndPointDefinition(), "t0"))
+          .Returns(_fakeJoinInfo);
 
       var result = _resolver.ResolveJoinInfo(unresolvedJoinInfo, _generator);
 
@@ -154,8 +155,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var leftEndPoint = GetEndPointDefinition(memberInfo);
 
       _storageSpecificExpressionResolverStub
-          .Stub(stub => stub.ResolveJoin(entityExpression, leftEndPoint, leftEndPoint.GetOppositeEndPointDefinition(), "t0"))
-          .Return(_fakeJoinInfo);
+          .Setup(stub => stub.ResolveJoin(entityExpression, leftEndPoint, leftEndPoint.GetOppositeEndPointDefinition(), "t0"))
+          .Returns(_fakeJoinInfo);
 
       var result = _resolver.ResolveJoinInfo(unresolvedJoinInfo, _generator);
 
@@ -235,8 +236,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var propertyDefinition = GetPropertyDefinition(property);
 
       _storageSpecificExpressionResolverStub
-          .Stub(stub => stub.ResolveProperty(entityExpression, propertyDefinition))
-          .Return(_fakeColumnDefinitionExpression);
+          .Setup(stub => stub.ResolveProperty(entityExpression, propertyDefinition))
+          .Returns(_fakeColumnDefinitionExpression);
 
       var sqlColumnExpression = (SqlColumnExpression)_resolver.ResolveMemberExpression(entityExpression, property);
 
@@ -251,8 +252,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var propertyDefinition = GetPropertyDefinition(typeof(StorageGroupClass), property.DeclaringType, property.Name);
 
       _storageSpecificExpressionResolverStub
-          .Stub(stub => stub.ResolveProperty(entityExpression, propertyDefinition))
-          .Return(_fakeColumnDefinitionExpression);
+          .Setup(stub => stub.ResolveProperty(entityExpression, propertyDefinition))
+          .Returns(_fakeColumnDefinitionExpression);
 
       var result = _resolver.ResolveMemberExpression(entityExpression, property);
 
@@ -267,8 +268,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var propertyDefinition = GetPropertyDefinition(property);
 
       _storageSpecificExpressionResolverStub
-          .Stub(stub => stub.ResolveProperty(entityExpression, propertyDefinition))
-          .Return(_fakeColumnDefinitionExpression);
+          .Setup(stub => stub.ResolveProperty(entityExpression, propertyDefinition))
+          .Returns(_fakeColumnDefinitionExpression);
 
       var result = _resolver.ResolveMemberExpression(entityExpression, property);
 
@@ -283,8 +284,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var fakeIDColumnExpression = new SqlColumnDefinitionExpression(typeof(ObjectID), "c", "ID", true);
 
       _storageSpecificExpressionResolverStub
-          .Stub(stub => stub.ResolveIDProperty(entityExpression, MappingConfiguration.Current.GetTypeDefinition(typeof(Order))))
-          .Return(fakeIDColumnExpression);
+          .Setup(stub => stub.ResolveIDProperty(entityExpression, MappingConfiguration.Current.GetTypeDefinition(typeof(Order))))
+          .Returns(fakeIDColumnExpression);
 
       var result = (SqlColumnExpression)_resolver.ResolveMemberExpression(entityExpression, property);
 
@@ -488,8 +489,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var endPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(property);
       var fakeResolvedIdentity = Expression.Constant(0);
       _storageSpecificExpressionResolverStub
-          .Stub(stub => stub.ResolveEntityIdentityViaForeignKey(entityExpression, endPointDefinition))
-          .Return(fakeResolvedIdentity);
+          .Setup(stub => stub.ResolveEntityIdentityViaForeignKey(entityExpression, endPointDefinition))
+          .Returns(fakeResolvedIdentity);
 
       var result = _resolver.TryResolveOptimizedIdentity(entityRefMemberExpression);
 
@@ -505,8 +506,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
       var result = _resolver.TryResolveOptimizedIdentity(entityRefMemberExpression);
 
-      _storageSpecificExpressionResolverStub.AssertWasNotCalled(
-          stub => stub.ResolveEntityIdentityViaForeignKey(Arg<SqlEntityExpression>.Is.Anything, Arg<RelationEndPointDefinition>.Is.Anything));
+      _storageSpecificExpressionResolverStub.Verify (          stub => stub.ResolveEntityIdentityViaForeignKey(It.IsAny<SqlEntityExpression>(), It.IsAny<RelationEndPointDefinition>()), Times.Never());
       Assert.That(result, Is.Null);
     }
 
@@ -520,8 +520,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var endPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(property);
       var fakeResolvedIdentity = Expression.Constant(0);
       _storageSpecificExpressionResolverStub
-          .Stub(stub => stub.ResolveIDPropertyViaForeignKey(entityExpression, endPointDefinition))
-          .Return(fakeResolvedIdentity);
+          .Setup(stub => stub.ResolveIDPropertyViaForeignKey(entityExpression, endPointDefinition))
+          .Returns(fakeResolvedIdentity);
 
       var result = _resolver.TryResolveOptimizedMemberExpression(entityRefMemberExpression, typeof(DomainObject).GetProperty("ID"));
 
@@ -538,8 +538,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var result = _resolver.TryResolveOptimizedMemberExpression(entityRefMemberExpression, typeof(DomainObject).GetProperty("State"));
 
       _storageSpecificExpressionResolverStub
-          .AssertWasNotCalled(
-              stub => stub.ResolveIDPropertyViaForeignKey(Arg<SqlEntityExpression>.Is.Anything, Arg<RelationEndPointDefinition>.Is.Anything));
+.Verify (              stub => stub.ResolveIDPropertyViaForeignKey(It.IsAny<SqlEntityExpression>(), It.IsAny<RelationEndPointDefinition>()), Times.Never());
       Assert.That(result, Is.Null);
     }
 
@@ -553,8 +552,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var result = _resolver.TryResolveOptimizedMemberExpression(entityRefMemberExpression, typeof(FakeObject).GetProperty("ID"));
 
       _storageSpecificExpressionResolverStub
-          .AssertWasNotCalled(
-              stub => stub.ResolveIDPropertyViaForeignKey(Arg<SqlEntityExpression>.Is.Anything, Arg<RelationEndPointDefinition>.Is.Anything));
+.Verify (              stub => stub.ResolveIDPropertyViaForeignKey(It.IsAny<SqlEntityExpression>(), It.IsAny<RelationEndPointDefinition>()), Times.Never());
       Assert.That(result, Is.Null);
     }
 
@@ -567,8 +565,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
       var result = _resolver.TryResolveOptimizedMemberExpression(entityRefMemberExpression, typeof(DomainObject).GetProperty("ID"));
 
-      _storageSpecificExpressionResolverStub.AssertWasNotCalled(
-          stub => stub.ResolveIDPropertyViaForeignKey(Arg<SqlEntityExpression>.Is.Anything, Arg<RelationEndPointDefinition>.Is.Anything));
+      _storageSpecificExpressionResolverStub.Verify (          stub => stub.ResolveIDPropertyViaForeignKey(It.IsAny<SqlEntityExpression>(), It.IsAny<RelationEndPointDefinition>()), Times.Never());
       Assert.That(result, Is.Null);
     }
 

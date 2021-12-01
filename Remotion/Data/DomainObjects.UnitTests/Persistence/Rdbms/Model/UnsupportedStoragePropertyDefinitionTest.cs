@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
@@ -109,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void CombineValue ()
     {
       Assert.That(
-          () => _unsupportedStorageProperty.CombineValue(MockRepository.GenerateStub<IColumnValueProvider>()),
+          () => _unsupportedStorageProperty.CombineValue(new Mock<IColumnValueProvider>().Object),
           Throws.TypeOf<NotSupportedException>()
               .With.Message.EqualTo("This operation is not supported because the storage property is invalid. Reason: Message")
               .And.InnerException.SameAs(_innerException));

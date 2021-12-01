@@ -16,13 +16,14 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
@@ -36,8 +37,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     private VirtualCollectionData _wrappedData;
     private VirtualCollectionData _decoratorWithRealData;
 
-    private IVirtualCollectionEndPointChangeDetectionStrategy _strategyStrictMock;
-    private IDataContainerMapReadOnlyView _dataContainerMapStub;
+    private Mock<IVirtualCollectionEndPointChangeDetectionStrategy> _strategyStrictMock;
+    private Mock<IDataContainerMapReadOnlyView> _dataContainerMapStub;
 
     public override void SetUp ()
     {
@@ -46,19 +47,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       var parent = DomainObjectMother.CreateFakeObject<Product>();
       _domainObject = DomainObjectMother.CreateFakeObject<ProductReview>();
       _endPointID = RelationEndPointID.Resolve(parent, o => o.Reviews);
-      _dataContainerMapStub = MockRepository.GenerateStub<IDataContainerMapReadOnlyView>();
-      _wrappedData = new VirtualCollectionData(_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      _dataContainerMapStub = new Mock<IDataContainerMapReadOnlyView>();
+      _wrappedData = new VirtualCollectionData(_endPointID, _dataContainerMapStub.Object, ValueAccess.Current);
       //_wrappedData.Add (_domainObject);
       _decoratorWithRealData = _wrappedData;
 
-      _strategyStrictMock = new MockRepository().StrictMock<IVirtualCollectionEndPointChangeDetectionStrategy>();
+      _strategyStrictMock = new Mock<IVirtualCollectionEndPointChangeDetectionStrategy> (MockBehavior.Strict);
     }
 
     [Test]
     public void Initialization ()
     {
-      _strategyStrictMock.Replay();
-
       Assert.That(_decoratorWithRealData.IsCacheUpToDate, Is.True);
     }
 
@@ -150,7 +149,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Commit_RevertsOriginalObjects_ToCurrentObjects ()
     {
-      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub.Object, ValueAccess.Current);
       ((IVirtualCollectionData)decorator).Add(_domainObject);
       Assert.That(decorator.GetOriginalData().ToArray(), Is.Empty);
 
@@ -163,9 +162,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Commit_SetsFlagUnchanged ()
     {
-      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub.Object, ValueAccess.Current);
       ((IVirtualCollectionData)decorator).Add(_domainObject);
-      _strategyStrictMock.Replay();
 
       decorator.ResetCachedDomainObjects();
 
@@ -175,7 +173,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Rollback_RevertsCurrentObjects_ToOriginalObjects ()
     {
-      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub.Object, ValueAccess.Current);
       ((IVirtualCollectionData)decorator).Add(_domainObject);
 
       Assert.That(decorator.ToArray(), Is.Not.Empty);
@@ -191,9 +189,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Rollback_SetsFlagUnchanged ()
     {
-      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub.Object, ValueAccess.Current);
       ((IVirtualCollectionData)decorator).Add(_domainObject);
-      _strategyStrictMock.Replay();
 
       decorator.ResetCachedDomainObjects();
 
@@ -423,7 +420,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Serializable ()
     {
-      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub.Object, ValueAccess.Current);
       //decorator.Add (_domainObject);
 
       WarmUpCache(decorator, false);
@@ -459,7 +456,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       var domainObject1 = DomainObjectMother.CreateFakeObject<ProductReview>();
       var domainObject2 = DomainObjectMother.CreateFakeObject<ProductReview>();
 
-      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub, ValueAccess.Current);
+      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub.Object, ValueAccess.Current);
       //decorator.Add (domainObject1);
       //decorator.Add (domainObject2);
 

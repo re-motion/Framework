@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
@@ -25,7 +27,6 @@ using Remotion.Data.DomainObjects.Persistence.NonPersistent.Model;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.NonPersistentPersistenceModelLoaderTestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
 {
@@ -86,7 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     [Test]
     public void ApplyPersistenceModelToHierarchy_LeavesExistingEntities_AndProperties ()
     {
-      var fakeProviderDefinition = new NonPersistentProviderDefinition("Test", MockRepository.GenerateStub<INonPersistentStorageObjectFactory>());
+      var fakeProviderDefinition = new NonPersistentProviderDefinition("Test", new Mock<INonPersistentStorageObjectFactory>().Object);
       var fakeEntityDefinition = new NonPersistentStorageEntity(fakeProviderDefinition);
       var fakeStoragePropertyDefinition = (NonPersistentStorageProperty)Activator.CreateInstance(typeof(NonPersistentStorageProperty), true);
 
@@ -107,12 +108,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     [Test]
     public void ApplyPersistenceModelToHierarchy_Throws_WhenExistingEntityDefinitionDoesNotImplementIEntityDefinition ()
     {
-      var invalidStorageEntityDefinition = MockRepository.GenerateStub<IStorageEntityDefinition>();
+      var invalidStorageEntityDefinition = new Mock<IStorageEntityDefinition>();
 
       var baseClass = ClassDefinitionObjectMother.CreateClassDefinition(id: "Base", classType: typeof(BaseClass), baseClass: null);
       baseClass.SetDerivedClasses(new ClassDefinition[0]);
 
-      baseClass.SetStorageEntity(invalidStorageEntityDefinition);
+      baseClass.SetStorageEntity(invalidStorageEntityDefinition.Object);
       baseClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new PropertyDefinition[0], true));
 
       Assert.That(
@@ -124,7 +125,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     [Test]
     public void ApplyPersistenceModelToHierarchy_Throws_WhenExistingPropertyDefinitionDoesNotImplementIColumnDefinition ()
     {
-
       var baseClass = ClassDefinitionObjectMother.CreateClassDefinition(id: "Base", classType: typeof(BaseClass), baseClass: null);
       baseClass.SetDerivedClasses(new ClassDefinition[0]);
 

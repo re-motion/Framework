@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DomainImplementation;
@@ -23,7 +25,6 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 {
@@ -47,13 +48,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     public void IsSynchronized ()
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.OrderItem1, typeof(OrderItem), "Order");
-      var endPointStub = MockRepository.GenerateStub<IRelationEndPoint>();
-      endPointStub.Stub(stub => stub.ID).Return(endPointID);
-      endPointStub.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPointStub.Stub(stub => stub.IsDataComplete).Return(true);
-      endPointStub.Stub(stub => stub.IsSynchronized).Return(true).Repeat.Once();
-      endPointStub.Stub(stub => stub.IsSynchronized).Return(false).Repeat.Once();
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub);
+      var endPointStub = new Mock<IRelationEndPoint>();
+      endPointStub.Setup (stub => stub.ID).Returns (endPointID);
+      endPointStub.Setup (stub => stub.Definition).Returns (endPointID.Definition);
+      endPointStub.Setup (stub => stub.IsDataComplete).Returns (true);
+      endPointStub.Setup (stub => stub.IsSynchronized).Returns (true);
+      endPointStub.Setup (stub => stub.IsSynchronized).Returns (false);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub.Object);
 
       Assert.That(BidirectionalRelationSyncService.IsSynchronized(_transaction, endPointID), Is.True);
       Assert.That(BidirectionalRelationSyncService.IsSynchronized(_transaction, endPointID), Is.False);
@@ -63,13 +64,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     public void IsSynchronized_CalledFromSubTransaction_UsesRootTransaction ()
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.OrderItem1, typeof(OrderItem), "Order");
-      var endPointStub = MockRepository.GenerateStub<IRelationEndPoint>();
-      endPointStub.Stub(stub => stub.ID).Return(endPointID);
-      endPointStub.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPointStub.Stub(stub => stub.IsDataComplete).Return(true);
-      endPointStub.Stub(stub => stub.IsSynchronized).Return(true).Repeat.Once();
-      endPointStub.Stub(stub => stub.IsSynchronized).Return(false).Repeat.Once();
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub);
+      var endPointStub = new Mock<IRelationEndPoint>();
+      endPointStub.Setup (stub => stub.ID).Returns (endPointID);
+      endPointStub.Setup (stub => stub.Definition).Returns (endPointID.Definition);
+      endPointStub.Setup (stub => stub.IsDataComplete).Returns (true);
+      endPointStub.Setup (stub => stub.IsSynchronized).Returns (true);
+      endPointStub.Setup (stub => stub.IsSynchronized).Returns (false);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub.Object);
 
       var subTransaction = _transaction.CreateSubTransaction();
       using (subTransaction.EnterDiscardingScope())
@@ -90,11 +91,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     public void IsSynchronized_EndPointReturnsNull ()
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
-      var endPointStub = MockRepository.GenerateStub<IRelationEndPoint>();
-      endPointStub.Stub(stub => stub.ID).Return(endPointID);
-      endPointStub.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPointStub.Stub(stub => stub.IsSynchronized).Return(null);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub);
+      var endPointStub = new Mock<IRelationEndPoint>();
+      endPointStub.Setup (stub => stub.ID).Returns (endPointID);
+      endPointStub.Setup (stub => stub.Definition).Returns (endPointID.Definition);
+      endPointStub.Setup (stub => stub.IsSynchronized).Returns ((bool?) null);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub.Object);
 
       var result = BidirectionalRelationSyncService.IsSynchronized(_transaction, endPointID);
       Assert.That(result, Is.Null);
@@ -127,17 +128,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
 
-      var endPointMock = MockRepository.GenerateStrictMock<IRelationEndPoint>();
-      endPointMock.Stub(stub => stub.ID).Return(endPointID);
-      endPointMock.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPointMock.Stub(stub => stub.IsDataComplete).Return(true);
-      endPointMock.Expect(mock => mock.Synchronize());
-      endPointMock.Replay();
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMock);
+      var endPointMock = new Mock<IRelationEndPoint> (MockBehavior.Strict);
+      endPointMock.Setup (stub => stub.ID).Returns (endPointID);
+      endPointMock.Setup (stub => stub.Definition).Returns (endPointID.Definition);
+      endPointMock.Setup (stub => stub.IsDataComplete).Returns (true);
+      endPointMock.Setup (mock => mock.Synchronize()).Verifiable();
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMock.Object);
 
       BidirectionalRelationSyncService.Synchronize(_transaction, endPointID);
 
-      endPointMock.VerifyAllExpectations();
+      endPointMock.Verify();
     }
 
     [Test]
@@ -145,27 +145,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
 
-      var endPointMockInParent = MockRepository.GenerateStrictMock<IRelationEndPoint>();
-      endPointMockInParent.Stub(stub => stub.ID).Return(endPointID);
-      endPointMockInParent.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPointMockInParent.Stub(stub => stub.IsDataComplete).Return(true);
-      endPointMockInParent.Expect(mock => mock.Synchronize());
-      endPointMockInParent.Replay();
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMockInParent);
+      var endPointMockInParent = new Mock<IRelationEndPoint> (MockBehavior.Strict);
+      endPointMockInParent.Setup (stub => stub.ID).Returns (endPointID);
+      endPointMockInParent.Setup (stub => stub.Definition).Returns (endPointID.Definition);
+      endPointMockInParent.Setup (stub => stub.IsDataComplete).Returns (true);
+      endPointMockInParent.Setup (mock => mock.Synchronize()).Verifiable();
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMockInParent.Object);
 
       var subTransaction = _transaction.CreateSubTransaction();
-      var endPointMockInSub = MockRepository.GenerateStrictMock<IRelationEndPoint>();
-      endPointMockInSub.Stub(stub => stub.ID).Return(endPointID);
-      endPointMockInSub.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPointMockInSub.Stub(stub => stub.IsDataComplete).Return(true);
-      endPointMockInSub.Expect(mock => mock.Synchronize());
-      endPointMockInSub.Replay();
-      DataManagerTestHelper.AddEndPoint(ClientTransactionTestHelper.GetDataManager(subTransaction), endPointMockInSub);
+      var endPointMockInSub = new Mock<IRelationEndPoint> (MockBehavior.Strict);
+      endPointMockInSub.Setup (stub => stub.ID).Returns (endPointID);
+      endPointMockInSub.Setup (stub => stub.Definition).Returns (endPointID.Definition);
+      endPointMockInSub.Setup (stub => stub.IsDataComplete).Returns (true);
+      endPointMockInSub.Setup (mock => mock.Synchronize()).Verifiable();
+      DataManagerTestHelper.AddEndPoint(ClientTransactionTestHelper.GetDataManager(subTransaction), endPointMockInSub.Object);
 
       BidirectionalRelationSyncService.Synchronize(_transaction, endPointID);
 
-      endPointMockInParent.VerifyAllExpectations();
-      endPointMockInSub.VerifyAllExpectations();
+      endPointMockInParent.Verify();
+      endPointMockInSub.Verify();
     }
 
     [Test]
@@ -173,27 +171,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
 
-      var endPointMockInParent = MockRepository.GenerateStrictMock<IRelationEndPoint>();
-      endPointMockInParent.Stub(stub => stub.ID).Return(endPointID);
-      endPointMockInParent.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPointMockInParent.Stub(stub => stub.IsDataComplete).Return(true);
-      endPointMockInParent.Expect(mock => mock.Synchronize());
-      endPointMockInParent.Replay();
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMockInParent);
+      var endPointMockInParent = new Mock<IRelationEndPoint> (MockBehavior.Strict);
+      endPointMockInParent.Setup (stub => stub.ID).Returns (endPointID);
+      endPointMockInParent.Setup (stub => stub.Definition).Returns (endPointID.Definition);
+      endPointMockInParent.Setup (stub => stub.IsDataComplete).Returns (true);
+      endPointMockInParent.Setup (mock => mock.Synchronize()).Verifiable();
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMockInParent.Object);
 
       var subTransaction = _transaction.CreateSubTransaction();
-      var endPointMockInSub = MockRepository.GenerateStrictMock<IRelationEndPoint>();
-      endPointMockInSub.Stub(stub => stub.ID).Return(endPointID);
-      endPointMockInSub.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPointMockInSub.Stub(stub => stub.IsDataComplete).Return(true);
-      endPointMockInSub.Expect(mock => mock.Synchronize());
-      endPointMockInSub.Replay();
-      DataManagerTestHelper.AddEndPoint(ClientTransactionTestHelper.GetDataManager(subTransaction), endPointMockInSub);
+      var endPointMockInSub = new Mock<IRelationEndPoint> (MockBehavior.Strict);
+      endPointMockInSub.Setup (stub => stub.ID).Returns (endPointID);
+      endPointMockInSub.Setup (stub => stub.Definition).Returns (endPointID.Definition);
+      endPointMockInSub.Setup (stub => stub.IsDataComplete).Returns (true);
+      endPointMockInSub.Setup (mock => mock.Synchronize()).Verifiable();
+      DataManagerTestHelper.AddEndPoint(ClientTransactionTestHelper.GetDataManager(subTransaction), endPointMockInSub.Object);
 
       BidirectionalRelationSyncService.Synchronize(subTransaction, endPointID);
 
-      endPointMockInParent.VerifyAllExpectations();
-      endPointMockInSub.VerifyAllExpectations();
+      endPointMockInParent.Verify();
+      endPointMockInSub.Verify();
     }
 
     [Test]
@@ -201,19 +197,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
 
-      var endPointMockInParent = MockRepository.GenerateStrictMock<IRelationEndPoint>();
-      endPointMockInParent.Stub(stub => stub.ID).Return(endPointID);
-      endPointMockInParent.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPointMockInParent.Stub(stub => stub.IsDataComplete).Return(true);
-      endPointMockInParent.Expect(mock => mock.Synchronize());
-      endPointMockInParent.Replay();
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMockInParent);
+      var endPointMockInParent = new Mock<IRelationEndPoint> (MockBehavior.Strict);
+      endPointMockInParent.Setup (stub => stub.ID).Returns (endPointID);
+      endPointMockInParent.Setup (stub => stub.Definition).Returns (endPointID.Definition);
+      endPointMockInParent.Setup (stub => stub.IsDataComplete).Returns (true);
+      endPointMockInParent.Setup (mock => mock.Synchronize()).Verifiable();
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMockInParent.Object);
 
       var subTransaction = _transaction.CreateSubTransaction();
 
       BidirectionalRelationSyncService.Synchronize(subTransaction, endPointID);
 
-      endPointMockInParent.VerifyAllExpectations();
+      endPointMockInParent.Verify();
     }
 
     [Test]
@@ -255,11 +250,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     public void Synchronize_EndPointIncomplete ()
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
-      var endPointStub = MockRepository.GenerateStub<IRelationEndPoint>();
-      endPointStub.Stub(stub => stub.ID).Return(endPointID);
-      endPointStub.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPointStub.Stub(stub => stub.IsDataComplete).Return(false);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub);
+      var endPointStub = new Mock<IRelationEndPoint>();
+      endPointStub.Setup (stub => stub.ID).Returns (endPointID);
+      endPointStub.Setup (stub => stub.Definition).Returns (endPointID.Definition);
+      endPointStub.Setup (stub => stub.IsDataComplete).Returns (false);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub.Object);
       Assert.That(
           () => BidirectionalRelationSyncService.Synchronize(_transaction, endPointID),
           Throws.InvalidOperationException

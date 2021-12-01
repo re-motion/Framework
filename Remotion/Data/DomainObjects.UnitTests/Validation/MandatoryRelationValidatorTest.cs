@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -23,7 +25,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.IntegrationTests;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Validation
 {
@@ -32,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
   {
     private MandatoryRelationValidator _validator;
 
-    private IRelationEndPoint _endPointMock;
+    private Mock<IRelationEndPoint> _endPointMock;
 
     private IRelationEndPointDefinition _mandatoryEndPointDefinition;
     private IRelationEndPointDefinition _nonMandatoryEndPointDefinition;
@@ -43,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
 
       _validator = new MandatoryRelationValidator();
 
-      _endPointMock = MockRepository.GenerateStrictMock<IRelationEndPoint>();
+      _endPointMock = new Mock<IRelationEndPoint> (MockBehavior.Strict);
 
       _mandatoryEndPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
       _nonMandatoryEndPointDefinition = GetEndPointDefinition(typeof(Computer), "Employee");
@@ -52,58 +53,54 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     [Test]
     public void Validate_ChecksComplete_AndMandatoryRelationEndPoints ()
     {
-      var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock });
+      var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock.Object });
 
-      _endPointMock.Stub(stub => stub.Definition).Return(_mandatoryEndPointDefinition);
-      _endPointMock.Stub(stub => stub.IsDataComplete).Return(true);
-      _endPointMock.Expect(mock => mock.ValidateMandatory());
-      _endPointMock.Replay();
+      _endPointMock.Setup (stub => stub.Definition).Returns (_mandatoryEndPointDefinition);
+      _endPointMock.Setup (stub => stub.IsDataComplete).Returns (true);
+      _endPointMock.Setup (mock => mock.ValidateMandatory()).Verifiable();
 
       _validator.Validate(ClientTransaction.CreateRootTransaction(), dataItem);
 
-      _endPointMock.VerifyAllExpectations();
+      _endPointMock.Verify();
     }
 
     [Test]
     public void Validate_IgnoresIncompleteEndPoints ()
     {
-      var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock });
+      var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock.Object });
 
-      _endPointMock.Stub(stub => stub.Definition).Return(_mandatoryEndPointDefinition);
-      _endPointMock.Stub(stub => stub.IsDataComplete).Return(false);
-      _endPointMock.Replay();
+      _endPointMock.Setup (stub => stub.Definition).Returns (_mandatoryEndPointDefinition);
+      _endPointMock.Setup (stub => stub.IsDataComplete).Returns (false);
 
       _validator.Validate(ClientTransaction.CreateRootTransaction(), dataItem);
 
-      _endPointMock.AssertWasNotCalled(mock => mock.ValidateMandatory());
+      _endPointMock.Verify (mock => mock.ValidateMandatory(), Times.Never());
     }
 
     [Test]
     public void Validate_IgnoresNonMandatoryEndPoints ()
     {
-      var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock });
+      var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, new[] { _endPointMock.Object });
 
-      _endPointMock.Stub(stub => stub.Definition).Return(_nonMandatoryEndPointDefinition);
-      _endPointMock.Stub(stub => stub.IsDataComplete).Return(true);
-      _endPointMock.Replay();
+      _endPointMock.Setup (stub => stub.Definition).Returns (_nonMandatoryEndPointDefinition);
+      _endPointMock.Setup (stub => stub.IsDataComplete).Returns (true);
 
       _validator.Validate(ClientTransaction.CreateRootTransaction(), dataItem);
 
-      _endPointMock.AssertWasNotCalled(mock => mock.ValidateMandatory());
+      _endPointMock.Verify (mock => mock.ValidateMandatory(), Times.Never());
     }
 
     [Test]
     public void Validate_IgnoresDeletedObjects ()
     {
-      var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetDeleted().Value, new[] { _endPointMock });
+      var dataItem = CreatePersistableData(new DomainObjectState.Builder().SetDeleted().Value, new[] { _endPointMock.Object });
 
-      _endPointMock.Stub(stub => stub.Definition).Return(_mandatoryEndPointDefinition);
-      _endPointMock.Stub(stub => stub.IsDataComplete).Return(true);
-      _endPointMock.Replay();
+      _endPointMock.Setup (stub => stub.Definition).Returns (_mandatoryEndPointDefinition);
+      _endPointMock.Setup (stub => stub.IsDataComplete).Returns (true);
 
       _validator.Validate(ClientTransaction.CreateRootTransaction(), dataItem);
 
-      _endPointMock.AssertWasNotCalled(mock => mock.ValidateMandatory());
+      _endPointMock.Verify (mock => mock.ValidateMandatory(), Times.Never());
     }
 
     [Test]

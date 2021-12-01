@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CommonServiceLocator;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -31,7 +33,6 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
@@ -51,18 +52,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void CreateEventBroker ()
     {
-      var fakeListener = MockRepository.GenerateStub<IClientTransactionListener>();
+      var fakeListener = new Mock<IClientTransactionListener>();
 
-      var factoryPartialMock = MockRepository.GeneratePartialMock<TestableClientTransactionComponentFactoryBase>();
-      factoryPartialMock.Stub(stub => stub.CallCreateListeners(_fakeConstructedTransaction)).Return(new[] { fakeListener });
+      var factoryPartialMock = new Mock<TestableClientTransactionComponentFactoryBase>() { CallBase = true };
+      factoryPartialMock.Setup (stub => stub.CallCreateListeners (_fakeConstructedTransaction)).Returns (new[] { fakeListener.Object });
 
-      var result = factoryPartialMock.CreateEventBroker(_fakeConstructedTransaction);
+      var result = factoryPartialMock.Object.CreateEventBroker(_fakeConstructedTransaction);
 
       Assert.That(
           result,
           Is.TypeOf<ClientTransactionEventBroker>()
               .With.Property<ClientTransactionEventBroker>(m => m.ClientTransaction).SameAs(_fakeConstructedTransaction)
-              .And.Property<ClientTransactionEventBroker>(m => m.Listeners).EqualTo(new[] { fakeListener }));
+              .And.Property<ClientTransactionEventBroker>(m => m.Listeners).EqualTo(new[] { fakeListener.Object }));
     }
 
     [Test]
@@ -79,171 +80,173 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void CreateDataManager ()
     {
-      var fakeEventSink = MockRepository.GenerateStub<IClientTransactionEventSink>();
-      var fakeInvalidDomainObjectManager = MockRepository.GenerateStub<IInvalidDomainObjectManager>();
-      var fakePersistenceStrategy = MockRepository.GenerateStub<IPersistenceStrategy>();
+      var fakeEventSink = new Mock<IClientTransactionEventSink>();
+      var fakeInvalidDomainObjectManager = new Mock<IInvalidDomainObjectManager>();
+      var fakePersistenceStrategy = new Mock<IPersistenceStrategy>();
 
-      var fakeDataContainerEventListener = MockRepository.GenerateStub<IDataContainerEventListener>();
-      var fakeEndPointProvider = MockRepository.GenerateStub<IRelationEndPointProvider>();
-      var fakeLazyLoader = MockRepository.GenerateStub<ILazyLoader>();
-      var fakeRelationEndPointManager = MockRepository.GenerateStub<IRelationEndPointManager>();
-      var fakeObjectLoader = MockRepository.GenerateStub<IObjectLoader>();
-      var fakeHierarchyManager = MockRepository.GenerateStub<ITransactionHierarchyManager>();
+      var fakeDataContainerEventListener = new Mock<IDataContainerEventListener>();
+      var fakeEndPointProvider = new Mock<IRelationEndPointProvider>();
+      var fakeLazyLoader = new Mock<ILazyLoader>();
+      var fakeRelationEndPointManager = new Mock<IRelationEndPointManager>();
+      var fakeObjectLoader = new Mock<IObjectLoader>();
+      var fakeHierarchyManager = new Mock<ITransactionHierarchyManager>();
 
       DelegatingDataManager endPointProviderDataManager = null;
       DelegatingDataManager lazyLoaderDataManager = null;
       DelegatingDataManager objectLoaderDataManager = null;
       DelegatingDataContainerMap relationEndPointManagerDataContainerMap = null;
 
-      var factoryPartialMock = MockRepository.GeneratePartialMock<TestableClientTransactionComponentFactoryBase>();
+      var factoryPartialMock = new Mock<TestableClientTransactionComponentFactoryBase>() { CallBase = true };
       factoryPartialMock
-          .Expect(mock => mock.CallCreateDataContainerEventListener(fakeEventSink))
-          .Return(fakeDataContainerEventListener);
+          .Setup(mock => mock.CallCreateDataContainerEventListener(fakeEventSink.Object))
+          .Returns(fakeDataContainerEventListener.Object)
+          .Verifiable();
       factoryPartialMock
-          .Expect(mock => mock.CallGetEndPointProvider(Arg<DelegatingDataManager>.Is.TypeOf))
-          .Return(fakeEndPointProvider)
-          .WhenCalled(mi => endPointProviderDataManager = (DelegatingDataManager)mi.Arguments[0]);
+          .Setup(mock => mock.CallGetEndPointProvider(Arg<DelegatingDataManager>.Is.TypeOf))
+          .Returns(fakeEndPointProvider.Object)
+          .Callback((IDataManager dataManager) => endPointProviderDataManager = dataManager)
+          .Verifiable();
       factoryPartialMock
-          .Expect(mock => mock.CallGetLazyLoader(Arg<DelegatingDataManager>.Is.TypeOf))
-          .Return(fakeLazyLoader)
-          .WhenCalled(mi => lazyLoaderDataManager = (DelegatingDataManager)mi.Arguments[0]);
+          .Setup(mock => mock.CallGetLazyLoader(Arg<DelegatingDataManager>.Is.TypeOf))
+          .Returns(fakeLazyLoader.Object)
+          .Callback((IDataManager dataManager) => lazyLoaderDataManager = dataManager)
+          .Verifiable();
       factoryPartialMock
-          .Expect(
+          .Setup(
               mock => mock.CallCreateRelationEndPointManager(
-                  Arg.Is(_fakeConstructedTransaction),
-                  Arg.Is(fakeEndPointProvider),
-                  Arg.Is(fakeLazyLoader),
-                  Arg.Is(fakeEventSink),
+                  _fakeConstructedTransaction,
+                  fakeEndPointProvider.Object,
+                  fakeLazyLoader.Object,
+                  fakeEventSink.Object,
                   Arg<DelegatingDataContainerMap>.Is.TypeOf))
-          .Return(fakeRelationEndPointManager)
-          .WhenCalled(mi => relationEndPointManagerDataContainerMap = (DelegatingDataContainerMap)mi.Arguments[4]);
+          .Returns(fakeRelationEndPointManager.Object)
+          .Callback((ClientTransaction constructedTransaction, IRelationEndPointProvider endPointProvider, ILazyLoader lazyLoader, IClientTransactionEventSink eventSink, IDataContainerMapReadOnlyView dataContainerMap) => relationEndPointManagerDataContainerMap = dataContainerMap)
+          .Verifiable();
       factoryPartialMock
-          .Expect(
+          .Setup(
               mock => mock.CallCreateObjectLoader(
-                  Arg.Is(_fakeConstructedTransaction),
-                  Arg.Is(fakeEventSink),
-                  Arg.Is(fakePersistenceStrategy),
-                  Arg.Is(fakeInvalidDomainObjectManager),
+                  _fakeConstructedTransaction,
+                  fakeEventSink.Object,
+                  fakePersistenceStrategy.Object,
+                  fakeInvalidDomainObjectManager.Object,
                   Arg<DelegatingDataManager>.Is.TypeOf,
-                  Arg.Is(fakeHierarchyManager)))
-          .Return(fakeObjectLoader)
-          .WhenCalled(mi => objectLoaderDataManager = (DelegatingDataManager)mi.Arguments[4]);
-      factoryPartialMock.Replay();
+                  fakeHierarchyManager.Object))
+          .Returns(fakeObjectLoader.Object)
+          .Callback((ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink, IPersistenceStrategy persistenceStrategy, IInvalidDomainObjectManager invalidDomainObjectManager, IDataManager dataManager, ITransactionHierarchyManager hierarchyManager) => objectLoaderDataManager = dataManager)
+          .Verifiable();
 
-      var dataManager = (DataManager)factoryPartialMock.CreateDataManager(
+      var dataManager = (DataManager)factoryPartialMock.Object.CreateDataManager(
           _fakeConstructedTransaction,
-          fakeEventSink,
-          fakeInvalidDomainObjectManager,
-          fakePersistenceStrategy,
-          fakeHierarchyManager);
+          fakeEventSink.Object,
+          fakeInvalidDomainObjectManager.Object,
+          fakePersistenceStrategy.Object,
+          fakeHierarchyManager.Object);
 
-      factoryPartialMock.VerifyAllExpectations();
+      factoryPartialMock.Verify();
       Assert.That(endPointProviderDataManager.InnerDataManager, Is.SameAs(dataManager));
       Assert.That(lazyLoaderDataManager.InnerDataManager, Is.SameAs(dataManager));
       Assert.That(objectLoaderDataManager.InnerDataManager, Is.SameAs(dataManager));
       Assert.That(relationEndPointManagerDataContainerMap.InnerDataContainerMap, Is.SameAs(dataManager.DataContainers));
 
       Assert.That(dataManager.ClientTransaction, Is.SameAs(_fakeConstructedTransaction));
-      Assert.That(dataManager.TransactionEventSink, Is.SameAs(fakeEventSink));
-      Assert.That(dataManager.DataContainerEventListener, Is.SameAs(fakeDataContainerEventListener));
-      Assert.That(DataManagerTestHelper.GetInvalidDomainObjectManager(dataManager), Is.SameAs(fakeInvalidDomainObjectManager));
-      Assert.That(DataManagerTestHelper.GetObjectLoader(dataManager), Is.SameAs(fakeObjectLoader));
-      Assert.That(DataManagerTestHelper.GetRelationEndPointManager(dataManager), Is.SameAs(fakeRelationEndPointManager));
+      Assert.That(dataManager.TransactionEventSink, Is.SameAs(fakeEventSink.Object));
+      Assert.That(dataManager.DataContainerEventListener, Is.SameAs(fakeDataContainerEventListener.Object));
+      Assert.That(DataManagerTestHelper.GetInvalidDomainObjectManager(dataManager), Is.SameAs(fakeInvalidDomainObjectManager.Object));
+      Assert.That(DataManagerTestHelper.GetObjectLoader(dataManager), Is.SameAs(fakeObjectLoader.Object));
+      Assert.That(DataManagerTestHelper.GetRelationEndPointManager(dataManager), Is.SameAs(fakeRelationEndPointManager.Object));
     }
 
     [Test]
     public void CreateObjectLifetimeAgent ()
     {
-      var dataManager = MockRepository.GenerateStub<IDataManager>();
-      var invalidDomainObjectManager = MockRepository.GenerateStub<IInvalidDomainObjectManager>();
-      var eventSink = MockRepository.GenerateStub<IClientTransactionEventSink>();
-      var enlistedDomainObjectManager = MockRepository.GenerateStub<IEnlistedDomainObjectManager>();
-      var persistenceStrategy = MockRepository.GenerateStub<IPersistenceStrategy>();
+      var dataManager = new Mock<IDataManager>();
+      var invalidDomainObjectManager = new Mock<IInvalidDomainObjectManager>();
+      var eventSink = new Mock<IClientTransactionEventSink>();
+      var enlistedDomainObjectManager = new Mock<IEnlistedDomainObjectManager>();
+      var persistenceStrategy = new Mock<IPersistenceStrategy>();
 
       var result = _factory.CreateObjectLifetimeAgent(
-          _fakeConstructedTransaction, eventSink, invalidDomainObjectManager, dataManager, enlistedDomainObjectManager, persistenceStrategy);
+          _fakeConstructedTransaction, eventSink.Object, invalidDomainObjectManager.Object, dataManager.Object, enlistedDomainObjectManager.Object, persistenceStrategy.Object);
 
       Assert.That(result, Is.TypeOf(typeof(ObjectLifetimeAgent)));
 
       var objectLifetimeAgent = ((ObjectLifetimeAgent)result);
       Assert.That(objectLifetimeAgent.ClientTransaction, Is.SameAs(_fakeConstructedTransaction));
-      Assert.That(objectLifetimeAgent.EventSink, Is.SameAs(eventSink));
-      Assert.That(objectLifetimeAgent.InvalidDomainObjectManager, Is.SameAs(invalidDomainObjectManager));
-      Assert.That(objectLifetimeAgent.DataManager, Is.SameAs(dataManager));
-      Assert.That(objectLifetimeAgent.EnlistedDomainObjectManager, Is.SameAs(enlistedDomainObjectManager));
-      Assert.That(objectLifetimeAgent.PersistenceStrategy, Is.SameAs(persistenceStrategy));
+      Assert.That(objectLifetimeAgent.EventSink, Is.SameAs(eventSink.Object));
+      Assert.That(objectLifetimeAgent.InvalidDomainObjectManager, Is.SameAs(invalidDomainObjectManager.Object));
+      Assert.That(objectLifetimeAgent.DataManager, Is.SameAs(dataManager.Object));
+      Assert.That(objectLifetimeAgent.EnlistedDomainObjectManager, Is.SameAs(enlistedDomainObjectManager.Object));
+      Assert.That(objectLifetimeAgent.PersistenceStrategy, Is.SameAs(persistenceStrategy.Object));
     }
 
     [Test]
     public void CreateQueryManager ()
     {
-      var persistenceStrategy = MockRepository.GenerateStub<IPersistenceStrategy>();
-      var dataManager = MockRepository.GenerateStub<IDataManager>();
-      var invalidDomainObjectManager = MockRepository.GenerateStub<IInvalidDomainObjectManager>();
-      var eventSink = MockRepository.GenerateStub<IClientTransactionEventSink>();
-      var hierarchyManager = MockRepository.GenerateStub<ITransactionHierarchyManager>();
+      var persistenceStrategy = new Mock<IPersistenceStrategy>();
+      var dataManager = new Mock<IDataManager>();
+      var invalidDomainObjectManager = new Mock<IInvalidDomainObjectManager>();
+      var eventSink = new Mock<IClientTransactionEventSink>();
+      var hierarchyManager = new Mock<ITransactionHierarchyManager>();
 
-      var fakeObjectLoader = MockRepository.GenerateStub<IObjectLoader>();
+      var fakeObjectLoader = new Mock<IObjectLoader>();
 
-      var factoryPartialMock = MockRepository.GeneratePartialMock<TestableClientTransactionComponentFactoryBase>();
+      var factoryPartialMock = new Mock<TestableClientTransactionComponentFactoryBase>() { CallBase = true };
       factoryPartialMock
-          .Expect(
+          .Setup(
               mock => mock.CallCreateObjectLoader(
-                  _fakeConstructedTransaction, eventSink, persistenceStrategy, invalidDomainObjectManager, dataManager, hierarchyManager))
-          .Return(fakeObjectLoader);
-      factoryPartialMock.Replay();
+                  _fakeConstructedTransaction, eventSink.Object, persistenceStrategy.Object, invalidDomainObjectManager.Object, dataManager.Object, hierarchyManager.Object))
+          .Returns(fakeObjectLoader.Object)
+          .Verifiable();
 
-      var result = factoryPartialMock.CreateQueryManager(
-          _fakeConstructedTransaction, eventSink, invalidDomainObjectManager, persistenceStrategy, dataManager, hierarchyManager);
+      var result = factoryPartialMock.Object.CreateQueryManager(
+          _fakeConstructedTransaction, eventSink.Object, invalidDomainObjectManager.Object, persistenceStrategy.Object, dataManager.Object, hierarchyManager.Object);
 
-      factoryPartialMock.VerifyAllExpectations();
+      factoryPartialMock.Verify();
 
       Assert.That(result, Is.TypeOf(typeof(QueryManager)));
-      Assert.That(((QueryManager)result).PersistenceStrategy, Is.SameAs(persistenceStrategy));
-      Assert.That(((QueryManager)result).TransactionEventSink, Is.SameAs(eventSink));
-      Assert.That(((QueryManager)result).ObjectLoader, Is.SameAs(fakeObjectLoader));
+      Assert.That(((QueryManager)result).PersistenceStrategy, Is.SameAs(persistenceStrategy.Object));
+      Assert.That(((QueryManager)result).TransactionEventSink, Is.SameAs(eventSink.Object));
+      Assert.That(((QueryManager)result).ObjectLoader, Is.SameAs(fakeObjectLoader.Object));
     }
 
     [Test]
     public void CreateCommitRollbackAgent ()
     {
-      var eventSink = MockRepository.GenerateStub<IClientTransactionEventSink>();
-      var persistenceStrategy = MockRepository.GenerateStub<IPersistenceStrategy>();
-      var dataManager = MockRepository.GenerateStub<IDataManager>();
+      var eventSink = new Mock<IClientTransactionEventSink>();
+      var persistenceStrategy = new Mock<IPersistenceStrategy>();
+      var dataManager = new Mock<IDataManager>();
 
-      var result = _factory.CreateCommitRollbackAgent(_fakeConstructedTransaction, eventSink, persistenceStrategy, dataManager);
+      var result = _factory.CreateCommitRollbackAgent(_fakeConstructedTransaction, eventSink.Object, persistenceStrategy.Object, dataManager.Object);
 
       Assert.That(result, Is.TypeOf<CommitRollbackAgent>());
       Assert.That(((CommitRollbackAgent)result).ClientTransaction, Is.SameAs(_fakeConstructedTransaction));
-      Assert.That(((CommitRollbackAgent)result).EventSink, Is.SameAs(eventSink));
-      Assert.That(((CommitRollbackAgent)result).PersistenceStrategy, Is.SameAs(persistenceStrategy));
-      Assert.That(((CommitRollbackAgent)result).DataManager, Is.SameAs(dataManager));
+      Assert.That(((CommitRollbackAgent)result).EventSink, Is.SameAs(eventSink.Object));
+      Assert.That(((CommitRollbackAgent)result).PersistenceStrategy, Is.SameAs(persistenceStrategy.Object));
+      Assert.That(((CommitRollbackAgent)result).DataManager, Is.SameAs(dataManager.Object));
     }
 
     [Test]
     public void CreateExtensions ()
     {
-      var extensionFactoryMock = MockRepository.GenerateStrictMock<IClientTransactionExtensionFactory>();
-      var extensionStub = MockRepository.GenerateStub<IClientTransactionExtension>();
-      extensionStub.Stub(stub => stub.Key).Return("stub1");
+      var extensionFactoryMock = new Mock<IClientTransactionExtensionFactory> (MockBehavior.Strict);
+      var extensionStub = new Mock<IClientTransactionExtension>();
+      extensionStub.Setup (stub => stub.Key).Returns ("stub1");
 
-      extensionFactoryMock.Expect(mock => mock.CreateClientTransactionExtensions(_fakeConstructedTransaction)).Return(new[] { extensionStub });
-      extensionFactoryMock.Replay();
+      extensionFactoryMock.Setup (mock => mock.CreateClientTransactionExtensions (_fakeConstructedTransaction)).Returns (new[] { extensionStub.Object }).Verifiable();
 
-      var serviceLocatorMock = MockRepository.GenerateStrictMock<IServiceLocator>();
-      serviceLocatorMock.Expect(mock => mock.GetInstance<IClientTransactionExtensionFactory>()).Return(extensionFactoryMock);
-      serviceLocatorMock.Replay();
+      var serviceLocatorMock = new Mock<IServiceLocator> (MockBehavior.Strict);
+      serviceLocatorMock.Setup (mock => mock.GetInstance<IClientTransactionExtensionFactory>()).Returns (extensionFactoryMock.Object).Verifiable();
 
       IClientTransactionExtension[] extensions;
-      using (new ServiceLocatorScope(serviceLocatorMock))
+      using (new ServiceLocatorScope(serviceLocatorMock.Object))
       {
         extensions = _factory.CreateExtensions(_fakeConstructedTransaction).ToArray();
       }
 
-      serviceLocatorMock.VerifyAllExpectations();
-      extensionFactoryMock.VerifyAllExpectations();
+      serviceLocatorMock.Verify();
+      extensionFactoryMock.Verify();
 
-      Assert.That(extensions, Is.EqualTo(new[] { extensionStub }));
+      Assert.That(extensions, Is.EqualTo(new[] { extensionStub.Object }));
     }
 
     [Test]
@@ -259,11 +262,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void GetEndPointProvider ()
     {
-      var dataManager = MockRepository.GenerateStub<IDataManager>();
+      var dataManager = new Mock<IDataManager>();
 
-      var result = _factory.CallGetEndPointProvider(dataManager);
+      var result = _factory.CallGetEndPointProvider(dataManager.Object);
 
-      Assert.That(result, Is.SameAs(dataManager));
+      Assert.That(result, Is.SameAs(dataManager.Object));
     }
   }
 }

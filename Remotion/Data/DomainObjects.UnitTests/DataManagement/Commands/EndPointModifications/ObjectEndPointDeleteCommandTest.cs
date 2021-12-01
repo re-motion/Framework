@@ -15,13 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
@@ -34,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
     private bool _oppositeObjectNullSetterCalled;
     private Action _oppositeObjectNullSetter;
-    private IClientTransactionEventSink _transactionEventSinkWithMock;
+    private Mock<IClientTransactionEventSink> _transactionEventSinkWithMock;
 
     private ObjectEndPointDeleteCommand _command;
 
@@ -52,8 +53,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
         _oppositeObjectNullSetterCalled = true;
       };
 
-      _transactionEventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
-      _command = new ObjectEndPointDeleteCommand(_endPoint, _oppositeObjectNullSetter, _transactionEventSinkWithMock);
+      _transactionEventSinkWithMock = new Mock<IClientTransactionEventSink> (MockBehavior.Strict);
+      _command = new ObjectEndPointDeleteCommand(_endPoint, _oppositeObjectNullSetter, _transactionEventSinkWithMock.Object);
     }
 
     [Test]
@@ -69,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       var endPoint = new NullObjectEndPoint(TestableClientTransaction, _endPointID.Definition);
       Assert.That(
-          () => new ObjectEndPointDeleteCommand(endPoint, () => { }, _transactionEventSinkWithMock),
+          () => new ObjectEndPointDeleteCommand(endPoint, () => { }, _transactionEventSinkWithMock.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Modified end point is null, a NullEndPointModificationCommand is needed.",
@@ -79,16 +80,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Begin_NoEvents ()
     {
-      _transactionEventSinkWithMock.Replay();
-
       _command.Begin();
     }
 
     [Test]
     public void End_NoEvents ()
     {
-      _transactionEventSinkWithMock.Replay();
-
       _command.End();
     }
 
@@ -121,7 +118,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var steps = bidirectionalModification.GetNestedCommands();
       Assert.That(steps.Count, Is.EqualTo(1));
       Assert.That(steps[0], Is.SameAs(_command));
-
     }
   }
 }

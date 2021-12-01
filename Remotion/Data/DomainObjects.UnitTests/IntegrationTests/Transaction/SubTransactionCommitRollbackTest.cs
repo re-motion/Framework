@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -198,34 +199,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         ClassWithAllDataTypes domainObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
 
-        MockRepository repository = new MockRepository();
-
-        IClientTransactionExtension extensionMock = repository.StrictMock<IClientTransactionExtension>();
-        extensionMock.Stub(stub => stub.Key).Return("Mock");
-        extensionMock.Replay();
-        _subTransaction.Extensions.Add(extensionMock);
+        var extensionMock = new Mock<IClientTransactionExtension> (MockBehavior.Strict);
+        extensionMock.Setup (stub => stub.Key).Returns ("Mock");
+        _subTransaction.Extensions.Add(extensionMock.Object);
         try
         {
           extensionMock.BackToRecord();
 
-          extensionMock.ObjectDeleting(_subTransaction, domainObject);
-          extensionMock.ObjectDeleted(_subTransaction, domainObject);
+          extensionMock.Object.ObjectDeleting(_subTransaction, domainObject);
+          extensionMock.Object.ObjectDeleted(_subTransaction, domainObject);
 
-          repository.ReplayAll();
           domainObject.Delete();
-          repository.VerifyAll();
+          extensionMock.Verify();
 
           repository.BackToRecordAll();
-          extensionMock.Committing(null, null, null);
-          LastCall.IgnoreArguments();
-          extensionMock.CommitValidate(null, null);
-          LastCall.IgnoreArguments();
-          extensionMock.Committed(null, null);
-          LastCall.IgnoreArguments();
-          repository.ReplayAll();
+          extensionMock.Expect (_ => _.Committing(It.IsAny<ClientTransaction>(),It.IsAny<IReadOnlyList<DomainObject>>(),It.IsAny<ICommittingEventRegistrar>()));
+          extensionMock.Expect (_ => _.CommitValidate(It.IsAny<ClientTransaction>(),It.IsAny<IReadOnlyList<PersistableData>>()));
+          extensionMock.Expect (_ => _.Committed(It.IsAny<ClientTransaction>(),It.IsAny<IReadOnlyList<DomainObject>>()));
 
           _subTransaction.Commit();
-          repository.VerifyAll();
+          extensionMock.Verify();
         }
         finally
         {
@@ -242,31 +235,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         Order domainObject = DomainObjectIDs.Order1.GetObject<Order>();
         domainObject.OrderItems[0].Delete();
 
-        MockRepository repository = new MockRepository();
-
-        IClientTransactionExtension extensionMock = repository.StrictMock<IClientTransactionExtension>();
-        extensionMock.Replay();
-        extensionMock.Stub(stub => stub.Key).Return("Mock");
-        _subTransaction.Extensions.Add(extensionMock);
+        var extensionMock = new Mock<IClientTransactionExtension> (MockBehavior.Strict);
+        extensionMock.Setup (stub => stub.Key).Returns ("Mock");
+        _subTransaction.Extensions.Add(extensionMock.Object);
         try
         {
           extensionMock.BackToRecord();
 
-          using (repository.Ordered())
-          {
-            extensionMock.Committing(null, null, null);
-            LastCall.IgnoreArguments();
-            extensionMock.CommitValidate(null, null);
-            LastCall.IgnoreArguments();
-            extensionMock.Committed(null, null);
-            LastCall.IgnoreArguments();
-          }
+          var sequence = new MockSequence();
 
-          repository.ReplayAll();
+          extensionMock.Expect (_ => _.Committing(It.IsAny<ClientTransaction>(),It.IsAny<IReadOnlyList<DomainObject>>(),It.IsAny<ICommittingEventRegistrar>()));
+
+          extensionMock.Expect (_ => _.CommitValidate(It.IsAny<ClientTransaction>(),It.IsAny<IReadOnlyList<PersistableData>>()));
+
+          extensionMock.Expect (_ => _.Committed(It.IsAny<ClientTransaction>(),It.IsAny<IReadOnlyList<DomainObject>>()));
 
           _subTransaction.Commit();
 
-          repository.VerifyAll();
+          extensionMock.Verify();
         }
         finally
         {

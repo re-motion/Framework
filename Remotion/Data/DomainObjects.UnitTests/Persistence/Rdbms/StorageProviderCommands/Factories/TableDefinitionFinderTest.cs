@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -23,14 +25,13 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Fact
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProviderCommands.Factories
 {
   [TestFixture]
   public class TableDefinitionFinderTest : StandardMappingTest
   {
-    private IRdbmsPersistenceModelProvider _rdbmsPersistenceModelProviderStub;
+    private Mock<IRdbmsPersistenceModelProvider> _rdbmsPersistenceModelProviderStub;
     private TableDefinitionFinder _finder;
     private TableDefinition _tableDefinition;
 
@@ -38,8 +39,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       base.SetUp();
 
-      _rdbmsPersistenceModelProviderStub = MockRepository.GenerateStub<IRdbmsPersistenceModelProvider>();
-      _finder = new TableDefinitionFinder(_rdbmsPersistenceModelProviderStub);
+      _rdbmsPersistenceModelProviderStub = new Mock<IRdbmsPersistenceModelProvider>();
+      _finder = new TableDefinitionFinder(_rdbmsPersistenceModelProviderStub.Object);
 
       _tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table"));
     }
@@ -48,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     public void GetTableDefinition_TableDefinition ()
     {
       var objectID = CreateObjectID(_tableDefinition);
-      _rdbmsPersistenceModelProviderStub.Stub(stub => stub.GetEntityDefinition(objectID.ClassDefinition)).Return(_tableDefinition);
+      _rdbmsPersistenceModelProviderStub.Setup (stub => stub.GetEntityDefinition (objectID.ClassDefinition)).Returns (_tableDefinition);
 
       var result = _finder.GetTableDefinition(objectID);
 
@@ -62,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
           TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "FilterView"), _tableDefinition);
 
       var objectID = CreateObjectID(filterViewDefinition);
-      _rdbmsPersistenceModelProviderStub.Stub(stub => stub.GetEntityDefinition(objectID.ClassDefinition)).Return(filterViewDefinition);
+      _rdbmsPersistenceModelProviderStub.Setup (stub => stub.GetEntityDefinition (objectID.ClassDefinition)).Returns (filterViewDefinition);
 
       var result = _finder.GetTableDefinition(objectID);
 
@@ -76,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
           TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table"), _tableDefinition);
 
       var objectID = CreateObjectID(unionViewDefinition);
-      _rdbmsPersistenceModelProviderStub.Stub(stub => stub.GetEntityDefinition(objectID.ClassDefinition)).Return(unionViewDefinition);
+      _rdbmsPersistenceModelProviderStub.Setup (stub => stub.GetEntityDefinition (objectID.ClassDefinition)).Returns (unionViewDefinition);
       Assert.That(
           () => _finder.GetTableDefinition(objectID),
           Throws.InvalidOperationException
@@ -90,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var emptyViewDefinition = EmptyViewDefinitionObjectMother.Create(TestDomainStorageProviderDefinition);
 
       var objectID = CreateObjectID(emptyViewDefinition);
-      _rdbmsPersistenceModelProviderStub.Stub(stub => stub.GetEntityDefinition(objectID.ClassDefinition)).Return(emptyViewDefinition);
+      _rdbmsPersistenceModelProviderStub.Setup (stub => stub.GetEntityDefinition (objectID.ClassDefinition)).Returns (emptyViewDefinition);
       Assert.That(
           () => _finder.GetTableDefinition(objectID),
           Throws.InvalidOperationException

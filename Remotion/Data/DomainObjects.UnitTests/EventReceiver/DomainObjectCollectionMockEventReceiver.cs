@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using Remotion.Utilities;
-using Rhino.Mocks;
-using Mocks_Is = Rhino.Mocks.Constraints.Is;
-using Mocks_List = Rhino.Mocks.Constraints.List;
-using Mocks_Property = Rhino.Mocks.Constraints.Property;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
@@ -70,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Adding ()
     {
-      Adding(Arg<object>.Is.Anything, Arg<DomainObjectCollectionChangeEventArgs>.Is.Anything);
+      Adding(It.IsAny<object>(), It.IsAny<DomainObjectCollectionChangeEventArgs>());
     }
 
     public void Added (object sender, DomainObject domainObject)
@@ -86,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Added ()
     {
-      Added(Arg<object>.Is.Anything, Arg<DomainObjectCollectionChangeEventArgs>.Is.Anything);
+      Added(It.IsAny<object>(), It.IsAny<DomainObjectCollectionChangeEventArgs>());
     }
 
     public void Removing (object sender, DomainObject domainObject)
@@ -102,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Removing ()
     {
-      Removing(Arg<object>.Is.Anything, Arg<DomainObjectCollectionChangeEventArgs>.Is.Anything);
+      Removing(It.IsAny<object>(), It.IsAny<DomainObjectCollectionChangeEventArgs>());
     }
 
     public void Removed (object sender, DomainObject domainObject)
@@ -118,17 +116,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Removed ()
     {
-      Removed(Arg<object>.Is.Anything, Arg<DomainObjectCollectionChangeEventArgs>.Is.Anything);
+      Removed(It.IsAny<object>(), It.IsAny<DomainObjectCollectionChangeEventArgs>());
     }
 
     public void Deleting ()
     {
-      Deleting(Arg.Is(_domainObjectCollection), Arg<EventArgs>.Is.Anything);
+      Deleting(_domainObjectCollection, It.IsAny<EventArgs>());
     }
 
     public void Deleted ()
     {
-      Deleted(Arg.Is(_domainObjectCollection), Arg<EventArgs>.Is.Anything);
+      Deleted(_domainObjectCollection, It.IsAny<EventArgs>());
     }
   }
 }

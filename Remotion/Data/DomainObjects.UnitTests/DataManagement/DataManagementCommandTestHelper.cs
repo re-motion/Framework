@@ -15,8 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using Remotion.Data.DomainObjects.DataManagement;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -24,23 +25,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
   {
     public static void ExpectNotifyAndPerform (IDataManagementCommand commandMock)
     {
-      using (commandMock.GetMockRepository().Ordered())
-      {
-        commandMock.Expect(mock => mock.Begin());
-        commandMock.Expect(mock => mock.Begin());
-        commandMock.Expect(mock => mock.Perform());
-        commandMock.Expect(mock => mock.End());
-        commandMock.Expect(mock => mock.End());
-      }
+      var sequence = new MockSequence();
+      commandMock.Setup (mock => mock.Begin()).Verifiable();
+      commandMock.Setup (mock => mock.Begin()).Verifiable();
+      commandMock.Setup (mock => mock.Perform()).Verifiable();
+      commandMock.Setup (mock => mock.End()).Verifiable();
+      commandMock.Setup (mock => mock.End()).Verifiable();
     }
 
     public static void AssertNotifyAndPerformWasCalled (IDataManagementCommand commandMock)
     {
-      commandMock.AssertWasCalled(mock => mock.Begin());
-      commandMock.AssertWasCalled(mock => mock.Begin());
-      commandMock.AssertWasCalled(mock => mock.Perform());
-      commandMock.AssertWasCalled(mock => mock.End());
-      commandMock.AssertWasCalled(mock => mock.End());
+      commandMock.Verify (mock => mock.Begin(), Times.AtLeastOnce());
+      commandMock.Verify (mock => mock.Begin(), Times.AtLeastOnce());
+      commandMock.Verify (mock => mock.Perform(), Times.AtLeastOnce());
+      commandMock.Verify (mock => mock.End(), Times.AtLeastOnce());
+      commandMock.Verify (mock => mock.End(), Times.AtLeastOnce());
     }
   }
 }

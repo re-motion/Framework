@@ -16,12 +16,13 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflectorTests
 {
@@ -43,8 +44,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     public void GetMetadata_ForOptional ()
     {
       DomainModelConstraintProviderStub
-        .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "NoAttributeForVirtualCollection")))
-        .Return(true);
+        .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "NoAttributeForVirtualCollection")))
+        .Returns(true);
 
       RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector("NoAttributeForVirtualCollection");
 
@@ -58,8 +59,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     public void GetMetadata_ForMandatory ()
     {
       DomainModelConstraintProviderStub
-        .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "NotNullableForVirtualCollection")))
-        .Return(false);
+        .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "NotNullableForVirtualCollection")))
+        .Returns(false);
 
       RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector("NotNullableForVirtualCollection");
 
@@ -73,8 +74,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     public void GetMetadata_Unidirectional ()
     {
       DomainModelConstraintProviderStub
-        .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "Unidirectional")))
-        .Return(true);
+        .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "Unidirectional")))
+        .Returns(true);
 
       RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector("Unidirectional");
 
@@ -91,8 +92,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     public void GetMetadata_BidirectionalOneToOne ()
     {
       DomainModelConstraintProviderStub
-        .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BidirectionalOneToOne")))
-        .Return(true);
+        .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BidirectionalOneToOne")))
+        .Returns(true);
 
       RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector("BidirectionalOneToOne");
 
@@ -109,8 +110,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     public void GetMetadata_BidirectionalOneToMany ()
     {
       DomainModelConstraintProviderStub
-        .Stub(stub => stub.IsNullable(Arg<IPropertyInformation>.Matches(pi => pi.Name == "BidirectionalOneToManyForVirtualCollection")))
-        .Return(true);
+        .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation> (pi => pi.Name == "BidirectionalOneToManyForVirtualCollection")))
+        .Returns(true);
 
       RdbmsRelationEndPointReflector relationEndPointReflector = CreateRelationEndPointReflector("BidirectionalOneToManyForVirtualCollection");
 

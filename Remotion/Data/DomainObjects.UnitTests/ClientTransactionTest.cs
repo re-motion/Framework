@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -37,7 +39,6 @@ using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -46,18 +47,16 @@ namespace Remotion.Data.DomainObjects.UnitTests
   {
     private ClientTransaction _transaction;
     private DataManager _dataManager;
-
-    private MockRepository _mockRepository;
     private Dictionary<Enum, object> _fakeApplicationData;
-    private IClientTransactionEventBroker _eventBrokerMock;
-    private ITransactionHierarchyManager _hierarchyManagerMock;
-    private IEnlistedDomainObjectManager _enlistedObjectManagerMock;
-    private IInvalidDomainObjectManager _invalidDomainObjectManagerMock;
-    private IPersistenceStrategy _persistenceStrategyMock;
-    private IDataManager _dataManagerMock;
-    private IObjectLifetimeAgent _objectLifetimeAgentMock;
-    private IQueryManager _queryManagerMock;
-    private ICommitRollbackAgent _commitRollbackAgentMock;
+    private Mock<IClientTransactionEventBroker> _eventBrokerMock;
+    private Mock<ITransactionHierarchyManager> _hierarchyManagerMock;
+    private Mock<IEnlistedDomainObjectManager> _enlistedObjectManagerMock;
+    private Mock<IInvalidDomainObjectManager> _invalidDomainObjectManagerMock;
+    private Mock<IPersistenceStrategy> _persistenceStrategyMock;
+    private Mock<IDataManager> _dataManagerMock;
+    private Mock<IObjectLifetimeAgent> _objectLifetimeAgentMock;
+    private Mock<IQueryManager> _queryManagerMock;
+    private Mock<ICommitRollbackAgent> _commitRollbackAgentMock;
 
     private TestableClientTransaction _transactionWithMocks;
 
@@ -73,29 +72,28 @@ namespace Remotion.Data.DomainObjects.UnitTests
       _transaction = ClientTransaction.CreateRootTransaction();
       _dataManager = ClientTransactionTestHelper.GetDataManager(_transaction);
 
-      _mockRepository = new MockRepository();
       _fakeApplicationData = new Dictionary<Enum, object>();
-      _eventBrokerMock = _mockRepository.StrictMock<IClientTransactionEventBroker>();
-      _hierarchyManagerMock = _mockRepository.StrictMock<ITransactionHierarchyManager>();
-      _enlistedObjectManagerMock = _mockRepository.StrictMock<IEnlistedDomainObjectManager>();
-      _invalidDomainObjectManagerMock = _mockRepository.StrictMock<IInvalidDomainObjectManager>();
-      _persistenceStrategyMock = _mockRepository.StrictMock<IPersistenceStrategy>();
-      _dataManagerMock = _mockRepository.StrictMock<IDataManager>();
-      _objectLifetimeAgentMock = _mockRepository.StrictMock<IObjectLifetimeAgent>();
-      _queryManagerMock = _mockRepository.StrictMock<IQueryManager>();
-      _commitRollbackAgentMock = _mockRepository.StrictMock<ICommitRollbackAgent>();
+      _eventBrokerMock = new Mock<IClientTransactionEventBroker> (MockBehavior.Strict);
+      _hierarchyManagerMock = new Mock<ITransactionHierarchyManager> (MockBehavior.Strict);
+      _enlistedObjectManagerMock = new Mock<IEnlistedDomainObjectManager> (MockBehavior.Strict);
+      _invalidDomainObjectManagerMock = new Mock<IInvalidDomainObjectManager> (MockBehavior.Strict);
+      _persistenceStrategyMock = new Mock<IPersistenceStrategy> (MockBehavior.Strict);
+      _dataManagerMock = new Mock<IDataManager> (MockBehavior.Strict);
+      _objectLifetimeAgentMock = new Mock<IObjectLifetimeAgent> (MockBehavior.Strict);
+      _queryManagerMock = new Mock<IQueryManager> (MockBehavior.Strict);
+      _commitRollbackAgentMock = new Mock<ICommitRollbackAgent> (MockBehavior.Strict);
 
       _transactionWithMocks = ClientTransactionObjectMother.CreateWithComponents<TestableClientTransaction>(
           _fakeApplicationData,
-          _eventBrokerMock,
-          _hierarchyManagerMock,
-          _enlistedObjectManagerMock,
-          _invalidDomainObjectManagerMock,
-          _persistenceStrategyMock,
-          _dataManagerMock,
-          _objectLifetimeAgentMock,
-          _queryManagerMock,
-          _commitRollbackAgentMock,
+          _eventBrokerMock.Object,
+          _hierarchyManagerMock.Object,
+          _enlistedObjectManagerMock.Object,
+          _invalidDomainObjectManagerMock.Object,
+          _persistenceStrategyMock.Object,
+          _dataManagerMock.Object,
+          _objectLifetimeAgentMock.Object,
+          _queryManagerMock.Object,
+          _commitRollbackAgentMock.Object,
           Enumerable.Empty<IClientTransactionExtension>());
       // Ignore calls made by ctor
       _hierarchyManagerMock.BackToRecord();
@@ -110,10 +108,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void Initialization_OrderOfFactoryCalls ()
     {
-      var componentFactoryMock = _mockRepository.StrictMock<IClientTransactionComponentFactory>();
+      var componentFactoryMock = new Mock<IClientTransactionComponentFactory> (MockBehavior.Strict);
 
-      var fakeExtension = MockRepository.GenerateStub<IClientTransactionExtension>();
-      fakeExtension.Stub(stub => stub.Key).Return("fake");
+      var fakeExtension = new Mock<IClientTransactionExtension>();
+      fakeExtension.Setup (stub => stub.Key).Returns ("fake");
 
       var fakeExtensionCollection = new ClientTransactionExtensionCollection("root");
 
@@ -122,113 +120,134 @@ namespace Remotion.Data.DomainObjects.UnitTests
       using (_mockRepository.Ordered())
       {
         componentFactoryMock
-            .Expect(mock => mock.CreateApplicationData(Arg<ClientTransaction>.Is.Anything))
-            .Return(_fakeApplicationData)
-            .WhenCalled(
-                mi =>
+            .Setup(mock => mock.CreateApplicationData(It.IsAny<ClientTransaction>()))
+            .Returns(_fakeApplicationData)
+            .Callback(
+                (ClientTransaction constructedTransaction) =>
                 {
                   constructedTransaction = (ClientTransaction)mi.Arguments[0];
                   Assert.That(constructedTransaction.ID, Is.Not.EqualTo(Guid.Empty));
-                });
+                })
+            .Verifiable();
         componentFactoryMock
-            .Expect(mock => mock.CreateEventBroker(Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction)))
-            .Return(_eventBrokerMock)
-            .WhenCalled(mi => Assert.That(constructedTransaction.ApplicationData, Is.SameAs(_fakeApplicationData)));
+            .Setup(mock => mock.CreateEventBroker(It.Is<ClientTransaction> (tx => tx == constructedTransaction)))
+            .Returns(_eventBrokerMock.Object)
+            .Callback((ClientTransaction constructedTransaction) => Assert.That(constructedTransaction.ApplicationData, Is.SameAs(_fakeApplicationData)))
+            .Verifiable();
         componentFactoryMock
-            .Expect(mock => mock.CreateTransactionHierarchyManager(Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction), Arg.Is(_eventBrokerMock)))
-            .Return(_hierarchyManagerMock)
-            .WhenCalled(mi => Assert.That(ClientTransactionTestHelper.GetEventBroker(constructedTransaction), Is.SameAs(_eventBrokerMock)));
+            .Setup(mock => mock.CreateTransactionHierarchyManager(It.Is<ClientTransaction> (tx => tx == constructedTransaction), _eventBrokerMock.Object))
+            .Returns(_hierarchyManagerMock.Object)
+            .Callback((ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink) => Assert.That(ClientTransactionTestHelper.GetEventBroker(constructedTransaction), Is.SameAs(_eventBrokerMock.Object)))
+            .Verifiable();
         _hierarchyManagerMock
-            .Expect(mock => mock.InstallListeners(_eventBrokerMock));
+            .Setup(mock => mock.InstallListeners(_eventBrokerMock.Object))
+            .Verifiable();
         componentFactoryMock
-            .Expect(mock => mock.CreateEnlistedObjectManager(Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction)))
-            .Return(_enlistedObjectManagerMock)
-            .WhenCalled(mi => Assert.That(ClientTransactionTestHelper.GetHierarchyManager(constructedTransaction) == _hierarchyManagerMock));
+            .Setup(mock => mock.CreateEnlistedObjectManager(It.Is<ClientTransaction> (tx => tx == constructedTransaction)))
+            .Returns(_enlistedObjectManagerMock.Object)
+            .Callback((ClientTransaction constructedTransaction) => Assert.That(ClientTransactionTestHelper.GetHierarchyManager(constructedTransaction) == _hierarchyManagerMock))
+            .Verifiable();
         componentFactoryMock
-            .Expect(mock => mock.CreateInvalidDomainObjectManager(
-                Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction),
-                Arg.Is(_eventBrokerMock)))
-            .Return(_invalidDomainObjectManagerMock)
-            .WhenCalled(
-                mi => Assert.That(
-                    ClientTransactionTestHelper.GetEnlistedDomainObjectManager(constructedTransaction), Is.SameAs(_enlistedObjectManagerMock)));
+            .Setup(mock => mock.CreateInvalidDomainObjectManager(
+                It.Is<ClientTransaction> (tx => tx == constructedTransaction),
+                _eventBrokerMock.Object))
+            .Returns(_invalidDomainObjectManagerMock.Object)
+            .Callback(
+                (ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink) =>                 Assert.That(
+                    ClientTransactionTestHelper.GetEnlistedDomainObjectManager(constructedTransaction), Is.SameAs(_enlistedObjectManagerMock.Object)))
+            .Verifiable();
         componentFactoryMock
-            .Expect(mock => mock.CreatePersistenceStrategy(Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction)))
-            .Return(_persistenceStrategyMock)
-            .WhenCalled(
-                mi => Assert.That(
-                    ClientTransactionTestHelper.GetInvalidDomainObjectManager(constructedTransaction), Is.SameAs(_invalidDomainObjectManagerMock)));
+            .Setup(mock => mock.CreatePersistenceStrategy(It.Is<ClientTransaction> (tx => tx == constructedTransaction)))
+            .Returns(_persistenceStrategyMock.Object)
+            .Callback(
+                (ClientTransaction constructedTransaction) =>                 Assert.That(
+                    ClientTransactionTestHelper.GetInvalidDomainObjectManager(constructedTransaction), Is.SameAs(_invalidDomainObjectManagerMock.Object)))
+            .Verifiable();
         componentFactoryMock
-            .Expect(
+            .Setup(
                 mock =>
                 mock.CreateDataManager(
-                    Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction),
-                    Arg<IClientTransactionEventSink>.Matches(eventSink => eventSink == _eventBrokerMock),
-                    Arg.Is(_invalidDomainObjectManagerMock),
-                    Arg.Is(_persistenceStrategyMock),
-                    Arg.Is(_hierarchyManagerMock)))
-            .Return(_dataManagerMock)
-            .WhenCalled(
-                mi => Assert.That(ClientTransactionTestHelper.GetPersistenceStrategy(constructedTransaction), Is.SameAs(_persistenceStrategyMock)));
+                    It.Is<ClientTransaction> (tx => tx == constructedTransaction),
+                    It.Is<IClientTransactionEventSink> (eventSink => eventSink == _eventBrokerMock),
+                    _invalidDomainObjectManagerMock.Object,
+                    _persistenceStrategyMock.Object,
+                    _hierarchyManagerMock.Object))
+            .Returns(_dataManagerMock.Object)
+            .Callback(
+                (ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink, IInvalidDomainObjectManager invalidDomainObjectManager, IPersistenceStrategy persistenceStrategy, ITransactionHierarchyManager hierarchyManager) =>                 Assert.That(ClientTransactionTestHelper.GetPersistenceStrategy(constructedTransaction), Is.SameAs(_persistenceStrategyMock.Object)))
+            .Verifiable();
         componentFactoryMock
-            .Expect(
+            .Setup(
                 mock =>
                 mock.CreateObjectLifetimeAgent(
-                    Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction),
-                    Arg<IClientTransactionEventSink>.Matches(eventSink => eventSink == _eventBrokerMock),
-                    Arg.Is(_invalidDomainObjectManagerMock),
-                    Arg.Is(_dataManagerMock),
-                    Arg.Is(_enlistedObjectManagerMock),
-                    Arg.Is(_persistenceStrategyMock)))
-            .Return(_objectLifetimeAgentMock)
-            .WhenCalled(mi => Assert.That(ClientTransactionTestHelper.GetIDataManager(constructedTransaction), Is.SameAs(_dataManagerMock)));
+                    It.Is<ClientTransaction> (tx => tx == constructedTransaction),
+                    It.Is<IClientTransactionEventSink> (eventSink => eventSink == _eventBrokerMock),
+                    _invalidDomainObjectManagerMock.Object,
+                    _dataManagerMock.Object,
+                    _enlistedObjectManagerMock.Object,
+                    _persistenceStrategyMock.Object))
+            .Returns(_objectLifetimeAgentMock.Object)
+            .Callback((ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink, IInvalidDomainObjectManager invalidDomainObjectManager, IDataManager dataManager, IEnlistedDomainObjectManager enlistedDomainObjectManager, IPersistenceStrategy persistenceStrategy) => Assert.That(ClientTransactionTestHelper.GetIDataManager(constructedTransaction), Is.SameAs(_dataManagerMock.Object)))
+            .Verifiable();
         componentFactoryMock
-            .Expect(
+            .Setup(
                 mock =>
                 mock.CreateQueryManager(
-                    Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction),
-                    Arg<IClientTransactionEventSink>.Matches(eventSink => eventSink == _eventBrokerMock),
-                    Arg.Is(_invalidDomainObjectManagerMock),
-                    Arg.Is(_persistenceStrategyMock),
-                    Arg.Is(_dataManagerMock),
-                    Arg.Is(_hierarchyManagerMock)))
-            .Return(_queryManagerMock)
-            .WhenCalled(mi => Assert.That(ClientTransactionTestHelper.GetObjectLifetimeAgent(constructedTransaction), Is.SameAs(_objectLifetimeAgentMock)));
+                    It.Is<ClientTransaction> (tx => tx == constructedTransaction),
+                    It.Is<IClientTransactionEventSink> (eventSink => eventSink == _eventBrokerMock),
+                    _invalidDomainObjectManagerMock.Object,
+                    _persistenceStrategyMock.Object,
+                    _dataManagerMock.Object,
+                    _hierarchyManagerMock.Object))
+            .Returns(_queryManagerMock.Object)
+            .Callback((ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink, IInvalidDomainObjectManager invalidDomainObjectManager, IPersistenceStrategy persistenceStrategy, IDataManager dataManager, ITransactionHierarchyManager hierarchyManager) => Assert.That(ClientTransactionTestHelper.GetObjectLifetimeAgent(constructedTransaction), Is.SameAs(_objectLifetimeAgentMock.Object)))
+            .Verifiable();
         componentFactoryMock
-            .Expect(
+            .Setup(
                 mock =>
                 mock.CreateCommitRollbackAgent(
-                    Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction),
-                    Arg<IClientTransactionEventSink>.Matches(eventSink => eventSink == _eventBrokerMock),
-                    Arg.Is(_persistenceStrategyMock),
-                    Arg.Is(_dataManagerMock)))
-            .Return(_commitRollbackAgentMock)
-            .WhenCalled(mi => Assert.That(constructedTransaction.QueryManager, Is.SameAs(_queryManagerMock)));
+                    It.Is<ClientTransaction> (tx => tx == constructedTransaction),
+                    It.Is<IClientTransactionEventSink> (eventSink => eventSink == _eventBrokerMock),
+                    _persistenceStrategyMock.Object,
+                    _dataManagerMock.Object))
+            .Returns(_commitRollbackAgentMock.Object)
+            .Callback((ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink, IPersistenceStrategy persistenceStrategy, IDataManager dataManager) => Assert.That(constructedTransaction.QueryManager, Is.SameAs(_queryManagerMock.Object)))
+            .Verifiable();
         componentFactoryMock
-            .Expect(mock => mock.CreateExtensions(Arg<ClientTransaction>.Matches(tx => tx == constructedTransaction)))
-            .Return(new[] { fakeExtension })
-            .WhenCalled(mi => Assert.That(ClientTransactionTestHelper.GetCommitRollbackAgent(constructedTransaction), Is.SameAs(_commitRollbackAgentMock)));
+            .Setup(mock => mock.CreateExtensions(It.Is<ClientTransaction> (tx => tx == constructedTransaction)))
+            .Returns(new[] { fakeExtension.Object })
+            .Callback((ClientTransaction constructedTransaction) => Assert.That(ClientTransactionTestHelper.GetCommitRollbackAgent(constructedTransaction), Is.SameAs(_commitRollbackAgentMock.Object)))
+            .Verifiable();
         _eventBrokerMock
-            .Stub(mock => mock.Extensions)
-            .Return(fakeExtensionCollection);
+            .Setup(mock => mock.Extensions)
+            .Returns(fakeExtensionCollection);
 
         _hierarchyManagerMock
-            .Expect(mock => mock.OnBeforeTransactionInitialize())
-            .WhenCalled(mi => Assert.That(fakeExtensionCollection, Has.Member(fakeExtension)));
+            .Setup(mock => mock.OnBeforeTransactionInitialize())
+            .Callback(() => Assert.That(fakeExtensionCollection, Has.Member(fakeExtension.Object)))
+            .Verifiable();
         _eventBrokerMock
-            .Expect(mock => mock.RaiseTransactionInitializeEvent());
+            .Setup(mock => mock.RaiseTransactionInitializeEvent())
+            .Verifiable();
       }
-
-      _mockRepository.ReplayAll();
 
       var result = Activator.CreateInstance(
           typeof(ClientTransaction),
           BindingFlags.NonPublic | BindingFlags.Instance,
           null,
-          new[] { componentFactoryMock },
+          new[] { componentFactoryMock.Object },
           null);
 
-      _mockRepository.VerifyAll();
+      _eventBrokerMock.Verify();
+      _hierarchyManagerMock.Verify();
+      _enlistedObjectManagerMock.Verify();
+      _invalidDomainObjectManagerMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
+      _objectLifetimeAgentMock.Verify();
+      _queryManagerMock.Verify();
+      _commitRollbackAgentMock.Verify();
+      componentFactoryMock.Verify();
 
       Assert.That(result, Is.SameAs(constructedTransaction));
     }
@@ -237,8 +256,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void Extensions ()
     {
       var fakeExtensions = new ClientTransactionExtensionCollection("root");
-      _eventBrokerMock.Stub(mock => mock.Extensions).Return(fakeExtensions);
-      _eventBrokerMock.Replay();
+      _eventBrokerMock.Setup (mock => mock.Extensions).Returns (fakeExtensions);
 
       Assert.That(_transactionWithMocks.Extensions, Is.SameAs(fakeExtensions));
     }
@@ -247,8 +265,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void ParentTransaction ()
     {
       var fakeParent = ClientTransactionObjectMother.Create();
-      _hierarchyManagerMock.Stub(mock => mock.ParentTransaction).Return(fakeParent);
-      _hierarchyManagerMock.Replay();
+      _hierarchyManagerMock.Setup (mock => mock.ParentTransaction).Returns (fakeParent);
 
       Assert.That(_transactionWithMocks.ParentTransaction, Is.SameAs(fakeParent));
     }
@@ -257,8 +274,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void SubTransaction ()
     {
       var fakeSub = ClientTransactionObjectMother.Create();
-      _hierarchyManagerMock.Stub(mock => mock.SubTransaction).Return(fakeSub);
-      _hierarchyManagerMock.Replay();
+      _hierarchyManagerMock.Setup (mock => mock.SubTransaction).Returns (fakeSub);
 
       Assert.That(_transactionWithMocks.SubTransaction, Is.SameAs(fakeSub));
     }
@@ -267,8 +283,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void RootTransaction ()
     {
       var fakeRootTransaction = ClientTransactionObjectMother.Create();
-      _hierarchyManagerMock.Stub(mock => mock.TransactionHierarchy.RootTransaction).Return(fakeRootTransaction);
-      _hierarchyManagerMock.Replay();
+      _hierarchyManagerMock.Setup (mock => mock.TransactionHierarchy.RootTransaction).Returns (fakeRootTransaction);
 
       Assert.That(_transactionWithMocks.RootTransaction, Is.SameAs(fakeRootTransaction));
     }
@@ -277,8 +292,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void LeafTransaction ()
     {
       var fakeLeafTransaction = ClientTransactionObjectMother.Create();
-      _hierarchyManagerMock.Stub(mock => mock.TransactionHierarchy.LeafTransaction).Return(fakeLeafTransaction);
-      _hierarchyManagerMock.Replay();
+      _hierarchyManagerMock.Setup (mock => mock.TransactionHierarchy.LeafTransaction).Returns (fakeLeafTransaction);
 
       Assert.That(_transactionWithMocks.LeafTransaction, Is.SameAs(fakeLeafTransaction));
     }
@@ -287,8 +301,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void ActiveTransaction ()
     {
       var fakeActiveTransaction = ClientTransactionObjectMother.Create();
-      _hierarchyManagerMock.Stub(mock => mock.TransactionHierarchy.ActiveTransaction).Return(fakeActiveTransaction);
-      _hierarchyManagerMock.Replay();
+      _hierarchyManagerMock.Setup (mock => mock.TransactionHierarchy.ActiveTransaction).Returns (fakeActiveTransaction);
 
       Assert.That(_transactionWithMocks.ActiveTransaction, Is.SameAs(fakeActiveTransaction));
     }
@@ -328,38 +341,43 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void AddListener ()
     {
-      var listenerStub = MockRepository.GenerateStub<IClientTransactionListener>();
-      _eventBrokerMock.Expect(mock => mock.AddListener(listenerStub));
-      _eventBrokerMock.Replay();
+      var listenerStub = new Mock<IClientTransactionListener>();
+      _eventBrokerMock.Setup (mock => mock.AddListener (listenerStub.Object)).Verifiable();
 
-      _transactionWithMocks.AddListener(listenerStub);
+      _transactionWithMocks.AddListener(listenerStub.Object);
 
-      _eventBrokerMock.VerifyAllExpectations();
+      _eventBrokerMock.Verify();
     }
 
     [Test]
     public void RemoveListener ()
     {
-      var listenerStub = MockRepository.GenerateStub<IClientTransactionListener>();
-      _eventBrokerMock.Expect(mock => mock.RemoveListener(listenerStub));
-      _eventBrokerMock.Replay();
+      var listenerStub = new Mock<IClientTransactionListener>();
+      _eventBrokerMock.Setup (mock => mock.RemoveListener (listenerStub.Object)).Verifiable();
 
-      _transactionWithMocks.RemoveListener(listenerStub);
+      _transactionWithMocks.RemoveListener(listenerStub.Object);
 
-      _eventBrokerMock.VerifyAllExpectations();
+      _eventBrokerMock.Verify();
     }
 
     [Test]
     public void HasChanged ()
     {
-      _commitRollbackAgentMock.Expect(mock => mock.HasDataChanged()).Return(true).Repeat.Once();
-      _commitRollbackAgentMock.Expect(mock => mock.HasDataChanged()).Return(false).Repeat.Once();
-      _mockRepository.ReplayAll();
+      _commitRollbackAgentMock.Setup (mock => mock.HasDataChanged()).Returns (true).Verifiable();
+      _commitRollbackAgentMock.Setup (mock => mock.HasDataChanged()).Returns (false).Verifiable();
 
       var result1 = _transactionWithMocks.HasChanged();
       var result2 = _transactionWithMocks.HasChanged();
 
-      _mockRepository.VerifyAll();
+      _eventBrokerMock.Verify();
+      _hierarchyManagerMock.Verify();
+      _enlistedObjectManagerMock.Verify();
+      _invalidDomainObjectManagerMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
+      _objectLifetimeAgentMock.Verify();
+      _queryManagerMock.Verify();
+      _commitRollbackAgentMock.Verify (mock => mock.HasDataChanged(), Times.Once());
 
       Assert.That(result1, Is.True);
       Assert.That(result2, Is.False);
@@ -368,23 +386,37 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void Commit ()
     {
-      _commitRollbackAgentMock.Expect(mock => mock.CommitData());
-      _mockRepository.ReplayAll();
+      _commitRollbackAgentMock.Setup (mock => mock.CommitData()).Verifiable();
 
       _transactionWithMocks.Commit();
 
-      _mockRepository.VerifyAll();
+      _eventBrokerMock.Verify();
+      _hierarchyManagerMock.Verify();
+      _enlistedObjectManagerMock.Verify();
+      _invalidDomainObjectManagerMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
+      _objectLifetimeAgentMock.Verify();
+      _queryManagerMock.Verify();
+      _commitRollbackAgentMock.Verify();
     }
 
     [Test]
     public void Rollback ()
     {
-      _commitRollbackAgentMock.Expect(mock => mock.RollbackData());
-      _mockRepository.ReplayAll();
+      _commitRollbackAgentMock.Setup (mock => mock.RollbackData()).Verifiable();
 
       _transactionWithMocks.Rollback();
 
-      _mockRepository.VerifyAll();
+      _eventBrokerMock.Verify();
+      _hierarchyManagerMock.Verify();
+      _enlistedObjectManagerMock.Verify();
+      _invalidDomainObjectManagerMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
+      _objectLifetimeAgentMock.Verify();
+      _queryManagerMock.Verify();
+      _commitRollbackAgentMock.Verify();
     }
 
     [Test]
@@ -392,13 +424,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var includeDeleted = BooleanObjectMother.GetRandomBoolean();
       _objectLifetimeAgentMock
-          .Expect(mock => mock.GetObject(_objectID1, includeDeleted))
-          .Return(_fakeDomainObject1);
-      _objectLifetimeAgentMock.Replay();
+          .Setup(mock => mock.GetObject(_objectID1, includeDeleted))
+          .Returns(_fakeDomainObject1)
+          .Verifiable();
 
       var result = ClientTransactionTestHelper.CallGetObject(_transactionWithMocks, _objectID1, includeDeleted);
 
-      _objectLifetimeAgentMock.VerifyAllExpectations();
+      _objectLifetimeAgentMock.Verify();
       Assert.That(result, Is.SameAs(_fakeDomainObject1));
     }
 
@@ -406,13 +438,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void TryGetObject ()
     {
       _objectLifetimeAgentMock
-          .Expect(mock => mock.TryGetObject(_objectID1))
-          .Return(_fakeDomainObject1);
-      _objectLifetimeAgentMock.Replay();
+          .Setup(mock => mock.TryGetObject(_objectID1))
+          .Returns(_fakeDomainObject1)
+          .Verifiable();
 
       var result = ClientTransactionTestHelper.CallTryGetObject(_transactionWithMocks, _objectID1);
 
-      _objectLifetimeAgentMock.VerifyAllExpectations();
+      _objectLifetimeAgentMock.Verify();
       Assert.That(result, Is.SameAs(_fakeDomainObject1));
     }
 
@@ -420,13 +452,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void GetObjectReference ()
     {
       _objectLifetimeAgentMock
-          .Expect(mock => mock.GetObjectReference(_objectID1))
-          .Return(_fakeDomainObject1);
-      _objectLifetimeAgentMock.Replay();
+          .Setup(mock => mock.GetObjectReference(_objectID1))
+          .Returns(_fakeDomainObject1)
+          .Verifiable();
 
       var result = ClientTransactionTestHelper.CallGetObjectReference(_transactionWithMocks, _objectID1);
 
-      _objectLifetimeAgentMock.VerifyAllExpectations();
+      _objectLifetimeAgentMock.Verify();
       Assert.That(result, Is.SameAs(_fakeDomainObject1));
     }
 
@@ -471,13 +503,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var typeDefinition = GetTypeDefinition(typeof(Order));
       var constructorParameters = ParamList.Create(_fakeDomainObject1);
       _objectLifetimeAgentMock
-          .Expect(mock => mock.NewObject(typeDefinition, constructorParameters))
-          .Return(_fakeDomainObject1);
-      _objectLifetimeAgentMock.Replay();
+          .Setup(mock => mock.NewObject(typeDefinition, constructorParameters))
+          .Returns(_fakeDomainObject1)
+          .Verifiable();
 
       var result = ClientTransactionTestHelper.CallNewObject(_transactionWithMocks, typeof(Order), constructorParameters);
 
-      _objectLifetimeAgentMock.VerifyAllExpectations();
+      _objectLifetimeAgentMock.Verify();
       Assert.That(result, Is.SameAs(_fakeDomainObject1));
     }
 
@@ -485,39 +517,64 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void EnsureDataAvailable ()
     {
       _dataManagerMock
-          .Expect(mock => mock.GetDataContainerWithLazyLoad(_objectID1, true))
-          .Return(DataContainerObjectMother.Create());
-      _mockRepository.ReplayAll();
+          .Setup(mock => mock.GetDataContainerWithLazyLoad(_objectID1, true))
+          .Returns(DataContainerObjectMother.Create())
+          .Verifiable();
 
       _transactionWithMocks.EnsureDataAvailable(_objectID1);
 
-      _mockRepository.VerifyAll();
+      _eventBrokerMock.Verify();
+      _hierarchyManagerMock.Verify();
+      _enlistedObjectManagerMock.Verify();
+      _invalidDomainObjectManagerMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
+      _objectLifetimeAgentMock.Verify();
+      _queryManagerMock.Verify();
+      _commitRollbackAgentMock.Verify();
     }
 
     [Test]
     public void EnsureDataAvailable_Many ()
     {
       _dataManagerMock
-          .Expect(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, true))
-          .Return(new DataContainer[0]);
+          .Setup(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, true))
+          .Returns(new DataContainer[0])
+          .Verifiable();
       _mockRepository.ReplayAll();
 
       _transactionWithMocks.EnsureDataAvailable(new[] { _objectID1, _objectID2 });
 
-      _mockRepository.VerifyAll();
+      _eventBrokerMock.Verify();
+      _hierarchyManagerMock.Verify();
+      _enlistedObjectManagerMock.Verify();
+      _invalidDomainObjectManagerMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
+      _objectLifetimeAgentMock.Verify();
+      _queryManagerMock.Verify();
+      _commitRollbackAgentMock.Verify();
     }
 
     [Test]
     public void TryEnsureDataAvailable_True ()
     {
       _dataManagerMock
-          .Expect(mock => mock.GetDataContainerWithLazyLoad(_objectID1, false))
-          .Return(DataContainerObjectMother.Create());
-      _mockRepository.ReplayAll();
+          .Setup(mock => mock.GetDataContainerWithLazyLoad(_objectID1, false))
+          .Returns(DataContainerObjectMother.Create())
+          .Verifiable();
 
       var result = _transactionWithMocks.TryEnsureDataAvailable(_objectID1);
 
-      _mockRepository.VerifyAll();
+      _eventBrokerMock.Verify();
+      _hierarchyManagerMock.Verify();
+      _enlistedObjectManagerMock.Verify();
+      _invalidDomainObjectManagerMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
+      _objectLifetimeAgentMock.Verify();
+      _queryManagerMock.Verify();
+      _commitRollbackAgentMock.Verify();
       Assert.That(result, Is.True);
     }
 
@@ -525,13 +582,21 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void TryEnsureDataAvailable_False ()
     {
       _dataManagerMock
-          .Expect(mock => mock.GetDataContainerWithLazyLoad(_objectID1, false))
-          .Return(null);
-      _mockRepository.ReplayAll();
+          .Setup(mock => mock.GetDataContainerWithLazyLoad(_objectID1, false))
+          .Returns((DataContainer) null)
+          .Verifiable();
 
       var result = _transactionWithMocks.TryEnsureDataAvailable(_objectID1);
 
-      _mockRepository.VerifyAll();
+      _eventBrokerMock.Verify();
+      _hierarchyManagerMock.Verify();
+      _enlistedObjectManagerMock.Verify();
+      _invalidDomainObjectManagerMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
+      _objectLifetimeAgentMock.Verify();
+      _queryManagerMock.Verify();
+      _commitRollbackAgentMock.Verify();
       Assert.That(result, Is.False);
     }
 
@@ -539,13 +604,21 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void TryEnsureDataAvailable_Many_True ()
     {
       _dataManagerMock
-          .Expect(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, false))
-          .Return(new[] { DataContainerObjectMother.Create(), DataContainerObjectMother.Create() });
-      _mockRepository.ReplayAll();
+          .Setup(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, false))
+          .Returns(new[] { DataContainerObjectMother.Create(), DataContainerObjectMother.Create() })
+          .Verifiable();
 
       var result = _transactionWithMocks.TryEnsureDataAvailable(new[] { _objectID1, _objectID2 });
 
-      _mockRepository.VerifyAll();
+      _eventBrokerMock.Verify();
+      _hierarchyManagerMock.Verify();
+      _enlistedObjectManagerMock.Verify();
+      _invalidDomainObjectManagerMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
+      _objectLifetimeAgentMock.Verify();
+      _queryManagerMock.Verify();
+      _commitRollbackAgentMock.Verify();
       Assert.That(result, Is.True);
     }
 
@@ -553,13 +626,21 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void TryEnsureDataAvailable_Many_False ()
     {
       _dataManagerMock
-          .Expect(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, false))
-          .Return(new[] { DataContainerObjectMother.Create(), null });
-      _mockRepository.ReplayAll();
+          .Setup(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, false))
+          .Returns(new[] { DataContainerObjectMother.Create(), null })
+          .Verifiable();
 
       var result = _transactionWithMocks.TryEnsureDataAvailable(new[] { _objectID1, _objectID2 });
 
-      _mockRepository.VerifyAll();
+      _eventBrokerMock.Verify();
+      _hierarchyManagerMock.Verify();
+      _enlistedObjectManagerMock.Verify();
+      _invalidDomainObjectManagerMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
+      _objectLifetimeAgentMock.Verify();
+      _queryManagerMock.Verify();
+      _commitRollbackAgentMock.Verify();
       Assert.That(result, Is.False);
     }
 
@@ -672,27 +753,26 @@ namespace Remotion.Data.DomainObjects.UnitTests
       ClientTransaction fakeSubTransaction = ClientTransactionObjectMother.Create();
       Func<ClientTransaction, ClientTransaction> actualFactoryFunc = null;
       _hierarchyManagerMock
-          .Expect(mock => mock.CreateSubTransaction(Arg<Func<ClientTransaction, ClientTransaction>>.Is.Anything))
-          .WhenCalled(mi => actualFactoryFunc = (Func<ClientTransaction, ClientTransaction>)mi.Arguments[0])
-          .Return(fakeSubTransaction);
+          .Setup(mock => mock.CreateSubTransaction(It.IsAny<Func<ClientTransaction, ClientTransaction>>()))
+          .Callback((Func<ClientTransaction, ClientTransaction> subTransactionFactory) => actualFactoryFunc = subTransactionFactory)
+          .Returns(fakeSubTransaction)
+          .Verifiable();
 
       ClientTransaction fakeSubTransaction2 = ClientTransactionObjectMother.Create();
       Func<ClientTransaction, IInvalidDomainObjectManager, IEnlistedDomainObjectManager, ITransactionHierarchyManager, IClientTransactionEventSink, ClientTransaction> factoryMock =
         (tx, invalidDomainObjectManager, enlistedDomainObjectManager, hierarchyManager, eventSink) =>
         {
           Assert.That(tx, Is.SameAs(_transactionWithMocks));
-          Assert.That(invalidDomainObjectManager, Is.SameAs(_invalidDomainObjectManagerMock));
-          Assert.That(enlistedDomainObjectManager, Is.SameAs(_enlistedObjectManagerMock));
-          Assert.That(hierarchyManager, Is.SameAs(_hierarchyManagerMock));
-          Assert.That(eventSink, Is.SameAs(_eventBrokerMock));
+          Assert.That(invalidDomainObjectManager, Is.SameAs(_invalidDomainObjectManagerMock.Object));
+          Assert.That(enlistedDomainObjectManager, Is.SameAs(_enlistedObjectManagerMock.Object));
+          Assert.That(hierarchyManager, Is.SameAs(_hierarchyManagerMock.Object));
+          Assert.That(eventSink, Is.SameAs(_eventBrokerMock.Object));
           return fakeSubTransaction2;
         };
 
-      _mockRepository.ReplayAll();
-
       var result = _transactionWithMocks.CreateSubTransaction(factoryMock);
 
-      _hierarchyManagerMock.VerifyAllExpectations();
+      _hierarchyManagerMock.Verify();
       Assert.That(result, Is.SameAs(fakeSubTransaction));
 
       // Check the actualfactoryFunc that was passed from CreateSubTransaction to _hierarchyManagerMock by invoking it.
@@ -703,19 +783,24 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void Discard ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _eventBrokerMock.RaiseTransactionDiscardEvent();
-        _hierarchyManagerMock.Expect(mock => mock.OnTransactionDiscard());
-        _eventBrokerMock.Expect(mock => mock.AddListener(Arg<InvalidatedTransactionListener>.Is.TypeOf));
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _eventBrokerMock.Object.RaiseTransactionDiscardEvent();
+      _hierarchyManagerMock.InSequence (sequence).Setup (mock => mock.OnTransactionDiscard()).Verifiable();
+      _eventBrokerMock.InSequence (sequence).Setup (mock => mock.AddListener (Arg<InvalidatedTransactionListener>.Is.TypeOf)).Verifiable();
 
       Assert.That(_transactionWithMocks.IsDiscarded, Is.False);
 
       _transactionWithMocks.Discard();
 
-      _mockRepository.VerifyAll();
+      _eventBrokerMock.Verify();
+      _hierarchyManagerMock.Verify();
+      _enlistedObjectManagerMock.Verify();
+      _invalidDomainObjectManagerMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
+      _objectLifetimeAgentMock.Verify();
+      _queryManagerMock.Verify();
+      _commitRollbackAgentMock.Verify();
       Assert.That(_transactionWithMocks.IsDiscarded, Is.True);
     }
 
@@ -726,61 +811,58 @@ namespace Remotion.Data.DomainObjects.UnitTests
       ClientTransactionTestHelper.SetIsWriteable(parentTransaction, false);
       ClientTransactionTestHelper.SetSubTransaction(parentTransaction, _transactionWithMocks);
 
-      _eventBrokerMock.Stub(stub => stub.RaiseTransactionDiscardEvent());
-      _hierarchyManagerMock.Stub(mock => mock.OnTransactionDiscard());
+      _eventBrokerMock.Setup (stub => stub.RaiseTransactionDiscardEvent());
+      _hierarchyManagerMock.Setup (mock => mock.OnTransactionDiscard());
 
       _transactionWithMocks.Discard();
 
       _mockRepository.BackToRecordAll();
-      _mockRepository.ReplayAll();
 
       _transactionWithMocks.Discard();
 
-      _eventBrokerMock.AssertWasNotCalled(mock => mock.RaiseTransactionDiscardEvent());
-      _hierarchyManagerMock.AssertWasNotCalled(mock => mock.OnTransactionDiscard());
+      _eventBrokerMock.Verify (mock => mock.RaiseTransactionDiscardEvent(), Times.Never());
+      _hierarchyManagerMock.Verify (mock => mock.OnTransactionDiscard(), Times.Never());
     }
 
     [Test]
     public void EnterScope_ActiveTransaction_ActivatesTransaction ()
     {
-      var hierarchyMock = MockRepository.GenerateStrictMock<IClientTransactionHierarchy>();
-      _hierarchyManagerMock.Stub(stub => stub.TransactionHierarchy).Return(hierarchyMock);
-      _hierarchyManagerMock.Replay();
+      var hierarchyMock = new Mock<IClientTransactionHierarchy> (MockBehavior.Strict);
+      _hierarchyManagerMock.Setup (stub => stub.TransactionHierarchy).Returns (hierarchyMock.Object);
 
-      hierarchyMock.Stub(stub => stub.ActiveTransaction).Return(_transactionWithMocks);
+      hierarchyMock.Setup (stub => stub.ActiveTransaction).Returns (_transactionWithMocks);
 
-      var activatedScopeStub = MockRepository.GenerateStub<IDisposable>();
-      hierarchyMock.Expect(mock => mock.ActivateTransaction(_transactionWithMocks)).Return(activatedScopeStub);
+      var activatedScopeStub = new Mock<IDisposable>();
+      hierarchyMock.Setup (mock => mock.ActivateTransaction (_transactionWithMocks)).Returns (activatedScopeStub.Object).Verifiable();
 
       _transactionWithMocks.EnterScope(AutoRollbackBehavior.Rollback);
 
-      hierarchyMock.VerifyAllExpectations();
+      hierarchyMock.Verify();
     }
 
     [Test]
     public void EnterScope_InactiveTransaction_SetsTransactionActiveAndReturnsAScope_ThatUndoesActivation ()
     {
-      var hierarchyMock = MockRepository.GenerateStrictMock<IClientTransactionHierarchy>();
-      _hierarchyManagerMock.Stub(stub => stub.TransactionHierarchy).Return(hierarchyMock);
-      _hierarchyManagerMock.Replay();
+      var hierarchyMock = new Mock<IClientTransactionHierarchy> (MockBehavior.Strict);
+      _hierarchyManagerMock.Setup (stub => stub.TransactionHierarchy).Returns (hierarchyMock.Object);
 
       var fakeSub = ClientTransactionObjectMother.Create();
-      hierarchyMock.Stub(stub => stub.ActiveTransaction).Return(fakeSub);
+      hierarchyMock.Setup (stub => stub.ActiveTransaction).Returns (fakeSub);
 
-      var activatedScopeMock = MockRepository.GenerateStrictMock<IDisposable>();
-      hierarchyMock.Expect(mock => mock.ActivateTransaction(_transactionWithMocks)).Return(activatedScopeMock);
+      var activatedScopeMock = new Mock<IDisposable> (MockBehavior.Strict);
+      hierarchyMock.Setup (mock => mock.ActivateTransaction (_transactionWithMocks)).Returns (activatedScopeMock.Object).Verifiable();
 
       var result = _transactionWithMocks.EnterScope(AutoRollbackBehavior.None);
 
-      hierarchyMock.VerifyAllExpectations();
+      hierarchyMock.Verify();
 
       // Check that result scope integrates and disposes activation scope for undo.
 
-      activatedScopeMock.Expect(mock => mock.Dispose());
+      activatedScopeMock.Setup (mock => mock.Dispose()).Verifiable();
 
       result.Leave();
 
-      activatedScopeMock.VerifyAllExpectations();
+      activatedScopeMock.Verify();
     }
 
     [Test]
@@ -1050,13 +1132,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void GetObjects ()
     {
       _objectLifetimeAgentMock
-          .Expect(mock => mock.GetObjects<DomainObject>(new[] { _objectID1, _objectID2 }))
-          .Return(new[] { _fakeDomainObject1, _fakeDomainObject2 });
-      _objectLifetimeAgentMock.Replay();
+          .Setup(mock => mock.GetObjects<DomainObject>(new[] { _objectID1, _objectID2 }))
+          .Returns(new[] { _fakeDomainObject1, _fakeDomainObject2 })
+          .Verifiable();
 
       var result = ClientTransactionTestHelper.CallGetObjects<DomainObject>(_transactionWithMocks, _objectID1, _objectID2);
 
-      _objectLifetimeAgentMock.VerifyAllExpectations();
+      _objectLifetimeAgentMock.Verify();
       Assert.That(result, Is.EqualTo(new[] { _fakeDomainObject1, _fakeDomainObject2 }));
     }
 
@@ -1064,13 +1146,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void TryGetObjects ()
     {
       _objectLifetimeAgentMock
-          .Expect(mock => mock.TryGetObjects<DomainObject>(new[] { _objectID1, _objectID2 }))
-          .Return(new[] { _fakeDomainObject1, _fakeDomainObject2 });
-      _objectLifetimeAgentMock.Replay();
+          .Setup(mock => mock.TryGetObjects<DomainObject>(new[] { _objectID1, _objectID2 }))
+          .Returns(new[] { _fakeDomainObject1, _fakeDomainObject2 })
+          .Verifiable();
 
       var result = ClientTransactionTestHelper.CallTryGetObjects<DomainObject>(_transactionWithMocks, _objectID1, _objectID2);
 
-      _objectLifetimeAgentMock.VerifyAllExpectations();
+      _objectLifetimeAgentMock.Verify();
       Assert.That(result, Is.EqualTo(new[] { _fakeDomainObject1, _fakeDomainObject2 }));
     }
 

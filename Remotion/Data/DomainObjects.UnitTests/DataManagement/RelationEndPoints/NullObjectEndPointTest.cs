@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -22,7 +24,6 @@ using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -218,7 +219,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void SetDataFromSubTransaction ()
     {
       Assert.That(
-          () => _nullEndPoint.SetDataFromSubTransaction(MockRepository.GenerateStub<IRelationEndPoint>()),
+          () => _nullEndPoint.SetDataFromSubTransaction(new Mock<IRelationEndPoint>().Object),
           Throws.InvalidOperationException);
     }
 

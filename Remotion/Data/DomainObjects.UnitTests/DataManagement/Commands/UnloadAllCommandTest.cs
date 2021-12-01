@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Collections.ObjectModel;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
@@ -23,17 +25,16 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 {
   [TestFixture]
   public class UnloadAllCommandTest : StandardMappingTest
   {
-    private IRelationEndPointManager _endPointManagerMock;
+    private Mock<IRelationEndPointManager> _endPointManagerMock;
     private DataContainerMap _dataContainerMap;
-    private IClientTransactionEventSink _transactionEventSinkWithMock;
-    private IInvalidDomainObjectManager _invalidDomainObjectManagerMock;
+    private Mock<IClientTransactionEventSink> _transactionEventSinkWithMock;
+    private Mock<IInvalidDomainObjectManager> _invalidDomainObjectManagerMock;
 
     private DataContainer _existingDataContainer;
     private TestDomainBase _existingDomainObject;
@@ -46,10 +47,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     public override void SetUp ()
     {
       base.SetUp();
-      _endPointManagerMock = MockRepository.GenerateStrictMock<IRelationEndPointManager>();
-      _transactionEventSinkWithMock = MockRepository.GenerateMock<IClientTransactionEventSink>();
-      _dataContainerMap = new DataContainerMap(_transactionEventSinkWithMock);
-      _invalidDomainObjectManagerMock = MockRepository.GenerateStrictMock<IInvalidDomainObjectManager>();
+      _endPointManagerMock = new Mock<IRelationEndPointManager> (MockBehavior.Strict);
+      _transactionEventSinkWithMock = new Mock<IClientTransactionEventSink>();
+      _dataContainerMap = new DataContainerMap(_transactionEventSinkWithMock.Object);
+      _invalidDomainObjectManagerMock = new Mock<IInvalidDomainObjectManager> (MockBehavior.Strict);
 
       _existingDataContainer = CreateExistingDataContainer();
       _existingDomainObject = (TestDomainBase)_existingDataContainer.DomainObject;
@@ -57,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       _newDataContainer = CreateNewDataContainer();
       _newDomainObject = (TestDomainBase)_newDataContainer.DomainObject;
 
-      _unloadCommand = new UnloadAllCommand(_endPointManagerMock, _dataContainerMap, _invalidDomainObjectManagerMock, _transactionEventSinkWithMock);
+      _unloadCommand = new UnloadAllCommand(_endPointManagerMock.Object, _dataContainerMap, _invalidDomainObjectManagerMock.Object, _transactionEventSinkWithMock.Object);
     }
 
     [Test]
@@ -67,13 +68,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       _dataContainerMap.Register(_newDataContainer);
 
       // Order of registration
-      _transactionEventSinkWithMock.Expect(mock => mock.RaiseObjectsUnloadingEvent(
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { _existingDomainObject, _newDomainObject })));
-      _transactionEventSinkWithMock.Replay();
+      _transactionEventSinkWithMock.Setup (mock => mock.RaiseObjectsUnloadingEvent (
+          new[] { _existingDomainObject, _newDomainObject })).Verifiable();
 
       _unloadCommand.Begin();
 
-      _transactionEventSinkWithMock.VerifyAllExpectations();
+      _transactionEventSinkWithMock.Verify();
     }
 
     [Test]
@@ -81,16 +81,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       _dataContainerMap.Register(_existingDataContainer);
 
-      _transactionEventSinkWithMock.Expect(mock => mock.RaiseObjectsUnloadingEvent(
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { _existingDomainObject })))
-          .WhenCalled(mi => _dataContainerMap.Register(_newDataContainer));
-      _transactionEventSinkWithMock.Expect(mock => mock.RaiseObjectsUnloadingEvent(
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { _newDomainObject })));
-      _transactionEventSinkWithMock.Replay();
+      _transactionEventSinkWithMock.Setup(mock => mock.RaiseObjectsUnloadingEvent(
+          new[] { _existingDomainObject }))
+          .Callback((IReadOnlyList<DomainObject> unloadedDomainObjects) => _dataContainerMap.Register(_newDataContainer))
+          .Verifiable();
+      _transactionEventSinkWithMock.Setup (mock => mock.RaiseObjectsUnloadingEvent (
+          new[] { _newDomainObject })).Verifiable();
 
       _unloadCommand.Begin();
 
-      _transactionEventSinkWithMock.VerifyAllExpectations();
+      _transactionEventSinkWithMock.Verify();
     }
 
     [Test]
@@ -100,14 +100,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       Assert.That(_dataContainerMap, Is.Not.Empty.And.Member(_existingDataContainer));
 
       _endPointManagerMock
-          .Expect(mock => mock.Reset())
-          .WhenCalled(mi => Assert.That(_dataContainerMap, Is.Not.Empty));
-      _endPointManagerMock.Replay();
+          .Setup(mock => mock.Reset())
+          .Callback(() => Assert.That(_dataContainerMap, Is.Not.Empty))
+          .Verifiable();
+      _endPointManagerMock.Object.Replay();
 
       _unloadCommand.Perform();
 
       Assert.That(_dataContainerMap, Is.Empty);
-      _endPointManagerMock.VerifyAllExpectations();
+      _endPointManagerMock.Verify();
       Assert.That(_existingDataContainer.State.IsDiscarded, Is.True);
     }
 
@@ -116,25 +117,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       _dataContainerMap.Register(_existingDataContainer);
       Assert.That(_dataContainerMap, Is.Not.Empty.And.Member(_existingDataContainer));
-      _endPointManagerMock.Stub(mock => mock.Reset());
+      _endPointManagerMock.Setup (mock => mock.Reset());
 
       _unloadCommand.Perform();
 
-      _transactionEventSinkWithMock.AssertWasCalled(mock => mock.RaiseDataContainerMapUnregisteringEvent(_existingDataContainer));
+      _transactionEventSinkWithMock.Verify (mock => mock.RaiseDataContainerMapUnregisteringEvent(_existingDataContainer), Times.AtLeastOnce());
     }
 
     [Test]
     public void Perform_InvalidatesAndDiscardsNewDataContainers ()
     {
       _dataContainerMap.Register(_newDataContainer);
-      _endPointManagerMock.Stub(mock => mock.Reset());
+      _endPointManagerMock.Setup (mock => mock.Reset());
 
-      _invalidDomainObjectManagerMock.Expect(mock => mock.MarkInvalid(_newDataContainer.DomainObject)).Return(true);
-      _invalidDomainObjectManagerMock.Replay();
+      _invalidDomainObjectManagerMock.Setup (mock => mock.MarkInvalid (_newDataContainer.DomainObject)).Returns (true).Verifiable();
 
       _unloadCommand.Perform();
 
-      _invalidDomainObjectManagerMock.VerifyAllExpectations();
+      _invalidDomainObjectManagerMock.Verify();
       Assert.That(_newDataContainer.State.IsDiscarded, Is.True);
     }
 
@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 
       _unloadCommand.End();
 
-      _transactionEventSinkWithMock.AssertWasNotCalled(mock => mock.RaiseObjectsUnloadedEvent( Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));
+      _transactionEventSinkWithMock.Verify (mock => mock.RaiseObjectsUnloadedEvent( It.IsAny<ReadOnlyCollection<DomainObject>>()), Times.Never());
     }
 
     [Test]
@@ -155,17 +155,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       _dataContainerMap.Register(_existingDataContainer);
       _dataContainerMap.Register(_newDataContainer);
 
-      _invalidDomainObjectManagerMock.Stub(mock => mock.MarkInvalid(Arg<DomainObject>.Is.Anything)).Return(true);
-      _endPointManagerMock.Stub(mock => mock.Reset());
+      _invalidDomainObjectManagerMock.Setup (mock => mock.MarkInvalid (It.IsAny<DomainObject>())).Returns (true);
+      _endPointManagerMock.Setup (mock => mock.Reset());
       _unloadCommand.Perform();
 
       // Order of registration
-      _transactionEventSinkWithMock.Expect(mock => mock.RaiseObjectsUnloadedEvent(
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { _existingDataContainer.DomainObject, _newDataContainer.DomainObject })));
+      _transactionEventSinkWithMock.Setup (mock => mock.RaiseObjectsUnloadedEvent (
+          new[] { _existingDataContainer.DomainObject, _newDataContainer.DomainObject })).Verifiable();
 
       _unloadCommand.End();
 
-      _transactionEventSinkWithMock.VerifyAllExpectations();
+      _transactionEventSinkWithMock.Verify();
     }
 
     [Test]

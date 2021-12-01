@@ -15,40 +15,41 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
   [TestFixture]
   public class SqlIndexScriptElementFactoryTest : SchemaGenerationTestBase
   {
-    private ISqlIndexDefinitionScriptElementFactory<SqlIndexDefinition> _indexDefinitionElementFactoryMock;
-    private ISqlIndexDefinitionScriptElementFactory<SqlPrimaryXmlIndexDefinition> _primaryIndexDefinitionElementFactoryMock;
-    private ISqlIndexDefinitionScriptElementFactory<SqlSecondaryXmlIndexDefinition> _secondaryIndexDefinitionElementFactoryMock;
+    private Mock<ISqlIndexDefinitionScriptElementFactory<SqlIndexDefinition>> _indexDefinitionElementFactoryMock;
+    private Mock<ISqlIndexDefinitionScriptElementFactory<SqlPrimaryXmlIndexDefinition>> _primaryIndexDefinitionElementFactoryMock;
+    private Mock<ISqlIndexDefinitionScriptElementFactory<SqlSecondaryXmlIndexDefinition>> _secondaryIndexDefinitionElementFactoryMock;
     private SqlIndexDefinition _indexDefinition;
     private SqlPrimaryXmlIndexDefinition _primaryIndexDefinition;
     private SqlSecondaryXmlIndexDefinition _secondaryIndexDefinition;
     private SqlIndexScriptElementFactory _factory;
-    private IScriptElement _fakeScriptElement;
+    private Mock<IScriptElement> _fakeScriptElement;
     private EntityNameDefinition _entityNameDefinition;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _indexDefinitionElementFactoryMock = MockRepository.GenerateStub<ISqlIndexDefinitionScriptElementFactory<SqlIndexDefinition>>();
-      _primaryIndexDefinitionElementFactoryMock = MockRepository.GenerateStub<ISqlIndexDefinitionScriptElementFactory<SqlPrimaryXmlIndexDefinition>>();
+      _indexDefinitionElementFactoryMock = new Mock<ISqlIndexDefinitionScriptElementFactory<SqlIndexDefinition>>();
+      _primaryIndexDefinitionElementFactoryMock = new Mock<ISqlIndexDefinitionScriptElementFactory<SqlPrimaryXmlIndexDefinition>>();
       _secondaryIndexDefinitionElementFactoryMock =
-          MockRepository.GenerateStub<ISqlIndexDefinitionScriptElementFactory<SqlSecondaryXmlIndexDefinition>>();
+          new Mock<ISqlIndexDefinitionScriptElementFactory<SqlSecondaryXmlIndexDefinition>>();
 
       _factory = new SqlIndexScriptElementFactory(
-          _indexDefinitionElementFactoryMock, _primaryIndexDefinitionElementFactoryMock, _secondaryIndexDefinitionElementFactoryMock);
+          _indexDefinitionElementFactoryMock.Object, _primaryIndexDefinitionElementFactoryMock.Object, _secondaryIndexDefinitionElementFactoryMock.Object);
 
       var simpleColumn = ColumnDefinitionObjectMother.CreateColumn("Column");
       var indexedColumn = new SqlIndexedColumnDefinition(simpleColumn, IndexOrder.Desc);
@@ -59,79 +60,79 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       _secondaryIndexDefinition = new SqlSecondaryXmlIndexDefinition(
           "Index3", simpleColumn, "PrimaryIndexName", SqlSecondaryXmlIndexKind.Property);
 
-      _fakeScriptElement = MockRepository.GenerateStub<IScriptElement>();
+      _fakeScriptElement = new Mock<IScriptElement>();
     }
 
     [Test]
     public void GetCreateElement_IndexDefinition ()
     {
       _indexDefinitionElementFactoryMock
-          .Stub(stub => stub.GetCreateElement(_indexDefinition, _entityNameDefinition))
-          .Return(_fakeScriptElement);
+          .Setup(stub => stub.GetCreateElement(_indexDefinition, _entityNameDefinition))
+          .Returns(_fakeScriptElement.Object);
 
       var result = _factory.GetCreateElement(_indexDefinition, _entityNameDefinition);
 
-      Assert.That(result, Is.SameAs(_fakeScriptElement));
+      Assert.That(result, Is.SameAs(_fakeScriptElement.Object));
     }
 
     [Test]
     public void GetCreateElement_PrimaryIndexDefinition ()
     {
       _primaryIndexDefinitionElementFactoryMock
-          .Stub(stub => stub.GetCreateElement(_primaryIndexDefinition, _entityNameDefinition))
-          .Return(_fakeScriptElement);
+          .Setup(stub => stub.GetCreateElement(_primaryIndexDefinition, _entityNameDefinition))
+          .Returns(_fakeScriptElement.Object);
 
       var result = _factory.GetCreateElement(_primaryIndexDefinition, _entityNameDefinition);
 
-      Assert.That(result, Is.SameAs(_fakeScriptElement));
+      Assert.That(result, Is.SameAs(_fakeScriptElement.Object));
     }
 
     [Test]
     public void GetCreateElement_SecondaryIndexDefinition ()
     {
       _secondaryIndexDefinitionElementFactoryMock
-          .Stub(stub => stub.GetCreateElement(_secondaryIndexDefinition, _entityNameDefinition))
-          .Return(_fakeScriptElement);
+          .Setup(stub => stub.GetCreateElement(_secondaryIndexDefinition, _entityNameDefinition))
+          .Returns(_fakeScriptElement.Object);
 
       var result = _factory.GetCreateElement(_secondaryIndexDefinition, _entityNameDefinition);
 
-      Assert.That(result, Is.SameAs(_fakeScriptElement));
+      Assert.That(result, Is.SameAs(_fakeScriptElement.Object));
     }
 
     [Test]
     public void GetDropElement_IndexDefinition ()
     {
       _indexDefinitionElementFactoryMock
-          .Stub(stub => stub.GetDropElement(_indexDefinition, _entityNameDefinition))
-          .Return(_fakeScriptElement);
+          .Setup(stub => stub.GetDropElement(_indexDefinition, _entityNameDefinition))
+          .Returns(_fakeScriptElement.Object);
 
       var result = _factory.GetDropElement(_indexDefinition, _entityNameDefinition);
 
-      Assert.That(result, Is.SameAs(_fakeScriptElement));
+      Assert.That(result, Is.SameAs(_fakeScriptElement.Object));
     }
 
     [Test]
     public void GetDropElement_PrimaryIndexDefinition ()
     {
       _primaryIndexDefinitionElementFactoryMock
-          .Stub(stub => stub.GetDropElement(_primaryIndexDefinition, _entityNameDefinition))
-          .Return(_fakeScriptElement);
+          .Setup(stub => stub.GetDropElement(_primaryIndexDefinition, _entityNameDefinition))
+          .Returns(_fakeScriptElement.Object);
 
       var result = _factory.GetDropElement(_primaryIndexDefinition, _entityNameDefinition);
 
-      Assert.That(result, Is.SameAs(_fakeScriptElement));
+      Assert.That(result, Is.SameAs(_fakeScriptElement.Object));
     }
 
     [Test]
     public void GetDropElement_SecondaryIndexDefinition ()
     {
       _secondaryIndexDefinitionElementFactoryMock
-          .Stub(stub => stub.GetDropElement(_secondaryIndexDefinition, _entityNameDefinition))
-          .Return(_fakeScriptElement);
+          .Setup(stub => stub.GetDropElement(_secondaryIndexDefinition, _entityNameDefinition))
+          .Returns(_fakeScriptElement.Object);
 
       var result = _factory.GetDropElement(_secondaryIndexDefinition, _entityNameDefinition);
 
-      Assert.That(result, Is.SameAs(_fakeScriptElement));
+      Assert.That(result, Is.SameAs(_fakeScriptElement.Object));
     }
   }
 }

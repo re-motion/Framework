@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
@@ -28,7 +30,6 @@ using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Implementation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 {
@@ -110,16 +111,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     {
       DomainObject registeredObject = null;
 
-      var initializationContextMock = MockRepository.GenerateStrictMock<IObjectInitializationContext>();
-      initializationContextMock.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order1);
-      initializationContextMock.Stub(stub => stub.RootTransaction).Return(_transaction);
+      var initializationContextMock = new Mock<IObjectInitializationContext> (MockBehavior.Strict);
+      initializationContextMock.Setup (stub => stub.ObjectID).Returns (DomainObjectIDs.Order1);
+      initializationContextMock.Setup (stub => stub.RootTransaction).Returns (_transaction);
       initializationContextMock
-          .Expect(mock => mock.RegisterObject(Arg<DomainObject>.Matches(obj => obj.ID == DomainObjectIDs.Order1)))
-          .WhenCalled(mi => registeredObject = (DomainObject)mi.Arguments[0]);
+          .Setup(mock => mock.RegisterObject(It.Is<DomainObject> (obj => obj.ID == DomainObjectIDs.Order1)))
+          .Callback((DomainObject domainObject) => registeredObject = domainObject)
+          .Verifiable();
 
-      var instance = _domainObjectCreator.CreateObjectReference(initializationContextMock, _transaction);
+      var instance = _domainObjectCreator.CreateObjectReference(initializationContextMock.Object, _transaction);
 
-      initializationContextMock.VerifyAllExpectations();
+      initializationContextMock.Verify();
       Assert.That(instance, Is.SameAs(registeredObject));
     }
 
@@ -219,11 +221,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
     private IObjectInitializationContext CreateFakeInitializationContext (ObjectID objectID, ClientTransaction rootTransaction)
     {
-      var initializationContextStub = MockRepository.GenerateStub<IObjectInitializationContext>();
+      var initializationContextStub = new Mock<IObjectInitializationContext>();
 
-      initializationContextStub.Stub(stub => stub.ObjectID).Return(objectID);
-      initializationContextStub.Stub(stub => stub.RootTransaction).Return(rootTransaction);
-      return initializationContextStub;
+      initializationContextStub.Setup (stub => stub.ObjectID).Returns (objectID);
+      initializationContextStub.Setup (stub => stub.RootTransaction).Returns (rootTransaction);
+      return initializationContextStub.Object;
     }
 
     private NewObjectInitializationContext CreateNewObjectInitializationContext (ObjectID objectID, ClientTransaction rootTransaction)

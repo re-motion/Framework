@@ -15,10 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
@@ -48,14 +49,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void Accept ()
     {
-      var visitorMock = MockRepository.GenerateStrictMock<ITableConstraintDefinitionVisitor>();
+      var visitorMock = new Mock<ITableConstraintDefinitionVisitor> (MockBehavior.Strict);
 
-      visitorMock.Expect(mock => mock.VisitPrimaryKeyConstraintDefinition(_constraint));
-      visitorMock.Replay();
+      visitorMock.Setup (mock => mock.VisitPrimaryKeyConstraintDefinition (_constraint)).Verifiable();
 
-      _constraint.Accept(visitorMock);
+      _constraint.Accept(visitorMock.Object);
 
-      visitorMock.VerifyAllExpectations();
+      visitorMock.Verify();
     }
   }
 }

@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -25,7 +27,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
 {
@@ -168,8 +169,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
       var order1Reference = DomainObjectIDs.Order1.GetObjectReference<Order>();
       order1Reference.ProtectedLoaded += (sender, args) =>
       {
-        var persistenceExtensionMock = MockRepository.GenerateStrictMock<IPersistenceExtension>();
-        using (ScopeWithPersistenceExtension(persistenceExtensionMock))
+        var persistenceExtensionMock = new Mock<IPersistenceExtension> (MockBehavior.Strict);
+        using (ScopeWithPersistenceExtension(persistenceExtensionMock.Object))
         {
           Assert.That(TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(id1), Is.Not.Null);
           Assert.That(
@@ -177,7 +178,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
               Is.EquivalentTo(
                   new[] { DomainObjectIDs.OrderItem1.GetObjectReference<OrderItem>(), DomainObjectIDs.OrderItem2.GetObjectReference<OrderItem>() }));
 
-          persistenceExtensionMock.AssertWasNotCalled(mock => mock.ConnectionOpened(Arg<Guid>.Is.Anything));
+          persistenceExtensionMock.Verify (mock => mock.ConnectionOpened(It.IsAny<Guid>()), Times.Never());
         }
         onLoadedRaised = true;
       };
@@ -299,12 +300,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.EagerFetching
 
     private static ServiceLocatorScope ScopeWithPersistenceExtension (IPersistenceExtension persistenceExtensionMock)
     {
-      var persistenceExtensionFactoryStub = MockRepository.GenerateStub<IPersistenceExtensionFactory>();
+      var persistenceExtensionFactoryStub = new Mock<IPersistenceExtensionFactory>();
       persistenceExtensionFactoryStub
-          .Stub(stub => stub.CreatePersistenceExtensions(Arg<Guid>.Is.Anything))
-          .Return(new[] { persistenceExtensionMock });
+          .Setup(stub => stub.CreatePersistenceExtensions(It.IsAny<Guid>()))
+          .Returns(new[] { persistenceExtensionMock });
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<IPersistenceExtensionFactory>(() => persistenceExtensionFactoryStub);
+      serviceLocator.RegisterSingle<IPersistenceExtensionFactory>(() => persistenceExtensionFactoryStub.Object);
       return new ServiceLocatorScope(serviceLocator);
     }
   }

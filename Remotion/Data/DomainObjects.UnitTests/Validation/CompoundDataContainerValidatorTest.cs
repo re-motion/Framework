@@ -15,10 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Validation
 {
@@ -30,8 +31,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var validators = new[]
                        {
-                           MockRepository.GenerateStub<IDataContainerValidator>(),
-                           MockRepository.GenerateStub<IDataContainerValidator>()
+                           new Mock<IDataContainerValidator>().Object,
+                           new Mock<IDataContainerValidator>().Object
                        };
       var compoundValidator = new CompoundDataContainerValidator(validators);
 
@@ -43,8 +44,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var validators = new[]
                        {
-                           MockRepository.GenerateStub<IDataContainerValidator>(),
-                           MockRepository.GenerateStub<IDataContainerValidator>()
+                           new Mock<IDataContainerValidator>().Object,
+                           new Mock<IDataContainerValidator>().Object
                        };
 
       var dataContainer = DataContainer.CreateNew(DomainObjectIDs.ClassWithAllDataTypes1);
@@ -53,8 +54,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
 
       compoundValidator.Validate(dataContainer);
 
-      validators[0].AssertWasCalled(_ => _.Validate(dataContainer));
-      validators[1].AssertWasCalled(_ => _.Validate(dataContainer));
+      validators.Verify (_ => _.Validate(dataContainer), Times.AtLeastOnce());
+      validators.Verify (_ => _.Validate(dataContainer), Times.AtLeastOnce());
     }
   }
 }

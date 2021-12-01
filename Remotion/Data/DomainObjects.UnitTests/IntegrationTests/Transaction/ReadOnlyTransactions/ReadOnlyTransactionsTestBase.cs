@@ -17,11 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.ReadOnlyTransactions
 {
@@ -30,8 +31,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     private ClientTransaction _readOnlyRootTransaction;
     private ClientTransaction _readOnlyMiddleTransaction;
     private ClientTransaction _writeableSubTransaction;
-    private IClientTransactionListener _listenerDynamicMock;
-    private IClientTransactionExtension _extensionStrictMock;
+    private Mock<IClientTransactionListener> _listenerDynamicMock;
+    private Mock<IClientTransactionExtension> _extensionStrictMock;
 
     protected ClientTransaction ReadOnlyRootTransaction
     {
@@ -50,20 +51,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
     protected IClientTransactionListener ListenerDynamicMock
     {
-      get { return _listenerDynamicMock; }
+      get { return _listenerDynamicMock.Object; }
     }
 
     protected IClientTransactionExtension ExtensionStrictMock
     {
-      get { return _extensionStrictMock; }
+      get { return _extensionStrictMock.Object; }
     }
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _listenerDynamicMock = MockRepository.GenerateMock<IClientTransactionListener>();
-      _extensionStrictMock = MockRepository.GenerateStrictMock<IClientTransactionExtension>();
+      _listenerDynamicMock = new Mock<IClientTransactionListener>();
+      _extensionStrictMock = new Mock<IClientTransactionExtension> (MockBehavior.Strict);
 
       _readOnlyRootTransaction = ClientTransaction.CreateRootTransaction();
       ExecuteInReadOnlyRootTransaction(InitializeReadOnlyRootTransaction);
@@ -87,7 +88,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
     protected void InstallExtensionMock ()
     {
-      ExtensionStrictMock.Stub(stub => stub.Key).Return("test");
+      ExtensionStrictMock.Setup (stub => stub.Key).Returns ("test");
       ReadOnlyRootTransaction.Extensions.Add(ExtensionStrictMock);
       ReadOnlyMiddleTransaction.Extensions.Add(ExtensionStrictMock);
       WriteableSubTransaction.Extensions.Add(ExtensionStrictMock);

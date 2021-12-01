@@ -17,11 +17,12 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
 {
@@ -29,22 +30,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
   public class PropertySerializerTest : SchemaGenerationTestBase
   {
     private PropertySerializer _propertySerializer;
-    private IRdbmsPersistenceModelProvider _rdbmsPersistenceModelProviderStub;
-    private IColumnSerializer _columnSerializerStub;
+    private Mock<IRdbmsPersistenceModelProvider> _rdbmsPersistenceModelProviderStub;
+    private Mock<IColumnSerializer> _columnSerializerStub;
 
     public override void SetUp ()
     {
       base.SetUp();
-      _columnSerializerStub = MockRepository.GenerateStub<IColumnSerializer>();
-      _propertySerializer = new PropertySerializer(_columnSerializerStub);
-      _rdbmsPersistenceModelProviderStub = MockRepository.GenerateStub<IRdbmsPersistenceModelProvider>();
+      _columnSerializerStub = new Mock<IColumnSerializer>();
+      _propertySerializer = new PropertySerializer(_columnSerializerStub.Object);
+      _rdbmsPersistenceModelProviderStub = new Mock<IRdbmsPersistenceModelProvider>();
     }
 
     [Test]
     public void Serialize_SerializesName ()
     {
       var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.StringProperty);
-      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("name"));
       Assert.That(
@@ -56,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_SerializesDisplayName ()
     {
       var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.StringProperty);
-      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("displayName"));
       Assert.That(actual.Attribute("displayName").Value, Is.EqualTo("StringProperty"));
@@ -66,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_SerializesType_SimpleType ()
     {
       var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.StringProperty);
-      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("type"));
       Assert.That(actual.Attribute("type").Value, Is.EqualTo("System.String"));
@@ -77,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     {
       var sampleProperty = GetPropertyDefinition((Company _) => _.Address);
 
-      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("type"));
       Assert.That(
@@ -90,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     {
       var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.EnumProperty);
 
-      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("type"));
       Assert.That(
@@ -103,7 +104,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     {
       var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty);
 
-      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("type"));
       Assert.That(
@@ -115,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_AddsIsNullableAttribute ()
     {
       var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.NaByteProperty);
-      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("isNullable"));
       Assert.That(actual.Attribute("isNullable").Value, Is.EqualTo("true"));
@@ -125,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_AddsIsNullableAttributeToNotNullableType ()
     {
       var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.ByteProperty);
-      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("isNullable"));
       Assert.That(actual.Attribute("isNullable").Value, Is.EqualTo("false"));
@@ -135,7 +136,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_SerializesType_NullableProperty ()
     {
       var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.NaDateProperty);
-      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("type"));
       Assert.That(actual.Attribute("type").Value, Is.EqualTo("System.DateTime"));
@@ -145,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_AddsMaxLengthAttribute ()
     {
       var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.StringProperty);
-      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("maxLength"));
       Assert.That(actual.Attribute("maxLength").Value, Is.EqualTo("100"));
@@ -155,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_StringPropertyWithoutMaxLengthConstraint ()
     {
       var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.StringPropertyWithoutMaxLength);
-      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object);
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName).Contains("maxLength"), Is.False);
     }
 
@@ -163,10 +164,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_AddsColumnElements ()
     {
       var sampleProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.StringProperty);
-      _columnSerializerStub.Stub(_ => _.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub))
-          .Return(new[] { new XElement("column1"), new XElement("column2") });
+      _columnSerializerStub.Setup(_ => _.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object))
+          .Returns(new[] { new XElement("column1"), new XElement("column2") });
 
-      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub);
+      var actual = _propertySerializer.Serialize(sampleProperty, _rdbmsPersistenceModelProviderStub.Object);
 
       Assert.That(actual.Elements().Count(), Is.EqualTo(2));
       Assert.That(actual.Elements().ElementAt(0).Name.LocalName, Is.EqualTo("column1"));

@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Tracing;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 {
@@ -31,8 +32,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var innerFactories = new[]
                            {
-                               MockRepository.GenerateStub<IPersistenceExtensionFactory>(),
-                               MockRepository.GenerateStub<IPersistenceExtensionFactory>()
+                               new Mock<IPersistenceExtensionFactory>().Object,
+                               new Mock<IPersistenceExtensionFactory>().Object
                            };
       var compoundFactory = new CompoundPersistenceExtensionFactory(innerFactories);
 
@@ -45,23 +46,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var firstExtensions =  new[]
                            {
-                               MockRepository.GenerateStub<IPersistenceExtension>(),
-                               MockRepository.GenerateStub<IPersistenceExtension>()
+                               new Mock<IPersistenceExtension>().Object,
+                               new Mock<IPersistenceExtension>().Object
                            };
       var secondExtensions =  new[]
                            {
-                               MockRepository.GenerateStub<IPersistenceExtension>(),
-                               MockRepository.GenerateStub<IPersistenceExtension>()
+                               new Mock<IPersistenceExtension>().Object,
+                               new Mock<IPersistenceExtension>().Object
                            };
       var innerFactories = new[]
                            {
-                               MockRepository.GenerateStub<IPersistenceExtensionFactory>(),
-                               MockRepository.GenerateStub<IPersistenceExtensionFactory>()
+                               new Mock<IPersistenceExtensionFactory>().Object,
+                               new Mock<IPersistenceExtensionFactory>().Object
                            };
 
       var clientTransactionID = Guid.NewGuid();
-      innerFactories[0].Stub(_ => _.CreatePersistenceExtensions(clientTransactionID)).Return(firstExtensions);
-      innerFactories[1].Stub(_ => _.CreatePersistenceExtensions(clientTransactionID)).Return(secondExtensions);
+      innerFactories[0].Setup (_ => _.CreatePersistenceExtensions (clientTransactionID)).Returns (firstExtensions);
+      innerFactories[1].Setup (_ => _.CreatePersistenceExtensions (clientTransactionID)).Returns (secondExtensions);
 
       var compoundFactory = new CompoundPersistenceExtensionFactory(innerFactories);
 

@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
@@ -26,8 +28,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.Reflection;
 using Remotion.Utilities;
-using Rhino.Mocks;
-using Rhino.Mocks.Constraints;
 using File = System.IO.File;
 using Is = NUnit.Framework.Is;
 
@@ -95,15 +95,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void GetAssemblyPath_FromNonLocalUri ()
     {
-      MockRepository mockRepository = new MockRepository();
-      Assembly assemblyMock = mockRepository.StrictMock<FakeAssembly>();
+      var assemblyMock = new Mock<FakeAssembly> (MockBehavior.Strict);
       AssemblyName fakeAssemblyName = new AssemblyName();
       fakeAssemblyName.CodeBase = "http://server/File.ext";
 
-      SetupResult.For(assemblyMock.GetName(false)).Return(fakeAssemblyName);
-      mockRepository.ReplayAll();
+      assemblyMock.Setup (_ => _.GetName (false)).Returns (fakeAssemblyName);
       Assert.That(
-          () => ReflectionUtility.GetAssemblyDirectory(assemblyMock),
+          () => ReflectionUtility.GetAssemblyDirectory(assemblyMock.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo("The assembly's code base 'http://server/File.ext' is not a local path."));
     }
@@ -363,46 +361,46 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void GetRelatedObjectTypeFromRelationProperty_ObjectList_ReturnsTypeParameterValue ()
     {
-      var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof(ObjectList<Order>));
+      var propertyInfoStub = new Mock<IPropertyInformation>();
+      propertyInfoStub.Setup (_ => _.PropertyType).Returns (typeof(ObjectList<Order>));
 
-      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof(Order)));
+      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub.Object), Is.EqualTo(typeof(Order)));
     }
 
     [Test]
     public void GetRelatedObjectTypeFromRelationProperty_IObjectList_ReturnsTypeParameterValue ()
     {
-      var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof(IObjectList<Order>));
+      var propertyInfoStub = new Mock<IPropertyInformation>();
+      propertyInfoStub.Setup (_ => _.PropertyType).Returns (typeof(IObjectList<Order>));
 
-      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof(Order)));
+      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub.Object), Is.EqualTo(typeof(Order)));
     }
 
     [Test]
     public void GetRelatedObjectTypeFromRelationProperty_IDomainObject_ReturnsTypeParameterValue ()
     {
-      var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof(IDomainObject));
+      var propertyInfoStub = new Mock<IPropertyInformation>();
+      propertyInfoStub.Setup (_ => _.PropertyType).Returns (typeof(IDomainObject));
 
-      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof(IDomainObject)));
+      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub.Object), Is.EqualTo(typeof(IDomainObject)));
     }
 
     [Test]
     public void GetRelatedObjectTypeFromRelationProperty_DomainObject_ReturnsTypeParameterValue ()
     {
-      var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof(DomainObject));
+      var propertyInfoStub = new Mock<IPropertyInformation>();
+      propertyInfoStub.Setup (_ => _.PropertyType).Returns (typeof(DomainObject));
 
-      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof(DomainObject)));
+      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub.Object), Is.EqualTo(typeof(DomainObject)));
     }
 
     [Test]
     public void GetRelatedObjectTypeFromRelationProperty_Object_ReturnsTypeParameterValue ()
     {
-      var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof(object));
+      var propertyInfoStub = new Mock<IPropertyInformation>();
+      propertyInfoStub.Setup (_ => _.PropertyType).Returns (typeof(object));
 
-      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof(object)));
+      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub.Object), Is.EqualTo(typeof(object)));
     }
 
     [Test]

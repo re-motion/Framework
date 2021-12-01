@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
-using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
 
 namespace Remotion.Data.UnitTests.UnitTesting
 {
@@ -49,7 +49,7 @@ namespace Remotion.Data.UnitTests.UnitTesting
         string message = null)
     {
       var expectedPosition = counter.GetNextExpectedPosition();
-      return options.WhenCalled(
+      return options.Callback(
           mi =>
           {
             counter.CheckPosition(mi.Method.ToString(), expectedPosition, message);
@@ -60,7 +60,7 @@ namespace Remotion.Data.UnitTests.UnitTesting
     public static IMethodOptions<T> WhenCalledWithCurrentTransaction<T> (
         this IMethodOptions<T> options, ClientTransaction expectedTransaction, Action<MethodInvocation> whenCalledAction)
     {
-      return options.WhenCalled(
+      return options.Callback(
           mi =>
           {
             Assert.That(ClientTransaction.Current, Is.SameAs(expectedTransaction));
@@ -70,7 +70,7 @@ namespace Remotion.Data.UnitTests.UnitTesting
 
     public static IMethodOptions<T> WithCurrentTransaction<T> (this IMethodOptions<T> options, ClientTransaction expectedTransaction)
     {
-      return options.WhenCalled(mi => Assert.That(ClientTransaction.Current, Is.SameAs(expectedTransaction)));
+      return options.Callback(mi => Assert.That(ClientTransaction.Current, Is.SameAs(expectedTransaction)));
     }
   }
 }

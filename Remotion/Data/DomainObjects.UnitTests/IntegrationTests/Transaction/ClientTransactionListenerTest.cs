@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -33,23 +35,20 @@ using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.RhinoMocks.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.FunctionalProgramming;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
   [TestFixture]
   public class ClientTransactionListenerTest : ClientTransactionBaseTest
   {
-    private MockRepository _mockRepository;
-    private IClientTransactionListener _strictListenerMock;
+    private Mock<IClientTransactionListener> _strictListenerMock;
 
     [SetUp]
     public override void SetUp ()
     {
       base.SetUp();
 
-      _mockRepository = new MockRepository();
-      _strictListenerMock = _mockRepository.StrictMock<IClientTransactionListener>();
+      _strictListenerMock = new Mock<IClientTransactionListener> (MockBehavior.Strict);
     }
 
     [TearDown]
@@ -65,13 +64,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       ClientTransaction inititalizedTransaction = null;
 
       _strictListenerMock
-          .Expect(mock => mock.TransactionInitialize(Arg<ClientTransaction>.Is.Anything))
-          .WhenCalled(mi => inititalizedTransaction = (ClientTransaction)mi.Arguments[0]);
-      _strictListenerMock.Replay();
+          .Setup(mock => mock.TransactionInitialize(It.IsAny<ClientTransaction>()))
+          .Callback((ClientTransaction clientTransaction) => inititalizedTransaction = clientTransaction)
+          .Verifiable();
 
-      var result = ClientTransactionObjectMother.CreateWithCustomListeners(_strictListenerMock);
+      var result = ClientTransactionObjectMother.CreateWithCustomListeners(_strictListenerMock.Object);
 
-      _strictListenerMock.VerifyAllExpectations();
+      _strictListenerMock.Verify();
 
       Assert.That(result, Is.SameAs(inititalizedTransaction));
     }
@@ -79,98 +78,82 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void TransactionDiscard ()
     {
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      _strictListenerMock.Expect(mock => mock.TransactionDiscard(TestableClientTransaction));
-
-      _mockRepository.ReplayAll();
+      _strictListenerMock.Setup (mock => mock.TransactionDiscard (TestableClientTransaction)).Verifiable();
 
       TestableClientTransaction.Discard();
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
     public void TransactionDiscard_OnlyFiresIfTransactionIsNotYetDiscarded ()
     {
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      _strictListenerMock.Expect(mock => mock.TransactionDiscard(TestableClientTransaction));
-
-      _mockRepository.ReplayAll();
+      _strictListenerMock.Setup (mock => mock.TransactionDiscard (TestableClientTransaction)).Verifiable();
 
       TestableClientTransaction.Discard();
       TestableClientTransaction.Discard();
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
     public void NewObjectCreating ()
     {
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(
-            mock => mock.NewObjectCreating(
-                Arg.Is(TestableClientTransaction),
-                Arg.Is(typeof(ClassWithAllDataTypes))));
-        _strictListenerMock.Expect(mock => mock.DataContainerMapRegistering(Arg.Is(TestableClientTransaction), Arg<DataContainer>.Is.Anything));
-      }
-
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.NewObjectCreating (
+                TestableClientTransaction,
+                typeof(ClassWithAllDataTypes))).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.DataContainerMapRegistering (TestableClientTransaction, It.IsAny<DataContainer>())).Verifiable();
 
       ClassWithAllDataTypes.NewObject();
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
     public void ObjectsLoadingInitializedObjectsLoaded ()
     {
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(mock => mock.ObjectsLoading(
-          Arg.Is(TestableClientTransaction),
-          Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
-        _strictListenerMock.Expect(mock => mock.DataContainerMapRegistering(Arg.Is(TestableClientTransaction), Arg<DataContainer>.Is.Anything));
-        _strictListenerMock.Expect(mock => mock.ObjectsLoaded(
-            Arg.Is(TestableClientTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Matches(doc => doc.Count == 1)));
-      }
-
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.ObjectsLoading (
+          TestableClientTransaction,
+          new[] { DomainObjectIDs.ClassWithAllDataTypes1 })).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.DataContainerMapRegistering (TestableClientTransaction, It.IsAny<DataContainer>())).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.ObjectsLoaded (
+            TestableClientTransaction,
+            It.Is<ReadOnlyCollection<DomainObject>> (doc => doc.Count == 1))).Verifiable();
 
       DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
     public void ObjectsObjectDeletingObjectsDeleted ()
     {
       ClassWithAllDataTypes cwadt = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      using (_mockRepository.Ordered())
-      {
-          _strictListenerMock.Expect(mock => mock.ObjectDeleting(TestableClientTransaction, cwadt));
-          _strictListenerMock.Expect(
-              mock => mock.DataContainerStateUpdated(
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.ObjectDeleting (TestableClientTransaction, cwadt)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (
+              mock => mock.DataContainerStateUpdated (
                   TestableClientTransaction,
                   cwadt.InternalDataContainer,
-                  new DataContainerState.Builder().SetDeleted().Value));
-          _strictListenerMock.Expect(mock => mock.ObjectDeleted(TestableClientTransaction, cwadt));
-      }
-
-      _mockRepository.ReplayAll();
+                  new DataContainerState.Builder().SetDeleted().Value)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.ObjectDeleted (TestableClientTransaction, cwadt)).Verifiable();
 
       cwadt.Delete();
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
@@ -179,27 +162,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
       int orderNumber = order.OrderNumber;
 
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
       var orderNumberPropertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(
-            mock => mock.PropertyValueReading(TestableClientTransaction, order, orderNumberPropertyDefinition, ValueAccess.Current));
-        _strictListenerMock.Expect(
-            mock => mock.PropertyValueRead(
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.PropertyValueReading (TestableClientTransaction, order, orderNumberPropertyDefinition, ValueAccess.Current)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.PropertyValueRead (
                 TestableClientTransaction,
                 order,
                 orderNumberPropertyDefinition,
                 orderNumber,
-                ValueAccess.Current));
-      }
-
-      _mockRepository.ReplayAll();
+                ValueAccess.Current)).Verifiable();
 
       Dev.Null = order.OrderNumber;
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
@@ -208,37 +187,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
       int orderNumber = order.OrderNumber;
 
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
       var orderNumberPropertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(
-            mock => mock.PropertyValueChanging(
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.PropertyValueChanging (
                 TestableClientTransaction,
                 order,
                 orderNumberPropertyDefinition,
                 orderNumber,
-                43));
-        _strictListenerMock.Expect(
-            mock => mock.DataContainerStateUpdated(
+                43)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.DataContainerStateUpdated (
                 TestableClientTransaction,
                 order.InternalDataContainer,
-                new DataContainerState.Builder().SetChanged().Value));
-        _strictListenerMock.Expect(
-            mock => mock.PropertyValueChanged(
+                new DataContainerState.Builder().SetChanged().Value)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.PropertyValueChanged (
                 TestableClientTransaction,
                 order,
                 orderNumberPropertyDefinition,
                 orderNumber,
-                43));
-      }
-
-      _mockRepository.ReplayAll();
+                43)).Verifiable();
 
       order.OrderNumber = 43;
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
@@ -249,34 +224,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       ObjectList<OrderItem> orderItems = order.OrderItems;
       orderItems.EnsureDataComplete();
 
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
       IRelationEndPointDefinition customerEndPointDefinition = GetEndPointDefinition(typeof(Order), "Customer");
       IRelationEndPointDefinition orderItemsEndPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(
-            mock => mock.RelationReading(TestableClientTransaction, order, customerEndPointDefinition, ValueAccess.Current));
-        _strictListenerMock.Expect(
-            mock => mock.RelationRead(TestableClientTransaction, order, customerEndPointDefinition, customer, ValueAccess.Current));
-        _strictListenerMock.Expect(
-            mock => mock.RelationReading(TestableClientTransaction, order, orderItemsEndPointDefinition, ValueAccess.Current));
-        _strictListenerMock.Expect(
-            mock => mock.RelationRead(
-                Arg.Is(TestableClientTransaction),
-                Arg.Is(order),
-                Arg.Is(orderItemsEndPointDefinition),
-                Arg<IReadOnlyCollectionData<DomainObject>>.Matches(domainObjects => domainObjects.SequenceEqual(orderItems.Cast<DomainObject>())),
-                Arg.Is(ValueAccess.Current)));
-      }
-
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.RelationReading (TestableClientTransaction, order, customerEndPointDefinition, ValueAccess.Current)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.RelationRead (TestableClientTransaction, order, customerEndPointDefinition, customer, ValueAccess.Current)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.RelationReading (TestableClientTransaction, order, orderItemsEndPointDefinition, ValueAccess.Current)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.RelationRead (
+                TestableClientTransaction,
+                order,
+                orderItemsEndPointDefinition,
+                It.Is<IReadOnlyCollectionData<DomainObject>> (domainObjects => domainObjects.SequenceEqual (orderItems.Cast<DomainObject>())),
+                ValueAccess.Current)).Verifiable();
 
       Dev.Null = order.Customer;
       Dev.Null = order.OrderItems;
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
@@ -294,51 +265,56 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       IRelationEndPointDefinition customerEndPointDefinition = GetEndPointDefinition(typeof(Order), "Customer");
 
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(mock => mock.RelationChanging(
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.RelationChanging (
             TestableClientTransaction,
             order,
             customerEndPointDefinition,
             oldCustomer,
-            newCustomer));
-        _strictListenerMock.Expect(mock => mock.RelationChanging(
+            newCustomer)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.RelationChanging (
             TestableClientTransaction,
             newCustomer,
             newCustomerEndPointID.Definition,
             null,
-            order));
-        _strictListenerMock.Expect(mock => mock.RelationChanging(
+            order)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.RelationChanging (
             TestableClientTransaction,
             oldCustomer,
             oldCustomerEndPointID.Definition,
             order,
-            null));
-        _strictListenerMock.Expect(
-            mock => mock.DataContainerStateUpdated(
+            null)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.DataContainerStateUpdated (
                 TestableClientTransaction,
                 order.InternalDataContainer,
-                new DataContainerState.Builder().SetChanged().Value));
-        _strictListenerMock.Expect(mock => mock.VirtualRelationEndPointStateUpdated(TestableClientTransaction, newCustomerEndPointID, null));
-        _strictListenerMock.Expect(mock => mock.VirtualRelationEndPointStateUpdated(TestableClientTransaction, oldCustomerEndPointID, null));
-        _strictListenerMock.Expect(mock => mock.RelationChanged(
+                new DataContainerState.Builder().SetChanged().Value)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.VirtualRelationEndPointStateUpdated (TestableClientTransaction, newCustomerEndPointID, null)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.VirtualRelationEndPointStateUpdated (TestableClientTransaction, oldCustomerEndPointID, null)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.RelationChanged (
             TestableClientTransaction,
-            oldCustomer, oldCustomerEndPointID.Definition, order, null));
-        _strictListenerMock.Expect(mock => mock.RelationChanged(
+            oldCustomer,
+            oldCustomerEndPointID.Definition,
+            order,
+            null)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.RelationChanged (
             TestableClientTransaction,
-            newCustomer, newCustomerEndPointID.Definition, null, order));
-        _strictListenerMock.Expect(mock => mock.RelationChanged(
+            newCustomer,
+            newCustomerEndPointID.Definition,
+            null,
+            order)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.RelationChanged (
             TestableClientTransaction,
-            order, customerEndPointDefinition, oldCustomer, newCustomer));
-      }
-
-      _mockRepository.ReplayAll();
+            order,
+            customerEndPointDefinition,
+            oldCustomer,
+            newCustomer)).Verifiable();
 
       order.Customer = newCustomer;
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
@@ -347,21 +323,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var query = QueryFactory.CreateQueryFromConfiguration("StoredProcedureQuery");
       var orders = (OrderCollection)TestableClientTransaction.QueryManager.GetCollection(query).ToCustomCollection();
 
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
       var newQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>();
       _strictListenerMock
-          .Expect(mock => mock.FilterQueryResult(
-              Arg.Is(TestableClientTransaction),
-              Arg<QueryResult<DomainObject>>.Matches(qr => qr.Count == orders.Count)))
-          .Return(newQueryResult);
-
-      _mockRepository.ReplayAll();
+          .Setup(mock => mock.FilterQueryResult(
+              TestableClientTransaction,
+              It.Is<QueryResult<DomainObject>> (qr => qr.Count == orders.Count)))
+          .Returns(newQueryResult)
+          .Verifiable();
 
       var result = TestableClientTransaction.QueryManager.GetCollection(query);
       Assert.That(result, Is.SameAs(newQueryResult));
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
@@ -369,22 +344,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var query = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
 
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
       var newQueryResult = new[] {new object(), new object() };
       _strictListenerMock
-          .Expect(mock => mock.FilterCustomQueryResult(
-              Arg.Is(TestableClientTransaction),
-              Arg.Is(query),
-              Arg<IEnumerable<object>>.Matches(qr => qr.SetEquals(new[] { "abcdeföäü", "üäöfedcba" }))))
-          .Return(newQueryResult);
-
-      _mockRepository.ReplayAll();
+          .Setup(mock => mock.FilterCustomQueryResult(
+              TestableClientTransaction,
+              query,
+              It.Is<IEnumerable<object>> (qr => qr.SetEquals(new[] { "abcdeföäü", "üäöfedcba" }))))
+          .Returns(newQueryResult)
+          .Verifiable();
 
       var result = TestableClientTransaction.QueryManager.GetCustom(query, rr => rr.GetRawValue(0));
       Assert.That(result, Is.SameAs(newQueryResult));
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
@@ -394,32 +368,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
       ++order.OrderNumber;
 
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(mock => mock.TransactionCommitting(
-            Arg.Is(TestableClientTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent(new[] { order }),
-            Arg<CommittingEventRegistrar>.Is.TypeOf));
-        _strictListenerMock.Expect(mock => mock.TransactionCommitValidate(
-            Arg.Is(TestableClientTransaction),
-            Arg<ReadOnlyCollection<PersistableData>>.Matches(c => c.Select(d => d.DomainObject).SetEquals(new[] { order }))));
-        _strictListenerMock.Expect(
-            mock => mock.DataContainerStateUpdated(
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.TransactionCommitting (
+            TestableClientTransaction,
+            Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (new[] { order }),
+            Arg<CommittingEventRegistrar>.Is.TypeOf)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.TransactionCommitValidate (
+            TestableClientTransaction,
+            It.Is<ReadOnlyCollection<PersistableData>> (c => c.Select (d => d.DomainObject).SetEquals (new[] { order })))).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.DataContainerStateUpdated (
                 TestableClientTransaction,
                 order.InternalDataContainer,
-                new DataContainerState.Builder().SetUnchanged().Value));
-        _strictListenerMock.Expect(mock => mock.TransactionCommitted(
-            Arg.Is(TestableClientTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent(new[] { order })));
-      }
-
-      _mockRepository.ReplayAll();
+                new DataContainerState.Builder().SetUnchanged().Value)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.TransactionCommitted (
+            TestableClientTransaction,
+            Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (new[] { order }))).Verifiable();
 
       TestableClientTransaction.Commit();
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
@@ -428,62 +398,54 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
       ++order.OrderNumber;
 
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(mock => mock.TransactionRollingBack(
-            Arg.Is(TestableClientTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Matches(doc => doc.Count == 1)));
-        _strictListenerMock.Expect(
-            mock => mock.DataContainerStateUpdated(
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.TransactionRollingBack (
+            TestableClientTransaction,
+            It.Is<ReadOnlyCollection<DomainObject>> (doc => doc.Count == 1))).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.DataContainerStateUpdated (
                 TestableClientTransaction,
                 order.InternalDataContainer,
-                new DataContainerState.Builder().SetUnchanged().Value));
-        _strictListenerMock.Expect(mock => mock.TransactionRolledBack(
-            Arg.Is(TestableClientTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Matches(doc => doc.Count == 1)));
-      }
-
-      _mockRepository.ReplayAll();
+                new DataContainerState.Builder().SetUnchanged().Value)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.TransactionRolledBack (
+            TestableClientTransaction,
+            It.Is<ReadOnlyCollection<DomainObject>> (doc => doc.Count == 1))).Verifiable();
 
       TestableClientTransaction.Rollback();
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
     public void RelationEndPointMapRegistering ()
     {
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
       using (_mockRepository.Ordered())
       {
-        _strictListenerMock.Expect(mock => mock.ObjectsLoading(
-            Arg.Is(TestableClientTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
-        _strictListenerMock.Expect(mock => mock.DataContainerMapRegistering(Arg.Is(TestableClientTransaction), Arg<DataContainer>.Is.Anything));
-        _strictListenerMock.Expect(
-            mock => mock.RelationEndPointMapRegistering(
-                Arg.Is(TestableClientTransaction),
-                Arg<IRelationEndPoint>.Matches(
-                    rep => rep.Definition.PropertyName == typeof(Company).FullName + ".IndustrialSector" && rep.ObjectID == DomainObjectIDs.Customer1)));
-        _strictListenerMock.Expect(
-            mock => mock.RelationEndPointMapRegistering(
-                Arg.Is(TestableClientTransaction),
-                Arg<IRelationEndPoint>.Matches(
-                    rep => rep.Definition.PropertyName == typeof(IndustrialSector).FullName + ".Companies" && rep.ObjectID == DomainObjectIDs.IndustrialSector1)));
+        _strictListenerMock.Setup (mock => mock.ObjectsLoading (
+            TestableClientTransaction,
+            It.IsAny<ReadOnlyCollection<ObjectID>>())).Verifiable();
+        _strictListenerMock.Setup (mock => mock.DataContainerMapRegistering (TestableClientTransaction, It.IsAny<DataContainer>())).Verifiable();
+        _strictListenerMock.Setup (
+            mock => mock.RelationEndPointMapRegistering (
+                TestableClientTransaction,
+                It.Is<IRelationEndPoint> (                    rep => rep.Definition.PropertyName == typeof(Company).FullName + ".IndustrialSector" && rep.ObjectID == DomainObjectIDs.Customer1))).Verifiable();
+        _strictListenerMock.Setup (
+            mock => mock.RelationEndPointMapRegistering (
+                TestableClientTransaction,
+                It.Is<IRelationEndPoint> (                    rep => rep.Definition.PropertyName == typeof(IndustrialSector).FullName + ".Companies" && rep.ObjectID == DomainObjectIDs.IndustrialSector1))).Verifiable();
 
-        _strictListenerMock.Expect(mock => mock.ObjectsLoaded(
-            Arg.Is(TestableClientTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));
+        _strictListenerMock.Setup (mock => mock.ObjectsLoaded (
+            TestableClientTransaction,
+            It.IsAny<ReadOnlyCollection<DomainObject>>())).Verifiable();
       }
-
-      _mockRepository.ReplayAll();
 
       DomainObjectIDs.Customer1.GetObject<Customer>();
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
@@ -493,122 +455,107 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var orderTicketEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(order.ID, "OrderTicket");
       var orderItemEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(order.ID, "OrderItems");
 
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(mock => mock.ObjectDeleting(TestableClientTransaction, order));
-        _strictListenerMock.Expect(mock => mock.VirtualRelationEndPointStateUpdated(TestableClientTransaction, orderTicketEndPointID, false));
-        _strictListenerMock.Expect(mock => mock.VirtualRelationEndPointStateUpdated(TestableClientTransaction, orderItemEndPointID, false));
-
-        _strictListenerMock
-            .Expect(mock => mock.RelationEndPointMapUnregistering(
-                Arg.Is(TestableClientTransaction),
-                Arg<RelationEndPointID>.Matches(id => id.ObjectID == order.ID)))
-            .Repeat.Times(4); // four related objects/object collections in Order
-
-        _strictListenerMock.Expect(mock => mock.DataContainerMapUnregistering(TestableClientTransaction, order.InternalDataContainer));
-        _strictListenerMock.Expect(
-            mock => mock.DataContainerStateUpdated(
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.ObjectDeleting (TestableClientTransaction, order)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.VirtualRelationEndPointStateUpdated (TestableClientTransaction, orderTicketEndPointID, false)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.VirtualRelationEndPointStateUpdated (TestableClientTransaction, orderItemEndPointID, false)).Verifiable();
+      _strictListenerMock.InSequence (sequence)
+            .Setup(mock => mock.RelationEndPointMapUnregistering(
+                TestableClientTransaction,
+                It.Is<RelationEndPointID> (id => id.ObjectID == order.ID)))
+            .Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.DataContainerMapUnregistering (TestableClientTransaction, order.InternalDataContainer)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.DataContainerStateUpdated (
                 TestableClientTransaction,
                 order.InternalDataContainer,
-                new DataContainerState.Builder().SetDiscarded().Value));
-        _strictListenerMock.Expect(mock => mock.ObjectMarkedInvalid(TestableClientTransaction, order));
-        _strictListenerMock.Expect(mock => mock.ObjectDeleted(TestableClientTransaction, order));
-      }
-
-      _mockRepository.ReplayAll();
+                new DataContainerState.Builder().SetDiscarded().Value)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.ObjectMarkedInvalid (TestableClientTransaction, order)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.ObjectDeleted (TestableClientTransaction, order)).Verifiable();
 
       order.Delete();
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify (mock => mock.RelationEndPointMapUnregistering(
+                TestableClientTransaction,
+                It.Is<RelationEndPointID> (id => id.ObjectID == order.ID)), Times.Exactly (4));
     }
 
     [Test]
     public void DataContainerMapRegistering ()
     {
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(mock => mock.ObjectsLoading(
-            Arg.Is(TestableClientTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
-        _strictListenerMock.Expect(
-            mock => mock.DataContainerMapRegistering(
-                Arg.Is(TestableClientTransaction),
-                Arg<DataContainer>.Matches(dc => dc.ID == DomainObjectIDs.ClassWithAllDataTypes1)));
-
-        _strictListenerMock.Expect(mock => mock.ObjectsLoaded(
-            Arg.Is(TestableClientTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));
-      }
-
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.ObjectsLoading (
+            TestableClientTransaction,
+            new[] { DomainObjectIDs.ClassWithAllDataTypes1 })).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (
+            mock => mock.DataContainerMapRegistering (
+                TestableClientTransaction,
+                It.Is<DataContainer> (dc => dc.ID == DomainObjectIDs.ClassWithAllDataTypes1))).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.ObjectsLoaded (
+            TestableClientTransaction,
+            It.IsAny<ReadOnlyCollection<DomainObject>>())).Verifiable();
 
       DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
     public void SubTransactionCreating_AndSubTransactionCreated ()
     {
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
       ClientTransaction initializedTransaction = null;
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(mock => mock.SubTransactionCreating(TestableClientTransaction));
-        _strictListenerMock
-            .Expect(mock => mock.SubTransactionInitialize(
-                Arg.Is(TestableClientTransaction),
-                Arg<ClientTransaction>.Matches(tx => tx != null && tx != TestableClientTransaction && tx.ParentTransaction == TestableClientTransaction)))
-            .WhenCalled(mi => initializedTransaction = (ClientTransaction)mi.Arguments[1]);
-        _strictListenerMock.Expect(mock => mock.SubTransactionCreated(
-            Arg.Is(TestableClientTransaction),
-            Arg<ClientTransaction>.Matches(tx => tx == initializedTransaction)));
-      }
-
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.SubTransactionCreating (TestableClientTransaction)).Verifiable();
+      _strictListenerMock.InSequence (sequence)
+            .Setup(mock => mock.SubTransactionInitialize(
+                TestableClientTransaction,
+                It.Is<ClientTransaction> (tx => tx != null && tx != TestableClientTransaction && tx.ParentTransaction == TestableClientTransaction)))
+            .Callback((ClientTransaction clientTransaction, ClientTransaction subTransaction) => initializedTransaction = subTransaction)
+            .Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.SubTransactionCreated (
+            TestableClientTransaction,
+            It.Is<ClientTransaction> (tx => tx == initializedTransaction))).Verifiable();
 
       var result = TestableClientTransaction.CreateSubTransaction();
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
       Assert.That(result, Is.SameAs(initializedTransaction));
     }
 
     [Test]
     public void SubTransactionInitialize_AndTransactionInitialize_AndSubTransactionCreated ()
     {
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
       ClientTransaction initializedTransaction = null;
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(mock => mock.SubTransactionCreating(TestableClientTransaction));
-        _strictListenerMock
-            .Expect(mock => mock.SubTransactionInitialize(
-                Arg.Is(TestableClientTransaction),
-                Arg<ClientTransaction>.Matches(tx => tx != null && tx != TestableClientTransaction && tx.ParentTransaction == TestableClientTransaction)))
-            .WhenCalled(mi =>
-            {
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.SubTransactionCreating (TestableClientTransaction)).Verifiable();
+      _strictListenerMock.InSequence (sequence)
+            .Setup(mock => mock.SubTransactionInitialize(
+                TestableClientTransaction,
+                It.Is<ClientTransaction> (tx => tx != null && tx != TestableClientTransaction && tx.ParentTransaction == TestableClientTransaction)))
+            .Callback((ClientTransaction clientTransaction, ClientTransaction subTransaction) =>
+{
               initializedTransaction = (ClientTransaction)mi.Arguments[1];
-              ClientTransactionTestHelper.AddListener(initializedTransaction, _strictListenerMock);
-            });
-        _strictListenerMock.Expect(mock => mock.TransactionInitialize(Arg<ClientTransaction>.Matches(tx => tx == initializedTransaction)));
-        _strictListenerMock.Expect(mock => mock.SubTransactionCreated(
-            Arg.Is(TestableClientTransaction),
-            Arg<ClientTransaction>.Matches(tx => tx == initializedTransaction)));
-      }
-
-      _mockRepository.ReplayAll();
+              ClientTransactionTestHelper.AddListener(initializedTransaction, _strictListenerMock.Object);
+            })
+            .Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.TransactionInitialize (It.Is<ClientTransaction> (tx => tx == initializedTransaction))).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.SubTransactionCreated (
+            TestableClientTransaction,
+            It.Is<ClientTransaction> (tx => tx == initializedTransaction))).Verifiable();
 
       var result = TestableClientTransaction.CreateSubTransaction();
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
       Assert.That(result, Is.SameAs(initializedTransaction));
     }
 
@@ -620,38 +567,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var orderEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(orderTicket1.ID, "Order");
       var orderTicketEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(orderTicket1.Order.ID, "OrderTicket");
 
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock
-            .Expect(mock => mock.ObjectsUnloading(
-                Arg.Is(TestableClientTransaction),
-                Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { orderTicket1 })))
-            .WhenCalled(mi => Assert.That(orderTicket1.State.IsUnchanged, Is.True));
-        using (_mockRepository.Unordered())
+      var sequence = new MockSequence();
+      _strictListenerMock
+            .InSequence (sequence)
+            .Setup(mock => mock.ObjectsUnloading(
+                TestableClientTransaction,
+                new[] { orderTicket1 }))
+            .Callback((ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects) => Assert.That(orderTicket1.State.IsUnchanged, Is.True))
+            .Verifiable();
+
+      using (_mockRepository.Unordered())
         {
           _strictListenerMock
-              .Expect(mock => mock.RelationEndPointMapUnregistering(TestableClientTransaction, orderEndPointID));
+              .Setup(mock => mock.RelationEndPointMapUnregistering(TestableClientTransaction, orderEndPointID))
+              .Verifiable();
           _strictListenerMock
-              .Expect(mock => mock.RelationEndPointMapUnregistering(TestableClientTransaction, orderTicketEndPointID));
+              .Setup(mock => mock.RelationEndPointMapUnregistering(TestableClientTransaction, orderTicketEndPointID))
+              .Verifiable();
           _strictListenerMock
-              .Expect(mock => mock.RelationEndPointBecomingIncomplete(TestableClientTransaction, orderTicketEndPointID));
+              .Setup(mock => mock.RelationEndPointBecomingIncomplete(TestableClientTransaction, orderTicketEndPointID))
+              .Verifiable();
           _strictListenerMock
-              .Expect(mock => mock.DataContainerMapUnregistering(TestableClientTransaction, orderTicket1.InternalDataContainer));
+              .Setup(mock => mock.DataContainerMapUnregistering(TestableClientTransaction, orderTicket1.InternalDataContainer))
+              .Verifiable();
         }
-        _strictListenerMock
-            .Expect(mock => mock.ObjectsUnloaded(
-                Arg.Is(TestableClientTransaction),
-                Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { orderTicket1 })))
-            .WhenCalled(mi => Assert.That(orderTicket1.State.IsNotLoadedYet, Is.True));
-      }
-
-      _mockRepository.ReplayAll();
+      _strictListenerMock
+            .InSequence (sequence)
+            .Setup(mock => mock.ObjectsUnloaded(
+                TestableClientTransaction,
+                new[] { orderTicket1 }))
+            .Callback((ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects) => Assert.That(orderTicket1.State.IsNotLoadedYet, Is.True))
+            .Verifiable();
 
       UnloadService.UnloadData(TestableClientTransaction, orderTicket1.ID);
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
@@ -663,18 +615,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       Dev.Null = orderItemsEndPoint.HasChanged; // warm up has changed cache
 
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(mock => mock.RelationEndPointBecomingIncomplete(TestableClientTransaction, orderItemsEndPoint.ID));
-      }
-
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.RelationEndPointBecomingIncomplete (TestableClientTransaction, orderItemsEndPoint.ID)).Verifiable();
 
       UnloadService.UnloadVirtualEndPoint(TestableClientTransaction, orderItemsEndPoint.ID);
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
 
     [Test]
@@ -686,19 +634,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       Dev.Null = productReviewsEndPoint.HasChanged; // warm up has changed cache
 
-      TestableClientTransaction.AddListener(_strictListenerMock);
+      TestableClientTransaction.AddListener(_strictListenerMock.Object);
 
-      using (_mockRepository.Ordered())
-      {
-        _strictListenerMock.Expect(mock => mock.RelationEndPointBecomingIncomplete(TestableClientTransaction, productReviewsEndPoint.ID));
-        _strictListenerMock.Expect(mock => mock.RelationEndPointMapUnregistering(TestableClientTransaction, productReviewsEndPoint.ID));
-      }
-
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.RelationEndPointBecomingIncomplete (TestableClientTransaction, productReviewsEndPoint.ID)).Verifiable();
+      _strictListenerMock.InSequence (sequence).Setup (mock => mock.RelationEndPointMapUnregistering (TestableClientTransaction, productReviewsEndPoint.ID)).Verifiable();
 
       UnloadService.UnloadVirtualEndPoint(TestableClientTransaction, productReviewsEndPoint.ID);
 
-      _mockRepository.VerifyAll();
+      _strictListenerMock.Verify();
     }
   }
 }

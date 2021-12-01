@@ -17,9 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Tracing;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 {
@@ -84,8 +85,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var queryID = Guid.NewGuid();
       var commandText = "commandText";
-      var parameters = MockRepository.GenerateMock<IDictionary<string, object>>();
-      _extension.QueryExecuting(_connectionID, queryID, commandText, parameters);
+      var parameters = new Mock<IDictionary<string, object>>();
+      _extension.QueryExecuting(_connectionID, queryID, commandText, parameters.Object);
     }
 
     [Test]

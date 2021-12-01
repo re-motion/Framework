@@ -17,6 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -25,7 +27,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
@@ -186,7 +187,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void FilterQueryResult ()
     {
-      var querResult = new QueryResult<DomainObject>(MockRepository.GenerateStub<IQuery>(), new DomainObject[0]);
+      var querResult = new QueryResult<DomainObject>(new Mock<IQuery>().Object, new DomainObject[0]);
       Assert.That(_listener.FilterQueryResult(TestableClientTransaction, querResult), Is.SameAs(querResult));
     }
 
@@ -194,7 +195,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     public void FilterCustomQueryResult ()
     {
       var querResult = new List<object>();
-      Assert.That(_listener.FilterCustomQueryResult(TestableClientTransaction, MockRepository.GenerateStub<IQuery>(), querResult), Is.SameAs(querResult));
+      Assert.That(_listener.FilterCustomQueryResult(TestableClientTransaction, new Mock<IQuery>().Object, querResult), Is.SameAs(querResult));
     }
 
     [Test]
@@ -203,7 +204,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _listener.TransactionCommitting(
           TestableClientTransaction,
           new ReadOnlyCollection<DomainObject>(new DomainObject[0]),
-          MockRepository.GenerateStub<ICommittingEventRegistrar>());
+          new Mock<ICommittingEventRegistrar>().Object);
     }
 
     [Test]

@@ -15,10 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
@@ -43,26 +44,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
     private void CheckAllowed<T> (Func<IDomainObjectTransactionContext, T> func, T mockResult)
     {
-      var contextMock = MockRepository.GenerateMock<IDomainObjectTransactionContext>();
-      contextMock.Expect(mock => func(mock)).Return(mockResult);
-      contextMock.Replay();
+      var contextMock = new Mock<IDomainObjectTransactionContext>();
+      contextMock.Setup (mock => func (mock)).Returns (mockResult).Verifiable();
 
-      var result = func(new InitializedEventDomainObjectTransactionContextDecorator(contextMock));
+      var result = func(new InitializedEventDomainObjectTransactionContextDecorator(contextMock.Object));
 
-      contextMock.VerifyAllExpectations();
+      contextMock.Verify();
       Assert.That(result, Is.EqualTo(result));
     }
 
     private void CheckForbidden (Action<IDomainObjectTransactionContext> action)
     {
-      var contextMock = MockRepository.GenerateMock<IDomainObjectTransactionContext>();
+      var contextMock = new Mock<IDomainObjectTransactionContext>();
 
       Assert.That(
-          () => action(new InitializedEventDomainObjectTransactionContextDecorator(contextMock)),
+          () => action(new InitializedEventDomainObjectTransactionContextDecorator(contextMock.Object)),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "While the OnReferenceInitializing event is executing, this member cannot be used."));
 
-      contextMock.AssertWasNotCalled(action);
+      contextMock.Verify (action, Times.Never());
     }
   }
 }

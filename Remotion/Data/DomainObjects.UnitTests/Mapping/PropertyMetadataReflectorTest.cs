@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -29,13 +30,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetStorageClass_WithAttribute_ReturnsStorageClass ()
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
+      var propertyInformationStub = new Mock<IPropertyInformation>();
       propertyInformationStub
-          .Stub(_ => _.GetCustomAttribute<StorageClassAttribute>(true))
-          .Return(new StorageClassAttribute(StorageClass.Transaction));
+          .Setup(_ => _.GetCustomAttribute<StorageClassAttribute>(true))
+          .Returns(new StorageClassAttribute(StorageClass.Transaction));
 
       var reflector = new PropertyMetadataReflector();
-      var result = reflector.GetStorageClass(propertyInformationStub);
+      var result = reflector.GetStorageClass(propertyInformationStub.Object);
 
       Assert.That(result, Is.EqualTo(StorageClass.Transaction));
     }
@@ -43,13 +44,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetStorageClass_WithDerivedAttribute_ReturnsStorageClass ()
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
+      var propertyInformationStub = new Mock<IPropertyInformation>();
       propertyInformationStub
-          .Stub(_ => _.GetCustomAttribute<StorageClassAttribute>(true))
-          .Return(new StorageClassNoneAttribute());
+          .Setup(_ => _.GetCustomAttribute<StorageClassAttribute>(true))
+          .Returns(new StorageClassNoneAttribute());
 
       var reflector = new PropertyMetadataReflector();
-      var result = reflector.GetStorageClass(propertyInformationStub);
+      var result = reflector.GetStorageClass(propertyInformationStub.Object);
 
       Assert.That(result, Is.EqualTo(StorageClass.None));
     }
@@ -57,13 +58,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetStorageClass_WithoutAttribute_ReturnsNull ()
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
+      var propertyInformationStub = new Mock<IPropertyInformation>();
       propertyInformationStub
-          .Stub(_ => _.GetCustomAttribute<StorageClassAttribute>(true))
-          .Return(null);
+          .Setup(_ => _.GetCustomAttribute<StorageClassAttribute>(true))
+          .Returns((StorageClassAttribute) null);
 
       var reflector = new PropertyMetadataReflector();
-      var result = reflector.GetStorageClass(propertyInformationStub);
+      var result = reflector.GetStorageClass(propertyInformationStub.Object);
 
       Assert.That(result, Is.Null);
     }

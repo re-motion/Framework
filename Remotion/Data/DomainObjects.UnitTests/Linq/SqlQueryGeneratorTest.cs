@@ -17,6 +17,8 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -28,16 +30,15 @@ using Remotion.Linq.SqlBackend.SqlGeneration;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Linq.SqlBackend.SqlStatementModel;
 using Remotion.Linq.SqlBackend.SqlStatementModel.Resolved;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq
 {
   [TestFixture]
   public class SqlQueryGeneratorTest
   {
-    private ISqlPreparationStage _preparationStageMock;
-    private IMappingResolutionStage _resolutionStageMock;
-    private ISqlGenerationStage _generationStageMock;
+    private Mock<ISqlPreparationStage> _preparationStageMock;
+    private Mock<IMappingResolutionStage> _resolutionStageMock;
+    private Mock<ISqlGenerationStage> _generationStageMock;
 
     private SqlQueryGenerator _sqlQueryGenerator;
 
@@ -46,11 +47,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     [SetUp]
     public void SetUp ()
     {
-      _preparationStageMock = MockRepository.GenerateStrictMock<ISqlPreparationStage>();
-      _resolutionStageMock = MockRepository.GenerateStrictMock<IMappingResolutionStage>();
-      _generationStageMock = MockRepository.GenerateStrictMock<ISqlGenerationStage>();
+      _preparationStageMock = new Mock<ISqlPreparationStage> (MockBehavior.Strict);
+      _resolutionStageMock = new Mock<IMappingResolutionStage> (MockBehavior.Strict);
+      _generationStageMock = new Mock<ISqlGenerationStage> (MockBehavior.Strict);
 
-      _sqlQueryGenerator = new SqlQueryGenerator(_preparationStageMock, _resolutionStageMock, _generationStageMock);
+      _sqlQueryGenerator = new SqlQueryGenerator(_preparationStageMock.Object, _resolutionStageMock.Object, _generationStageMock.Object);
 
       _queryModel = QueryModelObjectMother.Create();
     }
@@ -60,26 +61,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       var fakePreparationResult = CreateSqlStatement();
       _preparationStageMock
-          .Expect(mock => mock.PrepareSqlStatement(_queryModel, null))
-          .Return(fakePreparationResult);
+          .Setup(mock => mock.PrepareSqlStatement(_queryModel, null))
+          .Returns(fakePreparationResult)
+          .Verifiable();
       var fakeResolutionResult = CreateSqlStatement();
       _resolutionStageMock
-          .Expect(mock => mock.ResolveSqlStatement(Arg.Is(fakePreparationResult), Arg<MappingResolutionContext>.Is.TypeOf))
-          .Return(fakeResolutionResult);
+          .Setup(mock => mock.ResolveSqlStatement(fakePreparationResult, Arg<MappingResolutionContext>.Is.TypeOf))
+          .Returns(fakeResolutionResult)
+          .Verifiable();
       _generationStageMock
-          .Expect(mock => mock.GenerateTextForOuterSqlStatement(Arg<SqlCommandBuilder>.Is.TypeOf, Arg.Is(fakeResolutionResult)))
-          .WhenCalled(mi =>
-          {
+          .Setup(mock => mock.GenerateTextForOuterSqlStatement(Arg<SqlCommandBuilder>.Is.TypeOf, fakeResolutionResult))
+          .Callback((ISqlCommandBuilder commandBuilder, SqlStatement sqlStatement) =>
+{
             var sqlCommandBuilder = ((SqlCommandBuilder)mi.Arguments[0]);
             sqlCommandBuilder.Append("TestTest");
             sqlCommandBuilder.SetInMemoryProjectionBody(Expression.Constant(null));
-          });
+          })
+          .Verifiable();
 
       var result = _sqlQueryGenerator.CreateSqlQuery(_queryModel);
 
-      _preparationStageMock.VerifyAllExpectations();
-      _resolutionStageMock.VerifyAllExpectations();
-      _generationStageMock.VerifyAllExpectations();
+      _preparationStageMock.Verify();
+      _resolutionStageMock.Verify();
+      _generationStageMock.Verify();
 
       Assert.That(result.SqlCommand.CommandText, Is.EqualTo("TestTest"));
     }
@@ -110,8 +114,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       var exception = new NotSupportedException("Bla.");
       _preparationStageMock
-          .Stub(mock => mock.PrepareSqlStatement(_queryModel, null))
-          .Throw(exception);
+          .Setup(mock => mock.PrepareSqlStatement(_queryModel, null))
+          .Throws(exception);
 
       Assert.That(
           () => _sqlQueryGenerator.CreateSqlQuery(_queryModel),
@@ -124,12 +128,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       var exception = new NotSupportedException("Bla.");
       _preparationStageMock
-          .Stub(mock => mock.PrepareSqlStatement(_queryModel, null))
-          .Return(CreateSqlStatement());
+          .Setup(mock => mock.PrepareSqlStatement(_queryModel, null))
+          .Returns(CreateSqlStatement());
 
       _resolutionStageMock
-          .Stub(mock => mock.ResolveSqlStatement(Arg<SqlStatement>.Is.Anything, Arg<MappingResolutionContext>.Is.TypeOf))
-          .Throw(exception);
+          .Setup(mock => mock.ResolveSqlStatement(It.IsAny<SqlStatement>(), Arg<MappingResolutionContext>.Is.TypeOf))
+          .Throws(exception);
 
       Assert.That(
           () => _sqlQueryGenerator.CreateSqlQuery(_queryModel),
@@ -142,14 +146,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       var exception = new NotSupportedException("Bla.");
       _preparationStageMock
-          .Stub(mock => mock.PrepareSqlStatement(_queryModel, null))
-          .Return(CreateSqlStatement());
+          .Setup(mock => mock.PrepareSqlStatement(_queryModel, null))
+          .Returns(CreateSqlStatement());
       _resolutionStageMock
-          .Stub(mock => mock.ResolveSqlStatement(Arg<SqlStatement>.Is.Anything, Arg<MappingResolutionContext>.Is.TypeOf))
-          .Return(CreateSqlStatement());
+          .Setup(mock => mock.ResolveSqlStatement(It.IsAny<SqlStatement>(), Arg<MappingResolutionContext>.Is.TypeOf))
+          .Returns(CreateSqlStatement());
       _generationStageMock
-          .Stub(mock => mock.GenerateTextForOuterSqlStatement(Arg<SqlCommandBuilder>.Is.TypeOf, Arg<SqlStatement>.Is.Anything))
-          .Throw(exception);
+          .Setup(mock => mock.GenerateTextForOuterSqlStatement(Arg<SqlCommandBuilder>.Is.TypeOf, It.IsAny<SqlStatement>()))
+          .Throws(exception);
 
       Assert.That(
           () => _sqlQueryGenerator.CreateSqlQuery(_queryModel),
@@ -162,12 +166,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       var exception = new UnmappedItemException("Bla.");
       _preparationStageMock
-          .Stub(mock => mock.PrepareSqlStatement(_queryModel, null))
-          .Return(CreateSqlStatement());
+          .Setup(mock => mock.PrepareSqlStatement(_queryModel, null))
+          .Returns(CreateSqlStatement());
 
       _resolutionStageMock
-          .Stub(mock => mock.ResolveSqlStatement(Arg<SqlStatement>.Is.Anything, Arg<MappingResolutionContext>.Is.TypeOf))
-          .Throw(exception);
+          .Setup(mock => mock.ResolveSqlStatement(It.IsAny<SqlStatement>(), Arg<MappingResolutionContext>.Is.TypeOf))
+          .Throws(exception);
 
       Assert.That(
           () => _sqlQueryGenerator.CreateSqlQuery(_queryModel),
@@ -178,18 +182,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     private void CheckCreateSqlQuery_SelectedEntityType (Type expectedSelectedEntityType, Expression selectProjection)
     {
       _preparationStageMock
-          .Stub(mock => mock.PrepareSqlStatement(_queryModel, null))
-          .Return(CreateSqlStatement());
+          .Setup(mock => mock.PrepareSqlStatement(_queryModel, null))
+          .Returns(CreateSqlStatement());
 
       var fakeResolutionResult = CreateSqlStatement(selectProjection);
       _resolutionStageMock
-          .Stub(mock => mock.ResolveSqlStatement(Arg<SqlStatement>.Is.Anything, Arg<MappingResolutionContext>.Is.TypeOf))
-          .Return(fakeResolutionResult);
+          .Setup(mock => mock.ResolveSqlStatement(It.IsAny<SqlStatement>(), Arg<MappingResolutionContext>.Is.TypeOf))
+          .Returns(fakeResolutionResult);
 
       _generationStageMock
-          .Stub(mock => mock.GenerateTextForOuterSqlStatement(Arg<SqlCommandBuilder>.Is.TypeOf, Arg<SqlStatement>.Is.Anything))
-          .WhenCalled(mi =>
-          {
+          .Setup(mock => mock.GenerateTextForOuterSqlStatement(Arg<SqlCommandBuilder>.Is.TypeOf, It.IsAny<SqlStatement>()))
+          .Callback((ISqlCommandBuilder commandBuilder, SqlStatement sqlStatement) =>
+{
             var sqlCommandBuilder = ((SqlCommandBuilder)mi.Arguments[0]);
             sqlCommandBuilder.Append("TestTest");
             sqlCommandBuilder.SetInMemoryProjectionBody(Expression.Constant(null));

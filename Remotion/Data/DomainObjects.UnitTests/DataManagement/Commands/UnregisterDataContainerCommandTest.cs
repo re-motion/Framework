@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 {
@@ -35,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       base.SetUp();
 
-      _map = new DataContainerMap(MockRepository.GenerateStub<IClientTransactionEventSink>());
+      _map = new DataContainerMap(new Mock<IClientTransactionEventSink>().Object);
       _dataContainer1 = DataContainer.CreateNew(DomainObjectIDs.Order1);
       _map.Register(_dataContainer1);
 

@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Collections.ObjectModel;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Loading
 {
@@ -43,8 +44,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Loading
       // First, load an object and throw in ObjectsLoading.
 
       _listenerDynamicMock
-          .Expect(mock => mock.ObjectsLoading(Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<ObjectID>>.Is.Anything))
-          .Throw(exception).Repeat.Once();
+          .Setup(mock => mock.ObjectsLoading(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<ObjectID>>()))
+          .Throws(exception)
+          .Verifiable();
 
       var abortedDomainObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObjectReference<ClassWithAllDataTypes>();
       Assert.That(() => abortedDomainObject.EnsureDataAvailable(), Throws.Exception.SameAs(exception));

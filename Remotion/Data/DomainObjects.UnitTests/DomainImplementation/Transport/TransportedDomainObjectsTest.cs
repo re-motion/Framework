@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.DomainImplementation.Transport;
@@ -29,7 +31,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.RhinoMocks.UnitTesting;
 using Remotion.FunctionalProgramming;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 {
@@ -88,29 +89,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       TransportedDomainObjects transportedObjects = TransportAndDeleteObjects(
           DomainObjectIDs.ClassWithAllDataTypes1,
           DomainObjectIDs.ClassWithAllDataTypes2);
-      var mockRepository = new MockRepository();
-      var extensionMock = mockRepository.StrictMock<IClientTransactionExtension>();
+      var extensionMock = new Mock<IClientTransactionExtension> (MockBehavior.Strict);
 
-      extensionMock.Expect(mock => mock.Committing(
-          Arg.Is(transportedObjects.DataTransaction),
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent(GetTransportedObjects(transportedObjects)),
-          Arg<ICommittingEventRegistrar>.Is.Anything));
-      extensionMock.Expect(mock => mock.CommitValidate(
-          Arg.Is(transportedObjects.DataTransaction),
-          Arg<ReadOnlyCollection<PersistableData>>.Matches(c => c.Select(d => d.DomainObject).SetEquals(GetTransportedObjects(transportedObjects)))));
-      extensionMock.Expect(mock => mock.Committed(
-          Arg.Is(transportedObjects.DataTransaction),
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent(GetTransportedObjects(transportedObjects))));
-      extensionMock.Expect(mock => mock.TransactionDiscard(transportedObjects.DataTransaction));
+      extensionMock.Setup (mock => mock.Committing (
+          transportedObjects.DataTransaction,
+          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (GetTransportedObjects (transportedObjects)),
+          It.IsAny<ICommittingEventRegistrar>())).Verifiable();
+      extensionMock.Setup (mock => mock.CommitValidate (
+          transportedObjects.DataTransaction,
+          It.Is<ReadOnlyCollection<PersistableData>> (c => c.Select (d => d.DomainObject).SetEquals (GetTransportedObjects (transportedObjects))))).Verifiable();
+      extensionMock.Setup (mock => mock.Committed (
+          transportedObjects.DataTransaction,
+          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (GetTransportedObjects (transportedObjects)))).Verifiable();
+      extensionMock.Setup (mock => mock.TransactionDiscard (transportedObjects.DataTransaction)).Verifiable();
 
-      extensionMock.Stub(stub => stub.Key).Return("mock");
+      extensionMock.Setup (stub => stub.Key).Returns ("mock");
 
-      mockRepository.ReplayAll();
-
-      transportedObjects.DataTransaction.Extensions.Add(extensionMock);
+      transportedObjects.DataTransaction.Extensions.Add(extensionMock.Object);
       transportedObjects.FinishTransport();
 
-      mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
@@ -201,7 +199,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     [Test]
     public void FinishTransport_FilterExisting ()
     {
-
       TransportedDomainObjects transportedObjects = TransportAndChangeObjects(
           typeof(ClassWithAllDataTypes).FullName + ".Int32Property",
           42,

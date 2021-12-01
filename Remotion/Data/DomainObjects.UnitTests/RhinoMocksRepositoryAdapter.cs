@@ -15,16 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using Remotion.Development.RhinoMocks.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
   public class RhinoMocksRepositoryAdapter : IMockRepository
   {
-    private readonly MockRepository _mockRepository;
 
     public RhinoMocksRepositoryAdapter ()
         : this(new MockRepository())
@@ -39,12 +39,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public T StrictMock<T> (params object[] argumentsForConstructor)
     {
-      return _mockRepository.StrictMock<T>(argumentsForConstructor);
+      return new Mock<T> (MockBehavior.Strict, argumentsForConstructor).Object;
     }
 
     public void ReplayAll ()
     {
-      _mockRepository.ReplayAll();
     }
 
     public void VerifyAll ()

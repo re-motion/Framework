@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.DomainImplementation.Transport;
@@ -28,7 +30,6 @@ using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 {
@@ -353,21 +354,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
         items = new[] { TransportItem.PackageDataContainer(DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer) };
       }
 
-      var repository = new MockRepository();
-      var strategyMock = repository.StrictMock<IImportStrategy>();
-      var streamFake = repository.Stub<Stream>();
+      var strategyMock = new Mock<IImportStrategy> (MockBehavior.Strict);
+      var streamFake = new Mock<Stream>();
 
-      strategyMock.Expect(mock => mock.Import(streamFake)).Return(items);
+      strategyMock.Setup (mock => mock.Import (streamFake.Object)).Returns (items).Verifiable();
 
-      strategyMock.Replay();
-
-      var importer = DomainObjectImporter.CreateImporterFromStream(streamFake, strategyMock);
+      var importer = DomainObjectImporter.CreateImporterFromStream(streamFake.Object, strategyMock.Object);
       TransportedDomainObjects result = importer.GetImportedObjects();
       Assert.That(
           result.TransportedObjects,
           Is.EquivalentTo(LifetimeService.GetObjects<Order>(result.DataTransaction, DomainObjectIDs.Order1)));
 
-      strategyMock.VerifyAllExpectations();
+      strategyMock.Verify();
     }
 
     [Test]

@@ -16,35 +16,36 @@
 // 
 using System;
 using System.Data;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.ObjectMothers;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
   [TestFixture]
   public class SimpleStoragePropertyDefinitionTest
   {
-    private IStorageTypeInformation _storageTypeInformationStub;
+    private Mock<IStorageTypeInformation> _storageTypeInformationStub;
     private ColumnDefinition _innerColumnDefinition;
     private SimpleStoragePropertyDefinition _storagePropertyDefinition;
 
-    private IDbCommand _dbCommandStub;
-    private IDbDataParameter _dbDataParameterStub;
+    private Mock<IDbCommand> _dbCommandStub;
+    private Mock<IDbDataParameter> _dbDataParameterStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _storageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
-      _innerColumnDefinition = ColumnDefinitionObjectMother.CreateColumn(storageTypeInformation: _storageTypeInformationStub);
+      _storageTypeInformationStub = new Mock<IStorageTypeInformation>();
+      _innerColumnDefinition = ColumnDefinitionObjectMother.CreateColumn(storageTypeInformation: _storageTypeInformationStub.Object);
       _storagePropertyDefinition = new SimpleStoragePropertyDefinition(typeof(string), _innerColumnDefinition);
 
-      _dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      _dbDataParameterStub = MockRepository.GenerateStub<IDbDataParameter>();
-      _dbCommandStub.Stub(stub => stub.CreateParameter()).Return(_dbDataParameterStub);
+      _dbCommandStub = new Mock<IDbCommand>();
+      _dbDataParameterStub = new Mock<IDbDataParameter>();
+      _dbCommandStub.Setup (stub => stub.CreateParameter()).Returns (_dbDataParameterStub.Object);
     }
 
     [Test]
@@ -139,10 +140,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void CombineValue ()
     {
-      var columnValueProviderStub = MockRepository.GenerateStub<IColumnValueProvider>();
-      columnValueProviderStub.Stub(stub => stub.GetValueForColumn(_innerColumnDefinition)).Return(12);
+      var columnValueProviderStub = new Mock<IColumnValueProvider>();
+      columnValueProviderStub.Setup (stub => stub.GetValueForColumn (_innerColumnDefinition)).Returns (12);
 
-      var result = _storagePropertyDefinition.CombineValue(columnValueProviderStub);
+      var result = _storagePropertyDefinition.CombineValue(columnValueProviderStub.Object);
 
       Assert.That(result, Is.EqualTo(12));
     }

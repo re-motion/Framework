@@ -17,10 +17,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Development.RhinoMocks.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -32,22 +33,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var objectID = DomainObjectIDs.Order1;
       var dataContainer = DataContainer.CreateNew(objectID);
-      var enumeratorGeneric = MockRepository.GenerateStub<IEnumerator<DataContainer>>();
-      var enumeratorObject = MockRepository.GenerateStub<IEnumerator>();
+      var enumeratorGeneric = new Mock<IEnumerator<DataContainer>>();
+      var enumeratorObject = new Mock<IEnumerator>();
 
       CheckDelegation(dm => dm.Count, 5);
       CheckDelegation(dm => dm[objectID], dataContainer);
-      CheckDelegation(dm => dm.GetEnumerator(), enumeratorGeneric);
-      CheckDelegation(dm => ((IEnumerable)dm).GetEnumerator(), enumeratorObject);
+      CheckDelegation(dm => dm.GetEnumerator(), enumeratorGeneric.Object);
+      CheckDelegation(dm => ((IEnumerable)dm).GetEnumerator(), enumeratorObject.Object);
     }
 
     private void CheckDelegation<TR> (Func<IDataContainerMapReadOnlyView, TR> func, TR fakeResult)
     {
-      var innerMock = MockRepository.GenerateStrictMock<IDataContainerMapReadOnlyView>();
+      var innerMock = new Mock<IDataContainerMapReadOnlyView> (MockBehavior.Strict);
       var delegatingDataContainerMap = new DelegatingDataContainerMap();
-      delegatingDataContainerMap.InnerDataContainerMap = innerMock;
+      delegatingDataContainerMap.InnerDataContainerMap = innerMock.Object;
 
-      var helper = new DecoratorTestHelper<IDataContainerMapReadOnlyView>(delegatingDataContainerMap, innerMock);
+      var helper = new DecoratorTestHelper<IDataContainerMapReadOnlyView>(delegatingDataContainerMap, innerMock.Object);
       helper.CheckDelegation(func, fakeResult);
 
       delegatingDataContainerMap.InnerDataContainerMap = null;

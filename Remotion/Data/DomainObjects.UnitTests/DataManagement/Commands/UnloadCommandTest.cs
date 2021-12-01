@@ -16,26 +16,26 @@
 // 
 using System;
 using System.Collections.ObjectModel;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 {
   [TestFixture]
   public class UnloadCommandTest : StandardMappingTest
   {
-    private MockRepository _mockRepository;
 
     private Order _domainObject1;
     private Order _domainObject2;
 
-    private IClientTransactionEventSink _transactionEventSinkWithMock;
+    private Mock<IClientTransactionEventSink> _transactionEventSinkWithMock;
 
-    private IDataManagementCommand _unloadDataCommandMock;
+    private Mock<IDataManagementCommand> _unloadDataCommandMock;
 
     private UnloadCommand _unloadCommand;
     private Exception _exception1;
@@ -45,19 +45,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       base.SetUp();
 
-      _mockRepository = new MockRepository();
-
       _domainObject1 = DomainObjectMother.CreateFakeObject<Order>();
       _domainObject2 = DomainObjectMother.CreateFakeObject<Order>();
 
-      _transactionEventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
+      _transactionEventSinkWithMock = new Mock<IClientTransactionEventSink> (MockBehavior.Strict);
 
-      _unloadDataCommandMock = _mockRepository.StrictMock<IDataManagementCommand>();
+      _unloadDataCommandMock = new Mock<IDataManagementCommand> (MockBehavior.Strict);
 
       _unloadCommand = new UnloadCommand(
           new[] { _domainObject1, _domainObject2 },
-          _unloadDataCommandMock,
-          _transactionEventSinkWithMock);
+          _unloadDataCommandMock.Object,
+          _transactionEventSinkWithMock.Object);
 
       _exception1 = new Exception("1");
       _exception2 = new Exception("2");
@@ -66,8 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void GetAllExceptions ()
     {
-      _unloadDataCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new[] { _exception1, _exception2 });
-      _unloadDataCommandMock.Replay();
+      _unloadDataCommandMock.Setup (stub => stub.GetAllExceptions()).Returns (new[] { _exception1, _exception2 });
 
       Assert.That(_unloadCommand.GetAllExceptions(), Is.EqualTo(new[] { _exception1, _exception2 }));
     }
@@ -75,94 +72,82 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void Begin ()
     {
-      _unloadDataCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
+      _unloadDataCommandMock.Setup (stub => stub.GetAllExceptions()).Returns (new Exception[0]);
 
-      using (_mockRepository.Ordered())
-      {
-        _transactionEventSinkWithMock.Expect(mock => mock.RaiseObjectsUnloadingEvent(
-            Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { _domainObject1, _domainObject2 })));
-        _unloadDataCommandMock.Expect(mock => mock.Begin());
-      }
+      var sequence = new MockSequence();
+      _transactionEventSinkWithMock.InSequence (sequence).Setup (mock => mock.RaiseObjectsUnloadingEvent (
+            new[] { _domainObject1, _domainObject2 })).Verifiable();
+      _unloadDataCommandMock.InSequence (sequence).Setup (mock => mock.Begin()).Verifiable();
       _mockRepository.ReplayAll();
 
       _unloadCommand.Begin();
 
-      _mockRepository.VerifyAll();
+      _unloadDataCommandMock.Verify();
     }
 
     [Test]
     public void Begin_NonExecutable ()
     {
-      _unloadDataCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new[] { _exception1 });
-
-      _mockRepository.ReplayAll();
+      _unloadDataCommandMock.Setup (stub => stub.GetAllExceptions()).Returns (new[] { _exception1 });
 
       var exception = Assert.Throws<Exception>(_unloadCommand.Begin);
       Assert.That(exception, Is.SameAs(_exception1));
 
-      _mockRepository.VerifyAll();
+      _unloadDataCommandMock.Verify();
     }
 
     [Test]
     public void Perform ()
     {
-      _unloadDataCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-      _unloadDataCommandMock.Expect(mock => mock.Perform());
-      _mockRepository.ReplayAll();
+      _unloadDataCommandMock.Setup (stub => stub.GetAllExceptions()).Returns (new Exception[0]);
+      _unloadDataCommandMock.Setup (mock => mock.Perform()).Verifiable();
 
       _unloadCommand.Perform();
 
-      _mockRepository.VerifyAll();
+      _unloadDataCommandMock.Verify();
     }
 
     [Test]
     public void Perform_NonExecutable ()
     {
-      _unloadDataCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new[] { _exception1 });
-      _mockRepository.ReplayAll();
+      _unloadDataCommandMock.Setup (stub => stub.GetAllExceptions()).Returns (new[] { _exception1 });
 
       var exception = Assert.Throws<Exception>(_unloadCommand.Perform);
       Assert.That(exception, Is.SameAs(_exception1));
 
-      _mockRepository.VerifyAll();
+      _unloadDataCommandMock.Verify();
     }
 
     [Test]
     public void End ()
     {
-      _unloadDataCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
+      _unloadDataCommandMock.Setup (stub => stub.GetAllExceptions()).Returns (new Exception[0]);
 
-      using (_mockRepository.Ordered())
-      {
-        _unloadDataCommandMock.Expect(mock => mock.End());
-        _transactionEventSinkWithMock.Expect(mock => mock.RaiseObjectsUnloadedEvent(
-            Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { _domainObject1, _domainObject2 })));
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _unloadDataCommandMock.InSequence (sequence).Setup (mock => mock.End()).Verifiable();
+      _transactionEventSinkWithMock.InSequence (sequence).Setup (mock => mock.RaiseObjectsUnloadedEvent (
+            new[] { _domainObject1, _domainObject2 })).Verifiable();
 
       _unloadCommand.End();
 
-      _mockRepository.VerifyAll();
+      _unloadDataCommandMock.Verify();
     }
 
     [Test]
     public void End_NonExecutable ()
     {
-      _unloadDataCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new[] { _exception1 });
-
-      _mockRepository.ReplayAll();
+      _unloadDataCommandMock.Setup (stub => stub.GetAllExceptions()).Returns (new[] { _exception1 });
 
       var exception = Assert.Throws<Exception>(_unloadCommand.End);
       Assert.That(exception, Is.SameAs(_exception1));
 
-      _mockRepository.VerifyAll();
+      _unloadDataCommandMock.Verify();
     }
 
     [Test]
     public void ExpandToAllRelatedObjects ()
     {
-      _unloadDataCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-      _mockRepository.ReplayAll();
+      _unloadDataCommandMock.Setup (stub => stub.GetAllExceptions()).Returns (new Exception[0]);
 
       var result = _unloadCommand.ExpandToAllRelatedObjects();
 

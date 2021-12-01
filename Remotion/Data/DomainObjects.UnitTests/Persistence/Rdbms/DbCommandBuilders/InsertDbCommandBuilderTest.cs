@@ -17,62 +17,63 @@
 using System;
 using System.Data;
 using System.Text;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuilders
 {
   [TestFixture]
   public class InsertDbCommandBuilderTest : StandardMappingTest
   {
-    private IInsertedColumnsSpecification _insertedColumnsSpecificationStub;
-    private ISqlDialect _sqlDialectStub;
-    private IDbCommand _dbCommandStub;
-    private IDbDataParameter _dbDataParameterStub;
-    private IDataParameterCollection _dataParameterCollectionMock;
-    private IRdbmsProviderCommandExecutionContext _commandExecutionContextStub;
+    private Mock<IInsertedColumnsSpecification> _insertedColumnsSpecificationStub;
+    private Mock<ISqlDialect> _sqlDialectStub;
+    private Mock<IDbCommand> _dbCommandStub;
+    private Mock<IDbDataParameter> _dbDataParameterStub;
+    private Mock<IDataParameterCollection> _dataParameterCollectionMock;
+    private Mock<IRdbmsProviderCommandExecutionContext> _commandExecutionContextStub;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _insertedColumnsSpecificationStub = MockRepository.GenerateStub<IInsertedColumnsSpecification>();
+      _insertedColumnsSpecificationStub = new Mock<IInsertedColumnsSpecification>();
 
-      _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect>();
-      _sqlDialectStub.Stub(stub => stub.StatementDelimiter).Return(";");
+      _sqlDialectStub = new Mock<ISqlDialect>();
+      _sqlDialectStub.Setup (stub => stub.StatementDelimiter).Returns (";");
 
-      _dbDataParameterStub = MockRepository.GenerateStub<IDbDataParameter>();
-      _dataParameterCollectionMock = MockRepository.GenerateStrictMock<IDataParameterCollection>();
+      _dbDataParameterStub = new Mock<IDbDataParameter>();
+      _dataParameterCollectionMock = new Mock<IDataParameterCollection> (MockBehavior.Strict);
 
-      _dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      _dbCommandStub.Stub(stub => stub.CreateParameter()).Return(_dbDataParameterStub);
-      _dbCommandStub.Stub(stub => stub.Parameters).Return(_dataParameterCollectionMock);
+      _dbCommandStub = new Mock<IDbCommand>();
+      _dbCommandStub.Setup (stub => stub.CreateParameter()).Returns (_dbDataParameterStub.Object);
+      _dbCommandStub.Setup (stub => stub.Parameters).Returns (_dataParameterCollectionMock.Object);
 
-      _commandExecutionContextStub = MockRepository.GenerateStub<IRdbmsProviderCommandExecutionContext>();
-      _commandExecutionContextStub.Stub(stub => stub.CreateDbCommand()).Return(_dbCommandStub);
+      _commandExecutionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
+      _commandExecutionContextStub.Setup (stub => stub.CreateDbCommand()).Returns (_dbCommandStub.Object);
     }
 
     [Test]
     public void Create_DefaultSchema ()
     {
       var tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table"));
-      var builder = new InsertDbCommandBuilder(tableDefinition, _insertedColumnsSpecificationStub, _sqlDialectStub);
+      var builder = new InsertDbCommandBuilder(tableDefinition, _insertedColumnsSpecificationStub.Object, _sqlDialectStub.Object);
 
-      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Table")).Return("[delimited Table]");
+      _sqlDialectStub.Setup (stub => stub.DelimitIdentifier ("Table")).Returns ("[delimited Table]");
 
       _insertedColumnsSpecificationStub
-          .Stub(stub => stub.AppendColumnNames(Arg<StringBuilder>.Is.Anything, Arg.Is(_dbCommandStub), Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1], [Column2], [Column3]"));
+          .Setup(stub => stub.AppendColumnNames(It.IsAny<StringBuilder>(), _dbCommandStub.Object, _sqlDialectStub.Object))
+          .Callback((StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect) => ((StringBuilder)mi.Arguments[0]).Append("[Column1], [Column2], [Column3]"));
       _insertedColumnsSpecificationStub
-          .Stub(stub => stub.AppendColumnValues(Arg<StringBuilder>.Is.Anything, Arg.Is(_dbCommandStub), Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("5, 'test', true"));
+          .Setup(stub => stub.AppendColumnValues(It.IsAny<StringBuilder>(), _dbCommandStub.Object, _sqlDialectStub.Object))
+          .Callback((StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect) => ((StringBuilder)mi.Arguments[0]).Append("5, 'test', true"));
 
-      var result = builder.Create(_commandExecutionContextStub);
+      var result = builder.Create(_commandExecutionContextStub.Object);
 
       Assert.That(result.CommandText, Is.EqualTo("INSERT INTO [delimited Table] ([Column1], [Column2], [Column3]) VALUES (5, 'test', true);"));
     }
@@ -81,19 +82,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     public void Create_CustomSchema ()
     {
       var tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition("customSchema", "Table"));
-      var builder = new InsertDbCommandBuilder(tableDefinition, _insertedColumnsSpecificationStub, _sqlDialectStub);
+      var builder = new InsertDbCommandBuilder(tableDefinition, _insertedColumnsSpecificationStub.Object, _sqlDialectStub.Object);
 
-      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("customSchema")).Return("[delimited customSchema]");
-      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Table")).Return("[delimited Table]");
+      _sqlDialectStub.Setup (stub => stub.DelimitIdentifier ("customSchema")).Returns ("[delimited customSchema]");
+      _sqlDialectStub.Setup (stub => stub.DelimitIdentifier ("Table")).Returns ("[delimited Table]");
 
       _insertedColumnsSpecificationStub
-          .Stub(stub => stub.AppendColumnNames(Arg<StringBuilder>.Is.Anything, Arg.Is(_dbCommandStub), Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("[Column1], [Column2], [Column3]"));
+          .Setup(stub => stub.AppendColumnNames(It.IsAny<StringBuilder>(), _dbCommandStub.Object, _sqlDialectStub.Object))
+          .Callback((StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect) => ((StringBuilder)mi.Arguments[0]).Append("[Column1], [Column2], [Column3]"));
       _insertedColumnsSpecificationStub
-          .Stub(stub => stub.AppendColumnValues(Arg<StringBuilder>.Is.Anything, Arg.Is(_dbCommandStub), Arg.Is(_sqlDialectStub)))
-          .WhenCalled(mi => ((StringBuilder)mi.Arguments[0]).Append("5, 'test', true"));
+          .Setup(stub => stub.AppendColumnValues(It.IsAny<StringBuilder>(), _dbCommandStub.Object, _sqlDialectStub.Object))
+          .Callback((StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect) => ((StringBuilder)mi.Arguments[0]).Append("5, 'test', true"));
 
-      var result = builder.Create(_commandExecutionContextStub);
+      var result = builder.Create(_commandExecutionContextStub.Object);
 
       Assert.That(result.CommandText, Is.EqualTo("INSERT INTO [delimited customSchema].[delimited Table] ([Column1], [Column2], [Column3]) VALUES (5, 'test', true);"));
     }

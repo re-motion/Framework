@@ -17,12 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
 {
@@ -31,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
   {
     private ColumnDefinition _columnDefinition;
     private DictionaryBasedColumnOrdinalProvider _dictionaryBasedColumnOrdinalProvider;
-    private IDataReader _dataReaderStub;
+    private Mock<IDataReader> _dataReaderStub;
     private Dictionary<string, int> _ordinals;
 
     [SetUp]
@@ -39,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       _columnDefinition = ColumnDefinitionObjectMother.CreateColumn("Testcolumn 1");
       var columnDefinition2 = ColumnDefinitionObjectMother.CreateColumn("Testcolumn 2");
-      _dataReaderStub = MockRepository.GenerateStub<IDataReader>();
+      _dataReaderStub = new Mock<IDataReader>();
       _ordinals = new Dictionary<string, int> { { _columnDefinition.Name, 5 }, { columnDefinition2.Name, 3} };
       _dictionaryBasedColumnOrdinalProvider = new DictionaryBasedColumnOrdinalProvider(_ordinals);
     }
@@ -47,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [Test]
     public void GetOrdinal ()
     {
-      var result = _dictionaryBasedColumnOrdinalProvider.GetOrdinal(_columnDefinition, _dataReaderStub);
+      var result = _dictionaryBasedColumnOrdinalProvider.GetOrdinal(_columnDefinition, _dataReaderStub.Object);
 
       Assert.That(result, Is.EqualTo(5));
     }
@@ -56,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     public void GetOrdinal_DifferentColumnOfSameName ()
     {
       var columnDefinition = ColumnDefinitionObjectMother.CreateColumn(_columnDefinition.Name);
-      var result = _dictionaryBasedColumnOrdinalProvider.GetOrdinal(columnDefinition, _dataReaderStub);
+      var result = _dictionaryBasedColumnOrdinalProvider.GetOrdinal(columnDefinition, _dataReaderStub.Object);
 
       Assert.That(result, Is.EqualTo(5));
     }
@@ -66,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       var otherColumn = ColumnDefinitionObjectMother.CreateColumn("other column");
       Assert.That(
-          () => _dictionaryBasedColumnOrdinalProvider.GetOrdinal(otherColumn, _dataReaderStub),
+          () => _dictionaryBasedColumnOrdinalProvider.GetOrdinal(otherColumn, _dataReaderStub.Object),
           Throws.InstanceOf<RdbmsProviderException>()
               .With.Message.EqualTo(
                   "The column 'other column' is not included in the query result and is not expected for this operation. The included and expected columns are: "
