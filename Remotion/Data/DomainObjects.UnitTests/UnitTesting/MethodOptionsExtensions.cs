@@ -15,15 +15,38 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Reflection;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Data.DomainObjects.UnitTests;
+
+namespace Remotion.Data.DomainObjects.UnitTests
+{
+  public interface IMethodOptions<T>
+  {
+    public T Callback (Func<MethodInvocation, T> func);
+  }
+
+  public class MethodInvocation
+  {
+    public MethodInfo Method;
+  }
+
+  public class RhinoMocksExtensions
+  {
+    public class VoidType
+    {
+    }
+  }
+}
 
 namespace Remotion.Data.UnitTests.UnitTesting
 {
   public static class MethodOptionsExtensions
   {
+
     /// <summary>
     /// Provides support for ordered Rhino.Mocks expectations without dedicated <see cref="MockRepository"/> instance. Create an 
     /// <see cref="OrderedExpectationCounter"/>, then call this method with that counter for all expectations that should occur 
