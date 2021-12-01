@@ -221,13 +221,9 @@ ul.DropDownMenuOptions li a > span:last-of-type
   padding-left: var(--remotion-themed-spacing);
 }
 
-ul.DropDownMenuOptions li a:hover:not(li.DropDownMenuItemDisabled a),
-ul.DropDownMenuOptions li a:focus:not(li.DropDownMenuItemDisabled a)
+ul.DropDownMenuOptions li.selected a:hover:not(li.DropDownMenuItemDisabled a),
+ul.DropDownMenuOptions li.selected a:focus:not(li.DropDownMenuItemDisabled a)
 {
-  /* Due to the implementation of the popup, the currently selected / hovered menu item has the focus.
-     Since this is an implementation detail and the popup will close once the focus is removed,
-     it is better to just show the hover effect. */
-
   background-color: var(--remotion-themed-background-color-hover);
   border: var(--remotion-themed-border-hover);
   box-shadow: var(--remotion-themed-box-shadow-hover);
