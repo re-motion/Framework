@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel.Design;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.CodeGeneration.TypePipe;
@@ -25,7 +26,6 @@ using Remotion.Mixins.MixerTools.UnitTests.TestDomain;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.MixerTools.UnitTests
 {
@@ -169,9 +169,9 @@ namespace Remotion.Mixins.MixerTools.UnitTests
 
     private ITypeDiscoveryService CreateTypeDiscoveryServiceStub (params Type[] stubResult)
     {
-      var typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService>();
-      typeDiscoveryServiceStub.Stub(stub => stub.GetTypes(null, false)).Return(stubResult);
-      return typeDiscoveryServiceStub;
+      var typeDiscoveryServiceStub = new Mock<ITypeDiscoveryService>();
+      typeDiscoveryServiceStub.Setup(stub => stub.GetTypes(null, false)).Returns(stubResult);
+      return typeDiscoveryServiceStub.Object;
     }
 
     private ClassContext CreateClassContext (Type type, Type mixinType)

@@ -13,7 +13,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs" Link="SharedSource\UnitTesting\NUnit\NUnitExtensions.cs" />
-    <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
     <PackageReference Include="Castle.Core" Version="4.4.0" />
   </ItemGroup>
   <ItemGroup>

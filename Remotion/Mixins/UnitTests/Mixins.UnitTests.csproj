@@ -17,11 +17,11 @@
     <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj" />
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
     <ProjectReference Include="..\..\Development\Mixins\Development.Mixins.csproj" />
+    <ProjectReference Include="..\..\Development\Moq\Development.Moq.csproj" />
     <ProjectReference Include="..\Core\Mixins.Core.csproj" />
     <ProjectReference Include="..\Samples\Mixins.Samples.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
     <PackageReference Include="Remotion.TypePipe.Development" Version="3.0.0-alpha.1" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

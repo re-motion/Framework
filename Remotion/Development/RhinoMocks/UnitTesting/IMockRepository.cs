@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.Development.UnitTesting
+namespace Remotion.Development.RhinoMocks.UnitTesting
 {
   public interface IMockRepository
   {

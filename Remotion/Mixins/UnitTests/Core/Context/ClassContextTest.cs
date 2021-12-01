@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins.Context;
@@ -25,7 +26,6 @@ using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.Context.Serialization;
 using Remotion.Mixins.Context.Suppression;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.Context
 {
@@ -300,13 +300,13 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void Serialize ()
     {
-      var serializer = MockRepository.GenerateMock<IClassContextSerializer>();
+      var serializer = new Mock<IClassContextSerializer>();
       var context = new ClassContext(typeof(BaseType1), new[] { CreateBT1Mixin1Context() }, new[] { typeof(int), typeof(string) });
-      context.Serialize(serializer);
+      context.Serialize(serializer.Object);
 
-      serializer.AssertWasCalled(mock => mock.AddClassType(context.Type));
-      serializer.AssertWasCalled(mock => mock.AddMixins(context.Mixins));
-      serializer.AssertWasCalled(mock => mock.AddComposedInterfaces(context.ComposedInterfaces));
+      serializer.Verify(mock => mock.AddClassType(context.Type), Times.AtLeastOnce());
+      serializer.Verify(mock => mock.AddMixins(context.Mixins), Times.AtLeastOnce());
+      serializer.Verify(mock => mock.AddComposedInterfaces(context.ComposedInterfaces), Times.AtLeastOnce());
     }
 
     [Test]
@@ -314,12 +314,12 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       var expectedContext = new ClassContext(typeof(BaseType1), new[] { CreateBT1Mixin1Context() }, new[] { typeof(int), typeof(string) });
 
-      var deserializer = MockRepository.GenerateMock<IClassContextDeserializer>();
-      deserializer.Expect(mock => mock.GetClassType()).Return(expectedContext.Type);
-      deserializer.Expect(mock => mock.GetMixins()).Return(expectedContext.Mixins);
-      deserializer.Expect(mock => mock.GetComposedInterfaces()).Return(expectedContext.ComposedInterfaces);
+      var deserializer = new Mock<IClassContextDeserializer>();
+      deserializer.Setup(mock => mock.GetClassType()).Returns(expectedContext.Type).Verifiable();
+      deserializer.Setup(mock => mock.GetMixins()).Returns(expectedContext.Mixins).Verifiable();
+      deserializer.Setup(mock => mock.GetComposedInterfaces()).Returns(expectedContext.ComposedInterfaces).Verifiable();
 
-      var context = ClassContext.Deserialize(deserializer);
+      var context = ClassContext.Deserialize(deserializer.Object);
 
       Assert.That(context, Is.EqualTo(expectedContext));
     }
@@ -335,19 +335,19 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     [Test]
     public void SuppressMixins ()
     {
-      var ruleStub1 = MockRepository.GenerateStub<IMixinSuppressionRule>();
+      var ruleStub1 = new Mock<IMixinSuppressionRule>();
       ruleStub1
-          .Stub(stub => stub.RemoveAffectedMixins(Arg<Dictionary<Type, MixinContext>>.Is.Anything))
-          .WhenCalled(mi => ((Dictionary<Type, MixinContext>)mi.Arguments[0]).Remove(typeof(int)));
+          .Setup(stub => stub.RemoveAffectedMixins(It.IsAny<Dictionary<Type, MixinContext>>()))
+          .Callback((Dictionary<Type, MixinContext> configuredMixinTypes) => configuredMixinTypes.Remove(typeof(int)));
 
-      var ruleStub2 = MockRepository.GenerateStub<IMixinSuppressionRule>();
+      var ruleStub2 = new Mock<IMixinSuppressionRule>();
       ruleStub2
-          .Stub(stub => stub.RemoveAffectedMixins(Arg<Dictionary<Type, MixinContext>>.Is.Anything))
-          .WhenCalled(mi => ((Dictionary<Type, MixinContext>)mi.Arguments[0]).Remove(typeof(double)));
+          .Setup(stub => stub.RemoveAffectedMixins(It.IsAny<Dictionary<Type, MixinContext>>()))
+          .Callback((Dictionary<Type, MixinContext> configuredMixinTypes) => configuredMixinTypes.Remove(typeof(double)));
 
       var original = ClassContextObjectMother.Create(typeof(NullTarget), typeof(int), typeof(double), typeof(string));
 
-      var result = original.SuppressMixins(new[] { ruleStub1, ruleStub2 });
+      var result = original.SuppressMixins(new[] { ruleStub1.Object, ruleStub2.Object });
 
       Assert.That(result.Mixins.Select(mc => mc.MixinType).ToArray(), Is.EquivalentTo(new[] { typeof(string) }));
     }

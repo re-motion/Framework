@@ -18,11 +18,11 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.Serialization;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.Context
 {
@@ -96,25 +96,25 @@ namespace Remotion.Mixins.UnitTests.Core.Context
     {
       var origin = new MixinContextOrigin("SomeKind", _someAssembly, "some location");
 
-      var serializerMock = MockRepository.GenerateStrictMock<IMixinContextOriginSerializer>();
-      serializerMock.Expect(mock => mock.AddKind(origin.Kind));
-      serializerMock.Expect(mock => mock.AddAssembly(origin.Assembly));
-      serializerMock.Expect(mock => mock.AddLocation(origin.Location));
+      var serializerMock = new Mock<IMixinContextOriginSerializer>(MockBehavior.Strict);
+      serializerMock.Setup(mock => mock.AddKind(origin.Kind)).Verifiable();
+      serializerMock.Setup(mock => mock.AddAssembly(origin.Assembly)).Verifiable();
+      serializerMock.Setup(mock => mock.AddLocation(origin.Location)).Verifiable();
 
-      origin.Serialize(serializerMock);
+      origin.Serialize(serializerMock.Object);
 
-      serializerMock.VerifyAllExpectations();
+      serializerMock.Verify();
     }
 
     [Test]
     public void Deserialize ()
     {
-      var deserializerStub = MockRepository.GenerateStub<IMixinContextOriginDeserializer>();
-      deserializerStub.Stub(stub => stub.GetKind()).Return("SomeKind");
-      deserializerStub.Stub(stub => stub.GetAssembly()).Return(_someAssembly);
-      deserializerStub.Stub(stub => stub.GetLocation()).Return("some location");
+      var deserializerStub = new Mock<IMixinContextOriginDeserializer>();
+      deserializerStub.Setup(stub => stub.GetKind()).Returns("SomeKind");
+      deserializerStub.Setup(stub => stub.GetAssembly()).Returns(_someAssembly);
+      deserializerStub.Setup(stub => stub.GetLocation()).Returns("some location");
 
-      var origin = MixinContextOrigin.Deserialize(deserializerStub);
+      var origin = MixinContextOrigin.Deserialize(deserializerStub.Object);
 
       Assert.That(origin.Kind, Is.EqualTo("SomeKind"));
       Assert.That(origin.Assembly, Is.EqualTo(_someAssembly));

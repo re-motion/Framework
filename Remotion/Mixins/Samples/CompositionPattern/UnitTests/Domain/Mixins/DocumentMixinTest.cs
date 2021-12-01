@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Samples.CompositionPattern.Core.Domain;
 using Remotion.Mixins.Samples.CompositionPattern.Core.Domain.Mixins;
@@ -25,7 +26,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
   public class DocumentMixinTest
   {
     private DocumentMixin _mixin;
-    private ITenantBoundObject _targetStub;
+    private Mock<ITenantBoundObject> _targetStub;
 
     [SetUp]
     public void SetUp ()
@@ -36,7 +37,9 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
     [Test]
     public void TargetCommitting_ReplacesNullTitle ()
     {
-      _targetStub.Tenant = "TheTenant";
+      _targetStub.SetupProperty(_ => _.Tenant);
+
+      _targetStub.Object.Tenant = "TheTenant";
       Assert.That(_mixin.Title, Is.Null);
 
       _mixin.TargetEvents.OnCommitting();
@@ -47,7 +50,9 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
     [Test]
     public void TargetCommitting_ReplacesEmptyTitle ()
     {
-      _targetStub.Tenant = "TheTenant";
+      _targetStub.SetupProperty(_ => _.Tenant);
+
+      _targetStub.Object.Tenant = "TheTenant";
       _mixin.Title = "";
 
       _mixin.TargetEvents.OnCommitting();

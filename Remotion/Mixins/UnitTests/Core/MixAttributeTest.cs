@@ -17,26 +17,24 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core
 {
   [TestFixture]
   public class MixAttributeTest
   {
-    private MockRepository _mockRepository;
-    private MixinConfigurationBuilder _configurationBuilderMock;
+    private Mock<MixinConfigurationBuilder> _configurationBuilderMock;
 
     private Assembly _assembly;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
-      _configurationBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration)null);
+      _configurationBuilderMock = new Mock<MixinConfigurationBuilder>(MockBehavior.Strict, (MixinConfiguration)null);
 
       _assembly = GetType().Assembly;
     }
@@ -66,7 +64,7 @@ namespace Remotion.Mixins.UnitTests.Core
       MixAttribute attribute = new MixAttribute(typeof(object), typeof(float));
 
       _configurationBuilderMock
-          .Expect(
+          .Setup(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
                   typeof(object),
@@ -75,11 +73,11 @@ namespace Remotion.Mixins.UnitTests.Core
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
                   CreateExpectedOrigin(attribute)))
-          .Return(null);
+          .Returns((MixinConfigurationBuilder)null)
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-      attribute.Apply(_configurationBuilderMock, _assembly);
-      _mockRepository.VerifyAll();
+      attribute.Apply(_configurationBuilderMock.Object, _assembly);
+      _configurationBuilderMock.Verify();
     }
 
     [Test]
@@ -89,7 +87,7 @@ namespace Remotion.Mixins.UnitTests.Core
       attribute.SuppressedMixins = new[] { typeof(int) };
 
       _configurationBuilderMock
-          .Expect(
+          .Setup(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
                   typeof(object),
@@ -98,11 +96,11 @@ namespace Remotion.Mixins.UnitTests.Core
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
                   CreateExpectedOrigin(attribute)))
-          .Return(null);
+          .Returns((MixinConfigurationBuilder)null)
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-      attribute.Apply(_configurationBuilderMock, _assembly);
-      _mockRepository.VerifyAll();
+      attribute.Apply(_configurationBuilderMock.Object, _assembly);
+      _configurationBuilderMock.Verify();
     }
 
     [Test]
@@ -112,7 +110,7 @@ namespace Remotion.Mixins.UnitTests.Core
       attribute.AdditionalDependencies = new[] { typeof(string) };
 
       _configurationBuilderMock
-          .Expect(
+          .Setup(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
                   typeof(object),
@@ -121,11 +119,11 @@ namespace Remotion.Mixins.UnitTests.Core
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
                   CreateExpectedOrigin(attribute)))
-          .Return(null);
+          .Returns((MixinConfigurationBuilder)null)
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-      attribute.Apply(_configurationBuilderMock, _assembly);
-      _mockRepository.VerifyAll();
+      attribute.Apply(_configurationBuilderMock.Object, _assembly);
+      _configurationBuilderMock.Verify();
     }
 
     [Test]
@@ -135,7 +133,7 @@ namespace Remotion.Mixins.UnitTests.Core
       attribute.MixinKind = MixinKind.Extending;
 
       _configurationBuilderMock
-          .Expect(
+          .Setup(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
                   typeof(object),
@@ -144,11 +142,11 @@ namespace Remotion.Mixins.UnitTests.Core
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
                   CreateExpectedOrigin(attribute)))
-          .Return(null);
+          .Returns((MixinConfigurationBuilder)null)
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-      attribute.Apply(_configurationBuilderMock, _assembly);
-      _mockRepository.VerifyAll();
+      attribute.Apply(_configurationBuilderMock.Object, _assembly);
+      _configurationBuilderMock.Verify();
     }
 
     [Test]
@@ -158,7 +156,7 @@ namespace Remotion.Mixins.UnitTests.Core
       attribute.MixinKind = MixinKind.Used;
 
       _configurationBuilderMock
-          .Expect(
+          .Setup(
               mock => mock.AddMixinToClass(
                   MixinKind.Used,
                   typeof(object),
@@ -167,11 +165,11 @@ namespace Remotion.Mixins.UnitTests.Core
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
                   CreateExpectedOrigin(attribute)))
-          .Return(null);
+          .Returns((MixinConfigurationBuilder)null)
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-      attribute.Apply(_configurationBuilderMock, _assembly);
-      _mockRepository.VerifyAll();
+      attribute.Apply(_configurationBuilderMock.Object, _assembly);
+      _configurationBuilderMock.Verify();
     }
 
     [Test]
@@ -181,7 +179,7 @@ namespace Remotion.Mixins.UnitTests.Core
       attribute.IntroducedMemberVisibility = MemberVisibility.Private;
 
       _configurationBuilderMock
-          .Expect(
+          .Setup(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
                   typeof(object),
@@ -190,11 +188,11 @@ namespace Remotion.Mixins.UnitTests.Core
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
                   CreateExpectedOrigin(attribute)))
-          .Return(null);
+          .Returns((MixinConfigurationBuilder)null)
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-      attribute.Apply(_configurationBuilderMock, _assembly);
-      _mockRepository.VerifyAll();
+      attribute.Apply(_configurationBuilderMock.Object, _assembly);
+      _configurationBuilderMock.Verify();
     }
 
     [Test]
@@ -204,7 +202,7 @@ namespace Remotion.Mixins.UnitTests.Core
       attribute.IntroducedMemberVisibility = MemberVisibility.Public;
 
       _configurationBuilderMock
-          .Expect(
+          .Setup(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
                   typeof(object),
@@ -213,11 +211,11 @@ namespace Remotion.Mixins.UnitTests.Core
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
                   CreateExpectedOrigin(attribute)))
-          .Return(null);
+          .Returns((MixinConfigurationBuilder)null)
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-      attribute.Apply(_configurationBuilderMock, _assembly);
-      _mockRepository.VerifyAll();
+      attribute.Apply(_configurationBuilderMock.Object, _assembly);
+      _configurationBuilderMock.Verify();
     }
 
     [Test]
@@ -228,7 +226,7 @@ namespace Remotion.Mixins.UnitTests.Core
       attribute.AdditionalDependencies = new[] { typeof(string) };
 
       _configurationBuilderMock
-          .Expect(
+          .Setup(
               mock => mock.AddMixinToClass(
                   MixinKind.Extending,
                   typeof(object),
@@ -237,11 +235,11 @@ namespace Remotion.Mixins.UnitTests.Core
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
                   CreateExpectedOrigin(attribute)))
-          .Throw(new InvalidOperationException("Supper?"));
+          .Throws(new InvalidOperationException("Supper?"))
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
       Assert.That(
-          () => attribute.Apply(_configurationBuilderMock, _assembly),
+          () => attribute.Apply(_configurationBuilderMock.Object, _assembly),
           Throws.InstanceOf<ConfigurationException>()
               .With.Message.EqualTo("Supper?"));
     }

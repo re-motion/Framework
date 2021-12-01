@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Samples.CompositionPattern.Core.Domain.Mixins;
 using Remotion.Mixins.Samples.CompositionPattern.Core.Framework;
@@ -25,7 +26,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
   public class TenantBoundMixinTest
   {
     private TenantBoundMixin _mixin;
-    private IDomainObject _targetStub;
+    private Mock<IDomainObject> _targetStub;
 
     [SetUp]
     public void SetUp ()

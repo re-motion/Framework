@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core
 {
@@ -28,29 +28,25 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Mock_ThisBaseConfig ()
     {
-      var repository = new MockRepository();
-
-      var thisMock = repository.StrictMock<IBaseType31>();
-      var baseMock = repository.StrictMock<IBaseType31>();
+      var thisMock = new Mock<IBaseType31>(MockBehavior.Strict);
+      var baseMock = new Mock<IBaseType31>(MockBehavior.Strict);
 
       var mixin = new BT3Mixin1();
 
-      MixinTargetMockUtility.MockMixinTarget(mixin, thisMock, baseMock);
+      MixinTargetMockUtility.MockMixinTarget(mixin, thisMock.Object, baseMock.Object);
 
-      Assert.That(mixin.Target, Is.SameAs(thisMock));
-      Assert.That(mixin.Next, Is.SameAs(baseMock));
+      Assert.That(mixin.Target, Is.SameAs(thisMock.Object));
+      Assert.That(mixin.Next, Is.SameAs(baseMock.Object));
     }
 
     [Test]
     public void Mock_ThisConfig ()
     {
-      var repository = new MockRepository();
-
-      var thisMock = repository.StrictMock<IBaseType32>();
+      var thisMock = new Mock<IBaseType32>(MockBehavior.Strict);
       var mixin = new BT3Mixin2();
 
-      MixinTargetMockUtility.MockMixinTarget(mixin, thisMock);
-      Assert.That(mixin.Target, Is.SameAs(thisMock));
+      MixinTargetMockUtility.MockMixinTarget(mixin, thisMock.Object);
+      Assert.That(mixin.Target, Is.SameAs(thisMock.Object));
     }
 
     [Test]
@@ -88,37 +84,31 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void CreateMixinWithMockedTarget_ThisBase ()
     {
-      var repository = new MockRepository();
+      var thisMock = new Mock<IBaseType31>(MockBehavior.Strict);
+      var baseMock = new Mock<IBaseType31>(MockBehavior.Strict);
 
-      var thisMock = repository.StrictMock<IBaseType31>();
-      var baseMock = repository.StrictMock<IBaseType31>();
-
-      BT3Mixin1 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin1, IBaseType31, IBaseType31>(thisMock, baseMock);
-      Assert.That(mixin.Target, Is.SameAs(thisMock));
-      Assert.That(mixin.Next, Is.SameAs(baseMock));
+      BT3Mixin1 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin1, IBaseType31, IBaseType31>(thisMock.Object, baseMock.Object);
+      Assert.That(mixin.Target, Is.SameAs(thisMock.Object));
+      Assert.That(mixin.Next, Is.SameAs(baseMock.Object));
     }
 
     [Test]
     public void CreateMixinWithMockedTarget_This ()
     {
-      var repository = new MockRepository();
-
-      var thisMock = repository.StrictMock<IBaseType32>();
+      var thisMock = new Mock<IBaseType32>(MockBehavior.Strict);
 
       BT3Mixin2 mixin =
-          MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin2, IBaseType32>(thisMock);
-      Assert.That(mixin.Target, Is.SameAs(thisMock));
+          MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin2, IBaseType32>(thisMock.Object);
+      Assert.That(mixin.Target, Is.SameAs(thisMock.Object));
     }
 
     [Test]
     public void CreateMixinWithMockedTarget_NonPublicCtor ()
     {
-      var repository = new MockRepository();
+      var thisMock = new Mock<IBaseType32>(MockBehavior.Strict);
 
-      var thisMock = repository.StrictMock<IBaseType32>();
-
-      BT3Mixin2 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin2, IBaseType32>(thisMock, 7);
-      Assert.That(mixin.Target, Is.SameAs(thisMock));
+      BT3Mixin2 mixin = MixinTargetMockUtility.CreateMixinWithMockedTarget<BT3Mixin2, IBaseType32>(thisMock.Object, 7);
+      Assert.That(mixin.Target, Is.SameAs(thisMock.Object));
       Assert.That(mixin.I, Is.EqualTo(7));
     }
 

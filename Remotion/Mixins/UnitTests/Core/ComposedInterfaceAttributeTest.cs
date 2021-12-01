@@ -15,23 +15,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Context.FluentBuilders;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core
 {
   [TestFixture]
   public class ComposedInterfaceAttributeTest
   {
-    private MockRepository _mockRepository;
-    private MixinConfigurationBuilder _configurationBuilderMock;
+    private Mock<MixinConfigurationBuilder> _configurationBuilderMock;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
-      _configurationBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration)null);
+      _configurationBuilderMock = new Mock<MixinConfigurationBuilder>(MockBehavior.Strict, (MixinConfiguration)null);
     }
 
     [Test]
@@ -45,14 +43,14 @@ namespace Remotion.Mixins.UnitTests.Core
     public void Apply ()
     {
       var attribute = new ComposedInterfaceAttribute(typeof(string));
-      ClassContextBuilder classBuilderMock = _mockRepository.StrictMock<ClassContextBuilder>(_configurationBuilderMock, typeof(string));
+      var classBuilderMock = new Mock<ClassContextBuilder>(MockBehavior.Strict, _configurationBuilderMock.Object, typeof(string));
 
-      _configurationBuilderMock.Expect(mock => mock.ForClass(typeof(string))).Return(classBuilderMock);
-      classBuilderMock.Expect(mock => mock.AddComposedInterface(typeof(IServiceProvider))).Return(classBuilderMock);
+      _configurationBuilderMock.Setup(mock => mock.ForClass(typeof(string))).Returns(classBuilderMock.Object).Verifiable();
+      classBuilderMock.Setup(mock => mock.AddComposedInterface(typeof(IServiceProvider))).Returns(classBuilderMock.Object).Verifiable();
 
-      _mockRepository.ReplayAll();
-      attribute.Apply(_configurationBuilderMock, typeof(IServiceProvider));
-      _mockRepository.VerifyAll();
+      attribute.Apply(_configurationBuilderMock.Object, typeof(IServiceProvider));
+      _configurationBuilderMock.Verify();
+      classBuilderMock.Verify();
     }
   }
 }

@@ -18,12 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.Definitions
 {
@@ -142,7 +142,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     [Test]
     public void ChildSpecificAccept ()
     {
-      var visitorMock = MockRepository.GenerateMock<IDefinitionVisitor>();
+      var visitorMock = new Mock<IDefinitionVisitor>();
       var definition = DefinitionObjectMother.CreateTargetClassDefinition(typeof(BaseType1), typeof(BT1Mixin1)).Mixins[0];
 
       var interfaceIntroduction = DefinitionObjectMother.CreateInterfaceIntroductionDefinition(definition);
@@ -154,22 +154,19 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
       var nextCallDependency = DefinitionObjectMother.CreateNextCallDependencyDefinition(definition);
       var mixinDependency = DefinitionObjectMother.CreateMixinDependencyDefinition(definition);
 
-      using (visitorMock.GetMockRepository().Ordered())
-      {
-        visitorMock.Expect(mock => mock.Visit(definition));
-        visitorMock.Expect(mock => mock.Visit(interfaceIntroduction));
-        visitorMock.Expect(mock => mock.Visit(nonInterfaceIntroduction));
-        visitorMock.Expect(mock => mock.Visit(attributeIntroduction));
-        visitorMock.Expect(mock => mock.Visit(nonAttributeIntroduction));
-        visitorMock.Expect(mock => mock.Visit(suppressedAttributeIntroduction));
-        visitorMock.Expect(mock => mock.Visit(targetCallDependency));
-        visitorMock.Expect(mock => mock.Visit(nextCallDependency));
-        visitorMock.Expect(mock => mock.Visit(mixinDependency));
-      }
+      var sequence = new MockSequence();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(definition)).Verifiable();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(interfaceIntroduction)).Verifiable();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(nonInterfaceIntroduction)).Verifiable();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(attributeIntroduction)).Verifiable();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(nonAttributeIntroduction)).Verifiable();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(suppressedAttributeIntroduction)).Verifiable();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(targetCallDependency)).Verifiable();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(nextCallDependency)).Verifiable();
+      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(mixinDependency)).Verifiable();
 
-      visitorMock.Replay();
-      PrivateInvoke.InvokeNonPublicMethod(definition, "ChildSpecificAccept", visitorMock);
-      visitorMock.VerifyAllExpectations();
+      PrivateInvoke.InvokeNonPublicMethod(definition, "ChildSpecificAccept", visitorMock.Object);
+      visitorMock.Verify();
     }
 
     [Test]
