@@ -23,7 +23,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -1943,7 +1942,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-    void IResourceDispatchTarget.Dispatch (IDictionary values)
+    void IResourceDispatchTarget.Dispatch (IDictionary<string, WebString> values)
     {
       ArgumentUtility.CheckNotNull ("values", values);
       Dispatch (values);
@@ -1951,18 +1950,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-    protected virtual void Dispatch (IDictionary values)
+    protected virtual void Dispatch (IDictionary<string, WebString> values)
     {
-      HybridDictionary fixedColumnValues = new HybridDictionary();
-      HybridDictionary optionsMenuItemValues = new HybridDictionary();
-      HybridDictionary listMenuItemValues = new HybridDictionary();
-      HybridDictionary propertyValues = new HybridDictionary();
+      var fixedColumnValues = new Dictionary<string, IDictionary<string, WebString>>();
+      var optionsMenuItemValues = new Dictionary<string, IDictionary<string, WebString>>();
+      var listMenuItemValues = new Dictionary<string, IDictionary<string, WebString>>();
+      var propertyValues = new Dictionary<string, WebString>();
 
       //  Parse the values
 
-      foreach (DictionaryEntry entry in values)
+      foreach (var entry in values)
       {
-        string key = (string) entry.Key;
+        string key = entry.Key;
         string[] keyParts = key.Split (new[] { ':' }, 3);
 
         //  Is a property/value entry?
@@ -1979,7 +1978,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           string elementID = keyParts[1];
           string property = keyParts[2];
 
-          IDictionary currentCollection = null;
+          IDictionary<string,IDictionary<string,WebString>> currentCollection = null;
 
           //  Switch to the right collection
           switch (collectionID)
@@ -2013,12 +2012,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           if (currentCollection != null)
           {
             //  Get the dictonary for the current element
-            IDictionary elementValues = (IDictionary) currentCollection[elementID];
-
             //  If no dictonary exists, create it and insert it into the elements hashtable.
-            if (elementValues == null)
+            if (!currentCollection.TryGetValue(elementID, out var elementValues))
             {
-              elementValues = new HybridDictionary();
+              elementValues = new Dictionary<string, WebString>();
               currentCollection[elementID] = elementValues;
             }
 

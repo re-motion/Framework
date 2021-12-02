@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections;
-using System.Collections.Specialized;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -24,7 +24,6 @@ using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.Utilities;
-using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Globalization
 {
@@ -44,6 +43,7 @@ public sealed class ResourceDispatcher
 
 	private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceDispatcher));
   private static ArrayList _registeredDispatchTargets = new ArrayList();
+  private static readonly WebStringConverter s_webStringConverter = new();
 
   /// <summary>
   ///   Dispatches resources.
@@ -62,7 +62,7 @@ public sealed class ResourceDispatcher
  
     const string prefix = "auto:";
 
-    IDictionary autoElements = ResourceDispatcher.GetResources (resourceManager, prefix);
+    var autoElements = ResourceDispatcher.GetResources (resourceManager, prefix);
 
     ResourceDispatcher.Dispatch (control, autoElements, resourceManager.Name);
   }
@@ -93,15 +93,15 @@ public sealed class ResourceDispatcher
   ///   Dispatches an IDictonary of elementID/IDictonary pairs to the specified control.
   /// </summary>
   /// <include file='..\..\doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/*' />
-  public static void Dispatch (Control control, IDictionary elements, string resourceSource)
+  public static void Dispatch (Control control, IDictionary<string, IDictionary<string, WebString>> elements, string resourceSource)
   {
     ArgumentUtility.CheckNotNull ("control", control);
     ArgumentUtility.CheckNotNull ("elements", elements);
 
     //  Dispatch the resources to the controls
-    foreach (DictionaryEntry elementsEntry in elements)
+    foreach (var elementsEntry in elements)
     {
-      string elementID = (string) elementsEntry.Key;
+      var elementID = elementsEntry.Key;
 
       Control? targetControl;
 
@@ -117,7 +117,7 @@ public sealed class ResourceDispatcher
       else
       {
         //  Pass the value to the control
-        IDictionary values = (IDictionary) elementsEntry.Value!; // TODO RM-8118: not null assertion
+        var values = elementsEntry.Value;
         IResourceDispatchTarget? resourceDispatchTarget = targetControl as IResourceDispatchTarget;
 
         if (resourceDispatchTarget != null) //  Control knows how to dispatch
@@ -132,20 +132,28 @@ public sealed class ResourceDispatcher
   ///   Dispatches the resources passed in <paramref name="values"/> to the properties of <paramref name="obj"/>.
   /// </summary>
   /// <include file='..\..\doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/*' />
-  public static void DispatchGeneric (object obj, IDictionary values)
+  public static void DispatchGeneric (object obj, IDictionary<string, WebString> values)
   {
     ArgumentUtility.CheckNotNull ("obj", obj);
     ArgumentUtility.CheckNotNull ("values", values);
 
-    foreach (DictionaryEntry entry in values)
+    foreach (var entry in values)
     {
-      string propertyName = (string) entry.Key;
-      string? propertyValue = (string?) entry.Value;
+      var propertyName = entry.Key;
+      var propertyValue = entry.Value;
 
-      PropertyInfo? property = obj.GetType ().GetProperty (propertyName, typeof (string));
-      if (property != null)
+      PropertyInfo? property = obj.GetType().GetProperty (propertyName);
+      if (property?.PropertyType == typeof (WebString))
       {
-        property.SetValue (obj, propertyValue, new object[0]); 
+        property.SetValue (obj, propertyValue, Array.Empty<object>());
+      }
+      else if (property?.PropertyType == typeof (PlainTextString))
+      {
+        property.SetValue (obj, propertyValue.ToPlainTextString(), Array.Empty<object>());
+      }
+      else if (property?.PropertyType == typeof (string))
+      {
+        property.SetValue (obj, propertyValue.GetValue(), Array.Empty<object>());
       }
       else if (obj is Control)
       {
@@ -153,7 +161,7 @@ public sealed class ResourceDispatcher
         //  Test for HtmlControl, they can take anything
         HtmlControl? genericHtmlControl = control as HtmlControl;
         if (genericHtmlControl != null)
-          genericHtmlControl.Attributes[propertyName] = propertyValue;
+          genericHtmlControl.Attributes[propertyName] = propertyValue.ToString (WebStringEncoding.Attribute);
         else //  Non-HtmlControls require valid property
           s_log.Warn ("Control '" + control.ID + "' of type '" + control.GetType().GetFullNameSafe() + "' does not contain a public property '" + propertyName + "'.");
       }
@@ -172,7 +180,7 @@ public sealed class ResourceDispatcher
   /// <returns>
   ///   Hashtable&lt;string elementID, IDictionary&lt;string property, string value&gt; elementValues&gt;
   /// </returns>
-  private static IDictionary GetResources (IResourceManager resourceManager, string? prefix)
+  private static IDictionary<string, IDictionary<string, WebString>> GetResources (IResourceManager resourceManager, string? prefix)
   {
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
@@ -180,7 +188,7 @@ public sealed class ResourceDispatcher
       prefix = String.Empty;
 
     // Hashtable<string elementID, IDictionary<string property, string value> elementValues>
-    IDictionary elements = new Hashtable (); 
+    var elements = new Dictionary<string, IDictionary<string, WebString>>();
 
     var resources = resourceManager.GetAllStrings (prefix);
     foreach (var resourceEntry in resources)
@@ -207,17 +215,15 @@ public sealed class ResourceDispatcher
         //  using the argument as key and the resources' value as the value.
 
         //  Get the dictonary for the current element
-        IDictionary? elementValues = (IDictionary?) elements[elementID];
-
         //  If no dictonary exists, create it and insert it into the elements hashtable.
-        if (elementValues == null)
+        if (!elements.TryGetValue(elementID, out var elementValues))
         {
-          elementValues = new HybridDictionary ();
+          elementValues = new Dictionary<string, WebString>();
           elements[elementID] = elementValues;
         }
 
         //  Insert the argument and resource's value into the dictonary for the specified element.
-        elementValues.Add (property, resourceEntry.Value);
+        elementValues.Add (property, (WebString) s_webStringConverter.ConvertFromString (resourceEntry.Value));
       }
     }
 
