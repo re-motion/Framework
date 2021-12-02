@@ -783,7 +783,7 @@ namespace Remotion.Web.UI.Controls
       else
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeHead);
       if (!node.ToolTip.IsEmpty)
-        node.ToolTip.AddAttribute (writer, HtmlTextWriterAttribute.Title);
+        node.ToolTip.AddAttributeTo (writer, HtmlTextWriterAttribute.Title);
 
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
@@ -807,7 +807,7 @@ namespace Remotion.Web.UI.Controls
         if (!node.Text.IsEmpty)
         {
           writer.RenderBeginTag (HtmlTextWriterTag.Span);
-          node.Text.Write (writer);
+          node.Text.WriteTo (writer);
           writer.RenderEndTag();
         }
       }
@@ -825,13 +825,13 @@ namespace Remotion.Web.UI.Controls
       if (badge == null || badge.Value.IsEmpty)
         return;
 
-      badge.Description.AddAttribute (writer, HtmlTextWriterAttribute.Title);
+      badge.Description.AddAttributeTo (writer, HtmlTextWriterAttribute.Title);
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeBadge);
       writer.AddAttribute (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       writer.RenderBeginTag(HtmlTextWriterTag.Span);
-      badge.Value.Write (writer);
+      badge.Value.WriteTo (writer);
       writer.RenderEndTag();
 
       writer.RenderEndTag();
@@ -841,7 +841,7 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
         writer.RenderBeginTag (HtmlTextWriterTag.Span);
         writer.Write (".");
-        badge.Description.Write (writer);
+        badge.Description.WriteTo (writer);
         writer.RenderEndTag();
       }
     }

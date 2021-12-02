@@ -116,7 +116,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         cssClass += " " + CssClassDisabled;
       renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
       if (HasCustomTitle (renderingContext) && HasTitleText (renderingContext))
-        renderingContext.Control.TitleText.AddAttribute (renderingContext.Writer, HtmlTextWriterAttribute.Title);
+        renderingContext.Control.TitleText.AddAttributeTo (renderingContext.Writer, HtmlTextWriterAttribute.Title);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
       if (HasCustomTitle (renderingContext))
@@ -154,7 +154,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       if (HasTitleText (renderingContext))
       {
-        renderingContext.Control.TitleText.Write (renderingContext.Writer);
+        renderingContext.Control.TitleText.WriteTo (renderingContext.Writer);
       }
 
       renderingContext.Writer.RenderEndTag();
@@ -168,7 +168,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       if (HasTitleText (renderingContext))
       {
-        renderingContext.Control.TitleText.Write (renderingContext.Writer);
+        renderingContext.Control.TitleText.WriteTo (renderingContext.Writer);
       }
       else if (HasTitleIcon (renderingContext))
       {

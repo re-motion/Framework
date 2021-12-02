@@ -199,7 +199,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       if (showText)
       {
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-        menuItem.Text.Write (renderingContext.Writer);
+        menuItem.Text.WriteTo (renderingContext.Writer);
         renderingContext.Writer.RenderEndTag();
       }
 

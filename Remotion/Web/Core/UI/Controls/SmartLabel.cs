@@ -94,7 +94,7 @@ public class SmartLabel: WebControl, IControl
     RenderBeginTag (writer);
     var text = GetText();
     // Do not HTML encode
-    text.Write (writer);
+    text.WriteTo (writer);
     RenderEndTag (writer);
   }
 

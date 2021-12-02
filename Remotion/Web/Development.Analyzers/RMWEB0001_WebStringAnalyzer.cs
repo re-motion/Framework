@@ -132,7 +132,7 @@ namespace Web.Development.Analyzers
               ctx.Node.GetLocation(),
               symbols.HtmlTextWriterWriteMethodSymbol.ToString(),
               argumentType.ToString(),
-              $"Use '{argumentType.ToString()}.Write(HtmlTextWriter)' instead.");
+              $"Use '{argumentType.ToString()}.WriteTo(HtmlTextWriter)' instead.");
           ctx.ReportDiagnostic (diagnostic);
         }
       }

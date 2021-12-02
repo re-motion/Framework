@@ -47,7 +47,7 @@ namespace Remotion.Web.Utilities
     [Obsolete ("HtmlUtility.HtmlEncode(string, HtmlTextWriter) is obsolete. Use WebString.CreateFromText(string).Write(HtmlTextWriter) instead. (Version 3.0.0)")]
     public static void HtmlEncode (string nonHtmlString, HtmlTextWriter writer)
     {
-      WebString.CreateFromText (nonHtmlString).Write (writer);
+      WebString.CreateFromText (nonHtmlString).WriteTo (writer);
     }
 
     private static readonly Regex s_stripHtmlTagsRegex = new Regex ("<.*?>", RegexOptions.Compiled);

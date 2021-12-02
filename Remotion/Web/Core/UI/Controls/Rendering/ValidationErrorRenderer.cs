@@ -112,7 +112,7 @@ namespace Remotion.Web.UI.Controls.Rendering
 
       foreach (var validationError in validationErrors)
       {
-        validationError.Write (htmlTextWriter);
+        validationError.WriteTo (htmlTextWriter);
         htmlTextWriter.WriteBreak();
       }
 

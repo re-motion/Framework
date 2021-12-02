@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.ColumnDefinition.Icon.Render (renderingContext.Writer, renderingContext.Control);
 
       if (!renderingContext.ColumnDefinition.Text.IsEmpty)
-        renderingContext.ColumnDefinition.Text.Write (renderingContext.Writer);
+        renderingContext.ColumnDefinition.Text.WriteTo (renderingContext.Writer);
     }
 
     private void RenderCellIcon (
