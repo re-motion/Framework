@@ -15,27 +15,28 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Web;
 using NUnit.Framework;
 using Remotion.Context;
-using Remotion.Development.UnitTesting;
-using Remotion.Development.Web.UnitTesting.AspNetFramework;
-using Remotion.Web.Context;
 
-namespace Remotion.Web.UnitTests.Core.Context
+namespace Remotion.UnitTests.Context
 {
+#if NETFRAMEWORK
   [TestFixture]
-  public class HttpContextStorageProviderTest
+  public class CallContextStorageProviderTest
   {
-    private HttpContextStorageProvider _provider;
-    private HttpContext _testContext;
+    private CallContextStorageProvider _provider;
 
     [SetUp]
     public void SetUp ()
     {
-      _testContext = HttpContextHelper.CreateHttpContext("x", "y", "z");
-      HttpContext.Current = _testContext;
-      _provider = new HttpContextStorageProvider();
+      _provider = new CallContextStorageProvider();
+      _provider.FreeData("Foo");
+    }
+
+    [TearDown]
+    public void TearDown ()
+    {
+      _provider.FreeData("Foo");
     }
 
     [Test]
@@ -49,7 +50,6 @@ namespace Remotion.Web.UnitTests.Core.Context
     {
       _provider.SetData("Foo", 45);
       Assert.That(_provider.GetData("Foo"), Is.EqualTo(45));
-      Assert.That(_testContext.Items["Foo"], Is.EqualTo(45));
     }
 
     [Test]
@@ -58,7 +58,6 @@ namespace Remotion.Web.UnitTests.Core.Context
       _provider.SetData("Foo", 45);
       _provider.SetData("Foo", null);
       Assert.That(_provider.GetData("Foo"), Is.Null);
-      Assert.That(_testContext.Items["Foo"], Is.Null);
     }
 
     [Test]
@@ -67,7 +66,6 @@ namespace Remotion.Web.UnitTests.Core.Context
       _provider.SetData("Foo", 45);
       _provider.FreeData("Foo");
       Assert.That(_provider.GetData("Foo"), Is.Null);
-      Assert.That(_testContext.Items.Contains("Foo"), Is.False);
     }
 
     [Test]
@@ -75,29 +73,7 @@ namespace Remotion.Web.UnitTests.Core.Context
     {
       _provider.FreeData("Foo");
       Assert.That(_provider.GetData("Foo"), Is.Null);
-      Assert.That(_testContext.Items.Contains("Foo"), Is.False);
-    }
-
-    [Test]
-    public void FallbackToAsyncLocal_IfNoCurrentHttpContext ()
-    {
-      HttpContext.Current = null;
-
-#if NETFRAMEWORK
-      var fallbackProvider = (CallContextStorageProvider)PrivateInvoke.GetNonPublicField(_provider, "_fallbackProvider");
-#else
-// Ignore the obsolete warnings for AsyncLocalStorageProvider
-#pragma warning disable 618
-      var fallbackProvider = (AsyncLocalStorageProvider)PrivateInvoke.GetNonPublicField(_provider, "_fallbackProvider");
-#pragma warning restore 618
-#endif
-
-      _provider.SetData("Foo", 123);
-      Assert.That(_provider.GetData("Foo"), Is.EqualTo(123));
-      Assert.That(fallbackProvider.GetData("Foo"), Is.EqualTo(123));
-
-      _provider.FreeData("Foo");
-      Assert.That(fallbackProvider.GetData("Foo"), Is.Null);
     }
   }
+#endif
 }

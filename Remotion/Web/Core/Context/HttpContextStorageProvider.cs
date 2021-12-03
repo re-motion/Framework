@@ -25,7 +25,14 @@ namespace Remotion.Web.Context
   [ImplementationFor(typeof(ISafeContextStorageProvider), Position = 0)]
   public class HttpContextStorageProvider : ISafeContextStorageProvider
   {
+#if NETFRAMEWORK
+    private readonly CallContextStorageProvider _fallbackProvider = new();
+#else
+// Ignore the obsolete warnings for AsyncLocalStorageProvider
+#pragma warning disable 618
     private readonly AsyncLocalStorageProvider _fallbackProvider = new();
+#pragma warning restore 618
+#endif
 
     public object? GetData (string key)
     {

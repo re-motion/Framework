@@ -24,6 +24,9 @@ using Remotion.Context;
 using System.Runtime.Remoting.Messaging;
 #endif
 
+// Ignore the obsolete warnings for AsyncLocalStorageProvider
+#pragma warning disable 618
+
 namespace Remotion.UnitTests.Context
 {
   [TestFixture]
