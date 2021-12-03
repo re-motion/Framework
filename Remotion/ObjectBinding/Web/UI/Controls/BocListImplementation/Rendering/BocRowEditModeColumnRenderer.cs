@@ -186,7 +186,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         icon.Render (renderingContext.Writer, renderingContext.Control);
       }
       if (hasText)
-        text.Write (renderingContext.Writer);
+        text.WriteTo (renderingContext.Writer);
 
       c.RenderEnd (renderingContext.Writer);
     }

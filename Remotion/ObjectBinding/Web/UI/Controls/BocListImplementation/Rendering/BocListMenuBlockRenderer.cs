@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         availableViewsListTitle = renderingContext.Control.AvailableViewsListTitle;
       }
 
-      availableViewsListTitle.Write (renderingContext.Writer);
+      availableViewsListTitle.WriteTo (renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
 
       renderingContext.Writer.Write (c_whiteSpace);

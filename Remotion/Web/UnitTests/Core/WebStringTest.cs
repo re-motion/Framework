@@ -54,7 +54,7 @@ namespace Remotion.Web.UnitTests.Core
     {
       var webString = WebString.CreateFromText (null);
 
-      var renderedString = ExecuteWithHtmlTextWriter (webString.Write);
+      var renderedString = ExecuteWithHtmlTextWriter (webString.WriteTo);
       Assert.That (renderedString, Is.EqualTo (string.Empty));
     }
 
@@ -63,7 +63,7 @@ namespace Remotion.Web.UnitTests.Core
     {
       var webString = WebString.CreateFromText (string.Empty);
 
-      var renderedString = ExecuteWithHtmlTextWriter (webString.Write);
+      var renderedString = ExecuteWithHtmlTextWriter (webString.WriteTo);
       Assert.That (renderedString, Is.EqualTo (string.Empty));
     }
 
@@ -73,7 +73,7 @@ namespace Remotion.Web.UnitTests.Core
       var stringValue = "aoe   \" & ' < > é \r \n \r\n";
       var webString = WebString.CreateFromText (stringValue);
 
-      var renderedString = ExecuteWithHtmlTextWriter (webString.Write);
+      var renderedString = ExecuteWithHtmlTextWriter (webString.WriteTo);
       Assert.That (renderedString, Is.EqualTo ("aoe &#160; &quot; &amp; &#39; &lt; &gt; &#233; <br /> <br /> <br />"));
     }
 
@@ -82,7 +82,7 @@ namespace Remotion.Web.UnitTests.Core
     {
       var webString = WebString.CreateFromHtml (null);
 
-      var renderedString = ExecuteWithHtmlTextWriter (webString.Write);
+      var renderedString = ExecuteWithHtmlTextWriter (webString.WriteTo);
       Assert.That (renderedString, Is.EqualTo (string.Empty));
     }
 
@@ -91,7 +91,7 @@ namespace Remotion.Web.UnitTests.Core
     {
       var webString = WebString.CreateFromHtml (string.Empty);
 
-      var renderedString = ExecuteWithHtmlTextWriter (webString.Write);
+      var renderedString = ExecuteWithHtmlTextWriter (webString.WriteTo);
       Assert.That (renderedString, Is.EqualTo (string.Empty));
     }
 
@@ -101,7 +101,7 @@ namespace Remotion.Web.UnitTests.Core
       var stringValue = "aoe   \" & ' < > é \r \n \r\n";
       var webString = WebString.CreateFromHtml (stringValue);
 
-      var renderedString = ExecuteWithHtmlTextWriter (webString.Write);
+      var renderedString = ExecuteWithHtmlTextWriter (webString.WriteTo);
       Assert.That (renderedString, Is.EqualTo (stringValue));
     }
 
@@ -113,7 +113,7 @@ namespace Remotion.Web.UnitTests.Core
       var renderedString = ExecuteWithHtmlTextWriter (
           writer =>
           {
-            webString.AddAttribute (writer, HtmlTextWriterAttribute.Class);
+            webString.AddAttributeTo (writer, HtmlTextWriterAttribute.Class);
             writer.RenderBeginTag ("a");
           });
       Assert.That (renderedString, Is.EqualTo ("<a class=\"\">"));
@@ -127,7 +127,7 @@ namespace Remotion.Web.UnitTests.Core
       var renderedString = ExecuteWithHtmlTextWriter (
           writer =>
           {
-            webString.AddAttribute (writer, HtmlTextWriterAttribute.Class);
+            webString.AddAttributeTo (writer, HtmlTextWriterAttribute.Class);
             writer.RenderBeginTag ("a");
           });
       Assert.That (renderedString, Is.EqualTo ("<a class=\"\">"));
@@ -142,7 +142,7 @@ namespace Remotion.Web.UnitTests.Core
       var renderedString = ExecuteWithHtmlTextWriter (
           writer =>
           {
-            webString.AddAttribute (writer, HtmlTextWriterAttribute.Class);
+            webString.AddAttributeTo (writer, HtmlTextWriterAttribute.Class);
             writer.RenderBeginTag ("a");
           });
       Assert.That (renderedString, Is.EqualTo ("<a class=\"aoe   &quot; &amp; &#39; &lt; > é \r \n \r\n\">"));
@@ -157,7 +157,7 @@ namespace Remotion.Web.UnitTests.Core
       var renderedString = ExecuteWithHtmlTextWriter (
           writer =>
           {
-            webString.AddAttribute (writer, HtmlTextWriterAttribute.Cols);
+            webString.AddAttributeTo (writer, HtmlTextWriterAttribute.Cols);
             writer.RenderBeginTag ("a");
           });
       Assert.That (renderedString, Is.EqualTo ("<a cols=\"aoe   &quot; &amp; &#39; &lt; > é \r \n \r\n\">"));
@@ -172,7 +172,7 @@ namespace Remotion.Web.UnitTests.Core
       var renderedString = ExecuteWithHtmlTextWriter (
           writer =>
           {
-            webString.AddAttribute (writer, "class");
+            webString.AddAttributeTo (writer, "class");
             writer.RenderBeginTag ("a");
           });
       Assert.That (renderedString, Is.EqualTo ("<a class=\"aoe   &quot; &amp; &#39; &lt; > é \r \n \r\n\">"));
@@ -187,7 +187,7 @@ namespace Remotion.Web.UnitTests.Core
       var renderedString = ExecuteWithHtmlTextWriter (
           writer =>
           {
-            webString.AddAttribute (writer, HtmlTextWriterAttribute.Cols);
+            webString.AddAttributeTo (writer, HtmlTextWriterAttribute.Cols);
             writer.RenderBeginTag ("a");
           });
       Assert.That (renderedString, Is.EqualTo ($"<a cols=\"{stringValue}\">"));
@@ -202,7 +202,7 @@ namespace Remotion.Web.UnitTests.Core
       var renderedString = ExecuteWithHtmlTextWriter (
           writer =>
           {
-            webString.AddAttribute (writer, HtmlTextWriterAttribute.Class);
+            webString.AddAttributeTo (writer, HtmlTextWriterAttribute.Class);
             writer.RenderBeginTag ("a");
           });
       Assert.That (renderedString, Is.EqualTo ($"<a class=\"{stringValue}\">"));
@@ -217,7 +217,7 @@ namespace Remotion.Web.UnitTests.Core
       var renderedString = ExecuteWithHtmlTextWriter (
           writer =>
           {
-            webString.AddAttribute (writer, "class");
+            webString.AddAttributeTo (writer, "class");
             writer.RenderBeginTag ("a");
           });
       Assert.That (renderedString, Is.EqualTo ($@"<a class=""{stringValue}"">"));

@@ -338,7 +338,7 @@ namespace Remotion.Web.UI.Controls
         if (hasText)
         {
           writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin text span
-          Text.Write (writer);
+          Text.WriteTo (writer);
           writer.RenderEndTag(); // End text span
         }
       }

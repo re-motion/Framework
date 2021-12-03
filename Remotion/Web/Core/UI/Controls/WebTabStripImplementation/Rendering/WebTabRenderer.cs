@@ -221,7 +221,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       if (hasText)
       {
         renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin text span
-        tab.Text.Write(renderingContext.Writer);
+        tab.Text.WriteTo(renderingContext.Writer);
         renderingContext.Writer.RenderEndTag(); // End text span
       }
       if (!hasIcon && !hasText)

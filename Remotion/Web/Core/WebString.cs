@@ -117,7 +117,7 @@ namespace Remotion.Web
     /// The value is escaped if necessary, depending on the <see cref="Type"/> of the <see cref="WebString"/>.
     /// </summary>
     /// <param name="writer">The <see cref="HtmlTextWriter"/> where the value will be appended to. Must not be <see langword="null" />.</param>
-    public void Write ([NotNull] HtmlTextWriter writer)
+    public void WriteTo ([NotNull] HtmlTextWriter writer)
     {
       ArgumentUtility.CheckNotNull (nameof (writer), writer);
 
@@ -152,7 +152,7 @@ namespace Remotion.Web
     /// </remarks>
     /// <param name="writer">The <see cref="HtmlTextWriter"/> where the attribute will be added. Must not be <see langword="null" />.</param>
     /// <param name="attribute">The attribute that is to be added.</param>
-    public void AddAttribute ([NotNull] HtmlTextWriter writer, HtmlTextWriterAttribute attribute)
+    public void AddAttributeTo ([NotNull] HtmlTextWriter writer, HtmlTextWriterAttribute attribute)
     {
       ArgumentUtility.CheckNotNull (nameof (writer), writer);
 
@@ -178,7 +178,7 @@ namespace Remotion.Web
     /// </remarks>
     /// <param name="writer">The <see cref="HtmlTextWriter"/> where the attribute will be added. Must not be <see langword="null" />.</param>
     /// <param name="attribute">The name of the attribute that is to be added. Must not be <see langword="null" /> or empty.</param>
-    public void AddAttribute ([NotNull] HtmlTextWriter writer, [NotNull] string attribute)
+    public void AddAttributeTo ([NotNull] HtmlTextWriter writer, [NotNull] string attribute)
     {
       ArgumentUtility.CheckNotNull (nameof (writer), writer);
       ArgumentUtility.CheckNotNullOrEmpty (nameof (attribute), attribute);
@@ -259,7 +259,7 @@ namespace Remotion.Web
           {
             using (var htmlTextWriter = new HtmlTextWriter (stringWriter))
             {
-              Write (htmlTextWriter);
+              WriteTo (htmlTextWriter);
               return stringWriter.ToString();
             }
           }

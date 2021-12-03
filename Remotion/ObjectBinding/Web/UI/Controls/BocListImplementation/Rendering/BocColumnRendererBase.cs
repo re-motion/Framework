@@ -224,7 +224,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!renderingContext.ColumnDefinition.ShowColumnTitle)
         renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, _cssClasses.CssClassScreenReaderText);
       renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      columnTitle.Write (renderingContext.Writer);
+      columnTitle.WriteTo (renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
       if (!renderingContext.ColumnDefinition.ShowColumnTitle)
       {

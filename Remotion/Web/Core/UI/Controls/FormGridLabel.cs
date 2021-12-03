@@ -177,7 +177,7 @@ public class FormGridLabel: Label, ISmartControl
     if (HasControls())
       base.RenderContents (writer);
     else
-      Text.Write (writer);
+      Text.WriteTo (writer);
   }
 }
 

@@ -47,7 +47,7 @@ namespace Remotion.Web.UI.Controls
       if (HasControls())
         base.RenderContents (writer);
       else
-        Text.Write(writer);
+        Text.WriteTo(writer);
     }
 
     public new IPage? Page

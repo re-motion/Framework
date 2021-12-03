@@ -93,7 +93,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
       if (renderingContext.Control.StatusText.IsEmpty)
         renderingContext.Writer.Write ("&nbsp;");
       else
-        renderingContext.Control.StatusText.Write (renderingContext.Writer);
+        renderingContext.Control.StatusText.WriteTo (renderingContext.Writer);
 
       renderingContext.Writer.RenderEndTag (); // End status cell
       renderingContext.Writer.RenderEndTag (); // End sub menu row
