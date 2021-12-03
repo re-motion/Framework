@@ -404,10 +404,19 @@ class DropDownMenu
     const menuButton = document.getElementById (menuID)!;
     menuButton.closest ('div, td, th, body')!.append (div);
 
+    ul.addEventListener ('mouseleave', function ()
+    {
+      ul.querySelectorAll ("li").forEach (b => b.classList.remove (DropDownMenu._itemSelectedClassName));
+    });
     ul.addEventListener ('mouseover', function (event)
     {
       var eventTarget = DropDownMenu.GetTarget (event, "LI");
+
       ul.querySelectorAll ("li").forEach (b => b.classList.remove (DropDownMenu._itemSelectedClassName));
+
+      if (eventTarget == null)
+        return;
+
       if (eventTarget.firstChild != null && eventTarget.firstChild.nodeName.toLowerCase() === 'a')
       {
         eventTarget.classList.add (DropDownMenu._itemSelectedClassName);
@@ -880,12 +889,12 @@ class DropDownMenu
     return isEnabled;
   }
 
-  private static GetTarget (event: MouseEvent, tagName: string): Element
+  private static GetTarget (event: MouseEvent, tagName: string): Nullable<Element>
   {
     var element: Nullable<Element> = event.target as Element;
     while (element && element.tagName != tagName)
       element = element.parentNode as Nullable<Element>;
-    return element!;
+    return element;
   }
 
   private static FocusHandler (): void
