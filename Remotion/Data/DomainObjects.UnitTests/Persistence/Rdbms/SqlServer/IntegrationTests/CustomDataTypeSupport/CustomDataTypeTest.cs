@@ -62,8 +62,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void InsertAndGetObject_WithCompoundDataType ()
     {
-      SetDatabaseModifyable();
-
       ObjectID id;
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
@@ -86,8 +84,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void InsertAndGetObject_WithCompoundDataType_Null ()
     {
-      SetDatabaseModifyable();
-
       ObjectID id;
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
@@ -108,8 +104,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void InsertAndGetObject_WithSimpleDataType ()
     {
-      SetDatabaseModifyable();
-
       ObjectID id;
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
@@ -135,15 +129,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       {
         var obj = ClassWithCustomDataType.NewObject();
         obj.SimpleDataTypeValue = new SimpleDataType(new string('x', 200));
-        Assert.That(() => ClientTransaction.Current.Commit(), Throws.TypeOf<PropertyValueTooLongException>());
+
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          Assert.That(() => ClientTransaction.Current.Commit(), Throws.TypeOf<PropertyValueTooLongException>());
+        }
       }
     }
 
     [Test]
     public void LinqQuery_WithSimpleDataType ()
     {
-      SetDatabaseModifyable();
-
       ObjectID id;
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {

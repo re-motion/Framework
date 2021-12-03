@@ -24,12 +24,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
   [TestFixture]
   public class TableInheritanceDomainObjectTest : TableInheritanceMappingTest
   {
-    public override void OneTimeSetUp ()
-    {
-      base.OneTimeSetUp();
-      SetDatabaseModifyable();
-    }
-
     [Test]
     public void OneToManyRelationToAbstractClass ()
     {

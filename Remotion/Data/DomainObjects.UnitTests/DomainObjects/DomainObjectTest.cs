@@ -30,12 +30,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class DomainObjectTest : ClientTransactionBaseTest
   {
-    public override void OneTimeSetUp ()
-    {
-      base.OneTimeSetUp();
-      SetDatabaseModifyable();
-    }
-
     [Test]
     public void LoadingOfSimpleObject ()
     {

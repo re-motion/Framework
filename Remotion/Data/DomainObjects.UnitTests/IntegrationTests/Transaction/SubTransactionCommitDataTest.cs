@@ -34,7 +34,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         order.OrderNumber = 5;
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransactionScope.CurrentTransaction.Commit();
+        }
 
         Assert.That(order.OrderNumber, Is.EqualTo(5));
       }
@@ -51,7 +54,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         classWithAllDataTypes.Int32Property = 7;
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransactionScope.CurrentTransaction.Commit();
+        }
       }
 
       Assert.That(classWithAllDataTypes.Int32Property, Is.EqualTo(7));
@@ -65,7 +71,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         order = DomainObjectIDs.Order1.GetObject<Order>();
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransactionScope.CurrentTransaction.Commit();
+        }
         Assert.That(order.OrderNumber, Is.EqualTo(1));
       }
 
@@ -78,7 +87,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        ClientTransactionScope.CurrentTransaction.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransactionScope.CurrentTransaction.Commit();
+        }
         Assert.That(order.OrderNumber, Is.EqualTo(1));
       }
 
@@ -91,7 +103,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Order order = Order.NewObject();
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        ClientTransactionScope.CurrentTransaction.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransactionScope.CurrentTransaction.Commit();
+        }
         Assert.That(order.OrderNumber, Is.EqualTo(0));
       }
 
@@ -116,7 +131,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         newOrder.OrderItems.Add(orderItem);
         originalTicket.Delete(); // dependent object
         originalOrder.Delete();
-        ClientTransaction.Current.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransaction.Current.Commit();
+        }
         Assert.That(orderItem.Order, Is.SameAs(newOrder));
         Assert.That(orderItem.Properties.Find("Order").GetRelatedObjectID(), Is.EqualTo(newOrder.ID));
       }
@@ -148,8 +166,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         newProduct.Reviews.EnsureDataComplete();
         productReview.Product = newProduct;
         originalProduct.Delete();
-        ClientTransaction.Current.Commit();
-
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransaction.Current.Commit();
+        }
         Assert.That(productReview.Product, Is.SameAs(newProduct));
         Assert.That(productReview.Properties.Find("Product").GetRelatedObjectID(), Is.EqualTo(newProduct.ID));
       }
@@ -178,7 +198,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         originalProduct.Delete();
         Assert.That(newProduct.Reviews.IsDataComplete, Is.False);
 
-        ClientTransaction.Current.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransaction.Current.Commit();
+        }
         Assert.That(productReview.Product, Is.SameAs(newProduct));
         Assert.That(productReview.Properties.Find("Product").GetRelatedObjectID(), Is.EqualTo(newProduct.ID));
       }
@@ -209,7 +232,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         originalItem.Delete(); // delete old item
         originalOrder.Delete();
-        ClientTransaction.Current.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransaction.Current.Commit();
+        }
         Assert.That(orderTicket.Order, Is.SameAs(newOrder));
         Assert.That(orderTicket.Properties.Find("Order").GetRelatedObjectID(), Is.EqualTo(newOrder.ID));
       }
@@ -240,7 +266,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         loadedOrder.OrderNumber = 13;
         newClassWithAllDataTypes.Int16Property = 47;
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransactionScope.CurrentTransaction.Commit();
+        }
 
         Assert.That(loadedOrder.State.IsUnchanged, Is.True);
         Assert.That(newClassWithAllDataTypes.State.IsUnchanged, Is.True);
@@ -293,7 +322,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         Assert.That(order.OrderTicket, Is.Not.Null);
         Assert.That(order.OrderTicket, Is.SameAs(newOrderTicket));
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransactionScope.CurrentTransaction.Commit();
+        }
 
         Assert.That(order.State.IsUnchanged, Is.True);
 
@@ -336,7 +368,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         order.OrderItems.Add(orderItem3);
         order.OrderItems.Add(orderItem1);
         Assert.That(order.OrderItems, Is.EqualTo(new object[] { orderItem2, orderItem3, orderItem1 }));
-        ClientTransaction.Current.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransaction.Current.Commit();
+        }
         Assert.That(order.OrderItems, Is.EqualTo(new object[] { orderItem2, orderItem3, orderItem1 }));
       }
       Assert.That(order.OrderItems, Is.EqualTo(new object[] { orderItem2, orderItem3, orderItem1 }));
@@ -376,7 +411,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         Assert.That(location1.Client, Is.SameAs(newClient1));
         Assert.That(location2.Client, Is.SameAs(newClient2));
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransactionScope.CurrentTransaction.Commit();
+        }
 
         Assert.That(employee.Computer, Is.Null);
         Assert.That(computer.Employee, Is.SameAs(newEmployee));
@@ -419,7 +457,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         newCeo = Ceo.NewObject();
         newCustomer.Ceo = newCeo;
 
-        ClientTransactionScope.CurrentTransaction.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransactionScope.CurrentTransaction.Commit();
+        }
       }
 
       Assert.That(newOrderTicket.Order, Is.SameAs(order));
@@ -446,7 +487,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         Order orderInSub = DomainObjectIDs.Order1.GetObject<Order>();
         Assert.That(orderInSub.OrderNumber, Is.Not.EqualTo(4711));
         orderInSub.OrderNumber = 4711;
-        ClientTransactionScope.CurrentTransaction.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransactionScope.CurrentTransaction.Commit();
+        }
       }
 
       Order orderInParent = DomainObjectIDs.Order1.GetObject<Order>();
@@ -461,7 +505,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         Order orderInSub = DomainObjectIDs.Order1.GetObject<Order>();
         Assert.That(orderInSub.OrderNumber, Is.Not.EqualTo(4711));
         orderInSub.OrderNumber = 4711;
-        ClientTransactionScope.CurrentTransaction.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransactionScope.CurrentTransaction.Commit();
+        }
       }
 
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
@@ -474,8 +521,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void ObjectValuesCanBeChangedInParentAndChildSubTransactions ()
     {
-      SetDatabaseModifyable();
-
       ClassWithAllDataTypes cwadt = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
       Assert.That(cwadt.Int32Property, Is.Not.EqualTo(7));
       Assert.That(cwadt.Int16Property, Is.Not.EqualTo(8));
@@ -508,8 +553,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void PropertyValue_HasChangedHandling_WithNestedSubTransactions ()
     {
-      SetDatabaseModifyable();
-
       ClassWithAllDataTypes cwadt = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
       Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int32Property")), Is.False);
       Assert.That(cwadt.InternalDataContainer.HasValueChanged(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "Int16Property")), Is.False);
@@ -591,8 +634,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void ObjectEndPoint_HasChangedHandling_WithNestedSubTransactions ()
     {
-      SetDatabaseModifyable();
-
       OrderTicket orderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
       Order oldOrder = orderTicket.Order;
 
@@ -649,8 +690,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void VirtualObjectEndPoint_HasChangedHandling_WithNestedSubTransactions ()
     {
-      SetDatabaseModifyable();
-
       OrderTicket orderTicket1 = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
       Order order1 = orderTicket1.Order;
 
@@ -707,8 +746,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void DomainObjectCollectionEndPoint_HasChangedHandling_WithNestedSubTransactions ()
     {
-      SetDatabaseModifyable();
-
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
       OrderItem newItem = OrderItem.NewObject();
       OrderItem firstItem = order.OrderItems[0];
@@ -778,7 +815,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         order.Delete();
         orderTicket.Delete();
 
-        ClientTransaction.Current.Commit();
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          ClientTransaction.Current.Commit();
+        }
       }
 
       Assert.That(order.State.IsInvalid, Is.True);

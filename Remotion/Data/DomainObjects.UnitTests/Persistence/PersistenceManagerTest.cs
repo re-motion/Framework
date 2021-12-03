@@ -466,8 +466,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void SaveInDifferentStorageProviders_WithOverriddenCheck_CallsSaveOnBothStorageProviders ()
     {
-      SetDatabaseModifyable();
-
       using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance))
       {
         DataContainer orderContainer = persistenceManager.LoadDataContainer(DomainObjectIDs.Order1).LocatedObject;
@@ -521,8 +519,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void SaveInDifferentStorageProviders_WithOnlyOnePersistentStorageProvider_CallsSaveOnBothStorageProviders ()
     {
-      SetDatabaseModifyable();
-
       DataContainer orderContainer = _persistenceManager.LoadDataContainer(DomainObjectIDs.Order1).LocatedObject;
       DataContainer orderViewModelContainer =  DataContainer.CreateNew(DomainObjectIDs.OrderViewModel1);
 
@@ -547,8 +543,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Save_WithCommit_CallsExtensionPoints ()
     {
-      SetDatabaseModifyable();
-
       using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance))
       {
         DataContainer officialContainer = persistenceManager.LoadDataContainer(DomainObjectIDs.Official1).LocatedObject;
@@ -605,8 +599,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Save_WithRollback_CallsExtensionPoints ()
     {
-      SetDatabaseModifyable();
-
       using (var persistenceManager = new TestablePersistenceManager(NullPersistenceExtension.Instance))
       {
         DataContainer officialContainer = persistenceManager.LoadDataContainer(DomainObjectIDs.Official1).LocatedObject;
@@ -659,8 +651,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Save_DeletedDataContainersAreIgnoredForUpdateTimestamps ()
     {
-      SetDatabaseModifyable();
-
       var dataContainer = _persistenceManager.LoadDataContainer(DomainObjectIDs.ClassWithAllDataTypes1).LocatedObject;
       Assert.That(dataContainer, Is.Not.Null);
       dataContainer.Delete();

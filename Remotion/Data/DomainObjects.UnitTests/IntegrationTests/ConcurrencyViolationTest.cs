@@ -27,8 +27,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void ConcurrencyViolationException_WhenSomebodyElseModifiesData ()
     {
-      SetDatabaseModifyable();
-
       var computer = DomainObjectIDs.Computer1.GetObject<Computer>();
       computer.SerialNumber = "100";
 
@@ -53,8 +51,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void ConcurrencyViolationException_WhenSomebodyElseRegistersForCommit ()
     {
-      SetDatabaseModifyable();
-
       var computer = DomainObjectIDs.Computer1.GetObject<Computer>();
       computer.RegisterForCommit();
 

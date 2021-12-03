@@ -91,8 +91,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     [Test]
     public void UnloadVirtualEndPointAndItemData_Collection_Reload ()
     {
-      SetDatabaseModifyable();
-
       var order = DomainObjectIDs.Order1.GetObject<Order>();
       var orderItems = order.OrderItems;
       orderItems.EnsureDataComplete();

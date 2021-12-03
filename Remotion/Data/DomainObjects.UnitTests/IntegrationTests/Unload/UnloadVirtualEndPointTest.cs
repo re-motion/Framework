@@ -105,8 +105,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     [Test]
     public void UnloadVirtualEndPoint_Collection_Reload ()
     {
-      SetDatabaseModifyable();
-
       var order = DomainObjectIDs.Order1.GetObject<Order>();
       var orderItems = order.OrderItems;
       orderItems.EnsureDataComplete();
@@ -237,8 +235,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     [Test]
     public void UnloadVirtualEndPoint_Object_Reload ()
     {
-      SetDatabaseModifyable();
-
       var order = DomainObjectIDs.Order1.GetObject<Order>();
       var oldOrderTicket = order.OrderTicket;
 
@@ -263,8 +259,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     [Test]
     public void UnloadVirtualEndPoint_Object_Null_Reload ()
     {
-      SetDatabaseModifyable();
-
       var employee = DomainObjectIDs.Employee1.GetObject<Employee>();
       Dev.Null = employee.Computer;
 

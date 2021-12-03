@@ -124,8 +124,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     [Test]
     public void UnloadData_Computer_WithUnsynchronizedOppositeEndPoint ()
     {
-      SetDatabaseModifyable();
-
       var computer1 = DomainObjectIDs.Computer1.GetObject<Computer>();
       var employee = computer1.Employee;
       employee.EnsureDataAvailable();
@@ -293,8 +291,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     [Test]
     public void UnloadData_OrderItem_AfterCommit ()
     {
-      SetDatabaseModifyable();
-
       var order1 = DomainObjectIDs.Order1.GetObject<Order>();
       var orderItems = order1.OrderItems;
       var newOrderItem = OrderItem.NewObject();
@@ -370,7 +366,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     [Test]
     public void UnloadData_ReloadChanges_PropertyValue ()
     {
-      SetDatabaseModifyable();
       var order1 = DomainObjectIDs.Order1.GetObject<Order>();
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
@@ -390,7 +385,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     [Test]
     public void UnloadData_ReloadChanges_ForeignKey ()
     {
-      SetDatabaseModifyable();
       var computer1 = DomainObjectIDs.Computer1.GetObject<Computer>();
 
       ObjectID newEmployeeID;

@@ -64,8 +64,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     [Test]
     public void UnloadVirtualEndPointAndItemData_Object_Reload ()
     {
-      SetDatabaseModifyable();
-
       var employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       var computer = employee.Computer;
 

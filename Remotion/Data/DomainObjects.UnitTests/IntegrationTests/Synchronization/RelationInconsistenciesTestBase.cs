@@ -132,8 +132,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     protected void PrepareInconsistentState_OneMany_ObjectIncluded (out Company company, out IndustrialSector industrialSector)
     {
-      SetDatabaseModifyable();
-
       company = CreateCompanyInDatabaseAndLoad();
       Assert.That(company.IndustrialSector, Is.Null);
 
@@ -153,8 +151,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     protected void PrepareInconsistentState_OneMany_ObjectNotIncluded (out Company company, out IndustrialSector industrialSector)
     {
-      SetDatabaseModifyable();
-
       var companyID = CreateCompanyAndSetIndustrialSectorInOtherTransaction(DomainObjectIDs.IndustrialSector1);
       company = companyID.GetObject<Company>();
 
@@ -175,8 +171,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     protected void PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse (out Computer computer, out Employee nonMatchingEmployee, out Employee matchingEmployee)
     {
-      SetDatabaseModifyable();
-
       computer = CreateComputerAndSetEmployeeInOtherTransaction(DomainObjectIDs.Employee2).GetObject<Computer>();
       Assert.That(computer.Employee.ID, Is.EqualTo(DomainObjectIDs.Employee2));
 
@@ -191,8 +185,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     protected void PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsToNull (out Computer computer, out Employee nonMatchingEmployee)
     {
-      SetDatabaseModifyable();
-
       computer = CreateObjectInDatabaseAndLoad<Computer>();
       Assert.That(computer.Employee, Is.Null);
 
@@ -206,8 +198,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     protected void PrepareInconsistentState_OneOne_ObjectNotReturned_ThatLocallyPointsToHere (out Computer computer, out Employee employee, out Employee employee2)
     {
-      SetDatabaseModifyable();
-
       employee = DomainObjectIDs.Employee1.GetObject<Employee>();
       employee2 = DomainObjectIDs.Employee2.GetObject<Employee>();
 
@@ -227,8 +217,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     protected void PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNull (out Employee employee, out Computer computer)
     {
-      SetDatabaseModifyable();
-
       employee = DomainObjectIDs.Employee1.GetObject<Employee>();
       // Employee has no computer
       Assert.That(employee.Computer, Is.Null);
@@ -240,8 +228,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     protected void PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNonNull (out Employee employee, out Computer computer, out Computer computer2)
     {
-      SetDatabaseModifyable();
-
       employee = DomainObjectIDs.Employee1.GetObject<Employee>();
 
       // This computer points to employee

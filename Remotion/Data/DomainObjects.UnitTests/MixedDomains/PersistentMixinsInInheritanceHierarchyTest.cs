@@ -28,20 +28,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
   [TestFixture]
   public class PersistentMixinsInInheritanceHierarchyTest : StandardMappingTest
   {
-
-    [SetUp]
-    public override void SetUp ()
-    {
-      base.SetUp();
-      SetDatabaseModifyable();
-    }
-
-    //[TearDown]
-    //public override void TearDown ()
-    //{
-    //  base.TearDown();
-    //}
-
     [Test]
     public void SingleInheritance_QueryOverView ()
     {

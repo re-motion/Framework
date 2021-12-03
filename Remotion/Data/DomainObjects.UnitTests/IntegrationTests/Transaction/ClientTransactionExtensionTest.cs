@@ -55,12 +55,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     private MockRepository _mockRepository;
     private IClientTransactionExtension _extensionMock;
 
-    public override void OneTimeSetUp ()
-    {
-      base.OneTimeSetUp();
-      SetDatabaseModifyable();
-    }
-
     public override void SetUp ()
     {
       base.SetUp();
@@ -1268,8 +1262,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void CommitWithEvents ()
     {
-      SetDatabaseModifyable();
-
       Computer computer;
       using (_transaction.EnterNonDiscardingScope())
       {

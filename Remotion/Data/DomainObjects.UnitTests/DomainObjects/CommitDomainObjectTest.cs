@@ -23,12 +23,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
   [TestFixture]
   public class CommitDomainObjectTest : ClientTransactionBaseTest
   {
-    public override void OneTimeSetUp ()
-    {
-      base.OneTimeSetUp();
-      SetDatabaseModifyable();
-    }
-
     [Test]
     public void CommitOneToManyRelation ()
     {

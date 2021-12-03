@@ -260,8 +260,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NonPersistentDo
     [Test]
     public void CommitChangedObject_WithPersistentAndNonPersistentObjectInRootTransaction_AppliesValueAndUpdatesStateToUnchanged ()
     {
-      SetDatabaseModifyable();
-
       var orderViewModel = OrderViewModel.NewObject();
       var order = DomainObjectIDs.Order1.GetObject<Order>();
 

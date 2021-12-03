@@ -331,7 +331,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void GetObjects_Discarded ()
     {
-      SetDatabaseModifyable();
       DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>().Delete();
       TestableClientTransaction.Commit();
       Assert.That(

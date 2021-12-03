@@ -30,8 +30,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void Relation_WithMoreThan2100Objects ()
     {
-      SetDatabaseModifyable();
-
       var insertedIDs = Enumerable.Range(0, 4000).Select(x => Guid.NewGuid()).ToArray();
       var insertStatements = insertedIDs.Select(
           id => string.Format(
@@ -55,8 +53,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void Relation_WithMoreThan2100Objects_WithTableInheritance ()
     {
-      SetDatabaseModifyable();
-
       var domainObjectIDs = new TableInheritanceDomainObjectIDs(Configuration);
 
       var insertedIDs = Enumerable.Range(0, 4000).Select(x => Guid.NewGuid()).ToArray();

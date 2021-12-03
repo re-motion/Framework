@@ -29,8 +29,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.TableInheritanc
     [Ignore("TODO: Implement referential integrity for unidirectional relationships.")]
     public void DeleteAndCommitWithConcreteTableInheritance ()
     {
-      SetDatabaseModifyable();
-
       TIClassWithUnidirectionalRelation classWithUnidirectionalRelation =
           DomainObjectIDs.ClassWithUnidirectionalRelation.GetObject<TIClassWithUnidirectionalRelation>();
       classWithUnidirectionalRelation.DomainBase.Delete();

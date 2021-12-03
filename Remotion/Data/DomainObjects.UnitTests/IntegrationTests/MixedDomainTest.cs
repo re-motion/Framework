@@ -69,8 +69,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void LoadStoreMixedDomainObject ()
     {
-      SetDatabaseModifyable();
-
       ClientTransaction clientTransaction = ClientTransaction.CreateRootTransaction();
 
       var mixedInstance = clientTransaction.ExecuteInScope(() => TargetClassForPersistentMixin.NewObject());
@@ -114,8 +112,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void OneDomainClassTwoMixins ()
     {
-      SetDatabaseModifyable();
-
       var clientTransaction = ClientTransaction.CreateRootTransaction();
 
       var mixedInstance = clientTransaction.ExecuteInScope(() => TargetClassWithTwoUnidirectionalMixins.NewObject());
@@ -142,8 +138,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void OneMixinTwoDomainClasses ()
     {
-      SetDatabaseModifyable();
-
       var clientTransaction = ClientTransaction.CreateRootTransaction();
 
       TargetClassWithUnidirectionalMixin1 mixedInstance1 = clientTransaction.ExecuteInScope(() => TargetClassWithUnidirectionalMixin1.NewObject());

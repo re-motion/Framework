@@ -404,7 +404,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
     private void ModifyDatabase (Action changer)
     {
-      SetDatabaseModifyable();
       using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
         changer();

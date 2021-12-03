@@ -98,8 +98,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void CreateObjectsAndCommit ()
     {
-      SetDatabaseModifyable();
-
       Client client1 = Client.NewObject();
       Client client2 = Client.NewObject();
       Location location = Location.NewObject();
@@ -143,8 +141,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void DeleteLocationAndCommit ()
     {
-      SetDatabaseModifyable();
-
       SequenceEventReceiver eventReceiver = new SequenceEventReceiver(new DomainObject[] { _location, _oldClient, _newClient }, new DomainObjectCollection[0]);
 
       _location.Delete();
@@ -162,8 +158,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void DeleteMultipleObjectsAndCommit ()
     {
-      SetDatabaseModifyable();
-
       _location.Delete();
       _oldClient.Delete();
       _newClient.Delete();
@@ -277,8 +271,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void CreateHierarchy ()
     {
-      SetDatabaseModifyable();
-
       Client newClient1 = Client.NewObject();
       Client newClient2 = Client.NewObject();
       newClient2.ParentClient = newClient1;

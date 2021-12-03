@@ -60,8 +60,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     [Test]
     public void AccessingMixinProperties_OfDerivedClass ()
     {
-      SetDatabaseModifyable();
-
       var singleInheritanceFirstDerivedClass1 = SingleInheritanceFirstDerivedClass.NewObject();
       ((ISingleInheritancePersistentMixin)singleInheritanceFirstDerivedClass1).PersistentProperty = "value 1";
       var singleInheritanceFirstDerivedClass2 = SingleInheritanceFirstDerivedClass.NewObject();

@@ -35,7 +35,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       base.OneTimeSetUp();
 
-      SetDatabaseModifyable();
       DatabaseAgent.ExecuteBatchFile("Database\\DataDomainObjects_DropFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
       DatabaseAgent.ExecuteBatchFile("Database\\DataDomainObjects_CreateFulltextIndices.sql", false, DatabaseConfiguration.GetReplacementDictionary());
       WaitForIndices();

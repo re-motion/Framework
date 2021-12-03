@@ -30,12 +30,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   [TestFixture]
   public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   {
-    public override void OneTimeSetUp ()
-    {
-      base.OneTimeSetUp();
-      SetDatabaseModifyable();
-    }
-
     [Test]
     public void Save ()
     {

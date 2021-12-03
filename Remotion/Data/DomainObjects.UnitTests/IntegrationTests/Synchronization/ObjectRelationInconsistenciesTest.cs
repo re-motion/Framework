@@ -234,8 +234,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void VirtualEndPointQuery_OneOne_ObjectNotReturned_ThatLocallyPointsToHere_WithChangedRelation ()
     {
-      SetDatabaseModifyable();
-
       var employee2 = DomainObjectIDs.Employee2.GetObject<Employee>();
 
       var computer = CreateComputerAndSetEmployeeInOtherTransaction(employee2.ID).GetObject<Computer>();
