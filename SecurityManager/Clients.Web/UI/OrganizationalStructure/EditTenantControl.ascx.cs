@@ -24,7 +24,6 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.Web;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 
@@ -84,7 +83,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
       
-      ParentValidator.ErrorMessage = resourceManager.GetText (ResourceIdentifier.ParentValidatorErrorMessage).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+      ParentValidator.ErrorMessage = resourceManager.GetString (ResourceIdentifier.ParentValidatorErrorMessage);
       TenantLabel.Text = resourceManager.GetText (ResourceIdentifier.TenantLabelText);
 
       base.OnPreRender (e);

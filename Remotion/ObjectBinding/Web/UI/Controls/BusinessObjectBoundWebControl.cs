@@ -29,7 +29,6 @@ using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
-using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -495,11 +494,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       string key;
       key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
       if (!string.IsNullOrEmpty (key))
-        AccessKey = resourceManager.GetText (key).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+        AccessKey = resourceManager.GetString (key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
       if (!string.IsNullOrEmpty (key))
-        ToolTip = resourceManager.GetText (key).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+        ToolTip = resourceManager.GetString (key);
     }
 
     //  /// <summary>

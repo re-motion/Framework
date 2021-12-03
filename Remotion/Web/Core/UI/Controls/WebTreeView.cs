@@ -474,7 +474,7 @@ namespace Remotion.Web.UI.Controls
 
       key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
       if (!string.IsNullOrEmpty (key))
-        ToolTip = resourceManager.GetText (key).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+        ToolTip = resourceManager.GetString (key);
 
       Nodes.LoadResources (resourceManager, globalizationService);
     }

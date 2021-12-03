@@ -491,7 +491,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       //  Get all matching business objects
       if (DataSource != null)
-        businessObjects = Property.SearchAvailableObjects (DataSource.BusinessObject, new DefaultSearchArguments (_select.ToString()));
+        businessObjects = Property.SearchAvailableObjects (DataSource.BusinessObject, new DefaultSearchArguments (_select));
 
       RefreshBusinessObjectList (ArrayUtility.Convert<IBusinessObject, IBusinessObjectWithIdentity> (businessObjects));
     }

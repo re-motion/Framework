@@ -361,18 +361,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
                       {
                         ID = renderingContext.Control.GetDateValueName(),
                         ClientIDMode = ClientIDMode.Static,
-                        ToolTip = hasTimeField
-                            ? resourceManager.GetText (BocDateTimeValue.ResourceIdentifier.DateLabelText).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)
-                            : null,
+                        ToolTip = hasTimeField ? resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.DateLabelText) : null,
                         AssociatedControlID = hasTimeField ? renderingContext.Control.ClientID + "_DateLabel" : null
                       };
       var timeLabel = new Label
                       {
                         ID = renderingContext.Control.GetTimeValueName(),
                         ClientIDMode = ClientIDMode.Static,
-                        ToolTip = hasDateField
-                            ? resourceManager.GetText (BocDateTimeValue.ResourceIdentifier.TimeLabelText).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks)
-                            : null,
+                        ToolTip = hasDateField ? resourceManager.GetString (BocDateTimeValue.ResourceIdentifier.TimeLabelText) : null,
                         AssociatedControlID = hasDateField ? renderingContext.Control.ClientID + "_TimeLabel" : null
                       };
 

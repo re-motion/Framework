@@ -20,8 +20,6 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web;
-using Remotion.Web.Globalization;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation
 {
@@ -63,9 +61,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.V
         var requiredFieldValidator = new RequiredFieldValidator();
         requiredFieldValidator.ID = control.ID + "_ValidatorNotNullItem";
         requiredFieldValidator.ControlToValidate = control.ID;
-        requiredFieldValidator.ErrorMessage = resourceManager
-            .GetText (BocBooleanValue.ResourceIdentifier.NullItemValidationMessage)
-            .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+        requiredFieldValidator.ErrorMessage = resourceManager.GetString (BocBooleanValue.ResourceIdentifier.NullItemValidationMessage);
         requiredFieldValidator.EnableViewState = false;
         return requiredFieldValidator;
       }

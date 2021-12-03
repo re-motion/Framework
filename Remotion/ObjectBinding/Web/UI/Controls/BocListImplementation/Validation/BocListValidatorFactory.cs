@@ -20,8 +20,6 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web;
-using Remotion.Web.Globalization;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation
 {
@@ -55,9 +53,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
       editModeValidator.ID = control.ID + "_ValidatorEditMode";
       editModeValidator.ControlToValidate = control.ID;
       if (control.EditModeController.IsRowEditModeActive)
-        editModeValidator.ErrorMessage = resourceManager.GetText (BocList.ResourceIdentifier.RowEditModeErrorMessage).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+        editModeValidator.ErrorMessage = resourceManager.GetString (BocList.ResourceIdentifier.RowEditModeErrorMessage);
       else if (control.EditModeController.IsListEditModeActive)
-        editModeValidator.ErrorMessage = resourceManager.GetText (BocList.ResourceIdentifier.ListEditModeErrorMessage).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+        editModeValidator.ErrorMessage = resourceManager.GetString (BocList.ResourceIdentifier.ListEditModeErrorMessage);
       editModeValidator.EnableViewState = false;
 
       return editModeValidator;

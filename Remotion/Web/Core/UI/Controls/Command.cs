@@ -32,7 +32,6 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.UrlMapping;
-using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
@@ -987,7 +986,7 @@ namespace Remotion.Web.UI.Controls
 
       var key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
       if (!string.IsNullOrEmpty (key))
-        ToolTip = resourceManager.GetText (key).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+        ToolTip = resourceManager.GetString (key);
     }
 
     public void RegisterForSynchronousPostBackOnDemand ([JetBrains.Annotations.NotNull]Control control, [JetBrains.Annotations.NotNull]string argument, [JetBrains.Annotations.NotNull]string commandID)

@@ -19,8 +19,6 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web;
-using Remotion.Web.Globalization;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation
 {
@@ -62,9 +60,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         var requiredFieldValidator = new RequiredFieldValidator();
         requiredFieldValidator.ID = control.ID + "_ValidatorNotNullItem";
         requiredFieldValidator.ControlToValidate = control.ID;
-        requiredFieldValidator.ErrorMessage = resourceManage
-            .GetText (BocReferenceValue.ResourceIdentifier.NullItemErrorMessage)
-            .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+        requiredFieldValidator.ErrorMessage = resourceManage.GetString (BocReferenceValue.ResourceIdentifier.NullItemErrorMessage);
         requiredFieldValidator.EnableViewState = false;
 
         return requiredFieldValidator;

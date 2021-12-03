@@ -287,9 +287,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnPreRender (EventArgs e)
     {
       var resourceManager = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier));
-      DuplicateStateCombinationsValidator.ErrorMessage = resourceManager
-          .GetText (ResourceIdentifier.DuplicateStateCombinationsValidatorErrorMessage)
-          .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+      DuplicateStateCombinationsValidator.ErrorMessage = resourceManager.GetString (
+          ResourceIdentifier.DuplicateStateCombinationsValidatorErrorMessage);
 
       NewStatefulAccessControlListButton.Text = resourceManager.GetText (ResourceIdentifier.NewStatefulAccessControlListButtonText);
 

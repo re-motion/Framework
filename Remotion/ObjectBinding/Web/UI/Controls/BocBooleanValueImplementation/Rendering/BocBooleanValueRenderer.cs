@@ -28,7 +28,6 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
-using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -158,9 +157,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       string[] accessibilityLabelIDs;
       if (!renderingContext.Control.IsReadOnly && renderingContext.Control.IsRequired)
       {
-        requiredLabelControl.Text = GetResourceManager (renderingContext)
-            .GetText (ResourceIdentifier.ScreenReaderRequiredLabelText)
-            .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+        requiredLabelControl.Text = GetResourceManager (renderingContext).GetString (ResourceIdentifier.ScreenReaderRequiredLabelText);
         accessibilityLabelIDs = new[] { requiredLabelControl.ID };
       }
       else

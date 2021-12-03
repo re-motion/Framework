@@ -23,8 +23,6 @@ using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
-using Remotion.Web;
-using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation
@@ -75,9 +73,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         RequiredFieldValidator requiredValidator = new RequiredFieldValidator ();
         requiredValidator.ID = control.ID + "_ValidatorRequired";
         requiredValidator.ControlToValidate = control.TargetControl.ID;
-        requiredValidator.ErrorMessage = resourceManager
-            .GetText (BocTextValue.ResourceIdentifier.RequiredErrorMessage)
-            .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+        requiredValidator.ErrorMessage = resourceManager.GetString (BocTextValue.ResourceIdentifier.RequiredErrorMessage);
         requiredValidator.EnableViewState = false;
 
         return requiredValidator;
@@ -100,7 +96,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         lengthValidator.ControlToValidate = control.TargetControl.ID;
         lengthValidator.MaximumLength = maxLength.Value;
         lengthValidator.ErrorMessage = string.Format (
-            resourceManager.GetText (BocTextValue.ResourceIdentifier.MaxLengthValidationMessage).ToString (WebStringEncoding.HtmlWithTransformedLineBreaks),
+            resourceManager.GetString (BocTextValue.ResourceIdentifier.MaxLengthValidationMessage),
             maxLength.Value);
         lengthValidator.EnableViewState = false;
 
@@ -151,16 +147,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       if (control.TextBoxStyle.TextMode == BocTextBoxMode.MultiLine)
       {
         typeValidator.EnableMultilineText = true;
-        typeValidator.ErrorMessageFormat = resourceManager
-            .GetText (BocTextValue.ResourceIdentifier.InvalidCharactersForMultiLineErrorMessage)
-            .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+        typeValidator.ErrorMessageFormat = resourceManager.GetString (BocTextValue.ResourceIdentifier.InvalidCharactersForMultiLineErrorMessage);
       }
       else
       {
         typeValidator.EnableMultilineText = false;
-        typeValidator.ErrorMessageFormat = resourceManager
-            .GetText (BocTextValue.ResourceIdentifier.InvalidCharactersForSingleLineErrorMessage)
-            .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+        typeValidator.ErrorMessageFormat = resourceManager.GetString (BocTextValue.ResourceIdentifier.InvalidCharactersForSingleLineErrorMessage);
       }
       typeValidator.EnableViewState = false;
 
@@ -172,9 +164,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       DateTimeValidator typeValidator = new DateTimeValidator();
       typeValidator.ID = control.ID + "_ValidatorType";
       typeValidator.ControlToValidate = control.TargetControl.ID;
-      typeValidator.ErrorMessage = resourceManager
-          .GetText (BocTextValue.ResourceIdentifier.InvalidDateAndTimeErrorMessage)
-          .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+      typeValidator.ErrorMessage = resourceManager.GetString (BocTextValue.ResourceIdentifier.InvalidDateAndTimeErrorMessage);
       typeValidator.EnableViewState = false;
 
       return typeValidator;
@@ -187,9 +177,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
       typeValidator.ControlToValidate = control.TargetControl.ID;
       typeValidator.Operator = ValidationCompareOperator.DataTypeCheck;
       typeValidator.Type = ValidationDataType.Date;
-      typeValidator.ErrorMessage = resourceManager
-          .GetText (BocTextValue.ResourceIdentifier.InvalidDateErrorMessage)
-          .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+      typeValidator.ErrorMessage = resourceManager.GetString (BocTextValue.ResourceIdentifier.InvalidDateErrorMessage);
       typeValidator.EnableViewState = false;
 
       return typeValidator;
@@ -204,9 +192,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
         typeValidator.AllowNegative = ((IBusinessObjectNumericProperty) control.Property).AllowNegative;
       typeValidator.DataType = GetNumericValidatorDataType (valueType);
       typeValidator.NumberStyle = GetNumberStyle (valueType);
-      typeValidator.ErrorMessage = resourceManager
-          .GetText (GetNumericValidatorErrorMessage (GetNumericValidatorDataType (valueType)))
-          .ToString (WebStringEncoding.HtmlWithTransformedLineBreaks);
+      typeValidator.ErrorMessage = resourceManager.GetString (GetNumericValidatorErrorMessage (GetNumericValidatorDataType (valueType)));
       typeValidator.EnableViewState = false;
 
       return typeValidator;
