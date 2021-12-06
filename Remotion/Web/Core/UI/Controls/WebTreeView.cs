@@ -29,6 +29,7 @@ using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.WebTreeViewImplementation;
@@ -735,7 +736,7 @@ namespace Remotion.Web.UI.Controls
         writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
         var resourceManager= GetResourceManager();
-        writer.Write(resourceManager.GetString(ResourceIdentifier.ScreenReaderNodeSelectedLabelText));
+        resourceManager.GetText(ResourceIdentifier.ScreenReaderNodeSelectedLabelText).WriteTo(writer);
 
         writer.RenderEndTag();
       }
