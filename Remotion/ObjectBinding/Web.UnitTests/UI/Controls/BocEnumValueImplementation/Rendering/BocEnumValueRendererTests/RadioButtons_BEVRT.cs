@@ -102,7 +102,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumerationInfos = values.ToArray();
       _enumValue.Setup(mock => mock.GetEnabledValues()).Returns(_enumerationInfos);
 
-      _enumValue.Setup(mock => mock.GetNullItemText()).Returns("null-text");
+      _enumValue.Setup(mock => mock.GetNullItemText()).Returns(PlainTextString.CreateFromText("null-text"));
       _enumValue.Setup(mock => mock.NullIdentifier).Returns("null-id");
       _enumValue.Setup(mock => mock.GetValueName()).Returns(c_valueName);
 
@@ -402,7 +402,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
     private void AssertNullOption (XmlNode select, bool isSelected, bool autoPostBack)
     {
-      AssertRadioButton(select, _enumValue.Object.NullIdentifier, _enumValue.Object.GetNullItemText(), 0, isSelected, autoPostBack);
+      AssertRadioButton(
+          select,
+          _enumValue.Object.NullIdentifier,
+          _enumValue.Object.GetNullItemText().ToString(WebStringEncoding.HtmlWithTransformedLineBreaks),
+          0,
+          isSelected,
+          autoPostBack);
     }
   }
 }
