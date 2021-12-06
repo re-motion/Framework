@@ -52,11 +52,12 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected override void OnPreRenderComplete (EventArgs e)
     {
-      string title = string.Format(
-          GlobalizationService.GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.Title),
-          CurrentSecurableClassDefinition.DisplayName);
-      TitleLabel.InnerText = title;
-      HtmlHeadAppender.Current.SetTitle(title);
+      var title = WebString.CreateFromText(
+          string.Format(
+              GlobalizationService.GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.Title),
+              CurrentSecurableClassDefinition.DisplayName));
+      TitleLabel.InnerText = title.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
+      HtmlHeadAppender.Current.SetTitle(title.ToString(WebStringEncoding.Html));
       base.OnPreRenderComplete(e);
     }
 
@@ -127,7 +128,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
           if (statelessAccessControlListsPlaceHolder.Controls.Count == 0)
           {
             statelessAccessControlListsPlaceHolder.Controls.Add(
-                CreateAccessControlListTitle(resourceManager.GetString(ResourceIdentifier.StatelessAccessControlListTitle)));
+                CreateAccessControlListTitle(resourceManager.GetText(ResourceIdentifier.StatelessAccessControlListTitle)));
           }
           statelessAccessControlListsPlaceHolder.Controls.Add(updatePanel);
         }
@@ -136,7 +137,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
           if (statefulAccessControlListsPlaceHolder.Controls.Count == 0)
           {
             statefulAccessControlListsPlaceHolder.Controls.Add(
-                CreateAccessControlListTitle(resourceManager.GetString(ResourceIdentifier.StatefulAccessControlListsTitle)));
+                CreateAccessControlListTitle(resourceManager.GetText(ResourceIdentifier.StatefulAccessControlListsTitle)));
           }
           statefulAccessControlListsPlaceHolder.Controls.Add(updatePanel);
         }
@@ -312,10 +313,10 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       NewStatelessAccessControlListButton.Enabled = CurrentSecurableClassDefinition.StatelessAccessControlList == null;
     }
 
-    private HtmlGenericControl CreateAccessControlListTitle (string title)
+    private HtmlGenericControl CreateAccessControlListTitle (WebString title)
     {
       var control = new HtmlGenericControl("h2");
-      control.InnerText = title;
+      control.InnerText = title.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
       control.Attributes["class"] = "accessControlListTitle";
       return control;
     }
