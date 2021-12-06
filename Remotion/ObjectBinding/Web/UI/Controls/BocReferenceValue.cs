@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private string? _displayName;
     private readonly ListItemCollection _listItems;
 
-    private string _nullItemText = string.Empty;
+    private PlainTextString _nullItemText = PlainTextString.Empty;
     private string? _select = String.Empty;
     private bool? _enableSelectStatement;
     private PlainTextString _nullItemErrorMessage;
@@ -127,8 +127,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Description("The description displayed for the undefined item.")]
     [Category("Appearance")]
-    [DefaultValue("")]
-    public string NullItemText
+    [DefaultValue(typeof(PlainTextString), "")]
+    public PlainTextString NullItemText
     {
       get { return _nullItemText; }
       set { _nullItemText = value; }
@@ -235,9 +235,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       base.LoadResources(resourceManager, globalizationService);
 
-      var key = ResourceManagerUtility.GetGlobalResourceKey(NullItemText);
+      var key = ResourceManagerUtility.GetGlobalResourceKey(NullItemText.GetValue());
       if (! string.IsNullOrEmpty(key))
-        NullItemText = resourceManager.GetString(key);
+        NullItemText = resourceManager.GetText(key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey(NullItemErrorMessage.GetValue());
       if (!string.IsNullOrEmpty(key))
@@ -686,7 +686,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns> A <see cref="ListItem"/>. </returns>
     private ListItem CreateNullItem ()
     {
-      var nullItem = new ListItem(GetNullItemText(), c_nullIdentifier);
+      var nullItem = new ListItem(GetNullItemText().GetValue(), c_nullIdentifier);
       if (!DropDownListStyle.NullValueTextVisible)
       {
         nullItem.Attributes[HtmlTextWriterAttribute2.AriaLabel] = nullItem.Text;
@@ -699,11 +699,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return nullItem;
     }
 
-    private string GetNullItemText ()
+    private PlainTextString GetNullItemText ()
     {
-      string nullDisplayName = _nullItemText;
-      if (string.IsNullOrEmpty(nullDisplayName))
-        nullDisplayName = GetResourceManager().GetString(ResourceIdentifier.NullItemText);
+      var nullDisplayName = _nullItemText;
+      if (nullDisplayName.IsEmpty)
+        nullDisplayName = GetResourceManager().GetText(ResourceIdentifier.NullItemText);
       return nullDisplayName;
     }
 

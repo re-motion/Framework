@@ -29,6 +29,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.Services;
 using Remotion.Web.UI.Controls;
 
@@ -450,7 +451,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       var control = new BocReferenceValue();
       control.DropDownListStyle.NullValueTextVisible = true;
-      control.NullItemText = "The null item";
+      control.NullItemText = PlainTextString.CreateFromText("The null item");
 
       var dropDownList = new DropDownList();
       ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
@@ -485,7 +486,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       var control = new BocReferenceValue();
       control.DropDownListStyle.NullValueTextVisible = false;
-      control.NullItemText = "The null item";
+      control.NullItemText = PlainTextString.CreateFromText("The null item");
 
       var dropDownList = new DropDownList();
       ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);

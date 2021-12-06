@@ -26,6 +26,7 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -183,7 +184,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       jsonBuilder.Append("{ ");
       jsonBuilder.Append("LoadIconFailedErrorMessage : ");
-      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetString(ResourceIdentifier.LoadIconFailedErrorMessage));
+      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetText(ResourceIdentifier.LoadIconFailedErrorMessage));
       jsonBuilder.Append(" }");
 
       return jsonBuilder.ToString();

@@ -307,7 +307,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
                   };
       label.ApplyStyle(renderingContext.Control.CommonStyle);
       label.ApplyStyle(renderingContext.Control.LabelStyle);
-      label.Text = HttpUtility.HtmlEncode(renderingContext.Control.GetLabelText());
+      label.Text = PlainTextString.CreateFromText(renderingContext.Control.GetLabelText()).ToString(WebStringEncoding.Html);
       label.Attributes.Add("data-value", renderingContext.Control.BusinessObjectUniqueIdentifier ?? renderingContext.Control.NullValueString);
       return label;
     }
