@@ -44,7 +44,7 @@ namespace Remotion.Web.Compilation
       ArgumentUtility.CheckNotNullOrEmpty ("resourceID", resourceID);
 
       IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (parent, true);
-      if (resourceManager == null)
+      if (resourceManager.IsNull)
         throw new InvalidOperationException ("Remotion.Web.Compilation.ResourceExpressionBuilder can only be used on controls embedded within a parent implementing IObjectWithResources.");
 
       return resourceManager.GetString (resourceID);
@@ -58,7 +58,7 @@ namespace Remotion.Web.Compilation
       var resourceIDAsWebString = (WebString) s_webStringConverter.ConvertFromString (resourceID);
 
       IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (parent, true);
-      if (resourceManager == null)
+      if (resourceManager.IsNull)
         throw new InvalidOperationException ("Remotion.Web.Compilation.ResourceExpressionBuilder can only be used on controls embedded within a parent implementing IObjectWithResources.");
 
       return resourceManager.GetWebString (resourceIDAsWebString.GetValue(), resourceIDAsWebString.Type);
@@ -70,7 +70,7 @@ namespace Remotion.Web.Compilation
       ArgumentUtility.CheckNotNullOrEmpty ("resourceID", resourceID);
 
       IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (parent, true);
-      if (resourceManager == null)
+      if (resourceManager.IsNull)
         throw new InvalidOperationException ("Remotion.Web.Compilation.ResourceExpressionBuilder can only be used on controls embedded within a parent implementing IObjectWithResources.");
 
       return resourceManager.GetText (resourceID);
@@ -88,20 +88,20 @@ namespace Remotion.Web.Compilation
 
     public override CodeExpression GetCodeExpression (BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
     {
-      CodeMethodInvokeExpression expression = new CodeMethodInvokeExpression ();
-      expression.Method.TargetObject = new CodeTypeReferenceExpression (base.GetType ());
+      CodeMethodInvokeExpression expression = new CodeMethodInvokeExpression();
+      expression.Method.TargetObject = new CodeTypeReferenceExpression (GetType());
       expression.Method.MethodName = entry.PropertyInfo.PropertyType switch
       {
           { } type when type == typeof (WebString) => nameof (GetWebStringForResourceID),
           { } type when type == typeof (PlainTextString) => nameof (GetPlainTextStringForResourceID),
           _ => nameof (GetStringForResourceID),
       };
-      expression.Parameters.Add (new CodeThisReferenceExpression ());
+      expression.Parameters.Add (new CodeThisReferenceExpression());
       expression.Parameters.Add (new CodePrimitiveExpression ((string) parsedData));
 
       return expression;
     }
- 
+
     public override object ParseExpression (string expression, Type propertyType, ExpressionBuilderContext context)
     {
       return expression;
