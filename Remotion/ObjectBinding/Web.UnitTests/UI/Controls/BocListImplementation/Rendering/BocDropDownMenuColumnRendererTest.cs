@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Menu.Object.MenuItems.Add (
           new WebMenuItem (
               "itemId",
-              WebString.CreateFromText ("category"),
+              "category",
               WebString.CreateFromText ("text"),
               new IconInfo ("~/Images/NullImage.gif"),
               new IconInfo ("~/Images/NullImage.gif"),

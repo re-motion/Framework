@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
       return new WebMenuItem
              {
                  ItemID = "Item" + name,
-                 Category = WebString.CreateFromText ("CatA"),
+                 Category = "CatA",
                  Text = WebString.CreateFromText (name)
              };
     }

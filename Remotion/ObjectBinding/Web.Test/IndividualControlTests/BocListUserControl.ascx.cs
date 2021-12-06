@@ -103,14 +103,14 @@ public class BocListUserControl : BaseUserControl
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Event";
     menuItem.Text = WebString.CreateFromText ("Event");
-    menuItem.Category = WebString.CreateFromText ("PostBacks");
+    menuItem.Category = "PostBacks";
     menuItem.Command.Type = CommandType.Event;
     JobList.ListMenuItems.Add (menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Enum.Href";
     menuItem.Text = WebString.CreateFromText ("Href");
-    menuItem.Category = WebString.CreateFromText ("Links");
+    menuItem.Category = "Links";
     menuItem.Style = WebMenuItemStyle.Text;
     menuItem.Command.Type = CommandType.Href;
     menuItem.Command.HrefCommand.Href = "link.htm";
@@ -118,7 +118,7 @@ public class BocListUserControl : BaseUserControl
 
     menuItem = new BocMenuItem();
     menuItem.Text = WebString.CreateFromText ("<b>Wxe</b>");
-    menuItem.Category = WebString.CreateFromText ("PostBacks");
+    menuItem.Category = "PostBacks";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.WxeFunction;
     menuItem.Command.WxeFunctionCommand.TypeName = "MyType, MyAssembly";
@@ -156,7 +156,7 @@ public class BocListUserControl : BaseUserControl
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
     menuItem.Text = WebString.CreateFromText ("Paste");
-    menuItem.Category = WebString.CreateFromText ("Edit");
+    menuItem.Category = "Edit";
     menuItem.IsDisabled = true;
     menuItem.Command.Type = CommandType.Event;
     ChildrenList.ListMenuItems.Add (menuItem);
@@ -164,7 +164,7 @@ public class BocListUserControl : BaseUserControl
     menuItem = new BocMenuItem();
     menuItem.ItemID = c_deleteItemID;
     menuItem.Text = WebString.CreateFromText ("Delete");
-    menuItem.Category = WebString.CreateFromText ("Edit");
+    menuItem.Category = "Edit";
     menuItem.Icon.Url = "~/Images/DeleteItem.gif";
     menuItem.DisabledIcon.Url = "~/Images/DeleteItemDisabled.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
@@ -174,7 +174,7 @@ public class BocListUserControl : BaseUserControl
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
-    menuItem.Category = WebString.CreateFromText ("Edit");
+    menuItem.Category = "Edit";
     menuItem.Icon.Url = "~/Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.ExactlyOne;
     menuItem.Command.Type = CommandType.Event;
@@ -183,7 +183,7 @@ public class BocListUserControl : BaseUserControl
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Open";
     menuItem.Text = WebString.CreateFromText ("Open");
-    menuItem.Category = WebString.CreateFromText ("Object");
+    menuItem.Category = "Object";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.WxeFunction;
     menuItem.Command.WxeFunctionCommand.Parameters = "objects";
@@ -193,7 +193,7 @@ public class BocListUserControl : BaseUserControl
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
     menuItem.Text = WebString.CreateFromText ("Copy");
-    menuItem.Category = WebString.CreateFromText ("Edit");
+    menuItem.Category = "Edit";
     menuItem.Icon.Url = "~/Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
@@ -202,7 +202,7 @@ public class BocListUserControl : BaseUserControl
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Cut";
     menuItem.Text = WebString.CreateFromText ("Cut");
-    menuItem.Category = WebString.CreateFromText ("Edit");
+    menuItem.Category = "Edit";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
     ChildrenList.OptionsMenuItems.Add (menuItem);
@@ -210,21 +210,21 @@ public class BocListUserControl : BaseUserControl
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
     menuItem.Text = WebString.CreateFromText ("Paste");
-    menuItem.Category = WebString.CreateFromText ("Edit");
+    menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
     ChildrenList.OptionsMenuItems.Add (menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Duplicate";
     menuItem.Text = WebString.CreateFromText ("Duplicate");
-    menuItem.Category = WebString.CreateFromText ("Edit");
+    menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
     ChildrenList.OptionsMenuItems.Add (menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
     menuItem.Text = WebString.CreateFromText ("Delete");
-    menuItem.Category = WebString.CreateFromText ("Edit");
+    menuItem.Category = "Edit";
     menuItem.Icon.Url = "~/Images/DeleteItem.gif";
     menuItem.DisabledIcon.Url = "~/Images/DeleteItemDisabled.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;

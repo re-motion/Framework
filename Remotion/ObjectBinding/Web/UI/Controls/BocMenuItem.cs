@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     public BocMenuItem (
         string id,
-        WebString category,
+        string category,
         WebString text,
         IconInfo icon,
         IconInfo disabledIcon,
@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BocMenuItem (
         string id,
-        WebString category,
+        string category,
         WebString text,
         IconInfo icon,
         IconInfo disabledIcon,
@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public BocMenuItem ()
         : this (
             null,
-            WebString.Empty,
+            null,
             WebString.Empty,
             new IconInfo(),
             new IconInfo(),

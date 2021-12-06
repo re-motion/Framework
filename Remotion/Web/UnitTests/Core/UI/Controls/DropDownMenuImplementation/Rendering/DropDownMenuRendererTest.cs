@@ -229,14 +229,14 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
 
     private void PopulateMenu ()
     {
-      AddItem (0, WebString.CreateFromText ("Category1"), CommandType.Event, false, true);
-      AddItem (1, WebString.CreateFromText ("Category1"), CommandType.Href, false, true);
-      AddItem (2, WebString.CreateFromText ("Category2"), CommandType.WxeFunction, false, true);
-      AddItem (3, WebString.CreateFromText ("Category2"), CommandType.WxeFunction, true, true);
-      AddItem (4, WebString.CreateFromText ("Category2"), CommandType.WxeFunction, false, false);
+      AddItem (0, "Category1", CommandType.Event, false, true);
+      AddItem (1, "Category1", CommandType.Href, false, true);
+      AddItem (2, "Category2", CommandType.WxeFunction, false, true);
+      AddItem (3, "Category2", CommandType.WxeFunction, true, true);
+      AddItem (4, "Category2", CommandType.WxeFunction, false, false);
     }
 
-    private void AddItem (int index, WebString category, CommandType commandType, bool isDisabled, bool isVisible)
+    private void AddItem (int index, string category, CommandType commandType, bool isDisabled, bool isVisible)
     {
       string id = "item" + index;
       string text = "Item" + index;

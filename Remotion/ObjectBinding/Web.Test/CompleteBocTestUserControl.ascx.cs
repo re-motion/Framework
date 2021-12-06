@@ -123,7 +123,7 @@ public class CompleteBocUserControl :
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Open";
     menuItem.Text = WebString.CreateFromText ("Open");
-    menuItem.Category = WebString.CreateFromText ("Object");
+    menuItem.Category = "Object";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.WxeFunction;
     menuItem.Command.WxeFunctionCommand.Parameters = "objects";
@@ -133,7 +133,7 @@ public class CompleteBocUserControl :
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
     menuItem.Text = WebString.CreateFromText ("Copy");
-    menuItem.Category = WebString.CreateFromText ("Edit");
+    menuItem.Category = "Edit";
     menuItem.Icon.Url = "Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
@@ -142,7 +142,7 @@ public class CompleteBocUserControl :
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Cut";
     menuItem.Text = WebString.CreateFromText ("Cut");
-    menuItem.Category = WebString.CreateFromText("Edit");
+    menuItem.Category = "Edit";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
     ReferenceField.OptionsMenuItems.Add (menuItem);
@@ -150,14 +150,14 @@ public class CompleteBocUserControl :
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
     menuItem.Text = WebString.CreateFromText ("Paste");
-    menuItem.Category = WebString.CreateFromText ("Edit");
+    menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
     ReferenceField.OptionsMenuItems.Add (menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
     menuItem.Text = WebString.CreateFromText ("Delete");
-    menuItem.Category = WebString.CreateFromText ("Edit");
+    menuItem.Category = "Edit";
     menuItem.Icon.Url = "Images/DeleteItem.gif";
     menuItem.DisabledIcon.Url = "Images/DeleteItemDisabled.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
