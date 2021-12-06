@@ -27,6 +27,7 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -223,7 +224,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, dateTextBoxLabelID);
           renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
           renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
-          renderingContext.Writer.Write(resourceManager.GetString(BocDateTimeValue.ResourceIdentifier.DateLabelText));
+          resourceManager.GetText(BocDateTimeValue.ResourceIdentifier.DateLabelText).WriteTo(renderingContext.Writer);
           renderingContext.Writer.RenderEndTag();
         }
 
@@ -251,7 +252,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, timeTextBoxLabelID);
           renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
           renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
-          renderingContext.Writer.Write(resourceManager.GetString(BocDateTimeValue.ResourceIdentifier.TimeLabelText));
+          resourceManager.GetText(BocDateTimeValue.ResourceIdentifier.TimeLabelText).WriteTo(renderingContext.Writer);
           renderingContext.Writer.RenderEndTag();
         }
 
