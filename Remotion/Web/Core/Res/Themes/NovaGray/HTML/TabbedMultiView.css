@@ -41,6 +41,8 @@ div.tabbedMultiViewActiveView > div.contentBorder
   margin: 0;
   padding: 0.5em;
   overflow: auto;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 div.tabbedMultiViewActiveView > div.contentBorder > div.content
