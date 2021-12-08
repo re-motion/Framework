@@ -29,16 +29,19 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     private readonly int _index;
     private readonly string _title;
     private readonly bool _isDisabled;
+    private readonly string _accessKey;
 
-    public WebTabStripTabDefinition ([NotNull] string itemID, int index, [NotNull] string title, bool isDisabled)
+    public WebTabStripTabDefinition ([NotNull] string itemID, int index, [NotNull] string title, bool isDisabled, [NotNull] string accessKey)
     {
       ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
       ArgumentUtility.CheckNotNullOrEmpty("title", title);
+      ArgumentUtility.CheckNotNull("accessKey", accessKey);
 
       _itemID = itemID;
       _index = index;
       _title = title;
       _isDisabled = isDisabled;
+      _accessKey = accessKey;
     }
 
     public string ItemID
@@ -59,6 +62,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public bool IsDisabled
     {
       get { return _isDisabled; }
+    }
+
+    public string AccessKey
+    {
+      get { return _accessKey; }
     }
   }
 }

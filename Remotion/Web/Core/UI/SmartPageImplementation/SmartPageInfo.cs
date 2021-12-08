@@ -27,6 +27,7 @@ using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
@@ -67,8 +68,8 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private SmartNavigationData _smartNavigationDataToBeDisacarded;
     private string? _smartFocusID;
-    private string? _abortMessage;
-    private string _statusIsSubmittingMessage = string.Empty;
+    private WebString _abortMessage = WebString.Empty;
+    private WebString _statusIsSubmittingMessage = WebString.Empty;
 
     private bool _isPreRenderComplete;
 
@@ -415,9 +416,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       if (_page.IsAbortConfirmationEnabled)
       {
-        string temp;
-        if (string.IsNullOrEmpty(_page.AbortMessage))
-          temp = resourceManager.GetString(ResourceIdentifier.AbortMessage);
+        WebString temp;
+        if (_page.AbortMessage.IsEmpty)
+          temp = resourceManager.GetText(ResourceIdentifier.AbortMessage);
         else
           temp = _page.AbortMessage;
         abortMessage = "'" + ScriptUtility.EscapeClientScript(temp) + "'";
@@ -433,9 +434,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       if (_page.IsStatusIsSubmittingMessageEnabled)
       {
-        string temp;
-        if (string.IsNullOrEmpty(_page.StatusIsSubmittingMessage))
-          temp = resourceManager.GetString(ResourceIdentifier.StatusIsSubmittingMessage);
+        WebString temp;
+        if (_page.StatusIsSubmittingMessage.IsEmpty)
+          temp = resourceManager.GetHtml(ResourceIdentifier.StatusIsSubmittingMessage);
         else
           temp = _page.StatusIsSubmittingMessage;
         statusIsSubmittingMessage = "'" + ScriptUtility.EscapeClientScript(temp) + "'";
@@ -549,19 +550,19 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary>
     ///   Implements <see cref="ISmartPage.StatusIsSubmittingMessage">ISmartPage.StatusIsSubmittingMessage</see>.
     /// </summary>
-    public string StatusIsSubmittingMessage
+    public WebString StatusIsSubmittingMessage
     {
       get { return _statusIsSubmittingMessage; }
-      set { _statusIsSubmittingMessage = value ?? string.Empty; }
+      set { _statusIsSubmittingMessage = value; }
     }
 
     /// <summary>
     ///   Implements <see cref="ISmartPage.AbortMessage">ISmartPage.AbortMessage</see>.
     /// </summary>
-    public string? AbortMessage
+    public WebString AbortMessage
     {
       get { return _abortMessage; }
-      set { _abortMessage = value ?? string.Empty; }
+      set { _abortMessage = value; }
     }
 
     /// <summary>

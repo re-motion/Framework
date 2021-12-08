@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -30,7 +29,9 @@ using Remotion.ObjectBinding.Web.Services;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -157,7 +158,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private readonly Style _commonStyle;
     private readonly Style _labelStyle;
-    private string? _optionsTitle;
+    private WebString _optionsTitle;
     private bool _showOptionsMenu = true;
     private Unit _optionsMenuWidth = Unit.Empty;
     private bool _reserveOptionsMenuWidth = false;
@@ -204,9 +205,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     protected abstract IResourceManager GetResourceManager ();
 
-    protected abstract string GetNullItemErrorMessage ();
-
-    protected abstract string GetOptionsMenuTitle ();
+    protected abstract WebString GetOptionsMenuTitle ();
 
     protected abstract string GetSelectionCountScript ();
 
@@ -312,8 +311,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// </value>
     [Category("Menu")]
     [Description("The text that is rendered as a label for the options menu.")]
-    [DefaultValue("")]
-    public string? OptionsTitle
+    [DefaultValue(typeof(WebString), "")]
+    public WebString OptionsTitle
     {
       get { return _optionsTitle; }
       set { _optionsTitle = value; }
@@ -716,7 +715,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-    void IResourceDispatchTarget.Dispatch (IDictionary values)
+    void IResourceDispatchTarget.Dispatch (IDictionary<string, WebString> values)
     {
       ArgumentUtility.CheckNotNull("values", values);
       Dispatch(values);
@@ -724,17 +723,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-    protected virtual void Dispatch (IDictionary values)
+    protected virtual void Dispatch (IDictionary<string, WebString> values)
     {
-      HybridDictionary optionsMenuItemValues = new HybridDictionary();
-      HybridDictionary propertyValues = new HybridDictionary();
-      HybridDictionary commandValues = new HybridDictionary();
+      var optionsMenuItemValues = new Dictionary<string, IDictionary<string, WebString>>();
+      var propertyValues = new Dictionary<string, WebString>();
 
       //  Parse the values
 
-      foreach (DictionaryEntry entry in values)
+      foreach (var entry in values)
       {
-        string key = (string)entry.Key;
+        string key = entry.Key;
         string[] keyParts = key.Split(new[] { ':' }, 3);
 
         //  Is a property/value entry?
@@ -771,7 +769,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           string elementID = keyParts[1];
           string property = keyParts[2];
 
-          IDictionary? currentCollection = null;
+          IDictionary<string, IDictionary<string, WebString>>? currentCollection = null;
 
           //  Switch to the right collection
           switch (collectionID)
@@ -795,12 +793,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
           if (currentCollection != null)
           {
             //  Get the dictonary for the current element
-            IDictionary? elementValues = (IDictionary?)currentCollection[elementID];
-
             //  If no dictonary exists, create it and insert it into the elements hashtable.
-            if (elementValues == null)
+            if (!currentCollection.TryGetValue(elementID, out var elementValues))
             {
-              elementValues = new HybridDictionary();
+              elementValues = new Dictionary<string, WebString>();
               currentCollection[elementID] = elementValues;
             }
 
@@ -837,9 +833,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       //if (!string.IsNullOrEmpty (key))
       //  NullItemErrorMessage = resourceManager.GetString (key);
 
-      var key = ResourceManagerUtility.GetGlobalResourceKey(OptionsTitle);
+      var key = ResourceManagerUtility.GetGlobalResourceKey(OptionsTitle.GetValue());
       if (! string.IsNullOrEmpty(key))
-        OptionsTitle = resourceManager.GetString(key);
+        OptionsTitle = resourceManager.GetWebString(key, OptionsTitle.Type);
 
       OptionsMenuItems.LoadResources(resourceManager, globalizationService);
     }
@@ -854,7 +850,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       OptionsMenu.Enabled = Enabled;
       OptionsMenu.IsReadOnly = IsReadOnly;
-      if (string.IsNullOrEmpty(OptionsTitle))
+      if (OptionsTitle.IsEmpty)
       {
         OptionsMenu.TitleText = GetOptionsMenuTitle();
       }
@@ -963,9 +959,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return GetLabelText();
     }
 
-    IEnumerable<string> IBocReferenceValueBase.GetValidationErrors ()
+    IEnumerable<PlainTextString> IBocReferenceValueBase.GetValidationErrors ()
     {
-      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators()
+          .Where(v => !v.IsValid)
+          .Select(v => v.ErrorMessage)
+          .Select(PlainTextString.CreateFromText)
+          .Distinct();
     }
 
     /// <summary>

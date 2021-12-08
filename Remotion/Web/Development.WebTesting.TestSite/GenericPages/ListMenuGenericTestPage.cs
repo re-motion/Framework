@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
              {
                  ItemID = "Item" + name,
                  Category = "CatA",
-                 Text = name
+                 Text = WebString.CreateFromText(name)
              };
     }
   }

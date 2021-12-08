@@ -27,6 +27,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Utilities;
+using Remotion.Web;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -387,10 +388,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void GetNullItemText_WithTextFromProperty (ListControlType listControlType)
     {
       var control = new BocEnumValue();
-      control.UndefinedItemText = "The undefined item";
+      control.UndefinedItemText = PlainTextString.CreateFromText("The undefined item");
       control.ListControlStyle.ControlType = listControlType;
 
-      Assert.That(((IBocEnumValue)control).GetNullItemText(), Is.EqualTo("The undefined item"));
+      Assert.That(((IBocEnumValue)control).GetNullItemText(), Is.EqualTo(PlainTextString.CreateFromText("The undefined item")));
     }
 
     [Test]
@@ -404,7 +405,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       using (CultureScope.CreateInvariantCultureScope())
       {
-        Assert.That(((IBocEnumValue)control).GetNullItemText(), Is.Not.Empty);
+        Assert.That(((IBocEnumValue)control).GetNullItemText().IsEmpty, Is.False);
       }
     }
   }

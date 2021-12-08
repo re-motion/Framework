@@ -86,13 +86,13 @@ namespace Remotion.Web.UI
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
     /// </remarks>
-    string? AbortMessage { get; }
+    WebString AbortMessage { get; }
 
     /// <summary> Gets the message displayed when the user attempts to submit while the page is already submitting. </summary>
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
     /// </remarks>
-    string StatusIsSubmittingMessage { get; }
+    WebString StatusIsSubmittingMessage { get; }
 
     /// <summary> 
     ///   Gets a flag whether the is submitting status messages will be displayed when the user tries to postback while 

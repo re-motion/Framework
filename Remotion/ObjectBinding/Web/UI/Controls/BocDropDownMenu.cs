@@ -24,6 +24,7 @@ using Remotion.Mixins;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
@@ -188,8 +189,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     if (businessObject != null)
     {
       _dropDownMenu.GetSelectionCount = "function() { return 1; }";
-      var titleText = GetTitleText(businessObject);
-      _dropDownMenu.TitleText = System.Web.HttpUtility.HtmlEncode(titleText);
+      _dropDownMenu.TitleText = GetTitleText(businessObject);
 
      if (_enableIcon)
      {
@@ -202,14 +202,15 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     }
   }
 
-  protected virtual string GetTitleText (IBusinessObject businessObject)
+  protected virtual WebString GetTitleText (IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-    if (businessObject is IBusinessObjectWithIdentity)
-      return ((IBusinessObjectWithIdentity)businessObject).GetAccessibleDisplayName();
-    else
-      return businessObject.ToString()!;
+    var titleText = businessObject is IBusinessObjectWithIdentity businessObjectWithIdentity
+        ? businessObjectWithIdentity.GetAccessibleDisplayName()
+        : businessObject.ToString();
+
+    return WebString.CreateFromText(titleText);
   }
 
   protected override void Render (HtmlTextWriter writer)

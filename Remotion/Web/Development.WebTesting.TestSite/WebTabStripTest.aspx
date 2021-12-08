@@ -19,9 +19,9 @@
   <h3>WebTabStrip1</h3>
   <remotion:WebTabStrip ID="MyTabStrip1" style="width: 300px" runat="server">
     <Tabs>
-      <remotion:WebTab ItemID="Tab1" Text="Tab1Label"/>
-      <remotion:WebTab ItemID="Tab2" Text="Tab2Label"/>
-      <remotion:WebTab ItemID="Tab3" Text="Tab3 disabled" IsDisabled="True"/>
+      <remotion:WebTab ItemID="Tab1" Text="Tab1Label" AccessKey="A"/>
+      <remotion:WebTab ItemID="Tab2" Text="Tab2Label" AccessKey="B"/>
+      <remotion:WebTab ItemID="Tab3" Text="Tab3 disabled" IsDisabled="True" AccessKey="C"/>
     </Tabs>
   </remotion:WebTabStrip>
   <div id="scope">

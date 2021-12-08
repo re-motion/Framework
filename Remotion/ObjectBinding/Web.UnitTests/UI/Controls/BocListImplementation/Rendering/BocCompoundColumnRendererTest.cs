@@ -23,6 +23,7 @@ using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -38,8 +39,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public override void SetUp ()
     {
       Column = new BocCompoundColumnDefinition();
-      Column.ColumnTitle = "TestColumn1";
-      Column.ColumnTitle = "FirstColumn";
+      Column.ColumnTitle = WebString.CreateFromText("FirstColumn");
       Column.Command = null;
       Column.EnforceWidth = false;
       Column.FormatString = "{0}";

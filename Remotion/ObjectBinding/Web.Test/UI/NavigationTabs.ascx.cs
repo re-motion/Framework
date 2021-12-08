@@ -88,7 +88,7 @@ namespace OBWTest.UI
 
       string mode = Global.PreferQuirksModeRendering ? "Quirks" : "Standard";
       string theme = Global.PreferQuirksModeRendering ? "" : SafeServiceLocator.Current.GetInstance<ResourceTheme>().Name;
-      TabbedMenu.StatusText = mode + " " + theme;
+      TabbedMenu.StatusText = WebString.CreateFromText(mode + " " + theme);
 
       var mainContentScrollable = (bool?)Session[c_mainContentScrollableKey] ?? false;
       MainContentScrollableCheckBox.Checked = mainContentScrollable;

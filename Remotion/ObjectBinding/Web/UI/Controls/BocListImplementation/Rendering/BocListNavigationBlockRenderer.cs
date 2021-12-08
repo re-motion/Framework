@@ -23,6 +23,7 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -181,16 +182,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Themed);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-      var pageLabelText = GetResourceManager(renderingContext).GetString(ResourceIdentifier.PageLabelText);
+      var pageLabelText = GetResourceManager(renderingContext).GetText(ResourceIdentifier.PageLabelText);
       var currentPageNumber = (renderingContext.Control.CurrentPageIndex + 1).ToString(CultureInfo.InvariantCulture);
       var totalPageCount = renderingContext.Control.PageCount.ToString(CultureInfo.InvariantCulture);
       var currentPageNumberMaxLength = totalPageCount.Length.ToString(CultureInfo.InvariantCulture);
       var currentPageNumberTextBoxID = GetCurrentPageNumberControlID(renderingContext);
-      var totalPageCountText = GetResourceManager(renderingContext).GetString(ResourceIdentifier.TotalPageCountText);
+      var totalPageCountText = GetResourceManager(renderingContext).GetText(ResourceIdentifier.TotalPageCountText).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.For, currentPageNumberTextBoxID);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Label);
-      renderingContext.Writer.Write(pageLabelText);
+      pageLabelText.WriteTo(renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, currentPageNumberTextBoxID);
@@ -223,15 +224,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       //  Page info
-      string pageLabelText = GetResourceManager(renderingContext).GetString(ResourceIdentifier.PageLabelText);
-      string totalPageCountText = GetResourceManager(renderingContext).GetString(ResourceIdentifier.TotalPageCountText);
+      var pageLabelText = GetResourceManager(renderingContext).GetText(ResourceIdentifier.PageLabelText);
+      var totalPageCountText = WebString.CreateFromText(
+          string.Format(
+              GetResourceManager(renderingContext).GetString(ResourceIdentifier.TotalPageCountText),
+              renderingContext.Control.PageCount));
 
-      // Do not HTML encode.
-      renderingContext.Writer.Write(pageLabelText);
+      pageLabelText.WriteTo(renderingContext.Writer);
       renderingContext.Writer.Write(" ");
       renderingContext.Writer.Write(renderingContext.Control.CurrentPageIndex + 1);
       renderingContext.Writer.Write(" ");
-      renderingContext.Writer.Write(totalPageCountText, renderingContext.Control.PageCount);
+      totalPageCountText.WriteTo(renderingContext.Writer);
 
       renderingContext.Writer.RenderEndTag(); // end span
     }

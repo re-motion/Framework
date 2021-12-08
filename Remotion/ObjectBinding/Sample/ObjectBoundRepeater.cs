@@ -24,6 +24,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -297,7 +298,7 @@ namespace Remotion.ObjectBinding.Sample
 
 
     [Browsable(false)]
-    public string DisplayName
+    public WebString DisplayName
     {
       get { return _repeaterInternal.DisplayName; }
     }

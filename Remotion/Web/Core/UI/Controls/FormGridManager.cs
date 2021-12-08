@@ -33,7 +33,6 @@ using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.FormGridManagerImplementation;
-using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
@@ -1081,7 +1080,7 @@ namespace Remotion.Web.UI.Controls
     }
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-    void IResourceDispatchTarget.Dispatch (IDictionary values)
+    void IResourceDispatchTarget.Dispatch (IDictionary<string, WebString> values)
     {
       ArgumentUtility.CheckNotNull("values", values);
       Dispatch(values);
@@ -1089,20 +1088,18 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Implementation of <see cref="IResourceDispatchTarget"/>. </summary>
     /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/Dispatch/*' />
-    protected virtual void Dispatch (IDictionary values)
+    protected virtual void Dispatch (IDictionary<string, WebString> values)
     {
       EnsureTransformationStep(TransformationStep.PreLoadViewStateTransformationCompleted);
 
-      Hashtable formGridControls = new Hashtable();
+      var formGridControls = new Dictionary<string, IDictionary<string, IDictionary<string, WebString>>>();
 
       //  Parse the values
 
-      var hotkeyFormatter = HotkeyFormatter;
-
-      foreach (DictionaryEntry entry in values)
+      foreach (var entry in values)
       {
         //  Compound key: "tableUniqueID:controlUniqueID:property"
-        string key = (string)entry.Key;
+        var key = entry.Key;
 
         int posColon = key.IndexOf(':');
 
@@ -1113,12 +1110,10 @@ namespace Remotion.Web.UI.Controls
         if (_formGrids.ContainsKey(tableID))
         {
           //  Get the controls for the current FormGrid
-          Hashtable? controls = (Hashtable?)formGridControls[tableID];
-
           //  If no hashtable exists, create it and insert it into the formGridControls hashtable.
-          if (controls == null)
+          if (!formGridControls.TryGetValue(tableID, out var controls))
           {
-            controls = new Hashtable();
+            controls = new Dictionary<string, IDictionary<string, WebString>>();
             formGridControls[tableID] = controls;
           }
 
@@ -1133,12 +1128,10 @@ namespace Remotion.Web.UI.Controls
             string property = elementIDProperty.Substring(posColon + 1);
 
             //  Get the dictonary for the current element
-            IDictionary? controlValues = (IDictionary?)controls[controlID];
-
             //  If no dictonary exists, create it and insert it into the elements hashtable.
-            if (controlValues == null)
+            if (!controls.TryGetValue(controlID, out var controlValues))
             {
-              controlValues = new HybridDictionary();
+              controlValues = new Dictionary<string, WebString>();
               controls[controlID] = controlValues;
             }
 
@@ -1162,21 +1155,21 @@ namespace Remotion.Web.UI.Controls
 
       //  Assign the values
 
-      foreach (DictionaryEntry formGridEntry in formGridControls)
+      foreach (var formGridEntry in formGridControls)
       {
-        string tableID = (string)formGridEntry.Key;
+        string tableID = formGridEntry.Key;
         var formGrid = _formGrids[tableID];
 
-        Hashtable controls = (Hashtable)formGridEntry.Value!; // TODO RM-8118: not null assertion
+        var controls = formGridEntry.Value;
 
-        foreach (DictionaryEntry controlEntry in controls)
+        foreach (var controlEntry in controls)
         {
-          string controlID = (string)controlEntry.Key;
+          string controlID = controlEntry.Key;
           Control? control = formGrid.Table.FindControl(controlID);
 
           if (control != null)
           {
-            IDictionary controlValues = (IDictionary)controlEntry.Value!; // TODO RM-8118: not null assertion
+            var controlValues = controlEntry.Value;
 
             //  Pass the values to the control
             IResourceDispatchTarget? resourceDispatchTarget = control as IResourceDispatchTarget;
@@ -1185,38 +1178,6 @@ namespace Remotion.Web.UI.Controls
               resourceDispatchTarget.Dispatch(controlValues);
             else
               ResourceDispatcher.DispatchGeneric(control, controlValues);
-
-            //  Access key support for Labels
-            Label? label = control as Label;
-            if (label != null)
-            {
-#pragma warning disable 184
-              Assertion.IsFalse(label is SmartLabel);
-#pragma warning restore 184
-
-              var textWithHotkey = HotkeyParser.Parse(label.Text);
-
-              //  Label has associated control
-              if (!string.IsNullOrEmpty(label.AssociatedControlID))
-              {
-                ISmartControl? smartControl = control as ISmartControl;
-                if (smartControl != null && smartControl.UseLabel)
-                {
-                  label.Text = hotkeyFormatter.FormatText(textWithHotkey, false);
-                  label.AccessKey = hotkeyFormatter.FormatHotkey(textWithHotkey);
-                }
-                else
-                {
-                  label.Text = hotkeyFormatter.FormatText(textWithHotkey, false);
-                  label.AccessKey = hotkeyFormatter.FormatHotkey(textWithHotkey);
-                }
-              }
-              else
-              {
-                label.Text = textWithHotkey.Text;
-                label.AccessKey = "";
-              }
-            }
           }
           else
           {
@@ -1710,16 +1671,16 @@ namespace Remotion.Web.UI.Controls
         {
           ValidationError validationError = (ValidationError)validationErrorList[i]!;
           //  Get validation message
-          string validationMessage = validationError.ValidationMessage;
+          PlainTextString validationMessage = validationError.ValidationMessage;
           //  Get tool tip, tool tip is validation message
-          if (!string.IsNullOrEmpty(validationMessage))
+          if (!validationMessage.IsEmpty)
           {
             if (toolTip.Length > 0)
               toolTip.AppendLine();
-            toolTip.Append(validationMessage);
+            toolTip.Append(validationMessage.GetValue());
           }
         }
-        dataRow.ValidationMarker = CreateValidationMarker(toolTip.ToString());
+        dataRow.ValidationMarker = CreateValidationMarker(PlainTextString.CreateFromText(toolTip.ToString()));
       }
 
       dataRow.ValidationErrors = (ValidationError[])validationErrorList.ToArray(typeof(ValidationError));
@@ -3022,7 +2983,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Builds a new marker for validation errors. </summary>
     /// <include file='..\..\doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/CreateValidationMarker/*' />
-    protected virtual Control CreateValidationMarker (string toolTip)
+    protected virtual Control CreateValidationMarker (PlainTextString toolTip)
     {
       Image validationErrorIcon = new Image();
       validationErrorIcon.ImageUrl = GetImageUrl(FormGridImage.ValidationError);
@@ -3036,7 +2997,7 @@ namespace Remotion.Web.UI.Controls
       validationAnchor.Controls.Add(validationErrorIcon);
       if (ValidatorVisibility == ValidatorVisibility.HideValidators)
       {
-        validationAnchor.Attributes.Add(HtmlTextWriterAttribute2.AriaLabel, toolTip);
+        validationAnchor.Attributes.Add(HtmlTextWriterAttribute2.AriaLabel, toolTip.GetValue());
         validationAnchor.Attributes["tabindex"] = "0";
       }
       else
@@ -3346,11 +3307,6 @@ namespace Remotion.Web.UI.Controls
     protected virtual IServiceLocator ServiceLocator
     {
       get { return SafeServiceLocator.Current; }
-    }
-
-    private IHotkeyFormatter HotkeyFormatter
-    {
-      get { return ServiceLocator.GetInstance<IHotkeyFormatter>(); }
     }
 
     private IInternalControlMemberCaller MemberCaller

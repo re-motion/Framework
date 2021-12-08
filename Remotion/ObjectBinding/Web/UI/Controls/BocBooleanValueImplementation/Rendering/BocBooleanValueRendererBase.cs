@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       get { return true; }
     }
 
-    protected IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
+    protected IEnumerable<PlainTextString> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 

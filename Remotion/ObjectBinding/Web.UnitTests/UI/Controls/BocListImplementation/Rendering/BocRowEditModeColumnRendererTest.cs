@@ -23,6 +23,7 @@ using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -38,9 +39,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public override void SetUp ()
     {
       Column = new BocRowEditModeColumnDefinition();
-      Column.EditText = "Bearbeiten";
-      Column.SaveText = "Speichern";
-      Column.CancelText = "Abbrechen";
+      Column.EditText = WebString.CreateFromText("Bearbeiten");
+      Column.SaveText = WebString.CreateFromText("Speichern");
+      Column.CancelText = WebString.CreateFromText("Abbrechen");
       Column.Show = BocRowEditColumnDefinitionShow.Always;
 
       base.SetUp();

@@ -264,7 +264,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
     /// <returns> A <see cref="ListItem"/>. </returns>
     private ListItem CreateNullItem (BocEnumValueRenderingContext renderingContext)
     {
-      ListItem emptyItem = new ListItem(renderingContext.Control.GetNullItemText(), renderingContext.Control.NullIdentifier);
+      ListItem emptyItem = new ListItem(
+          renderingContext.Control.GetNullItemText().GetValue(),
+          renderingContext.Control.NullIdentifier);
+
       if (renderingContext.Control.Value == null)
       {
         if (renderingContext.Control.Value == null)
@@ -277,19 +280,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
     private Label GetLabel (BocEnumValueRenderingContext renderingContext)
     {
       Label label = new Label { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
-      string? text;
+      PlainTextString text;
       if (renderingContext.Control.EnumerationValueInfo == null)
       {
-        text = null;
+        text = PlainTextString.Empty;
         label.Attributes.Add("data-value", renderingContext.Control.NullIdentifier);
       }
       else
       {
-        text = renderingContext.Control.EnumerationValueInfo.DisplayName;
+        text = PlainTextString.CreateFromText(renderingContext.Control.EnumerationValueInfo.DisplayName);
         label.Attributes.Add("data-value", renderingContext.Control.EnumerationValueInfo.Identifier);
       }
 
-      label.Text = text;
+      label.Text = text.ToString(WebStringEncoding.Html);
 
       label.Width = Unit.Empty;
       label.Height = Unit.Empty;
@@ -321,7 +324,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       return label;
     }
 
-    private IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<IBocEnumValue> renderingContext)
+    private IEnumerable<PlainTextString> GetValidationErrorsToRender (BocRenderingContext<IBocEnumValue> renderingContext)
     {
       return renderingContext.Control.GetValidationErrors();
     }

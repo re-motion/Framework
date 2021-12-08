@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Sample
@@ -39,14 +40,14 @@ namespace Remotion.ObjectBinding.Sample
 
         nodeInfos = new BusinessObjectPropertyTreeNodeInfo[2];
         nodeInfos[0] = new BusinessObjectPropertyTreeNodeInfo(
-            "Children",
-            "ToolTip: Children",
+            WebString.CreateFromText("Children"),
+            WebString.CreateFromText("ToolTip: Children"),
             new IconInfo(null, Unit.Empty, Unit.Empty),
             childrenProperty);
-        nodeInfos[0].Badge = new Badge("" + childCount, childCount + " children");
+        nodeInfos[0].Badge = new Badge(WebString.CreateFromText("" + childCount), WebString.CreateFromText(childCount + " children"));
         nodeInfos[1] = new BusinessObjectPropertyTreeNodeInfo(
-            "Jobs",
-            "ToolTip: Jobs",
+            WebString.CreateFromText("Jobs"),
+            WebString.CreateFromText("ToolTip: Jobs"),
             new IconInfo(null, Unit.Empty, Unit.Empty),
             (IBusinessObjectReferenceProperty)businessObject.BusinessObjectClass.GetPropertyDefinition("Jobs"));
       }

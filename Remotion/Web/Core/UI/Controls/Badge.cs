@@ -32,21 +32,21 @@ namespace Remotion.Web.UI.Controls
       if (badge == null)
         return false;
 
-      if (string.IsNullOrEmpty(badge.Value) && string.IsNullOrEmpty(badge.Description))
+      if (badge.Value.IsEmpty && badge.Description.IsEmpty)
         return false;
 
       return true;
     }
 
-    private string _value;
-    private string _description;
+    private WebString _value;
+    private WebString _description;
 
     public Badge ()
-        : this(string.Empty, string.Empty)
+        : this(WebString.Empty, WebString.Empty)
     {
     }
 
-    public Badge (string value, string description)
+    public Badge (WebString value, WebString description)
     {
       Value = value;
       Description = description;
@@ -56,31 +56,31 @@ namespace Remotion.Web.UI.Controls
     /// Gets or sets the text that is displayed in the badge.
     /// </summary>
     [PersistenceMode(PersistenceMode.Attribute)]
-    [DefaultValue("")]
+    [DefaultValue(typeof(WebString), "")]
     [NotifyParentProperty(true)]
-    public string Value
+    public WebString Value
     {
       get { return _value; }
       [MemberNotNull(nameof(_value))]
-      set { _value = value ?? string.Empty; }
+      set { _value = value; }
     }
 
     /// <summary>
     /// Gets or sets a screen reader friendly description of <see cref="Value"/>.
     /// </summary>
     [PersistenceMode(PersistenceMode.Attribute)]
-    [DefaultValue("")]
+    [DefaultValue(typeof(WebString), "")]
     [NotifyParentProperty(true)]
-    public string Description
+    public WebString Description
     {
       get { return _description; }
       [MemberNotNull(nameof(_description))]
-      set { _description = value ?? string.Empty; }
+      set { _description = value; }
     }
 
     public override string ToString ()
     {
-      return _value;
+      return _value.ToString();
     }
   }
 }

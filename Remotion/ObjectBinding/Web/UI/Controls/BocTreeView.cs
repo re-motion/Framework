@@ -28,6 +28,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocTreeViewImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTreeViewImplementation.Rendering;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -472,8 +473,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         IBusinessObjectWithIdentity businessObject)
     {
       string id = businessObject.UniqueIdentifier;
-      string? text = GetText(businessObject);
-      string? toolTip = GetToolTip(businessObject);
+      WebString text = GetText(businessObject);
+      WebString toolTip = GetToolTip(businessObject);
       IconInfo? icon = GetIcon(businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
       BusinessObjectTreeNode node = new BusinessObjectTreeNode(id, text, toolTip, icon, property, businessObject);
       node.Badge = GetBadge(businessObject);
@@ -501,16 +502,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return null;
     }
 
-    protected virtual string? GetText (IBusinessObjectWithIdentity businessObject)
+    protected virtual WebString GetText (IBusinessObjectWithIdentity businessObject)
     {
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
-      return businessObject.GetAccessibleDisplayName();
+      return WebString.CreateFromText(businessObject.GetAccessibleDisplayName());
     }
 
-    protected virtual string? GetToolTip (IBusinessObjectWithIdentity businessObject)
+    protected virtual WebString GetToolTip (IBusinessObjectWithIdentity businessObject)
     {
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
-      return GetToolTip(businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
+      return WebString.CreateFromText(GetToolTip(businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider));
     }
 
     [NotNull]
@@ -641,8 +642,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         bool isEvaluated = (bool)values[2];
         bool isSelected = (bool)values[3];
         string menuID = (string)values[4];
-        string text = (string)values[5];
-        string toolTip = (string)values[6];
+        WebString text = (WebString)values[5];
+        WebString toolTip = (WebString)values[6];
         IconInfo icon = (IconInfo)values[7];
         Badge badge = (Badge)values[8];
         bool isBusinessObjectTreeNode = (bool)values[10];
@@ -1069,8 +1070,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
   public class BusinessObjectPropertyTreeNodeInfo
   {
-    private string _text;
-    private string _toolTip;
+    private WebString _text;
+    private WebString _toolTip;
     private IconInfo? _icon;
     private Badge? _badge;
     private IBusinessObjectReferenceProperty _property;
@@ -1078,32 +1079,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public BusinessObjectPropertyTreeNodeInfo (IBusinessObjectReferenceProperty property)
     {
       ArgumentUtility.CheckNotNull("property", property);
-      _text = property.DisplayName;
-      _toolTip = string.Empty;
+      _text = WebString.CreateFromText(property.DisplayName);
+      _toolTip = WebString.Empty;
       _icon = null;
       _property = property;
     }
 
-    public BusinessObjectPropertyTreeNodeInfo (string text, string toolTip, IconInfo icon, IBusinessObjectReferenceProperty property)
+    public BusinessObjectPropertyTreeNodeInfo (WebString text, WebString toolTip, IconInfo icon, IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("text", text);
       _text = text;
       _toolTip = toolTip;
       _icon = icon;
       _property = property;
     }
 
-    public string Text
+    public WebString Text
     {
       get { return _text; }
-      set
-      {
-        ArgumentUtility.CheckNotNullOrEmpty("value", value);
-        _text = value;
-      }
+      set { _text = value; }
     }
 
-    public string ToolTip
+    public WebString ToolTip
     {
       get { return _toolTip; }
       set { _toolTip = value; }

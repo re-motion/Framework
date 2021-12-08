@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -25,12 +24,12 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CommonServiceLocator;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.WebTreeViewImplementation;
@@ -447,7 +446,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-    void IResourceDispatchTarget.Dispatch (IDictionary values)
+    void IResourceDispatchTarget.Dispatch (IDictionary<string, WebString> values)
     {
       ArgumentUtility.CheckNotNull("values", values);
       Dispatch(values);
@@ -455,7 +454,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-    protected virtual void Dispatch (IDictionary values)
+    protected virtual void Dispatch (IDictionary<string, WebString> values)
     {
       //  Dispatch simple properties
       ResourceDispatcher.DispatchGeneric(this, values);
@@ -640,7 +639,7 @@ namespace Remotion.Web.UI.Controls
         {
           if (!string.IsNullOrEmpty(node.ItemID))
             writer.AddAttribute(DiagnosticMetadataAttributes.ItemID, node.ItemID);
-          if (!string.IsNullOrEmpty(node.Text))
+          if (!node.Text.IsEmpty)
             writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(node.Text));
           if (node.IsSelected)
             writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewIsSelectedNode, "true");
@@ -650,11 +649,11 @@ namespace Remotion.Web.UI.Controls
             writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewNumberOfChildren, DiagnosticMetadataAttributes.Null);
           writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewIsExpanded, node.IsExpanded ? "true" : "false");
           writer.AddAttribute(DiagnosticMetadataAttributes.IndexInCollection, (i + 1).ToString());
-          if (!string.IsNullOrEmpty(node.Badge?.Value))
+          if (node.Badge is { Value: { IsEmpty: false } })
           {
-            writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewBadgeValue, node.Badge.Value);
-            if (!string.IsNullOrEmpty(node.Badge.Description))
-              writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewBadgeDescription, node.Badge.Description);
+            writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewBadgeValue, HtmlUtility.StripHtmlTags(node.Badge.Value));
+            if (!node.Badge.Description.IsEmpty)
+              writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewBadgeDescription, HtmlUtility.StripHtmlTags(node.Badge.Description));
           }
           if (!string.IsNullOrEmpty(node.Category))
             writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewNodeCategory, node.Category);
@@ -737,7 +736,7 @@ namespace Remotion.Web.UI.Controls
         writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
         var resourceManager= GetResourceManager();
-        writer.Write(resourceManager.GetString(ResourceIdentifier.ScreenReaderNodeSelectedLabelText));
+        resourceManager.GetText(ResourceIdentifier.ScreenReaderNodeSelectedLabelText).WriteTo(writer);
 
         writer.RenderEndTag();
       }
@@ -784,8 +783,8 @@ namespace Remotion.Web.UI.Controls
         writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeHeadSelected);
       else
         writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeHead);
-      if (!string.IsNullOrEmpty(node.ToolTip))
-        writer.AddAttribute(HtmlTextWriterAttribute.Title, node.ToolTip);
+      if (!node.ToolTip.IsEmpty)
+        node.ToolTip.AddAttributeTo(writer, HtmlTextWriterAttribute.Title);
 
       writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
@@ -806,10 +805,10 @@ namespace Remotion.Web.UI.Controls
           node.Icon.Render(writer, this);
           writer.Write("&nbsp;");
         }
-        if (!string.IsNullOrEmpty(node.Text))
+        if (!node.Text.IsEmpty)
         {
           writer.RenderBeginTag(HtmlTextWriterTag.Span);
-          writer.WriteEncodedText(node.Text);
+          node.Text.WriteTo(writer);
           writer.RenderEndTag();
         }
       }
@@ -824,26 +823,26 @@ namespace Remotion.Web.UI.Controls
     private void RenderNodeBadge (HtmlTextWriter writer, WebTreeNode node)
     {
       var badge = node.Badge;
-      if (string.IsNullOrEmpty(badge?.Value))
+      if (badge == null || badge.Value.IsEmpty)
         return;
 
-      writer.AddAttribute(HtmlTextWriterAttribute.Title, badge.Description);
+      badge.Description.AddAttributeTo(writer, HtmlTextWriterAttribute.Title);
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassNodeBadge);
       writer.AddAttribute(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
       writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       writer.RenderBeginTag(HtmlTextWriterTag.Span);
-      writer.Write(badge.Value);
+      badge.Value.WriteTo(writer);
       writer.RenderEndTag();
 
       writer.RenderEndTag();
 
-      if (!string.IsNullOrEmpty(badge.Description))
+      if (!badge.Description.IsEmpty)
       {
         writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassScreenReaderText);
         writer.RenderBeginTag(HtmlTextWriterTag.Span);
         writer.Write(".");
-        writer.Write(badge.Description);
+        badge.Description.WriteTo(writer);
         writer.RenderEndTag();
       }
     }
@@ -876,9 +875,9 @@ namespace Remotion.Web.UI.Controls
       WebTreeNodeCollection designModeNodes = new WebTreeNodeCollection(null);
       designModeNodes.SetParent(this, null);
       WebTreeNodeCollection nodes = designModeNodes;
-      nodes.Add(new WebTreeNode("node0", "Node 0"));
-      nodes.Add(new WebTreeNode("node1", "Node 1"));
-      nodes.Add(new WebTreeNode("node2", "Node 2"));
+      nodes.Add(new WebTreeNode("node0", WebString.CreateFromText("Node 0")));
+      nodes.Add(new WebTreeNode("node1", WebString.CreateFromText("Node 1")));
+      nodes.Add(new WebTreeNode("node2", WebString.CreateFromText("Node 2")));
       using (var nodeIDAlgorithm = MD5CryptoServiceProvider.Create())
       {
         RenderNodes(writer, designModeNodes, true, nodeIDAlgorithm, 0);

@@ -18,10 +18,7 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CommonServiceLocator;
-using Remotion.ServiceLocation;
 using Remotion.Web.Infrastructure;
-using Remotion.Web.UI.Controls.Hotkey;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -31,19 +28,13 @@ namespace Remotion.Web.UI.Controls
   [ToolboxItem(false)]
   public class WebLinkButton : LinkButton, IControl
   {
-    private TextWithHotkey? _textWithHotkey;
-
-    protected override void Render (HtmlTextWriter writer)
-    {
-      _textWithHotkey = HotkeyParser.Parse(Text);
-
-      base.Render(writer);
-    }
+    private const string c_textViewStateKey = nameof(Text);
+    private const string c_textWebStringViewStateKey = c_textViewStateKey + "_" + nameof(WebStringType);
 
     protected override void AddAttributesToRender (HtmlTextWriter writer)
     {
-      if (string.IsNullOrEmpty(AccessKey) && _textWithHotkey!.Hotkey.HasValue) // TODO RM-8118: not null assertion
-        writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, HotkeyFormatter.FormatHotkey(_textWithHotkey));
+      if (string.IsNullOrEmpty(AccessKey))
+        writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, AccessKey);
 
       base.AddAttributesToRender(writer);
     }
@@ -56,7 +47,7 @@ namespace Remotion.Web.UI.Controls
       if (HasControls())
         base.RenderContents(writer);
       else
-        writer.Write(HotkeyFormatter.FormatText(_textWithHotkey!, false)); // TODO RM-8118: not null assertion
+        Text.WriteTo(writer);
     }
 
     public new IPage? Page
@@ -64,14 +55,29 @@ namespace Remotion.Web.UI.Controls
       get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
-    protected virtual IServiceLocator ServiceLocator
+    [Category("Appearance")]
+    [Description("WebLinkButton_Text")]
+    [DefaultValue("")]
+    public new WebString Text
     {
-      get { return SafeServiceLocator.Current; }
-    }
+      get
+      {
+        var value = (string?)ViewState[c_textViewStateKey];
+        var type = (WebStringType?)ViewState[c_textWebStringViewStateKey] ?? WebStringType.PlainText;
 
-    private IHotkeyFormatter HotkeyFormatter
-    {
-      get { return ServiceLocator.GetInstance<IHotkeyFormatter>(); }
+        return type switch
+        {
+            WebStringType.PlainText => WebString.CreateFromText(value),
+            WebStringType.Encoded => WebString.CreateFromHtml(value),
+            _ => throw new InvalidOperationException(
+                $"The value for key '{c_textWebStringViewStateKey}' in the ViewState contains invalid data '{type}'."),
+        };
+      }
+      set
+      {
+        ViewState[nameof(Text)] = value.GetValue();
+        ViewState[c_textWebStringViewStateKey] = value.Type;
+      }
     }
   }
 }

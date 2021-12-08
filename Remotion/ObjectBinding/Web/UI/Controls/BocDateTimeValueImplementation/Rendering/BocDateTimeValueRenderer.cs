@@ -27,6 +27,7 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -223,7 +224,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, dateTextBoxLabelID);
           renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
           renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
-          renderingContext.Writer.Write(resourceManager.GetString(BocDateTimeValue.ResourceIdentifier.DateLabelText));
+          resourceManager.GetText(BocDateTimeValue.ResourceIdentifier.DateLabelText).WriteTo(renderingContext.Writer);
           renderingContext.Writer.RenderEndTag();
         }
 
@@ -251,7 +252,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
           renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, timeTextBoxLabelID);
           renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
           renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
-          renderingContext.Writer.Write(resourceManager.GetString(BocDateTimeValue.ResourceIdentifier.TimeLabelText));
+          resourceManager.GetText(BocDateTimeValue.ResourceIdentifier.TimeLabelText).WriteTo(renderingContext.Writer);
           renderingContext.Writer.RenderEndTag();
         }
 
@@ -416,7 +417,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         Label label,
         BocDateTimeValueRenderingContext renderingContext,
         string validationErrorsID,
-        IReadOnlyCollection<string> validationErrors)
+        IReadOnlyCollection<PlainTextString> validationErrors)
     {
       label.Height = Unit.Empty;
       label.Width = Unit.Empty;
@@ -464,7 +465,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       _validationErrorRenderer.RenderValidationErrors(renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
-    private IEnumerable<string> GetDateValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
+    private IEnumerable<PlainTextString> GetDateValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
     {
       return renderingContext.Control.GetDateValueValidationErrors();
     }
@@ -474,7 +475,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
       return renderingContext.Control.ClientID + "_DateValueValidationErrors";
     }
 
-    private IEnumerable<string> GetTimeValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
+    private IEnumerable<PlainTextString> GetTimeValueValidationErrorsToRender (BocRenderingContext<IBocDateTimeValue> renderingContext)
     {
       return renderingContext.Control.GetTimeValueValidationErrors();
     }

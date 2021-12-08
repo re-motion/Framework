@@ -93,8 +93,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.AddDiagnosticMetadataAttributes(renderingContext);
 
       var control = renderingContext.Control;
-      if (!string.IsNullOrEmpty(control.DisplayName))
-        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.DisplayName, control.DisplayName);
+      if (!control.DisplayName.IsEmpty)
+        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.DisplayName, control.DisplayName.ToString(WebStringEncoding.Attribute));
 
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsDisabled, (!control.Enabled).ToString().ToLower());
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsReadOnly, IsReadOnly(control).ToString().ToLower());

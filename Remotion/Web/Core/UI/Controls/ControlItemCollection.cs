@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -269,7 +270,7 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    public void Dispatch (IDictionary values, Control? parent, string collectionName)
+    public void Dispatch (IDictionary<string, IDictionary<string, WebString>> values, Control? parent, string collectionName)
     {
       string parentID = string.Empty;
       string page = string.Empty;
@@ -279,13 +280,13 @@ namespace Remotion.Web.UI.Controls
         page = parent.Page!.ToString()!;
       }
 
-      foreach (DictionaryEntry entry in values)
+      foreach (var entry in values)
       {
-        string id = (string)entry.Key;
+        string id = entry.Key;
 
         IControlItem? item = Find(id);
         if (item != null)
-          ResourceDispatcher.DispatchGeneric(item, (IDictionary)entry.Value!); // TODO: not null assertion
+          ResourceDispatcher.DispatchGeneric(item, entry.Value);
         else //  Invalid collection element
         {
           s_log.Debug(

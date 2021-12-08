@@ -262,7 +262,7 @@ namespace Remotion.Web.UI.Controls
 
       MultiViewTab tab = new MultiViewTab();
       tab.ItemID = view.ID + c_itemIDSuffix;
-      tab.Text = view.Title!; // TODO RM-8118: Title should not be null or empty
+      tab.Text = WebString.CreateFromText(view.Title!); // TODO RM-8118: Title should not be null or empty
       tab.Icon = view.Icon;
       tab.Target = view.ID;
       _tabStrip.Tabs.Add(tab);

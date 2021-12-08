@@ -21,6 +21,8 @@ using CommonServiceLocator;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
 
@@ -30,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class BocDropDownMenuColumnDefinition : BocColumnDefinition
   {
     private bool _showMenuTitle = true;
-    private string _menuTitleText = string.Empty;
+    private WebString _menuTitleText;
     private IconInfo _menuTitleIcon;
 
     public BocDropDownMenuColumnDefinition ()
@@ -65,16 +67,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the text displayed as the menu title. </summary>
-    /// <value> A <see cref="string"/> displayed as the menu's title. </value>
+    /// <value> A <see cref="WebString"/> displayed as the menu's title. </value>
     [PersistenceMode(PersistenceMode.Attribute)]
     [Category("Appearance")]
     [Description("The menu title, can be empty.")]
-    [DefaultValue("")]
+    [DefaultValue(typeof(WebString), "")]
     [NotifyParentProperty(true)]
-    public string MenuTitleText
+    public WebString MenuTitleText
     {
       get { return _menuTitleText; }
-      set { _menuTitleText = value ?? string.Empty; }
+      set { _menuTitleText = value; }
     }
 
     /// <summary> Gets or sets the icon displayed in the menu's title field. </summary>
@@ -99,9 +101,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       base.LoadResources(resourceManager, globalizationService);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey(MenuTitleText);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(MenuTitleText.GetValue());
       if (!string.IsNullOrEmpty(key))
-        MenuTitleText = resourceManager.GetString(key);
+        MenuTitleText = resourceManager.GetWebString(key, MenuTitleText.Type);
 
       if (MenuTitleIcon != null)
         MenuTitleIcon.LoadResources(resourceManager);

@@ -19,6 +19,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -26,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 public abstract class BocTreeNode: WebTreeNode
 {
-  public BocTreeNode (string itemID, string? text, string? toolTip, IconInfo? icon)
+  public BocTreeNode (string itemID, WebString text, WebString toolTip, IconInfo? icon)
     : base(itemID, text, toolTip, icon ?? new IconInfo(string.Empty))
   {
   }
@@ -52,8 +53,8 @@ public class BusinessObjectTreeNode: BocTreeNode
 
   public BusinessObjectTreeNode (
       string itemID,
-      string? text,
-      string? toolTip,
+      WebString text,
+      WebString toolTip,
       IconInfo? icon,
       IBusinessObjectReferenceProperty? property,
       IBusinessObjectWithIdentity? businessObject)
@@ -67,10 +68,10 @@ public class BusinessObjectTreeNode: BocTreeNode
 
   public BusinessObjectTreeNode (
       string itemID,
-      string text,
+      WebString text,
       IBusinessObjectReferenceProperty property,
       IBusinessObjectWithIdentity businessObject)
-    : this(itemID, text, null, null, property, businessObject)
+    : this(itemID, text, WebString.Empty, null, property, businessObject)
   {
   }
 
@@ -207,8 +208,8 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
 
   public BusinessObjectPropertyTreeNode (
       string itemID,
-      string text,
-      string? toolTip,
+      WebString text,
+      WebString toolTip,
       IconInfo? icon,
       IBusinessObjectReferenceProperty? property)
     : base(itemID, text, toolTip, icon)
@@ -218,9 +219,9 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
 
   public BusinessObjectPropertyTreeNode (
       string itemID,
-      string text,
+      WebString text,
       IBusinessObjectReferenceProperty property)
-    : this(itemID, text, null, null, property)
+    : this(itemID, text, WebString.Empty, null, property)
   {
   }
 

@@ -509,7 +509,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
           else
             writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassEditModeValidationMessage);
           writer.RenderBeginTag(HtmlTextWriterTag.Div);
-          WebString.CreateFromText(validator.ErrorMessage).WriteTo(writer);
+          PlainTextString.CreateFromText(validator.ErrorMessage).WriteTo(writer);
           writer.RenderEndTag();
         }
       }

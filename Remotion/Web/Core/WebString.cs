@@ -33,6 +33,8 @@ namespace Remotion.Web
   {
     private static readonly string[] s_newlineSplitSeparators = { "\r\n", "\r", "\n" };
 
+    public static readonly WebString Empty = new(string.Empty, WebStringType.PlainText);
+
     /// <summary>
     /// Creates a <see cref="WebString"/> from the specified <paramref name="html"/>.
     /// The value will be rendered without being encoded and thus must be a safe string.

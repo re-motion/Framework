@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Utilities;
+using Remotion.Web;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 {
@@ -29,26 +30,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     private readonly string _trueIconUrl;
     private readonly string _falseIconUrl;
     private readonly string _nullIconUrl;
-    private readonly string _defaultTrueDescription;
-    private readonly string _defaultFalseDescription;
-    private readonly string _defaultNullDescription;
+    private readonly WebString _defaultTrueDescription;
+    private readonly WebString _defaultFalseDescription;
+    private readonly WebString _defaultNullDescription;
 
     public BocBooleanValueResourceSet (
         string resourceKey,
         string trueIconUrl,
         string falseIconUrl,
         string nullIconUrl,
-        string defaultTrueDescription,
-        string defaultFalseDescription,
-        string defaultNullDescription)
+        WebString defaultTrueDescription,
+        WebString defaultFalseDescription,
+        WebString defaultNullDescription)
     {
       ArgumentUtility.CheckNotNull("resourceKey", resourceKey);
       ArgumentUtility.CheckNotNullOrEmpty("trueIconUrl", trueIconUrl);
       ArgumentUtility.CheckNotNullOrEmpty("falseIconUrl", falseIconUrl);
       ArgumentUtility.CheckNotNullOrEmpty("nullIconUrl", nullIconUrl);
-      ArgumentUtility.CheckNotNullOrEmpty("defaultTrueDescription", defaultTrueDescription);
-      ArgumentUtility.CheckNotNullOrEmpty("defaultFalseDescription", defaultFalseDescription);
-      ArgumentUtility.CheckNotNullOrEmpty("defaultNullDescription", defaultNullDescription);
+      ArgumentUtility.CheckNotEmpty("defaultTrueDescription", defaultTrueDescription.GetValue());
+      ArgumentUtility.CheckNotEmpty("defaultFalseDescription", defaultFalseDescription.GetValue());
+      ArgumentUtility.CheckNotEmpty("defaultNullDescription", defaultNullDescription.GetValue());
 
       _resourceKey = resourceKey;
       _trueIconUrl = trueIconUrl;
@@ -79,17 +80,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
       get { return _nullIconUrl; }
     }
 
-    public string DefaultTrueDescription
+    public WebString DefaultTrueDescription
     {
       get { return _defaultTrueDescription; }
     }
 
-    public string DefaultFalseDescription
+    public WebString DefaultFalseDescription
     {
       get { return _defaultFalseDescription; }
     }
 
-    public string DefaultNullDescription
+    public WebString DefaultNullDescription
     {
       get { return _defaultNullDescription; }
     }

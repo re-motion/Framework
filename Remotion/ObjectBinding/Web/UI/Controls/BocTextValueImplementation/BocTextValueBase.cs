@@ -24,6 +24,7 @@ using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Globalization;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -297,9 +298,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
       return ClientID + c_textboxIDPostfix;
     }
 
-    IEnumerable<string> IBocTextValueBase.GetValidationErrors ()
+    IEnumerable<PlainTextString> IBocTextValueBase.GetValidationErrors ()
     {
-      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct().Distinct();
+      return GetRegisteredValidators()
+          .Where(v => !v.IsValid)
+          .Select(v => v.ErrorMessage)
+          .Select(PlainTextString.CreateFromText)
+          .Distinct();
     }
 
     [Obsolete("For DependDB only.", true)]

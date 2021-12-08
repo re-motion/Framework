@@ -22,6 +22,7 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
@@ -71,7 +72,7 @@ public class ValidationStateViewer : WebControl, IControl
   ///   The Text displayed if <see cref="ValidationStateViewer.ValidationErrorStyle"/> is set to 
   ///   <see cref="Remotion.Web.UI.Controls.ValidationErrorStyle.Notice"/>.
   /// </summary>
-  private string? _noticeText;
+  private WebString _noticeText;
   /// <summary> The style in which the validation errors should be displayed on the page. </summary>
   private ValidationErrorStyle _validationErrorStyle = ValidationErrorStyle.Notice;
   private bool _showLabels = true;
@@ -122,9 +123,9 @@ public class ValidationStateViewer : WebControl, IControl
   {
     ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
 
-    string? key = ResourceManagerUtility.GetGlobalResourceKey(NoticeText);
+    string? key = ResourceManagerUtility.GetGlobalResourceKey(NoticeText.GetValue());
     if (!string.IsNullOrEmpty(key))
-      NoticeText = resourceManager.GetString(key);
+      NoticeText = resourceManager.GetWebString(key, NoticeText.Type);
   }
 
   protected override void RenderContents (HtmlTextWriter writer)
@@ -174,17 +175,16 @@ public class ValidationStateViewer : WebControl, IControl
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassValidationNotice);
       writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-      string noticeText;
-      if (string.IsNullOrEmpty(_noticeText))
+      WebString noticeText;
+      if (_noticeText.IsEmpty)
       {
         IResourceManager resourceManager = GetResourceManager();
-        noticeText = resourceManager.GetString(ResourceIdentifier.NoticeText);
+        noticeText = resourceManager.GetText(ResourceIdentifier.NoticeText);
       }
       else
         noticeText = _noticeText;
 
-      // Do not HTML encode.
-      writer.WriteLine(noticeText);
+      noticeText.WriteTo(writer);
       writer.RenderEndTag();
     }
   }
@@ -221,9 +221,9 @@ public class ValidationStateViewer : WebControl, IControl
             Control control = (Control)validationError.Labels[idxErrorLabels];
             string text = string.Empty;
             if (control is SmartLabel)
-              text = ((SmartLabel)control).GetText();
+              text = ((SmartLabel)control).GetText().ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
             else if (control is FormGridLabel)
-              text = ((FormGridLabel)control).Text;
+              text = ((FormGridLabel)control).Text.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
             else if (control is Label)
               text = ((Label)control).Text;
             else if (control is LiteralControl)
@@ -288,8 +288,8 @@ public class ValidationStateViewer : WebControl, IControl
   /// <value> A string. </value>
   [Category("Appearance")]
   [Description("Sets the Text to be displayed if ValidationErrorStyle is set to Notice.")]
-  [DefaultValue("")]
-  public string? NoticeText
+  [DefaultValue(typeof(WebString), "")]
+  public WebString NoticeText
   {
     get { return _noticeText; }
     set { _noticeText = value; }

@@ -78,7 +78,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
     /// </remarks>
-    string StatusIsAbortingMessage { get; }
+    WebString StatusIsAbortingMessage { get; }
 
     /// <summary> 
     ///   Gets the message displayed when the user returnes to a cached page that has already been submited or aborted. 
@@ -86,7 +86,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
     /// </remarks>
-    string StatusIsCachedMessage { get; }
+    WebString StatusIsCachedMessage { get; }
 
     /// <summary> Gets the permanent URL parameters the current page. </summary>
     NameValueCollection GetPermanentUrlParameters ();

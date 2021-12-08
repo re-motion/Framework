@@ -26,6 +26,7 @@ using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -258,7 +259,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       string searchStringForDropDown = StringUtility.EmptyToNull(renderingContext.Control.ValidSearchStringForDropDownRegex) ?? searchString;
       string searchStringForDropDownDoesNotMatchRegexMessage =
           StringUtility.EmptyToNull(renderingContext.Control.SearchStringForDropDownDoesNotMatchRegexMessage)
-          ?? GetResourceManager(renderingContext).GetString(ResourceIdentifier.SearchStringForDropDownDoesNotMatchRegexMessage);
+          ?? GetResourceManager(renderingContext)
+              .GetText(ResourceIdentifier.SearchStringForDropDownDoesNotMatchRegexMessage)
+              .ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
 
       var jsonBuilder = new StringBuilder(1000);
 
@@ -286,13 +289,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       jsonBuilder.Append("{ ");
       jsonBuilder.Append("LoadIconFailedErrorMessage : ");
-      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetString(ResourceIdentifier.LoadIconFailedErrorMessage));
+      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetText(ResourceIdentifier.LoadIconFailedErrorMessage));
       jsonBuilder.Append(", ");
       jsonBuilder.Append("LoadDataFailedErrorMessage : ");
-      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetString(ResourceIdentifier.LoadDataFailedErrorMessage));
+      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetText(ResourceIdentifier.LoadDataFailedErrorMessage));
       jsonBuilder.Append(", ");
       jsonBuilder.Append("NoDataFoundMessage : ");
-      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetString(ResourceIdentifier.NoDataFoundMessage));
+      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetText(ResourceIdentifier.NoDataFoundMessage));
       jsonBuilder.Append(" }");
 
       return jsonBuilder.ToString();

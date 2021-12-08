@@ -29,6 +29,8 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rende
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
@@ -85,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private bool _showDescription = true;
 
-    private string? _errorMessage;
+    private PlainTextString _errorMessage;
     private ReadOnlyCollection<BaseValidator>? _validators;
 
     // construction and disposing
@@ -154,15 +156,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OverrideValidatorErrorMessages ()
     {
-      if (!string.IsNullOrEmpty(_errorMessage) )
-        UpdateValidtaorErrorMessages<CompareValidator>(_errorMessage);
+      if (!_errorMessage.IsEmpty)
+        UpdateValidatorErrorMessages<CompareValidator>(_errorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
+    private void UpdateValidatorErrorMessages<T> (PlainTextString errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage!;
+        validator.ErrorMessage = errorMessage.GetValue();
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -240,14 +242,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Description("Validation message displayed if there is an error.")]
     [Category("Validator")]
-    [DefaultValue("")]
-    public string? ErrorMessage
+    [DefaultValue(typeof(PlainTextString), "")]
+    public PlainTextString ErrorMessage
     {
       get { return _errorMessage; }
       set
       {
         _errorMessage = value;
-        UpdateValidtaorErrorMessages<CompareValidator>(_errorMessage);
+        UpdateValidatorErrorMessages<CompareValidator>(_errorMessage);
       }
     }
 
@@ -419,21 +421,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadResources(resourceManager, globalizationService);
 
       string? key;
-      key = ResourceManagerUtility.GetGlobalResourceKey(TrueDescription);
+      key = ResourceManagerUtility.GetGlobalResourceKey(TrueDescription.GetValue());
       if (! string.IsNullOrEmpty(key))
-        TrueDescription = resourceManager.GetString(key);
+        TrueDescription = resourceManager.GetWebString(key, TrueDescription.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey(FalseDescription);
+      key = ResourceManagerUtility.GetGlobalResourceKey(FalseDescription.GetValue());
       if (! string.IsNullOrEmpty(key))
-        FalseDescription = resourceManager.GetString(key);
+        FalseDescription = resourceManager.GetWebString(key, FalseDescription.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey(NullDescription);
+      key = ResourceManagerUtility.GetGlobalResourceKey(NullDescription.GetValue());
       if (! string.IsNullOrEmpty(key))
-        NullDescription = resourceManager.GetString(key);
+        NullDescription = resourceManager.GetWebString(key, NullDescription.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage);
+      key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage.GetValue());
       if (! string.IsNullOrEmpty(key))
-        ErrorMessage = resourceManager.GetString(key);
+        ErrorMessage = resourceManager.GetText(key);
     }
 
     /// <summary> <see cref="BocBooleanValue"/> supports only scalar properties. </summary>

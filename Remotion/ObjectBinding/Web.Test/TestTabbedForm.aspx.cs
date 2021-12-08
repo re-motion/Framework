@@ -118,7 +118,7 @@ public class TestTabbedForm : TestWxeBasePage
   private void AddTab (string id, string text, IconInfo icon)
   {
     WebTab tab = new WebTab();
-    tab.Text = text;
+    tab.Text = WebString.CreateFromText("text");
     tab.ItemID = id ;
     tab.Icon = icon;
     PagesTabStrip.Tabs.Add(tab);
@@ -127,7 +127,7 @@ public class TestTabbedForm : TestWxeBasePage
   private void AddMainMenuTab (string id, string text, IconInfo icon)
   {
     WebTab tab = new WebTab();
-    tab.Text = text;
+    tab.Text = WebString.CreateFromText("text");
     tab.ItemID = id ;
     tab.Icon = icon;
     NavigationTabs.Tabs.Add(tab);
@@ -195,21 +195,21 @@ public class TestTabbedForm : TestWxeBasePage
 
     WebButton saveButton = new WebButton();
     saveButton.ID = "SaveButton";
-    saveButton.Text = "Save";
+    saveButton.Text = WebString.CreateFromText("Save");
     saveButton.Style["margin-right"] = "10pt";
     saveButton.Click += new EventHandler(SaveButton_Click);
     MultiView.TopControls.Add(saveButton);
 
     WebButton cancelButton = new WebButton();
     cancelButton.ID = "CancelButton";
-    cancelButton.Text = "Cancel";
+    cancelButton.Text = WebString.CreateFromText("Cancel");
     cancelButton.Style["margin-right"] = "10pt";
     cancelButton.Click += new EventHandler(CancelButton_Click);
     MultiView.TopControls.Add(cancelButton);
 
     WebButton postBackButton = new WebButton();
     postBackButton.ID = "PostBackButton";
-    postBackButton.Text = "Postback";
+    postBackButton.Text = WebString.CreateFromText("Postback");
     postBackButton.Style["margin-right"] = "10pt";
     MultiView.BottomControls.Add(postBackButton);
 
@@ -245,7 +245,7 @@ public class TestTabbedForm : TestWxeBasePage
     base.OnPreRender(e);
     string mode = Global.PreferQuirksModeRendering ? "Quirks" : "Standard";
     string theme = Global.PreferQuirksModeRendering ? "" : SafeServiceLocator.Current.GetInstance<ResourceTheme>().Name;
-    NavigationTabs.StatusText = mode + " " + theme;
+    NavigationTabs.StatusText = WebString.CreateFromText(mode + " " + theme);
 
     if (Global.PreferQuirksModeRendering)
       UpdatePanel.Style.Clear();

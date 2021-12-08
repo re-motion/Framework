@@ -122,7 +122,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     {
       WebButton button = new WebButton();
       button.ID = CreateID(prefix, "ButtonSubmit");
-      button.Text = "Submit";
+      button.Text = WebString.CreateFromText("Submit");
       button.UseSubmitBehavior = true;
       button.Click += OnClick;
       return button;
@@ -132,7 +132,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     {
       WebButton button = new WebButton();
       button.ID = CreateID(prefix, "ButtonButton");
-      button.Text = "Button";
+      button.Text = WebString.CreateFromText("Button");
       button.UseSubmitBehavior = false;
       button.Click += OnClick;
 

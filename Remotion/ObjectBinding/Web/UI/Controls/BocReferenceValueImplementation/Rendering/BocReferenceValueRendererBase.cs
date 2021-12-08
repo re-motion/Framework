@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -306,12 +307,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
                   };
       label.ApplyStyle(renderingContext.Control.CommonStyle);
       label.ApplyStyle(renderingContext.Control.LabelStyle);
-      label.Text = HttpUtility.HtmlEncode(renderingContext.Control.GetLabelText());
+      label.Text = PlainTextString.CreateFromText(renderingContext.Control.GetLabelText()).ToString(WebStringEncoding.Html);
       label.Attributes.Add("data-value", renderingContext.Control.BusinessObjectUniqueIdentifier ?? renderingContext.Control.NullValueString);
       return label;
     }
 
-    protected IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
+    protected IEnumerable<PlainTextString> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 

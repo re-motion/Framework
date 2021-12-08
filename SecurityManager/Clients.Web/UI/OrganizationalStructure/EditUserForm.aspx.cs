@@ -19,6 +19,7 @@ using System;
 using Remotion.Globalization;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI.Controls;
 
@@ -49,8 +50,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
     {
       Title = GlobalizationService.GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.Title);
 
-      SaveButton.Text = GlobalResourcesHelper.GetString(GlobalResources.Save);
-      CancelButton.Text = GlobalResourcesHelper.GetString(GlobalResources.Cancel);
+      SaveButton.Text = GlobalResourcesHelper.GetText(GlobalResources.Save);
+      CancelButton.Text = GlobalResourcesHelper.GetText(GlobalResources.Cancel);
 
       base.OnPreRender(e);
     }

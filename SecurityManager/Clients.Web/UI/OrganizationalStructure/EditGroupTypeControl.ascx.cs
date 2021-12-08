@@ -20,6 +20,7 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
@@ -74,7 +75,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnPreRender (EventArgs e)
     {
-      GroupTypeLabel.Text = GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.GroupTypeLabelText);
+      GroupTypeLabel.Text = GetResourceManager(typeof(ResourceIdentifier)).GetText(ResourceIdentifier.GroupTypeLabelText);
 
       base.OnPreRender(e);
     }

@@ -120,19 +120,19 @@ public class ClientForm : TestWxeBasePage
     _ddm.ID = "ddm";
     _ddm.Height = new Unit("1%");
     _ddm.Width = new Unit("1%");
-    _ddm.TitleText = "Options Menu";
+    _ddm.TitleText = WebString.CreateFromText("Options Menu");
     MultiView.TopControls.Add(_ddm);
 
     WebButton saveButton = new WebButton();
     saveButton.ID = "SaveButton";
-    saveButton.Text = "Save";
+    saveButton.Text = WebString.CreateFromText("Save");
     saveButton.Style["margin-right"] = "10pt";
     saveButton.Click += new EventHandler(SaveButton_Click);
     MultiView.TopControls.Add(saveButton);
 
     WebButton cancelButton = new WebButton();
     cancelButton.ID = "CancelButton";
-    cancelButton.Text = "Cancel";
+    cancelButton.Text = WebString.CreateFromText("Cancel");
     cancelButton.Style["margin-right"] = "10pt";
     cancelButton.Click += new EventHandler(CancelButton_Click);
     cancelButton.UseSubmitBehavior = false;

@@ -29,6 +29,7 @@ using Remotion.SecurityManager.Clients.Web.Classes.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
 
@@ -110,21 +111,21 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
           new WebMenuItem
           {
               ItemID = c_clearAllMenuItemID,
-              Text = resourceManager.GetString(ResourceIdentifier.AllPermissionsMenu_ClearAllPermissions_Text),
+              Text = resourceManager.GetText(ResourceIdentifier.AllPermissionsMenu_ClearAllPermissions_Text),
               Icon = new IconInfo(GetIconUrl("sprite.svg#PermissionUndefined").GetUrl())
           });
       AllPermisionsMenu.MenuItems.Add(
           new WebMenuItem
           {
               ItemID = c_grantAllMenuItemID,
-              Text = resourceManager.GetString(ResourceIdentifier.AllPermissionsMenu_GrantAllPermissions_Text),
+              Text = resourceManager.GetText(ResourceIdentifier.AllPermissionsMenu_GrantAllPermissions_Text),
               Icon = new IconInfo(GetIconUrl("sprite.svg#PermissionGranted").GetUrl())
           });
       AllPermisionsMenu.MenuItems.Add(
           new WebMenuItem
           {
               ItemID = c_denyAllMenuItemID,
-              Text = resourceManager.GetString(ResourceIdentifier.AllPermissionsMenu_DenyAllPermissions_Text),
+              Text = resourceManager.GetText(ResourceIdentifier.AllPermissionsMenu_DenyAllPermissions_Text),
               Icon = new IconInfo(GetIconUrl("sprite.svg#PermissionDenied").GetUrl())
           });
       AllPermisionsMenu.EventCommandClick += AllPermisionsMenu_EventCommandClick;
@@ -151,14 +152,14 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnPreRender (EventArgs e)
     {
       var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
-      SpecificGroupField.NullItemErrorMessage = resourceManager.GetString(ResourceIdentifier.SpecificGroupFieldRequiredFieldErrorMessage);
-      SpecificGroupTypeField.NullItemErrorMessage = resourceManager.GetString(ResourceIdentifier.SpecificGroupTypeFieldRequiredFieldErrorMessage);
-      SpecificPositionField.NullItemErrorMessage = resourceManager.GetString(ResourceIdentifier.SpecificPositionFieldRequiredFieldErrorMessage);
-      SpecificTenantField.NullItemErrorMessage = resourceManager.GetString(ResourceIdentifier.SpecificTenantFieldRequiredFieldErrorMessage);
-      SpecificUserField.NullItemErrorMessage = resourceManager.GetString(ResourceIdentifier.SpecificUserFieldRequiredFieldErrorMessage);
+      SpecificGroupField.NullItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificGroupFieldRequiredFieldErrorMessage);
+      SpecificGroupTypeField.NullItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificGroupTypeFieldRequiredFieldErrorMessage);
+      SpecificPositionField.NullItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificPositionFieldRequiredFieldErrorMessage);
+      SpecificTenantField.NullItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificTenantFieldRequiredFieldErrorMessage);
+      SpecificUserField.NullItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificUserFieldRequiredFieldErrorMessage);
 
-      SpecificGroupField.InvalidItemErrorMessage = resourceManager.GetString(ResourceIdentifier.SpecificGroupFieldInvalidItemErrorMessage);
-      SpecificUserField.InvalidItemErrorMessage = resourceManager.GetString(ResourceIdentifier.SpecificUserFieldInvalidItemErrorMessage);
+      SpecificGroupField.InvalidItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificGroupFieldInvalidItemErrorMessage);
+      SpecificUserField.InvalidItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificUserFieldInvalidItemErrorMessage);
 
       base.OnPreRender(e);
 
@@ -210,9 +211,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
         var permission = tuple.Item1;
         var control = tuple.Item2;
         string accessTypeName = permission.AccessType.DisplayName;
-        control.TrueDescription = string.Format(resourceManager.GetString(ResourceIdentifier.PermissionGrantedText), accessTypeName);
-        control.FalseDescription = string.Format(resourceManager.GetString(ResourceIdentifier.PermissionDeniedText), accessTypeName);
-        control.NullDescription = string.Format(resourceManager.GetString(ResourceIdentifier.PermissionUndefinedText), accessTypeName);
+        control.TrueDescription = WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.PermissionGrantedText), accessTypeName));
+        control.FalseDescription = WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.PermissionDeniedText), accessTypeName));
+        control.NullDescription = WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.PermissionUndefinedText), accessTypeName));
       }
 
       container.SetRenderMethodDelegate(null);

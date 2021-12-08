@@ -24,7 +24,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -44,6 +43,7 @@ using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
@@ -212,7 +212,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private readonly PlaceHolder _availableViewsListPlaceHolder;
 
-    private string? _availableViewsListTitle;
+    private WebString _availableViewsListTitle;
 
     /// <summary> The predefined column definition sets that the user can choose from at run-time. </summary>
     private readonly BocListViewCollection _availableViews;
@@ -256,7 +256,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _showListMenu = true;
 
     private RowMenuDisplay _rowMenuDisplay = RowMenuDisplay.Undefined;
-    private string? _optionsTitle;
+    private WebString _optionsTitle;
     private string[]? _hiddenMenuItems;
     private Unit _menuBlockOffset = Unit.Empty;
     private Unit _menuBlockItemOffset = Unit.Empty;
@@ -270,7 +270,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _showMenuForEmptyListEditMode = true;
     private bool _showEmptyListReadOnlyMode;
     private bool _showMenuForEmptyListReadOnlyMode;
-    private string? _emptyListMessage;
+    private WebString _emptyListMessage;
     private bool _showEmptyListMessage;
 
     /// <summary> Determines whether to generate columns for all properties. </summary>
@@ -300,7 +300,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private HashSet<string> _selectorControlCheckedState = new HashSet<string>();
 
     private RowIndex _index = RowIndex.Undefined;
-    private string? _indexColumnTitle;
+    private WebString _indexColumnTitle;
     private int? _indexOffset;
 
     /// <summary> Null, 0: show all objects, > 0: show n objects per page. </summary>
@@ -332,7 +332,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _showEditModeValidationMarkers;
     private bool _disableEditModeValidationMessages;
 
-    private string? _errorMessage;
+    private PlainTextString _errorMessage;
     private bool? _isBrowserCapableOfSCripting;
     private ScalarLoadPostDataTarget? _currentPagePostBackTarget;
 
@@ -947,17 +947,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       var validatorFactory = ServiceLocator.GetInstance<IBocListValidatorFactory>();
       _validators = validatorFactory.CreateValidators(this, isReadOnly).ToList().AsReadOnly();
 
-      if (!string.IsNullOrEmpty(ErrorMessage))
-        UpdateValidtaorErrorMessages<EditModeValidator>(ErrorMessage);
+      if (!ErrorMessage.IsEmpty)
+        UpdateValidatorErrorMessages<EditModeValidator>(ErrorMessage);
 
       return _validators;
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
+    private void UpdateValidatorErrorMessages<T> (PlainTextString errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage!;
+        validator.ErrorMessage = errorMessage.GetValue();
     }
 
     /// <summary> Checks whether the control conforms to the required WAI level. </summary>
@@ -1643,7 +1643,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         IBusinessObjectProperty property = properties[i];
         BocSimpleColumnDefinition column = new BocSimpleColumnDefinition();
         column.ItemID = property.Identifier;
-        column.ColumnTitle = property.DisplayName;
+        column.ColumnTitle = WebString.CreateFromText(property.DisplayName);
         column.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new[] { property }));
         column.OwnerControl = this;
         _allPropertyColumns[i] = column;
@@ -1983,7 +1983,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-    void IResourceDispatchTarget.Dispatch (IDictionary values)
+    void IResourceDispatchTarget.Dispatch (IDictionary<string, WebString> values)
     {
       ArgumentUtility.CheckNotNull("values", values);
       Dispatch(values);
@@ -1991,18 +1991,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-    protected virtual void Dispatch (IDictionary values)
+    protected virtual void Dispatch (IDictionary<string, WebString> values)
     {
-      HybridDictionary fixedColumnValues = new HybridDictionary();
-      HybridDictionary optionsMenuItemValues = new HybridDictionary();
-      HybridDictionary listMenuItemValues = new HybridDictionary();
-      HybridDictionary propertyValues = new HybridDictionary();
+      var fixedColumnValues = new Dictionary<string, IDictionary<string, WebString>>();
+      var optionsMenuItemValues = new Dictionary<string, IDictionary<string, WebString>>();
+      var listMenuItemValues = new Dictionary<string, IDictionary<string, WebString>>();
+      var propertyValues = new Dictionary<string, WebString>();
 
       //  Parse the values
 
-      foreach (DictionaryEntry entry in values)
+      foreach (var entry in values)
       {
-        string key = (string)entry.Key;
+        string key = entry.Key;
         string[] keyParts = key.Split(new[] { ':' }, 3);
 
         //  Is a property/value entry?
@@ -2019,7 +2019,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           string elementID = keyParts[1];
           string property = keyParts[2];
 
-          IDictionary? currentCollection = null;
+          IDictionary<string,IDictionary<string,WebString>>? currentCollection = null;
 
           //  Switch to the right collection
           switch (collectionID)
@@ -2053,12 +2053,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           if (currentCollection != null)
           {
             //  Get the dictonary for the current element
-            IDictionary? elementValues = (IDictionary?)currentCollection[elementID];
-
             //  If no dictonary exists, create it and insert it into the elements hashtable.
-            if (elementValues == null)
+            if (!currentCollection.TryGetValue(elementID, out var elementValues))
             {
-              elementValues = new HybridDictionary();
+              elementValues = new Dictionary<string, WebString>();
               currentCollection[elementID] = elementValues;
             }
 
@@ -2094,25 +2092,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       base.LoadResources(resourceManager, globalizationService);
 
       string? key;
-      key = ResourceManagerUtility.GetGlobalResourceKey(IndexColumnTitle);
+      key = ResourceManagerUtility.GetGlobalResourceKey(IndexColumnTitle.GetValue());
       if (! string.IsNullOrEmpty(key))
-        IndexColumnTitle = resourceManager.GetString(key);
+        IndexColumnTitle = resourceManager.GetWebString(key, IndexColumnTitle.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey(EmptyListMessage);
+      key = ResourceManagerUtility.GetGlobalResourceKey(EmptyListMessage.GetValue());
       if (! string.IsNullOrEmpty(key))
-        EmptyListMessage = resourceManager.GetString(key);
+        EmptyListMessage = resourceManager.GetWebString(key, EmptyListMessage.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey(OptionsTitle);
+      key = ResourceManagerUtility.GetGlobalResourceKey(OptionsTitle.GetValue());
       if (! string.IsNullOrEmpty(key))
-        OptionsTitle = resourceManager.GetString(key);
+        OptionsTitle = resourceManager.GetWebString(key, OptionsTitle.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey(AvailableViewsListTitle);
+      key = ResourceManagerUtility.GetGlobalResourceKey(AvailableViewsListTitle.GetValue());
       if (! string.IsNullOrEmpty(key))
-        AvailableViewsListTitle = resourceManager.GetString(key);
+        AvailableViewsListTitle = resourceManager.GetWebString(key, AvailableViewsListTitle.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage);
+      key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage.GetValue());
       if (! string.IsNullOrEmpty(key))
-        ErrorMessage = resourceManager.GetString(key);
+        ErrorMessage = resourceManager.GetText(key);
 
       _fixedColumns.LoadResources(resourceManager, globalizationService);
       OptionsMenuItems.LoadResources(resourceManager, globalizationService);
@@ -3430,11 +3428,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 
     /// <summary> Gets or sets the text that is displayed in the index column's title row. </summary>
-    /// <remarks> The value will not be HTML encoded. </remarks>
     [Category("Appearance")]
-    [Description("The text that is displayed in the index column's title row. The value will not be HTML encoded.")]
-    [DefaultValue(null)]
-    public string? IndexColumnTitle
+    [Description("The text that is displayed in the index column's title row.")]
+    [DefaultValue(typeof(WebString), "")]
+    public WebString IndexColumnTitle
     {
       get { return _indexColumnTitle; }
       set { _indexColumnTitle = value; }
@@ -3506,11 +3503,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the text rendered if the list is empty. </summary>
-    /// <remarks> The value will not be HTML encoded. </remarks>
     [Category("Appearance")]
-    [Description("The text if the list is empty. The value will not be HTML encoded.")]
-    [DefaultValue(null)]
-    public string? EmptyListMessage
+    [Description("The text if the list is empty.")]
+    [DefaultValue(typeof(WebString), "")]
+    public WebString EmptyListMessage
     {
       get { return _emptyListMessage; }
       set { _emptyListMessage = value; }
@@ -3631,11 +3627,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
-    /// <remarks> The value will not be HTML encoded. </remarks>
     [Category("Menu")]
-    [Description("The text that is rendered as a title for the list of available views. The value will not be HTML encoded.")]
-    [DefaultValue("")]
-    public string? AvailableViewsListTitle
+    [Description("The text that is rendered as a title for the list of available views.")]
+    [DefaultValue(typeof(WebString), "")]
+    public WebString AvailableViewsListTitle
     {
       get { return _availableViewsListTitle; }
       set { _availableViewsListTitle = value; }
@@ -3644,8 +3639,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
     [Category("Menu")]
     [Description("The text that is rendered as a label for the options menu.")]
-    [DefaultValue("")]
-    public string? OptionsTitle
+    [DefaultValue(typeof(WebString), "")]
+    public WebString OptionsTitle
     {
       get { return _optionsTitle; }
       set { _optionsTitle = value; }
@@ -3668,14 +3663,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Description("Validation message displayed if there is an error.")]
     [Category("Validator")]
-    [DefaultValue("")]
-    public string? ErrorMessage
+    [DefaultValue(typeof(PlainTextString), "")]
+    public PlainTextString ErrorMessage
     {
       get { return _errorMessage; }
       set
       {
         _errorMessage = value;
-        UpdateValidtaorErrorMessages<EditModeValidator>(_errorMessage);
+        UpdateValidatorErrorMessages<EditModeValidator>(_errorMessage);
       }
     }
 
@@ -3715,8 +3710,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        if (string.IsNullOrEmpty(OptionsTitle))
-          _optionsMenu.TitleText = GetResourceManager().GetString(ResourceIdentifier.OptionsTitle);
+        if (OptionsTitle.IsEmpty)
+          _optionsMenu.TitleText = GetResourceManager().GetText(ResourceIdentifier.OptionsTitle);
         else
           _optionsMenu.TitleText = OptionsTitle;
 
@@ -3747,9 +3742,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return new ReadOnlyDictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]>(_customColumnControls); }
     }
 
-    IEnumerable<string> IBocList.GetValidationErrors ()
+    IEnumerable<PlainTextString> IBocList.GetValidationErrors ()
     {
-      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators()
+          .Where(v => !v.IsValid)
+          .Select(v => v.ErrorMessage)
+          .Select(PlainTextString.CreateFromText)
+          .Distinct();
     }
 
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()

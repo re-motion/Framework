@@ -71,9 +71,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
       var variableColumnsColumnDefinitions = new[]
                                              {
-                                                 new BocSimpleColumnDefinition { ColumnTitle = "Column 0" },
-                                                 new BocSimpleColumnDefinition { ColumnTitle = "Column 1" },
-                                                 new BocSimpleColumnDefinition { ColumnTitle = "Column 2" },
+                                                 new BocSimpleColumnDefinition { ColumnTitle = WebString.CreateFromText("Column 0") },
+                                                 new BocSimpleColumnDefinition { ColumnTitle = WebString.CreateFromText("Column 1") },
+                                                 new BocSimpleColumnDefinition { ColumnTitle = WebString.CreateFromText("Column 2") },
                                              };
       var variableColumnsViews = new[]
                                  {

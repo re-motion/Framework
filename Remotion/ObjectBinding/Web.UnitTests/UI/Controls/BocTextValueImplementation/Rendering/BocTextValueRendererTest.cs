@@ -28,6 +28,7 @@ using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering;
+using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -41,7 +42,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     private const string c_valueName = "MyTextValue_Boc_Textbox";
     private const string c_clientID = "MyTextValue";
     private const string c_labelID = "Label";
-    private const string c_validationErrors = "ValidationError";
+
+    private static readonly PlainTextString s_validationErrors = PlainTextString.CreateFromText("ValidationError");
+
     private BocTextValueRenderer _renderer;
 
     [SetUp]
@@ -60,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       TextValue.Setup(stub => stub.GetValueName()).Returns(c_valueName);
       TextValue.Setup(mock => mock.GetLabelIDs()).Returns(EnumerableUtility.Singleton(c_labelID));
       TextValue.SetupProperty(_ => _.CssClass);
-      TextValue.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(c_validationErrors));
+      TextValue.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(s_validationErrors));
 
       var pageStub = new Mock<IPage>();
       pageStub.Setup(stub => stub.WrappedInstance).Returns(new PageMock());
@@ -277,7 +280,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute(input, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       Html.AssertAttribute(input, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
       Html.AssertAttribute(input, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(input, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(input, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
       Html.AssertAttribute(input, "type", "text");
       Html.AssertAttribute(input, "value", c_firstLineText);
       Assert.That(TextValue.Object.TextBoxStyle.AutoPostBack, Is.EqualTo(autoPostBack));
@@ -290,7 +293,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
       var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
 
       return span;
     }
@@ -325,7 +328,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
       var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
     private void RenderSingleLineReadonly (bool withStyle, bool withCssClass, bool inStandardProperties)
@@ -354,7 +357,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute(labelSpan, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       Html.AssertAttribute(labelSpan, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_valueName);
       Html.AssertAttribute(labelSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(labelSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(labelSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
       Html.AssertAttribute(labelSpan, "tabindex", "0");
       Html.AssertTextNode(labelSpan, c_firstLineText, 0);
 
@@ -397,7 +400,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
       var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
     private void RenderPasswordEditable (bool renderPassword, bool autoPostBack)
@@ -434,7 +437,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
       var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
     private void RenderPasswordReadonly (bool renderPassword)
@@ -464,7 +467,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
       var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
     private void CheckStyle (bool withStyle, XmlNode span, XmlNode valueElement)

@@ -30,6 +30,7 @@ using Remotion.SecurityManager.Configuration;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
@@ -67,8 +68,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
     protected override void OnPreRender (EventArgs e)
     {
       var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
-      GroupListLabel.Text = resourceManager.GetString(ResourceIdentifier.GroupListLabelText);
-      NewGroupButton.Text = resourceManager.GetString(ResourceIdentifier.NewGroupButtonText);
+      GroupListLabel.Text = resourceManager.GetText(ResourceIdentifier.GroupListLabelText);
+      NewGroupButton.Text = resourceManager.GetText(ResourceIdentifier.NewGroupButtonText);
 
       base.OnPreRender(e);
 

@@ -29,6 +29,8 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Rend
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
 using Remotion.Reflection;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
@@ -113,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _provideMaxLength = true;
     private bool _enableClientScript = true;
 
-    private string? _errorMessage;
+    private PlainTextString _errorMessage;
     private ReadOnlyCollection<BaseValidator>? _validators;
     private const string c_dateTextBoxIDPostfix = "_DateValue";
     private const string c_timeTextBoxIDPostfix = "_TimeValue";
@@ -406,9 +408,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       base.LoadResources(resourceManager, globalizationService);
 
-      string? key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage.GetValue());
       if (!string.IsNullOrEmpty(key))
-        ErrorMessage = resourceManager.GetString(key);
+        ErrorMessage = resourceManager.GetText(key);
     }
 
     [Obsolete("For DependDB only.", true)]
@@ -438,15 +440,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OverrideValidatorErrorMessages ()
     {
-      if (!string.IsNullOrEmpty(_errorMessage))
-        UpdateValidtaorErrorMessages<BocDateTimeValueValidatorBase>(_errorMessage);
+      if (!_errorMessage.IsEmpty)
+        UpdateValidatorErrorMessages<BocDateTimeValueValidatorBase>(_errorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string? errorMessage) where T : BaseValidator
+    private void UpdateValidatorErrorMessages<T> (PlainTextString errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage!;
+        validator.ErrorMessage = errorMessage.GetValue();
     }
 
     /// <summary> Handles refreshing the bound control. </summary>
@@ -967,14 +969,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </value>
     [Description("Validation message displayed if there is an error.")]
     [Category("Validator")]
-    [DefaultValue("")]
-    public string? ErrorMessage
+    [DefaultValue(typeof(PlainTextString), "")]
+    public PlainTextString ErrorMessage
     {
       get { return _errorMessage; }
       set
       {
         _errorMessage = value;
-        UpdateValidtaorErrorMessages<BocDateTimeValueValidatorBase>(_errorMessage);
+        UpdateValidatorErrorMessages<BocDateTimeValueValidatorBase>(_errorMessage);
       }
     }
 
@@ -998,14 +1000,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return InternalTimeValue; }
     }
 
-    IEnumerable<string> IBocDateTimeValue.GetDateValueValidationErrors ()
+    IEnumerable<PlainTextString> IBocDateTimeValue.GetDateValueValidationErrors ()
     {
-      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators()
+          .Where(v => !v.IsValid)
+          .Select(v => v.ErrorMessage)
+          .Select(PlainTextString.CreateFromText)
+          .Distinct();
     }
 
-    IEnumerable<string> IBocDateTimeValue.GetTimeValueValidationErrors ()
+    IEnumerable<PlainTextString> IBocDateTimeValue.GetTimeValueValidationErrors ()
     {
-      return GetRegisteredValidators().Where(v => !v.IsValid).Select(v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators()
+          .Where(v => !v.IsValid)
+          .Select(v => v.ErrorMessage)
+          .Select(PlainTextString.CreateFromText)
+          .Distinct();
     }
 
     string IControlWithDiagnosticMetadata.ControlType

@@ -93,7 +93,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     [Test]
     public void RenderEmptyMenuWithTitle ()
     {
-      _control.Setup(stub=>stub.TitleText).Returns(c_MenuTitle);
+      _control.Setup(stub=>stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
 
       XmlNode containerDiv = GetAssertedContainerSpan();
       AssertTitleSpan(containerDiv, true, false);
@@ -102,7 +102,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     [Test]
     public void RenderEmptyMenuWithTitleAndIcon ()
     {
-      _control.Setup(stub => stub.TitleText).Returns(c_MenuTitle);
+      _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
       _control.Setup(stub => stub.TitleIcon).Returns(s_titleIcon);
 
       XmlNode containerDiv = GetAssertedContainerSpan();
@@ -112,7 +112,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     [Test]
     public void RenderPopulatedMenu ()
     {
-      _control.Setup(stub => stub.TitleText).Returns(c_MenuTitle);
+      _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
       PopulateMenu();
 
       XmlNode containerDiv = GetAssertedContainerSpan();
@@ -122,7 +122,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
-      _control.Setup(stub => stub.TitleText).Returns(c_MenuTitle);
+      _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
       PopulateMenu();
 
       var renderer = new DropDownMenuRenderer(_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new StubLabelReferenceRenderer());
@@ -257,7 +257,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
           new WebMenuItem(
               id,
               category,
-              text,
+              WebString.CreateFromText(text),
               new IconInfo(iconUrl, text, text, width, height),
               new IconInfo(disabledIconUrl, text, text, width, height),
               WebMenuItemStyle.IconAndText,

@@ -23,6 +23,7 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 
@@ -115,6 +116,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       if (!renderingContext.Control.Enabled)
         cssClass += " " + CssClassDisabled;
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
+      renderingContext.Control.TitleText.AddAttributeTo(renderingContext.Writer, HtmlTextWriterAttribute.Title);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       if (HasDefaultTitle(renderingContext))
@@ -147,7 +149,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       if (HasTitleText(renderingContext))
       {
-        renderingContext.Writer.Write(renderingContext.Control.TitleText);
+        renderingContext.Control.TitleText.WriteTo(renderingContext.Writer);
       }
 
       renderingContext.Writer.RenderEndTag();
@@ -161,7 +163,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       if (HasTitleText(renderingContext))
       {
-        renderingContext.Writer.Write(renderingContext.Control.TitleText);
+        renderingContext.Control.TitleText.WriteTo(renderingContext.Writer);
       }
       else if (HasTitleIcon(renderingContext))
       {
@@ -206,7 +208,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
     private bool HasTitleText (DropDownMenuRenderingContext renderingContext)
     {
-      return !string.IsNullOrEmpty(renderingContext.Control.TitleText);
+      return !renderingContext.Control.TitleText.IsEmpty;
     }
 
     private bool HasTitleIcon (DropDownMenuRenderingContext renderingContext)
@@ -398,15 +400,17 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       string icon = GetIconUrl(renderingContext, menuItem, showIcon);
       string disabledIcon = GetDisabledIconUrl(renderingContext, menuItem, showIcon);
-      string text = showText ? "'" + menuItem.Text + "'" : "null";
-      string diagnosticMetadataText = showText ? menuItem.Text : "";
+      string text = showText
+          ? "'" + ScriptUtility.EscapeClientScript(menuItem.Text) + "'"
+          : "null";
+      WebString diagnosticMetadataText = showText ? menuItem.Text : default;
 
       bool isDisabled = !menuItem.EvaluateEnabled() || !isCommandEnabled;
 
       stringBuilder.AppendFormat(
           "\t\tnew DropDownMenu_ItemInfo ({0}, '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, ",
           string.IsNullOrEmpty(menuItem.ItemID) ? "null" : "'" + menuItem.ItemID + "'",
-          menuItem.Category,
+          ScriptUtility.EscapeClientScript(menuItem.Category),
           text,
           icon,
           disabledIcon,
@@ -421,7 +425,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         var diagnosticMetadataDictionary = new Dictionary<string, string?>();
         diagnosticMetadataDictionary.Add(HtmlTextWriterAttribute.Id.ToString(), htmlID);
         diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
-        diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(diagnosticMetadataText ?? ""));
+        diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(diagnosticMetadataText));
 
         stringBuilder.WriteDictionaryAsJson(diagnosticMetadataDictionary);
 
@@ -471,10 +475,10 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       jsonBuilder.Append("{ ");
       jsonBuilder.Append("LoadFailedErrorMessage : ");
-      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetString(ResourceIdentifier.LoadFailedErrorMessage));
+      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetText(ResourceIdentifier.LoadFailedErrorMessage));
       jsonBuilder.Append(", ");
       jsonBuilder.Append("LoadingStatusMessage : ");
-      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetString(ResourceIdentifier.LoadingStatusMessage));
+      AppendStringValueOrNullToScript(jsonBuilder, resourceManager.GetText(ResourceIdentifier.LoadingStatusMessage));
       jsonBuilder.Append(", ");
       jsonBuilder.Append(" }");
 

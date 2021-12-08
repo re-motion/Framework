@@ -21,6 +21,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.Web;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
@@ -44,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var dropDownList = new Mock<DropDownList>();
       List.Setup(mock => mock.GetAvailableViewsList()).Returns(dropDownList.Object);
       List.Setup(mock => mock.HasAvailableViewsList).Returns(true);
-      List.Setup(mock => mock.AvailableViewsListTitle).Returns("Views List Title");
+      List.Setup(mock => mock.AvailableViewsListTitle).Returns(WebString.CreateFromText("Views List Title"));
 
       dropDownList.Setup(mock => mock.ClientID).Returns("MockedDropDownListClientID");
       dropDownList.Setup(mock => mock.RenderControl(Html.Writer)).Callback(
@@ -77,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       List.Setup(mock => mock.OptionsMenu).Returns(optionsMenu.Object);
       List.Setup(mock => mock.HasOptionsMenu).Returns(true);
-      List.Setup(mock => mock.OptionsTitle).Returns("Options Menu Title");
+      List.Setup(mock => mock.OptionsTitle).Returns(WebString.CreateFromText("Options Menu Title"));
 
       optionsMenu.Setup(menuMock => menuMock.RenderControl(Html.Writer)).Callback(
           (HtmlTextWriter writer) => writer.Write("mocked dropdown menu"));

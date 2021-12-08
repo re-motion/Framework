@@ -21,6 +21,7 @@ using System.Web.UI;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
@@ -123,7 +124,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void RenderEmptyTable (
         BocListRenderingContext renderingContext,
         string validationErrorsID,
-        IReadOnlyCollection<string> validationErrors)
+        IReadOnlyCollection<PlainTextString> validationErrors)
     {
       renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "100%");
       renderingContext.Writer.AddAttribute("tabindex", "0");
@@ -203,7 +204,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void RenderTableOpeningTag (
         BocListRenderingContext renderingContext,
         string validationErrorsID,
-        IReadOnlyCollection<string> validationErrors)
+        IReadOnlyCollection<PlainTextString> validationErrors)
     {
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.TableContainer);
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -293,7 +294,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       }
     }
 
-    private IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<IBocList> renderingContext)
+    private IEnumerable<PlainTextString> GetValidationErrorsToRender (BocRenderingContext<IBocList> renderingContext)
     {
       return renderingContext.Control.GetValidationErrors();
     }
@@ -303,7 +304,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       return renderingContext.Control.ClientID + "_ValidationErrors";
     }
 
-    private void AddValidationErrorsReference (BocListRenderingContext renderingContext, string validationErrorsID, IReadOnlyCollection<string> validationErrors)
+    private void AddValidationErrorsReference (BocListRenderingContext renderingContext, string validationErrorsID, IReadOnlyCollection<PlainTextString> validationErrors)
     {
       var attributeCollection = new AttributeCollection(new StateBag());
       _validationErrorRenderer.AddValidationErrorsReference(attributeCollection, validationErrorsID, validationErrors);

@@ -17,6 +17,7 @@
 using System;
 using Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.GenericPages
@@ -52,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Gene
     public override TestBocListWithRowMenuItems CreateControl (GenericTestOptions options)
     {
       var control = base.CreateControl(options);
-      control.FixedColumns.Add(new BocSimpleColumnDefinition { ColumnTitle = "Last Name", PropertyPathIdentifier = "Title" });
+      control.FixedColumns.Add(new BocSimpleColumnDefinition { ColumnTitle = WebString.CreateFromText("Last Name"), PropertyPathIdentifier = "Title" });
       return control;
     }
   }
