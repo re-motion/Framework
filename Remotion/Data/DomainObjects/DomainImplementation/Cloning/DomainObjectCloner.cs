@@ -77,8 +77,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     public virtual T CreateCloneHull<T> (T source)
         where T : DomainObject
     {
-      var classType = source.ID.ClassDefinition.ClassType;
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(classType);
+      var type = source.ID.ClassDefinition.Type;
+      var classDefinition = MappingConfiguration.Current.GetClassDefinition(type);
 
       // Get an object reference for a non-existing object, then register a new DataContainer for it. This, in effect, creates a New object that has
       // no ctor called.

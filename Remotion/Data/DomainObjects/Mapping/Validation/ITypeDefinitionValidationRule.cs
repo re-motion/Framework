@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,16 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Xml.Linq;
-using Remotion.Data.DomainObjects.Mapping;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
+namespace Remotion.Data.DomainObjects.Mapping.Validation
 {
   /// <summary>
-  /// Defines an API for creating an xml fragment which contains the <see cref="ClassDefinition"/> metadata.
+  /// Defines the API for the type definition mapping validation rules.
   /// </summary>
-  public interface IClassSerializer
+  public interface ITypeDefinitionValidationRule
   {
-    XElement Serialize (ClassDefinition classDefinition);
+    MappingValidationResult Validate (TypeDefinition typeDefinition);
   }
 }

@@ -17,7 +17,9 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
+using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 {
@@ -41,9 +43,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [TestCase("a1")]
     public void ValidClassID (string classID)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(id: classID);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(id: classID);
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -56,9 +58,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [TestCase("a+a")]
     public void InvalidClassID (string classID)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(id: classID);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(id: classID);
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       var expectedMessage =
           string.Format(
@@ -72,9 +74,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void IntegrationTestForObjectIDStringSerializer ()
     {
       var classID = "Class" + ObjectIDStringSerializer.Delimiter + "End";
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(id: classID);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(id: classID);
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       var expectedMessage =
           string.Format(
@@ -82,6 +84,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
               + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order",
               classID);
       AssertMappingValidationResult(validationResult, false, expectedMessage);
+    }
+
+    [Test]
+    public void IgnoresArgumentsOfTypeOtherThanClassDefinition ()
+    {
+      var typeDefinition = new TypeDefinitionForUnresolvedRelationPropertyType(typeof(string), new NullPropertyInformation());
+
+      var validationResult = _validationRule.Validate(typeDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
     }
   }
 }

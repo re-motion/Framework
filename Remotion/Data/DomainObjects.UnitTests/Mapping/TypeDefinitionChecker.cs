@@ -22,13 +22,139 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
-  public class ClassDefinitionChecker
+  public class TypeDefinitionChecker
   {
-    public void Check (ClassDefinition expectedDefinition, ClassDefinition actualDefinition)
+    public void Check (TypeDefinition expectedDefinition, TypeDefinition actualDefinition)
+    {
+      ArgumentUtility.CheckNotNull("expectedDefinition", expectedDefinition);
+      ArgumentUtility.CheckNotNull("actualDefinition", actualDefinition);
+
+      if (expectedDefinition is ClassDefinition expectedClassDefinition)
+      {
+        if (actualDefinition is not ClassDefinition actualClassDefinition)
+          throw new InvalidOperationException("The two type definitions must have a matching type.");
+
+        CheckClassDefinition(expectedClassDefinition, actualClassDefinition);
+      }
+      else
+      {
+        Assert.Fail("Unsupported type definition cannot be checked.");
+      }
+    }
+
+    public void Check (
+        IEnumerable<TypeDefinition> expectedDefinitions,
+        IDictionary<Type, TypeDefinition> actualDefinitions,
+        bool checkRelations,
+        bool ignoreUnknown)
+    {
+      ArgumentUtility.CheckNotNull("expectedDefinitions", expectedDefinitions);
+      ArgumentUtility.CheckNotNull("actualDefinitions", actualDefinitions);
+
+      if (!ignoreUnknown)
+        Assert.AreEqual(expectedDefinitions.Count(), actualDefinitions.Count, "Number of class definitions does not match.");
+
+      foreach (var expectedDefinition in expectedDefinitions)
+      {
+        var actualDefinition = actualDefinitions[expectedDefinition.Type];
+        if (expectedDefinition is ClassDefinition expectedClassDefinition)
+        {
+          if (actualDefinition is not ClassDefinition actualClassDefinition)
+          {
+            Assert.Fail("The two type definitions must have a matching type.");
+            return;
+          }
+
+          CheckClassDefinition(expectedClassDefinition, actualClassDefinition);
+          CheckDerivedClasses(expectedClassDefinition, actualClassDefinition);
+        }
+        else
+        {
+          Assert.Fail("Unsupported type definition cannot be checked.");
+        }
+      }
+
+      if (checkRelations)
+        CheckRelationEndPoints(expectedDefinitions, actualDefinitions);
+    }
+
+    public void CheckRelationEndPoints (IEnumerable<TypeDefinition> expectedDefinitions, IDictionary<Type, TypeDefinition> actualDefinitions)
+    {
+      ArgumentUtility.CheckNotNull("expectedDefinitions", expectedDefinitions);
+      ArgumentUtility.CheckNotNull("actualDefinitions", actualDefinitions);
+
+      foreach (var expectedDefinition in expectedDefinitions)
+      {
+        var actualDefinition = actualDefinitions[expectedDefinition.Type];
+        var endPointDefinitionChecker = new RelationEndPointDefinitionChecker();
+        endPointDefinitionChecker.Check(expectedDefinition.MyRelationEndPointDefinitions, actualDefinition.MyRelationEndPointDefinitions, true);
+      }
+    }
+
+    public void CheckPersistenceModel (IEnumerable<TypeDefinition> expectedDefinitions, IDictionary<Type, TypeDefinition> actualDefinitions)
+    {
+      ArgumentUtility.CheckNotNull("expectedDefinitions", expectedDefinitions);
+      ArgumentUtility.CheckNotNull("actualDefinitions", actualDefinitions);
+
+      foreach (var expectedDefinition in expectedDefinitions)
+      {
+        var actualDefinition = actualDefinitions[expectedDefinition.Type];
+        CheckPersistenceModel(expectedDefinition, actualDefinition);
+      }
+    }
+
+    public void CheckPersistenceModel (TypeDefinition expectedDefinition, TypeDefinition actualDefinition)
+    {
+      ArgumentUtility.CheckNotNull("expectedDefinition", expectedDefinition);
+      ArgumentUtility.CheckNotNull("actualDefinition", actualDefinition);
+
+      Assert.AreEqual(
+          expectedDefinition.StorageEntityDefinition.StorageProviderDefinition,
+          actualDefinition.StorageEntityDefinition.StorageProviderDefinition,
+          "StorageProviderDefinition of type definition '{0}' does not match. ",
+          expectedDefinition.Type.GetFullNameSafe());
+
+      // We can't check much since FakeMappingConfiguration always creates fake entity definitions, only the entity name is defined.
+      var expectedEntityName = GetEntityName(expectedDefinition.StorageEntityDefinition);
+      var actualEntityName = GetEntityName(actualDefinition.StorageEntityDefinition);
+
+      Assert.AreEqual(
+          expectedEntityName,
+          actualEntityName,
+          "Entity name of type definition '{0}' does not match.",
+          expectedDefinition.Type.GetFullNameSafe());
+
+      foreach (PropertyDefinition expectedPropertyDefinition in expectedDefinition.MyPropertyDefinitions)
+      {
+        PropertyDefinition actualPropertyDefinition = actualDefinition.MyPropertyDefinitions[expectedPropertyDefinition.PropertyName];
+        Assert.IsNotNull(
+            actualPropertyDefinition,
+            "Type '{0}' has no property '{1}'.",
+            expectedDefinition.Type.GetFullNameSafe(),
+            expectedPropertyDefinition.PropertyName);
+
+        if (expectedPropertyDefinition.StorageClass == StorageClass.Persistent)
+        {
+          // We can't check much since FakeMappingConfiguration always creates fake storage property definitions, only the first column name is defined.
+          var expectedColumnName = GetFirstColumnName(expectedPropertyDefinition.StoragePropertyDefinition);
+          var actualColumnName = GetFirstColumnName(actualPropertyDefinition.StoragePropertyDefinition);
+
+          Assert.AreEqual(
+              expectedColumnName,
+              actualColumnName,
+              "Column name of property definition '{0}' (type definition: '{1}') does not match.",
+              expectedPropertyDefinition.PropertyName,
+              actualDefinition.Type.GetFullNameSafe());
+        }
+      }
+    }
+
+    private void CheckClassDefinition (ClassDefinition expectedDefinition, ClassDefinition actualDefinition)
     {
       ArgumentUtility.CheckNotNull("expectedDefinition", expectedDefinition);
       ArgumentUtility.CheckNotNull("actualDefinition", actualDefinition);
@@ -36,15 +162,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.AreEqual(expectedDefinition.ID, actualDefinition.ID, "IDs of class definitions do not match.");
 
       Assert.AreEqual(
-          expectedDefinition.ClassType,
-          actualDefinition.ClassType,
-          "ClassType of class definition '{0}' does not match.",
+          expectedDefinition.Type,
+          actualDefinition.Type,
+          "Type of class definition '{0}' does not match.",
           expectedDefinition.ID);
 
       Assert.AreEqual(
-          expectedDefinition.IsClassTypeResolved,
-          actualDefinition.IsClassTypeResolved,
-          "IsClassTypeResolved of class definition '{0}' does not match.",
+          expectedDefinition.IsTypeResolved,
+          actualDefinition.IsTypeResolved,
+          "IsResolved of class definition '{0}' does not match.",
           expectedDefinition.ID);
 
       Assert.AreEqual(
@@ -75,97 +201,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       }
 
       CheckPropertyDefinitions(expectedDefinition.MyPropertyDefinitions, actualDefinition.MyPropertyDefinitions, expectedDefinition);
-    }
-
-    public void Check (
-        IEnumerable<ClassDefinition> expectedDefinitions,
-        IDictionary<Type, ClassDefinition> actualDefinitions,
-        bool checkRelations,
-        bool ignoreUnknown)
-    {
-      ArgumentUtility.CheckNotNull("expectedDefinitions", expectedDefinitions);
-      ArgumentUtility.CheckNotNull("actualDefinitions", actualDefinitions);
-
-      if (!ignoreUnknown)
-        Assert.AreEqual(expectedDefinitions.Count(), actualDefinitions.Count, "Number of class definitions does not match.");
-
-      foreach (var expectedDefinition in expectedDefinitions)
-      {
-        var actualDefinition = actualDefinitions[expectedDefinition.ClassType];
-        Check(expectedDefinition, actualDefinition);
-        CheckDerivedClasses(expectedDefinition, actualDefinition);
-      }
-
-      if (checkRelations)
-        CheckRelationEndPoints(expectedDefinitions, actualDefinitions);
-    }
-
-    public void CheckRelationEndPoints (IEnumerable<ClassDefinition> expectedDefinitions, IDictionary<Type, ClassDefinition> actualDefinitions)
-    {
-      ArgumentUtility.CheckNotNull("expectedDefinitions", expectedDefinitions);
-      ArgumentUtility.CheckNotNull("actualDefinitions", actualDefinitions);
-
-      foreach (var expectedDefinition in expectedDefinitions)
-      {
-        var actualDefinition = actualDefinitions[expectedDefinition.ClassType];
-        var endPointDefinitionChecker = new RelationEndPointDefinitionChecker();
-        endPointDefinitionChecker.Check(expectedDefinition.MyRelationEndPointDefinitions, actualDefinition.MyRelationEndPointDefinitions, true);
-      }
-    }
-
-    public void CheckPersistenceModel (IEnumerable<ClassDefinition> expectedDefinitions, IDictionary<Type, ClassDefinition> actualDefinitions)
-    {
-      ArgumentUtility.CheckNotNull("expectedDefinitions", expectedDefinitions);
-      ArgumentUtility.CheckNotNull("actualDefinitions", actualDefinitions);
-
-      foreach (var expectedDefinition in expectedDefinitions)
-      {
-        var actualDefinition = actualDefinitions[expectedDefinition.ClassType];
-        CheckPersistenceModel(expectedDefinition, actualDefinition);
-      }
-    }
-
-    public void CheckPersistenceModel (ClassDefinition expectedDefinition, ClassDefinition actualDefinition)
-    {
-      ArgumentUtility.CheckNotNull("expectedDefinition", expectedDefinition);
-      ArgumentUtility.CheckNotNull("actualDefinition", actualDefinition);
-
-      Assert.AreEqual(
-          expectedDefinition.StorageEntityDefinition.StorageProviderDefinition,
-          actualDefinition.StorageEntityDefinition.StorageProviderDefinition,
-          "StorageProviderDefinition of class definition '{0}' does not match. ",
-          expectedDefinition.ID);
-
-      // We can't check much since FakeMappingConfiguration always creates fake entity definitions, only the entity name is defined.
-      var expectedEntityName = GetEntityName(expectedDefinition.StorageEntityDefinition);
-      var actualEntityName = GetEntityName(actualDefinition.StorageEntityDefinition);
-
-      Assert.AreEqual(
-          expectedEntityName,
-          actualEntityName,
-          "Entity name of class definition '{0}' does not match.",
-          expectedDefinition.ID);
-
-      foreach (PropertyDefinition expectedPropertyDefinition in expectedDefinition.MyPropertyDefinitions)
-      {
-        PropertyDefinition actualPropertyDefinition = actualDefinition.MyPropertyDefinitions[expectedPropertyDefinition.PropertyName];
-        Assert.IsNotNull(
-            actualPropertyDefinition, "Class '{0}' has no property '{1}'.", expectedDefinition.ID, expectedPropertyDefinition.PropertyName);
-
-        if (expectedPropertyDefinition.StorageClass == StorageClass.Persistent)
-        {
-          // We can't check much since FakeMappingConfiguration always creates fake storage property definitions, only the first column name is defined.
-          var expectedColumnName = GetFirstColumnName(expectedPropertyDefinition.StoragePropertyDefinition);
-          var actualColumnName = GetFirstColumnName(actualPropertyDefinition.StoragePropertyDefinition);
-
-          Assert.AreEqual(
-              expectedColumnName,
-              actualColumnName,
-              "Column name of property definition '{0}' (class definition: '{1}') does not match.",
-              expectedPropertyDefinition.PropertyName,
-              actualDefinition.ID);
-        }
-      }
     }
 
     public void CheckDerivedClasses (ClassDefinition expectedDefinition, ClassDefinition actualDefinition)
@@ -201,74 +236,74 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private void CheckPropertyDefinitions (
         PropertyDefinitionCollection expectedDefinitions,
         PropertyDefinitionCollection actualDefinitions,
-        ClassDefinition expectedClassDefinition)
+        TypeDefinition expectedTypeDefinition)
     {
       Assert.AreEqual(
           expectedDefinitions.Count,
           actualDefinitions.Count,
-          "Number of property definitions in class definition '{0}' does not match. Expected: {1}",
-          expectedClassDefinition.ID,
+          "Number of property definitions in type definition '{0}' does not match. Expected: {1}",
+          expectedTypeDefinition.Type.GetFullNameSafe(),
           string.Join(", ", actualDefinitions.Select(pd => pd.PropertyName)));
 
       foreach (PropertyDefinition expectedDefinition in expectedDefinitions)
       {
         PropertyDefinition actualDefinition = actualDefinitions[expectedDefinition.PropertyName];
-        Assert.IsNotNull(actualDefinition, "Class '{0}' has no property '{1}'.", expectedClassDefinition.ID, expectedDefinition.PropertyName);
-        CheckPropertyDefinition(expectedDefinition, actualDefinition, expectedClassDefinition);
+        Assert.IsNotNull(actualDefinition, "Type '{0}' has no property '{1}'.", expectedTypeDefinition.Type.GetFullNameSafe(), expectedDefinition.PropertyName);
+        CheckPropertyDefinition(expectedDefinition, actualDefinition, expectedTypeDefinition);
       }
     }
 
     private void CheckPropertyDefinition (
         PropertyDefinition expectedDefinition,
         PropertyDefinition actualDefinition,
-        ClassDefinition classDefinition)
+        TypeDefinition typeDefinition)
     {
       Assert.AreEqual(
           expectedDefinition.PropertyName,
           actualDefinition.PropertyName,
-          "PropertyNames of property definitions (class definition: '{0}') do not match.",
-          classDefinition.ID);
+          "PropertyNames of property definitions (type definition: '{0}') do not match.",
+          typeDefinition.Type.GetFullNameSafe());
 
       Assert.AreEqual(
-          expectedDefinition.ClassDefinition.ID,
-          actualDefinition.ClassDefinition.ID,
-          "ClassDefinitionID of property definition '{0}' does not match.",
+          expectedDefinition.TypeDefinition.Type,
+          actualDefinition.TypeDefinition.Type,
+          "Type of property definition '{0}' does not match.",
           expectedDefinition.PropertyName);
 
       Assert.AreEqual(
           expectedDefinition.StorageClass,
           actualDefinition.StorageClass,
-          "StorageClass of property definition '{0}' (class definition: '{1}') does not match.",
+          "StorageClass of property definition '{0}' (type definition: '{1}') does not match.",
           expectedDefinition.PropertyName,
-          classDefinition.ID);
+          typeDefinition.Type.GetFullNameSafe());
 
       Assert.AreEqual(
           expectedDefinition.MaxLength,
           actualDefinition.MaxLength,
-          "MaxLength of property definition '{0}' (class definition: '{1}') does not match.",
+          "MaxLength of property definition '{0}' (type definition: '{1}') does not match.",
           expectedDefinition.PropertyName,
-          classDefinition.ID);
+          typeDefinition.Type.GetFullNameSafe());
 
       Assert.AreEqual(
           expectedDefinition.PropertyType,
           actualDefinition.PropertyType,
-          "PropertyType of property definition '{0}' (class definition: '{1}') does not match.",
+          "PropertyType of property definition '{0}' (type definition: '{1}') does not match.",
           expectedDefinition.PropertyName,
-          classDefinition.ID);
+          typeDefinition.Type.GetFullNameSafe());
 
       Assert.AreEqual(
           expectedDefinition.IsNullable,
           actualDefinition.IsNullable,
-          "IsNullable of property definition '{0}' (class definition: '{1}') does not match",
+          "IsNullable of property definition '{0}' (type definition: '{1}') does not match",
           expectedDefinition.PropertyName,
-          classDefinition.ID);
+          typeDefinition.Type.GetFullNameSafe());
 
       Assert.AreEqual(
           expectedDefinition.IsObjectID,
           actualDefinition.IsObjectID,
-          "IsObjectID of property definition '{0}' (class definition: '{1}') does not match.",
+          "IsObjectID of property definition '{0}' (type definition: '{1}') does not match.",
           expectedDefinition.PropertyName,
-          classDefinition.ID);
+          typeDefinition.Type.GetFullNameSafe());
     }
 
     private string GetEntityName (IStorageEntityDefinition storageEntityDefinition)

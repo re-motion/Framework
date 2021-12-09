@@ -15,26 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure;
+using System.Collections.Generic;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
-  public class ClassDefinitionForUnresolvedRelationPropertyType : ClassDefinition
+  public class TypeDefinitionForUnresolvedRelationPropertyType : TypeDefinition
   {
     private readonly IPropertyInformation _relationProperty;
 
-    public ClassDefinitionForUnresolvedRelationPropertyType (string id, Type classType, IPropertyInformation relationProperty)
-            : base(
-                    id,
-                    classType,
-                    false,
-                    null,
-                    null,
-                    DefaultStorageClass.Persistent,
-                    new PersistentMixinFinder(classType),
-                    new ThrowingDomainObjectCreator())
+    public TypeDefinitionForUnresolvedRelationPropertyType (Type type, IPropertyInformation relationProperty)
+            : base(type, null, DefaultStorageClass.Persistent)
     {
         ArgumentUtility.CheckNotNull("relationProperty", relationProperty);
 
@@ -46,9 +38,37 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _relationProperty; }
     }
 
-    public override bool IsClassTypeResolved
+    public override bool IsTypeResolved
     {
       get { return false; }
+    }
+
+    public override bool IsPartOfInheritanceHierarchy
+    {
+      get { return false; }
+    }
+
+    public override bool IsAssignableFrom (TypeDefinition other)
+    {
+      return ReferenceEquals(this, other);
+    }
+
+    public override TypeDefinition[] GetTypeHierarchy ()
+    {
+      return Array.Empty<TypeDefinition>();
+    }
+
+    public override TypeDefinition GetInheritanceRoot ()
+    {
+      return this;
+    }
+
+    protected override void CheckPropertyDefinitions (IEnumerable<PropertyDefinition> propertyDefinitions)
+    {
+    }
+
+    protected override void CheckRelationEndPointDefinitions (IEnumerable<IRelationEndPointDefinition> relationEndPoints)
+    {
     }
   }
 }

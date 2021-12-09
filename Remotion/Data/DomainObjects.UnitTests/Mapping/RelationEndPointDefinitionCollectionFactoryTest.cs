@@ -45,19 +45,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateRelationEndPointDefinitionCollection ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(OrderTicket));
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(classDefinition);
-      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(OrderTicket));
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(typeDefinition);
+      typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
       var fakeRelationEndPoint = new RelationEndPointDefinition(propertyDefinition, false);
 
       var expectedPropertyInfo = PropertyInfoAdapter.Create(typeof(OrderTicket).GetProperty("Order"));
 
       _mappingObjectFactoryMock
-          .Setup(mock => mock.CreateRelationEndPointDefinition(classDefinition, PropertyInfoAdapter.Create(expectedPropertyInfo.PropertyInfo)))
+          .Setup(mock => mock.CreateRelationEndPointDefinition(typeDefinition, PropertyInfoAdapter.Create(expectedPropertyInfo.PropertyInfo)))
           .Returns(fakeRelationEndPoint)
           .Verifiable();
 
-      var result = _factory.CreateRelationEndPointDefinitionCollection(classDefinition);
+      var result = _factory.CreateRelationEndPointDefinitionCollection(typeDefinition);
 
       _mappingObjectFactoryMock.Verify();
       _memberInformationNameResolverMock.Verify();

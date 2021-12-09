@@ -20,19 +20,19 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Mapping
 {
   /// <summary>
-  /// Provides extension methods for <see cref="ClassDefinition"/>.
+  /// Provides extension methods for <see cref="TypeDefinition"/>.
   /// </summary>
-  public static class ClassDefinitionExtensions
+  public static class TypeDefinitionExtensions
   {
     /// <summary>
-    /// Gets a flag if objects associated with the <see cref="ClassDefinition"/> are persistent or only held within the <see cref="ClientTransaction"/>.
+    /// Gets a flag if objects associated with the <see cref="TypeDefinition"/> are persistent or only held within the <see cref="ClientTransaction"/>.
     /// </summary>
-    /// <returns><see langword="true" /> if the <see cref="ClassDefinition.StorageEntityDefinition"/> is a <see cref="NonPersistentStorageEntity"/>.</returns>
-    internal static bool IsNonPersistent (this ClassDefinition classDefinition)
+    /// <returns><see langword="true" /> if the <see cref="TypeDefinition.StorageEntityDefinition"/> is a <see cref="NonPersistentStorageEntity"/>.</returns>
+    internal static bool IsNonPersistent (this TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      return classDefinition.StorageEntityDefinition is NonPersistentStorageEntity;
+      return typeDefinition.StorageEntityDefinition is NonPersistentStorageEntity;
     }
   }
 }

@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       if (dataContainer == null)
         return null;
 
-      if (!SortedPropertySpecification.PropertyDefinition.ClassDefinition.IsSameOrBaseClassOf(dataContainer.ClassDefinition))
+      if (!SortedPropertySpecification.PropertyDefinition.TypeDefinition.IsAssignableFrom(dataContainer.ClassDefinition))
         return null;
 
       return dataContainer.GetValueWithoutEvents(SortedPropertySpecification.PropertyDefinition, ValueAccess);

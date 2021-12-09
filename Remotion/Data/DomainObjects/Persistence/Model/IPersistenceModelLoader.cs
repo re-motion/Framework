@@ -25,6 +25,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Model
   /// <threadsafety static="true" instance="true"/>
   public interface IPersistenceModelLoader : IPersistenceModelValidatorFactory
   {
-    void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition);
+    void ApplyPersistenceModelToHierarchy (TypeDefinition typeDefinition);
   }
 }

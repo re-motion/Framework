@@ -31,10 +31,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_CreatesColumnElement ()
     {
       var propertyDefinition = GetPropertyDefinition((ClassWithAllDataTypes _) => _.Int32Property);
-      var classDefinition = propertyDefinition.ClassDefinition;
+      var typeDefinition = propertyDefinition.TypeDefinition;
 
       var columnSerializer = new ColumnSerializer();
-      var actual = columnSerializer.Serialize(propertyDefinition, GetRdbmsPersistenceModelProvider(classDefinition)).ToArray();
+      var actual = columnSerializer.Serialize(propertyDefinition, GetRdbmsPersistenceModelProvider(typeDefinition)).ToArray();
 
       Assert.That(actual.Length, Is.EqualTo(1));
       Assert.That(actual[0].Name.LocalName, Is.EqualTo("column"));
@@ -44,10 +44,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_AddsNameAttribute ()
     {
       var propertyDefinition = GetPropertyDefinition((ClassWithAllDataTypes _) => _.Int32Property);
-      var classDefinition = propertyDefinition.ClassDefinition;
+      var typeDefinition = propertyDefinition.TypeDefinition;
 
       var columnSerializer = new ColumnSerializer();
-      var actual = columnSerializer.Serialize(propertyDefinition, GetRdbmsPersistenceModelProvider(classDefinition)).Single();
+      var actual = columnSerializer.Serialize(propertyDefinition, GetRdbmsPersistenceModelProvider(typeDefinition)).Single();
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("name"));
       Assert.That(actual.Attribute("name").Value, Is.EqualTo("Int32"));
@@ -57,10 +57,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_AddsTypeAttribute ()
     {
       var propertyDefinition = GetPropertyDefinition((ClassWithAllDataTypes _) => _.Int32Property);
-      var classDefinition = propertyDefinition.ClassDefinition;
+      var typeDefinition = propertyDefinition.TypeDefinition;
 
       var columnSerializer = new ColumnSerializer();
-      var actual = columnSerializer.Serialize(propertyDefinition, GetRdbmsPersistenceModelProvider(classDefinition)).Single();
+      var actual = columnSerializer.Serialize(propertyDefinition, GetRdbmsPersistenceModelProvider(typeDefinition)).Single();
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("dbType"));
       Assert.That(actual.Attribute("dbType").Value, Is.EqualTo("Int32"));
@@ -70,10 +70,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_RelationProperty ()
     {
       var propertyDefinition = GetPropertyDefinition((Ceo _) => _.Company);
-      var classDefinition = propertyDefinition.ClassDefinition;
+      var typeDefinition = propertyDefinition.TypeDefinition;
 
       var columnSerializer = new ColumnSerializer();
-      var actual = columnSerializer.Serialize(propertyDefinition, GetRdbmsPersistenceModelProvider(classDefinition)).ToArray();
+      var actual = columnSerializer.Serialize(propertyDefinition, GetRdbmsPersistenceModelProvider(typeDefinition)).ToArray();
 
       Assert.That(actual.Length, Is.EqualTo(2));
       Assert.That(actual[0].Attribute("name").Value, Is.EqualTo("CompanyID"));
@@ -82,9 +82,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
       Assert.That(actual[1].Attribute("dbType").Value, Is.EqualTo("AnsiString"));
     }
 
-    private IRdbmsPersistenceModelProvider GetRdbmsPersistenceModelProvider (ClassDefinition classDefinition)
+    private IRdbmsPersistenceModelProvider GetRdbmsPersistenceModelProvider (TypeDefinition typeDefinition)
     {
-      var storageProviderDefinition = (RdbmsProviderDefinition)classDefinition.StorageEntityDefinition.StorageProviderDefinition;
+      var storageProviderDefinition = (RdbmsProviderDefinition)typeDefinition.StorageEntityDefinition.StorageProviderDefinition;
       var persistenceModelProvider = storageProviderDefinition.Factory.CreateRdbmsPersistenceModelProvider(storageProviderDefinition);
       return persistenceModelProvider;
     }

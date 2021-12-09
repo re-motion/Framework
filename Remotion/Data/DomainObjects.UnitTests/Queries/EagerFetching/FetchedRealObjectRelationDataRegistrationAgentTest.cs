@@ -145,8 +145,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "Cannot register relation end-point 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' for domain object "
-                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'. The end-point belongs to an object of class 'OrderTicket' but the domain object "
-                  + "has class 'Order'."));
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'. The end-point belongs to an object of type "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket' but the domain object "
+                  + "has type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order'."));
     }
 
     [Test]

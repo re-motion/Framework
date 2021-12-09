@@ -29,21 +29,21 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Mapping
 {
   /// <summary>
-  /// Holds all <see cref="PropertyAccessorData"/> object for a <see cref="ClassDefinition"/>, providing fast access via full property name or
+  /// Holds all <see cref="PropertyAccessorData"/> object for a <see cref="TypeDefinition"/>, providing fast access via full property name or
   /// declaring type and short (.NET) property name.
   /// </summary>
   public class PropertyAccessorDataCache
   {
-    private readonly ClassDefinition _classDefinition;
+    private readonly TypeDefinition _typeDefinition;
     private readonly Lazy<IReadOnlyDictionary<string, PropertyAccessorData>> _cachedAccessorData;
     private readonly ConcurrentDictionary<IPropertyInformation, PropertyAccessorData?> _cachedAccessorDataByMember;
     private readonly Func<IPropertyInformation, PropertyAccessorData?> _resolvePropertyAccessorDataWithoutCacheFunc;
 
-    public PropertyAccessorDataCache (ClassDefinition classDefinition)
+    public PropertyAccessorDataCache (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      _classDefinition = classDefinition;
+      _typeDefinition = typeDefinition;
       _cachedAccessorData = new Lazy<IReadOnlyDictionary<string, PropertyAccessorData>>(
           BuildAccessorDataDictionary,
           LazyThreadSafetyMode.ExecutionAndPublication);
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     [CanBeNull]
     private PropertyAccessorData? ResolvePropertyAccessorDataWithoutCache ([NotNull] IPropertyInformation propertyInformation)
     {
-      return ReflectionBasedPropertyResolver.ResolveDefinition(propertyInformation, _classDefinition, GetPropertyAccessorData);
+      return ReflectionBasedPropertyResolver.ResolveDefinition(propertyInformation, _typeDefinition, GetPropertyAccessorData);
     }
 
     [NotNull]
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       {
         var message = string.Format(
             "The domain object type '{0}' does not have a mapping property named '{1}'.",
-            _classDefinition.ClassType,
+            _typeDefinition.Type,
             propertyName);
         throw new MappingException(message);
       }
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       {
         var message = string.Format(
             "The domain object type '{0}' does not have a mapping property identified by expression '{1}'.",
-            _classDefinition.ClassType,
+            _typeDefinition.Type,
             propertyAccessExpression);
         throw new MappingException(message);
       }
@@ -182,8 +182,8 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     private Dictionary<string, PropertyAccessorData> BuildAccessorDataDictionary ()
     {
-      var propertyDefinitions = _classDefinition.GetPropertyDefinitions();
-      var relationEndPointDefinitions = _classDefinition.GetRelationEndPointDefinitions();
+      var propertyDefinitions = _typeDefinition.GetPropertyDefinitions();
+      var relationEndPointDefinitions = _typeDefinition.GetRelationEndPointDefinitions();
 
       var propertyDefinitionNames = from PropertyDefinition pd in propertyDefinitions
                                     select pd.PropertyName;
@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects.Mapping
           select (string)repd.PropertyName!;
 
       var allPropertyNames = propertyDefinitionNames.Concat(virtualRelationEndPointNames);
-      var allPropertyAccessorData = allPropertyNames.Select(name => new PropertyAccessorData(_classDefinition, name));
+      var allPropertyAccessorData = allPropertyNames.Select(name => new PropertyAccessorData(_typeDefinition, name));
       return allPropertyAccessorData.ToDictionary(data => data.PropertyIdentifier);
     }
   }

@@ -275,7 +275,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       CheckDisposed();
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
       ArgumentUtility.CheckNotNull("relatedID", relatedID);
-      CheckClassDefinition(relationEndPointDefinition.ClassDefinition, "classDefinition");
+
+      CheckTypeDefinition(relationEndPointDefinition.TypeDefinition, "relationEndPointDefinition.TypeDefinition");
 
       Connect();
 
@@ -329,7 +330,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      CheckClassDefinition(classDefinition, "classDefinition");
+      CheckTypeDefinition(classDefinition, "typeDefinition");
 
       return new ObjectID(classDefinition.ID, Guid.NewGuid());
     }
@@ -449,14 +450,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return id;
     }
 
-    private void CheckClassDefinition (ClassDefinition classDefinition, string argumentName)
+    private void CheckTypeDefinition (TypeDefinition typeDefinition, string argumentName)
     {
-      if (classDefinition.StorageEntityDefinition.StorageProviderDefinition != StorageProviderDefinition)
+      if (typeDefinition.StorageEntityDefinition.StorageProviderDefinition != StorageProviderDefinition)
       {
         throw CreateArgumentException(
             argumentName,
-            "The StorageProvider '{0}' of the provided ClassDefinition does not match with this StorageProvider '{1}'.",
-            classDefinition.StorageEntityDefinition.StorageProviderDefinition.Name,
+            "The StorageProvider '{0}' of the provided TypeDefinition does not match with this StorageProvider '{1}'.",
+            typeDefinition.StorageEntityDefinition.StorageProviderDefinition.Name,
             StorageProviderDefinition.Name);
       }
     }

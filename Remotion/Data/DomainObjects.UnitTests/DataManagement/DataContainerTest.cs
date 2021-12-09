@@ -1664,7 +1664,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void SetDataFromSubTransaction_SetsChangedFlag_IfChanged_WithNonPersistentProperty ()
     {
       var sourceDataContainer = DataContainer.CreateForExisting(
-          new ObjectID(_nonPersistentPropertyOnPersistentDataContainer.ClassDefinition, Guid.NewGuid()),
+          new ObjectID((ClassDefinition)_nonPersistentPropertyOnPersistentDataContainer.TypeDefinition, Guid.NewGuid()),
           null,
           propertyDefinition => propertyDefinition.DefaultValue);
       sourceDataContainer.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 42);

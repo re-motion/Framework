@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(
           () => RelationEndPointID.Create(DomainObjectIDs.Order1, "PropertyName"),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("No relation found for class 'Order' and property 'PropertyName'.", "propertyIdentifier"));
+              .With.ArgumentExceptionMessageEqualTo("No relation found for type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order' and property 'PropertyName'.", "propertyIdentifier"));
     }
 
     [Test]

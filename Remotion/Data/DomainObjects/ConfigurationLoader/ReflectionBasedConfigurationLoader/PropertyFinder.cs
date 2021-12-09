@@ -27,13 +27,13 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   /// </summary>
   public class PropertyFinder : PropertyFinderBase
   {
-    private readonly ClassDefinition _classDefinition;
+    private readonly TypeDefinition _typeDefinition;
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
     private readonly ISortExpressionDefinitionProvider _sortExpressionDefinitionProvider;
 
     public PropertyFinder (
         Type type,
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         bool includeBaseProperties,
         bool includeMixinProperties,
         IMemberInformationNameResolver nameResolver,
@@ -43,11 +43,11 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
         : base(type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
       ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
 
-      _classDefinition = classDefinition;
+      _typeDefinition = typeDefinition;
       _domainModelConstraintProvider = domainModelConstraintProvider;
       _sortExpressionDefinitionProvider = sortExpressionDefinitionProvider;
     }
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     {
       return new PropertyFinder(
           type,
-          _classDefinition,
+          _typeDefinition,
           includeBaseProperties,
           includeMixinProperties,
           nameResolver,
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       if (!ReflectionUtility.IsRelationType(propertyInfo.PropertyType))
         return false;
       var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector(
-          _classDefinition,
+          _typeDefinition,
           propertyInfo,
           NameResolver,
           PropertyMetadataProvider,

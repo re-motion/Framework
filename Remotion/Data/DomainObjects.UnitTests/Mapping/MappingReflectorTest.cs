@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
 using Remotion.Data.DomainObjects.Mapping.Validation.Reflection;
@@ -83,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetRelationDefinitions ()
     {
-      var actualClassDefinitions = _mappingReflector.GetClassDefinitions().ToDictionary(cd => cd.ClassType);
+      var actualClassDefinitions = _mappingReflector.GetTypeDefinitions().ToDictionary(td => td.Type);
       var actualRelationDefinitions = _mappingReflector.GetRelationDefinitions(actualClassDefinitions).ToDictionary(rd => rd.ID);
 
       var relationDefinitionChecker = new RelationDefinitionChecker();
@@ -95,14 +96,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var assembly = GetType().Assembly;
       var expectedMappingReflector = MappingReflectorObjectMother.CreateMappingReflector(BaseConfiguration.GetTypeDiscoveryService(assembly));
-      var expectedClassDefinitions = expectedMappingReflector.GetClassDefinitions().ToDictionary(cd=>cd.ClassType);
+      var expectedClassDefinitions = expectedMappingReflector.GetTypeDefinitions().ToDictionary(td => td.Type);
       var expectedRelationDefinitions = expectedMappingReflector.GetRelationDefinitions(expectedClassDefinitions);
 
       var mappingReflector = MappingReflectorObjectMother.CreateMappingReflector(BaseConfiguration.GetTypeDiscoveryService(assembly, assembly));
-      var actualClassDefinitions = mappingReflector.GetClassDefinitions().ToDictionary(cd => cd.ClassType);
+      var actualClassDefinitions = mappingReflector.GetTypeDefinitions().ToDictionary(td => td.Type);
 
-      var classDefinitionChecker = new ClassDefinitionChecker();
-      classDefinitionChecker.Check(expectedClassDefinitions.Values, actualClassDefinitions, false, false);
+      var typeDefinitionChecker = new TypeDefinitionChecker();
+      typeDefinitionChecker.Check(expectedClassDefinitions.Values, actualClassDefinitions, false, false);
 
       var actualRelationDefinitions = mappingReflector.GetRelationDefinitions(actualClassDefinitions).ToDictionary(rd => rd.ID);
       var relationDefinitionChecker = new RelationDefinitionChecker();
@@ -114,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var assembly = GetType().Assembly;
       var mappingReflector = MappingReflectorObjectMother.CreateMappingReflector(BaseConfiguration.GetTypeDiscoveryService(assembly, assembly));
-      var classDefinitions = mappingReflector.GetClassDefinitions();
+      var classDefinitions = mappingReflector.GetTypeDefinitions();
 
       Assert.That(classDefinitions, Is.Not.Empty);
     }
@@ -122,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateClassDefinitionValidator ()
     {
-      var validator = (ClassDefinitionValidator)_mappingReflector.CreateClassDefinitionValidator();
+      var validator = (TypeDefinitionValidator)_mappingReflector.CreateTypeDefinitionValidator();
 
       Assert.That(validator.ValidationRules.Count, Is.EqualTo(7));
       Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof(DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule)));
@@ -163,7 +164,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(validator.ValidationRules[6], Is.TypeOf(typeof(RelationEndPointNamesAreConsistentValidationRule)));
       Assert.That(validator.ValidationRules[7], Is.TypeOf(typeof(RelationEndPointTypesAreConsistentValidationRule)));
       Assert.That(validator.ValidationRules[8], Is.TypeOf(typeof(CheckForInvalidRelationEndPointsValidationRule)));
-      Assert.That(validator.ValidationRules[9], Is.TypeOf(typeof(CheckForTypeNotFoundClassDefinitionValidationRule)));
+      Assert.That(validator.ValidationRules[9], Is.TypeOf(typeof(CheckForTypeNotFoundTypeDefinitionValidationRule)));
     }
 
     [Test]

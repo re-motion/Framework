@@ -44,9 +44,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           "End point definitions (property name: '{0}') are not of same type.",
           expectedEndPointDefinition.PropertyName);
 
+      // TODO R2I Mapping: Do actually checking for TypeDefinition not only ClassDefinition
       Assert.AreEqual(
-          expectedEndPointDefinition.ClassDefinition.ID,
-          actualEndPointDefinition.ClassDefinition.ID,
+          ((ClassDefinition)expectedEndPointDefinition.TypeDefinition).ID,
+          ((ClassDefinition)actualEndPointDefinition.TypeDefinition).ID,
           "ClassDefinition of end point definitions (property name: '{0}') does not match.",
           expectedEndPointDefinition.PropertyName);
 

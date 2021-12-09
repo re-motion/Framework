@@ -22,22 +22,22 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   /// <summary>
-  /// Implements <see cref="ITypeDefinitionProvider"/> by retrieving the <see cref="ClassDefinition"/> of the domain object type from the current 
+  /// Implements <see cref="IClassDefinitionProvider"/> by retrieving the <see cref="ClassDefinition"/> of the domain object type from the current 
   /// mapping configuration.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor(typeof(ITypeDefinitionProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
-  public class TypeDefinitionProvider : ITypeDefinitionProvider
+  [ImplementationFor(typeof(IClassDefinitionProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  public class ClassDefinitionProvider : IClassDefinitionProvider
   {
-    public ClassDefinition? GetTypeDefinition (Type domainObjectType)
+    public ClassDefinition? GetClassDefinition (Type domainObjectType)
     {
       ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
 
       var mappingConfiguration = MappingConfiguration.Current;
-      if (!mappingConfiguration.ContainsTypeDefinition(domainObjectType))
+      if (!mappingConfiguration.ContainsClassDefinition(domainObjectType))
         return null;
 
-      return mappingConfiguration.GetTypeDefinition(domainObjectType);
+      return mappingConfiguration.GetClassDefinition(domainObjectType);
     }
   }
 }

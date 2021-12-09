@@ -60,8 +60,8 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull("tableInfo", tableInfo);
       ArgumentUtility.CheckNotNull("generator", generator);
 
-      var classDefinition = GetClassDefinition(tableInfo.ItemType);
-      return _storageSpecificExpressionResolver.ResolveTable(classDefinition, generator.GetUniqueIdentifier("t"));
+      var typeDefinition = GetTypeDefinition(tableInfo.ItemType);
+      return _storageSpecificExpressionResolver.ResolveTable(typeDefinition, generator.GetUniqueIdentifier("t"));
     }
 
     public ResolvedJoinInfo ResolveJoinInfo (UnresolvedJoinInfo joinInfo, UniqueIdentifierGenerator generator)
@@ -83,8 +83,8 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull("tableInfo", tableInfo);
       ArgumentUtility.CheckNotNull("generator", generator);
 
-      var classDefinition = GetClassDefinition(tableInfo.ItemType);
-      return _storageSpecificExpressionResolver.ResolveEntity(classDefinition, tableInfo.TableAlias);
+      var typeDefinition = GetTypeDefinition(tableInfo.ItemType);
+      return _storageSpecificExpressionResolver.ResolveEntity(typeDefinition, tableInfo.TableAlias);
     }
 
     public Expression ResolveMemberExpression (SqlEntityExpression originatingEntity, MemberInfo memberInfo)
@@ -93,14 +93,14 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
 
       var property = GetMemberAsProperty(originatingEntity, memberInfo);
-      var entityClassDefinition = GetClassDefinition(originatingEntity.Type);
+      var entityTypeDefinition = GetTypeDefinition(originatingEntity.Type);
 
       if (property.Equals(s_idProperty))
-        return _storageSpecificExpressionResolver.ResolveIDProperty(originatingEntity, entityClassDefinition);
+        return _storageSpecificExpressionResolver.ResolveIDProperty(originatingEntity, entityTypeDefinition);
 
-      var allClassDefinitions = new[] { entityClassDefinition }.Concat(entityClassDefinition.GetAllDerivedClasses());
-      var resolvedMember = allClassDefinitions
-          .Select(cd => ResolveMemberInClassDefinition(originatingEntity, property, cd))
+      var allTypeDefinitions = entityTypeDefinition.GetTypeHierarchy();
+      var resolvedMember = allTypeDefinitions
+          .Select(cd => ResolveMemberInTypeDefinition(originatingEntity, property, cd))
           .FirstOrDefault(e => e != null);
 
       if (resolvedMember == null)
@@ -156,10 +156,10 @@ namespace Remotion.Data.DomainObjects.Linq
           throw new UnmappedItemException(message);
         }
 
-        var classDefinition = GetClassDefinition(desiredType);
+        var typeDefinition = GetTypeDefinition(desiredType);
         var idExpression = Expression.MakeMemberAccess(checkedExpression, s_idProperty.PropertyInfo);
         var classIDExpression = Expression.MakeMemberAccess(idExpression, s_classIDProperty.PropertyInfo);
-        var allClassDefinitions = EnumerableUtility.Singleton(classDefinition).Concat(classDefinition.GetAllDerivedClasses().Select(cd => cd));
+        var allClassDefinitions = typeDefinition.GetTypeHierarchy().OfType<ClassDefinition>();
         var allClassIDExpressions = allClassDefinitions.Select(cd => new SqlLiteralExpression(cd.ID));
 
         return new SqlInExpression(classIDExpression, new SqlCollectionExpression(typeof(string[]), allClassIDExpressions.Cast<Expression>()));
@@ -198,12 +198,12 @@ namespace Remotion.Data.DomainObjects.Linq
       return _storageSpecificExpressionResolver.ResolveIDPropertyViaForeignKey(entityRefMemberExpression.OriginatingEntity, foreignKeyEndPoint);
     }
 
-    private ClassDefinition GetClassDefinition (Type type)
+    private TypeDefinition GetTypeDefinition (Type type)
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(
+      var typeDefinition = MappingConfiguration.Current.GetTypeDefinition(
           type,
           t => new UnmappedItemException(string.Format("The type '{0}' does not identify a queryable table.", t)));
-      return classDefinition;
+      return typeDefinition;
     }
 
     private static PropertyInfoAdapter GetMemberAsProperty (SqlEntityExpression originatingEntity, MemberInfo memberInfo)
@@ -220,10 +220,10 @@ namespace Remotion.Data.DomainObjects.Linq
       return PropertyInfoAdapter.Create(property);
     }
 
-    private Expression? ResolveMemberInClassDefinition (
-        SqlEntityExpression originatingEntity, PropertyInfoAdapter propertyInfoAdapter, ClassDefinition classDefinition)
+    private Expression? ResolveMemberInTypeDefinition (
+        SqlEntityExpression originatingEntity, PropertyInfoAdapter propertyInfoAdapter, TypeDefinition typeDefinition)
     {
-      var endPointDefinition = classDefinition.ResolveRelationEndPoint(propertyInfoAdapter);
+      var endPointDefinition = typeDefinition.ResolveRelationEndPoint(propertyInfoAdapter);
       if (endPointDefinition != null)
       {
         if (endPointDefinition.Cardinality != CardinalityType.One)
@@ -235,7 +235,7 @@ namespace Remotion.Data.DomainObjects.Linq
         return new SqlEntityRefMemberExpression(originatingEntity, propertyInfoAdapter.PropertyInfo);
       }
 
-      var propertyDefinition = classDefinition.ResolveProperty(propertyInfoAdapter);
+      var propertyDefinition = typeDefinition.ResolveProperty(propertyInfoAdapter);
       if (propertyDefinition != null)
         return _storageSpecificExpressionResolver.ResolveProperty(originatingEntity, propertyDefinition);
 
@@ -245,10 +245,10 @@ namespace Remotion.Data.DomainObjects.Linq
     private IRelationEndPointDefinition GetEndPointDefinition (SqlEntityExpression originatingEntity, MemberInfo memberInfo)
     {
       var property = GetMemberAsProperty(originatingEntity, memberInfo);
-      var entityClassDefinition = GetClassDefinition(originatingEntity.Type);
+      var entityTypeDefinition = GetTypeDefinition(originatingEntity.Type);
 
-      var allClassDefinitions = new[] { entityClassDefinition }.Concat(entityClassDefinition.GetAllDerivedClasses());
-      var leftEndPointDefinition = allClassDefinitions
+      var allTypeDefinitions = entityTypeDefinition.GetTypeHierarchy();
+      var leftEndPointDefinition = allTypeDefinitions
           .Select(cd => cd.ResolveRelationEndPoint(property))
           .FirstOrDefault(e => e != null);
 

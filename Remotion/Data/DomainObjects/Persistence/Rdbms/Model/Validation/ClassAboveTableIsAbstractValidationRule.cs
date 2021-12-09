@@ -32,11 +32,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
 
     }
 
-    public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
+    public IEnumerable<MappingValidationResult> Validate (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      if (!classDefinition.IsClassTypeResolved)
+      if (typeDefinition is not ClassDefinition classDefinition)
+      {
+        yield return MappingValidationResult.CreateValidResult();
+      }
+      else if (!classDefinition.IsTypeResolved)
       {
         yield return MappingValidationResult.CreateValidResult();
       }
@@ -55,10 +59,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
       else
       {
         yield return MappingValidationResult.CreateInvalidResultForType(
-            classDefinition.ClassType,
+            classDefinition.Type,
             "Neither class '{0}' nor its base classes are mapped to a table. "
             + "Make class '{0}' abstract or define a table for it or one of its base classes.",
-            classDefinition.ClassType.Name);
+            classDefinition.Type.Name);
       }
     }
 

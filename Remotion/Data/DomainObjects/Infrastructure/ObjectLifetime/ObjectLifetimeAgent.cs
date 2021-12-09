@@ -102,9 +102,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
         throw new InvalidOperationException(
             string.Format(
                 "Cannot instantiate type '{0}' because it is abstract. For classes with automatic properties, InstantiableAttribute must be used.",
-                classDefinition.ClassType));
+                classDefinition.Type));
 
-      _eventSink.RaiseNewObjectCreatingEvent(classDefinition.ClassType);
+      _eventSink.RaiseNewObjectCreatingEvent(classDefinition.Type);
 
       var objectID = _persistenceStrategy.CreateNewObjectID(classDefinition);
       var initializationContext = new NewObjectInitializationContext(

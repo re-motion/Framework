@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     private IEnumerable<IPropertyInformation> GetPropertyInfos (ClassDefinition classDefinition)
     {
       PropertyFinder propertyFinder = new PropertyFinder(
-          classDefinition.ClassType,
+          classDefinition.Type,
           classDefinition,
           classDefinition.BaseClass == null,
           true,

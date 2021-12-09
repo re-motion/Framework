@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateForAllPropertyDefinitions_ClassDefinitionWithoutBaseClassDefinition_MakeCollectionReadOnlyIsFalse ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
+      var classDefinition = TypeDefinitionObjectMother.CreateClassDefinition();
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition);
 
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateForAllPropertyDefinitions_ClassDefinitionWithoutBaseClassDefinition_MakeCollectionReadOnlyIsTrue ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
+      var classDefinition = TypeDefinitionObjectMother.CreateClassDefinition();
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition);
 
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, false));
@@ -71,15 +71,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void CreateForAllPropertyDefinitions_ClassDefinitionWithBaseClassDefinition ()
     {
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Company));
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Partner), baseClass: baseClassDefinition);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(Partner), baseClass: baseClassDefinition);
 
       var propertyDefinitionInBaseClass = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(baseClassDefinition, "Property1");
-      var propertyDefinitionInDerivedClass = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "Property2");
+      var propertyDefinitionInDerivedClass = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(typeDefinition, "Property2");
 
       baseClassDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinitionInBaseClass }, true));
-      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinitionInDerivedClass }, true));
+      typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinitionInDerivedClass }, true));
 
-      var propertyDefinitions = PropertyDefinitionCollection.CreateForAllProperties(classDefinition, false);
+      var propertyDefinitions = PropertyDefinitionCollection.CreateForAllProperties(typeDefinition, false);
 
       Assert.That(propertyDefinitions.Count, Is.EqualTo(2));
       Assert.That(propertyDefinitions[0], Is.SameAs(propertyDefinitionInDerivedClass));
@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var copy =
           new PropertyDefinition(
-              _propertyDefinition.ClassDefinition,
+              _propertyDefinition.TypeDefinition,
               _propertyDefinition.PropertyInfo,
               _propertyDefinition.PropertyName,
               _propertyDefinition.IsObjectID,

@@ -27,11 +27,11 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
   /// </summary>
   public class PropertyStorageClassIsSupportedByStorageProviderValidationRule : IPersistenceMappingValidationRule
   {
-    public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
+    public IEnumerable<MappingValidationResult> Validate (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions
+      return from PropertyDefinition propertyDefinition in typeDefinition.MyPropertyDefinitions
           select Validate(propertyDefinition);
     }
 
@@ -39,9 +39,9 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
     {
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
-      if (propertyDefinition.StorageClass == StorageClass.Persistent && propertyDefinition.ClassDefinition.HasStorageEntityDefinitionBeenSet)
+      if (propertyDefinition.StorageClass == StorageClass.Persistent && propertyDefinition.TypeDefinition.HasStorageEntityDefinitionBeenSet)
       {
-        if (propertyDefinition.ClassDefinition.IsNonPersistent())
+        if (propertyDefinition.TypeDefinition.IsNonPersistent())
         {
           return MappingValidationResult.CreateInvalidResultForProperty(
               propertyDefinition.PropertyInfo,

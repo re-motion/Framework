@@ -26,9 +26,12 @@ namespace Remotion.Data.DomainObjects.Mapping
   [Serializable]
   public class RelationEndPointDefinitionCollection : CommonCollection, IEnumerable<IRelationEndPointDefinition>
   {
-    public static RelationEndPointDefinitionCollection CreateForAllRelationEndPoints (ClassDefinition classDefinition, bool makeCollectionReadOnly)
+    public static RelationEndPointDefinitionCollection CreateForAllRelationEndPoints (TypeDefinition typeDefinition, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
+
+      if (typeDefinition is not ClassDefinition classDefinition) // TODO R2I Mapping: Maybe move this into TypeDefinition instead
+        return new RelationEndPointDefinitionCollection(typeDefinition.MyRelationEndPointDefinitions, makeCollectionReadOnly);
 
       return
           new RelationEndPointDefinitionCollection(

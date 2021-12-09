@@ -97,10 +97,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That(classDefinitions.Length, Is.EqualTo(4));
 
-      var orderClassDefinition = classDefinitions.Single(cd => cd.ClassType == typeof(Order));
+      var orderClassDefinition = classDefinitions.Single(cd => cd.Type == typeof(Order));
       Assert.That(orderClassDefinition.DerivedClasses.Count, Is.EqualTo(0));
 
-      var companyClassDefinition = classDefinitions.Single(cd => cd.ClassType == typeof(Company));
+      var companyClassDefinition = classDefinitions.Single(cd => cd.Type == typeof(Company));
       Assert.That(companyClassDefinition.DerivedClasses, Is.EquivalentTo(new[] { fakeClassDefinitionPartner, fakeClassDefinitionCustomer }));
     }
 
@@ -155,7 +155,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetClassDefinition_ForDerivedClass_WithBaseClassAlreadyInClassDefinitionCollection ()
     {
       var expectedBaseClass = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassWithDifferentProperties));
-      _classDefinitions.Add(expectedBaseClass.ClassType, expectedBaseClass);
+      _classDefinitions.Add(expectedBaseClass.Type, expectedBaseClass);
 
       _mappingObjectFactoryMock
           .Setup(mock => mock.CreateClassDefinition(typeof(DerivedClassWithDifferentProperties), expectedBaseClass))
@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetClassDefinition_ForDerivedClass_WithDerivedClassAlreadyInClassDefinitionCollection ()
     {
       var existing = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order));
-      _classDefinitions.Add(existing.ClassType, existing);
+      _classDefinitions.Add(existing.Type, existing);
 
       var actual = _classDefinitionCollectionFactory.GetClassDefinition(_classDefinitions, typeof(Order));
 

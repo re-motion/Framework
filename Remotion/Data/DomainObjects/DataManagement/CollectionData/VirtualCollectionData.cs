@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public int Count => GetCachedDomainObjects().Count;
 
-    public Type RequiredItemType  => _associatedEndPointID.Definition.GetOppositeEndPointDefinition().ClassDefinition.ClassType;
+    public Type RequiredItemType  => _associatedEndPointID.Definition.GetOppositeEndPointDefinition().TypeDefinition.Type;
 
     public bool IsReadOnly { get; } = false;
 
@@ -182,8 +182,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       {
         var foreignKeyRelationEndPointDefinition = (RelationEndPointDefinition)_associatedEndPointID.Definition.GetOppositeEndPointDefinition();
         var foreignKeyPropertyDefinition = foreignKeyRelationEndPointDefinition.PropertyDefinition;
-        var requiredClassDefinition = foreignKeyRelationEndPointDefinition.ClassDefinition;
-        var requiredItemType = requiredClassDefinition.ClassType;
+        var requiredTypeDefinition = foreignKeyRelationEndPointDefinition.TypeDefinition;
+        var requiredItemType = requiredTypeDefinition.Type;
         var foreignKeyValue = _associatedEndPointID.ObjectID;
 
         _cachedDomainObjects = _dataContainerMap
@@ -192,7 +192,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
             .Where(dc => requiredItemType.IsAssignableFrom(dc.DomainObjectType))
 #if DEBUG
             // Only in debug builds for performance reasons. The .NET type comparison is sufficient for filtering the types until interface support is added.
-            .Where(dc => requiredClassDefinition.IsSameOrBaseClassOf(dc.ClassDefinition))
+            .Where(dc => requiredTypeDefinition.IsAssignableFrom(dc.ClassDefinition))
 #endif
             .Where(dc => (ObjectID?)dc.GetValueWithoutEvents(foreignKeyPropertyDefinition, _valueAccess) == foreignKeyValue)
             .ToDictionary(dc => dc.ID, dc => dc.DomainObject);

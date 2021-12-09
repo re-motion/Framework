@@ -65,7 +65,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
                                SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
                                SafeServiceLocator.Current.GetInstance<IConcreteTypeMetadataImporter>()),
                            new DomainObjectParticipant(
-                               SafeServiceLocator.Current.GetInstance<ITypeDefinitionProvider>(),
+                               SafeServiceLocator.Current.GetInstance<IClassDefinitionProvider>(),
                                SafeServiceLocator.Current.GetInstance<IInterceptedPropertyFinder>())
                          };
       var pipelineFactory = new RemotionPipelineFactory();

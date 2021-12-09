@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
@@ -49,9 +50,9 @@ namespace Remotion.Data.DomainObjects.Mapping
       if (oppositeEndPointDefinition == null)
       {
         throw CreateMappingException(
-            "Relation '{0}' has no association with class '{1}' and property '{2}'.",
+            "Relation '{0}' has no association with type '{1}' and property '{2}'.",
             ID,
-            endPointDefinition.ClassDefinition.ID,
+            endPointDefinition.TypeDefinition.Type.GetFullNameSafe(),
             endPointDefinition.PropertyName);
       }
 
@@ -81,14 +82,14 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return new[] { _endPointDefinition1, _endPointDefinition2 }; }
     }
 
-    public IRelationEndPointDefinition? GetEndPointDefinition (string classID, string propertyName)
+    public IRelationEndPointDefinition? GetEndPointDefinition (Type type, string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("classID", classID);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      if (_endPointDefinition1.ClassDefinition.ID == classID && _endPointDefinition1.PropertyName == propertyName)
+      if (_endPointDefinition1.TypeDefinition.Type == type && _endPointDefinition1.PropertyName == propertyName)
         return _endPointDefinition1;
 
-      if (_endPointDefinition2.ClassDefinition.ID == classID && _endPointDefinition2.PropertyName == propertyName)
+      if (_endPointDefinition2.TypeDefinition.Type == type && _endPointDefinition2.PropertyName == propertyName)
         return _endPointDefinition2;
 
       return null;
@@ -106,22 +107,22 @@ namespace Remotion.Data.DomainObjects.Mapping
         return null;
     }
 
-    public IRelationEndPointDefinition? GetOppositeEndPointDefinition (string classID, string propertyName)
+    public IRelationEndPointDefinition? GetOppositeEndPointDefinition (Type type, string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("classID", classID);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var matchingEndPointDefinition = GetEndPointDefinition(classID, propertyName);
+      var matchingEndPointDefinition = GetEndPointDefinition(type, propertyName);
       if (matchingEndPointDefinition == null)
         return null;
 
       return GetOppositeEndPointDefinition(matchingEndPointDefinition);
     }
 
-    public bool IsEndPoint (string classID, string propertyName)
+    public bool IsEndPoint (Type type, string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("classID", classID);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return GetEndPointDefinition(classID, propertyName) != null;
+      return GetEndPointDefinition(type, propertyName) != null;
     }
 
     public bool Contains (IRelationEndPointDefinition endPointDefinition)

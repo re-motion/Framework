@@ -30,32 +30,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
   public class ReferenceMappingComparisonTest
   {
     [Test]
-    public void GetClassDefinitions ()
+    public void GetTypeDefinitions ()
     {
       MappingReflector mappingReflector = MappingReflectorObjectMother.CreateMappingReflector(TestMappingConfiguration.GetTypeDiscoveryService());
 
-      var actualClassDefinitions = mappingReflector.GetClassDefinitions().ToDictionary(cd => cd.ClassType);
+      var actualClassDefinitions = mappingReflector.GetTypeDefinitions().ToDictionary(td => td.Type);
       mappingReflector.GetRelationDefinitions(actualClassDefinitions);
       Assert.That(actualClassDefinitions, Is.Not.Null);
 
-      var inheritanceRootClasses = actualClassDefinitions.Values.Select(cd => cd.GetInheritanceRootClass()).Distinct();
+      var inheritanceRootClasses = actualClassDefinitions.Values.Select(td => td.GetInheritanceRoot()).Distinct();
 
       // Pretend that all classes have the storage provider definition used by FakeMappingConfiguration
       var defaultStorageProviderDefinition = FakeMappingConfiguration.Current.DefaultStorageProviderDefinition;
       var defaultStorageSettingsStub = new Mock<IStorageSettings>();
       defaultStorageSettingsStub
-          .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<ClassDefinition>()))
+          .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<TypeDefinition>()))
           .Returns(defaultStorageProviderDefinition);
 
       var nonPersistentStorageProviderDefinition = FakeMappingConfiguration.Current.NonPersistentStorageProviderDefinition;
       var storageSettingsStub = new Mock<IStorageSettings>();
       storageSettingsStub
-          .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<ClassDefinition>()))
+          .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<TypeDefinition>()))
           .Returns(nonPersistentStorageProviderDefinition);
 
-      foreach (ClassDefinition classDefinition in inheritanceRootClasses)
+      foreach (ClassDefinition classDefinition in inheritanceRootClasses.Cast<ClassDefinition>())
       {
-        if (typeof(OrderViewModel).IsAssignableFrom(classDefinition.ClassType))
+        if (typeof(OrderViewModel).IsAssignableFrom(classDefinition.Type))
         {
           var persistenceModelLoader = nonPersistentStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
               nonPersistentStorageProviderDefinition);
@@ -69,9 +69,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
         }
       }
 
-      var classDefinitionChecker = new ClassDefinitionChecker();
-      classDefinitionChecker.Check(FakeMappingConfiguration.Current.TypeDefinitions.Values, actualClassDefinitions, false, true);
-      classDefinitionChecker.CheckPersistenceModel(FakeMappingConfiguration.Current.TypeDefinitions.Values, actualClassDefinitions);
+      var typeDefinitionChecker = new TypeDefinitionChecker();
+      typeDefinitionChecker.Check(FakeMappingConfiguration.Current.TypeDefinitions.Values.Cast<ClassDefinition>(), actualClassDefinitions, false, true);
+      typeDefinitionChecker.CheckPersistenceModel(FakeMappingConfiguration.Current.TypeDefinitions.Values.Cast<ClassDefinition>(), actualClassDefinitions);
       Assert.That(actualClassDefinitions.ContainsKey(typeof(TestDomainBase)), Is.False);
     }
   }

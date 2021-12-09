@@ -31,13 +31,13 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     private readonly IPropertyDefaultValueProvider _propertyDefaultValueProvider;
 
     public PropertyReflector (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IPropertyDefaultValueProvider propertyDefaultValueProvider)
-        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
+        : base(typeDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
       ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
       ArgumentUtility.CheckNotNull("propertyDefaultValueProvider", propertyDefaultValueProvider);
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       var isNullable = IsNullable();
 
       var propertyDefinition = new PropertyDefinition(
-          ClassDefinition,
+          TypeDefinition,
           PropertyInfo,
           GetPropertyName(),
           IsDomainObject(),

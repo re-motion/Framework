@@ -25,27 +25,27 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// </summary>
   public abstract class InvalidRelationEndPointDefinitionBase : IRelationEndPointDefinition, IRelationEndPointDefinitionSetter
   {
-    private readonly ClassDefinition _classDefinition;
+    private readonly TypeDefinition _typeDefinition;
     private readonly string _propertyName;
     private readonly Type _propertyType;
     private RelationDefinition? _relationDefinition;
     private readonly IPropertyInformation _propertyInformation;
 
-    protected InvalidRelationEndPointDefinitionBase (ClassDefinition classDefinition, string propertyName, Type propertyType)
+    protected InvalidRelationEndPointDefinitionBase (TypeDefinition typeDefinition, string propertyName, Type propertyType)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("propertyName", propertyName);
       ArgumentUtility.CheckNotNull("propertyType", propertyType);
 
-      _classDefinition = classDefinition;
+      _typeDefinition = typeDefinition;
       _propertyName = propertyName;
       _propertyType = propertyType;
-      _propertyInformation = new InvalidPropertyInformation(TypeAdapter.Create(_classDefinition.ClassType), propertyName, propertyType);
+      _propertyInformation = new InvalidPropertyInformation(TypeAdapter.Create(_typeDefinition.Type), propertyName, propertyType);
     }
 
-    public ClassDefinition ClassDefinition
+    public TypeDefinition TypeDefinition
     {
-      get { return _classDefinition; }
+      get { return _typeDefinition; }
     }
 
     public string PropertyName

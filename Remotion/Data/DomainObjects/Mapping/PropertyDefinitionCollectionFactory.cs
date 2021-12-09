@@ -37,14 +37,14 @@ namespace Remotion.Data.DomainObjects.Mapping
       _mappingObjectFactory = mappingObjectFactory;
     }
 
-    public PropertyDefinitionCollection CreatePropertyDefinitions (ClassDefinition classDefinition, IEnumerable<IPropertyInformation> propertyInfos)
+    public PropertyDefinitionCollection CreatePropertyDefinitions (TypeDefinition typeDefinition, IEnumerable<IPropertyInformation> propertyInfos)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("propertyInfos", propertyInfos);
 
       var propertyDefinitionsForClass =
           from IPropertyInformation propertyInfo in propertyInfos
-          select _mappingObjectFactory.CreatePropertyDefinition(classDefinition, propertyInfo);
+          select _mappingObjectFactory.CreatePropertyDefinition(typeDefinition, propertyInfo);
       return new PropertyDefinitionCollection(propertyDefinitionsForClass, true);
     }
   }

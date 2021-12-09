@@ -27,18 +27,18 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     ClassDefinition CreateClassDefinition (Type type, ClassDefinition? baseClass);
 
-    PropertyDefinition CreatePropertyDefinition (ClassDefinition classDefinition, IPropertyInformation propertyInfo);
+    PropertyDefinition CreatePropertyDefinition (TypeDefinition typeDefinition, IPropertyInformation propertyInfo);
 
     RelationDefinition CreateRelationDefinition (
-        IDictionary<Type, ClassDefinition> classDefinitions, ClassDefinition classDefinition, IPropertyInformation propertyInfo);
+        IDictionary<Type, TypeDefinition> typeDefinitions, TypeDefinition typeDefinition, IPropertyInformation propertyInfo);
 
-    IRelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition, IPropertyInformation propertyInfo);
+    IRelationEndPointDefinition CreateRelationEndPointDefinition (TypeDefinition typeDefinition, IPropertyInformation propertyInfo);
 
-    ClassDefinition[] CreateClassDefinitionCollection (IEnumerable<Type> types);
+    TypeDefinition[] CreateTypeDefinitionCollection (IEnumerable<Type> types);
 
-    PropertyDefinitionCollection CreatePropertyDefinitionCollection (ClassDefinition classDefinition, IEnumerable<IPropertyInformation> propertyInfos);
+    PropertyDefinitionCollection CreatePropertyDefinitionCollection (TypeDefinition typeDefinition, IEnumerable<IPropertyInformation> propertyInfos);
 
-    RelationDefinition[] CreateRelationDefinitionCollection (IDictionary<Type, ClassDefinition> classDefinitions);
-    RelationEndPointDefinitionCollection CreateRelationEndPointDefinitionCollection (ClassDefinition classDefinition);
+    RelationDefinition[] CreateRelationDefinitionCollection (IDictionary<Type, TypeDefinition> typeDefinitions);
+    RelationEndPointDefinitionCollection CreateRelationEndPointDefinitionCollection (TypeDefinition typeDefinition);
   }
 }

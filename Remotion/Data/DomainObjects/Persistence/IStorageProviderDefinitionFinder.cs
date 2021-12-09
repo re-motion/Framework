@@ -25,6 +25,6 @@ namespace Remotion.Data.DomainObjects.Persistence
   /// </summary>
   public interface IStorageProviderDefinitionFinder
   {
-    StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition, string? errorMessageContext);
+    StorageProviderDefinition GetStorageProviderDefinition (TypeDefinition typeDefinition, string? errorMessageContext);
   }
 }

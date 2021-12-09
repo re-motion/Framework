@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   public class RelationEndPointDefinitionCollectionTest : MappingReflectionTestBase
   {
     private RelationEndPointDefinitionCollection _collection;
-    private ClassDefinition _classDefinition;
+    private TypeDefinition _typeDefinition;
     private RelationEndPointDefinition _endPoint1;
     private RelationEndPointDefinition _endPoint2;
     private AnonymousRelationEndPointDefinition _anonymousEndPoint;
@@ -36,25 +36,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       base.SetUp();
 
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
-      var propertyDefinition1 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(_classDefinition, "Property1");
-      var propertyDefinition2 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(_classDefinition, "Property2");
-      var propertyDefinition3 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(_classDefinition, "Property3");
-      var propertyDefinition4 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(_classDefinition, "Property4");
-      _classDefinition.SetPropertyDefinitions(
+      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition();
+      var propertyDefinition1 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(_typeDefinition, "Property1");
+      var propertyDefinition2 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(_typeDefinition, "Property2");
+      var propertyDefinition3 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(_typeDefinition, "Property3");
+      var propertyDefinition4 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(_typeDefinition, "Property4");
+      _typeDefinition.SetPropertyDefinitions(
           new PropertyDefinitionCollection(new[] { propertyDefinition1, propertyDefinition2, propertyDefinition3, propertyDefinition4 }, true));
       _endPoint1 = new RelationEndPointDefinition(propertyDefinition1, false);
       _endPoint2 = new RelationEndPointDefinition(propertyDefinition2, false);
-      _anonymousEndPoint = new AnonymousRelationEndPointDefinition(_classDefinition);
+      _anonymousEndPoint = new AnonymousRelationEndPointDefinition(_typeDefinition);
       _collection = new RelationEndPointDefinitionCollection();
     }
 
     [Test]
     public void CreateForAllRelationEndPoints_ClassDefinitionWithoutBaseClassDefinition_MakeCollectionReadOnlyIsFalse ()
     {
-      _classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { _endPoint1, _endPoint2 }, true));
+      _typeDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { _endPoint1, _endPoint2 }, true));
 
-      var endPoints = RelationEndPointDefinitionCollection.CreateForAllRelationEndPoints(_classDefinition, false);
+      var endPoints = RelationEndPointDefinitionCollection.CreateForAllRelationEndPoints(_typeDefinition, false);
 
       Assert.That(endPoints.Count, Is.EqualTo(2));
       Assert.That(endPoints.IsReadOnly, Is.False);
@@ -65,9 +65,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateForAllRelationEndPoints_ClassDefinitionWithoutBaseClassDefinition_MakeCollectionReadOnlyIsTrue ()
     {
-      _classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { _endPoint1, _endPoint2 }, false));
+      _typeDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { _endPoint1, _endPoint2 }, false));
 
-      var endPoints = RelationEndPointDefinitionCollection.CreateForAllRelationEndPoints(_classDefinition, true);
+      var endPoints = RelationEndPointDefinitionCollection.CreateForAllRelationEndPoints(_typeDefinition, true);
 
       Assert.That(endPoints.Count, Is.EqualTo(2));
       Assert.That(endPoints.IsReadOnly, Is.True);
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Company));
       var basedPropertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(baseClassDefinition, "Property1");
       baseClassDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { basedPropertyDefinition }, true));
-      var derivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Partner), baseClass: baseClassDefinition);
+      var derivedClassDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(Partner), baseClass: baseClassDefinition);
       var derivedPropertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(derivedClassDefinition, "Property2");
       derivedClassDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { derivedPropertyDefinition }, true));
 
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void Add_PropertyNameIsNull ()
     {
-      var endPoint = new AnonymousRelationEndPointDefinition(_classDefinition);
+      var endPoint = new AnonymousRelationEndPointDefinition(_typeDefinition);
       Assert.That(
           () => _collection.Add(endPoint),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Anonymous end points cannot be added to this collection.", "value"));

@@ -27,17 +27,17 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
   /// <summary>
   /// Validates that a persistent relation property does not reference non-persistent classes.
   /// </summary>
-  public class RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule : IPersistenceMappingValidationRule
+  public class RelationPropertyStorageClassMatchesReferencedTypeDefinitionStorageClassValidationRule : IPersistenceMappingValidationRule
   {
-    public RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule ()
+    public RelationPropertyStorageClassMatchesReferencedTypeDefinitionStorageClassValidationRule ()
     {
     }
 
-    public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
+    public IEnumerable<MappingValidationResult> Validate (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      return from IRelationEndPointDefinition endPointDefinition in classDefinition.MyRelationEndPointDefinitions
+      return from IRelationEndPointDefinition endPointDefinition in typeDefinition.MyRelationEndPointDefinitions
           select Validate(endPointDefinition);
     }
 
@@ -48,14 +48,14 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
         var oppositeEndPointDefinition = endPointDefinition.GetOppositeEndPointDefinition();
 
         if (relationEndPointDefinition.PropertyDefinition.StorageClass == StorageClass.Persistent
-            && oppositeEndPointDefinition.ClassDefinition.HasStorageEntityDefinitionBeenSet
-            && oppositeEndPointDefinition.ClassDefinition.IsNonPersistent())
+            && oppositeEndPointDefinition.TypeDefinition.HasStorageEntityDefinitionBeenSet
+            && oppositeEndPointDefinition.TypeDefinition.IsNonPersistent())
         {
           return MappingValidationResult.CreateInvalidResultForProperty(
               relationEndPointDefinition.PropertyInfo,
               "The relation property is defined as persistent but the referenced type '{0}' is non-persistent. "
               + "Persistent relation properties may only reference persistent types.",
-              oppositeEndPointDefinition.ClassDefinition.ClassType.GetFullNameSafe());
+              oppositeEndPointDefinition.TypeDefinition.Type.GetFullNameSafe());
         }
       }
 

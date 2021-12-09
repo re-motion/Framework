@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
     private DomainObjectQueryGenerator _generator;
 
-    private ClassDefinition _customerClassDefinition;
+    private TypeDefinition _customerTypeDefinition;
     private QueryModel _customerQueryModel;
 
     public override void SetUp ()
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           _storageTypeInformationProviderStub.Object,
           Configuration);
 
-      _customerClassDefinition = GetTypeDefinition(typeof(Customer));
+      _customerTypeDefinition = GetTypeDefinition(typeof(Customer));
       _customerQueryModel = QueryModelObjectMother.Create(Expression.Constant(null, typeof(Customer)));
     }
 
@@ -550,7 +550,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _sqlQueryGeneratorMock.Verify();
       Assert.That(result, Is.TypeOf(typeof(CustomSequenceQueryAdapter<int>)));
       Assert.That(result.ID, Is.EqualTo("id"));
-      Assert.That(result.StorageProviderDefinition, Is.EqualTo(_customerClassDefinition.StorageEntityDefinition.StorageProviderDefinition));
+      Assert.That(result.StorageProviderDefinition, Is.EqualTo(_customerTypeDefinition.StorageEntityDefinition.StorageProviderDefinition));
       Assert.That(result.Statement, Is.EqualTo("SELECT x"));
       Assert.That(result.QueryType, Is.EqualTo(QueryType.Custom));
       Assert.That(result.CollectionType, Is.Null);

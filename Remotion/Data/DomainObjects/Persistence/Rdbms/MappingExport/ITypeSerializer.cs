@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,27 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.Infrastructure;
+using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
-  public class ClassDefinitionWithUnresolvedClassType : ClassDefinition
+  /// <summary>
+  /// Defines an API for creating an xml fragment which contains the <see cref="TypeDefinition"/> metadata.
+  /// </summary>
+  public interface ITypeSerializer
   {
-    public ClassDefinitionWithUnresolvedClassType (
-        string id,
-        Type classType,
-        bool isAbstract,
-        ClassDefinition baseClass,
-        IPersistentMixinFinder persistentMixinFinder,
-        IDomainObjectCreator instanceCreator)
-        : base(id, classType, isAbstract, baseClass, null, DefaultStorageClass.Persistent, persistentMixinFinder, instanceCreator)
-    {
-    }
-
-    public override bool IsClassTypeResolved
-    {
-      get { return false; }
-    }
+    XElement Serialize (TypeDefinition typeDefinition);
   }
 }

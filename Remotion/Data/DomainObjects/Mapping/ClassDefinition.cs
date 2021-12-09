@@ -23,83 +23,53 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
-  [DebuggerDisplay("{GetType().Name} for {ClassType.GetFullNameSafe()}")]
-  public class ClassDefinition
+  [DebuggerDisplay("{GetType().Name} for {Type.Name}")]
+  public class ClassDefinition : TypeDefinition
   {
-    private readonly string _id;
-    private bool _isReadOnly;
-    private readonly Type? _storageGroupType;
-    private readonly DefaultStorageClass _defaultStorageClass;
-    private readonly PropertyAccessorDataCache _propertyAccessorDataCache;
-    private readonly DoubleCheckedLockingContainer<RelationEndPointDefinitionCollection> _cachedRelationEndPointDefinitions;
-    private readonly DoubleCheckedLockingContainer<PropertyDefinitionCollection> _cachedPropertyDefinitions;
-    private readonly ClassDefinition? _baseClass;
-    private PropertyDefinitionCollection? _propertyDefinitions;
-    private RelationEndPointDefinitionCollection? _relationEndPoints;
-    private IStorageEntityDefinition? _storageEntityDefinition;
-    private ReadOnlyCollection<ClassDefinition>? _derivedClasses;
-    private readonly bool _isAbstract;
-    private readonly Type _classType;
-    private readonly IPersistentMixinFinder _persistentMixinFinder;
-    private readonly IDomainObjectCreator _instanceCreator;
     private readonly Lazy<Func<ObjectID, IDomainObjectHandle<DomainObject>>> _handleCreator;
+
+    private ReadOnlyCollection<ClassDefinition>? _derivedClasses;
+
+    public string ID { get; }
+
+    public bool IsAbstract { get; }
+
+    public IDomainObjectCreator InstanceCreator { get; }
+
+    public ClassDefinition? BaseClass { get; }
+
+    public IPersistentMixinFinder PersistentMixinFinder { get; }
 
     public ClassDefinition (
         string id,
-        Type classType,
+        Type type,
         bool isAbstract,
         ClassDefinition? baseClass,
         Type? storageGroupType,
         DefaultStorageClass defaultStorageClass,
         IPersistentMixinFinder persistentMixinFinder,
         IDomainObjectCreator instanceCreator)
+        : base(type, storageGroupType, defaultStorageClass)
     {
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
-      ArgumentUtility.CheckNotNull("classType", classType);
       ArgumentUtility.CheckNotNull("persistentMixinFinder", persistentMixinFinder);
 
-      _id = id;
-      _storageGroupType = storageGroupType;
-      _defaultStorageClass = defaultStorageClass;
+      ID = id;
 
-      _classType = classType;
-      _persistentMixinFinder = persistentMixinFinder;
-      _isAbstract = isAbstract;
+      PersistentMixinFinder = persistentMixinFinder;
+      IsAbstract = isAbstract;
 
-      _propertyAccessorDataCache = new PropertyAccessorDataCache(this);
-      _cachedRelationEndPointDefinitions = new DoubleCheckedLockingContainer<RelationEndPointDefinitionCollection>(
-           () => RelationEndPointDefinitionCollection.CreateForAllRelationEndPoints(this, true));
-      _cachedPropertyDefinitions =
-          new DoubleCheckedLockingContainer<PropertyDefinitionCollection>(
-              () => new PropertyDefinitionCollection(PropertyDefinitionCollection.CreateForAllProperties(this, true), true));
-
-      _baseClass = baseClass;
-      _instanceCreator = instanceCreator;
+      BaseClass = baseClass;
+      InstanceCreator = instanceCreator;
       _handleCreator = new Lazy<Func<ObjectID, IDomainObjectHandle<DomainObject>>>(BuildHandleCreator, LazyThreadSafetyMode.PublicationOnly);
     }
 
     // methods and properties
-
-    public PropertyAccessorDataCache PropertyAccessorDataCache
-    {
-      get { return _propertyAccessorDataCache; }
-    }
-
-    public bool IsReadOnly
-    {
-      get { return _isReadOnly; }
-    }
-
-    public void SetReadOnly ()
-    {
-      _isReadOnly = true;
-    }
 
     public bool IsSameOrBaseClassOf (ClassDefinition classDefinition)
     {
@@ -120,6 +90,27 @@ namespace Remotion.Data.DomainObjects.Mapping
       return false;
     }
 
+    public override bool IsAssignableFrom (TypeDefinition other)
+    {
+      if (ReferenceEquals(this, other))
+        return true;
+
+      return DerivedClasses.Any(e => e.IsAssignableFrom(other));
+    }
+
+    public override TypeDefinition[] GetTypeHierarchy ()
+    {
+      var allDerivedClasses = new List<ClassDefinition>();
+      allDerivedClasses.Add(this);
+      FillAllDerivedClasses(allDerivedClasses);
+
+      var allDerivedTypes = new TypeDefinition[allDerivedClasses.Count];
+      for (var i = 0; i < allDerivedTypes.Length; i++)
+        allDerivedTypes[i] = allDerivedClasses[i];
+
+      return allDerivedTypes;
+    }
+
     public ClassDefinition[] GetAllDerivedClasses ()
     {
       var allDerivedClasses = new List<ClassDefinition>();
@@ -127,56 +118,19 @@ namespace Remotion.Data.DomainObjects.Mapping
       return allDerivedClasses.ToArray();
     }
 
-    public ClassDefinition GetInheritanceRootClass ()
+    public override TypeDefinition GetInheritanceRoot ()
     {
       if (BaseClass != null)
-        return BaseClass.GetInheritanceRootClass();
+        return BaseClass.GetInheritanceRoot();
 
       return this;
-    }
-
-    [Obsolete(
-        "Contains (...) method was ambiguous between GetPropertyDefinitions() and MyPropertyDefinitions. Use GetPropertyDefinitions().Contains (...) instead. (Version: 3.0.0)",
-        true)]
-    public bool Contains (PropertyDefinition propertyDefinition)
-    {
-      throw new NotSupportedException("Use GetPropertyDefinitions().Contains (...) instead. (Version: 3.0.0)");
-    }
-
-    public PropertyDefinitionCollection GetPropertyDefinitions ()
-    {
-      return _cachedPropertyDefinitions.Value;
-    }
-
-    public RelationEndPointDefinitionCollection GetRelationEndPointDefinitions ()
-    {
-      return _cachedRelationEndPointDefinitions.Value;
-    }
-
-    public IRelationEndPointDefinition? GetRelationEndPointDefinition (string propertyName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-
-      return _cachedRelationEndPointDefinitions.Value[propertyName];
-    }
-
-    public IRelationEndPointDefinition GetMandatoryRelationEndPointDefinition (string propertyName)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-
-      IRelationEndPointDefinition? relationEndPointDefinition = GetRelationEndPointDefinition(propertyName);
-
-      if (relationEndPointDefinition == null)
-        throw CreateMappingException("No relation found for class '{0}' and property '{1}'.", ID, propertyName);
-
-      return relationEndPointDefinition;
     }
 
     public bool IsMyRelationEndPoint (IRelationEndPointDefinition relationEndPointDefinition)
     {
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
-      return (relationEndPointDefinition.ClassDefinition == this && !relationEndPointDefinition.IsAnonymous);
+      return (relationEndPointDefinition.TypeDefinition == this && !relationEndPointDefinition.IsAnonymous);
     }
 
     public bool IsRelationEndPoint (IRelationEndPointDefinition relationEndPointDefinition)
@@ -192,58 +146,15 @@ namespace Remotion.Data.DomainObjects.Mapping
       return false;
     }
 
-    public PropertyDefinition? GetPropertyDefinition (string propertyName)
+    public override PropertyDefinition? GetPropertyDefinition (string propertyName)
     {
       ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
 
-      var propertyDefinition = MyPropertyDefinitions[propertyName];
-
+      var propertyDefinition = base.GetPropertyDefinition(propertyName);
       if (propertyDefinition == null && BaseClass != null)
         return BaseClass.GetPropertyDefinition(propertyName);
 
       return propertyDefinition;
-    }
-
-    public void SetStorageEntity (IStorageEntityDefinition storageEntityDefinition)
-    {
-      ArgumentUtility.CheckNotNull("storageEntityDefinition", storageEntityDefinition);
-
-      if (_isReadOnly)
-        throw new NotSupportedException(String.Format("Class '{0}' is read-only.", ID));
-
-      _storageEntityDefinition = storageEntityDefinition;
-    }
-
-    public void SetPropertyDefinitions (PropertyDefinitionCollection propertyDefinitions)
-    {
-      ArgumentUtility.CheckNotNull("propertyDefinitions", propertyDefinitions);
-
-      if (_propertyDefinitions != null)
-        throw new InvalidOperationException(String.Format("The property-definitions for class '{0}' have already been set.", ID));
-
-      if (_isReadOnly)
-        throw new NotSupportedException(String.Format("Class '{0}' is read-only.", ID));
-
-      CheckPropertyDefinitions(propertyDefinitions);
-
-      _propertyDefinitions = propertyDefinitions;
-      _propertyDefinitions.SetReadOnly();
-    }
-
-    public void SetRelationEndPointDefinitions (RelationEndPointDefinitionCollection relationEndPoints)
-    {
-      ArgumentUtility.CheckNotNull("relationEndPoints", relationEndPoints);
-
-      if (_relationEndPoints != null)
-        throw new InvalidOperationException(String.Format("The relation end point definitions for class '{0}' have already been set.", ID));
-
-      if (_isReadOnly)
-        throw new NotSupportedException(String.Format("Class '{0}' is read-only.", ID));
-
-      CheckRelationEndPointDefinitions(relationEndPoints);
-
-      _relationEndPoints = relationEndPoints;
-      _relationEndPoints.SetReadOnly();
     }
 
     public void SetDerivedClasses (IEnumerable<ClassDefinition> derivedClasses)
@@ -251,10 +162,10 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull("derivedClasses", derivedClasses);
 
       if (_derivedClasses != null)
-        throw new InvalidOperationException(String.Format("The derived-classes for class '{0}' have already been set.", ID));
+        throw new InvalidOperationException($"The derived-classes for class '{ID}' have already been set.");
 
-      if (_isReadOnly)
-        throw new NotSupportedException(String.Format("Class '{0}' is read-only.", ID));
+      if (IsReadOnly)
+        throw new NotSupportedException($"Class '{ID}' is read-only.");
 
       var derivedClassesReadOnly = derivedClasses.ToList().AsReadOnly();
       CheckDerivedClass(derivedClassesReadOnly);
@@ -262,147 +173,22 @@ namespace Remotion.Data.DomainObjects.Mapping
       _derivedClasses = derivedClassesReadOnly;
     }
 
-    public PropertyDefinition GetMandatoryPropertyDefinition (string propertyName)
-    {
-      PropertyDefinition? propertyDefinition = GetPropertyDefinition(propertyName);
-
-      if (propertyDefinition == null)
-        throw CreateMappingException("Class '{0}' does not contain the property '{1}'.", ID, propertyName);
-
-      return propertyDefinition;
-    }
-
-    public PropertyDefinition? this [string propertyName]
-    {
-      get
-      {
-        ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-        return MyPropertyDefinitions[propertyName];
-      }
-    }
-
-    public string ID
-    {
-      get { return _id; }
-    }
-
-    public IStorageEntityDefinition StorageEntityDefinition
-    {
-      get
-      {
-        Assertion.IsNotNull(_storageEntityDefinition, "StorageEntityDefinition has not been set for class definition '{0}'.", _id);
-        return _storageEntityDefinition;
-      }
-    }
-
-    public bool HasStorageEntityDefinitionBeenSet
-    {
-      get { return _storageEntityDefinition != null; }
-    }
-
-    public Type ClassType
-    {
-      get { return _classType; }
-    }
-
-    public virtual bool IsClassTypeResolved
-    {
-      get { return true; }
-    }
-
-    public bool IsAbstract
-    {
-      get { return _isAbstract; }
-    }
-
-    public IDomainObjectCreator InstanceCreator
-    {
-      get { return _instanceCreator; }
-    }
-
-    public Func<ObjectID, IDomainObjectHandle<DomainObject>> HandleCreator
-    {
-      get { return _handleCreator.Value; }
-    }
-
-    public PropertyDefinition? ResolveProperty (IPropertyInformation propertyInformation)
-    {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
-
-      var propertyAccessorData = PropertyAccessorDataCache.ResolvePropertyAccessorData(propertyInformation);
-      return propertyAccessorData == null ? null : propertyAccessorData.PropertyDefinition;
-    }
-
-    public IRelationEndPointDefinition? ResolveRelationEndPoint (IPropertyInformation propertyInformation)
-    {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
-
-      var propertyAccessorData = PropertyAccessorDataCache.ResolvePropertyAccessorData(propertyInformation);
-      return propertyAccessorData == null ? null : propertyAccessorData.RelationEndPointDefinition;
-    }
-
-    public ClassDefinition? BaseClass
-    {
-      get { return _baseClass; }
-    }
-
-    public Type? StorageGroupType
-    {
-      get { return _storageGroupType; }
-    }
-
-    public DefaultStorageClass DefaultStorageClass
-    {
-      get { return _defaultStorageClass; }
-    }
-
-    public PropertyDefinitionCollection MyPropertyDefinitions
-    {
-      get
-      {
-        if (_propertyDefinitions == null)
-          throw new InvalidOperationException(String.Format("No property definitions have been set for class '{0}'.", ID));
-
-        return _propertyDefinitions;
-      }
-    }
-
-    public RelationEndPointDefinitionCollection MyRelationEndPointDefinitions
-    {
-      get
-      {
-        if (_relationEndPoints == null)
-          throw new InvalidOperationException(String.Format("No relation end point definitions have been set for class '{0}'.", ID));
-
-        return _relationEndPoints;
-      }
-    }
+    public Func<ObjectID, IDomainObjectHandle<DomainObject>> HandleCreator => _handleCreator.Value;
 
     public ReadOnlyCollection<ClassDefinition> DerivedClasses
     {
       get
       {
         if (_derivedClasses == null)
-          throw new InvalidOperationException(String.Format("No derived classes have been set for class '{0}'.", ID));
+          throw new InvalidOperationException($"No derived classes have been set for class '{ID}'.");
 
         return _derivedClasses;
       }
     }
 
-    public bool IsPartOfInheritanceHierarchy
-    {
-      get { return (BaseClass != null || DerivedClasses.Count > 0); }
-    }
+    public override bool IsPartOfInheritanceHierarchy => BaseClass != null || DerivedClasses.Count > 0;
 
-    public IPersistentMixinFinder PersistentMixinFinder
-    {
-      get { return _persistentMixinFinder; }
-    }
-
-    public IEnumerable<Type> PersistentMixins
-    {
-      get { return _persistentMixinFinder.GetPersistentMixins(); }
-    }
+    public IEnumerable<Type> PersistentMixins => PersistentMixinFinder.GetPersistentMixins();
 
     public Type? GetPersistentMixin (Type mixinToSearch)
     {
@@ -415,28 +201,18 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void ValidateCurrentMixinConfiguration ()
     {
-      var currentMixinConfiguration = Mapping.PersistentMixinFinder.GetMixinConfigurationForDomainObjectType(ClassType);
+      var currentMixinConfiguration = Mapping.PersistentMixinFinder.GetMixinConfigurationForDomainObjectType(Type);
       if (!Equals(currentMixinConfiguration, PersistentMixinFinder.MixinConfiguration))
       {
-        string message = String.Format(
+        string message = string.Format(
             "The mixin configuration for domain object type '{0}' was changed after the mapping information was built." + Environment.NewLine
             + "Original configuration: {1}." + Environment.NewLine
             + "Active configuration: {2}",
-            ClassType,
+            Type,
             PersistentMixinFinder.MixinConfiguration,
             currentMixinConfiguration);
         throw new MappingException(message);
       }
-    }
-
-    public override string ToString ()
-    {
-      return GetType().GetFullNameChecked() + ": " + _id;
-    }
-
-    private MappingException CreateMappingException (string message, params object?[] args)
-    {
-      return new MappingException(String.Format(message, args));
     }
 
     private void FillAllDerivedClasses (List<ClassDefinition> allDerivedClasses)
@@ -448,61 +224,53 @@ namespace Remotion.Data.DomainObjects.Mapping
       }
     }
 
-    private void CheckPropertyDefinitions (IEnumerable<PropertyDefinition> propertyDefinitions)
+    public override string ToString () => $"{GetType().Name}: {ID}";
+
+    protected override void CheckPropertyDefinitions (IEnumerable<PropertyDefinition> propertyDefinitions)
     {
       foreach (var propertyDefinition in propertyDefinitions)
       {
-        if (!ReferenceEquals(propertyDefinition.ClassDefinition, this))
+        if (!ReferenceEquals(propertyDefinition.TypeDefinition, this))
         {
-          throw CreateMappingException(
-              "Property '{0}' cannot be added to class '{1}', because it was initialized for class '{2}'.",
-              propertyDefinition.PropertyName,
-              _id,
-              propertyDefinition.ClassDefinition.ID);
+          throw new MappingException(
+              $"Property '{propertyDefinition.PropertyName}' cannot be added to class '{ID}',"
+              + $" because it was initialized for type '{propertyDefinition.TypeDefinition.Type.GetFullNameSafe()}'.");
         }
 
-        var basePropertyDefinition = BaseClass != null ? BaseClass.GetPropertyDefinition(propertyDefinition.PropertyName) : null;
-        if (basePropertyDefinition != null)
+        var baseClass = BaseClass;
+        var basePropertyDefinition = baseClass?.GetPropertyDefinition(propertyDefinition.PropertyName);
+        if (baseClass != null && basePropertyDefinition != null)
         {
-          string definingClass = String.Format("base class '{0}'", basePropertyDefinition.ClassDefinition.ID);
-
-          throw CreateMappingException(
-              "Property '{0}' cannot be added to class '{1}', because {2} already defines a property with the same name.",
-              propertyDefinition.PropertyName,
-              _id,
-              definingClass);
+          throw new MappingException(
+              $"Property '{propertyDefinition.PropertyName}' cannot be added to class '{ID}',"
+              + $" because base type '{basePropertyDefinition.TypeDefinition.Type.GetFullNameSafe()}' already defines a property with the same name.");
         }
       }
     }
 
-    private void CheckRelationEndPointDefinitions (IEnumerable<IRelationEndPointDefinition> relationEndPoints)
+    protected override void CheckRelationEndPointDefinitions (IEnumerable<IRelationEndPointDefinition> relationEndPoints)
     {
       foreach (IRelationEndPointDefinition endPointDefinition in relationEndPoints)
       {
-        var relationEndPointClassDefinition = endPointDefinition.ClassDefinition;
+        var relationEndPointClassDefinition = endPointDefinition.TypeDefinition;
         var relationEndPointPropertyName = endPointDefinition.PropertyName;
         Assertion.DebugAssert(endPointDefinition.IsAnonymous == false, "endPointDefinition.IsAnonymous == false");
         Assertion.DebugIsNotNull(relationEndPointPropertyName, "endPointDefinition.PropertyName != null when endPointDefinition.IsAnonymous == false");
 
         if (!ReferenceEquals(relationEndPointClassDefinition, this))
         {
-          throw CreateMappingException(
-              "Relation end point for property '{0}' cannot be added to class '{1}', because it was initialized for class '{2}'.",
-              relationEndPointPropertyName,
-              _id,
-              relationEndPointClassDefinition.ID);
+          throw new MappingException(
+              $"Relation end point for property '{relationEndPointPropertyName}' cannot be added to class '{ID}',"
+              + $" because it was initialized for class '{relationEndPointClassDefinition.Type.GetFullNameSafe()}'.");
         }
 
-        var baseEndPointDefinition = BaseClass != null ? BaseClass.GetRelationEndPointDefinition(relationEndPointPropertyName) : null;
-        if (baseEndPointDefinition != null)
+        var baseClass = BaseClass;
+        var baseEndPointDefinition = baseClass?.GetRelationEndPointDefinition(relationEndPointPropertyName);
+        if (baseClass != null && baseEndPointDefinition != null)
         {
-          string definingClass = String.Format("base class '{0}'", baseEndPointDefinition.ClassDefinition.ID);
-
-          throw CreateMappingException(
-              "Relation end point for property '{0}' cannot be added to class '{1}', because {2} already defines a relation end point with the same property name.",
-              relationEndPointPropertyName,
-              _id,
-              definingClass);
+          throw new MappingException(
+              $"Relation end point for property '{relationEndPointPropertyName}' cannot be added to class '{ID}',"
+              + $" because base class '{baseClass.ID}' already defines a relation end point with the same property name.");
         }
       }
     }
@@ -513,17 +281,14 @@ namespace Remotion.Data.DomainObjects.Mapping
       {
         if (derivedClass.BaseClass == null)
         {
-          throw CreateMappingException(
-              "Derived class '{0}' cannot be added to class '{1}', because it has no base class definition defined.", derivedClass.ID, _id);
+          throw new MappingException(
+              $"Derived class '{derivedClass.ID}' cannot be added to class '{ID}', because it has no base class definition defined.");
         }
 
         if (derivedClass.BaseClass != this)
         {
-          throw CreateMappingException(
-              "Derived class '{0}' cannot be added to class '{1}', because it has class '{2}' as its base class definition defined.",
-              derivedClass.ID,
-              _id,
-              derivedClass.BaseClass.ID);
+          throw new MappingException(
+              $"Derived class '{derivedClass.ID}' cannot be added to class '{ID}', because it has class '{derivedClass.BaseClass.ID}' as its base class definition defined.");
         }
       }
     }
@@ -533,12 +298,11 @@ namespace Remotion.Data.DomainObjects.Mapping
       var objectIDParameter = Expression.Parameter(typeof(ObjectID), "objectID");
 
       Expression body;
-      if (typeof(DomainObject).IsAssignableFrom(ClassType))
+      if (typeof(DomainObject).IsAssignableFrom(Type))
       {
-        var handleType = typeof(DomainObjectHandle<>).MakeGenericType(ClassType);
+        var handleType = typeof(DomainObjectHandle<>).MakeGenericType(Type);
 
-        var constructorInfo = handleType.GetConstructor(
-            BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(ObjectID) }, null);
+        var constructorInfo = handleType.GetConstructor(BindingFlags.Public | BindingFlags.Instance, null, new[] { typeof(ObjectID) }, null);
         Assertion.DebugAssert(constructorInfo != null);
 
         body = Expression.New(constructorInfo, objectIDParameter);
@@ -548,7 +312,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         var throwingDelegate =
             (Func<IDomainObjectHandle<DomainObject>>)(() =>
             {
-              throw new InvalidOperationException("Handles cannot be created when the ClassType does not derive from DomainObject.");
+              throw new InvalidOperationException("Handles cannot be created when the Type does not derive from DomainObject.");
             });
         body = Expression.Invoke(Expression.Constant(throwingDelegate));
       }

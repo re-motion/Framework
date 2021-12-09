@@ -78,13 +78,13 @@ namespace Remotion.Data.DomainObjects.Mapping
       return classReflector.GetMetadata(baseClass);
     }
 
-    public PropertyDefinition CreatePropertyDefinition (ClassDefinition classDefinition, IPropertyInformation propertyInfo)
+    public PropertyDefinition CreatePropertyDefinition (TypeDefinition typeDefinition, IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
       var propertyReflector = new PropertyReflector(
-          classDefinition,
+          typeDefinition,
           propertyInfo,
           _nameResolver,
           _propertyMetadataProvider,
@@ -94,23 +94,23 @@ namespace Remotion.Data.DomainObjects.Mapping
     }
 
     public RelationDefinition CreateRelationDefinition (
-        IDictionary<Type, ClassDefinition> classDefinitions, ClassDefinition classDefinition, IPropertyInformation propertyInfo)
+        IDictionary<Type, TypeDefinition> typeDefinitions, TypeDefinition typeDefinition, IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      var relationReflector = new RelationReflector(classDefinition, propertyInfo, _nameResolver, _propertyMetadataProvider);
-      return relationReflector.GetMetadata(classDefinitions);
+      var relationReflector = new RelationReflector(typeDefinition, propertyInfo, _nameResolver, _propertyMetadataProvider);
+      return relationReflector.GetMetadata(typeDefinitions);
     }
 
-    public IRelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition, IPropertyInformation propertyInfo)
+    public IRelationEndPointDefinition CreateRelationEndPointDefinition (TypeDefinition typeDefinition, IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
       var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector(
-          classDefinition,
+          typeDefinition,
           propertyInfo,
           _nameResolver,
           _propertyMetadataProvider,
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return relationEndPointReflector.GetMetadata();
     }
 
-    public ClassDefinition[] CreateClassDefinitionCollection (IEnumerable<Type> types)
+    public TypeDefinition[] CreateTypeDefinitionCollection (IEnumerable<Type> types)
     {
       ArgumentUtility.CheckNotNull("types", types);
 
@@ -128,29 +128,29 @@ namespace Remotion.Data.DomainObjects.Mapping
     }
 
     public PropertyDefinitionCollection CreatePropertyDefinitionCollection (
-        ClassDefinition classDefinition, IEnumerable<IPropertyInformation> propertyInfos)
+        TypeDefinition typeDefinition, IEnumerable<IPropertyInformation> propertyInfos)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("propertyInfos", propertyInfos);
 
       var factory = new PropertyDefinitionCollectionFactory(this);
-      return factory.CreatePropertyDefinitions(classDefinition, propertyInfos);
+      return factory.CreatePropertyDefinitions(typeDefinition, propertyInfos);
     }
 
-    public RelationDefinition[] CreateRelationDefinitionCollection (IDictionary<Type, ClassDefinition> classDefinitions)
+    public RelationDefinition[] CreateRelationDefinitionCollection (IDictionary<Type, TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
       var factory = new RelationDefinitionCollectionFactory(this);
-      return factory.CreateRelationDefinitionCollection(classDefinitions);
+      return factory.CreateRelationDefinitionCollection(typeDefinitions);
     }
 
-    public RelationEndPointDefinitionCollection CreateRelationEndPointDefinitionCollection (ClassDefinition classDefinition)
+    public RelationEndPointDefinitionCollection CreateRelationEndPointDefinitionCollection (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
       var factory = new RelationEndPointDefinitionCollectionFactory(this, _nameResolver, _propertyMetadataProvider);
-      return factory.CreateRelationEndPointDefinitionCollection(classDefinition);
+      return factory.CreateRelationEndPointDefinitionCollection(typeDefinition);
     }
   }
 }

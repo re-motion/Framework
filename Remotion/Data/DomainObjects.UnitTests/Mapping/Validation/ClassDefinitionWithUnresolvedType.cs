@@ -15,14 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Remotion.Data.DomainObjects.Mapping.Validation
+namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
 {
-  /// <summary>
-  /// Defines the API for the class definition mapping validation rules.
-  /// </summary>
-  public interface IClassDefinitionValidationRule
+  public class ClassDefinitionWithUnresolvedType : ClassDefinition
   {
-    MappingValidationResult Validate (ClassDefinition classDefinition);
+    public ClassDefinitionWithUnresolvedType (
+        string id,
+        Type classType,
+        bool isAbstract,
+        ClassDefinition baseClass,
+        IPersistentMixinFinder persistentMixinFinder,
+        IDomainObjectCreator instanceCreator)
+        : base(id, classType, isAbstract, baseClass, null, DefaultStorageClass.Persistent, persistentMixinFinder, instanceCreator)
+    {
+    }
+
+    public override bool IsTypeResolved
+    {
+      get { return false; }
+    }
   }
 }

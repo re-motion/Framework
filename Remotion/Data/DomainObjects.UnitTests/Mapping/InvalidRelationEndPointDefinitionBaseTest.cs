@@ -27,26 +27,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   {
     private class TestableInvalidRelationEndPointDefinitionBase : InvalidRelationEndPointDefinitionBase
     {
-      public TestableInvalidRelationEndPointDefinitionBase (ClassDefinition classDefinition, string propertyName, Type propertyType)
-          : base(classDefinition, propertyName, propertyType)
+      public TestableInvalidRelationEndPointDefinitionBase (TypeDefinition typeDefinition, string propertyName, Type propertyType)
+          : base(typeDefinition, propertyName, propertyType)
       {
       }
     }
 
     private InvalidRelationEndPointDefinitionBase _invalidEndPointDefinition;
-    private ClassDefinition _classDefinition;
+    private TypeDefinition _typeDefinition;
 
     [SetUp]
     public void SetUp ()
     {
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order));
-      _invalidEndPointDefinition = new TestableInvalidRelationEndPointDefinitionBase(_classDefinition, "TestProperty", typeof(string));
+      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order));
+      _invalidEndPointDefinition = new TestableInvalidRelationEndPointDefinitionBase(_typeDefinition, "TestProperty", typeof(string));
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That(_invalidEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
+      Assert.That(_invalidEndPointDefinition.TypeDefinition, Is.SameAs(_typeDefinition));
       Assert.That(_invalidEndPointDefinition.PropertyName, Is.EqualTo("TestProperty"));
       Assert.That(_invalidEndPointDefinition.PropertyInfo.DeclaringType, Is.SameAs(TypeAdapter.Create(typeof(Order))));
       Assert.That(_invalidEndPointDefinition.PropertyInfo.Name, Is.EqualTo("TestProperty"));
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void SetRelationDefinition ()
     {
-      var endPoint = new AnonymousRelationEndPointDefinition(_classDefinition);
+      var endPoint = new AnonymousRelationEndPointDefinition(_typeDefinition);
       var relationDefinition = new RelationDefinition("Test", endPoint, endPoint);
 
       _invalidEndPointDefinition.SetRelationDefinition(relationDefinition);
