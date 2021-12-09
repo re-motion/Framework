@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.Validation;
+using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validation
 {
@@ -54,7 +55,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     [Test]
     public void ClassTypeUnresolved_UnionViewDefinition_NotAbstract ()
     {
-      var classDefinition = new ClassDefinitionWithUnresolvedClassType(
+      var classDefinition = new ClassDefinitionWithUnresolvedType(
           "NonAbstractClassHasEntityNameDomainObject",
           typeof(DerivedValidationDomainObjectClass),
           false,
@@ -143,6 +144,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
                             +
                             "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
+    }
+
+    [Test]
+    public void IgnoresArgumentsOfTypeOtherThanClassDefinition ()
+    {
+      var typeDefinitionForUnresolvedRelationPropertyType = new TypeDefinitionForUnresolvedRelationPropertyType(typeof(string), new NullPropertyInformation());
+      var validationResult = _validationRule.Validate(typeDefinitionForUnresolvedRelationPropertyType);
+
+      AssertMappingValidationResult(validationResult, true, null);
     }
   }
 }

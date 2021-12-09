@@ -30,12 +30,12 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
 
     public PropertyReflector (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider)
-        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
+        : base(typeDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
       ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
 
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     public PropertyDefinition GetMetadata ()
     {
       var propertyDefinition = new PropertyDefinition(
-          ClassDefinition,
+          TypeDefinition,
           PropertyInfo,
           GetPropertyName(),
           IsDomainObject(),

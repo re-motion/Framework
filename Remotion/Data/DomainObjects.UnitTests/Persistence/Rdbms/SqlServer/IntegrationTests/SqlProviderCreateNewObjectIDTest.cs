@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void CreateNewObjectID ()
     {
-      ClassDefinition orderClass = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
+      ClassDefinition orderClass = MappingConfiguration.Current.GetClassDefinition(typeof(Order));
       var newObjectID = Provider.CreateNewObjectID(orderClass);
 
       Assert.IsNotNull(newObjectID, "ObjectID of new DataContainer.");
@@ -39,12 +39,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void CreateNewObjectID_ClassDefinitionOfOtherStorageProvider ()
     {
-      ClassDefinition classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Official));
+      ClassDefinition classDefinition = MappingConfiguration.Current.GetClassDefinition(typeof(Official));
       Assert.That(
           () => Provider.CreateNewObjectID(classDefinition),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ClassDefinition does not match with this StorageProvider's ID 'TestDomain'.", "classDefinition"));
+                  "The StorageProviderID 'UnitTestStorageProviderStub' of the provided TypeDefinition does not match with this StorageProvider's ID 'TestDomain'.", "typeDefinition"));
     }
   }
 }

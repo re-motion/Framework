@@ -39,24 +39,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreatePropertyDefinitions ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
 
       var propertyInfo1 = PropertyInfoAdapter.Create(typeof(Order).GetProperty("OrderNumber"));
       var propertyInfo2 = PropertyInfoAdapter.Create(typeof(Order).GetProperty("DeliveryDate"));
 
-      var fakePropertyDefinition1 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "P1");
-      var fakePropertyDefinition2 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "P2");
+      var fakePropertyDefinition1 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(typeDefinition, "P1");
+      var fakePropertyDefinition2 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(typeDefinition, "P2");
 
       _mappingObjectFactoryMock
-          .Setup(mock => mock.CreatePropertyDefinition(classDefinition, propertyInfo1))
+          .Setup(mock => mock.CreatePropertyDefinition(typeDefinition, propertyInfo1))
           .Returns(fakePropertyDefinition1)
           .Verifiable();
       _mappingObjectFactoryMock
-          .Setup(mock => mock.CreatePropertyDefinition(classDefinition, propertyInfo2))
+          .Setup(mock => mock.CreatePropertyDefinition(typeDefinition, propertyInfo2))
           .Returns(fakePropertyDefinition2)
           .Verifiable();
 
-      var result = _factory.CreatePropertyDefinitions(classDefinition, new[] { propertyInfo1, propertyInfo2 });
+      var result = _factory.CreatePropertyDefinitions(typeDefinition, new[] { propertyInfo1, propertyInfo2 });
 
       _mappingObjectFactoryMock.Verify();
       Assert.That(result.Count, Is.EqualTo(2));

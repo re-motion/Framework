@@ -20,9 +20,9 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 {
   /// <summary>
-  /// Validates that the given<see cref="ClassDefinition"/> is no <see cref="ClassDefinitionForUnresolvedRelationPropertyType"/>.
+  /// Validates that the given<see cref="TypeDefinition"/> is no <see cref="TypeDefinitionForUnresolvedRelationPropertyType"/>.
   /// </summary>
-  public class CheckForTypeNotFoundClassDefinitionValidationRule : IRelationDefinitionValidatorRule
+  public class CheckForTypeNotFoundTypeDefinitionValidationRule : IRelationDefinitionValidatorRule
   {
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
@@ -30,15 +30,14 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
-        var classDefinitionAsTypeNotFoundClassDefinition = endPointDefinition.ClassDefinition as ClassDefinitionForUnresolvedRelationPropertyType;
-        if (classDefinitionAsTypeNotFoundClassDefinition!=null)
+        if (endPointDefinition.TypeDefinition is TypeDefinitionForUnresolvedRelationPropertyType unresolvedTypeDefinition)
         {
           return MappingValidationResult.CreateInvalidResultForProperty(
-              classDefinitionAsTypeNotFoundClassDefinition.RelationProperty,
+              unresolvedTypeDefinition.RelationProperty,
               "The relation property '{0}' has return type '{1}', which is not a part of the mapping. Relation properties must not point to "
-              + "classes above the inheritance root.",
-              classDefinitionAsTypeNotFoundClassDefinition.RelationProperty.Name,
-              classDefinitionAsTypeNotFoundClassDefinition.RelationProperty.PropertyType.Name);
+              + "types above the inheritance root.",
+              unresolvedTypeDefinition.RelationProperty.Name,
+              unresolvedTypeDefinition.RelationProperty.PropertyType.Name);
         }
       }
 

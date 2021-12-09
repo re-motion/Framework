@@ -24,17 +24,17 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
   /// <summary>
-  /// <see cref="RdbmsStorageEntityDefinitionProvider"/> returns a sequence of <see cref="IRdbmsStorageEntityDefinition"/> for the given <see cref="ClassDefinition"/> 
+  /// <see cref="RdbmsStorageEntityDefinitionProvider"/> returns a sequence of <see cref="IRdbmsStorageEntityDefinition"/> for the given <see cref="TypeDefinition"/> 
   /// instances.
   /// </summary>
   public class RdbmsStorageEntityDefinitionProvider : IRdbmsStorageEntityDefinitionProvider
   {
-    public IEnumerable<IRdbmsStorageEntityDefinition> GetEntityDefinitions (IEnumerable<ClassDefinition> classDefinitions)
+    public IEnumerable<IRdbmsStorageEntityDefinition> GetEntityDefinitions (IEnumerable<TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
-      return classDefinitions
-          .Select(cd => cd.StorageEntityDefinition)
+      return typeDefinitions
+          .Select(td => td.StorageEntityDefinition)
           .OfType<IRdbmsStorageEntityDefinition>();
     }
   }

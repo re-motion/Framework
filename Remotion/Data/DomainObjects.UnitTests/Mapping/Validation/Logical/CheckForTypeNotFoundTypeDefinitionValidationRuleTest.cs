@@ -24,21 +24,21 @@ using Remotion.Reflection;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 {
   [TestFixture]
-  public class CheckForTypeNotFoundClassDefinitionValidationRuleTest : ValidationRuleTestBase
+  public class CheckForTypeNotFoundTypeDefinitionValidationRuleTest : ValidationRuleTestBase
   {
-    private CheckForTypeNotFoundClassDefinitionValidationRule _validationRule;
+    private CheckForTypeNotFoundTypeDefinitionValidationRule _validationRule;
 
     [SetUp]
     public void SetUp ()
     {
-      _validationRule = new CheckForTypeNotFoundClassDefinitionValidationRule();
+      _validationRule = new CheckForTypeNotFoundTypeDefinitionValidationRule();
     }
 
     [Test]
     public void RelationDefinitionWithNoTypeNotFoundClassDefinition ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
-      var endPoint = new AnonymousRelationEndPointDefinition(classDefinition);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
+      var endPoint = new AnonymousRelationEndPointDefinition(typeDefinition);
       var relationDefinition = new RelationDefinition("ID", endPoint, endPoint);
 
       var validationResult = _validationRule.Validate(relationDefinition);
@@ -49,8 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void RelationDefinitionWithTypeNotFoundClassDefinition ()
     {
-      var classDefinition = new ClassDefinitionForUnresolvedRelationPropertyType(
-          "Test",
+      var classDefinition = new TypeDefinitionForUnresolvedRelationPropertyType(
           typeof(ClassOutOfInheritanceHierarchy),
           PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("Property")));
       var endPoint = new VirtualObjectRelationEndPointDefinition(
@@ -64,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
 
       var expectedMessage =
           "The relation property 'Property' has return type 'String', which is not a part of the mapping. "
-          + "Relation properties must not point to classes above the inheritance root.\r\n\r\n"
+          + "Relation properties must not point to types above the inheritance root.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass\r\n"
           + "Property: Property";
       AssertMappingValidationResult(validationResult, false, expectedMessage);

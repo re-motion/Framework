@@ -30,9 +30,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     // member fields
 
-    private ClassDefinition _clientClass;
+    private TypeDefinition _clientClass;
     private AnonymousRelationEndPointDefinition _clientEndPoint;
-    private ClassDefinition _locationClass;
+    private TypeDefinition _locationClass;
     private RelationEndPointDefinition _locationEndPoint;
 
     // methods and properties

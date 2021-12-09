@@ -27,21 +27,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
   public class PropertyTypeIsSupportedValidationRuleTest : ValidationRuleTestBase
   {
     private PropertyTypeIsSupportedValidationRule _validationRule;
-    private ClassDefinition _classDefinition;
+    private TypeDefinition _typeDefinition;
 
     [SetUp]
     public void SetUp ()
     {
       _validationRule = new PropertyTypeIsSupportedValidationRule();
 
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
+      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
     }
 
     [Test]
     public void NoRelationProperty_SupportedType ()
     {
       var propertyDefinition = new PropertyDefinition(
-          _classDefinition,
+          _typeDefinition,
           PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassPersistent")),
           "PropertyWithStorageClassPersistent",
           false,
@@ -49,10 +49,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           20,
           StorageClass.Persistent);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithStorageClassPersistent"));
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate(_classDefinition);
+      var validationResult = _validationRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void NoRelationProperty_UnsupportedType ()
     {
       var propertyDefinition = new PropertyDefinition(
-          _classDefinition,
+          _typeDefinition,
           PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithTypeObjectWithStorageClassPersistent")),
           "PropertyWithTypeObjectWithStorageClassPersistent",
           false,
@@ -69,10 +69,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           null,
           StorageClass.Persistent);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithTypeObjectWithStorageClassPersistent"));
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate(_classDefinition);
+      var validationResult = _validationRule.Validate(_typeDefinition);
 
       var expectedMessage =
           "The property type 'Object' is not supported. If you meant to declare a relation, 'Object' must be derived from 'DomainObject'. "
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void RelationProperty ()
     {
       var propertyDefinition = new PropertyDefinition(
-          _classDefinition,
+          _typeDefinition,
           PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("RelationPropertyWithStorageClassPersistent")),
           "RelationPropertyWithStorageClassPersistent",
           true,
@@ -94,10 +94,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           null,
           StorageClass.Persistent);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("RelationPropertyWithStorageClassPersistent"));
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate(_classDefinition);
+      var validationResult = _validationRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }

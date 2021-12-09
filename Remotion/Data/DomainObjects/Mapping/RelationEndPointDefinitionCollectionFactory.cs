@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 {
   /// <summary>
   /// The <see cref="RelationEndPointDefinitionCollectionFactory"/> is used to get a <see cref="RelationEndPointDefinitionCollection"/> for a 
-  /// <see cref="ClassDefinition"/>
+  /// <see cref="TypeDefinition"/>
   /// </summary>
   public class RelationEndPointDefinitionCollectionFactory
   {
@@ -46,28 +46,37 @@ namespace Remotion.Data.DomainObjects.Mapping
       _propertyMetadataProvider = propertyMetadataProvider;
     }
 
-    public RelationEndPointDefinitionCollection CreateRelationEndPointDefinitionCollection (ClassDefinition classDefinition)
+    public RelationEndPointDefinitionCollection CreateRelationEndPointDefinitionCollection (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
       var endPoints = new RelationEndPointDefinitionCollection();
-      foreach (var propertyInfo in GetRelationPropertyInfos(classDefinition))
+      foreach (var propertyInfo in GetRelationPropertyInfos(typeDefinition))
       {
-        var relationEndPoint = _mappingObjectFactory.CreateRelationEndPointDefinition(classDefinition, propertyInfo);
+        var relationEndPoint = _mappingObjectFactory.CreateRelationEndPointDefinition(typeDefinition, propertyInfo);
         endPoints.Add(relationEndPoint);
       }
       return endPoints;
     }
 
-    private IEnumerable<IPropertyInformation> GetRelationPropertyInfos (ClassDefinition classDefinition)
+    private IEnumerable<IPropertyInformation> GetRelationPropertyInfos (TypeDefinition typeDefinition)
     {
-      var relationPropertyFinder = new RelationPropertyFinder(
-          classDefinition.ClassType,
-          classDefinition.BaseClass == null,
-          true,
-          _nameResolver,
-          classDefinition.PersistentMixinFinder,
-          _propertyMetadataProvider);
+      RelationPropertyFinder relationPropertyFinder;
+      if (typeDefinition is ClassDefinition classDefinition)
+      {
+        relationPropertyFinder = new RelationPropertyFinder(
+            classDefinition.Type,
+            classDefinition.BaseClass == null,
+            true,
+            _nameResolver,
+            classDefinition.PersistentMixinFinder,
+            _propertyMetadataProvider);
+      }
+      else
+      {
+        throw new NotSupportedException("Only class definitions are supported."); // TODO R2I Mapping: property finder support for interfaces
+      }
+
       return relationPropertyFinder.FindPropertyInfos();
     }
   }

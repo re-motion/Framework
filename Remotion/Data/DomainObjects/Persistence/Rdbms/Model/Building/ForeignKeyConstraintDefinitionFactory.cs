@@ -71,9 +71,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       return (from classDefinitionInHierarchy in allClassDefinitionsInHierarchy
               from endPointDefinition in classDefinitionInHierarchy.MyRelationEndPointDefinitions
               where !endPointDefinition.IsVirtual
-              let referencedClassDefinition = endPointDefinition.ClassDefinition
+              let referencedClassDefinition = endPointDefinition.TypeDefinition
                   .GetMandatoryRelationEndPointDefinition(Assertion.IsNotNull(endPointDefinition.PropertyName, "endPointDefinition.PropertyName != null when endPointDefinition.IsVirtual == false"))
-                  .GetOppositeClassDefinition()
+                  .GetOppositeTypeDefinition()
               let propertyDefinition = ((RelationEndPointDefinition)endPointDefinition).PropertyDefinition
               where propertyDefinition.StorageClass == StorageClass.Persistent
               let referencingStorageProperty =
@@ -89,8 +89,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
              ).ToList();
     }
 
-    private EntityNameDefinition? FindTableName (ClassDefinition classDefinition)
+    private EntityNameDefinition? FindTableName (TypeDefinition typeDefinition)
     {
+      if (typeDefinition is not ClassDefinition classDefinition) // TODO R2I Persistence: check if this makes sense after refactoring GetTableName
+        return null;
+
       var tableName = classDefinition
           .CreateSequence(cd => cd.BaseClass)
           .Select(cd => _storageNameProvider.GetTableName(cd))

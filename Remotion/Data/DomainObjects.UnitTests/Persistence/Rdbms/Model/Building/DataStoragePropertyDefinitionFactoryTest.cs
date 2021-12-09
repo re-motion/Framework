@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void CreateStoragePropertyDefinition_Value_ObjectID ()
     {
-      var expectedClassDefinition = GetTypeDefinition(typeof(Order));
+      var expectedClassDefinition = GetClassDefinition(typeof(Order));
       _relationPropertyFactoryMock
           .Setup(mock => mock.CreateStoragePropertyDefinition(expectedClassDefinition, "Value", "ValueClassID"))
           .Returns(_fakeStoragePropertyDefinition.Object)
