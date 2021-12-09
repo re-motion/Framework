@@ -35,7 +35,8 @@ namespace Web.Development.Analyzers
         INamedTypeSymbol PlainTextStringEnumerable,
         IMethodSymbol StringBuilderAppendMethodSymbol,
         IMethodSymbol HtmlTextWriterWriteMethodSymbol,
-        IReadOnlyCollection<IMethodSymbol> StringJoinMethodSymbols);
+        IReadOnlyCollection<IMethodSymbol> StringJoinMethodSymbols,
+        IReadOnlyCollection<IMethodSymbol> StringFormatMethodSymbols);
 
     public static readonly DiagnosticDescriptor DiagnosticDescriptor = new(
         "RMWEB0001",
@@ -76,6 +77,7 @@ namespace Web.Development.Analyzers
             var stringBuilderAppendMethodSymbol = GetStringBuilderAppendObjectMethodSymbol (stringBuilderTypeSymbol, objectSymbol);
             var htmlTextWriterWriteMethodSymbol = GetHtmlTextWriterWriteObjectMethodSymbol (htmlTextWriterSymbol, objectSymbol);
             var stringJoinMethodSymbols = GetStringJoinMethodSymbols (stringSymbol!);
+            var stringFormatMethodSymbols = GetStringFormatMethodSymbols (stringSymbol!);
 
             var symbolContext = new SymbolContext (
                 webStringTypeSymbol,
@@ -84,7 +86,8 @@ namespace Web.Development.Analyzers
                 plainTextStringEnumerable,
                 stringBuilderAppendMethodSymbol,
                 htmlTextWriterWriteMethodSymbol,
-                stringJoinMethodSymbols);
+                stringJoinMethodSymbols,
+                stringFormatMethodSymbols);
 
             compilationContext.RegisterSyntaxNodeAction (
                 ctx => AnalyzeInvocationExpression (ctx, symbolContext),
@@ -140,7 +143,7 @@ namespace Web.Development.Analyzers
       else if (TryFindItem (
           symbols.StringJoinMethodSymbols,
           s => SymbolEqualityComparer.Default.Equals (invocationOriginalDefinitionSymbol, s),
-          out var methodSymbol))
+          out var stringJoinMethodSymbol))
       {
         var argumentTypes = GetArgumentTypeSymbols (node, ctx.SemanticModel);
         // Check if one of the arguments is a WebString or PlainTextString or implicitly convertible to one of them.
@@ -155,7 +158,30 @@ namespace Web.Development.Analyzers
           var diagnostic = Diagnostic.Create (
               DiagnosticDescriptor,
               ctx.Node.GetLocation(),
-              methodSymbol.ToString(),
+              stringJoinMethodSymbol.ToString(),
+              result.ToString(),
+              $"Encode the {result.ToString()} instances first.");
+          ctx.ReportDiagnostic (diagnostic);
+        }
+      }
+      // Check if the invoked method is a string.Format(...) overload
+      else if (TryFindItem(
+          symbols.StringFormatMethodSymbols,
+          s => SymbolEqualityComparer.Default.Equals(invocationOriginalDefinitionSymbol, s),
+          out var stringFormatMethodSymbol))
+      {
+        var argumentTypes = GetArgumentTypeSymbols (node, ctx.SemanticModel);
+        // Check if one of the arguments is a WebString or PlainTextString.
+        if (TryFindItem (
+                argumentTypes,
+                a => SymbolEqualityComparer.Default.Equals (a, symbols.WebStringTypeSymbol)
+                     || SymbolEqualityComparer.Default.Equals (a, symbols.PlainTextStringTypeSymbol),
+                out var result))
+        {
+          var diagnostic = Diagnostic.Create (
+              DiagnosticDescriptor,
+              ctx.Node.GetLocation(),
+              stringFormatMethodSymbol.ToString(),
               result.ToString(),
               $"Encode the {result.ToString()} instances first.");
           ctx.ReportDiagnostic (diagnostic);
@@ -185,6 +211,14 @@ namespace Web.Development.Analyzers
     {
       return stringSymbol
           .GetMembers ("Join")
+          .Cast<IMethodSymbol>()
+          .ToList();
+    }
+
+    private static IReadOnlyCollection<IMethodSymbol> GetStringFormatMethodSymbols (INamedTypeSymbol stringSymbol)
+    {
+      return stringSymbol
+          .GetMembers ("Format")
           .Cast<IMethodSymbol>()
           .ToList();
     }
