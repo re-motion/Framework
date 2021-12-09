@@ -37,6 +37,9 @@ namespace Remotion.Web.Development.Analyzers.IntegrationTests
 
     public static Task VerifyAnalyzerAsync (string source, params DiagnosticResult[] expected)
     {
+      var remotionWebAssemblyLocation = typeof(WebString).Assembly.Location;
+      var coreWebAssemblyLocation = typeof(HtmlTextWriter).Assembly.Location;
+
       var test = new Test
                  {
                      TestCode = source,
@@ -45,8 +48,8 @@ namespace Remotion.Web.Development.Analyzers.IntegrationTests
                      {
                        var project = solution.GetProject(id);
                        project = project
-                           .AddMetadataReference(MetadataReference.CreateFromFile(typeof(WebString).Assembly.Location))
-                           .AddMetadataReference(MetadataReference.CreateFromFile(typeof(HtmlTextWriter).Assembly.Location));
+                           .AddMetadataReference(MetadataReference.CreateFromFile(remotionWebAssemblyLocation))
+                           .AddMetadataReference(MetadataReference.CreateFromFile(coreWebAssemblyLocation));
                        return project.Solution;
                      } }
                  };
