@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       Assert.That(
           () => LifetimeService.NewObject(TestableClientTransaction, typeof(object), ParamList.Empty),
           Throws.InstanceOf<MappingException>()
-              .With.Message.EqualTo("Mapping does not contain class 'System.Object'."));
+              .With.Message.EqualTo("Mapping does not contain type 'System.Object'."));
     }
 
     [Test]

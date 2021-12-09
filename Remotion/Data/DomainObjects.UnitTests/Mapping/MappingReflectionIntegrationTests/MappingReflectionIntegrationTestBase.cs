@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     private static readonly IEnumerable<Type> s_domainObjectTypes =
         typeof(MappingReflectionTestBase).Assembly.GetTypes().Where(t => typeof(DomainObject).IsAssignableFrom(t)).ToArray();
 
-    private IDictionary<Type, ClassDefinition> _typeDefinitions;
+    private IDictionary<Type, TypeDefinition> _typeDefinitions;
 
     [SetUp]
     public virtual void SetUp ()
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
       var reflectedTypes = ForTheseReflectedTypes().ToArray();
       var mappingReflector = CreateMappingReflector(reflectedTypes);
 
-      var typeDefinitions = GetTypeDefinitionsAndValidateMapping(mappingReflector).ToDictionary(cd => cd.ClassType);
+      var typeDefinitions = GetTypeDefinitionsAndValidateMapping(mappingReflector).ToDictionary(cd => cd.Type);
       _typeDefinitions = typeDefinitions;
     }
 
@@ -55,9 +55,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
       StandardConfiguration.EnsureInitialized();
     }
 
-    protected IDictionary<Type, ClassDefinition> TypeDefinitions
+    protected IDictionary<Type, TypeDefinition> TypeDefinitions
     {
       get { return _typeDefinitions; }
+    }
+
+    protected ClassDefinition GetClassDefinition (Type type)
+    {
+      return (ClassDefinition)TypeDefinitions[type];
     }
 
     protected virtual IEnumerable<Type> ForTheseReflectedTypes ()
@@ -66,9 +71,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     }
 
     protected IRelationEndPointDefinition GetRelationEndPointDefinition (
-        ClassDefinition classDefinition, Type declaringType, string shortPropertyName)
+        TypeDefinition typeDefinition, Type declaringType, string shortPropertyName)
     {
-      return classDefinition.GetRelationEndPointDefinition(declaringType.FullName + "." + shortPropertyName);
+      return typeDefinition.GetRelationEndPointDefinition(declaringType.FullName + "." + shortPropertyName);
     }
 
     private IEnumerable<Type> AllDomainObjectTypesFromThisNamespace ()
@@ -86,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
       return MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryServiceStub.Object);
     }
 
-    private IEnumerable<ClassDefinition> GetTypeDefinitionsAndValidateMapping (MappingReflector mappingReflector)
+    private IEnumerable<TypeDefinition> GetTypeDefinitionsAndValidateMapping (MappingReflector mappingReflector)
     {
       var storageGroupBasedStorageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(
           StandardConfiguration.Instance.GetPersistenceConfiguration());

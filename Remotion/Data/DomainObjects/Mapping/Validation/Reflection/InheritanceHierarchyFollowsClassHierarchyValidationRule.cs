@@ -22,23 +22,29 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   /// <summary>
   /// Validates that the type of a class defintion is derived from base type.
   /// </summary>
-  public class InheritanceHierarchyFollowsClassHierarchyValidationRule : IClassDefinitionValidationRule
+  public class InheritanceHierarchyFollowsClassHierarchyValidationRule : ITypeDefinitionValidationRule
   {
     public InheritanceHierarchyFollowsClassHierarchyValidationRule ()
     {
 
     }
 
-    public MappingValidationResult Validate (ClassDefinition classDefinition)
+    public MappingValidationResult Validate (TypeDefinition typeDefinition)
     {
-      if (classDefinition.BaseClass !=null && !classDefinition.ClassType.IsSubclassOf(classDefinition.BaseClass.ClassType))
+      if (typeDefinition is not ClassDefinition classDefinition) // TODO R2I Valdiation: Support for interface support
+        throw new InvalidOperationException("Only class definitions are supported.");
+
+      if (classDefinition.BaseClass == null)
+        return MappingValidationResult.CreateValidResult();
+
+      if (!classDefinition.Type.IsSubclassOf(classDefinition.BaseClass.Type))
       {
         return MappingValidationResult.CreateInvalidResultForType(
-            classDefinition.BaseClass.ClassType,
+            classDefinition.BaseClass.Type,
             "Type '{0}' of class '{1}' is not derived from type '{2}' of base class '{3}'.",
-            classDefinition.ClassType.GetAssemblyQualifiedNameSafe(),
+            classDefinition.Type.GetAssemblyQualifiedNameSafe(),
             classDefinition.ID,
-            classDefinition.BaseClass.ClassType.GetAssemblyQualifiedNameSafe(),
+            classDefinition.BaseClass.Type.GetAssemblyQualifiedNameSafe(),
             classDefinition.BaseClass.ID);
       }
       return MappingValidationResult.CreateValidResult();

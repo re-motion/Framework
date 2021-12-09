@@ -37,10 +37,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         + "Integration.Customer.Orders"];
 
       _customerEndPoint = (DomainObjectCollectionRelationEndPointDefinition)customerToOrder.GetEndPointDefinition(
-          "Customer", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders");
+          typeof(Customer), "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders");
 
       _orderEndPoint = (RelationEndPointDefinition)customerToOrder.GetEndPointDefinition(
-          "Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer");
+          typeof(Order), "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer");
     }
 
     [Test]
@@ -52,16 +52,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           () => new RelationEndPointDefinition(propertyDefinition, false),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "Relation definition error: Property 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Name' of class 'Company' is of type "
+                  "Relation definition error: Property 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Name' of type "
+                  + "'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company' is of type "
                   + "'System.String', but non-virtual properties must be of type 'Remotion.Data.DomainObjects.ObjectID'."));
     }
 
     [Test]
     public void Initialize ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order));
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(classDefinition);
-      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection { propertyDefinition });
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order));
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(typeDefinition);
+      typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection { propertyDefinition });
       var endPoint = new RelationEndPointDefinition(propertyDefinition, true);
 
       Assert.That(endPoint.PropertyInfo, Is.SameAs(propertyDefinition.PropertyInfo));
@@ -76,8 +77,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void RelationDefinition_NotSet ()
     {
-      var classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof(OrderTicket)];
-      var propertyDefinition = classDefinition["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderTicket.Order"];
+      var typeDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof(OrderTicket)];
+      var propertyDefinition = typeDefinition["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderTicket.Order"];
 
       var definition = new RelationEndPointDefinition(propertyDefinition, true);
 

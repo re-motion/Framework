@@ -41,24 +41,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     }
 
     [Test]
-    public void ClassDefinitionWithUnresolvedClassType ()
+    public void ClassDefinitionWithUnresolvedType ()
     {
       var type = typeof(BaseMappingAttributesClass);
-      var classDefinition = new ClassDefinitionWithUnresolvedClassType(
+      var classDefinition = new ClassDefinitionWithUnresolvedType(
           "Test", type, true, null, new Mock<IPersistentMixinFinder>().Object, new Mock<IDomainObjectCreator>().Object);
       Assert.That(
           () => _validationRule.Validate(classDefinition),
           Throws.InvalidOperationException
-              .With.Message.EqualTo("Class type of 'Test' is not resolved."));
+              .With.Message.EqualTo(
+                  "Type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
+                  + "MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.BaseMappingAttributesClass' is not resolved."));
     }
 
     [Test]
     public void OriginalPropertyDeclaration ()
     {
       var type = typeof(BaseMappingAttributesClass);
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: type);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: type);
 
-      var validationResult = _validationRule.Validate(classDefinition).First();
+      var validationResult = _validationRule.Validate(typeDefinition).First();
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -67,9 +69,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     public void NonOriginalPropertiesDeclarationWithMappingAttribute_NoInheritanceRoot ()
     {
       var type = typeof(DerivedClassWithMappingAttribute);
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: type);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: type);
 
-      var validationResult = _validationRule.Validate(classDefinition).Where(r=>!r.IsValid).ToArray();
+      var validationResult = _validationRule.Validate(typeDefinition).Where(r=>!r.IsValid).ToArray();
 
       var expectedMessage1 =
         "The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n\r\n"
@@ -88,9 +90,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     public void NonOriginalPropertiesDeclarationWithMappingAttribute_InheritanceRoot ()
     {
       var type = typeof(InheritanceRootDerivedMappingAttributesClass);
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: type);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: type);
 
-      var validationResult = _validationRule.Validate(classDefinition).Where(r => !r.IsValid).ToArray();
+      var validationResult = _validationRule.Validate(typeDefinition).Where(r => !r.IsValid).ToArray();
 
       var expectedMessage1 =
         "The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n\r\n"
@@ -109,9 +111,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Ignore("TODO RM-4449: Utilities.ReflectionUtility.IsOriginalDeclaration does not work for Mixins")]
     public void NonOriginalPropertiesDeclarationWithMappingAttributeOnMixin_NoInheritanceRoot ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassUsingMixinPropertiesNoInheritanceRoot));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassUsingMixinPropertiesNoInheritanceRoot));
 
-      var validationResult = _validationRule.Validate(classDefinition).ToArray();
+      var validationResult = _validationRule.Validate(typeDefinition).ToArray();
 
       var expectedMessage1 =
         "The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n\r\n"

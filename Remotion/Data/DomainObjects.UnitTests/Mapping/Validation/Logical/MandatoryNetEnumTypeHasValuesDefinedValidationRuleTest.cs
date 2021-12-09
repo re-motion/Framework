@@ -10,21 +10,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
   public class MandatoryNetEnumTypeHasValuesDefinedValidationRuleTest : ValidationRuleTestBase
   {
     private MandatoryNetEnumTypeHasValuesDefinedValidationRule _validationRule;
-    private ClassDefinition _classDefinition;
+    private TypeDefinition _typeDefinition;
 
     [SetUp]
     public void SetUp ()
     {
       _validationRule = new MandatoryNetEnumTypeHasValuesDefinedValidationRule();
 
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(EnumTypeValidationDomainObjectClass));
+      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(EnumTypeValidationDomainObjectClass));
     }
 
     [Test]
     public void PropertyWithOtherType_SupportedType ()
     {
       var propertyDefinition = new PropertyDefinition(
-          _classDefinition,
+          _typeDefinition,
           PropertyInfoAdapter.Create(typeof(EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithMandatoryOtherType")),
           "PropertyWithMandatoryOtherType",
           false,
@@ -32,10 +32,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           20,
           StorageClass.Persistent);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithMandatoryOtherType"));
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
-      _classDefinition.SetReadOnly();
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate(_classDefinition);
+      var validationResult = _validationRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void MandatoryNetEnumWithValuesProperty_SupportedType ()
     {
       var propertyDefinition = new PropertyDefinition(
-          _classDefinition,
+          _typeDefinition,
           PropertyInfoAdapter.Create(typeof(EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithMandatoryNetEnumTypeWithValues")),
           "PropertyWithMandatoryNetEnumTypeWithValues",
           false,
@@ -52,10 +52,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           20,
           StorageClass.Persistent);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithMandatoryNetEnumTypeWithValues"));
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
-      _classDefinition.SetReadOnly();
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate(_classDefinition);
+      var validationResult = _validationRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void NullableNetEnumWithValuesProperty_SupportedType ()
     {
       var propertyDefinition = new PropertyDefinition(
-          _classDefinition,
+          _typeDefinition,
           PropertyInfoAdapter.Create(typeof(EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithNullableNetEnumTypeWithValues")),
           "PropertyWithNullableNetEnumTypeWithValues",
           false,
@@ -72,10 +72,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           20,
           StorageClass.Persistent);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithNullableNetEnumTypeWithValues"));
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate(_classDefinition);
+      var validationResult = _validationRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void MandatoryNetEnumWithoutValuesProperty_UnsupportedType ()
     {
       var propertyDefinition = new PropertyDefinition(
-          _classDefinition,
+          _typeDefinition,
           PropertyInfoAdapter.Create(typeof(EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithMandatoryNetEnumTypeWithoutValues")),
           "PropertyWithMandatoryNetEnumTypeWithoutValues",
           false,
@@ -92,10 +92,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           20,
           StorageClass.Persistent);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithMandatoryNetEnumTypeWithoutValues"));
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate(_classDefinition);
+      var validationResult = _validationRule.Validate(_typeDefinition);
 
       var expectedMessage =
           "Enum type 'NetEnumTypeWithoutValues' cannot be used for property 'PropertyWithMandatoryNetEnumTypeWithoutValues' "
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void NullableNetEnumWithoutValuesProperty_SupportedType ()
     {
       var propertyDefinition = new PropertyDefinition(
-          _classDefinition,
+          _typeDefinition,
           PropertyInfoAdapter.Create(typeof(EnumTypeValidationDomainObjectClass).GetProperty("PropertyWithNullableNetEnumTypeWithoutValues")),
           "PropertyWithNullableNetEnumTypeWithoutValues",
           false,
@@ -117,10 +117,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           20,
           StorageClass.Persistent);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithNullableNetEnumTypeWithoutValues"));
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate(_classDefinition);
+      var validationResult = _validationRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }

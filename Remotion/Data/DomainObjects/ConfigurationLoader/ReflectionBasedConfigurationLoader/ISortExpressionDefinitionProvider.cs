@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     [CanBeNull]
     SortExpressionDefinition? GetSortExpression (
         [NotNull] IPropertyInformation propertyInfo,
-        [NotNull] ClassDefinition referencedClassDefinition,
+        [NotNull] TypeDefinition referencedTypeDefinition,
         [CanBeNull] string? sortExpressionText);
   }
 }

@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
       _adapter = new InterceptedPropertyCollectorAdapter();
 
-      _classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(MyDomainObject));
+      _classDefinition = MappingConfiguration.Current.GetClassDefinition(typeof(MyDomainObject));
       _concreteBaseType = typeof(MyConcreteBaseType);
     }
 

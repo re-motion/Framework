@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
   public class SortExpressionParserTest : StandardMappingTest
   {
     private SortExpressionParser _parser;
-    private ClassDefinition _orderItemClassDefinition;
+    private TypeDefinition _orderItemTypeDefinition;
     private PropertyDefinition _productPropertyDefinition;
     private PropertyDefinition _positionPropertyDefinition;
     private PropertyDefinition _orderPropertyDefinition;
@@ -35,12 +35,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       base.SetUp();
 
-      _orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem));
-      _productPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Product");
-      _positionPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Position");
-      _orderPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Order");
+      _orderItemTypeDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem));
+      _productPropertyDefinition = _orderItemTypeDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Product");
+      _positionPropertyDefinition = _orderItemTypeDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Position");
+      _orderPropertyDefinition = _orderItemTypeDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Order");
 
-      _parser = new SortExpressionParser(_orderItemClassDefinition);
+      _parser = new SortExpressionParser(_orderItemTypeDefinition);
     }
 
     [Test]

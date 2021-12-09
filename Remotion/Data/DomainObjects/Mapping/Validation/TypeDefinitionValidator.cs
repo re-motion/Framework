@@ -27,28 +27,28 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
   /// class definitions to validate. Each validation rule is applied to each class definition and for every rule which is invalid a 
   /// mapping validation result with the respective error message is returned.
   /// </summary>
-  public class ClassDefinitionValidator : IClassDefinitionValidator
+  public class TypeDefinitionValidator : ITypeDefinitionValidator
   {
-    private readonly ReadOnlyCollection<IClassDefinitionValidationRule> _validationRules;
+    private readonly ReadOnlyCollection<ITypeDefinitionValidationRule> _validationRules;
 
-    public ClassDefinitionValidator (params IClassDefinitionValidationRule[] validationRules)
+    public TypeDefinitionValidator (params ITypeDefinitionValidationRule[] validationRules)
     {
       ArgumentUtility.CheckNotNull("validationRules", validationRules);
 
       _validationRules = Array.AsReadOnly(validationRules);
     }
 
-    public ReadOnlyCollection<IClassDefinitionValidationRule> ValidationRules
+    public ReadOnlyCollection<ITypeDefinitionValidationRule> ValidationRules
     {
       get { return _validationRules; }
     }
 
-    public IEnumerable<MappingValidationResult> Validate (IEnumerable<ClassDefinition> classDefinitions)
+    public IEnumerable<MappingValidationResult> Validate (IEnumerable<TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
       return from r in _validationRules
-             from c in classDefinitions
+             from c in typeDefinitions
              let result = r.Validate(c)
              where !result.IsValid
              select result;

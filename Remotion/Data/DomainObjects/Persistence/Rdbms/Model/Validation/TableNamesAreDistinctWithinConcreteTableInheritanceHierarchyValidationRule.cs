@@ -33,9 +33,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
 
     }
 
-    public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
+    public IEnumerable<MappingValidationResult> Validate (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
+
+      if (typeDefinition is not ClassDefinition classDefinition)
+        yield break;
 
       if (classDefinition.BaseClass == null) //if class definition is inheritance root class
       {
@@ -45,10 +48,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
           if (allDistinctTableNames.Contains(tableName))
           {
             yield return MappingValidationResult.CreateInvalidResultForType(
-                classDefinition.ClassType,
+                classDefinition.Type,
                 "At least two classes in different inheritance branches derived from abstract class '{0}'"
                 + " specify the same entity name '{1}', which is not allowed.",
-                classDefinition.ClassType.Name,
+                classDefinition.Type.Name,
                 tableName);
           }
           else

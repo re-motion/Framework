@@ -25,6 +25,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Model
   /// </summary>
   public interface IPersistenceModelValidatorFactory
   {
-    IPersistenceMappingValidator CreatePersistenceMappingValidator (ClassDefinition classDefinition);
+    IPersistenceMappingValidator CreatePersistenceMappingValidator (TypeDefinition typeDefinition);
   }
 }

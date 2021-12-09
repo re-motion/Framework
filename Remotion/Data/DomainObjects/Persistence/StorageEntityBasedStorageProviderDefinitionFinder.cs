@@ -22,19 +22,19 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence
 {
   /// <summary>
-  /// Returns the <see cref="StorageProviderDefinition"/> of a <see cref="ClassDefinition"/> based on its 
-  /// <see cref="ClassDefinition.StorageEntityDefinition"/>.
+  /// Returns the <see cref="StorageProviderDefinition"/> of a <see cref="TypeDefinition"/> based on its 
+  /// <see cref="TypeDefinition.StorageEntityDefinition"/>.
   /// </summary>
   public class StorageEntityBasedStorageProviderDefinitionFinder : IStorageProviderDefinitionFinder
   {
-    public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition, string? errorMessageContext)
+    public StorageProviderDefinition GetStorageProviderDefinition (TypeDefinition typeDefinition, string? errorMessageContext)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      if (!classDefinition.HasStorageEntityDefinitionBeenSet)
-        throw new InvalidOperationException("Cannot obtain storage provider for ClassDefinitions without storage entities. " + errorMessageContext);
+      if (!typeDefinition.HasStorageEntityDefinitionBeenSet)
+        throw new InvalidOperationException("Cannot obtain storage provider for TypeDefinitions without storage entities. " + errorMessageContext);
 
-      return classDefinition.StorageEntityDefinition.StorageProviderDefinition;
+      return typeDefinition.StorageEntityDefinition.StorageProviderDefinition;
     }
   }
 }
