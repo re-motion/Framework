@@ -32,11 +32,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
     {
     }
 
-    public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
+    public IEnumerable<MappingValidationResult> Validate (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions
+      return from PropertyDefinition propertyDefinition in typeDefinition.MyPropertyDefinitions
              select Validate(propertyDefinition.PropertyInfo);
     }
 
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
       {
         return MappingValidationResult.CreateInvalidResultForProperty(
             propertyInfo,
-            "Only StorageClass.Persistent and StorageClass.Transaction are supported for property '{0}' of class '{1}'.",
+            "Only StorageClass.Persistent and StorageClass.Transaction are supported for property '{0}' of type '{1}'.",
             propertyInfo.Name,
             propertyInfo.DeclaringType!.Name);
       }

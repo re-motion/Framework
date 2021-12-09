@@ -27,13 +27,13 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
   /// </summary>
   public class SortExpressionParser
   {
-    private readonly ClassDefinition _classDefinition;
+    private readonly TypeDefinition _typeDefinition;
 
-    public SortExpressionParser (ClassDefinition classDefinition)
+    public SortExpressionParser (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      _classDefinition = classDefinition;
+      _typeDefinition = typeDefinition;
     }
 
     public SortExpressionDefinition? Parse (string sortExpression)
@@ -104,9 +104,10 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
       // Try as full name first, only if that doesn't match, assume it must be a short name
       // If that still doesn't produce a match, search all derived classes for a full name match. Derived classes are not searched for short names.
       var propertyAccessorData =
-          _classDefinition.PropertyAccessorDataCache.GetPropertyAccessorData(fullOrShortPropertyName)
-          ?? _classDefinition.PropertyAccessorDataCache.FindPropertyAccessorData(_classDefinition.ClassType, fullOrShortPropertyName)
-          ?? GetAllDerivedClassDefinitions(_classDefinition)
+          _typeDefinition.PropertyAccessorDataCache.GetPropertyAccessorData(fullOrShortPropertyName)
+          ?? _typeDefinition.PropertyAccessorDataCache.FindPropertyAccessorData(_typeDefinition.Type, fullOrShortPropertyName)
+          ?? _typeDefinition.GetTypeHierarchy()
+              .Skip(1)
               .Select(cd => cd.PropertyAccessorDataCache.GetPropertyAccessorData(fullOrShortPropertyName))
               .FirstOrDefault(data => data != null);
 
@@ -117,7 +118,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
             + "Alternatively, to resolve ambiguities or to use a property declared by a mixin or a derived class of '{1}', the full unique re-store "
             + "property identifier can be specified.",
             fullOrShortPropertyName,
-            _classDefinition.ClassType.Name);
+            _typeDefinition.Type.Name);
         throw new MappingException(message);
       }
 
@@ -133,12 +134,6 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
       }
 
       return propertyAccessorData.PropertyDefinition;
-    }
-
-    private IEnumerable<ClassDefinition> GetAllDerivedClassDefinitions (ClassDefinition baseClassDefinition)
-    {
-      var directlyDerived = baseClassDefinition.DerivedClasses.Cast<ClassDefinition>();
-      return directlyDerived.Concat(directlyDerived.SelectMany(cd => GetAllDerivedClassDefinitions(cd)));
     }
   }
 }

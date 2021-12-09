@@ -93,9 +93,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [Test]
     public void CreateForRelationLookup_TableDefinition_NoSortExpression ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(classType: typeof(Order), storageProviderDefinition: TestDomainStorageProviderDefinition);
-      var relationEndPointDefinition = CreateForeignKeyEndPointDefinition(classDefinition);
-      var oppositeTable = (TableDefinition)relationEndPointDefinition.ClassDefinition.StorageEntityDefinition;
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithTable(classType: typeof(Order), storageProviderDefinition: TestDomainStorageProviderDefinition);
+      var relationEndPointDefinition = CreateForeignKeyEndPointDefinition(typeDefinition);
+      var oppositeTable = (TableDefinition)relationEndPointDefinition.TypeDefinition.StorageEntityDefinition;
 
       _foreignKeyStoragePropertyDefinitionStrictMock.Setup(mock => mock.SplitValueForComparison(_foreignKeyValue)).Returns(_fakeComparedColumns).Verifiable();
 
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandBuilderFactoryStrictMock
           .Setup(
               stub => stub.CreateForSelect(
-                  (TableDefinition)classDefinition.StorageEntityDefinition,
+                  (TableDefinition)typeDefinition.StorageEntityDefinition,
                   expectedSelectedColumns,
                   _fakeComparedColumns,
                   new OrderedColumn[0]))
@@ -308,55 +308,55 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     }
 
     private SortedPropertySpecification CreateSortedPropertySpecification (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         SortOrder sortOrder,
         ColumnDefinition sortedColumn)
     {
       return CreateSortedPropertySpecification(
-          classDefinition,
+          typeDefinition,
           new SimpleStoragePropertyDefinition(typeof(int), sortedColumn),
           sortOrder);
     }
 
     private SortedPropertySpecification CreateSortedPropertySpecification (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         SortOrder sortOrder,
         ColumnDefinition sortedColumn1,
         ColumnDefinition sortedColumn2)
     {
       return CreateSortedPropertySpecification(
-          classDefinition,
+          typeDefinition,
           new ObjectIDStoragePropertyDefinition(
               new SimpleStoragePropertyDefinition(typeof(int), sortedColumn1), new SimpleStoragePropertyDefinition(typeof(int), sortedColumn2)),
           sortOrder);
     }
 
-    private RelationEndPointDefinition CreateForeignKeyEndPointDefinition (ClassDefinition classDefinition)
+    private RelationEndPointDefinition CreateForeignKeyEndPointDefinition (TypeDefinition typeDefinition)
     {
-      var idPropertyDefinition = CreateForeignKeyPropertyDefinition(classDefinition);
+      var idPropertyDefinition = CreateForeignKeyPropertyDefinition(typeDefinition);
       return new RelationEndPointDefinition(idPropertyDefinition, false);
     }
 
-    private PropertyDefinition CreateForeignKeyPropertyDefinition (ClassDefinition classDefinition)
+    private PropertyDefinition CreateForeignKeyPropertyDefinition (TypeDefinition typeDefinition)
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(classDefinition, "OrderTicket");
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(typeDefinition, "OrderTicket");
       propertyDefinition.SetStorageProperty(_foreignKeyStoragePropertyDefinitionStrictMock.Object);
       return propertyDefinition;
     }
 
     private SortedPropertySpecification CreateSortedPropertySpecification (
-        ClassDefinition classDefinition, IStoragePropertyDefinition columnDefinition, SortOrder sortOrder)
+        TypeDefinition typeDefinition, IStoragePropertyDefinition columnDefinition, SortOrder sortOrder)
     {
-      var sortedPropertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition);
+      var sortedPropertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(typeDefinition);
       sortedPropertyDefinition.SetStorageProperty(columnDefinition);
       return new SortedPropertySpecification(sortedPropertyDefinition, sortOrder);
     }
 
-    private ClassDefinition CreateClassDefinition (IStorageEntityDefinition entityDefinition)
+    private TypeDefinition CreateClassDefinition (IStorageEntityDefinition entityDefinition)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
-      classDefinition.SetStorageEntity(entityDefinition);
-      return classDefinition;
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
+      typeDefinition.SetStorageEntity(entityDefinition);
+      return typeDefinition;
     }
   }
 }

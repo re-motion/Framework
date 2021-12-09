@@ -35,9 +35,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void NonAbstractType_WithoutLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(NonAbstractClassWithoutLegacyConstructor));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(NonAbstractClassWithoutLegacyConstructor));
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -45,9 +45,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void NonAbstractType_WithLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(NonAbstractClassWithLegacyConstructor));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(NonAbstractClassWithLegacyConstructor));
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       var expectedMessage =
         "The domain object type has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer argument). "
@@ -60,9 +60,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void AbstractType_WithoutInstantiableAttribute_And_WithoutLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithoutAttributeAndLegacyCtor));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithoutAttributeAndLegacyCtor));
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -70,9 +70,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void AbstractType_WithoutInstantiableAttribute_And_WithLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithoutAttributeAndWithLegacyCtor));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithoutAttributeAndWithLegacyCtor));
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -80,9 +80,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void AbstractType_WithInstantiableAttribute_And_WithoutLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithAttributeAndWithoutLegacyCtor));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithAttributeAndWithoutLegacyCtor));
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -90,9 +90,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void AbstractType_WithInstantiableAttribute_And_WithLegacyConstructor ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithAttributeAndWithLegacyCtor));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(AbstractClassWithAttributeAndWithLegacyCtor));
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       var expectedMessage =
         "The domain object type has a legacy infrastructure constructor for loading (a nonpublic constructor taking a single DataContainer argument). "

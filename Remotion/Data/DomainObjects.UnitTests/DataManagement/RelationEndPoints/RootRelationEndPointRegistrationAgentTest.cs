@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private Mock<IRealObjectEndPoint> CreateRealObjectEndPointMock (ObjectID originatingObjectID, string shortPropertyName, ObjectID oppositeObjectID)
     {
       var endPointMock = new Mock<IRealObjectEndPoint>(MockBehavior.Strict);
-      var relationEndPointID = RelationEndPointID.Create(originatingObjectID, originatingObjectID.ClassDefinition.ClassType, shortPropertyName);
+      var relationEndPointID = RelationEndPointID.Create(originatingObjectID, originatingObjectID.ClassDefinition.Type, shortPropertyName);
       endPointMock.Setup(stub => stub.ID).Returns(relationEndPointID);
       endPointMock.Setup(stub => stub.Definition).Returns(relationEndPointID.Definition);
       endPointMock.Setup(stub => stub.OriginalOppositeObjectID).Returns(oppositeObjectID);

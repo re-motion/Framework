@@ -25,16 +25,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   [TestFixture]
   public class VirtualObjectRelationEndPointDefinitionTest : MappingReflectionTestBase
   {
-    private ClassDefinition _orderClassDefinition;
+    private TypeDefinition _orderTypeDefinition;
     private VirtualObjectRelationEndPointDefinition _orderOrderTicketEndPoint;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _orderClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order));
+      _orderTypeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order));
       _orderOrderTicketEndPoint = VirtualObjectRelationEndPointDefinitionFactory.Create(
-          _orderClassDefinition,
+          _orderTypeDefinition,
           "OrderTicket",
           false,
           typeof(OrderTicket));
@@ -82,15 +82,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void PropertyInfo ()
     {
-      ClassDefinition employeeClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Employee));
+      TypeDefinition employeeTypeDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Employee));
       VirtualObjectRelationEndPointDefinition relationEndPointDefinition =
-          (VirtualObjectRelationEndPointDefinition)employeeClassDefinition.GetRelationEndPointDefinition(typeof(Employee) + ".Computer");
+          (VirtualObjectRelationEndPointDefinition)employeeTypeDefinition.GetRelationEndPointDefinition(typeof(Employee) + ".Computer");
       Assert.That(relationEndPointDefinition.PropertyInfo, Is.EqualTo(PropertyInfoAdapter.Create(typeof(Employee).GetProperty("Computer"))));
     }
 
-    private static ClassDefinition CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses ()
+    private static TypeDefinition CreateOrderDefinition_WithEmptyMembers_AndDerivedClasses ()
     {
-      return ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("Order", classType: typeof(Order));
+      return TypeDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("Order", classType: typeof(Order));
     }
   }
 }

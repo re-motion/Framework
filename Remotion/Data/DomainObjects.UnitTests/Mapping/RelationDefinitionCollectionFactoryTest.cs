@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   {
     private RelationDefinitionCollectionFactory _factory;
     private Mock<IMappingObjectFactory> _mappingObjectFactoryMock;
-    private ClassDefinition _orderClassDefinition;
-    private ClassDefinition _orderItemClassDefinition;
+    private TypeDefinition _orderTypeDefinition;
+    private TypeDefinition _orderItemTypeDefinition;
     private RelationDefinition _fakeRelationDefinition1;
     private RelationDefinition _fakeRelationDefinition2;
 
@@ -39,29 +39,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       _mappingObjectFactoryMock = new Mock<IMappingObjectFactory>(MockBehavior.Strict);
       _factory = new RelationDefinitionCollectionFactory(_mappingObjectFactoryMock.Object);
-      _orderClassDefinition = MappingConfiguration.Current.GetClassDefinition("Order");
-      _orderItemClassDefinition = MappingConfiguration.Current.GetClassDefinition("OrderItem");
+      _orderTypeDefinition = MappingConfiguration.Current.GetClassDefinition("Order");
+      _orderItemTypeDefinition = MappingConfiguration.Current.GetClassDefinition("OrderItem");
       _fakeRelationDefinition1 = new RelationDefinition(
           "Fake1",
-          new AnonymousRelationEndPointDefinition(_orderClassDefinition),
-          new AnonymousRelationEndPointDefinition(_orderItemClassDefinition));
+          new AnonymousRelationEndPointDefinition(_orderTypeDefinition),
+          new AnonymousRelationEndPointDefinition(_orderItemTypeDefinition));
       _fakeRelationDefinition2 = new RelationDefinition(
           "Fake2",
-          new AnonymousRelationEndPointDefinition(_orderItemClassDefinition),
-          new AnonymousRelationEndPointDefinition(_orderClassDefinition));
+          new AnonymousRelationEndPointDefinition(_orderItemTypeDefinition),
+          new AnonymousRelationEndPointDefinition(_orderTypeDefinition));
     }
 
     [Test]
     public void CreateRelationDefinitionCollection_OneClassDefinitionWithOneEndPoint ()
     {
-      var classDefinitions = new[] { _orderItemClassDefinition }.ToDictionary(cd => cd.ClassType);
+      var classDefinitions = new[] { _orderItemTypeDefinition }.ToDictionary(cd => cd.Type);
 
       _mappingObjectFactoryMock
           .Setup(
               mock => mock.CreateRelationDefinition(
                   classDefinitions,
-                  _orderItemClassDefinition,
-                  _orderItemClassDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].PropertyInfo))
+                  _orderItemTypeDefinition,
+                  _orderItemTypeDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].PropertyInfo))
           .Returns(_fakeRelationDefinition1)
           .Verifiable();
 
@@ -74,38 +74,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateRelationDefinitionCollection_OneClassDefinitionWithSeveralEndPoints_DuplicatedRelationDefinitionsGetFiltered ()
     {
-      var classDefinitions = new[] { _orderClassDefinition }.ToDictionary(cd => cd.ClassType);
+      var classDefinitions = new[] { _orderTypeDefinition }.ToDictionary(cd => cd.Type);
 
       _mappingObjectFactoryMock
           .Setup(
               mock => mock.CreateRelationDefinition(
                   classDefinitions,
-                  _orderClassDefinition,
-                  _orderClassDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Official"].PropertyInfo))
+                  _orderTypeDefinition,
+                  _orderTypeDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Official"].PropertyInfo))
           .Returns(_fakeRelationDefinition1)
           .Verifiable();
       _mappingObjectFactoryMock
           .Setup(
               mock => mock.CreateRelationDefinition(
                   classDefinitions,
-                  _orderClassDefinition,
-                  _orderClassDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].PropertyInfo))
+                  _orderTypeDefinition,
+                  _orderTypeDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].PropertyInfo))
           .Returns(_fakeRelationDefinition1)
           .Verifiable();
       _mappingObjectFactoryMock
           .Setup(
               mock => mock.CreateRelationDefinition(
                   classDefinitions,
-                  _orderClassDefinition,
-                  _orderClassDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].PropertyInfo))
+                  _orderTypeDefinition,
+                  _orderTypeDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].PropertyInfo))
           .Returns(_fakeRelationDefinition2)
           .Verifiable();
       _mappingObjectFactoryMock
           .Setup(
               mock => mock.CreateRelationDefinition(
                   classDefinitions,
-                  _orderClassDefinition,
-                  _orderClassDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].PropertyInfo))
+                  _orderTypeDefinition,
+                  _orderTypeDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].PropertyInfo))
           .Returns(_fakeRelationDefinition2)
           .Verifiable();
 
@@ -118,46 +118,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateRelationDefinitionCollection_SeveralClassDefinitionWithSeveralEndPoints_DuplicatedRelationDefinitionsGetFiltered ()
     {
-      var classDefinitions = new[] { _orderClassDefinition, _orderItemClassDefinition }.ToDictionary(cd => cd.ClassType);
+      var classDefinitions = new[] { _orderTypeDefinition, _orderItemTypeDefinition }.ToDictionary(cd => cd.Type);
 
       _mappingObjectFactoryMock
           .Setup(
               mock => mock.CreateRelationDefinition(
                   classDefinitions,
-                  _orderClassDefinition,
-                  _orderClassDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Official"].PropertyInfo))
+                  _orderTypeDefinition,
+                  _orderTypeDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Official"].PropertyInfo))
           .Returns(_fakeRelationDefinition1)
           .Verifiable();
       _mappingObjectFactoryMock
           .Setup(
               mock => mock.CreateRelationDefinition(
                   classDefinitions,
-                  _orderClassDefinition,
-                  _orderClassDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].PropertyInfo))
+                  _orderTypeDefinition,
+                  _orderTypeDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"].PropertyInfo))
           .Returns(_fakeRelationDefinition1)
           .Verifiable();
       _mappingObjectFactoryMock
           .Setup(
               mock => mock.CreateRelationDefinition(
                   classDefinitions,
-                  _orderClassDefinition,
-                  _orderClassDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].PropertyInfo))
+                  _orderTypeDefinition,
+                  _orderTypeDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer"].PropertyInfo))
           .Returns(_fakeRelationDefinition2)
           .Verifiable();
       _mappingObjectFactoryMock
           .Setup(
               mock => mock.CreateRelationDefinition(
                   classDefinitions,
-                  _orderClassDefinition,
-                  _orderClassDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].PropertyInfo))
+                  _orderTypeDefinition,
+                  _orderTypeDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"].PropertyInfo))
           .Returns(_fakeRelationDefinition2)
           .Verifiable();
       _mappingObjectFactoryMock
           .Setup(
               mock => mock.CreateRelationDefinition(
                   classDefinitions,
-                  _orderItemClassDefinition,
-                  _orderItemClassDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].PropertyInfo))
+                  _orderItemTypeDefinition,
+                  _orderItemTypeDefinition.MyRelationEndPointDefinitions["Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order"].PropertyInfo))
           .Returns(_fakeRelationDefinition1)
           .Verifiable();
 

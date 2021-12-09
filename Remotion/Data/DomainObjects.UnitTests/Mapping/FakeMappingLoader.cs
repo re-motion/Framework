@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
     }
 
-    public ClassDefinition[] GetClassDefinitions ()
+    public TypeDefinition[] GetTypeDefinitions ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Fake", typeof(Company));
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return new[] { classDefinition };
     }
 
-    public RelationDefinition[] GetRelationDefinitions (IDictionary<Type, ClassDefinition> classDefinitions)
+    public RelationDefinition[] GetRelationDefinitions (IDictionary<Type, TypeDefinition> typeDefinitions)
     {
       return new RelationDefinition[0];
     }
@@ -53,9 +53,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       get { return new ReflectionBasedMemberInformationNameResolver(); }
     }
 
-    public IClassDefinitionValidator CreateClassDefinitionValidator ()
+    public ITypeDefinitionValidator CreateTypeDefinitionValidator ()
     {
-      return new ClassDefinitionValidator();
+      return new TypeDefinitionValidator();
     }
 
     public IPropertyDefinitionValidator CreatePropertyDefinitionValidator ()

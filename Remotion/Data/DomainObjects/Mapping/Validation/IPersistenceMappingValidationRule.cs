@@ -24,6 +24,6 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
   /// </summary>
   public interface IPersistenceMappingValidationRule
   {
-    IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition);
+    IEnumerable<MappingValidationResult> Validate (TypeDefinition typeDefinition);
   }
 }

@@ -25,22 +25,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
   [TestFixture]
   public class SortedPropertySpecificationTest : StandardMappingTest
   {
-    private ClassDefinition _orderItemClassDefinition;
+    private TypeDefinition _orderItemTypeDefinition;
     private PropertyDefinition _productPropertyDefinition;
     private PropertyDefinition _positionPropertyDefinition;
 
-    private ClassDefinition _customerClassDefinition;
+    private TypeDefinition _customerTypeDefinition;
     private PropertyDefinition _customerSincePropertyDefinition;
 
     public override void SetUp ()
     {
       base.SetUp();
-      _orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem));
-      _productPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Product");
-      _positionPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Position");
+      _orderItemTypeDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem));
+      _productPropertyDefinition = _orderItemTypeDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Product");
+      _positionPropertyDefinition = _orderItemTypeDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Position");
 
-      _customerClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Customer));
-      _customerSincePropertyDefinition = _customerClassDefinition.GetMandatoryPropertyDefinition(typeof(Customer).FullName + ".CustomerSince");
+      _customerTypeDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Customer));
+      _customerSincePropertyDefinition = _customerTypeDefinition.GetMandatoryPropertyDefinition(typeof(Customer).FullName + ".CustomerSince");
     }
 
     [Test]

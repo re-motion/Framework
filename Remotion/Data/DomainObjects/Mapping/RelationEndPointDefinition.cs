@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   public class RelationEndPointDefinition : IRelationEndPointDefinition, IRelationEndPointDefinitionSetter
   {
     private RelationDefinition? _relationDefinition;
-    private readonly ClassDefinition _classDefinition;
+    private readonly TypeDefinition _typeDefinition;
     private readonly PropertyDefinition _propertyDefinition;
     private readonly bool _isMandatory;
 
@@ -39,14 +39,14 @@ namespace Remotion.Data.DomainObjects.Mapping
       if (!propertyDefinition.IsObjectID)
       {
         throw CreateMappingException(
-            "Relation definition error: Property '{0}' of class '{1}' is of type '{2}', but non-virtual properties must be of type '{3}'.",
+            "Relation definition error: Property '{0}' of type '{1}' is of type '{2}', but non-virtual properties must be of type '{3}'.",
             propertyDefinition.PropertyName,
-            propertyDefinition.ClassDefinition.ID,
+            propertyDefinition.TypeDefinition.Type.GetFullNameSafe(),
             propertyDefinition.PropertyType,
             typeof(ObjectID));
       }
 
-      _classDefinition = propertyDefinition.ClassDefinition;
+      _typeDefinition = propertyDefinition.TypeDefinition;
       _isMandatory = isMandatory;
       _propertyDefinition = propertyDefinition;
     }
@@ -72,9 +72,9 @@ namespace Remotion.Data.DomainObjects.Mapping
       }
     }
 
-    public ClassDefinition ClassDefinition
+    public TypeDefinition TypeDefinition
     {
-      get { return _classDefinition; }
+      get { return _typeDefinition; }
     }
 
     public string PropertyName

@@ -35,9 +35,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     [Test]
     public void NoGenericType ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(NonGenericTypeDomainObject));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(NonGenericTypeDomainObject));
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -46,9 +46,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     public void IsGenericType_IsNotDomainObjectBase ()
     {
       var type = typeof(GenericTypeDomainObject<string>);
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
 
-      var validationResult = _validationRule.Validate(classDefinition);
+      var validationResult = _validationRule.Validate(typeDefinition);
 
       var expectedMessage = "Generic domain objects are not supported.\r\n\r\n"
         +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."

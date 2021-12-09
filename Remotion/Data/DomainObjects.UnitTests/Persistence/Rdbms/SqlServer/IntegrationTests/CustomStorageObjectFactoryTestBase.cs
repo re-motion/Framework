@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var storageProviderDefinitionFinderStub = new Mock<IStorageProviderDefinitionFinder>();
       _storageProviderDefinition = new RdbmsProviderDefinition("test", _storageObjectFactory, DatabaseTest.TestDomainConnectionString);
       storageProviderDefinitionFinderStub
-          .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<ClassDefinition>(), It.IsAny<string>()))
+          .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<TypeDefinition>(), It.IsAny<string>()))
           .Returns(_storageProviderDefinition);
       var persistenceModelLoader = _storageObjectFactory.CreatePersistenceModelLoader(_storageProviderDefinition, storageProviderDefinitionFinderStub.Object);
       _mappingConfiguration = new MappingConfiguration(mappingLoader, persistenceModelLoader);

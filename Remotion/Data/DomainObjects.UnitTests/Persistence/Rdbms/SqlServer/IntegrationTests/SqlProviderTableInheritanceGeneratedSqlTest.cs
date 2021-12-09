@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainersByRelatedID_WithEmptyResult ()
     {
-      var newObjectID = _testHelper.Provider.CreateNewObjectID(Configuration.GetTypeDefinition(typeof(TIClient)));
+      var newObjectID = _testHelper.Provider.CreateNewObjectID(Configuration.GetClassDefinition(typeof(TIClient)));
 
       var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteReader(

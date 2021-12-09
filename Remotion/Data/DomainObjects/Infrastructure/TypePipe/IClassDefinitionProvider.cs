@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,15 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
+using JetBrains.Annotations;
+using Remotion.Data.DomainObjects.Mapping;
 
-namespace Remotion.Data.DomainObjects.Mapping.Validation
+namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   /// <summary>
-  /// Defines the API for the class definition mapping validator.
+  /// Defines an interface for classes retrieving the non-abstract <see cref="ClassDefinition"/> for a domain object type.
   /// </summary>
-  public interface IClassDefinitionValidator
+  /// <threadsafety static="true" instance="true"/>
+  public interface IClassDefinitionProvider
   {
-    IEnumerable<MappingValidationResult> Validate (IEnumerable<ClassDefinition> classDefinitions);
+    [CanBeNull]
+    ClassDefinition? GetClassDefinition (Type domainObjectType);
   }
 }

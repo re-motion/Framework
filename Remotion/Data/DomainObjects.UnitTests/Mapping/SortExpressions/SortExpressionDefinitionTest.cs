@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
   [TestFixture]
   public class SortExpressionDefinitionTest : StandardMappingTest
   {
-    private ClassDefinition _orderItemClassDefinition;
+    private TypeDefinition _orderItemTypeDefinition;
     private PropertyDefinition _productPropertyDefinition;
     private PropertyDefinition _positionPropertyDefinition;
 
@@ -34,9 +34,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       base.SetUp();
 
-      _orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem));
-      _productPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Product");
-      _positionPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Position");
+      _orderItemTypeDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem));
+      _productPropertyDefinition = _orderItemTypeDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Product");
+      _positionPropertyDefinition = _orderItemTypeDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Position");
     }
 
     [Test]

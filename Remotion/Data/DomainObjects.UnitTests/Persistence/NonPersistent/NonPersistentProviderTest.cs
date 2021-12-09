@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => providerWithDifferentID.CreateNewObjectID(DomainObjectIDs.OrderViewModel1.ClassDefinition),
           Throws.Exception.TypeOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo(
-              "The StorageProviderID 'NonPersistentTestDomain' of the provided ClassDefinition does not match with this StorageProvider's ID 'Test'.", "classDefinition"));
+              "The StorageProviderID 'NonPersistentTestDomain' of the provided TypeDefinition does not match with this StorageProvider's ID 'Test'.", "classDefinition"));
     }
 
     [Test]
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => providerWithDifferentID.LoadDataContainersByRelatedID(relationEndPointDefinition, null, objectID),
           Throws.Exception.TypeOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo(
-              "The StorageProviderID 'NonPersistentTestDomain' of the provided ClassDefinition does not match with this StorageProvider's ID 'Test'.", "classDefinition"));
+              "The StorageProviderID 'NonPersistentTestDomain' of the provided TypeDefinition does not match with this StorageProvider's ID 'Test'.", "typeDefinition"));
     }
 
     [Test]

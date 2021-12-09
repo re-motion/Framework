@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     private RelationEndPointTypesAreConsistentValidationRule _validationRule;
     private ClassDefinition _baseClassDefinition1;
     private ClassDefinition _baseClassDefinition2;
-    private ClassDefinition _derivedClassDefinition1;
-    private ClassDefinition _derivedClassDefinition2;
+    private TypeDefinition _derivedClassDefinition1;
+    private TypeDefinition _derivedClassDefinition2;
 
     [SetUp]
     public void SetUp ()
@@ -38,11 +38,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       _validationRule = new RelationEndPointTypesAreConsistentValidationRule();
       _baseClassDefinition1 = ClassDefinitionObjectMother.CreateClassDefinition("BaseRelationEndPointPropertyClass1", typeof(BaseRelationEndPointPropertyClass1));
       _baseClassDefinition2 = ClassDefinitionObjectMother.CreateClassDefinition("BaseRelationEndPointPropertyClass2", typeof(BaseRelationEndPointPropertyClass2));
-      _derivedClassDefinition1 = ClassDefinitionObjectMother.CreateClassDefinition(
+      _derivedClassDefinition1 = TypeDefinitionObjectMother.CreateClassDefinition(
           "DerivedRelationEndPointPropertyClass1",
           typeof(DerivedRelationEndPointPropertyClass1),
           baseClass: _baseClassDefinition1);
-      _derivedClassDefinition2 = ClassDefinitionObjectMother.CreateClassDefinition(
+      _derivedClassDefinition2 = TypeDefinitionObjectMother.CreateClassDefinition(
           "DerivedRelationEndPointPropertyClass2",
           typeof(DerivedRelationEndPointPropertyClass2),
           baseClass: _baseClassDefinition2);

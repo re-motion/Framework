@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
     public ObjectID (Type classType, object value)
-      : this(MappingConfiguration.Current.GetTypeDefinition(ArgumentUtility.CheckNotNull("classType", classType)), value)
+      : this(MappingConfiguration.Current.GetClassDefinition(ArgumentUtility.CheckNotNull("classType", classType)), value)
     {
     }
 
@@ -200,7 +200,7 @@ namespace Remotion.Data.DomainObjects
         throw CreateArgumentException(
             "classDefinition",
             "An ObjectID cannot be constructed for abstract type '{0}' of class '{1}'.",
-            classDefinition.ClassType.GetAssemblyQualifiedNameSafe(),
+            classDefinition.Type.GetAssemblyQualifiedNameSafe(),
             classDefinition.ID);
       }
 
@@ -250,7 +250,7 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Creates a typed handle to the <see cref="DomainObject"/> identified by this <see cref="ObjectID"/>.
     /// </summary>
-    /// <typeparam name="T">The handle's object type. This must either be the <see cref="Mapping.ClassDefinition.ClassType"/> of this 
+    /// <typeparam name="T">The handle's object type. This must either be the <see cref="TypeDefinition.Type"/> of this 
     /// <see cref="ObjectID"/>, or a base type of it.</typeparam>
     /// <returns>A typed handle to the <see cref="DomainObject"/> identified by this <see cref="ObjectID"/>.</returns>
     public IDomainObjectHandle<T> GetHandle<T> () where T : IDomainObject

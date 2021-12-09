@@ -25,10 +25,10 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
 {
   public static class PropertyDefinitionObjectMother
   {
-    public static PropertyDefinition CreatePropertyDefinition (PropertyInfo propertyInfo, Type classType = null)
+    public static PropertyDefinition CreatePropertyDefinition (PropertyInfo propertyInfo, Type type = null)
     {
       return new PropertyDefinition(
-          MappingConfiguration.Current.GetTypeDefinition(classType ?? typeof(SecurableObject)),
+          MappingConfiguration.Current.GetTypeDefinition(type ?? typeof(SecurableObject)),
           PropertyInfoAdapter.Create(propertyInfo),
           "Test",
           false,

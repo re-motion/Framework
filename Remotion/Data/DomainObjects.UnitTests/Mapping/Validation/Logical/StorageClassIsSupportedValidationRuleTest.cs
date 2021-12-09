@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
   {
     private StorageClassIsSupportedValidationRule _validationRule;
     private Type _type;
-    private ClassDefinition _classDefinition;
+    private TypeDefinition _typeDefinition;
 
     [SetUp]
     public void SetUp ()
@@ -35,17 +35,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       _validationRule = new StorageClassIsSupportedValidationRule();
 
       _type = typeof(DerivedValidationDomainObjectClass);
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(_type);
+      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(_type);
     }
 
     [Test]
     public void PropertyWithoutStorageClassAttribute ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _type, "Property");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _type, "Property");
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate(_classDefinition);
+      var validationResult = _validationRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -53,11 +53,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void PropertyWithStorageClassPersistent ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _type, "PropertyWithStorageClassPersistent");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _type, "PropertyWithStorageClassPersistent");
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate(_classDefinition);
+      var validationResult = _validationRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -65,11 +65,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void PropertyWithStorageClassTransaction ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _type, "PropertyWithStorageClassTransaction");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _type, "PropertyWithStorageClassTransaction");
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate(_classDefinition);
+      var validationResult = _validationRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
     }
@@ -77,14 +77,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void PropertyWithStorageClassNone ()
     {
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_classDefinition, _type, "PropertyWithStorageClassNone");
-      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly();
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(_typeDefinition, _type, "PropertyWithStorageClassNone");
+      _typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _typeDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate(_classDefinition);
+      var validationResult = _validationRule.Validate(_typeDefinition);
 
       var expectedMessage = "Only StorageClass.Persistent and StorageClass.Transaction are supported for property 'PropertyWithStorageClassNone' of "
-        +"class 'DerivedValidationDomainObjectClass'.\r\n\r\n"
+        +"type 'DerivedValidationDomainObjectClass'.\r\n\r\n"
         +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass\r\n"
         +"Property: PropertyWithStorageClassNone";
       AssertMappingValidationResult(validationResult, false, expectedMessage);

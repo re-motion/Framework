@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var result = _factory.CreateClassDefinition(typeof(Order), null);
 
       Assert.That(result, Is.Not.Null);
-      Assert.That(result.ClassType, Is.SameAs(typeof(Order)));
+      Assert.That(result.Type, Is.SameAs(typeof(Order)));
       Assert.That(result.InstanceCreator, Is.SameAs(_domainObjectCreator));
       Assert.That(result.BaseClass, Is.Null);
     }
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var result = _factory.CreateClassDefinition(typeof(Customer), companyClass);
 
       Assert.That(result, Is.Not.Null);
-      Assert.That(result.ClassType, Is.SameAs(typeof(Customer)));
+      Assert.That(result.Type, Is.SameAs(typeof(Customer)));
       Assert.That(result.InstanceCreator, Is.SameAs(_domainObjectCreator));
       Assert.That(result.BaseClass, Is.SameAs(companyClass));
     }
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var result =
           _factory.CreateRelationDefinition(
-              new[] { orderClassDefinition, orderItemClassDefinition }.ToDictionary(cd => cd.ClassType),
+              new TypeDefinition[] { orderClassDefinition, orderItemClassDefinition }.ToDictionary(cd => cd.Type),
               orderItemClassDefinition,
               orderItemClassDefinition.MyRelationEndPointDefinitions[0].PropertyInfo);
 
@@ -112,10 +112,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateRelationEndPointDefinition ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
       var propertyInfo = PropertyInfoAdapter.Create(typeof(Order).GetProperty("OrderItems"));
 
-      var result = _factory.CreateRelationEndPointDefinition(classDefinition, propertyInfo);
+      var result = _factory.CreateRelationEndPointDefinition(typeDefinition, propertyInfo);
 
       Assert.That(result, Is.TypeOf(typeof(DomainObjectCollectionRelationEndPointDefinition)));
       Assert.That(((DomainObjectCollectionRelationEndPointDefinition)result).PropertyInfo, Is.SameAs(propertyInfo));
@@ -124,21 +124,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateClassDefinitionCollection ()
     {
-      var result = _factory.CreateClassDefinitionCollection(new[] { typeof(Order), typeof(Company) });
+      var result = _factory.CreateTypeDefinitionCollection(new[] { typeof(Order), typeof(Company) });
 
       Assert.That(result.Length, Is.EqualTo(2));
-      Assert.That(result.Any(cd => cd.ClassType == typeof(Order)));
-      Assert.That(result.Any(cd => cd.ClassType == typeof(Company)));
+      Assert.That(result.Any(cd => cd.Type == typeof(Order)));
+      Assert.That(result.Any(cd => cd.Type == typeof(Company)));
     }
 
     [Test]
     public void CreatePropertyDefinitionCollection ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
       var propertyInfo1 = PropertyInfoAdapter.Create(typeof(Order).GetProperty("OrderNumber"));
       var propertyInfo2 = PropertyInfoAdapter.Create(typeof(Order).GetProperty("DeliveryDate"));
 
-      var result = _factory.CreatePropertyDefinitionCollection(classDefinition, new[] { propertyInfo1, propertyInfo2 });
+      var result = _factory.CreatePropertyDefinitionCollection(typeDefinition, new[] { propertyInfo1, propertyInfo2 });
 
       Assert.That(result.Count, Is.EqualTo(2));
       Assert.That(result[0].PropertyInfo, Is.SameAs(propertyInfo1));
@@ -148,13 +148,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateRelationDefinitionCollection ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(OrderItem));
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof(OrderItem), "Order");
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(OrderItem));
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(typeDefinition, typeof(OrderItem), "Order");
       var endPoint = new RelationEndPointDefinition(propertyDefinition, false);
-      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
-      classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPoint }, true));
+      typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+      typeDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPoint }, true));
 
-      var result = _factory.CreateRelationDefinitionCollection(new[] { classDefinition }.ToDictionary(cd => cd.ClassType));
+      var result = _factory.CreateRelationDefinitionCollection(new TypeDefinition[] { typeDefinition }.ToDictionary(cd => cd.Type));
 
       Assert.That(result.Count(), Is.EqualTo(1));
       Assert.That(
@@ -168,11 +168,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateRelationEndPointDefinitionCollection ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(OrderTicket), baseClass: null);
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(classDefinition, typeof(OrderTicket), "Order");
-      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: typeof(OrderTicket), baseClass: null);
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(typeDefinition, typeof(OrderTicket), "Order");
+      typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
 
-      var result = _factory.CreateRelationEndPointDefinitionCollection(classDefinition);
+      var result = _factory.CreateRelationEndPointDefinitionCollection(typeDefinition);
 
       Assert.That(result.Count, Is.EqualTo(1));
       Assert.That(
