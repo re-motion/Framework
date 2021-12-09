@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
       _classDefinition = classDefinition;
       _typeConversionProvider = typeConversionProvider;
-      _baseType = classDefinition.ClassType;
+      _baseType = classDefinition.Type;
 
       if (_classDefinition.IsAbstract)
       {

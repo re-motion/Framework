@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NewObject
     {
       var outer = OuterDomainObject.NewObject();
 
-      Assert.That(outer.ID.ClassDefinition.ClassType, Is.SameAs(typeof(OuterDomainObject)));
-      Assert.That(outer.InnerDomainObject.ID.ClassDefinition.ClassType, Is.SameAs(typeof(InnerDomainObject)));
+      Assert.That(outer.ID.ClassDefinition.Type, Is.SameAs(typeof(OuterDomainObject)));
+      Assert.That(outer.InnerDomainObject.ID.ClassDefinition.Type, Is.SameAs(typeof(InnerDomainObject)));
     }
 
     [DBTable]

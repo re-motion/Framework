@@ -27,20 +27,20 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   public class RelationReflector : RelationReflectorBase<BidirectionalRelationAttribute>
   {
     public RelationReflector (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
-        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
+        : base(typeDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
     }
 
-    public RelationDefinition GetMetadata (IDictionary<Type, ClassDefinition> classDefinitions)
+    public RelationDefinition GetMetadata (IDictionary<Type, TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
-      var firstEndPoint = GetEndPointDefinition(ClassDefinition, PropertyInfo);
-      var secondEndPoint = GetOppositeEndPointDefinition(classDefinitions);
+      var firstEndPoint = GetEndPointDefinition(TypeDefinition, PropertyInfo);
+      var secondEndPoint = GetOppositeEndPointDefinition(typeDefinitions);
 
       var relationID = GetRelationID(firstEndPoint, secondEndPoint);
       return new RelationDefinition(relationID, firstEndPoint, secondEndPoint);
@@ -56,65 +56,65 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
       if (endPoints.Right.IsAnonymous)
       {
-        return string.Format("{0}:{1}", endPoints.Left.ClassDefinition.ClassType.GetFullNameChecked(), leftPropertyName);
+        return string.Format("{0}:{1}", endPoints.Left.TypeDefinition.Type.GetFullNameChecked(), leftPropertyName);
       }
       else
       {
         var rightPropertyName = NameResolver.GetPropertyName(endPoints.Right.PropertyInfo);
-        return string.Format("{0}:{1}->{2}", endPoints.Left.ClassDefinition.ClassType.GetFullNameChecked(), leftPropertyName, rightPropertyName);
+        return string.Format("{0}:{1}->{2}", endPoints.Left.TypeDefinition.Type.GetFullNameChecked(), leftPropertyName, rightPropertyName);
       }
     }
 
-    private IRelationEndPointDefinition GetOppositeEndPointDefinition (IDictionary<Type, ClassDefinition> classDefinitions)
+    private IRelationEndPointDefinition GetOppositeEndPointDefinition (IDictionary<Type, TypeDefinition> typeDefinitions)
     {
       if (!IsBidirectionalRelation)
-        return CreateOppositeAnonymousRelationEndPointDefinition(classDefinitions);
+        return CreateOppositeAnonymousRelationEndPointDefinition(typeDefinitions);
       Assertion.DebugIsNotNull(BidirectionalRelationAttribute, "BidirectionalRelationAttribute != null");
 
-      var oppositeClassDefinition = GetOppositeClassDefinition(classDefinitions);
+      var oppositeTypeDefinition = GetOppositeTypeDefinition(typeDefinitions);
       var oppositePropertyInfo = GetOppositePropertyInfo();
       if (oppositePropertyInfo == null)
-        return new PropertyNotFoundRelationEndPointDefinition(oppositeClassDefinition, BidirectionalRelationAttribute.OppositeProperty, typeof(void));
+        return new PropertyNotFoundRelationEndPointDefinition(oppositeTypeDefinition, BidirectionalRelationAttribute.OppositeProperty, typeof(void));
       else
-        return GetEndPointDefinition(oppositeClassDefinition, oppositePropertyInfo);
+        return GetEndPointDefinition(oppositeTypeDefinition, oppositePropertyInfo);
     }
 
-    private AnonymousRelationEndPointDefinition CreateOppositeAnonymousRelationEndPointDefinition (IDictionary<Type, ClassDefinition> classDefinitions)
+    private AnonymousRelationEndPointDefinition CreateOppositeAnonymousRelationEndPointDefinition (IDictionary<Type, TypeDefinition> typeDefinitions)
     {
-      var oppositeClassDefinition = GetOppositeClassDefinition(classDefinitions);
-      return new AnonymousRelationEndPointDefinition(oppositeClassDefinition);
+      var oppositeTypeDefinition = GetOppositeTypeDefinition(typeDefinitions);
+      return new AnonymousRelationEndPointDefinition(oppositeTypeDefinition);
     }
 
-    private IRelationEndPointDefinition GetEndPointDefinition (ClassDefinition classDefinition, IPropertyInformation propertyInfo)
+    private IRelationEndPointDefinition GetEndPointDefinition (TypeDefinition typeDefinition, IPropertyInformation propertyInfo)
     {
-      var endPointDefinition = classDefinition.GetRelationEndPointDefinition(NameResolver.GetPropertyName(propertyInfo));
+      var endPointDefinition = typeDefinition.GetRelationEndPointDefinition(NameResolver.GetPropertyName(propertyInfo));
       if (endPointDefinition != null)
         return endPointDefinition;
 
-      return new PropertyNotFoundRelationEndPointDefinition(classDefinition, propertyInfo.Name, propertyInfo.PropertyType);
+      return new PropertyNotFoundRelationEndPointDefinition(typeDefinition, propertyInfo.Name, propertyInfo.PropertyType);
     }
 
-    private ClassDefinition GetOppositeClassDefinition (IDictionary<Type, ClassDefinition> classDefinitions)
+    private TypeDefinition GetOppositeTypeDefinition (IDictionary<Type, TypeDefinition> typeDefinitions)
     {
       var type = ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(PropertyInfo);
       if (type == null)
       {
-        var notFoundClassDefinition = new ClassDefinitionForUnresolvedRelationPropertyType(PropertyInfo.PropertyType.Name, typeof(DomainObject), PropertyInfo);
-        notFoundClassDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
-        notFoundClassDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
-        return notFoundClassDefinition;
+        var notFoundTypeDefinition = new TypeDefinitionForUnresolvedRelationPropertyType(typeof(DomainObject), PropertyInfo);
+        notFoundTypeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
+        notFoundTypeDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+        return notFoundTypeDefinition;
       }
 
-      var oppositeClassDefinition = classDefinitions.GetValueOrDefault(type);
-      if (oppositeClassDefinition == null)
+      var oppositeTypeDefinition = typeDefinitions.GetValueOrDefault(type);
+      if (oppositeTypeDefinition == null)
       {
-        var notFoundClassDefinition = new ClassDefinitionForUnresolvedRelationPropertyType(type.Name, type, PropertyInfo);
-        notFoundClassDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
-        notFoundClassDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
-        return notFoundClassDefinition;
+        var notFoundTypeDefinition = new TypeDefinitionForUnresolvedRelationPropertyType(type, PropertyInfo);
+        notFoundTypeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
+        notFoundTypeDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+        return notFoundTypeDefinition;
       }
 
-      return oppositeClassDefinition;
+      return oppositeTypeDefinition;
     }
   }
 }

@@ -26,9 +26,13 @@ namespace Remotion.Data.DomainObjects.Mapping
   [Serializable]
   public class PropertyDefinitionCollection : CommonCollection, IEnumerable<PropertyDefinition>
   {
-    public static PropertyDefinitionCollection CreateForAllProperties (ClassDefinition classDefinition, bool makeCollectionReadOnly)
+    public static PropertyDefinitionCollection CreateForAllProperties (TypeDefinition typeDefinition, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
+
+      if (typeDefinition is not ClassDefinition classDefinition) // TODO R2I Mapping: Maybe move this into TypeDefinition instead
+        throw new NotSupportedException("Only class definitions are supported");
+
       return new PropertyDefinitionCollection(
           classDefinition.CreateSequence(cd => cd.BaseClass).SelectMany(cd => cd.MyPropertyDefinitions), makeCollectionReadOnly);
     }

@@ -99,30 +99,30 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       writer.WriteEndElement();
     }
 
-    private List<KeyValuePair<string, object?>> DeserializeProperties (XmlReader reader, ClassDefinition classDefinition)
+    private List<KeyValuePair<string, object?>> DeserializeProperties (XmlReader reader, TypeDefinition typeDefinition)
     {
       reader.ReadStartElement("Properties");
       var properties = new List<KeyValuePair<string, object?>>();
       while (reader.IsStartElement("Property"))
-        properties.Add(DeserializeProperty(reader, classDefinition));
+        properties.Add(DeserializeProperty(reader, typeDefinition));
       reader.ReadEndElement();
       return properties;
     }
 
-    private void SerializeProperty (XmlWriter writer, ClassDefinition classDefinition, KeyValuePair<string, object?> property)
+    private void SerializeProperty (XmlWriter writer, TypeDefinition typeDefinition, KeyValuePair<string, object?> property)
     {
-      PropertyDefinition? propertyDefinition = classDefinition.GetPropertyDefinition(property.Key);
+      PropertyDefinition? propertyDefinition = typeDefinition.GetPropertyDefinition(property.Key);
       writer.WriteStartElement("Property");
       writer.WriteAttributeString("Name", property.Key);
       SerializePropertyValue(writer, propertyDefinition, property.Value);
       writer.WriteEndElement();
     }
 
-    private KeyValuePair<string, object?> DeserializeProperty (XmlReader reader, ClassDefinition classDefinition)
+    private KeyValuePair<string, object?> DeserializeProperty (XmlReader reader, TypeDefinition typeDefinition)
     {
       string? name = reader.GetAttribute("Name");
       Assertion.IsNotNull(name, "No value was found for required attribute 'Name' on the current node.");
-      PropertyDefinition? propertyDefinition = classDefinition.GetPropertyDefinition(name);
+      PropertyDefinition? propertyDefinition = typeDefinition.GetPropertyDefinition(name);
       object? value = DeserializePropertyValue(reader, propertyDefinition);
       return new KeyValuePair<string, object?>(name, value);
     }

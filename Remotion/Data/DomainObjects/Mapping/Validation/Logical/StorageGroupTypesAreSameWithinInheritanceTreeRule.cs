@@ -21,22 +21,26 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
   /// <summary>
   /// Validates that the class has the same storage group type as its base class.
   /// </summary>
-  public class StorageGroupTypesAreSameWithinInheritanceTreeRule : IClassDefinitionValidationRule
+  public class StorageGroupTypesAreSameWithinInheritanceTreeRule : ITypeDefinitionValidationRule
   {
-    public MappingValidationResult Validate (ClassDefinition classDefinition)
+    public MappingValidationResult Validate (TypeDefinition typeDefinition)
     {
-      if (classDefinition.BaseClass != null)
+      if (typeDefinition is not ClassDefinition classDefinition)
+        throw new InvalidOperationException("Only class definitions are supported"); // TODO R2I Validation: Support interfaces as well
+
+      if (classDefinition.BaseClass == null)
+        return MappingValidationResult.CreateValidResult();
+
+      if (classDefinition.StorageGroupType != classDefinition.BaseClass.StorageGroupType)
       {
-        if (classDefinition.StorageGroupType != classDefinition.BaseClass.StorageGroupType)
-        {
-          var message = "Class '{0}' must have the same storage group type as its base class '{1}'.";
-          return MappingValidationResult.CreateInvalidResultForType(
-              classDefinition.ClassType,
-              message,
-              classDefinition.ClassType.Name,
-              classDefinition.BaseClass.ClassType.Name);
-        }
+        var message = "Class '{0}' must have the same storage group type as its base class '{1}'.";
+        return MappingValidationResult.CreateInvalidResultForType(
+            classDefinition.Type,
+            message,
+            classDefinition.Type.Name,
+            classDefinition.BaseClass.Type.Name);
       }
+
       return MappingValidationResult.CreateValidResult();
     }
   }

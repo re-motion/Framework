@@ -110,9 +110,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
       return propertyDefinition;
     }
 
-    protected PropertyDefinition GetPropertyDefinition (Type classType, Type declaringType, string shortPropertyName)
+    protected PropertyDefinition GetPropertyDefinition (Type type, Type declaringType, string shortPropertyName)
     {
-      var propertyDefinition = GetTypeDefinition(classType)
+      var propertyDefinition = GetTypeDefinition(type)
           .PropertyAccessorDataCache
           .GetMandatoryPropertyAccessorData(declaringType, shortPropertyName)
           .PropertyDefinition;
@@ -125,19 +125,19 @@ namespace Remotion.Data.DomainObjects.UnitTests
       return GetEndPointDefinition(typeof(Order), "OrderItems");
     }
 
-    protected IRelationEndPointDefinition GetEndPointDefinition (Type classType, string shortPropertyName)
+    protected IRelationEndPointDefinition GetEndPointDefinition (Type type, string shortPropertyName)
     {
-      return GetEndPointDefinition(classType, classType, shortPropertyName);
+      return GetEndPointDefinition(type, type, shortPropertyName);
     }
 
-    protected IRelationEndPointDefinition GetEndPointDefinition (Type classType, Type propertyDeclaringType, string shortPropertyName)
+    protected IRelationEndPointDefinition GetEndPointDefinition (Type type, Type propertyDeclaringType, string shortPropertyName)
     {
-      var endPointDefinition = GetTypeDefinition(classType)
+      var endPointDefinition = GetTypeDefinition(type)
           .PropertyAccessorDataCache
           .GetMandatoryPropertyAccessorData(propertyDeclaringType, shortPropertyName)
           .RelationEndPointDefinition;
       Assertion.IsNotNull(
-          endPointDefinition, "Property '{0}.{1}' is not a relation end-point on '{2}'.", propertyDeclaringType, shortPropertyName, classType.Name);
+          endPointDefinition, "Property '{0}.{1}' is not a relation end-point on '{2}'.", propertyDeclaringType, shortPropertyName, type.Name);
       return endPointDefinition;
     }
 
@@ -181,9 +181,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
       return declaringType.FullName + "." + shortPropertyName;
     }
 
-    protected ClassDefinition GetTypeDefinition (Type classType)
+    protected ClassDefinition GetClassDefinition (Type classType)
     {
-      return Configuration.GetTypeDefinition(classType);
+      return Configuration.GetClassDefinition(classType);
+    }
+
+    protected TypeDefinition GetTypeDefinition (Type type)
+    {
+      return Configuration.GetTypeDefinition(type);
     }
 
   }

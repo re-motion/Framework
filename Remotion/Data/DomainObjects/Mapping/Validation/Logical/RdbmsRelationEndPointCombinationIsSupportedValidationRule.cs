@@ -81,9 +81,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
             "The relation between property '{0}', declared on type '{1}', and property '{2}' declared on type '{3}', contains two virtual end points. "
             + "One of the two properties must set 'ContainsForeignKey' to 'true' on the '{4}'.",
             property1.Name,
-            endPointDefinition1.ClassDefinition.ClassType.Name,
+            endPointDefinition1.TypeDefinition.Type.Name,
             property2.Name,
-            endPointDefinition2.ClassDefinition.ClassType.Name,
+            endPointDefinition2.TypeDefinition.Type.Name,
             typeof(DBBidirectionalRelationAttribute).Name);
       }
 
@@ -95,9 +95,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
             "The relation between property '{0}', declared on type '{1}', and property '{2}' declared on type '{3}', contains two non-virtual end points. "
             + "One of the two properties must set 'ContainsForeignKey' to 'false' on the '{4}'.",
             endPointDefinition1.PropertyInfo.Name,
-            endPointDefinition1.ClassDefinition.ClassType.Name,
+            endPointDefinition1.TypeDefinition.Type.Name,
             endPointDefinition2.PropertyInfo.Name,
-            endPointDefinition2.ClassDefinition.ClassType.Name,
+            endPointDefinition2.TypeDefinition.Type.Name,
             typeof(DBBidirectionalRelationAttribute).Name);
       }
 

@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 {
   /// <summary>
   /// The <see cref="RelationDefinitionCollectionFactory"/> is used to get a sequence of <see cref="RelationDefinition"/> objects for a set of 
-  /// <see cref="ClassDefinition"/>s.
+  /// <see cref="TypeDefinition"/>s.
   /// sets base classes and derived classes correctly.
   /// </summary>
   public class RelationDefinitionCollectionFactory
@@ -37,26 +37,26 @@ namespace Remotion.Data.DomainObjects.Mapping
       _mappingObjectFactory = mappingObjectFactory;
     }
 
-    public RelationDefinition[] CreateRelationDefinitionCollection (IDictionary<Type, ClassDefinition> classDefinitions)
+    public RelationDefinition[] CreateRelationDefinitionCollection (IDictionary<Type, TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
       var relationDefinitions = new Dictionary<string, RelationDefinition>();
-      foreach (var classDefinition in classDefinitions.Values)
-        GetRelationDefinitions(classDefinitions, classDefinition, relationDefinitions);
+      foreach (var typeDefinition in typeDefinitions.Values)
+        GetRelationDefinitions(typeDefinitions, typeDefinition, relationDefinitions);
 
       return relationDefinitions.Values.ToArray();
     }
 
     private void GetRelationDefinitions (
-        IDictionary<Type, ClassDefinition> classDefinitions,
-        ClassDefinition classDefinition,
+        IDictionary<Type, TypeDefinition> typeDefinitions,
+        TypeDefinition typeDefinition,
         IDictionary<string, RelationDefinition> relationDefinitions)
     {
-      foreach (var endPoint in classDefinition.MyRelationEndPointDefinitions)
+      foreach (var endPoint in typeDefinition.MyRelationEndPointDefinitions)
       {
         Assertion.DebugAssert(endPoint.IsAnonymous == false, "endPoint.IsAnonymous == false");
-        var relationDefinition = _mappingObjectFactory.CreateRelationDefinition(classDefinitions, classDefinition, endPoint.PropertyInfo);
+        var relationDefinition = _mappingObjectFactory.CreateRelationDefinition(typeDefinitions, typeDefinition, endPoint.PropertyInfo);
         if (!relationDefinitions.ContainsKey(relationDefinition.ID))
         {
           ((IRelationEndPointDefinitionSetter)relationDefinition.EndPointDefinitions[0]).SetRelationDefinition(relationDefinition);

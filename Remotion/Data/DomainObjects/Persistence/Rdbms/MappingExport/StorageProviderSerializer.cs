@@ -28,28 +28,28 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
   /// </summary>
   public class StorageProviderSerializer : IStorageProviderSerializer
   {
-    private readonly IClassSerializer _classSerializer;
+    private readonly ITypeSerializer _typeSerializer;
 
-    public StorageProviderSerializer (IClassSerializer classSerializer)
+    public StorageProviderSerializer (ITypeSerializer typeSerializer)
     {
-      ArgumentUtility.CheckNotNull("classSerializer", classSerializer);
+      ArgumentUtility.CheckNotNull("typeSerializer", typeSerializer);
 
-      _classSerializer = classSerializer;
+      _typeSerializer = typeSerializer;
     }
 
-    public IClassSerializer ClassSerializer
+    public ITypeSerializer TypeSerializer
     {
-      get { return _classSerializer; }
+      get { return _typeSerializer; }
     }
 
-    public XElement Serialize (IEnumerable<ClassDefinition> classDefinitions, RdbmsProviderDefinition providerDefinition)
+    public XElement Serialize (IEnumerable<TypeDefinition> typeDefinitions, RdbmsProviderDefinition providerDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
       ArgumentUtility.CheckNotNull("providerDefinition", providerDefinition);
 
       return new XElement(Constants.Namespace + "storageProvider",
               new XAttribute("name", providerDefinition.Name),
-              classDefinitions.Select(c => _classSerializer.Serialize(c)));
+              typeDefinitions.Select(td => _typeSerializer.Serialize(td)));
     }
   }
 }

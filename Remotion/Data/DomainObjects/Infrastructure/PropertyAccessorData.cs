@@ -24,21 +24,21 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   public class PropertyAccessorData
   {
     /// <summary>
-    /// Gets the <see cref="PropertyKind"/> for a given property identifier and class definition.
+    /// Gets the <see cref="PropertyKind"/> for a given property identifier and type definition.
     /// </summary>
-    /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> object describing the property's declaring class.</param>
+    /// <param name="typeDefinition">The <see cref="TypeDefinition"/> object describing the property's declaring type.</param>
     /// <param name="propertyIdentifier">The property identifier.</param>
     /// <returns>The <see cref="PropertyKind"/> of the property.</returns>
     /// <exception cref="ArgumentNullException">One of the method's arguments is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">The domain object does not have a property with the given identifier.</exception>
-    public static PropertyKind GetPropertyKind (ClassDefinition classDefinition, string propertyIdentifier)
+    public static PropertyKind GetPropertyKind (TypeDefinition typeDefinition, string propertyIdentifier)
     {
       // TODO RM-8246: possibly inline this method
 
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
 
-      Tuple<PropertyDefinition?, IRelationEndPointDefinition?> propertyObjects = GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
+      Tuple<PropertyDefinition?, IRelationEndPointDefinition?> propertyObjects = GetPropertyDefinitionObjects(typeDefinition, propertyIdentifier);
       return GetPropertyKind(propertyObjects.Item2);
     }
 
@@ -69,24 +69,24 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <summary>
     /// Returns the value type of the given property.
     /// </summary>
-    /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> object describing the property's declaring class.</param>
+    /// <param name="typeDefinition">The <see cref="Mapping.TypeDefinition"/> object describing the property's declaring type.</param>
     /// <param name="propertyIdentifier">The property identifier.</param>
     /// <returns>The property's value type.</returns>
     /// <remarks>For simple value properties, this returns the simple property type. For related objects, it
     /// returns the related object's type. For related object collections, it returns type <see cref="ObjectList{T}"/>, where "T" is the related
     /// objects' type.</remarks>
     /// <exception cref="ArgumentNullException">One of the method's arguments is <see langword="null"/>.</exception>
-    /// <exception cref="ArgumentException">The class definition does not have a property with the given identifier.</exception>
-    public static Type GetPropertyType (ClassDefinition classDefinition, string propertyIdentifier)
+    /// <exception cref="ArgumentException">The type definition does not have a property with the given identifier.</exception>
+    public static Type GetPropertyType (TypeDefinition typeDefinition, string propertyIdentifier)
     {
       // TODO RM-8246: possibly inline this method
 
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
 
       // TODO RM-8246: this is actually a discriminating union, solved via nullable values
       Tuple<PropertyDefinition?, IRelationEndPointDefinition?> definitionObjects =
-          GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
+          GetPropertyDefinitionObjects(typeDefinition, propertyIdentifier);
 
       return GetStrategy(GetPropertyKind(definitionObjects.Item2)).GetPropertyType(definitionObjects.Item1, definitionObjects.Item2);
     }
@@ -94,28 +94,28 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <summary>
     /// Returns mapping objects for the given property.
     /// </summary>
-    /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> object describing the property's declaring class.</param>
+    /// <param name="typeDefinition">The <see cref="Mapping.TypeDefinition"/> object describing the property's declaring type.</param>
     /// <param name="propertyIdentifier">The property identifier.</param>
     /// <returns>The property's <see cref="Mapping.PropertyDefinition"/> and <see cref="IRelationEndPointDefinition"/> objects.</returns>
     /// <exception cref="ArgumentNullException">One of the method's arguments is <see langword="null"/>.</exception>
-    /// <exception cref="ArgumentException">The class definition does not have a property with the given identifier.</exception>
+    /// <exception cref="ArgumentException">The type definition does not have a property with the given identifier.</exception>
     public static Tuple<PropertyDefinition?, IRelationEndPointDefinition?> GetPropertyDefinitionObjects (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         string propertyIdentifier)
     {
       // TODO RM-8246: possibly inline this method
 
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
 
-      PropertyDefinition? propertyDefinition = classDefinition.GetPropertyDefinition(propertyIdentifier);
-      IRelationEndPointDefinition? relationEndPointDefinition = classDefinition.GetRelationEndPointDefinition(propertyIdentifier);
+      PropertyDefinition? propertyDefinition = typeDefinition.GetPropertyDefinition(propertyIdentifier);
+      IRelationEndPointDefinition? relationEndPointDefinition = typeDefinition.GetRelationEndPointDefinition(propertyIdentifier);
 
       if (propertyDefinition == null && relationEndPointDefinition == null)
       {
         string message = String.Format(
             "The domain object type {0} does not have a mapping property named '{1}'.",
-            classDefinition.ClassType.GetFullNameSafe(),
+            typeDefinition.Type.GetFullNameSafe(),
             propertyIdentifier);
 
         throw new ArgumentException(message, "propertyIdentifier");
@@ -129,20 +129,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     private readonly PropertyDefinition? _propertyDefinition;
     private readonly IRelationEndPointDefinition? _relationEndPointDefinition;
-    private readonly ClassDefinition _classDefinition;
+    private readonly TypeDefinition _typeDefinition;
     private readonly Type _propertyType;
 
     private readonly IPropertyAccessorStrategy _strategy;
 
-    public PropertyAccessorData (ClassDefinition classDefinition, string propertyIdentifier)
+    public PropertyAccessorData (TypeDefinition typeDefinition, string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
 
       _propertyIdentifier = propertyIdentifier;
-      _classDefinition = classDefinition;
+      _typeDefinition = typeDefinition;
 
-      Tuple<PropertyDefinition?, IRelationEndPointDefinition?> propertyObjects = GetPropertyDefinitionObjects(_classDefinition, propertyIdentifier);
+      Tuple<PropertyDefinition?, IRelationEndPointDefinition?> propertyObjects = GetPropertyDefinitionObjects(_typeDefinition, propertyIdentifier);
       _propertyDefinition = propertyObjects.Item1;
       _relationEndPointDefinition = propertyObjects.Item2;
 
@@ -154,11 +154,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     }
 
     /// <summary>
-    /// The definition object for the property's declaring class.
+    /// The definition object for the property's declaring type.
     /// </summary>
-    public ClassDefinition ClassDefinition
+    public TypeDefinition TypeDefinition
     {
-      get { return _classDefinition; }
+      get { return _typeDefinition; }
     }
 
     /// <summary>
@@ -210,24 +210,24 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     /// <summary>
     /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="PropertyAccessorData"/> by comparing
-    /// <see cref="PropertyIdentifier"/> and <see cref="ClassDefinition"/>.
+    /// <see cref="PropertyIdentifier"/> and <see cref="TypeDefinition"/>.
     /// </summary>
     /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="PropertyAccessorData"/>.</param>
     /// <returns>
     /// true if the specified <see cref="T:System.Object"/> is equivalent to the current <see cref="PropertyAccessorData"/>, ie. it is another
-    /// instance of <see cref="PropertyAccessorData"/> with equal <see cref="PropertyIdentifier"/> and <see cref="ClassDefinition"/>; otherwise, false.
+    /// instance of <see cref="PropertyAccessorData"/> with equal <see cref="PropertyIdentifier"/> and <see cref="TypeDefinition"/>; otherwise, false.
     /// </returns>
     public override bool Equals (object? obj)
     {
       var other = obj as PropertyAccessorData;
       return other != null
           && Equals(PropertyIdentifier, other.PropertyIdentifier)
-          && Equals(ClassDefinition, other.ClassDefinition);
+          && Equals(TypeDefinition, other.TypeDefinition);
     }
 
     public override int GetHashCode ()
     {
-      return EqualityUtility.GetRotatedHashCode(PropertyIdentifier, ClassDefinition);
+      return EqualityUtility.GetRotatedHashCode(PropertyIdentifier, TypeDefinition);
     }
   }
 }

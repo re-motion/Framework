@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -42,19 +43,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetOppositeEndPointDefinition ()
     {
       Assert.That(
-          _relation.GetOppositeEndPointDefinition("Location", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location.Client"),
+          _relation.GetOppositeEndPointDefinition(typeof(Location), "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location.Client"),
           Is.SameAs(_clientEndPoint));
-      Assert.That(_relation.GetOppositeEndPointDefinition("Client", null), Is.SameAs(_locationEndPoint));
+      Assert.That(_relation.GetOppositeEndPointDefinition(typeof(Client), null), Is.SameAs(_locationEndPoint));
     }
 
     [Test]
     public void IsEndPoint ()
     {
-      Assert.That(_relation.IsEndPoint("Location", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location.Client"), Is.True);
-      Assert.That(_relation.IsEndPoint("Client", null), Is.True);
+      Assert.That(_relation.IsEndPoint(typeof(Location), "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location.Client"), Is.True);
+      Assert.That(_relation.IsEndPoint(typeof(Client), null), Is.True);
 
-      Assert.That(_relation.IsEndPoint("Location", null), Is.False);
-      Assert.That(_relation.IsEndPoint("Client", "Client"), Is.False);
+      Assert.That(_relation.IsEndPoint(typeof(Location), null), Is.False);
+      Assert.That(_relation.IsEndPoint(typeof(Client), "Client"), Is.False);
     }
   }
 }
