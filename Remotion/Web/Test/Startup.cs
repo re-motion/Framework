@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Integration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -22,6 +23,7 @@ namespace Remotion.Web.Test
         app.UseDeveloperExceptionPage();
       }
 
+      //app.UsePathBase ("/fx-develop/Web.Test"); // didn't use
       //app.UseHsts();
       //app.UseHttpsRedirection();
 
