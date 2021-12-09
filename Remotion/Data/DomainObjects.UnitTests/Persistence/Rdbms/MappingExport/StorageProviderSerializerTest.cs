@@ -32,13 +32,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_AddsNameAttribute ()
     {
-      var classDefinitions = MappingConfiguration.Current.GetTypeDefinitions();
-      var groupedByStorageProvider = classDefinitions
+      var typeDefinitions = MappingConfiguration.Current.GetTypeDefinitions();
+      var groupedByStorageProvider = typeDefinitions
           .Where(c => c.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)
           .GroupBy(c => (RdbmsProviderDefinition)c.StorageEntityDefinition.StorageProviderDefinition)
           .First();
 
-      var storageProviderSerializer = new StorageProviderSerializer(new Mock<IClassSerializer>().Object);
+      var storageProviderSerializer = new StorageProviderSerializer(new Mock<ITypeSerializer>().Object);
       var actual = storageProviderSerializer.Serialize(groupedByStorageProvider, groupedByStorageProvider.Key);
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("name"));
@@ -48,19 +48,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_AddsClassElements ()
     {
-      var classDefinitions = MappingConfiguration.Current.GetTypeDefinitions();
-      var groupedByStorageProvider = classDefinitions
+      var typeDefinitions = MappingConfiguration.Current.GetTypeDefinitions();
+      var groupedByStorageProvider = typeDefinitions
           .Where(c => c.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)
           .GroupBy(c => (RdbmsProviderDefinition)c.StorageEntityDefinition.StorageProviderDefinition)
           .First();
 
-      var classSerializerStub = new Mock<IClassSerializer>();
+      var typeSerializerStub = new Mock<ITypeSerializer>();
       var expectedElement = new XElement("class");
-      classSerializerStub
+      typeSerializerStub
           .Setup(_ => _.Serialize(It.IsNotNull<ClassDefinition>()))
           .Returns(expectedElement);
 
-      var storageProviderSerializer = new StorageProviderSerializer(classSerializerStub.Object);
+      var storageProviderSerializer = new StorageProviderSerializer(typeSerializerStub.Object);
       var actual = storageProviderSerializer.Serialize(groupedByStorageProvider, groupedByStorageProvider.Key);
 
       Assert.That(actual.Elements(), Is.Not.Empty);

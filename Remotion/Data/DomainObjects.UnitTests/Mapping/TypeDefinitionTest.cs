@@ -14,19 +14,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using JetBrains.Annotations;
-using Remotion.Data.DomainObjects.Mapping;
+using NUnit.Framework;
 
-namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
+namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
-  /// <summary>
-  /// Defines an interface for classes retrieving the non-abstract <see cref="ClassDefinition"/> for a domain object type.
-  /// </summary>
-  /// <threadsafety static="true" instance="true"/>
-  public interface ITypeDefinitionProvider
+  [TestFixture]
+  public class TypeDefinitionTest
   {
-    [CanBeNull]
-    ClassDefinition? GetTypeDefinition (Type domainObjectType);
+    // TODO R2I Split up ClassDefinitionTests and move relevant tests in here
   }
 }

@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     [Test]
     public void CreateNewObjectID ()
     {
-      var classDefinition = GetTypeDefinition(typeof(Order));
+      var classDefinition = GetClassDefinition(typeof(Order));
       var fakeResult = DomainObjectIDs.Order1;
 
       _parentTransactionContextMock

@@ -24,31 +24,31 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   /// <summary>Base class for reflecting on the properties and relations of a class.</summary>
   public abstract class MemberReflectorBase
   {
-    private readonly ClassDefinition _classDefinition;
+    private readonly TypeDefinition _typeDefinition;
     private readonly IPropertyInformation _propertyInfo;
     private readonly IMemberInformationNameResolver _nameResolver;
     private readonly IPropertyMetadataProvider _propertyMetadataProvider;
 
     protected MemberReflectorBase (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
       ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
 
-      _classDefinition = classDefinition;
+      _typeDefinition = typeDefinition;
       _propertyInfo = propertyInfo;
       _nameResolver = nameResolver;
       _propertyMetadataProvider = propertyMetadataProvider;
     }
 
-    public ClassDefinition ClassDefinition
+    public TypeDefinition TypeDefinition
     {
-      get { return _classDefinition; }
+      get { return _typeDefinition; }
     }
 
     public IPropertyInformation PropertyInfo
@@ -73,14 +73,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     private StorageClass GetDefaultStorageClass ()
     {
-      switch (_classDefinition.DefaultStorageClass)
+      switch (_typeDefinition.DefaultStorageClass)
       {
         case DefaultStorageClass.Persistent:
           return StorageClass.Persistent;
         case DefaultStorageClass.Transaction:
           return StorageClass.Transaction;
         default:
-          throw new NotImplementedException($"{nameof(DefaultStorageClass)} '{_classDefinition.DefaultStorageClass}' is not supported.");
+          throw new NotImplementedException($"{nameof(DefaultStorageClass)} '{_typeDefinition.DefaultStorageClass}' is not supported.");
       }
     }
 

@@ -29,22 +29,22 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     private readonly string _propertyName;
     private RelationDefinition? _relationDefinition;
-    private readonly ClassDefinition _classDefinition;
+    private readonly TypeDefinition _typeDefinition;
     private readonly bool _isMandatory;
     private readonly IPropertyInformation _propertyInfo;
     private bool _hasSortExpression;
 
     public VirtualObjectRelationEndPointDefinition (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         string propertyName,
         bool isMandatory,
         IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      _classDefinition = classDefinition;
+      _typeDefinition = typeDefinition;
       _isMandatory = isMandatory;
       _propertyName = propertyName;
       _propertyInfo = propertyInfo;
@@ -70,9 +70,9 @@ namespace Remotion.Data.DomainObjects.Mapping
       }
     }
 
-    public ClassDefinition ClassDefinition
+    public TypeDefinition TypeDefinition
     {
-      get { return _classDefinition; }
+      get { return _typeDefinition; }
     }
 
     public bool IsMandatory

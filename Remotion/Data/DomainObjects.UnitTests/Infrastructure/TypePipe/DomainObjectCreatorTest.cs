@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
           SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
           SafeServiceLocator.Current.GetInstance<IConcreteTypeMetadataImporter>());
       var restoreParticipant = new DomainObjectParticipant(
-          SafeServiceLocator.Current.GetInstance<ITypeDefinitionProvider>(),
+          SafeServiceLocator.Current.GetInstance<IClassDefinitionProvider>(),
           SafeServiceLocator.Current.GetInstance<IInterceptedPropertyFinder>());
       _pipeline = SafeServiceLocator.Current.GetInstance<IPipelineFactory>().Create("DomainObjectCreatorTest", remixParticipant, restoreParticipant);
       var pipelineRegistry = new DefaultPipelineRegistry(_pipeline);

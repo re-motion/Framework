@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void ObjectReference ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(SampleBindableDomainObject));
+      var classDefinition = MappingConfiguration.Current.GetClassDefinition(typeof(SampleBindableDomainObject));
       var instance = LifetimeService.GetObjectReference(TestableClientTransaction, new ObjectID(classDefinition, Guid.NewGuid()));
 
       var implementation = (BindableDomainObjectImplementation)PrivateInvoke.GetNonPublicField(instance, "_implementation");
@@ -224,7 +224,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void BindableDomainObject_IsNotPartOfMapping ()
     {
-      Assert.That(MappingConfiguration.Current.GetTypeDefinitions().Where(o => o.ClassType == typeof(BindableDomainObject)), Is.Empty);
+      Assert.That(MappingConfiguration.Current.GetTypeDefinitions().Where(o => o.Type == typeof(BindableDomainObject)), Is.Empty);
     }
 
     [Test]

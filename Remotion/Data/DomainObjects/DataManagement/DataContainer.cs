@@ -452,7 +452,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get
       {
         CheckNotDiscarded();
-        return _id.ClassDefinition.ClassType;
+        return _id.ClassDefinition.Type;
       }
     }
 

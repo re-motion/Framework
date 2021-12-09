@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
+using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
 {
@@ -53,8 +54,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _someClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
 
       _someClassDefinitionWithoutBaseClass = ClassDefinitionObjectMother.CreateClassDefinition();
-      _someClassDefinitionWithBaseClass = ClassDefinitionObjectMother.CreateClassDefinition(id: "some", baseClass: _someClassDefinitionWithoutBaseClass);
-      _someClassDefinitionWithBaseBaseClass = ClassDefinitionObjectMother.CreateClassDefinition(id: "some", baseClass: _someClassDefinitionWithBaseClass);
+      _someClassDefinitionWithBaseClass = ClassDefinitionObjectMother.CreateClassDefinition(baseClass: _someClassDefinitionWithoutBaseClass);
+      _someClassDefinitionWithBaseBaseClass = ClassDefinitionObjectMother.CreateClassDefinition(baseClass: _someClassDefinitionWithBaseClass);
 
       _fakeStorageTypeInformation1 = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
       _fakeStorageTypeInformation2 = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
@@ -77,7 +78,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           result,
           Is.TypeOf<UnsupportedStoragePropertyDefinition>()
               .With.Property<UnsupportedStoragePropertyDefinition>(pd => pd.Message).EqualTo(
-                  "There was an error when retrieving storage type for property 'Test' (declaring class: '" + _someClassDefinition.ID + "'): Msg.")
+                  "There was an error when retrieving storage type for property 'Test' (declaring type: '" + _someClassDefinition.Type.GetFullNameSafe() + "'): Msg.")
               .And.Property<UnsupportedStoragePropertyDefinition>(pd => pd.PropertyType).EqualTo(typeof(string))
               .And.Property<UnsupportedStoragePropertyDefinition>(pd => pd.InnerException).SameAs(exception));
     }

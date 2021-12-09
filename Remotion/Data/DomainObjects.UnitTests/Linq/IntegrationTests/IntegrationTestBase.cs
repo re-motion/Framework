@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     protected void CheckDomainObjectCollectionRelationRegistered (
         ObjectID originatingObjectID, string shortPropertyName, bool checkOrdering, params ObjectID[] expectedRelatedObjectIDs)
     {
-      var declaringType = originatingObjectID.ClassDefinition.ClassType;
+      var declaringType = originatingObjectID.ClassDefinition.Type;
       CheckDomainObjectCollectionRelationRegistered(originatingObjectID, declaringType, shortPropertyName, checkOrdering, expectedRelatedObjectIDs);
     }
 
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
 
     protected void CheckObjectRelationRegistered (ObjectID originatingObjectID, string shortPropertyName, ObjectID expectedRelatedObjectID)
     {
-      var declaringType = originatingObjectID.ClassDefinition.ClassType;
+      var declaringType = originatingObjectID.ClassDefinition.Type;
       CheckObjectRelationRegistered(originatingObjectID, declaringType, shortPropertyName, expectedRelatedObjectID);
     }
 

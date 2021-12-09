@@ -27,11 +27,11 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   public abstract class RelationReflectorBase<T> : MemberReflectorBase where T: BidirectionalRelationAttribute
   {
     protected RelationReflectorBase (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
-        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
+        : base(typeDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
       BidirectionalRelationAttribute = PropertyInfo.GetCustomAttribute<T>(true);
     }

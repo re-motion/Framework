@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     {
       base.SetUp();
 
-      _inheritanceRootClass = TypeDefinitions[typeof(InheritanceRoot)];
-      _relationTarget = TypeDefinitions[typeof(RelationTarget)];
+      _inheritanceRootClass = GetClassDefinition(typeof(InheritanceRoot));
+      _relationTarget = GetClassDefinition(typeof(RelationTarget));
 
       _propertyOnClassAboveInheritanceRoot = GetPropertyInformation((ClassAboveInheritanceRoot c) => c.RelationPropertyOnClassAboveInheritanceRoot);
       _propertyOnRelationTarget = GetPropertyInformation((RelationTarget t) => t.RelationProperty);
@@ -44,8 +44,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     [Test]
     public void GivenThat_TheRelationTarget_PointsBackToTheInheritanceRoot_WhichIsNotTheTypeDeclaringTheOppositeProperty ()
     {
-      Assert.That(_propertyOnRelationTarget.PropertyType, Is.SameAs(_inheritanceRootClass.ClassType));
-      Assert.That(_propertyOnClassAboveInheritanceRoot.DeclaringType, Is.Not.SameAs(_inheritanceRootClass.ClassType));
+      Assert.That(_propertyOnRelationTarget.PropertyType, Is.SameAs(_inheritanceRootClass.Type));
+      Assert.That(_propertyOnClassAboveInheritanceRoot.DeclaringType, Is.Not.SameAs(_inheritanceRootClass.Type));
     }
 
     [Test]

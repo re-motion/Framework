@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition
   {
     public VirtualRelationEndPointDefinition (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         string propertyName,
         bool isMandatory,
         CardinalityType cardinality,
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationDefinition RelationDefinition => null!;
 
-    public ClassDefinition ClassDefinition => null!;
+    public TypeDefinition TypeDefinition => null!;
 
     public bool IsMandatory => false;
 

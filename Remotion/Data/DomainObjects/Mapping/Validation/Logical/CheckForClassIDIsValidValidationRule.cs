@@ -21,9 +21,9 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 {
   /// <summary>
-  /// Validates that the given <see cref="ClassDefinition"/> has a valid class-ID containing only letters, digits, and underscores.
+  /// Validates that the given <see cref="TypeDefinition"/> has a valid class-ID containing only letters, digits, and underscores.
   /// </summary>
-  public class CheckForClassIDIsValidValidationRule : IClassDefinitionValidationRule
+  public class CheckForClassIDIsValidValidationRule : ITypeDefinitionValidationRule
   {
     private const string ClassIDPattern = @"^(?:\p{L}|_)(?:\p{L}|_|\p{N})*$";
     private static readonly Regex s_validClassID = new Regex(ClassIDPattern, RegexOptions.Compiled);
@@ -32,14 +32,17 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
     {
     }
 
-    public MappingValidationResult Validate (ClassDefinition classDefinition)
+    public MappingValidationResult Validate (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
+
+      if (typeDefinition is not ClassDefinition classDefinition)
+        return MappingValidationResult.CreateValidResult();
 
       if (!s_validClassID.IsMatch(classDefinition.ID))
       {
         return MappingValidationResult.CreateInvalidResultForType(
-            classDefinition.ClassType,
+            typeDefinition.Type,
             "The Class-ID '{0}' is not valid. Valid Class-IDs must start with a letter or underscore and containing only letters, digits, and underscores.",
             classDefinition.ID);
       }

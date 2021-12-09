@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public void GetOppositeClassDefinition ()
     {
-      Console.WriteLine("Expected average duration of GetOppositeClassDefinition on reference system: ~0,05 µs");
+      Console.WriteLine("Expected average duration of GetOppositeClassDefinition on reference system: ~0,05 Âµs");
 
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(ClassWithRelationProperties));
       var endPoints = classDefinition.GetRelationEndPointDefinitions().ToList();
@@ -40,14 +40,14 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       var stopwatch = new Stopwatch();
       stopwatch.Start();
       for (int i = 0; i < TestRepititions; i++)
-        found &= endPoints[i % endPoints.Count].GetOppositeEndPointDefinition().ClassDefinition != null;
+        found &= endPoints[i % endPoints.Count].GetOppositeEndPointDefinition().TypeDefinition != null;
       stopwatch.Stop();
 
       Console.WriteLine(found);
 
       double averageMicroseconds = stopwatch.Elapsed.TotalMilliseconds * 1000.0 / TestRepititions;
       Console.WriteLine(
-          "GetOppositeClassDefinition (executed {0}x ({2} end points)): Average duration: {1} µs",
+          "GetOppositeClassDefinition (executed {0}x ({2} end points)): Average duration: {1} Âµs",
           TestRepititions,
           averageMicroseconds.ToString("n"),
           endPoints.Count);
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public void GetMandatoryOppositeClassDefinition ()
     {
-      Console.WriteLine("Expected average duration of GetMandatoryOppositeClassDefinition on reference system: ~0,05 µs");
+      Console.WriteLine("Expected average duration of GetMandatoryOppositeClassDefinition on reference system: ~0,05 Âµs");
 
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(ClassWithRelationProperties));
       var endPoints = classDefinition.GetRelationEndPointDefinitions().ToList();
@@ -65,14 +65,14 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       var stopwatch = new Stopwatch();
       stopwatch.Start();
       for (int i = 0; i < TestRepititions; i++)
-        found &= endPoints[i % endPoints.Count].GetOppositeEndPointDefinition().ClassDefinition != null;
+        found &= endPoints[i % endPoints.Count].GetOppositeEndPointDefinition().TypeDefinition != null;
       stopwatch.Stop();
 
       Console.WriteLine(found);
 
       double averageMicroseconds = stopwatch.Elapsed.TotalMilliseconds * 1000.0 / TestRepititions;
       Console.WriteLine(
-          "GetMandatoryOppositeClassDefinition (executed {0}x ({2} end points)): Average duration: {1} µs",
+          "GetMandatoryOppositeClassDefinition (executed {0}x ({2} end points)): Average duration: {1} Âµs",
           TestRepititions,
           averageMicroseconds.ToString("n"),
           endPoints.Count);
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public void GetOppositeEndPointDefinition ()
     {
-      Console.WriteLine("Expected average duration of GetOppositeEndPointDefinition on reference system: ~0,04 µs");
+      Console.WriteLine("Expected average duration of GetOppositeEndPointDefinition on reference system: ~0,04 Âµs");
 
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(ClassWithRelationProperties));
       var endPoints = classDefinition.GetRelationEndPointDefinitions().ToList();
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       double averageMicroseconds = stopwatch.Elapsed.TotalMilliseconds * 1000.0 / TestRepititions;
       Console.WriteLine(
-          "GetOppositeEndPointDefinition (executed {0}x ({2} end points)): Average duration: {1} µs",
+          "GetOppositeEndPointDefinition (executed {0}x ({2} end points)): Average duration: {1} Âµs",
           TestRepititions,
           averageMicroseconds.ToString("n"),
           endPoints.Count);
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public void GetMandatoryOppositeEndPointDefinition ()
     {
-      Console.WriteLine("Expected average duration of GetMandatoryOppositeEndPointDefinition on reference system: ~0,04 µs");
+      Console.WriteLine("Expected average duration of GetMandatoryOppositeEndPointDefinition on reference system: ~0,04 Âµs");
 
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(ClassWithRelationProperties));
       var endPoints = classDefinition.GetRelationEndPointDefinitions().ToList();
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       double averageMicroseconds = stopwatch.Elapsed.TotalMilliseconds * 1000.0 / TestRepititions;
       Console.WriteLine(
-          "GetMandatoryOppositeEndPointDefinition (executed {0}x ({2} end points)): Average duration: {1} µs",
+          "GetMandatoryOppositeEndPointDefinition (executed {0}x ({2} end points)): Average duration: {1} Âµs",
           TestRepititions,
           averageMicroseconds.ToString("n"),
           endPoints.Count);

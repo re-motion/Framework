@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 {
   /// <summary>
   /// The <see cref="StorageGroupBasedStorageProviderDefinitionFinder"/> is responsible for finding the <see cref="StorageProviderDefinition"/> for a 
-  /// <see cref="ClassDefinition"/> based on the <see cref="ClassDefinition.StorageGroupType"/>.
+  /// <see cref="TypeDefinition"/> based on the <see cref="TypeDefinition.StorageGroupType"/>.
   /// </summary>
   public class StorageGroupBasedStorageProviderDefinitionFinder : IStorageProviderDefinitionFinder
   {
@@ -36,11 +36,11 @@ namespace Remotion.Data.DomainObjects.Persistence
       _storageConfiguration = storageConfiguration;
     }
 
-    public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition, string? errorMessageContext)
+    public StorageProviderDefinition GetStorageProviderDefinition (TypeDefinition typeDefinition, string? errorMessageContext)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      var storageGroupTypeOrNull = classDefinition.StorageGroupType;
+      var storageGroupTypeOrNull = typeDefinition.StorageGroupType;
 
       return GetStorageProviderDefinition(storageGroupTypeOrNull, errorMessageContext);
     }

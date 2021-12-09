@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var endPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(
           typeof(Order).FullName + ".OrderTicket");
 
-      var oppositeEndPointDefinition = endPointDefinition.GetOppositeClassDefinition();
+      var oppositeEndPointDefinition = endPointDefinition.GetOppositeTypeDefinition();
 
       Assert.That(oppositeEndPointDefinition, Is.SameAs(DomainObjectIDs.OrderTicket1.ClassDefinition));
     }
