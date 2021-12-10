@@ -110,7 +110,7 @@ public class A
           .WithSpan(9, 5, 9, 28)
           .WithMessage(
               "'System.Web.UI.HtmlTextWriter.Write(object)' should not be used with a 'Remotion.Web.WebString' argument. "
-              + "Use 'Remotion.Web.WebString.Write(HtmlTextWriter)' instead.");
+              + "Use 'Remotion.Web.WebString.WriteTo(HtmlTextWriter)' instead.");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -133,7 +133,7 @@ public class A
           .WithSpan(9, 5, 9, 34)
           .WithMessage(
               "'System.Web.UI.HtmlTextWriter.Write(object)' should not be used with a 'Remotion.Web.PlainTextString' argument. "
-              + "Use 'Remotion.Web.PlainTextString.Write(HtmlTextWriter)' instead.");
+              + "Use 'Remotion.Web.PlainTextString.WriteTo(HtmlTextWriter)' instead.");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
 
@@ -148,7 +148,7 @@ public class A
   public void Test(HtmlTextWriter writer)
   {
     var webString = WebString.CreateFromText(""test"");
-    webString.Write(writer);
+    webString.WriteTo(writer);
   }
 }";
 
