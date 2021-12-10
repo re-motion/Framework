@@ -62,11 +62,11 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
       var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
       if (aclCount == 0)
-        return WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.NoAclsText), text.ToString()));
+        return WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.NoAclsText), text.GetValue()));
       if (aclCount == 1)
-        return WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.SingleAclText), text.ToString()));
+        return WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.SingleAclText), text.GetValue()));
       else
-        return WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.MultipleAclsText), text.ToString(), aclCount));
+        return WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.MultipleAclsText), text.GetValue(), aclCount));
     }
   }
 }
