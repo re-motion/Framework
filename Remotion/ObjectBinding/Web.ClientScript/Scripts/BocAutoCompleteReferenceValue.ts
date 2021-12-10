@@ -13,7 +13,7 @@
 // 
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
-// 
+//
 
 class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes BocReferenceValue and BocAutoCompleteReferenceValue inherit from BocReferenceValueBase
 {
@@ -140,18 +140,27 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
           return inputValue.length > 0;
         },
         dataType: 'json',
-        parse: function (data: Remotion.BocAutoCompleteReferenceValue.Item[])
+        parse: function (data: Remotion.BocAutoCompleteReferenceValue.BocAutoCompleteReferenceValueSearchResult)
         {
-          return data.map(function (row)
+          if (data.Type === 'ValueList')
           {
-            row.IsAnnotation = row.UniqueIdentifier === nullValueString;
+            const valueList = data as Remotion.BocAutoCompleteReferenceValue.BocAutoCompleteReferenceValueSearchResultWithValueList;
 
-            return {
-              data: row,
-              value: row.UniqueIdentifier,
-              result: row.IsAnnotation ? '' : row.DisplayName
-            };
-          });
+            return valueList.Values.map(function (row)
+            {
+              row.IsAnnotation = row.UniqueIdentifier === nullValueString;
+
+              return {
+                data: row,
+                value: row.UniqueIdentifier,
+                result: row.IsAnnotation ? '' : row.DisplayName
+              };
+            });
+          }
+          else
+          {
+            throw `Unknown BocAutoCompleteReferenceValueSearchResult variant '${data.Type}'.`;
+          }
         },
         formatItem: function (item: Remotion.BocAutoCompleteReferenceValue.Item) //What we display on input box
         {

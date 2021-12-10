@@ -80,7 +80,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
     [WebMethod(EnableSession = true)]
     [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
-    public BusinessObjectWithIdentityProxy[] Search (
+    public BocAutoCompleteReferenceValueSearchResult Search (
         string searchString,
         int? completionSetCount,
         string businessObjectClass,
@@ -100,7 +100,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI
         ClientTransaction.Current.Extensions.Add(new SecurityClientTransactionExtension());
         var referencingObject = businessObjectClassWithIdentity.GetObject(businessObject);
         var result = referenceProperty.SearchAvailableObjects(referencingObject, securityManagerSearchArguments);
-        return result.Cast<IBusinessObjectWithIdentity>().Select(o => new BusinessObjectWithIdentityProxy(o)).ToArray();
+        var resultArray = result.Cast<IBusinessObjectWithIdentity>().Select(o => new BusinessObjectWithIdentityProxy(o)).ToArray();
+        return BocAutoCompleteReferenceValueSearchResult.CreateForValueList(resultArray);
       }
     }
 
@@ -113,7 +114,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI
         string businessObject,
         string args)
     {
-      var result = Search(searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var resultWithValueList = Search(searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var result = ((BocAutoCompleteReferenceValueSearchResultWithValueList)resultWithValueList).Values;
       var hasSingleMatch = result.Count() == 1;
       if (hasSingleMatch)
         return result.Single();

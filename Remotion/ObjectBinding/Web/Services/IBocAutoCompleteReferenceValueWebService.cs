@@ -45,9 +45,9 @@ namespace Remotion.ObjectBinding.Web.Services
     ///   if the bound object only implements the <see cref="IBusinessObject"/> interface.
     /// </param>
     /// <param name="args">Additional search arguments.</param>
-    /// <returns>An array of <see cref="BusinessObjectWithIdentityProxy"/> objects containing the search result.</returns>
+    /// <returns>A <see cref="BocAutoCompleteReferenceValueSearchResult"/> instance.</returns>
     /// <remarks>This method can be implemented by delegating the search to <see cref="ISearchAvailableObjectsService"/>.<see cref="ISearchAvailableObjectsService.Search"/>.</remarks>
-    BusinessObjectWithIdentityProxy[] Search (
+    BocAutoCompleteReferenceValueSearchResult Search (
         string searchString,
         int? completionSetCount,
         string businessObjectClass,
