@@ -53,16 +53,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _attribute.MaximumLength = 100;
       Assert.That(_attribute.HasMaximumLength, Is.True);
-      Assert.That(_attribute.MaximumLength, Is.EqualTo(100));
+      Assert.That(((ILengthConstrainedPropertyAttribute)_attribute).MaximumLength, Is.EqualTo(100));
       Assert.That(_lengthConstraint.MaximumLength, Is.EqualTo(100));
-    }
-
-    [Test]
-    public void GetMaximumLength_FromDefault_WithInvalidOperationException ()
-    {
-      Assert.That(
-          () => _attribute.MaximumLength,
-          Throws.InvalidOperationException);
     }
   }
 }

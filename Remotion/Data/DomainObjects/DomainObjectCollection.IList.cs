@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects
 
     int IList.Add (object? value)
     {
-      return Add(ArgumentUtility.CheckNotNullAndType<DomainObject>("value", value));
+      return Add(ArgumentUtility.CheckNotNullAndType<DomainObject>("value", value!));
     }
 
     void IList.Remove (object? value)
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects
 
     void IList.Insert (int index, object? value)
     {
-      Insert(index, ArgumentUtility.CheckNotNullAndType<DomainObject>("value", value));
+      Insert(index, ArgumentUtility.CheckNotNullAndType<DomainObject>("value", value!));
     }
 
     object ICollection.SyncRoot

@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
           new XAttribute("displayName", propertyDefinition.PropertyInfo.Name),
           new XAttribute("type", GetTypeName(propertyType)),
           new XAttribute("isNullable", propertyDefinition.IsNullable),
-          GetMaxLenghtAttribute(propertyDefinition),
+          GetMaxLenghtAttribute(propertyDefinition)!,
           _columnSerializer.Serialize(propertyDefinition, persistenceModelProvider)
           );
     }

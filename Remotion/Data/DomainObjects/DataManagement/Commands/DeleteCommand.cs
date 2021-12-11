@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       _deletedObject = deletedObject;
       _transactionEventSink = transactionEventSink;
 
-      _dataContainer = _clientTransaction.DataManager.GetDataContainerWithLazyLoad(_deletedObject.ID, throwOnNotFound: true);
+      _dataContainer = _clientTransaction.DataManager.GetDataContainerWithLazyLoad(_deletedObject.ID, throwOnNotFound: true)!;
       Assertion.IsFalse(_dataContainer.State.IsDeleted);
       Assertion.IsFalse(_dataContainer.State.IsDiscarded);
 

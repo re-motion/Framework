@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.Queries
       var customNodeTypeRegistry = new MethodInfoBasedNodeTypeRegistry();
 
       customNodeTypeRegistry.Register(
-          new[] { MemberInfoFromExpressionUtility.GetMethod((DomainObjectCollection obj) => obj.ContainsObject(null)) },
+          new[] { MemberInfoFromExpressionUtility.GetMethod((DomainObjectCollection obj) => obj.ContainsObject(null!)) },
           typeof(ContainsExpressionNode));
       customNodeTypeRegistry.Register(
           new[] { MemberInfoFromExpressionUtility.GetProperty((DomainObjectCollection obj) => obj.Count).GetGetMethod() },

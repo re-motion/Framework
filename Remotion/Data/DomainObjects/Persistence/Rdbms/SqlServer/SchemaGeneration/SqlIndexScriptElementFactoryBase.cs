@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
     protected string GetIndexedColumnNames (IEnumerable<SqlIndexedColumnDefinition> indexedColumnDefinitions)
     {
       return string.Join(", ", indexedColumnDefinitions.Select(
-          cd => "[" + cd.Columnn.Name + "]" + (cd.IndexOrder.HasValue ? " " + cd.IndexOrder.ToString().ToUpper() : string.Empty)));
+          cd => "[" + cd.Columnn.Name + "]" + (cd.IndexOrder.HasValue ? " " + cd.IndexOrder.ToString()!.ToUpper() : string.Empty)));
     }
 
     protected virtual string GetCreateIndexOptions (IEnumerable<string> optionItems)

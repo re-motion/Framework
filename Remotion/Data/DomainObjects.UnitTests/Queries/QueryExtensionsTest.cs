@@ -15,34 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Diagnostics.CodeAnalysis;
-using Remotion.Utilities;
+using NUnit.Framework;
 
-namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
+namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
-  /// <summary>
-  /// Parses the <see cref="string"/> value of an <see cref="ObjectID"/>.
-  /// </summary>
-  public class StringObjectIDValueParser : IObjectIDValueParser
+  [TestFixture]
+  public class QueryExtensionsTest : StandardMappingTest
   {
-    public static readonly StringObjectIDValueParser Instance = new StringObjectIDValueParser();
-
-    private StringObjectIDValueParser ()
+    [Test]
+    public void CreateCopyFromTemplate ()
     {
-    }
-
-    public bool TryParse (string stringValue, [MaybeNullWhen(false)] out object resultValue)
-    {
-      ArgumentUtility.CheckNotNull("stringValue", stringValue);
-
-      if (stringValue == string.Empty)
-      {
-        resultValue = null;
-        return false;
-      }
-
-      resultValue = stringValue;
-      return true;
+      Assert.Ignore("TODO: add tests");
     }
   }
 }

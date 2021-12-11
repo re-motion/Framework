@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.Mapping
@@ -27,7 +28,11 @@ public interface IRelationEndPointDefinition
   IPropertyInformation? PropertyInfo { get; }
   bool IsMandatory { get; }
   CardinalityType Cardinality { get; }
+  [MemberNotNullWhen(false, nameof(PropertyName))]
+  [MemberNotNullWhen(false, nameof(PropertyInfo))]
   bool IsVirtual { get; }
+  [MemberNotNullWhen(false, nameof(PropertyName))]
+  [MemberNotNullWhen(false, nameof(PropertyInfo))]
   bool IsAnonymous { get; }
 
   void SetRelationDefinition (RelationDefinition relationDefinition);

@@ -173,7 +173,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
           cloneProperty.SetValueWithoutTypeCheck(sourceValue);
         }
         else if (strategy != null && !cloneProperty.HasBeenTouched)
+        {
+          Assertion.DebugIsNotNull(context, "context != null when strategy != null");
           strategy.HandleReference(sourceProperty, cloneProperty, context);
+        }
       }
     }
 

@@ -101,7 +101,11 @@ namespace Remotion.Data.DomainObjects.Mapping
           return null;
 
         if (_propertyType.IsArray)
-          return Array.CreateInstance(_propertyType.GetElementType(), 0);
+        {
+          var elementType = _propertyType.GetElementType();
+          Assertion.DebugIsNotNull(elementType, "elementType != null when _propertyType.IsArray");
+          return Array.CreateInstance(elementType, 0);
+        }
 
         if (_propertyType == typeof(string))
           return string.Empty;

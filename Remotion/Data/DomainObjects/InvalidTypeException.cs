@@ -38,19 +38,11 @@ public class InvalidTypeException : DomainObjectException
 
   // construction and disposing
 
-  public InvalidTypeException (string message) : base(message)
-  {
-  }
-
-  public InvalidTypeException (string message, Exception inner) : base(message, inner)
-  {
-  }
-
   protected InvalidTypeException (SerializationInfo info, StreamingContext context) : base(info, context)
   {
-    _propertyName = info.GetString("PropertyName");
-    _expectedType = (Type)info.GetValue("ExpectedType", typeof(Type));
-    _actualType = (Type)info.GetValue("ActualType", typeof(Type));
+    _propertyName = info.GetString("PropertyName")!;
+    _expectedType = (Type)info.GetValue("ExpectedType", typeof(Type))!;
+    _actualType = (Type)info.GetValue("ActualType", typeof(Type))!;
   }
 
   public InvalidTypeException (string propertyName, Type expectedType, Type actualType) : this(
@@ -63,15 +55,15 @@ public class InvalidTypeException : DomainObjectException
   {
   }
 
-  public InvalidTypeException (string message, string propertyName, Type exptectedType, Type actualType)
-      : base(message)
+  public InvalidTypeException (string message, string propertyName, Type expectedType, Type actualType, Exception? innerException = null)
+      : base(message, innerException)
   {
     ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-    ArgumentUtility.CheckNotNull("expectedType", exptectedType);
+    ArgumentUtility.CheckNotNull("expectedType", expectedType);
     ArgumentUtility.CheckNotNull("actualType", actualType);
 
     _propertyName = propertyName;
-    _expectedType = exptectedType;
+    _expectedType = expectedType;
     _actualType = actualType;
   }
 

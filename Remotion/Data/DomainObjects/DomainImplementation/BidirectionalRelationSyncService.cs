@@ -192,6 +192,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
       {
         endPoint.Synchronize();
 
+        Assertion.DebugIsNotNull(currentTransaction, "currentTransaction != null");
         currentTransaction = currentTransaction.SubTransaction;
         endPoint = currentTransaction != null ? GetEndPoint(currentTransaction, endPointID) : null;
       }

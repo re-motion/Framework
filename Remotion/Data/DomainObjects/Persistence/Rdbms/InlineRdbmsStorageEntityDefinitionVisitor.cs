@@ -93,6 +93,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         _filterViewDefinitionHandler = filterViewDefinitionHandler;
         _unionViewDefinitionHandler = unionViewDefinitionHandler;
         _emptyViewDefinitionHandler = emptyViewDefinitionHandler;
+        _returnValue = default!;
       }
 
       public T ReturnValue

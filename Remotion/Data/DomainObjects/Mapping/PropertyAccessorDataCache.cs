@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       var virtualRelationEndPointNames =
           from IRelationEndPointDefinition repd in relationEndPointDefinitions
           where repd.IsVirtual
-          select repd.PropertyName;
+          select (string)repd.PropertyName!;
 
       var allPropertyNames = propertyDefinitionNames.Concat(virtualRelationEndPointNames);
       var allPropertyAccessorData = allPropertyNames.Select(name => new PropertyAccessorData(_classDefinition, name));

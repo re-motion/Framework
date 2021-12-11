@@ -40,8 +40,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       ArgumentUtility.CheckNotNullOrEmpty("name", name);
       ArgumentUtility.CheckNotNull("config", config);
 
-      var factoryTypeName = GetAndRemoveNonEmptyStringAttribute(config, "factoryType", name, true);
-      var configuredFactoryType = TypeUtility.GetType(factoryTypeName, true);
+      var factoryTypeName = GetAndRemoveNonEmptyStringAttribute(config, "factoryType", name, required: true)!;
+      var configuredFactoryType = TypeUtility.GetType(factoryTypeName, throwOnError: true)!;
       _factory = CreateStorageObjectFactory(configuredFactoryType);
     }
 

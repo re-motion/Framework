@@ -50,6 +50,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       public override void VirtualRelationEndPointStateUpdated (ClientTransaction clientTransaction, RelationEndPointID endPointID, bool? newEndPointChangeState)
       {
+        Assertion.DebugIsNotNull(endPointID.ObjectID, "endPointID.ObjectID != null");
         _cache.HandleStateUpdate(endPointID.ObjectID);
       }
 

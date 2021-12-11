@@ -36,6 +36,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
     public TableDefinition GetTableDefinition (ObjectID objectID)
     {
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+
       return InlineRdbmsStorageEntityDefinitionVisitor.Visit<TableDefinition>(
           _rdbmsPersistenceModelProvider.GetEntityDefinition(objectID.ClassDefinition),
           (table, continuation) => table,

@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
@@ -29,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     {
       base.SetUp();
 
-      _parameter = new QueryParameter("name", "value", QueryParameterType.Value);
+      _parameter = new QueryParameter("name", "value", QueryParameterType.Text);
     }
 
     [Test]
@@ -37,50 +38,68 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     {
       Assert.That(_parameter.Name, Is.EqualTo("name"));
       Assert.That(_parameter.Value, Is.EqualTo("value"));
-      Assert.That(_parameter.ParameterType, Is.EqualTo(QueryParameterType.Value));
+      Assert.That(_parameter.ParameterType, Is.EqualTo(QueryParameterType.Text));
+    }
+
+    [Test]
+    public void Initialize_WithParameterTypeMismatch ()
+    {
+      Assert.That(
+          () => new QueryParameter("name", 5, QueryParameterType.Text),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+              "The parameter value must of type 'System.String' when the parameter type is 'QueryParameterType.Text'.",
+              "value"));
     }
 
     [Test]
     public void Equals_EqualParameterWithAllMembers_ValueIsReferenceType ()
     {
-      var equalParameter = new QueryParameter("name", "value", QueryParameterType.Value);
+      var equalParameter = new QueryParameter("name", "value", QueryParameterType.Text);
       Assert.That(_parameter.Equals(equalParameter), Is.True);
     }
 
     [Test]
-    public void Equals_EqualParameterWithAllMembers_ValueIsValueTypee ()
+    public void Equals_EqualParameterWithAllMembers_ValueIsValueType ()
     {
-      var parameter1 = new QueryParameter("name", 5, QueryParameterType.Value);
-      var parameter2 = new QueryParameter("name", 5, QueryParameterType.Value);
+      var parameter1 = new QueryParameter("name", "a", QueryParameterType.Text);
+      var parameter2 = new QueryParameter("name", "a", QueryParameterType.Text);
       Assert.That(parameter1.Equals(parameter2), Is.True);
     }
 
     [Test]
     public void Equals_EqualParameterWithMandatoryMembers ()
     {
-      var parameter1 = new QueryParameter("name", null, QueryParameterType.Text);
-      var parameter2 = new QueryParameter("name", null, QueryParameterType.Text);
+      var parameter1 = new QueryParameter("name", null, QueryParameterType.Value);
+      var parameter2 = new QueryParameter("name", null, QueryParameterType.Value);
       Assert.That(parameter1.Equals(parameter2), Is.True);
     }
 
     [Test]
     public void Equal_DifferentParameterName ()
     {
-      var equalParameter = new QueryParameter("name2", "value", QueryParameterType.Value);
+      var equalParameter = new QueryParameter("name2", "value", QueryParameterType.Text);
       Assert.That(_parameter.Equals(equalParameter), Is.False);
     }
 
     [Test]
     public void Equal_DifferentParameterValue ()
     {
-      var equalParameter = new QueryParameter("name", "value2", QueryParameterType.Value);
+      var equalParameter = new QueryParameter("name", "value2", QueryParameterType.Text);
       Assert.That(_parameter.Equals(equalParameter), Is.False);
+    }
+
+    [Test]
+    public void Equal_DifferentParameterValue_WithNull ()
+    {
+      var equalParameter = new QueryParameter("name", null, QueryParameterType.Value);
+      Assert.That(_parameter.Equals(equalParameter), Is.False);
+      Assert.That(equalParameter.Equals(_parameter), Is.False);
     }
 
     [Test]
     public void Equal_DifferentParameterType ()
     {
-      var equalParameter = new QueryParameter("name", "value", QueryParameterType.Text);
+      var equalParameter = new QueryParameter("name", "value", QueryParameterType.Value);
       Assert.That(_parameter.Equals(equalParameter), Is.False);
     }
 
@@ -105,15 +124,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void GetHashCode_EqualQueryParameterWithAllMembers ()
     {
-      var equalParameter = new QueryParameter("name", "value", QueryParameterType.Value);
+      var equalParameter = new QueryParameter("name", "value", QueryParameterType.Text);
       Assert.That(_parameter.GetHashCode(), Is.EqualTo(equalParameter.GetHashCode()));
     }
 
     [Test]
     public void GetHashCode_EqualQueryParameterWithMandatoryMembers ()
     {
-      var parameter1 = new QueryParameter("name", null, QueryParameterType.Text);
-      var parameter2 = new QueryParameter("name", null, QueryParameterType.Text);
+      var parameter1 = new QueryParameter("name", null, QueryParameterType.Value);
+      var parameter2 = new QueryParameter("name", null, QueryParameterType.Value);
       Assert.That(parameter1.GetHashCode(), Is.EqualTo(parameter2.GetHashCode()));
     }
 

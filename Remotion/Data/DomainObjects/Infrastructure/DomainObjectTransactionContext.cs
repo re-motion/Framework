@@ -57,12 +57,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public object? Timestamp
     {
-      get { return ClientTransaction.DataManager.GetDataContainerWithLazyLoad(DomainObject.ID, throwOnNotFound: true).Timestamp; }
+      get { return ClientTransaction.DataManager.GetDataContainerWithLazyLoad(DomainObject.ID, throwOnNotFound: true)!.Timestamp; }
     }
 
     public void RegisterForCommit ()
     {
-      var dataContainer = ClientTransaction.DataManager.GetDataContainerWithLazyLoad(DomainObject.ID, throwOnNotFound: true);
+      var dataContainer = ClientTransaction.DataManager.GetDataContainerWithLazyLoad(DomainObject.ID, throwOnNotFound: true)!;
       if (dataContainer.State.IsDeleted)
         return;
 

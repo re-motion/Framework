@@ -30,22 +30,22 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
-        if (endPointDefinition is PropertyNotFoundRelationEndPointDefinition)
+        if (endPointDefinition is PropertyNotFoundRelationEndPointDefinition propertyNotFoundRelationEndPointDefinition)
         {
           return MappingValidationResult.CreateInvalidResultForType(
-              endPointDefinition.ClassDefinition.ClassType,
+              propertyNotFoundRelationEndPointDefinition.ClassDefinition.ClassType,
               "Property '{0}' on class '{1}' could not be found.",
-              endPointDefinition.PropertyName,
-              endPointDefinition.ClassDefinition.ClassType.Name);
+              propertyNotFoundRelationEndPointDefinition.PropertyName,
+              propertyNotFoundRelationEndPointDefinition.ClassDefinition.ClassType.Name);
         }
-        else if (endPointDefinition is TypeNotObjectIDRelationEndPointDefinition)
+        else if (endPointDefinition is TypeNotObjectIDRelationEndPointDefinition typeNotObjectIDRelationEndPointDefinition)
         {
           return MappingValidationResult.CreateInvalidResultForType(
-            endPointDefinition.ClassDefinition.ClassType,
+              typeNotObjectIDRelationEndPointDefinition.ClassDefinition.ClassType,
             "Relation property '{0}' on class '{1}' is of type '{2}', but non-virtual relation properties must be of type '{3}'.",
-            endPointDefinition.PropertyName,
-            endPointDefinition.ClassDefinition.ClassType.Name,
-            endPointDefinition.PropertyInfo.PropertyType.Name,
+            typeNotObjectIDRelationEndPointDefinition.PropertyName,
+            typeNotObjectIDRelationEndPointDefinition.ClassDefinition.ClassType.Name,
+            typeNotObjectIDRelationEndPointDefinition.PropertyInfo.PropertyType.Name,
             typeof(ObjectID).Name);
         }
         else if (endPointDefinition is TypeNotCompatibleWithVirtualRelationEndPointDefinition)

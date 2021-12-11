@@ -46,9 +46,9 @@ namespace Remotion.Data.DomainObjects
     protected InvalidEnumValueException (SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
-      _propertyName = info.GetString("PropertyName");
-      _underlyingPropertyType = (Type)info.GetValue("UnderlyingPropertyType", typeof(Type));
-      _invalidValue = info.GetValue("InvalidValue", typeof(object));
+      _propertyName = info.GetString("PropertyName")!;
+      _underlyingPropertyType = (Type)info.GetValue("UnderlyingPropertyType", typeof(Type))!;
+      _invalidValue = info.GetValue("InvalidValue", typeof(object))!;
     }
 
     public string PropertyName

@@ -92,6 +92,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     }
 
     [Test]
+    public void Parent_WithoutParent ()
+    {
+      Assert.That((ClientTransactionWrapper)_transaction.Parent, Is.Null);
+    }
+
+    [Test]
     public void Release ()
     {
       ITransaction child = _transaction.CreateChild();

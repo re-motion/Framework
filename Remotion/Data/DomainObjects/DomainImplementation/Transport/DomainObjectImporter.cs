@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
           var transportedObjectIDs = GetIDs(_transportItems);
 
           var existingObjects = bindingTargetTransaction.TryGetObjects<DomainObject>(transportedObjectIDs);
-          var existingObjectDictionary = existingObjects.Where(obj => obj != null).ToDictionary(obj => obj.ID);
+          var existingObjectDictionary = existingObjects.Where(obj => obj != null).Select(obj => obj!).ToDictionary(obj => obj.ID);
 
           foreach (TransportItem transportItem in _transportItems)
           {
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     {
       if (existingObjects.TryGetValue(transportItem.ID, out var existingObject))
       {
-        return bindingTargetTransaction.DataManager.GetDataContainerWithLazyLoad(existingObject.ID, throwOnNotFound: true);
+        return bindingTargetTransaction.DataManager.GetDataContainerWithLazyLoad(existingObject.ID, throwOnNotFound: true)!;
       }
       else
       {
@@ -130,6 +130,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
               targetProperty.SetValueWithoutTypeCheck(sourceProperty.Value);
               break;
             case PropertyKind.RelatedObject:
+              Assertion.DebugIsNotNull(targetProperty.PropertyData.RelationEndPointDefinition, "targetProperty.PropertyData.RelationEndPointDefinition != null");
               if (!targetProperty.PropertyData.RelationEndPointDefinition.IsVirtual)
               {
                 var relatedObjectID = (ObjectID?)sourceProperty.Value;

@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </value>
     public virtual ITransaction? Parent
     {
-      get { return _wrappedInstance.ParentTransaction.ToITransaction(); }
+      get { return _wrappedInstance.ParentTransaction?.ToITransaction(); }
     }
 
     /// <summary>Gets a flag describing whether the transaction is a child transaction.</summary>

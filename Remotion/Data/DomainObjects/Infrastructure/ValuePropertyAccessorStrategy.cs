@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public Type GetPropertyType (PropertyDefinition? propertyDefinition, IRelationEndPointDefinition? relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition!);
       return propertyDefinition.PropertyType;
     }
 
@@ -39,6 +39,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);
+      Assertion.IsNotNull(propertyAccessor.PropertyData.PropertyDefinition, "A relation property accessor cannot be used with a value property definition.");
 
       return GetDataContainer(propertyAccessor, transaction).HasValueChanged(propertyAccessor.PropertyData.PropertyDefinition);
     }
@@ -47,6 +48,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);
+      Assertion.IsNotNull(propertyAccessor.PropertyData.PropertyDefinition, "A relation property accessor cannot be used with a value property definition.");
 
       return GetDataContainer(propertyAccessor, transaction).HasValueBeenTouched(propertyAccessor.PropertyData.PropertyDefinition);
     }
@@ -55,6 +57,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);
+      Assertion.IsNotNull(propertyAccessor.PropertyData.PropertyDefinition, "A relation property accessor cannot be used with a value property definition.");
 
       return GetValueWithoutTypeCheck(propertyAccessor, transaction) == null;
     }
@@ -63,6 +66,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);
+      Assertion.IsNotNull(propertyAccessor.PropertyData.PropertyDefinition, "A relation property accessor cannot be used with a value property definition.");
 
       return GetDataContainer(propertyAccessor, transaction).GetValue(propertyAccessor.PropertyData.PropertyDefinition);
     }
@@ -71,6 +75,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);
+      Assertion.IsNotNull(propertyAccessor.PropertyData.PropertyDefinition, "A relation property accessor cannot be used with a value property definition.");
 
       GetDataContainer(propertyAccessor, transaction).SetValue(propertyAccessor.PropertyData.PropertyDefinition, value);
     }
@@ -79,13 +84,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);
+      Assertion.IsNotNull(propertyAccessor.PropertyData.PropertyDefinition, "A relation property accessor cannot be used with a value property definition.");
 
       return GetDataContainer(propertyAccessor, transaction).GetValue(propertyAccessor.PropertyData.PropertyDefinition, ValueAccess.Original);
     }
 
     private DataContainer GetDataContainer (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      return transaction.DataManager.GetDataContainerWithLazyLoad(propertyAccessor.DomainObject.ID, throwOnNotFound: true);
+      return transaction.DataManager.GetDataContainerWithLazyLoad(propertyAccessor.DomainObject.ID, throwOnNotFound: true)!;
     }
   }
 }

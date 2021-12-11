@@ -39,9 +39,9 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
     }
 
-    public RelationDefinition RelationDefinition => null;
+    public RelationDefinition RelationDefinition => null!;
 
-    public ClassDefinition ClassDefinition => null;
+    public ClassDefinition ClassDefinition => null!;
 
     public bool IsMandatory => false;
 

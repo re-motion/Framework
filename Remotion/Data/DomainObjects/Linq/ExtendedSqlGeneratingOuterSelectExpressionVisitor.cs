@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
 using Remotion.Linq.SqlBackend.SqlGeneration;
@@ -28,8 +29,8 @@ namespace Remotion.Data.DomainObjects.Linq
   /// </summary>
   public class ExtendedSqlGeneratingOuterSelectExpressionVisitor : SqlGeneratingOuterSelectExpressionVisitor
   {
-    private static readonly MethodInfo s_getObjectIDOrNullMethod = MemberInfoFromExpressionUtility.GetMethod(() => GetObjectIDOrNull(null, null));
-    private static readonly ConstructorInfo s_objectIDConstructor = MemberInfoFromExpressionUtility.GetConstructor(() => new ObjectID((string)null, null));
+    private static readonly MethodInfo s_getObjectIDOrNullMethod = MemberInfoFromExpressionUtility.GetMethod(() => GetObjectIDOrNull(null!, null!));
+    private static readonly ConstructorInfo s_objectIDConstructor = MemberInfoFromExpressionUtility.GetConstructor(() => new ObjectID((string?)null!, null!));
 
     public static new void GenerateSql (
         Expression expression,
@@ -47,6 +48,7 @@ namespace Remotion.Data.DomainObjects.Linq
       visitor.Visit(expression);
     }
 
+    [return: NotNullIfNotNull("value")]
     public static ObjectID? GetObjectIDOrNull (string classID, object? value)
     {
       if (value == null)
@@ -73,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
         var originalObjectIDProjection = (NewExpression)CommandBuilder.GetInMemoryProjectionBody();
         Assertion.IsNotNull(originalObjectIDProjection);
-        Assertion.IsTrue(originalObjectIDProjection.Constructor.Equals(s_objectIDConstructor));
+        Assertion.IsTrue(object.Equals(originalObjectIDProjection.Constructor, s_objectIDConstructor));
 
         var nullSafeObjectIDProjection = Expression.Call(
             s_getObjectIDOrNullMethod,

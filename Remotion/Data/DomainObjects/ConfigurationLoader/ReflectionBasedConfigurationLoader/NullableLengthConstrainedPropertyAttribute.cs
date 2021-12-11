@@ -28,7 +28,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public int MaximumLength
     {
-      get { return _maximumLength.Value; }
+      [Obsolete("Property getter is only required for C# compiler.", true)]
+      get { return _maximumLength ?? Int32.MaxValue; }
       set { _maximumLength = value; }
     }
 

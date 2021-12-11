@@ -187,7 +187,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       foreach (IRelationEndPointDefinition endPointDefinition in ClassDefinition.GetRelationEndPointDefinitions())
       {
         if (endPointDefinition.IsVirtual)
+        {
+          Assertion.DebugAssert(!endPointDefinition.IsAnonymous, "!Definition.IsAnonymous");
           yield return this[endPointDefinition.PropertyName, transaction];
+        }
       }
     }
 
@@ -312,6 +315,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
             break;
           case PropertyKind.RelatedObjectCollection:
             var values = (IEnumerable?)property.GetValueWithoutTypeCheck();
+            Assertion.IsNotNull(values, "Collection property '{0}' does not have a value.", property.PropertyData.PropertyIdentifier);
             foreach (DomainObject relatedObject in values)
               yield return relatedObject;
             break;

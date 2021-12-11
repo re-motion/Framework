@@ -54,6 +54,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       catch (MappingException ex)
       {
         var result = MappingValidationResult.CreateInvalidResultForProperty(propertyInfo, ex.Message);
+        Assertion.DebugIsNotNull(result.Message, "result.Message != null");
         throw new MappingException(result.Message, ex);
       }
     }

@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     protected virtual void Dispose (bool disposing)
     {
       if (disposing)
-        _storageProviderDefinition = null;
+        _storageProviderDefinition = null!;
 
       _disposed = true;
     }

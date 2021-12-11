@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Collections;
@@ -64,6 +65,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return new ReadOnlyVirtualCollectionDataDecorator(originalData);
     }
 
+    [MemberNotNullWhen(true, nameof(_cachedDomainObjects))]
     public bool IsCacheUpToDate
     {
       get { return _cachedDomainObjects != null; }
@@ -173,7 +175,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return true;
     }
 
-    [NotNull]
+    [JetBrains.Annotations.NotNull]
     private IReadOnlyDictionary<ObjectID, DomainObject> GetCachedDomainObjects ()
     {
       if (_cachedDomainObjects == null)
@@ -199,7 +201,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return _cachedDomainObjects;
     }
 
-    [NotNull]
+    [JetBrains.Annotations.NotNull]
     private IEnumerable<DomainObject> GetCachedDomainObjectsSorted ()
     {
       var comparer = GetDomainObjectComparer();
@@ -245,7 +247,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       var hasCachedDomainObjects = _cachedDomainObjects != null;
       info.AddBoolValue(hasCachedDomainObjects);
       if (hasCachedDomainObjects)
-        info.AddCollection((ICollection<DomainObject>)_cachedDomainObjects.Values);
+        info.AddCollection((ICollection<DomainObject>)_cachedDomainObjects!.Values);
     }
 
     #endregion

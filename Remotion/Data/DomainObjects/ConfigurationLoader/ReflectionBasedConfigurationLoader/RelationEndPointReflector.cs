@@ -103,6 +103,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
             IsMandatory(),
             PropertyInfo);
 
+        Assertion.DebugIsNotNull(BidirectionalRelationAttribute, "Cannot call {0}(...) with for unidirectional relations.", nameof(CreateVirtualRelationEndPointDefinition));
         if (BidirectionalRelationAttribute.SortExpression != null)
           relationEndPointDefinition.SetHasSortExpressionFlag();
 
@@ -147,7 +148,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     private Lazy<SortExpressionDefinition?> GetSortExpressionDefinition (DeferredRelationEndPointDefinition deferredRelationEndPointDefinition)
     {
-      Assertion.IsTrue(IsBidirectionalRelation, "Cannot call {0}(...) with for unidirectional relations.", nameof(GetSortExpressionDefinition));
+      Assertion.DebugIsNotNull(BidirectionalRelationAttribute, "Cannot call {0}(...) with for unidirectional relations.", nameof(GetSortExpressionDefinition));
 
       var propertyInfo = PropertyInfo;
       var sortExpressionText = BidirectionalRelationAttribute.SortExpression;

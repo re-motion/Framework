@@ -166,6 +166,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     private IStorageEntityDefinition CreateEntityDefinitionForClassBelowTable (ClassDefinition classDefinition)
     {
+      Assertion.DebugIsNotNull(classDefinition.BaseClass, "classDefinition.BaseClass != null");
+
       // The following call is potentially recursive (GetEntityDefinition -> EnsureStorageEntitiesCreated -> CreateEntityDefinitionForClassBelowTable), but this is
       // guaranteed to terminate because we know at this point that there is a class in the classDefinition's base hierarchy that will get a 
       // TableDefinition

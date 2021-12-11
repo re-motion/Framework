@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
                   "The type '{0}' does not match the type of the opposite relation propery '{1}' declared on type '{2}'.",
                   declaringDomainObjectTypeForProperty.Name,
                   relationAttribute.OppositeProperty,
-                  oppositePropertyInfo.DeclaringType.Name);
+                  oppositePropertyInfo.DeclaringType!.Name);
             }
           }
           else
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
                   "The type '{0}' cannot be assigned to the type of the opposite relation propery '{1}' declared on type '{2}'.",
                   declaringDomainObjectTypeForProperty.Name,
                   relationAttribute.OppositeProperty,
-                  oppositePropertyInfo.DeclaringType.Name);
+                  oppositePropertyInfo.DeclaringType!.Name);
             }
           }
         }

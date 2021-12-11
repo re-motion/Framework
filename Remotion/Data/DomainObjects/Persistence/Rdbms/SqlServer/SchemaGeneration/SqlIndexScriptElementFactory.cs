@@ -81,6 +81,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
       var visitor = new IndexDefinitionVisitor(this, ownerName);
       indexDefinition.Accept(visitor);
+      Assertion.IsNotNull(_createScriptElement, "_createScriptElement != null after indexDefinition.Accept (visitor)");
       return _createScriptElement;
     }
 
@@ -90,6 +91,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
       var visitor = new IndexDefinitionVisitor(this, ownerName);
       indexDefinition.Accept(visitor);
+      Assertion.IsNotNull(_dropScriptElement, "_createScriptElement != null after indexDefinition.Accept (visitor)");
       return _dropScriptElement;
     }
 

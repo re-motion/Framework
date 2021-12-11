@@ -79,14 +79,20 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
     {
       XmlNodeList? queryNodeList = Document.SelectNodes(FormatXPath("{0}:queries/{0}:query"), NamespaceManager);
 
+      Assertion.DebugIsNotNull(queryNodeList, "queryNodeList != null");
       foreach (XmlNode queryNode in queryNodeList)
         queries.Add(GetQueryDefinition(queryNode));
     }
 
     private QueryDefinition GetQueryDefinition (XmlNode queryNode)
     {
-      string queryID = queryNode.SelectSingleNode("@id", NamespaceManager).InnerText;
-      string queryTypeAsString = queryNode.SelectSingleNode("@type", NamespaceManager).InnerText;
+      var queryIDNode = queryNode.SelectSingleNode("@id", NamespaceManager);
+      Assertion.DebugIsNotNull(queryIDNode, "queryIDNode != null");
+      string queryID = queryIDNode.InnerText;
+
+      var queryTypeNode = queryNode.SelectSingleNode("@type", NamespaceManager);
+      Assertion.DebugIsNotNull(queryTypeNode, "queryTypeNode != null");
+      string queryTypeAsString = queryTypeNode.InnerText;
       QueryType queryType = (QueryType)Enum.Parse(typeof(QueryType), queryTypeAsString, true);
 
       XmlNode? node = queryNode.SelectSingleNode(FormatXPath("{0}:storageGroupType"), NamespaceManager);
@@ -96,7 +102,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
       else
         storageProviderDefinition = GetStorageProviderDefinition(null);
 
-      string statement = queryNode.SelectSingleNode(FormatXPath("{0}:statement"), NamespaceManager).InnerText;
+      var queryStatementNode = queryNode.SelectSingleNode(FormatXPath("{0}:statement"), NamespaceManager);
+      Assertion.DebugIsNotNull(queryStatementNode, "queryStatementNode != null");
+      string statement = queryStatementNode.InnerText;
 
       Type? collectionType = LoaderUtility.GetOptionalType(queryNode, FormatXPath("{0}:collectionType"), NamespaceManager);
 

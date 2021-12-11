@@ -108,12 +108,12 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public IPropertyInformation? FindInterfaceImplementation (Type implementationType)
     {
-      throw new InvalidOperationException("FindInterfaceImplementation can only be called on inteface properties.");
+      throw new InvalidOperationException("FindInterfaceImplementation can only be called on interface properties.");
     }
 
     public IEnumerable<IPropertyInformation> FindInterfaceDeclarations ()
     {
-      return null;
+      return Array.Empty<IPropertyInformation>();
     }
 
     public ParameterInfo[] GetIndexParameters ()

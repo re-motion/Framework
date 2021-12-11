@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -121,6 +122,8 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
       _message = message;
     }
 
+    [MemberNotNullWhen(false, nameof(Message))]
+    [MemberNotNullWhen(false, nameof(_message))]
     public bool IsValid
     {
       get { return _isValid; }

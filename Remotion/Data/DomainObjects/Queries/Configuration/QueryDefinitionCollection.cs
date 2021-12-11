@@ -71,10 +71,13 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// <exception cref="QueryConfigurationException">The <see cref="QueryDefinition"/> identified through <paramref name="queryID"/> could not be found.</exception>
     public QueryDefinition GetMandatory (string queryID)
     {
-      if (!Contains(queryID))
+      ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
+
+      var queryDefinition = this[queryID];
+      if (queryDefinition == null)
         throw CreateQueryConfigurationException("QueryDefinition '{0}' does not exist.", queryID);
 
-      return this[queryID];
+      return queryDefinition;
     }
 
     private ArgumentException CreateArgumentException (string message, string parameterName, params object[] args)
@@ -95,8 +98,9 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
       foreach (QueryDefinition query in source)
       {
-        if (Contains(query.ID))
-          throw new DuplicateQueryDefinitionException(this[query.ID], query);
+        var existingQueryDefinition = this[query.ID];
+        if (existingQueryDefinition != null)
+          throw new DuplicateQueryDefinitionException(existingQueryDefinition, query);
         else
           Add(query);
       }

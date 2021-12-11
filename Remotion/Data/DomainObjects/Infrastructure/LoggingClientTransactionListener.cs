@@ -380,7 +380,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     private string GetObjectIDString (ObjectID? id)
     {
-      return id != null ? id.ToString() : "<null>";
+      return id != null ? id.ToString()! : "<null>";
     }
 
     private string GetDomainObjectsString (IEnumerable<DomainObject> domainObjects)

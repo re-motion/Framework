@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Persistence
         if (_storageProviderManager != null)
           _storageProviderManager.Dispose();
 
-        _storageProviderManager = null;
+        _storageProviderManager = null!;
 
         _disposed = true;
         GC.SuppressFinalize(this);
@@ -347,6 +347,12 @@ namespace Remotion.Data.DomainObjects.Persistence
     {
       var oppositeEndPointDefinition = (RelationEndPointDefinition)relationEndPointID.Definition.GetOppositeEndPointDefinition();
       var objectID = (ObjectID?)oppositeDataContainer.GetValueWithoutEvents(oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current);
+
+      Assertion.IsNotNull(
+          objectID,
+          "The property '{0}' of the loaded DataContainer '{1}' is null.",
+          oppositeEndPointDefinition.PropertyName,
+          oppositeDataContainer.ID);
 
       if (relationEndPointID.ObjectID.ClassID != objectID.ClassID)
       {

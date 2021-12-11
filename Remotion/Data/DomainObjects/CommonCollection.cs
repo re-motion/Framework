@@ -70,7 +70,7 @@ public class CommonCollection : ICollection
 
     public void Dispose ()
     {
-      _collection = null;
+      _collection = null!;
     }
 
     #endregion
@@ -189,7 +189,11 @@ public class CommonCollection : ICollection
   /// </exception>
   protected object BaseGetObject (int index)
   {
-    return _collectionData[_collectionKeys[index]];
+    var collectionKey = _collectionKeys[index];
+    Assertion.DebugIsNotNull(collectionKey, "{0} must not contain null entries.", nameof(_collectionKeys));
+    var value = _collectionData[collectionKey];
+    Assertion.DebugIsNotNull(value, "{0} is out-of-sync with {1} or contains a null entry for index {2}.", nameof(_collectionData), nameof(_collectionKeys), index);
+    return value;
   }
 
   /// <summary>

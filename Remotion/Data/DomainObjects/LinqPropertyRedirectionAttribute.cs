@@ -96,11 +96,21 @@ namespace Remotion.Data.DomainObjects
         if (methodCallExpression.Method.Equals(MappedProperty.GetGetMethod(true)))
           throw CreateNotSupportedException(methodCallExpression, "The method would redirect to itself.");
 
-        Expression instanceExpression = isInstanceMethod ? methodCallExpression.Object : methodCallExpression.Arguments.Single();
+        Expression? instanceExpression;
+        if (isInstanceMethod)
+        {
+          instanceExpression = methodCallExpression.Object;
+          Assertion.DebugIsNotNull(instanceExpression, "methodCallExpression.Object != null when methodCallExpression.Method.IsStatic == false");
+        }
+        else
+        {
+          instanceExpression = methodCallExpression.Arguments.Single();
+        }
+
         try
         {
           if (instanceExpression.Type != MappedProperty.DeclaringType)
-            instanceExpression = Expression.Convert(instanceExpression, MappedProperty.DeclaringType);
+            instanceExpression = Expression.Convert(instanceExpression, MappedProperty.DeclaringType!);
         }
         catch (InvalidOperationException ex)
         {

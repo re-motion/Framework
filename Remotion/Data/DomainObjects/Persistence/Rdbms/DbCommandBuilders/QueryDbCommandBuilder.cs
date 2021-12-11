@@ -50,11 +50,20 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       var statement = _statement;
       foreach (var parameterWithType in _parametersWithType)
       {
+        var queryParameterValue = parameterWithType.QueryParameter.Value;
+
         if (parameterWithType.QueryParameter.ParameterType == QueryParameterType.Text)
-          statement = statement.Replace(parameterWithType.QueryParameter.Name, parameterWithType.QueryParameter.Value.ToString());
+        {
+          Assertion.DebugAssert(
+              queryParameterValue is string,
+              "parameterWithType.QueryParameter.Value is string when parameterWithType.QueryParameter.ParameterType == Text");
+          var queryParameterValueAsString = (string)queryParameterValue;
+
+          statement = statement.Replace(parameterWithType.QueryParameter.Name, queryParameterValueAsString);
+        }
         else
         {
-          var parameter = parameterWithType.StorageTypeInformation.CreateDataParameter(command, parameterWithType.QueryParameter.Value);
+          var parameter = parameterWithType.StorageTypeInformation.CreateDataParameter(command, queryParameterValue);
           parameter.ParameterName = parameterWithType.QueryParameter.Name;
           command.Parameters.Add(parameter);
         }

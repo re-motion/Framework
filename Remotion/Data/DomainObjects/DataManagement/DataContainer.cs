@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -320,6 +321,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <value>
     /// 	<see langword="true"/> if this instance has a <see cref="DomainObjects.DomainObject"/>; otherwise, <see langword="false"/>.
     /// </value>
+    [MemberNotNullWhen(true, nameof(_domainObject))]
     public bool HasDomainObject
     {
       get { return _domainObject != null; }
@@ -671,7 +673,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
         for (int i = 0; i < ClassDefinition.GetPropertyDefinitions().Count(); ++i)
         {
           var propertyName = info.GetValueForHandle<string>();
-          var propertyDefinition = ClassDefinition.GetPropertyDefinition(propertyName);
+          var propertyDefinition = ClassDefinition.GetMandatoryPropertyDefinition(propertyName);
           var propertyValue = new PropertyValue(propertyDefinition, propertyDefinition.DefaultValue);
           propertyValue.DeserializeFromFlatStructure(info);
           _propertyValues.Add(propertyDefinition, propertyValue);

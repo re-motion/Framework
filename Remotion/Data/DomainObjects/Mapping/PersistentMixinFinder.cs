@@ -61,13 +61,15 @@ namespace Remotion.Data.DomainObjects.Mapping
     public PersistentMixinFinder (Type type, bool includeInherited)
     {
       ArgumentUtility.CheckNotNull("type", type);
+      // API does not guarantee that type is DomainObject-derived. This is probably required when generating the mapping configuration prior to validation.
+
       Type = type;
       _includeInherited = includeInherited;
 
-      _mixinConfiguration = GetMixinConfigurationForDomainObjectType(type); // never null
+      _mixinConfiguration = GetMixinConfigurationForDomainObjectType(type);
 
-      if (Type.BaseType != null)
-        _parentClassContext = GetMixinConfigurationForDomainObjectType(Type.BaseType); // never null
+      if (type.BaseType != null)
+        _parentClassContext = GetMixinConfigurationForDomainObjectType(type.BaseType);
 
       if (IncludeInherited)
         _allParentClassContexts = GetParentClassContexts();
@@ -114,6 +116,9 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool IsInParentContext (Type mixinType)
     {
+      if (ParentClassContext == null)
+        return false;
+
       return ParentClassContext.Mixins.ContainsAssignableMixin(mixinType);
     }
 
@@ -134,6 +139,9 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     private void CheckForSuppressedMixins ()
     {
+      if (ParentClassContext == null)
+        return;
+
       var suppressedMixins = from mixin in ParentClassContext.Mixins
                              where IsPersistenceRelevant(mixin.MixinType) && !MixinConfiguration.Mixins.ContainsAssignableMixin(mixin.MixinType)
                              select mixin;
@@ -166,7 +174,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
       Assertion.IsTrue(_allParentClassContexts != null || !IncludeInherited, "If IncludeInherited is set, _allParentClassContexts is never null.");
 
-      if (!IncludeInherited && ParentClassContext.Mixins.ContainsKey(mixinType))
+      if (!IncludeInherited && ParentClassContext != null && ParentClassContext.Mixins.ContainsKey(mixinType))
         throw new InvalidOperationException("The given mixin is inherited from the base class, but includeInherited is not set to true.");
 
       ClassContext? parent = _allParentClassContexts != null ? _allParentClassContexts.FirstOrDefault(c => c.Mixins.ContainsKey(mixinType)) : null;

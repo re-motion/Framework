@@ -87,8 +87,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
         {
           Assertion.IsNotNull(endPointDefinition.PropertyInfo);
 
-          string propertyIdentifier = endPointDefinition.PropertyName;
-          var property = ( endPointDefinition.PropertyInfo);
+          string propertyIdentifier = endPointDefinition.PropertyName!;
+          var property = endPointDefinition.PropertyInfo;
 
           AnalyzeAndValidateProperty(property, propertyIdentifier);
         }
@@ -103,7 +103,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
         return;
 
       var property = (PropertyInfo?)_typeConversionProvider.Convert(propertyInformation.GetType(), typeof(PropertyInfo), propertyInformation);
-      var isMixinProperty = !property.DeclaringType.IsAssignableFrom(_baseType);
+      Assertion.DebugIsNotNull(property, "property != null when propertyInformation can be converted to PropertyInfo");
+      var isMixinProperty = !property.DeclaringType!.IsAssignableFrom(_baseType);
 
       var getMethod = property.GetGetMethod(true);
       var setMethod = property.GetSetMethod(true);
@@ -139,7 +140,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
             "Cannot instantiate type '{0}' because the mixin member '{1}.{2}' is an automatic property. "
             + "Mixins must implement their persistent members by using 'Properties' to get and set property values.",
             _baseType.GetFullNameSafe(),
-            property.DeclaringType.Name,
+            property.DeclaringType!.Name,
             property.Name);
         throw new NonInterceptableTypeException(message, _baseType);
       }

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
@@ -388,11 +389,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         Touch();
     }
 
+    [MemberNotNull(nameof(_loadState))]
     private void SetCompleteLoadState (IDomainObjectCollectionEndPointDataManager dataManager)
     {
       _loadState = new CompleteDomainObjectCollectionEndPointLoadState(dataManager, _endPointProvider, _transactionEventSink);
     }
 
+    [MemberNotNull(nameof(_loadState))]
     private void SetIncompleteLoadState ()
     {
       var loader = new EndPointLoader(_lazyLoader);

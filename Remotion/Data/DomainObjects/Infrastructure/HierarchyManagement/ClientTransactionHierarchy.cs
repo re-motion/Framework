@@ -73,9 +73,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     {
       if (_leafTransaction == _rootTransaction)
         throw new InvalidOperationException("Cannot remove the root transaction.");
-      _leafTransaction = _leafTransaction.ParentTransaction;
 
-      Assertion.IsNotNull(_leafTransaction);
+      var parentTransaction = _leafTransaction.ParentTransaction;
+      Assertion.IsNotNull(parentTransaction);
+
+      _leafTransaction = parentTransaction;
     }
 
     public IDisposable ActivateTransaction (ClientTransaction clientTransaction)

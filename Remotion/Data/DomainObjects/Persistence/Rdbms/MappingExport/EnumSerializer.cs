@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
     {
      return Enum.GetValues(type).Cast<object>().Select(
           value => new XElement(Constants.Namespace + "value",
-              new XAttribute("name", Enum.GetName(type, value)),
+              new XAttribute("name", Enum.GetName(type, value)!),
               new XAttribute("columnValue", Convert.ChangeType(value, Enum.GetUnderlyingType(type)))));
     }
   }

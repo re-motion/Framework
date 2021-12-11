@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Text;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -79,11 +79,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     /// <summary>
     /// Parses the specified object ID string, indicating by a boolean return value whether the operation was completed successfully.
     /// </summary>
-    public bool TryParse (string objectIDString, out ObjectID result)
+
+    public bool TryParse (string objectIDString, [MaybeNullWhen(false)] out ObjectID result)
     {
       ArgumentUtility.CheckNotNull("objectIDString", objectIDString);
 
-      result = ParseWithCustomErrorHandler(objectIDString, msg => null);
+      result = ParseWithCustomErrorHandler(objectIDString, msg => null!);
+      // ReSharper disable once ConditionIsAlwaysTrueOrFalse
       return result != null;
     }
 

@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
 
       throw new UnmappedItemException(
-          string.Format("The member '{0}.{1}' does not identify a mapped property.", memberInfo.ReflectedType.Name, memberInfo.Name));
+          string.Format("The member '{0}.{1}' does not identify a mapped property.", memberInfo.ReflectedType!.Name, memberInfo.Name));
     }
 
     public Expression ResolveConstantExpression (ConstantExpression constantExpression)

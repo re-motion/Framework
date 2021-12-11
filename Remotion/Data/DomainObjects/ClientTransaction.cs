@@ -1183,6 +1183,7 @@ public class ClientTransaction
     // - the user can rely on property access triggering OnLoaded for initialization (e.g., for registering event handlers),
     // - the user gets an ObjectNotFoundException for the originating object rather than a "mandatory relation not set in database" exception (or a
     //   null result) when the originating object doesn't exist.
+    Assertion.IsNotNull(relationEndPointID.ObjectID, "RelationEndPointID must indicate an existing endpoint at this point.");
     DomainObject domainObject = GetObject(relationEndPointID.ObjectID, true);
     return domainObject;
   }

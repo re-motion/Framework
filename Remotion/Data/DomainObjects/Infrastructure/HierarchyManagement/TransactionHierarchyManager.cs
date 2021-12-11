@@ -199,7 +199,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     public void OnBeforeTransactionInitialize ()
     {
       if (_parentTransaction != null)
+      {
+        Assertion.DebugIsNotNull(_parentEventSink, "_parentEventSink != null");
         _parentEventSink.RaiseSubTransactionInitializeEvent(_thisTransaction);
+      }
     }
 
     public void OnTransactionDiscard ()

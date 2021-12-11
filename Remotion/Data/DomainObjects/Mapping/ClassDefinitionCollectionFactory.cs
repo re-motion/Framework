@@ -73,6 +73,8 @@ namespace Remotion.Data.DomainObjects.Mapping
       if (ReflectionUtility.IsInheritanceRoot(type))
         return null;
 
+      Assertion.DebugIsNotNull(type.BaseType, "type.BaseType != null");
+
       return GetClassDefinition(classDefinitions, type.BaseType);
     }
 

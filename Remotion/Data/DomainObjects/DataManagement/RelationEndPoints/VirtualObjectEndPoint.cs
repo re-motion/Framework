@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
@@ -281,12 +282,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _loadState.SetDataFromSubTransaction(this, sourceVirtualObjectEndPoint._loadState);
     }
 
+    [MemberNotNull(nameof(_loadState))]
     private void SetIncompleteState ()
     {
       var loader = new EndPointLoader(_lazyLoader);
       _loadState = new IncompleteVirtualObjectEndPointLoadState(loader, _dataManagerFactory);
     }
 
+    [MemberNotNull(nameof(_loadState))]
     private void SetCompleteState (IVirtualObjectEndPointDataManager dataManager)
     {
       _loadState = new CompleteVirtualObjectEndPointLoadState(dataManager, EndPointProvider, _transactionEventSink);

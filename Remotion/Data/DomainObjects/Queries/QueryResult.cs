@@ -182,7 +182,8 @@ namespace Remotion.Data.DomainObjects.Queries
       var collectionType = Query.CollectionType ?? typeof(DomainObjectCollection);
       try
       {
-        return DomainObjectCollectionFactory.Instance.CreateCollection(collectionType, _queryResult);
+        // Null-forgiving operator is covered by general purpose catch block.
+        return DomainObjectCollectionFactory.Instance.CreateCollection(collectionType, _queryResult!);
       }
       catch (Exception ex)
       {
@@ -196,7 +197,8 @@ namespace Remotion.Data.DomainObjects.Queries
     {
       try
       {
-        return new ObjectList<TResult>(values);
+        // Null-forgiving operator is covered by general purpose catch block.
+        return new ObjectList<TResult>(values!);
       }
       catch (Exception ex)
       {

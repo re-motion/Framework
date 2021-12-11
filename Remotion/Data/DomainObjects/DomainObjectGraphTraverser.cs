@@ -89,7 +89,9 @@ namespace Remotion.Data.DomainObjects
           case PropertyKind.RelatedObjectCollection:
             if (strategy.ShouldFollowLink(_rootObject, current, currentDepth, property))
             {
-              foreach (DomainObject relatedObject in (IEnumerable)property.GetValueWithoutTypeCheck())
+              var value = (IEnumerable?)property.GetValueWithoutTypeCheck();
+              Assertion.IsNotNull(value, "Collection property '{0}' does not have a value.", property.PropertyData.PropertyIdentifier);
+              foreach (DomainObject relatedObject in value)
               {
                 if (relatedObject != null)
                   yield return Tuple.Create(relatedObject, currentDepth + 1);

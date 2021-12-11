@@ -101,10 +101,13 @@ namespace Remotion.Data.DomainObjects
       ArgumentUtility.CheckNotNull("assembly", assembly);
 
       var assemblyNameWithoutShadowCopy = assembly.GetName(copiedName: false);
-      var codeBaseUri = new Uri(assemblyNameWithoutShadowCopy.EscapedCodeBase);
+      var escapedCodeBase = assemblyNameWithoutShadowCopy.EscapedCodeBase;
+      if (escapedCodeBase == null)
+        throw new InvalidOperationException(String.Format("The code base of assembly '{0}' is not set.", assemblyNameWithoutShadowCopy.Name));
+      var codeBaseUri = new Uri(escapedCodeBase);
       if (!codeBaseUri.IsFile)
-        throw new InvalidOperationException(String.Format("The assembly's code base '{0}' is not a local path.", codeBaseUri.OriginalString));
-      return Path.GetDirectoryName(codeBaseUri.LocalPath);
+        throw new InvalidOperationException(String.Format("The code base '{0}' of assembly '{1}' is not a local path.", codeBaseUri.OriginalString, assemblyNameWithoutShadowCopy.Name));
+      return Path.GetDirectoryName(codeBaseUri.LocalPath)!;
     }
 
     /// <summary>
@@ -170,10 +173,11 @@ namespace Remotion.Data.DomainObjects
       Type?[] types = new Type?[args.Length];
       for (int i = 0; i < args.Length; i++)
       {
-        if (args[i] == null)
+        object? argument = args[i];
+        if (argument == null)
           types[i] = null;
         else
-          types[i] = args[i].GetType();
+          types[i] = argument.GetType();
       }
       return types;
     }
@@ -344,6 +348,8 @@ namespace Remotion.Data.DomainObjects
         return GetObjectListTypeParameter(propertyInfo.PropertyType);
       if (IsIObjectList(propertyInfo.PropertyType))
         return GetIObjectListTypeParameter(propertyInfo.PropertyType);
+      else if (propertyInfo.PropertyType.IsGenericParameter)
+        return null;
       else
         return propertyInfo.PropertyType;
     }
@@ -359,17 +365,18 @@ namespace Remotion.Data.DomainObjects
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      if (IsMixedProperty(propertyInfo, classDefinition))
+      var persistentMixin = GetPersistentMixinTypeForProperty(propertyInfo, classDefinition);
+      if (persistentMixin != null)
       {
         var originalMixinTarget =
-            classDefinition.PersistentMixinFinder.FindOriginalMixinTarget(classDefinition.GetPersistentMixin(propertyInfo.DeclaringType.ConvertToRuntimeType()));
+            classDefinition.PersistentMixinFinder.FindOriginalMixinTarget(persistentMixin);
         if (originalMixinTarget == null)
           throw new InvalidOperationException(
               String.Format("IPersistentMixinFinder.FindOriginalMixinTarget (DeclaringMixin) evaluated and returned null."));
         return originalMixinTarget;
       }
       else
-        return propertyInfo.DeclaringType.ConvertToRuntimeType();
+        return propertyInfo.DeclaringType!.ConvertToRuntimeType();
     }
 
     /// <summary>
@@ -383,7 +390,12 @@ namespace Remotion.Data.DomainObjects
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      return classDefinition.GetPersistentMixin(propertyInfo.DeclaringType.ConvertToRuntimeType()) != null;
+      return GetPersistentMixinTypeForProperty(propertyInfo, classDefinition) != null;
+    }
+
+    private static Type? GetPersistentMixinTypeForProperty (IPropertyInformation propertyInfo, ClassDefinition classDefinition)
+    {
+      return classDefinition.GetPersistentMixin(propertyInfo.DeclaringType!.ConvertToRuntimeType());
     }
 
     /// <summary>

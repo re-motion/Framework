@@ -32,8 +32,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public Type GetPropertyType (PropertyDefinition? propertyDefinition, IRelationEndPointDefinition? relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition!);
       Assertion.IsFalse(relationEndPointDefinition.IsAnonymous);
+      Assertion.DebugIsNotNull(relationEndPointDefinition.PropertyInfo, "relationEndPointDefinition.PropertyInfo != null when relationEndPointDefinition.IsAnonymous == false");
 
       return relationEndPointDefinition.PropertyInfo.PropertyType;
     }
@@ -41,6 +42,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public RelationEndPointID CreateRelationEndPointID (PropertyAccessor propertyAccessor)
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      Assertion.IsNotNull(propertyAccessor.PropertyData.RelationEndPointDefinition, "A value property accessor cannot be used with a relation property definition.");
+
       return RelationEndPointID.Create(propertyAccessor.DomainObject.ID, propertyAccessor.PropertyData.RelationEndPointDefinition);
     }
 
@@ -74,6 +77,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);
+      Assertion.IsNotNull(propertyAccessor.PropertyData.RelationEndPointDefinition, "A value property accessor cannot be used with a relation property definition.");
 
       if (propertyAccessor.PropertyData.RelationEndPointDefinition.IsVirtual)
         return GetValueWithoutTypeCheck(propertyAccessor, transaction) == null;
@@ -108,7 +112,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         throw new ClientTransactionsDifferException(formattedMessage + " The objects do not belong to the same ClientTransaction.");
       }
 
-      DomainObjectCheckUtility.EnsureNotDeleted(endPoint.GetDomainObjectReference(), endPoint.ClientTransaction);
+      var domainObjectOfEndPoint = endPoint.GetDomainObjectReference();
+      Assertion.DebugIsNotNull(domainObjectOfEndPoint, "endPoint.GetDomainObjectReference() != null");
+      DomainObjectCheckUtility.EnsureNotDeleted(domainObjectOfEndPoint, endPoint.ClientTransaction);
+
       if (newRelatedObject != null)
       {
         DomainObjectCheckUtility.EnsureNotDeleted(newRelatedObject, endPoint.ClientTransaction);

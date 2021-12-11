@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         throw new ArgumentException("The dataSourceData parameter must not be null when loadedObjectData.IsNull is false.", "dataSourceData");
       if (loadedObjectData.IsNull && dataSourceData != null)
         throw new ArgumentException("The dataSourceData parameter must be null when loadedObjectData.IsNull is true.", "dataSourceData");
-      if (!loadedObjectData.IsNull && loadedObjectData.ObjectID != dataSourceData.ID)
+      if (!loadedObjectData.IsNull && loadedObjectData.ObjectID != dataSourceData!.ID)
         throw new ArgumentException("The ID of the dataSourceData parameter does not match the loadedObjectData.", "dataSourceData");
 
       _loadedObjectData = loadedObjectData;

@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         throw new ConfigurationErrorsException(message);
       }
 
-      string connectionStringName = GetAndRemoveNonEmptyStringAttribute(config, "connectionString", name, true);
+      string connectionStringName = GetAndRemoveNonEmptyStringAttribute(config, "connectionString", name, required: true)!;
       _connectionString = ConfigurationWrapper.Current.GetConnectionString(connectionStringName, true).ConnectionString;
     }
 

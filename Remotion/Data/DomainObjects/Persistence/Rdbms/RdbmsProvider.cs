@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
@@ -60,6 +61,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
+    [MemberNotNullWhen(true, nameof(_connection))]
     public virtual bool IsConnected
     {
       get
@@ -118,6 +120,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
+    [MemberNotNull(nameof(_connection))]
     public virtual void Connect ()
     {
       CheckDisposed();

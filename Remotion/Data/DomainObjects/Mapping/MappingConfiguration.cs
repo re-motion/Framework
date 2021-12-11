@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Mapping
           throw CreateArgumentException("mappingConfiguration", "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.");
       }
 
-      s_fields.Current.Value = mappingConfiguration;
+      s_fields.Current.Value = mappingConfiguration!;
     }
 
     private static ArgumentException CreateArgumentException (Exception? innerException, string argumentName, string message, params object[] args)

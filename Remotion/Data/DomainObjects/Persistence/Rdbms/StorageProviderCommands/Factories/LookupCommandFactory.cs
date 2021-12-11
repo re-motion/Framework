@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       var selectedColumns = tableDefinition.GetAllColumns().ToArray();
       var dataContainerReader = _objectReaderFactory.CreateDataContainerReader(tableDefinition, selectedColumns);
       var comparedColumns = tableDefinition.ObjectIDProperty.SplitValueForComparison(objectID);
-      var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect(tableDefinition, selectedColumns, comparedColumns, new OrderedColumn[0]);
+      var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect(tableDefinition, selectedColumns, comparedColumns, Array.Empty<OrderedColumn>());
 
       var loadCommand = new SingleObjectLoadCommand<DataContainer?>(dbCommandBuilder, dataContainerReader);
       return new SingleDataContainerAssociateWithIDCommand<IRdbmsProviderCommandExecutionContext>(objectID, loadCommand);
@@ -129,7 +129,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           lookupResults => lookupResults.Select(
               result =>
               {
-                Assertion.IsNotNull(
+                Assertion.IsNotNull<Tuple<ObjectID, object>?>(
+                    result,
+                    "Because no OUTER JOIN query is involved in retrieving the result, the DataContainer can never be null.");
+                Assertion.IsNotNull<ObjectID>(
                     result.Item1,
                     "Because we included IDColumn into the projection and used it for the lookup, every row in the result set certainly has an ID.");
                 return new ObjectLookupResult<object>(result.Item1, result.Item2);

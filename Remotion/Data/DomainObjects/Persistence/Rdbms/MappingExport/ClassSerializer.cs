@@ -43,9 +43,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       return new XElement(
           Constants.Namespace + "class",
           GetIdAttribute(classDefinition),
-          GetBaseClassAttribute(classDefinition),
+          GetBaseClassAttribute(classDefinition)!,
           GetIsAbstractAttribute(classDefinition),
-          GetTableElements(classDefinition)
+          GetTableElements(classDefinition)!
           );
     }
 

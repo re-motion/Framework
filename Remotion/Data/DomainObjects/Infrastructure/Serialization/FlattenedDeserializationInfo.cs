@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 
     private Func<FlattenedDeserializationInfo, object> GetInstanceFactory (string typeName)
     {
-      var type = Type.GetType(typeName, throwOnError: true, ignoreCase: false);
+      var type = Type.GetType(typeName, throwOnError: true, ignoreCase: false)!;
       var ctorInfo = type.GetConstructor(
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
           null,

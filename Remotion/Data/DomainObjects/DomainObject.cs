@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -226,8 +227,8 @@ namespace Remotion.Data.DomainObjects
 
       try
       {
-        _id = (ObjectID)info.GetValue("DomainObject.ID", typeof(ObjectID));
-        _rootTransaction = (ClientTransaction)info.GetValue("DomainObject._rootTransaction", typeof(ClientTransaction));
+        _id = (ObjectID)info.GetValue("DomainObject.ID", typeof(ObjectID))!;
+        _rootTransaction = (ClientTransaction)info.GetValue("DomainObject._rootTransaction", typeof(ClientTransaction))!;
         _needsLoadModeDataContainerOnly = info.GetBoolean("DomainObject._needsLoadModeDataContainerOnly");
 
         PropertyChanging =
@@ -392,6 +393,8 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="InvalidOperationException">This <see cref="DomainObject"/> has already been initialized.</exception>
     /// <remarks>This method is always called exactly once per <see cref="DomainObject"/> instance by the framework. It sets the object's 
     /// <see cref="ID"/> and enlists it with the given <see cref="DomainObjects.ClientTransaction"/>.</remarks>
+    [MemberNotNull(nameof(_id))]
+    [MemberNotNull(nameof(_rootTransaction))]
     public void Initialize (ObjectID id, ClientTransaction rootTransaction)
     {
       ArgumentUtility.CheckNotNull("id", id);

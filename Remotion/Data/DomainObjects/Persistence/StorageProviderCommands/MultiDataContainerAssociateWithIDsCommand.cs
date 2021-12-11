@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       foreach (var dataContainer in dataContainers.Where(dc => dc != null))
       {
         // Duplicates overwrite the previous DataContainer
-        dataContainersByID[dataContainer.ID] = dataContainer;
+        dataContainersByID[dataContainer!.ID] = dataContainer;
       }
 
       var unassociatedDataContainerIDs = new HashSet<ObjectID>(dataContainersByID.Keys);

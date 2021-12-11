@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public RelationEndPointID EndPointID { get; }
 
-    public IDataContainerMapReadOnlyView DataContainerMap { get; }
+    public IDataContainerMapReadOnlyView DataContainerMap => _virtualCollectionData.DataContainerMap;
 
     private readonly VirtualCollectionData _virtualCollectionData;
 
@@ -42,7 +42,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("dataContainerMap", dataContainerMap);
 
       EndPointID = endPointID;
-      DataContainerMap = dataContainerMap;
 
       _virtualCollectionData = new VirtualCollectionData(endPointID, dataContainerMap, ValueAccess.Current);
     }

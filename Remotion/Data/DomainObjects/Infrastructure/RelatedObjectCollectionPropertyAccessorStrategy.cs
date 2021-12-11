@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public Type GetPropertyType (PropertyDefinition? propertyDefinition, IRelationEndPointDefinition? relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition!);
       return RelatedObjectPropertyAccessorStrategy.Instance.GetPropertyType(propertyDefinition, relationEndPointDefinition);
     }
 
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);
-      var newCollection = ArgumentUtility.CheckNotNullAndType<DomainObjectCollection>("value", value);
+      var newCollection = ArgumentUtility.CheckNotNullAndType<DomainObjectCollection>("value", value!);
 
       DomainObjectCheckUtility.EnsureNotDeleted(propertyAccessor.DomainObject, transaction);
 

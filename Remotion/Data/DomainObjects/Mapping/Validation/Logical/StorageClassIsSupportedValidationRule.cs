@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
             propertyInfo,
             "Only StorageClass.Persistent and StorageClass.Transaction are supported for property '{0}' of class '{1}'.",
             propertyInfo.Name,
-            propertyInfo.DeclaringType.Name);
+            propertyInfo.DeclaringType!.Name);
       }
       return MappingValidationResult.CreateValidResult();
     }

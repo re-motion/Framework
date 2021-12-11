@@ -51,6 +51,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       bool isFirstEndPointReal = !first.IsVirtual && !first.IsAnonymous;
       var endPoints = isFirstEndPointReal ? new { Left = first, Right = second } : new { Left = second, Right = first };
 
+      Assertion.DebugAssert(endPoints.Left.IsAnonymous == false, "At least one relation endpoint must be a real endpoint.");
       var leftPropertyName = NameResolver.GetPropertyName(endPoints.Left.PropertyInfo);
 
       if (endPoints.Right.IsAnonymous)
@@ -68,6 +69,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     {
       if (!IsBidirectionalRelation)
         return CreateOppositeAnonymousRelationEndPointDefinition(classDefinitions);
+      Assertion.DebugIsNotNull(BidirectionalRelationAttribute, "BidirectionalRelationAttribute != null");
 
       var oppositeClassDefinition = GetOppositeClassDefinition(classDefinitions);
       var oppositePropertyInfo = GetOppositePropertyInfo();

@@ -28,6 +28,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public NotFoundLoadedObjectData (ObjectID objectID)
     {
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+
       _objectID = objectID;
     }
 

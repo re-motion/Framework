@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.Mapping;
@@ -110,7 +111,7 @@ namespace Remotion.Data.DomainObjects
     /// If you expect <paramref name="objectIDString"/> to always hold a valid <see cref="ObjectID"/> string, use <see cref="Parse"/> instead. Use
     /// this method only if an invalid string constitutes a supported use case.
     /// </remarks>
-    public static bool TryParse (string objectIDString, out ObjectID result)
+    public static bool TryParse (string objectIDString, [MaybeNullWhen(false)] out ObjectID result)
     {
       ArgumentUtility.CheckNotNull("objectIDString", objectIDString);
       return ObjectIDStringSerializer.Instance.TryParse(objectIDString, out result);
@@ -319,7 +320,8 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public int CompareTo (object? obj)
     {
-      ArgumentUtility.CheckNotNull("obj", obj);
+      if (obj == null)
+        return 1;
 
       var other = obj as ObjectID;
       if (other == null)
@@ -384,8 +386,8 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("info", info);
 
-      var value = info.GetValue("Value", typeof(object));
-      var classID = info.GetString("ClassID");
+      var value = info.GetValue("Value", typeof(object))!;
+      var classID = info.GetString("ClassID")!;
       var classDefinition = MappingConfiguration.Current.GetClassDefinition(classID);
 
       _value = value;

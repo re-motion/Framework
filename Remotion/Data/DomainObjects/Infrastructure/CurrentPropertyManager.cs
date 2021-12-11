@@ -46,10 +46,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       get
       {
-        if (CurrentPropertyNames.Count == 0)
+        var currentPropertyNames = CurrentPropertyNames;
+        if (currentPropertyNames.Count == 0)
           return null;
         else
-          return _currentPropertyNames.Peek();
+          return currentPropertyNames.Peek();
       }
     }
 
@@ -105,9 +106,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <see cref="PreparePropertyAccess"/> and <see cref="PropertyAccessFinished"/>.</exception>
     public static void PropertyAccessFinished ()
     {
-      if (CurrentPropertyNames.Count == 0)
+      var currentPropertyNames = CurrentPropertyNames;
+      if (currentPropertyNames.Count == 0)
         throw new InvalidOperationException("There is no property to finish.");
-      CurrentPropertyNames.Pop();
+      currentPropertyNames.Pop();
     }
   }
 }

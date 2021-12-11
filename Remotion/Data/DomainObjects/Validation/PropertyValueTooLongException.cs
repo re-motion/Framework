@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Runtime.Serialization;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
@@ -37,6 +38,8 @@ namespace Remotion.Data.DomainObjects.Validation
     public PropertyValueTooLongException (DomainObject? domainObject, string propertyName, int maxLength, string message, Exception? inner)
         : base(message, inner)
     {
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+
       _domainObject = domainObject;
       _propertyName = propertyName;
       _maxLength = maxLength;
@@ -46,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Validation
         : base(info, context)
     {
       _domainObject = (DomainObject?)info.GetValue("_domainObject", typeof(DomainObject));
-      _propertyName = info.GetString("_propertyName");
+      _propertyName = info.GetString("_propertyName")!;
       _maxLength = info.GetInt32("_maxLength");
     }
 

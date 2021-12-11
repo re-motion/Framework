@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         ObjectID foreignKeyValue,
         SortExpressionDefinition? sortExpression)
     {
-      var selectedColumns = tableDefinition.GetAllColumns();
+      var selectedColumns = tableDefinition.GetAllColumns().ToArray();
       var dataContainerReader = _objectReaderFactory.CreateDataContainerReader(tableDefinition, selectedColumns);
 
       var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect(
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         ObjectID foreignKeyValue,
         SortExpressionDefinition? sortExpression)
     {
-      var selectedColumns = unionViewDefinition.ObjectIDProperty.GetColumns();
+      var selectedColumns = unionViewDefinition.ObjectIDProperty.GetColumns().ToArray();
       var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect(
           unionViewDefinition,
           selectedColumns,
@@ -128,10 +128,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           lookupResults => lookupResults.Select(
               result =>
               {
-                Assertion.IsNotNull(
+                return Assertion.IsNotNull<DataContainer?>(
                     result.LocatedObject,
                     "Because ID lookup and DataContainer lookup are executed within the same database transaction, the DataContainer can never be null.");
-                return result.LocatedObject;
               }));
     }
 
@@ -150,9 +149,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     protected virtual IEnumerable<OrderedColumn> GetOrderedColumns (SortExpressionDefinition? sortExpression)
     {
       if (sortExpression == null)
-        return new OrderedColumn[0];
+        return Array.Empty<OrderedColumn>();
 
-      Assertion.IsTrue(sortExpression.SortedProperties.Count > 0, "The sort-epression must have at least one sorted property.");
+      Assertion.IsTrue(sortExpression.SortedProperties.Count > 0, "The sort-expression must have at least one sorted property.");
 
       return from sortedProperty in sortExpression.SortedProperties
              let storagePropertyDefinition = _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition(sortedProperty.PropertyDefinition)

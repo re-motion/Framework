@@ -153,11 +153,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       object? value = GetValueWithoutTypeCheck();
 
+      var propertyIdentifier = PropertyData.PropertyIdentifier;
+      var propertyType = PropertyData.PropertyType;
 
       Assertion.DebugAssert(
-          value != null || NullableTypeUtility.IsNullableType(PropertyData.PropertyType),
+          value != null || NullableTypeUtility.IsNullableType(propertyType),
           "Property '{0}' is a value type but the DataContainer returned null.",
-          PropertyData.PropertyIdentifier);
+          propertyIdentifier);
 
       try
       {
@@ -166,12 +168,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       catch (InvalidCastException ex)
       {
         Assertion.IsNotNull(value, "Otherwise, the cast would have succeeded (ref type) or thrown a NullReferenceException (value type).");
+
+        var valueType = value.GetType();
+
         var message = string.Format(
             "The property '{0}' was expected to hold an object of type '{1}', but it returned an object of type '{2}'.",
-            PropertyData.PropertyIdentifier,
-            PropertyData.PropertyType,
-            value.GetType());
-        throw new InvalidTypeException(message, ex);
+            propertyIdentifier,
+            propertyType,
+            valueType);
+        throw new InvalidTypeException(message, propertyIdentifier, expectedType: propertyType, actualType:valueType, ex);
       }
     }
 
@@ -205,6 +210,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       if (PropertyData.Kind != PropertyKind.RelatedObject)
         throw new InvalidOperationException("This operation can only be used on related object properties.");
 
+      Assertion.DebugIsNotNull(PropertyData.RelationEndPointDefinition, "PropertyData.RelationEndPointDefinition != null");
       if (PropertyData.RelationEndPointDefinition.IsVirtual)
         throw new InvalidOperationException("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
 
@@ -260,6 +266,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       if (PropertyData.Kind != PropertyKind.RelatedObject)
         throw new InvalidOperationException("This operation can only be used on related object properties.");
 
+      Assertion.DebugIsNotNull(PropertyData.RelationEndPointDefinition, "PropertyData.RelationEndPointDefinition != null");
       if (PropertyData.RelationEndPointDefinition.IsVirtual)
         throw new InvalidOperationException("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
 

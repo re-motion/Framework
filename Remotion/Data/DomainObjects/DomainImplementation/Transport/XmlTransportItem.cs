@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -70,6 +71,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       ArgumentUtility.CheckNotNull("reader", reader);
 
       string? idString = reader.GetAttribute("ID");
+      Assertion.IsNotNull(idString, "No value was found for required attribute 'ID' on the current node.");
       ObjectID id = ObjectID.Parse(idString);
 
       reader.Read();
@@ -119,6 +121,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     private KeyValuePair<string, object?> DeserializeProperty (XmlReader reader, ClassDefinition classDefinition)
     {
       string? name = reader.GetAttribute("Name");
+      Assertion.IsNotNull(name, "No value was found for required attribute 'Name' on the current node.");
       PropertyDefinition? propertyDefinition = classDefinition.GetPropertyDefinition(name);
       object? value = DeserializePropertyValue(reader, propertyDefinition);
       return new KeyValuePair<string, object?>(name, value);
@@ -132,18 +135,22 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       {
         writer.WriteElementString("null", "");
       }
-      else if (IsObjectID(valueType))
-      {
-        writer.WriteString(value.ToString());
-      }
-      else if (ExtensibleEnumUtility.IsExtensibleEnumType(valueType))
-      {
-        writer.WriteString(((IExtensibleEnum)value).ID);
-      }
       else
       {
-        var valueSerializer = new XmlSerializer(valueType);
-        valueSerializer.Serialize(writer, value);
+        Assertion.DebugIsNotNull(valueType, "valueType != null when value != null");
+        if (IsObjectID(valueType))
+        {
+          writer.WriteString(value.ToString());
+        }
+        else if (ExtensibleEnumUtility.IsExtensibleEnumType(Assertion.IsNotNull(valueType)))
+        {
+          writer.WriteString(((IExtensibleEnum)value).ID);
+        }
+        else
+        {
+          var valueSerializer = new XmlSerializer(valueType);
+          valueSerializer.Serialize(writer, value);
+        }
       }
     }
 
@@ -159,7 +166,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
         reader.ReadStartElement("null"); // no end element for null
         value = null;
       }
-      else if (ExtensibleEnumUtility.IsExtensibleEnumType(valueType))
+      else if (ExtensibleEnumUtility.IsExtensibleEnumType(Assertion.IsNotNull(valueType)))
       {
         string idString = reader.ReadContentAsString();
         value = ExtensibleEnumUtility.GetDefinition(valueType).GetValueInfoByID(idString).Value;
@@ -178,6 +185,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       return value;
     }
 
+    [return: NotNullIfNotNull("value")]
     private Type? SerializeCustomValueType (XmlWriter writer, object? value)
     {
       Type? valueType = value != null ? value.GetType() : null;
@@ -195,6 +203,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     private Type? DeserializeCustomValueType (XmlReader reader)
     {
       string? valueTypeAttribute = reader.GetAttribute("Type");
+      Assertion.IsNotNull(valueTypeAttribute, "No value was found for required attribute 'Type' on the current node.");
       switch (valueTypeAttribute)
       {
         case "null":

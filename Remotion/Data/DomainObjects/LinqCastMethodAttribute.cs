@@ -88,11 +88,14 @@ namespace Remotion.Data.DomainObjects
         }
         else
         {
+          Assertion.DebugIsNotNull(methodCallExpression.Object, "methodCallExpression.Object != null when methodCallExpression.Method.IsStatic == false");
+
           if (methodCallExpression.Arguments.Count != 0)
           {
             var message = string.Format("Non-static LinqCastMethods must have no arguments. Expression: '{0}'", methodCallExpression);
             throw new NotSupportedException(message);
           }
+
           return Expression.Convert(methodCallExpression.Object, methodCallExpression.Type);
         }
       }

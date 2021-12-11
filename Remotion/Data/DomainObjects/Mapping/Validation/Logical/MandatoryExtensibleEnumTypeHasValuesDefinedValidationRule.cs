@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
             "Extensible enum type '{0}' cannot be used for property '{1}' on type '{2}' because the property is mandatory but there are not values defined for the enum type.",
             nativePropertyType.Name,
             propertyDefinition.PropertyInfo.Name,
-            propertyDefinition.PropertyInfo.DeclaringType.Name);
+            propertyDefinition.PropertyInfo.DeclaringType!.Name);
       }
 
       return MappingValidationResult.CreateValidResult();

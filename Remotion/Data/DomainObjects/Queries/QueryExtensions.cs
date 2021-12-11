@@ -58,11 +58,14 @@ namespace Remotion.Data.DomainObjects.Queries
 
     private static QueryParameter CopyQueryParameter (this QueryParameter template, Dictionary<object, object?> parameterValues)
     {
-      object parameterValue;
-      if (!parameterValues.TryGetValue(template.Value, out parameterValue))
+      var templateValue = template.Value;
+      if (templateValue == null)
+        throw new InvalidOperationException(string.Format("Template parameter '{0}' contains null value.", template.Name));
+
+      if (!parameterValues.TryGetValue(templateValue, out var parameterValue))
       {
         throw new InvalidOperationException(
-            String.Format("Query parameter '{0}' (lookup key: '{1}') is missing.", template.Name, template.Value));
+            String.Format("Query parameter '{0}' (lookup key: '{1}') is missing.", template.Name, templateValue));
       }
 
       return new QueryParameter(template.Name, parameterValue, template.ParameterType);
