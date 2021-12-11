@@ -66,6 +66,9 @@ namespace Remotion.Configuration
       }
       config.Remove(attribute);
 
+      if (required)
+        Assertion.IsNotNull(value, "value != null when required");
+
       return value;
     }
   }
