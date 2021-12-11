@@ -32,7 +32,7 @@ namespace Remotion.Data
     /// Gets the transaction managed by this scope.
     /// </summary>
     /// <value>The scoped transaction.</value>
-    ITransaction ScopedTransaction { get; }
+    ITransaction? ScopedTransaction { get; }
 
     /// <summary>
     /// Leaves the scope, which means that <see cref="ScopedTransaction"/> is no loner the current transaction. 

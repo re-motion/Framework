@@ -85,12 +85,12 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return (PropertyDefinition)BaseGetObject(index); }
     }
 
-    public PropertyDefinition this [string propertyName]
+    public PropertyDefinition? this [string propertyName]
     {
       get
       {
         ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-        return (PropertyDefinition)BaseGetObject(propertyName);
+        return (PropertyDefinition?)BaseGetObject(propertyName);
       }
     }
 

@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 
     public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (
         RelationEndPointDefinition relationEndPointDefinition,
-        SortExpressionDefinition sortExpressionDefinition,
+        SortExpressionDefinition? sortExpressionDefinition,
         ObjectID relatedID)
     {
       CheckDisposed();
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
       return Enumerable.Empty<IQueryResultRow>();
     }
 
-    public override object ExecuteScalarQuery (IQuery query)
+    public override object? ExecuteScalarQuery (IQuery query)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("query", query);

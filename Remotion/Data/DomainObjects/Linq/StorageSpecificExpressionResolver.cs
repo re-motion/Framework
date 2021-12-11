@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.Linq
       return GetJoinColumn(foreignKeyEndPoint, originatingEntity);
     }
 
-    public Expression ResolveIDPropertyViaForeignKey (SqlEntityExpression originatingEntity, RelationEndPointDefinition foreignKeyEndPoint)
+    public Expression? ResolveIDPropertyViaForeignKey (SqlEntityExpression originatingEntity, RelationEndPointDefinition foreignKeyEndPoint)
     {
       ArgumentUtility.CheckNotNull("originatingEntity", originatingEntity);
       ArgumentUtility.CheckNotNull("foreignKeyEndPoint", foreignKeyEndPoint);

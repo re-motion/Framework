@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// <summary>
     /// Returns the <see cref="QueryDefinition"/> identified through <paramref name="queryID"/>. If no <see cref="QueryDefinition"/> can be found an exception is thrown.
     /// </summary>
-    /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to be found.</param>
+    /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to be found. Must not be <see langword="null"/> or empty.</param>
     /// <returns>The <see cref="QueryDefinition"/> identified through <paramref name="queryID"/>.</returns>
     /// <exception cref="QueryConfigurationException">The <see cref="QueryDefinition"/> identified through <paramref name="queryID"/> could not be found.</exception>
     public QueryDefinition GetMandatory (string queryID)
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// <summary>
     /// Determines whether an item is in the <see cref="QueryDefinitionCollection"/>.
     /// </summary>
-    /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/>.</param>
+    /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/> or empty.</param>
     /// <returns><see langword="true"/> if the <see cref="QueryDefinition"/> with the <paramref name="queryID"/> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="queryID"/> is <see langword="null"/></exception>
     public bool Contains (string queryID)
@@ -146,12 +146,12 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// Gets the <see cref="QueryDefinition"/> with a given <see cref="QueryDefinition.ID"/> from the <see cref="QueryDefinitionCollection"/>.
     /// </summary>
     /// <remarks>The indexer returns <see langword="null"/> if the given <paramref name="queryID"/> was not found.</remarks>
-    public QueryDefinition this [string queryID]
+    public QueryDefinition? this [string queryID]
     {
       get
       {
         ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
-        return (QueryDefinition)BaseGetObject(queryID);
+        return (QueryDefinition?)BaseGetObject(queryID);
       }
     }
 

@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   [DebuggerDisplay("{GetType().Name}: Cardinality: {Cardinality}")]
   public class AnonymousRelationEndPointDefinition : IRelationEndPointDefinition
   {
-    private RelationDefinition _relationDefinition;
+    private RelationDefinition? _relationDefinition;
     private readonly ClassDefinition _classDefinition;
 
     public AnonymousRelationEndPointDefinition (ClassDefinition classDefinition)
@@ -46,12 +46,12 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _classDefinition; }
     }
 
-    public string PropertyName
+    public string? PropertyName
     {
       get { return null; }
     }
 
-    public IPropertyInformation PropertyInfo
+    public IPropertyInformation? PropertyInfo
     {
       get { return null; }
     }

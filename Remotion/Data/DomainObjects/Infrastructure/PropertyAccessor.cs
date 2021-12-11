@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Utilities;
@@ -145,11 +146,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </exception>
     /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="DomainObjects.ClientTransaction"/>.</exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
+    [return: MaybeNull]
     public T GetValue<T> ()
     {
       CheckType(typeof(T));
 
-      object value = GetValueWithoutTypeCheck();
+      object? value = GetValueWithoutTypeCheck();
+
 
       Assertion.DebugAssert(
           value != null || NullableTypeUtility.IsNullableType(PropertyData.PropertyType),
@@ -158,7 +161,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       try
       {
-        return (T)value;
+        return (T?)value;
       }
       catch (InvalidCastException ex)
       {
@@ -180,7 +183,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// this is an <see cref="ObjectList{T}"/>, where "T" is the related objects' type.</returns>
     /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="DomainObjects.ClientTransaction"/>.</exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
-    public object GetValueWithoutTypeCheck ()
+    public object? GetValueWithoutTypeCheck ()
     {
       CheckTransactionalStatus(ClientTransaction);
       return PropertyData.GetStrategy().GetValueWithoutTypeCheck(this, ClientTransaction);
@@ -195,7 +198,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// relation end point (i.e. the other side of the relation holds the foreign key).</exception>
     /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="DomainObjects.ClientTransaction"/>.</exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
-    public ObjectID GetRelatedObjectID ()
+    public ObjectID? GetRelatedObjectID ()
     {
       CheckTransactionalStatus(ClientTransaction);
 
@@ -205,7 +208,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       if (PropertyData.RelationEndPointDefinition.IsVirtual)
         throw new InvalidOperationException("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
 
-      return (ObjectID)ValuePropertyAccessorStrategy.Instance.GetValueWithoutTypeCheck(this, ClientTransaction);
+      return (ObjectID?)ValuePropertyAccessorStrategy.Instance.GetValueWithoutTypeCheck(this, ClientTransaction);
     }
 
     /// <summary>
@@ -223,10 +226,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </exception>
     /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="DomainObjects.ClientTransaction"/>.</exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
+    [return: MaybeNull]
     public T GetOriginalValue<T> ()
     {
       CheckType(typeof(T));
-      return (T)GetOriginalValueWithoutTypeCheck();
+      return (T?)GetOriginalValueWithoutTypeCheck();
     }
 
     /// <summary>
@@ -235,7 +239,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <returns>The original value of the encapsulated property in the current transaction.</returns>
     /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="DomainObjects.ClientTransaction"/>.</exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
-    public object GetOriginalValueWithoutTypeCheck ()
+    public object? GetOriginalValueWithoutTypeCheck ()
     {
       CheckTransactionalStatus(ClientTransaction);
       return PropertyData.GetStrategy().GetOriginalValueWithoutTypeCheck(this, ClientTransaction);
@@ -249,7 +253,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// relation end point (i.e. the other side of the relation holds the foreign key).</exception>
     /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="DomainObjects.ClientTransaction"/>.</exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
-    public ObjectID GetOriginalRelatedObjectID ()
+    public ObjectID? GetOriginalRelatedObjectID ()
     {
       CheckTransactionalStatus(ClientTransaction);
 
@@ -259,7 +263,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       if (PropertyData.RelationEndPointDefinition.IsVirtual)
         throw new InvalidOperationException("ObjectIDs only exist on the real side of a relation, not on the virtual side.");
 
-      return (ObjectID)ValuePropertyAccessorStrategy.Instance.GetOriginalValueWithoutTypeCheck(this, ClientTransaction);
+      return (ObjectID?)ValuePropertyAccessorStrategy.Instance.GetOriginalValueWithoutTypeCheck(this, ClientTransaction);
     }
 
     /// <summary>
@@ -299,7 +303,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="InvalidOperationException">The property is a related object collection; such properties cannot be set.</exception>
     /// <exception cref="ClientTransactionsDifferException">The <see cref="DomainObject"/> cannot be used in the current <see cref="DomainObjects.ClientTransaction"/>.</exception>
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
-    public void SetValueWithoutTypeCheck (object value)
+    public void SetValueWithoutTypeCheck (object? value)
     {
       CheckTransactionalStatus(ClientTransaction);
       PropertyData.GetStrategy().SetValueWithoutTypeCheck(this, ClientTransaction, value);

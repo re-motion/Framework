@@ -60,28 +60,28 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return _serializedIDProperty.GetColumns();
     }
 
-    public IEnumerable<ColumnValue> SplitValue (object value)
+    public IEnumerable<ColumnValue> SplitValue (object? value)
     {
       var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
 
       return _serializedIDProperty.SplitValue(GetStringOrNull(objectID));
     }
 
-    public IEnumerable<ColumnValue> SplitValueForComparison (object value)
+    public IEnumerable<ColumnValue> SplitValueForComparison (object? value)
     {
       var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
 
       return _serializedIDProperty.SplitValueForComparison(GetStringOrNull(objectID));
     }
 
-    public ColumnValueTable SplitValuesForComparison (IEnumerable<object> values)
+    public ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values)
     {
       ArgumentUtility.CheckNotNull("values", values);
 
-      return _serializedIDProperty.SplitValuesForComparison(values.Select(v => (object)GetStringOrNull((ObjectID)v)));
+      return _serializedIDProperty.SplitValuesForComparison(values.Select(v => (object?)GetStringOrNull((ObjectID?)v)));
     }
 
-    public object CombineValue (IColumnValueProvider columnValueProvider)
+    public object? CombineValue (IColumnValueProvider columnValueProvider)
     {
       ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
 
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
           this,
           property,
           "equivalentProperties",
-          prop => Tuple.Create<string, object>("property type", prop.PropertyType)
+          prop => Tuple.Create<string, object?>("property type", prop.PropertyType)
           )).ToArray();
 
       var unifiedSerializedIDProperty = _serializedIDProperty.UnifyWithEquivalentProperties(checkedProperties.Select(p => p.SerializedIDProperty));
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       throw new NotSupportedException("String-serialized ObjectID values cannot be used as foreign keys.");
     }
 
-    private string GetStringOrNull (ObjectID objectID)
+    private string? GetStringOrNull (ObjectID? objectID)
     {
       return objectID == null ? null : objectID.ToString();
     }

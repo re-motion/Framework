@@ -17,7 +17,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public int Count => 0;
 
-    public DataContainer this [ObjectID id] => null;
+    public DataContainer? this [ObjectID id] => null;
 
     public IEnumerator<DataContainer> GetEnumerator ()
     {

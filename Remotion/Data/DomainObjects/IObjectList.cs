@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects
     /// Gets the <see cref="DomainObject"/> with a given <see cref="ObjectID"/> from the <see cref="IObjectList{TDomainObject}"/>.
     /// </summary>
     /// <returns>The <see cref="DomainObject"/> for the <paramref name="objectID"/> or <see langword="null" /> of the <see cref="DomainObject"/> was not found.</returns>
-    TDomainObject GetObject (ObjectID objectID);
+    TDomainObject? GetObject (ObjectID objectID);
 
     [Obsolete("IObjectList is readonly.", true)]
     new int Add (object value);

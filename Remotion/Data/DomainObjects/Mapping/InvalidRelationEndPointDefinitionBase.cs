@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly ClassDefinition _classDefinition;
     private readonly string _propertyName;
     private readonly Type _propertyType;
-    private RelationDefinition _relationDefinition;
+    private RelationDefinition? _relationDefinition;
     private readonly IPropertyInformation _propertyInformation;
 
     protected InvalidRelationEndPointDefinitionBase (ClassDefinition classDefinition, string propertyName, Type propertyType)

@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     private readonly IDataContainerMapReadOnlyView _dataContainerMap;
     private readonly ValueAccess _valueAccess;
     [CanBeNull]
-    private IReadOnlyDictionary<ObjectID, DomainObject> _cachedDomainObjects;
+    private IReadOnlyDictionary<ObjectID, DomainObject>? _cachedDomainObjects;
 
     public VirtualCollectionData (
         RelationEndPointID associatedEndPointID,
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       throw new ArgumentOutOfRangeException("index");
     }
 
-    public DomainObject GetObject (ObjectID objectID)
+    public DomainObject? GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -192,7 +192,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
             // Only in debug builds for performance reasons. The .NET type comparison is sufficient for filtering the types until interface support is added.
             .Where(dc => requiredClassDefinition.IsSameOrBaseClassOf(dc.ClassDefinition))
 #endif
-            .Where(dc => (ObjectID)dc.GetValueWithoutEvents(foreignKeyPropertyDefinition, _valueAccess) == foreignKeyValue)
+            .Where(dc => (ObjectID?)dc.GetValueWithoutEvents(foreignKeyPropertyDefinition, _valueAccess) == foreignKeyValue)
             .ToDictionary(dc => dc.ID, dc => dc.DomainObject);
       }
 

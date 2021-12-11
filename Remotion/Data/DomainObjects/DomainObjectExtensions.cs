@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects
     /// is <see langword="null" />.</returns>
     [CanBeNull]
     [ContractAnnotation("null => null; notnull => notnull")]
-    public static ObjectID GetSafeID ([CanBeNull] this IDomainObject domainObjectOrNull)
+    public static ObjectID? GetSafeID ([CanBeNull] this IDomainObject? domainObjectOrNull)
     {
       if (domainObjectOrNull == null)
         return null;
@@ -55,8 +55,7 @@ namespace Remotion.Data.DomainObjects
     /// <typeparam name="T">The type to be used for the returned <see cref="IDomainObjectHandle{T}"/>.</typeparam>
     /// <param name="domainObject">The <see cref="IDomainObject"/> to get a handle for. Must not be <see langword="null" />.</param>
     /// <returns>A typed handle to the given <paramref name="domainObject"/>.</returns>
-    [NotNull]
-    public static IDomainObjectHandle<T> GetHandle<T> ([NotNull] this T domainObject) where T : IDomainObject
+    public static IDomainObjectHandle<T> GetHandle<T> ([JetBrains.Annotations.NotNull] this T domainObject) where T : IDomainObject
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -79,7 +78,7 @@ namespace Remotion.Data.DomainObjects
     /// is <see langword="null" />.</returns>
     [CanBeNull]
     [ContractAnnotation("null => null; notnull => notnull")]
-    public static IDomainObjectHandle<T> GetSafeHandle<T> ([CanBeNull] this T domainObjectOrNull) where T : class, IDomainObject
+    public static IDomainObjectHandle<T>? GetSafeHandle<T> ([CanBeNull] this T domainObjectOrNull) where T : class, IDomainObject
     {
       return domainObjectOrNull != null ? domainObjectOrNull.GetHandle() : null;
     }
@@ -89,7 +88,7 @@ namespace Remotion.Data.DomainObjects
     /// </summary>
     /// <param name="domainObject">The <see cref="IDomainObject"/> to get the <see cref="DomainObjectState"/> for. Must not be <see langword="null" />.</param>
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
-    public static DomainObjectState GetState ([NotNull] this IDomainObject domainObject)
+    public static DomainObjectState GetState ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
@@ -104,7 +103,7 @@ namespace Remotion.Data.DomainObjects
     /// <value>The timestamp of the object.</value>
     /// <exception cref="ObjectInvalidException">The object is invalid in the transaction.</exception>
     [CanBeNull]
-    public static object GetTimestamp ([NotNull] this IDomainObject domainObject)
+    public static object? GetTimestamp ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
@@ -125,8 +124,7 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="IDomainObject.RootTransaction"/>. The <see cref="ClientTransaction.ActiveTransaction"/> is usually the 
     /// <see cref="ClientTransaction.LeafTransaction"/>, but it can be changed by using <see cref="ClientTransaction"/> APIs.
     /// </remarks>
-    [NotNull]
-    public static IDomainObjectTransactionContext GetDefaultTransactionContext ([NotNull] this IDomainObject domainObject)
+    public static IDomainObjectTransactionContext GetDefaultTransactionContext ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 

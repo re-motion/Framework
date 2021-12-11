@@ -28,12 +28,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
   /// Executes the command created by the given <see cref="IDbCommandBuilder"/> and parses the result into a sequence of <see cref="ObjectID"/>
   /// instances.
   /// </summary>
-  public class MultiObjectIDLoadCommand : IStorageProviderCommand<IEnumerable<ObjectID>, IRdbmsProviderCommandExecutionContext>
+  public class MultiObjectIDLoadCommand : IStorageProviderCommand<IEnumerable<ObjectID?>, IRdbmsProviderCommandExecutionContext>
   {
     private readonly IEnumerable<IDbCommandBuilder> _dbCommandBuilders;
-    private readonly IObjectReader<ObjectID> _objectIDReader;
+    private readonly IObjectReader<ObjectID?> _objectIDReader;
 
-    public MultiObjectIDLoadCommand (IEnumerable<IDbCommandBuilder> dbCommandBuilders, IObjectReader<ObjectID> objectIDReader)
+    public MultiObjectIDLoadCommand (IEnumerable<IDbCommandBuilder> dbCommandBuilders, IObjectReader<ObjectID?> objectIDReader)
     {
       ArgumentUtility.CheckNotNull("dbCommandBuilders", dbCommandBuilders);
       ArgumentUtility.CheckNotNull("objectIDReader", objectIDReader);
@@ -47,18 +47,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _dbCommandBuilders; }
     }
 
-    public IObjectReader<ObjectID> ObjectIDReader
+    public IObjectReader<ObjectID?> ObjectIDReader
     {
       get { return _objectIDReader; }
     }
 
-    public IEnumerable<ObjectID> Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public IEnumerable<ObjectID?> Execute (IRdbmsProviderCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("executionContext", executionContext);
       return _dbCommandBuilders.SelectMany(b => LoadObjectIDsFromCommandBuilder(b, executionContext));
     }
 
-    private IEnumerable<ObjectID> LoadObjectIDsFromCommandBuilder (
+    private IEnumerable<ObjectID?> LoadObjectIDsFromCommandBuilder (
         IDbCommandBuilder commandBuilder, IRdbmsProviderCommandExecutionContext executionContext)
     {
       ArgumentUtility.CheckNotNull("commandBuilder", commandBuilder);
@@ -67,6 +67,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       {
         using (var reader = executionContext.ExecuteReader(command, CommandBehavior.SingleResult))
         {
+          // Use yield return to keep reader and command open while reading items
           foreach (var objectID in _objectIDReader.ReadSequence(reader))
             yield return objectID;
         }

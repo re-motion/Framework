@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     }
 
     protected abstract IEnumerable<RelationEndPointID> GetOwnedEndPointIDs (DataContainer dataContainer);
-    protected abstract string GetUnregisterProblem (IRelationEndPoint endPoint, RelationEndPointMap relationEndPointMap);
+    protected abstract string? GetUnregisterProblem (IRelationEndPoint endPoint, RelationEndPointMap relationEndPointMap);
 
     public void RegisterEndPoints (DataContainer dataContainer, RelationEndPointMap relationEndPointMap)
     {

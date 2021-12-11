@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       var valuePart = objectIDString.Substring(indexOfValuePart, indexOfTypeDelimiter - indexOfValuePart);
       var typePart = objectIDString.Substring(indexOfTypePart);
 
-      Type type = TypeUtility.GetType(typePart, false);
+      Type? type = TypeUtility.GetType(typePart, throwOnError: false);
       if (type == null)
       {
         return errorHandler(
@@ -132,8 +132,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       if (valueParser == null)
         return errorHandler(string.Format("Serialized ObjectID '{0}' is invalid: type '{1}' is not supported.", objectIDString, typePart));
 
-      object value;
-      if (!valueParser.TryParse(valuePart, out value))
+      if (!valueParser.TryParse(valuePart, out var value))
       {
         return errorHandler(string.Format(
             "Serialized ObjectID '{0}' is not correctly formatted: value '{1}' is not in the correct format for type '{2}'.",
@@ -149,7 +148,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       return new ObjectID(classDefinition, value);
     }
 
-    private IObjectIDValueParser GetValueParser (Type type)
+    private IObjectIDValueParser? GetValueParser (Type type)
     {
       if (type == typeof(Guid))
         return GuidObjectIDValueParser.Instance;

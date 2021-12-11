@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects
     /// <value>The timestamp of the object.</value>
     /// <exception cref="ObjectInvalidException">The object is invalid in the associated <see cref="ClientTransaction"/>.</exception>
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
-    object Timestamp { get; }
+    object? Timestamp { get; }
 
     /// <summary>
     /// Ensures that the <see cref="DomainObject"/> is included in the commit set of the <see cref="ClientTransaction"/>. 

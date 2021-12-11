@@ -28,9 +28,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
   [Serializable]
   public class DelegatingDataManager : IDataManager
   {
-    private IDataManager _innerDataManager;
+    private IDataManager? _innerDataManager;
 
-    public IDataManager InnerDataManager
+    public IDataManager? InnerDataManager
     {
       get { return _innerDataManager; }
       set { _innerDataManager = value; }
@@ -46,12 +46,12 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return SafeInnerDataManager.GetRelationEndPointWithLazyLoad(endPointID);
     }
 
-    public IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
+    public IRelationEndPoint? GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
     {
       return SafeInnerDataManager.GetRelationEndPointWithoutLoading(endPointID);
     }
 
-    public DataContainer GetDataContainerWithoutLoading (ObjectID objectID)
+    public DataContainer? GetDataContainerWithoutLoading (ObjectID objectID)
     {
       return SafeInnerDataManager.GetDataContainerWithoutLoading(objectID);
     }
@@ -81,12 +81,12 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return SafeInnerDataManager.GetState(objectID);
     }
 
-    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
+    public DataContainer? GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
     {
       return SafeInnerDataManager.GetDataContainerWithLazyLoad(objectID, throwOnNotFound);
     }
 
-    public IEnumerable<DataContainer> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
+    public IEnumerable<DataContainer?> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
     {
       return SafeInnerDataManager.GetDataContainersWithLazyLoad(objectIDs, throwOnNotFound);
     }

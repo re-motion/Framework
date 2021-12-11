@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
     private static readonly ConcurrentDictionary<string, Func<FlattenedDeserializationInfo, object>> s_instanceFactoryCache =
         new ConcurrentDictionary<string, Func<FlattenedDeserializationInfo, object>>();
 
-    public event EventHandler DeserializationFinished;
+    public event EventHandler? DeserializationFinished;
 
     private readonly FlattenedSerializationReader<object> _objectReader;
     private readonly FlattenedSerializationReader<int> _intReader;
@@ -160,11 +160,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
     {
       int handle = GetIntValue();
       if (handle == -1)
-        return (T)(object)null;
+        return (T)(object?)null;
       else
       {
-        object objectValue;
-        if (!_handleMap.TryGetValue(handle, out objectValue))
+        if (!_handleMap.TryGetValue(handle, out var objectValue))
         {
           if (handle < _handleMap.Count)
             throw new NotSupportedException("The serialized data contains a cycle, this is not supported.");

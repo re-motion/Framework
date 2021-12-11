@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
       get { return _query.StorageProviderDefinition; }
     }
 
-    public Type CollectionType
+    public Type? CollectionType
     {
       get { return _query.CollectionType;  }
     }

@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       _storageConfiguration = storageConfiguration;
     }
 
-    public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition, string errorMessageContext)
+    public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition, string? errorMessageContext)
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       return GetStorageProviderDefinition(storageGroupTypeOrNull, errorMessageContext);
     }
 
-    public StorageProviderDefinition GetStorageProviderDefinition (Type storageGroupTypeOrNull, string errorMessageContext)
+    public StorageProviderDefinition GetStorageProviderDefinition (Type? storageGroupTypeOrNull, string? errorMessageContext)
     {
       if (storageGroupTypeOrNull == null)
         return GetDefaultStorageProviderDefinition(errorMessageContext);
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       return _storageConfiguration.StorageProviderDefinitions.GetMandatory(storageGroup.StorageProviderName);
     }
 
-    private StorageProviderDefinition GetDefaultStorageProviderDefinition (string errorMessageContext)
+    private StorageProviderDefinition GetDefaultStorageProviderDefinition (string? errorMessageContext)
     {
       var defaultStorageProviderDefinition = _storageConfiguration.DefaultStorageProviderDefinition;
       if (defaultStorageProviderDefinition == null)

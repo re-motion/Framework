@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ValueAccess = valueAccess;
     }
 
-    public int Compare (DomainObject x, DomainObject y)
+    public int Compare (DomainObject? x, DomainObject? y)
     {
       ArgumentUtility.CheckNotNull("x", x);
       ArgumentUtility.CheckNotNull("y", y);
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         return -Comparer.Default.Compare(valueX, valueY);
     }
 
-    private object GetComparedKey (DomainObject domainObject)
+    private object? GetComparedKey (DomainObject domainObject)
     {
       var dataContainer = DataContainerMap[domainObject.ID];
       if (dataContainer == null)

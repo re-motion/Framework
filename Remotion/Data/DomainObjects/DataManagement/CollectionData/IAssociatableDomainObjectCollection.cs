@@ -54,6 +54,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     /// this is a stand-alone collection.
     /// </summary>
     /// <value>The associated end point.</value>
-    RelationEndPointID AssociatedEndPointID { get; }
+    RelationEndPointID? AssociatedEndPointID { get; }
   }
 }

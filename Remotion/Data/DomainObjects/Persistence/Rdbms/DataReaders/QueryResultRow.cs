@@ -55,12 +55,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _dataReader.FieldCount; }
     }
 
-    public object GetRawValue (int position)
+    public object? GetRawValue (int position)
     {
       return _dataReader.GetValue(position);
     }
 
-    public object GetConvertedValue (int position, Type type)
+    public object? GetConvertedValue (int position, Type type)
     {
       ArgumentUtility.CheckNotNull("type", type);
 

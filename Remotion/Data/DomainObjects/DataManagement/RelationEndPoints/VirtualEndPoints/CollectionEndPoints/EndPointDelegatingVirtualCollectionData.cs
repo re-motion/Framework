@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return data.GetObject(index);
     }
 
-    public DomainObject GetObject (ObjectID objectID)
+    public DomainObject? GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 

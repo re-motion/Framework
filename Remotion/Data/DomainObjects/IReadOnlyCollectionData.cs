@@ -27,9 +27,9 @@ namespace Remotion.Data.DomainObjects
   public interface IReadOnlyCollectionData<out T> : IReadOnlyList<T>
       where T : IDomainObject
   {
-    RelationEndPointID AssociatedEndPointID { get; }
+    RelationEndPointID? AssociatedEndPointID { get; }
     bool IsDataComplete { get; }
     bool Contains (ObjectID objectID);
-    T GetObject (ObjectID objectID);
+    T? GetObject (ObjectID objectID);
   }
 }

@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       return "Timestamp";
     }
 
-    public EntityNameDefinition GetTableName (ClassDefinition classDefinition)
+    public EntityNameDefinition? GetTableName (ClassDefinition classDefinition)
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       return String.Format("FK_{0}_{1}", tableName, String.Join((string)"_", (IEnumerable<string>)foreignKeyColumns.Select(cd => cd.Name)));
     }
 
-    private string GetColumnNameFromAttribute (PropertyDefinition propertyDefinition)
+    private string? GetColumnNameFromAttribute (PropertyDefinition propertyDefinition)
     {
       var attribute = propertyDefinition.PropertyInfo.GetCustomAttribute<IStorageSpecificIdentifierAttribute>(false);
       return attribute != null ? attribute.Identifier : null;

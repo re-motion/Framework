@@ -36,12 +36,12 @@ namespace Remotion.Data.DomainObjects.Persistence
         IEnumerable<ObjectID> objectIDs);
 
     IStorageProviderCommand<IEnumerable<DataContainer>, TExecutionContext> CreateForRelationLookup (
-        RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition sortExpressionDefinition);
+        RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition? sortExpressionDefinition);
 
-    IStorageProviderCommand<IEnumerable<DataContainer>, TExecutionContext> CreateForDataContainerQuery (IQuery query);
+    IStorageProviderCommand<IEnumerable<DataContainer?>, TExecutionContext> CreateForDataContainerQuery (IQuery query);
     IStorageProviderCommand<IEnumerable<IQueryResultRow>, TExecutionContext> CreateForCustomQuery (IQuery query);
 
-    IStorageProviderCommand<object, IRdbmsProviderCommandExecutionContext> CreateForScalarQuery (IQuery query);
+    IStorageProviderCommand<object?, IRdbmsProviderCommandExecutionContext> CreateForScalarQuery (IQuery query);
 
     IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>, TExecutionContext> CreateForMultiTimestampLookup (
         IEnumerable<ObjectID> objectIDs);

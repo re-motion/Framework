@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   public static class CurrentPropertyManager
   {
     [ThreadStatic]
-    private static Stack<string> _currentPropertyNames;
+    private static Stack<string>? _currentPropertyNames;
 
     private static Stack<string> CurrentPropertyNames
     {
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <summary>
     /// Returns the property name last put on this thread's stack, or null if the stack is empty.
     /// </summary>
-    public static string CurrentPropertyName
+    public static string? CurrentPropertyName
     {
       get
       {
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="InvalidOperationException">There is no current property or it hasn't been properly initialized.</exception>
     public static string GetAndCheckCurrentPropertyName ()
     {
-      string propertyName = CurrentPropertyName;
+      string? propertyName = CurrentPropertyName;
       if (propertyName == null)
       {
         throw new InvalidOperationException(

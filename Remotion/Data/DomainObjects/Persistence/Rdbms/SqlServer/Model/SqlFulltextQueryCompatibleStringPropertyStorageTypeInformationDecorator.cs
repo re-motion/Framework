@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
       get { return _innerStorageTypeInformation.DotNetType; }
     }
 
-    public IDbDataParameter CreateDataParameter (IDbCommand command, object value)
+    public IDbDataParameter CreateDataParameter (IDbCommand command, object? value)
     {
       var dbDataParameter = _innerStorageTypeInformation.CreateDataParameter(command, value);
 
@@ -100,17 +100,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
       return dbDataParameter;
     }
 
-    public object Read (IDataReader dataReader, int ordinal)
+    public object? Read (IDataReader dataReader, int ordinal)
     {
       return _innerStorageTypeInformation.Read(dataReader, ordinal);
     }
 
-    public object ConvertToStorageType (object dotNetValue)
+    public object ConvertToStorageType (object? dotNetValue)
     {
       return _innerStorageTypeInformation.ConvertToStorageType(dotNetValue);
     }
 
-    public object ConvertFromStorageType (object storageValue)
+    public object? ConvertFromStorageType (object? storageValue)
     {
       return _innerStorageTypeInformation.ConvertFromStorageType(storageValue);
     }
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
                   this,
                   p,
                   "equivalentStorageTypes",
-                  info => Tuple.Create<string, object>("fulltext compatible max-length", info.FulltextCompatibleMaxLength)
+                  info => Tuple.Create<string, object?>("fulltext compatible max-length", info.FulltextCompatibleMaxLength)
                   ))
           .Select(p => p._innerStorageTypeInformation);
       var unifiedInnerStorageType = _innerStorageTypeInformation.UnifyForEquivalentProperties(unwrappedStorageTypes);

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
@@ -27,12 +28,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     public class DataChangeEventArgs : EventArgs
     {
       public readonly OperationKind Operation;
-      // AffectedObject can be null for OperationKind.Sort
-      public readonly DomainObject AffectedObject;
-      // Index can be invalid for OperationKind.Sort
+      /// <summary>
+      /// The <see cref="DomainObject"/> of the insert or remove operation or <see langword="null" />
+      /// when the <see cref="Operation"/> is <see cref="ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Sort"/>.
+      /// </summary>
+      public readonly DomainObject? AffectedObject;
       public readonly int Index;
 
-      public DataChangeEventArgs (OperationKind operation, DomainObject affectedObject, int index)
+      public DataChangeEventArgs (OperationKind operation, DomainObject? affectedObject, int index)
       {
         Operation = operation;
         AffectedObject = affectedObject;
@@ -40,22 +43,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       }
     }
 
-    public event EventHandler<DataChangeEventArgs> CollectionChanging;
-    public event EventHandler<DataChangeEventArgs> CollectionChanged;
+    public event EventHandler<DataChangeEventArgs>? CollectionChanging;
+    public event EventHandler<DataChangeEventArgs>? CollectionChanged;
 
     public ObservableDomainObjectCollectionDataDecorator (IDomainObjectCollectionData wrappedData)
       : base(wrappedData)
     {
     }
 
-    protected override void OnDataChanging (OperationKind operation, DomainObject affectedObject, int index)
+    protected override void OnDataChanging (OperationKind operation, DomainObject? affectedObject, int index)
     {
       var eventHandler = CollectionChanging;
       if (eventHandler != null)
         eventHandler(this, new DataChangeEventArgs(operation, affectedObject, index));
     }
 
-    protected override void OnDataChanged (OperationKind operation, DomainObject affectedObject, int index)
+    protected override void OnDataChanged (OperationKind operation, DomainObject? affectedObject, int index)
     {
       var eventHandler = CollectionChanged;
       if (eventHandler != null)

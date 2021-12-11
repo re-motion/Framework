@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Validation
   [Serializable]
   public abstract class DomainObjectValidationException : DomainObjectException
   {
-    protected DomainObjectValidationException (string message, Exception inner)
+    protected DomainObjectValidationException (string message, Exception? inner)
         : base(message, inner)
     {
     }

@@ -34,15 +34,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     private readonly IRelationEndPoint _modifiedEndPoint;
     private readonly DomainObject _domainObject;
 
-    private readonly DomainObject _oldRelatedObject;
-    private readonly DomainObject _newRelatedObject;
+    private readonly DomainObject? _oldRelatedObject;
+    private readonly DomainObject? _newRelatedObject;
 
     private readonly IClientTransactionEventSink _transactionEventSink;
 
     protected RelationEndPointModificationCommand (
         IRelationEndPoint modifiedEndPoint,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject,
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject,
         IClientTransactionEventSink transactionEventSink)
     {
       ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint);
@@ -67,12 +67,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       get { return _domainObject; }
     }
 
-    public DomainObject OldRelatedObject
+    public DomainObject? OldRelatedObject
     {
       get { return _oldRelatedObject; }
     }
 
-    public DomainObject NewRelatedObject
+    public DomainObject? NewRelatedObject
     {
       get { return _newRelatedObject; }
     }
@@ -111,19 +111,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       RaiseClientTransactionEndNotification(_oldRelatedObject, _newRelatedObject);
     }
 
-    protected void RaiseClientTransactionBeginNotification (DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    protected void RaiseClientTransactionBeginNotification (DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
       _transactionEventSink.RaiseRelationChangingEvent(_domainObject, _modifiedEndPoint.Definition, oldRelatedObject, newRelatedObject);
     }
 
-    protected void RaiseClientTransactionEndNotification (DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    protected void RaiseClientTransactionEndNotification (DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
       _transactionEventSink.RaiseRelationChangedEvent(_domainObject, _modifiedEndPoint.Definition, oldRelatedObject, newRelatedObject);
     }
 
     protected IRelationEndPoint GetOppositeEndPoint (
         IRelationEndPoint originatingEndPoint,
-        DomainObject oppositeObject,
+        DomainObject? oppositeObject,
         IRelationEndPointProvider endPointProvider)
     {
       var oppositeEndPointID = RelationEndPointID.CreateOpposite(originatingEndPoint.Definition, oppositeObject.GetSafeID());

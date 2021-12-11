@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
   {
     private readonly string _indexName;
     private readonly ReadOnlyCollection<SqlIndexedColumnDefinition> _columns;
-    private readonly ReadOnlyCollection<ColumnDefinition> _includedColumns;
+    private readonly ReadOnlyCollection<ColumnDefinition>? _includedColumns;
     private readonly bool? _isClustered;
     private readonly bool? _isUnique;
     private readonly bool? _ignoreDupKey;
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
     public SqlIndexDefinition (
         string indexName,
         IEnumerable<SqlIndexedColumnDefinition> columns,
-        IEnumerable<ColumnDefinition> includedColumns = null,
+        IEnumerable<ColumnDefinition>? includedColumns = null,
         bool? isClustered = false,
         bool? isUnique = false,
         bool? ignoreDupKey = null,
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
 
       var columnsReadOnlyCollection = columns.ToList().AsReadOnly();
 
-      ReadOnlyCollection<ColumnDefinition> includedColumnsReadOnlyCollection = null;
+      ReadOnlyCollection<ColumnDefinition>? includedColumnsReadOnlyCollection = null;
       if (includedColumns != null)
         includedColumnsReadOnlyCollection = includedColumns.ToList().AsReadOnly();
 
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
       get { return _columns; }
     }
 
-    public ReadOnlyCollection<ColumnDefinition> IncludedColumns
+    public ReadOnlyCollection<ColumnDefinition>? IncludedColumns
     {
       get { return _includedColumns; }
     }

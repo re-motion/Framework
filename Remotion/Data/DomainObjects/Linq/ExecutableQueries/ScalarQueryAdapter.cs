@@ -28,9 +28,9 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
   /// are converted to this type via the <see cref="ResultConversion"/> delegate.</typeparam>
   public class ScalarQueryAdapter<T> : QueryAdapterBase<T>
   {
-    private readonly Func<object, T> _resultConversion;
+    private readonly Func<object?, T> _resultConversion;
 
-    public ScalarQueryAdapter (IQuery query, Func<object, T> resultConversion)
+    public ScalarQueryAdapter (IQuery query, Func<object?, T> resultConversion)
       : base(ArgumentUtility.CheckNotNull("query", query))
     {
       ArgumentUtility.CheckNotNull("resultConversion", resultConversion);
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
       _resultConversion = resultConversion;
     }
 
-    public Func<object, T> ResultConversion
+    public Func<object?, T> ResultConversion
     {
       get { return _resultConversion; }
     }

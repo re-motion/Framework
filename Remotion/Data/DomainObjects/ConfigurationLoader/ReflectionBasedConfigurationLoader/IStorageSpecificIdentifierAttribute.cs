@@ -27,7 +27,6 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     /// <summary>
     /// Gets the <see cref="string"/> used as the identifier.
     /// </summary>
-    //TODO: Always allow null values.
-    string Identifier { get; }
+    string? Identifier { get; }
   }
 }

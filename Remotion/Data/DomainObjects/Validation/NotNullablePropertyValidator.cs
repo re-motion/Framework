@@ -65,12 +65,12 @@ namespace Remotion.Data.DomainObjects.Validation
       }
     }
 
-    private static void ValidatePropertyDefinition (DomainObject domainObject, DataContainer dataContainer, PropertyDefinition propertyDefinition)
+    private static void ValidatePropertyDefinition (DomainObject? domainObject, DataContainer dataContainer, PropertyDefinition propertyDefinition)
     {
       if (propertyDefinition.IsNullable)
         return;
 
-      object propertyValue = dataContainer.GetValueWithoutEvents(propertyDefinition, ValueAccess.Current);
+      object? propertyValue = dataContainer.GetValueWithoutEvents(propertyDefinition, ValueAccess.Current);
       if (propertyValue == null)
       {
         throw new PropertyValueNotSetException(

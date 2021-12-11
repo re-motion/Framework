@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly ClassDefinition _classDefinition;
     private readonly int? _maxLength;
     private readonly StorageClass _storageClass;
-    private IStoragePropertyDefinition _storagePropertyDefinition;
+    private IStoragePropertyDefinition? _storagePropertyDefinition;
     private readonly IPropertyInformation _propertyInfo;
     private readonly Type _propertyType;
     private readonly bool _isNullable;
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _propertyType; }
     }
 
-    public object DefaultValue
+    public object? DefaultValue
     {
       get
       {

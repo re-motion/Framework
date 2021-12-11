@@ -82,12 +82,12 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return (IRelationEndPointDefinition)BaseGetObject(index); }
     }
 
-    public IRelationEndPointDefinition this [string propertyName]
+    public IRelationEndPointDefinition? this [string propertyName]
     {
       get
       {
         ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-        return (IRelationEndPointDefinition)BaseGetObject(propertyName);
+        return (IRelationEndPointDefinition?)BaseGetObject(propertyName);
       }
     }
 

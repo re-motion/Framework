@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull("endPointDefinition", endPointDefinition);
 
-      IRelationEndPointDefinition oppositeEndPointDefinition = GetOppositeEndPointDefinition(endPointDefinition);
+      IRelationEndPointDefinition? oppositeEndPointDefinition = GetOppositeEndPointDefinition(endPointDefinition);
       if (oppositeEndPointDefinition == null)
       {
         throw CreateMappingException(
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return new[] { _endPointDefinition1, _endPointDefinition2 }; }
     }
 
-    public IRelationEndPointDefinition GetEndPointDefinition (string classID, string propertyName)
+    public IRelationEndPointDefinition? GetEndPointDefinition (string classID, string propertyName)
     {
       ArgumentUtility.CheckNotNullOrEmpty("classID", classID);
 
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return null;
     }
 
-    public IRelationEndPointDefinition GetOppositeEndPointDefinition (IRelationEndPointDefinition endPointDefinition)
+    public IRelationEndPointDefinition? GetOppositeEndPointDefinition (IRelationEndPointDefinition endPointDefinition)
     {
       ArgumentUtility.CheckNotNull("endPointDefinition", endPointDefinition);
 
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         return null;
     }
 
-    public IRelationEndPointDefinition GetOppositeEndPointDefinition (string classID, string propertyName)
+    public IRelationEndPointDefinition? GetOppositeEndPointDefinition (string classID, string propertyName)
     {
       ArgumentUtility.CheckNotNullOrEmpty("classID", classID);
 
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return GetType().Name + ": " + _id;
     }
 
-    private MappingException CreateMappingException (string message, params object[] args)
+    private MappingException CreateMappingException (string message, params object?[] args)
     {
       return new MappingException(String.Format(message, args));
     }

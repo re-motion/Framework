@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     {
       List<string> potentialPaths = GetPotentialDefaultQueryFilePaths();
 
-      string path = null;
+      string? path = null;
       foreach (string potentialPath in potentialPaths)
       {
         if (File.Exists(potentialPath))

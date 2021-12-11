@@ -24,15 +24,15 @@ namespace Remotion.Data.DomainObjects
   /// </summary>
   public class ValueChangeEventArgs : EventArgs
   {
-    private readonly object _oldValue;
-    private readonly object _newValue;
+    private readonly object? _oldValue;
+    private readonly object? _newValue;
 
     /// <summary>
     /// Initializes a new instance of the <b>ValueChangingEventArgs</b>.
     /// </summary>
     /// <param name="oldValue">The old value.</param>
     /// <param name="newValue">The new value.</param>
-    public ValueChangeEventArgs (object oldValue, object newValue)
+    public ValueChangeEventArgs (object? oldValue, object? newValue)
     {
       _oldValue = oldValue;
       _newValue = newValue;
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Gets the old value.
     /// </summary>
-    public object OldValue
+    public object? OldValue
     {
       get { return _oldValue; }
     }
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Gets the new value.
     /// </summary>
-    public object NewValue
+    public object? NewValue
     {
       get { return _newValue; }
     }

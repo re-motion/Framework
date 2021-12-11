@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       get { return _orderedObjectIDs.Count; }
     }
 
-    Type IDomainObjectCollectionData.RequiredItemType
+    Type? IDomainObjectCollectionData.RequiredItemType
     {
       get { return null; }
     }
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       get { return false; }
     }
 
-    RelationEndPointID IDomainObjectCollectionData.AssociatedEndPointID
+    RelationEndPointID? IDomainObjectCollectionData.AssociatedEndPointID
     {
       get { return null; }
     }
@@ -90,12 +90,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return _objectsByID[_orderedObjectIDs[index]];
     }
 
-    public DomainObject GetObject (ObjectID objectID)
+    public DomainObject? GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      DomainObject result;
-      _objectsByID.TryGetValue(objectID, out result);
+      _objectsByID.TryGetValue(objectID, out var result);
       return result;
     }
 

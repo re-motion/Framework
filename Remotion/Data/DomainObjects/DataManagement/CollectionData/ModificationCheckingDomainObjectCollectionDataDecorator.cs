@@ -27,15 +27,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   [Serializable]
   public class ModificationCheckingDomainObjectCollectionDataDecorator : DomainObjectCollectionDataDecoratorBase
   {
-    private readonly Type _requiredItemType;
+    private readonly Type? _requiredItemType;
 
-    public ModificationCheckingDomainObjectCollectionDataDecorator (Type requiredItemType, IDomainObjectCollectionData wrappedData)
+    public ModificationCheckingDomainObjectCollectionDataDecorator (Type? requiredItemType, IDomainObjectCollectionData wrappedData)
       : base(wrappedData)
     {
       _requiredItemType = requiredItemType;
     }
 
-    public override Type RequiredItemType
+    public override Type? RequiredItemType
     {
       get { return _requiredItemType; }
     }

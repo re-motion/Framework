@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     private readonly IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderCommandFactory;
     private readonly Func<IDbConnection> _connectionFactory;
 
-    private TracingDbConnection _connection;
-    private TracingDbTransaction _transaction;
+    private TracingDbConnection? _connection;
+    private TracingDbTransaction? _transaction;
 
     public RdbmsProvider (
         RdbmsProviderDefinition definition,
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    public TracingDbConnection Connection
+    public TracingDbConnection? Connection
     {
       get
       {
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    public TracingDbTransaction Transaction
+    public TracingDbTransaction? Transaction
     {
       get
       {
@@ -205,7 +205,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    public override IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
+    public override IEnumerable<DataContainer?> ExecuteCollectionQuery (IQuery query)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("query", query);
@@ -232,7 +232,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return command.Execute(this);
     }
 
-    public override object ExecuteScalarQuery (IQuery query)
+    public override object? ExecuteScalarQuery (IQuery query)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("query", query);
@@ -270,7 +270,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (
         RelationEndPointDefinition relationEndPointDefinition,
-        SortExpressionDefinition sortExpressionDefinition,
+        SortExpressionDefinition? sortExpressionDefinition,
         ObjectID relatedID)
     {
       CheckDisposed();
@@ -317,8 +317,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
       foreach (var dataContainer in dataContainers)
       {
-        object timestamp;
-        if (!timestampDictionary.TryGetValue(dataContainer.ID, out timestamp))
+        if (!timestampDictionary.TryGetValue(dataContainer.ID, out var timestamp))
           throw new RdbmsProviderException(string.Format("No timestamp found for object '{0}'.", dataContainer.ID));
 
         dataContainer.SetTimestamp(timestamp);
@@ -378,7 +377,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    public virtual object ExecuteScalar (IDbCommand command)
+    public virtual object? ExecuteScalar (IDbCommand command)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("command", command);
@@ -461,7 +460,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    private IEnumerable<DataContainer> CheckForDuplicates (IEnumerable<DataContainer> dataContainers, string operation)
+    private IEnumerable<DataContainer?> CheckForDuplicates (IEnumerable<DataContainer?> dataContainers, string operation)
     {
       var loadedIDs = new HashSet<ObjectID>();
       foreach (var dataContainer in dataContainers)
@@ -480,7 +479,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       }
     }
 
-    private IEnumerable<DataContainer> CheckForNulls (IEnumerable<DataContainer> dataContainers, string operation)
+    private IEnumerable<DataContainer> CheckForNulls (IEnumerable<DataContainer?> dataContainers, string operation)
     {
       foreach (var dataContainer in dataContainers)
       {

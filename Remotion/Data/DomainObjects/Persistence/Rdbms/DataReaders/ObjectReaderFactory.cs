@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       _dataContainerValidator = dataContainerValidator;
     }
 
-    public IObjectReader<DataContainer> CreateDataContainerReader ()
+    public IObjectReader<DataContainer?> CreateDataContainerReader ()
     {
       var ordinalProvider = new NameBasedColumnOrdinalProvider();
       var objectIDStoragePropertyDefinition = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition();
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
           _dataContainerValidator);
     }
 
-    public IObjectReader<DataContainer> CreateDataContainerReader (
+    public IObjectReader<DataContainer?> CreateDataContainerReader (
         IRdbmsStorageEntityDefinition entityDefinition,
         IEnumerable<ColumnDefinition> selectedColumns)
     {
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
           _dataContainerValidator);
     }
 
-    public IObjectReader<ObjectID> CreateObjectIDReader (
+    public IObjectReader<ObjectID?> CreateObjectIDReader (
         IRdbmsStorageEntityDefinition entityDefinition,
         IEnumerable<ColumnDefinition> selectedColumns)
     {
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       return new ObjectIDReader(entityDefinition.ObjectIDProperty, ordinalProvider);
     }
 
-    public IObjectReader<Tuple<ObjectID, object>> CreateTimestampReader (
+    public IObjectReader<Tuple<ObjectID, object>?> CreateTimestampReader (
         IRdbmsStorageEntityDefinition entityDefinition,
         IEnumerable<ColumnDefinition> selectedColumns)
     {

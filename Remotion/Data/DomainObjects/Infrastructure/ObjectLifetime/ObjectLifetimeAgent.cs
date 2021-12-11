@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       return dataContainer.DomainObject;
     }
 
-    public DomainObject TryGetObject (ObjectID objectID)
+    public DomainObject? TryGetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -177,7 +177,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
           .ToArray();
     }
 
-    public T[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
+    public T?[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
         where T : DomainObject
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
@@ -194,9 +194,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       var result = objectIDsAsCollection.Select(
           id =>
           {
-            DataContainer loadResult;
-            if (dataContainersByID.TryGetValue(id, out loadResult))
-              return loadResult == null ? null : (T)loadResult.DomainObject;
+            if (dataContainersByID.TryGetValue(id, out var loadResult))
+              return loadResult == null ? null : (T?)loadResult.DomainObject;
             else
             {
               Assertion.IsTrue(

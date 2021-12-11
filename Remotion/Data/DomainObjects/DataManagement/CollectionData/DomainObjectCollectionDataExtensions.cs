@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         Add(data, domainObject);
     }
 
-    public static void AddRangeAndCheckItems (this IDomainObjectCollectionData data, IEnumerable<DomainObject> domainObjects, Type requiredItemType)
+    public static void AddRangeAndCheckItems (this IDomainObjectCollectionData data, IEnumerable<DomainObject> domainObjects, Type? requiredItemType)
     {
       ArgumentUtility.CheckNotNull("data", data);
       ArgumentUtility.CheckNotNull("domainObjects", domainObjects);

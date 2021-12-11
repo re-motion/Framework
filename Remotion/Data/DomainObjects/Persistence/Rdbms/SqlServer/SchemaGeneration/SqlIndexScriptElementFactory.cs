@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
     private readonly ISqlIndexDefinitionScriptElementFactory<SqlIndexDefinition> _indexDefinitionElementFactory;
     private readonly ISqlIndexDefinitionScriptElementFactory<SqlPrimaryXmlIndexDefinition> _primaryIndexDefinitionElementFactory;
     private readonly ISqlIndexDefinitionScriptElementFactory<SqlSecondaryXmlIndexDefinition> _secondaryIndexDefinitionElementFactory;
-    private IScriptElement _createScriptElement;
-    private IScriptElement _dropScriptElement;
+    private IScriptElement? _createScriptElement;
+    private IScriptElement? _dropScriptElement;
 
     public SqlIndexScriptElementFactory (
         ISqlIndexDefinitionScriptElementFactory<SqlIndexDefinition> indexDefinitionElmementFactory,

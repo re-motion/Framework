@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Linq
       get { return _queryResultRow; }
     }
 
-    public T GetValue<T> (ColumnID columnID)
+    public T? GetValue<T> (ColumnID columnID)
     {
       ArgumentUtility.CheckNotNull("columnID", columnID);
 

@@ -198,7 +198,7 @@ public class CommonCollection : ICollection
   /// <param name="key">The key of the object to return. Must not be <see langword="null"/>.</param>
   /// <returns>The object with the given key, if the object is found; otherwise, <see langword="null"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
-  protected object BaseGetObject (object key)
+  protected object? BaseGetObject (object key)
   {
     ArgumentUtility.CheckNotNull("key", key);
 
@@ -234,7 +234,7 @@ public class CommonCollection : ICollection
     if (!BaseContainsKey(key))
       return false;
 
-    object objectInCollection = BaseGetObject(key);
+    object? objectInCollection = BaseGetObject(key);
     return object.Equals(objectInCollection, value);
   }
 

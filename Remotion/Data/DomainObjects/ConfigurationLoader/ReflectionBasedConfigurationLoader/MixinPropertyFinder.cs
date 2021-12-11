@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     private IEnumerable<IPropertyInformation> FindPropertyInfosOnMixin (Type mixin, HashSet<Type> processedMixins)
     {
-      Type current = mixin;
+      Type? current = mixin;
       while (current != null && !IsMixinBaseClass(current))
       {
         if (!processedMixins.Contains(current) && (_includeBaseMixins || !_persistentMixinFinder.IsInParentContext(current)))

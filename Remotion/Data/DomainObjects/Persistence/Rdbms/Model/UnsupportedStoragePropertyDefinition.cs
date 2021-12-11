@@ -62,22 +62,22 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       throw CreateNotSupportedException();
     }
 
-    public IEnumerable<ColumnValue> SplitValue (object value)
+    public IEnumerable<ColumnValue> SplitValue (object? value)
     {
       throw CreateNotSupportedException();
     }
 
-    public IEnumerable<ColumnValue> SplitValueForComparison (object value)
+    public IEnumerable<ColumnValue> SplitValueForComparison (object? value)
     {
       throw CreateNotSupportedException();
     }
 
-    public ColumnValueTable SplitValuesForComparison (IEnumerable<object> values)
+    public ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values)
     {
       throw CreateNotSupportedException();
     }
 
-    public object CombineValue (IColumnValueProvider columnValueProvider)
+    public object? CombineValue (IColumnValueProvider columnValueProvider)
     {
       throw CreateNotSupportedException();
     }
@@ -89,9 +89,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
           this,
           property,
           "equivalentProperties",
-          prop => Tuple.Create<string, object>("property type", prop.PropertyType),
-          prop => Tuple.Create<string, object>("message", prop.Message),
-          prop => Tuple.Create<string, object>("inner exception type", prop.InnerException.GetType())
+          prop => Tuple.Create<string, object?>("property type", prop.PropertyType),
+          prop => Tuple.Create<string, object?>("message", prop.Message),
+          prop => Tuple.Create<string, object?>("inner exception type", prop.InnerException.GetType())
           )).ToArray();
 
       return new UnsupportedStoragePropertyDefinition(_propertyType, _message, _innerException);

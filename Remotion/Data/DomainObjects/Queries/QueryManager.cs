@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
     ///   An error occurred while executing the query.
     /// </exception>
-    public object GetScalar (IQuery query)
+    public object? GetScalar (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
 
@@ -188,10 +188,10 @@ namespace Remotion.Data.DomainObjects.Queries
       return _transactionEventSink.RaiseFilterCustomQueryResultEvent(query, queryResult);
     }
 
-    private T ConvertLoadedDomainObject<T> (DomainObject domainObject) where T : DomainObject
+    private T? ConvertLoadedDomainObject<T> (DomainObject? domainObject) where T : DomainObject
     {
       if (domainObject == null || domainObject is T)
-        return (T)domainObject;
+        return (T?)domainObject;
       else
       {
         var message = string.Format(

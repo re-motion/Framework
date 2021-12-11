@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
           );
     }
 
-    private XAttribute GetMaxLenghtAttribute (PropertyDefinition propertyDefinition)
+    private XAttribute? GetMaxLenghtAttribute (PropertyDefinition propertyDefinition)
     {
       return propertyDefinition.MaxLength.HasValue ? new XAttribute("maxLength", propertyDefinition.MaxLength.Value) : null;
     }

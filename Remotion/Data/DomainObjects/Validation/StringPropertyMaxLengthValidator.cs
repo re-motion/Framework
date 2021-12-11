@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Validation
       }
     }
 
-    private void ValidatePropertyDefinition (DomainObject domainObject, DataContainer dataContainer, PropertyDefinition propertyDefinition)
+    private void ValidatePropertyDefinition (DomainObject? domainObject, DataContainer dataContainer, PropertyDefinition propertyDefinition)
     {
       var maxLength = propertyDefinition.MaxLength;
       if (maxLength == null)
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Validation
       if (propertyType != typeof(string))
         return;
 
-      object propertyValue = dataContainer.GetValueWithoutEvents(propertyDefinition, ValueAccess.Current);
+      object? propertyValue = dataContainer.GetValueWithoutEvents(propertyDefinition, ValueAccess.Current);
       if (propertyValue == null)
         return;
 

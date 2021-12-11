@@ -47,16 +47,16 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public CardinalityType Cardinality => CardinalityType.Many;
 
-    public string PropertyName => null;
+    public string? PropertyName => null;
 
-    public IPropertyInformation PropertyInfo => null;
+    public IPropertyInformation? PropertyInfo => null;
 
     public bool IsVirtual => true;
 
     public bool IsAnonymous => false;
 
-    public string SortExpressionText => null;
+    public string? SortExpressionText => null;
 
-    public SortExpressionDefinition GetSortExpression () => null;
+    public SortExpressionDefinition? GetSortExpression () => null;
   }
 }

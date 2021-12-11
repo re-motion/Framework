@@ -65,30 +65,30 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     // User event
     void RaisePropertyValueReadingEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess);
     // User event
-    void RaisePropertyValueReadEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess);
+    void RaisePropertyValueReadEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess);
     // User event
-    void RaisePropertyValueChangingEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue);
+    void RaisePropertyValueChangingEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
     // User event
-    void RaisePropertyValueChangedEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue);
+    void RaisePropertyValueChangedEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
 
     // User event
     void RaiseRelationReadingEvent (DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess);
     // User event
-    void RaiseRelationReadEvent (DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess);
+    void RaiseRelationReadEvent (DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess);
     // User event
     void RaiseRelationReadEvent (DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess);
     // User event
     void RaiseRelationChangingEvent (
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject);
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject);
     // User event
     void RaiseRelationChangedEvent (
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject);
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject);
 
     // User event
     QueryResult<T> RaiseFilterQueryResultEvent<T> (QueryResult<T> queryResult) where T : DomainObject;

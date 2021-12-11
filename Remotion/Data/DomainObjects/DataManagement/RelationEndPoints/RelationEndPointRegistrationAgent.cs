@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       map.RemoveEndPoint(endPoint.ID);
     }
 
-    protected virtual IVirtualEndPoint RegisterOppositeForRealObjectEndPoint (IRealObjectEndPoint realObjectEndPoint)
+    protected virtual IVirtualEndPoint? RegisterOppositeForRealObjectEndPoint (IRealObjectEndPoint realObjectEndPoint)
     {
       ArgumentUtility.CheckNotNull("realObjectEndPoint", realObjectEndPoint);
 

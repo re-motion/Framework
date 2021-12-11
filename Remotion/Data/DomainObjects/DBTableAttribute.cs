@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects
   [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
   public class DBTableAttribute: Attribute, IStorageSpecificIdentifierAttribute
   {
-    private string _name;
+    private string? _name;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DBTableAttribute"/> class.
@@ -46,12 +46,12 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Gets the table name defined by this <see cref="DBTableAttribute"/>.
     /// </summary>
-    public string Name
+    public string? Name
     {
       get { return _name; }
     }
 
-    string IStorageSpecificIdentifierAttribute.Identifier
+    string? IStorageSpecificIdentifierAttribute.Identifier
     {
       get { return Name; }
     }

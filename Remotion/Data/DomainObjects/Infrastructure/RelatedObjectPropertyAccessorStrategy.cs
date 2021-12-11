@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
     }
 
-    public Type GetPropertyType (PropertyDefinition propertyDefinition, IRelationEndPointDefinition relationEndPointDefinition)
+    public Type GetPropertyType (PropertyDefinition? propertyDefinition, IRelationEndPointDefinition? relationEndPointDefinition)
     {
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
       Assertion.IsFalse(relationEndPointDefinition.IsAnonymous);
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return RelationEndPointID.Create(propertyAccessor.DomainObject.ID, propertyAccessor.PropertyData.RelationEndPointDefinition);
     }
 
-    public IRelationEndPoint GetRelationEndPoint (PropertyAccessor propertyAccessor, ClientTransaction transaction)
+    public IRelationEndPoint? GetRelationEndPoint (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         return ValuePropertyAccessorStrategy.Instance.GetValueWithoutTypeCheck(propertyAccessor, transaction) == null;
     }
 
-    public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
+    public object? GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return transaction.GetRelatedObject(CreateRelationEndPointID(propertyAccessor));
     }
 
-    public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object value)
+    public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object? value)
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       bidirectionalModification.NotifyAndPerform();
     }
 
-    public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
+    public object? GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);

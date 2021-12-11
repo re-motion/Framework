@@ -59,17 +59,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return EnumerableUtility.Singleton(_columnDefinition);
     }
 
-    public IEnumerable<ColumnValue> SplitValue (object value)
+    public IEnumerable<ColumnValue> SplitValue (object? value)
     {
       return EnumerableUtility.Singleton(new ColumnValue(_columnDefinition, value));
     }
 
-    public IEnumerable<ColumnValue> SplitValueForComparison (object value)
+    public IEnumerable<ColumnValue> SplitValueForComparison (object? value)
     {
       return SplitValue(value);
     }
 
-    public ColumnValueTable SplitValuesForComparison (IEnumerable<object> values)
+    public ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values)
     {
       ArgumentUtility.CheckNotNull("values", values);
 
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
           values.Select(v => new ColumnValueTable.Row(EnumerableUtility.Singleton(v))));
     }
 
-    public object CombineValue (IColumnValueProvider columnValueProvider)
+    public object? CombineValue (IColumnValueProvider columnValueProvider)
     {
       ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
       return columnValueProvider.GetValueForColumn(_columnDefinition);
@@ -91,9 +91,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
           this,
           property,
           "equivalentProperties",
-          prop => Tuple.Create<string, object>("property type", prop.PropertyType),
-          prop => Tuple.Create<string, object>("column name", prop.ColumnDefinition.Name),
-          prop => Tuple.Create<string, object>("primary key flag", prop.ColumnDefinition.IsPartOfPrimaryKey)
+          prop => Tuple.Create<string, object?>("property type", prop.PropertyType),
+          prop => Tuple.Create<string, object?>("column name", prop.ColumnDefinition.Name),
+          prop => Tuple.Create<string, object?>("primary key flag", prop.ColumnDefinition.IsPartOfPrimaryKey)
           )).ToArray();
 
       return new SimpleStoragePropertyDefinition(

@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return _valueProperty.GetColumns().Concat(_classIDProperty.GetColumns());
     }
 
-    public IEnumerable<ColumnValue> SplitValue (object value)
+    public IEnumerable<ColumnValue> SplitValue (object? value)
     {
       var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
       if (objectID == null)
@@ -83,26 +83,26 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return _valueProperty.SplitValue(objectID.Value).Concat(_classIDProperty.SplitValue(objectID.ClassID));
     }
 
-    public IEnumerable<ColumnValue> SplitValueForComparison (object value)
+    public IEnumerable<ColumnValue> SplitValueForComparison (object? value)
     {
       var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
 
       return _valueProperty.SplitValueForComparison(GetValueOrNull(objectID));
     }
 
-    public ColumnValueTable SplitValuesForComparison (IEnumerable<object> values)
+    public ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values)
     {
       ArgumentUtility.CheckNotNull("values", values);
 
-      return _valueProperty.SplitValuesForComparison(values.Select(v => GetValueOrNull((ObjectID)v)));
+      return _valueProperty.SplitValuesForComparison(values.Select(v => GetValueOrNull((ObjectID?)v)));
     }
 
-    public object CombineValue (IColumnValueProvider columnValueProvider)
+    public object? CombineValue (IColumnValueProvider columnValueProvider)
     {
       ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
 
       var value = _valueProperty.CombineValue(columnValueProvider);
-      var classID = (string)_classIDProperty.CombineValue(columnValueProvider);
+      var classID = (string?)_classIDProperty.CombineValue(columnValueProvider);
       if (value == null)
       {
         if (classID != null)
@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return new ForeignKeyConstraintDefinition(nameProvider(referencingColumns),  referencedTableName,  referencingColumns, referencedColumns);
     }
 
-    private object GetValueOrNull (ObjectID objectID)
+    private object? GetValueOrNull (ObjectID? objectID)
     {
       return objectID != null ? objectID.Value : null;
     }

@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return RelatedObjectPropertyAccessorStrategy.Instance.CreateRelationEndPointID(propertyAccessor);
     }
 
-    public Type GetPropertyType (PropertyDefinition propertyDefinition, IRelationEndPointDefinition relationEndPointDefinition)
+    public Type GetPropertyType (PropertyDefinition? propertyDefinition, IRelationEndPointDefinition? relationEndPointDefinition)
     {
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
       return RelatedObjectPropertyAccessorStrategy.Instance.GetPropertyType(propertyDefinition, relationEndPointDefinition);
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return transaction.GetRelatedObjects(CreateRelationEndPointID(propertyAccessor));
     }
 
-    public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object value)
+    public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object? value)
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);

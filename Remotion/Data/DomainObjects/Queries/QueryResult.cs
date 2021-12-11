@@ -43,14 +43,14 @@ namespace Remotion.Data.DomainObjects.Queries
       where T : DomainObject
   {
     private readonly IQuery _query;
-    private readonly T[] _queryResult;
+    private readonly T?[] _queryResult;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="QueryResult{T}"/> class.
     /// </summary>
     /// <param name="query">The query that yielded the <paramref name="queryResult"/></param>.
     /// <param name="queryResult">The elements making up the query result. The <see cref="IEnumerable{T}"/> is enumerated exactly once by this class.</param>
-    public QueryResult (IQuery query, T[] queryResult)
+    public QueryResult (IQuery query, T?[] queryResult)
     {
       ArgumentUtility.CheckNotNull("query", query);
       ArgumentUtility.CheckNotNull("queryResult", queryResult);
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.Queries
     [Obsolete("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
     public bool ContainsDuplicates ()
     {
-      var visitedElements = new HashSet<T>();
+      var visitedElements = new HashSet<T?>();
 
       foreach (var resultElement in _queryResult)
       {
@@ -123,12 +123,12 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <returns>
     /// An instance of <see cref="IEnumerable{T}"/> containing the <see cref="DomainObject"/> instances yielded by the query.
     /// </returns>
-    public IEnumerable<T> AsEnumerable ()
+    public IEnumerable<T?> AsEnumerable ()
     {
       return _queryResult;
     }
 
-    IEnumerable<DomainObject> IQueryResult.AsEnumerable ()
+    IEnumerable<DomainObject?> IQueryResult.AsEnumerable ()
     {
       return _queryResult;
     }
@@ -139,12 +139,12 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <returns>
     /// An array containing the <see cref="DomainObject"/> instances yielded by the query.
     /// </returns>
-    public T[] ToArray ()
+    public T?[] ToArray ()
     {
-      return (T[])_queryResult.Clone();
+      return (T?[])_queryResult.Clone();
     }
 
-    DomainObject[] IQueryResult.ToArray ()
+    DomainObject?[] IQueryResult.ToArray ()
     {
       return ToArray();
     }
@@ -191,7 +191,7 @@ namespace Remotion.Data.DomainObjects.Queries
       }
     }
 
-    private ObjectList<TResult> ToObjectList<TResult> (IEnumerable<TResult> values)
+    private ObjectList<TResult> ToObjectList<TResult> (IEnumerable<TResult?> values)
       where TResult : DomainObject
     {
       try

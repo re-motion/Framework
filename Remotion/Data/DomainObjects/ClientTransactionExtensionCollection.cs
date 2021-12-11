@@ -47,13 +47,13 @@ namespace Remotion.Data.DomainObjects
     /// <param name="key">The <see cref="IClientTransactionExtension.Key"/> of the extension. Must not be <see langword="null"/> or 
     /// <see cref="System.String.Empty"/>.</param>
     /// <returns>The <see cref="IClientTransactionExtension"/> of the given <paramref name="key"/> or <see langword="null"/> if the name was not found.</returns>
-    public IClientTransactionExtension this[string key]
+    public IClientTransactionExtension? this[string key]
     {
       get
       {
         ArgumentUtility.CheckNotNullOrEmpty("key", key);
 
-        return (IClientTransactionExtension)BaseGetObject(key);
+        return (IClientTransactionExtension?)BaseGetObject(key);
       }
     }
 
@@ -257,7 +257,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
+    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
       ArgumentUtility.DebugCheckNotNull("propertyDefinition", propertyDefinition);
@@ -267,7 +267,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
       ArgumentUtility.DebugCheckNotNull("propertyDefinition", propertyDefinition);
@@ -277,7 +277,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
       ArgumentUtility.DebugCheckNotNull("propertyDefinition", propertyDefinition);
@@ -297,7 +297,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess)
+    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
       ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
@@ -318,7 +318,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
       ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
@@ -328,7 +328,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
       ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);

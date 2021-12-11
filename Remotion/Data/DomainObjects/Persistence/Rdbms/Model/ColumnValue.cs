@@ -25,9 +25,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
   public struct ColumnValue
   {
     private readonly ColumnDefinition _column;
-    private readonly object _value;
+    private readonly object? _value;
 
-    public ColumnValue (ColumnDefinition column, object value)
+    public ColumnValue (ColumnDefinition column, object? value)
     {
       ArgumentUtility.CheckNotNull("column", column);
 
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       get { return _column; }
     }
 
-    public object Value
+    public object? Value
     {
       get { return _value; }
     }

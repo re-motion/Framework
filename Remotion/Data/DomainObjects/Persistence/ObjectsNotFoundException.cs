@@ -41,12 +41,12 @@ namespace Remotion.Data.DomainObjects.Persistence
     {
     }
 
-    public ObjectsNotFoundException (IEnumerable<ObjectID> ids, Exception inner)
+    public ObjectsNotFoundException (IEnumerable<ObjectID> ids, Exception? inner)
         : this(BuildMessage(ArgumentUtility.CheckNotNull("ids", ids)), ids, inner)
     {
     }
 
-    public ObjectsNotFoundException (string message, IEnumerable<ObjectID> ids, Exception inner)
+    public ObjectsNotFoundException (string message, IEnumerable<ObjectID> ids, Exception? inner)
       : base(message, inner)
     {
       ArgumentUtility.CheckNotNull("ids", ids);

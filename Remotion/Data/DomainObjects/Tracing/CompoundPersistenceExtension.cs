@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.Tracing
         listener.TransactionDisposed(connectionID);
     }
 
-    public void QueryExecuting (Guid connectionID, Guid queryID, string commandText, IDictionary<string, object> parameters)
+    public void QueryExecuting (Guid connectionID, Guid queryID, string commandText, IDictionary<string, object?> parameters)
     {
       ArgumentUtility.CheckNotNull("commandText", commandText);
       ArgumentUtility.CheckNotNull("parameters", parameters);

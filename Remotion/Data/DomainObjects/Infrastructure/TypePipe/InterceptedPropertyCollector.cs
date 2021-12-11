@@ -27,12 +27,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
   internal class InterceptedPropertyCollector
   {
-    public static bool IsAutomaticPropertyAccessor (MethodInfo accessorMethod)
+    public static bool IsAutomaticPropertyAccessor (MethodInfo? accessorMethod)
     {
       return accessorMethod != null && (accessorMethod.IsAbstract || accessorMethod.IsDefined(typeof(CompilerGeneratedAttribute), false));
     }
 
-    public static bool IsOverridable (MethodInfo method)
+    public static bool IsOverridable (MethodInfo? method)
     {
       return method != null && method.IsVirtual && !method.IsFinal;
     }
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       if (!_typeConversionProvider.CanConvert(propertyInformation.GetType(), typeof(PropertyInfo)))
         return;
 
-      var property = (PropertyInfo)_typeConversionProvider.Convert(propertyInformation.GetType(), typeof(PropertyInfo), propertyInformation);
+      var property = (PropertyInfo?)_typeConversionProvider.Convert(propertyInformation.GetType(), typeof(PropertyInfo), propertyInformation);
       var isMixinProperty = !property.DeclaringType.IsAssignableFrom(_baseType);
 
       var getMethod = property.GetGetMethod(true);

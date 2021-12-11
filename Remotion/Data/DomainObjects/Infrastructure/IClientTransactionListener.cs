@@ -65,9 +65,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject);
 
     void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess);
-    void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess);
-    void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue);
-    void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue);
+    void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess);
+    void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
+    void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
 
     void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess);
 
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <param name="relationEndPointDefinition">The relation endpoint definition of the relation that has been read.</param>
     /// <param name="relatedObject">The related object that is returned to the reader.</param>
     /// <param name="valueAccess">An indicator whether the current or original values have been read.</param>
-    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess);
+    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess);
 
     /// <summary>
     /// Indicates that a collection-value relation has been read.
@@ -112,8 +112,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject);
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject);
 
     /// <summary>
     /// Indicates that a relation has been changed. 
@@ -132,8 +132,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject);
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject);
 
     QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T : DomainObject;
     IEnumerable<T> FilterCustomQueryResult<T> (ClientTransaction clientTransaction, IQuery query, IEnumerable<T> results);

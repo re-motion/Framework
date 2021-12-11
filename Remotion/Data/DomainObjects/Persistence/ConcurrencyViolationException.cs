@@ -41,12 +41,12 @@ namespace Remotion.Data.DomainObjects.Persistence
     {
     }
 
-    public ConcurrencyViolationException (IEnumerable<ObjectID> ids, Exception inner)
+    public ConcurrencyViolationException (IEnumerable<ObjectID> ids, Exception? inner)
         : this(BuildMessage(ArgumentUtility.CheckNotNull("ids", ids)), ids, inner)
     {
     }
 
-    public ConcurrencyViolationException (string message, IEnumerable<ObjectID> ids, Exception inner)
+    public ConcurrencyViolationException (string message, IEnumerable<ObjectID> ids, Exception? inner)
         : base(message, inner)
     {
       ArgumentUtility.CheckNotNull("ids", ids);

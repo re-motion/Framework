@@ -26,12 +26,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
   /// </summary>
   public abstract class ObjectEndPointSetCommand : RelationEndPointModificationCommand
   {
-    private readonly Action<DomainObject> _oppositeObjectSetter;
+    private readonly Action<DomainObject?> _oppositeObjectSetter;
 
     protected ObjectEndPointSetCommand (
         IObjectEndPoint modifiedEndPoint,
-        DomainObject newRelatedObject,
-        Action<DomainObject> oppositeObjectSetter,
+        DomainObject? newRelatedObject,
+        Action<DomainObject?> oppositeObjectSetter,
         IClientTransactionEventSink transactionEventSink
         )
         : base(ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),

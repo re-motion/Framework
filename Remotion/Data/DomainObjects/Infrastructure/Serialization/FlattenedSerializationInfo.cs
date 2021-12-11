@@ -55,12 +55,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
     public void AddValue<T> (T value)
     {
       if (typeof(IFlattenedSerializable).IsAssignableFrom(typeof(T)))
-        AddFlattenedSerializable((IFlattenedSerializable)value);
+        AddFlattenedSerializable((IFlattenedSerializable?)value);
       else
         _objectWriter.AddSimpleValue(value);
     }
 
-    private void AddFlattenedSerializable (IFlattenedSerializable serializable)
+    private void AddFlattenedSerializable (IFlattenedSerializable? serializable)
     {
       if (serializable != null)
       {
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       }
       else
       {
-        AddHandle<Type>(null);
+        AddHandle<Type?>(null);
       }
     }
 

@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   {
     private class DeferredRelationEndPointDefinition
     {
-      public IRelationEndPointDefinition Value;
+      public IRelationEndPointDefinition? Value;
     }
 
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
@@ -145,7 +145,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       return !_domainModelConstraintProvider.IsNullable(PropertyInfo);
     }
 
-    private Lazy<SortExpressionDefinition> GetSortExpressionDefinition (DeferredRelationEndPointDefinition deferredRelationEndPointDefinition)
+    private Lazy<SortExpressionDefinition?> GetSortExpressionDefinition (DeferredRelationEndPointDefinition deferredRelationEndPointDefinition)
     {
       Assertion.IsTrue(IsBidirectionalRelation, "Cannot call {0}(...) with for unidirectional relations.", nameof(GetSortExpressionDefinition));
 
@@ -153,7 +153,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       var sortExpressionText = BidirectionalRelationAttribute.SortExpression;
       var sortExpressionDefinitionProvider = _sortExpressionDefinitionProvider;
 
-      return new Lazy<SortExpressionDefinition>(
+      return new Lazy<SortExpressionDefinition?>(
           () =>
           {
             var relationEndPointDefinition = deferredRelationEndPointDefinition.Value;

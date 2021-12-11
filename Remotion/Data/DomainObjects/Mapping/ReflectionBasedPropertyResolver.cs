@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// </summary>
   public static class ReflectionBasedPropertyResolver
   {
-    public static T ResolveDefinition<T> (IPropertyInformation propertyInformation, ClassDefinition classDefinition, Func<string, T> definitionGetter)
+    public static T? ResolveDefinition<T> (IPropertyInformation propertyInformation, ClassDefinition classDefinition, Func<string, T?> definitionGetter)
         where T : class
     {
       ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     private static List<Tuple<IPropertyInformation, T>> GetMatchingDefinitions<T> (
         IPropertyInformation propertyInformation,
         ClassDefinition classDefinition,
-        Func<string, T> definitionGetter) where T: class
+        Func<string, T?> definitionGetter) where T: class
     {
       IEnumerable<IPropertyInformation> propertyImplementationCandidates;
       if (propertyInformation.DeclaringType.IsInterface)

@@ -34,20 +34,18 @@ namespace Remotion.Data.DomainObjects.Queries
     /// Returns a value stored within the current row at the given <paramref name="position"/> in the format returned by the 
     /// <see cref="StorageProvider"/>.
     /// </summary>
-    object GetRawValue (int position);
+    object? GetRawValue (int position);
 
     /// <summary>
     /// Returns a value stored within the current row at the given <paramref name="position"/>, asking the <see cref="StorageProvider"/> 
     /// to convert the value into the given <paramref name="type"/>.
     /// </summary>
-    object GetConvertedValue (int position, Type type);
+    object? GetConvertedValue (int position, Type type);
 
     /// <summary>
     /// Returns a value stored within the current row at the given <paramref name="position"/>, asking the <see cref="StorageProvider"/> to 
     /// convert the value into the given type <typeparamref name="T"/>.
     /// </summary>
-    T GetConvertedValue<T> (int position);
-
-
+    T? GetConvertedValue<T> (int position);
   }
 }

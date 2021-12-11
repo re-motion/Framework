@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public DomainObject GetObject (int index) => _innerVirtualCollectionData.GetObject(index);
 
-    public DomainObject GetObject (ObjectID objectID) => _innerVirtualCollectionData.GetObject(objectID);
+    public DomainObject? GetObject (ObjectID objectID) => _innerVirtualCollectionData.GetObject(objectID);
 
     public int IndexOf (ObjectID objectID) => _innerVirtualCollectionData.IndexOf(objectID);
 

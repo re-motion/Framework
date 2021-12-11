@@ -43,7 +43,7 @@ public class QueryDefinition : ISerializable, IObjectReference
 
   private readonly string _statement;
   private readonly QueryType _queryType;
-  private readonly Type _collectionType;
+  private readonly Type? _collectionType;
   private readonly StorageProviderDefinition _storageProviderDefinition;
 
   // Note: _ispartOfQueryConfiguration is used only during the deserialization process. 
@@ -98,7 +98,7 @@ public class QueryDefinition : ISerializable, IObjectReference
       StorageProviderDefinition storageProviderDefinition,
       string statement,
       QueryType queryType,
-      Type collectionType)
+      Type? collectionType)
   {
     ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
     ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
@@ -184,7 +184,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <summary>
   /// If <see cref="QueryType"/> specifies a collection to be returned, <b>CollectionType</b> specifies the type of the collection. The default is <see cref="DomainObjectCollection"/>. 
   /// </summary>
-  public Type CollectionType
+  public Type? CollectionType
   {
     get { return _collectionType; }
   }

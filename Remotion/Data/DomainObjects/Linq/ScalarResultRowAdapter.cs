@@ -26,19 +26,18 @@ namespace Remotion.Data.DomainObjects.Linq
   /// </summary>
   public class ScalarResultRowAdapter : IDatabaseResultRow
   {
-    private readonly object _scalarValue;
+    private readonly object? _scalarValue;
     private readonly IStorageTypeInformationProvider _storageTypeInformationProvider;
 
-    public ScalarResultRowAdapter (object scalarValue, IStorageTypeInformationProvider storageTypeInformationProvider)
+    public ScalarResultRowAdapter (object? scalarValue, IStorageTypeInformationProvider storageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull("scalarValue", scalarValue);
       ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
 
       _scalarValue = scalarValue;
       _storageTypeInformationProvider = storageTypeInformationProvider;
     }
 
-    public object ScalarValue
+    public object? ScalarValue
     {
       get { return _scalarValue; }
     }
@@ -59,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Linq
       }
 
       var storageTypeInformation = _storageTypeInformationProvider.GetStorageType(typeof(T));
-      return (T)storageTypeInformation.ConvertFromStorageType(_scalarValue);
+      return (T?)storageTypeInformation.ConvertFromStorageType(_scalarValue);
     }
 
     public T GetEntity<T> (params ColumnID[] columnIDs)

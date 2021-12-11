@@ -218,7 +218,7 @@ namespace Remotion.Data.DomainObjects
     ///   Use this method to perform actions on a successful execution, whereas <see cref="PropertyValueReading"/> should be used to cancel the operation.
     /// <note type="inotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="PropertyValueReading"/> instead.</note>
     /// </remarks>
-    void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess);
+    void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess);
 
     /// <summary>
     /// Invoked before a value of a <see cref="DomainObject"/> is changed.
@@ -238,7 +238,7 @@ namespace Remotion.Data.DomainObjects
     ///   </para>
     /// <note type="inotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     /// </remarks>
-    void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue);
+    void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
 
     /// <summary>
     /// Invoked after a value of a <see cref="DomainObject"/> was changed.
@@ -257,7 +257,7 @@ namespace Remotion.Data.DomainObjects
     ///   </para>
     /// <note type="inotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="PropertyValueChanging"/> instead.</note>
     /// </remarks>
-    void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue);
+    void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
 
     /// <summary>
     /// Invoked before a relation property is being read. 
@@ -290,7 +290,7 @@ namespace Remotion.Data.DomainObjects
     ///   </para>
     /// <note type="inotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="RelationReading"/> instead.</note>
     /// </remarks>
-    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess);
+    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess);
 
     /// <summary>
     /// Invoked when a relation property with cardinality <see cref="Mapping.CardinalityType.Many"/> was read. 
@@ -371,8 +371,8 @@ namespace Remotion.Data.DomainObjects
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject);
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject);
 
     /// <summary>
     /// Invoked after a relation was changed.
@@ -402,8 +402,8 @@ namespace Remotion.Data.DomainObjects
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject);
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject);
 
     /// <summary>
     /// Invoked after a collection query was executed by <see cref="QueryManager.GetCollection"/>.

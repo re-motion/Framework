@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="id1">The <see cref="ObjectID"/> object that is to the left of the equality operator.</param>
     /// <param name="id2">The <see cref="ObjectID"/> object that is to the right of the equality operator.</param>
     /// <returns></returns>
-    public static bool operator == (ObjectID id1, ObjectID id2)
+    public static bool operator == (ObjectID? id1, ObjectID? id2)
     {
       return Equals(id1, id2);
     }
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="id1">The <see cref="ObjectID"/> object that is to the left of the inequality operator.</param>
     /// <param name="id2">The <see cref="ObjectID"/> object that is to the right of the inequality operator.</param>
     /// <returns></returns>
-    public static bool operator != (ObjectID id1, ObjectID id2)
+    public static bool operator != (ObjectID? id1, ObjectID? id2)
     {
       return !Equals(id1, id2);
     }
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="id1">The first <see cref="ObjectID"/> to compare.</param>
     /// <param name="id2">The second <see cref="ObjectID"/> to compare.</param>
     /// <returns><see langword="true"/> if the both <see cref="ObjectID"/>s are equal; otherwise, <see langword="false"/>.</returns>
-    public static bool Equals (ObjectID id1, ObjectID id2)
+    public static bool Equals (ObjectID? id1, ObjectID? id2)
     {
       if (ReferenceEquals(id1, id2))
         return true;
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects
     private readonly object _value;
     private readonly ClassDefinition _classDefinition;
     private int _cachedHashCode;
-    private string _cachedSerializedValue;
+    private string? _cachedSerializedValue;
 
     /// <summary>
     /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
@@ -202,7 +202,6 @@ namespace Remotion.Data.DomainObjects
 
       CheckValue("value", value);
 
-      Assertion.IsNotNull(classDefinition.StorageEntityDefinition, "Entity definition must be initialized before an ObjectID can be created.");
       classDefinition.StorageEntityDefinition.StorageProviderDefinition.CheckIdentityType(value.GetType());
 
       _classDefinition = classDefinition;
@@ -318,7 +317,7 @@ namespace Remotion.Data.DomainObjects
     /// If two <see cref="ObjectID"/> instances are compared that have different <see cref="Value"/> types, their <see cref="ClassID"/>s are compared
     /// instead.
     /// </remarks>
-    public int CompareTo (object obj)
+    public int CompareTo (object? obj)
     {
       ArgumentUtility.CheckNotNull("obj", obj);
 
@@ -344,7 +343,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="obj">The <see cref="ObjectID"/> to compare with the current <see cref="ObjectID"/>. </param>
     /// <returns><see langword="true"/> if the specified <see cref="ObjectID"/> is equal to the current <see cref="ObjectID"/>; otherwise, 
     /// <see langword="false"/>.</returns>
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;

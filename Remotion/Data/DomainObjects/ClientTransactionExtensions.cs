@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects
       }
     }
 
-    private static IDisposable EnterScopeOnDemand (ClientTransaction clientTransaction)
+    private static IDisposable? EnterScopeOnDemand (ClientTransaction clientTransaction)
     {
       if (clientTransaction.ActiveTransaction != clientTransaction)
         return clientTransaction.EnterNonDiscardingScope();

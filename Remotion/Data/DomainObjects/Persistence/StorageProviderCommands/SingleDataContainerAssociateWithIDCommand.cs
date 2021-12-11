@@ -25,11 +25,12 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
   /// checking whether the return value actually matches the expected <see cref="ObjectID"/>.
   /// </summary>
   public class SingleDataContainerAssociateWithIDCommand<TExecutionContext> : IStorageProviderCommand<ObjectLookupResult<DataContainer>, TExecutionContext>
+      where TExecutionContext: notnull
   {
     private readonly ObjectID _expectedObjectID;
-    private readonly IStorageProviderCommand<DataContainer, TExecutionContext> _innerCommand;
+    private readonly IStorageProviderCommand<DataContainer?, TExecutionContext> _innerCommand;
 
-    public SingleDataContainerAssociateWithIDCommand (ObjectID expectedObjectID, IStorageProviderCommand<DataContainer, TExecutionContext> innerCommand)
+    public SingleDataContainerAssociateWithIDCommand (ObjectID expectedObjectID, IStorageProviderCommand<DataContainer?, TExecutionContext> innerCommand)
     {
       ArgumentUtility.CheckNotNull("expectedObjectID", expectedObjectID);
       ArgumentUtility.CheckNotNull("innerCommand", innerCommand);
@@ -43,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       get { return _expectedObjectID; }
     }
 
-    public IStorageProviderCommand<DataContainer, TExecutionContext> InnerCommand
+    public IStorageProviderCommand<DataContainer?, TExecutionContext> InnerCommand
     {
       get { return _innerCommand; }
     }

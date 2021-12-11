@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _id; }
     }
 
-    public ObjectID ObjectID
+    public ObjectID? ObjectID
     {
       get { return _id.ObjectID; }
     }
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return false; }
     }
 
-    public DomainObject GetDomainObject ()
+    public DomainObject? GetDomainObject ()
     {
       if (ObjectID == null)
         return null;
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return ClientTransaction.GetObject(ObjectID, true);
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public DomainObject? GetDomainObjectReference ()
     {
       if (ObjectID == null)
         return null;

@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return this;
     }
 
-    public T GetCustomAttribute<T> (bool inherited) where T : class
+    public T? GetCustomAttribute<T> (bool inherited) where T : class
     {
       return null;
     }
@@ -87,26 +87,26 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return false; }
     }
 
-    public object GetValue (object instance, object[] indexParameters)
+    public object? GetValue (object? instance, object[]? indexParameters)
     {
       return null;
     }
 
-    public void SetValue (object instance, object value, object[] indexParameters)
+    public void SetValue (object? instance, object? value, object[]? indexParameters)
     {
     }
 
-    public IMethodInformation GetGetMethod (bool nonPublic)
-    {
-      return null;
-    }
-
-    public IMethodInformation GetSetMethod (bool nonPublic)
+    public IMethodInformation? GetGetMethod (bool nonPublic)
     {
       return null;
     }
 
-    public IPropertyInformation FindInterfaceImplementation (Type implementationType)
+    public IMethodInformation? GetSetMethod (bool nonPublic)
+    {
+      return null;
+    }
+
+    public IPropertyInformation? FindInterfaceImplementation (Type implementationType)
     {
       throw new InvalidOperationException("FindInterfaceImplementation can only be called on inteface properties.");
     }
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return new IMethodInformation[0];
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       return ReferenceEquals(this, obj);
     }

@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Linq
       visitor.Visit(expression);
     }
 
-    public static ObjectID GetObjectIDOrNull (string classID, object value)
+    public static ObjectID? GetObjectIDOrNull (string classID, object? value)
     {
       if (value == null)
         return null;

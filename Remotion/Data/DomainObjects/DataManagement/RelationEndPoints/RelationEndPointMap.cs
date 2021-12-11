@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _transactionEventSink; }
     }
 
-    public IRelationEndPoint this[RelationEndPointID endPointID]
+    public IRelationEndPoint? this[RelationEndPointID endPointID]
     {
       get { return _relationEndPoints.GetValueOrDefault(endPointID); }
     }

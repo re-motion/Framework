@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       get { return _transportItem; }
     }
 
-    public XmlSchema GetSchema ()
+    public XmlSchema? GetSchema ()
     {
       return null;
     }
@@ -69,19 +69,19 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     {
       ArgumentUtility.CheckNotNull("reader", reader);
 
-      string idString = reader.GetAttribute("ID");
+      string? idString = reader.GetAttribute("ID");
       ObjectID id = ObjectID.Parse(idString);
 
       reader.Read();
-      List<KeyValuePair<string, object>> properties = DeserializeProperties(reader, id.ClassDefinition);
+      List<KeyValuePair<string, object?>> properties = DeserializeProperties(reader, id.ClassDefinition);
       reader.ReadEndElement();
 
       _transportItem = CreateTransportItem(id, properties);
     }
 
-    private TransportItem CreateTransportItem (ObjectID id, List<KeyValuePair<string, object>> properties)
+    private TransportItem CreateTransportItem (ObjectID id, List<KeyValuePair<string, object?>> properties)
     {
-      var propertyDictionary = new Dictionary<string, object>();
+      var propertyDictionary = new Dictionary<string, object?>();
       for (int i = 0; i < properties.Count; ++i)
       {
         propertyDictionary.Add(properties[i].Key, properties[i].Value);
@@ -92,41 +92,41 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     private void SerializeProperties (XmlWriter writer)
     {
       writer.WriteStartElement("Properties");
-      foreach (KeyValuePair<string, object> property in _transportItem.Properties)
+      foreach (KeyValuePair<string, object?> property in _transportItem.Properties)
         SerializeProperty(writer, _transportItem.ID.ClassDefinition, property);
       writer.WriteEndElement();
     }
 
-    private List<KeyValuePair<string, object>> DeserializeProperties (XmlReader reader, ClassDefinition classDefinition)
+    private List<KeyValuePair<string, object?>> DeserializeProperties (XmlReader reader, ClassDefinition classDefinition)
     {
       reader.ReadStartElement("Properties");
-      var properties = new List<KeyValuePair<string, object>>();
+      var properties = new List<KeyValuePair<string, object?>>();
       while (reader.IsStartElement("Property"))
         properties.Add(DeserializeProperty(reader, classDefinition));
       reader.ReadEndElement();
       return properties;
     }
 
-    private void SerializeProperty (XmlWriter writer, ClassDefinition classDefinition, KeyValuePair<string, object> property)
+    private void SerializeProperty (XmlWriter writer, ClassDefinition classDefinition, KeyValuePair<string, object?> property)
     {
-      PropertyDefinition propertyDefinition = classDefinition.GetPropertyDefinition(property.Key);
+      PropertyDefinition? propertyDefinition = classDefinition.GetPropertyDefinition(property.Key);
       writer.WriteStartElement("Property");
       writer.WriteAttributeString("Name", property.Key);
       SerializePropertyValue(writer, propertyDefinition, property.Value);
       writer.WriteEndElement();
     }
 
-    private KeyValuePair<string, object> DeserializeProperty (XmlReader reader, ClassDefinition classDefinition)
+    private KeyValuePair<string, object?> DeserializeProperty (XmlReader reader, ClassDefinition classDefinition)
     {
-      string name = reader.GetAttribute("Name");
-      PropertyDefinition propertyDefinition = classDefinition.GetPropertyDefinition(name);
-      object value = DeserializePropertyValue(reader, propertyDefinition);
-      return new KeyValuePair<string, object>(name, value);
+      string? name = reader.GetAttribute("Name");
+      PropertyDefinition? propertyDefinition = classDefinition.GetPropertyDefinition(name);
+      object? value = DeserializePropertyValue(reader, propertyDefinition);
+      return new KeyValuePair<string, object?>(name, value);
     }
 
-    private void SerializePropertyValue (XmlWriter writer, PropertyDefinition propertyDefinition, object value)
+    private void SerializePropertyValue (XmlWriter writer, PropertyDefinition? propertyDefinition, object? value)
     {
-      Type valueType = propertyDefinition == null ? SerializeCustomValueType(writer, value) : propertyDefinition.PropertyType;
+      Type? valueType = propertyDefinition == null ? SerializeCustomValueType(writer, value) : propertyDefinition.PropertyType;
 
       if (value == null)
       {
@@ -147,13 +147,13 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       }
     }
 
-    private object DeserializePropertyValue (XmlReader reader, PropertyDefinition propertyDefinition)
+    private object? DeserializePropertyValue (XmlReader reader, PropertyDefinition? propertyDefinition)
     {
-      Type valueType = propertyDefinition == null ? DeserializeCustomValueType(reader) : propertyDefinition.PropertyType;
+      Type? valueType = propertyDefinition == null ? DeserializeCustomValueType(reader) : propertyDefinition.PropertyType;
 
       reader.ReadStartElement("Property");
 
-      object value;
+      object? value;
       if (reader.IsStartElement("null"))
       {
         reader.ReadStartElement("null"); // no end element for null
@@ -178,9 +178,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       return value;
     }
 
-    private Type SerializeCustomValueType (XmlWriter writer, object value)
+    private Type? SerializeCustomValueType (XmlWriter writer, object? value)
     {
-      Type valueType = value != null ? value.GetType() : null;
+      Type? valueType = value != null ? value.GetType() : null;
 
       if (valueType == null)
         writer.WriteAttributeString("Type", "null");
@@ -192,9 +192,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       return valueType;
     }
 
-    private Type DeserializeCustomValueType (XmlReader reader)
+    private Type? DeserializeCustomValueType (XmlReader reader)
     {
-      string valueTypeAttribute = reader.GetAttribute("Type");
+      string? valueTypeAttribute = reader.GetAttribute("Type");
       switch (valueTypeAttribute)
       {
         case "null":

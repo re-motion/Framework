@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       _instanceCreator = instanceCreator;
     }
 
-    public ClassDefinition CreateClassDefinition (Type type, ClassDefinition baseClass)
+    public ClassDefinition CreateClassDefinition (Type type, ClassDefinition? baseClass)
     {
       ArgumentUtility.CheckNotNull("type", type);
 

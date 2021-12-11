@@ -32,7 +32,7 @@ public class QueryParameter
   // member fields
 
   private readonly string _name;
-  private readonly object _value;
+  private readonly object? _value;
   private readonly QueryParameterType _parameterType;
 
   // construction and disposing
@@ -42,7 +42,7 @@ public class QueryParameter
   /// </summary>
   /// <param name="name">The name of the parameter.</param>
   /// <param name="value">The value of the parameter.</param>
-  public QueryParameter (string name, object value) : this(name, value, QueryParameterType.Value)
+  public QueryParameter (string name, object? value) : this(name, value, QueryParameterType.Value)
   {
   }
 
@@ -55,7 +55,7 @@ public class QueryParameter
   /// <exception cref="System.ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="name"/> is an empty string.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="parameterType"/> is not a valid enum value.</exception>
-  public QueryParameter (string name, object value, QueryParameterType parameterType)
+  public QueryParameter (string name, object? value, QueryParameterType parameterType)
   {
     ArgumentUtility.CheckNotNullOrEmpty("name", name);
     ArgumentUtility.CheckValidEnumValue("parameterType", parameterType);
@@ -78,7 +78,7 @@ public class QueryParameter
   /// <summary>
   /// Gets the value of the <see cref="QueryParameter"/>.
   /// </summary>
-  public object Value
+  public object? Value
   {
     get { return _value; }
   }
@@ -91,7 +91,7 @@ public class QueryParameter
     get { return _parameterType; }
   }
 
-  public override bool Equals (object obj)
+  public override bool Equals (object? obj)
   {
     var parameter = obj as QueryParameter;
     if (parameter == null)

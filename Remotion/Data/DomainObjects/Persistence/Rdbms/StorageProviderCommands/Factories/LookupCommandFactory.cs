@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       var comparedColumns = tableDefinition.ObjectIDProperty.SplitValueForComparison(objectID);
       var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect(tableDefinition, selectedColumns, comparedColumns, new OrderedColumn[0]);
 
-      var loadCommand = new SingleObjectLoadCommand<DataContainer>(dbCommandBuilder, dataContainerReader);
+      var loadCommand = new SingleObjectLoadCommand<DataContainer?>(dbCommandBuilder, dataContainerReader);
       return new SingleDataContainerAssociateWithIDCommand<IRdbmsProviderCommandExecutionContext>(objectID, loadCommand);
     }
 
@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           let dbCommandBuilder = CreateIDLookupDbCommandBuilder(idsByTable.Key, selectedColumns, idsByTable)
           select Tuple.Create(dbCommandBuilder, dataContainerReader);
 
-      var loadCommand = new MultiObjectLoadCommand<DataContainer>(dbCommandBuildersAndReaders);
+      var loadCommand = new MultiObjectLoadCommand<DataContainer?>(dbCommandBuildersAndReaders);
       return new MultiDataContainerAssociateWithIDsCommand(objectIDList, loadCommand);
     }
 
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           let dbCommandBuilder = CreateIDLookupDbCommandBuilder(idsByTable.Key, selectedColumns, idsByTable)
           select Tuple.Create(dbCommandBuilder, timestampReader);
 
-      var loadCommand = new MultiObjectLoadCommand<Tuple<ObjectID, object>>(dbCommandBuildersAndReaders);
+      var loadCommand = new MultiObjectLoadCommand<Tuple<ObjectID, object>?>(dbCommandBuildersAndReaders);
       return DelegateBasedCommand.Create(
           loadCommand,
           lookupResults => lookupResults.Select(

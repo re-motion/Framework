@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
 
     private void FillQueryDefinitions (QueryDefinitionCollection queries)
     {
-      XmlNodeList queryNodeList = Document.SelectNodes(FormatXPath("{0}:queries/{0}:query"), NamespaceManager);
+      XmlNodeList? queryNodeList = Document.SelectNodes(FormatXPath("{0}:queries/{0}:query"), NamespaceManager);
 
       foreach (XmlNode queryNode in queryNodeList)
         queries.Add(GetQueryDefinition(queryNode));
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
       string queryTypeAsString = queryNode.SelectSingleNode("@type", NamespaceManager).InnerText;
       QueryType queryType = (QueryType)Enum.Parse(typeof(QueryType), queryTypeAsString, true);
 
-      XmlNode node = queryNode.SelectSingleNode(FormatXPath("{0}:storageGroupType"), NamespaceManager);
+      XmlNode? node = queryNode.SelectSingleNode(FormatXPath("{0}:storageGroupType"), NamespaceManager);
       StorageProviderDefinition storageProviderDefinition;
       if (node != null)
         storageProviderDefinition = GetStorageProviderDefinition(node.InnerText);
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
 
       string statement = queryNode.SelectSingleNode(FormatXPath("{0}:statement"), NamespaceManager).InnerText;
 
-      Type collectionType = LoaderUtility.GetOptionalType(queryNode, FormatXPath("{0}:collectionType"), NamespaceManager);
+      Type? collectionType = LoaderUtility.GetOptionalType(queryNode, FormatXPath("{0}:collectionType"), NamespaceManager);
 
       if (queryType == QueryType.Scalar && collectionType != null)
         throw CreateQueryConfigurationException("A scalar query '{0}' must not specify a collectionType.", queryID);
@@ -111,9 +111,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
       return NamespaceManager.FormatXPath(xPath, PrefixNamespace.QueryConfigurationNamespace.Uri);
     }
 
-    private StorageProviderDefinition GetStorageProviderDefinition (string storageGroupName)
+    private StorageProviderDefinition GetStorageProviderDefinition (string? storageGroupName)
     {
-      Type storageGroupType = storageGroupName == null ? null : TypeUtility.GetType(storageGroupName, true);
+      Type? storageGroupType = storageGroupName == null ? null : TypeUtility.GetType(storageGroupName, true);
       return _storageProviderDefinitionFinder.GetStorageProviderDefinition(storageGroupType, "File: " + ConfigurationFile);
     }
 
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
       return CreateQueryConfigurationException(null, message, args);
     }
 
-    private QueryConfigurationException CreateQueryConfigurationException (Exception inner, string message, params object[] args)
+    private QueryConfigurationException CreateQueryConfigurationException (Exception? inner, string message, params object[] args)
     {
       return new QueryConfigurationException(string.Format(message, args), inner);
     }

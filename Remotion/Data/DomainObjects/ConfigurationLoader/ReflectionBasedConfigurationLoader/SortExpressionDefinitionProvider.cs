@@ -35,10 +35,10 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     {
     }
 
-    public SortExpressionDefinition GetSortExpression (
+    public SortExpressionDefinition? GetSortExpression (
         IPropertyInformation propertyInfo,
         ClassDefinition referencedClassDefinition,
-        string sortExpressionText)
+        string? sortExpressionText)
     {
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull("referencedClassDefinition", referencedClassDefinition);

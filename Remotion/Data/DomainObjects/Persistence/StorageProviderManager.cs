@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 public class StorageProviderManager : IDisposable
 {
   private bool _disposed;
-  private StorageProviderCollection _storageProviders;
+  private StorageProviderCollection? _storageProviders;
   private readonly IPersistenceExtension _persistenceExtension;
 
   public StorageProviderManager (IPersistenceExtension persistenceExtension)
@@ -58,7 +58,7 @@ public class StorageProviderManager : IDisposable
     CheckDisposed();
     ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
 
-    StorageProvider provider = this[storageProviderID];
+    StorageProvider? provider = this[storageProviderID];
     if (provider == null)
     {
       throw CreatePersistenceException(
@@ -68,7 +68,7 @@ public class StorageProviderManager : IDisposable
     return provider;
   }
 
-  public StorageProvider this [string storageProviderID]
+  public StorageProvider? this [string storageProviderID]
   {
     get
     {

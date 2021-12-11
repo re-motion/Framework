@@ -86,14 +86,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _propertyDefinition; }
     }
 
-    public override ObjectID OppositeObjectID
+    public override ObjectID? OppositeObjectID
     {
-      get { return (ObjectID)ForeignKeyDataContainer.GetValueWithoutEvents(PropertyDefinition, ValueAccess.Current); }
+      get { return (ObjectID?)ForeignKeyDataContainer.GetValueWithoutEvents(PropertyDefinition, ValueAccess.Current); }
     }
 
-    public override ObjectID OriginalOppositeObjectID
+    public override ObjectID? OriginalOppositeObjectID
     {
-      get { return (ObjectID)ForeignKeyDataContainer.GetValueWithoutEvents(PropertyDefinition, ValueAccess.Original); }
+      get { return (ObjectID?)ForeignKeyDataContainer.GetValueWithoutEvents(PropertyDefinition, ValueAccess.Original); }
     }
 
     public override bool HasChanged
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _syncState.IsSynchronized(this); }
     }
 
-    public override DomainObject GetOppositeObject ()
+    public override DomainObject? GetOppositeObject ()
     {
       if (OppositeObjectID == null)
         return null;
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return ClientTransaction.GetObjectReference(OppositeObjectID);
     }
 
-    public override DomainObject GetOriginalOppositeObject ()
+    public override DomainObject? GetOriginalOppositeObject ()
     {
       if (OriginalOppositeObjectID == null)
         return null;
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return _syncState.CreateDeleteCommand(this, () => SetOppositeObjectID(null));
     }
 
-    public override IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject)
+    public override IDataManagementCommand CreateSetCommand (DomainObject? newRelatedObject)
     {
       return _syncState.CreateSetCommand(this, newRelatedObject, domainObject => SetOppositeObjectID(domainObject.GetSafeID()));
     }
@@ -195,7 +195,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ForeignKeyDataContainer.SetValueDataFromSubTransaction(PropertyDefinition, sourceAsRealObjectEndPoint.ForeignKeyDataContainer);
     }
 
-    private void SetOppositeObjectID (ObjectID value)
+    private void SetOppositeObjectID (ObjectID? value)
     {
       ForeignKeyDataContainer.SetValue(_propertyDefinition, value); // TODO 4608: This is with events, which is a little inconsistent to OppositeObjectID
     }

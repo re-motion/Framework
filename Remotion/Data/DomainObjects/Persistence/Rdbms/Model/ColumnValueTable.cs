@@ -34,16 +34,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
   {
     public struct Row
     {
-      private readonly IEnumerable<object> _values;
+      private readonly IEnumerable<object?> _values;
 
-      public Row (IEnumerable<object> values)
+      public Row (IEnumerable<object?> values)
       {
         ArgumentUtility.CheckNotNull("values", values);
 
         _values = values;
       }
 
-      public IEnumerable<object> Values
+      public IEnumerable<object?> Values
       {
         get { return _values; }
       }

@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     private DataContainerMap _dataContainerMap;
     private DomainObjectStateCache _domainObjectStateCache;
 
-    private object[] _deserializedData; // only used for deserialization
+    private object[]? _deserializedData; // only used for deserialization
 
     public DataManager (
         ClientTransaction clientTransaction,
@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _dataContainerMap.RollbackAllDataContainers();
     }
 
-    public DataContainer GetDataContainerWithoutLoading (ObjectID objectID)
+    public DataContainer? GetDataContainerWithoutLoading (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -230,7 +230,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return _domainObjectStateCache.GetState(objectID);
     }
 
-    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
+    public DataContainer? GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -245,7 +245,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return DataContainers[objectID];
     }
 
-    public IEnumerable<DataContainer> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
+    public IEnumerable<DataContainer?> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
@@ -307,7 +307,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       if (_dataContainerMap[objectID] != null)
         throw new InvalidOperationException("The given DataContainer cannot be loaded, its data is already available.");
 
-      return GetDataContainerWithLazyLoad(objectID, throwOnNotFound: true);
+      return GetDataContainerWithLazyLoad(objectID, throwOnNotFound: true)!;
     }
 
     public IRelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID)
@@ -316,7 +316,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return _relationEndPointManager.GetRelationEndPointWithLazyLoad(endPointID);
     }
 
-    public IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
+    public IRelationEndPoint? GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
     {
       ArgumentUtility.CheckNotNull("endPointID", endPointID);
       return _relationEndPointManager.GetRelationEndPointWithoutLoading(endPointID);
@@ -429,7 +429,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return new UnloadAllCommand(_relationEndPointManager, _dataContainerMap, _invalidDomainObjectManager, _transactionEventSink);
     }
 
-    private ClientTransactionsDifferException CreateClientTransactionsDifferException (string message, params object[] args)
+    private ClientTransactionsDifferException CreateClientTransactionsDifferException (string message, params object?[] args)
     {
       return new ClientTransactionsDifferException(String.Format(message, args));
     }

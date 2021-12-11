@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.Linq
       }
     }
 
-    public Expression TryResolveOptimizedIdentity (SqlEntityRefMemberExpression entityRefMemberExpression)
+    public Expression? TryResolveOptimizedIdentity (SqlEntityRefMemberExpression entityRefMemberExpression)
     {
       ArgumentUtility.CheckNotNull("entityRefMemberExpression", entityRefMemberExpression);
 
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.Linq
       return _storageSpecificExpressionResolver.ResolveEntityIdentityViaForeignKey(entityRefMemberExpression.OriginatingEntity, foreignKeyEndPoint);
     }
 
-    public Expression TryResolveOptimizedMemberExpression (SqlEntityRefMemberExpression entityRefMemberExpression, MemberInfo memberInfo)
+    public Expression? TryResolveOptimizedMemberExpression (SqlEntityRefMemberExpression entityRefMemberExpression, MemberInfo memberInfo)
     {
       ArgumentUtility.CheckNotNull("entityRefMemberExpression", entityRefMemberExpression);
       ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects.Linq
       return PropertyInfoAdapter.Create(property);
     }
 
-    private Expression ResolveMemberInClassDefinition (
+    private Expression? ResolveMemberInClassDefinition (
         SqlEntityExpression originatingEntity, PropertyInfoAdapter propertyInfoAdapter, ClassDefinition classDefinition)
     {
       var endPointDefinition = classDefinition.ResolveRelationEndPoint(propertyInfoAdapter);

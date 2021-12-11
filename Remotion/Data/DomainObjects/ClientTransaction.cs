@@ -76,12 +76,12 @@ public class ClientTransaction
   /// <remarks>This method is a shortcut for calling <see cref="ClientTransactionScope.CurrentTransaction"/>, but it doesn't throw an exception but
   /// return <see langword="null"/> if no transaction exists for the current thread.
   /// </remarks>
-  public static ClientTransaction Current
+  public static ClientTransaction? Current
   {
     get
     {
       // Performance: In order to reduce SafeContext calls, we do not use HasCurrentTransaction/CurrentTransaction here
-      ClientTransactionScope activeScope = ClientTransactionScope.ActiveScope;
+      var activeScope = ClientTransactionScope.ActiveScope;
 
       if (activeScope != null && activeScope.ScopedTransaction != null)
         return activeScope.ScopedTransaction;
@@ -95,32 +95,32 @@ public class ClientTransaction
   /// <summary>
   /// Occurs when the <b>ClientTransaction</b> has created a subtransaction.
   /// </summary>
-  public event EventHandler<SubTransactionCreatedEventArgs> SubTransactionCreated;
+  public event EventHandler<SubTransactionCreatedEventArgs>? SubTransactionCreated;
 
   /// <summary>
   /// Occurs after the <b>ClientTransaction</b> has loaded a new object.
   /// </summary>
-  public event EventHandler<ClientTransactionEventArgs> Loaded;
+  public event EventHandler<ClientTransactionEventArgs>? Loaded;
 
   /// <summary>
   /// Occurs immediately before the <b>ClientTransaction</b> performs a <see cref="Commit"/> operation.
   /// </summary>
-  public event EventHandler<ClientTransactionCommittingEventArgs> Committing;
+  public event EventHandler<ClientTransactionCommittingEventArgs>? Committing;
 
   /// <summary>
   /// Occurs immediately after the <b>ClientTransaction</b> has successfully performed a <see cref="Commit"/> operation.
   /// </summary>
-  public event EventHandler<ClientTransactionEventArgs> Committed;
+  public event EventHandler<ClientTransactionEventArgs>? Committed;
 
   /// <summary>
   /// Occurs immediately before the <b>ClientTransaction</b> performs a <see cref="Rollback"/> operation.
   /// </summary>
-  public event EventHandler<ClientTransactionEventArgs> RollingBack;
+  public event EventHandler<ClientTransactionEventArgs>? RollingBack;
 
   /// <summary>
   /// Occurs immediately after the <b>ClientTransaction</b> has successfully performed a <see cref="Rollback"/> operation.
   /// </summary>
-  public event EventHandler<ClientTransactionEventArgs> RolledBack;
+  public event EventHandler<ClientTransactionEventArgs>? RolledBack;
 
   private readonly IDictionary<Enum, object> _applicationData;
   private readonly ITransactionHierarchyManager _hierarchyManager;
@@ -172,7 +172,7 @@ public class ClientTransaction
   /// Gets the parent transaction for this <see cref="ClientTransaction"/>, or <see langword="null" /> if this transaction is a root transaction.
   /// </summary>
   /// <value>The parent transaction, or <see langword="null" /> if this transaction is a root transaction.</value>
-  public ClientTransaction ParentTransaction
+  public ClientTransaction? ParentTransaction
   {
     get { return _hierarchyManager.ParentTransaction; }
   }
@@ -182,7 +182,7 @@ public class ClientTransaction
   /// </summary>
   /// <value>The active sub-transaction, or <see langword="null" /> if this transaction has no sub-transaction.</value>
   /// <remarks>When the <see cref="SubTransaction"/> is discarded, this property is automatically set to <see langword="null" />.</remarks>
-  public ClientTransaction SubTransaction
+  public ClientTransaction? SubTransaction
   {
     get { return _hierarchyManager.SubTransaction; }
   }
@@ -473,7 +473,7 @@ public class ClientTransaction
   /// The <see cref="DataContainer"/> of the returned object might not have been loaded yet. In that case, it will be loaded on first
   /// access of the object's properties, and this might trigger an <see cref="ObjectsNotFoundException"/> if the container cannot be loaded.
   /// </remarks>
-  public DomainObject GetEnlistedDomainObject (ObjectID objectID)
+  public DomainObject? GetEnlistedDomainObject (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull("objectID", objectID);
     return _enlistedDomainObjectManager.GetEnlistedDomainObject(objectID);
@@ -811,7 +811,7 @@ public class ClientTransaction
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the data source.
   /// </exception>
-  protected internal virtual DomainObject TryGetObject (ObjectID objectID)
+  protected internal virtual DomainObject? TryGetObject (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull("objectID", objectID);
     return _objectLifetimeAgent.TryGetObject(objectID);
@@ -920,7 +920,7 @@ public class ClientTransaction
   /// <paramref name="objectIDs"/>. This list can contain invalid and <see langword="null" /> <see cref="DomainObject"/> references.</returns>
   /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null"/>.</exception>
   /// <exception cref="InvalidCastException">One of the retrieved objects doesn't fit the specified type <typeparamref name="T"/>.</exception>
-  protected internal T[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
+  protected internal T?[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
       where T : DomainObject
   {
     ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
@@ -934,7 +934,7 @@ public class ClientTransaction
   /// <returns>The <see cref="DomainObject"/> that is the current related object.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to an <see cref="ObjectEndPoint"/></exception>
-  protected internal virtual DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
+  protected internal virtual DomainObject? GetRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
@@ -946,7 +946,7 @@ public class ClientTransaction
     _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Current);
 
     var objectEndPoint = (IObjectEndPoint)DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
-    DomainObject relatedObject = objectEndPoint.GetOppositeObject();
+    DomainObject? relatedObject = objectEndPoint.GetOppositeObject();
 
     _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Current);
 
@@ -960,7 +960,7 @@ public class ClientTransaction
   /// <returns>The <see cref="DomainObject"/> that is the original related object.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to an <see cref="ObjectEndPoint"/></exception>
-  protected internal virtual DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
+  protected internal virtual DomainObject? GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
@@ -972,7 +972,7 @@ public class ClientTransaction
     _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Original);
 
     var objectEndPoint = (IObjectEndPoint)_dataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
-    DomainObject relatedObject = objectEndPoint.GetOriginalOppositeObject();
+    DomainObject? relatedObject = objectEndPoint.GetOriginalOppositeObject();
 
     _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Original);
 

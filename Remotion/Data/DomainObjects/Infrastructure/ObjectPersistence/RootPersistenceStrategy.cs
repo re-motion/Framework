@@ -136,9 +136,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    private IEnumerable<DataContainer> ExecuteDataContainerQuery (IQuery query)
+    private IEnumerable<DataContainer?> ExecuteDataContainerQuery (IQuery query)
     {
-      IEnumerable<DataContainer> dataContainers;
+      IEnumerable<DataContainer?> dataContainers;
       using (var storageProviderManager = CreateStorageProviderManager())
       {
         var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return dataContainers;
     }
 
-    public virtual object ExecuteScalarQuery (IQuery query)
+    public virtual object? ExecuteScalarQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
 
@@ -207,7 +207,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return new CompoundPersistenceExtension(listenerFactory.CreatePersistenceExtensions(_transactionID));
     }
 
-    private ILoadedObjectData GetLoadedObjectDataForDataContainer (DataContainer dataContainer, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
+    private ILoadedObjectData GetLoadedObjectDataForDataContainer (DataContainer? dataContainer, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
       if (dataContainer == null)
         return new NullLoadedObjectData();

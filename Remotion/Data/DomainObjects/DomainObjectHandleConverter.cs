@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects
       return destinationType == typeof(string);
     }
 
-    public override object ConvertFrom (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+    public override object? ConvertFrom (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
     {
       if (value == null)
         return null;
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects
       }
     }
 
-    public override object ConvertTo (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+    public override object? ConvertTo (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
     {
       if (destinationType != typeof(string))
         throw new NotSupportedException(string.Format("This TypeConverter cannot convert to values of type '{0}'.", destinationType));

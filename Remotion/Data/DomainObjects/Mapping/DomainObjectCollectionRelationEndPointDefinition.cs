@@ -30,17 +30,17 @@ namespace Remotion.Data.DomainObjects.Mapping
   public class DomainObjectCollectionRelationEndPointDefinition : IRelationEndPointDefinition
   {
     private readonly string _propertyName;
-    private RelationDefinition _relationDefinition;
+    private RelationDefinition? _relationDefinition;
     private readonly ClassDefinition _classDefinition;
     private readonly bool _isMandatory;
-    private readonly Lazy<SortExpressionDefinition> _sortExpression;
+    private readonly Lazy<SortExpressionDefinition?> _sortExpression;
     private readonly IPropertyInformation _propertyInfo;
 
     public DomainObjectCollectionRelationEndPointDefinition (
         ClassDefinition classDefinition,
         string propertyName,
         bool isMandatory,
-        Lazy<SortExpressionDefinition> sortExpression,
+        Lazy<SortExpressionDefinition?> sortExpression,
         IPropertyInformation propertyInfo)
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
@@ -102,13 +102,13 @@ namespace Remotion.Data.DomainObjects.Mapping
     }
 
     [Obsolete("Use GetSortExpression().ToString() instead. (Version: 1.21.8)", false)]
-    public string SortExpressionText
+    public string? SortExpressionText
     {
       get { return _sortExpression.Value?.ToString(); }
     }
 
     [CanBeNull]
-    public SortExpressionDefinition GetSortExpression ()
+    public SortExpressionDefinition? GetSortExpression ()
     {
       return _sortExpression.Value;
     }

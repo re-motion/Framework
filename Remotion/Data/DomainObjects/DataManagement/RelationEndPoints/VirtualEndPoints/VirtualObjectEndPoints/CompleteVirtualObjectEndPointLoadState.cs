@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// Represents the state of a <see cref="VirtualObjectEndPoint"/> where all of its data is available (ie., the end-point has been (lazily) loaded).
   /// </summary>
   public class CompleteVirtualObjectEndPointLoadState
-      : CompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, DomainObject, IVirtualObjectEndPointDataManager>, IVirtualObjectEndPointLoadState
+      : CompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, DomainObject?, IVirtualObjectEndPointDataManager>, IVirtualObjectEndPointLoadState
   {
     public CompleteVirtualObjectEndPointLoadState (
         IVirtualObjectEndPointDataManager dataManager,
@@ -39,14 +39,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
     }
 
-    public override DomainObject GetData (IVirtualObjectEndPoint endPoint)
+    public override DomainObject? GetData (IVirtualObjectEndPoint endPoint)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
 
       return DataManager.CurrentOppositeObject;
     }
 
-    public override DomainObject GetOriginalData (IVirtualObjectEndPoint endPoint)
+    public override DomainObject? GetOriginalData (IVirtualObjectEndPoint endPoint)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
 
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public override void SetDataFromSubTransaction (
         IVirtualObjectEndPoint endPoint,
-        IVirtualEndPointLoadState<IVirtualObjectEndPoint, DomainObject, IVirtualObjectEndPointDataManager> sourceLoadState)
+        IVirtualEndPointLoadState<IVirtualObjectEndPoint, DomainObject?, IVirtualObjectEndPointDataManager> sourceLoadState)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       var sourceCompleteLoadState = ArgumentUtility.CheckNotNullAndType<CompleteVirtualObjectEndPointLoadState>("sourceLoadState", sourceLoadState);
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       DataManager.SetDataFromSubTransaction(sourceCompleteLoadState.DataManager, EndPointProvider);
     }
 
-    public void MarkDataComplete (IVirtualObjectEndPoint endPoint, DomainObject item, Action<IVirtualObjectEndPointDataManager> stateSetter)
+    public void MarkDataComplete (IVirtualObjectEndPoint endPoint, DomainObject? item, Action<IVirtualObjectEndPointDataManager> stateSetter)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       base.SynchronizeOppositeEndPoint(endPoint, oppositeEndPoint);
     }
 
-    public IDataManagementCommand CreateSetCommand (IVirtualObjectEndPoint virtualObjectEndPoint, DomainObject newRelatedObject)
+    public IDataManagementCommand CreateSetCommand (IVirtualObjectEndPoint virtualObjectEndPoint, DomainObject? newRelatedObject)
     {
       ArgumentUtility.CheckNotNull("virtualObjectEndPoint", virtualObjectEndPoint);
 

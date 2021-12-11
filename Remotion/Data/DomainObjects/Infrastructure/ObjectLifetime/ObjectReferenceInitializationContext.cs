@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     private readonly ClientTransaction _rootTransaction;
     private readonly IEnlistedDomainObjectManager _enlistedDomainObjectManager;
 
-    private DomainObject _registeredObject;
+    private DomainObject? _registeredObject;
 
     public ObjectReferenceInitializationContext (
         ObjectID objectID,
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       get { return _enlistedDomainObjectManager; }
     }
 
-    public DomainObject RegisteredObject
+    public DomainObject? RegisteredObject
     {
       get { return _registeredObject; }
     }

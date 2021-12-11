@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
       if (!type.IsAbstract || (type.IsAbstract && Attribute.IsDefined(type, typeof(InstantiableAttribute), false)))
       {
         BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.ExactBinding;
-        ConstructorInfo legacyLoadConstructor = type.GetConstructor(flags, null, new[] { typeof(DataContainer) }, null);
+        ConstructorInfo? legacyLoadConstructor = type.GetConstructor(flags, null, new[] { typeof(DataContainer) }, null);
         if (legacyLoadConstructor != null)
         {
           return MappingValidationResult.CreateInvalidResultForType(

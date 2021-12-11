@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration
       return MappingLoaderElement.CreateInstance();
     }
 
-    public Type MappingLoaderType
+    public Type? MappingLoaderType
     {
       get { return MappingLoaderElement.Type; }
       set { MappingLoaderElement.Type = value; }

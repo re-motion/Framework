@@ -127,7 +127,7 @@ namespace Remotion.Data.DomainObjects.Linq
       return commandBuilder.GetCommand();
     }
 
-    private Type GetSelectedEntityType (Expression selectProjection)
+    private Type? GetSelectedEntityType (Expression selectProjection)
     {
       var expression = selectProjection;
       while (expression is UnaryExpression)

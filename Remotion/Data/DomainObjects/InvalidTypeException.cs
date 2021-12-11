@@ -80,7 +80,7 @@ public class InvalidTypeException : DomainObjectException
   /// <summary>
   /// The name of the property that caused the exception.
   /// </summary>
-  public string PropertyName
+  public string? PropertyName
   {
     get { return _propertyName; }
   }
@@ -88,7 +88,7 @@ public class InvalidTypeException : DomainObjectException
   /// <summary>
   /// The type that was expected for the property value.
   /// </summary>
-  public Type ExpectedType
+  public Type? ExpectedType
   {
     get { return _expectedType; }
   }
@@ -96,7 +96,7 @@ public class InvalidTypeException : DomainObjectException
   /// <summary>
   /// The type that was provided for the property value.
   /// </summary>
-  public Type ActualType
+  public Type? ActualType
   {
     get { return _actualType; }
   }

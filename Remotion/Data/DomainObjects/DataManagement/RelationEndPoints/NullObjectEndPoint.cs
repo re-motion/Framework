@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _definition; }
     }
 
-    public ObjectID ObjectID
+    public ObjectID? ObjectID
     {
       get { return null; }
     }
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return true; }
     }
 
-    public ObjectID OppositeObjectID
+    public ObjectID? OppositeObjectID
     {
       get { return null; }
     }
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       // do nothing
     }
 
-    public DomainObject GetOppositeObject ()
+    public DomainObject? GetOppositeObject ()
     {
       return null;
     }
@@ -109,12 +109,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return false; }
     }
 
-    public DomainObject GetDomainObject ()
+    public DomainObject? GetDomainObject ()
     {
       return null;
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public DomainObject? GetDomainObjectReference ()
     {
       return null;
     }
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       throw new InvalidOperationException("Rollback cannot be called on a NullObjectEndPoint.");
     }
 
-    public IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
+    public IDataManagementCommand CreateRemoveCommand (DomainObject? removedRelatedObject)
     {
       return new NullEndPointModificationCommand(this);
     }
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return new NullEndPointModificationCommand(this);
     }
 
-    public IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject)
+    public IDataManagementCommand CreateSetCommand (DomainObject? newRelatedObject)
     {
       return new NullEndPointModificationCommand(this);
     }

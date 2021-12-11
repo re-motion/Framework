@@ -26,6 +26,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
   public interface IDataContainerMapReadOnlyView : IEnumerable<DataContainer>, IFlattenedSerializable
   {
     int Count { get; }
-    DataContainer this[ObjectID id] { get; }
+    DataContainer? this[ObjectID id] { get; }
   }
 }

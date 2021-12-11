@@ -216,7 +216,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public ObjectID ObjectID
+    public ObjectID? ObjectID
     {
       get
       {
@@ -273,7 +273,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject GetDomainObject ()
+    public DomainObject? GetDomainObject ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -283,7 +283,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public DomainObject? GetDomainObjectReference ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))

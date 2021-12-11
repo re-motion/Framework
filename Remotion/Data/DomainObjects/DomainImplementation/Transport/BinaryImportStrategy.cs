@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       var formatter = new BinaryFormatter();
       try
       {
-        KeyValuePair<string, Dictionary<string, object>>[] deserializedData = PerformDeserialization(inputStream, formatter);
+        KeyValuePair<string, Dictionary<string, object?>>[] deserializedData = PerformDeserialization(inputStream, formatter);
         TransportItem[] transportedObjects = GetTransportItems(deserializedData);
         return transportedObjects;
       }
@@ -46,17 +46,17 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       }
     }
 
-    protected virtual KeyValuePair<string, Dictionary<string, object>>[] PerformDeserialization (Stream stream, BinaryFormatter formatter)
+    protected virtual KeyValuePair<string, Dictionary<string, object?>>[] PerformDeserialization (Stream stream, BinaryFormatter formatter)
     {
       ArgumentUtility.CheckNotNull("stream", stream);
       ArgumentUtility.CheckNotNull("formatter", formatter);
 
 #pragma warning disable SYSLIB0011
-      return (KeyValuePair<string, Dictionary<string, object>>[])formatter.Deserialize(stream);
+      return (KeyValuePair<string, Dictionary<string, object?>>[])formatter.Deserialize(stream);
 #pragma warning restore SYSLIB0011
     }
 
-    private TransportItem[] GetTransportItems (KeyValuePair<string, Dictionary<string, object>>[] deserializedData)
+    private TransportItem[] GetTransportItems (KeyValuePair<string, Dictionary<string, object?>>[] deserializedData)
     {
       return Array.ConvertAll(deserializedData, pair => new TransportItem(ObjectID.Parse(pair.Key), pair.Value));
     }

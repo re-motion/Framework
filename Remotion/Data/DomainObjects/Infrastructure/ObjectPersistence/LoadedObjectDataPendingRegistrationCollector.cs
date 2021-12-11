@@ -42,9 +42,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull("pendingData", pendingData);
 
-      FreshlyLoadedObjectData existingData;
-
-      if (_dataPendingRegistration.TryGetValue(pendingData.ObjectID, out existingData))
+      if (_dataPendingRegistration.TryGetValue(pendingData.ObjectID, out var existingData))
         return existingData;
 
       _dataPendingRegistration.Add(pendingData.ObjectID, pendingData);

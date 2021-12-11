@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     }
 
     public virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForRelationLookup (
-        RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition sortExpressionDefinition)
+        RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition? sortExpressionDefinition)
     {
       ArgumentUtility.CheckNotNull("foreignKeyEndPoint", foreignKeyEndPoint);
       ArgumentUtility.CheckNotNull("foreignKeyValue", foreignKeyValue);
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         TableDefinition tableDefinition,
         RelationEndPointDefinition foreignKeyEndPoint,
         ObjectID foreignKeyValue,
-        SortExpressionDefinition sortExpression)
+        SortExpressionDefinition? sortExpression)
     {
       var selectedColumns = tableDefinition.GetAllColumns();
       var dataContainerReader = _objectReaderFactory.CreateDataContainerReader(tableDefinition, selectedColumns);
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         UnionViewDefinition unionViewDefinition,
         RelationEndPointDefinition foreignKeyEndPoint,
         ObjectID foreignKeyValue,
-        SortExpressionDefinition sortExpression)
+        SortExpressionDefinition? sortExpression)
     {
       var selectedColumns = unionViewDefinition.ObjectIDProperty.GetColumns();
       var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect(
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       return storagePropertyDefinition.SplitValueForComparison(foreignKeyValue);
     }
 
-    protected virtual  IEnumerable<OrderedColumn> GetOrderedColumns (SortExpressionDefinition sortExpression)
+    protected virtual IEnumerable<OrderedColumn> GetOrderedColumns (SortExpressionDefinition? sortExpression)
     {
       if (sortExpression == null)
         return new OrderedColumn[0];

@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
              ).ToList();
     }
 
-    private EntityNameDefinition FindTableName (ClassDefinition classDefinition)
+    private EntityNameDefinition? FindTableName (ClassDefinition classDefinition)
     {
       var tableName = classDefinition
           .CreateSequence(cd => cd.BaseClass)

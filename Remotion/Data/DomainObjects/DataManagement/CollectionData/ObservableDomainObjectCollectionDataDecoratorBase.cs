@@ -40,8 +40,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
     }
 
-    protected abstract void OnDataChanging (OperationKind operation, DomainObject affectedObject, int index);
-    protected abstract void OnDataChanged (OperationKind operation, DomainObject affectedObject, int index);
+    /// <param name="operation">The <see cref="OperationKind"/> of the change.</param>
+    /// <param name="affectedObject">The <see cref="DomainObject"/> that was inserted or removed or <see langword="null" /> if <paramref name="operation"/> is <see cref="OperationKind.Sort"/>.</param>
+    /// <param name="index">The index of the <paramref name="affectedObject"/>.</param>
+    protected abstract void OnDataChanging (OperationKind operation, DomainObject? affectedObject, int index);
+
+    /// <param name="operation">The <see cref="OperationKind"/> of the change.</param>
+    /// <param name="affectedObject">The <see cref="DomainObject"/> that was inserted or removed or <see langword="null" /> if <paramref name="operation"/> is <see cref="OperationKind.Sort"/>.</param>
+    /// <param name="index">The index of the <paramref name="affectedObject"/>.</param>
+    protected abstract void OnDataChanged (OperationKind operation, DomainObject? affectedObject, int index);
 
     public override void Clear ()
     {

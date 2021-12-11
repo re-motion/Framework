@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
   public class DictionaryBasedEnlistedDomainObjectManager : IEnlistedDomainObjectManager
   {
     private readonly Dictionary<ObjectID, int> _enlistedObjects = new Dictionary<ObjectID, int>();
-    private readonly List<DomainObject> _enlistedObjectsList = new List<DomainObject>();
+    private readonly List<DomainObject?> _enlistedObjectsList = new List<DomainObject?>();
 
     public int EnlistedDomainObjectCount
     {
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
       }
     }
 
-    public DomainObject GetEnlistedDomainObject (ObjectID objectID)
+    public DomainObject? GetEnlistedDomainObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      DomainObject alreadyEnlistedObject = GetEnlistedDomainObject(domainObject.ID);
+      DomainObject? alreadyEnlistedObject = GetEnlistedDomainObject(domainObject.ID);
       if (alreadyEnlistedObject != null && alreadyEnlistedObject != domainObject)
       {
         string message = string.Format("A domain object instance for object '{0}' already exists in this transaction.", domainObject.ID);

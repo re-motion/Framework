@@ -81,12 +81,12 @@ public class StorageProviderCollection : CommonCollection, IDisposable
     get { return (StorageProvider)BaseGetObject(index); }
   }
 
-  public StorageProvider this [string storageProviderID]
+  public StorageProvider? this [string storageProviderID]
   {
     get
     {
       ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
-      return (StorageProvider)BaseGetObject(storageProviderID);
+      return (StorageProvider?)BaseGetObject(storageProviderID);
     }
   }
 

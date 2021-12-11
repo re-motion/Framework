@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Tracing
         PersistenceExtension.TransactionRolledBack(_connectionID);
     }
 
-    IDbConnection IDbTransaction.Connection
+    IDbConnection? IDbTransaction.Connection
     {
       get { return _transaction.Connection; }
     }

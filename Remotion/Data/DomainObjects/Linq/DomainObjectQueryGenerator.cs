@@ -187,7 +187,7 @@ namespace Remotion.Data.DomainObjects.Linq
         string statement,
         CommandParameter[] commandParameters,
         QueryType queryType,
-        Type selectedEntityType)
+        Type? selectedEntityType)
     {
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
@@ -249,7 +249,7 @@ namespace Remotion.Data.DomainObjects.Linq
       }
     }
 
-    private SortExpressionDefinition GetSortExpressionForRelation (IRelationEndPointDefinition relationEndPointDefinition)
+    private SortExpressionDefinition? GetSortExpressionForRelation (IRelationEndPointDefinition relationEndPointDefinition)
     {
       switch (relationEndPointDefinition)
       {
@@ -349,7 +349,7 @@ namespace Remotion.Data.DomainObjects.Linq
               ));
     }
 
-    private Type GetCollectionType (Type itemType)
+    private Type GetCollectionType (Type? itemType)
     {
       if (itemType == null)
         return typeof(DomainObjectCollection);

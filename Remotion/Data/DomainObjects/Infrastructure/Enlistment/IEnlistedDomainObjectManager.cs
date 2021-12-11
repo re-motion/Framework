@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
     /// A <see cref="DomainObject"/> with the given <paramref name="objectID"/> previously enlisted via <see cref="EnlistDomainObject"/>,
     /// or <see langword="null"/> if no such object exists.
     /// </returns>
-    DomainObject GetEnlistedDomainObject (ObjectID objectID);
+    DomainObject? GetEnlistedDomainObject (ObjectID objectID);
 
     /// <summary>
     /// Determines whether the specified <paramref name="domainObject"/> has been enlisted via <see cref="EnlistDomainObject"/>.

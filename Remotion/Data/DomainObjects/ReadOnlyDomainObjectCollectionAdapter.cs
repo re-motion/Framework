@@ -38,12 +38,12 @@ namespace Remotion.Data.DomainObjects
       _wrappedData = wrappedData;
     }
 
-    public Type RequiredItemType
+    public Type? RequiredItemType
     {
       get { return _wrappedData.RequiredItemType; }
     }
 
-    public RelationEndPointID AssociatedEndPointID
+    public RelationEndPointID? AssociatedEndPointID
     {
       get { return _wrappedData.AssociatedEndPointID; }
     }
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects
       get { return (T)_wrappedData[index]; }
     }
 
-    public T this[ObjectID objectID]
+    public T? this[ObjectID objectID]
     {
       get
       {
@@ -94,10 +94,10 @@ namespace Remotion.Data.DomainObjects
       }
     }
 
-    public T GetObject (ObjectID objectID)
+    public T? GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
-      return (T)_wrappedData[objectID];
+      return (T?)_wrappedData[objectID];
     }
 
     public int IndexOf (ObjectID objectID)

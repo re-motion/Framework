@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private readonly IDomainObjectCollectionEndPointCollectionProvider _domainObjectCollectionProvider;
     private readonly IAssociatedDomainObjectCollectionDataStrategyFactory _dataStrategyFactory;
 
-    private DomainObjectCollection _originalCollectionReference;
-    private DomainObjectCollection _currentCollectionReference;
+    private DomainObjectCollection? _originalCollectionReference;
+    private DomainObjectCollection? _currentCollectionReference;
 
     public DomainObjectCollectionEndPointCollectionManager (
         RelationEndPointID endPointID,

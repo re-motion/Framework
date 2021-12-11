@@ -47,13 +47,13 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
       return GetType(node.SelectSingleNode(xPath, namespaceManager));
     }
 
-    public static Type GetOptionalType (XmlNode selectionNode, string xPath, XmlNamespaceManager namespaceManager)
+    public static Type? GetOptionalType (XmlNode selectionNode, string xPath, XmlNamespaceManager namespaceManager)
     {
       ArgumentUtility.CheckNotNull("selectionNode", selectionNode);
       ArgumentUtility.CheckNotNullOrEmpty("xPath", xPath);
       ArgumentUtility.CheckNotNull("namespaceManager", namespaceManager);
 
-      XmlNode typeNode = selectionNode.SelectSingleNode(xPath, namespaceManager);
+      XmlNode? typeNode = selectionNode.SelectSingleNode(xPath, namespaceManager);
 
       if (typeNode != null)
         return GetType(typeNode);
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
       ArgumentUtility.CheckNotNullOrEmpty("appSettingKey", appSettingKey);
       ArgumentUtility.CheckNotNullOrEmpty("defaultFileName", defaultFileName);
 
-      string fileName = ConfigurationWrapper.Current.GetAppSetting(appSettingKey, false);
+      string? fileName = ConfigurationWrapper.Current.GetAppSetting(appSettingKey, false);
       if (fileName != null)
         return fileName;
 

@@ -30,17 +30,17 @@ namespace Remotion.Data.DomainObjects.Mapping
   public class VirtualCollectionRelationEndPointDefinition : IRelationEndPointDefinition
   {
     private readonly string _propertyName;
-    private RelationDefinition _relationDefinition;
+    private RelationDefinition? _relationDefinition;
     private readonly ClassDefinition _classDefinition;
     private readonly bool _isMandatory;
-    private readonly Lazy<SortExpressionDefinition> _sortExpression;
+    private readonly Lazy<SortExpressionDefinition?> _sortExpression;
     private readonly IPropertyInformation _propertyInfo;
 
     public VirtualCollectionRelationEndPointDefinition (
         [NotNull] ClassDefinition classDefinition,
         string propertyName,
         bool isMandatory,
-        [CanBeNull] Lazy<SortExpressionDefinition> sortExpression,
+        [NotNull] Lazy<SortExpressionDefinition?> sortExpression,
         [NotNull] IPropertyInformation propertyInfo)
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     }
 
     [CanBeNull]
-    public SortExpressionDefinition GetSortExpression ()
+    public SortExpressionDefinition? GetSortExpression ()
     {
       return _sortExpression.Value;
     }

@@ -35,15 +35,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       Assertion.IsFalse(id.Definition.IsAnonymous);
     }
 
-    public abstract ObjectID OppositeObjectID { get; }
-    public abstract ObjectID OriginalOppositeObjectID { get; }
+    public abstract ObjectID? OppositeObjectID { get; }
+    public abstract ObjectID? OriginalOppositeObjectID { get; }
 
-    public abstract DomainObject GetOppositeObject ();
-    public abstract DomainObject GetOriginalOppositeObject ();
+    public abstract DomainObject? GetOppositeObject ();
+    public abstract DomainObject? GetOriginalOppositeObject ();
 
     protected abstract void SetOppositeObjectDataFromSubTransaction (IObjectEndPoint sourceObjectEndPoint);
 
-    public abstract IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject);
+    public abstract IDataManagementCommand CreateSetCommand (DomainObject? newRelatedObject);
 
     public override void ValidateMandatory ()
     {
@@ -62,8 +62,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       if (removedRelatedObject.ID != OppositeObjectID)
       {
-        string removedID = removedRelatedObject.ID.ToString();
-        string currentID = OppositeObjectID != null ? OppositeObjectID.ToString() : "<null>";
+        var removedID = removedRelatedObject.ID.ToString();
+        var currentID = OppositeObjectID != null ? OppositeObjectID.ToString() : "<null>";
 
         var message = string.Format(
             "Cannot remove object '{0}' from object end point '{1}' - it currently holds object '{2}'.",
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         Touch();
     }
 
-    public RelationEndPointID GetOppositeRelationEndPointID ()
+    public RelationEndPointID? GetOppositeRelationEndPointID ()
     {
       var oppositeEndPointDefinition = Definition.GetOppositeEndPointDefinition();
       if (oppositeEndPointDefinition.IsAnonymous)

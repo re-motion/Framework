@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects
         return memberAccess;
       }
 
-      private NotSupportedException CreateNotSupportedException (MethodCallExpression methodCallExpression, string specificMessage, Exception inner = null)
+      private NotSupportedException CreateNotSupportedException (MethodCallExpression methodCallExpression, string specificMessage, Exception? inner = null)
       {
         var message = string.Format(
             "The method call '{0}' cannot be redirected to the property '{1}.{2}'. {3}",

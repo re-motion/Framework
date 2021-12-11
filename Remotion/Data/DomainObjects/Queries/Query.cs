@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <summary>
     /// Gets the <see cref="Configuration.QueryDefinition.CollectionType"/> of the associated <see cref="Configuration.QueryDefinition"/>.
     /// </summary>
-    public Type CollectionType
+    public Type? CollectionType
     {
       get { return _definition.CollectionType; }
     }

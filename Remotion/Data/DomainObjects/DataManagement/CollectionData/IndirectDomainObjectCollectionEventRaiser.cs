@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       EventRaiser = eventRaiser;
     }
 
-    public IDomainObjectCollectionEventRaiser EventRaiser { get; set; }
+    public IDomainObjectCollectionEventRaiser? EventRaiser { get; set; }
 
     public void BeginAdd (int index, DomainObject domainObject)
     {

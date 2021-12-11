@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _clientTransaction; }
     }
 
-    public ObjectID ObjectID
+    public ObjectID? ObjectID
     {
       get { return null; }
     }
@@ -100,12 +100,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return false; }
     }
 
-    public DomainObject GetDomainObject ()
+    public DomainObject? GetDomainObject ()
     {
       return null;
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public DomainObject? GetDomainObjectReference ()
     {
       return null;
     }
@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return new NullEndPointModificationCommand(this);
     }
 
-    public IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
+    public IDataManagementCommand CreateRemoveCommand (DomainObject? removedRelatedObject)
     {
       return new NullEndPointModificationCommand(this);
     }

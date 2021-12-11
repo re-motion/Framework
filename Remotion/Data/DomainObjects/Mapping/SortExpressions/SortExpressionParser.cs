@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
       _classDefinition = classDefinition;
     }
 
-    public SortExpressionDefinition Parse (string sortExpression)
+    public SortExpressionDefinition? Parse (string sortExpression)
     {
       ArgumentUtility.CheckNotNull("sortExpression", sortExpression);
 
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
       return new SortedPropertySpecification(propertyDefinition, sortOrder);
     }
 
-    private Tuple<string, string> SplitSortedPropertySpecification (string sortedPropertySpecification)
+    private Tuple<string, string?> SplitSortedPropertySpecification (string sortedPropertySpecification)
     {
       var parts = sortedPropertySpecification.Split(' ').Where(s => !string.IsNullOrEmpty(s)).ToArray();
 
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
       return Tuple.Create(parts[0], parts.Length > 1 ? parts[1] : null);
     }
 
-    private SortOrder ParseOrderSpecification (string orderSpecification)
+    private SortOrder ParseOrderSpecification (string? orderSpecification)
     {
       if (orderSpecification == null)
         return SortOrder.Ascending;

@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   [Serializable]
   public sealed class RelationEndPointID : IFlattenedSerializable, ISerializable
   {
-    public static RelationEndPointID Create (ObjectID objectID, IRelationEndPointDefinition definition)
+    public static RelationEndPointID Create (ObjectID? objectID, IRelationEndPointDefinition definition)
     {
       ArgumentUtility.CheckNotNull("definition", definition);
 
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
           cache => cache.ResolveMandatoryPropertyAccessorData(propertyAccessExpression));
     }
 
-    public static RelationEndPointID CreateOpposite (IRelationEndPointDefinition sourceEndPointDefinition, ObjectID oppositeObjectID)
+    public static RelationEndPointID CreateOpposite (IRelationEndPointDefinition sourceEndPointDefinition, ObjectID? oppositeObjectID)
     {
       ArgumentUtility.CheckNotNull("sourceEndPointDefinition", sourceEndPointDefinition);
 
@@ -123,17 +123,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return endPointDefinitions.Select(endPointDefinition => Create(objectID, endPointDefinition));
     }
 
-    public static bool operator == (RelationEndPointID endPointID1, RelationEndPointID endPointID2)
+    public static bool operator == (RelationEndPointID? endPointID1, RelationEndPointID? endPointID2)
     {
       return Equals(endPointID1, endPointID2);
     }
 
-    public static bool operator != (RelationEndPointID endPointID1, RelationEndPointID endPointID2)
+    public static bool operator != (RelationEndPointID? endPointID1, RelationEndPointID? endPointID2)
     {
       return !Equals(endPointID1, endPointID2);
     }
 
-    public static bool Equals (RelationEndPointID endPointID1, RelationEndPointID endPointID2)
+    public static bool Equals (RelationEndPointID? endPointID1, RelationEndPointID? endPointID2)
     {
       if (ReferenceEquals(endPointID1, endPointID2))
         return true;
@@ -144,10 +144,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     }
 
     private readonly IRelationEndPointDefinition _definition;
-    private readonly ObjectID _objectID;
+    private readonly ObjectID? _objectID;
     private int _cachedHashCode;
 
-    private RelationEndPointID (ObjectID objectID, IRelationEndPointDefinition definition)
+    private RelationEndPointID (ObjectID? objectID, IRelationEndPointDefinition definition)
     {
       _objectID = objectID;
       _definition = definition;
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _definition; }
     }
 
-    public ObjectID ObjectID
+    public ObjectID? ObjectID
     {
       get { return _objectID; }
     }
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return _cachedHashCode;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;
@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       ArgumentUtility.CheckNotNull("info", info);
 
-      var objectID = (ObjectID)info.GetValue("ObjectID", typeof(ObjectID));
+      var objectID = (ObjectID?)info.GetValue("ObjectID", typeof(ObjectID));
       var classDefinitionID = info.GetString("ClassID");
       var propertyName = info.GetString("PropertyName");
 

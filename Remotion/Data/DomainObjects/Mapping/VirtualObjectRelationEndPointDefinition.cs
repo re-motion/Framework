@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   public class VirtualObjectRelationEndPointDefinition : IRelationEndPointDefinition
   {
     private readonly string _propertyName;
-    private RelationDefinition _relationDefinition;
+    private RelationDefinition? _relationDefinition;
     private readonly ClassDefinition _classDefinition;
     private readonly bool _isMandatory;
     private readonly IPropertyInformation _propertyInfo;

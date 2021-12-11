@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       get { return (ConfigurationElementCollection<StorageGroupElement>)this[_storageProviderGroupsProperty]; }
     }
 
-    public StorageProviderDefinition DefaultStorageProviderDefinition
+    public StorageProviderDefinition? DefaultStorageProviderDefinition
     {
       get { return _defaultStorageProviderDefinitionHelper.Provider; }
     }
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       _providerHelpers.ForEach(current => current.PostDeserialze());
     }
 
-    public ConfigurationException CreateMissingDefaultProviderException (string context)
+    public ConfigurationException CreateMissingDefaultProviderException (string? context)
     {
       return new ConfigurationException(
           "Missing default storage provider. "

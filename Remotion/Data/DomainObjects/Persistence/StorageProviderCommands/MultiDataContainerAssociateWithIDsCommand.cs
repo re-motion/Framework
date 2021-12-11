@@ -33,11 +33,11 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       : IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext>
   {
     private readonly ObjectID[] _objectIDs;
-    private readonly IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> _command;
+    private readonly IStorageProviderCommand<IEnumerable<DataContainer?>, IRdbmsProviderCommandExecutionContext> _command;
 
     public MultiDataContainerAssociateWithIDsCommand (
         IEnumerable<ObjectID> objectIDs,
-        IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> command)
+        IStorageProviderCommand<IEnumerable<DataContainer?>, IRdbmsProviderCommandExecutionContext> command)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
       ArgumentUtility.CheckNotNull("command", command);
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       get { return _objectIDs; }
     }
 
-    public IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> Command
+    public IStorageProviderCommand<IEnumerable<DataContainer?>, IRdbmsProviderCommandExecutionContext> Command
     {
       get { return _command; }
     }

@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
     }
 
-    public Type GetPropertyType (PropertyDefinition propertyDefinition, IRelationEndPointDefinition relationEndPointDefinition)
+    public Type GetPropertyType (PropertyDefinition? propertyDefinition, IRelationEndPointDefinition? relationEndPointDefinition)
     {
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
       return propertyDefinition.PropertyType;
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return GetValueWithoutTypeCheck(propertyAccessor, transaction) == null;
     }
 
-    public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
+    public object? GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return GetDataContainer(propertyAccessor, transaction).GetValue(propertyAccessor.PropertyData.PropertyDefinition);
     }
 
-    public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object value)
+    public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object? value)
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       GetDataContainer(propertyAccessor, transaction).SetValue(propertyAccessor.PropertyData.PropertyDefinition, value);
     }
 
-    public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
+    public object? GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
       ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
       ArgumentUtility.CheckNotNull("transaction", transaction);

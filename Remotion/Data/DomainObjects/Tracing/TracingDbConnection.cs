@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
@@ -33,6 +34,7 @@ namespace Remotion.Data.DomainObjects.Tracing
       _connection.ChangeDatabase(databaseName);
     }
 
+    [AllowNull]
     public string ConnectionString
     {
       get { return _connection.ConnectionString; }

@@ -194,7 +194,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       return propertyInfos;
     }
 
-    private bool FindPropertiesFilter (MemberInfo member, object filterCriteria)
+    private bool FindPropertiesFilter (MemberInfo member, object? filterCriteria)
     {
       return FindPropertiesFilter(PropertyInfoAdapter.Create((PropertyInfo)member));
     }

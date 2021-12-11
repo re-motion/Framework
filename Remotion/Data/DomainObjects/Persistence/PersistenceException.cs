@@ -32,7 +32,7 @@ public class PersistenceException : DomainObjectException
 
   public PersistenceException () : this("A persistence exception occurred.") {}
   public PersistenceException (string message) : base(message) {}
-  public PersistenceException (string message, Exception inner) : base(message, inner) {}
+  public PersistenceException (string message, Exception? inner) : base(message, inner) {}
   protected PersistenceException (SerializationInfo info, StreamingContext context) : base(info, context) {}
 
   // methods and properties

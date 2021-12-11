@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     }
 
     private readonly ObjectID _id;
-    private readonly Dictionary<string, object> _properties;
+    private readonly Dictionary<string, object?> _properties;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TransportItem"/> class.
@@ -70,10 +70,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     {
       ArgumentUtility.CheckNotNull("id", id);
       _id = id;
-      _properties = new Dictionary<string, object>();
+      _properties = new Dictionary<string, object?>();
     }
 
-    internal TransportItem (ObjectID id, Dictionary<string, object> properties)
+    internal TransportItem (ObjectID id, Dictionary<string, object?> properties)
     {
       ArgumentUtility.CheckNotNull("id", id);
       ArgumentUtility.CheckNotNull("properties", properties);
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// Gets the properties to be transported by this item.
     /// </summary>
     /// <value>The properties to be transported.</value>
-    public Dictionary<string, object> Properties
+    public Dictionary<string, object?> Properties
     {
       get { return _properties; }
     }

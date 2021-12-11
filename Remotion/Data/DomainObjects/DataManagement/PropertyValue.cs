@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
           || ReflectionUtility.IsStructuralEquatablePropertyValueType(propertyType);
     }
 
-    public static bool AreValuesDifferent (object value1, object value2)
+    public static bool AreValuesDifferent (object? value1, object? value2)
     {
       if (ReferenceEquals(value1, value2))
         return false;
@@ -57,8 +57,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     private readonly PropertyDefinition _definition;
 
-    private object _value;
-    private object _originalValue;
+    private object? _value;
+    private object? _originalValue;
     private bool _hasBeenTouched;
 
     // construction and disposing
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <param name="value">The initial <see cref="Value"/> for the <b>PropertyValue</b>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="definition"/> is <see langword="null"/>.</exception>
     /// <exception cref="Remotion.Data.DomainObjects.InvalidTypeException"><paramref name="value"/> does not match the required type specified in <paramref name="definition"/>.</exception>
-    public PropertyValue (PropertyDefinition definition, object value)
+    public PropertyValue (PropertyDefinition definition, object? value)
     {
       ArgumentUtility.CheckNotNull("definition", definition);
 
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <exception cref="ObjectInvalidException">The <see cref="DomainObject"/> is invalid and its <see cref="PropertyValue"/> has been discarded. 
     /// See <see cref="ObjectInvalidException"/> for further information.</exception>
     /// <exception cref="Remotion.Data.DomainObjects.InvalidTypeException"><paramref name="value"/> does not match the required type specified in <see cref="PropertyDefinition"/>.</exception>
-    public object Value
+    public object? Value
     {
       get
       {
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// </summary>
     /// <exception cref="ObjectInvalidException">The <see cref="DomainObject"/> is invalid and its <see cref="PropertyValue"/> has been discarded. 
     /// See <see cref="ObjectInvalidException"/> for further information.</exception>
-    public object OriginalValue
+    public object? OriginalValue
     {
       get
       {
@@ -196,7 +196,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _hasBeenTouched = false;
     }
 
-    private void CheckValue (object value, PropertyDefinition definition)
+    private void CheckValue (object? value, PropertyDefinition definition)
     {
       if (value != null)
       {

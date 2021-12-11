@@ -27,6 +27,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   public interface ITypeDefinitionProvider
   {
     [CanBeNull]
-    ClassDefinition GetTypeDefinition (Type domainObjectType);
+    ClassDefinition? GetTypeDefinition (Type domainObjectType);
   }
 }

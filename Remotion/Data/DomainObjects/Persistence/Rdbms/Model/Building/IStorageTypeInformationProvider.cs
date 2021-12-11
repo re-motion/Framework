@@ -69,6 +69,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     /// all possible data types, although it tries to be as compatible as possible without knowing the context in which the value is to be used.
     /// </remarks>
     [NotNull]
-    IStorageTypeInformation GetStorageType (object value);
+    IStorageTypeInformation GetStorageType (object? value);
   }
 }

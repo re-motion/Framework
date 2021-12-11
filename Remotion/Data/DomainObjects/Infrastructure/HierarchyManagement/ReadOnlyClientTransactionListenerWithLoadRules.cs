@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     }
 
     public override void PropertyValueChanging (
-        ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+        ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
@@ -114,8 +114,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject)
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
@@ -157,7 +157,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       base.DataContainerStateUpdated(clientTransaction, container, newDataContainerState);
     }
 
-    private void CheckModifiedObjectID (ObjectID objectID, string modifiedPropertyIdentifier)
+    private void CheckModifiedObjectID (ObjectID objectID, string? modifiedPropertyIdentifier)
     {
       if (!_currentlyLoadingObjectIDs.Contains(objectID))
       {

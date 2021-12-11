@@ -89,8 +89,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     private DataContainer GetTargetDataContainer (TransportItem transportItem, Dictionary<ObjectID, DomainObject> existingObjects, ClientTransaction bindingTargetTransaction)
     {
-      DomainObject existingObject;
-      if (existingObjects.TryGetValue(transportItem.ID, out existingObject))
+      if (existingObjects.TryGetValue(transportItem.ID, out var existingObject))
       {
         return bindingTargetTransaction.DataManager.GetDataContainerWithLazyLoad(existingObject.ID, throwOnNotFound: true);
       }
@@ -122,7 +121,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
         DataContainer targetContainer = sourceToTargetContainer.Item2;
         PropertyIndexer targetProperties = new PropertyIndexer(targetContainer.DomainObject);
 
-        foreach (KeyValuePair<string, object> sourceProperty in transportItem.Properties)
+        foreach (KeyValuePair<string, object?> sourceProperty in transportItem.Properties)
         {
           PropertyAccessor targetProperty = targetProperties[sourceProperty.Key, targetTransaction];
           switch (targetProperty.PropertyData.Kind)
@@ -133,7 +132,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
             case PropertyKind.RelatedObject:
               if (!targetProperty.PropertyData.RelationEndPointDefinition.IsVirtual)
               {
-                var relatedObjectID = (ObjectID)sourceProperty.Value;
+                var relatedObjectID = (ObjectID?)sourceProperty.Value;
                 var targetRelatedObject = relatedObjectID != null ? targetTransaction.GetObject(relatedObjectID, false) : null;
                 targetProperty.SetValueWithoutTypeCheck(targetRelatedObject);
               }

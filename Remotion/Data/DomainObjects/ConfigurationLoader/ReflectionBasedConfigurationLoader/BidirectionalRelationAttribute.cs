@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -26,7 +27,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   public class BidirectionalRelationAttribute: Attribute, IMappingAttribute
   {
     private readonly string _oppositeProperty;
-    private string _sortExpression;
+    private string? _sortExpression;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BidirectionalRelationAttribute"/> class with the name of the oppsite property.
@@ -65,7 +66,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     /// (Customer) of the related class (Person).
     /// </para>
     /// </example>
-    public string SortExpression
+    [DisallowNull]
+    public string? SortExpression
     {
       get { return _sortExpression; }
       set

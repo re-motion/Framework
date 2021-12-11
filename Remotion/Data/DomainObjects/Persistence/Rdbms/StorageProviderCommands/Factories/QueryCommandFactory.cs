@@ -65,13 +65,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       get { return _dataStoragePropertyDefinitionFactory; }
     }
 
-    public virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForDataContainerQuery (IQuery query)
+    public virtual IStorageProviderCommand<IEnumerable<DataContainer?>, IRdbmsProviderCommandExecutionContext> CreateForDataContainerQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
 
       var dbCommandBuilder = CreateDbCommandBuilder(query);
       var dataContainerReader = _objectReaderFactory.CreateDataContainerReader();
-      return new MultiObjectLoadCommand<DataContainer>(new[] { Tuple.Create(dbCommandBuilder, dataContainerReader) });
+      return new MultiObjectLoadCommand<DataContainer?>(new[] { Tuple.Create(dbCommandBuilder, dataContainerReader) });
     }
 
     public virtual IStorageProviderCommand<IEnumerable<IQueryResultRow>, IRdbmsProviderCommandExecutionContext> CreateForCustomQuery (IQuery query)
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       return new MultiObjectLoadCommand<IQueryResultRow>(new[] { Tuple.Create(dbCommandBuilder, resultRowReader) });
     }
 
-    public virtual IStorageProviderCommand<object, IRdbmsProviderCommandExecutionContext> CreateForScalarQuery (IQuery query)
+    public virtual IStorageProviderCommand<object?, IRdbmsProviderCommandExecutionContext> CreateForScalarQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
 

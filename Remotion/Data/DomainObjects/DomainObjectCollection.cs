@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>An instance of <see cref="IDomainObjectCollectionData"/> that can be used for stand-alone collections.</returns>
     public static IDomainObjectCollectionData CreateDataStrategyForStandAloneCollection (
         IDomainObjectCollectionData dataStore,
-        Type requiredItemType,
+        Type? requiredItemType,
         IDomainObjectCollectionEventRaiser eventRaiser)
     {
       ArgumentUtility.CheckNotNull("dataStore", dataStore);
@@ -153,12 +153,12 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Occurs before an object is added to the collection.
     /// </summary>
-    public event DomainObjectCollectionChangeEventHandler Adding;
+    public event DomainObjectCollectionChangeEventHandler? Adding;
 
     /// <summary>
     /// Occurs after an object is added to the collection.
     /// </summary>
-    public event DomainObjectCollectionChangeEventHandler Added;
+    public event DomainObjectCollectionChangeEventHandler? Added;
 
     /// <summary>
     /// Occurs before an object is removed to the collection.
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects
     /// This event is not raised if the <see cref="DomainObject"/> holding the <see cref="DomainObjectCollection"/> is being deleted. 
     /// The <see cref="Deleting"/> event is raised instead.
     /// </remarks>
-    public event DomainObjectCollectionChangeEventHandler Removing;
+    public event DomainObjectCollectionChangeEventHandler? Removing;
 
     /// <summary>
     /// Occurs after an object is removed to the collection.
@@ -176,17 +176,17 @@ namespace Remotion.Data.DomainObjects
     /// This event is not raised if the <see cref="DomainObject"/> holding the <see cref="DomainObjectCollection"/> has been deleted. 
     /// The <see cref="Deleted"/> event is raised instead.
     /// </remarks>
-    public event DomainObjectCollectionChangeEventHandler Removed;
+    public event DomainObjectCollectionChangeEventHandler? Removed;
 
     /// <summary>
     /// Occurs before the object holding this collection is deleted if this <see cref="DomainObjectCollection"/> represents a one-to-many relation.
     /// </summary>
-    public event EventHandler Deleting;
+    public event EventHandler? Deleting;
 
     /// <summary>
     /// Occurs after the object holding this collection is deleted if this <see cref="DomainObjectCollection"/> represents a one-to-many relation.
     /// </summary>
-    public event EventHandler Deleted;
+    public event EventHandler? Deleted;
 
     private IDomainObjectCollectionData _dataStrategy; // holds the actual data represented by this collection
 
@@ -194,7 +194,7 @@ namespace Remotion.Data.DomainObjects
     /// Initializes a new <see cref="DomainObjectCollection" />.
     /// </summary>
     public DomainObjectCollection ()
-        : this((Type)null)
+        : this((Type?)null)
     {
     }
 
@@ -202,7 +202,7 @@ namespace Remotion.Data.DomainObjects
     /// Initializes a new <see cref="DomainObjectCollection" /> that only takes a certain <see cref="Type"/> as members.
     /// </summary>
     /// <param name="requiredItemType">The <see cref="Type"/> that are required for members.</param>
-    public DomainObjectCollection (Type requiredItemType)
+    public DomainObjectCollection (Type? requiredItemType)
     {
       _dataStrategy = CreateDataStrategyForStandAloneCollection(new DomainObjectCollectionData(), requiredItemType, this);
     }
@@ -266,7 +266,7 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Gets the required <see cref="Type"/> for all elements of the collection. If the collection is read-only, this is <see langword="null" />.
     /// </summary>
-    public Type RequiredItemType
+    public Type? RequiredItemType
     {
       get { return _dataStrategy.RequiredItemType; }
     }
@@ -276,7 +276,7 @@ namespace Remotion.Data.DomainObjects
     /// this is a stand-alone collection.
     /// </summary>
     /// <value>The associated end point.</value>
-    public RelationEndPointID AssociatedEndPointID
+    public RelationEndPointID? AssociatedEndPointID
     {
       get { return _dataStrategy.AssociatedEndPointID; }
     }
@@ -369,7 +369,7 @@ namespace Remotion.Data.DomainObjects
     /// </summary>
     /// <param name="id">The <paramref name="id"/> to locate in the collection.</param>
     /// <returns>The zero-based index of the <paramref name="id"/>, if found; otherwise, -1.</returns>
-    public int IndexOf (ObjectID id)
+    public int IndexOf (ObjectID? id)
     {
       if (id != null)
         return _dataStrategy.IndexOf(id);
@@ -408,7 +408,7 @@ namespace Remotion.Data.DomainObjects
     /// Gets the <see cref="DomainObject"/> with a given <see cref="ObjectID"/> from the <see cref="DomainObjectCollection"/>.
     /// </summary>
     /// <remarks>The indexer returns <see langword="null"/> if the given <paramref name="id"/> was not found.</remarks>
-    public DomainObject this [ObjectID id]
+    public DomainObject? this [ObjectID id]
     {
       get { return _dataStrategy.GetObject(id); }
     }

@@ -15,9 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -34,14 +36,15 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       BidirectionalRelationAttribute = PropertyInfo.GetCustomAttribute<T>(true);
     }
 
-    public T BidirectionalRelationAttribute { get; private set; }
+    public T? BidirectionalRelationAttribute { get; private set; }
 
+    [MemberNotNullWhen(true, nameof(BidirectionalRelationAttribute))]
     protected bool IsBidirectionalRelation
     {
       get { return BidirectionalRelationAttribute != null; }
     }
 
-    protected IPropertyInformation GetOppositePropertyInfo ()
+    protected IPropertyInformation? GetOppositePropertyInfo ()
     {
       var type = ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(PropertyInfo);
       var propertyFinder = new NameBasedPropertyFinder(

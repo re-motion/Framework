@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return classDefinition;
     }
 
-    private ClassDefinition GetBaseClassDefinition (IDictionary<Type, ClassDefinition> classDefinitions, Type type)
+    private ClassDefinition? GetBaseClassDefinition (IDictionary<Type, ClassDefinition> classDefinitions, Type type)
     {
       if (ReflectionUtility.IsInheritanceRoot(type))
         return null;
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return GetClassDefinition(classDefinitions, type.BaseType);
     }
 
-    private void SetDerivedClasses (IEnumerable<ClassDefinition> classDefinitions)
+    private void SetDerivedClasses (IReadOnlyCollection<ClassDefinition> classDefinitions)
     {
       var classesByBaseClass = (from classDefinition in classDefinitions
                                 where classDefinition.BaseClass != null
@@ -85,8 +85,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
       foreach (var classDefinition in classDefinitions)
       {
-        IEnumerable<ClassDefinition> derivedClasses;
-        if (!classesByBaseClass.TryGetValue(classDefinition, out derivedClasses))
+        if (!classesByBaseClass.TryGetValue(classDefinition, out var derivedClasses))
           derivedClasses = Enumerable.Empty<ClassDefinition>();
 
         classDefinition.SetDerivedClasses(derivedClasses);

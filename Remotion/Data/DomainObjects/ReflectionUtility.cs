@@ -39,9 +39,9 @@ namespace Remotion.Data.DomainObjects
     private static readonly Type s_binaryPropertyValueType = typeof(byte[]);
     private static readonly Type s_typePropertyValueType = typeof(Type);
     private static readonly Type s_objectIDPropertyValueType = typeof(ObjectID);
-    private static readonly ConcurrentDictionary<Type, (bool CanAscribeTo, Type ItemType)> s_objectListTypeCache = new();
+    private static readonly ConcurrentDictionary<Type, (bool CanAscribeTo, Type? ItemType)> s_objectListTypeCache = new();
 
-    private static readonly Func<Type, ValueTuple<bool, Type>> s_objectListTypeCacheValueFactory =
+    private static readonly Func<Type, ValueTuple<bool, Type?>> s_objectListTypeCacheValueFactory =
         static t =>
         {
           var canAscribeTo = typeof(IReadOnlyList<DomainObject>).IsAssignableFrom(t) && t.CanAscribeTo(typeof(ObjectList<>));
@@ -52,9 +52,9 @@ namespace Remotion.Data.DomainObjects
                   : null);
         };
 
-    private static readonly ConcurrentDictionary<Type, (bool IsMatchingType, Type ItemType)> s_iObjectListTypeCache = new();
+    private static readonly ConcurrentDictionary<Type, (bool IsMatchingType, Type? ItemType)> s_iObjectListTypeCache = new();
 
-    private static readonly Func<Type, ValueTuple<bool, Type>> s_iObjectListTypeCacheValueFactory =
+    private static readonly Func<Type, ValueTuple<bool, Type?>> s_iObjectListTypeCacheValueFactory =
         static t =>
         {
           var isIObjectList = IsGenericIObjectList(t);
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects
       for (int i = 0; i < constructorParameterTypes.Length; i++)
         constructorParameterTypes[i] = constructorParameters[i].GetType();
 
-      ConstructorInfo constructor = type.GetConstructor(
+      ConstructorInfo? constructor = type.GetConstructor(
           BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
           null,
           constructorParameterTypes,
@@ -141,11 +141,11 @@ namespace Remotion.Data.DomainObjects
       }
     }
 
-    internal static string GetTypeListAsString (Type[] types)
+    internal static string GetTypeListAsString (Type?[] types)
     {
       ArgumentUtility.CheckNotNull("types", types);
       string result = String.Empty;
-      foreach (Type type in types)
+      foreach (Type? type in types)
       {
         if (result != String.Empty)
           result += ", ";
@@ -159,15 +159,15 @@ namespace Remotion.Data.DomainObjects
       return result;
     }
 
-    public static string GetSignatureForArguments (object[] args)
+    public static string GetSignatureForArguments (object?[] args)
     {
-      Type[] argumentTypes = GetTypesForArgs(args);
+      Type?[] argumentTypes = GetTypesForArgs(args);
       return GetTypeListAsString(argumentTypes);
     }
 
-    public static Type[] GetTypesForArgs (object[] args)
+    public static Type?[] GetTypesForArgs (object?[] args)
     {
-      Type[] types = new Type[args.Length];
+      Type?[] types = new Type?[args.Length];
       for (int i = 0; i < args.Length; i++)
       {
         if (args[i] == null)
@@ -290,7 +290,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="ArgumentException">
     /// Thrown if the type is not an <see cref="ObjectList{T}"/> or derived from <see cref="ObjectList{T}"/>.
     /// </exception>
-    public static Type GetObjectListTypeParameter (Type type)
+    public static Type? GetObjectListTypeParameter (Type type)
     {
       ArgumentUtility.CheckNotNull("type", type);
 
@@ -316,7 +316,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="ArgumentException">
     /// Thrown if the type is not an <see cref="IObjectList{T}"/> or implements <see cref="IObjectList{T}"/>.
     /// </exception>
-    public static Type GetIObjectListTypeParameter (Type type)
+    public static Type? GetIObjectListTypeParameter (Type type)
     {
       ArgumentUtility.CheckNotNull("type", type);
 
@@ -336,7 +336,7 @@ namespace Remotion.Data.DomainObjects
     /// </summary>
     /// <param name="propertyInfo">The <see cref="IPropertyInformation"/> to analyze.</param>
     /// <returns>the domain object type of the given property.</returns>
-    public static Type GetRelatedObjectTypeFromRelationProperty (IPropertyInformation propertyInfo)
+    public static Type? GetRelatedObjectTypeFromRelationProperty (IPropertyInformation propertyInfo)
     {
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 

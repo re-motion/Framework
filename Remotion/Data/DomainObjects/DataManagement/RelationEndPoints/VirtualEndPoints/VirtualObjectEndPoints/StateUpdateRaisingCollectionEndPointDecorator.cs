@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject)
+    public IDataManagementCommand CreateSetCommand (DomainObject? newRelatedObject)
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public ObjectID ObjectID
+    public ObjectID? ObjectID
     {
       get
       {
@@ -278,7 +278,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject GetDomainObject ()
+    public DomainObject? GetDomainObject ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -288,7 +288,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public DomainObject? GetDomainObjectReference ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -440,7 +440,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject GetData ()
+    public DomainObject? GetData ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -450,7 +450,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject GetOriginalData ()
+    public DomainObject? GetOriginalData ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -460,7 +460,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public ObjectID OppositeObjectID
+    public ObjectID? OppositeObjectID
     {
       get
       {
@@ -473,7 +473,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public ObjectID OriginalOppositeObjectID
+    public ObjectID? OriginalOppositeObjectID
     {
       get
       {
@@ -486,7 +486,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject GetOppositeObject ()
+    public DomainObject? GetOppositeObject ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -496,7 +496,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject GetOriginalOppositeObject ()
+    public DomainObject? GetOriginalOppositeObject ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -506,7 +506,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public RelationEndPointID GetOppositeRelationEndPointID ()
+    public RelationEndPointID? GetOppositeRelationEndPointID ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -516,7 +516,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public void MarkDataComplete (DomainObject item)
+    public void MarkDataComplete (DomainObject? item)
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))

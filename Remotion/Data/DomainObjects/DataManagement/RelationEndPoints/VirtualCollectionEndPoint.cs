@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     private readonly HashSet<ObjectID> _removedDomainObjects;
 
     [CanBeNull]
-    private IVirtualCollectionEndPointDataManager _dataManager;
+    private IVirtualCollectionEndPointDataManager? _dataManager;
     private bool _hasBeenTouched;
 
     public VirtualCollectionEndPoint (

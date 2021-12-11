@@ -147,9 +147,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
       set { throw new NotSupportedException("It is not supported to set a DataContainer based by index."); }
     }
 
-    public DataContainer this [ObjectID id]
+    public DataContainer? this [ObjectID id]
     {
-      get { return (DataContainer)BaseGetObject(id); }
+      get { return (DataContainer?)BaseGetObject(id); }
     }
 
     public int Add (DataContainer value)

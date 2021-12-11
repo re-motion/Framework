@@ -27,11 +27,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
   public class ObjectInititalizationContextScope : IDisposable
   {
     [ThreadStatic]
-    private static IObjectInitializationContext s_currentObjectInitializationContext;
+    private static IObjectInitializationContext? s_currentObjectInitializationContext;
 
-    private readonly IObjectInitializationContext _previousObjectInitializationContext;
+    private readonly IObjectInitializationContext? _previousObjectInitializationContext;
 
-    public static IObjectInitializationContext CurrentObjectInitializationContext
+    public static IObjectInitializationContext? CurrentObjectInitializationContext
     {
       get { return s_currentObjectInitializationContext; }
     }

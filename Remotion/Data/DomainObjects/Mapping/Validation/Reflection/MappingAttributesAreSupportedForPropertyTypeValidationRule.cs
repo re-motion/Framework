@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
       }
     }
 
-    private Dictionary<Type, AttributeConstraint> _attributeConstraints;
+    private Dictionary<Type, AttributeConstraint>? _attributeConstraints;
 
     private Dictionary<Type, AttributeConstraint> AttributeConstraints
     {
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
       return type.IsAssignableFrom(propertyInfo.PropertyType);
     }
 
-    private AttributeConstraint GetAttributeConstraint (Type attributeType)
+    private AttributeConstraint? GetAttributeConstraint (Type attributeType)
     {
       return (AttributeConstraints.Where(c => c.Key.IsAssignableFrom(attributeType)).Select(c => c.Value)).FirstOrDefault();
     }

@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       visitor.VisitTableDefinition(this);
     }
 
-    public ColumnDefinition[] CalculateAdjustedColumnList (IEnumerable<ColumnDefinition> fullColumnList)
+    public ColumnDefinition?[] CalculateAdjustedColumnList (IEnumerable<ColumnDefinition?> fullColumnList)
     {
       ArgumentUtility.CheckNotNull("fullColumnList", fullColumnList);
 

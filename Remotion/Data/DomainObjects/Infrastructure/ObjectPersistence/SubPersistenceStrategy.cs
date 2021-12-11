@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return _parentTransactionContext.ExecuteCustomQuery(query);
     }
 
-    public virtual object ExecuteScalarQuery (IQuery query)
+    public virtual object? ExecuteScalarQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
 
@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    private ILoadedObjectData GetLoadedObjectDataForParentObject (ValueTuple<ObjectID, DomainObject> parentObject)
+    private ILoadedObjectData GetLoadedObjectDataForParentObject (ValueTuple<ObjectID, DomainObject?> parentObject)
     {
       if (parentObject.Item2 == null)
         return new NotFoundLoadedObjectData(parentObject.Item1);
@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         return TransferParentObject(parentObject.Item1);
     }
 
-    private ILoadedObjectData TransferParentObject (DomainObject parentObject, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
+    private ILoadedObjectData TransferParentObject (DomainObject? parentObject, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
       if (parentObject == null)
         return new NullLoadedObjectData();
@@ -270,7 +270,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     private void PersistChangedDataContainer (DataContainer dataContainer)
     {
-      DataContainer parentDataContainer = _parentTransactionContext.GetDataContainerWithoutLoading(dataContainer.ID);
+      var parentDataContainer = _parentTransactionContext.GetDataContainerWithoutLoading(dataContainer.ID);
       Assertion.IsNotNull(
           parentDataContainer,
           "a changed DataContainer must have been loaded through ParentTransaction, so the "

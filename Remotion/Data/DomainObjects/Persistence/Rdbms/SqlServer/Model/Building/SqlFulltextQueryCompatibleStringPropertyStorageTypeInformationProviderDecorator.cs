@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       return DecorateStringPropertyStorageTypeInformationWithFulltextQueryCompatiblity(innerStorageTypeInformation);
     }
 
-    public IStorageTypeInformation GetStorageType (object value)
+    public IStorageTypeInformation GetStorageType (object? value)
     {
       var innerStorageTypeInformation = _innerStorageTypeInformationProvider.GetStorageType(value);
       return DecorateStringPropertyStorageTypeInformationWithFulltextQueryCompatiblity(innerStorageTypeInformation);

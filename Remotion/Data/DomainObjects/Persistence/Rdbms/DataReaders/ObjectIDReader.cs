@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
   /// Reads data from an <see cref="IDataReader"/> and converts it into <see cref="ObjectID"/> instances.
   /// The command whose data is converted must return an ID (as defined by the given <see cref="IRdbmsStoragePropertyDefinition"/>).
   /// </summary>
-  public class ObjectIDReader : IObjectReader<ObjectID>
+  public class ObjectIDReader : IObjectReader<ObjectID?>
   {
     private readonly IRdbmsStoragePropertyDefinition _idProperty;
     private readonly IColumnOrdinalProvider _columnOrdinalProvider;
@@ -50,24 +50,24 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _columnOrdinalProvider; }
     }
 
-    public ObjectID Read (IDataReader dataReader)
+    public ObjectID? Read (IDataReader dataReader)
     {
       ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
       if (dataReader.Read())
-        return (ObjectID)_idProperty.CombineValue(new ColumnValueReader(dataReader, _columnOrdinalProvider));
+        return (ObjectID?)_idProperty.CombineValue(new ColumnValueReader(dataReader, _columnOrdinalProvider));
       else
         return null;
     }
 
-    public IEnumerable<ObjectID> ReadSequence (IDataReader dataReader)
+    public IEnumerable<ObjectID?> ReadSequence (IDataReader dataReader)
     {
       ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
       var columnValueReader = new ColumnValueReader(dataReader, _columnOrdinalProvider);
 
       while (dataReader.Read())
-        yield return (ObjectID)_idProperty.CombineValue(columnValueReader);
+        yield return (ObjectID?)_idProperty.CombineValue(columnValueReader);
     }
   }
 }

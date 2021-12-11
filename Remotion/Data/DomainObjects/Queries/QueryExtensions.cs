@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Queries
 {
   public static class QueryExtensions
   {
-    public static Query CreateCopyFromTemplate (this IQuery template, Dictionary<object, object> parameterValues)
+    public static Query CreateCopyFromTemplate (this IQuery template, Dictionary<object, object?> parameterValues)
     {
       ArgumentUtility.CheckNotNull("template", template);
       ArgumentUtility.CheckNotNull("parameterValues", parameterValues);
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Queries
       return new QueryDefinition(template.ID, template.StorageProviderDefinition, template.Statement, template.QueryType, template.CollectionType);
     }
 
-    private static QueryParameterCollection CopyQueryParameters (this IQuery template, Dictionary<object, object> parameterValues)
+    private static QueryParameterCollection CopyQueryParameters (this IQuery template, Dictionary<object, object?> parameterValues)
     {
       if (template.Parameters.Count != parameterValues.Count)
       {
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Queries
       return queryParameters;
     }
 
-    private static QueryParameter CopyQueryParameter (this QueryParameter template, Dictionary<object, object> parameterValues)
+    private static QueryParameter CopyQueryParameter (this QueryParameter template, Dictionary<object, object?> parameterValues)
     {
       object parameterValue;
       if (!parameterValues.TryGetValue(template.Value, out parameterValue))
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Queries
       return new QueryParameter(template.Name, parameterValue, template.ParameterType);
     }
 
-    private static void CopyFetchQueries (this IQuery template, Dictionary<object, object> parameterValues, Query target)
+    private static void CopyFetchQueries (this IQuery template, Dictionary<object, object?> parameterValues, Query target)
     {
       foreach (var fetchQuery in template.EagerFetchQueries)
         target.EagerFetchQueries.Add(fetchQuery.Key, fetchQuery.Value.CreateCopyFromTemplate(parameterValues));

@@ -185,7 +185,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
 
       CheckNotUnidirectional(endPointID, "endPointID");
 
-      var currentTransaction = clientTransaction.RootTransaction;
+      ClientTransaction? currentTransaction = clientTransaction.RootTransaction;
       var endPoint = GetAndCheckLoadedEndPoint(endPointID, currentTransaction);
 
       while (endPoint != null)
@@ -218,7 +218,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
       return endPoint;
     }
 
-    private static IRelationEndPoint GetEndPoint (ClientTransaction clientTransaction, RelationEndPointID endPointID)
+    private static IRelationEndPoint? GetEndPoint (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
       var endPoint = clientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID);
       return endPoint == null || !endPoint.IsDataComplete ? null : endPoint;

@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       get { return _dotNetTypeConverter; }
     }
 
-    public IDbDataParameter CreateDataParameter (IDbCommand command, object value)
+    public IDbDataParameter CreateDataParameter (IDbCommand command, object? value)
     {
       ArgumentUtility.CheckNotNull("command", command);
 
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return parameter;
     }
 
-    public object Read (IDataReader dataReader, int ordinal)
+    public object? Read (IDataReader dataReader, int ordinal)
     {
       ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
@@ -159,13 +159,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     }
 
     /// <inheritdoc />
-    public object ConvertToStorageType (object dotNetValue)
+    public object ConvertToStorageType (object? dotNetValue)
     {
       return DotNetTypeConverter.ConvertTo(dotNetValue, StorageType) ?? DBNull.Value;
     }
 
     /// <inheritdoc />
-    public object ConvertFromStorageType (object storageValue)
+    public object? ConvertFromStorageType (object? storageValue)
     {
       if (storageValue == DBNull.Value)
         storageValue = null;
@@ -183,12 +183,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
                       this,
                       equivalentInfo,
                       "equivalentStorageTypes",
-                      info => Tuple.Create<string, object>("storage type", info.StorageType),
-                      info => Tuple.Create<string, object>("storage type name", info.StorageTypeName),
-                      info => Tuple.Create<string, object>("storage DbType", info.StorageDbType),
-                      info => Tuple.Create<string, object>("storage type length", info.StorageTypeLength),
-                      info => Tuple.Create<string, object>(".NET type", info.DotNetType),
-                      info => Tuple.Create<string, object>(".NET type converter type", info.DotNetTypeConverter.GetType())))
+                      info => Tuple.Create<string, object?>("storage type", info.StorageType),
+                      info => Tuple.Create<string, object?>("storage type name", info.StorageTypeName),
+                      info => Tuple.Create<string, object?>("storage DbType", info.StorageDbType),
+                      info => Tuple.Create<string, object?>("storage type length", info.StorageTypeLength),
+                      info => Tuple.Create<string, object?>(".NET type", info.DotNetType),
+                      info => Tuple.Create<string, object?>(".NET type converter type", info.DotNetTypeConverter.GetType())))
               .ToArray();
 
       return new StorageTypeInformation(

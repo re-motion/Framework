@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       return storageType;
     }
 
-    public IStorageTypeInformation GetStorageType (object value)
+    public IStorageTypeInformation GetStorageType (object? value)
     {
       if (value == null)
       {
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     }
 
     [CanBeNull]
-    private StorageTypeInformation GetStorageType (Type dotNetType, int? maxLength, bool isNullableInDatabase)
+    private StorageTypeInformation? GetStorageType (Type dotNetType, int? maxLength, bool isNullableInDatabase)
     {
       var underlyingTypeOfNullable = Nullable.GetUnderlyingType(dotNetType);
       if (underlyingTypeOfNullable != null)
@@ -216,7 +216,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     }
 
     [CanBeNull]
-    private StorageTypeInformation GetStorageTypeForNullableValueType (Type nullableValueType, Type underlyingType, int? maxLength, bool isNullableInDatabase)
+    private StorageTypeInformation? GetStorageTypeForNullableValueType (Type nullableValueType, Type underlyingType, int? maxLength, bool isNullableInDatabase)
     {
       var underlyingStorageInformation = GetStorageType(underlyingType, maxLength, false);
       if (underlyingStorageInformation == null)
@@ -241,7 +241,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     }
 
     [CanBeNull]
-    private StorageTypeInformation GetStorageTypeForEnumType (Type enumType, int? maxLength, bool isNullableInDatabase)
+    private StorageTypeInformation? GetStorageTypeForEnumType (Type enumType, int? maxLength, bool isNullableInDatabase)
     {
       var underlyingStorageInformation = GetStorageType(Enum.GetUnderlyingType(enumType), maxLength, isNullableInDatabase);
       if (underlyingStorageInformation == null)

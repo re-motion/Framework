@@ -34,16 +34,16 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     private readonly string _id;
     private bool _isReadOnly;
-    private readonly Type _storageGroupType;
+    private readonly Type? _storageGroupType;
     private readonly DefaultStorageClass _defaultStorageClass;
     private readonly PropertyAccessorDataCache _propertyAccessorDataCache;
     private readonly DoubleCheckedLockingContainer<RelationEndPointDefinitionCollection> _cachedRelationEndPointDefinitions;
     private readonly DoubleCheckedLockingContainer<PropertyDefinitionCollection> _cachedPropertyDefinitions;
-    private readonly ClassDefinition _baseClass;
-    private PropertyDefinitionCollection _propertyDefinitions;
-    private RelationEndPointDefinitionCollection _relationEndPoints;
-    private IStorageEntityDefinition _storageEntityDefinition;
-    private ReadOnlyCollection<ClassDefinition> _derivedClasses;
+    private readonly ClassDefinition? _baseClass;
+    private PropertyDefinitionCollection? _propertyDefinitions;
+    private RelationEndPointDefinitionCollection? _relationEndPoints;
+    private IStorageEntityDefinition? _storageEntityDefinition;
+    private ReadOnlyCollection<ClassDefinition>? _derivedClasses;
     private readonly bool _isAbstract;
     private readonly Type _classType;
     private readonly IPersistentMixinFinder _persistentMixinFinder;
@@ -54,8 +54,8 @@ namespace Remotion.Data.DomainObjects.Mapping
         string id,
         Type classType,
         bool isAbstract,
-        ClassDefinition baseClass,
-        Type storageGroupType,
+        ClassDefinition? baseClass,
+        Type? storageGroupType,
         DefaultStorageClass defaultStorageClass,
         IPersistentMixinFinder persistentMixinFinder,
         IDomainObjectCreator instanceCreator)
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       if (ReferenceEquals(this, classDefinition))
         return true;
 
-      ClassDefinition baseClassOfProvidedClassDefinition = classDefinition.BaseClass;
+      ClassDefinition? baseClassOfProvidedClassDefinition = classDefinition.BaseClass;
       while (baseClassOfProvidedClassDefinition != null)
       {
         if (ReferenceEquals(this, baseClassOfProvidedClassDefinition))
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return _cachedRelationEndPointDefinitions.Value;
     }
 
-    public IRelationEndPointDefinition GetRelationEndPointDefinition (string propertyName)
+    public IRelationEndPointDefinition? GetRelationEndPointDefinition (string propertyName)
     {
       ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
 
@@ -162,7 +162,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
 
-      IRelationEndPointDefinition relationEndPointDefinition = GetRelationEndPointDefinition(propertyName);
+      IRelationEndPointDefinition? relationEndPointDefinition = GetRelationEndPointDefinition(propertyName);
 
       if (relationEndPointDefinition == null)
         throw CreateMappingException("No relation found for class '{0}' and property '{1}'.", ID, propertyName);
@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return false;
     }
 
-    public PropertyDefinition GetPropertyDefinition (string propertyName)
+    public PropertyDefinition? GetPropertyDefinition (string propertyName)
     {
       ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
 
@@ -262,7 +262,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PropertyDefinition GetMandatoryPropertyDefinition (string propertyName)
     {
-      PropertyDefinition propertyDefinition = GetPropertyDefinition(propertyName);
+      PropertyDefinition? propertyDefinition = GetPropertyDefinition(propertyName);
 
       if (propertyDefinition == null)
         throw CreateMappingException("Class '{0}' does not contain the property '{1}'.", ID, propertyName);
@@ -270,7 +270,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return propertyDefinition;
     }
 
-    public PropertyDefinition this [string propertyName]
+    public PropertyDefinition? this [string propertyName]
     {
       get
       {
@@ -314,7 +314,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _handleCreator.Value; }
     }
 
-    public PropertyDefinition ResolveProperty (IPropertyInformation propertyInformation)
+    public PropertyDefinition? ResolveProperty (IPropertyInformation propertyInformation)
     {
       ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
 
@@ -322,7 +322,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return propertyAccessorData == null ? null : propertyAccessorData.PropertyDefinition;
     }
 
-    public IRelationEndPointDefinition ResolveRelationEndPoint (IPropertyInformation propertyInformation)
+    public IRelationEndPointDefinition? ResolveRelationEndPoint (IPropertyInformation propertyInformation)
     {
       ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
 
@@ -330,12 +330,12 @@ namespace Remotion.Data.DomainObjects.Mapping
       return propertyAccessorData == null ? null : propertyAccessorData.RelationEndPointDefinition;
     }
 
-    public ClassDefinition BaseClass
+    public ClassDefinition? BaseClass
     {
       get { return _baseClass; }
     }
 
-    public Type StorageGroupType
+    public Type? StorageGroupType
     {
       get { return _storageGroupType; }
     }
@@ -393,7 +393,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _persistentMixinFinder.GetPersistentMixins(); }
     }
 
-    public Type GetPersistentMixin (Type mixinToSearch)
+    public Type? GetPersistentMixin (Type mixinToSearch)
     {
       ArgumentUtility.CheckNotNull("mixinToSearch", mixinToSearch);
       if (PersistentMixins.Contains(mixinToSearch))
@@ -423,7 +423,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return GetType().GetFullNameChecked() + ": " + _id;
     }
 
-    private MappingException CreateMappingException (string message, params object[] args)
+    private MappingException CreateMappingException (string message, params object?[] args)
     {
       return new MappingException(String.Format(message, args));
     }

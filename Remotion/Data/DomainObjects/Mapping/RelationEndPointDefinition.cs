@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   [DebuggerDisplay("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
   public class RelationEndPointDefinition : IRelationEndPointDefinition
   {
-    private RelationDefinition _relationDefinition;
+    private RelationDefinition? _relationDefinition;
     private readonly ClassDefinition _classDefinition;
     private readonly PropertyDefinition _propertyDefinition;
     private readonly bool _isMandatory;

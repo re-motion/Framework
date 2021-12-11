@@ -306,12 +306,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         switch (property.PropertyData.Kind)
         {
           case PropertyKind.RelatedObject:
-            var value = (DomainObject)property.GetValueWithoutTypeCheck();
+            var value = (DomainObject?)property.GetValueWithoutTypeCheck();
             if (value != null)
               yield return value;
             break;
           case PropertyKind.RelatedObjectCollection:
-            var values = (IEnumerable)property.GetValueWithoutTypeCheck();
+            var values = (IEnumerable?)property.GetValueWithoutTypeCheck();
             foreach (DomainObject relatedObject in values)
               yield return relatedObject;
             break;

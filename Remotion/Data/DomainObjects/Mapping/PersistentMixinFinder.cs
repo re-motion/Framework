@@ -47,11 +47,11 @@ namespace Remotion.Data.DomainObjects.Mapping
     }
 
     private readonly ClassContext _mixinConfiguration;
-    private readonly List<ClassContext> _allParentClassContexts;
-    private readonly ClassContext _parentClassContext;
+    private readonly List<ClassContext>? _allParentClassContexts;
+    private readonly ClassContext? _parentClassContext;
     private readonly bool _includeInherited;
 
-    private Type[] _persistentMixins;
+    private Type[]? _persistentMixins;
 
     public PersistentMixinFinder (Type type)
       : this(type, false)
@@ -76,10 +76,10 @@ namespace Remotion.Data.DomainObjects.Mapping
     private List<ClassContext> GetParentClassContexts ()
     {
       var parentClassContexts = new List<ClassContext>();
-      ClassContext current = MixinConfiguration;
+      ClassContext? current = MixinConfiguration;
       while (current != null && current.Type.BaseType != null)
       {
-        ClassContext parent = Mixins.MixinConfiguration.ActiveConfiguration.GetContext(current.Type.BaseType);
+        ClassContext? parent = Mixins.MixinConfiguration.ActiveConfiguration.GetContext(current.Type.BaseType);
         if (parent != null)
           parentClassContexts.Add(parent);
         current = parent;
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _mixinConfiguration; }
     }
 
-    public ClassContext ParentClassContext
+    public ClassContext? ParentClassContext
     {
       get { return _parentClassContext; }
     }
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.Mapping
                              where IsPersistenceRelevant(mixin.MixinType) && !MixinConfiguration.Mixins.ContainsAssignableMixin(mixin.MixinType)
                              select mixin;
 
-      MixinContext suppressedMixin = suppressedMixins.FirstOrDefault();
+      MixinContext? suppressedMixin = suppressedMixins.FirstOrDefault();
       if (suppressedMixin != null)
       {
         string message = string.Format("Class '{0}' suppresses mixin '{1}' inherited from its base class '{2}'. This is not allowed because "
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         return mixin;
     }
 
-    public Type FindOriginalMixinTarget (Type mixinType)
+    public Type? FindOriginalMixinTarget (Type mixinType)
     {
       ArgumentUtility.CheckNotNull("mixinType", mixinType);
 
@@ -169,7 +169,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       if (!IncludeInherited && ParentClassContext.Mixins.ContainsKey(mixinType))
         throw new InvalidOperationException("The given mixin is inherited from the base class, but includeInherited is not set to true.");
 
-      ClassContext parent = _allParentClassContexts != null ? _allParentClassContexts.FirstOrDefault(c => c.Mixins.ContainsKey(mixinType)) : null;
+      ClassContext? parent = _allParentClassContexts != null ? _allParentClassContexts.FirstOrDefault(c => c.Mixins.ContainsKey(mixinType)) : null;
       if (parent != null)
         return parent.Type;
       else if (MixinConfiguration.Mixins.ContainsKey(mixinType))

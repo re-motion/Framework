@@ -189,7 +189,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       return oppositeDataContainers;
     }
 
-    public DataContainer LoadRelatedDataContainer (RelationEndPointID relationEndPointID)
+    public DataContainer? LoadRelatedDataContainer (RelationEndPointID relationEndPointID)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
@@ -276,7 +276,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       }
     }
 
-    private DataContainer GetOppositeDataContainerForVirtualEndPoint (RelationEndPointID relationEndPointID)
+    private DataContainer? GetOppositeDataContainerForVirtualEndPoint (RelationEndPointID relationEndPointID)
     {
       var relationEndPointDefinition = relationEndPointID.Definition;
       if (relationEndPointDefinition.Cardinality == CardinalityType.Many)
@@ -321,7 +321,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       var oppositeProvider =
           _storageProviderManager.GetMandatory(oppositeEndPointDefinition.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition.Name);
 
-      SortExpressionDefinition sortExpression;
+      SortExpressionDefinition? sortExpression;
       if (relationEndPointDefinition is DomainObjectCollectionRelationEndPointDefinition domainObjectCollectionRelationEndPointDefinition)
         sortExpression = domainObjectCollectionRelationEndPointDefinition.GetSortExpression();
       else
@@ -346,7 +346,7 @@ namespace Remotion.Data.DomainObjects.Persistence
         DataContainer oppositeDataContainer)
     {
       var oppositeEndPointDefinition = (RelationEndPointDefinition)relationEndPointID.Definition.GetOppositeEndPointDefinition();
-      var objectID = (ObjectID)oppositeDataContainer.GetValueWithoutEvents(oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current);
+      var objectID = (ObjectID?)oppositeDataContainer.GetValueWithoutEvents(oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current);
 
       if (relationEndPointID.ObjectID.ClassID != objectID.ClassID)
       {
@@ -360,7 +360,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       }
     }
 
-    private PersistenceException CreatePersistenceException (string message, params object[] args)
+    private PersistenceException CreatePersistenceException (string message, params object?[] args)
     {
       return new PersistenceException(string.Format(message, args));
     }

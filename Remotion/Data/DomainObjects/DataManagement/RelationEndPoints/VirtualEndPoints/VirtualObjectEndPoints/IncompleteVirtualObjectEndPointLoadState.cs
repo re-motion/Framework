@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// loaded, or it has been unloaded).
   /// </summary>
   public class IncompleteVirtualObjectEndPointLoadState
-      : IncompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, DomainObject, IVirtualObjectEndPointDataManager, IVirtualObjectEndPointLoadState>,
+      : IncompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, DomainObject?, IVirtualObjectEndPointDataManager, IVirtualObjectEndPointLoadState>,
         IVirtualObjectEndPointLoadState
   {
     private readonly IVirtualObjectEndPointDataManagerFactory _dataManagerFactory;
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       EndPointLoader.LoadEndPointAndGetNewState(endPoint);
     }
 
-    public void MarkDataComplete (IVirtualObjectEndPoint endPoint, DomainObject item, Action<IVirtualObjectEndPointDataManager> stateSetter)
+    public void MarkDataComplete (IVirtualObjectEndPoint endPoint, DomainObject? item, Action<IVirtualObjectEndPointDataManager> stateSetter)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     }
 
     public IDataManagementCommand CreateSetCommand (
-        IVirtualObjectEndPoint virtualObjectEndPoint, DomainObject newRelatedObject)
+        IVirtualObjectEndPoint virtualObjectEndPoint, DomainObject? newRelatedObject)
     {
       ArgumentUtility.CheckNotNull("virtualObjectEndPoint", virtualObjectEndPoint);
 
