@@ -61,19 +61,49 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     }
 
     [Test]
-    public void GetRawValue ()
+    public void GetRawValue_WithString ()
     {
-      var value1 = "hallo";
-      var value2 = true;
-      var value3 = 45;
+      var value = "hallo";
 
-      _dataReaderStub.Stub(stub => stub.GetValue(0)).Return(value1);
-      _dataReaderStub.Stub(stub => stub.GetValue(1)).Return(value2);
-      _dataReaderStub.Stub(stub => stub.GetValue(2)).Return(value3);
+      _dataReaderStub.Stub(stub => stub.GetValue(0)).Return(value);
 
-      Assert.That( _queryResultRow.GetRawValue(0), Is.EqualTo(value1));
-      Assert.That(_queryResultRow.GetRawValue(1), Is.EqualTo(value2));
-      Assert.That(_queryResultRow.GetRawValue(2), Is.EqualTo(value3));
+      Assert.That( _queryResultRow.GetRawValue(0), Is.EqualTo(value));
+    }
+
+    [Test]
+    public void GetRawValue_WithInt32 ()
+    {
+      var value = true;
+
+      _dataReaderStub.Stub(stub => stub.GetValue(1)).Return(value);
+
+      Assert.That(_queryResultRow.GetRawValue(1), Is.EqualTo(value));
+    }
+
+    [Test]
+    public void GetRawValue_WithBoolean ()
+    {
+      var value = 45;
+
+      _dataReaderStub.Stub(stub => stub.GetValue(2)).Return(value);
+
+      Assert.That(_queryResultRow.GetRawValue(2), Is.EqualTo(value));
+    }
+
+    [Test]
+    public void GetRawValue_WithDBNull ()
+    {
+      _dataReaderStub.Stub(stub => stub.GetValue(3)).Return(DBNull.Value);
+
+      Assert.That(_queryResultRow.GetRawValue(3), Is.EqualTo(DBNull.Value));
+    }
+
+    [Test]
+    public void GetRawValue_WithNull ()
+    {
+      _dataReaderStub.Stub(stub => stub.GetValue(4)).Return(null);
+
+      Assert.That(_queryResultRow.GetRawValue(4), Is.EqualTo(null));
     }
 
     [Test]
@@ -118,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     }
 
     [Test]
-    public void GetConvertedValue_GenericOverload_DelegatesToNoGenericOverload ()
+    public void GetConvertedValue_GenericOverloadWithReferenceType_DelegatesToNoGenericOverload ()
     {
       _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof(string))).Return(_storageTypeInformationMock);
 
@@ -126,9 +156,68 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       _storageTypeInformationMock.Expect(mock => mock.Read(_dataReaderStub, 1)).Return(fakeResult);
       _storageTypeInformationMock.Replay();
 
-      var result = _queryResultRow.GetConvertedValue<string>(1);
+      string result = _queryResultRow.GetConvertedValue<string>(1);
 
       Assert.That(result, Is.EqualTo(fakeResult));
+      _storageTypeInformationMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void GetConvertedValue_GenericOverloadWithNullableValueType_DelegatesToNoGenericOverload ()
+    {
+      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof(int?))).Return(_storageTypeInformationMock);
+
+      _storageTypeInformationMock.Expect(mock => mock.Read(_dataReaderStub, 1)).Return(13);
+      _storageTypeInformationMock.Replay();
+
+      int? result = _queryResultRow.GetConvertedValue<int?>(1);
+
+      Assert.That(result, Is.EqualTo(13));
+      _storageTypeInformationMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void GetConvertedValue_GenericOverloadWithNullableValueTypeAndNullValue_DelegatesToNoGenericOverload ()
+    {
+      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof(int?))).Return(_storageTypeInformationMock);
+
+      _storageTypeInformationMock.Expect(mock => mock.Read(_dataReaderStub, 1)).Return(null);
+      _storageTypeInformationMock.Replay();
+
+      int? result = _queryResultRow.GetConvertedValue<int?>(1);
+
+      Assert.That(result, Is.EqualTo(null));
+      _storageTypeInformationMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void GetConvertedValue_GenericOverloadWithValueType_DelegatesToNoGenericOverload ()
+    {
+      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof(int))).Return(_storageTypeInformationMock);
+
+      _storageTypeInformationMock.Expect(mock => mock.Read(_dataReaderStub, 1)).Return(13);
+      _storageTypeInformationMock.Replay();
+
+      int result = _queryResultRow.GetConvertedValue<int>(1);
+
+      Assert.That(result, Is.EqualTo(13));
+      _storageTypeInformationMock.VerifyAllExpectations();
+    }
+
+    [Test]
+    public void GetConvertedValue_GenericOverloadWithValueTypeAndNullValue_DelegatesToNoGenericOverload ()
+    {
+      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof(int))).Return(_storageTypeInformationMock);
+
+      _storageTypeInformationMock.Expect(mock => mock.Read(_dataReaderStub, 3)).Return(null);
+      _storageTypeInformationMock.Replay();
+
+      Assert.That(
+          () => _queryResultRow.GetConvertedValue<int>(3),
+          Throws.Exception.TypeOf<InvalidCastException>()
+              .With.Message.EqualTo(
+                  "Type parameter 'T' is a value type ('System.Int32') but the result at position '3' is null. Use 'System.Nullable<System.Int32>' instead as type parameter."));
+
       _storageTypeInformationMock.VerifyAllExpectations();
     }
   }

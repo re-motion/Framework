@@ -154,7 +154,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     {
       ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
-      var value = dataReader[ordinal];
+      // IDataReader.GetValue(ordinal) usually returns DBNull.Value for null values, but the implementation does return null for unsupported data types.
+      // There is no explicit documentation on IDataReader.GetValue(ordinal) returning only DBNull.Value instead of an actual null value.
+      // Also, when using IDbCommand.ExecuteScalar(), the API is defined as a nullable value, therefore it is more consistent to officially accept
+      // that IDataReader.GetValue(ordinal) could also return null values despite its contract.
+      object? value = dataReader.GetValue(ordinal);
       return ConvertFromStorageType(value);
     }
 
@@ -167,10 +171,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     /// <inheritdoc />
     public object? ConvertFromStorageType (object? storageValue)
     {
+      object? storageValueOrNull;
       if (storageValue == DBNull.Value)
-        storageValue = null;
+        storageValueOrNull = null;
+      else
+        storageValueOrNull = storageValue;
 
-      return DotNetTypeConverter.ConvertFrom(storageValue);
+      return DotNetTypeConverter.ConvertFrom(storageValueOrNull);
     }
 
     public IStorageTypeInformation UnifyForEquivalentProperties (IEnumerable<IStorageTypeInformation> equivalentStorageTypes)

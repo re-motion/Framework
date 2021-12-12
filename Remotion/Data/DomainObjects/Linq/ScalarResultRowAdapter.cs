@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Linq.SqlBackend.SqlGeneration;
 using Remotion.Utilities;
@@ -47,6 +48,7 @@ namespace Remotion.Data.DomainObjects.Linq
       get { return _storageTypeInformationProvider; }
     }
 
+    [return: MaybeNull]
     public T GetValue<T> (ColumnID columnID)
     {
       ArgumentUtility.CheckNotNull("columnID", columnID);

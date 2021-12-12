@@ -88,6 +88,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         return null;
 
       var timestampValue = _timestampProperty.CombineValue(columnValueProvider);
+      if (timestampValue == null)
+        throw new RdbmsProviderException(string.Format("No timestamp was read for object '{0}'.", objectIDValue));
       return Tuple.Create(objectIDValue, timestampValue);
     }
   }

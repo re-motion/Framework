@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Data;
+using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
@@ -49,10 +50,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       return _innerDataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(propertyDefinition);
     }
 
-    public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (object value)
+    public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition ([CanBeNull] object value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
-
       if (value is CompoundDataType)
         return CreateStoragePropertyDefinitionForCompoundDataType("Value");
       return _innerDataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(value);

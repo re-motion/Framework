@@ -103,6 +103,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       Assert.That(result, Is.EqualTo("converted null value"));
     }
 
+    [Test]
+    public void ConvertFromStorageType_Null ()
+    {
+      _typeConverterStub.Stub(stub => stub.ConvertFrom(null)).Return("converted null value");
+
+      var result = _storageTypeInformation.ConvertFromStorageType(null);
+
+      Assert.That(result, Is.EqualTo("converted null value"));
+    }
+
     [CLSCompliant(false)]
     [Test]
     [TestCase(new object[] { null }, TestName = "CreateDataParameter_WithoutSize_DoesNotSetSizeOnParameter.")]
@@ -329,7 +339,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void Read ()
     {
       var dataReaderMock = MockRepository.GenerateStrictMock<IDataReader>();
-      dataReaderMock.Expect(mock => mock[17]).Return("value");
+      dataReaderMock.Expect(mock => mock.GetValue(17)).Return("value");
       dataReaderMock.Replay();
 
       _typeConverterStub.Stub(stub => stub.ConvertFrom("value")).Return("converted value");
@@ -344,7 +354,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public void Read_DBNull ()
     {
       var dataReaderMock = MockRepository.GenerateStrictMock<IDataReader>();
-      dataReaderMock.Expect(mock => mock[17]).Return(DBNull.Value);
+      dataReaderMock.Expect(mock => mock.GetValue(17)).Return(DBNull.Value);
+      dataReaderMock.Replay();
+
+      _typeConverterStub.Stub(stub => stub.ConvertFrom(null)).Return("converted null value");
+
+      var result = _storageTypeInformation.Read(dataReaderMock, 17);
+
+      dataReaderMock.VerifyAllExpectations();
+      Assert.That(result, Is.EqualTo("converted null value"));
+    }
+
+    [Test]
+    public void Read_Null ()
+    {
+      var dataReaderMock = MockRepository.GenerateStrictMock<IDataReader>();
+      dataReaderMock.Expect(mock => mock.GetValue(17)).Return(null);
       dataReaderMock.Replay();
 
       _typeConverterStub.Stub(stub => stub.ConvertFrom(null)).Return("converted null value");

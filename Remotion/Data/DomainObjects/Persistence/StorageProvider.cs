@@ -90,6 +90,11 @@ namespace Remotion.Data.DomainObjects.Persistence
     public abstract ObjectID CreateNewObjectID (ClassDefinition classDefinition);
     public abstract IEnumerable<DataContainer?> ExecuteCollectionQuery (IQuery query);
     public abstract IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query);
+
+    /// <remarks>
+    /// If the first column of the first row in the result set is not found, a <see langword="null"/> is returned.
+    /// If the value in the database is null, the query returns <see cref="DBNull"/>.<see cref="DBNull.Value"/>
+    /// </remarks>
     public abstract object? ExecuteScalarQuery (IQuery query);
 
     public StorageProviderDefinition StorageProviderDefinition

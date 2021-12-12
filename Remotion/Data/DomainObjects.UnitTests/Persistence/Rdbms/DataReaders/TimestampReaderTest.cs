@@ -18,6 +18,7 @@ using System;
 using System.Data;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -67,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     }
 
     [Test]
-    public void Read_DataReaderReadTrue_NullValue ()
+    public void Read_DataReaderReadTrue_NullValueForObjectID ()
     {
       _dataReaderStrictMock.Expect(mock => mock.Read()).Return(true).Repeat.Once();
       _idPropertyStrictMock
@@ -100,6 +101,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
 
       VerifyAll();
       Assert.That(result, Is.EqualTo(Tuple.Create(_fakeObjectIDResult, _fakeTimestampResult)));
+    }
+
+    [Test]
+    public void Read_DataReaderReadTrue_NullValueForTimestamp ()
+    {
+      _dataReaderStrictMock.Expect(mock => mock.Read()).Return(true).Repeat.Once();
+      _idPropertyStrictMock
+          .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
+          .Return(_fakeObjectIDResult)
+          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]));
+      _timestampStrictMock
+          .Expect(mock => mock.CombineValue(Arg<IColumnValueProvider>.Is.Anything))
+          .Return(null)
+          .WhenCalled(mi => CheckColumnValueReader((ColumnValueReader)mi.Arguments[0]));
+      ReplayAll();
+
+      Assert.That(
+          () => _reader.Read(_dataReaderStrictMock),
+          Throws.TypeOf<RdbmsProviderException>().With.Message.EqualTo("No timestamp was read for object '" + _fakeObjectIDResult + "'."));
+
+      VerifyAll();
     }
 
     [Test]
