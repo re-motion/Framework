@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void GetEntityDefinition_EmptyViewDefinition ()
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Order", classType: typeof(Order), baseClass: null);
-      Assert.That(classDefinition.StorageEntityDefinition, Is.Null);
+      Assert.That(classDefinition.HasStorageEntityDefinitionBeenSet, Is.False);
       Assert.That(
           () => _provider.GetEntityDefinition(classDefinition),
           Throws.InstanceOf<RdbmsProviderException>()
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void GetStoragePropertyDefinition_NoDefinition ()
     {
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(_classDefinition, "OrderNumber");
-      Assert.That(propertyDefinition.StoragePropertyDefinition, Is.Null);
+      Assert.That(propertyDefinition.HasStoragePropertyDefinitionBeenSet, Is.False);
       Assert.That(
           () => _provider.GetStoragePropertyDefinition(propertyDefinition),
           Throws.InstanceOf<MappingException>()

@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      if (classDefinition.StorageEntityDefinition == null)
+      if (!classDefinition.HasStorageEntityDefinitionBeenSet)
         throw new InvalidOperationException("Cannot obtain storage provider for ClassDefinitions without storage entities. " + errorMessageContext);
 
       return classDefinition.StorageEntityDefinition.StorageProviderDefinition;

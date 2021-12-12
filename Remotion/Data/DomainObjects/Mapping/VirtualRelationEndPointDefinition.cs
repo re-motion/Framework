@@ -35,10 +35,6 @@ namespace Remotion.Data.DomainObjects.Mapping
           "Use DomainObjectCollectionRelationEndPointDefinition or VirtualCollectionRelationEndPointDefinition or VirtualObjectRelationEndPointDefinition respectively. (Version: 3.0.0)");
     }
 
-    public void SetRelationDefinition (RelationDefinition relationDefinition)
-    {
-    }
-
     public RelationDefinition RelationDefinition => null!;
 
     public ClassDefinition ClassDefinition => null!;

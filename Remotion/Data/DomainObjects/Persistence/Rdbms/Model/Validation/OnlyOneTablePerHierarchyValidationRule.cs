@@ -36,11 +36,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      if (classDefinition.BaseClass != null && classDefinition.StorageEntityDefinition is TableDefinition)
+      if (classDefinition.BaseClass != null && classDefinition.HasStorageEntityDefinitionBeenSet && classDefinition.StorageEntityDefinition is TableDefinition)
       {
         var baseClasses = classDefinition.BaseClass.CreateSequence(cd => cd.BaseClass);
         foreach (ClassDefinition baseClass in baseClasses)
         {
+          Assertion.DebugAssert(baseClass.HasStorageEntityDefinitionBeenSet, "baseClass.HasStorageEntityDefinitionBeenSet == true");
           if (baseClass.StorageEntityDefinition is TableDefinition)
           {
             yield return MappingValidationResult.CreateInvalidResultForType(

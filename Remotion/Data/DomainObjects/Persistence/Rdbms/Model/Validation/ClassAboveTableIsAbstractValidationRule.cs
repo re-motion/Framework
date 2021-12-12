@@ -64,12 +64,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
 
     private bool IsAssociatedWithRdbmsStorageEntityDefinition (ClassDefinition classDefinition)
     {
-      return classDefinition.StorageEntityDefinition is IRdbmsStorageEntityDefinition;
+      return classDefinition.HasStorageEntityDefinitionBeenSet && classDefinition.StorageEntityDefinition is IRdbmsStorageEntityDefinition;
     }
 
     private bool IsAssociatedWithTable (ClassDefinition classDefinition)
     {
-      return classDefinition.StorageEntityDefinition is TableDefinition || classDefinition.StorageEntityDefinition is FilterViewDefinition;
+      return classDefinition.HasStorageEntityDefinitionBeenSet
+             && (classDefinition.StorageEntityDefinition is TableDefinition || classDefinition.StorageEntityDefinition is FilterViewDefinition);
     }
   }
 }

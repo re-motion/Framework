@@ -110,6 +110,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     }
 
     [Test]
+    public void ClassTypeResolved_StorageEntityDefinitionIsNotSet ()
+    {
+      var validationResult = _validationRule.Validate(_abstractClassDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
+    }
+
+    [Test]
     public void ClassTypeResolved_UnionViewDefinition_NotAbstract ()
     {
       _concreteClassDefinition.SetStorageEntity(_unionViewDefinition);

@@ -348,6 +348,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     }
 
     [Test]
+    public void RelationEndPointHasStorageClassPersistent_RelationDefinitionIsNotSet ()
+    {
+      var leftEndPointDefinition = new RelationEndPointDefinition(_persistentPropertyDefinition, false);
+      var rightEndPointDefinition = VirtualCollectionRelationEndPointDefinitionFactory.Create(
+          _persistentClassDefinition,
+          "Right",
+          false,
+          typeof(IObjectList<DomainObject>));
+
+      _persistentClassDefinition.SetRelationEndPointDefinitions(
+          new RelationEndPointDefinitionCollection(new IRelationEndPointDefinition[] { leftEndPointDefinition, rightEndPointDefinition }, true));
+      _persistentClassDefinition.SetReadOnly();
+
+      var validationResult = _validationRule.Validate(_persistentClassDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
+    }
+
+    [Test]
     public void RelationEndPointHasStorageClassPersistent_AndAnonymousEndPointHasNonPersistentClassDefinition ()
     {
       var leftEndPointDefinition = new RelationEndPointDefinition(_persistentPropertyDefinition, false);

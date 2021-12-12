@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// Represents the many-side of a bidirectional one-to-many relationship based on <see cref="IObjectList{TDomainObject}"/>.
   /// </summary>
   [DebuggerDisplay("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
-  public class VirtualCollectionRelationEndPointDefinition : IRelationEndPointDefinition
+  public class VirtualCollectionRelationEndPointDefinition : IRelationEndPointDefinition, IRelationEndPointDefinitionSetter
   {
     private readonly string _propertyName;
     private RelationDefinition? _relationDefinition;
@@ -61,9 +61,18 @@ namespace Remotion.Data.DomainObjects.Mapping
       _relationDefinition = relationDefinition;
     }
 
+    public bool HasRelationDefinitionBeenSet
+    {
+      get { return _relationDefinition != null; }
+    }
+
     public RelationDefinition RelationDefinition
     {
-      get { return _relationDefinition; }
+      get
+      {
+        Assertion.IsNotNull(_relationDefinition, "RelationDefinition has not been set for this relation end point.");
+        return _relationDefinition;
+      }
     }
 
     public ClassDefinition ClassDefinition

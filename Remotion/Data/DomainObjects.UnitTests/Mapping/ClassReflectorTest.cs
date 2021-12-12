@@ -204,7 +204,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       {
         var endPointStub = MockRepository.GenerateStub<IRelationEndPointDefinition>();
         endPointStub.Stub(stub => stub.ClassDefinition).Return(classDefinitionFake);
-        actualEndPoint.SetRelationDefinition(new RelationDefinition("fake: " + actualEndPoint.PropertyName, actualEndPoint, endPointStub));
+        ((IRelationEndPointDefinitionSetter)actualEndPoint).SetRelationDefinition(new RelationDefinition("fake: " + actualEndPoint.PropertyName, actualEndPoint, endPointStub));
       }
 
       Assert.That(actual, Is.Not.Null);
@@ -526,7 +526,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       {
         var endPointStub = MockRepository.GenerateStub<IRelationEndPointDefinition>();
         endPointStub.Stub(stub => stub.ClassDefinition).Return(classDefinitionFake);
-        endPoint.SetRelationDefinition(new RelationDefinition("fake: " + endPoint.PropertyName, endPoint, endPointStub));
+        ((IRelationEndPointDefinitionSetter)endPoint).SetRelationDefinition(new RelationDefinition("fake: " + endPoint.PropertyName, endPoint, endPointStub));
       }
 
       classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(endPoints, true));

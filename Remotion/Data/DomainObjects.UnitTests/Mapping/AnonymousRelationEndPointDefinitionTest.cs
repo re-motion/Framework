@@ -49,11 +49,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    public void RelationDefinitionNull ()
+    public void RelationDefinition_NotSet ()
     {
       AnonymousRelationEndPointDefinition definition = new AnonymousRelationEndPointDefinition(MappingConfiguration.Current.GetTypeDefinition(typeof(Client)));
 
-      Assert.That(definition.RelationDefinition, Is.Null);
+      Assert.That(definition.HasRelationDefinitionBeenSet, Is.False);
+      Assert.That(
+          () => definition.RelationDefinition,
+          Throws.InvalidOperationException.With.Message.EqualTo("RelationDefinition has not been set for this relation end point."));
     }
 
     [Test]
@@ -66,7 +69,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       _definition.SetRelationDefinition(relationDefinition);
 
-      Assert.That(_definition.RelationDefinition, Is.Not.Null);
+      Assert.That(_definition.HasRelationDefinitionBeenSet, Is.True);
+      Assert.That(_definition.RelationDefinition, Is.SameAs(relationDefinition));
     }
   }
 }

@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// <summary>
   /// Holds information about a relation end point that could not be resolved.
   /// </summary>
-  public abstract class InvalidRelationEndPointDefinitionBase : IRelationEndPointDefinition
+  public abstract class InvalidRelationEndPointDefinitionBase : IRelationEndPointDefinition, IRelationEndPointDefinitionSetter
   {
     private readonly ClassDefinition _classDefinition;
     private readonly string _propertyName;
@@ -55,7 +55,11 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationDefinition RelationDefinition
     {
-      get { return _relationDefinition; }
+      get
+      {
+        Assertion.IsNotNull(_relationDefinition, "RelationDefinition has not been set for this relation end point.");
+        return _relationDefinition;
+      }
     }
 
     public IPropertyInformation PropertyInfo
@@ -88,6 +92,11 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       _relationDefinition = relationDefinition;
+    }
+
+    public bool HasRelationDefinitionBeenSet
+    {
+      get { return _relationDefinition != null; }
     }
   }
 }

@@ -292,7 +292,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Order", typeof(Order));
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
 
-      Assert.That(classDefinition.StorageEntityDefinition, Is.Null);
+      Assert.That(classDefinition.HasStorageEntityDefinitionBeenSet, Is.False);
 
       var persistenceModelStub = MockRepository.GenerateStub<IPersistenceModelLoader>();
 
@@ -314,8 +314,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
 
-      Assert.That(classDefinition.StorageEntityDefinition, Is.Null);
-      Assert.That(propertyDefinition.StoragePropertyDefinition, Is.Null);
+      Assert.That(classDefinition.HasStorageEntityDefinitionBeenSet, Is.False);
+      Assert.That(propertyDefinition.HasStoragePropertyDefinitionBeenSet, Is.False);
 
       var persistenceModelStub = MockRepository.GenerateStub<IPersistenceModelLoader>();
 
@@ -329,7 +329,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           () => new MappingConfiguration(_mockMappingLoader, persistenceModelStub),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "The persistence model loader did not assign a storage property to property 'Fake' of class 'Order'."));
+                  "StoragePropertyDefinition has not been set for property 'Fake' of class 'Order'."));
     }
 
     [Test]
@@ -344,8 +344,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       companyClass.SetDerivedClasses(new[] { partnerClass });
 
-      Assert.That(companyClass.StorageEntityDefinition, Is.Null);
-      Assert.That(partnerClass.StorageEntityDefinition, Is.Null);
+      Assert.That(companyClass.HasStorageEntityDefinitionBeenSet, Is.False);
+      Assert.That(partnerClass.HasStorageEntityDefinitionBeenSet, Is.False);
 
       var persistenceModelStub = MockRepository.GenerateStub<IPersistenceModelLoader>();
 

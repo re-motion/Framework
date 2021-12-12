@@ -34,7 +34,10 @@ public interface IRelationEndPointDefinition
   [MemberNotNullWhen(false, nameof(PropertyName))]
   [MemberNotNullWhen(false, nameof(PropertyInfo))]
   bool IsAnonymous { get; }
-
+}
+public interface IRelationEndPointDefinitionSetter
+{
+  bool HasRelationDefinitionBeenSet { get; }
   void SetRelationDefinition (RelationDefinition relationDefinition);
 }
 }

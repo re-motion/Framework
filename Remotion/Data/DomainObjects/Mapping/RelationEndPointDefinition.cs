@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// Represents the non-anonymous, foreign-key side of a bidirectional or unidirectional relationship.
   /// </summary>
   [DebuggerDisplay("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
-  public class RelationEndPointDefinition : IRelationEndPointDefinition
+  public class RelationEndPointDefinition : IRelationEndPointDefinition, IRelationEndPointDefinitionSetter
   {
     private RelationDefinition? _relationDefinition;
     private readonly ClassDefinition _classDefinition;
@@ -58,9 +58,18 @@ namespace Remotion.Data.DomainObjects.Mapping
       _relationDefinition = relationDefinition;
     }
 
+    public bool HasRelationDefinitionBeenSet
+    {
+      get { return _relationDefinition != null; }
+    }
+
     public RelationDefinition RelationDefinition
     {
-      get { return _relationDefinition; }
+      get
+      {
+        Assertion.IsNotNull(_relationDefinition, "RelationDefinition has not been set for this relation end point.");
+        return _relationDefinition;
+      }
     }
 
     public ClassDefinition ClassDefinition

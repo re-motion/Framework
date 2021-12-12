@@ -72,6 +72,11 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _propertyName; }
     }
 
+    public bool HasStoragePropertyDefinitionBeenSet
+    {
+      get { return _storagePropertyDefinition != null; }
+    }
+
     public IStoragePropertyDefinition StoragePropertyDefinition
     {
       get
@@ -79,6 +84,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         if (StorageClass != StorageClass.Persistent)
           throw new InvalidOperationException("Cannot access property 'storagePropertyDefinition' for non-persistent property definitions.");
 
+        Assertion.IsNotNull(_storagePropertyDefinition, "StoragePropertyDefinition has not been set for property '{0}' of class '{1}'.", PropertyName, _classDefinition.ID);
         return _storagePropertyDefinition;
       }
     }

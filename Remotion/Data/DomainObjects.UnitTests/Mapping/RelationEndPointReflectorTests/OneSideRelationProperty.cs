@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       Assert.That(relationEndPointDefinition.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToOne"));
       Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(ClassWithRealRelationEndPoints)));
       Assert.That(relationEndPointDefinition.Cardinality, Is.EqualTo(CardinalityType.One));
-      Assert.That(relationEndPointDefinition.RelationDefinition, Is.Null);
+      Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
       DomainModelConstraintProviderStub.VerifyAllExpectations();
     }
 
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       Assert.That(relationEndPointDefinition.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToManyForDomainObjectCollection"));
       Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(ObjectList<ClassWithRealRelationEndPoints>)));
       Assert.That(relationEndPointDefinition.Cardinality, Is.EqualTo(CardinalityType.Many));
-      Assert.That(relationEndPointDefinition.RelationDefinition, Is.Null);
+      Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
 
       var oppositeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
       var oppositeEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
@@ -183,7 +183,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       Assert.That(relationEndPointDefinition.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToManyForVirtualCollection"));
       Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(IObjectList<ClassWithRealRelationEndPoints>)));
       Assert.That(relationEndPointDefinition.Cardinality, Is.EqualTo(CardinalityType.Many));
-      Assert.That(relationEndPointDefinition.RelationDefinition, Is.Null);
+      Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
 
       var oppositeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
       var oppositeEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();

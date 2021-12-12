@@ -286,7 +286,16 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public IStorageEntityDefinition StorageEntityDefinition
     {
-      get { return _storageEntityDefinition; }
+      get
+      {
+        Assertion.IsNotNull(_storageEntityDefinition, "StorageEntityDefinition has not been set for class definition '{0}'.", _id);
+        return _storageEntityDefinition;
+      }
+    }
+
+    public bool HasStorageEntityDefinitionBeenSet
+    {
+      get { return _storageEntityDefinition != null; }
     }
 
     public Type ClassType

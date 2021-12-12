@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     private void EnsureStorageEntitiesCreated (ClassDefinition classDefinition)
     {
-      if (classDefinition.StorageEntityDefinition == null)
+      if (!classDefinition.HasStorageEntityDefinitionBeenSet)
       {
         var storageEntity = CreateEntityDefinition(classDefinition);
         classDefinition.SetStorageEntity(storageEntity);
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
                 typeof(IRdbmsStorageEntityDefinition).Name));
       }
 
-      Assertion.IsNotNull(classDefinition.StorageEntityDefinition);
+      Assertion.DebugIsNotNull(classDefinition.StorageEntityDefinition, "classDefinition.StorageEntityDefinition != null");
     }
 
     private void EnsureAllStoragePropertiesCreated (IEnumerable<ClassDefinition> classDefinitions)
@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     {
       foreach (var propertyDefinition in classDefinition.MyPropertyDefinitions.Where(pd => pd.StorageClass == StorageClass.Persistent))
       {
-        if (propertyDefinition.StoragePropertyDefinition == null)
+        if (!propertyDefinition.HasStoragePropertyDefinitionBeenSet)
         {
           var storagePropertyDefinition = _dataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(propertyDefinition);
           propertyDefinition.SetStorageProperty(storagePropertyDefinition);
@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
                 typeof(IRdbmsStoragePropertyDefinition).Name));
         }
 
-        Assertion.IsNotNull(propertyDefinition.StoragePropertyDefinition);
+        Assertion.DebugIsNotNull(propertyDefinition.StoragePropertyDefinition, "propertyDefinition.StoragePropertyDefinition != null");
       }
     }
 
