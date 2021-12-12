@@ -49,6 +49,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       Assertion.IsNotNull(BidirectionalRelationAttribute, "Property '{0}' is not part of a bi-directional relation.", PropertyInfo.Name);
 
       var type = ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(PropertyInfo);
+      if (type == null)
+        return null;
+
       var propertyFinder = new NameBasedPropertyFinder(
           BidirectionalRelationAttribute.OppositeProperty,
           type,

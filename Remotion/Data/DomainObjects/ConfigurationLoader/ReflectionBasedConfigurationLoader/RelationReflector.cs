@@ -97,6 +97,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     private ClassDefinition GetOppositeClassDefinition (IDictionary<Type, ClassDefinition> classDefinitions)
     {
       var type = ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(PropertyInfo);
+      if (type == null)
+      {
+        var notFoundClassDefinition = new ClassDefinitionForUnresolvedRelationPropertyType(PropertyInfo.PropertyType.Name, typeof(DomainObject), PropertyInfo);
+        notFoundClassDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
+        notFoundClassDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+        return notFoundClassDefinition;
+      }
+
       var oppositeClassDefinition = classDefinitions.GetValueOrDefault(type);
       if (oppositeClassDefinition == null)
       {
