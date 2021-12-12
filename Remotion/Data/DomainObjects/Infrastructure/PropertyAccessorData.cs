@@ -33,6 +33,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentException">The domain object does not have a property with the given identifier.</exception>
     public static PropertyKind GetPropertyKind (ClassDefinition classDefinition, string propertyIdentifier)
     {
+      // TODO RM-8246: possibly inline this method
+
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
 
@@ -77,9 +79,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentException">The class definition does not have a property with the given identifier.</exception>
     public static Type GetPropertyType (ClassDefinition classDefinition, string propertyIdentifier)
     {
+      // TODO RM-8246: possibly inline this method
+
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
 
+      // TODO RM-8246: this is actually a discriminating union, solved via nullable values
       Tuple<PropertyDefinition?, IRelationEndPointDefinition?> definitionObjects =
           GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
 
@@ -98,6 +103,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClassDefinition classDefinition,
         string propertyIdentifier)
     {
+      // TODO RM-8246: possibly inline this method
+
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
 
@@ -142,6 +149,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _kind = GetPropertyKind(_relationEndPointDefinition);
       _strategy = GetStrategy(_kind);
 
+      // TODO RM-8246: possibly change the strategy to use classDefinition and propertyIdentifier to get the propertyType in order to avoid the discriminated union.
       _propertyType = _strategy.GetPropertyType(_propertyDefinition, _relationEndPointDefinition);
     }
 
