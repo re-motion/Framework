@@ -210,7 +210,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     private IComparer<DomainObject> GetDomainObjectComparer ()
     {
-      var idComparer = new DelegateBasedComparer<DomainObject>((left, right) => left.ID.CompareTo(right.ID));
+      var idComparer = new DelegateBasedComparer<DomainObject>((left, right) =>
+      {
+        Assertion.DebugIsNotNull(left, "left != null");
+        Assertion.DebugIsNotNull(right, "right != null");
+
+        return left.ID.CompareTo(right.ID);
+      });
+
       var sortExpression = ((VirtualCollectionRelationEndPointDefinition)_associatedEndPointID.Definition).GetSortExpression();
       if (sortExpression != null)
       {

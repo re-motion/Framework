@@ -60,8 +60,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public int Compare (DomainObject? x, DomainObject? y)
     {
-      ArgumentUtility.CheckNotNull("x", x);
-      ArgumentUtility.CheckNotNull("y", y);
+      if (x == null && y == null)
+        return 0;
+      if (x == null)
+        return SortedPropertySpecification.Order == SortOrder.Ascending ? 1 : -1;
+      if (y == null)
+        return SortedPropertySpecification.Order == SortOrder.Ascending ? -1 : 1;
 
       var valueX = GetComparedKey(x);
       var valueY = GetComparedKey(y);

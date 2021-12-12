@@ -177,7 +177,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
       ArgumentUtility.CheckNotNull("comparison", comparison);
 
-      _orderedObjectIDs.Sort((one, two) => comparison(GetObject(one), GetObject(two)));
+      _orderedObjectIDs.Sort((one, two) =>
+      {
+        var domainObjectOne = GetObject(one);
+        var domainObjectTwo = GetObject(two);
+        Assertion.DebugIsNotNull(domainObjectOne, "DomainObject '{0}' is missing in the collection.", one);
+        Assertion.DebugIsNotNull(domainObjectTwo, "DomainObject '{0}' is missing in the collection.", two);
+        return comparison(domainObjectOne, domainObjectTwo);
+      });
       IncrementVersion();
     }
 
