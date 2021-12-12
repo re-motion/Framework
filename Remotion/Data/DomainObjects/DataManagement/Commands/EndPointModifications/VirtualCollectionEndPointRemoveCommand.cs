@@ -39,16 +39,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
         : base(
-            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
+            modifiedEndPoint,
             ArgumentUtility.CheckNotNull("removedObject", removedObject),
             null,
-            ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
+            transactionEventSink)
     {
       ArgumentUtility.CheckNotNull("collectionData", collectionData);
       ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
-
-      if (modifiedEndPoint.IsNull)
-        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _index = collectionData.IsDataComplete ? collectionData.IndexOf(removedObject.ID) : 0;
       _modifiedCollectionData = collectionData;
@@ -63,6 +60,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public IRelationEndPointProvider EndPointProvider
     {
       get { return _endPointProvider; }
+    }
+
+    public new DomainObject OldRelatedObject
+    {
+      get { return base.OldRelatedObject!; }
     }
 
     public override void Perform ()
@@ -84,8 +86,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
       var removedEndPoint = GetOppositeEndPoint(ModifiedEndPoint, OldRelatedObject, _endPointProvider);
+      var removedRelatedObject = DomainObject;
+
       return new ExpandedCommand(
-          removedEndPoint.CreateRemoveCommand(ModifiedEndPoint.GetDomainObject()),
+          removedEndPoint.CreateRemoveCommand(removedRelatedObject),
           this);
     }
   }

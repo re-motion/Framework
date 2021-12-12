@@ -80,6 +80,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
+    public void Initialize_NullEndPointID ()
+    {
+      var existingEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.OrderTicket1, "Order");
+      var nullEndPointID = RelationEndPointID.Create(null, existingEndPointID.Definition);
+      var foreignKeyDataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
+      Assert.That(
+          () => new RealObjectEndPoint(TestableClientTransaction, nullEndPointID, foreignKeyDataContainer, _endPointProviderStub, _transactionEventSinkStub),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "End point ID must have a non-null ObjectID.", "id"));
+    }
+
+    [Test]
     public void Initialization_SyncState ()
     {
       var endPoint = new RealObjectEndPoint(TestableClientTransaction, _endPointID, _foreignKeyDataContainer, _endPointProviderStub, _transactionEventSinkStub);

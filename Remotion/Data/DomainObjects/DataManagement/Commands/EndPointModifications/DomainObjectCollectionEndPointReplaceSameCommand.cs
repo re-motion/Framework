@@ -32,13 +32,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         DomainObject selfReplacedObject,
         IClientTransactionEventSink transactionEventSink)
         : base(
-            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
+            modifiedEndPoint,
             ArgumentUtility.CheckNotNull("selfReplacedObject", selfReplacedObject),
             ArgumentUtility.CheckNotNull("selfReplacedObject", selfReplacedObject),
-            ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
+            transactionEventSink)
     {
-      if (modifiedEndPoint.IsNull)
-        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
     }
 
     public override void Perform ()

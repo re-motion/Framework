@@ -35,14 +35,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IDomainObjectCollectionData collectionData,
         IClientTransactionEventSink transactionEventSink)
         : base(
-            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
+            modifiedEndPoint,
             null,
             null,
-            ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
+            transactionEventSink)
     {
-      if (modifiedEndPoint.IsNull)
-        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
-
       _modifiedCollectionData = collectionData;
       _modifiedCollectionEventRaiser = modifiedEndPoint.GetCollectionEventRaiser();
     }

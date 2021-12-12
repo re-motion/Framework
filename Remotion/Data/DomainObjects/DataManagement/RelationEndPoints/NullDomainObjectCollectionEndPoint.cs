@@ -192,6 +192,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IDataManagementCommand CreateRemoveCommand (DomainObject? removedRelatedObject)
     {
+      // TODO RM-8241: removedRelatedObject can be null for null-object implementations.
       return new NullEndPointModificationCommand(this);
     }
 

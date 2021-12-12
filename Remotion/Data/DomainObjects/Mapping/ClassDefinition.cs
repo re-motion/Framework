@@ -468,23 +468,28 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       foreach (IRelationEndPointDefinition endPointDefinition in relationEndPoints)
       {
-        if (!ReferenceEquals(endPointDefinition.ClassDefinition, this))
+        var relationEndPointClassDefinition = endPointDefinition.ClassDefinition;
+        var relationEndPointPropertyName = endPointDefinition.PropertyName;
+        Assertion.DebugAssert(endPointDefinition.IsAnonymous == false, "endPointDefinition.IsAnonymous == false");
+        Assertion.DebugIsNotNull(relationEndPointPropertyName, "endPointDefinition.PropertyName != null when endPointDefinition.IsAnonymous == false");
+
+        if (!ReferenceEquals(relationEndPointClassDefinition, this))
         {
           throw CreateMappingException(
               "Relation end point for property '{0}' cannot be added to class '{1}', because it was initialized for class '{2}'.",
-              endPointDefinition.PropertyName,
+              relationEndPointPropertyName,
               _id,
-              endPointDefinition.ClassDefinition.ID);
+              relationEndPointClassDefinition.ID);
         }
 
-        var baseEndPointDefinition = BaseClass != null ? BaseClass.GetRelationEndPointDefinition(endPointDefinition.PropertyName) : null;
+        var baseEndPointDefinition = BaseClass != null ? BaseClass.GetRelationEndPointDefinition(relationEndPointPropertyName) : null;
         if (baseEndPointDefinition != null)
         {
           string definingClass = String.Format("base class '{0}'", baseEndPointDefinition.ClassDefinition.ID);
 
           throw CreateMappingException(
               "Relation end point for property '{0}' cannot be added to class '{1}', because {2} already defines a relation end point with the same property name.",
-              endPointDefinition.PropertyName,
+              relationEndPointPropertyName,
               _id,
               definingClass);
         }

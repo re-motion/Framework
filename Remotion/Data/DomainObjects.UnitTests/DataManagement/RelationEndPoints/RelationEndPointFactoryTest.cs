@@ -122,6 +122,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
+    public void CreateRealObjectEndPoint_NullEndPoint ()
+    {
+      var existingEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
+      var endPointID = RelationEndPointID.Create(null, existingEndPointID.Definition);
+      var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
+
+      Assert.That(
+          () => _factory.CreateRealObjectEndPoint(endPointID, dataContainer),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("End point ID must have a non-null ObjectID.", "endPointID"));
+    }
+
+    [Test]
     public void CreateVirtualObjectEndPoint ()
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");

@@ -47,9 +47,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     {
       ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint);
       ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+      if (modifiedEndPoint.IsNull)
+        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
+
+      var domainObject = modifiedEndPoint.GetDomainObject();
+      if (domainObject == null)
+        throw new ArgumentException("DomainObject of modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _modifiedEndPoint = modifiedEndPoint;
-      _domainObject = modifiedEndPoint.GetDomainObject();
+      _domainObject = domainObject;
 
       _oldRelatedObject = oldRelatedObject;
       _newRelatedObject = newRelatedObject;

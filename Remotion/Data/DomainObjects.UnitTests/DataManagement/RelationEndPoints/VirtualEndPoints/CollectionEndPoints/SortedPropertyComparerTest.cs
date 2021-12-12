@@ -18,7 +18,6 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
-using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -33,6 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   {
     private IDataContainerMapReadOnlyView _dataContainerMapStub;
     private PropertyDefinition _orderNumberPropertyDefinition;
+    private PropertyDefinition _officialPropertyDefinition;
 
     public override void SetUp ()
     {
@@ -40,6 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _dataContainerMapStub = MockRepository.GenerateStub<IDataContainerMapReadOnlyView>();
       _orderNumberPropertyDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryPropertyDefinition(typeof(Order).FullName + ".OrderNumber");
+      _officialPropertyDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryPropertyDefinition(typeof(Order).FullName + ".Official");
     }
 
     [Test]
@@ -92,6 +93,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(comparer.Compare(domainObject1, domainObject2), Is.EqualTo(1));
       Assert.That(comparer.Compare(domainObject2, domainObject1), Is.EqualTo(-1));
       Assert.That(comparer.Compare(domainObject2, domainObject2), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void Compare_Ascending_Null ()
+    {
+      var domainObject1 = DomainObjectMother.CreateFakeObject<Order>();
+
+      PrepareDataContainer(_dataContainerMapStub, domainObject1, 1);
+
+      var specification = new SortedPropertySpecification(_officialPropertyDefinition, SortOrder.Ascending);
+      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub, ValueAccess.Current);
+
+      Assert.That(comparer.Compare(domainObject1, domainObject1), Is.EqualTo(0));
+      Assert.That(comparer.Compare(domainObject1, null), Is.EqualTo(-1));
+      Assert.That(comparer.Compare(null, domainObject1), Is.EqualTo(1));
+      Assert.That(comparer.Compare(null, null), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void Compare_Descending_Null ()
+    {
+      var domainObject1 = DomainObjectMother.CreateFakeObject<Order>();
+
+      PrepareDataContainer(_dataContainerMapStub, domainObject1, 1);
+
+      var specification = new SortedPropertySpecification(_officialPropertyDefinition, SortOrder.Descending);
+      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub, ValueAccess.Current);
+
+      Assert.That(comparer.Compare(domainObject1, domainObject1), Is.EqualTo(0));
+      Assert.That(comparer.Compare(domainObject1, null), Is.EqualTo(1));
+      Assert.That(comparer.Compare(null, domainObject1), Is.EqualTo(-1));
+      Assert.That(comparer.Compare(null, null), Is.EqualTo(0));
     }
 
     [Test]

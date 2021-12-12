@@ -50,6 +50,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
         }
         else if (endPointDefinition is TypeNotCompatibleWithVirtualRelationEndPointDefinition)
         {
+          Assertion.DebugAssert(endPointDefinition.IsAnonymous == false, "endPointDefinition.IsAnonymous == false");
+          Assertion.DebugIsNotNull(endPointDefinition.PropertyInfo, "endPointDefinition.PropertyInfo != null when endPointDefinition.IsAnonymous == false");
+
           return MappingValidationResult.CreateInvalidResultForType(
               endPointDefinition.ClassDefinition.ClassType,
               "Relation property '{0}' on class '{1}' is of type '{2}', but virtual relation properties must be of type '{3}', '{4}', or '{5}'.",

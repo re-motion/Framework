@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
+using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints
@@ -56,7 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
 
-      var items = item == null ? new DomainObject[0] : new[] { item };
+      var items = item == null ? Array.Empty<DomainObject>() : EnumerableUtility.Singleton(item);
       MarkDataComplete(endPoint, items, stateSetter);
     }
 

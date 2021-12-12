@@ -149,7 +149,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void Clear ()
     {
-      DomainObjectCheckUtility.EnsureNotDeleted(GetAssociatedEndPoint().GetDomainObjectReference(), GetAssociatedEndPoint().ClientTransaction);
+      var associatedEndPoint = GetAssociatedEndPoint();
+      var associatedDomainObjectReference = associatedEndPoint.GetDomainObjectReference();
+      Assertion.DebugAssert(associatedEndPoint.IsNull == false, "GetAssociatedEndPoint().IsNull == false");
+      Assertion.DebugIsNotNull(associatedDomainObjectReference, "GetAssociatedEndPoint().GetDomainObjectReference() != null");
+      DomainObjectCheckUtility.EnsureNotDeleted(associatedDomainObjectReference, associatedEndPoint.ClientTransaction);
 
       var combinedCommand = GetClearCommand();
       combinedCommand.NotifyAndPerform();
@@ -160,14 +164,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       CheckClientTransaction(domainObject, "Cannot insert DomainObject '{0}' into collection of property '{1}' of DomainObject '{2}'.");
-      DomainObjectCheckUtility.EnsureNotDeleted(domainObject, GetAssociatedEndPoint().ClientTransaction);
-      DomainObjectCheckUtility.EnsureNotDeleted(GetAssociatedEndPoint().GetDomainObjectReference(), GetAssociatedEndPoint().ClientTransaction);
+      var associatedEndPoint = GetAssociatedEndPoint();
+      var associatedDomainObjectReference = associatedEndPoint.GetDomainObjectReference();
+      Assertion.DebugAssert(associatedEndPoint.IsNull == false, "GetAssociatedEndPoint().IsNull == false");
+      Assertion.DebugIsNotNull(associatedDomainObjectReference, "GetAssociatedEndPoint().GetDomainObjectReference() != null");
+      DomainObjectCheckUtility.EnsureNotDeleted(domainObject, associatedEndPoint.ClientTransaction);
+      DomainObjectCheckUtility.EnsureNotDeleted(associatedDomainObjectReference, associatedEndPoint.ClientTransaction);
 
-      var insertCommand = GetAssociatedEndPoint().CreateInsertCommand(domainObject, index);
+      var insertCommand = associatedEndPoint.CreateInsertCommand(domainObject, index);
       var bidirectionalModification = insertCommand.ExpandToAllRelatedObjects();
       bidirectionalModification.NotifyAndPerform();
 
-      GetAssociatedEndPoint().Touch();
+      associatedEndPoint.Touch();
     }
 
     public bool Remove (DomainObject domainObject)
@@ -175,14 +183,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       CheckClientTransaction(domainObject, "Cannot remove DomainObject '{0}' from collection of property '{1}' of DomainObject '{2}'.");
-      DomainObjectCheckUtility.EnsureNotDeleted(domainObject, GetAssociatedEndPoint().ClientTransaction);
-      DomainObjectCheckUtility.EnsureNotDeleted(GetAssociatedEndPoint().GetDomainObjectReference(), GetAssociatedEndPoint().ClientTransaction);
+      var associatedEndPoint = GetAssociatedEndPoint();
+      var associatedDomainObjectReference = associatedEndPoint.GetDomainObjectReference();
+      Assertion.DebugAssert(associatedEndPoint.IsNull == false, "GetAssociatedEndPoint().IsNull == false");
+      Assertion.DebugIsNotNull(associatedDomainObjectReference, "GetAssociatedEndPoint().GetDomainObjectReference() != null");
+      DomainObjectCheckUtility.EnsureNotDeleted(domainObject, associatedEndPoint.ClientTransaction);
+      DomainObjectCheckUtility.EnsureNotDeleted(associatedDomainObjectReference, associatedEndPoint.ClientTransaction);
 
       var containsObjectID = ContainsObjectID(domainObject.ID);
       if (containsObjectID)
         CreateAndExecuteRemoveCommand(domainObject);
 
-      GetAssociatedEndPoint().Touch();
+      associatedEndPoint.Touch();
       return containsObjectID;
     }
 
@@ -190,18 +202,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      DomainObjectCheckUtility.EnsureNotDeleted(GetAssociatedEndPoint().GetDomainObjectReference(), GetAssociatedEndPoint().ClientTransaction);
+      var associatedEndPoint = GetAssociatedEndPoint();
+      var associatedDomainObjectReference = associatedEndPoint.GetDomainObjectReference();
+      Assertion.DebugAssert(associatedEndPoint.IsNull == false, "GetAssociatedEndPoint().IsNull == false");
+      Assertion.DebugIsNotNull(associatedDomainObjectReference, "GetAssociatedEndPoint().GetDomainObjectReference() != null");
+      DomainObjectCheckUtility.EnsureNotDeleted(associatedDomainObjectReference, associatedEndPoint.ClientTransaction);
 
       var domainObject = GetObject(objectID);
       if (domainObject != null)
       {
         // we can rely on the fact that this object is not deleted, otherwise we wouldn't have got it
-        Assertion.IsFalse(domainObject.TransactionContext[GetAssociatedEndPoint().ClientTransaction].State.IsDeleted);
+        Assertion.IsFalse(domainObject.TransactionContext[associatedEndPoint.ClientTransaction].State.IsDeleted);
 
         CreateAndExecuteRemoveCommand(domainObject);
       }
 
-      GetAssociatedEndPoint().Touch();
+      associatedEndPoint.Touch();
       return domainObject != null;
     }
 
@@ -210,14 +226,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("value", value);
 
       CheckClientTransaction(value, "Cannot put DomainObject '{0}' into the collection of property '{1}' of DomainObject '{2}'.");
-      DomainObjectCheckUtility.EnsureNotDeleted(value, GetAssociatedEndPoint().ClientTransaction);
-      DomainObjectCheckUtility.EnsureNotDeleted(GetAssociatedEndPoint().GetDomainObjectReference(), GetAssociatedEndPoint().ClientTransaction);
+      var associatedEndPoint = GetAssociatedEndPoint();
+      var associatedDomainObjectReference = associatedEndPoint.GetDomainObjectReference();
+      Assertion.DebugAssert(associatedEndPoint.IsNull == false, "GetAssociatedEndPoint().IsNull == false");
+      Assertion.DebugIsNotNull(associatedDomainObjectReference, "GetAssociatedEndPoint().GetDomainObjectReference() != null");
+      DomainObjectCheckUtility.EnsureNotDeleted(value, associatedEndPoint.ClientTransaction);
+      DomainObjectCheckUtility.EnsureNotDeleted(associatedDomainObjectReference, associatedEndPoint.ClientTransaction);
 
-      var replaceCommand = GetAssociatedEndPoint().CreateReplaceCommand(index, value);
+      var replaceCommand = associatedEndPoint.CreateReplaceCommand(index, value);
       var bidirectionalModification = replaceCommand.ExpandToAllRelatedObjects();
       bidirectionalModification.NotifyAndPerform();
 
-      GetAssociatedEndPoint().Touch();
+      associatedEndPoint.Touch();
     }
 
     public void Sort (Comparison<DomainObject> comparison)
@@ -238,16 +258,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       var removeCommands = new List<ExpandedCommand>();
 
+      var associatedEndPoint = GetAssociatedEndPoint();
       for (int i = Count - 1; i >= 0; --i)
       {
         var removedObject = GetObject(i);
 
         // we can rely on the fact that this object is not deleted, otherwise we wouldn't have got it
-        Assertion.IsFalse(removedObject.TransactionContext[GetAssociatedEndPoint().ClientTransaction].State.IsDeleted);
-        removeCommands.Add(GetAssociatedEndPoint().CreateRemoveCommand(removedObject).ExpandToAllRelatedObjects());
+        Assertion.IsFalse(removedObject.TransactionContext[associatedEndPoint.ClientTransaction].State.IsDeleted);
+        removeCommands.Add(associatedEndPoint.CreateRemoveCommand(removedObject).ExpandToAllRelatedObjects());
       }
 
-      return new CompositeCommand(removeCommands.Cast<IDataManagementCommand>()).CombineWith(new RelationEndPointTouchCommand(GetAssociatedEndPoint()));
+      return new CompositeCommand(removeCommands.Cast<IDataManagementCommand>()).CombineWith(new RelationEndPointTouchCommand(associatedEndPoint));
     }
 
     private void CheckClientTransaction (DomainObject domainObject, string exceptionFormatString)

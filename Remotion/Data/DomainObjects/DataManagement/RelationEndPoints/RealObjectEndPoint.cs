@@ -50,13 +50,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
       ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
 
-      if (ID.Definition.IsVirtual)
-        throw new ArgumentException("End point ID must refer to a non-virtual end point.", "id");
+      if (id.ObjectID == null)
+        throw new ArgumentException("End point ID must have a non-null ObjectID.", "id");
 
-      var propertyDefinition = GetPropertyDefinition();
+      if (id.Definition.IsVirtual)
+        throw new ArgumentException("End point ID must refer to a non-virtual end point.", "id");
 
       if (foreignKeyDataContainer.ID != id.ObjectID)
         throw new ArgumentException("The foreign key data container must be from the same object as the end point definition.", "foreignKeyDataContainer");
+
+      var propertyDefinition = GetPropertyDefinition();
 
       _foreignKeyDataContainer = foreignKeyDataContainer;
       _endPointProvider = endPointProvider;

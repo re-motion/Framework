@@ -57,6 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       int index = 0;
       foreach (var domainObject in this)
       {
+        Assertion.DebugIsNotNull(domainObject, "domainObject != null when operation == OperationKind.Remove");
         OnDataChanging(OperationKind.Remove, domainObject, index);
         removedObjects.Push(domainObject);
         ++index;
@@ -69,6 +70,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       foreach (var domainObject in removedObjects)
       {
         --index;
+        Assertion.DebugIsNotNull(domainObject, "domainObject != null when operation == OperationKind.Remove");
         OnDataChanged(OperationKind.Remove, domainObject, index);
       }
 
@@ -108,6 +110,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         return false;
 
       var domainObject = GetObject(objectID);
+      Assertion.DebugIsNotNull(domainObject, "domainObject != null");
       OnDataChanging(OperationKind.Remove, domainObject, index);
       WrappedData.Remove(objectID);
       OnDataChanged(OperationKind.Remove, domainObject, index);

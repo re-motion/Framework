@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
               from endPointDefinition in classDefinitionInHierarchy.MyRelationEndPointDefinitions
               where !endPointDefinition.IsVirtual
               let referencedClassDefinition = endPointDefinition.ClassDefinition
-                  .GetMandatoryRelationEndPointDefinition(endPointDefinition.PropertyName)
+                  .GetMandatoryRelationEndPointDefinition(Assertion.IsNotNull(endPointDefinition.PropertyName, "endPointDefinition.PropertyName != null when endPointDefinition.IsVirtual == false"))
                   .GetOppositeClassDefinition()
               let propertyDefinition = ((RelationEndPointDefinition)endPointDefinition).PropertyDefinition
               where propertyDefinition.StorageClass == StorageClass.Persistent

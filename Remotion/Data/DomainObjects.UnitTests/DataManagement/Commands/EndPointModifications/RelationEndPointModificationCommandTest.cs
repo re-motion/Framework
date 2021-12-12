@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 using Rhino.Mocks.Interfaces;
 
@@ -64,6 +65,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       _command = CreateTestableCommand();
       _commandPartialMock = CreateCommandPartialMock();
+    }
+
+    [Test]
+    public void Initialize_WithNullEndPoint ()
+    {
+      var endPointMock = MockRepository.GenerateMock<IRelationEndPoint>();
+      endPointMock.Stub(_ => _.IsNull).Return(true);
+      endPointMock.Replay();
+
+      Assert.That(
+          () => new TestableRelationEndPointModificationCommand(endPointMock, _oldRelatedObject, _newRelatedObject, _transactionEventSinkWithMock),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+              "Modified end point is null, a NullEndPointModificationCommand is needed.",
+              "modifiedEndPoint"));
+    }
+
+    [Test]
+    public void Initialize_WithNullDomainObjectInEndPoint ()
+    {
+      var endPointMock = MockRepository.GenerateMock<IRelationEndPoint>();
+      endPointMock.Stub(_ => _.GetDomainObject()).Return(null);
+      endPointMock.Replay();
+
+      Assert.That(
+          () => new TestableRelationEndPointModificationCommand(endPointMock, _oldRelatedObject, _newRelatedObject, _transactionEventSinkWithMock),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+              "DomainObject of modified end point is null, a NullEndPointModificationCommand is needed.",
+              "modifiedEndPoint"));
     }
 
     [Test]

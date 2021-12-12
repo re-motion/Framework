@@ -404,6 +404,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     private DomainObjectCollection CreateCollection (IDomainObjectCollectionData dataStrategy)
     {
+      Assertion.DebugAssert(!Definition.IsAnonymous, "!Definition.IsAnonymous");
       return DomainObjectCollectionFactory.Instance.CreateCollection(Definition.PropertyInfo.PropertyType, dataStrategy);
     }
 

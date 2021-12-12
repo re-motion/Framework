@@ -37,12 +37,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         : base(ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
                 modifiedEndPoint.GetOppositeObject(),
                 newRelatedObject,
-                ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
+                transactionEventSink)
     {
       ArgumentUtility.CheckNotNull("oppositeObjectSetter", oppositeObjectSetter);
-
-      if (modifiedEndPoint.IsNull)
-        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _oppositeObjectSetter = oppositeObjectSetter;
     }

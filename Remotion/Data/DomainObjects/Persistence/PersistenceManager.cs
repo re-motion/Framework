@@ -316,6 +316,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       var relationEndPointDefinition = relationEndPointID.Definition;
       Assertion.IsTrue(relationEndPointDefinition.IsVirtual, "RelationEndPointDefinition for '{0}' is not virtual.", relationEndPointID);
       Assertion.IsFalse(relationEndPointDefinition.IsAnonymous, "RelationEndPointDefinition for '{0}' is anonymous.", relationEndPointID);
+      Assertion.DebugIsNotNull(relationEndPointID.ObjectID, "relationEndPointID.ObjectID != null");
 
       var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
       var oppositeProvider =
@@ -345,6 +346,9 @@ namespace Remotion.Data.DomainObjects.Persistence
         RelationEndPointID relationEndPointID,
         DataContainer oppositeDataContainer)
     {
+      Assertion.DebugAssert(relationEndPointID.Definition.IsAnonymous == false, "relationEndPointID.Definition.IsAnonymous == false");
+      Assertion.DebugIsNotNull(relationEndPointID.ObjectID, "relationEndPointID.ObjectID != null");
+
       var oppositeEndPointDefinition = (RelationEndPointDefinition)relationEndPointID.Definition.GetOppositeEndPointDefinition();
       var objectID = (ObjectID?)oppositeDataContainer.GetValueWithoutEvents(oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current);
 

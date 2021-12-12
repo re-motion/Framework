@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
@@ -179,6 +180,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
+    public void RegisterOriginalOppositeEndPoint_NullOppositeEndPoint ()
+    {
+      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      endPointStub.Stub(stub => stub.IsNull).Return(true);
+
+      Assert.That(
+          () => _dataManager.RegisterOriginalOppositeEndPoint(endPointStub),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("End point must not be a null object.", "oppositeEndPoint"));
+    }
+
+    [Test]
     public void UnregisterOriginalOppositeEndPoint ()
     {
       var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
@@ -214,6 +227,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
+    public void UnregisterOriginalOppositeEndPoint_NullOppositeEndPoint ()
+    {
+      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      endPointStub.Stub(stub => stub.IsNull).Return(true);
+
+      Assert.That(
+          () => _dataManager.UnregisterOriginalOppositeEndPoint(endPointStub),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("End point must not be a null object.", "oppositeEndPoint"));
+    }
+
+    [Test]
     public void ContainsCurrentOppositeEndPoint ()
     {
       Assert.That(_dataManager.ContainsCurrentOppositeEndPoint(_domainObjectEndPoint1), Is.False);
@@ -221,6 +246,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
 
       Assert.That(_dataManager.ContainsCurrentOppositeEndPoint(_domainObjectEndPoint1), Is.True);
+    }
+
+    [Test]
+    public void ContainsCurrentOppositeEndPoint_NullOppositeEndPoint ()
+    {
+      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      endPointStub.Stub(stub => stub.IsNull).Return(true);
+
+      Assert.That(
+          () => _dataManager.ContainsCurrentOppositeEndPoint(endPointStub),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("End point must not be a null object.", "oppositeEndPoint"));
     }
 
     [Test]
@@ -245,6 +282,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
+    public void RegisterCurrentOppositeEndPoint_NullOppositeEndPoint ()
+    {
+      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      endPointStub.Stub(stub => stub.IsNull).Return(true);
+
+      Assert.That(
+          () => _dataManager.RegisterCurrentOppositeEndPoint(endPointStub),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("End point must not be a null object.", "oppositeEndPoint"));
+    }
+
+    [Test]
     public void UnregisterCurrentOppositeEndPoint ()
     {
       _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
@@ -264,6 +313,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The opposite end-point has not been registered."));
+    }
+
+    [Test]
+    public void UnregisterCurrentOppositeEndPoint_NullOppositeEndPoint ()
+    {
+      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      endPointStub.Stub(stub => stub.IsNull).Return(true);
+
+      Assert.That(
+          () => _dataManager.UnregisterCurrentOppositeEndPoint(endPointStub),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("End point must not be a null object.", "oppositeEndPoint"));
     }
 
     [Test]

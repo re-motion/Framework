@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints
@@ -68,7 +69,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
 
-      MarkDataComplete(endPoint, new[] { item }, stateSetter);
+      var items = item == null ? Array.Empty<DomainObject>() : EnumerableUtility.Singleton(item);
+      MarkDataComplete(endPoint, items, stateSetter);
     }
 
     public override void SynchronizeOppositeEndPoint (IVirtualObjectEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
@@ -140,6 +142,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       if (!IsSynchronized(virtualObjectEndPoint))
       {
+        Assertion.DebugIsNotNull(
+            DataManager.OriginalItemWithoutEndPoint,
+            "DataManager.OriginalItemWithoutEndPoint != null when IsSynchronized (virtualObjectEndPoint) == false");
+
         var message = string.Format(
             "The domain object '{0}' cannot be deleted because its virtual property '{1}' is out of sync with "
             + "the opposite object property '{2}' of domain object '{3}'. To make this change, synchronize the two properties by calling the "
