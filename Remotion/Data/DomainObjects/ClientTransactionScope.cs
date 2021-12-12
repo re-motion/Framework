@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Context;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -141,6 +142,9 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     internal ClientTransactionScope (ClientTransaction? scopedCurrentTransaction, AutoRollbackBehavior autoRollbackBehavior, IDisposable? attachedScope)
     {
+      if (autoRollbackBehavior != AutoRollbackBehavior.None)
+        ArgumentUtility.CheckNotNull("scopedCurrentTransaction", scopedCurrentTransaction!);
+
       _autoRollbackBehavior = autoRollbackBehavior;
 
       _previousScope = ClientTransactionScope.ActiveScope;
@@ -177,7 +181,7 @@ namespace Remotion.Data.DomainObjects
     /// <value>The scoped transaction.</value>
     ITransaction? ITransactionScope.ScopedTransaction
     {
-      get { return ScopedTransaction.ToITransaction(); }
+      get { return ScopedTransaction?.ToITransaction(); }
     }
 
     /// <summary>
@@ -214,10 +218,16 @@ namespace Remotion.Data.DomainObjects
 
     private void ExecuteAutoRollbackBehavior ()
     {
-      if (AutoRollbackBehavior == AutoRollbackBehavior.Rollback && ScopedTransaction.HasChanged())
-        Rollback();
+      if (AutoRollbackBehavior == AutoRollbackBehavior.Rollback)
+      {
+        Assertion.DebugIsNotNull(ScopedTransaction, "ScopedTransaction != null when AutoRollbackBehavior == AutoRollbackBehavior.Rollback");
+        if (ScopedTransaction.HasChanged())
+          Rollback();
+      }
       else if (AutoRollbackBehavior == AutoRollbackBehavior.Discard)
+      {
         DiscardTransaction();
+      }
     }
 
     /// <summary>
