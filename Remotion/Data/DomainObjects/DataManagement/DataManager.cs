@@ -418,10 +418,16 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull("endPointIDs", endPointIDs);
 
-      var endPointsOfNewOrDeletedObjects = (from endPointID in endPointIDs
-                                            let owningDataContainer = GetDataContainerWithoutLoading(endPointID.ObjectID)
-                                            where owningDataContainer != null && (owningDataContainer.State.IsDeleted || owningDataContainer.State.IsNew)
-                                            select endPointID).ConvertToCollection();
+      var endPointsOfNewOrDeletedObjects = endPointIDs
+          .Where(endPointID => endPointID.ObjectID != null)
+          .Where(
+              endPointID =>
+              {
+                Assertion.DebugIsNotNull(endPointID.ObjectID, "endPointID.ObjectID != null");
+                var owningDataContainer = GetDataContainerWithoutLoading(endPointID.ObjectID);
+                return owningDataContainer != null && (owningDataContainer.State.IsDeleted || owningDataContainer.State.IsNew);
+              })
+          .ToList();
       if (endPointsOfNewOrDeletedObjects.Count > 0)
       {
         var message = "Cannot unload the following relation end-points because they belong to new or deleted objects: "

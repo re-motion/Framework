@@ -687,6 +687,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var endPointIDOfUnloadedObject = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
       var endPointIDOfUnchangedObject = RelationEndPointID.Create(DomainObjectIDs.Order3, typeof(Order), "OrderItems");
       var endPointIDOfChangedObject = RelationEndPointID.Create(DomainObjectIDs.Order4, typeof(Order), "OrderItems");
+      var endPointIDOfNullValue = RelationEndPointID.Create(null, endPointIDOfUnchangedObject.Definition);
 
       PrepareLoadedDataContainer(_dataManagerWithMocks, endPointIDOfUnchangedObject.ObjectID);
 
@@ -696,11 +697,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var fakeCommand = MockRepository.GenerateStub<IDataManagementCommand>();
       _endPointManagerMock
           .Expect(mock => mock.CreateUnloadVirtualEndPointsCommand(
-              new[] { endPointIDOfUnloadedObject, endPointIDOfUnchangedObject, endPointIDOfChangedObject }))
+              new[] { endPointIDOfUnloadedObject, endPointIDOfUnchangedObject, endPointIDOfNullValue, endPointIDOfChangedObject }))
           .Return(fakeCommand);
       _endPointManagerMock.Replay();
 
-      var result = _dataManagerWithMocks.CreateUnloadVirtualEndPointsCommand(endPointIDOfUnloadedObject, endPointIDOfUnchangedObject, endPointIDOfChangedObject);
+      var result = _dataManagerWithMocks.CreateUnloadVirtualEndPointsCommand(
+          endPointIDOfUnloadedObject,
+          endPointIDOfUnchangedObject,
+          endPointIDOfNullValue,
+          endPointIDOfChangedObject);
 
       _endPointManagerMock.VerifyAllExpectations();
       Assert.That(result, Is.SameAs(fakeCommand));
