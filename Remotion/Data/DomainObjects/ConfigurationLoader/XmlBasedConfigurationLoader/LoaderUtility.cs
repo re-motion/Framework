@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
     {
       ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
 
-      return TypeUtility.GetType(typeName.Trim(), true);
+      return TypeUtility.GetType(typeName.Trim(), throwOnError: true)!;
     }
 
     public static Type GetType (XmlNode node)
@@ -44,7 +44,10 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
       ArgumentUtility.CheckNotNullOrEmpty("xPath", xPath);
       ArgumentUtility.CheckNotNull("namespaceManager", namespaceManager);
 
-      return GetType(node.SelectSingleNode(xPath, namespaceManager));
+      var selectedNode = node.SelectSingleNode(xPath, namespaceManager);
+      if (selectedNode == null)
+        throw new ConfigurationException(string.Format("XPath '{0}' does not exist on node '{1}'.", xPath, node.Name));
+      return GetType(selectedNode);
     }
 
     public static Type? GetOptionalType (XmlNode selectionNode, string xPath, XmlNamespaceManager namespaceManager)
