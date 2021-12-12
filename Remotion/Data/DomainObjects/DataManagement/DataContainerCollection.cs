@@ -87,8 +87,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       foreach (DataContainer dataContainer in this)
       {
-        if (dataContainers.Contains(dataContainer.ID))
-          mergedCollection.Add(dataContainers[dataContainer.ID]);
+        var otherDataContainer = dataContainers[dataContainer.ID];
+        if (otherDataContainer != null)
+          mergedCollection.Add(otherDataContainer);
         else
           mergedCollection.Add(dataContainer);
       }
@@ -166,7 +167,11 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void Remove (ObjectID id)
     {
-      Remove(this[id]);
+      var dataContainer = (DataContainer?)BaseGetObject(id);
+      if (dataContainer == null)
+        return;
+
+      Remove(dataContainer);
     }
 
     public bool Remove (DataContainer dataContainer)
