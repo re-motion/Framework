@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderCommands
@@ -47,6 +48,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
       _order1Container = DataContainerObjectMother.Create(DomainObjectIDs.Order1);
       _order2Container = DataContainerObjectMother.Create(DomainObjectIDs.Order3);
       _order3Container = DataContainerObjectMother.Create(DomainObjectIDs.Order4);
+    }
+
+    [Test]
+    public void Initialize_NullObjectID ()
+    {
+      Assert.That(
+          () => new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1, null }, _commandStub),
+          Throws.ArgumentNullException.With.ArgumentExceptionMessageWithParameterNameEqualTo("objectIDs[1]"));
     }
 
     [Test]
@@ -110,22 +119,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
       Assert.That(result.Count, Is.EqualTo(1));
       Assert.That(result[0].LocatedObject, Is.SameAs(_order1Container));
       Assert.That(result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
-    }
-
-    [Test]
-    public void Execute_NullObjectID ()
-    {
-      var command = new MultiDataContainerAssociateWithIDsCommand(new[] { DomainObjectIDs.Order1, null }, _commandStub);
-
-      _commandStub.Stub(stub => stub.Execute(_executionContext)).Return(new[] { _order1Container });
-
-      var result = command.Execute(_executionContext).ToList();
-
-      Assert.That(result.Count, Is.EqualTo(2));
-      Assert.That(result[0].LocatedObject, Is.SameAs(_order1Container));
-      Assert.That(result[0].ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
-      Assert.That(result[1].LocatedObject, Is.Null);
-      Assert.That(result[1].ObjectID, Is.Null);
     }
 
     [Test]

@@ -275,7 +275,16 @@ namespace Remotion.Data.DomainObjects.DataManagement
         throw new InvalidOperationException("The given end-point cannot be loaded, its data is already complete.");
 
       var loadedData = _objectLoader.GetOrLoadRelatedObjects(endPointID);
-      var domainObjects = loadedData.Select(data => data.GetDomainObjectReference()).ToArray();
+      var domainObjects = loadedData.Select(
+          data =>
+          {
+            Assertion.IsFalse(data.IsNull, "ILoadedObjectData.ObjectID: {0}", data.ObjectID);
+
+            var domainObjectReference = data.GetDomainObjectReference();
+            Assertion.DebugIsNotNull(domainObjectReference, "data.GetDomainObjectReference() != null");
+
+            return domainObjectReference;
+          }).ToArray();
       collectionEndPoint.MarkDataComplete(domainObjects);
     }
 

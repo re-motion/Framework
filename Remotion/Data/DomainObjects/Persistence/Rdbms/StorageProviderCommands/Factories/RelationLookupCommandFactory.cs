@@ -103,7 +103,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           selectedColumns,
           GetComparedColumns(foreignKeyEndPoint, foreignKeyValue),
           GetOrderedColumns(sortExpression));
-      return new MultiObjectLoadCommand<DataContainer>(new[] { Tuple.Create(dbCommandBuilder, dataContainerReader) });
+      return DelegateBasedCommand.Create(
+          new MultiObjectLoadCommand<DataContainer?>(new[] { Tuple.Create(dbCommandBuilder, dataContainerReader) }),
+          lookupResults => lookupResults.Select(
+              result =>
+              {
+                return Assertion.IsNotNull<DataContainer?>(
+                    result,
+                    "Because no OUTER JOIN query is involved in retrieving the result, the DataContainer can never be null.");
+              }));
     }
 
     protected virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForIndirectRelationLookup (
@@ -121,7 +129,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
       var objectIDReader = _objectReaderFactory.CreateObjectIDReader(unionViewDefinition, selectedColumns);
 
-      var objectIDLoadCommand = new MultiObjectIDLoadCommand(new[] { dbCommandBuilder }, objectIDReader);
+      var objectIDLoadCommand = DelegateBasedCommand.Create(
+          new MultiObjectIDLoadCommand(new[] { dbCommandBuilder }, objectIDReader),
+          lookupResults => lookupResults.Select(
+              result =>
+              {
+                return Assertion.IsNotNull<ObjectID?>(
+                    result,
+                    "Because no OUTER JOIN query is involved in retrieving the result, the ObjectID can never be null.");
+              }));
+
       var indirectDataContainerLoadCommand = new IndirectDataContainerLoadCommand(objectIDLoadCommand, _storageProviderCommandFactory);
       return DelegateBasedCommand.Create(
           indirectDataContainerLoadCommand,

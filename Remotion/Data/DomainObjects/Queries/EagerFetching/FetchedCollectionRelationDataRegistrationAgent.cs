@@ -81,29 +81,41 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       var relatedObjectsByOriginalObject = groupedRelatedObjects;
       foreach (var originatingObject in originatingObjects)
       {
-        if (!originatingObject.IsNull && originatingObject.ObjectID.ClassDefinition.IsRelationEndPoint(relationEndPointDefinition))
+        if (!originatingObject.IsNull)
         {
-          var relationEndPointID = RelationEndPointID.Create(originatingObject.ObjectID, relationEndPointDefinition);
-          var relatedObjectData = relatedObjectsByOriginalObject[originatingObject.ObjectID];
-          var relatedObjects = relatedObjectData.Select(data => data.GetDomainObjectReference()).ToArray();
-
-          if (relationEndPointDefinition.IsMandatory && relatedObjects.Length == 0)
+          Assertion.DebugIsNotNull(originatingObject.ObjectID, "originatingObject.ObjectID != null when originatingObject.IsNull == false");
+          if (originatingObject.ObjectID.ClassDefinition.IsRelationEndPoint(relationEndPointDefinition))
           {
-            var message = string.Format(
-                "The fetched mandatory collection property '{0}' on object '{1}' contains no items.",
-                relationEndPointDefinition.PropertyName,
-                relationEndPointID.ObjectID);
-            throw new InvalidOperationException(message);
-          }
+            var relationEndPointID = RelationEndPointID.Create(originatingObject.ObjectID, relationEndPointDefinition);
+            var relatedObjectData = relatedObjectsByOriginalObject[originatingObject.ObjectID];
+            var relatedObjects = relatedObjectData.Select<ILoadedObjectData, DomainObject>(
+                data =>
+                {
+                  Assertion.IsFalse(data.IsNull, "data.IsNull == false");
+                  var domainObjectReference = data.GetDomainObjectReference();
+                  Assertion.DebugIsNotNull(domainObjectReference, "data.GetDomainObjectReference() != null when data.IsNull == false");
+                  return domainObjectReference;
+                }).ToArray();
 
-          if (!TrySetCollectionEndPointData(relationEndPointID, relatedObjects))
-            s_log.DebugFormat("Relation data for relation end-point '{0}' is discarded; the end-point has already been loaded.", relationEndPointID);
+            if (relationEndPointDefinition.IsMandatory && relatedObjects.Length == 0)
+            {
+              var message = string.Format(
+                  "The fetched mandatory collection property '{0}' on object '{1}' contains no items.",
+                  relationEndPointDefinition.PropertyName,
+                  relationEndPointID.ObjectID);
+              throw new InvalidOperationException(message);
+            }
+
+            if (!TrySetCollectionEndPointData(relationEndPointID, relatedObjects))
+              s_log.DebugFormat("Relation data for relation end-point '{0}' is discarded; the end-point has already been loaded.", relationEndPointID);
+          }
         }
       }
     }
 
     private bool TrySetCollectionEndPointData (RelationEndPointID endPointID, DomainObject[] items)
     {
+      Assertion.DebugIsNotNull(endPointID.ObjectID, "endPointID.ObjectID != null");
       var endPoint = (ICollectionEndPoint<ICollectionEndPointData>)_virtualEndPointProvider.GetOrCreateVirtualEndPoint(endPointID);
       if (endPoint.IsDataComplete)
         return false;

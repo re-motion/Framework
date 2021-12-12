@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
     {
       var relatedObjectsWithForeignKey = GetForeignKeysForVirtualEndPointDefinition(relatedObjects, relationEndPointDefinition);
       var dictionary = new Dictionary<ObjectID, ILoadedObjectData>();
-      foreach (var tuple in relatedObjectsWithForeignKey.Where(tuple => tuple.Item1 != null))
+      foreach (var tuple in relatedObjectsWithForeignKey)
       {
         try
         {
@@ -105,27 +105,32 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       var relatedObjectsByOriginalObject = groupedRelatedObjects;
       foreach (var originatingObject in originatingObjects)
       {
-        if (!originatingObject.IsNull && originatingObject.ObjectID.ClassDefinition.IsRelationEndPoint(relationEndPointDefinition))
+        if (!originatingObject.IsNull)
         {
-          var relationEndPointID = RelationEndPointID.Create(originatingObject.ObjectID, relationEndPointDefinition);
-          var relatedObjectData = relatedObjectsByOriginalObject.GetValueOrDefault(originatingObject.ObjectID) ?? new NullLoadedObjectData();
-          var relatedObject = relatedObjectData.GetDomainObjectReference();
-          if (relationEndPointDefinition.IsMandatory && relatedObject == null)
+          Assertion.DebugIsNotNull(originatingObject.ObjectID, "originatingObject.ObjectID != null when originatingObject.IsNull == false");
+          if (originatingObject.ObjectID.ClassDefinition.IsRelationEndPoint(relationEndPointDefinition))
           {
-            var message = string.Format(
-                "The fetched mandatory relation property '{0}' on object '{1}' contains no related object.",
-                relationEndPointDefinition.PropertyName,
-                relationEndPointID.ObjectID);
-            throw new InvalidOperationException(message);
+            var relationEndPointID = RelationEndPointID.Create(originatingObject.ObjectID, relationEndPointDefinition);
+            var relatedObjectData = relatedObjectsByOriginalObject.GetValueOrDefault(originatingObject.ObjectID) ?? new NullLoadedObjectData();
+            var relatedObject = relatedObjectData.GetDomainObjectReference();
+            if (relationEndPointDefinition.IsMandatory && relatedObject == null)
+            {
+              var message = string.Format(
+                  "The fetched mandatory relation property '{0}' on object '{1}' contains no related object.",
+                  relationEndPointDefinition.PropertyName,
+                  relationEndPointID.ObjectID);
+              throw new InvalidOperationException(message);
+            }
+            if (!TrySetVirtualObjectEndPointData(relationEndPointID, relatedObject))
+              s_log.DebugFormat("Relation data for relation end-point '{0}' is discarded; the end-point has already been loaded.", relationEndPointID);
           }
-          if (!TrySetVirtualObjectEndPointData(relationEndPointID, relatedObject))
-            s_log.DebugFormat("Relation data for relation end-point '{0}' is discarded; the end-point has already been loaded.", relationEndPointID);
         }
       }
     }
 
     private bool TrySetVirtualObjectEndPointData (RelationEndPointID endPointID, DomainObject? item)
     {
+      Assertion.DebugIsNotNull(endPointID.ObjectID, "endPointID.ObjectID != null");
       var endPoint = (IVirtualObjectEndPoint)_virtualEndPointProvider.GetOrCreateVirtualEndPoint(endPointID);
       if (endPoint.IsDataComplete)
         return false;
