@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     private void MenuItemClickHandler (object sender, WebMenuItemClickEventArgs e)
     {
       var bocList = (BocList)sender;
-      var command = e.Item.ItemID + "|" + e.Item.Text;
+      var command = e.Item.ItemID + "|" + e.Item.Text.ToString();
       TestOutput.SetActionPerformed(bocList.ID, -1, "ListMenuOrOptionsClick", command);
     }
 
@@ -135,7 +135,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     private void CustomCellClickHandler (object sender, BocCustomCellClickEventArgs bocCustomCellClickEventArgs)
     {
       var bocList = (BocList)sender;
-      var cell = bocCustomCellClickEventArgs.Column.ItemID + "|" + bocCustomCellClickEventArgs.Column.ColumnTitleDisplayValue;
+      var cell = bocCustomCellClickEventArgs.Column.ItemID + "|" + bocCustomCellClickEventArgs.Column.ColumnTitleDisplayValue.ToString();
       TestOutput.SetActionPerformed(bocList.ID, -1, "CustomCellClick", cell);
     }
 

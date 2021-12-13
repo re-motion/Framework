@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     {
       base.OnMenuItemEventCommandClick(menuItem, node);
 
-      TestOutput.SetActionPerformed(node.TreeView.ID, "NodeContextMenuClick", node.ItemID + "|" + node.Text);
+      TestOutput.SetActionPerformed(node.TreeView.ID, "NodeContextMenuClick", node.ItemID + "|" + node.Text.ToString());
     }
 
     private BocTreeViewUserControlTestOutput TestOutput

@@ -43,15 +43,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     private void SetTestOutput ()
     {
-      TestOutput.SetNormalSelectedNodeLabel(Normal.SelectedNode != null ? Normal.SelectedNode.ItemID + "|" + Normal.SelectedNode.Text : "");
+      TestOutput.SetNormalSelectedNodeLabel(Normal.SelectedNode != null ? Normal.SelectedNode.ItemID + "|" + Normal.SelectedNode.Text.ToString() : "");
       TestOutput.SetNoTopLevelExpanderSelectedNodeLabel(
-          NoTopLevelExpander.SelectedNode != null ? NoTopLevelExpander.SelectedNode.ItemID + "|" + NoTopLevelExpander.SelectedNode.Text : "");
+          NoTopLevelExpander.SelectedNode != null ? NoTopLevelExpander.SelectedNode.ItemID + "|" + NoTopLevelExpander.SelectedNode.Text.ToString() : "");
       TestOutput.SetNoLookAheadEvaluationSelectedNodeLabel(
           NoLookAheadEvaluation.SelectedNode != null
-              ? NoLookAheadEvaluation.SelectedNode.ItemID + "|" + NoLookAheadEvaluation.SelectedNode.Text
+              ? NoLookAheadEvaluation.SelectedNode.ItemID + "|" + NoLookAheadEvaluation.SelectedNode.Text.ToString()
               : "");
       TestOutput.SetNoPropertyIdentifierSelectedNodeLabel(
-          NoPropertyIdentifier.SelectedNode != null ? NoPropertyIdentifier.SelectedNode.ItemID + "|" + NoPropertyIdentifier.SelectedNode.Text : "");
+          NoPropertyIdentifier.SelectedNode != null ? NoPropertyIdentifier.SelectedNode.ItemID + "|" + NoPropertyIdentifier.SelectedNode.Text.ToString() : "");
     }
 
     private BocTreeViewUserControlTestOutput TestOutput
