@@ -36,7 +36,8 @@ namespace Web.Development.Analyzers
         IMethodSymbol StringBuilderAppendMethodSymbol,
         IMethodSymbol HtmlTextWriterWriteMethodSymbol,
         IReadOnlyCollection<IMethodSymbol> StringJoinMethodSymbols,
-        IReadOnlyCollection<IMethodSymbol> StringFormatMethodSymbols);
+        IReadOnlyCollection<IMethodSymbol> StringFormatMethodSymbols,
+        IReadOnlyCollection<IMethodSymbol> StringConcatMethodSymbols);
 
     public static readonly DiagnosticDescriptor DiagnosticDescriptor = new(
         "RMWEB0001",
@@ -78,6 +79,7 @@ namespace Web.Development.Analyzers
             var htmlTextWriterWriteMethodSymbol = GetHtmlTextWriterWriteObjectMethodSymbol (htmlTextWriterSymbol, objectSymbol);
             var stringJoinMethodSymbols = GetStringJoinMethodSymbols (stringSymbol!);
             var stringFormatMethodSymbols = GetStringFormatMethodSymbols (stringSymbol!);
+            var stringConcatMethodSymbols = GetStringConcatMethodSymbols (stringSymbol!);
 
             var symbolContext = new SymbolContext (
                 webStringTypeSymbol,
@@ -87,12 +89,43 @@ namespace Web.Development.Analyzers
                 stringBuilderAppendMethodSymbol,
                 htmlTextWriterWriteMethodSymbol,
                 stringJoinMethodSymbols,
-                stringFormatMethodSymbols);
+                stringFormatMethodSymbols,
+                stringConcatMethodSymbols);
 
+            compilationContext.RegisterSyntaxNodeAction(
+                ctx => AnalyzeAddExpression (ctx, symbolContext),
+                ImmutableArray.Create (SyntaxKind.AddExpression));
             compilationContext.RegisterSyntaxNodeAction (
                 ctx => AnalyzeInvocationExpression (ctx, symbolContext),
                 ImmutableArray.Create (SyntaxKind.InvocationExpression));
           });
+    }
+
+    private void AnalyzeAddExpression (SyntaxNodeAnalysisContext ctx, SymbolContext symbolContext)
+    {
+      var node = (BinaryExpressionSyntax) ctx.Node;
+      var leftSymbol = ctx.SemanticModel.GetTypeInfo (node.Left).Type;
+      var rightSymbol = ctx.SemanticModel.GetTypeInfo (node.Right).Type;
+
+      if (SymbolEqualityComparer.Default.Equals(leftSymbol, symbolContext.WebStringTypeSymbol))
+        ReportDiagnostic(ctx, node.Left.GetLocation(), symbolContext.WebStringTypeSymbol);
+      if (SymbolEqualityComparer.Default.Equals(rightSymbol, symbolContext.WebStringTypeSymbol))
+        ReportDiagnostic(ctx, node.Right.GetLocation(), symbolContext.WebStringTypeSymbol);
+      if (SymbolEqualityComparer.Default.Equals(leftSymbol, symbolContext.PlainTextStringTypeSymbol))
+        ReportDiagnostic(ctx, node.Left.GetLocation(), symbolContext.PlainTextStringTypeSymbol);
+      if (SymbolEqualityComparer.Default.Equals(rightSymbol, symbolContext.PlainTextStringTypeSymbol))
+        ReportDiagnostic(ctx, node.Right.GetLocation(), symbolContext.PlainTextStringTypeSymbol);
+
+      static void ReportDiagnostic (SyntaxNodeAnalysisContext ctx, Location location, ITypeSymbol symbol)
+      {
+        var diagnostic = Diagnostic.Create (
+            DiagnosticDescriptor,
+            location,
+            "+",
+            symbol.ToString(),
+            $"Encode the {symbol.ToString()} instance first.");
+        ctx.ReportDiagnostic (diagnostic);
+      }
     }
 
     private void AnalyzeInvocationExpression (SyntaxNodeAnalysisContext ctx, SymbolContext symbols)
@@ -187,6 +220,31 @@ namespace Web.Development.Analyzers
           ctx.ReportDiagnostic (diagnostic);
         }
       }
+      // Check if the invoked method is a string.Concat(...) overload
+      else if (TryFindItem(
+          symbols.StringConcatMethodSymbols,
+          s => SymbolEqualityComparer.Default.Equals(invocationOriginalDefinitionSymbol, s),
+          out var stringFormatConcatSymbol))
+      {
+        var argumentTypes = GetArgumentTypeSymbols (node, ctx.SemanticModel);
+        // Check if one of the arguments is a WebString or PlainTextString.
+        if (TryFindItem (
+                argumentTypes,
+                a => SymbolEqualityComparer.Default.Equals (a, symbols.WebStringTypeSymbol)
+                     || SymbolEqualityComparer.Default.Equals (a, symbols.PlainTextStringTypeSymbol)
+                     || ctx.Compilation.ClassifyConversion (a, symbols.WebStringEnumerable).IsImplicit
+                     || ctx.Compilation.ClassifyConversion (a, symbols.PlainTextStringEnumerable).IsImplicit,
+                out var result))
+        {
+          var diagnostic = Diagnostic.Create (
+              DiagnosticDescriptor,
+              ctx.Node.GetLocation(),
+              stringFormatConcatSymbol.ToString(),
+              result.ToString(),
+              $"Encode the {result.ToString()} instances first.");
+          ctx.ReportDiagnostic (diagnostic);
+        }
+      }
     }
 
     private static bool TryFindItem<TSymbol> (IEnumerable<TSymbol> methods, Func<TSymbol, bool> predicate, out TSymbol match)
@@ -219,6 +277,14 @@ namespace Web.Development.Analyzers
     {
       return stringSymbol
           .GetMembers ("Format")
+          .Cast<IMethodSymbol>()
+          .ToList();
+    }
+
+    private IReadOnlyCollection<IMethodSymbol> GetStringConcatMethodSymbols (INamedTypeSymbol stringSymbol)
+    {
+      return stringSymbol
+          .GetMembers("Concat")
           .Cast<IMethodSymbol>()
           .ToList();
     }
