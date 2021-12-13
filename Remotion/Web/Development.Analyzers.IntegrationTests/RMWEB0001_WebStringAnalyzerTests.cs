@@ -242,5 +242,92 @@ public class A
               + "Encode the Remotion.Web.PlainTextString[] instances first.");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
+
+    [Test]
+    public async Task StringFormat_WithWebString2Params ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var webString1 = WebString.CreateFromText(""test1"");
+    return string.Format(""{0}, {1}"", webString1, WebString.CreateFromText(""test2""));
+  }
+}";
+
+      var diagnostic = Verifier.Diagnostic()
+          .WithSpan(8, 12, 8, 84)
+          .WithMessage(
+              "'string.Format(string, object?, object?)' should not be used with a 'Remotion.Web.WebString' argument. "
+              + "Encode the Remotion.Web.WebString instances first.");
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic);
+    }
+
+    [Test]
+    public async Task StringFormat_WithWebStringParams ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var webString = WebString.CreateFromText(""test1"");
+    return string.Format(""{0}, {1}, {2}, {3}, {4}"", webString, webString, webString, webString, webString);
+  }
+}";
+
+      var diagnostic = Verifier.Diagnostic()
+          .WithSpan(8, 12, 8, 107)
+          .WithMessage(
+              "'string.Format(string, params object?[])' should not be used with a 'Remotion.Web.WebString' argument. "
+              + "Encode the Remotion.Web.WebString instances first.");
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic);
+    }
+
+    [Test]
+    public async Task StringFormat_WithPlainTextString2Params ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var plainTextString2 = PlainTextString.CreateFromText(""test2"");
+    return string.Format(""{0}, {1}"", PlainTextString.CreateFromText(""test1""), plainTextString2);
+  }
+}";
+
+      var diagnostic = Verifier.Diagnostic()
+          .WithSpan(8, 12, 8, 96)
+          .WithMessage(
+              "'string.Format(string, object?, object?)' should not be used with a 'Remotion.Web.PlainTextString' argument. "
+              + "Encode the Remotion.Web.PlainTextString instances first.");
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic);
+    }
+    [Test]
+    public async Task StringFormat_WithPlainTextStringParams ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var plainTextString = PlainTextString.CreateFromText(""test2"");
+    return string.Format(""{0}, {1}, {2}, {3}, {4}"", plainTextString, plainTextString, plainTextString, plainTextString, plainTextString);
+  }
+}";
+
+      var diagnostic = Verifier.Diagnostic()
+          .WithSpan(8, 12, 8, 137)
+          .WithMessage(
+              "'string.Format(string, params object?[])' should not be used with a 'Remotion.Web.PlainTextString' argument. "
+              + "Encode the Remotion.Web.PlainTextString instances first.");
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic);
+    }
   }
 }
