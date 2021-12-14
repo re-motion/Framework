@@ -516,5 +516,61 @@ public class A
               + "Encode the Remotion.Web.WebString instance first.");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic1, diagnostic2);
     }
+
+    [Test]
+    public async Task StringInterpolation_WithWebStrings ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var webString2 = WebString.CreateFromText(""test2"");
+    return $"" {WebString.CreateFromText(""test1"")}, {webString2} "";
+  }
+}";
+
+      var diagnostic1 = Verifier.Diagnostic()
+          .WithSpan(8, 16, 8, 49)
+          .WithMessage(
+              "'$\"\"' should not be used with a 'Remotion.Web.WebString' argument. "
+                  + "Encode the Remotion.Web.WebString instance first.");
+      var diagnostic2 = Verifier.Diagnostic()
+          .WithSpan(8, 53, 8, 63)
+          .WithMessage(
+              "'$\"\"' should not be used with a 'Remotion.Web.WebString' argument. "
+              + "Encode the Remotion.Web.WebString instance first.");
+
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic1, diagnostic2);
+    }
+
+    [Test]
+    public async Task StringInterpolation_WithPlainTextStrings ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var plainTextString2 = PlainTextString.CreateFromText(""test2"");
+    return $"" {PlainTextString.CreateFromText(""test1"")}, {plainTextString2} "";
+  }
+}";
+
+      var diagnostic1 = Verifier.Diagnostic()
+          .WithSpan(8, 16, 8, 55)
+          .WithMessage(
+              "'$\"\"' should not be used with a 'Remotion.Web.PlainTextString' argument. "
+              + "Encode the Remotion.Web.PlainTextString instance first.");
+      var diagnostic2 = Verifier.Diagnostic()
+          .WithSpan(8, 59, 8, 75)
+          .WithMessage(
+              "'$\"\"' should not be used with a 'Remotion.Web.PlainTextString' argument. "
+              + "Encode the Remotion.Web.PlainTextString instance first.");
+
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic1, diagnostic2);
+    }
   }
 }

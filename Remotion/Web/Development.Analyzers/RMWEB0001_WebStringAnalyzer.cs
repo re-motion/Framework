@@ -95,10 +95,31 @@ namespace Web.Development.Analyzers
             compilationContext.RegisterSyntaxNodeAction(
                 ctx => AnalyzeAddExpression (ctx, symbolContext),
                 ImmutableArray.Create (SyntaxKind.AddExpression));
+            compilationContext.RegisterSyntaxNodeAction(
+                ctx => AnalyzeInterpolation (ctx, symbolContext),
+                ImmutableArray.Create (SyntaxKind.Interpolation));
             compilationContext.RegisterSyntaxNodeAction (
                 ctx => AnalyzeInvocationExpression (ctx, symbolContext),
                 ImmutableArray.Create (SyntaxKind.InvocationExpression));
           });
+    }
+
+    private void AnalyzeInterpolation (SyntaxNodeAnalysisContext ctx, SymbolContext symbolContext)
+    {
+      var node = (InterpolationSyntax)ctx.Node;
+      var symbol = ctx.SemanticModel.GetTypeInfo(node.Expression).Type;
+
+      if (SymbolEqualityComparer.Default.Equals (symbol, symbolContext.WebStringTypeSymbol)
+          || SymbolEqualityComparer.Default.Equals(symbol, symbolContext.PlainTextStringTypeSymbol))
+      {
+        var diagnostic = Diagnostic.Create (
+            DiagnosticDescriptor,
+            node.Expression.GetLocation(),
+            "$\"\"",
+            symbol.ToString(),
+            $"Encode the {symbol.ToString()} instance first.");
+        ctx.ReportDiagnostic (diagnostic);
+      }
     }
 
     private void AnalyzeAddExpression (SyntaxNodeAnalysisContext ctx, SymbolContext symbolContext)
