@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     protected override void OnRowMenuItemEventCommandClick (WebMenuItem menuItem, IBusinessObject businessObject, int listIndex)
     {
-      var command = menuItem.ItemID + "|" + menuItem.Text;
+      var command = menuItem.ItemID + "|" + menuItem.Text.ToString();
       TestOutput.SetActionPerformed(ID, listIndex, "RowContextMenuClick", command);
     }
 

@@ -308,6 +308,7 @@ public class A
               + "Encode the Remotion.Web.PlainTextString instances first.");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
     }
+
     [Test]
     public async Task StringFormat_WithPlainTextStringParams ()
     {
@@ -328,6 +329,192 @@ public class A
               "'string.Format(string, params object?[])' should not be used with a 'Remotion.Web.PlainTextString' argument. "
               + "Encode the Remotion.Web.PlainTextString instances first.");
       await Verifier.VerifyAnalyzerAsync(input, diagnostic);
+    }
+
+    [Test]
+    public async Task StringConcat_WithPlainTextString2Params ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var plainTextString2 = PlainTextString.CreateFromText(""test2"");
+    return string.Concat(PlainTextString.CreateFromText(""test1""), plainTextString2);
+  }
+}";
+
+      var diagnostic = Verifier.Diagnostic()
+          .WithSpan(8, 12, 8, 84)
+          .WithMessage(
+              "'string.Concat(object?, object?)' should not be used with a 'Remotion.Web.PlainTextString' argument. "
+              + "Encode the Remotion.Web.PlainTextString instances first.");
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic);
+    }
+
+    [Test]
+    public async Task StringConcat_WithPlainTextStringArray ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var plainTextStrings = new PlainTextString[]{PlainTextString.CreateFromText(""test1""), PlainTextString.CreateFromText(""test2"")};
+    return string.Concat(plainTextStrings);
+  }
+}";
+
+      var diagnostic = Verifier.Diagnostic()
+          .WithSpan(8, 12, 8, 43)
+          .WithMessage(
+              "'string.Concat<T>(System.Collections.Generic.IEnumerable<T>)' should not be used with a 'Remotion.Web.PlainTextString[]' argument. "
+              + "Encode the Remotion.Web.PlainTextString[] instances first.");
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic);
+    }
+
+    [Test]
+    public async Task StringConcat_WithWebString2Params ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var webString2 = WebString.CreateFromText(""test2"");
+    return string.Concat(WebString.CreateFromText(""test1""), webString2);
+  }
+}";
+
+      var diagnostic = Verifier.Diagnostic()
+          .WithSpan(8, 12, 8, 72)
+          .WithMessage(
+              "'string.Concat(object?, object?)' should not be used with a 'Remotion.Web.WebString' argument. "
+              + "Encode the Remotion.Web.WebString instances first.");
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic);
+    }
+
+    [Test]
+    public async Task StringConcat_WithWebStringArray ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var webStrings = new WebString[]{WebString.CreateFromText(""test1""), WebString.CreateFromText(""test2"")};
+    return string.Concat(webStrings);
+  }
+}";
+
+      var diagnostic = Verifier.Diagnostic()
+          .WithSpan(8, 12, 8, 37)
+          .WithMessage(
+              "'string.Concat<T>(System.Collections.Generic.IEnumerable<T>)' should not be used with a 'Remotion.Web.WebString[]' argument. "
+              + "Encode the Remotion.Web.WebString[] instances first.");
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic);
+    }
+
+    [Test]
+    public async Task AddConcat_WithStringAndPlainTextString ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var plainTextString = PlainTextString.CreateFromText(""test2"");
+    return """" + plainTextString;
+  }
+}";
+
+      var diagnostic = Verifier.Diagnostic()
+          .WithSpan(8, 17, 8, 32)
+          .WithMessage(
+              "'+' should not be used with a 'Remotion.Web.PlainTextString' argument. "
+              + "Encode the Remotion.Web.PlainTextString instance first.");
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic);
+    }
+
+    [Test]
+    public async Task AddConcat_WithPlainTextStrings ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var plainTextString2 = PlainTextString.CreateFromText(""test2"");
+    return """" + PlainTextString.CreateFromText(""test1"") + plainTextString2;
+  }
+}";
+
+      var diagnostic1 = Verifier.Diagnostic()
+          .WithSpan(8, 17, 8, 56)
+          .WithMessage(
+              "'+' should not be used with a 'Remotion.Web.PlainTextString' argument. "
+              + "Encode the Remotion.Web.PlainTextString instance first.");
+      var diagnostic2 = Verifier.Diagnostic()
+          .WithSpan(8, 59, 8, 75)
+          .WithMessage(
+              "'+' should not be used with a 'Remotion.Web.PlainTextString' argument. "
+              + "Encode the Remotion.Web.PlainTextString instance first.");
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic1, diagnostic2);
+    }
+
+    [Test]
+    public async Task AddConcat_WithStringAndWebString ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var webString = WebString.CreateFromText(""test2"");
+    return """" + webString;
+  }
+}";
+
+      var diagnostic = Verifier.Diagnostic()
+          .WithSpan(8, 17, 8, 26)
+          .WithMessage(
+              "'+' should not be used with a 'Remotion.Web.WebString' argument. "
+              + "Encode the Remotion.Web.WebString instance first.");
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic);
+    }
+
+    [Test]
+    public async Task AddConcat_WithWebStrings ()
+    {
+      const string input = @"
+using Remotion.Web;
+public class A
+{
+  public string Test()
+  {
+    var webString2 = WebString.CreateFromText(""test2"");
+    return """" + WebString.CreateFromText(""test1"") + webString2;
+  }
+}";
+
+      var diagnostic1 = Verifier.Diagnostic()
+          .WithSpan(8, 17, 8, 50)
+          .WithMessage(
+              "'+' should not be used with a 'Remotion.Web.WebString' argument. "
+              + "Encode the Remotion.Web.WebString instance first.");
+      var diagnostic2 = Verifier.Diagnostic()
+          .WithSpan(8, 53, 8, 63)
+          .WithMessage(
+              "'+' should not be used with a 'Remotion.Web.WebString' argument. "
+              + "Encode the Remotion.Web.WebString instance first.");
+      await Verifier.VerifyAnalyzerAsync(input, diagnostic1, diagnostic2);
     }
   }
 }
