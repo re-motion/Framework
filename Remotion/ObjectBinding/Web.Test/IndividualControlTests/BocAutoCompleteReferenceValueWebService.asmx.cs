@@ -199,7 +199,7 @@ namespace OBWTest.IndividualControlTests
 
     [WebMethod(EnableSession = true)]
     [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
-    public BusinessObjectWithIdentityProxy[] Search (
+    public BocAutoCompleteReferenceValueSearchResult Search (
         string searchString,
         int? completionSetCount,
         string businessObjectClass,
@@ -231,7 +231,7 @@ namespace OBWTest.IndividualControlTests
       filteredPersons.Sort((left, right) => string.Compare(left.DisplayName, right.DisplayName, StringComparison.OrdinalIgnoreCase));
       if (filteredPersons.Count > 10)
         filteredPersons.Add(new BusinessObjectWithIdentityProxy { UniqueIdentifier = "==null==", DisplayName = "...", IconUrl = GetUrl(IconInfo.CreateSpacer(_resourceUrlFactory)) });
-      return filteredPersons.ToArray();
+      return BocAutoCompleteReferenceValueSearchResult.CreateForValueList(filteredPersons.ToArray());
     }
 
     [WebMethod]
@@ -247,7 +247,8 @@ namespace OBWTest.IndividualControlTests
           Thread.Sleep(delay);
       }
 
-      var result = Search(searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var resultWithValueList = Search(searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var result = ((BocAutoCompleteReferenceValueSearchResultWithValueList)resultWithValueList).Values;
       if (result.Length == 0)
         return null;
       if (string.Equals(result[0].DisplayName, searchString, StringComparison.CurrentCultureIgnoreCase))

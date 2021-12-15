@@ -32,6 +32,18 @@
 // ************************************************
 namespace Remotion.BocAutoCompleteReferenceValue
 {
+
+    export interface BocAutoCompleteReferenceValueSearchResult
+    {
+        Type: string;
+    }
+
+    export interface BocAutoCompleteReferenceValueSearchResultWithValueList extends BocAutoCompleteReferenceValueSearchResult
+    {
+        Type: 'ValueList';
+        Values: Remotion.BocAutoCompleteReferenceValue.Item[];
+    }
+
     export type Item = {
         UniqueIdentifier: string;
         DisplayName: string;
@@ -86,7 +98,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
         highlight(value: string, term: string): string;
         scroll: boolean;
         repositionInterval: number;
-        parse(data: Item[]): Remotion.BocAutoCompleteReferenceValue.CacheRow;
+        parse(data: BocAutoCompleteReferenceValueSearchResult): Remotion.BocAutoCompleteReferenceValue.CacheRow;
         handleRequestError(err: Sys.Net.WebServiceError): void;
         clearRequestError(err?: Sys.Net.WebServiceError): void;
         serviceUrl: string;
@@ -914,7 +926,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                     params[propertyName] = options.extraParams[propertyName];
 
                 executingRequest = Sys.Net.WebServiceProxy.invoke(options.serviceUrl, options.serviceMethodSearch, false, params,
-                                            function(result: Item[]) {
+                                            function(result: BocAutoCompleteReferenceValueSearchResult) {
                                                 executingRequest = null;
                                                 const parsed = options.parse(result);
                                                 cache.add(term, parsed);
@@ -962,7 +974,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                                                         executingRequest = null;
                                                         let parsed: Nullable<CacheRowEntry> = null;
                                                         if (result != null) {
-                                                            const resultArray = new Array ( result );
+                                                            const resultArray: BocAutoCompleteReferenceValueSearchResultWithValueList = { Type: "ValueList", Values: [result] };
                                                             const parsedArray = options.parse(resultArray);
                                                             parsed = parsedArray[0];
                                                         }

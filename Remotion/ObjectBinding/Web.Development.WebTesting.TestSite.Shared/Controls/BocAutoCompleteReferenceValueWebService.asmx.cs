@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
     [WebMethod]
     [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
-    public BusinessObjectWithIdentityProxy[] Search (
+    public BocAutoCompleteReferenceValueSearchResult Search (
         string searchString,
         int? completionSetCount,
         string businessObjectClass,
@@ -90,7 +90,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
 
       filteredPersons.Sort((left, right) => string.Compare(left.DisplayName, right.DisplayName, StringComparison.OrdinalIgnoreCase));
 
-      return filteredPersons.Take(completionSetCount ?? int.MaxValue).ToArray();
+      return BocAutoCompleteReferenceValueSearchResult.CreateForValueList(filteredPersons.Take(completionSetCount ?? int.MaxValue).ToArray());
     }
 
     [WebMethod]
@@ -105,7 +105,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
       if (searchString == "throw")
         throw new InvalidOperationException("I'm always going to throw an exception if you search for 'throw'!");
 
-      var result = Search(searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var resultWithValueList = Search(searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
+      var result = ((BocAutoCompleteReferenceValueSearchResultWithValueList)resultWithValueList).Values;
       if (result.Length == 0)
         return null;
       if (!string.Equals(result[0].DisplayName, searchString, StringComparison.CurrentCultureIgnoreCase))

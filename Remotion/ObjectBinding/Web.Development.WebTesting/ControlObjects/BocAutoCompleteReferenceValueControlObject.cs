@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
@@ -25,6 +26,7 @@ using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebTestActions;
+using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 {
@@ -166,7 +168,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var searchServiceRequestScript = CreateAutoCompleteSearchServiceRequest(inputScopeID, searchText, completionSetCount);
       var response = (IReadOnlyDictionary<string, object>)Context.Browser.Driver.ExecuteScript(searchServiceRequestScript, Scope);
-      return ParseSearchServiceResponse(response);
+      return ParseSearchServiceResponse(
+          response,
+          static data =>
+          {
+            Assertion.IsTrue(
+                data.Count == 1,
+                "The returned search service response must have a single item as its data, here {0} items are contained.",
+                data.Count);
+            return ParseSearchServiceResultVariants((IReadOnlyDictionary<string, object>)data.Single());
+          });
     }
 
     /// <summary>
@@ -183,7 +194,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var searchServiceRequestScript = CreateAutoCompleteExactSearchServiceRequest(inputScopeId, searchText);
       var response = (IReadOnlyDictionary<string, object>)Context.Browser.Driver.ExecuteScript(searchServiceRequestScript, Scope);
-      return ParseSearchServiceResponse(response).SingleOrDefault();
+      return ParseSearchServiceResponse(
+          response,
+          static data =>
+          {
+            Assertion.IsTrue(
+                data.Count == 1,
+                "The returned search service response must have a single item as its data, here {0} items are contained.",
+                data.Count);
+            return ParseSearchServiceResultItem((IReadOnlyDictionary<string, object>)data.Single());
+          });
     }
 
     /// <summary>
@@ -364,7 +384,9 @@ CallWebService = function() {{
 return CallWebService();";
     }
 
-    private IReadOnlyList<SearchServiceResultItem> ParseSearchServiceResponse ([NotNull] IReadOnlyDictionary<string, object> response)
+    private static T ParseSearchServiceResponse<T> (
+        [NotNull] IReadOnlyDictionary<string, object> response,
+        [NotNull] Func<IReadOnlyCollection<object>, T> successParser)
     {
       ArgumentUtility.CheckNotNull("response", response);
 
@@ -373,11 +395,7 @@ return CallWebService();";
       switch (state)
       {
         case AutoCompleteSearchService.Success:
-          var successData = (IReadOnlyCollection<object>)data;
-          return successData.Cast<IDictionary<string, object>>()
-              .Where(d => d != null) // empty JSON object (= no result) is converted to null
-              .Select(d => new SearchServiceResultItem((string)d["UniqueIdentifier"], (string)d["DisplayName"], (string)d["IconUrl"]))
-              .ToList();
+          return successParser((IReadOnlyCollection<object>)data);
 
         case AutoCompleteSearchService.Error:
           var errorData = (IDictionary<string, object>)data;
@@ -391,6 +409,24 @@ return CallWebService();";
           throw new NotSupportedException(string.Format("The script returned the unknown state '{0}'.", state));
       }
     }
+
+    private static IReadOnlyList<SearchServiceResultItem> ParseSearchServiceResultVariants (IReadOnlyDictionary<string, object> data) =>
+        (data["Type"] as string) switch
+        {
+            "ValueList" => ParseSearchServiceResultItems(((IReadOnlyCollection<object?>)data["Values"]).Cast<IReadOnlyDictionary<string, object>>()),
+            var unknown => throw new InvalidOperationException($"The result variant '{unknown}' is not supported."),
+        };
+
+    private static IReadOnlyList<SearchServiceResultItem> ParseSearchServiceResultItems (IEnumerable<IReadOnlyDictionary<string, object>?> data) =>
+        data.Select(ParseSearchServiceResultItem).OfType<SearchServiceResultItem>().ToArray();
+
+    [return: NotNullIfNotNull("data")]
+    private static SearchServiceResultItem? ParseSearchServiceResultItem (IReadOnlyDictionary<string, object>? data) =>
+        data switch
+        {
+            { } => new((string)data["UniqueIdentifier"], (string)data["DisplayName"], (string)data["IconUrl"]),
+            null => null,
+        };
 
     /// <summary>
     /// See <see cref="IControlObjectWithFormElements.GetFormElementNames"/>. Returns the input[type=text] (text value) as first element, the
