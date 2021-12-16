@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private class SelectAutoCompleteAction : WebTestAction
     {
-      private const string c_updateResultScript = "arguments[0].__getUpdateResultHandler({{DisplayName: '{0}', UniqueIdentifier: '{1}' }}, {{ Value: null }});";
+      private const string c_updateResultScript = "arguments[0].__getUpdateResultHandler()({{DisplayName: '{0}', UniqueIdentifier: '{1}' }}, {{ Value: null }});";
 
       private string _actionName = "BocAutoCompleteReferenceValueControlObject_SelectAutoCompleteAction";
 
