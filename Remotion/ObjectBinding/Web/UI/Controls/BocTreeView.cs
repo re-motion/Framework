@@ -250,9 +250,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public void RefreshTreeNodes ()
     {
-      Assertion.IsNotNull(_treeView.SelectedNode, "_treeView.SelectedNode must not be null.");
-      BocTreeNode? selectedNode = (BocTreeNode)_treeView.SelectedNode;
-      string selectedNodePath = selectedNodePath = _treeView.FormatNodePath(selectedNode);
+      BocTreeNode? selectedNode = (BocTreeNode?)_treeView.SelectedNode;
+      string selectedNodePath = _treeView.FormatNodePath(selectedNode);
 
       InvalidateTreeNodes();
       InitializeRootWebTreeNodes();
