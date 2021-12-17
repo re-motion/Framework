@@ -71,8 +71,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void VirtualEndPointQuery_OneMany_ObjectIncluded_ThatLocallyPointsToSomewhereElse ()
     {
-      SetDatabaseModifyable();
-
       var company = CreateCompanyInDatabaseAndLoad();
       Assert.That(company.IndustrialSector, Is.Null);
 
@@ -123,8 +121,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void VirtualEndPointQuery_OneMany_ObjectIncluded_ThatLocallyPointsToSomewhereElse_SolvableViaReload ()
     {
-      SetDatabaseModifyable();
-
       var company = CreateCompanyInDatabaseAndLoad();
       Assert.That(company.IndustrialSector, Is.Null);
 
@@ -153,8 +149,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void VirtualEndPointQuery_OneMany_ObjectNotIncluded_ThatLocallyPointsToHere ()
     {
-      SetDatabaseModifyable();
-
       var companyID = CreateCompanyAndSetIndustrialSectorInOtherTransaction(DomainObjectIDs.IndustrialSector1);
       var company = companyID.GetObject<Company>();
 
@@ -193,8 +187,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void VirtualEndPointQuery_OneMany_ObjectIncludedInTwoCollections ()
     {
-      SetDatabaseModifyable();
-
       var companyID = CreateCompanyAndSetIndustrialSectorInOtherTransaction(DomainObjectIDs.IndustrialSector1);
       var company = companyID.GetObject<Company>();
 
@@ -228,8 +220,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void ObjectLoaded_WithInconsistentForeignKey_OneMany ()
     {
-      SetDatabaseModifyable();
-
       // set up new IndustrialSector object in database with one company
       var industrialSector = CreateIndustrialSectorInDatabaseAndLoad();
       industrialSector.Companies.EnsureDataComplete();
@@ -270,8 +260,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void ObjectLoaded_WithInconsistentForeignKey_OneMany_UnloadedCorrectsIssue ()
     {
-      SetDatabaseModifyable();
-
       // set up new IndustrialSector object in database with one company
       var industrialSector = CreateIndustrialSectorInDatabaseAndLoad();
       industrialSector.Companies.EnsureDataComplete();

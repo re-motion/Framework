@@ -125,7 +125,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       computer.Employee = null;
 
-      SetDatabaseModifyable();
       TestableClientTransaction.Commit();
 
       CheckTouching(delegate { computer.Employee = null; }, computer, "Employee",
@@ -150,7 +149,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       employee.Computer = null;
 
-      SetDatabaseModifyable();
       TestableClientTransaction.Commit();
 
       CheckTouching(delegate { employee.Computer = null; }, null, null,

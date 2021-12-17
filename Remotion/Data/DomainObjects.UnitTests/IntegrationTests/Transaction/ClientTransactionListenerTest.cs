@@ -390,7 +390,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void TransactionCommittingTransactionCommitted ()
     {
-      SetDatabaseModifyable();
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
       ++order.OrderNumber;
 

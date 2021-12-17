@@ -337,8 +337,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void UnidirectionalRelationProperty_ShouldReturnInvalidObject ()
     {
-      SetDatabaseModifyable();
-
       // Need to disable the foreign key constraints so that the property is allowed to point to an invalid ID in the database
       var clientTable = (TableDefinition)GetTypeDefinition(typeof(Client)).StorageEntityDefinition;
       DisableConstraints(clientTable);

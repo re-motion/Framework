@@ -52,12 +52,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     private DataManager _subTransactionDataManager;
     private Product _product1;
 
-    public override void OneTimeSetUp ()
-    {
-      base.OneTimeSetUp();
-      SetDatabaseModifyable();
-    }
-
     public override void SetUp ()
     {
       base.SetUp();
@@ -1344,8 +1338,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void CommitWithEvents ()
     {
-      SetDatabaseModifyable();
-
       Computer computer = DomainObjectIDs.Computer4.GetObject<Computer>();
       computer.SerialNumber = "newSerialNumber";
 

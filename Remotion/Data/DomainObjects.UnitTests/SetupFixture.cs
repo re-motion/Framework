@@ -60,7 +60,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
         _standardMappingDatabaseAgent.ExecuteBatchFile(sqlFileName, true, DatabaseConfiguration.GetReplacementDictionary());
         string sqlFileName1 = TableInheritanceMappingTest.CreateTestDataFileName;
         _standardMappingDatabaseAgent.ExecuteBatchFile(sqlFileName1, true, DatabaseConfiguration.GetReplacementDictionary());
-        _standardMappingDatabaseAgent.SetDatabaseReadOnly(DatabaseTest.DatabaseName);
 
         // We don't want the tests to initialize a default mapping; therefore, modify MappingConfiguration.s_fields.Current so that it will 
         // throw when asked to generate a new MappingConfiguration.

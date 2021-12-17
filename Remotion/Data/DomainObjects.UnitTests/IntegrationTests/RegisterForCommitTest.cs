@@ -167,7 +167,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var transactionEventReceiverMock = MockRepository.GenerateMock<ClientTransactionMockEventReceiver>(TestableClientTransaction);
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(TestableClientTransaction);
 
-      SetDatabaseModifyable();
       CommitTransactionAndCheckTimestamps(newObject, changedObject, unchangedObject);
 
       listenerMock.AssertWasCalled(
@@ -199,7 +198,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       var unchangedObject = DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes>();
       unchangedObject.RegisterForCommit();
 
-      SetDatabaseModifyable();
       ModifyAndCommitInOtherTransaction(unchangedObject.ID);
 
       Assert.That(() => TestableClientTransaction.Commit(), Throws.TypeOf<ConcurrencyViolationException>());

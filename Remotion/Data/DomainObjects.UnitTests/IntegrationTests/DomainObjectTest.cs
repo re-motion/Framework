@@ -35,12 +35,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
   {
     private PropertyDefinition _orderDeliveryDateProperty;
 
-    public override void OneTimeSetUp ()
-    {
-      base.OneTimeSetUp();
-      SetDatabaseModifyable();
-    }
-
     public override void SetUp ()
     {
       base.SetUp();

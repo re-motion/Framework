@@ -25,12 +25,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
   [TestFixture]
   public class DeleteDomainObjectTest : ClientTransactionBaseTest
   {
-    public override void OneTimeSetUp ()
-    {
-      base.OneTimeSetUp();
-      SetDatabaseModifyable();
-    }
-
     [Test]
     public void Delete ()
     {

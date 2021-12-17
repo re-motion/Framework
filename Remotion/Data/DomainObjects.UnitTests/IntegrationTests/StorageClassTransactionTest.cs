@@ -26,8 +26,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void Commit_Rollback_NewObject ()
     {
-      SetDatabaseModifyable();
-
       DateTime referenceDateTime = DateTime.Now;
       Employee referenceEmployee = Employee.NewObject();
 
@@ -59,7 +57,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       computer.DateTimeTransactionProperty = referenceDateTime;
       computer.EmployeeTransactionProperty = referenceEmployee;
 
-      CheckValueAfterCommitAndRollback(computer, referenceDateTime, referenceEmployee);
+      using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+      {
+        CheckValueAfterCommitAndRollback(computer, referenceDateTime, referenceEmployee);
+      }
       CheckValueInParallelRootTransaction(computer, referenceEmployee);
     }
 

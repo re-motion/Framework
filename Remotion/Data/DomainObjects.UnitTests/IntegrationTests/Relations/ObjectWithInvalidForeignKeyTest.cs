@@ -42,7 +42,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       classWithGuidKey.ClassWithValidRelationsNonOptional = ClassWithValidRelations.NewObject();
       objectWithInvalidRelation.ClassWithGuidKey = classWithGuidKey;
 
-      SetDatabaseModifyable();
       TestableClientTransaction.Commit();
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())

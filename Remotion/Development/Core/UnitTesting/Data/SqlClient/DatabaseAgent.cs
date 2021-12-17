@@ -144,6 +144,14 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       }
     }
 
+    /// <summary>
+    /// Opens a <see cref="NoDatabaseWriteSection"/> ensuring that no database writes occur while the section is open.
+    /// </summary>
+    /// <seealso cref="NoDatabaseWriteSection"/>
+    public IDisposable OpenNoDatabaseWriteSection () => new NoDatabaseWriteSection(this, GetLastUsedTimestamp());
+
+    public byte[] GetLastUsedTimestamp () => (byte[])ExecuteScalarCommand("SELECT @@DBTS")!;
+
     protected virtual int ExecuteBatchString (IDbConnection connection, string commandBatch, IDbTransaction? transaction)
     {
       ArgumentUtility.CheckNotNull("connection", connection);

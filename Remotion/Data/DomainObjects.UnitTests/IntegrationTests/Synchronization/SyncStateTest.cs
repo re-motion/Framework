@@ -49,8 +49,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void CollectionItems_Unsynchronized_WithUnload ()
     {
-      SetDatabaseModifyable();
-
       var order = DomainObjectIDs.Order1.GetObject<Order>();
       order.OrderItems.EnsureDataComplete();
 

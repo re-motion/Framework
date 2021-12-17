@@ -225,8 +225,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void VirtualEndPointQuery_OneMany_ObjectIncludedInTwoCollections ()
     {
-      SetDatabaseModifyable();
-
       Company company;
       IndustrialSector industrialSector1;
       IndustrialSector industrialSector2;

@@ -1173,8 +1173,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(GetNumberOfSetFlags(state3), Is.EqualTo(1));
       Assert.That(dataContainer.State.IsUnchanged, Is.True);
 
-      SetDatabaseModifyable();
-
       dataContainer.MarkAsChanged();
       var state4 = dataContainer.State;
       Assert.That(state4.IsChanged, Is.True);

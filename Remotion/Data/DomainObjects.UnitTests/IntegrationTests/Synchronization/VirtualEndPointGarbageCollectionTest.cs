@@ -38,8 +38,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void UnloadLastFK_CausesCollectionEndPointToBeRemoved_ButKeepsDomainObjectCollectionInMemory ()
     {
-      SetDatabaseModifyable();
-
       var industrialSector = DomainObjectIDs.IndustrialSector1.GetObject<IndustrialSector>();
       var companies = industrialSector.Companies;
       industrialSector.Companies.EnsureDataComplete();
@@ -67,8 +65,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void UnloadUnsynchronizedFK_LeavesCompleteEmptyCollection ()
     {
-      SetDatabaseModifyable();
-
       var employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       employee.Subordinates.EnsureDataComplete();
       Assert.That(employee.Subordinates, Is.Empty);
@@ -92,8 +88,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void UnloadLastFK_CausesVirtualObjectEndPointToBeRemoved ()
     {
-      SetDatabaseModifyable();
-
       var employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       var virtualEndPointID = RelationEndPointID.Resolve(employee, e => e.Computer);
       TestableClientTransaction.EnsureDataComplete(virtualEndPointID);
@@ -118,8 +112,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void UnloadUnsynchronizedFK_LeavesNullCompleteVirtualObjectEndPoint ()
     {
-      SetDatabaseModifyable();
-
       var employee = DomainObjectIDs.Employee1.GetObject<Employee>();
       var virtualEndPointID = RelationEndPointID.Resolve(employee, e => e.Computer);
       TestableClientTransaction.EnsureDataComplete(virtualEndPointID);
@@ -212,8 +204,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void UnloadCollectionEndPoint_WithoutReferences_AfterSettingDifferentCollection_AndCommit_CausesEndPointToBeRemoved_ButKeepsDomainObjectCollectionInMemory ()
     {
-      SetDatabaseModifyable();
-
       var customer = DomainObjectIDs.Customer2.GetObject<Customer>();
 
       var newCustomerOrders = new OrderCollection();
@@ -237,8 +227,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     [Test]
     public void UnloadCollectionEndPoint_WithoutReferences_AfterSettingDifferentCollection_AndRollback_CausesEndPointToBeRemoved_ButKeepsDomainObjectCollectionInMemory ()
     {
-      SetDatabaseModifyable();
-
       var customer = DomainObjectIDs.Customer2.GetObject<Customer>();
       var oldCustomerOrders = customer.Orders;
       Assert.That(customer.Orders, Is.Empty);

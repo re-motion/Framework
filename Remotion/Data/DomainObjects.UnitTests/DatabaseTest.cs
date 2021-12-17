@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Data;
+using System.Transactions;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Development.UnitTesting.Data.SqlClient;
@@ -42,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     private readonly DatabaseAgent _databaseAgent;
     private readonly string _createTestDataFileName;
-    private bool _isDatabaseModifyable;
+    private TransactionScope _transactionScope;
 
     protected DatabaseTest (DatabaseAgent databaseAgent, string createTestDataFileName)
     {
@@ -56,15 +57,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [SetUp]
     public virtual void SetUp ()
     {
+      _transactionScope = new TransactionScope();
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      if (_isDatabaseModifyable)
-      {
-        _databaseAgent.ExecuteBatchFile(_createTestDataFileName, true, DatabaseConfiguration.GetReplacementDictionary());
-      }
+      _transactionScope.Dispose();
     }
 
     [OneTimeSetUp]
@@ -75,11 +74,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [OneTimeTearDown]
     public virtual void TestFixtureTearDown ()
     {
-      if (_isDatabaseModifyable)
-      {
-        _databaseAgent.SetDatabaseReadOnly(DatabaseName);
-        _isDatabaseModifyable = false;
-      }
     }
 
     protected DatabaseAgent DatabaseAgent
@@ -111,15 +105,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public static string SchemaGenerationConnectionString3
     {
       get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_SchemaGenerationTestDomain3; Max Pool Size=1;"); }
-    }
-
-    protected void SetDatabaseModifyable ()
-    {
-      if (!_isDatabaseModifyable)
-      {
-        _isDatabaseModifyable = true;
-        _databaseAgent.SetDatabaseReadWrite(DatabaseName);
-      }
     }
 
     protected IDbCommand CreateCommand (string table, Guid id, IDbConnection connection)

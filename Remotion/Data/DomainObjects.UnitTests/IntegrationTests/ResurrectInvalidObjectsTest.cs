@@ -83,8 +83,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void DiscardedDeletedObject ()
     {
-      SetDatabaseModifyable();
-
       var deletedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
       deletedObject.Delete();
       TestableClientTransaction.Commit();
@@ -99,8 +97,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void DiscardedDeletedObject_TryResurrect ()
     {
-      SetDatabaseModifyable();
-
       var deletedObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
       deletedObject.Delete();
       TestableClientTransaction.Commit();

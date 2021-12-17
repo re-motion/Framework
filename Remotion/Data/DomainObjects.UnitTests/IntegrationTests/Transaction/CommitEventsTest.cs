@@ -27,12 +27,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
   {
     private Customer _customer;
 
-    public override void OneTimeSetUp ()
-    {
-      base.OneTimeSetUp();
-      SetDatabaseModifyable();
-    }
-
     public override void SetUp ()
     {
       base.SetUp();

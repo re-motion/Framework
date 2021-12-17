@@ -29,6 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public override void SetUp ()
     {
+      base.SetUp();
       _factory = new VirtualObjectEndPointDataManagerFactory();
       _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
     }

@@ -95,8 +95,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Add_WithNewRelationMemberLazyLoaded_IsAddedToCompletedCollectionEndPoint ()
     {
-      SetDatabaseModifyable();
-
       _productEndPoint.EnsureDataComplete();
       Assert.That(_productEndPoint.IsDataComplete, Is.True);
       Assert.That(
