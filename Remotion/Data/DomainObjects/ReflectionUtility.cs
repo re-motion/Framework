@@ -52,6 +52,34 @@ namespace Remotion.Data.DomainObjects
                   : null);
         };
 
+    private static readonly ConcurrentDictionary<Type, (bool IsMatchingType, Type ItemType)> s_iObjectListTypeCache = new();
+
+    private static readonly Func<Type, ValueTuple<bool, Type>> s_iObjectListTypeCacheValueFactory =
+        static t =>
+        {
+          var isIObjectList = IsGenericIObjectList(t);
+
+          return ValueTuple.Create(
+              isIObjectList,
+              isIObjectList
+                  ? t.GetAscribedGenericArguments(typeof(IObjectList<>))[0]
+                  : null);
+
+          static bool IsGenericIObjectList (Type type)
+          {
+            if (type == typeof(IObjectList<>))
+              return true;
+
+            if (!type.IsInterface)
+              return false;
+
+            if (!type.IsConstructedGenericType)
+              return false;
+
+            return type.GetGenericTypeDefinition() == typeof(IObjectList<>);
+          }
+        };
+
     /// <summary>
     /// Returns the directory of the current executing assembly.
     /// </summary>
@@ -182,17 +210,7 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("type", type);
 
-      if (type == typeof(IObjectList<>))
-        return true;
-
-      if (!type.IsInterface)
-        return false;
-
-      if (!type.IsConstructedGenericType)
-        return false;
-
-      var genericTypeDefinition = type.GetGenericTypeDefinition();
-      return genericTypeDefinition == typeof(IObjectList<>);
+      return s_iObjectListTypeCache.GetOrAdd(type, s_iObjectListTypeCacheValueFactory).IsMatchingType;
     }
 
     /// <summary>
@@ -302,10 +320,14 @@ namespace Remotion.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull("type", type);
 
-      var typeParameters = type.GetAscribedGenericArguments(typeof(IObjectList<>));
-      var typeParameter = typeParameters[0];
+      var typeParameter = s_iObjectListTypeCache.GetOrAdd(type, s_iObjectListTypeCacheValueFactory).ItemType;
+
+      if (typeParameter is null)
+        throw ArgumentUtility.CreateArgumentTypeException("type", type, typeof(IObjectList<>));
+
       if (typeParameter.IsGenericParameter)
         return null;
+
       return typeParameter;
     }
 

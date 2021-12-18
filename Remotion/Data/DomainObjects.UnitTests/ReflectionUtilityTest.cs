@@ -466,9 +466,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void GetIObjectListTypeParameter_DerivedObjectList_ReturnsTypeParameterValue ()
+    public void GetIObjectListTypeParameter_DerivedObjectList_ThrowsArgumentException ()
     {
-      Assert.That(ReflectionUtility.GetIObjectListTypeParameter(typeof(IDerivedObjectList<Order>)), Is.EqualTo(typeof(Order)));
+      Assert.That(
+          () => ReflectionUtility.GetIObjectListTypeParameter(typeof(IDerivedObjectList<Order>)),
+          Throws.ArgumentException.With.Message.StartWith(
+              "Parameter 'type' has type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.IDerivedObjectList`1[Remotion.Data.DomainObjects.UnitTests.TestDomain.Order]' "
+              + "when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
     }
 
     [Test]
