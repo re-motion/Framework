@@ -95,7 +95,7 @@ namespace Remotion.Reflection
 
     public IEnumerable<IPropertyInformation> FindInterfaceDeclarations ()
     {
-     //TODO RM-7432: Implementation doesn’t match nullability of IPropertyInformation
+      //TODO RM-7432: Implementation doesn’t match nullability of IMethodInformation
       return null!;
     }
 
