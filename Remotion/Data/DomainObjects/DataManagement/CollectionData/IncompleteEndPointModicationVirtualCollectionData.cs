@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public bool ContainsObjectID (ObjectID objectID) => false;
 
-    public DomainObject GetObject (int index) => null;
+    public DomainObject GetObject (int index) => throw new ArgumentOutOfRangeException("index");
 
     public DomainObject GetObject (ObjectID objectID) => null;
 
