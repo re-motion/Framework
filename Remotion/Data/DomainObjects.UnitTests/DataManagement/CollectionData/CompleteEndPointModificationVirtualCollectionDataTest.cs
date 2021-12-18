@@ -20,7 +20,7 @@ using NUnit.Framework;
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
   [TestFixture]
-  public class IncompleteEndPointModificationVirtualCollectionDataTest
+  public class EndPointDelegatingVirtualCollectionDataTest
   {
     [Test]
     [Ignore("TODO: RM-7294 Add tests")]

@@ -15,73 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
+using NUnit.Framework;
 
-namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
+namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
-  /// <summary>
-  /// Represents the <seealso cref="IVirtualCollectionData"/> in situations when the collection has not been loaded.
-  /// This type does not implement any kind of data management for the collection. It is simply intended as a null-object in certain infrastructure use cases.
-  /// </summary>
-  public class IncompleteEndPointModificationVirtualCollectionData : IVirtualCollectionData
+  [TestFixture]
+  public class ChangeTrackingVirtualCollectionDataDecoratorTest
   {
-    private readonly RelationEndPointID _associatedEndPointID;
-
-    public IncompleteEndPointModificationVirtualCollectionData (RelationEndPointID associatedEndPointID)
+    [Test]
+    [Ignore("TODO: RM-7294 Add tests")]
+    public void GetObject ()
     {
-      ArgumentUtility.CheckNotNull("associatedEndPointID", associatedEndPointID);
-
-      _associatedEndPointID = associatedEndPointID;
-    }
-
-    public IEnumerator<DomainObject> GetEnumerator ()
-    {
-      return Enumerable.Empty<DomainObject>().GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator ()
-    {
-      return GetEnumerator();
-    }
-
-    public int Count => 0;
-
-    public Type RequiredItemType => _associatedEndPointID.Definition.GetOppositeEndPointDefinition().ClassDefinition.ClassType;
-
-    public bool IsReadOnly => false;
-
-    public RelationEndPointID AssociatedEndPointID => _associatedEndPointID;
-
-    public bool IsDataComplete => false;
-
-    public void EnsureDataComplete ()
-    {
-    }
-
-    public bool ContainsObjectID (ObjectID objectID) => false;
-
-    public DomainObject GetObject (int index) => throw new ArgumentOutOfRangeException("index");
-
-    public DomainObject GetObject (ObjectID objectID) => null;
-
-    public int IndexOf (ObjectID objectID) => -1;
-
-    public void Clear ()
-    {
-    }
-
-    public void Add (DomainObject domainObject)
-    {
-    }
-
-    public bool Remove (DomainObject domainObject)
-    {
-      return true;
     }
   }
 }
