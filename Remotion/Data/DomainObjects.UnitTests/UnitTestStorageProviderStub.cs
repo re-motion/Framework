@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         InnerProvider.Save(dataContainers);
     }
 
-    public override void UpdateTimestamps (IEnumerable<DataContainer> dataContainers)
+    public override void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
     {
       if (InnerProvider != null)
         InnerProvider.UpdateTimestamps(dataContainers);

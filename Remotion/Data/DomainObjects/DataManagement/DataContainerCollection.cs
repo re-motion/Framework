@@ -22,7 +22,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DataManagement
 {
   [Serializable]
-  public class DataContainerCollection : CommonCollection, IList<DataContainer>
+  public class DataContainerCollection : CommonCollection, IList<DataContainer>, IReadOnlyCollection<DataContainer>
   {
     // types
 
