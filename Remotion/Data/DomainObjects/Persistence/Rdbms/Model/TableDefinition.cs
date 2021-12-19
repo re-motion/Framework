@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
       var availableColumnsAsDictionary = GetAllColumns().ToDictionary(c => c);
 
-      return fullColumnList.Select(columnDefinition => availableColumnsAsDictionary.GetValueOrDefault(columnDefinition)).ToArray();
+      return fullColumnList.Select(columnDefinition => columnDefinition == null ? null : availableColumnsAsDictionary.GetValueOrDefault(columnDefinition)).ToArray();
     }
   }
 }
