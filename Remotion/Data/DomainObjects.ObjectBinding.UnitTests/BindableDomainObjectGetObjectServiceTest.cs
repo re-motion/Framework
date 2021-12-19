@@ -73,5 +73,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
         Assert.That(_service.GetObject(_businessObjectClass, _id), Is.Null);
       }
     }
+
+    [Test]
+    public void GetObject_NoClientTransaction_ThrowsInvalidOperationException ()
+    {
+      using (ClientTransactionScope.EnterNullScope())
+      {
+        Assert.That(
+            () => _service.GetObject(_businessObjectClass, _id),
+            Throws.InvalidOperationException.With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
+      }
+    }
   }
 }

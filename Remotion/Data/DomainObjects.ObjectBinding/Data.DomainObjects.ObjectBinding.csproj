@@ -10,8 +10,10 @@
 - Use BindableDomainObject as a base class when using object binding in a domain.</Description>
     <AssemblyName>Remotion.Data.DomainObjects.ObjectBinding</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />

@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     }
 
     [OverrideTarget]
-    public virtual IBusinessObjectService CreateService (IBusinessObjectProviderWithIdentity provider, Type serviceType)
+    public virtual IBusinessObjectService? CreateService (IBusinessObjectProviderWithIdentity provider, Type serviceType)
     {
       ArgumentUtility.CheckNotNull("provider", provider);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof(IBusinessObjectService));
