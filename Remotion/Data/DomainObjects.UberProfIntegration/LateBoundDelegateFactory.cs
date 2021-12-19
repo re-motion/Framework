@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
       try
       {
-        return (TSignature)(object)Delegate.CreateDelegate(typeof(TSignature), target, methodName, false, true);
+        return (TSignature)(object)Delegate.CreateDelegate(typeof(TSignature), target, methodName, false, throwOnBindFailure: true)!;
       }
       catch (ArgumentException ex)
       {
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
       try
       {
-        return Delegate.CreateDelegate(signature, target, methodName, false, true);
+        return Delegate.CreateDelegate(signature, target, methodName, false, throwOnBindFailure: true)!;
       }
       catch (ArgumentException ex)
       {
@@ -61,7 +61,8 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
       Type targetType = (target is Type) ? (Type)target : target.GetType();
 
       Assertion.IsTrue(typeof(Delegate).IsAssignableFrom(signatureType));
-      MethodInfo invoke = signatureType.GetMethod("Invoke");
+      MethodInfo? invoke = signatureType.GetMethod("Invoke");
+      Assertion.DebugIsNotNull(invoke, "Delegate.Invoke(...) != null");
       Type returnType = invoke.ReturnType;
       var parameters = invoke.GetParameters().Select(p => p.ParameterType);
 

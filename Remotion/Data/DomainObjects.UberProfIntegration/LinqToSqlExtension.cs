@@ -82,15 +82,15 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
     }
 
-    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
+    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
     }
 
-    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
     }
 
-    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
     }
 
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
     }
 
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess)
+    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess)
     {
     }
 
@@ -106,11 +106,11 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
     }
 
-    public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
     }
 
-    public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinitiont, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinitiont, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
     }
 
@@ -206,7 +206,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     }
 
     public void QueryExecuting (
-        Guid connectionID, Guid queryID, string commandText, IDictionary<string, object> parameters)
+        Guid connectionID, Guid queryID, string commandText, IDictionary<string, object?> parameters)
     {
       ArgumentUtility.CheckNotNullOrEmpty("commandText", commandText);
       ArgumentUtility.CheckNotNull("parameters", parameters);
@@ -234,7 +234,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
       _appenderProxy.TransactionRolledBack(_clientTransactionID);
     }
 
-    private string AppendParametersToCommandText (string commandText, IDictionary<string, object> parameters)
+    private string AppendParametersToCommandText (string commandText, IDictionary<string, object?> parameters)
     {
       StringBuilder builder = new StringBuilder();
       builder.AppendLine(commandText);
@@ -245,7 +245,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
         string parameterName = key;
         if (!parameterName.StartsWith("@"))
           parameterName = "@" + parameterName;
-        object value = parameters[key];
+        object? value = parameters[key];
 
         builder.Append("-- ");
         builder.Append(parameterName);

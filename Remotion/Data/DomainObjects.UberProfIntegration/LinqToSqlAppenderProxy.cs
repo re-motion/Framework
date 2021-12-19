@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     private static readonly DoubleCheckedLockingContainer<LinqToSqlAppenderProxy> s_instance =
         new DoubleCheckedLockingContainer<LinqToSqlAppenderProxy>(() => new LinqToSqlAppenderProxy(
             "re-store ClientTransaction",
-            Type.GetType("HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler, HibernatingRhinos.Profiler.Appender", true, false),
-            Type.GetType("HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlAppender, HibernatingRhinos.Profiler.Appender", true, false)));
+            Type.GetType("HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler, HibernatingRhinos.Profiler.Appender", throwOnError: true, ignoreCase: false)!,
+            Type.GetType("HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlAppender, HibernatingRhinos.Profiler.Appender", throwOnError: true, ignoreCase: false)!));
 
     public static LinqToSqlAppenderProxy Instance
     {
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
       var getAppender = LateBoundDelegateFactory.CreateDelegate(
           linqToSqlProfilerType, "GetAppender", typeof(Func<,>).MakeGenericType(typeof(string), linqToSqlAppenderType));
-      _linqToSqlAppender = getAppender.DynamicInvoke(name);
+      _linqToSqlAppender = Assertion.IsNotNull(getAppender.DynamicInvoke(name), "getAppender.DynamicInvoke(\"{0}\") != null", name);
 
       _connectionStarted = LateBoundDelegateFactory.CreateDelegate<Action<Guid>>(_linqToSqlAppender, "ConnectionStarted");
       _connectionDisposed = LateBoundDelegateFactory.CreateDelegate<Action<Guid>>(_linqToSqlAppender, "ConnectionDisposed");
