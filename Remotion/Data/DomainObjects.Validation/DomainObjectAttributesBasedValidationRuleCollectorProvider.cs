@@ -66,10 +66,10 @@ namespace Remotion.Data.DomainObjects.Validation
       return types
           .Where(type => !MixinTypeUtility.IsGeneratedConcreteMixedType(type))
           .SelectMany(t => CreatePropertyRuleReflectors(t, t.GetInterfaces()))
-          .ToLookup(r => r.Item1, r => r.Item2);
+          .ToLookup(r => r.Type, r => r.PropertyRuleReflector);
     }
 
-    private IEnumerable<Tuple<Type, IAttributesBasedValidationPropertyRuleReflector>> CreatePropertyRuleReflectors (
+    private IEnumerable<(Type Type, IAttributesBasedValidationPropertyRuleReflector PropertyRuleReflector)> CreatePropertyRuleReflectors (
         Type annotatedType,
         IReadOnlyCollection<Type> interfaceTypes)
     {
@@ -78,13 +78,14 @@ namespace Remotion.Data.DomainObjects.Validation
         return annotatedType.GetProperties(PropertyBindingFlags | BindingFlags.DeclaredOnly)
             .Select(PropertyInfoAdapter.Create)
             .Where(p => p.IsOriginalDeclaration())
-            .Where(p => HasValidationRulesOnProperty(p.AsRuntimePropertyInfo()))
+            .Select(p => p.AsRuntimePropertyInfo()!)
+            .Where(p => HasValidationRulesOnProperty(p))
             .Select(
-                p => new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector>(
-                    annotatedType,
-                    new DomainObjectAttributesBasedValidationPropertyRuleReflector(
-                        p.AsRuntimePropertyInfo(),
-                        p.AsRuntimePropertyInfo(),
+                p => (
+                    Type: annotatedType,
+                    PropertyRuleReflector: (IAttributesBasedValidationPropertyRuleReflector)new DomainObjectAttributesBasedValidationPropertyRuleReflector(
+                        p,
+                        p,
                         _domainModelConstraintProvider,
                         _validationMessageFactory)));
       }
@@ -107,7 +108,7 @@ namespace Remotion.Data.DomainObjects.Validation
         var annotatedProperties = annotatedType.GetProperties(PropertyBindingFlags | BindingFlags.DeclaredOnly)
             .Select(p => (IPropertyInformation)PropertyInfoAdapter.Create(p))
             .Where(p => p.IsOriginalDeclaration())
-            .Where(p => HasValidationRulesOnProperty(p.AsRuntimePropertyInfo()));
+            .Where(p => HasValidationRulesOnProperty(p.AsRuntimePropertyInfo()!));
         var annotatedPropertiesSet = new HashSet<IPropertyInformation>(annotatedProperties);
 
         var interfaceImplementations = new HashSet<IPropertyInformation>(interfacePropertyMappings.Select(m=>m.ImplementationProperty));
@@ -121,16 +122,16 @@ namespace Remotion.Data.DomainObjects.Validation
             .Where(mapping => annotatedPropertiesSet.Contains(mapping.ImplementationProperty));
 
         return interfacePropertyMappingsForAnnotatedProperties.Select(
-            mapping => new Tuple<Type, IAttributesBasedValidationPropertyRuleReflector>(
-                mapping.InterfaceProperty.DeclaringType.AsRuntimeType(),
-                new DomainObjectAttributesBasedValidationPropertyRuleReflector(
-                    mapping.InterfaceProperty.AsRuntimePropertyInfo(),
-                    mapping.ImplementationProperty.AsRuntimePropertyInfo(),
+            mapping => (
+                Type: mapping.InterfaceProperty.DeclaringType!.AsRuntimeType()!,
+                PropertyRuleReflector: (IAttributesBasedValidationPropertyRuleReflector)new DomainObjectAttributesBasedValidationPropertyRuleReflector(
+                    mapping.InterfaceProperty.AsRuntimePropertyInfo()!,
+                    mapping.ImplementationProperty.AsRuntimePropertyInfo()!,
                     _domainModelConstraintProvider,
                     _validationMessageFactory)));
       }
 
-      return Enumerable.Empty<Tuple<Type, IAttributesBasedValidationPropertyRuleReflector>>();
+      return Enumerable.Empty<ValueTuple<Type, IAttributesBasedValidationPropertyRuleReflector>>();
     }
 
     private bool HasValidationRulesOnProperty (PropertyInfo property)
