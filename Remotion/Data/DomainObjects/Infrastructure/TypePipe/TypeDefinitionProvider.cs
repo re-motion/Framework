@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   [ImplementationFor(typeof(ITypeDefinitionProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class TypeDefinitionProvider : ITypeDefinitionProvider
   {
-    public ClassDefinition GetTypeDefinition (Type domainObjectType)
+    public ClassDefinition? GetTypeDefinition (Type domainObjectType)
     {
       ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
 

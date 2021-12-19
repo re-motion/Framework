@@ -90,9 +90,9 @@ namespace Remotion.Data.DomainObjects
       set { base[index] = value; }
     }
 
-    public new T this [ObjectID id]
+    public new T? this [ObjectID id]
     {
-      get { return (T)base[id]; }
+      get { return (T?)base[id]; }
     }
 
     public new ObjectList<T> Clone ()

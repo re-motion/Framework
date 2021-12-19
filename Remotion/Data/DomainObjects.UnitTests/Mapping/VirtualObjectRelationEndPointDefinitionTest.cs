@@ -61,16 +61,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    public void RelationDefinition_Null ()
+    public void RelationDefinition_NotSet ()
     {
-      Assert.That(_orderOrderTicketEndPoint.RelationDefinition, Is.Null);
+      Assert.That(_orderOrderTicketEndPoint.HasRelationDefinitionBeenSet, Is.False);
+      Assert.That(
+          () => _orderOrderTicketEndPoint.RelationDefinition,
+          Throws.InvalidOperationException.With.Message.EqualTo("RelationDefinition has not been set for this relation end point."));
     }
 
     [Test]
-    public void RelationDefinition_NonNull ()
+    public void SetRelationDefinition ()
     {
-      _orderOrderTicketEndPoint.SetRelationDefinition(new RelationDefinition("Test", _orderOrderTicketEndPoint, _orderOrderTicketEndPoint));
-      Assert.That(_orderOrderTicketEndPoint.RelationDefinition, Is.Not.Null);
+      var relationDefinition = new RelationDefinition("Test", _orderOrderTicketEndPoint, _orderOrderTicketEndPoint);
+      _orderOrderTicketEndPoint.SetRelationDefinition(relationDefinition);
+
+      Assert.That(_orderOrderTicketEndPoint.HasRelationDefinitionBeenSet, Is.True);
+      Assert.That(_orderOrderTicketEndPoint.RelationDefinition, Is.SameAs(relationDefinition));
     }
 
     [Test]

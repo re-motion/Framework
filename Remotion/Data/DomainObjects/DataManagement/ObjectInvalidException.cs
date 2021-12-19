@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
   [Serializable]
   public class ObjectInvalidException : DomainObjectException
   {
-    private readonly ObjectID _id;
+    private readonly ObjectID? _id;
 
     public ObjectInvalidException (string message)
         : base(message)
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     protected ObjectInvalidException (SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
-      _id = (ObjectID)info.GetValue("ID", typeof(ObjectID));
+      _id = (ObjectID?)info.GetValue("ID", typeof(ObjectID));
     }
 
     public ObjectInvalidException (ObjectID id)
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <summary>
     /// The <see cref="ObjectID"/> of the object that caused the exception.
     /// </summary>
-    public ObjectID ID
+    public ObjectID? ID
     {
       get { return _id; }
     }

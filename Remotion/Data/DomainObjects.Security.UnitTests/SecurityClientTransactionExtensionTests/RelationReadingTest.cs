@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Security.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.UnitTesting;
@@ -172,6 +173,18 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
 
 
       _extension.RelationReading(_testHelper.Transaction, nonSecurableObject, nonSecurableEndPointDefintion, ValueAccess.Current);
+
+      _testHelper.VerifyAll();
+    }
+
+    [Test]
+    public void Test_WithAnonymousRelationEndPoint_DoesNotPerformSecurityCheck ()
+    {
+      NonSecurableObject nonSecurableObject = _testHelper.CreateNonSecurableObject();
+      _testHelper.ReplayAll();
+      var endPointDefinition = new AnonymousRelationEndPointDefinition(nonSecurableObject.ID.ClassDefinition);
+
+      _extension.RelationReading(_testHelper.Transaction, nonSecurableObject, endPointDefinition, ValueAccess.Current);
 
       _testHelper.VerifyAll();
     }

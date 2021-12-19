@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -110,7 +111,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>
     /// This event does not fire when a <see cref="PropertyValue"/> has been changed due to a relation change.
     /// </remarks>
-    public event EventHandler<PropertyChangeEventArgs> PropertyChanging;
+    public event EventHandler<PropertyChangeEventArgs>? PropertyChanging;
 
     /// <summary>
     /// Occurs after a <see cref="PropertyValue"/> of the <see cref="DomainObject"/> is changed.
@@ -118,7 +119,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>
     /// This event does not fire when a <see cref="PropertyValue"/> has been changed due to a relation change.
     /// </remarks>
-    public event EventHandler<PropertyChangeEventArgs> PropertyChanged;
+    public event EventHandler<PropertyChangeEventArgs>? PropertyChanged;
 
     /// <summary>
     /// Occurs before a Relation of the <see cref="DomainObject"/> is changed.
@@ -126,7 +127,7 @@ namespace Remotion.Data.DomainObjects
     /// replaced in one go, this event is raised once for each old object that is not in the new collection and once for each new object not in the 
     /// old collection.
     /// </summary>
-    public event EventHandler<RelationChangingEventArgs> RelationChanging;
+    public event EventHandler<RelationChangingEventArgs>? RelationChanging;
 
     /// <summary>
     /// Occurs after a Relation of the <see cref="DomainObject"/> has been changed.
@@ -134,40 +135,40 @@ namespace Remotion.Data.DomainObjects
     /// replaced in one go, this event is raised once for each old object that is not in the new collection and once for each new object not in the 
     /// old collection.
     /// </summary>
-    public event EventHandler<RelationChangedEventArgs> RelationChanged;
+    public event EventHandler<RelationChangedEventArgs>? RelationChanged;
 
     /// <summary>
     /// Occurs before the <see cref="DomainObject"/> is deleted.
     /// </summary>
-    public event EventHandler Deleting;
+    public event EventHandler? Deleting;
 
     /// <summary>
     /// Occurs after the <see cref="DomainObject"/> has been deleted.
     /// </summary>
-    public event EventHandler Deleted;
+    public event EventHandler? Deleted;
 
     /// <summary>
     /// Occurs before the changes of a <see cref="DomainObject"/> are committed.
     /// </summary>
-    public event EventHandler<DomainObjectCommittingEventArgs> Committing;
+    public event EventHandler<DomainObjectCommittingEventArgs>? Committing;
 
     /// <summary>
     /// Occurs after the changes of a <see cref="DomainObject"/> are successfully committed.
     /// </summary>
-    public event EventHandler Committed;
+    public event EventHandler? Committed;
 
     /// <summary>
     /// Occurs before the changes of a <see cref="DomainObject"/> are rolled back.
     /// </summary>
-    public event EventHandler RollingBack;
+    public event EventHandler? RollingBack;
 
     /// <summary>
     /// Occurs after the changes of a <see cref="DomainObject"/> are successfully rolled back.
     /// </summary>
-    public event EventHandler RolledBack;
+    public event EventHandler? RolledBack;
 
     private ObjectID _id;
-    private ClientTransaction _rootTransaction; // null unless this object is bound to a fixed transaction
+    private ClientTransaction _rootTransaction;
     private bool _needsLoadModeDataContainerOnly; // true if the object was created by a constructor call or OnLoaded has already been called once
     private bool _isReferenceInitializeEventExecuting; // true only while OnReferenceInitializing is executed
 
@@ -226,25 +227,25 @@ namespace Remotion.Data.DomainObjects
 
       try
       {
-        _id = (ObjectID)info.GetValue("DomainObject.ID", typeof(ObjectID));
-        _rootTransaction = (ClientTransaction)info.GetValue("DomainObject._rootTransaction", typeof(ClientTransaction));
+        _id = (ObjectID)info.GetValue("DomainObject.ID", typeof(ObjectID))!;
+        _rootTransaction = (ClientTransaction)info.GetValue("DomainObject._rootTransaction", typeof(ClientTransaction))!;
         _needsLoadModeDataContainerOnly = info.GetBoolean("DomainObject._needsLoadModeDataContainerOnly");
 
         PropertyChanging =
-            (EventHandler<PropertyChangeEventArgs>)info.GetValue("DomainObject.PropertyChanging", typeof(EventHandler<PropertyChangeEventArgs>));
+            (EventHandler<PropertyChangeEventArgs>?)info.GetValue("DomainObject.PropertyChanging", typeof(EventHandler<PropertyChangeEventArgs>));
         PropertyChanged =
-            (EventHandler<PropertyChangeEventArgs>)info.GetValue("DomainObject.PropertyChanged", typeof(EventHandler<PropertyChangeEventArgs>));
+            (EventHandler<PropertyChangeEventArgs>?)info.GetValue("DomainObject.PropertyChanged", typeof(EventHandler<PropertyChangeEventArgs>));
         RelationChanging =
-            (EventHandler<RelationChangingEventArgs>)info.GetValue("DomainObject.RelationChanging", typeof(EventHandler<RelationChangingEventArgs>));
+            (EventHandler<RelationChangingEventArgs>?)info.GetValue("DomainObject.RelationChanging", typeof(EventHandler<RelationChangingEventArgs>));
         RelationChanged =
-            (EventHandler<RelationChangedEventArgs>)info.GetValue("DomainObject.RelationChanged", typeof(EventHandler<RelationChangedEventArgs>));
-        Deleting = (EventHandler)info.GetValue("DomainObject.Deleting", typeof(EventHandler));
-        Deleted = (EventHandler)info.GetValue("DomainObject.Deleted", typeof(EventHandler));
+            (EventHandler<RelationChangedEventArgs>?)info.GetValue("DomainObject.RelationChanged", typeof(EventHandler<RelationChangedEventArgs>));
+        Deleting = (EventHandler?)info.GetValue("DomainObject.Deleting", typeof(EventHandler));
+        Deleted = (EventHandler?)info.GetValue("DomainObject.Deleted", typeof(EventHandler));
         Committing =
-            (EventHandler<DomainObjectCommittingEventArgs>)info.GetValue("DomainObject.Committing", typeof(EventHandler<DomainObjectCommittingEventArgs>));
-        Committed = (EventHandler)info.GetValue("DomainObject.Committed", typeof(EventHandler));
-        RollingBack = (EventHandler)info.GetValue("DomainObject.RollingBack", typeof(EventHandler));
-        RolledBack = (EventHandler)info.GetValue("DomainObject.RolledBack", typeof(EventHandler));
+            (EventHandler<DomainObjectCommittingEventArgs>?)info.GetValue("DomainObject.Committing", typeof(EventHandler<DomainObjectCommittingEventArgs>));
+        Committed = (EventHandler?)info.GetValue("DomainObject.Committed", typeof(EventHandler));
+        RollingBack = (EventHandler?)info.GetValue("DomainObject.RollingBack", typeof(EventHandler));
+        RolledBack = (EventHandler?)info.GetValue("DomainObject.RolledBack", typeof(EventHandler));
       }
       catch (SerializationException ex)
       {
@@ -331,7 +332,7 @@ namespace Remotion.Data.DomainObjects
     /// </summary>
     /// <value>The timestamp of the object.</value>
     /// <exception cref="ObjectInvalidException">The object is invalid in the transaction.</exception>
-    public object Timestamp
+    public object? Timestamp
     {
       get { return this.GetTimestamp(); }
     }
@@ -392,6 +393,8 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="InvalidOperationException">This <see cref="DomainObject"/> has already been initialized.</exception>
     /// <remarks>This method is always called exactly once per <see cref="DomainObject"/> instance by the framework. It sets the object's 
     /// <see cref="ID"/> and enlists it with the given <see cref="DomainObjects.ClientTransaction"/>.</remarks>
+    [MemberNotNull(nameof(_id))]
+    [MemberNotNull(nameof(_rootTransaction))]
     public void Initialize (ObjectID id, ClientTransaction rootTransaction)
     {
       ArgumentUtility.CheckNotNull("id", id);

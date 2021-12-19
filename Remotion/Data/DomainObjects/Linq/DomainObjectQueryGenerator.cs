@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Linq
       {
         return s_cache.GetOrAdd(
             classType,
-            key => (GenericCallHelper)Activator.CreateInstance(typeof(GenericCallHelper<>).MakeGenericType(key)));
+            key => (GenericCallHelper)Activator.CreateInstance(typeof(GenericCallHelper<>).MakeGenericType(key))!);
       }
 
       protected GenericCallHelper ()
@@ -162,6 +162,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
       if (queryType == QueryType.Collection)
       {
+        Assertion.DebugIsNotNull(sqlQuery.SelectedEntityType, "sqlQuery.SelectedEntityType != null");
         var selectedEntityClassDefinition = _mappingConfiguration.GetTypeDefinition(sqlQuery.SelectedEntityType);
         Assertion.IsNotNull(selectedEntityClassDefinition, "We assume that in a re-store LINQ query, entities always have a mapping.");
 
@@ -187,7 +188,7 @@ namespace Remotion.Data.DomainObjects.Linq
         string statement,
         CommandParameter[] commandParameters,
         QueryType queryType,
-        Type selectedEntityType)
+        Type? selectedEntityType)
     {
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
@@ -249,7 +250,7 @@ namespace Remotion.Data.DomainObjects.Linq
       }
     }
 
-    private SortExpressionDefinition GetSortExpressionForRelation (IRelationEndPointDefinition relationEndPointDefinition)
+    private SortExpressionDefinition? GetSortExpressionForRelation (IRelationEndPointDefinition relationEndPointDefinition)
     {
       switch (relationEndPointDefinition)
       {
@@ -300,7 +301,7 @@ namespace Remotion.Data.DomainObjects.Linq
           TypeAdapter.Create(instanceExpression.Type));
 
       var memberExpression = Expression.MakeMemberAccess(
-            Expression.Convert(instanceExpression, normalizedProperty.DeclaringType.ConvertToRuntimeType()),
+            Expression.Convert(instanceExpression, normalizedProperty.DeclaringType!.ConvertToRuntimeType()),
             normalizedProperty.ConvertToRuntimePropertyInfo());
 
       var orderingDirection = sortedPropertySpecification.Order == SortOrder.Ascending ? OrderingDirection.Asc : OrderingDirection.Desc;
@@ -309,7 +310,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     private IPropertyInformation GetNormalizedProperty (IPropertyInformation propertyInformation, ITypeInformation instanceTypeInformation)
     {
-      var originalDeclaringType = propertyInformation.GetOriginalDeclaringType();
+      var originalDeclaringType = propertyInformation.GetOriginalDeclaringType()!;
       // Support for properties declared on instance type and base types
       if (originalDeclaringType.IsAssignableFrom(instanceTypeInformation))
         return propertyInformation;
@@ -323,14 +324,14 @@ namespace Remotion.Data.DomainObjects.Linq
       {
         var instanceRuntimeType = instanceTypeInformation.ConvertToRuntimeType();
         var interfacePropertyInformation = propertyInformation.FindInterfaceDeclarations()
-            .Where(p => MixinTypeUtility.IsAssignableFrom(p.GetOriginalDeclaringType().ConvertToRuntimeType(), instanceRuntimeType))
+            .Where(p => MixinTypeUtility.IsAssignableFrom(p.GetOriginalDeclaringType()!.ConvertToRuntimeType(), instanceRuntimeType))
             .First(
                 () =>
                     new NotSupportedException(
                         string.Format(
                             "The member '{0}.{1}' is not part of any interface introduced onto the target class '{2}'. "
                             + "Only mixed properties that are part of an introduced interface can be used within the sort-expression of a collection property.",
-                            propertyInformation.DeclaringType.GetFullNameSafe(),
+                            propertyInformation.DeclaringType!.GetFullNameSafe(),
                             propertyInformation.Name,
                             instanceTypeInformation.GetFullNameSafe()
                             )));
@@ -343,13 +344,13 @@ namespace Remotion.Data.DomainObjects.Linq
           string.Format(
               "The member '{0}.{1}' is not part of inheritance hierarchy of class '{2}'. "
               + "Only properties that are part of the inheritance hierarhcy can be used within the sort-expression of a collection property.",
-              propertyInformation.DeclaringType.GetFullNameSafe(),
+              propertyInformation.DeclaringType!.GetFullNameSafe(),
               propertyInformation.Name,
               instanceTypeInformation.GetFullNameSafe()
               ));
     }
 
-    private Type GetCollectionType (Type itemType)
+    private Type GetCollectionType (Type? itemType)
     {
       if (itemType == null)
         return typeof(DomainObjectCollection);

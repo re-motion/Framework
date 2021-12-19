@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     protected virtual void Dispose (bool disposing)
     {
       if (disposing)
-        _storageProviderDefinition = null;
+        _storageProviderDefinition = null!;
 
       _disposed = true;
     }
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     public abstract IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids);
 
     public abstract IEnumerable<DataContainer> LoadDataContainersByRelatedID (
-        RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition sortExpressionDefinition, ObjectID relatedID);
+        RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition? sortExpressionDefinition, ObjectID relatedID);
 
     public abstract void Save (IEnumerable<DataContainer> dataContainers);
     public abstract void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers);
@@ -88,9 +88,14 @@ namespace Remotion.Data.DomainObjects.Persistence
     public abstract void Commit ();
     public abstract void Rollback ();
     public abstract ObjectID CreateNewObjectID (ClassDefinition classDefinition);
-    public abstract IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query);
+    public abstract IEnumerable<DataContainer?> ExecuteCollectionQuery (IQuery query);
     public abstract IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query);
-    public abstract object ExecuteScalarQuery (IQuery query);
+
+    /// <remarks>
+    /// If the first column of the first row in the result set is not found, a <see langword="null"/> is returned.
+    /// If the value in the database is null, the query returns <see cref="DBNull"/>.<see cref="DBNull.Value"/>
+    /// </remarks>
+    public abstract object? ExecuteScalarQuery (IQuery query);
 
     public StorageProviderDefinition StorageProviderDefinition
     {

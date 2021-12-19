@@ -54,7 +54,11 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       foreach (var relatedObject in relatedObjects)
       {
         if (!relatedObject.IsNull)
+        {
+          Assertion.DebugAssert(relatedObject.LoadedObjectData.IsNull == false, "relatedObject.LoadedObjectData.IsNull == false");
+          Assertion.DebugIsNotNull(relatedObject.LoadedObjectData.ObjectID, "relatedObject.LoadedObjectData.ObjectID != null");
           CheckClassDefinitionOfRelatedObject(relationEndPointDefinition, oppositeEndPointDefinition, relatedObject.LoadedObjectData.ObjectID);
+        }
       }
     }
 
@@ -62,6 +66,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
     {
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
       ArgumentUtility.CheckNotNull("originatingObject", originatingObject);
+      Assertion.DebugAssert(originatingObject.IsNull == false, "originatingObject.IsNull == false");
+      Assertion.DebugIsNotNull(originatingObject.ObjectID, "originatingObject.ObjectID != null");
 
       var relationEndPointDefinitionInheritanceRoot = relationEndPointDefinition.ClassDefinition.GetInheritanceRootClass();
       var originatingObjectInheritanceRoot = originatingObject.ObjectID.ClassDefinition.GetInheritanceRootClass();
@@ -134,8 +140,9 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
                  data,
                  relationEndPointDefinition,
                  oppositeEndPointDefinition)
-             let originatingObjectID = (ObjectID)dataContainer.GetValueWithoutEvents(oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current)
-             select Tuple.Create(originatingObjectID, data);
+             let originatingObjectID = (ObjectID?)dataContainer.GetValueWithoutEvents(oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current)
+             where originatingObjectID != null // TODO RM-8247: analyze if originatingObjectID can actually ever be null
+             select Tuple.Create<ObjectID, LoadedObjectDataWithDataSourceData>(originatingObjectID!, data);
     }
 
     private DataContainer CheckRelatedObjectAndGetDataContainer (
@@ -143,6 +150,10 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         IRelationEndPointDefinition relationEndPointDefinition,
         IRelationEndPointDefinition oppositeEndPointDefinition)
     {
+      Assertion.DebugAssert(relatedObject.IsNull == false, "relatedObject.IsNull == false");
+      Assertion.DebugAssert(relatedObject.LoadedObjectData.IsNull == false, "relatedObject.LoadedObjectData.IsNull == false");
+      Assertion.DebugIsNotNull(relatedObject.LoadedObjectData.ObjectID, "relatedObject.LoadedObjectData.ObjectID != null");
+      Assertion.DebugIsNotNull(relatedObject.DataSourceData, "relatedObject.DataSourceData != null");
       CheckClassDefinitionOfRelatedObject(relationEndPointDefinition, oppositeEndPointDefinition, relatedObject.LoadedObjectData.ObjectID);
       return relatedObject.DataSourceData;
     }

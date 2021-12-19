@@ -30,9 +30,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   public interface ISortExpressionDefinitionProvider
   {
     [CanBeNull]
-    SortExpressionDefinition GetSortExpression (
+    SortExpressionDefinition? GetSortExpression (
         [NotNull] IPropertyInformation propertyInfo,
         [NotNull] ClassDefinition referencedClassDefinition,
-        [CanBeNull] string sortExpressionText);
+        [CanBeNull] string? sortExpressionText);
   }
 }

@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get { return _transactionEventSink; }
     }
 
-    public DataContainer this [ObjectID id]
+    public DataContainer? this [ObjectID id]
     {
       get { return _dataContainers[id]; }
     }

@@ -22,15 +22,15 @@ namespace Remotion.Data.DomainObjects.Validation
   [Serializable]
   public class MandatoryRelationNotSetException : DomainObjectValidationException
   {
-    private readonly DomainObject _domainObject;
-    private readonly string _propertyName;
+    private readonly DomainObject? _domainObject;
+    private readonly string? _propertyName;
 
-    public MandatoryRelationNotSetException (DomainObject domainObject, string propertyName, string message)
+    public MandatoryRelationNotSetException (DomainObject? domainObject, string? propertyName, string message)
         : this(domainObject, propertyName, message, null)
     {
     }
 
-    public MandatoryRelationNotSetException (DomainObject domainObject, string propertyName, string message, Exception inner)
+    public MandatoryRelationNotSetException (DomainObject? domainObject, string? propertyName, string message, Exception? inner)
         : base(message, inner)
     {
       _domainObject = domainObject;
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Validation
 
     protected MandatoryRelationNotSetException (SerializationInfo info, StreamingContext context) : base(info, context)
     {
-      _domainObject = (DomainObject)info.GetValue("_domainObject", typeof(DomainObject));
+      _domainObject = (DomainObject?)info.GetValue("_domainObject", typeof(DomainObject));
       _propertyName = info.GetString("_propertyName");
     }
 
@@ -51,12 +51,12 @@ namespace Remotion.Data.DomainObjects.Validation
       info.AddValue("_propertyName", _propertyName);
     }
 
-    public DomainObject DomainObject
+    public DomainObject? DomainObject
     {
       get { return _domainObject; }
     }
 
-    public string PropertyName
+    public string? PropertyName
     {
       get { return _propertyName; }
     }

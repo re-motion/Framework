@@ -66,9 +66,9 @@ namespace Remotion.Data.DomainObjects.Validation
 
       var interfacePropertyInformation = PropertyInfoAdapter.Create(interfaceProperty);
       var implementationPropertyInformation = PropertyInfoAdapter.Create(implementationProperty);
-      var isMixinProperty = Mixins.Utilities.ReflectionUtility.IsMixinType(implementationProperty.DeclaringType);
+      var isMixinProperty = Mixins.Utilities.ReflectionUtility.IsMixinType(implementationProperty.DeclaringType!);
 
-      if (isMixinProperty && !interfacePropertyInformation.DeclaringType.IsInterface)
+      if (isMixinProperty && !interfacePropertyInformation.DeclaringType!.IsInterface)
       {
         throw new ArgumentException(
             string.Format(
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Validation
             string.Format(
                 "The property '{0}' was used from the overridden declaration on type '{1}' but only original declarations are supported.",
                 implementationPropertyInformation.Name,
-                implementationPropertyInformation.DeclaringType.GetFullNameSafe()),
+                implementationPropertyInformation.DeclaringType!.GetFullNameSafe()),
             "implementationProperty");
       }
 
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.Validation
 
       // object o => UsePersistentProperty ((DomainObject)o, _interfaceProperty) ? (object) (TheType o).TheProperty : nonEmptyObject;
 
-      var usePersistentPropertyMethod = MemberInfoFromExpressionUtility.GetMethod(() => UsePersistentProperty(null, null));
+      var usePersistentPropertyMethod = MemberInfoFromExpressionUtility.GetMethod(() => UsePersistentProperty(null!, null!));
       var conditionExpression = Expression.Call(
           usePersistentPropertyMethod,
           Expression.Convert(parameterExpression, typeof(DomainObject)),
@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.Validation
         return true;
 
       var dataManager = DataManagementService.GetDataManager(domainObject.DefaultTransactionContext.ClientTransaction);
-      var endPointID = RelationEndPointID.Create(domainObject.ID, property.DeclaringType, property.Name);
+      var endPointID = RelationEndPointID.Create(domainObject.ID, property.DeclaringType!, property.Name);
       var endPoint = dataManager.GetRelationEndPointWithLazyLoad(endPointID);
       return endPoint.IsDataComplete;
     }

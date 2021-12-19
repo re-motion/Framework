@@ -35,10 +35,10 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     {
     }
 
-    public SortExpressionDefinition GetSortExpression (
+    public SortExpressionDefinition? GetSortExpression (
         IPropertyInformation propertyInfo,
         ClassDefinition referencedClassDefinition,
-        string sortExpressionText)
+        string? sortExpressionText)
     {
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
       ArgumentUtility.CheckNotNull("referencedClassDefinition", referencedClassDefinition);
@@ -54,6 +54,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       catch (MappingException ex)
       {
         var result = MappingValidationResult.CreateInvalidResultForProperty(propertyInfo, ex.Message);
+        Assertion.DebugIsNotNull(result.Message, "result.Message != null");
         throw new MappingException(result.Message, ex);
       }
     }

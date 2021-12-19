@@ -16,6 +16,7 @@
 // 
 using System;
 using System.IO;
+using System.Xml;
 using NUnit.Framework;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
@@ -68,6 +69,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     public void GetTypeWithTypeUtilityNotation ()
     {
       Assert.That(LoaderUtility.GetType("Remotion.Data.DomainObjects::ConfigurationLoader.XmlBasedConfigurationLoader.LoaderUtility"), Is.EqualTo(typeof(LoaderUtility)));
+    }
+
+    [Test]
+    public void GetType_XPathNotFound ()
+    {
+      var namespaceManager = new XmlNamespaceManager(new NameTable());
+      var node = new XmlDocument(namespaceManager.NameTable).CreateElement("documentRoot");
+      var xPath = "missing/root/node";
+      Assert.That(
+          () => LoaderUtility.GetType(node, xPath, namespaceManager),
+          Throws.Exception.TypeOf<ConfigurationException>().With.Message.EqualTo("XPath 'missing/root/node' does not exist on node 'documentRoot'."));
     }
   }
 }

@@ -38,6 +38,6 @@ namespace Remotion.ObjectBinding
     /// <returns> 
     ///   An <see cref="IBusinessObjectWithIdentity"/> or <see langword="null"/> if the specified object was not found. 
     /// </returns>
-    IBusinessObjectWithIdentity GetObject (string uniqueIdentifier);
+    IBusinessObjectWithIdentity? GetObject (string uniqueIdentifier);
   }
 }

@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public bool Contains (ObjectID objectID) => _dataStrategy.ContainsObjectID(objectID);
 
-    public T GetObject (ObjectID objectID) => (T)_dataStrategy.GetObject(objectID);
+    public T? GetObject (ObjectID objectID) => (T?)_dataStrategy.GetObject(objectID);
 
     bool IList.IsReadOnly => true;
 
@@ -76,14 +76,14 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _dataStrategy.ToArray().CopyTo(array, index);
     }
 
-    bool IList.Contains (object value)
+    bool IList.Contains (object? value)
     {
       if (value is DomainObject domainObject)
         return ReferenceEquals(domainObject, GetObject(domainObject.ID));
       return false;
     }
 
-    int IList.IndexOf (object value)
+    int IList.IndexOf (object? value)
     {
       return _dataStrategy
           .Select((obj, index) => new KeyValuePair<DomainObject, int>(obj, index))
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
           .Select(kvp => (int?)kvp.Value).FirstOrDefault() ?? -1;
     }
 
-    object IList.this [int index]
+    object? IList.this [int index]
     {
       get { return this[index]; }
       set
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
-    int IList.Add (object value)
+    int IList.Add (object? value)
     {
       throw new NotSupportedException(
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
-    void IList.Insert (int index, object value)
+    void IList.Insert (int index, object? value)
     {
       throw new NotSupportedException(
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");
     }
 
-    void IList.Remove (object value)
+    void IList.Remove (object? value)
     {
       throw new NotSupportedException(
           "The collection does not support updating the data explicitly. Instead, modify the opposite endpoint of this bidirectional relation.");

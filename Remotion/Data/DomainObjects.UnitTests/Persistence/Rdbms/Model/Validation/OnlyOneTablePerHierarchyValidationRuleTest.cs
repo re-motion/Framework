@@ -80,6 +80,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     }
 
     [Test]
+    public void HasBaseClassAndHasTableDefinition_StorageEntityDefinitionIsNotSet ()
+    {
+      var validationResult = _validationRule.Validate(_classDefinitionWithBaseClass);
+
+      AssertMappingValidationResult(validationResult, true, null);
+    }
+
+    [Test]
     public void HasBaseClassAndHasTableDefinition_BaseClassHasTableDefinition ()
     {
       _classDefinitionWithBaseClass.SetStorageEntity(_tableDefinition);

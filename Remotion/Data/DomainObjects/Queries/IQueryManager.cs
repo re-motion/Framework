@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
     ///   An error occurred while executing the query.
     /// </exception>
-    object GetScalar (IQuery query);
+    object? GetScalar (IQuery query);
 
     /// <summary>
     /// Executes a given <see cref="IQuery"/> and returns a collection of the <see cref="DomainObject"/>s returned by the query.

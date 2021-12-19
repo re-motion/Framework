@@ -66,6 +66,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     }
 
     [Test]
+    public void InheritanceRoot_WithoutBaseClass ()
+    {
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(object));
+
+      var validationResult = _validationRule.Validate(classDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
+    }
+
+    [Test]
     public void InheritanceRoot_WithStorageGroupAttribute_And_WithStorageGroupAttributeOnBaseClass ()
     {
       var type = typeof(DerivedClassWithStorageGroupAttribute);
@@ -76,6 +86,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       string message = "The domain object type cannot redefine the 'StorageGroupAttribute' already defined on base type 'BaseClassWithStorageGroupAttribute'.\r\n\r\n"
         +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
         +"StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule.DerivedClassWithStorageGroupAttribute";
+      AssertMappingValidationResult(validationResult, false, message);
+    }
+
+    [Test]
+    public void InheritanceRoot_WithStorageGroupAttribute_And_WithStorageGroupAttributeOnBaseClass_And_BaseClassIsNotDomainObject ()
+    {
+      var type = typeof(DerivedClassWithStorageGroupAttributeAndNonDomainObjectBaseTypeWithStorageGroupAttribute);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: type);
+
+      var validationResult = _validationRule.Validate(classDefinition);
+
+      string message = "The domain object type cannot redefine the 'StorageGroupAttribute' already defined on base type 'NonDomainObjectBaseTypeWithStorageGroupAttribute'.\r\n\r\n"
+                       +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
+                       +"StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule.DerivedClassWithStorageGroupAttributeAndNonDomainObjectBaseTypeWithStorageGroupAttribute";
       AssertMappingValidationResult(validationResult, false, message);
     }
   }

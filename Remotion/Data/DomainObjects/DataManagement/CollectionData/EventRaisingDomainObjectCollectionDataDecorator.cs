@@ -43,15 +43,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       get { return _eventRaiser; }
     }
 
-    protected override void OnDataChanging (OperationKind operation, DomainObject affectedObject, int index)
+    protected override void OnDataChanging (OperationKind operation, DomainObject? affectedObject, int index)
     {
+      if (operation != OperationKind.Sort)
+        ArgumentUtility.CheckNotNull("affectedObject", affectedObject!);
+
       switch (operation)
       {
         case OperationKind.Insert:
-          _eventRaiser.BeginAdd(index, affectedObject);
+          _eventRaiser.BeginAdd(index, affectedObject!);
           break;
         case OperationKind.Remove:
-          _eventRaiser.BeginRemove(index, affectedObject);
+          _eventRaiser.BeginRemove(index, affectedObject!);
           break;
         case OperationKind.Sort:
           break;
@@ -60,15 +63,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       }
     }
 
-    protected override void OnDataChanged (OperationKind operation, DomainObject affectedObject, int index)
+    protected override void OnDataChanged (OperationKind operation, DomainObject? affectedObject, int index)
     {
+      if (operation != OperationKind.Sort)
+        ArgumentUtility.CheckNotNull("affectedObject", affectedObject!);
+
       switch (operation)
       {
         case OperationKind.Insert:
-          _eventRaiser.EndAdd(index, affectedObject);
+          _eventRaiser.EndAdd(index, affectedObject!);
           break;
         case OperationKind.Remove:
-          _eventRaiser.EndRemove(index, affectedObject);
+          _eventRaiser.EndRemove(index, affectedObject!);
           break;
         case OperationKind.Sort:
           _eventRaiser.WithinReplaceData();

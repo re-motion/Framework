@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
       }
     }
 
-    public IDataManagementCommand CreateSetCommand (IRealObjectEndPoint endPoint, DomainObject newRelatedObject, Action<DomainObject> oppositeObjectSetter)
+    public IDataManagementCommand CreateSetCommand (IRealObjectEndPoint endPoint, DomainObject? newRelatedObject, Action<DomainObject?> oppositeObjectSetter)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("oppositeObjectSetter", oppositeObjectSetter);
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
       }
     }
 
-    private IVirtualEndPoint GetOppositeEndPoint (IRealObjectEndPoint sourceEndPoint, ObjectID oppositeObjectID)
+    private IVirtualEndPoint GetOppositeEndPoint (IRealObjectEndPoint sourceEndPoint, ObjectID? oppositeObjectID)
     {
       var newOppositeID = RelationEndPointID.CreateOpposite(sourceEndPoint.Definition, oppositeObjectID);
       return (IVirtualEndPoint)_endPointProvider.GetRelationEndPointWithLazyLoad(newOppositeID);

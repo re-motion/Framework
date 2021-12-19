@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     }
 
     private void AddAccessorInterceptor (
-        List<IAccessorInterceptor> interceptors, Type concreteBaseType, MethodInfo accessor, string propertyName, Type propertyType, bool isGetter)
+        List<IAccessorInterceptor> interceptors, Type concreteBaseType, MethodInfo? accessor, string propertyName, Type propertyType, bool isGetter)
     {
       if (accessor == null)
         return;

@@ -298,7 +298,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     private static IDataManagementCommand CreateUnloadVirtualEndPointAndItemDataCommand (ClientTransaction tx, RelationEndPointID endPointID)
     {
       CheckVirtualEndPointID(endPointID);
-      var endPoint = (IVirtualEndPoint)tx.DataManager.GetRelationEndPointWithoutLoading(endPointID);
+      var endPoint = (IVirtualEndPoint?)tx.DataManager.GetRelationEndPointWithoutLoading(endPointID);
 
       if (endPoint == null || !endPoint.IsDataComplete)
         return new NopCommand();

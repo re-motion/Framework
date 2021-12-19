@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
@@ -30,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     {
     }
 
-    public bool TryParse (string stringValue, out object resultValue)
+    public bool TryParse (string stringValue, [MaybeNullWhen(false)] out object resultValue)
     {
       ArgumentUtility.CheckNotNull("stringValue", stringValue);
 

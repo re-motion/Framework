@@ -26,10 +26,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// </summary>
   public interface IDomainObjectCollectionData : IReadOnlyCollection<DomainObject>
   {
-    Type RequiredItemType { get; }
+    Type? RequiredItemType { get; }
     bool IsReadOnly { get; }
 
-    RelationEndPointID AssociatedEndPointID { get; }
+    RelationEndPointID? AssociatedEndPointID { get; }
     bool IsDataComplete { get; }
 
     void EnsureDataComplete ();
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     bool ContainsObjectID (ObjectID objectID);
 
     DomainObject GetObject (int index);
-    DomainObject GetObject (ObjectID objectID);
+    DomainObject? GetObject (ObjectID objectID);
 
     int IndexOf (ObjectID objectID);
 

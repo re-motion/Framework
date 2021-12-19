@@ -9,8 +9,10 @@
     <Description>Register the factories in this library with your IoC container to integrate the UberProf profiling APIs.</Description>
     <AssemblyName>Remotion.Data.DomainObjects.UberProfIntegration</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />

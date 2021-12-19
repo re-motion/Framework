@@ -56,8 +56,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
     protected RelationDefinition CreateRelationDefinitionAndSetBackReferences (string id, IRelationEndPointDefinition endPointDefinition1, IRelationEndPointDefinition endPointDefinition2)
     {
       var relationDefinition = new RelationDefinition(id, endPointDefinition1, endPointDefinition2);
-      endPointDefinition1.SetRelationDefinition(relationDefinition);
-      endPointDefinition2.SetRelationDefinition(relationDefinition);
+      ((IRelationEndPointDefinitionSetter)endPointDefinition1).SetRelationDefinition(relationDefinition);
+      ((IRelationEndPointDefinitionSetter)endPointDefinition2).SetRelationDefinition(relationDefinition);
       return relationDefinition;
     }
   }

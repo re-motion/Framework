@@ -33,9 +33,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
   public class SqlXmlSetComparedColumnSpecification : IComparedColumnsSpecification
   {
     private readonly ColumnDefinition _columnDefinition;
-    private readonly object[] _objectValues;
+    private readonly object?[] _objectValues;
 
-    public SqlXmlSetComparedColumnSpecification (ColumnDefinition columnDefinition, IEnumerable<object> objectValues)
+    public SqlXmlSetComparedColumnSpecification (ColumnDefinition columnDefinition, IEnumerable<object?> objectValues)
     {
       ArgumentUtility.CheckNotNull("columnDefinition", columnDefinition);
       ArgumentUtility.CheckNotNull("objectValues", objectValues);
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
       get { return _columnDefinition; }
     }
 
-    public object[] ObjectValues
+    public object?[] ObjectValues
     {
       get { return _objectValues; }
     }

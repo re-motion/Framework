@@ -57,7 +57,7 @@ namespace Remotion.Data
     ///   An instance of the of a type implementing <see cref="ITransaction"/> or <see langword="null"/> if the
     ///   transaction is a root transaction.
     /// </value>
-    ITransaction Parent { get; }
+    ITransaction? Parent { get; }
 
     /// <summary>Gets a flag describing whether the transaction is a child transaction.</summary>
     /// <value> <see langword="true"/> if the transaction is a child transaction. </value>

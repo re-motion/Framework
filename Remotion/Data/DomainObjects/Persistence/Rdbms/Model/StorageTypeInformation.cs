@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       get { return _dotNetTypeConverter; }
     }
 
-    public IDbDataParameter CreateDataParameter (IDbCommand command, object value)
+    public IDbDataParameter CreateDataParameter (IDbCommand command, object? value)
     {
       ArgumentUtility.CheckNotNull("command", command);
 
@@ -150,27 +150,34 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return parameter;
     }
 
-    public object Read (IDataReader dataReader, int ordinal)
+    public object? Read (IDataReader dataReader, int ordinal)
     {
       ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
-      var value = dataReader[ordinal];
+      // IDataReader.GetValue(ordinal) usually returns DBNull.Value for null values, but the implementation does return null for unsupported data types.
+      // There is no explicit documentation on IDataReader.GetValue(ordinal) returning only DBNull.Value instead of an actual null value.
+      // Also, when using IDbCommand.ExecuteScalar(), the API is defined as a nullable value, therefore it is more consistent to officially accept
+      // that IDataReader.GetValue(ordinal) could also return null values despite its contract.
+      object? value = dataReader.GetValue(ordinal);
       return ConvertFromStorageType(value);
     }
 
     /// <inheritdoc />
-    public object ConvertToStorageType (object dotNetValue)
+    public object ConvertToStorageType (object? dotNetValue)
     {
       return DotNetTypeConverter.ConvertTo(dotNetValue, StorageType) ?? DBNull.Value;
     }
 
     /// <inheritdoc />
-    public object ConvertFromStorageType (object storageValue)
+    public object? ConvertFromStorageType (object? storageValue)
     {
+      object? storageValueOrNull;
       if (storageValue == DBNull.Value)
-        storageValue = null;
+        storageValueOrNull = null;
+      else
+        storageValueOrNull = storageValue;
 
-      return DotNetTypeConverter.ConvertFrom(storageValue);
+      return DotNetTypeConverter.ConvertFrom(storageValueOrNull);
     }
 
     public IStorageTypeInformation UnifyForEquivalentProperties (IEnumerable<IStorageTypeInformation> equivalentStorageTypes)
@@ -183,12 +190,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
                       this,
                       equivalentInfo,
                       "equivalentStorageTypes",
-                      info => Tuple.Create<string, object>("storage type", info.StorageType),
-                      info => Tuple.Create<string, object>("storage type name", info.StorageTypeName),
-                      info => Tuple.Create<string, object>("storage DbType", info.StorageDbType),
-                      info => Tuple.Create<string, object>("storage type length", info.StorageTypeLength),
-                      info => Tuple.Create<string, object>(".NET type", info.DotNetType),
-                      info => Tuple.Create<string, object>(".NET type converter type", info.DotNetTypeConverter.GetType())))
+                      info => Tuple.Create<string, object?>("storage type", info.StorageType),
+                      info => Tuple.Create<string, object?>("storage type name", info.StorageTypeName),
+                      info => Tuple.Create<string, object?>("storage DbType", info.StorageDbType),
+                      info => Tuple.Create<string, object?>("storage type length", info.StorageTypeLength),
+                      info => Tuple.Create<string, object?>(".NET type", info.DotNetType),
+                      info => Tuple.Create<string, object?>(".NET type converter type", info.DotNetTypeConverter.GetType())))
               .ToArray();
 
       return new StorageTypeInformation(

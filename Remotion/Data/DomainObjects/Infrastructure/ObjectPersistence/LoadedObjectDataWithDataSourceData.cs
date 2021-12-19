@@ -22,14 +22,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
   /// <summary>
   /// Holds an <see cref="ILoadedObjectData"/> object along with a <see cref="DataContainer"/> that holds the data from the underlying data source. 
-  /// originally loaded from thedata source.
+  /// originally loaded from the data source.
   /// </summary>
   public struct LoadedObjectDataWithDataSourceData
   {
     private readonly ILoadedObjectData _loadedObjectData;
-    private readonly DataContainer _dataSourceData;
+    private readonly DataContainer? _dataSourceData;
 
-    public LoadedObjectDataWithDataSourceData (ILoadedObjectData loadedObjectData, DataContainer dataSourceData)
+    public LoadedObjectDataWithDataSourceData (ILoadedObjectData loadedObjectData, DataContainer? dataSourceData)
     {
       ArgumentUtility.CheckNotNull("loadedObjectData", loadedObjectData);
 
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         throw new ArgumentException("The dataSourceData parameter must not be null when loadedObjectData.IsNull is false.", "dataSourceData");
       if (loadedObjectData.IsNull && dataSourceData != null)
         throw new ArgumentException("The dataSourceData parameter must be null when loadedObjectData.IsNull is true.", "dataSourceData");
-      if (!loadedObjectData.IsNull && loadedObjectData.ObjectID != dataSourceData.ID)
+      if (!loadedObjectData.IsNull && loadedObjectData.ObjectID != dataSourceData!.ID)
         throw new ArgumentException("The ID of the dataSourceData parameter does not match the loadedObjectData.", "dataSourceData");
 
       _loadedObjectData = loadedObjectData;
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _loadedObjectData; }
     }
 
-    public DataContainer DataSourceData
+    public DataContainer? DataSourceData
     {
       get { return _dataSourceData; }
     }

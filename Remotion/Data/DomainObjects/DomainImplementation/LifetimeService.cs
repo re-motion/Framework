@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// An error occurred while reading a <see cref="PropertyValue"/>.<br/> -or- <br/>
     /// An error occurred while accessing the data source.
     /// </exception>
-    public static DomainObject TryGetObject (ClientTransaction clientTransaction, ObjectID objectID)
+    public static DomainObject? TryGetObject (ClientTransaction clientTransaction, ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("objectID", objectID);
@@ -216,7 +216,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <paramref name="objectIDs"/>. This list can contain invalid and <see langword="null" /> <see cref="DomainObject"/> references.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null"/>.</exception>
     /// <exception cref="InvalidCastException">One of the retrieved objects doesn't fit the specified type <typeparamref name="T"/>.</exception>
-    public static T[] TryGetObjects<T> (ClientTransaction clientTransaction, params ObjectID[] objectIDs)
+    public static T?[] TryGetObjects<T> (ClientTransaction clientTransaction, params ObjectID[] objectIDs)
         where T : DomainObject
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
@@ -238,7 +238,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <paramref name="objectIDs"/>. This list can contain invalid and <see langword="null" /> <see cref="DomainObject"/> references.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null"/>.</exception>
     /// <exception cref="InvalidCastException">One of the retrieved objects doesn't fit the specified type <typeparamref name="T"/>.</exception>
-    public static T[] TryGetObjects<T> (ClientTransaction clientTransaction, IEnumerable<ObjectID> objectIDs)
+    public static T?[] TryGetObjects<T> (ClientTransaction clientTransaction, IEnumerable<ObjectID> objectIDs)
         where T : DomainObject
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);

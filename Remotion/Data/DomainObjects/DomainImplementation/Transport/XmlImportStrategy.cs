@@ -49,7 +49,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       ArgumentUtility.CheckNotNull("dataStream", dataStream);
       ArgumentUtility.CheckNotNull("formatter", formatter);
 
-      return (XmlTransportItem[])formatter.Deserialize(dataStream);
+      var result = (XmlTransportItem[]?)formatter.Deserialize(dataStream);
+      Assertion.IsNotNull(result, "Deserialized data stream returned null.");
+      return result;
     }
   }
 }

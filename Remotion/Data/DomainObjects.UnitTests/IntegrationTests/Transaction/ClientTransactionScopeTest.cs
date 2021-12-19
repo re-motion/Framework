@@ -120,6 +120,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       using (ClientTransactionScope.EnterNullScope())
       {
         Assert.That(ClientTransactionScope.HasCurrentTransaction, Is.False);
+        Assert.That(((ITransactionScope)ClientTransactionScope.ActiveScope).ScopedTransaction, Is.Null);
+
         using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
         {
           Assert.That(ClientTransactionScope.HasCurrentTransaction, Is.True);

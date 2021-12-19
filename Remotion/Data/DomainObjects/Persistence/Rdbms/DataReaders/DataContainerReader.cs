@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
   /// instances), and values for each persistent property of the <see cref="ClassDefinition"/> matching the <see cref="ObjectID"/> read from the 
   /// <see cref="IDataReader"/>.
   /// </summary>
-  public class DataContainerReader : IObjectReader<DataContainer>
+  public class DataContainerReader : IObjectReader<DataContainer?>
   {
     private readonly IRdbmsStoragePropertyDefinition _idProperty;
     private readonly IRdbmsStoragePropertyDefinition _timestampProperty;
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _dataContainerValidator; }
     }
 
-    public virtual DataContainer Read (IDataReader dataReader)
+    public virtual DataContainer? Read (IDataReader dataReader)
     {
       ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         return null;
     }
 
-    public virtual IEnumerable<DataContainer> ReadSequence (IDataReader dataReader)
+    public virtual IEnumerable<DataContainer?> ReadSequence (IDataReader dataReader)
     {
       ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
@@ -105,11 +105,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       }
     }
 
-    protected virtual DataContainer CreateDataContainerFromReader (IDataReader dataReader, ColumnValueReader columnValueReader)
+    protected virtual DataContainer? CreateDataContainerFromReader (IDataReader dataReader, ColumnValueReader columnValueReader)
     {
       ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
-      var id = (ObjectID)_idProperty.CombineValue(columnValueReader);
+      var id = (ObjectID?)_idProperty.CombineValue(columnValueReader);
       if (id == null)
         return null;
 
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       return dataContainer;
     }
 
-    private object ReadPropertyValue (PropertyDefinition propertyDefinition, IColumnValueProvider columnValueProvider, ObjectID id)
+    private object? ReadPropertyValue (PropertyDefinition propertyDefinition, IColumnValueProvider columnValueProvider, ObjectID id)
     {
       try
       {

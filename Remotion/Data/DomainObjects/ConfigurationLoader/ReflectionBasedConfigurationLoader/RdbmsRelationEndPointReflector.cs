@@ -17,6 +17,7 @@
 using System;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -47,6 +48,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       if (ReflectionUtility.IsIObjectList(PropertyInfo.PropertyType))
         return true;
 
+      Assertion.DebugIsNotNull(BidirectionalRelationAttribute, "BidirectionalRelationAttribute != null");
       if (BidirectionalRelationAttribute.ContainsForeignKey)
         return false;
 

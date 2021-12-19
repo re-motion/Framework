@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
     {
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
-      if (propertyDefinition.StorageClass == StorageClass.Persistent)
+      if (propertyDefinition.StorageClass == StorageClass.Persistent && propertyDefinition.ClassDefinition.HasStorageEntityDefinitionBeenSet)
       {
         if (propertyDefinition.ClassDefinition.StorageEntityDefinition is NonPersistentStorageEntity)
         {

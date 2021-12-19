@@ -70,7 +70,7 @@ public class CommonCollection : ICollection
 
     public void Dispose ()
     {
-      _collection = null;
+      _collection = null!;
     }
 
     #endregion
@@ -189,7 +189,11 @@ public class CommonCollection : ICollection
   /// </exception>
   protected object BaseGetObject (int index)
   {
-    return _collectionData[_collectionKeys[index]];
+    var collectionKey = _collectionKeys[index];
+    Assertion.DebugIsNotNull(collectionKey, "{0} must not contain null entries.", nameof(_collectionKeys));
+    var value = _collectionData[collectionKey];
+    Assertion.DebugIsNotNull(value, "{0} is out-of-sync with {1} or contains a null entry for index {2}.", nameof(_collectionData), nameof(_collectionKeys), index);
+    return value;
   }
 
   /// <summary>
@@ -198,7 +202,7 @@ public class CommonCollection : ICollection
   /// <param name="key">The key of the object to return. Must not be <see langword="null"/>.</param>
   /// <returns>The object with the given key, if the object is found; otherwise, <see langword="null"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
-  protected object BaseGetObject (object key)
+  protected object? BaseGetObject (object key)
   {
     ArgumentUtility.CheckNotNull("key", key);
 
@@ -234,7 +238,7 @@ public class CommonCollection : ICollection
     if (!BaseContainsKey(key))
       return false;
 
-    object objectInCollection = BaseGetObject(key);
+    object? objectInCollection = BaseGetObject(key);
     return object.Equals(objectInCollection, value);
   }
 

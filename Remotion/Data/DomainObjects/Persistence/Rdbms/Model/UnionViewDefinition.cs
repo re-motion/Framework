@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       get { return _unionedEntities; }
     }
 
-    public ColumnDefinition[] CalculateFullColumnList (IEnumerable<ColumnDefinition> availableColumns)
+    public ColumnDefinition?[] CalculateFullColumnList (IEnumerable<ColumnDefinition> availableColumns)
     {
       ArgumentUtility.CheckNotNull("availableColumns", availableColumns);
 

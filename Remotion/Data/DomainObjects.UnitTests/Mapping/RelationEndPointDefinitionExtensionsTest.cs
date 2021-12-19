@@ -18,8 +18,6 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
-using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -40,18 +38,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    public void GetOppositeEndPointDefinition_EndPointDefinitionWithoutRelation ()
-    {
-      var endPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      endPointDefinition.Stub(stub => stub.RelationDefinition).Return(null);
-
-      Assert.That(
-          () => endPointDefinition.GetOppositeEndPointDefinition(),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
-              "The given IRelationEndPointDefinition object must be part of a RelationDefinition.", "relationEndPointDefinition"));
-    }
-
-    [Test]
     public void GetOppositeClassDefinition ()
     {
       var endPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(
@@ -60,18 +46,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var oppositeEndPointDefinition = endPointDefinition.GetOppositeClassDefinition();
 
       Assert.That(oppositeEndPointDefinition, Is.SameAs(DomainObjectIDs.OrderTicket1.ClassDefinition));
-    }
-
-    [Test]
-    public void GetOppositeClassDefinition_EndPointDefinitionWithoutRelation ()
-    {
-      var endPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      endPointDefinition.Stub(stub => stub.RelationDefinition).Return(null);
-
-      Assert.That(
-          () => endPointDefinition.GetOppositeClassDefinition(),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
-              "The given IRelationEndPointDefinition object must be part of a RelationDefinition.", "relationEndPointDefinition"));
     }
   }
 }

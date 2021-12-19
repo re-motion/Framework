@@ -30,10 +30,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     DomainObject GetObjectReference (ObjectID objectID);
 
     DomainObject GetObject (ObjectID objectID, bool includeDeleted);
-    DomainObject TryGetObject (ObjectID objectID);
+    DomainObject? TryGetObject (ObjectID objectID);
 
-    T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs);
-    T[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs) where T : DomainObject;
+    T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs) where T : DomainObject;
+    T?[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs) where T : DomainObject;
 
     void Delete (DomainObject domainObject);
   }

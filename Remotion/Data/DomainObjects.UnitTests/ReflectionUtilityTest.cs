@@ -93,11 +93,28 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
+    public void GetAssemblyPath_FromNonPersistentAssembly ()
+    {
+      MockRepository mockRepository = new MockRepository();
+      Assembly assemblyMock = mockRepository.StrictMock<FakeAssembly>();
+      AssemblyName fakeAssemblyName = new AssemblyName();
+      fakeAssemblyName.Name = "FakeAssembly";
+
+      SetupResult.For(assemblyMock.GetName(false)).Return(fakeAssemblyName);
+      mockRepository.ReplayAll();
+      Assert.That(
+          () => ReflectionUtility.GetAssemblyDirectory(assemblyMock),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("The code base of assembly 'FakeAssembly' is not set."));
+    }
+
+    [Test]
     public void GetAssemblyPath_FromNonLocalUri ()
     {
       MockRepository mockRepository = new MockRepository();
       Assembly assemblyMock = mockRepository.StrictMock<FakeAssembly>();
       AssemblyName fakeAssemblyName = new AssemblyName();
+      fakeAssemblyName.Name = "FakeAssembly";
       fakeAssemblyName.CodeBase = "http://server/File.ext";
 
       SetupResult.For(assemblyMock.GetName(false)).Return(fakeAssemblyName);
@@ -105,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => ReflectionUtility.GetAssemblyDirectory(assemblyMock),
           Throws.InvalidOperationException
-              .With.Message.EqualTo("The assembly's code base 'http://server/File.ext' is not a local path."));
+              .With.Message.EqualTo("The code base 'http://server/File.ext' of assembly 'FakeAssembly' is not a local path."));
     }
 
     [Test]
@@ -370,6 +387,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
+    public void GetRelatedObjectTypeFromRelationProperty_ObjectList_OpenGenericParameter_ReturnsNull ()
+    {
+      var property = PropertyInfoAdapter.Create(typeof(TestObject<>).GetProperty("ObjectListProperty"));
+
+      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(property), Is.Null);
+    }
+
+    [Test]
     public void GetRelatedObjectTypeFromRelationProperty_IObjectList_ReturnsTypeParameterValue ()
     {
       var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
@@ -379,7 +404,15 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void GetRelatedObjectTypeFromRelationProperty_IDomainObject_ReturnsTypeParameterValue ()
+    public void GetRelatedObjectTypeFromRelationProperty_IObjectList_OpenGenericParameter_ReturnsNull ()
+    {
+      var property = PropertyInfoAdapter.Create(typeof(TestObject<>).GetProperty("IObjectListProperty"));
+
+      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(property), Is.Null);
+    }
+
+    [Test]
+    public void GetRelatedObjectTypeFromRelationProperty_IDomainObject_ReturnsPropertyType ()
     {
       var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
       propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof(IDomainObject));
@@ -388,7 +421,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void GetRelatedObjectTypeFromRelationProperty_DomainObject_ReturnsTypeParameterValue ()
+    public void GetRelatedObjectTypeFromRelationProperty_DomainObject_ReturnsPropertyType ()
     {
       var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
       propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof(DomainObject));
@@ -397,12 +430,20 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void GetRelatedObjectTypeFromRelationProperty_Object_ReturnsTypeParameterValue ()
+    public void GetRelatedObjectTypeFromRelationProperty_Object_ReturnsPropertyType ()
     {
       var propertyInfoStub = MockRepository.GenerateStub<IPropertyInformation>();
       propertyInfoStub.Stub(_ => _.PropertyType).Return(typeof(object));
 
       Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(propertyInfoStub), Is.EqualTo(typeof(object)));
+    }
+
+    [Test]
+    public void GetRelatedObjectTypeFromRelationProperty_RelationProperty_OpenGenericParameter_ReturnsNull ()
+    {
+      var property = PropertyInfoAdapter.Create(typeof(TestObject<>).GetProperty("RelationProperty"));
+
+      Assert.That(ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(property), Is.Null);
     }
 
     [Test]
@@ -421,6 +462,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void GetObjectListTypeParameter_OpenGeneric_ReturnsNull ()
     {
       Assert.That(ReflectionUtility.GetObjectListTypeParameter(typeof(ObjectList<>)), Is.Null);
+    }
+
+    [Test]
+    public void GetObjectListTypeParameter_OpenGenericParameter_ReturnsNull ()
+    {
+      var property = typeof(TestObject<>).GetProperty("ObjectListProperty");
+
+      Assert.That(ReflectionUtility.GetObjectListTypeParameter(property.PropertyType), Is.Null);
     }
 
     [Test]
@@ -476,9 +525,17 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void GetIObjectListTypeParameter_OpenGeneric_ReturnsTypeParameter ()
+    public void GetIObjectListTypeParameter_OpenGeneric_ReturnsNull ()
     {
       Assert.That(ReflectionUtility.GetIObjectListTypeParameter(typeof(IObjectList<>)), Is.Null);
+    }
+
+    [Test]
+    public void GetIObjectListTypeParameter_OpenGenericParameter_ReturnsNull ()
+    {
+      var property = typeof(TestObject<>).GetProperty("IObjectListProperty");
+
+      Assert.That(ReflectionUtility.GetIObjectListTypeParameter(property.PropertyType), Is.Null);
     }
 
     [Test]
@@ -525,6 +582,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     /// </remarks>
     public class FakeAssembly : Assembly
     {
+    }
+
+    private class TestObject<T>
+        where T : DomainObject
+    {
+      public ObjectList<T> ObjectListProperty { get; }
+      public IObjectList<T> IObjectListProperty { get; }
+      public T RelationProperty { get; }
     }
   }
 }

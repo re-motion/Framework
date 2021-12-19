@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Utilities;
 
@@ -51,18 +52,19 @@ namespace Remotion.Data.DomainObjects.Tracing
       return _command.CreateParameter();
     }
 
-    IDbConnection IDbCommand.Connection
+    IDbConnection? IDbCommand.Connection
     {
       get { return _command.Connection; }
       set { _command.Connection = value; }
     }
 
-    IDbTransaction IDbCommand.Transaction
+    IDbTransaction? IDbCommand.Transaction
     {
       get { return _command.Transaction; }
       set { _command.Transaction = value; }
     }
 
+    [AllowNull]
     public string CommandText
     {
       get { return _command.CommandText; }
@@ -152,9 +154,9 @@ namespace Remotion.Data.DomainObjects.Tracing
       return new TracingDataReader(dataReader, _persistenceExtension, _connectionID, _queryID);
     }
 
-    public object ExecuteScalar ()
+    public object? ExecuteScalar ()
     {
-      object result = ExecuteWithProfiler(() => _command.ExecuteScalar());
+      object? result = ExecuteWithProfiler(() => _command.ExecuteScalar());
       _persistenceExtension.QueryCompleted(_connectionID, _queryID, TimeSpan.Zero, 1);
       return result;
     }
@@ -164,7 +166,7 @@ namespace Remotion.Data.DomainObjects.Tracing
       _command.Connection = connection == null ? null : connection.WrappedInstance;
     }
 
-    public void SetInnerTransaction (TracingDbTransaction transaction)
+    public void SetInnerTransaction (TracingDbTransaction? transaction)
     {
       _command.Transaction = transaction == null ? null : transaction.WrappedInstance;
     }
@@ -186,7 +188,7 @@ namespace Remotion.Data.DomainObjects.Tracing
       }
     }
 
-    private IDictionary<string, object> ConvertToDictionary (IDataParameterCollection parameters)
+    private IDictionary<string, object?> ConvertToDictionary (IDataParameterCollection parameters)
     {
       return parameters.Cast<IDbDataParameter>().ToDictionary(parameter => parameter.ParameterName, parameter => parameter.Value);
     }

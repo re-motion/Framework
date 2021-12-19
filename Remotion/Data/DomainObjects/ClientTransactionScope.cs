@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Context;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -39,8 +40,8 @@ namespace Remotion.Data.DomainObjects
   /// </remarks>
   public class ClientTransactionScope : IDisposable, ITransactionScope
   {
-    private static readonly SafeContextSingleton<ClientTransactionScope> s_scopeSingleton =
-        new SafeContextSingleton<ClientTransactionScope>(SafeContextKeys.DataDomainObjectsClientTransactionScope, () => null);
+    private static readonly SafeContextSingleton<ClientTransactionScope?> s_scopeSingleton =
+        new SafeContextSingleton<ClientTransactionScope?>(SafeContextKeys.DataDomainObjectsClientTransactionScope, () => null);
 
     /// <summary>
     /// Gets a value indicating if a <see cref="ClientTransaction"/> is currently set as <see cref="CurrentTransaction"/>. 
@@ -53,8 +54,8 @@ namespace Remotion.Data.DomainObjects
     {
       get
       {
-        // Performancetuning: get_ActiveScope() is quite expensive, so only called once
-        ClientTransactionScope activeScope = ActiveScope;
+        // Performance tuning: get_ActiveScope() is quite expensive, so only called once
+        var activeScope = ActiveScope;
         return activeScope != null && activeScope.ScopedTransaction != null;
       }
     }
@@ -71,8 +72,8 @@ namespace Remotion.Data.DomainObjects
     {
       get
       {
-        // Performancetuning: get_ActiveScope() is quite expensive, so only called once
-        ClientTransactionScope activeScope = ActiveScope;
+        // Performance tuning: get_ActiveScope() is quite expensive, so only called once
+        var activeScope = ActiveScope;
 
         if (activeScope == null || activeScope.ScopedTransaction == null)
           throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");
@@ -85,7 +86,7 @@ namespace Remotion.Data.DomainObjects
     /// Retrieves the active <see cref="ClientTransactionScope"/> for the current thread.
     /// </summary>
     /// <value>The current thread's active scope, or <see langword="null"/> if no scope is currently active.</value>
-    public static ClientTransactionScope ActiveScope
+    public static ClientTransactionScope? ActiveScope
     {
       get { return s_scopeSingleton.Current; }
     }
@@ -100,7 +101,7 @@ namespace Remotion.Data.DomainObjects
       SetActiveScope(null);
     }
 
-    private static void SetActiveScope (ClientTransactionScope scope)
+    private static void SetActiveScope (ClientTransactionScope? scope)
     {
       s_scopeSingleton.SetCurrent(scope);
     }
@@ -120,12 +121,12 @@ namespace Remotion.Data.DomainObjects
       return new ClientTransactionScope(null, DomainObjects.AutoRollbackBehavior.None, null);
     }
 
-    private readonly ClientTransactionScope _previousScope;
-    private readonly ClientTransaction _scopedTransaction;
+    private readonly ClientTransactionScope? _previousScope;
+    private readonly ClientTransaction? _scopedTransaction;
 
     private bool _hasBeenLeft = false;
     private AutoRollbackBehavior _autoRollbackBehavior;
-    private readonly IDisposable _attachedScope;
+    private readonly IDisposable? _attachedScope;
 
     /// <summary>
     /// Associates a <see cref="ClientTransaction"/> with the current thread, specifying the scope's automatic rollback behavior.
@@ -139,8 +140,11 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="Leave"/> method is called or the scope is disposed of, the previous scope is reactivated.
     /// </para>
     /// </remarks>
-    internal ClientTransactionScope (ClientTransaction scopedCurrentTransaction, AutoRollbackBehavior autoRollbackBehavior, IDisposable attachedScope)
+    internal ClientTransactionScope (ClientTransaction? scopedCurrentTransaction, AutoRollbackBehavior autoRollbackBehavior, IDisposable? attachedScope)
     {
+      if (autoRollbackBehavior != AutoRollbackBehavior.None)
+        ArgumentUtility.CheckNotNull("scopedCurrentTransaction", scopedCurrentTransaction!);
+
       _autoRollbackBehavior = autoRollbackBehavior;
 
       _previousScope = ClientTransactionScope.ActiveScope;
@@ -166,7 +170,7 @@ namespace Remotion.Data.DomainObjects
     /// Gets the transaction this scope was created for.
     /// </summary>
     /// <value>The transaction passed to the scope's constructor or automatically created by the scope.</value>
-    public ClientTransaction ScopedTransaction
+    public ClientTransaction? ScopedTransaction
     {
       get { return _scopedTransaction; }
     }
@@ -175,9 +179,9 @@ namespace Remotion.Data.DomainObjects
     /// Gets the transaction managed by this scope.
     /// </summary>
     /// <value>The scoped transaction.</value>
-    ITransaction ITransactionScope.ScopedTransaction
+    ITransaction? ITransactionScope.ScopedTransaction
     {
-      get { return ScopedTransaction.ToITransaction(); }
+      get { return ScopedTransaction?.ToITransaction(); }
     }
 
     /// <summary>
@@ -214,10 +218,16 @@ namespace Remotion.Data.DomainObjects
 
     private void ExecuteAutoRollbackBehavior ()
     {
-      if (AutoRollbackBehavior == AutoRollbackBehavior.Rollback && ScopedTransaction.HasChanged())
-        Rollback();
+      if (AutoRollbackBehavior == AutoRollbackBehavior.Rollback)
+      {
+        Assertion.DebugIsNotNull(ScopedTransaction, "ScopedTransaction != null when AutoRollbackBehavior == AutoRollbackBehavior.Rollback");
+        if (ScopedTransaction.HasChanged())
+          Rollback();
+      }
       else if (AutoRollbackBehavior == AutoRollbackBehavior.Discard)
+      {
         DiscardTransaction();
+      }
     }
 
     /// <summary>

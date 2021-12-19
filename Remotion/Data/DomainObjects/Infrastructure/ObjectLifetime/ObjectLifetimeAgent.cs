@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
       // GetDataContainerWithLazyLoad throws on invalid objectID
-      var dataContainer = _dataManager.GetDataContainerWithLazyLoad(objectID, throwOnNotFound: true);
+      var dataContainer = _dataManager.GetDataContainerWithLazyLoad(objectID, throwOnNotFound: true)!;
 
       if (dataContainer.State.IsDeleted && !includeDeleted)
         throw new ObjectDeletedException(objectID);
@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       return dataContainer.DomainObject;
     }
 
-    public DomainObject TryGetObject (ObjectID objectID)
+    public DomainObject? TryGetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -167,17 +167,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     }
 
     public T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs)
+        where T : DomainObject
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
       // GetDataContainersWithLazyLoad throws on invalid objectID
-      return _dataManager.GetDataContainersWithLazyLoad(objectIDs, throwOnNotFound: true)
+      return _dataManager.GetDataContainersWithLazyLoad(objectIDs, throwOnNotFound: true).Select(dc => dc!)
           .Select(dc => dc.DomainObject)
           .Cast<T>()
           .ToArray();
     }
 
-    public T[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
+    public T?[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
         where T : DomainObject
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
@@ -194,9 +195,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       var result = objectIDsAsCollection.Select(
           id =>
           {
-            DataContainer loadResult;
-            if (dataContainersByID.TryGetValue(id, out loadResult))
-              return loadResult == null ? null : (T)loadResult.DomainObject;
+            if (dataContainersByID.TryGetValue(id, out var loadResult))
+              return loadResult == null ? null : (T?)loadResult.DomainObject;
             else
             {
               Assertion.IsTrue(

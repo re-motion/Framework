@@ -230,6 +230,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       _collection.Remove(_dataContainer.ID);
       Assert.That(_collection.Count, Is.EqualTo(0));
+
+      _collection.Remove(_dataContainer.ID);
+      Assert.That(_collection.Count, Is.EqualTo(0));
     }
 
     [Test]

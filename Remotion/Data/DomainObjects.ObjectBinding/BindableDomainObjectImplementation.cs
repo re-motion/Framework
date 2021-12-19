@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       _wrapper = wrapper;
     }
 
-    void IDeserializationCallback.OnDeserialization (object sender)
+    void IDeserializationCallback.OnDeserialization (object? sender)
     {
       MixinTargetMockUtility.MockMixinTargetAfterDeserialization(this, _wrapper);
     }

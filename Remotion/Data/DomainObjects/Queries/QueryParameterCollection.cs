@@ -134,9 +134,9 @@ public class QueryParameterCollection : CommonCollection
   /// Gets the <see cref="QueryParameter"/> with a given <paramref name="name"/> in the <see cref="QueryParameterCollection"/>.
   /// </summary>
   /// <remarks>The indexer returns <see langword="null"/> if the given <paramref name="name"/> was not found.</remarks>
-  public QueryParameter this [string name]
+  public QueryParameter? this [string name]
   {
-    get { return (QueryParameter)BaseGetObject(name); }
+    get { return (QueryParameter?)BaseGetObject(name); }
   }
 
   /// <summary>

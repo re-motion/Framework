@@ -78,8 +78,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
     {
       ArgumentUtility.CheckNotNull("id", id);
 
-      DomainObject invalidDomainObject;
-      if (!_invalidObjects.TryGetValue(id, out invalidDomainObject))
+      if (!_invalidObjects.TryGetValue(id, out var invalidDomainObject))
         throw new ArgumentException(String.Format("The object '{0}' has not been marked invalid.", id), "id");
       else
         return invalidDomainObject;
@@ -109,8 +108,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      DomainObject domainObject;
-      if (!_invalidObjects.TryGetValue(objectID, out domainObject))
+      if (!_invalidObjects.TryGetValue(objectID, out var domainObject))
         return false;
 
       _invalidObjects.Remove(objectID);

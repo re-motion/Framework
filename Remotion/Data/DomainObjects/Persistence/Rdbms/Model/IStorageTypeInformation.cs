@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     /// </para>
     /// </remarks>
     /// <exception cref="NotSupportedException">The <paramref name="value"/> cannot be converted to the <see cref="StorageType"/>.</exception>
-    IDbDataParameter CreateDataParameter (IDbCommand command, object value);
+    IDbDataParameter CreateDataParameter (IDbCommand command, object? value);
 
     /// <summary>
     /// Reads a value from the specified <see cref="IDataReader"/> at the given <paramref name="ordinal"/>, returning it as an instance of 
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     /// <param name="ordinal">The ordinal identifying the value to be read.</param>
     /// <returns>A (possibly converted) value read from the given <paramref name="dataReader"/>.</returns>
     /// <exception cref="NotSupportedException">The read value cannot be converted to the <see cref="DotNetType"/>.</exception>
-    object Read (IDataReader dataReader, int ordinal);
+    object? Read (IDataReader dataReader, int ordinal);
 
     /// <summary>
     /// Converts a value to the <see cref="StorageTypeInformation.StorageType"/>, so that it can be stored by the database.
@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     /// <param name="dotNetValue">The value to be converted. Can be <see langword="null" />.</param>
     /// <returns>The converted value as it can be stored by the database.</returns>
     /// <exception cref="NotSupportedException">The conversion cannot be performed.</exception>
-    object ConvertToStorageType (object dotNetValue);
+    object ConvertToStorageType (object? dotNetValue);
 
     /// <summary>
     /// Converts a value read from the database to the <see cref="StorageTypeInformation.DotNetType"/>.
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     /// <param name="storageValue">The value to be converted. Can be <see langword="null" />.</param>
     /// <returns>The converted value as it can be used in .NET code.</returns>
     /// <exception cref="NotSupportedException">The conversion cannot be performed.</exception>
-    object ConvertFromStorageType (object storageValue);
+    object? ConvertFromStorageType (object? storageValue);
 
     IStorageTypeInformation UnifyForEquivalentProperties (IEnumerable<IStorageTypeInformation> equivalentStorageTypes);
   }

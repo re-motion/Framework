@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Tracing
     {
     }
 
-    public void QueryExecuting (Guid connectionID, Guid queryID, string commandText, IDictionary<string, object> parameters)
+    public void QueryExecuting (Guid connectionID, Guid queryID, string commandText, IDictionary<string, object?> parameters)
     {
     }
 

@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   public abstract class CompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager>
       : IVirtualEndPointLoadState<TEndPoint, TData, TDataManager>
       where TEndPoint : IVirtualEndPoint<TData>
-      where TDataManager : IVirtualEndPointDataManager
+      where TDataManager : class, IVirtualEndPointDataManager
   {
     private static readonly ILog s_log = LogManager.GetLogger(typeof(CompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager>));
 
@@ -137,6 +137,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      if (oppositeEndPoint.IsNull)
+        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+
+      Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
       if (_dataManager.ContainsOriginalObjectID(oppositeEndPoint.ObjectID))
       {
@@ -160,6 +164,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      if (oppositeEndPoint.IsNull)
+        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+
+      Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
       if (_unsynchronizedOppositeEndPoints.ContainsKey(oppositeEndPoint.ObjectID))
       {
@@ -230,6 +238,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public virtual void SynchronizeOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      if (oppositeEndPoint.IsNull)
+        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+
+      Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat("ObjectEndPoint '{0}' is being marked as synchronized.", oppositeEndPoint.ID);
@@ -286,7 +298,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
       var unsynchronizedOppositeEndPoints = new List<IRealObjectEndPoint>();
       info.FillCollection(unsynchronizedOppositeEndPoints);
-      _unsynchronizedOppositeEndPoints = unsynchronizedOppositeEndPoints.ToDictionary(ep => ep.ObjectID);
+      _unsynchronizedOppositeEndPoints = unsynchronizedOppositeEndPoints.ToDictionary(
+          ep =>
+          {
+            Assertion.IsFalse(ep.IsNull, "ep.IsNull");
+            Assertion.DebugIsNotNull(ep.ObjectID, "ep.ObjectID != null when ep.IsNull == false");
+
+            return ep.ObjectID;
+          });
     }
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)

@@ -397,6 +397,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
     }
 
     [Test]
+    public void CompareTo_Null ()
+    {
+      var id1 = new ObjectID(typeof(Order), new Guid("{5682F032-2F0B-494b-A31C-C97F02B89C36}"));
+
+      Assert.That(id1.CompareTo(null), Is.GreaterThan(0));
+    }
+
+    [Test]
     public void CompareTo_InvalidArgument ()
     {
       var id = new ObjectID("Official", "aaa");

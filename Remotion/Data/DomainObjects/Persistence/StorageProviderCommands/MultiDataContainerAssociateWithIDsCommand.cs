@@ -33,16 +33,23 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       : IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext>
   {
     private readonly ObjectID[] _objectIDs;
-    private readonly IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> _command;
+    private readonly IStorageProviderCommand<IEnumerable<DataContainer?>, IRdbmsProviderCommandExecutionContext> _command;
 
     public MultiDataContainerAssociateWithIDsCommand (
         IEnumerable<ObjectID> objectIDs,
-        IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> command)
+        IStorageProviderCommand<IEnumerable<DataContainer?>, IRdbmsProviderCommandExecutionContext> command)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
       ArgumentUtility.CheckNotNull("command", command);
 
-      _objectIDs = objectIDs.ToArray();
+      _objectIDs = objectIDs.Select(
+          (objectID, index) =>
+          {
+            if (objectID == null)
+              throw new ArgumentNullException($"objectIDs[{index}]");
+            return objectID;
+          }).ToArray();
+
       _command = command;
     }
 
@@ -51,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       get { return _objectIDs; }
     }
 
-    public IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> Command
+    public IStorageProviderCommand<IEnumerable<DataContainer?>, IRdbmsProviderCommandExecutionContext> Command
     {
       get { return _command; }
     }
@@ -66,15 +73,15 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
       foreach (var dataContainer in dataContainers.Where(dc => dc != null))
       {
         // Duplicates overwrite the previous DataContainer
-        dataContainersByID[dataContainer.ID] = dataContainer;
+        dataContainersByID[dataContainer!.ID] = dataContainer;
       }
 
       var unassociatedDataContainerIDs = new HashSet<ObjectID>(dataContainersByID.Keys);
       foreach (var objectID in _objectIDs)
       {
-        var lookupResult = CreateLookupResult(objectID, dataContainersByID);
-        unassociatedDataContainerIDs.Remove(lookupResult.ObjectID);
-        yield return lookupResult;
+        var dataContainer = dataContainersByID.GetValueOrDefault(objectID);
+        unassociatedDataContainerIDs.Remove(objectID);
+        yield return new ObjectLookupResult<DataContainer>(objectID, dataContainer);
       }
 
       if (unassociatedDataContainerIDs.Count > 0)
@@ -93,13 +100,6 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
             string.Join(Environment.NewLine, nonMatchingIDDescriptions));
         throw new PersistenceException(message);
       }
-    }
-
-    private ObjectLookupResult<DataContainer> CreateLookupResult (ObjectID id, Dictionary<ObjectID, DataContainer> dataContainersByID)
-    {
-      return id != null
-                 ? new ObjectLookupResult<DataContainer>(id, dataContainersByID.GetValueOrDefault(id))
-                 : new ObjectLookupResult<DataContainer>(null, null);
     }
   }
 }

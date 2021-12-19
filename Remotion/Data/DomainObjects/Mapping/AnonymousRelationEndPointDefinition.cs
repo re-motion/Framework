@@ -25,9 +25,9 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// Represents the non-existing side of a unidirectional relationship.
   /// </summary>
   [DebuggerDisplay("{GetType().Name}: Cardinality: {Cardinality}")]
-  public class AnonymousRelationEndPointDefinition : IRelationEndPointDefinition
+  public class AnonymousRelationEndPointDefinition : IRelationEndPointDefinition, IRelationEndPointDefinitionSetter
   {
-    private RelationDefinition _relationDefinition;
+    private RelationDefinition? _relationDefinition;
     private readonly ClassDefinition _classDefinition;
 
     public AnonymousRelationEndPointDefinition (ClassDefinition classDefinition)
@@ -38,7 +38,11 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationDefinition RelationDefinition
     {
-      get { return _relationDefinition; }
+      get
+      {
+        Assertion.IsNotNull(_relationDefinition, "RelationDefinition has not been set for this relation end point.");
+        return _relationDefinition;
+      }
     }
 
     public ClassDefinition ClassDefinition
@@ -46,12 +50,12 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _classDefinition; }
     }
 
-    public string PropertyName
+    public string? PropertyName
     {
       get { return null; }
     }
 
-    public IPropertyInformation PropertyInfo
+    public IPropertyInformation? PropertyInfo
     {
       get { return null; }
     }
@@ -81,6 +85,11 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       _relationDefinition = relationDefinition;
+    }
+
+    public bool HasRelationDefinitionBeenSet
+    {
+      get { return _relationDefinition != null; }
     }
   }
 }

@@ -251,7 +251,12 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     private IEnumerable<DataContainer> GetTransportedContainers ()
     {
       foreach (ObjectID id in _transportedObjects)
-        yield return _transportTransaction.DataManager.DataContainers[id];
+      {
+        var dataContainer = _transportTransaction.DataManager.DataContainers[id];
+        Assertion.IsNotNull(dataContainer, "Object '{0}' is missing from the transported dataset.", id);
+
+        yield return dataContainer;
+      }
     }
   }
 }

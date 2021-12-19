@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects
       get { return _name; }
     }
 
-    string IStorageSpecificIdentifierAttribute.Identifier
+    string? IStorageSpecificIdentifierAttribute.Identifier
     {
       get { return Name; }
     }

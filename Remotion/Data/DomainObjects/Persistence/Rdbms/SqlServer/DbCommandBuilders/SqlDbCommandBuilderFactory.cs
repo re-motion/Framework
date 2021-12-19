@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
       return new DeleteDbCommandBuilder(tableDefinition, new ComparedColumnsSpecification(comparedColumnValues), _sqlDialect);
     }
 
-    private Tuple<ColumnDefinition, IEnumerable<object>> GetValuesForSingleColumnDefinition (ColumnValueTable comparedColumnValueTable)
+    private Tuple<ColumnDefinition, IEnumerable<object?>> GetValuesForSingleColumnDefinition (ColumnValueTable comparedColumnValueTable)
     {
       ColumnDefinition singleColumn;
       try

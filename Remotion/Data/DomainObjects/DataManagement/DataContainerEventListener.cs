@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _eventSink.RaisePropertyValueReadingEvent(dataContainer.DomainObject, propertyDefinition, valueAccess);
     }
 
-    public void PropertyValueRead (DataContainer dataContainer, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
+    public void PropertyValueRead (DataContainer dataContainer, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _eventSink.RaisePropertyValueReadEvent(dataContainer.DomainObject, propertyDefinition, value, valueAccess);
     }
 
-    public void PropertyValueChanging (DataContainer dataContainer, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void PropertyValueChanging (DataContainer dataContainer, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
         _eventSink.RaisePropertyValueChangingEvent(dataContainer.DomainObject, propertyDefinition, oldValue, newValue);
     }
 
-    public void PropertyValueChanged (DataContainer dataContainer, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void PropertyValueChanged (DataContainer dataContainer, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);

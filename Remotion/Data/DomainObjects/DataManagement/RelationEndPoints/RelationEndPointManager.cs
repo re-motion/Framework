@@ -32,7 +32,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public class RelationEndPointManager : IRelationEndPointManager
   {
-    public static IRelationEndPoint CreateNullEndPoint (ClientTransaction clientTransaction, IRelationEndPointDefinition endPointDefinition)
+    /// <remarks>
+    /// Only used with <see cref="GetRelationEndPointWithoutLoading"/>. Will be dropped when null-object implementation is replaced with actual null value.
+    /// </remarks>
+    private static IRelationEndPoint CreateNullEndPoint (ClientTransaction clientTransaction, IRelationEndPointDefinition endPointDefinition)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("endPointDefinition", endPointDefinition);
@@ -144,7 +147,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
           throw new ArgumentException(message, "endPointIDs");
         }
 
-        var virtualEndPoint = (IVirtualEndPoint)GetRelationEndPointWithoutLoading(endPointID);
+        var virtualEndPoint = (IVirtualEndPoint?)GetRelationEndPointWithoutLoading(endPointID);
         if (virtualEndPoint != null)
         {
           if (!virtualEndPoint.CanBeMarkedIncomplete)
@@ -168,12 +171,23 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return new UnloadVirtualEndPointsCommand(virtualEndPoints, _registrationAgent, _map);
     }
 
-    public IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
+    public IRelationEndPoint? GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
     {
       ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
       if (endPointID.ObjectID == null)
+      {
+        // TODO RM-8241: _map[endPointID] may return null if the endPointID is unknown. Most call-sites expect a non-null result, some call-sites do check for null.
+        //               These null-checks indicate that there is an actual inconsistency in the behavior and the API needs to be unified to either
+        //               never return null or never use null-objects. When doing this, the correct semantics of the call-sites need to be reverse engineered.
+        //               This was introduced during the introduction of the current method and related call-site changes (see commit f3e997f2)
+        //               Note: originally, the call-sites directly accessed _map[endPointID] and performed null-guarded checks.
+
+        // Presently, some code explicitly check for the result of of this operation being null instead of a null object.
+        // Other code depends on the result being a null object. These semantics needs to be unified. By doing this, the null objects can be
+        // deleted and the members of IRelationEndPoint can be made not-nullable.
         return CreateNullEndPoint(_clientTransaction, endPointID.Definition);
+      }
 
       return _map[endPointID];
     }
@@ -193,7 +207,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       }
       else
       {
-        _lazyLoader.LoadLazyDataContainer(endPointID.ObjectID); // will trigger indirect call to RegisterEndPointsForDataContainer
+        var objectID = endPointID.ObjectID;
+        Assertion.DebugIsNotNull(objectID, " ModifiedEndPoint.ObjectID != null when ModifiedEndPoint.IsNull == false");
+
+        _lazyLoader.LoadLazyDataContainer(objectID); // will trigger indirect call to RegisterEndPointsForDataContainer
         var endPoint = GetRelationEndPointWithoutLoading(endPointID);
         Assertion.IsNotNull(endPoint, "Non-virtual end-points are registered when the DataContainer is loaded.");
         Assertion.IsTrue(endPoint.IsDataComplete);
@@ -209,7 +226,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (!endPointID.Definition.IsVirtual)
         throw new ArgumentException("GetOrCreateVirtualEndPoint cannot be called for non-virtual end points.", "endPointID");
 
-      return (IVirtualEndPoint)GetRelationEndPointWithoutLoading(endPointID) ?? RegisterVirtualEndPoint(endPointID);
+      return (IVirtualEndPoint?)GetRelationEndPointWithoutLoading(endPointID) ?? RegisterVirtualEndPoint(endPointID);
     }
 
     public void CommitAllEndPoints ()

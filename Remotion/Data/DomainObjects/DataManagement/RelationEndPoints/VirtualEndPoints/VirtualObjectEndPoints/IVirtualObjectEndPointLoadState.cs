@@ -21,12 +21,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <summary>
   /// Represents the lazy-loading state of a <see cref="VirtualObjectEndPoint"/> and implements accessor methods for that end-point.
   /// </summary>
-  public interface IVirtualObjectEndPointLoadState : IVirtualEndPointLoadState<IVirtualObjectEndPoint, DomainObject, IVirtualObjectEndPointDataManager>
+  public interface IVirtualObjectEndPointLoadState : IVirtualEndPointLoadState<IVirtualObjectEndPoint, DomainObject?, IVirtualObjectEndPointDataManager>
   {
     void EnsureDataComplete (IVirtualObjectEndPoint endPoint);
-    void MarkDataComplete (IVirtualObjectEndPoint endPoint, DomainObject item, Action<IVirtualObjectEndPointDataManager> stateSetter);
+    void MarkDataComplete (IVirtualObjectEndPoint endPoint, DomainObject? item, Action<IVirtualObjectEndPointDataManager> stateSetter);
 
-    IDataManagementCommand CreateSetCommand (IVirtualObjectEndPoint virtualObjectEndPoint, DomainObject newRelatedObject);
+    IDataManagementCommand CreateSetCommand (IVirtualObjectEndPoint virtualObjectEndPoint, DomainObject? newRelatedObject);
     IDataManagementCommand CreateDeleteCommand (IVirtualObjectEndPoint virtualObjectEndPoint);
   }
 }

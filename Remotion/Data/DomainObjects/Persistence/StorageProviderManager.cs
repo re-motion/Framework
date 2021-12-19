@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Utilities;
@@ -24,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 public class StorageProviderManager : IDisposable
 {
   private bool _disposed;
-  private StorageProviderCollection _storageProviders;
+  private StorageProviderCollection? _storageProviders;
   private readonly IPersistenceExtension _persistenceExtension;
 
   public StorageProviderManager (IPersistenceExtension persistenceExtension)
@@ -58,7 +59,7 @@ public class StorageProviderManager : IDisposable
     CheckDisposed();
     ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
 
-    StorageProvider provider = this[storageProviderID];
+    StorageProvider? provider = this[storageProviderID];
     if (provider == null)
     {
       throw CreatePersistenceException(
@@ -68,7 +69,7 @@ public class StorageProviderManager : IDisposable
     return provider;
   }
 
-  public StorageProvider this [string storageProviderID]
+  public StorageProvider? this [string storageProviderID]
   {
     get
     {
@@ -101,10 +102,13 @@ public class StorageProviderManager : IDisposable
     return new PersistenceException(string.Format(message, args));
   }
 
+  [MemberNotNull(nameof(_storageProviders))]
   private void CheckDisposed ()
   {
     if (_disposed)
       throw new ObjectDisposedException("StorageProviderManager", "A disposed StorageProviderManager cannot be accessed.");
+#pragma warning disable 8774 // Disable _storageProviders-not-initialized warning
   }
+#pragma warning restore 8774
 }
 }

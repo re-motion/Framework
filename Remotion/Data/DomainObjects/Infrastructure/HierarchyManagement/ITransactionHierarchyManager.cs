@@ -27,9 +27,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
   {
     IClientTransactionHierarchy TransactionHierarchy { get; }
 
-    ClientTransaction ParentTransaction { get; }
+    ClientTransaction? ParentTransaction { get; }
     bool IsWriteable { get; }
-    ClientTransaction SubTransaction { get; }
+    ClientTransaction? SubTransaction { get; }
 
     void OnBeforeTransactionInitialize ();
     void OnTransactionDiscard ();
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     ClientTransaction CreateSubTransaction (Func<ClientTransaction, ClientTransaction> subTransactionFactory);
     void RemoveSubTransaction ();
     IDisposable Unlock ();
-    IDisposable UnlockIfRequired ();
+    IDisposable? UnlockIfRequired ();
     void InstallListeners (IClientTransactionEventBroker eventBroker);
   }
 }

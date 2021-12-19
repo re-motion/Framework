@@ -22,10 +22,10 @@ namespace Remotion.Data.DomainObjects.Mapping
   public interface IPersistentMixinFinder
   {
     ClassContext MixinConfiguration { get; }
-    ClassContext ParentClassContext { get; }
+    ClassContext? ParentClassContext { get; }
     bool IncludeInherited { get; }
     Type[] GetPersistentMixins ();
     bool IsInParentContext (Type mixinType);
-    Type FindOriginalMixinTarget (Type mixinType);
+    Type? FindOriginalMixinTarget (Type mixinType);
   }
 }

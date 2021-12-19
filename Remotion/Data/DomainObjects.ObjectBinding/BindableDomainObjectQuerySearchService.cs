@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       return true;
     }
 
-    public IBusinessObject[] Search (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property, ISearchAvailableObjectsArguments searchArguments)
+    public IBusinessObject[] Search (IBusinessObject? referencingObject, IBusinessObjectReferenceProperty property, ISearchAvailableObjectsArguments? searchArguments)
     {
       var defaultSearchArguments = searchArguments as DefaultSearchArguments;
       if (defaultSearchArguments == null || string.IsNullOrEmpty(defaultSearchArguments.SearchStatement))

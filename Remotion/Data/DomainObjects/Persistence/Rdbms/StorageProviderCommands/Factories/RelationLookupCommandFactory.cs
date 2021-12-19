@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     }
 
     public virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForRelationLookup (
-        RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition sortExpressionDefinition)
+        RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition? sortExpressionDefinition)
     {
       ArgumentUtility.CheckNotNull("foreignKeyEndPoint", foreignKeyEndPoint);
       ArgumentUtility.CheckNotNull("foreignKeyValue", foreignKeyValue);
@@ -93,9 +93,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         TableDefinition tableDefinition,
         RelationEndPointDefinition foreignKeyEndPoint,
         ObjectID foreignKeyValue,
-        SortExpressionDefinition sortExpression)
+        SortExpressionDefinition? sortExpression)
     {
-      var selectedColumns = tableDefinition.GetAllColumns();
+      var selectedColumns = tableDefinition.GetAllColumns().ToArray();
       var dataContainerReader = _objectReaderFactory.CreateDataContainerReader(tableDefinition, selectedColumns);
 
       var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect(
@@ -103,16 +103,24 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           selectedColumns,
           GetComparedColumns(foreignKeyEndPoint, foreignKeyValue),
           GetOrderedColumns(sortExpression));
-      return new MultiObjectLoadCommand<DataContainer>(new[] { Tuple.Create(dbCommandBuilder, dataContainerReader) });
+      return DelegateBasedCommand.Create(
+          new MultiObjectLoadCommand<DataContainer?>(new[] { Tuple.Create(dbCommandBuilder, dataContainerReader) }),
+          lookupResults => lookupResults.Select(
+              result =>
+              {
+                return Assertion.IsNotNull<DataContainer?>(
+                    result,
+                    "Because no OUTER JOIN query is involved in retrieving the result, the DataContainer can never be null.");
+              }));
     }
 
     protected virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForIndirectRelationLookup (
         UnionViewDefinition unionViewDefinition,
         RelationEndPointDefinition foreignKeyEndPoint,
         ObjectID foreignKeyValue,
-        SortExpressionDefinition sortExpression)
+        SortExpressionDefinition? sortExpression)
     {
-      var selectedColumns = unionViewDefinition.ObjectIDProperty.GetColumns();
+      var selectedColumns = unionViewDefinition.ObjectIDProperty.GetColumns().ToArray();
       var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect(
           unionViewDefinition,
           selectedColumns,
@@ -121,17 +129,25 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
       var objectIDReader = _objectReaderFactory.CreateObjectIDReader(unionViewDefinition, selectedColumns);
 
-      var objectIDLoadCommand = new MultiObjectIDLoadCommand(new[] { dbCommandBuilder }, objectIDReader);
+      var objectIDLoadCommand = DelegateBasedCommand.Create(
+          new MultiObjectIDLoadCommand(new[] { dbCommandBuilder }, objectIDReader),
+          lookupResults => lookupResults.Select(
+              result =>
+              {
+                return Assertion.IsNotNull<ObjectID?>(
+                    result,
+                    "Because no OUTER JOIN query is involved in retrieving the result, the ObjectID can never be null.");
+              }));
+
       var indirectDataContainerLoadCommand = new IndirectDataContainerLoadCommand(objectIDLoadCommand, _storageProviderCommandFactory);
       return DelegateBasedCommand.Create(
           indirectDataContainerLoadCommand,
           lookupResults => lookupResults.Select(
               result =>
               {
-                Assertion.IsNotNull(
+                return Assertion.IsNotNull<DataContainer?>(
                     result.LocatedObject,
                     "Because ID lookup and DataContainer lookup are executed within the same database transaction, the DataContainer can never be null.");
-                return result.LocatedObject;
               }));
     }
 
@@ -147,12 +163,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       return storagePropertyDefinition.SplitValueForComparison(foreignKeyValue);
     }
 
-    protected virtual  IEnumerable<OrderedColumn> GetOrderedColumns (SortExpressionDefinition sortExpression)
+    protected virtual IEnumerable<OrderedColumn> GetOrderedColumns (SortExpressionDefinition? sortExpression)
     {
       if (sortExpression == null)
-        return new OrderedColumn[0];
+        return Array.Empty<OrderedColumn>();
 
-      Assertion.IsTrue(sortExpression.SortedProperties.Count > 0, "The sort-epression must have at least one sorted property.");
+      Assertion.IsTrue(sortExpression.SortedProperties.Count > 0, "The sort-expression must have at least one sorted property.");
 
       return from sortedProperty in sortExpression.SortedProperties
              let storagePropertyDefinition = _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition(sortedProperty.PropertyDefinition)

@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -85,6 +86,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That(() => _provider.GetCollection(endPointID), Throws.TypeOf<MissingMethodException>()
           .With.Message.Contains("does not provide a constructor taking an IDomainObjectCollectionData object"));
+    }
+
+    [Test]
+    public void GetCollection_WithAnonymousEndPoint ()
+    {
+      var relationEndPointDefinition = GetEndPointDefinition(typeof(Location), "Client").GetOppositeEndPointDefinition();
+      var endPointID = RelationEndPointID.Create(null, relationEndPointDefinition);
+      Assert.That(endPointID.Definition.IsAnonymous, Is.True);
+
+      Assert.That(
+          () => _provider.GetCollection(endPointID),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("End point ID must not refer to an anonymous end point.", "endPointID"));
     }
 
     [Test]

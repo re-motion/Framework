@@ -131,6 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void SynchronizeOppositeEndPoint_NoExistingOppositeEndPoint ()
     {
       var endPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
+      endPointMock.Stub(stub => stub.IsNull).Return(false);
       endPointMock.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order1);
       endPointMock.Expect(mock => mock.MarkSynchronized());
       endPointMock.Replay();

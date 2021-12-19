@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       var relationEndPointDefinition =
-          (RelationEndPointDefinition)propertyDefinition.ClassDefinition.GetRelationEndPointDefinition(propertyDefinition.PropertyName);
+          (RelationEndPointDefinition?)propertyDefinition.ClassDefinition.GetRelationEndPointDefinition(propertyDefinition.PropertyName);
       if (relationEndPointDefinition != null)
       {
         Assertion.IsTrue(propertyDefinition.PropertyType == typeof(ObjectID));
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       }
     }
 
-    public virtual IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (object value)
+    public virtual IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (object? value)
     {
       var objectID = value as ObjectID;
       if (objectID != null)

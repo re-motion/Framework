@@ -154,6 +154,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void MarkDataComplete_Items_AreRegisteredInOrder_WithOrWithoutEndPoints ()
     {
       var oppositeEndPointForItem1Mock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
+      oppositeEndPointForItem1Mock.Stub(stub => stub.IsNull).Return(false);
       oppositeEndPointForItem1Mock.Stub(stub => stub.ObjectID).Return(_relatedObject.ID);
       oppositeEndPointForItem1Mock.Stub(stub => stub.ResetSyncState());
       oppositeEndPointForItem1Mock.Expect(mock => mock.MarkSynchronized());

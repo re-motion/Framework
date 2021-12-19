@@ -24,6 +24,6 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
   /// </summary>
   public interface IClonerCallback
   {
-    void OnObjectCreatedAsClone (ClientTransaction cloneTransaction, DomainObject original);
+    void OnObjectCreatedAsClone (ClientTransaction? cloneTransaction, DomainObject original);
   }
 }

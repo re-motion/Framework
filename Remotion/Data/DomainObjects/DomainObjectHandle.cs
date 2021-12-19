@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects
       }
     }
 
-    public bool Equals (IDomainObjectHandle<IDomainObject> other)
+    public bool Equals (IDomainObjectHandle<IDomainObject>? other)
     {
       if (ReferenceEquals(null, other))
         return false;
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects
       return Equals(_objectID, other.ObjectID);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (ReferenceEquals(null, obj))
         return false;

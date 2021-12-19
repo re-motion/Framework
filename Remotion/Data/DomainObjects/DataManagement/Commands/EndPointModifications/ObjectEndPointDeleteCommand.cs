@@ -31,16 +31,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public ObjectEndPointDeleteCommand (
         IObjectEndPoint modifiedEndPoint, Action oppositeObjectNullSetter, IClientTransactionEventSink transactionEventSink)
         : base(
-            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
+            modifiedEndPoint,
             null,
             null,
-            ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
+            transactionEventSink)
     {
       ArgumentUtility.CheckNotNull("oppositeObjectNullSetter", oppositeObjectNullSetter);
 
       _oppositeObjectNullSetter = oppositeObjectNullSetter;
-      if (modifiedEndPoint.IsNull)
-        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
     }
 
     public override void Begin ()

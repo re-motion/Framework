@@ -35,12 +35,12 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       ArgumentUtility.CheckNotNull("transportedItems", transportedItems);
 
       var formatter = new BinaryFormatter();
-      KeyValuePair<string, Dictionary<string, object>>[] versionIndependentItems = GetVersionIndependentItems(transportedItems);
+      KeyValuePair<string, Dictionary<string, object?>>[] versionIndependentItems = GetVersionIndependentItems(transportedItems);
       PerformSerialization(versionIndependentItems, outputStream, formatter);
     }
 
     protected virtual void PerformSerialization (
-        KeyValuePair<string, Dictionary<string, object>>[] versionIndependentItems,
+        KeyValuePair<string, Dictionary<string, object?>>[] versionIndependentItems,
         Stream dataStream,
         BinaryFormatter formatter)
     {
@@ -53,10 +53,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 #pragma warning restore SYSLIB0011
     }
 
-    private KeyValuePair<string, Dictionary<string, object>>[] GetVersionIndependentItems (TransportItem[] transportItems)
+    private KeyValuePair<string, Dictionary<string, object?>>[] GetVersionIndependentItems (TransportItem[] transportItems)
     {
       return Array.ConvertAll(transportItems,
-                               item => new KeyValuePair<string, Dictionary<string, object>>(item.ID.ToString(), item.Properties));
+                               item => new KeyValuePair<string, Dictionary<string, object?>>(item.ID.ToString(), item.Properties));
     }
   }
 }

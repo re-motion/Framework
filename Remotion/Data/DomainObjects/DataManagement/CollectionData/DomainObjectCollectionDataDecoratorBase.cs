@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       get { return _wrappedData.Count; }
     }
 
-    public virtual Type RequiredItemType
+    public virtual Type? RequiredItemType
     {
       get { return _wrappedData.RequiredItemType; }
     }
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       get { return _wrappedData.IsReadOnly; }
     }
 
-    public virtual RelationEndPointID AssociatedEndPointID
+    public virtual RelationEndPointID? AssociatedEndPointID
     {
       get { return _wrappedData.AssociatedEndPointID; }
     }
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return _wrappedData.GetObject(index);
     }
 
-    public virtual DomainObject GetObject (ObjectID objectID)
+    public virtual DomainObject? GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
       return _wrappedData.GetObject(objectID);

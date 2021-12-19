@@ -44,17 +44,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IDomainObjectCollectionEndPointCollectionManager collectionEndPointCollectionManager,
         IClientTransactionEventSink transactionEventSink)
       : base(
-          ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
+          modifiedEndPoint,
           null,
           null,
-          ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
+          transactionEventSink)
     {
       ArgumentUtility.CheckNotNull("newCollection", newCollection);
       ArgumentUtility.CheckNotNull("modifiedCollectionData", modifiedCollectionData);
       ArgumentUtility.CheckNotNull("collectionEndPointCollectionManager", collectionEndPointCollectionManager);
-
-      if (modifiedEndPoint.IsNull)
-        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _newCollection = newCollection;
       _modifiedCollectionData = modifiedCollectionData;
@@ -134,18 +131,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     /// </remarks>
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      var domainObjectOfCollectionEndPoint = ModifiedEndPoint.GetDomainObject();
-
       var commandsForRemoved = from oldObject in RemovedObjects
                                let endPoint = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint>(oldObject)
-                               select endPoint.CreateRemoveCommand(domainObjectOfCollectionEndPoint); // oldOrder.Customer = null
+                               select endPoint.CreateRemoveCommand(DomainObject); // oldOrder.Customer = null
 
       var commandsForAdded = from newObject in AddedObjects
                              let endPointOfNewObject = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRealObjectEndPoint>(newObject) // newOrder.Customer
                              let oldRelatedOfNewObject = endPointOfNewObject.GetOppositeObject() // newOrder.Customer
                              let endPointOfOldRelatedOfNewObject = endPointOfNewObject.GetEndPointWithOppositeDefinition<IDomainObjectCollectionEndPoint>(oldRelatedOfNewObject) // newOrder.Customer.Orders
                              let removeCommand = endPointOfOldRelatedOfNewObject.CreateRemoveCommand(newObject) // newOrder.Customer.Orders.Remove (newOrder)
-                             let setCommand = endPointOfNewObject.CreateSetCommand(domainObjectOfCollectionEndPoint) // newOrder.Customer = customer
+                             let setCommand = endPointOfNewObject.CreateSetCommand(DomainObject) // newOrder.Customer = customer
                              from command in new[] { removeCommand, setCommand }
                              select command;
 

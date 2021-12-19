@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
     }
 
-    protected override IVirtualEndPoint RegisterOppositeForRealObjectEndPoint (IRealObjectEndPoint realObjectEndPoint)
+    protected override IVirtualEndPoint? RegisterOppositeForRealObjectEndPoint (IRealObjectEndPoint realObjectEndPoint)
     {
       var oppositeVirtualEndPoint = base.RegisterOppositeForRealObjectEndPoint(realObjectEndPoint);
 

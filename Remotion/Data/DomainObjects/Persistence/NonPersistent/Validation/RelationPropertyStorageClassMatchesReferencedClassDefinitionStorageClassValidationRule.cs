@@ -44,11 +44,12 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
 
     private MappingValidationResult Validate (IRelationEndPointDefinition endPointDefinition)
     {
-      if (endPointDefinition is RelationEndPointDefinition relationEndPointDefinition)
+      if (endPointDefinition is RelationEndPointDefinition relationEndPointDefinition && relationEndPointDefinition.HasRelationDefinitionBeenSet)
       {
         var oppositeEndPointDefinition = endPointDefinition.GetOppositeEndPointDefinition();
 
         if (relationEndPointDefinition.PropertyDefinition.StorageClass == StorageClass.Persistent
+            && oppositeEndPointDefinition.ClassDefinition.HasStorageEntityDefinitionBeenSet
             && oppositeEndPointDefinition.ClassDefinition.StorageEntityDefinition is NonPersistentStorageEntity)
         {
           return MappingValidationResult.CreateInvalidResultForProperty(

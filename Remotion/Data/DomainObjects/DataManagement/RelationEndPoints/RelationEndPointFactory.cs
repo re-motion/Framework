@@ -128,6 +128,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     {
       ArgumentUtility.CheckNotNull("endPointID", endPointID);
       ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      if (endPointID.ObjectID == null)
+        throw new ArgumentException("End point ID must have a non-null ObjectID.", "endPointID");
 
       return new RealObjectEndPoint(_clientTransaction, endPointID, dataContainer, _endPointProvider, _transactionEventSink);
     }

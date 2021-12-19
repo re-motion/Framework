@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.Linq
       ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
 
       throw new UnmappedItemException(
-          string.Format("The member '{0}.{1}' does not identify a mapped property.", memberInfo.ReflectedType.Name, memberInfo.Name));
+          string.Format("The member '{0}.{1}' does not identify a mapped property.", memberInfo.ReflectedType!.Name, memberInfo.Name));
     }
 
     public Expression ResolveConstantExpression (ConstantExpression constantExpression)
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.Linq
       }
     }
 
-    public Expression TryResolveOptimizedIdentity (SqlEntityRefMemberExpression entityRefMemberExpression)
+    public Expression? TryResolveOptimizedIdentity (SqlEntityRefMemberExpression entityRefMemberExpression)
     {
       ArgumentUtility.CheckNotNull("entityRefMemberExpression", entityRefMemberExpression);
 
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.Linq
       return _storageSpecificExpressionResolver.ResolveEntityIdentityViaForeignKey(entityRefMemberExpression.OriginatingEntity, foreignKeyEndPoint);
     }
 
-    public Expression TryResolveOptimizedMemberExpression (SqlEntityRefMemberExpression entityRefMemberExpression, MemberInfo memberInfo)
+    public Expression? TryResolveOptimizedMemberExpression (SqlEntityRefMemberExpression entityRefMemberExpression, MemberInfo memberInfo)
     {
       ArgumentUtility.CheckNotNull("entityRefMemberExpression", entityRefMemberExpression);
       ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects.Linq
       return PropertyInfoAdapter.Create(property);
     }
 
-    private Expression ResolveMemberInClassDefinition (
+    private Expression? ResolveMemberInClassDefinition (
         SqlEntityExpression originatingEntity, PropertyInfoAdapter propertyInfoAdapter, ClassDefinition classDefinition)
     {
       var endPointDefinition = classDefinition.ResolveRelationEndPoint(propertyInfoAdapter);

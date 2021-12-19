@@ -43,9 +43,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       return new XElement(
           Constants.Namespace + "class",
           GetIdAttribute(classDefinition),
-          GetBaseClassAttribute(classDefinition),
+          GetBaseClassAttribute(classDefinition)!,
           GetIsAbstractAttribute(classDefinition),
-          GetTableElements(classDefinition)
+          GetTableElements(classDefinition)!
           );
     }
 
@@ -59,14 +59,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
       return new XAttribute("isAbstract", classDefinition.IsAbstract);
     }
 
-    private IEnumerable<XElement> GetTableElements (ClassDefinition classDefinition)
+    private IEnumerable<XElement>? GetTableElements (ClassDefinition classDefinition)
     {
       if (!classDefinition.IsAbstract)
         return _tableSerializer.Serialize(classDefinition);
       return null;
     }
 
-    private XAttribute GetBaseClassAttribute (ClassDefinition classDefinition)
+    private XAttribute? GetBaseClassAttribute (ClassDefinition classDefinition)
     {
       if (classDefinition.BaseClass == null)
         return null;

@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.BindableObject
       _getObjectServiceType = GetGetObjectServiceType();
     }
 
-    public IBusinessObjectWithIdentity GetObject (string uniqueIdentifier)
+    public IBusinessObjectWithIdentity? GetObject (string uniqueIdentifier)
     {
       IGetObjectService service = GetGetObjectService();
       return service.GetObject(this, uniqueIdentifier);

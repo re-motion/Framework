@@ -33,14 +33,16 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentException">The domain object does not have a property with the given identifier.</exception>
     public static PropertyKind GetPropertyKind (ClassDefinition classDefinition, string propertyIdentifier)
     {
+      // TODO RM-8246: possibly inline this method
+
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
 
-      Tuple<PropertyDefinition, IRelationEndPointDefinition> propertyObjects = GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
+      Tuple<PropertyDefinition?, IRelationEndPointDefinition?> propertyObjects = GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
       return GetPropertyKind(propertyObjects.Item2);
     }
 
-    private static PropertyKind GetPropertyKind (IRelationEndPointDefinition relationEndPointDefinition)
+    private static PropertyKind GetPropertyKind (IRelationEndPointDefinition? relationEndPointDefinition)
     {
       if (relationEndPointDefinition == null)
         return PropertyKind.PropertyValue;
@@ -77,10 +79,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentException">The class definition does not have a property with the given identifier.</exception>
     public static Type GetPropertyType (ClassDefinition classDefinition, string propertyIdentifier)
     {
+      // TODO RM-8246: possibly inline this method
+
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
 
-      Tuple<PropertyDefinition, IRelationEndPointDefinition> definitionObjects =
+      // TODO RM-8246: this is actually a discriminating union, solved via nullable values
+      Tuple<PropertyDefinition?, IRelationEndPointDefinition?> definitionObjects =
           GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
 
       return GetStrategy(GetPropertyKind(definitionObjects.Item2)).GetPropertyType(definitionObjects.Item1, definitionObjects.Item2);
@@ -94,15 +99,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <returns>The property's <see cref="Mapping.PropertyDefinition"/> and <see cref="IRelationEndPointDefinition"/> objects.</returns>
     /// <exception cref="ArgumentNullException">One of the method's arguments is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">The class definition does not have a property with the given identifier.</exception>
-    public static Tuple<PropertyDefinition, IRelationEndPointDefinition> GetPropertyDefinitionObjects (
+    public static Tuple<PropertyDefinition?, IRelationEndPointDefinition?> GetPropertyDefinitionObjects (
         ClassDefinition classDefinition,
         string propertyIdentifier)
     {
+      // TODO RM-8246: possibly inline this method
+
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
 
-      PropertyDefinition propertyDefinition = classDefinition.GetPropertyDefinition(propertyIdentifier);
-      IRelationEndPointDefinition relationEndPointDefinition = classDefinition.GetRelationEndPointDefinition(propertyIdentifier);
+      PropertyDefinition? propertyDefinition = classDefinition.GetPropertyDefinition(propertyIdentifier);
+      IRelationEndPointDefinition? relationEndPointDefinition = classDefinition.GetRelationEndPointDefinition(propertyIdentifier);
 
       if (propertyDefinition == null && relationEndPointDefinition == null)
       {
@@ -114,14 +121,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         throw new ArgumentException(message, "propertyIdentifier");
       }
       else
-        return new Tuple<PropertyDefinition, IRelationEndPointDefinition>(propertyDefinition, relationEndPointDefinition);
+        return new Tuple<PropertyDefinition?, IRelationEndPointDefinition?>(propertyDefinition, relationEndPointDefinition);
     }
 
     private readonly string _propertyIdentifier;
     private readonly PropertyKind _kind;
 
-    private readonly PropertyDefinition _propertyDefinition;
-    private readonly IRelationEndPointDefinition _relationEndPointDefinition;
+    private readonly PropertyDefinition? _propertyDefinition;
+    private readonly IRelationEndPointDefinition? _relationEndPointDefinition;
     private readonly ClassDefinition _classDefinition;
     private readonly Type _propertyType;
 
@@ -135,13 +142,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _propertyIdentifier = propertyIdentifier;
       _classDefinition = classDefinition;
 
-      Tuple<PropertyDefinition, IRelationEndPointDefinition> propertyObjects = GetPropertyDefinitionObjects(_classDefinition, propertyIdentifier);
+      Tuple<PropertyDefinition?, IRelationEndPointDefinition?> propertyObjects = GetPropertyDefinitionObjects(_classDefinition, propertyIdentifier);
       _propertyDefinition = propertyObjects.Item1;
       _relationEndPointDefinition = propertyObjects.Item2;
 
       _kind = GetPropertyKind(_relationEndPointDefinition);
       _strategy = GetStrategy(_kind);
 
+      // TODO RM-8246: possibly change the strategy to use classDefinition and propertyIdentifier to get the propertyType in order to avoid the discriminated union.
       _propertyType = _strategy.GetPropertyType(_propertyDefinition, _relationEndPointDefinition);
     }
 
@@ -182,7 +190,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <summary>
     /// The encapsulated object's property definition object (can be <see langword="null"/>).
     /// </summary>
-    public PropertyDefinition PropertyDefinition
+    public PropertyDefinition? PropertyDefinition
     {
       get { return _propertyDefinition; }
     }
@@ -190,7 +198,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <summary>
     /// The encapsulated object's relation end point definition object (can be <see langword="null"/>).
     /// </summary>
-    public IRelationEndPointDefinition RelationEndPointDefinition
+    public IRelationEndPointDefinition? RelationEndPointDefinition
     {
       get { return _relationEndPointDefinition; }
     }
@@ -209,7 +217,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// true if the specified <see cref="T:System.Object"/> is equivalent to the current <see cref="PropertyAccessorData"/>, ie. it is another
     /// instance of <see cref="PropertyAccessorData"/> with equal <see cref="PropertyIdentifier"/> and <see cref="ClassDefinition"/>; otherwise, false.
     /// </returns>
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       var other = obj as PropertyAccessorData;
       return other != null

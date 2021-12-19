@@ -90,7 +90,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       actual.SetDerivedClasses(new ClassDefinition[0]);
 
       Assert.That(actual.ID, Is.EqualTo("Order"));
-      Assert.That(actual.StorageEntityDefinition, Is.Null);
+      Assert.That(actual.HasStorageEntityDefinitionBeenSet, Is.False);
+      Assert.That(
+          () => actual.StorageEntityDefinition,
+          Throws.InvalidOperationException.With.Message.EqualTo("StorageEntityDefinition has not been set for class definition 'Order'."));
       Assert.That(actual.ClassType, Is.SameAs(typeof(Order)));
       Assert.That(actual.BaseClass, Is.Null);
       Assert.That(actual.DefaultStorageClass, Is.EqualTo(DefaultStorageClass.Transaction));
@@ -169,10 +172,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void SetStorageEntityDefinition ()
     {
       var tableDefinition = TableDefinitionObjectMother.Create(_storageProviderDefinition, new EntityNameDefinition(null, "Tablename"));
+      Assert.That(_domainBaseClass.HasStorageEntityDefinitionBeenSet, Is.False);
 
       _domainBaseClass.SetStorageEntity(tableDefinition);
 
       Assert.That(_domainBaseClass.StorageEntityDefinition, Is.SameAs(tableDefinition));
+      Assert.That(_domainBaseClass.HasStorageEntityDefinitionBeenSet, Is.True);
     }
 
     [Test]

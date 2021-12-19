@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Runtime.Serialization;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
@@ -26,17 +27,19 @@ namespace Remotion.Data.DomainObjects.Validation
   [Serializable]
   public class PropertyValueNotSetException : DomainObjectValidationException
   {
-    private readonly DomainObject _domainObject;
+    private readonly DomainObject? _domainObject;
     private readonly string _propertyName;
 
-    public PropertyValueNotSetException (DomainObject domainObject, string propertyName, string message)
+    public PropertyValueNotSetException (DomainObject? domainObject, string propertyName, string message)
         : this(domainObject, propertyName, message, null)
     {
     }
 
-    public PropertyValueNotSetException (DomainObject domainObject, string propertyName, string message, Exception inner)
+    public PropertyValueNotSetException (DomainObject? domainObject, string propertyName, string message, Exception? inner)
         : base(message, inner)
     {
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+
       _domainObject = domainObject;
       _propertyName = propertyName;
     }
@@ -44,8 +47,8 @@ namespace Remotion.Data.DomainObjects.Validation
     protected PropertyValueNotSetException (SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
-      _domainObject = (DomainObject)info.GetValue("_domainObject", typeof(DomainObject));
-      _propertyName = info.GetString("_propertyName");
+      _domainObject = (DomainObject?)info.GetValue("_domainObject", typeof(DomainObject));
+      _propertyName = info.GetString("_propertyName")!;
     }
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)
@@ -56,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Validation
       info.AddValue("_propertyName", _propertyName);
     }
 
-    public DomainObject DomainObject
+    public DomainObject? DomainObject
     {
       get { return _domainObject; }
     }

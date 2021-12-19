@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       get { return _nameResolver; }
     }
 
-    public ClassDefinition GetMetadata (ClassDefinition baseClassDefinition)
+    public ClassDefinition GetMetadata (ClassDefinition? baseClassDefinition)
     {
       var persistentMixinFinder = new PersistentMixinFinder(Type, baseClassDefinition == null);
       var storageGroupAttribute = GetStorageGroupAttribute();
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       return classDefinition;
     }
 
-    private StorageGroupAttribute GetStorageGroupAttribute ()
+    private StorageGroupAttribute? GetStorageGroupAttribute ()
     {
       return AttributeUtility.GetCustomAttributes<StorageGroupAttribute>(Type, true).FirstOrDefault();
     }

@@ -219,7 +219,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _extensionCollection.PropertyValueReading(_clientTransaction, domainObject, propertyDefinition, valueAccess);
     }
 
-    public void RaisePropertyValueReadEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
+    public void RaisePropertyValueReadEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
@@ -228,7 +228,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _listenerCollection.PropertyValueRead(_clientTransaction, domainObject, propertyDefinition, value, valueAccess);
     }
 
-    public void RaisePropertyValueChangingEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void RaisePropertyValueChangingEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
@@ -241,7 +241,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
 
-    public void RaisePropertyValueChangedEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void RaisePropertyValueChangedEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
@@ -265,7 +265,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     }
 
     public void RaiseRelationReadEvent (
-        DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess)
+        DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
@@ -291,8 +291,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public void RaiseRelationChangingEvent (
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject)
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
@@ -308,8 +308,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public void RaiseRelationChangedEvent (
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject)
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
@@ -461,7 +461,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _listenerCollection.VirtualRelationEndPointStateUpdated(_clientTransaction, endPointID, newEndPointChangeState);
     }
 
-    private ClientTransactionScope EnterScopeOnDemand ()
+    private ClientTransactionScope? EnterScopeOnDemand ()
     {
       //if (_clientTransaction.ActiveTransaction != _clientTransaction)
       //  return _clientTransaction.EnterNonDiscardingScope();

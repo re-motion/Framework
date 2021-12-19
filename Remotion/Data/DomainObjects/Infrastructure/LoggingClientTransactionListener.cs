@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
 
-    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
+    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
       if (s_log.IsDebugEnabled())
       {
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
 
-    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       if (s_log.IsDebugEnabled())
       {
@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
 
-    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       if (s_log.IsDebugEnabled())
       {
@@ -189,7 +189,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject relatedObject,
+        DomainObject? relatedObject,
         ValueAccess valueAccess)
     {
       if (s_log.IsDebugEnabled())
@@ -228,8 +228,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject)
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
       if (s_log.IsDebugEnabled())
       {
@@ -247,8 +247,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject)
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
       if (s_log.IsDebugEnabled())
       {
@@ -378,9 +378,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return string.Join(", ", ConvertToStringAndCount(objectIDs, 10, GetObjectIDString));
     }
 
-    private string GetObjectIDString (ObjectID id)
+    private string GetObjectIDString (ObjectID? id)
     {
-      return id != null ? id.ToString() : "<null>";
+      return id != null ? id.ToString()! : "<null>";
     }
 
     private string GetDomainObjectsString (IEnumerable<DomainObject> domainObjects)
@@ -388,7 +388,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return string.Join(", ", ConvertToStringAndCount(domainObjects, 10, GetDomainObjectString));
     }
 
-    private string GetDomainObjectString (DomainObject domainObject)
+    private string GetDomainObjectString (DomainObject? domainObject)
     {
       return GetObjectIDString(domainObject.GetSafeID());
     }

@@ -61,6 +61,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     }
 
     [Test]
+    public void PropertyWithStorageClassPersistent_StoragePropertyIsNotSet ()
+    {
+      var propertyDefinition = new PropertyDefinition(
+          _classDefinition,
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithTypeObjectWithStorageClassPersistent")),
+          "PropertyWithTypeObjectWithStorageClassPersistent",
+          false,
+          true,
+          null,
+          StorageClass.Persistent);
+      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _classDefinition.SetReadOnly();
+
+      var validationResult = _validationRule.Validate(_classDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
+    }
+
+    [Test]
     public void PropertyWithStorageClassPersistent_SupportedType ()
     {
       var propertyDefinition = new PropertyDefinition(

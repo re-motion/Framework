@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
   /// </summary>
   public class DomainObjectCloner
   {
-    private ClientTransaction _cloneTransaction;
+    private ClientTransaction? _cloneTransaction;
 
     /// <summary>
     /// Gets or sets the transaction to be used for the clone. If this is set to <see langword="null"/>, the current transaction is used.
@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
       return clone;
     }
 
-    private void CopyProperties<T> (T source, T clone, ICloneStrategy strategy, CloneContext context)
+    private void CopyProperties<T> (T source, T clone, ICloneStrategy? strategy, CloneContext? context)
         where T : IDomainObject
     {
       var sourceTransaction = source.GetDefaultTransactionContext().ClientTransaction;
@@ -161,23 +161,26 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
         PropertyIndexer sourceProperties,
         ClientTransaction sourceTransaction,
         IEnumerable<PropertyAccessor> cloneProperties,
-        ICloneStrategy strategy,
-        CloneContext context)
+        ICloneStrategy? strategy,
+        CloneContext? context)
     {
       foreach (PropertyAccessor cloneProperty in cloneProperties)
       {
         PropertyAccessor sourceProperty = sourceProperties[cloneProperty.PropertyData.PropertyIdentifier, sourceTransaction];
         if (cloneProperty.PropertyData.Kind == PropertyKind.PropertyValue)
         {
-          object sourceValue = sourceProperty.GetValueWithoutTypeCheck();
+          object? sourceValue = sourceProperty.GetValueWithoutTypeCheck();
           cloneProperty.SetValueWithoutTypeCheck(sourceValue);
         }
         else if (strategy != null && !cloneProperty.HasBeenTouched)
+        {
+          Assertion.DebugIsNotNull(context, "context != null when strategy != null");
           strategy.HandleReference(sourceProperty, cloneProperty, context);
+        }
       }
     }
 
-    private void InvokeClonerCallback (DomainObject source, DomainObject clone, ClientTransaction cloneTransaction)
+    private void InvokeClonerCallback (DomainObject source, DomainObject clone, ClientTransaction? cloneTransaction)
     {
       var callback = clone as IClonerCallback;
       if (callback != null)

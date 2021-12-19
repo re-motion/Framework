@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public ObjectEndPointSetOneManyCommand (
         IRealObjectEndPoint modifiedEndPoint,
-        DomainObject newRelatedObject,
-        Action<DomainObject> oppositeObjectSetter,
+        DomainObject? newRelatedObject,
+        Action<DomainObject?> oppositeObjectSetter,
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
         : base(
@@ -93,13 +93,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       var newRelatedEndPoint = (ICollectionEndPoint<ICollectionEndPointData>)GetOppositeEndPoint(ModifiedEndPoint, NewRelatedObject, _endPointProvider);
       var oldRelatedEndPoint = (ICollectionEndPoint<ICollectionEndPointData>)GetOppositeEndPoint(ModifiedEndPoint, OldRelatedObject, _endPointProvider);
 
+      var removedRelatedObject = DomainObject;
+
       var bidirectionalModification = new ExpandedCommand(
           // => order.Customer = newCustomer
           this,
           // => newCustomer.Orders.Add (order)
-          newRelatedEndPoint.CreateAddCommand(ModifiedEndPoint.GetDomainObject()),
+          newRelatedEndPoint.CreateAddCommand(removedRelatedObject),
           // => oldCustomer.Orders.Remove (order) (remove)
-          oldRelatedEndPoint.CreateRemoveCommand(ModifiedEndPoint.GetDomainObject()));
+          oldRelatedEndPoint.CreateRemoveCommand(removedRelatedObject));
       return bidirectionalModification;
     }
   }

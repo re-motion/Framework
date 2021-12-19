@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// </summary>
   public static class ReflectionBasedPropertyResolver
   {
-    public static T ResolveDefinition<T> (IPropertyInformation propertyInformation, ClassDefinition classDefinition, Func<string, T> definitionGetter)
+    public static T? ResolveDefinition<T> (IPropertyInformation propertyInformation, ClassDefinition classDefinition, Func<string, T?> definitionGetter)
         where T : class
     {
       ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
@@ -52,18 +52,19 @@ namespace Remotion.Data.DomainObjects.Mapping
       return matchingImplementations.Select(tuple => tuple.Item2).SingleOrDefault();
     }
 
-    private static List<Tuple<IPropertyInformation, T>> GetMatchingDefinitions<T> (
+    private static List<ValueTuple<IPropertyInformation, T>> GetMatchingDefinitions<T> (
         IPropertyInformation propertyInformation,
         ClassDefinition classDefinition,
-        Func<string, T> definitionGetter) where T: class
+        Func<string, T?> definitionGetter) where T: class
     {
       IEnumerable<IPropertyInformation> propertyImplementationCandidates;
-      if (propertyInformation.DeclaringType.IsInterface)
+      if (propertyInformation.DeclaringType!.IsInterface)
       {
         var implementingTypes = GetImplementingTypes(classDefinition, propertyInformation);
         propertyImplementationCandidates = implementingTypes
             .Select(propertyInformation.FindInterfaceImplementation)
-            .Where(pi => pi != null);
+            .Where(pi => pi != null)
+            .Select(pi => pi!);
       }
       else
       {
@@ -74,8 +75,8 @@ namespace Remotion.Data.DomainObjects.Mapping
               let propertyIdentifier = MappingConfiguration.Current.NameResolver.GetPropertyName(pi)
               let definition = definitionGetter(propertyIdentifier)
               where definition != null
-              select Tuple.Create(pi, definition))
-          .Distinct(new DelegateBasedEqualityComparer<Tuple<IPropertyInformation, T>>(
+              select ValueTuple.Create<IPropertyInformation, T>(pi, definition!))
+          .Distinct(new DelegateBasedEqualityComparer<ValueTuple<IPropertyInformation, T>>(
                          (x, y) => object.Equals(x.Item1, y.Item1),
                          x => x.Item1.GetHashCode()))
           .ToList();
@@ -83,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     private static IEnumerable<Type> GetImplementingTypes (ClassDefinition classDefinition, IPropertyInformation interfaceProperty)
     {
-      Assertion.IsTrue(interfaceProperty.DeclaringType.IsInterface);
+      Assertion.IsTrue(interfaceProperty.DeclaringType!.IsInterface);
 
       if (interfaceProperty.DeclaringType.IsAssignableFrom(TypeAdapter.Create(classDefinition.ClassType)))
         yield return classDefinition.ClassType;

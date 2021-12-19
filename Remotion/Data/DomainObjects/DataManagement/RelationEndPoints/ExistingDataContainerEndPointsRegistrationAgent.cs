@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return dataContainer.AssociatedRelationEndPointIDs.Where(id => !id.Definition.IsVirtual);
     }
 
-    protected override string GetUnregisterProblem (IRelationEndPoint endPoint, RelationEndPointMap relationEndPointMap)
+    protected override string? GetUnregisterProblem (IRelationEndPoint endPoint, RelationEndPointMap relationEndPointMap)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("relationEndPointMap", relationEndPointMap);

@@ -79,19 +79,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return _parentTransaction.GetObjects<DomainObject>(objectIDs);
     }
 
-    public DomainObject TryGetObject (ObjectID objectID)
+    public DomainObject? TryGetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
       return _parentTransaction.TryGetObject(objectID);
     }
 
-    public DomainObject[] TryGetObjects (IEnumerable<ObjectID> objectIDs)
+    public DomainObject?[] TryGetObjects (IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
       return _parentTransaction.TryGetObjects<DomainObject>(objectIDs);
     }
 
-    public DomainObject ResolveRelatedObject (RelationEndPointID relationEndPointID)
+    public DomainObject? ResolveRelatedObject (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
       if (!relationEndPointID.Definition.IsVirtual || relationEndPointID.Definition.Cardinality != CardinalityType.One)
@@ -123,25 +123,25 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return _parentTransaction.QueryManager.GetCustom(query, qrr => qrr);
     }
 
-    public object ExecuteScalarQuery (IQuery query)
+    public object? ExecuteScalarQuery (IQuery query)
     {
       ArgumentUtility.CheckNotNull("query", query);
       return _parentTransaction.QueryManager.GetScalar(query);
     }
 
-    public DataContainer GetDataContainerWithoutLoading (ObjectID objectID)
+    public DataContainer? GetDataContainerWithoutLoading (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
       return _parentTransaction.DataManager.GetDataContainerWithoutLoading(objectID);
     }
 
-    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
+    public DataContainer? GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
       return _parentTransaction.DataManager.GetDataContainerWithLazyLoad(objectID, throwOnNotFound);
     }
 
-    public IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID relationEndPointID)
+    public IRelationEndPoint? GetRelationEndPointWithoutLoading (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
       return _parentTransaction.DataManager.GetRelationEndPointWithoutLoading(relationEndPointID);

@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _storageTypeInformationProvider; }
     }
 
-    public IQueryResultRow Read (IDataReader dataReader)
+    public IQueryResultRow? Read (IDataReader dataReader)
     {
       ArgumentUtility.CheckNotNull("dataReader", dataReader);
 

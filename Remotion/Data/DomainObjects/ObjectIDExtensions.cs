@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     /// <exception cref="ObjectDeletedException">The object has already been deleted and the <paramref name="includeDeleted"/> flag is 
     /// <see langword="false" />.</exception>
-    public static T GetObject<T> (this ObjectID id, ClientTransaction clientTransaction = null, bool includeDeleted = false)
+    public static T GetObject<T> (this ObjectID id, ClientTransaction? clientTransaction = null, bool includeDeleted = false)
         where T : DomainObject, ISupportsGetObject
     {
       ArgumentUtility.CheckNotNull("id", id);
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects
     /// An error occurred while reading a <see cref="PropertyValue"/>.<br/> -or- <br/>
     /// An error occurred while accessing the data source.
     /// </exception>
-    public static T TryGetObject<T> (this ObjectID id, ClientTransaction clientTransaction = null)
+    public static T? TryGetObject<T> (this ObjectID id, ClientTransaction? clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
       ArgumentUtility.CheckNotNull("id", id);
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="ArgumentNullException">One of the parameters passed to this method is <see langword="null"/>.</exception>
     /// <exception cref="ObjectInvalidException">The object with the given <paramref name="id"/> is invalid in the given 
     /// <paramref name="clientTransaction"/>.</exception>
-    public static T GetObjectReference<T> (this ObjectID id, ClientTransaction clientTransaction = null)
+    public static T GetObjectReference<T> (this ObjectID id, ClientTransaction? clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
       ArgumentUtility.CheckNotNull("id", id);
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag, so calling this API again with the same <see cref="ObjectID"/>s
     /// results in a <see cref="ObjectInvalidException"/> being thrown.
     /// </exception>
-    public static T[] GetObjects<T> (this IEnumerable<ObjectID> ids, ClientTransaction clientTransaction = null)
+    public static T[] GetObjects<T> (this IEnumerable<ObjectID> ids, ClientTransaction? clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
       ArgumentUtility.CheckNotNull("ids", ids);
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects
     /// <paramref name="ids"/>. This list can contain invalid and <see langword="null" /> <see cref="DomainObject"/> references.</returns>
     /// <exception cref="ArgumentNullException">The <paramref name="ids"/> parameter is <see langword="null"/>.</exception>
     /// <exception cref="InvalidCastException">One of the retrieved objects doesn't fit the specified type <typeparamref name="T"/>.</exception>
-    public static T[] TryGetObjects<T> (this IEnumerable<ObjectID> ids, ClientTransaction clientTransaction = null)
+    public static T?[] TryGetObjects<T> (this IEnumerable<ObjectID> ids, ClientTransaction? clientTransaction = null)
         where T : DomainObject, ISupportsGetObject
     {
       ArgumentUtility.CheckNotNull("ids", ids);

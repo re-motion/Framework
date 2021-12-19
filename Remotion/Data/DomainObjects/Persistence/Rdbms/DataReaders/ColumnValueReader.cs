@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _columnOrdinalProvider; }
     }
 
-    public object GetValueForColumn (ColumnDefinition columnDefinition)
+    public object? GetValueForColumn (ColumnDefinition columnDefinition)
     {
       var ordinal = _columnOrdinalProvider.GetOrdinal(columnDefinition, _dataReader);
       return columnDefinition.StorageTypeInfo.Read(_dataReader, ordinal);

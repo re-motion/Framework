@@ -39,58 +39,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void CreateNullEndPoint_RealObjectEndPoint ()
-    {
-      var orderTicketDefinition =
-          Configuration.GetTypeDefinition(typeof(OrderTicket)).GetRelationEndPointDefinition(typeof(OrderTicket).FullName + ".Order");
-
-      var nullObjectEndPoint = RelationEndPointManager.CreateNullEndPoint(TestableClientTransaction, orderTicketDefinition);
-
-      Assert.That(nullObjectEndPoint, Is.TypeOf(typeof(NullRealObjectEndPoint)));
-      var objectEndPointID = RelationEndPointID.Create(null, orderTicketDefinition);
-      Assert.That(nullObjectEndPoint.ID, Is.EqualTo(objectEndPointID));
-    }
-
-    [Test]
-    public void CreateNullEndPoint_VirtualObjectEndPoint ()
-    {
-      var orderTicketDefinition =
-          Configuration.GetTypeDefinition(typeof(Order)).GetRelationEndPointDefinition(typeof(Order).FullName + ".OrderTicket");
-
-      var nullObjectEndPoint = RelationEndPointManager.CreateNullEndPoint(TestableClientTransaction, orderTicketDefinition);
-
-      Assert.That(nullObjectEndPoint, Is.TypeOf(typeof(NullVirtualObjectEndPoint)));
-      var objectEndPointID = RelationEndPointID.Create(null, orderTicketDefinition);
-      Assert.That(nullObjectEndPoint.ID, Is.EqualTo(objectEndPointID));
-    }
-
-    [Test]
-    public void CreateNullEndPoint_DomainObjectCollectionEndPoint ()
-    {
-      var orderItemsDefinition =
-          Configuration.GetTypeDefinition(typeof(Order)).GetRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems");
-
-      var nullObjectEndPoint = RelationEndPointManager.CreateNullEndPoint(TestableClientTransaction, orderItemsDefinition);
-
-      Assert.That(nullObjectEndPoint, Is.TypeOf(typeof(NullDomainObjectCollectionEndPoint)));
-      var collectionEndPointID = RelationEndPointID.Create(null, orderItemsDefinition);
-      Assert.That(nullObjectEndPoint.ID, Is.EqualTo(collectionEndPointID));
-    }
-
-    [Test]
-    public void CreateNullEndPoint_VirtualCollectionEndPoint ()
-    {
-      var productReviewsDefinition =
-          Configuration.GetTypeDefinition(typeof(Product)).GetRelationEndPointDefinition(typeof(Product).FullName + ".Reviews");
-
-      var nullObjectEndPoint = RelationEndPointManager.CreateNullEndPoint(TestableClientTransaction, productReviewsDefinition);
-
-      Assert.That(nullObjectEndPoint, Is.TypeOf(typeof(NullVirtualCollectionEndPoint)));
-      var collectionEndPointID = RelationEndPointID.Create(null, productReviewsDefinition);
-      Assert.That(nullObjectEndPoint.ID, Is.EqualTo(collectionEndPointID));
-    }
-
-    [Test]
     public void RegisterEndPointsForDataContainer_Existing_RegistersRealObjectEndPoints ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.OrderTicket1, "Order");
@@ -475,6 +423,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That(result, Is.TypeOf(typeof(NullRealObjectEndPoint)));
       Assert.That(result.Definition, Is.EqualTo(endPointDefinition));
+      Assert.That(result.ID, Is.EqualTo(relationEndPointID));
     }
 
     [Test]
@@ -488,6 +437,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That(result, Is.TypeOf(typeof(NullVirtualObjectEndPoint)));
       Assert.That(result.Definition, Is.EqualTo(endPointDefinition));
+      Assert.That(result.ID, Is.EqualTo(relationEndPointID));
     }
 
     [Test]
@@ -501,6 +451,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That(result, Is.TypeOf(typeof(NullDomainObjectCollectionEndPoint)));
       Assert.That(result.Definition, Is.EqualTo(endPointDefinition));
+      Assert.That(result.ID, Is.EqualTo(relationEndPointID));
     }
 
     [Test]
@@ -514,6 +465,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       Assert.That(result, Is.TypeOf(typeof(NullVirtualCollectionEndPoint)));
       Assert.That(result.Definition, Is.EqualTo(endPointDefinition));
+      Assert.That(result.ID, Is.EqualTo(relationEndPointID));
     }
 
     [Test]

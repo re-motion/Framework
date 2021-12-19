@@ -36,15 +36,17 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
     {
       if (sourceReference.PropertyData.Kind == PropertyKind.RelatedObject)
       {
-        var originalRelated = (DomainObject)sourceReference.GetValueWithoutTypeCheck();
-        DomainObject cloneRelated = originalRelated != null ? context.GetCloneFor(originalRelated) : null;
+        var originalRelated = (DomainObject?)sourceReference.GetValueWithoutTypeCheck();
+        DomainObject? cloneRelated = originalRelated != null ? context.GetCloneFor(originalRelated) : null;
         cloneReference.SetValueWithoutTypeCheck(cloneRelated);
       }
       else
       {
         Assertion.IsTrue(sourceReference.PropertyData.Kind == PropertyKind.RelatedObjectCollection);
-        var originalRelatedCollection = (DomainObjectCollection)sourceReference.GetValueWithoutTypeCheck();
-        var cloneRelatedCollection = (DomainObjectCollection)cloneReference.GetValueWithoutTypeCheck();
+        var originalRelatedCollection = (DomainObjectCollection?)sourceReference.GetValueWithoutTypeCheck();
+        var cloneRelatedCollection = (DomainObjectCollection?)cloneReference.GetValueWithoutTypeCheck();
+        Assertion.DebugIsNotNull(originalRelatedCollection, "sourceReference.GetValueWithoutTypeCheck () != null");
+        Assertion.DebugIsNotNull(cloneRelatedCollection, "cloneReference.GetValueWithoutTypeCheck () != null");
 
         foreach (DomainObject originalRelated in originalRelatedCollection)
         {

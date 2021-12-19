@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition)actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(relationEndPointDefinition.PropertyDefinition, Is.SameAs(GetPropertyDefinition("Unidirectional")));
-      Assert.That(relationEndPointDefinition.RelationDefinition, Is.Null);
+      Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
     }
 
     [Test]
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition)actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(relationEndPointDefinition.PropertyDefinition, Is.SameAs(GetPropertyDefinition("BidirectionalOneToOne")));
-      Assert.That(relationEndPointDefinition.RelationDefinition, Is.Null);
+      Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
     }
 
     [Test]
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       RelationEndPointDefinition relationEndPointDefinition = (RelationEndPointDefinition)actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(relationEndPointDefinition.PropertyDefinition, Is.SameAs(GetPropertyDefinition("BidirectionalOneToManyForVirtualCollection")));
-      Assert.That(relationEndPointDefinition.RelationDefinition, Is.Null);
+      Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
     }
 
     [Test]

@@ -31,9 +31,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
 
     // member fields
 
-    private XmlDocument _document;
-    private ConfigurationNamespaceManager _namespaceManager;
-    private string _configurationFile;
+    private XmlDocument _document = null!;
+    private ConfigurationNamespaceManager _namespaceManager = null!;
+    private string _configurationFile = null!;
     private bool _resolveTypes;
 
     // construction and disposing
@@ -80,6 +80,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationL
           XmlDocument document = new XmlDocument(new NameTable());
           document.Load(validatingReader);
 
+          Assertion.DebugIsNotNull(document.DocumentElement, "document.DocumentElement != null");
           if (document.DocumentElement.NamespaceURI != schemaNamespace)
           {
             throw CreateConfigurationException(

@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       get { return _orderedObjectIDs.Count; }
     }
 
-    Type IDomainObjectCollectionData.RequiredItemType
+    Type? IDomainObjectCollectionData.RequiredItemType
     {
       get { return null; }
     }
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       get { return false; }
     }
 
-    RelationEndPointID IDomainObjectCollectionData.AssociatedEndPointID
+    RelationEndPointID? IDomainObjectCollectionData.AssociatedEndPointID
     {
       get { return null; }
     }
@@ -90,12 +90,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return _objectsByID[_orderedObjectIDs[index]];
     }
 
-    public DomainObject GetObject (ObjectID objectID)
+    public DomainObject? GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      DomainObject result;
-      _objectsByID.TryGetValue(objectID, out result);
+      _objectsByID.TryGetValue(objectID, out var result);
       return result;
     }
 
@@ -178,7 +177,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
       ArgumentUtility.CheckNotNull("comparison", comparison);
 
-      _orderedObjectIDs.Sort((one, two) => comparison(GetObject(one), GetObject(two)));
+      _orderedObjectIDs.Sort((one, two) =>
+      {
+        var domainObjectOne = GetObject(one);
+        var domainObjectTwo = GetObject(two);
+        Assertion.DebugIsNotNull(domainObjectOne, "DomainObject '{0}' is missing in the collection.", one);
+        Assertion.DebugIsNotNull(domainObjectTwo, "DomainObject '{0}' is missing in the collection.", two);
+        return comparison(domainObjectOne, domainObjectTwo);
+      });
       IncrementVersion();
     }
 

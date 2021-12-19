@@ -38,12 +38,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       {
         try
         {
+          Assertion.DebugAssert(
+              NullableTypeUtility.IsNullableType(concreteDeserializedType) == false,
+              "NullableTypeUtility.IsNullableType (concreteDeserializedType) == false with concreteDeserializedType '{0}'.",
+              concreteDeserializedType);
+
           _realObject = Activator.CreateInstance(
               concreteDeserializedType,
               BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
               null,
               new object[] { info, context },
-              null);
+              null)!;
         }
         catch (MissingMethodException ex)
         {

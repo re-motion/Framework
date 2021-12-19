@@ -107,17 +107,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       // Allowed
     }
 
-    public virtual void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
+    public virtual void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
       // Handled by Begin event
     }
 
-    public virtual void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public virtual void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       EnsureWriteable(clientTransaction, "PropertyValueChanging");
     }
 
-    public virtual void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public virtual void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       // Handled by Begin event
     }
@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject relatedObject,
+        DomainObject? relatedObject,
         ValueAccess valueAccess)
     {
       // Handled by Begin event
@@ -151,8 +151,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject)
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
       EnsureWriteable(clientTransaction, "RelationChanging");
     }
@@ -161,8 +161,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject)
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
       // Handled by Begin event
     }
@@ -289,7 +289,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       }
     }
 
-    private bool IsNullOrIncomplete (IRelationEndPoint relationEndPoint)
+    private bool IsNullOrIncomplete (IRelationEndPoint? relationEndPoint)
     {
       return relationEndPoint == null || !relationEndPoint.IsDataComplete;
     }

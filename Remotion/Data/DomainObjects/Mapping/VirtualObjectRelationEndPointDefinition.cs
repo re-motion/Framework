@@ -25,10 +25,10 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// Represents the non-foreign-key side of a bidirectional one-to-one relationship.
   /// </summary>
   [DebuggerDisplay("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
-  public class VirtualObjectRelationEndPointDefinition : IRelationEndPointDefinition
+  public class VirtualObjectRelationEndPointDefinition : IRelationEndPointDefinition, IRelationEndPointDefinitionSetter
   {
     private readonly string _propertyName;
-    private RelationDefinition _relationDefinition;
+    private RelationDefinition? _relationDefinition;
     private readonly ClassDefinition _classDefinition;
     private readonly bool _isMandatory;
     private readonly IPropertyInformation _propertyInfo;
@@ -56,9 +56,18 @@ namespace Remotion.Data.DomainObjects.Mapping
       _relationDefinition = relationDefinition;
     }
 
+    public bool HasRelationDefinitionBeenSet
+    {
+      get { return _relationDefinition != null; }
+    }
+
     public RelationDefinition RelationDefinition
     {
-      get { return _relationDefinition; }
+      get
+      {
+        Assertion.IsNotNull(_relationDefinition, "RelationDefinition has not been set for this relation end point.");
+        return _relationDefinition;
+      }
     }
 
     public ClassDefinition ClassDefinition

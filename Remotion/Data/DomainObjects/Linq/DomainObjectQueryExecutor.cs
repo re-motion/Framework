@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
@@ -60,6 +61,7 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <returns>
     /// The result of the executed query, converted to <typeparam name="T"/>.
     /// </returns>
+    [return: MaybeNull]
     public T ExecuteScalar<T> (QueryModel queryModel)
     {
       ArgumentUtility.CheckNotNull("queryModel", queryModel);
@@ -86,6 +88,7 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <returns>
     /// The result of the executed query, converted to <typeparam name="T"/>.
     /// </returns>
+    [return: MaybeNull]
     public T ExecuteSingle<T> (QueryModel queryModel, bool returnDefaultWhenEmpty)
     {
       ArgumentUtility.CheckNotNull("queryModel", queryModel);

@@ -45,13 +45,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _classDefinition.SetDerivedClasses(new ClassDefinition[0]);
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
       _classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
-      Assert.That(_classDefinition.StorageEntityDefinition, Is.Null);
+      Assert.That(_classDefinition.HasStorageEntityDefinitionBeenSet, Is.False);
 
       _storageProviderDefinitionStub.Stub(stub => stub.GetStorageProviderDefinition(_classDefinition, null)).Return(
           new UnitTestStorageProviderStubDefinition("DefaultStorageProvider"));
 
       _persistenceModelLoader.ApplyPersistenceModelToHierarchy(_classDefinition);
 
+      Assert.That(_classDefinition.HasStorageEntityDefinitionBeenSet, Is.True);
       Assert.That(_classDefinition.StorageEntityDefinition, Is.Not.Null);
     }
 

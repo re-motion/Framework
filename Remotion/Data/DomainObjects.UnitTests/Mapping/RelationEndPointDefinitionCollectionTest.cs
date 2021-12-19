@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -29,6 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private ClassDefinition _classDefinition;
     private RelationEndPointDefinition _endPoint1;
     private RelationEndPointDefinition _endPoint2;
+    private AnonymousRelationEndPointDefinition _anonymousEndPoint;
 
     public override void SetUp ()
     {
@@ -43,6 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           new PropertyDefinitionCollection(new[] { propertyDefinition1, propertyDefinition2, propertyDefinition3, propertyDefinition4 }, true));
       _endPoint1 = new RelationEndPointDefinition(propertyDefinition1, false);
       _endPoint2 = new RelationEndPointDefinition(propertyDefinition2, false);
+      _anonymousEndPoint = new AnonymousRelationEndPointDefinition(_classDefinition);
       _collection = new RelationEndPointDefinitionCollection();
     }
 
@@ -108,8 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var endPoint = new AnonymousRelationEndPointDefinition(_classDefinition);
       Assert.That(
           () => _collection.Add(endPoint),
-          Throws.InvalidOperationException
-              .With.Message.EqualTo("End points without property name cannot be added to this collection."));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Anonymous end points cannot be added to this collection.", "value"));
     }
 
     [Test]
@@ -152,6 +154,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _collection.Add(_endPoint1);
 
       Assert.That(_collection.Contains(_endPoint2), Is.False);
+    }
+
+    [Test]
+    public void ContainsAnonymousRelationEndPointDefinitionFalse ()
+    {
+      _collection.Add(_endPoint1);
+
+      Assert.That(_collection.Contains(_anonymousEndPoint), Is.False);
     }
 
     [Test]

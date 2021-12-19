@@ -25,9 +25,9 @@ namespace Remotion.Data.DomainObjects.Linq
   public struct SqlQueryGeneratorResult
   {
     private readonly SqlCommandData _sqlCommand;
-    private readonly Type _selectedEntityTypeOrNull;
+    private readonly Type? _selectedEntityTypeOrNull;
 
-    public SqlQueryGeneratorResult (SqlCommandData sqlCommand, Type selectedEntityTypeOrNull)
+    public SqlQueryGeneratorResult (SqlCommandData sqlCommand, Type? selectedEntityTypeOrNull)
     {
       _sqlCommand = sqlCommand;
       _selectedEntityTypeOrNull = selectedEntityTypeOrNull;
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Linq
       get { return _sqlCommand; }
     }
 
-    public Type SelectedEntityType
+    public Type? SelectedEntityType
     {
       get { return _selectedEntityTypeOrNull; }
     }

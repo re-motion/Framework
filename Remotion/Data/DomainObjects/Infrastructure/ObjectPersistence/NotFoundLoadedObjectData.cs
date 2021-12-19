@@ -28,6 +28,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public NotFoundLoadedObjectData (ObjectID objectID)
     {
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+
       _objectID = objectID;
     }
 
@@ -36,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _objectID; }
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public DomainObject? GetDomainObjectReference ()
     {
       return null;
     }

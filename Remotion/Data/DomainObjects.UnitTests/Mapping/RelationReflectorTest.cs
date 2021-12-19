@@ -295,6 +295,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
+    public void GetMetadata_WithRealRelationEndPoint_OpenGenericProperty ()
+    {
+        var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType : typeof(ClosedGenericClassWithRealRelationEndPoints));
+        classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
+        classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+        EnsurePropertyDefinitionExisitsOnClassDefinition(
+                classDefinition,
+                typeof(ClosedGenericClassWithRealRelationEndPoints),
+                "BaseBidirectionalOneToOne");
+
+        var otherClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType : typeof(GenericClassWithRealRelationEndPointsNotInMapping<>));
+        otherClassDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
+        otherClassDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+        EnsurePropertyDefinitionExisitsOnClassDefinition(
+                otherClassDefinition,
+                typeof(GenericClassWithRealRelationEndPointsNotInMapping<>),
+                "BaseBidirectionalOneToOne");
+
+        var relationReflector = CreateRelationReflector(
+                otherClassDefinition,
+                typeof(GenericClassWithRealRelationEndPointsNotInMapping<>),
+                "BaseBidirectionalOneToOne");
+
+        RelationDefinition actualRelationDefinition = relationReflector.GetMetadata(_classDefinitions);
+        Assert.That(actualRelationDefinition.EndPointDefinitions[0], Is.InstanceOf(typeof(RelationEndPointDefinition)));
+        Assert.That(actualRelationDefinition.EndPointDefinitions[1], Is.InstanceOf(typeof(PropertyNotFoundRelationEndPointDefinition)));
+    }
+
+    [Test]
     public void GetMetadata_WithVirtualRelationEndPoint_BidirectionalOneToManyForDomainObjectCollection_CheckEndPoint0 ()
     {
       EnsurePropertyDefinitionExisitsOnClassDefinition(

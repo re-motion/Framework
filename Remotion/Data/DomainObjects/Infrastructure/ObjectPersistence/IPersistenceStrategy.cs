@@ -205,7 +205,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
     /// An error occurred while executing the query.
     /// </exception>
-    object ExecuteScalarQuery (IQuery query);
+    object? ExecuteScalarQuery (IQuery query);
 
     /// <summary>
     /// Persists the given data.

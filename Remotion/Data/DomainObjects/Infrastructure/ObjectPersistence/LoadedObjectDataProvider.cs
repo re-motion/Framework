@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _invalidDomainObjectManager; }
     }
 
-    public ILoadedObjectData GetLoadedObject (ObjectID objectID)
+    public ILoadedObjectData? GetLoadedObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 

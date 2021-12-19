@@ -30,9 +30,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     public struct NestedPropertyInfo
     {
       private readonly IRdbmsStoragePropertyDefinition _storagePropertyDefinition;
-      private readonly Func<object, object> _valueAccessor;
+      private readonly Func<object?, object?> _valueAccessor;
 
-      public NestedPropertyInfo (IRdbmsStoragePropertyDefinition storagePropertyDefinition, Func<object, object> valueAccessor)
+      public NestedPropertyInfo (IRdbmsStoragePropertyDefinition storagePropertyDefinition, Func<object?, object?> valueAccessor)
       {
         ArgumentUtility.CheckNotNull("storagePropertyDefinition", storagePropertyDefinition);
         ArgumentUtility.CheckNotNull("valueAccessor", valueAccessor);
@@ -46,17 +46,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         get { return _storagePropertyDefinition; }
       }
 
-      public Func<object, object> ValueAccessor
+      public Func<object?, object?> ValueAccessor
       {
         get { return _valueAccessor; }
       }
     }
 
     private readonly NestedPropertyInfo[] _properties;
-    private readonly Func<object[], object> _valueCombinator;
+    private readonly Func<object?[], object?> _valueCombinator;
     private readonly Type _propertyType;
 
-    public CompoundStoragePropertyDefinition (Type propertyType, IEnumerable<NestedPropertyInfo> properties, Func<object[], object> valueCombinator)
+    public CompoundStoragePropertyDefinition (Type propertyType, IEnumerable<NestedPropertyInfo> properties, Func<object?[], object?> valueCombinator)
     {
       ArgumentUtility.CheckNotNull("propertyType", propertyType);
       ArgumentUtility.CheckNotNull("properties", properties);
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       get { return _propertyType; }
     }
 
-    public Func<object[], object> ValueCombinator
+    public Func<object?[], object?> ValueCombinator
     {
       get { return _valueCombinator; }
     }
@@ -92,17 +92,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return _properties.SelectMany(p => p.StoragePropertyDefinition.GetColumnsForComparison());
     }
 
-    public IEnumerable<ColumnValue> SplitValue (object value)
+    public IEnumerable<ColumnValue> SplitValue (object? value)
     {
       return _properties.SelectMany(p => p.StoragePropertyDefinition.SplitValue(p.ValueAccessor(value)));
     }
 
-    public IEnumerable<ColumnValue> SplitValueForComparison (object value)
+    public IEnumerable<ColumnValue> SplitValueForComparison (object? value)
     {
       return _properties.SelectMany(p => p.StoragePropertyDefinition.SplitValueForComparison(p.ValueAccessor(value)));
     }
 
-    public ColumnValueTable SplitValuesForComparison (IEnumerable<object> values)
+    public ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values)
     {
       ArgumentUtility.CheckNotNull("values", values);
 
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
           _properties.Select(p => p.StoragePropertyDefinition.SplitValuesForComparison(valueList.Select(v => p.ValueAccessor(v)))));
     }
 
-    public object CombineValue (IColumnValueProvider columnValueProvider)
+    public object? CombineValue (IColumnValueProvider columnValueProvider)
     {
       ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
       var values = _properties.Select(p => p.StoragePropertyDefinition.CombineValue(columnValueProvider)).ToArray();
@@ -125,8 +125,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
           this,
           property,
           "equivalentProperties",
-          prop => Tuple.Create<string, object>("property type", prop.PropertyType),
-          prop => Tuple.Create<string, object>("nested property count", prop._properties.Length)
+          prop => Tuple.Create<string, object?>("property type", prop.PropertyType),
+          prop => Tuple.Create<string, object?>("nested property count", prop._properties.Length)
           )).ToArray();
 
       return new CompoundStoragePropertyDefinition(

@@ -35,28 +35,24 @@ namespace Remotion.Data.DomainObjects.Mapping
           "Use DomainObjectCollectionRelationEndPointDefinition or VirtualCollectionRelationEndPointDefinition or VirtualObjectRelationEndPointDefinition respectively. (Version: 3.0.0)");
     }
 
-    public void SetRelationDefinition (RelationDefinition relationDefinition)
-    {
-    }
+    public RelationDefinition RelationDefinition => null!;
 
-    public RelationDefinition RelationDefinition => null;
-
-    public ClassDefinition ClassDefinition => null;
+    public ClassDefinition ClassDefinition => null!;
 
     public bool IsMandatory => false;
 
     public CardinalityType Cardinality => CardinalityType.Many;
 
-    public string PropertyName => null;
+    public string? PropertyName => null;
 
-    public IPropertyInformation PropertyInfo => null;
+    public IPropertyInformation? PropertyInfo => null;
 
     public bool IsVirtual => true;
 
     public bool IsAnonymous => false;
 
-    public string SortExpressionText => null;
+    public string? SortExpressionText => null;
 
-    public SortExpressionDefinition GetSortExpression () => null;
+    public SortExpressionDefinition? GetSortExpression () => null;
   }
 }

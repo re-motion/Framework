@@ -19,6 +19,7 @@ using System.Configuration;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.Configuration
 {
@@ -45,10 +46,13 @@ namespace Remotion.Data.DomainObjects.Mapping.Configuration
 
     public IMappingLoader CreateMappingLoader ()
     {
-      return MappingLoaderElement.CreateInstance();
+      var mappingLoader = MappingLoaderElement.CreateInstance();
+      Assertion.DebugIsNotNull(MappingLoaderElement.Type, "MappingLoaderElement.Type != null");
+      Assertion.DebugIsNotNull(mappingLoader, "MappingLoaderElement.CreateInstance() != null");
+      return mappingLoader;
     }
 
-    public Type MappingLoaderType
+    public Type? MappingLoaderType
     {
       get { return MappingLoaderElement.Type; }
       set { MappingLoaderElement.Type = value; }

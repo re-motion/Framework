@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 
@@ -34,20 +35,22 @@ namespace Remotion.Data.DomainObjects.Queries
     /// Returns a value stored within the current row at the given <paramref name="position"/> in the format returned by the 
     /// <see cref="StorageProvider"/>.
     /// </summary>
-    object GetRawValue (int position);
+    /// <returns>The value at <paramref name="position"/>. Can be <see langword="null"/> when no result exists.</returns>
+    object? GetRawValue (int position);
 
     /// <summary>
     /// Returns a value stored within the current row at the given <paramref name="position"/>, asking the <see cref="StorageProvider"/> 
     /// to convert the value into the given <paramref name="type"/>.
     /// </summary>
-    object GetConvertedValue (int position, Type type);
+    /// <returns>The value at <paramref name="position"/>. Can be <see langword="null"/> when no result exists or the data conversion yielded <see langword="null"/>.</returns>
+    object? GetConvertedValue (int position, Type type);
 
     /// <summary>
     /// Returns a value stored within the current row at the given <paramref name="position"/>, asking the <see cref="StorageProvider"/> to 
     /// convert the value into the given type <typeparamref name="T"/>.
     /// </summary>
-    T GetConvertedValue<T> (int position);
-
-
+    /// <returns>The value at <paramref name="position"/>. Can be <see langword="null"/> when no result exists or the data conversion yielded <see langword="null"/>.</returns>
+    /// <typeparam name="T"> The <see cref="Type"/> of the result data. Note that for value types, <see cref="Nullable{T}"/> must be used to properly account for empty results. </typeparam>
+    T? GetConvertedValue<T> (int position);
   }
 }

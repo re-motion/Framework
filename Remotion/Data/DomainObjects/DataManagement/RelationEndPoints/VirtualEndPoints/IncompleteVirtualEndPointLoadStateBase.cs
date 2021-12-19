@@ -113,6 +113,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public virtual void RegisterOriginalOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      if (oppositeEndPoint.IsNull)
+        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+
+      Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
       _originalOppositeEndPoints.Add(oppositeEndPoint.ObjectID, oppositeEndPoint);
       oppositeEndPoint.ResetSyncState();
@@ -121,6 +125,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public virtual void UnregisterOriginalOppositeEndPoint (TEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      if (oppositeEndPoint.IsNull)
+        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+
+      Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
       if (!_originalOppositeEndPoints.ContainsKey(oppositeEndPoint.ObjectID))
         throw new InvalidOperationException("The opposite end-point has not been registered.");
@@ -204,8 +212,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       foreach (var item in items)
       {
-        IRealObjectEndPoint oppositeEndPoint;
-        if (_originalOppositeEndPoints.TryGetValue(item.ID, out oppositeEndPoint))
+        if (_originalOppositeEndPoints.TryGetValue(item.ID, out var oppositeEndPoint))
         {
           dataManager.RegisterOriginalOppositeEndPoint(oppositeEndPoint);
           oppositeEndPoint.MarkSynchronized();
@@ -236,7 +243,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       var realObjectEndPoints = new List<IRealObjectEndPoint>();
       info.FillCollection(realObjectEndPoints);
-      _originalOppositeEndPoints = realObjectEndPoints.ToDictionary(ep => ep.ObjectID);
+      _originalOppositeEndPoints = realObjectEndPoints.ToDictionary(
+          ep =>
+          {
+            Assertion.IsFalse(ep.IsNull, "ep.IsNull");
+            Assertion.DebugIsNotNull(ep.ObjectID, "ep.ObjectID != null when ep.IsNull == false");
+
+            return ep.ObjectID;
+          });
     }
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)

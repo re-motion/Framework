@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Linq.SqlBackend.SqlGeneration;
 using Remotion.Utilities;
@@ -26,19 +27,18 @@ namespace Remotion.Data.DomainObjects.Linq
   /// </summary>
   public class ScalarResultRowAdapter : IDatabaseResultRow
   {
-    private readonly object _scalarValue;
+    private readonly object? _scalarValue;
     private readonly IStorageTypeInformationProvider _storageTypeInformationProvider;
 
-    public ScalarResultRowAdapter (object scalarValue, IStorageTypeInformationProvider storageTypeInformationProvider)
+    public ScalarResultRowAdapter (object? scalarValue, IStorageTypeInformationProvider storageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull("scalarValue", scalarValue);
       ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
 
       _scalarValue = scalarValue;
       _storageTypeInformationProvider = storageTypeInformationProvider;
     }
 
-    public object ScalarValue
+    public object? ScalarValue
     {
       get { return _scalarValue; }
     }
@@ -48,6 +48,7 @@ namespace Remotion.Data.DomainObjects.Linq
       get { return _storageTypeInformationProvider; }
     }
 
+    [return: MaybeNull]
     public T GetValue<T> (ColumnID columnID)
     {
       ArgumentUtility.CheckNotNull("columnID", columnID);
@@ -59,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Linq
       }
 
       var storageTypeInformation = _storageTypeInformationProvider.GetStorageType(typeof(T));
-      return (T)storageTypeInformation.ConvertFromStorageType(_scalarValue);
+      return (T?)storageTypeInformation.ConvertFromStorageType(_scalarValue);
     }
 
     public T GetEntity<T> (params ColumnID[] columnIDs)

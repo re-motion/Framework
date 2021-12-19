@@ -19,6 +19,7 @@ using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding
 {
@@ -35,7 +36,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   [Serializable]
   public abstract class BindableDomainObject : DomainObject, IBusinessObjectWithIdentity
   {
-    private IBindableDomainObjectImplementation _implementation;
+    private IBindableDomainObjectImplementation? _implementation;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BindableDomainObject"/> class.
@@ -54,7 +55,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     protected BindableDomainObject (SerializationInfo info, StreamingContext context)
       : base(info, context)
     {
-      _implementation = (IBindableDomainObjectImplementation)info.GetValue("BDO._implementation", typeof(IBindableDomainObjectImplementation));
+      _implementation = (IBindableDomainObjectImplementation)info.GetValue("BDO._implementation", typeof(IBindableDomainObjectImplementation))!;
     }
 
     protected new void BaseGetObjectData (SerializationInfo info, StreamingContext context)
@@ -81,32 +82,38 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     [StorageClassNone]
     public virtual string DisplayName
     {
-      get { return _implementation.BaseDisplayName; }
+      get { return Implementation.BaseDisplayName; }
     }
 
     string IBusinessObjectWithIdentity.UniqueIdentifier
     {
-      get { return _implementation.BaseUniqueIdentifier; }
+      get { return Implementation.BaseUniqueIdentifier; }
     }
 
-    object IBusinessObject.GetProperty (IBusinessObjectProperty property)
+    object? IBusinessObject.GetProperty (IBusinessObjectProperty property)
     {
-      return _implementation.GetProperty(property);
+      return Implementation.GetProperty(property);
     }
 
-    void IBusinessObject.SetProperty (IBusinessObjectProperty property, object value)
+    void IBusinessObject.SetProperty (IBusinessObjectProperty property, object? value)
     {
-      _implementation.SetProperty(property, value);
+      Implementation.SetProperty(property, value);
     }
 
-    string IBusinessObject.GetPropertyString (IBusinessObjectProperty property, string format)
+    string IBusinessObject.GetPropertyString (IBusinessObjectProperty property, string? format)
     {
-      return _implementation.GetPropertyString(property, format);
+      return Implementation.GetPropertyString(property, format);
     }
 
     IBusinessObjectClass IBusinessObject.BusinessObjectClass
     {
-      get { return _implementation.BusinessObjectClass; }
+      get { return Implementation.BusinessObjectClass; }
+    }
+
+    [StorageClassNone]
+    private IBindableDomainObjectImplementation Implementation
+    {
+      get { return Assertion.IsNotNull(_implementation, "_implementation != null when object was initialized via infrastructure."); }
     }
   }
 }

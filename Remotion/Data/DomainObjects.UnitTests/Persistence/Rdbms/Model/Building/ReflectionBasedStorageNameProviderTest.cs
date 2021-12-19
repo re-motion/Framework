@@ -30,12 +30,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
   {
     private ReflectionBasedStorageNameProvider _provider;
     private ClassDefinition _classDefinition;
+    private ClassDefinition _classDefinitionWithoutTable;
 
     [SetUp]
     public void SetUp ()
     {
       _provider = new ReflectionBasedStorageNameProvider();
       _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Company", classType: typeof(Company), baseClass: null);
+      _classDefinitionWithoutTable = ClassDefinitionObjectMother.CreateClassDefinition("Partner", classType: typeof(Partner), baseClass: null);
     }
 
     [Test]
@@ -163,6 +165,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     }
 
     [Test]
+    public void GetPrimaryKeyName_WithoutTableName ()
+    {
+      Assert.That(
+          () => _provider.GetPrimaryKeyConstraintName(_classDefinitionWithoutTable),
+          Throws.Exception.TypeOf<MappingException>()
+              .With.Message.EqualTo("Class 'Partner' cannot not define a primary key constraint because no table name has been defined."));
+    }
+
+    [Test]
     public void GetForeignKeyConstraintName_One ()
     {
       var columnDefinition = ColumnDefinitionObjectMother.CreateColumn("FakeColumn");
@@ -181,6 +192,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       var result = _provider.GetForeignKeyConstraintName(_classDefinition, new[] { columnDefinition1, columnDefinition2 });
 
       Assert.That(result, Is.EqualTo("FK_Company_FakeColumn1_FakeColumn2"));
+    }
+
+    [Test]
+    public void GetForeignKeyConstraintName_WithoutTableName ()
+    {
+      var columnDefinition = ColumnDefinitionObjectMother.CreateColumn("FakeColumn");
+
+      Assert.That(
+          () => _provider.GetForeignKeyConstraintName(_classDefinitionWithoutTable, new[] { columnDefinition }),
+          Throws.Exception.TypeOf<MappingException>()
+              .With.Message.EqualTo("Class 'Partner' cannot not define a foreign key constraint because no table name has been defined."));
     }
   }
 }

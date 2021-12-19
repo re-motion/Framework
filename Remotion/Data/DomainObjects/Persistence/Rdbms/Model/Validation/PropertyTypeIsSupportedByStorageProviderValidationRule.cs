@@ -42,7 +42,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
 
       if (propertyDefinition.StorageClass == StorageClass.Persistent)
       {
-        var unsupportedStoragePropertyDefinition = propertyDefinition.StoragePropertyDefinition as UnsupportedStoragePropertyDefinition;
+        var unsupportedStoragePropertyDefinition = propertyDefinition.HasStoragePropertyDefinitionBeenSet
+            ? propertyDefinition.StoragePropertyDefinition as UnsupportedStoragePropertyDefinition
+            : null;
         if (unsupportedStoragePropertyDefinition != null)
         {
           return MappingValidationResult.CreateInvalidResultForProperty(

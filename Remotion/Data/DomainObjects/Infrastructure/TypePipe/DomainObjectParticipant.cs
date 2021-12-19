@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       _interceptedPropertyFinder = interceptedPropertyFinder;
     }
 
-    public ITypeIdentifierProvider PartialTypeIdentifierProvider
+    public ITypeIdentifierProvider? PartialTypeIdentifierProvider
     {
       get
       {
@@ -136,12 +136,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
       }
     }
 
-    public object GetAdditionalTypeID (Type additionalType)
+    public object? GetAdditionalTypeID (Type additionalType)
     {
       return null; // Does nothing.
     }
 
-    public Type GetOrCreateAdditionalType (object additionalTypeID, IAdditionalTypeAssemblyContext additionalTypeAssemblyContext)
+    public Type? GetOrCreateAdditionalType (object additionalTypeID, IAdditionalTypeAssemblyContext additionalTypeAssemblyContext)
     {
       return null; // Does nothing.
     }

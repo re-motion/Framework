@@ -38,6 +38,6 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </param>
     /// <param name="uniqueIdentifier">The unique identifier of the object. Must not be <see langword="null" /> or empty.</param>
     /// <returns>The object specified by <paramref name="uniqueIdentifier"/> or <see langword="null" /> of not found.</returns>
-    IBusinessObjectWithIdentity GetObject ([NotNull] BindableObjectClassWithIdentity classWithIdentity, [NotNull] string uniqueIdentifier);
+    IBusinessObjectWithIdentity? GetObject ([NotNull] BindableObjectClassWithIdentity classWithIdentity, [NotNull] string uniqueIdentifier);
   }
 }

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Queries;
@@ -55,22 +56,49 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _dataReader.FieldCount; }
     }
 
-    public object GetRawValue (int position)
+    public object? GetRawValue (int position)
     {
+      // IDataReader.GetValue(ordinal) usually returns DBNull.Value for null values, but the implementation does return null for unsupported data types.
+      // There is no explicit documentation on IDataReader.GetValue(ordinal) returning only DBNull.Value instead of an actual null value.
+      // Also, when using IDbCommand.ExecuteScalar(), the API is defined as a nullable value, therefore it is more consistent to officially accept
+      // that IDataReader.GetValue(ordinal) could also return null values despite its contract.
+
       return _dataReader.GetValue(position);
     }
 
-    public object GetConvertedValue (int position, Type type)
+    public object? GetConvertedValue (int position, Type type)
     {
       ArgumentUtility.CheckNotNull("type", type);
 
       var storageType =  GetStorageType(type);
-      return storageType.Read(_dataReader, position);
+      object? convertedValue = storageType.Read(_dataReader, position);
+      return convertedValue;
     }
 
+    [return: MaybeNull]
     public T GetConvertedValue<T> (int position)
     {
-      return (T)GetConvertedValue(position, typeof(T));
+      object? convertedValue = GetConvertedValue(position, typeof(T));
+
+      try
+      {
+        return (T?)convertedValue;
+      }
+      catch (NullReferenceException)
+      {
+        if (convertedValue == null && typeof(T).IsValueType && !NullableTypeUtility.IsNullableType(typeof(T)))
+        {
+          throw new InvalidCastException(
+              string.Format(
+                  "Type parameter 'T' is a value type ('{0}') but the result at position '{1}' is null. Use 'System.Nullable<{0}>' instead as type parameter.",
+                  typeof(T),
+                  position));
+        }
+        else
+        {
+          throw;
+        }
+      }
     }
 
     private IStorageTypeInformation GetStorageType (Type type)

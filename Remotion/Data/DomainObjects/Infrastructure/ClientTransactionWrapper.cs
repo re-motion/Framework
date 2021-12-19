@@ -96,9 +96,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     ///   An instance of the of a type implementing <see cref="ITransaction"/> or <see langword="null"/> if the
     ///   transaction is a root transaction.
     /// </value>
-    public virtual ITransaction Parent
+    public virtual ITransaction? Parent
     {
-      get { return _wrappedInstance.ParentTransaction.ToITransaction(); }
+      get { return _wrappedInstance.ParentTransaction?.ToITransaction(); }
     }
 
     /// <summary>Gets a flag describing whether the transaction is a child transaction.</summary>

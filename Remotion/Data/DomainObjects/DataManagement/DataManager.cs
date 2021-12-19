@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     private DataContainerMap _dataContainerMap;
     private DomainObjectStateCache _domainObjectStateCache;
 
-    private object[] _deserializedData; // only used for deserialization
+    private object[]? _deserializedData; // only used for deserialization
 
     public DataManager (
         ClientTransaction clientTransaction,
@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _dataContainerMap.RollbackAllDataContainers();
     }
 
-    public DataContainer GetDataContainerWithoutLoading (ObjectID objectID)
+    public DataContainer? GetDataContainerWithoutLoading (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -230,7 +230,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return _domainObjectStateCache.GetState(objectID);
     }
 
-    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
+    public DataContainer? GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -245,7 +245,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return DataContainers[objectID];
     }
 
-    public IEnumerable<DataContainer> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
+    public IEnumerable<DataContainer?> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
@@ -275,7 +275,16 @@ namespace Remotion.Data.DomainObjects.DataManagement
         throw new InvalidOperationException("The given end-point cannot be loaded, its data is already complete.");
 
       var loadedData = _objectLoader.GetOrLoadRelatedObjects(endPointID);
-      var domainObjects = loadedData.Select(data => data.GetDomainObjectReference()).ToArray();
+      var domainObjects = loadedData.Select(
+          data =>
+          {
+            Assertion.IsFalse(data.IsNull, "ILoadedObjectData.ObjectID: {0}", data.ObjectID);
+
+            var domainObjectReference = data.GetDomainObjectReference();
+            Assertion.DebugIsNotNull(domainObjectReference, "data.GetDomainObjectReference() != null");
+
+            return domainObjectReference;
+          }).ToArray();
       collectionEndPoint.MarkDataComplete(domainObjects);
     }
 
@@ -307,7 +316,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       if (_dataContainerMap[objectID] != null)
         throw new InvalidOperationException("The given DataContainer cannot be loaded, its data is already available.");
 
-      return GetDataContainerWithLazyLoad(objectID, throwOnNotFound: true);
+      return GetDataContainerWithLazyLoad(objectID, throwOnNotFound: true)!;
     }
 
     public IRelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID)
@@ -316,7 +325,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return _relationEndPointManager.GetRelationEndPointWithLazyLoad(endPointID);
     }
 
-    public IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
+    public IRelationEndPoint? GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
     {
       ArgumentUtility.CheckNotNull("endPointID", endPointID);
       return _relationEndPointManager.GetRelationEndPointWithoutLoading(endPointID);
@@ -409,10 +418,16 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull("endPointIDs", endPointIDs);
 
-      var endPointsOfNewOrDeletedObjects = (from endPointID in endPointIDs
-                                            let owningDataContainer = GetDataContainerWithoutLoading(endPointID.ObjectID)
-                                            where owningDataContainer != null && (owningDataContainer.State.IsDeleted || owningDataContainer.State.IsNew)
-                                            select endPointID).ConvertToCollection();
+      var endPointsOfNewOrDeletedObjects = endPointIDs
+          .Where(endPointID => endPointID.ObjectID != null)
+          .Where(
+              endPointID =>
+              {
+                Assertion.DebugIsNotNull(endPointID.ObjectID, "endPointID.ObjectID != null");
+                var owningDataContainer = GetDataContainerWithoutLoading(endPointID.ObjectID);
+                return owningDataContainer != null && (owningDataContainer.State.IsDeleted || owningDataContainer.State.IsNew);
+              })
+          .ToList();
       if (endPointsOfNewOrDeletedObjects.Count > 0)
       {
         var message = "Cannot unload the following relation end-points because they belong to new or deleted objects: "
@@ -429,7 +444,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return new UnloadAllCommand(_relationEndPointManager, _dataContainerMap, _invalidDomainObjectManager, _transactionEventSink);
     }
 
-    private ClientTransactionsDifferException CreateClientTransactionsDifferException (string message, params object[] args)
+    private ClientTransactionsDifferException CreateClientTransactionsDifferException (string message, params object?[] args)
     {
       return new ClientTransactionsDifferException(String.Format(message, args));
     }
@@ -443,11 +458,20 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     protected DataManager (SerializationInfo info, StreamingContext context)
     {
-      _deserializedData = (object[])info.GetValue("doInfo.GetData", typeof(object[]));
+      _deserializedData = (object[])info.GetValue("doInfo.GetData", typeof(object[]))!;
+      _clientTransaction = null!;
+      _transactionEventSink = null!;
+      _dataContainerEventListener = null!;
+      _dataContainerMap = null!;
+      _relationEndPointManager = null!;
+      _domainObjectStateCache = null!;
+      _invalidDomainObjectManager = null!;
+      _objectLoader = null!;
     }
 
-    void IDeserializationCallback.OnDeserialization (object sender)
+    void IDeserializationCallback.OnDeserialization (object? sender)
     {
+      Assertion.IsNotNull(_deserializedData, "_deserializedData != null");
       var doInfo = new FlattenedDeserializationInfo(_deserializedData);
       _clientTransaction = doInfo.GetValueForHandle<ClientTransaction>();
       _transactionEventSink = doInfo.GetValueForHandle<IClientTransactionEventSink>();

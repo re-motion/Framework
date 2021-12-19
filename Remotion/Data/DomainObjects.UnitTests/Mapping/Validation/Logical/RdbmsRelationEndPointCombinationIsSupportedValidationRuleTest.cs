@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     }
 
     [Test]
-    public void TwoVirtualRelationEndPoint_OneEndPointIsAnonymous ()
+    public void TwoVirtualRelationEndPoint_FirstEndPointIsAnonymous ()
     {
       var anonymousEndPointDefinition = new AnonymousRelationEndPointDefinition(_orderClass);
       var virtualEndPointDefinition = new VirtualObjectRelationEndPointDefinition(
@@ -166,7 +166,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
       var mappingValidationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
-          "Relation 'Test' cannot have two virtual end points.\r\n\r\n"
+          "Relation 'Test' contains one virtual and one anonymous end point. "
+          + "One of the two properties must set 'ContainsForeignKey' to 'true' on the 'DBBidirectionalRelationAttribute'.\r\n\r\n"
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          + "Property: OrderNumber\r\n"
+          + "Relation ID: Test";
+      AssertMappingValidationResult(mappingValidationResult, false, expectedMessage);
+    }
+
+    [Test]
+    public void TwoVirtualRelationEndPoint_SecondEndPointIsAnonymous ()
+    {
+      var anonymousEndPointDefinition = new AnonymousRelationEndPointDefinition(_orderClass);
+      var virtualEndPointDefinition = new VirtualObjectRelationEndPointDefinition(
+          _orderClass, "OrderNumber", false, PropertyInfoAdapter.Create(typeof(Order).GetProperty("OrderNumber")));
+      var relationDefinition = new RelationDefinition("Test", virtualEndPointDefinition, anonymousEndPointDefinition);
+
+      var mappingValidationResult = _validationRule.Validate(relationDefinition);
+
+      var expectedMessage =
+          "Relation 'Test' contains one virtual and one anonymous end point. "
+          + "One of the two properties must set 'ContainsForeignKey' to 'true' on the 'DBBidirectionalRelationAttribute'.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
           + "Property: OrderNumber\r\n"
           + "Relation ID: Test";

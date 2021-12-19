@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Development
     private readonly MappingLoaderConfiguration _mappingLoader;
     private readonly QueryConfiguration _query;
 
-    public FakeDomainObjectsConfiguration (MappingLoaderConfiguration mappingLoader = null, StorageConfiguration storage = null, QueryConfiguration query = null)
+    public FakeDomainObjectsConfiguration (MappingLoaderConfiguration? mappingLoader = null, StorageConfiguration? storage = null, QueryConfiguration? query = null)
     {
       _mappingLoader = mappingLoader ?? new MappingLoaderConfiguration();
       _storage = storage ?? new StorageConfiguration();

@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// <seealso cref="ObjectListFactory"/>
   public class DomainObjectCollectionFactory
   {
-    private static readonly ConcurrentDictionary<Type, (bool CanAscribe, Type ItemType)> s_genericEnumerableTypeCache = new();
+    private static readonly ConcurrentDictionary<Type, (bool CanAscribe, Type? ItemType)> s_genericEnumerableTypeCache = new();
 
     public static readonly DomainObjectCollectionFactory Instance = new DomainObjectCollectionFactory();
 
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// duplicates or <see langword="null" /> values.</param>
     /// <param name="requiredItemType">The required item type of the collection.</param>
     /// <returns>A stand-alone instance of <paramref name="collectionType"/>.</returns>
-    public DomainObjectCollection CreateCollection (Type collectionType, IEnumerable<DomainObject> content, Type requiredItemType)
+    public DomainObjectCollection CreateCollection (Type collectionType, IEnumerable<DomainObject> content, Type? requiredItemType)
     {
       ArgumentUtility.CheckNotNull("collectionType", collectionType);
       ArgumentUtility.CheckNotNull("content", content);
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return CreateCollection(collectionType, dataStrategy);
     }
 
-    private Type GetRequiredItemType (Type collectionType)
+    private Type? GetRequiredItemType (Type collectionType)
     {
       return s_genericEnumerableTypeCache.GetOrAdd(
                collectionType,

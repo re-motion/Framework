@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   public class ImplementingSetAccessorInterceptor : ImplementingAccessorInterceptorBase
   {
     private static readonly MethodInfo s_propertySetValue =
-        MemberInfoFromExpressionUtility.GetGenericMethodDefinition((PropertyAccessor o) => o.SetValue<object>(null));
+        MemberInfoFromExpressionUtility.GetGenericMethodDefinition((PropertyAccessor o) => o.SetValue<object>(null!));
 
     public ImplementingSetAccessorInterceptor (MethodInfo interceptedAccessorMethod, string propertyName, Type propertyType)
         : base(interceptedAccessorMethod, propertyName, propertyType)

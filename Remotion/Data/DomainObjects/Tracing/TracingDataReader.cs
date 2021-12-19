@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.Tracing
       return _dataReader.NextResult();
     }
 
-    public DataTable GetSchemaTable ()
+    public DataTable? GetSchemaTable ()
     {
       return _dataReader.GetSchemaTable();
     }

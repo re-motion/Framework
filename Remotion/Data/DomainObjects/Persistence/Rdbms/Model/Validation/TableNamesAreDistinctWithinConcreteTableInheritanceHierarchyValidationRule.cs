@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
 
     private IEnumerable<TableDefinition> FindAllTableDefinitions (ClassDefinition classDefinition)
     {
-      var tableDefinition = classDefinition.StorageEntityDefinition as TableDefinition;
+      var tableDefinition = classDefinition.HasStorageEntityDefinitionBeenSet ? classDefinition.StorageEntityDefinition as TableDefinition : null;
       if (tableDefinition != null)
         yield return tableDefinition;
 

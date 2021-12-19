@@ -55,11 +55,12 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       foreach (var endPoint in classDefinition.MyRelationEndPointDefinitions)
       {
+        Assertion.DebugAssert(endPoint.IsAnonymous == false, "endPoint.IsAnonymous == false");
         var relationDefinition = _mappingObjectFactory.CreateRelationDefinition(classDefinitions, classDefinition, endPoint.PropertyInfo);
         if (!relationDefinitions.ContainsKey(relationDefinition.ID))
         {
-          relationDefinition.EndPointDefinitions[0].SetRelationDefinition(relationDefinition);
-          relationDefinition.EndPointDefinitions[1].SetRelationDefinition(relationDefinition);
+          ((IRelationEndPointDefinitionSetter)relationDefinition.EndPointDefinitions[0]).SetRelationDefinition(relationDefinition);
+          ((IRelationEndPointDefinitionSetter)relationDefinition.EndPointDefinitions[1]).SetRelationDefinition(relationDefinition);
 
           relationDefinitions.Add(relationDefinition.ID, relationDefinition);
         }

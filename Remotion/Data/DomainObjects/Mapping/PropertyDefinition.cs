@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly ClassDefinition _classDefinition;
     private readonly int? _maxLength;
     private readonly StorageClass _storageClass;
-    private IStoragePropertyDefinition _storagePropertyDefinition;
+    private IStoragePropertyDefinition? _storagePropertyDefinition;
     private readonly IPropertyInformation _propertyInfo;
     private readonly Type _propertyType;
     private readonly bool _isNullable;
@@ -72,6 +72,11 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _propertyName; }
     }
 
+    public bool HasStoragePropertyDefinitionBeenSet
+    {
+      get { return _storagePropertyDefinition != null; }
+    }
+
     public IStoragePropertyDefinition StoragePropertyDefinition
     {
       get
@@ -79,6 +84,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         if (StorageClass != StorageClass.Persistent)
           throw new InvalidOperationException("Cannot access property 'storagePropertyDefinition' for non-persistent property definitions.");
 
+        Assertion.IsNotNull(_storagePropertyDefinition, "StoragePropertyDefinition has not been set for property '{0}' of class '{1}'.", PropertyName, _classDefinition.ID);
         return _storagePropertyDefinition;
       }
     }
@@ -93,7 +99,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _propertyType; }
     }
 
-    public object DefaultValue
+    public object? DefaultValue
     {
       get
       {
@@ -101,7 +107,11 @@ namespace Remotion.Data.DomainObjects.Mapping
           return null;
 
         if (_propertyType.IsArray)
-          return Array.CreateInstance(_propertyType.GetElementType(), 0);
+        {
+          var elementType = _propertyType.GetElementType();
+          Assertion.DebugIsNotNull(elementType, "elementType != null when _propertyType.IsArray");
+          return Array.CreateInstance(elementType, 0);
+        }
 
         if (_propertyType == typeof(string))
           return string.Empty;

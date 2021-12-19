@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 
     private void EnsureStorageEntitiesCreated (ClassDefinition classDefinition)
     {
-      if (classDefinition.StorageEntityDefinition == null)
+      if (!classDefinition.HasStorageEntityDefinitionBeenSet)
       {
         var storageEntity = CreateEntityDefinition(classDefinition);
         classDefinition.SetStorageEntity(storageEntity);
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
                 typeof(NonPersistentStorageEntity).Name));
       }
 
-      Assertion.IsNotNull(classDefinition.StorageEntityDefinition);
+      Assertion.DebugIsNotNull(classDefinition.StorageEntityDefinition, "classDefinition.StorageEntityDefinition != null");
     }
 
     private void EnsureAllStoragePropertiesCreated (IEnumerable<ClassDefinition> classDefinitions)
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     {
       foreach (var propertyDefinition in classDefinition.MyPropertyDefinitions.Where(pd => pd.StorageClass == StorageClass.Persistent))
       {
-        if (propertyDefinition.StoragePropertyDefinition == null)
+        if (!propertyDefinition.HasStoragePropertyDefinitionBeenSet)
         {
           propertyDefinition.SetStorageProperty(NonPersistentStorageProperty.Instance);
         }
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
                   typeof(NonPersistentStorageProperty).Name));
         }
 
-        Assertion.IsNotNull(propertyDefinition.StoragePropertyDefinition);
+        Assertion.DebugIsNotNull(propertyDefinition.StoragePropertyDefinition, "propertyDefinition.StoragePropertyDefinition != null");
       }
     }
 

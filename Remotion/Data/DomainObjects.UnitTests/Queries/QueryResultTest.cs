@@ -36,6 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 
     private QueryResult<Order> _result;
     private QueryResult<Order> _resultWithDuplicates;
+    private QueryResult<Order> _resultWithNullDuplicates;
     private QueryResult<Order> _resultWithNulls;
     private QueryResult<Order> _resultWithCustomType;
 
@@ -53,6 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
 
       _result = new QueryResult<Order>(_query, new[] { _order1, _order3, _order4 });
       _resultWithDuplicates = new QueryResult<Order>(_query, new[] { _order1, _order3, _order4, _order1 });
+      _resultWithNullDuplicates = new QueryResult<Order>(_query, new[] { _order1, _order3, null, _order4, null });
       _resultWithNulls = new QueryResult<Order>(_query, new[] { _order1, _order3, _order4, null });
       _resultWithCustomType = new QueryResult<Order>(_queryWithCustomType, new[] { _order1, _order3, _order4 });
     }
@@ -81,6 +83,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     public void ContainsDuplicates_True ()
     {
       Assert.That(_resultWithDuplicates.ContainsDuplicates(), Is.True);
+    }
+
+    [Test]
+    [Obsolete("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
+    public void ContainsDuplicates_WithNullValues_True ()
+    {
+      Assert.That(_resultWithNullDuplicates.ContainsDuplicates(), Is.True);
     }
 
     [Test]

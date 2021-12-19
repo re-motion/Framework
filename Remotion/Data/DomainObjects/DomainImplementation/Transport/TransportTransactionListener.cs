@@ -34,12 +34,12 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       _transporter = transporter;
     }
 
-    public override void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public override void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       CheckDomainObjectForChangedProperty(domainObject);
     }
 
-    public override void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public override void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
       if (!relationEndPointDefinition.IsVirtual)
         CheckDomainObjectForChangedProperty(domainObject);

@@ -18,6 +18,7 @@ using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications
 {
@@ -28,8 +29,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
   {
     public ObjectEndPointSetOneOneCommand (
         IObjectEndPoint modifiedEndPoint,
-        DomainObject newRelatedObject,
-        Action<DomainObject> oppositeObjectSetter,
+        DomainObject? newRelatedObject,
+        Action<DomainObject?> oppositeObjectSetter,
         IClientTransactionEventSink transactionEventSink)
         : base(modifiedEndPoint, newRelatedObject, oppositeObjectSetter, transactionEventSink)
     {
@@ -76,15 +77,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       var oldRelatedObjectOfNewRelatedObject = NewRelatedObject == null ? null : newRelatedEndPoint.GetOppositeObject();
       var oldRelatedEndPointOfNewRelatedEndPoint = newRelatedEndPoint.GetEndPointWithOppositeDefinition<IObjectEndPoint>(oldRelatedObjectOfNewRelatedObject);
 
+      var removedRelatedObject = DomainObject;
+
       var bidirectionalModification = new ExpandedCommand(
         // => order.OrderTicket = newTicket
         this,
         // => oldTicket.Order = null (remove)
-        oldRelatedEndPoint.CreateRemoveCommand(ModifiedEndPoint.GetDomainObject()),
+        oldRelatedEndPoint.CreateRemoveCommand(removedRelatedObject),
         // => newTicket.Order = order
-        newRelatedEndPoint.CreateSetCommand(ModifiedEndPoint.GetDomainObject()),
+        newRelatedEndPoint.CreateSetCommand(removedRelatedObject),
+        // TODO RM-8241: IRelationEndPoint.CreateRemoveCommand (...) requires a non-null parameter.
+        //               This is enforced by real implementations but ignored with NullObjectEndPoint and violates Liskov.
         // => oldOrderOfNewTicket.OrderTicket = null (remove)
-        oldRelatedEndPointOfNewRelatedEndPoint.CreateRemoveCommand(NewRelatedObject));
+        oldRelatedEndPointOfNewRelatedEndPoint.CreateRemoveCommand(NewRelatedObject!));
 
       return bidirectionalModification;
     }

@@ -41,16 +41,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
         : base(
-            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
+            modifiedEndPoint,
             null,
             ArgumentUtility.CheckNotNull("insertedObject", insertedObject),
-            ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink))
+            transactionEventSink)
     {
       ArgumentUtility.CheckNotNull("collectionData", collectionData);
       ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
-
-      if (modifiedEndPoint.IsNull)
-        throw new ArgumentException("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
 
       _index = index;
       _modifiedCollectionData = collectionData;
@@ -76,6 +73,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public IRelationEndPointProvider EndPointProvider
     {
       get { return _endPointProvider; }
+    }
+
+    public new DomainObject NewRelatedObject
+    {
+      get { return base.NewRelatedObject!; }
     }
 
     public override void Begin ()
@@ -124,7 +126,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
       return new ExpandedCommand(
           // insertedOrder.Customer = customer (previously oldCustomer)
-          insertedObjectEndPoint.CreateSetCommand(ModifiedEndPoint.GetDomainObject()),
+          insertedObjectEndPoint.CreateSetCommand(DomainObject),
           // customer.Orders.Insert (insertedOrder, index)
           this,
           // oldCustomer.Orders.Remove (insertedOrder)

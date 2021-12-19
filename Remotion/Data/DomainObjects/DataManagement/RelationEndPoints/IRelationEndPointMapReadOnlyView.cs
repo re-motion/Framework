@@ -26,6 +26,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   public interface IRelationEndPointMapReadOnlyView : IEnumerable<IRelationEndPoint>, IFlattenedSerializable
   {
     int Count { get; }
-    IRelationEndPoint this[RelationEndPointID endPointID] { get; }
+    IRelationEndPoint? this[RelationEndPointID endPointID] { get; }
   }
 }

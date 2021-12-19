@@ -35,6 +35,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("id", id);
 
+      if (id.Definition.IsAnonymous)
+        throw new ArgumentException("End point ID must not refer to an anonymous end point.", "id");
+
       _clientTransaction = clientTransaction;
       _id = id;
     }
@@ -70,7 +73,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _id; }
     }
 
-    public ObjectID ObjectID
+    public ObjectID? ObjectID
     {
       get { return _id.ObjectID; }
     }
@@ -82,7 +85,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public string PropertyName
     {
-      get { return Definition.PropertyName; }
+      get
+      {
+        Assertion.DebugAssert(!Definition.IsAnonymous, "!Definition.IsAnonymous");
+        return Definition.PropertyName;
+      }
     }
 
     public RelationDefinition RelationDefinition
@@ -100,8 +107,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return false; }
     }
 
-    public DomainObject GetDomainObject ()
+    public DomainObject? GetDomainObject ()
     {
+      //TODO RM-8241: possible null bug, non-null RelationEndPoint could probably require non-null ObjectID during construction.
       if (ObjectID == null)
         return null;
 
@@ -111,8 +119,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return ClientTransaction.GetObject(ObjectID, true);
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public DomainObject? GetDomainObjectReference ()
     {
+      //TODO RM-8241: possible null bug, non-null RelationEndPoint could probably require non-null ObjectID during construction.
       if (ObjectID == null)
         return null;
 

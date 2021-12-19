@@ -39,18 +39,29 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
     {
       ArgumentUtility.CheckNotNull("type", type);
 
-      if (AttributeUtility.IsDefined(type, typeof(StorageGroupAttribute), false)
-          && AttributeUtility.IsDefined(type.BaseType, typeof(StorageGroupAttribute), true))
+      if (AttributeUtility.IsDefined(type, typeof(StorageGroupAttribute), false))
       {
-        Type baseType = type.BaseType;
-        while (!AttributeUtility.IsDefined<StorageGroupAttribute>(baseType, false)) //get base type which has the attribute applied
-          baseType = baseType.BaseType;
+        Assertion.DebugAssert(type != typeof(object), "type != typeof(object)");
+        Assertion.DebugAssert(type.IsInterface == false, "type.IsInterface == false");
+        Assertion.DebugIsNotNull(type.BaseType, "type.BaseType != null when type != typeof(object) and type.IsInterface == false");
 
-        return MappingValidationResult.CreateInvalidResultForType(
-            type,
-            "The domain object type cannot redefine the '{0}' already defined on base type '{1}'.",
-            typeof(StorageGroupAttribute).Name,
-            baseType.Name);
+        if (AttributeUtility.IsDefined(type.BaseType, typeof(StorageGroupAttribute), true))
+        {
+          Type baseType = type.BaseType;
+          while (!AttributeUtility.IsDefined<StorageGroupAttribute>(baseType, false)) //get base type which has the attribute applied
+          {
+            Assertion.DebugAssert(baseType != typeof(object), "baseType != typeof(object)");
+            Assertion.DebugIsNotNull(baseType.BaseType, "baseType.BaseType != null when baseType != typeof(object)");
+
+            baseType = baseType.BaseType;
+          }
+
+          return MappingValidationResult.CreateInvalidResultForType(
+              type,
+              "The domain object type cannot redefine the '{0}' already defined on base type '{1}'.",
+              typeof(StorageGroupAttribute).Name,
+              baseType.Name);
+        }
       }
       return MappingValidationResult.CreateValidResult();
     }

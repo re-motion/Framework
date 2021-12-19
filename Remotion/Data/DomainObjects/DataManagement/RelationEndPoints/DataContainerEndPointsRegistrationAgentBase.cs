@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     }
 
     protected abstract IEnumerable<RelationEndPointID> GetOwnedEndPointIDs (DataContainer dataContainer);
-    protected abstract string GetUnregisterProblem (IRelationEndPoint endPoint, RelationEndPointMap relationEndPointMap);
+    protected abstract string? GetUnregisterProblem (IRelationEndPoint endPoint, RelationEndPointMap relationEndPointMap);
 
     public void RegisterEndPoints (DataContainer dataContainer, RelationEndPointMap relationEndPointMap)
     {
@@ -60,6 +60,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       foreach (var id in GetOwnedEndPointIDs(dataContainer))
       {
+        Assertion.DebugIsNotNull(id.ObjectID, "id.ObjectID != null");
         var endPoint = id.Definition.IsVirtual
                            ? (IRelationEndPoint)_endPointFactory.CreateVirtualEndPoint(id, true)
                            : _endPointFactory.CreateRealObjectEndPoint(id, dataContainer);

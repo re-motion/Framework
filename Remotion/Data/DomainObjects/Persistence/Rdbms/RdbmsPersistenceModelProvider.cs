@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      if (classDefinition.StorageEntityDefinition == null)
+      if (!classDefinition.HasStorageEntityDefinitionBeenSet)
       {
         throw new RdbmsProviderException(
             string.Format(
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     {
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
-      if (propertyDefinition.StoragePropertyDefinition == null)
+      if (!propertyDefinition.HasStoragePropertyDefinitionBeenSet)
       {
         throw new MappingException(
             string.Format(

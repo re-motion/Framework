@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return _valueProperty.GetColumns();
     }
 
-    public IEnumerable<ColumnValue> SplitValue (object value)
+    public IEnumerable<ColumnValue> SplitValue (object? value)
     {
       var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
       CheckClassDefinition(objectID, "value");
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return _valueProperty.SplitValue(innerValue);
     }
 
-    public IEnumerable<ColumnValue> SplitValueForComparison (object value)
+    public IEnumerable<ColumnValue> SplitValueForComparison (object? value)
     {
       var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
       CheckClassDefinition(objectID, "value");
@@ -93,14 +93,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return _valueProperty.SplitValueForComparison(innerValue);
     }
 
-    public ColumnValueTable SplitValuesForComparison (IEnumerable<object> values)
+    public ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values)
     {
       ArgumentUtility.CheckNotNull("values", values);
 
       var innerValues = values.Select(
           v =>
           {
-            var objectID = (ObjectID)v;
+            var objectID = (ObjectID?)v;
             CheckClassDefinition(objectID, "values");
             return GetValueOrNull(objectID);
           });
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return _valueProperty.SplitValuesForComparison(innerValues);
     }
 
-    public object CombineValue (IColumnValueProvider columnValueProvider)
+    public object? CombineValue (IColumnValueProvider columnValueProvider)
     {
       ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
 
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
           this,
           property,
           "equivalentProperties",
-          prop => Tuple.Create<string, object>("class definition", prop.ClassDefinition)
+          prop => Tuple.Create<string, object?>("class definition", prop.ClassDefinition)
           )).ToArray();
 
       var unifiedValueProperty = _valueProperty.UnifyWithEquivalentProperties(checkedProperties.Select(p => p.ValueProperty));
@@ -146,13 +146,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return new ForeignKeyConstraintDefinition(nameProvider(referencingColumns), referencedTableName, referencingColumns, referencedColumns);
     }
 
-    private void CheckClassDefinition (ObjectID objectID, string paramName)
+    private void CheckClassDefinition (ObjectID? objectID, string paramName)
     {
       if (objectID != null && objectID.ClassDefinition != _classDefinition)
         throw new ArgumentException("The specified ObjectID has an invalid ClassDefinition.", paramName);
     }
 
-    private object GetValueOrNull (ObjectID objectID)
+    private object? GetValueOrNull (ObjectID? objectID)
     {
       return objectID == null ? null : objectID.Value;
     }

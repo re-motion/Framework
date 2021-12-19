@@ -35,7 +35,7 @@ public class ConfigurationException : DomainObjectException
 
   public ConfigurationException () : this("A configuration exception occurred.") {}
   public ConfigurationException (string message) : base(message) {}
-  public ConfigurationException (string message, Exception inner) : base(message, inner) {}
+  public ConfigurationException (string message, Exception? inner) : base(message, inner) {}
   protected ConfigurationException (SerializationInfo info, StreamingContext context) : base(info, context) {}
 
   // methods and properties

@@ -49,6 +49,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public DomainObjectCollection GetCollection (RelationEndPointID endPointID)
     {
       ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      if (endPointID.Definition.IsAnonymous)
+        throw new ArgumentException("End point ID must not refer to an anonymous end point.", "endPointID");
+
       var collection = _collections.GetOrCreateValue(endPointID, _getCollectionWithoutCacheFunc);
       Assertion.IsTrue(collection.AssociatedEndPointID == endPointID);
       return collection;
@@ -57,6 +60,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private DomainObjectCollection GetCollectionWithoutCache (RelationEndPointID id)
     {
       var dataStrategy = _dataStrategyFactory.CreateDataStrategyForEndPoint(id);
+      Assertion.DebugAssert(!id.Definition.IsAnonymous, "!endPointID.Definition.IsAnonymous");
       return DomainObjectCollectionFactory.Instance.CreateCollection(id.Definition.PropertyInfo.PropertyType, dataStrategy);
     }
 

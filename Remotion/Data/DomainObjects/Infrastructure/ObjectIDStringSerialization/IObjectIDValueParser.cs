@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 {
@@ -23,6 +24,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
   /// </summary>
   public interface IObjectIDValueParser
   {
-    bool TryParse (string stringValue, out object resultValue);
+    bool TryParse (string stringValue, [MaybeNullWhen(false)] out object resultValue);
   }
 }

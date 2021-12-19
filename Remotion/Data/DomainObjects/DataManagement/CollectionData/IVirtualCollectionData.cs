@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     bool ContainsObjectID (ObjectID objectID);
 
     DomainObject GetObject (int index);
-    DomainObject GetObject (ObjectID objectID);
+    DomainObject? GetObject (ObjectID objectID);
 
     int IndexOf (ObjectID objectID);
 

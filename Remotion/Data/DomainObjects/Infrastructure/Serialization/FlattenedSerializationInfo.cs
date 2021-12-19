@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 {
   public class FlattenedSerializationInfo
   {
-    private readonly FlattenedSerializationWriter<object> _objectWriter = new FlattenedSerializationWriter<object>();
+    private readonly FlattenedSerializationWriter<object?> _objectWriter = new FlattenedSerializationWriter<object?>();
     private readonly FlattenedSerializationWriter<int> _intWriter = new FlattenedSerializationWriter<int>();
     private readonly FlattenedSerializationWriter<bool> _boolWriter = new FlattenedSerializationWriter<bool>();
     private readonly Dictionary<object, int> _handleMap = new Dictionary<object, int>();
@@ -52,15 +52,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
     }
 
     /// <remarks>Note: This will use T to decide whether to recurse into an IFlattenedSerializable or not.</remarks>
-    public void AddValue<T> (T value)
+    public void AddValue<T> (T? value)
     {
       if (typeof(IFlattenedSerializable).IsAssignableFrom(typeof(T)))
-        AddFlattenedSerializable((IFlattenedSerializable)value);
+        AddFlattenedSerializable((IFlattenedSerializable?)value);
       else
         _objectWriter.AddSimpleValue(value);
     }
 
-    private void AddFlattenedSerializable (IFlattenedSerializable serializable)
+    private void AddFlattenedSerializable (IFlattenedSerializable? serializable)
     {
       if (serializable != null)
       {
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
       }
       else
       {
-        AddHandle<Type>(null);
+        AddHandle<Type?>(null);
       }
     }
 
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
         AddValue(t);
     }
 
-    public void AddHandle<T> (T value)
+    public void AddHandle<T> (T? value)
     {
       if (value == null)
         AddIntValue(-1);

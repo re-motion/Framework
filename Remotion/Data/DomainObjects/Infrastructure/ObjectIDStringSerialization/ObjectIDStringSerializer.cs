@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Text;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -79,11 +79,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
     /// <summary>
     /// Parses the specified object ID string, indicating by a boolean return value whether the operation was completed successfully.
     /// </summary>
-    public bool TryParse (string objectIDString, out ObjectID result)
+
+    public bool TryParse (string objectIDString, [MaybeNullWhen(false)] out ObjectID result)
     {
       ArgumentUtility.CheckNotNull("objectIDString", objectIDString);
 
-      result = ParseWithCustomErrorHandler(objectIDString, msg => null);
+      result = ParseWithCustomErrorHandler(objectIDString, msg => null!);
+      // ReSharper disable once ConditionIsAlwaysTrueOrFalse
       return result != null;
     }
 
@@ -121,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       var valuePart = objectIDString.Substring(indexOfValuePart, indexOfTypeDelimiter - indexOfValuePart);
       var typePart = objectIDString.Substring(indexOfTypePart);
 
-      Type type = TypeUtility.GetType(typePart, false);
+      Type? type = TypeUtility.GetType(typePart, throwOnError: false);
       if (type == null)
       {
         return errorHandler(
@@ -132,8 +134,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       if (valueParser == null)
         return errorHandler(string.Format("Serialized ObjectID '{0}' is invalid: type '{1}' is not supported.", objectIDString, typePart));
 
-      object value;
-      if (!valueParser.TryParse(valuePart, out value))
+      if (!valueParser.TryParse(valuePart, out var value))
       {
         return errorHandler(string.Format(
             "Serialized ObjectID '{0}' is not correctly formatted: value '{1}' is not in the correct format for type '{2}'.",
@@ -149,7 +150,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       return new ObjectID(classDefinition, value);
     }
 
-    private IObjectIDValueParser GetValueParser (Type type)
+    private IObjectIDValueParser? GetValueParser (Type type)
     {
       if (type == typeof(Guid))
         return GuidObjectIDValueParser.Instance;

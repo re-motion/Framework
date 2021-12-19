@@ -111,11 +111,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      if (oppositeEndPoint.IsNull)
+        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+
+      Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
       if (ContainsOriginalOppositeEndPoint(oppositeEndPoint))
         throw new InvalidOperationException("The opposite end-point has already been registered.");
 
       var item = oppositeEndPoint.GetDomainObjectReference();
+      Assertion.DebugIsNotNull(item, "oppositeEndPoint.GetDomainObjectReference() != null when oppositeEndPoint.IsNull == false");
 
       if (_originalItemsWithoutEndPoint.Contains(item))
         _originalItemsWithoutEndPoint.Remove(item);
@@ -131,21 +136,28 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      if (oppositeEndPoint.IsNull)
+        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
 
       if (!ContainsOriginalOppositeEndPoint(oppositeEndPoint))
         throw new InvalidOperationException("The opposite end-point has not been registered.");
 
       var itemID = oppositeEndPoint.ObjectID;
+      Assertion.DebugIsNotNull(itemID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
       _changeCachingDomainObjectCollectionData.UnregisterOriginalItem(itemID);
 
       // UnregisterOriginalItem removes item from both original and current collection, so we must remove end-points for both
       _originalOppositeEndPoints.Remove(oppositeEndPoint);
-      _currentOppositeEndPoints.Remove(oppositeEndPoint.ObjectID);
+      _currentOppositeEndPoints.Remove(itemID);
     }
 
     public bool ContainsCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      if (oppositeEndPoint.IsNull)
+        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+
+      Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
       return _currentOppositeEndPoints.ContainsKey(oppositeEndPoint.ObjectID);
     }
@@ -153,9 +165,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      if (oppositeEndPoint.IsNull)
+        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
 
       if (ContainsCurrentOppositeEndPoint(oppositeEndPoint))
         throw new InvalidOperationException("The opposite end-point has already been registered.");
+
+      Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
       _currentOppositeEndPoints.Add(oppositeEndPoint.ObjectID, oppositeEndPoint);
     }
@@ -163,9 +179,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
       ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      if (oppositeEndPoint.IsNull)
+        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
 
       if (!ContainsCurrentOppositeEndPoint(oppositeEndPoint))
         throw new InvalidOperationException("The opposite end-point has not been registered.");
+
+      Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
       _currentOppositeEndPoints.Remove(oppositeEndPoint.ObjectID);
     }
@@ -240,7 +260,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       _changeCachingDomainObjectCollectionData.Rollback();
 
-      _currentOppositeEndPoints = _originalOppositeEndPoints.ToDictionary(ep => ep.ObjectID);
+      _currentOppositeEndPoints = _originalOppositeEndPoints.ToDictionary(
+          ep =>
+          {
+            Assertion.IsFalse(ep.IsNull, "ep.IsNull");
+            Assertion.DebugIsNotNull(ep.ObjectID, "ep.ObjectID != null when ep.IsNull == false");
+
+            return ep.ObjectID;
+          });
     }
 
     public void SetDataFromSubTransaction (IDomainObjectCollectionEndPointDataManager sourceDataManager, IRelationEndPointProvider endPointProvider)
@@ -251,9 +278,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _changeCachingDomainObjectCollectionData.ReplaceContents(sourceDataManager.CollectionData);
       _currentOppositeEndPoints = sourceDataManager.CurrentOppositeEndPoints
           .Select(ep => Assertion.IsNotNull(
-              (IRealObjectEndPoint)endPointProvider.GetRelationEndPointWithoutLoading(ep.ID),
+              (IRealObjectEndPoint?)endPointProvider.GetRelationEndPointWithoutLoading(ep.ID),
               "When committing a current virtual relation value from a sub-transaction, the opposite end-point is guaranteed to exist."))
-          .ToDictionary(ep => ep.ObjectID);
+          .ToDictionary(
+              ep =>
+              {
+                Assertion.IsFalse(ep.IsNull, "ep.IsNull");
+                Assertion.DebugIsNotNull(ep.ObjectID, "ep.ObjectID != null when ep.IsNull == false");
+
+                return ep.ObjectID;
+              });
     }
 
     #region Serialization
@@ -276,7 +310,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       var currentOppositeEndPoints = new List<IRealObjectEndPoint>();
       info.FillCollection(currentOppositeEndPoints);
-      _currentOppositeEndPoints = currentOppositeEndPoints.ToDictionary(ep => ep.ObjectID);
+      _currentOppositeEndPoints = currentOppositeEndPoints.ToDictionary(
+          ep =>
+          {
+            Assertion.IsFalse(ep.IsNull, "ep.IsNull");
+            Assertion.DebugIsNotNull(ep.ObjectID, "ep.ObjectID != null when ep.IsNull == false");
+
+            return ep.ObjectID;
+          });
     }
 
     // ReSharper restore UnusedMember.Local

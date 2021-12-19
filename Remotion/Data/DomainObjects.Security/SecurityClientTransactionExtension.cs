@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
@@ -46,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Security
     }
 
     [NonSerialized]
-    private SecurityClient _securityClient;
+    private SecurityClient? _securityClient;
 
 
     public SecurityClientTransactionExtension ()
@@ -70,7 +71,7 @@ namespace Remotion.Data.DomainObjects.Security
       if (SecurityFreeSection.IsActive)
         return queryResult;
 
-      var queryResultList = new List<T>(queryResult.AsEnumerable());
+      var queryResultList = new List<T?>(queryResult.AsEnumerable());
       var securityClient = GetSecurityClient();
 
       using (EnterScopeOnDemand(clientTransaction))
@@ -152,6 +153,9 @@ namespace Remotion.Data.DomainObjects.Security
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
+      if (relationEndPointDefinition.IsAnonymous)
+        return;
+
       PropertyReading(clientTransaction, domainObject, relationEndPointDefinition.PropertyInfo);
     }
 
@@ -172,7 +176,7 @@ namespace Remotion.Data.DomainObjects.Security
       }
     }
 
-    public override void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public override void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
@@ -185,12 +189,15 @@ namespace Remotion.Data.DomainObjects.Security
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject)
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+
+      if (relationEndPointDefinition.IsAnonymous)
+        return;
 
       PropertyChanging(clientTransaction, domainObject, relationEndPointDefinition.PropertyInfo);
     }
@@ -220,6 +227,7 @@ namespace Remotion.Data.DomainObjects.Security
       }
     }
 
+    [MemberNotNull(nameof(_securityClient))]
     private SecurityClient GetSecurityClient ()
     {
       if (_securityClient == null)
@@ -227,7 +235,7 @@ namespace Remotion.Data.DomainObjects.Security
       return _securityClient;
     }
 
-    private IDisposable EnterScopeOnDemand (ClientTransaction clientTransaction)
+    private IDisposable? EnterScopeOnDemand (ClientTransaction clientTransaction)
     {
       if (clientTransaction.ActiveTransaction != clientTransaction)
         return clientTransaction.EnterNonDiscardingScope();

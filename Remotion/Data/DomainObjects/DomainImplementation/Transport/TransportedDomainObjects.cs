@@ -30,8 +30,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
   /// </remarks>
   public struct TransportedDomainObjects
   {
-    private ClientTransaction _dataTransaction;
-    private ReadOnlyCollection<DomainObject> _transportedObjects;
+    private ClientTransaction? _dataTransaction;
+    private ReadOnlyCollection<DomainObject>? _transportedObjects;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TransportedDomainObjects"/> class. This constructor is typically only used internally,
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// inspect the data in an application.
     /// </summary>
     /// <value>The transaction holding the data of the transported objects.</value>
-    public ClientTransaction DataTransaction
+    public ClientTransaction? DataTransaction
     {
       get { return _dataTransaction; }
     }
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// Gets the transported objects. Use <see cref="DataTransaction"/> to inspect or change their data before calling <see cref="FinishTransport()"/>.
     /// </summary>
     /// <value>The transported objects.</value>
-    public ReadOnlyCollection<DomainObject> TransportedObjects
+    public ReadOnlyCollection<DomainObject>? TransportedObjects
     {
       get { return _transportedObjects; }
     }

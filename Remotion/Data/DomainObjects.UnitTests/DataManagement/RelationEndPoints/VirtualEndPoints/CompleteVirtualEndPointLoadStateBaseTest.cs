@@ -26,6 +26,7 @@ using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints
@@ -201,6 +202,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void RegisterOriginalOppositeEndPoint_WithoutExistingItem ()
     {
       var endPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
+      endPointMock.Stub(stub => stub.IsNull).Return(false);
       endPointMock.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order1);
       endPointMock.Expect(mock => mock.MarkUnsynchronized());
       endPointMock.Replay();
@@ -221,6 +223,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void RegisterOriginalOppositeEndPoint_WithExistingItem ()
     {
       var endPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
+      endPointMock.Stub(stub => stub.IsNull).Return(false);
       endPointMock.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order1);
       endPointMock.Expect(mock => mock.MarkSynchronized());
       endPointMock.Replay();
@@ -234,6 +237,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       endPointMock.VerifyAllExpectations();
       _dataManagerMock.VerifyAllExpectations();
       Assert.That(_loadState.UnsynchronizedOppositeEndPoints, Has.No.Member(endPointMock));
+    }
+
+    [Test]
+    public void RegisterOriginalOppositeEndPoint_WithNullOppositeEndPoint_Throws ()
+    {
+      var endPointMock = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      endPointMock.Stub(stub => stub.IsNull).Return(true);
+      endPointMock.Replay();
+
+      Assert.That(
+          () => _loadState.RegisterOriginalOppositeEndPoint(_virtualEndPointMock, endPointMock),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("End point must not be a null object.", "oppositeEndPoint"));
     }
 
     [Test]
@@ -266,6 +281,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _virtualEndPointMock.AssertWasNotCalled(mock => mock.MarkDataIncomplete());
       _virtualEndPointMock.AssertWasNotCalled(mock => mock.UnregisterOriginalOppositeEndPoint(_relatedEndPointStub));
       Assert.That(_loadState.UnsynchronizedOppositeEndPoints, Has.No.Member(_relatedEndPointStub));
+    }
+
+    [Test]
+    public void UnregisterOriginalOppositeEndPoint_WithNullOppositeEndPoint_Throws ()
+    {
+      var endPointMock = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      endPointMock.Stub(stub => stub.IsNull).Return(true);
+      endPointMock.Replay();
+
+      Assert.That(
+          () => _loadState.UnregisterOriginalOppositeEndPoint(_virtualEndPointMock, endPointMock),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("End point must not be a null object.", "oppositeEndPoint"));
     }
 
     [Test]
@@ -337,6 +364,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void SynchronizeOppositeEndPoint_InList ()
     {
       var endPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
+      endPointMock.Stub(stub => stub.IsNull).Return(false);
       endPointMock.Stub(stub => stub.ObjectID).Return(DomainObjectIDs.Order1);
       endPointMock.Stub(mock => mock.MarkUnsynchronized());
       endPointMock.Expect(mock => mock.MarkSynchronized());
@@ -373,6 +401,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
                   "Cannot synchronize opposite end-point "
                   + "'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' - the "
                   + "end-point is not in the list of unsynchronized end-points."));
+    }
+
+    [Test]
+    public void SynchronizeOppositeEndPoint_WithNullOppositeEndPoint_Throws ()
+    {
+      var endPointMock = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      endPointMock.Stub(stub => stub.IsNull).Return(true);
+      endPointMock.Replay();
+
+      Assert.That(
+          () => _loadState.SynchronizeOppositeEndPoint(_virtualEndPointMock, endPointMock),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("End point must not be a null object.", "oppositeEndPoint"));
     }
 
     [Test]

@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints
@@ -29,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// Represents the state of a <see cref="VirtualObjectEndPoint"/> where all of its data is available (ie., the end-point has been (lazily) loaded).
   /// </summary>
   public class CompleteVirtualObjectEndPointLoadState
-      : CompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, DomainObject, IVirtualObjectEndPointDataManager>, IVirtualObjectEndPointLoadState
+      : CompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, DomainObject?, IVirtualObjectEndPointDataManager>, IVirtualObjectEndPointLoadState
   {
     public CompleteVirtualObjectEndPointLoadState (
         IVirtualObjectEndPointDataManager dataManager,
@@ -39,14 +40,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
     }
 
-    public override DomainObject GetData (IVirtualObjectEndPoint endPoint)
+    public override DomainObject? GetData (IVirtualObjectEndPoint endPoint)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
 
       return DataManager.CurrentOppositeObject;
     }
 
-    public override DomainObject GetOriginalData (IVirtualObjectEndPoint endPoint)
+    public override DomainObject? GetOriginalData (IVirtualObjectEndPoint endPoint)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
 
@@ -55,7 +56,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public override void SetDataFromSubTransaction (
         IVirtualObjectEndPoint endPoint,
-        IVirtualEndPointLoadState<IVirtualObjectEndPoint, DomainObject, IVirtualObjectEndPointDataManager> sourceLoadState)
+        IVirtualEndPointLoadState<IVirtualObjectEndPoint, DomainObject?, IVirtualObjectEndPointDataManager> sourceLoadState)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       var sourceCompleteLoadState = ArgumentUtility.CheckNotNullAndType<CompleteVirtualObjectEndPointLoadState>("sourceLoadState", sourceLoadState);
@@ -63,12 +64,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       DataManager.SetDataFromSubTransaction(sourceCompleteLoadState.DataManager, EndPointProvider);
     }
 
-    public void MarkDataComplete (IVirtualObjectEndPoint endPoint, DomainObject item, Action<IVirtualObjectEndPointDataManager> stateSetter)
+    public void MarkDataComplete (IVirtualObjectEndPoint endPoint, DomainObject? item, Action<IVirtualObjectEndPointDataManager> stateSetter)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
 
-      MarkDataComplete(endPoint, new[] { item }, stateSetter);
+      var items = item == null ? Array.Empty<DomainObject>() : EnumerableUtility.Singleton(item);
+      MarkDataComplete(endPoint, items, stateSetter);
     }
 
     public override void SynchronizeOppositeEndPoint (IVirtualObjectEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
@@ -90,7 +92,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       base.SynchronizeOppositeEndPoint(endPoint, oppositeEndPoint);
     }
 
-    public IDataManagementCommand CreateSetCommand (IVirtualObjectEndPoint virtualObjectEndPoint, DomainObject newRelatedObject)
+    public IDataManagementCommand CreateSetCommand (IVirtualObjectEndPoint virtualObjectEndPoint, DomainObject? newRelatedObject)
     {
       ArgumentUtility.CheckNotNull("virtualObjectEndPoint", virtualObjectEndPoint);
 
@@ -140,6 +142,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       if (!IsSynchronized(virtualObjectEndPoint))
       {
+        Assertion.DebugIsNotNull(
+            DataManager.OriginalItemWithoutEndPoint,
+            "DataManager.OriginalItemWithoutEndPoint != null when IsSynchronized (virtualObjectEndPoint) == false");
+
         var message = string.Format(
             "The domain object '{0}' cannot be deleted because its virtual property '{1}' is out of sync with "
             + "the opposite object property '{2}' of domain object '{3}'. To make this change, synchronize the two properties by calling the "

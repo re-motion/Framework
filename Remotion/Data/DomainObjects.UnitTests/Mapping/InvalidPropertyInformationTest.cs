@@ -114,13 +114,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(
           () => _propertyInformation.FindInterfaceImplementation(typeof(object)),
           Throws.InvalidOperationException
-              .With.Message.EqualTo("FindInterfaceImplementation can only be called on inteface properties."));
+              .With.Message.EqualTo("FindInterfaceImplementation can only be called on interface properties."));
     }
 
     [Test]
     public void FindInterfaceDeclaration ()
     {
-      Assert.That(_propertyInformation.FindInterfaceDeclarations(), Is.Null);
+      Assert.That(_propertyInformation.FindInterfaceDeclarations(), Is.Empty);
     }
 
     [Test]

@@ -18,6 +18,7 @@ using System;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration
@@ -36,6 +37,8 @@ public class QueryDefinition : ISerializable, IObjectReference
   // types
 
   // static members and constants
+  private static readonly NonPersistentProviderDefinition s_dummyStorageProviderDefinition =
+      new NonPersistentProviderDefinition("NonSerializedStorageProviderDefinition", new NonPersistentStorageObjectFactory());
 
   // member fields
 
@@ -43,7 +46,7 @@ public class QueryDefinition : ISerializable, IObjectReference
 
   private readonly string _statement;
   private readonly QueryType _queryType;
-  private readonly Type _collectionType;
+  private readonly Type? _collectionType;
   private readonly StorageProviderDefinition _storageProviderDefinition;
 
   // Note: _ispartOfQueryConfiguration is used only during the deserialization process. 
@@ -98,7 +101,7 @@ public class QueryDefinition : ISerializable, IObjectReference
       StorageProviderDefinition storageProviderDefinition,
       string statement,
       QueryType queryType,
-      Type collectionType)
+      Type? collectionType)
   {
     ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
     ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
@@ -133,17 +136,24 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <param name="context">The source and destination of a given serialized stream.</param>
   protected QueryDefinition (SerializationInfo info, StreamingContext context)
   {
-    _id = info.GetString("ID");
+    _id = info.GetString("ID")!;
     _ispartOfQueryConfiguration = info.GetBoolean("IsPartOfQueryConfiguration");
 
     if (!_ispartOfQueryConfiguration)
     {
-       var storageProviderID = info.GetString("StorageProviderID");
-       _storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
-
-      _statement = info.GetString("Statement");
-      _queryType = (QueryType)info.GetValue("QueryType", typeof(QueryType));
-      _collectionType = (Type)info.GetValue("CollectionType", typeof(Type));
+       var storageProviderID = info.GetString("StorageProviderID")!;
+      _storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
+      _statement = info.GetString("Statement")!;
+      _queryType = (QueryType)info.GetValue("QueryType", typeof(QueryType))!;
+      _collectionType = (Type?)info.GetValue("CollectionType", typeof(Type));
+    }
+    else
+    {
+      // Populate with dummy-values during deserialization. Instance will be discarded through IObjectReference.GetRealObject()
+      _storageProviderDefinition = s_dummyStorageProviderDefinition;
+      _statement = "statement has not been serialized";
+      _queryType = (QueryType)(-1);
+      _collectionType = null;
     }
   }
 
@@ -184,7 +194,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <summary>
   /// If <see cref="QueryType"/> specifies a collection to be returned, <b>CollectionType</b> specifies the type of the collection. The default is <see cref="DomainObjectCollection"/>. 
   /// </summary>
-  public Type CollectionType
+  public Type? CollectionType
   {
     get { return _collectionType; }
   }

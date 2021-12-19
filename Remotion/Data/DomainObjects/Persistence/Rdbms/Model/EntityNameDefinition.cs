@@ -24,10 +24,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
   /// </summary>
   public class EntityNameDefinition
   {
-    private readonly string _schemaName;
+    private readonly string? _schemaName;
     private readonly string _entityName;
 
-    public EntityNameDefinition (string schemaName, string entityName)
+    public EntityNameDefinition (string? schemaName, string entityName)
     {
       ArgumentUtility.CheckNotEmpty("schemaName", schemaName);
       ArgumentUtility.CheckNotNullOrEmpty("entityName", entityName);
@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       _entityName = entityName;
     }
 
-    public string SchemaName
+    public string? SchemaName
     {
       get { return _schemaName; }
     }
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       get { return _entityName; }
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (ReferenceEquals(obj, null))
         return false;

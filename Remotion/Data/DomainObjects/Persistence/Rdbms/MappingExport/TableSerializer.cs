@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
           );
     }
 
-    private TableDefinition GetTableDefinition (ClassDefinition classDefinition)
+    private TableDefinition? GetTableDefinition (ClassDefinition classDefinition)
     {
       if (classDefinition.StorageEntityDefinition is FilterViewDefinition)
         return ((FilterViewDefinition)classDefinition.StorageEntityDefinition).GetBaseTable();

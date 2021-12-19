@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      if (classDefinition.StorageEntityDefinition == null)
+      if (!classDefinition.HasStorageEntityDefinitionBeenSet)
       {
         var message = String.Format("The persistence model loader did not assign a storage entity to class '{0}'.", classDefinition.ID);
         throw new InvalidOperationException(message);

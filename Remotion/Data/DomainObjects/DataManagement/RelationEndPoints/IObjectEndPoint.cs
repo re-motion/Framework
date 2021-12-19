@@ -24,14 +24,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// </summary>
   public interface IObjectEndPoint : IRelationEndPoint
   {
-    ObjectID OppositeObjectID { get; }
-    ObjectID OriginalOppositeObjectID { get; }
+    ObjectID? OppositeObjectID { get; }
+    ObjectID? OriginalOppositeObjectID { get; }
 
-    DomainObject GetOppositeObject ();
-    DomainObject GetOriginalOppositeObject ();
+    DomainObject? GetOppositeObject ();
+    DomainObject? GetOriginalOppositeObject ();
 
-    IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject);
+    IDataManagementCommand CreateSetCommand (DomainObject? newRelatedObject);
 
-    RelationEndPointID GetOppositeRelationEndPointID ();
+    RelationEndPointID? GetOppositeRelationEndPointID ();
   }
 }

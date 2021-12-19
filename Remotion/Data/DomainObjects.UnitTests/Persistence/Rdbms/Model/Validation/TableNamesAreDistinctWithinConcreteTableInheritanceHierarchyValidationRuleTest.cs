@@ -101,6 +101,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     }
 
     [Test]
+    public void InheritanceRoot_StorageEntityDefinitionIsNotSet ()
+    {
+      var validationResult = _validationRule.Validate(_baseOfBaseClass);
+
+      AssertMappingValidationResult(validationResult, true, null);
+    }
+
+    [Test]
     public void InheritanceRoot_SameTableNameInDerivedClass ()
     {
       _baseOfBaseClass.SetStorageEntity(_tableDefinition1);

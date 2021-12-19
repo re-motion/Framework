@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
   /// </summary>
   public class DelegatingDataContainerMap : IDataContainerMapReadOnlyView
   {
-    public IDataContainerMapReadOnlyView InnerDataContainerMap { get; set; }
+    public IDataContainerMapReadOnlyView? InnerDataContainerMap { get; set; }
 
     public DelegatingDataContainerMap ()
     {
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public int Count => SafeInnerDataContainerMap.Count;
 
-    public DataContainer this [ObjectID id] => SafeInnerDataContainerMap[id];
+    public DataContainer? this [ObjectID id] => SafeInnerDataContainerMap[id];
 
     private IDataContainerMapReadOnlyView SafeInnerDataContainerMap
     {
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     private DelegatingDataContainerMap (FlattenedDeserializationInfo info)
     {
-      InnerDataContainerMap = info.GetValueForHandle<DataContainerMap>();
+      InnerDataContainerMap = info.GetNullableValueForHandle<DataContainerMap>();
     }
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)

@@ -27,11 +27,11 @@ namespace Remotion.Data.DomainObjects.Persistence
   /// </summary>
   public class StorageEntityBasedStorageProviderDefinitionFinder : IStorageProviderDefinitionFinder
   {
-    public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition, string errorMessageContext)
+    public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition, string? errorMessageContext)
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      if (classDefinition.StorageEntityDefinition == null)
+      if (!classDefinition.HasStorageEntityDefinitionBeenSet)
         throw new InvalidOperationException("Cannot obtain storage provider for ClassDefinitions without storage entities. " + errorMessageContext);
 
       return classDefinition.StorageEntityDefinition.StorageProviderDefinition;

@@ -24,7 +24,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
   public static class StoragePropertyDefinitionUnificationUtility
   {
     public static T CheckAndConvertEquivalentProperty<T> (
-        T expected, object actual, string paramName, params Func<T, Tuple<string, object>>[] checkedPropertyGetters)
+        T expected, object actual, string paramName, params Func<T, Tuple<string, object?>>[] checkedPropertyGetters)
+        where T: notnull
     {
       T other;
       try
@@ -48,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         throw CreateExceptionForNonEquivalentProperties(checkedItem, expected, actual, paramName);
     }
 
-    private static ArgumentException CreateExceptionForNonEquivalentProperties (string mismatchingItem, object expected, object actual, string paramName)
+    private static ArgumentException CreateExceptionForNonEquivalentProperties (string mismatchingItem, object? expected, object? actual, string paramName)
     {
       var message =
           string.Format(

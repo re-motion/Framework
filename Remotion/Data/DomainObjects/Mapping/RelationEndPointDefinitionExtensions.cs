@@ -29,9 +29,6 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
-      if (relationEndPointDefinition.RelationDefinition == null)
-        throw new ArgumentException("The given IRelationEndPointDefinition object must be part of a RelationDefinition.", "relationEndPointDefinition");
-
       var oppositeEndPointDefinition = relationEndPointDefinition.RelationDefinition.GetOppositeEndPointDefinition(relationEndPointDefinition);
       Assertion.IsNotNull(oppositeEndPointDefinition, "Inconsistent mapping data structures!");
       return oppositeEndPointDefinition;

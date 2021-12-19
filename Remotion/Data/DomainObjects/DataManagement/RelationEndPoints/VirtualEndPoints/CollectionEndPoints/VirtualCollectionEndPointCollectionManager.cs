@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private readonly RelationEndPointID _endPointID;
     private readonly IVirtualCollectionEndPointCollectionProvider _collectionProvider;
 
-    private IObjectList<IDomainObject> _originalCollectionReference;
-    private IObjectList<IDomainObject> _currentCollectionReference;
+    private IObjectList<IDomainObject>? _originalCollectionReference;
+    private IObjectList<IDomainObject>? _currentCollectionReference;
 
     public VirtualCollectionEndPointCollectionManager (
         RelationEndPointID endPointID,

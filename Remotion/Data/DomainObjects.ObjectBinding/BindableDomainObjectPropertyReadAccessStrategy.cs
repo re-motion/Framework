@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.ObjectBinding;
@@ -36,7 +37,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   {
     public const int Position = 79;
 
-    public bool CanRead (IBusinessObject businessObject, PropertyBase bindableProperty)
+    public bool CanRead (IBusinessObject? businessObject, PropertyBase bindableProperty)
     {
       // businessObject can be null
       ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);
@@ -66,7 +67,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         IBusinessObject businessObject,
         PropertyBase bindableProperty,
         Exception exception,
-        out BusinessObjectPropertyAccessException propertyAccessException)
+        [MaybeNullWhen(false)] out BusinessObjectPropertyAccessException propertyAccessException)
     {
       ArgumentUtility.DebugCheckNotNull("businessObject", businessObject);
       ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);

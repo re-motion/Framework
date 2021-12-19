@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   {
     private static readonly QueryCache s_queryCache = new QueryCache();
     private static readonly MethodInfo s_getQueryMethod =
-        typeof(BindableDomainObjectSearchAllService).GetMethod("GetQuery", BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null);
+        typeof(BindableDomainObjectSearchAllService).GetMethod("GetQuery", BindingFlags.NonPublic | BindingFlags.Instance, null, Type.EmptyTypes, null)!;
 
     private readonly ConcurrentDictionary<Type, bool> _bindableObjectTypeCache = new ConcurrentDictionary<Type, bool>();
 
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       return domainObjectType != null;
     }
 
-    public IBusinessObject[] Search (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property, ISearchAvailableObjectsArguments searchArguments)
+    public IBusinessObject[] Search (IBusinessObject? referencingObject, IBusinessObjectReferenceProperty property, ISearchAvailableObjectsArguments? searchArguments)
     {
       ArgumentUtility.CheckNotNull("property", property);
       if (!SupportsProperty(property))
@@ -54,6 +54,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       }
 
       var referencedDomainObjectType = GetDomainObjectType(property);
+      Assertion.DebugIsNotNull(referencedDomainObjectType, "referencedDomainObjectType != null when SupportProperty(property) == true");
+
       var referencingDomainObject = referencingObject as DomainObject;
 
       var clientTransaction = referencingDomainObject != null ? referencingDomainObject.DefaultTransactionContext.ClientTransaction : ClientTransaction.Current;
@@ -63,7 +65,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
       return GetAllObjects(clientTransaction, referencedDomainObjectType);
     }
 
-    private Type GetDomainObjectType (IBusinessObjectReferenceProperty property)
+    private Type? GetDomainObjectType (IBusinessObjectReferenceProperty property)
     {
       if (ReflectionUtility.IsDomainObject(property.PropertyType))
         return property.PropertyType;
@@ -97,7 +99,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
       Assertion.IsNotNull(s_getQueryMethod);
 
-      return (IQuery)s_getQueryMethod.MakeGenericMethod(type).Invoke(this, null);
+      return (IQuery)s_getQueryMethod.MakeGenericMethod(type).Invoke(this, null)!;
     }
 
     [ReflectionAPI]

@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Collections;
@@ -39,7 +40,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     private readonly IDataContainerMapReadOnlyView _dataContainerMap;
     private readonly ValueAccess _valueAccess;
     [CanBeNull]
-    private IReadOnlyDictionary<ObjectID, DomainObject> _cachedDomainObjects;
+    private IReadOnlyDictionary<ObjectID, DomainObject>? _cachedDomainObjects;
 
     public VirtualCollectionData (
         RelationEndPointID associatedEndPointID,
@@ -64,6 +65,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return new ReadOnlyVirtualCollectionDataDecorator(originalData);
     }
 
+    [MemberNotNullWhen(true, nameof(_cachedDomainObjects))]
     public bool IsCacheUpToDate
     {
       get { return _cachedDomainObjects != null; }
@@ -121,7 +123,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       throw new ArgumentOutOfRangeException("index");
     }
 
-    public DomainObject GetObject (ObjectID objectID)
+    public DomainObject? GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -173,7 +175,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return true;
     }
 
-    [NotNull]
+    [JetBrains.Annotations.NotNull]
     private IReadOnlyDictionary<ObjectID, DomainObject> GetCachedDomainObjects ()
     {
       if (_cachedDomainObjects == null)
@@ -192,14 +194,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
             // Only in debug builds for performance reasons. The .NET type comparison is sufficient for filtering the types until interface support is added.
             .Where(dc => requiredClassDefinition.IsSameOrBaseClassOf(dc.ClassDefinition))
 #endif
-            .Where(dc => (ObjectID)dc.GetValueWithoutEvents(foreignKeyPropertyDefinition, _valueAccess) == foreignKeyValue)
+            .Where(dc => (ObjectID?)dc.GetValueWithoutEvents(foreignKeyPropertyDefinition, _valueAccess) == foreignKeyValue)
             .ToDictionary(dc => dc.ID, dc => dc.DomainObject);
       }
 
       return _cachedDomainObjects;
     }
 
-    [NotNull]
+    [JetBrains.Annotations.NotNull]
     private IEnumerable<DomainObject> GetCachedDomainObjectsSorted ()
     {
       var comparer = GetDomainObjectComparer();
@@ -208,7 +210,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     private IComparer<DomainObject> GetDomainObjectComparer ()
     {
-      var idComparer = new DelegateBasedComparer<DomainObject>((left, right) => left.ID.CompareTo(right.ID));
+      var idComparer = new DelegateBasedComparer<DomainObject>((left, right) =>
+      {
+        Assertion.DebugIsNotNull(left, "left != null");
+        Assertion.DebugIsNotNull(right, "right != null");
+
+        return left.ID.CompareTo(right.ID);
+      });
+
       var sortExpression = ((VirtualCollectionRelationEndPointDefinition)_associatedEndPointID.Definition).GetSortExpression();
       if (sortExpression != null)
       {
@@ -245,7 +254,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       var hasCachedDomainObjects = _cachedDomainObjects != null;
       info.AddBoolValue(hasCachedDomainObjects);
       if (hasCachedDomainObjects)
-        info.AddCollection((ICollection<DomainObject>)_cachedDomainObjects.Values);
+        info.AddCollection((ICollection<DomainObject>)_cachedDomainObjects!.Values);
     }
 
     #endregion

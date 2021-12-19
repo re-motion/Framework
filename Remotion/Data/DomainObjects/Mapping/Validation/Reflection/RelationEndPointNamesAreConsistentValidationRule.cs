@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
                   relationEndPointDefinition.PropertyInfo,
                   "Opposite relation property '{0}' declared on type '{1}' does not define a matching '{2}'.",
                   relationAttribute.OppositeProperty,
-                  oppositeProperty.DeclaringType.Name,
+                  oppositeProperty.DeclaringType!.Name,
                   relationAttribute.GetType().Name);
             }
 
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
                   relationEndPointDefinition.PropertyInfo,
                   "Opposite relation property '{0}' declared on type '{1}' defines a '{2}' whose opposite property does not match.",
                   relationAttribute.OppositeProperty,
-                  oppositeProperty.DeclaringType.Name,
+                  oppositeProperty.DeclaringType!.Name,
                   relationAttribute.GetType().Name);
             }
           }

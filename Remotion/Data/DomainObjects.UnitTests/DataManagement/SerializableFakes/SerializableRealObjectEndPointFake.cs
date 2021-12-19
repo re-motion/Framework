@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
@@ -25,10 +26,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 {
   public class SerializableRealObjectEndPointFake : IRealObjectEndPoint
   {
+    [CanBeNull]
     private readonly RelationEndPointID _id;
+    [CanBeNull]
     private readonly DomainObject _owningObject;
 
-    public SerializableRealObjectEndPointFake (RelationEndPointID id, DomainObject owningObject)
+    public SerializableRealObjectEndPointFake ([CanBeNull] RelationEndPointID id, [CanBeNull] DomainObject owningObject)
     {
       _id = id;
       _owningObject = owningObject;
@@ -36,13 +39,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     public SerializableRealObjectEndPointFake (FlattenedDeserializationInfo info)
     {
-      _owningObject = info.GetValue<DomainObject>();
-      _id = info.GetValue<RelationEndPointID>();
+      _owningObject = info.GetNullableValue<DomainObject>();
+      _id = info.GetNullableValue<RelationEndPointID>();
     }
 
     public bool IsNull
     {
-      get { throw new NotImplementedException(); }
+      get { return false; }
     }
 
     public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)

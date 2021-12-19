@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       return "Timestamp";
     }
 
-    public EntityNameDefinition GetTableName (ClassDefinition classDefinition)
+    public EntityNameDefinition? GetTableName (ClassDefinition classDefinition)
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
@@ -94,7 +94,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      var tableName = GetTableName(classDefinition).EntityName;
+      var entityNameDefinition = GetTableName(classDefinition);
+      if (entityNameDefinition == null)
+      {
+        throw new MappingException(
+            string.Format("Class '{0}' cannot not define a primary key constraint because no table name has been defined.", classDefinition.ID));
+      }
+
+      var tableName = entityNameDefinition.EntityName;
 
       return String.Format("PK_{0}", tableName);
     }
@@ -104,12 +111,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull("foreignKeyColumns", foreignKeyColumns);
 
-      var tableName = GetTableName(classDefinition).EntityName;
+      var entityNameDefinition = GetTableName(classDefinition);
+      if (entityNameDefinition == null)
+      {
+        throw new MappingException(
+            string.Format("Class '{0}' cannot not define a foreign key constraint because no table name has been defined.", classDefinition.ID));
+      }
+
+      var tableName = entityNameDefinition.EntityName;
 
       return String.Format("FK_{0}_{1}", tableName, String.Join((string)"_", (IEnumerable<string>)foreignKeyColumns.Select(cd => cd.Name)));
     }
 
-    private string GetColumnNameFromAttribute (PropertyDefinition propertyDefinition)
+    private string? GetColumnNameFromAttribute (PropertyDefinition propertyDefinition)
     {
       var attribute = propertyDefinition.PropertyInfo.GetCustomAttribute<IStorageSpecificIdentifierAttribute>(false);
       return attribute != null ? attribute.Identifier : null;

@@ -74,19 +74,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    public void RelationDefinitionNull ()
+    public void RelationDefinition_NotSet ()
     {
       var classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof(OrderTicket)];
       var propertyDefinition = classDefinition["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderTicket.Order"];
 
       var definition = new RelationEndPointDefinition(propertyDefinition, true);
 
-      Assert.That(definition.RelationDefinition, Is.Null);
+      Assert.That(definition.HasRelationDefinitionBeenSet, Is.False);
+      Assert.That(
+          () => definition.RelationDefinition,
+          Throws.InvalidOperationException.With.Message.EqualTo("RelationDefinition has not been set for this relation end point."));
     }
 
     [Test]
-    public void RelationDefinitionNotNull ()
+    public void RelationDefinition_NotNull ()
     {
+      Assert.That(_orderEndPoint.HasRelationDefinitionBeenSet, Is.True);
       Assert.That(_orderEndPoint.RelationDefinition, Is.Not.Null);
     }
   }

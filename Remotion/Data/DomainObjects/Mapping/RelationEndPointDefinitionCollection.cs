@@ -67,6 +67,8 @@ namespace Remotion.Data.DomainObjects.Mapping
     public bool Contains (IRelationEndPointDefinition relationEndPoint)
     {
       ArgumentUtility.CheckNotNull("relationEndPoint", relationEndPoint);
+      if (relationEndPoint.IsAnonymous)
+        return false;
 
       return BaseContains(relationEndPoint.PropertyName, relationEndPoint);
     }
@@ -82,12 +84,12 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return (IRelationEndPointDefinition)BaseGetObject(index); }
     }
 
-    public IRelationEndPointDefinition this [string propertyName]
+    public IRelationEndPointDefinition? this [string propertyName]
     {
       get
       {
         ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-        return (IRelationEndPointDefinition)BaseGetObject(propertyName);
+        return (IRelationEndPointDefinition?)BaseGetObject(propertyName);
       }
     }
 
@@ -95,8 +97,8 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull("value", value);
 
-      if (string.IsNullOrEmpty(value.PropertyName))
-        throw new InvalidOperationException("End points without property name cannot be added to this collection.");
+      if (value.IsAnonymous)
+        throw new ArgumentException("Anonymous end points cannot be added to this collection.", "value");
 
       int position = BaseAdd(value.PropertyName, value);
 
