@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.ObjectModel;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
@@ -24,7 +25,6 @@ using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -260,22 +260,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       LifetimeService.GetObject(subTransaction, DomainObjectIDs.ClassWithAllDataTypes1, false); // preload ClassWithAllDataTypes
 
-      var extensionMock = MockRepository.GenerateMock<IClientTransactionExtension>();
-      extensionMock.Stub(stub => stub.Key).Return("mock");
-      parent.Extensions.Add(extensionMock);
+      var extensionMock = new Mock<IClientTransactionExtension>();
+      extensionMock.Setup(stub => stub.Key).Returns("mock");
+      parent.Extensions.Add(extensionMock.Object);
 
       LifetimeService.GetObjects<DomainObject>(
           subTransaction,
           DomainObjectIDs.Order1,
           DomainObjectIDs.ClassWithAllDataTypes1,
-        // this has already been loaded
+          // this has already been loaded
           DomainObjectIDs.Order3,
           DomainObjectIDs.OrderItem1);
 
-      extensionMock.AssertWasCalled(mock => mock.ObjectsLoading(Arg.Is(parent),
-          Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 })));
-      extensionMock.AssertWasNotCalled(mock => mock.ObjectsLoading(Arg.Is(parent),
-          Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll(new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
+      extensionMock.Verify(
+          mock => mock.ObjectsLoading(parent, new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 }),
+          Times.AtLeastOnce());
+      extensionMock.Verify(
+          mock => mock.ObjectsLoading(parent, It.Is<ReadOnlyCollection<ObjectID>>(_ => _.Contains(DomainObjectIDs.ClassWithAllDataTypes1))),
+          Times.Never());
     }
 
     [Test]
@@ -286,9 +288,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       LifetimeService.GetObject(subTransaction, DomainObjectIDs.ClassWithAllDataTypes1, false); // preload ClassWithAllDataTypes
 
-      var extensionMock = MockRepository.GenerateMock<IClientTransactionExtension>();
-      extensionMock.Stub(stub => stub.Key).Return("mock");
-      parent.Extensions.Add(extensionMock);
+      var extensionMock = new Mock<IClientTransactionExtension>();
+      extensionMock.Setup(stub => stub.Key).Returns("mock");
+      parent.Extensions.Add(extensionMock.Object);
 
       LifetimeService.TryGetObjects<DomainObject>(
           subTransaction,
@@ -297,10 +299,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           DomainObjectIDs.Order3,
           DomainObjectIDs.OrderItem1);
 
-      extensionMock.AssertWasCalled(mock => mock.ObjectsLoading(Arg.Is(parent),
-          Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 })));
-      extensionMock.AssertWasNotCalled(mock => mock.ObjectsLoading(Arg.Is(parent),
-          Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll(new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
+      extensionMock.Verify(
+          mock => mock.ObjectsLoading(parent, new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 }),
+          Times.AtLeastOnce());
+      extensionMock.Verify(
+          mock => mock.ObjectsLoading(parent, It.Is<ReadOnlyCollection<ObjectID>>(_ => _.Contains(DomainObjectIDs.ClassWithAllDataTypes1))),
+          Times.Never());
     }
 
     [Test]
@@ -309,8 +313,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction();
       using (subTransaction.EnterDiscardingScope())
       {
-        var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
-        PrivateInvoke.InvokeNonPublicMethod(subTransaction, "AddListener", listenerMock);
+        var listenerMock = new Mock<IClientTransactionListener>();
+        PrivateInvoke.InvokeNonPublicMethod(subTransaction, "AddListener", listenerMock.Object);
 
         var eventReceiver = new ClientTransactionEventReceiver(subTransaction);
         DomainObject[] objects = LifetimeService.GetObjects<DomainObject>(
@@ -322,13 +326,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         Assert.That(eventReceiver.LoadedDomainObjectLists.Count, Is.EqualTo(1));
         Assert.That(eventReceiver.LoadedDomainObjectLists[0], Is.EqualTo(objects));
 
-        listenerMock.AssertWasCalled(mock => mock.ObjectsLoading(
-            Arg.Is(subTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.List.Equal(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 })));
+        listenerMock.Verify(
+            mock => mock.ObjectsLoading(subTransaction, new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1 }),
+            Times.AtLeastOnce());
 
-        listenerMock.AssertWasCalled(mock => mock.ObjectsLoaded(
-            Arg.Is(subTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.List.Equal(objects)));
+        listenerMock.Verify(mock => mock.ObjectsLoaded(subTransaction, objects), Times.AtLeastOnce());
       }
     }
 
@@ -365,18 +367,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         eventReceiver.Clear();
 
-        var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
-        PrivateInvoke.InvokeNonPublicMethod(subTransaction, "AddListener", listenerMock);
+        var listenerMock = new Mock<IClientTransactionListener>();
+        PrivateInvoke.InvokeNonPublicMethod(subTransaction, "AddListener", listenerMock.Object);
 
         LifetimeService.GetObjects<DomainObject>(subTransaction, DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.OrderItem1);
         Assert.That(eventReceiver.LoadedDomainObjectLists, Is.Empty);
 
-        listenerMock.AssertWasNotCalled(mock => mock.ObjectsLoading(
-            Arg<ClientTransaction>.Is.Anything,
-            Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
-        listenerMock.AssertWasNotCalled(mock => mock.ObjectsLoaded(
-            Arg<ClientTransaction>.Is.Anything,
-            Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));
+        listenerMock.Verify(mock => mock.ObjectsLoading(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<ObjectID>>()), Times.Never());
+        listenerMock.Verify(mock => mock.ObjectsLoaded(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<DomainObject>>()), Times.Never());
       }
     }
 
@@ -402,18 +400,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         var expectedObjects = new DomainObject[] { Order.NewObject(), OrderItem.NewObject() };
         eventReceiver.Clear();
 
-        var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
-        PrivateInvoke.InvokeNonPublicMethod(subTransaction, "AddListener", listenerMock);
+        var listenerMock = new Mock<IClientTransactionListener>();
+        PrivateInvoke.InvokeNonPublicMethod(subTransaction, "AddListener", listenerMock.Object);
 
         LifetimeService.GetObjects<DomainObject>(subTransaction, expectedObjects[0].ID, expectedObjects[1].ID);
         Assert.That(eventReceiver.LoadedDomainObjectLists, Is.Empty);
 
-        listenerMock.AssertWasNotCalled(mock => mock.ObjectsLoading(
-            Arg<ClientTransaction>.Is.Anything,
-            Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
-        listenerMock.AssertWasNotCalled(mock => mock.ObjectsLoaded(
-            Arg<ClientTransaction>.Is.Anything,
-            Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));
+        listenerMock.Verify(mock => mock.ObjectsLoading(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<ObjectID>>()), Times.Never());
+        listenerMock.Verify(mock => mock.ObjectsLoaded(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<DomainObject>>()), Times.Never());
       }
     }
 
@@ -537,8 +531,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         Assert.That(result[2].State.IsInvalid, Is.True);
       }
     }
-
-
-
   }
 }

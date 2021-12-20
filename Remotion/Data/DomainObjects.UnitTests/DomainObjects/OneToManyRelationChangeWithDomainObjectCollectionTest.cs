@@ -54,19 +54,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       _newCustomer.Orders.Add(_order1);
 
-      ChangeState[] expectedChangeStates = new ChangeState[]
-    {
-      new RelationChangeState(_order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-      new CollectionChangeState(_newCustomer.Orders, _order1, "2. Adding event of new customer's order collection"),
-      new RelationChangeState(_newCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, _order1, "3. Changing event of new customer"),
-      new CollectionChangeState(_oldCustomer.Orders, _order1, "4. Removing of orders of old customer"),
-      new RelationChangeState(_oldCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", _order1, null, "5. Changing event of old customer"),
-      new RelationChangeState(_oldCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "6. Changed event of old customer"),
-      new CollectionChangeState(_oldCustomer.Orders, _order1, "7. Removed event of old customer's order collection"),
-      new RelationChangeState(_newCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "8. Changed event of new customer"),
-      new CollectionChangeState(_newCustomer.Orders, _order1, "9. Added event of new customer's order collection"),
-      new RelationChangeState(_order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", null, null, "10. Changed event of order from old to new customer"),
-    };
+      ChangeState[] expectedChangeStates =
+          new ChangeState[]
+          {
+              new RelationChangeState(
+                  _order1,
+                  "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
+                  _oldCustomer,
+                  _newCustomer,
+                  "1. Changing event of order from old to new customer"),
+              new CollectionChangeState(_newCustomer.Orders, _order1, "2. Adding event of new customer's order collection"),
+              new RelationChangeState(_newCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, _order1, "3. Changing event of new customer"),
+              new CollectionChangeState(_oldCustomer.Orders, _order1, "4. Removing of orders of old customer"),
+              new RelationChangeState(_oldCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", _order1, null, "5. Changing event of old customer"),
+              new RelationChangeState(_oldCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "6. Changed event of old customer"),
+              new CollectionChangeState(_oldCustomer.Orders, _order1, "7. Removed event of old customer's order collection"),
+              new RelationChangeState(_newCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, null, "8. Changed event of new customer"),
+              new CollectionChangeState(_newCustomer.Orders, _order1, "9. Added event of new customer's order collection"),
+              new RelationChangeState(
+                  _order1,
+                  "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
+                  null,
+                  null,
+                  "10. Changed event of order from old to new customer"),
+          };
 
       eventReceiver.Check(expectedChangeStates);
 
@@ -97,8 +108,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       }
       catch (EventReceiverCancelException)
       {
-        ChangeState[] expectedChangeStates = new ChangeState[]
-            { new RelationChangeState(_order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer") };
+        ChangeState[] expectedChangeStates =
+            new ChangeState[]
+            {
+                new RelationChangeState(
+                    _order1,
+                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
+                    _oldCustomer,
+                    _newCustomer,
+                    "1. Changing event of order from old to new customer")
+            };
 
         eventReceiver.Check(expectedChangeStates);
 
@@ -130,10 +149,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       }
       catch (EventReceiverCancelException)
       {
-        ChangeState[] expectedChangeStates = new ChangeState[]
+        ChangeState[] expectedChangeStates =
+            new ChangeState[]
             {
-              new RelationChangeState(_order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-              new CollectionChangeState(_newCustomer.Orders, _order1, "2. Adding event of new customer's order collection")
+                new RelationChangeState(
+                    _order1,
+                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
+                    _oldCustomer,
+                    _newCustomer,
+                    "1. Changing event of order from old to new customer"),
+                new CollectionChangeState(_newCustomer.Orders, _order1, "2. Adding event of new customer's order collection")
             };
 
         eventReceiver.Check(expectedChangeStates);
@@ -166,11 +191,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       }
       catch (EventReceiverCancelException)
       {
-        ChangeState[] expectedChangeStates = new ChangeState[]
+        ChangeState[] expectedChangeStates =
+            new ChangeState[]
             {
-              new RelationChangeState(_order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-              new CollectionChangeState(_newCustomer.Orders, _order1, "2. Adding event of new customer's order collection"),
-              new RelationChangeState(_newCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, _order1, "3. Changing event of new customer")
+                new RelationChangeState(
+                    _order1,
+                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
+                    _oldCustomer,
+                    _newCustomer,
+                    "1. Changing event of order from old to new customer"),
+                new CollectionChangeState(_newCustomer.Orders, _order1, "2. Adding event of new customer's order collection"),
+                new RelationChangeState(_newCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, _order1, "3. Changing event of new customer")
             };
 
         eventReceiver.Check(expectedChangeStates);
@@ -203,12 +234,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       }
       catch (EventReceiverCancelException)
       {
-        ChangeState[] expectedChangeStates = new ChangeState[]
+        ChangeState[] expectedChangeStates =
+            new ChangeState[]
             {
-              new RelationChangeState(_order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-              new CollectionChangeState(_newCustomer.Orders, _order1, "2. Adding event of new customer's order collection"),
-              new RelationChangeState(_newCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, _order1, "3. Changing event of new customer"),
-              new CollectionChangeState(_oldCustomer.Orders, _order1, "4. Removing of orders of old customer")
+                new RelationChangeState(
+                    _order1,
+                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
+                    _oldCustomer,
+                    _newCustomer,
+                    "1. Changing event of order from old to new customer"),
+                new CollectionChangeState(_newCustomer.Orders, _order1, "2. Adding event of new customer's order collection"),
+                new RelationChangeState(_newCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, _order1, "3. Changing event of new customer"),
+                new CollectionChangeState(_oldCustomer.Orders, _order1, "4. Removing of orders of old customer")
             };
 
         eventReceiver.Check(expectedChangeStates);
@@ -241,13 +278,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       }
       catch (EventReceiverCancelException)
       {
-        ChangeState[] expectedChangeStates = new ChangeState[]
+        ChangeState[] expectedChangeStates =
+            new ChangeState[]
             {
-              new RelationChangeState(_order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-              new CollectionChangeState(_newCustomer.Orders, _order1, "2. Adding event of new customer's order collection"),
-              new RelationChangeState(_newCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, _order1, "3. Changing event of new customer"),
-              new CollectionChangeState(_oldCustomer.Orders, _order1, "4. Removing of orders of old customer"),
-              new RelationChangeState(_oldCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", _order1, null, "5. Changing event of old customer")
+                new RelationChangeState(
+                    _order1,
+                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer",
+                    _oldCustomer,
+                    _newCustomer,
+                    "1. Changing event of order from old to new customer"),
+                new CollectionChangeState(_newCustomer.Orders, _order1, "2. Adding event of new customer's order collection"),
+                new RelationChangeState(_newCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", null, _order1, "3. Changing event of new customer"),
+                new CollectionChangeState(_oldCustomer.Orders, _order1, "4. Removing of orders of old customer"),
+                new RelationChangeState(_oldCustomer, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders", _order1, null, "5. Changing event of old customer")
             };
 
         eventReceiver.Check(expectedChangeStates);
@@ -421,7 +464,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void GetOriginalRelatedObjectsWithLazyLoad ()
     {
       Employee supervisor = DomainObjectIDs.Employee1.GetObject<Employee>();
-      DomainObjectCollection subordinates = supervisor.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
+      DomainObjectCollection subordinates =
+          supervisor.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
 
       Assert.That(subordinates.Count, Is.EqualTo(2));
     }

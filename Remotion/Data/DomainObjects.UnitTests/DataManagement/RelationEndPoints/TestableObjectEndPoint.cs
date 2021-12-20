@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Language.Flow;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -108,9 +111,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       throw new NotImplementedException();
     }
 
-    public void CallSetOppositeObjectDataFromSubTransaction (IObjectEndPoint sourceObjectEndPoint)
+    public ISetup<TestableObjectEndPoint> SetupSetOppositeObjectDataFromSubTransaction (
+        Mock<TestableObjectEndPoint> mock,
+        IObjectEndPoint sourceObjectEndPoint)
     {
-      SetOppositeObjectDataFromSubTransaction(sourceObjectEndPoint);
+      Assertion.IsTrue(object.ReferenceEquals(Mock.Get(this), mock), "object.ReferenceEquals(Mock.Get(this), mock)");
+
+      return mock.Setup(_ => _.SetOppositeObjectDataFromSubTransaction(sourceObjectEndPoint));
     }
 
     protected override void SetOppositeObjectDataFromSubTransaction (IObjectEndPoint sourceObjectEndPoint)

@@ -16,11 +16,11 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     private Order _order3;
     private Order _order4;
 
-    private IQuery _query;
-    private IQuery _queryWithCustomType;
+    private Mock<IQuery> _query;
+    private Mock<IQuery> _queryWithCustomType;
 
     private QueryResult<Order> _result;
     private QueryResult<Order> _resultWithDuplicates;
@@ -48,15 +48,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       _order3 = DomainObjectIDs.Order3.GetObject<Order>();
       _order4 = DomainObjectIDs.Order4.GetObject<Order>();
 
-      _query = MockRepository.GenerateStub<IQuery>();
-      _queryWithCustomType = MockRepository.GenerateStub<IQuery>();
-      _queryWithCustomType.Stub(stub => stub.CollectionType).Return(typeof(OrderCollection));
+      _query = new Mock<IQuery>();
+      _queryWithCustomType = new Mock<IQuery>();
+      _queryWithCustomType.Setup(stub => stub.CollectionType).Returns(typeof(OrderCollection));
 
-      _result = new QueryResult<Order>(_query, new[] { _order1, _order3, _order4 });
-      _resultWithDuplicates = new QueryResult<Order>(_query, new[] { _order1, _order3, _order4, _order1 });
-      _resultWithNullDuplicates = new QueryResult<Order>(_query, new[] { _order1, _order3, null, _order4, null });
-      _resultWithNulls = new QueryResult<Order>(_query, new[] { _order1, _order3, _order4, null });
-      _resultWithCustomType = new QueryResult<Order>(_queryWithCustomType, new[] { _order1, _order3, _order4 });
+      _result = new QueryResult<Order>(_query.Object, new[] { _order1, _order3, _order4 });
+      _resultWithDuplicates = new QueryResult<Order>(_query.Object, new[] { _order1, _order3, _order4, _order1 });
+      _resultWithNullDuplicates = new QueryResult<Order>(_query.Object, new[] { _order1, _order3, null, _order4, null });
+      _resultWithNulls = new QueryResult<Order>(_query.Object, new[] { _order1, _order3, _order4, null });
+      _resultWithCustomType = new QueryResult<Order>(_queryWithCustomType.Object, new[] { _order1, _order3, _order4 });
     }
 
     [Test]
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void Query ()
     {
-      Assert.That(_result.Query, Is.SameAs(_query));
+      Assert.That(_result.Query, Is.SameAs(_query.Object));
     }
 
     [Test]

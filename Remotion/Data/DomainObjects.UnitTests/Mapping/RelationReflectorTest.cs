@@ -644,7 +644,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           propertyInfo,
           new ReflectionBasedMemberInformationNameResolver(),
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub);
+          DomainModelConstraintProviderStub.Object);
       var propertyDefinition = propertyReflector.GetMetadata();
 
       if (!classDefinition.MyPropertyDefinitions.Contains(propertyDefinition.PropertyName))

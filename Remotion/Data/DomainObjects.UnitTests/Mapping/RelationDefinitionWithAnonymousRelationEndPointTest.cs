@@ -41,7 +41,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetOppositeEndPointDefinition ()
     {
-      Assert.That(_relation.GetOppositeEndPointDefinition("Location", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location.Client"), Is.SameAs(_clientEndPoint));
+      Assert.That(
+          _relation.GetOppositeEndPointDefinition("Location", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location.Client"),
+          Is.SameAs(_clientEndPoint));
       Assert.That(_relation.GetOppositeEndPointDefinition("Client", null), Is.SameAs(_locationEndPoint));
     }
 

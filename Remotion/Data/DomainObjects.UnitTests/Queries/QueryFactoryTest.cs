@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Linq;
@@ -27,7 +28,6 @@ using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Linq;
 using Remotion.Linq.Parsing.Structure;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
@@ -193,52 +193,56 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateLinqQuery_WithParserAndExecutor ()
     {
-      var factoryMock = MockRepository.GenerateStrictMock<ILinqProviderComponentFactory>();
+      var factoryMock = new Mock<ILinqProviderComponentFactory>(MockBehavior.Strict);
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<ILinqProviderComponentFactory>(() => factoryMock);
+      serviceLocator.RegisterSingle<ILinqProviderComponentFactory>(() => factoryMock.Object);
       using (new ServiceLocatorScope(serviceLocator))
       {
-        var executorStub = MockRepository.GenerateStub<IQueryExecutor>();
-        var queryParserStub = MockRepository.GenerateStub<IQueryParser>();
-        var fakeResult = MockRepository.GenerateStub<IQueryable<Order>>();
+        var executorStub = new Mock<IQueryExecutor>();
+        var queryParserStub = new Mock<IQueryParser>();
+        var fakeResult = new Mock<IQueryable<Order>>();
 
         factoryMock
-            .Expect(mock => mock.CreateQueryable<Order>(queryParserStub, executorStub))
-            .Return(fakeResult);
+            .Setup(mock => mock.CreateQueryable<Order>(queryParserStub.Object, executorStub.Object))
+            .Returns(fakeResult.Object)
+            .Verifiable();
 
-        var result = QueryFactory.CreateLinqQuery<Order>(queryParserStub, executorStub);
+        var result = QueryFactory.CreateLinqQuery<Order>(queryParserStub.Object, executorStub.Object);
 
-        factoryMock.VerifyAllExpectations();
-        Assert.That(result, Is.SameAs(fakeResult));
+        factoryMock.Verify();
+        Assert.That(result, Is.SameAs(fakeResult.Object));
       }
     }
 
     [Test]
     public void CreateLinqQuery_WithoutParserAndExecutor ()
     {
-      var factoryMock = MockRepository.GenerateStrictMock<ILinqProviderComponentFactory>();
+      var factoryMock = new Mock<ILinqProviderComponentFactory>(MockBehavior.Strict);
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<ILinqProviderComponentFactory>(() => factoryMock);
+      serviceLocator.RegisterSingle<ILinqProviderComponentFactory>(() => factoryMock.Object);
       using (new ServiceLocatorScope(serviceLocator))
       {
-        var fakeExecutor = MockRepository.GenerateStub<IQueryExecutor>();
-        var fakeQueryParser = MockRepository.GenerateStub<IQueryParser>();
-        var fakeResult = MockRepository.GenerateStub<IQueryable<Order>>();
+        var fakeExecutor = new Mock<IQueryExecutor>();
+        var fakeQueryParser = new Mock<IQueryParser>();
+        var fakeResult = new Mock<IQueryable<Order>>();
 
         factoryMock
-            .Expect(mock => mock.CreateQueryExecutor(TestDomainStorageProviderDefinition))
-            .Return(fakeExecutor);
+            .Setup(mock => mock.CreateQueryExecutor(TestDomainStorageProviderDefinition))
+            .Returns(fakeExecutor.Object)
+            .Verifiable();
         factoryMock
-            .Expect(mock => mock.CreateQueryParser())
-            .Return(fakeQueryParser);
+            .Setup(mock => mock.CreateQueryParser())
+            .Returns(fakeQueryParser.Object)
+            .Verifiable();
         factoryMock
-            .Expect(mock => mock.CreateQueryable<Order>(fakeQueryParser, fakeExecutor))
-            .Return(fakeResult);
+            .Setup(mock => mock.CreateQueryable<Order>(fakeQueryParser.Object, fakeExecutor.Object))
+            .Returns(fakeResult.Object)
+            .Verifiable();
 
         var result = QueryFactory.CreateLinqQuery<Order>();
 
-        factoryMock.VerifyAllExpectations();
-        Assert.That(result, Is.SameAs(fakeResult));
+        factoryMock.Verify();
+        Assert.That(result, Is.SameAs(fakeResult.Object));
       }
     }
 

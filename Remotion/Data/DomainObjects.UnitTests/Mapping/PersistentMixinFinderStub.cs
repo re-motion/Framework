@@ -30,12 +30,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var mixinContexts =
           persistentMixins.Select(
               t =>
-              new MixinContext(
-                  MixinKind.Extending,
-                  t,
-                  MemberVisibility.Private,
-                  Enumerable.Empty<Type>(),
-                  MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod())));
+                  new MixinContext(
+                      MixinKind.Extending,
+                      t,
+                      MemberVisibility.Private,
+                      Enumerable.Empty<Type>(),
+                      MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod())));
       return new ClassContext(classType, mixinContexts, Enumerable.Empty<Type>());
     }
 

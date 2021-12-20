@@ -16,13 +16,13 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
 {
@@ -233,19 +233,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void CollectionQuery_CallsFilterQueryResult_AndAllowsGetObjectDuringFiltering ()
     {
-      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
+      var listenerMock = new Mock<IClientTransactionListener>();
       listenerMock
-          .Expect(mock => mock.FilterQueryResult(Arg.Is(TestableClientTransaction), Arg<QueryResult<DomainObject>>.Is.Anything))
-          .Return(TestQueryFactory.CreateTestQueryResult<DomainObject>())
-          .WhenCalled(mi => DomainObjectIDs.OrderItem1.GetObject<OrderItem>());
-      TestableClientTransaction.AddListener(listenerMock);
+          .Setup(mock => mock.FilterQueryResult(TestableClientTransaction, It.IsAny<QueryResult<DomainObject>>()))
+          .Returns(TestQueryFactory.CreateTestQueryResult<DomainObject>())
+          .Callback((ClientTransaction clientTransaction, QueryResult<DomainObject> queryResult) => DomainObjectIDs.OrderItem1.GetObject<OrderItem>())
+          .Verifiable();
+      TestableClientTransaction.AddListener(listenerMock.Object);
 
       var query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
       query.Parameters.Add("customerID", DomainObjectIDs.Customer1);
       TestableClientTransaction.QueryManager.GetCollection(query);
 
-      listenerMock.VerifyAllExpectations();
-      listenerMock.BackToRecord(); // For Discarding
+      listenerMock.Verify();
+      listenerMock.Reset(); // For Discarding
     }
 
     [Test]

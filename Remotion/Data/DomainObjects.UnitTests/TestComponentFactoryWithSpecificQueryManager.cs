@@ -33,7 +33,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
       _queryManager = queryManager;
     }
 
-    public override IQueryManager CreateQueryManager (ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink, IInvalidDomainObjectManager invalidDomainObjectManager, IPersistenceStrategy persistenceStrategy, IDataManager dataManager, ITransactionHierarchyManager hierarchyManager)
+    public override IQueryManager CreateQueryManager (
+        ClientTransaction constructedTransaction,
+        IClientTransactionEventSink eventSink,
+        IInvalidDomainObjectManager invalidDomainObjectManager,
+        IPersistenceStrategy persistenceStrategy,
+        IDataManager dataManager,
+        ITransactionHierarchyManager hierarchyManager)
     {
       return _queryManager;
     }

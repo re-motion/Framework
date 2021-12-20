@@ -16,14 +16,13 @@
 // 
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Xml.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
 {
@@ -34,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_CreatesTableElement ()
     {
-      var tableSerializer = new TableSerializer(MockRepository.GenerateStub<IPropertySerializer>());
+      var tableSerializer = new TableSerializer(new Mock<IPropertySerializer>().Object);
 
       var actual =
           tableSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinition(typeof(ClassWithAllDataTypes))).Single();
@@ -47,42 +46,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_CreatesPersistenceModelProvider ()
     {
-      var propertySerializerMock = MockRepository.GenerateMock<IPropertySerializer>();
-      var tableSerializer = new TableSerializer(propertySerializerMock);
+      var propertySerializerMock = new Mock<IPropertySerializer>();
+      var tableSerializer = new TableSerializer(propertySerializerMock.Object);
 
-      propertySerializerMock.Expect(
-          _ => _.Serialize(
-              Arg<PropertyDefinition>.Is.NotNull,
-              Arg<IRdbmsPersistenceModelProvider>.Is.NotNull))
-          .Return(null)
-          .Repeat.AtLeastOnce();
+      propertySerializerMock
+          .Setup(_ => _.Serialize(It.IsNotNull<PropertyDefinition>(), It.IsNotNull<IRdbmsPersistenceModelProvider>()))
+          .Returns((XElement)null)
+          .Verifiable();
 
-      propertySerializerMock.Replay();
       tableSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinition(typeof(ClassWithAllDataTypes))).ToArray();
-      propertySerializerMock.VerifyAllExpectations();
+      propertySerializerMock.Verify(
+          _ => _.Serialize(It.IsNotNull<PropertyDefinition>(), It.IsNotNull<IRdbmsPersistenceModelProvider>()),
+          Times.AtLeastOnce());
     }
 
     [Test]
     public void Serialize_AddsPropertyElements ()
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Ceo));
-      var propertySerializerStub = MockRepository.GenerateStub<IPropertySerializer>();
+      var propertySerializerStub = new Mock<IPropertySerializer>();
       var expected1 = new XElement("property1");
       var expected2 = new XElement("property2");
 
       propertySerializerStub
-          .Stub(
+          .Setup(
               _ => _.Serialize(
-                  Arg.Is(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Ceo.Name")),
-                  Arg<IRdbmsPersistenceModelProvider>.Is.Anything))
-          .Return(expected1);
+                  classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Ceo.Name"),
+                  It.IsAny<IRdbmsPersistenceModelProvider>()))
+          .Returns(expected1);
       propertySerializerStub
-          .Stub(
+          .Setup(
               _ => _.Serialize(
-                  Arg.Is(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Ceo.Company")),
-                  Arg<IRdbmsPersistenceModelProvider>.Is.Anything))
-          .Return(expected2);
-      var tableSerializer = new TableSerializer(propertySerializerStub);
+                  classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.Ceo.Company"),
+                  It.IsAny<IRdbmsPersistenceModelProvider>()))
+          .Returns(expected2);
+      var tableSerializer = new TableSerializer(propertySerializerStub.Object);
 
       var actual = tableSerializer.Serialize(classDefinition).Single();
 
@@ -93,29 +91,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     public void Serialize_OnlyAddsPersistentProperties ()
     {
       var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Ceo));
-      var propertySerializerMock = MockRepository.GenerateStrictMock<IPropertySerializer>();
+      var propertySerializerMock = new Mock<IPropertySerializer>(MockBehavior.Strict);
 
-      Expression<Predicate<PropertyDefinition>> propertyDefinitionConstraint =
-          p => p.StorageClass == StorageClass.Persistent;
+      propertySerializerMock
+          .Setup(
+              _ => _.Serialize(
+                  It.Is<PropertyDefinition>(p => p.StorageClass == StorageClass.Persistent),
+                  It.IsAny<IRdbmsPersistenceModelProvider>()))
+          .Returns(new XElement("property"))
+          .Verifiable();
 
-      propertySerializerMock.Expect(
-          _ => _.Serialize(
-              Arg<PropertyDefinition>.Matches(propertyDefinitionConstraint),
-              Arg<IRdbmsPersistenceModelProvider>.Is.Anything))
-          .Return(new XElement("property"))
-          .Repeat.AtLeastOnce();
+      var tableSerializer = new TableSerializer(propertySerializerMock.Object);
 
-      var tableSerializer = new TableSerializer(propertySerializerMock);
-
-      propertySerializerMock.Replay();
       tableSerializer.Serialize(classDefinition).ToArray();
-      propertySerializerMock.VerifyAllExpectations();
+      propertySerializerMock.Verify();
     }
 
     [Test]
     public void Serialize_AbstractDerivedClass_CreatesTableElementFromBaseClass ()
     {
-      var tableSerializer = new TableSerializer(MockRepository.GenerateStub<IPropertySerializer>());
+      var tableSerializer = new TableSerializer(new Mock<IPropertySerializer>().Object);
 
       var actual =
           tableSerializer.Serialize(

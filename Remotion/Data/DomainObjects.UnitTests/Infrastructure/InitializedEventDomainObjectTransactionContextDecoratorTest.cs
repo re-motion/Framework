@@ -15,10 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
@@ -28,41 +27,87 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void AllowedMembers ()
     {
-      CheckAllowed(ctx => ctx.ClientTransaction, ClientTransaction.CreateRootTransaction());
+      var expected = ClientTransaction.CreateRootTransaction();
+
+      var contextMock = new Mock<IDomainObjectTransactionContext>();
+      contextMock.Setup(mock => mock.ClientTransaction).Returns(expected).Verifiable();
+
+      var ctx = new InitializedEventDomainObjectTransactionContextDecorator(contextMock.Object);
+
+      var result = ctx.ClientTransaction;
+
+      contextMock.Verify();
+      Assert.That(result, Is.SameAs(expected));
     }
 
     [Test]
-    public void ForbiddenMembers ()
+    public void ForbiddenMembers_State ()
     {
-      CheckForbidden(ctx => Dev.Null = ctx.State);
-      CheckForbidden(ctx => Dev.Null = ctx.Timestamp);
-      CheckForbidden(ctx => ctx.RegisterForCommit());
-      CheckForbidden(ctx => ctx.EnsureDataAvailable());
-      CheckForbidden(ctx => ctx.TryEnsureDataAvailable());
-    }
-
-    private void CheckAllowed<T> (Func<IDomainObjectTransactionContext, T> func, T mockResult)
-    {
-      var contextMock = MockRepository.GenerateMock<IDomainObjectTransactionContext>();
-      contextMock.Expect(mock => func(mock)).Return(mockResult);
-      contextMock.Replay();
-
-      var result = func(new InitializedEventDomainObjectTransactionContextDecorator(contextMock));
-
-      contextMock.VerifyAllExpectations();
-      Assert.That(result, Is.EqualTo(result));
-    }
-
-    private void CheckForbidden (Action<IDomainObjectTransactionContext> action)
-    {
-      var contextMock = MockRepository.GenerateMock<IDomainObjectTransactionContext>();
+      var contextMock = new Mock<IDomainObjectTransactionContext>();
+      var ctx = new InitializedEventDomainObjectTransactionContextDecorator(contextMock.Object);
 
       Assert.That(
-          () => action(new InitializedEventDomainObjectTransactionContextDecorator(contextMock)),
-          Throws.InvalidOperationException.With.Message.EqualTo(
-              "While the OnReferenceInitializing event is executing, this member cannot be used."));
+          () => ctx.State,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("While the OnReferenceInitializing event is executing, this member cannot be used."));
 
-      contextMock.AssertWasNotCalled(action);
+      contextMock.VerifyGet(_ => _.State, Times.Never());
+    }
+
+    [Test]
+    public void ForbiddenMembers_Timestamp ()
+    {
+      var contextMock = new Mock<IDomainObjectTransactionContext>();
+      var ctx = new InitializedEventDomainObjectTransactionContextDecorator(contextMock.Object);
+
+      Assert.That(
+          () => ctx.Timestamp,
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("While the OnReferenceInitializing event is executing, this member cannot be used."));
+
+      contextMock.VerifyGet(_ => _.Timestamp, Times.Never());
+    }
+
+    [Test]
+    public void ForbiddenMembers_RegisterForCommit ()
+    {
+      var contextMock = new Mock<IDomainObjectTransactionContext>();
+      var ctx = new InitializedEventDomainObjectTransactionContextDecorator(contextMock.Object);
+
+      Assert.That(
+          () => ctx.RegisterForCommit(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("While the OnReferenceInitializing event is executing, this member cannot be used."));
+
+      contextMock.Verify(_ => _.RegisterForCommit(), Times.Never());
+    }
+
+    [Test]
+    public void ForbiddenMembers_EnsureDataAvailable ()
+    {
+      var contextMock = new Mock<IDomainObjectTransactionContext>();
+      var ctx = new InitializedEventDomainObjectTransactionContextDecorator(contextMock.Object);
+
+      Assert.That(
+          () => ctx.EnsureDataAvailable(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("While the OnReferenceInitializing event is executing, this member cannot be used."));
+
+      contextMock.Verify(_ => _.EnsureDataAvailable(), Times.Never());
+    }
+
+    [Test]
+    public void ForbiddenMembers_TryEnsureDataAvailable ()
+    {
+      var contextMock = new Mock<IDomainObjectTransactionContext>();
+      var ctx = new InitializedEventDomainObjectTransactionContextDecorator(contextMock.Object);
+
+      Assert.That(
+          () => ctx.TryEnsureDataAvailable(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("While the OnReferenceInitializing event is executing, this member cannot be used."));
+
+      contextMock.Verify(_ => _.TryEnsureDataAvailable(), Times.Never());
     }
   }
 }

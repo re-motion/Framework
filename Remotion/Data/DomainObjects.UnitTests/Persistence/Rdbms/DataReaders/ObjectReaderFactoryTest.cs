@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
@@ -22,54 +23,53 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
 {
   [TestFixture]
   public class ObjectReaderFactoryTest : StandardMappingTest
   {
-    private IRdbmsPersistenceModelProvider _rdbmsPersistenceModelProviderStub;
+    private Mock<IRdbmsPersistenceModelProvider> _rdbmsPersistenceModelProviderStub;
     private ObjectReaderFactory _factory;
-    private IRdbmsStorageEntityDefinition _entityDefinitionStub;
+    private Mock<IRdbmsStorageEntityDefinition> _entityDefinitionStub;
     private ColumnDefinition _column1;
     private ColumnDefinition _column2;
     private ObjectIDStoragePropertyDefinition _objectIDProperty;
     private SimpleStoragePropertyDefinition _timestampProperty;
-    private IInfrastructureStoragePropertyDefinitionProvider _infrastructureStoragePropertyDefinitionProviderStub;
-    private IStorageTypeInformationProvider _storageTypeInformationProviderStub;
-    private IDataContainerValidator _dataContainerValidatorStub;
+    private Mock<IInfrastructureStoragePropertyDefinitionProvider> _infrastructureStoragePropertyDefinitionProviderStub;
+    private Mock<IStorageTypeInformationProvider> _storageTypeInformationProviderStub;
+    private Mock<IDataContainerValidator> _dataContainerValidatorStub;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _rdbmsPersistenceModelProviderStub = MockRepository.GenerateStub<IRdbmsPersistenceModelProvider>();
-      _entityDefinitionStub = MockRepository.GenerateStub<IRdbmsStorageEntityDefinition>();
-      _storageTypeInformationProviderStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
-      _dataContainerValidatorStub = MockRepository.GenerateStub<IDataContainerValidator>();
+      _rdbmsPersistenceModelProviderStub = new Mock<IRdbmsPersistenceModelProvider>();
+      _entityDefinitionStub = new Mock<IRdbmsStorageEntityDefinition>();
+      _storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();
+      _dataContainerValidatorStub = new Mock<IDataContainerValidator>();
 
       _objectIDProperty = ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty;
       _timestampProperty = SimpleStoragePropertyDefinitionObjectMother.TimestampProperty;
-      _entityDefinitionStub.Stub(stub => stub.ObjectIDProperty).Return(_objectIDProperty);
-      _entityDefinitionStub.Stub(stub => stub.TimestampProperty).Return(_timestampProperty);
+      _entityDefinitionStub.Setup(stub => stub.ObjectIDProperty).Returns(_objectIDProperty);
+      _entityDefinitionStub.Setup(stub => stub.TimestampProperty).Returns(_timestampProperty);
 
       _column1 = ColumnDefinitionObjectMother.CreateColumn("Column1");
       _column2 = ColumnDefinitionObjectMother.CreateColumn("Column2");
 
-      _infrastructureStoragePropertyDefinitionProviderStub = MockRepository.GenerateStrictMock<IInfrastructureStoragePropertyDefinitionProvider>();
+      _infrastructureStoragePropertyDefinitionProviderStub = new Mock<IInfrastructureStoragePropertyDefinitionProvider>(MockBehavior.Strict);
       _factory = new ObjectReaderFactory(
-          _rdbmsPersistenceModelProviderStub,
-          _infrastructureStoragePropertyDefinitionProviderStub,
-          _storageTypeInformationProviderStub,
-          _dataContainerValidatorStub);
+          _rdbmsPersistenceModelProviderStub.Object,
+          _infrastructureStoragePropertyDefinitionProviderStub.Object,
+          _storageTypeInformationProviderStub.Object,
+          _dataContainerValidatorStub.Object);
     }
 
     [Test]
     public void CreateDataContainerReader_OverloadWithNoParameters ()
     {
-      _infrastructureStoragePropertyDefinitionProviderStub.Stub(stub => stub.GetObjectIDStoragePropertyDefinition()).Return(_objectIDProperty);
-      _infrastructureStoragePropertyDefinitionProviderStub.Stub(stub => stub.GetTimestampStoragePropertyDefinition()).Return(_timestampProperty);
+      _infrastructureStoragePropertyDefinitionProviderStub.Setup(stub => stub.GetObjectIDStoragePropertyDefinition()).Returns(_objectIDProperty);
+      _infrastructureStoragePropertyDefinitionProviderStub.Setup(stub => stub.GetTimestampStoragePropertyDefinition()).Returns(_timestampProperty);
 
       var result = _factory.CreateDataContainerReader();
 
@@ -78,26 +78,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       Assert.That(dataContainerReader.OrdinalProvider, Is.TypeOf(typeof(NameBasedColumnOrdinalProvider)));
       Assert.That(dataContainerReader.IDProperty, Is.SameAs(_objectIDProperty));
       Assert.That(dataContainerReader.TimestampProperty, Is.SameAs(_timestampProperty));
-      Assert.That(dataContainerReader.DataContainerValidator, Is.SameAs(_dataContainerValidatorStub));
+      Assert.That(dataContainerReader.DataContainerValidator, Is.SameAs(_dataContainerValidatorStub.Object));
     }
 
     [Test]
     public void CreateDataContainerReader ()
     {
-      var result = _factory.CreateDataContainerReader(_entityDefinitionStub, new[] { _column1, _column2 });
+      var result = _factory.CreateDataContainerReader(_entityDefinitionStub.Object, new[] { _column1, _column2 });
 
       Assert.That(result, Is.TypeOf(typeof(DataContainerReader)));
       var dataContainerReader = (DataContainerReader)result;
       CheckOrdinalProvider(dataContainerReader.OrdinalProvider);
       Assert.That(dataContainerReader.IDProperty, Is.SameAs(_objectIDProperty));
       Assert.That(dataContainerReader.TimestampProperty, Is.SameAs(_timestampProperty));
-      Assert.That(dataContainerReader.DataContainerValidator, Is.SameAs(_dataContainerValidatorStub));
+      Assert.That(dataContainerReader.DataContainerValidator, Is.SameAs(_dataContainerValidatorStub.Object));
     }
 
     [Test]
     public void CreateObjectIDReader ()
     {
-      var result = _factory.CreateObjectIDReader(_entityDefinitionStub, new[] { _column1, _column2 });
+      var result = _factory.CreateObjectIDReader(_entityDefinitionStub.Object, new[] { _column1, _column2 });
 
       Assert.That(result, Is.TypeOf(typeof(ObjectIDReader)));
       var objectIDReader = (ObjectIDReader)result;
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [Test]
     public void CreateTimestampReader ()
     {
-      var result = _factory.CreateTimestampReader(_entityDefinitionStub, new[] { _column1, _column2 });
+      var result = _factory.CreateTimestampReader(_entityDefinitionStub.Object, new[] { _column1, _column2 });
 
       Assert.That(result, Is.TypeOf(typeof(TimestampReader)));
       var timestampReader = (TimestampReader)result;
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
 
       Assert.That(result, Is.TypeOf(typeof(QueryResultRowReader)));
       var queryResultRowReader = (QueryResultRowReader)result;
-      Assert.That(queryResultRowReader.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub));
+      Assert.That(queryResultRowReader.StorageTypeInformationProvider, Is.SameAs(_storageTypeInformationProviderStub.Object));
     }
 
     private void CheckOrdinalProvider (IColumnOrdinalProvider ordinalProvider)

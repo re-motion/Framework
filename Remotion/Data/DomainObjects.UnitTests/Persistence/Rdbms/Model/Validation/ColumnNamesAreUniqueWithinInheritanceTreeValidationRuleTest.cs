@@ -320,7 +320,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
       return propertyDefinition;
     }
 
-    private PropertyDefinition CreateNonPersistentPropertyDefinition (ClassDefinition classDefinition, string propertyName, IStoragePropertyDefinition storagePropertyDefinition)
+    private PropertyDefinition CreateNonPersistentPropertyDefinition (
+        ClassDefinition classDefinition,
+        string propertyName,
+        IStoragePropertyDefinition storagePropertyDefinition)
     {
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, propertyName, StorageClass.None);
       propertyDefinition.SetStorageProperty(storagePropertyDefinition);

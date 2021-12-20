@@ -30,13 +30,12 @@
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
     <ProjectReference Include="..\..\Development\Data\Development.Data.csproj" />
     <ProjectReference Include="..\..\Development\Mixins\Development.Mixins.csproj" />
-    <ProjectReference Include="..\..\Development\RhinoMocks\Development.RhinoMocks.csproj" />
+    <ProjectReference Include="..\..\Development\Moq\Development.Moq.csproj" />
     <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj" />
     <ProjectReference Include="..\Core\Data.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
     <PackageReference Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
     <PackageReference Include="Remotion.Linq.Development" Version="2.2.0" />
     <PackageReference Include="Remotion.Linq.SqlBackend.Development" Version="2.1.0-alpha.1" />

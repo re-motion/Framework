@@ -15,21 +15,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
   public abstract class ObjectEndPointSetCommandTestBase : ClientTransactionBaseTest
   {
-    private IRelationEndPointProvider _endPointProviderStub;
+    private Mock<IRelationEndPointProvider> _endPointProviderStub;
     private bool _oppositeObjectSetterCalled;
     private DomainObject _oppositeObjectSetterObject;
     private Action<DomainObject> _oppositeObjectSetter;
-    private IClientTransactionEventSink _transactionEventSinkWithMock;
+    private Mock<IClientTransactionEventSink> _transactionEventSinkWithMock;
 
-    protected IRelationEndPointProvider EndPointProviderStub
+    protected Mock<IRelationEndPointProvider> EndPointProviderStub
     {
       get { return _endPointProviderStub; }
     }
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       get { return _oppositeObjectSetter; }
     }
 
-    public IClientTransactionEventSink TransactionEventSinkWithMock
+    public Mock<IClientTransactionEventSink> TransactionEventSinkWithMock
     {
       get { return _transactionEventSinkWithMock; }
     }
@@ -58,14 +58,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       base.SetUp();
 
-      _endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider>();
+      _endPointProviderStub = new Mock<IRelationEndPointProvider>();
       _oppositeObjectSetterCalled = false;
       _oppositeObjectSetter = id =>
       {
         _oppositeObjectSetterCalled = true;
         _oppositeObjectSetterObject = id;
       };
-      _transactionEventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
+      _transactionEventSinkWithMock = new Mock<IClientTransactionEventSink>(MockBehavior.Strict);
     }
   }
 }

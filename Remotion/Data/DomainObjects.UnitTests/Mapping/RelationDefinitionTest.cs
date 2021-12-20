@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -88,7 +88,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetEndPointDefinition ()
     {
-      Assert.That(_customerToOrder.GetEndPointDefinition("Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer"), Is.SameAs(_orderEndPoint));
+      Assert.That(
+          _customerToOrder.GetEndPointDefinition("Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer"),
+          Is.SameAs(_orderEndPoint));
       Assert.That(_customerToOrder.GetEndPointDefinition(
           "Customer", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders"), Is.SameAs(_customerEndPoint));
     }
@@ -203,10 +205,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private IRelationEndPointDefinition CreateEquivalentEndPointDefinitionFake (DomainObjectCollectionRelationEndPointDefinition sourceEndPoint)
     {
-      var invalidEndPoint = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      invalidEndPoint.Stub(stub => stub.ClassDefinition).Return(sourceEndPoint.ClassDefinition);
-      invalidEndPoint.Stub(stub => stub.PropertyName).Return(sourceEndPoint.PropertyName);
-      return invalidEndPoint;
+      var invalidEndPoint = new Mock<IRelationEndPointDefinition>();
+      invalidEndPoint.Setup(stub => stub.ClassDefinition).Returns(sourceEndPoint.ClassDefinition);
+      invalidEndPoint.Setup(stub => stub.PropertyName).Returns(sourceEndPoint.PropertyName);
+      return invalidEndPoint.Object;
     }
 
   }

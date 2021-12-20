@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
@@ -25,7 +26,6 @@ using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 {
@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
   {
     private TestableClientTransaction _transaction;
     private Order _order1;
-    private IClientTransactionEventSink _transactionEventSinkWithMock;
+    private Mock<IClientTransactionEventSink> _transactionEventSinkWithMock;
 
     private DeleteCommand _deleteOrder1Command;
 
@@ -44,9 +44,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 
       _transaction = new TestableClientTransaction();
       _order1 = (Order)LifetimeService.GetObject(_transaction, DomainObjectIDs.Order1, false);
-      _transactionEventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
+      _transactionEventSinkWithMock = new Mock<IClientTransactionEventSink>(MockBehavior.Strict);
 
-      _deleteOrder1Command = new DeleteCommand(_transaction, _order1, _transactionEventSinkWithMock);
+      _deleteOrder1Command = new DeleteCommand(_transaction, _order1, _transactionEventSinkWithMock.Object);
     }
 
     [Test]
@@ -58,75 +58,61 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void Begin ()
     {
-      _transactionEventSinkWithMock.Expect(mock => mock.RaiseObjectDeletingEvent(_order1));
-      _transactionEventSinkWithMock.Replay();
+      _transactionEventSinkWithMock.Setup(mock => mock.RaiseObjectDeletingEvent(_order1)).Verifiable();
 
       _deleteOrder1Command.Begin();
 
-      _transactionEventSinkWithMock.VerifyAllExpectations();
+      _transactionEventSinkWithMock.Verify();
     }
 
     [Test]
     public void Begin_TriggersEndPointModifications ()
     {
-      var mockRepository = _transactionEventSinkWithMock.GetMockRepository();
+      var endPointCommandMock = new Mock<IDataManagementCommand>(MockBehavior.Strict);
+      endPointCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var endPointCommandMock = mockRepository.StrictMock<IDataManagementCommand>();
-      endPointCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-
-      using (mockRepository.Ordered())
-      {
-        _transactionEventSinkWithMock.Expect(mock => mock.RaiseObjectDeletingEvent( _order1));
-        endPointCommandMock.Expect(mock => mock.Begin());
-      }
-
-      mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _transactionEventSinkWithMock.InSequence(sequence).Setup(mock => mock.RaiseObjectDeletingEvent(_order1)).Verifiable();
+      endPointCommandMock.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
 
       var compositeCommand = (CompositeCommand)PrivateInvoke.GetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands");
-      var compositeCommandWithMockStep = compositeCommand.CombineWith(endPointCommandMock);
+      var compositeCommandWithMockStep = compositeCommand.CombineWith(endPointCommandMock.Object);
       PrivateInvoke.SetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands", compositeCommandWithMockStep);
 
       _deleteOrder1Command.Begin();
 
-      mockRepository.VerifyAll();
-      mockRepository.BackToRecordAll(); // For Discard
+      endPointCommandMock.Verify();
+      endPointCommandMock.Reset(); // For Discard
     }
 
     [Test]
     public void End ()
     {
-      _transactionEventSinkWithMock.Expect(mock => mock.RaiseObjectDeletedEvent(_order1));
-      _transactionEventSinkWithMock.Replay();
+      _transactionEventSinkWithMock.Setup(mock => mock.RaiseObjectDeletedEvent(_order1)).Verifiable();
 
       _deleteOrder1Command.End();
 
-      _transactionEventSinkWithMock.VerifyAllExpectations();
+      _transactionEventSinkWithMock.Verify();
     }
 
     [Test]
     public void End_TriggersEndPointModifications ()
     {
-      var mockRepository = _transactionEventSinkWithMock.GetMockRepository();
+      var endPointCommandMock = new Mock<IDataManagementCommand>(MockBehavior.Strict);
+      endPointCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var endPointCommandMock = mockRepository.StrictMock<IDataManagementCommand>();
-      endPointCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-
-      using (mockRepository.Ordered())
-      {
-        endPointCommandMock.Expect(mock => mock.End());
-        _transactionEventSinkWithMock.Expect(mock => mock.RaiseObjectDeletedEvent( _order1));
-      }
-
-      mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      endPointCommandMock.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      _transactionEventSinkWithMock.InSequence(sequence).Setup(mock => mock.RaiseObjectDeletedEvent(_order1)).Verifiable();
 
       var compositeCommand = (CompositeCommand)PrivateInvoke.GetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands");
-      var compositeCommandWithMockStep = compositeCommand.CombineWith(endPointCommandMock);
+      var compositeCommandWithMockStep = compositeCommand.CombineWith(endPointCommandMock.Object);
       PrivateInvoke.SetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands", compositeCommandWithMockStep);
 
       _deleteOrder1Command.End();
 
-      mockRepository.VerifyAll();
-      mockRepository.BackToRecordAll(); // For Discard
+      endPointCommandMock.Verify();
+      endPointCommandMock.Reset(); // For Discard
     }
 
     [Test]
@@ -149,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     public void Perform_DiscardsNewDataContainer ()
     {
       var newOrder = _transaction.ExecuteInScope(() => Order.NewObject());
-      var deleteNewOrderCommand = new DeleteCommand(_transaction, newOrder, _transactionEventSinkWithMock);
+      var deleteNewOrderCommand = new DeleteCommand(_transaction, newOrder, _transactionEventSinkWithMock.Object);
 
       deleteNewOrderCommand.Perform();
 

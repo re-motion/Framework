@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -23,7 +24,6 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoi
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -419,7 +419,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _customerEndPoint.Collection.Add(_order3);
 
-      listener.AssertWasCalled(mock => mock.VirtualRelationEndPointStateUpdated(_customerEndPoint.ClientTransaction, _customerEndPoint.ID, null));
+      listener.Verify(mock => mock.VirtualRelationEndPointStateUpdated(_customerEndPoint.ClientTransaction, _customerEndPoint.ID, null), Times.AtLeastOnce());
     }
 
     [Test]

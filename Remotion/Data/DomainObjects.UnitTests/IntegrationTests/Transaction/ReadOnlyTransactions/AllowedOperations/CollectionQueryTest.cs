@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     {
       WriteableSubTransaction.EnsureDataAvailable(DomainObjectIDs.Order1);
 
-      var resultSet = ExecuteInReadOnlyMiddleTransaction( () => QueryFactory.CreateLinqQuery<Order>().Where(obj => obj.OrderNumber == 1).ToList());
+      var resultSet = ExecuteInReadOnlyMiddleTransaction(() => QueryFactory.CreateLinqQuery<Order>().Where(obj => obj.OrderNumber == 1).ToList());
 
       Assert.That(resultSet, Has.Count.EqualTo(1));
       Assert.That(resultSet[0].ID, Is.EqualTo(DomainObjectIDs.Order1));

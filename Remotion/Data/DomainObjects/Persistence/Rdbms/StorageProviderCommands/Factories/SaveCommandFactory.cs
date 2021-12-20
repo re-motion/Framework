@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         if (ShouldCreateDeleteCommand(dataContainer))
           deleteCommands.Add(Tuple.Create(dataContainer.ID, CreateDbCommandForDelete(dataContainer, tableDefinition)));
 
-        var updatedColumnValues = GetUpdatedColumnValues(dataContainer, tableDefinition);
+        var updatedColumnValues = GetUpdatedColumnValues(dataContainer, tableDefinition).ToArray();
         if (updatedColumnValues.Any())
         {
           var dbCommandForUpdate = CreateDbCommandForUpdate(dataContainer, tableDefinition, updatedColumnValues);
@@ -190,7 +190,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     private IDbCommandBuilder CreateDbCommandForUpdate (
     DataContainer dataContainer,
     TableDefinition tableDefinition,
-    IEnumerable<ColumnValue> updatedColumnValues)
+    IReadOnlyCollection<ColumnValue> updatedColumnValues)
     {
       var comparedColumnValues = GetComparedColumnValuesForUpdate(dataContainer, tableDefinition);
 

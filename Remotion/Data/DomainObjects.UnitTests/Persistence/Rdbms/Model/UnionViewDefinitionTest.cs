@@ -16,11 +16,11 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       _property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column2");
       _property3 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column3");
 
-      _indexes = new[] { MockRepository.GenerateStub<IIndexDefinition>() };
+      _indexes = new[] { new Mock<IIndexDefinition>().Object };
       _synonyms = new[] { new EntityNameDefinition("Schema", "Test") };
 
       _tableDefinition1 = TableDefinitionObjectMother.Create(
@@ -276,14 +276,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void Accept ()
     {
-      var visitorMock = MockRepository.GenerateStrictMock<IRdbmsStorageEntityDefinitionVisitor>();
+      var visitorMock = new Mock<IRdbmsStorageEntityDefinitionVisitor>(MockBehavior.Strict);
 
-      visitorMock.Expect(mock => mock.VisitUnionViewDefinition(_unionViewDefinition));
-      visitorMock.Replay();
+      visitorMock.Setup(mock => mock.VisitUnionViewDefinition(_unionViewDefinition)).Verifiable();
 
-      _unionViewDefinition.Accept(visitorMock);
+      _unionViewDefinition.Accept(visitorMock.Object);
 
-      visitorMock.VerifyAllExpectations();
+      visitorMock.Verify();
     }
   }
 }

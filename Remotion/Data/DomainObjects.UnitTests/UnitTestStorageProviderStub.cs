@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using Remotion.Context;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -26,7 +27,6 @@ using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -78,11 +78,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var storageProviderID =
           MappingConfiguration.Current.GetTypeDefinition(typeof(Official)).StorageEntityDefinition.StorageProviderDefinition.Name;
       var storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
-      return MockRepository.GenerateMock<StorageProvider>(storageProviderDefinition, NullPersistenceExtension.Instance);
+      return new Mock<StorageProvider>(storageProviderDefinition, NullPersistenceExtension.Instance).Object;
     }
 
     public UnitTestStorageProviderStub (
-        UnitTestStorageProviderStubDefinition definition, IPersistenceExtension persistenceExtension)
+        UnitTestStorageProviderStubDefinition definition,
+        IPersistenceExtension persistenceExtension)
         : base(definition, persistenceExtension)
     {
     }
@@ -160,7 +161,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
         InnerProvider.UpdateTimestamps(dataContainers);
     }
 
-    public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition sortExpressionDefinition, ObjectID relatedID)
+    public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (
+        RelationEndPointDefinition relationEndPointDefinition,
+        SortExpressionDefinition sortExpressionDefinition,
+        ObjectID relatedID)
     {
       if (InnerProvider != null)
         return InnerProvider.LoadDataContainersByRelatedID(relationEndPointDefinition, sortExpressionDefinition, relatedID);

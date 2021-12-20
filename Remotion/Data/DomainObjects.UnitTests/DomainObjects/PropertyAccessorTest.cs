@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -22,7 +23,6 @@ using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -149,8 +149,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var propertyAccessor = CreateAccessor(sector, "Companies");
       propertyAccessor.SetValue(newCompanies);
 
-      listenerMock.AssertWasCalled(
-        mock => mock.RelationChanged(TestableClientTransaction, sector, propertyAccessor.PropertyData.RelationEndPointDefinition, null, newCompanies[0]));
+      listenerMock.Verify(
+          mock => mock.RelationChanged(TestableClientTransaction, sector, propertyAccessor.PropertyData.RelationEndPointDefinition, null, newCompanies[0]),
+          Times.AtLeastOnce());
     }
 
     [Test]
@@ -260,8 +261,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var propertyAccessor = CreateAccessor(order, "OrderTicket");
       propertyAccessor.SetValue(newTicket);
 
-      listenerMock.AssertWasCalled(
-          mock => mock.RelationChanged(TestableClientTransaction, order, propertyAccessor.PropertyData.RelationEndPointDefinition, oldTicket, newTicket));
+      listenerMock.Verify(
+          mock => mock.RelationChanged(TestableClientTransaction, order, propertyAccessor.PropertyData.RelationEndPointDefinition, oldTicket, newTicket),
+          Times.AtLeastOnce());
     }
 
     [Test]

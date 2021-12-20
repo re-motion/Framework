@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
@@ -22,7 +23,6 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -154,14 +154,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var realEndPoint = _relationEndPointManager.RelationEndPoints[realEndPointID];
 
       var virtualObjectEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderItems");
-      var virtualObjectEndPointStub = MockRepository.GenerateStub<IVirtualObjectEndPoint>();
-      virtualObjectEndPointStub.Stub(stub => stub.ID).Return(virtualObjectEndPointID);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, virtualObjectEndPointStub);
+      var virtualObjectEndPointStub = new Mock<IVirtualObjectEndPoint>();
+      virtualObjectEndPointStub.Setup(stub => stub.ID).Returns(virtualObjectEndPointID);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, virtualObjectEndPointStub.Object);
 
       var collectionEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
-      var collectionEndPointStub = MockRepository.GenerateStub<ICollectionEndPoint<ICollectionEndPointData>>();
-      collectionEndPointStub.Stub(stub => stub.ID).Return(collectionEndPointID);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, collectionEndPointStub);
+      var collectionEndPointStub = new Mock<ICollectionEndPoint<ICollectionEndPointData>>();
+      collectionEndPointStub.Setup(stub => stub.ID).Returns(collectionEndPointID);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, collectionEndPointStub.Object);
 
       var command = _relationEndPointManager.CreateUnregisterCommandForDataContainer(dataContainer);
 
@@ -169,8 +169,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(((UnregisterEndPointsCommand)command).RegistrationAgent, Is.SameAs(_relationEndPointManager.RegistrationAgent));
       Assert.That(((UnregisterEndPointsCommand)command).Map, Is.SameAs(_relationEndPointManager.RelationEndPoints));
       Assert.That(((UnregisterEndPointsCommand)command).EndPoints, Has.Member(realEndPoint));
-      Assert.That(((UnregisterEndPointsCommand)command).EndPoints, Has.No.Member(virtualObjectEndPointStub));
-      Assert.That(((UnregisterEndPointsCommand)command).EndPoints, Has.No.Member(collectionEndPointStub));
+      Assert.That(((UnregisterEndPointsCommand)command).EndPoints, Has.No.Member(virtualObjectEndPointStub.Object));
+      Assert.That(((UnregisterEndPointsCommand)command).EndPoints, Has.No.Member(collectionEndPointStub.Object));
     }
 
     [Test]
@@ -232,11 +232,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CreateUnregisterCommandForDataContainer_WithUnregisterableEndPoint ()
     {
       var dataContainer = DataContainer.CreateForExisting(DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
-      var endPoint = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPoint.Stub(stub => stub.ID).Return(RelationEndPointID.Create(dataContainer.ID, typeof(Order), "Customer"));
-      endPoint.Stub(stub => stub.Definition).Return(endPoint.ID.Definition);
-      endPoint.Stub(stub => stub.HasChanged).Return(true);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPoint);
+      var endPoint = new Mock<IRealObjectEndPoint>();
+      endPoint.Setup(stub => stub.ID).Returns(RelationEndPointID.Create(dataContainer.ID, typeof(Order), "Customer"));
+      endPoint.Setup(stub => stub.Definition).Returns(endPoint.Object.ID.Definition);
+      endPoint.Setup(stub => stub.HasChanged).Returns(true);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPoint.Object);
 
       var command = _relationEndPointManager.CreateUnregisterCommandForDataContainer(dataContainer);
 
@@ -253,18 +253,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CreateUnregisterCommandForDataContainer_WithUnregisterableEndPoint_DueToChangedOpposite ()
     {
       var dataContainer = DataContainer.CreateForExisting(DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
-      var endPoint = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPoint.Stub(stub => stub.ID).Return(RelationEndPointID.Create(dataContainer.ID, typeof(Order), "Customer"));
-      endPoint.Stub(stub => stub.Definition).Return(endPoint.ID.Definition);
-      endPoint.Stub(stub => stub.HasChanged).Return(false);
-      endPoint.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.Customer1);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPoint);
+      var endPoint = new Mock<IRealObjectEndPoint>();
+      endPoint.Setup(stub => stub.ID).Returns(RelationEndPointID.Create(dataContainer.ID, typeof(Order), "Customer"));
+      endPoint.Setup(stub => stub.Definition).Returns(endPoint.Object.ID.Definition);
+      endPoint.Setup(stub => stub.HasChanged).Returns(false);
+      endPoint.Setup(stub => stub.OppositeObjectID).Returns(DomainObjectIDs.Customer1);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPoint.Object);
 
-      var oppositeEndPoint = MockRepository.GenerateStub<IVirtualEndPoint>();
-      oppositeEndPoint.Stub(stub => stub.ID).Return(RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders"));
-      oppositeEndPoint.Stub(stub => stub.Definition).Return(oppositeEndPoint.ID.Definition);
-      oppositeEndPoint.Stub(stub => stub.HasChanged).Return(true);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, oppositeEndPoint);
+      var oppositeEndPoint = new Mock<IVirtualEndPoint>();
+      oppositeEndPoint.Setup(stub => stub.ID).Returns(RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders"));
+      oppositeEndPoint.Setup(stub => stub.Definition).Returns(oppositeEndPoint.Object.ID.Definition);
+      oppositeEndPoint.Setup(stub => stub.HasChanged).Returns(true);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, oppositeEndPoint.Object);
 
       var command = _relationEndPointManager.CreateUnregisterCommandForDataContainer(dataContainer);
 
@@ -281,17 +281,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CreateUnregisterCommandForDataContainer_WithMultipleUnregisterableEndPoints ()
     {
       var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
-      var endPoint1 = MockRepository.GenerateStub<IVirtualObjectEndPoint>();
-      endPoint1.Stub(stub => stub.ID).Return(RelationEndPointID.Create(dataContainer.ID, typeof(Order), "OrderTicket"));
-      endPoint1.Stub(stub => stub.Definition).Return(endPoint1.ID.Definition);
-      endPoint1.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.OrderTicket1);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPoint1);
+      var endPoint1 = new Mock<IVirtualObjectEndPoint>();
+      endPoint1.Setup(stub => stub.ID).Returns(RelationEndPointID.Create(dataContainer.ID, typeof(Order), "OrderTicket"));
+      endPoint1.Setup(stub => stub.Definition).Returns(endPoint1.Object.ID.Definition);
+      endPoint1.Setup(stub => stub.OppositeObjectID).Returns(DomainObjectIDs.OrderTicket1);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPoint1.Object);
 
-      var endPoint2 = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPoint2.Stub(stub => stub.ID).Return(RelationEndPointID.Create(dataContainer.ID, typeof(Order), "Customer"));
-      endPoint2.Stub(stub => stub.Definition).Return(endPoint2.ID.Definition);
-      endPoint2.Stub(stub => stub.OriginalOppositeObjectID).Return(DomainObjectIDs.Customer1);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPoint2);
+      var endPoint2 = new Mock<IRealObjectEndPoint>();
+      endPoint2.Setup(stub => stub.ID).Returns(RelationEndPointID.Create(dataContainer.ID, typeof(Order), "Customer"));
+      endPoint2.Setup(stub => stub.Definition).Returns(endPoint2.Object.ID.Definition);
+      endPoint2.Setup(stub => stub.OriginalOppositeObjectID).Returns(DomainObjectIDs.Customer1);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPoint2.Object);
 
       var command = _relationEndPointManager.CreateUnregisterCommandForDataContainer(dataContainer);
 
@@ -306,7 +306,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
               + "Relation end-point "
               + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' "
               + "would leave a dangling reference."));
-
     }
 
     [Test]
@@ -315,22 +314,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var endPointID1 = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
       var endPointID2 = RelationEndPointID.Create(DomainObjectIDs.Order3, typeof(Order), "OrderItems");
 
-      var endPointStub1 = MockRepository.GenerateStub<IVirtualEndPoint>();
-      endPointStub1.Stub(stub => stub.ID).Return(endPointID1);
-      endPointStub1.Stub(stub => stub.CanBeMarkedIncomplete).Return(true);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub1);
+      var endPointStub1 = new Mock<IVirtualEndPoint>();
+      endPointStub1.Setup(stub => stub.ID).Returns(endPointID1);
+      endPointStub1.Setup(stub => stub.CanBeMarkedIncomplete).Returns(true);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub1.Object);
 
-      var endPointStub2 = MockRepository.GenerateStub<IVirtualEndPoint>();
-      endPointStub2.Stub(stub => stub.ID).Return(endPointID2);
-      endPointStub2.Stub(stub => stub.CanBeMarkedIncomplete).Return(true);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub2);
+      var endPointStub2 = new Mock<IVirtualEndPoint>();
+      endPointStub2.Setup(stub => stub.ID).Returns(endPointID2);
+      endPointStub2.Setup(stub => stub.CanBeMarkedIncomplete).Returns(true);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub2.Object);
 
       var result = _relationEndPointManager.CreateUnloadVirtualEndPointsCommand(new[] { endPointID1, endPointID2 });
 
       Assert.That(
           result,
           Is.TypeOf<UnloadVirtualEndPointsCommand>()
-              .With.Property("VirtualEndPoints").EqualTo(new[] { endPointStub1, endPointStub2 })
+              .With.Property("VirtualEndPoints").EqualTo(new[] { endPointStub1.Object, endPointStub2.Object })
               .And.Property("RelationEndPointMap").SameAs(_relationEndPointManager.RelationEndPoints)
               .And.Property("RegistrationAgent").SameAs(_relationEndPointManager.RegistrationAgent));
     }
@@ -351,14 +350,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var endPointID1 = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
       var endPointID2 = RelationEndPointID.Create(DomainObjectIDs.Order3, typeof(Order), "OrderItems");
 
-      var endPointStub2 = MockRepository.GenerateStub<IVirtualEndPoint>();
-      endPointStub2.Stub(stub => stub.ID).Return(endPointID2);
-      endPointStub2.Stub(stub => stub.CanBeMarkedIncomplete).Return(true);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub2);
+      var endPointStub2 = new Mock<IVirtualEndPoint>();
+      endPointStub2.Setup(stub => stub.ID).Returns(endPointID2);
+      endPointStub2.Setup(stub => stub.CanBeMarkedIncomplete).Returns(true);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub2.Object);
 
       var result = _relationEndPointManager.CreateUnloadVirtualEndPointsCommand(new[] { endPointID1, endPointID2 });
 
-      Assert.That(result, Is.TypeOf<UnloadVirtualEndPointsCommand>().With.Property("VirtualEndPoints").EqualTo(new[] { endPointStub2 }));
+      Assert.That(result, Is.TypeOf<UnloadVirtualEndPointsCommand>().With.Property("VirtualEndPoints").EqualTo(new[] { endPointStub2.Object }));
     }
 
     [Test]
@@ -368,20 +367,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var endPointID2 = RelationEndPointID.Create(DomainObjectIDs.Order3, typeof(Order), "OrderItems");
       var endPointID3 = RelationEndPointID.Create(DomainObjectIDs.Order4, typeof(Order), "OrderItems");
 
-      var endPointStub1 = MockRepository.GenerateStub<IVirtualEndPoint>();
-      endPointStub1.Stub(stub => stub.ID).Return(endPointID1);
-      endPointStub1.Stub(stub => stub.CanBeMarkedIncomplete).Return(false);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub1);
+      var endPointStub1 = new Mock<IVirtualEndPoint>();
+      endPointStub1.Setup(stub => stub.ID).Returns(endPointID1);
+      endPointStub1.Setup(stub => stub.CanBeMarkedIncomplete).Returns(false);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub1.Object);
 
-      var endPointStub2 = MockRepository.GenerateStub<IVirtualEndPoint>();
-      endPointStub2.Stub(stub => stub.ID).Return(endPointID2);
-      endPointStub2.Stub(stub => stub.CanBeMarkedIncomplete).Return(false);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub2);
+      var endPointStub2 = new Mock<IVirtualEndPoint>();
+      endPointStub2.Setup(stub => stub.ID).Returns(endPointID2);
+      endPointStub2.Setup(stub => stub.CanBeMarkedIncomplete).Returns(false);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub2.Object);
 
-      var endPointStub3 = MockRepository.GenerateStub<IVirtualEndPoint>();
-      endPointStub3.Stub(stub => stub.ID).Return(endPointID3);
-      endPointStub3.Stub(stub => stub.CanBeMarkedIncomplete).Return(true);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub3);
+      var endPointStub3 = new Mock<IVirtualEndPoint>();
+      endPointStub3.Setup(stub => stub.ID).Returns(endPointID3);
+      endPointStub3.Setup(stub => stub.CanBeMarkedIncomplete).Returns(true);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub3.Object);
 
       var result = _relationEndPointManager.CreateUnloadVirtualEndPointsCommand(new[] { endPointID1, endPointID2, endPointID3 });
 
@@ -472,22 +471,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetRelationEndPointWithoutLoading_EndPointRegistered ()
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
-      var endPointStub = MockRepository.GenerateStub<IRelationEndPoint>();
-      endPointStub.Stub(stub => stub.ID).Return(endPointID);
+      var endPointStub = new Mock<IRelationEndPoint>();
+      endPointStub.Setup(stub => stub.ID).Returns(endPointID);
 
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub.Object);
 
       var result = _relationEndPointManager.GetRelationEndPointWithoutLoading(endPointID);
 
-      Assert.That(result, Is.SameAs(endPointStub));
+      Assert.That(result, Is.SameAs(endPointStub.Object));
     }
 
     [Test]
     public void GetRelationEndPointWithoutLoading_EndPointNotRegistered ()
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
-      var endPointStub = MockRepository.GenerateStub<IRelationEndPoint>();
-      endPointStub.Stub(stub => stub.ID).Return(endPointID);
+      var endPointStub = new Mock<IRelationEndPoint>();
+      endPointStub.Setup(stub => stub.ID).Returns(endPointID);
 
       var result = _relationEndPointManager.GetRelationEndPointWithoutLoading(endPointID);
 
@@ -555,19 +554,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetRelationEndPointWithLazyLoad_EndPointAlreadyAvailable ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
-      var endPointMock = MockRepository.GenerateStrictMock<IRelationEndPoint>();
-      endPointMock.Stub(stub => stub.ID).Return(endPointID);
-      endPointMock.Expect(mock => mock.EnsureDataComplete());
-      endPointMock.Replay();
+      var endPointMock = new Mock<IRelationEndPoint>(MockBehavior.Strict);
+      endPointMock.Setup(stub => stub.ID).Returns(endPointID);
+      endPointMock.Setup(mock => mock.EnsureDataComplete()).Verifiable();
 
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMock);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMock.Object);
 
-      Assert.That(_relationEndPointManager.RelationEndPoints[endPointID], Is.SameAs(endPointMock));
+      Assert.That(_relationEndPointManager.RelationEndPoints[endPointID], Is.SameAs(endPointMock.Object));
 
       var result = _relationEndPointManager.GetRelationEndPointWithLazyLoad(endPointID);
 
-      Assert.That(result, Is.SameAs(endPointMock));
-      Assert.That(_relationEndPointManager.RelationEndPoints[endPointID], Is.SameAs(endPointMock));
+      Assert.That(result, Is.SameAs(endPointMock.Object));
+      Assert.That(_relationEndPointManager.RelationEndPoints[endPointID], Is.SameAs(endPointMock.Object));
     }
 
     [Test]
@@ -645,19 +643,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void GetOrCreateVirtualEndPoint_AlreadyAvailable ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
-      var endPointMock = MockRepository.GenerateStrictMock<IVirtualEndPoint>();
-      endPointMock.Stub(stub => stub.ID).Return(endPointID);
-      endPointMock.Expect(mock => mock.EnsureDataComplete());
-      endPointMock.Replay();
+      var endPointMock = new Mock<IVirtualEndPoint>(MockBehavior.Strict);
+      endPointMock.Setup(stub => stub.ID).Returns(endPointID);
+      endPointMock.Setup(mock => mock.EnsureDataComplete()).Verifiable();
 
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMock);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMock.Object);
 
-      Assert.That(_relationEndPointManager.RelationEndPoints[endPointID], Is.SameAs(endPointMock));
+      Assert.That(_relationEndPointManager.RelationEndPoints[endPointID], Is.SameAs(endPointMock.Object));
 
       var result = _relationEndPointManager.GetOrCreateVirtualEndPoint(endPointID);
 
-      Assert.That(result, Is.SameAs(endPointMock));
-      Assert.That(_relationEndPointManager.RelationEndPoints[endPointID], Is.SameAs(endPointMock));
+      Assert.That(result, Is.SameAs(endPointMock.Object));
+      Assert.That(_relationEndPointManager.RelationEndPoints[endPointID], Is.SameAs(endPointMock.Object));
     }
 
     [Test]
@@ -751,48 +748,45 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CommitAllEndPoints_CommitsEndPoints ()
     {
       RelationEndPointID endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Customer1, "Orders");
-      var endPointMock = MockRepository.GenerateStrictMock<IRelationEndPoint>();
-      endPointMock.Stub(stub => stub.ID).Return(endPointID);
-      endPointMock.Expect(mock => mock.Commit());
-      endPointMock.Replay();
+      var endPointMock = new Mock<IRelationEndPoint>(MockBehavior.Strict);
+      endPointMock.Setup(stub => stub.ID).Returns(endPointID);
+      endPointMock.Setup(mock => mock.Commit()).Verifiable();
 
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMock);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMock.Object);
 
       _relationEndPointManager.CommitAllEndPoints();
 
-      endPointMock.VerifyAllExpectations();
+      endPointMock.Verify();
     }
 
     [Test]
     public void RollbackAllEndPoints_RollsbackEndPoints ()
     {
       RelationEndPointID endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Customer1, "Orders");
-      var endPointMock = MockRepository.GenerateStrictMock<IRelationEndPoint>();
-      endPointMock.Stub(stub => stub.ID).Return(endPointID);
-      endPointMock.Expect(mock => mock.Rollback());
-      endPointMock.Replay();
+      var endPointMock = new Mock<IRelationEndPoint>(MockBehavior.Strict);
+      endPointMock.Setup(stub => stub.ID).Returns(endPointID);
+      endPointMock.Setup(mock => mock.Rollback()).Verifiable();
 
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMock);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMock.Object);
 
       _relationEndPointManager.RollbackAllEndPoints();
 
-      endPointMock.VerifyAllExpectations();
+      endPointMock.Verify();
     }
 
     [Test]
     public void Reset_RemovesEndPoints ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Customer1, "Orders");
-      var endPointMock = MockRepository.GenerateStrictMock<IRelationEndPoint>();
-      endPointMock.Stub(stub => stub.ID).Return(endPointID);
-      endPointMock.Expect(mock => mock.Rollback());
-      endPointMock.Replay();
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMock);
-      Assert.That(_relationEndPointManager.RelationEndPoints, Is.Not.Empty.And.Member(endPointMock));
+      var endPointMock = new Mock<IRelationEndPoint>(MockBehavior.Strict);
+      endPointMock.Setup(stub => stub.ID).Returns(endPointID);
+      endPointMock.Setup(mock => mock.Rollback()).Verifiable();
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointMock.Object);
+      Assert.That(_relationEndPointManager.RelationEndPoints, Is.Not.Empty.And.Member(endPointMock.Object));
 
       _relationEndPointManager.Reset();
 
-      endPointMock.VerifyAllExpectations();
+      endPointMock.Verify();
       Assert.That(_relationEndPointManager.RelationEndPoints, Is.Empty);
     }
 
@@ -800,15 +794,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void Reset_RaisesUnregisteringEvents ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Customer1, "Orders");
-      var endPointStub = MockRepository.GenerateStub<IRelationEndPoint>();
-      endPointStub.Stub(stub => stub.ID).Return(endPointID);
-      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub);
+      var endPointStub = new Mock<IRelationEndPoint>();
+      endPointStub.Setup(stub => stub.ID).Returns(endPointID);
+      RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub.Object);
 
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(_relationEndPointManager.ClientTransaction);
 
       _relationEndPointManager.Reset();
 
-      listenerMock.AssertWasCalled(mock => mock.RelationEndPointMapUnregistering(_relationEndPointManager.ClientTransaction, endPointID));
+      listenerMock.Verify(mock => mock.RelationEndPointMapUnregistering(_relationEndPointManager.ClientTransaction, endPointID), Times.AtLeastOnce());
     }
   }
 }

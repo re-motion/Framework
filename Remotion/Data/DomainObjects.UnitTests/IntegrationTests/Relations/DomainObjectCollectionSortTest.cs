@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
 {
@@ -126,32 +126,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void Sort_TriggersOnReplaceDataEvent_ButNoRelationChangeEvents ()
     {
-      var eventReceiverMock = MockRepository.GenerateStrictMock<OrderCollection.ICollectionEventReceiver>();
-      eventReceiverMock.Expect(mock => mock.OnReplaceData());
-      eventReceiverMock.Replay();
+      var eventReceiverMock = new Mock<OrderCollection.ICollectionEventReceiver>(MockBehavior.Strict);
+      eventReceiverMock.Setup(mock => mock.OnReplaceData()).Verifiable();
 
       var orderCollection = _owningCustomer.Orders;
-      orderCollection.SetEventReceiver(eventReceiverMock);
+      orderCollection.SetEventReceiver(eventReceiverMock.Object);
+
+      var relationEndPointID = RelationEndPointID.Resolve(_owningCustomer, c => c.Orders);
 
       var eventListenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(TestableClientTransaction);
       try
       {
         eventListenerMock
-            .Expect(
-                mock => mock.VirtualRelationEndPointStateUpdated(
-                    TestableClientTransaction,
-                    RelationEndPointID.Resolve(_owningCustomer, c => c.Orders),
-                    null));
-        eventListenerMock.Replay();
+            .Setup(mock => mock.VirtualRelationEndPointStateUpdated(TestableClientTransaction, relationEndPointID, null))
+            .Verifiable();
 
         orderCollection.Sort(_reversingComparison);
 
-        eventReceiverMock.VerifyAllExpectations();
-        eventListenerMock.VerifyAllExpectations();
+        eventReceiverMock.Verify();
+        eventListenerMock.Verify();
       }
       finally
       {
-        TestableClientTransaction.RemoveListener(eventListenerMock);
+        TestableClientTransaction.RemoveListener(eventListenerMock.Object);
       }
     }
   }

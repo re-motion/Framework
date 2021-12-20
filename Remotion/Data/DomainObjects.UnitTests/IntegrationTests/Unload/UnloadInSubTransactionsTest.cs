@@ -15,7 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -26,7 +27,6 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 {
@@ -580,86 +580,112 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       var rootTransaction = _subTransaction.ParentTransaction;
 
-      var mockRepository = new MockRepository();
-      var subListenerMock = mockRepository.StrictMock<IClientTransactionListener>();
-      var rootListenerMock = mockRepository.StrictMock<IClientTransactionListener>();
+      var subListenerMock = new Mock<IClientTransactionListener>(MockBehavior.Strict);
+      var rootListenerMock = new Mock<IClientTransactionListener>(MockBehavior.Strict);
 
-      ClientTransactionTestHelper.AddListener(_subTransaction, subListenerMock);
-      ClientTransactionTestHelper.AddListener(rootTransaction, rootListenerMock);
+      ClientTransactionTestHelper.AddListener(_subTransaction, subListenerMock.Object);
+      ClientTransactionTestHelper.AddListener(rootTransaction, rootListenerMock.Object);
 
       try
       {
-        using (mockRepository.Ordered())
-        {
-          subListenerMock
-              .Expect(
-                  mock => mock.ObjectsUnloading(
-                      Arg.Is(_subTransaction),
-                      Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { orderItemA, orderItemB })));
-          rootListenerMock
-              .Expect(
-                  mock => mock.ObjectsUnloading(
-                      Arg.Is(rootTransaction),
-                      Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { orderItemA, orderItemB })))
-              .WhenCalled(
-                  mi =>
-                  {
-                    Assert.That(orderItemA.TransactionContext[_subTransaction].State.IsUnchanged, Is.True);
-                    Assert.That(orderItemB.TransactionContext[_subTransaction].State.IsUnchanged, Is.True);
+        var sequence = new MockSequence();
+        subListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.ObjectsUnloading(_subTransaction, new[] { orderItemA, orderItemB }))
+            .Verifiable();
+        rootListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.ObjectsUnloading(rootTransaction, new[] { orderItemA, orderItemB }))
+            .Callback(
+                (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects) =>
+                {
+                  Assert.That(orderItemA.TransactionContext[_subTransaction].State.IsUnchanged, Is.True);
+                  Assert.That(orderItemB.TransactionContext[_subTransaction].State.IsUnchanged, Is.True);
 
-                    Assert.That(orderItemA.TransactionContext[rootTransaction].State.IsUnchanged, Is.True);
-                    Assert.That(orderItemB.TransactionContext[rootTransaction].State.IsUnchanged, Is.True);
+                  Assert.That(orderItemA.TransactionContext[rootTransaction].State.IsUnchanged, Is.True);
+                  Assert.That(orderItemB.TransactionContext[rootTransaction].State.IsUnchanged, Is.True);
 
-                    Assert.That(rootTransaction.IsWriteable, Is.False);
-                  });
+                  Assert.That(rootTransaction.IsWriteable, Is.False);
+                })
+            .Verifiable();
+        subListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.RelationEndPointBecomingIncomplete(_subTransaction, endPointID))
+            .Verifiable();
+        subListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.DataContainerMapUnregistering(_subTransaction, It.Is<DataContainer>(dc => dc.ID == orderItemA.ID)))
+            .Verifiable();
+        subListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.RelationEndPointMapUnregistering(_subTransaction, oppositeEndPointIDA))
+            .Verifiable();
+        subListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.DataContainerMapUnregistering(_subTransaction, It.Is<DataContainer>(dc => dc.ID == orderItemB.ID)))
+            .Verifiable();
+        subListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.RelationEndPointMapUnregistering(_subTransaction, endPointID))
+            .Verifiable();
+        subListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.RelationEndPointMapUnregistering(_subTransaction, oppositeEndPointIDB))
+            .Verifiable();
+        rootListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.RelationEndPointBecomingIncomplete(rootTransaction, endPointID))
+            .Verifiable();
+        rootListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.DataContainerMapUnregistering(rootTransaction, It.Is<DataContainer>(dc => dc.ID == orderItemA.ID)))
+            .Verifiable();
+        rootListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.RelationEndPointMapUnregistering(rootTransaction, oppositeEndPointIDA))
+            .Verifiable();
+        rootListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.DataContainerMapUnregistering(rootTransaction, It.Is<DataContainer>(dc => dc.ID == orderItemB.ID)))
+            .Verifiable();
+        rootListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.RelationEndPointMapUnregistering(rootTransaction, endPointID))
+            .Verifiable();
+        rootListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.RelationEndPointMapUnregistering(rootTransaction, oppositeEndPointIDB))
+            .Verifiable();
+        rootListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.ObjectsUnloaded(rootTransaction, new[] { orderItemA, orderItemB }))
+            .Callback(
+                (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects) =>
+                {
+                  Assert.That(orderItemA.TransactionContext[rootTransaction].State.IsNotLoadedYet, Is.True);
+                  Assert.That(orderItemB.TransactionContext[rootTransaction].State.IsNotLoadedYet, Is.True);
 
-          subListenerMock.Expect(mock => mock.RelationEndPointBecomingIncomplete(_subTransaction, endPointID));
-          subListenerMock.Expect(mock => mock.DataContainerMapUnregistering(Arg.Is(_subTransaction), Arg<DataContainer>.Matches(dc => dc.ID == orderItemA.ID)));
-          subListenerMock.Expect(mock => mock.RelationEndPointMapUnregistering(_subTransaction, oppositeEndPointIDA));
-          subListenerMock.Expect(mock => mock.DataContainerMapUnregistering(Arg.Is(_subTransaction), Arg<DataContainer>.Matches(dc => dc.ID == orderItemB.ID)));
-          subListenerMock.Expect(mock => mock.RelationEndPointMapUnregistering(_subTransaction, endPointID));
-          subListenerMock.Expect(mock => mock.RelationEndPointMapUnregistering(_subTransaction, oppositeEndPointIDB));
+                  Assert.That(orderItemA.TransactionContext[_subTransaction].State.IsNotLoadedYet, Is.True);
+                  Assert.That(orderItemB.TransactionContext[_subTransaction].State.IsNotLoadedYet, Is.True);
 
-          rootListenerMock.Expect(mock => mock.RelationEndPointBecomingIncomplete(rootTransaction, endPointID));
-          rootListenerMock.Expect(mock => mock.DataContainerMapUnregistering(Arg.Is(rootTransaction), Arg<DataContainer>.Matches(dc => dc.ID == orderItemA.ID)));
-          rootListenerMock.Expect(mock => mock.RelationEndPointMapUnregistering(rootTransaction, oppositeEndPointIDA));
-          rootListenerMock.Expect(mock => mock.DataContainerMapUnregistering(Arg.Is(rootTransaction), Arg<DataContainer>.Matches(dc => dc.ID == orderItemB.ID)));
-          rootListenerMock.Expect(mock => mock.RelationEndPointMapUnregistering(rootTransaction, endPointID));
-          rootListenerMock.Expect(mock => mock.RelationEndPointMapUnregistering(rootTransaction, oppositeEndPointIDB));
+                  Assert.That(rootTransaction.IsWriteable, Is.False);
+                })
+            .Verifiable();
+        subListenerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.ObjectsUnloaded(_subTransaction, new[] { orderItemA, orderItemB }))
+            .Verifiable();
 
-          rootListenerMock
-              .Expect(
-                  mock => mock.ObjectsUnloaded(
-                      Arg.Is(rootTransaction),
-                      Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { orderItemA, orderItemB })))
-              .WhenCalled(
-                  mi =>
-                  {
-                    Assert.That(orderItemA.TransactionContext[rootTransaction].State.IsNotLoadedYet, Is.True);
-                    Assert.That(orderItemB.TransactionContext[rootTransaction].State.IsNotLoadedYet, Is.True);
-
-                    Assert.That(orderItemA.TransactionContext[_subTransaction].State.IsNotLoadedYet, Is.True);
-                    Assert.That(orderItemB.TransactionContext[_subTransaction].State.IsNotLoadedYet, Is.True);
-
-                    Assert.That(rootTransaction.IsWriteable, Is.False);
-                  });
-          subListenerMock
-              .Expect(
-                  mock => mock.ObjectsUnloaded(
-                      Arg.Is(_subTransaction),
-                      Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { orderItemA, orderItemB })));
-        }
-
-        mockRepository.ReplayAll();
 
         UnloadService.UnloadVirtualEndPointAndItemData(_subTransaction, endPointID);
 
-        mockRepository.VerifyAll();
+        subListenerMock.Verify();
+        rootListenerMock.Verify();
       }
       finally
       {
-        ClientTransactionTestHelper.RemoveListener(rootTransaction, rootListenerMock);
-        ClientTransactionTestHelper.RemoveListener(_subTransaction, subListenerMock);
+        ClientTransactionTestHelper.RemoveListener(rootTransaction, rootListenerMock.Object);
+        ClientTransactionTestHelper.RemoveListener(_subTransaction, subListenerMock.Object);
       }
     }
 

@@ -62,7 +62,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       _synonymBuilder = synonymBuilder;
     }
 
-    public TestableSqlStorageObjectFactory (IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider, IStorageTypeInformationProvider storageTypeInformationProvider, IDbCommandBuilderFactory dbCommandBuilderFactory, IStorageNameProvider storageNameProvider, IInfrastructureStoragePropertyDefinitionProvider infrastructureStoragePropertyDefinitionProvider, IDataStoragePropertyDefinitionFactory dataStoragePropertyDefinitionFactory, IValueStoragePropertyDefinitionFactory valueStoragePropertyDefinitionFactory, IRelationStoragePropertyDefinitionFactory relationStoragePropertyDefinitionFactory, ISqlQueryGenerator sqlQueryGenerator, IForeignKeyConstraintDefinitionFactory foreignKeyConstraintDefinitionFactoryFactory, IStoragePropertyDefinitionResolver storagePropertyDefinitionResolver)
+    public TestableSqlStorageObjectFactory (
+        IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider,
+        IStorageTypeInformationProvider storageTypeInformationProvider,
+        IDbCommandBuilderFactory dbCommandBuilderFactory,
+        IStorageNameProvider storageNameProvider,
+        IInfrastructureStoragePropertyDefinitionProvider infrastructureStoragePropertyDefinitionProvider,
+        IDataStoragePropertyDefinitionFactory dataStoragePropertyDefinitionFactory,
+        IValueStoragePropertyDefinitionFactory valueStoragePropertyDefinitionFactory,
+        IRelationStoragePropertyDefinitionFactory relationStoragePropertyDefinitionFactory,
+        ISqlQueryGenerator sqlQueryGenerator,
+        IForeignKeyConstraintDefinitionFactory foreignKeyConstraintDefinitionFactoryFactory,
+        IStoragePropertyDefinitionResolver storagePropertyDefinitionResolver)
     {
       _infrastructureStoragePropertyDefinitionProvider = infrastructureStoragePropertyDefinitionProvider;
       _storageNameProvider = storageNameProvider;
@@ -123,9 +134,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       return _storageNameProvider ?? base.CreateStorageNameProvider(storageProviderDefiniton);
     }
 
-    protected override IInfrastructureStoragePropertyDefinitionProvider CreateInfrastructureStoragePropertyDefinitionProvider (RdbmsProviderDefinition storageProviderDefinition, IStorageTypeInformationProvider storageTypeInformationProvider, IStorageNameProvider storageNameProvider)
+    protected override IInfrastructureStoragePropertyDefinitionProvider CreateInfrastructureStoragePropertyDefinitionProvider (
+        RdbmsProviderDefinition storageProviderDefinition,
+        IStorageTypeInformationProvider storageTypeInformationProvider,
+        IStorageNameProvider storageNameProvider)
     {
-      return _infrastructureStoragePropertyDefinitionProvider ?? base.CreateInfrastructureStoragePropertyDefinitionProvider(storageProviderDefinition, storageTypeInformationProvider, storageNameProvider);
+      return _infrastructureStoragePropertyDefinitionProvider
+             ?? base.CreateInfrastructureStoragePropertyDefinitionProvider(
+                 storageProviderDefinition,
+                 storageTypeInformationProvider,
+                 storageNameProvider);
     }
 
     public override IDbCommandBuilderFactory CreateDbCommandBuilderFactory (RdbmsProviderDefinition storageProviderDefinition)
@@ -143,35 +161,69 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       return _rdbmsPersistenceModelProvider ?? base.CreateRdbmsPersistenceModelProvider(storageProviderDefinition);
     }
 
-    protected override IDataStoragePropertyDefinitionFactory CreateDataStoragePropertyDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition, IStorageTypeInformationProvider storageTypeInformationProvider, IStorageNameProvider storageNameProvider, IStorageProviderDefinitionFinder providerDefinitionFinder)
+    protected override IDataStoragePropertyDefinitionFactory CreateDataStoragePropertyDefinitionFactory (
+        RdbmsProviderDefinition storageProviderDefinition,
+        IStorageTypeInformationProvider storageTypeInformationProvider,
+        IStorageNameProvider storageNameProvider,
+        IStorageProviderDefinitionFinder providerDefinitionFinder)
     {
       return _dataStoragePropertyDefinitionFactory
              ?? base.CreateDataStoragePropertyDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider, storageNameProvider, providerDefinitionFinder);
     }
 
-    protected override IValueStoragePropertyDefinitionFactory CreateValueStoragePropertyDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition, IStorageTypeInformationProvider storageTypeInformationProvider, IStorageNameProvider storageNameProvider)
+    protected override IValueStoragePropertyDefinitionFactory CreateValueStoragePropertyDefinitionFactory (
+        RdbmsProviderDefinition storageProviderDefinition,
+        IStorageTypeInformationProvider storageTypeInformationProvider,
+        IStorageNameProvider storageNameProvider)
     {
-      return _valueStoragePropertyDefinitionFactory ?? base.CreateValueStoragePropertyDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider, storageNameProvider);
+      return _valueStoragePropertyDefinitionFactory
+             ?? base.CreateValueStoragePropertyDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider, storageNameProvider);
     }
 
-    protected override IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition, IStorageTypeInformationProvider storageTypeInformationProvider, IStorageNameProvider storageNameProvider, IStorageProviderDefinitionFinder providerDefinitionFinder)
+    protected override IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (
+        RdbmsProviderDefinition storageProviderDefinition,
+        IStorageTypeInformationProvider storageTypeInformationProvider,
+        IStorageNameProvider storageNameProvider,
+        IStorageProviderDefinitionFinder providerDefinitionFinder)
     {
-      return _relationStoragePropertyDefinitionFactory ?? base.CreateRelationStoragePropertyDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider, storageNameProvider, providerDefinitionFinder);
+      return _relationStoragePropertyDefinitionFactory
+             ?? base.CreateRelationStoragePropertyDefinitionFactory(
+                 storageProviderDefinition,
+                 storageTypeInformationProvider,
+                 storageNameProvider,
+                 providerDefinitionFinder);
     }
 
-    protected override ISqlQueryGenerator CreateSqlQueryGenerator (RdbmsProviderDefinition storageProviderDefinition, IMethodCallTransformerProvider methodCallTransformerProvider, ResultOperatorHandlerRegistry resultOperatorHandlerRegistry, IRdbmsPersistenceModelProvider persistenceModelProvider)
+    protected override ISqlQueryGenerator CreateSqlQueryGenerator (
+        RdbmsProviderDefinition storageProviderDefinition,
+        IMethodCallTransformerProvider methodCallTransformerProvider,
+        ResultOperatorHandlerRegistry resultOperatorHandlerRegistry,
+        IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
-      return _sqlQueryGenerator ?? base.CreateSqlQueryGenerator(storageProviderDefinition, methodCallTransformerProvider, resultOperatorHandlerRegistry, persistenceModelProvider);
+      return _sqlQueryGenerator
+             ?? base.CreateSqlQueryGenerator(storageProviderDefinition, methodCallTransformerProvider, resultOperatorHandlerRegistry, persistenceModelProvider);
     }
 
-    protected override IForeignKeyConstraintDefinitionFactory CreateForeignKeyConstraintDefinitionsFactory (RdbmsProviderDefinition storageProviderDefinition, IStorageNameProvider storageNameProvider, IRdbmsPersistenceModelProvider persistenceModelProvider, IInfrastructureStoragePropertyDefinitionProvider infrastructureStoragePropertyDefinitionProvider)
+    protected override IForeignKeyConstraintDefinitionFactory CreateForeignKeyConstraintDefinitionsFactory (
+        RdbmsProviderDefinition storageProviderDefinition,
+        IStorageNameProvider storageNameProvider,
+        IRdbmsPersistenceModelProvider persistenceModelProvider,
+        IInfrastructureStoragePropertyDefinitionProvider infrastructureStoragePropertyDefinitionProvider)
     {
-      return _foreignKeyConstraintDefinitionFactory ?? base.CreateForeignKeyConstraintDefinitionsFactory(storageProviderDefinition, storageNameProvider, persistenceModelProvider, infrastructureStoragePropertyDefinitionProvider);
+      return _foreignKeyConstraintDefinitionFactory
+             ?? base.CreateForeignKeyConstraintDefinitionsFactory(
+                 storageProviderDefinition,
+                 storageNameProvider,
+                 persistenceModelProvider,
+                 infrastructureStoragePropertyDefinitionProvider);
     }
 
-    protected override IStoragePropertyDefinitionResolver CreateStoragePropertyDefinitionResolver (RdbmsProviderDefinition storageProviderDefinition, IRdbmsPersistenceModelProvider persistenceModelProvider)
+    protected override IStoragePropertyDefinitionResolver CreateStoragePropertyDefinitionResolver (
+        RdbmsProviderDefinition storageProviderDefinition,
+        IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
-      return _storagePropertyDefinitionResolver ?? base.CreateStoragePropertyDefinitionResolver(storageProviderDefinition, persistenceModelProvider);
+      return _storagePropertyDefinitionResolver
+             ?? base.CreateStoragePropertyDefinitionResolver(storageProviderDefinition, persistenceModelProvider);
     }
   }
 }

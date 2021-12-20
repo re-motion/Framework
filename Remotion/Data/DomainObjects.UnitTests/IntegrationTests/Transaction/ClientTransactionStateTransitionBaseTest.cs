@@ -115,16 +115,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That(unchanged.State.IsUnchanged, Is.True);
 
       Assert.That(changedThroughPropertyValue.State.IsChanged, Is.True);
-      Assert.That(changedThroughPropertyValue.Properties[typeof(Order) + ".OrderNumber"].GetOriginalValue<int>(), Is.Not.EqualTo(changedThroughPropertyValue.OrderNumber));
+      Assert.That(
+          changedThroughPropertyValue.Properties[typeof(Order) + ".OrderNumber"].GetOriginalValue<int>(),
+          Is.Not.EqualTo(changedThroughPropertyValue.OrderNumber));
 
       Assert.That(changedThroughRelatedObjects.State.IsChanged, Is.True);
-      Assert.That(changedThroughRelatedObjects.Properties[typeof(Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>>().Count, Is.Not.EqualTo(changedThroughRelatedObjects.OrderItems.Count));
+      Assert.That(
+          changedThroughRelatedObjects.Properties[typeof(Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>>().Count,
+          Is.Not.EqualTo(changedThroughRelatedObjects.OrderItems.Count));
 
       Assert.That(changedThroughRelatedObjectRealSide.State.IsChanged, Is.True);
-      Assert.That(changedThroughRelatedObjectRealSide.Properties[typeof(Computer) + ".Employee"].GetOriginalValue<Employee>(), Is.Not.EqualTo(changedThroughRelatedObjectRealSide.Employee));
+      Assert.That(
+          changedThroughRelatedObjectRealSide.Properties[typeof(Computer) + ".Employee"].GetOriginalValue<Employee>(),
+          Is.Not.EqualTo(changedThroughRelatedObjectRealSide.Employee));
 
       Assert.That(changedThroughRelatedObjectVirtualSide.State.IsChanged, Is.True);
-      Assert.That(changedThroughRelatedObjectVirtualSide.Properties[typeof(Employee) + ".Computer"].GetOriginalValue<Computer>(), Is.Not.EqualTo(changedThroughRelatedObjectVirtualSide.Computer));
+      Assert.That(
+          changedThroughRelatedObjectVirtualSide.Properties[typeof(Employee) + ".Computer"].GetOriginalValue<Computer>(),
+          Is.Not.EqualTo(changedThroughRelatedObjectVirtualSide.Computer));
 
       Assert.That(newUnchanged.State.IsNew, Is.True);
       Assert.That(newChanged.State.IsNew, Is.True);

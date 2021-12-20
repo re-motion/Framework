@@ -50,8 +50,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void Fulltext_Spike ()
     {
       ClassDefinition orderClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
-      var queryDefinition =
-          new QueryDefinition("bla", orderClassDefinition.StorageEntityDefinition.StorageProviderDefinition, "SELECT * FROM CeoView WHERE Contains ([CeoView].[Name], 'Fischer')", QueryType.Collection);
+      var queryDefinition = new QueryDefinition(
+          "bla",
+          orderClassDefinition.StorageEntityDefinition.StorageProviderDefinition,
+          "SELECT * FROM CeoView WHERE Contains ([CeoView].[Name], 'Fischer')",
+          QueryType.Collection);
       var query = QueryFactory.CreateQuery(queryDefinition);
 
       var orders = TestableClientTransaction.QueryManager.GetCollection<Ceo>(query).AsEnumerable();

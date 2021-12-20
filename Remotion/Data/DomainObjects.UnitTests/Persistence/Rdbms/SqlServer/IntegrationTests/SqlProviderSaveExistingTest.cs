@@ -64,15 +64,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int64Property"), Is.EqualTo(9223372036854775807));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "SingleProperty"), Is.EqualTo(6789.321f));
       Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringProperty"), Is.EqualTo("abcdeföäü"));
-      Assert.That(GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength"), Is.EqualTo("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"));
+      Assert.That(
+          GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength"),
+          Is.EqualTo("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"));
       ResourceManager.IsEqualToImage1(
           (byte[])GetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty"));
 
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BooleanProperty", true);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "ByteProperty", (byte)42);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateProperty", new DateTime(1972, 10, 26));
-      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateTimeProperty", new DateTime(
-          1974, 10, 26, 15, 17, 19));
+      SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DateTimeProperty", new DateTime(1974, 10, 26, 15, 17, 19));
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DecimalProperty", (decimal)564.956);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "DoubleProperty", 5334.2456);
       SetPropertyValue(savedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "EnumProperty", ClassWithAllDataTypes.EnumType.Value0);
@@ -108,7 +109,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "Int64Property"), Is.EqualTo(424242424242424242));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "SingleProperty"), Is.EqualTo(42.42f));
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringProperty"), Is.EqualTo("zyxwvuZaphodBeeblebrox"));
-      Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength"), Is.EqualTo("123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876"));
+      Assert.That(
+          GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringPropertyWithoutMaxLength"),
+          Is.EqualTo("123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876"));
       ResourceManager.IsEqualToImage2(
           (byte[])GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "BinaryProperty"));
     }

@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Configuration;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
@@ -28,28 +29,27 @@ using Remotion.Development.UnitTesting;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Mixins;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
 {
   [TestFixture]
   public class StorageProviderDefinitionTest
   {
-    private IStorageObjectFactory _storageObjectFactoryStub;
+    private Mock<IStorageObjectFactory> _storageObjectFactoryStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _storageObjectFactoryStub = MockRepository.GenerateStub<IStorageObjectFactory>();
+      _storageObjectFactoryStub = new Mock<IStorageObjectFactory>();
     }
 
     [Test]
     public void Initialize_Objects ()
     {
-      var providerDefinition = new TestableStorageProviderDefinition("TestProvider", _storageObjectFactoryStub);
+      var providerDefinition = new TestableStorageProviderDefinition("TestProvider", _storageObjectFactoryStub.Object);
 
       Assert.That(providerDefinition.Name, Is.EqualTo("TestProvider"));
-      Assert.That(providerDefinition.Factory, Is.SameAs(_storageObjectFactoryStub));
+      Assert.That(providerDefinition.Factory, Is.SameAs(_storageObjectFactoryStub.Object));
     }
 
     [Test]
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     [Test]
     public new void ToString ()
     {
-      var providerDefinition = new TestableStorageProviderDefinition("TestProvider", _storageObjectFactoryStub);
+      var providerDefinition = new TestableStorageProviderDefinition("TestProvider", _storageObjectFactoryStub.Object);
 
       Assert.That(providerDefinition.ToString(), Is.EqualTo("TestableStorageProviderDefinition: 'TestProvider'"));
     }

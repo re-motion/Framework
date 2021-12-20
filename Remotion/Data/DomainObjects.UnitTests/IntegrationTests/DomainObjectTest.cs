@@ -17,6 +17,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
@@ -25,8 +26,6 @@ using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.FunctionalProgramming;
-using Rhino.Mocks;
-using Mocks_Is = Rhino.Mocks.Constraints.Is;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 {
@@ -45,6 +44,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void RelationEventTestWithMockObject ()
     {
+      var orderCustomerRelationEndPointDefinition = GetEndPointDefinition(typeof(Order), "Customer");
+
       Customer newCustomer1 = Customer.NewObject();
       newCustomer1.Name = "NewCustomer1";
 
@@ -63,8 +64,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       OrderItem newOrderItem1 = OrderItem.NewObject();
       OrderItem newOrderItem2 = OrderItem.NewObject();
 
-      var mockRepository = new MockRepository();
-
       DomainObjectCollection newCustomer1Orders = newCustomer1.Orders;
       Assert.That(newCustomer1Orders.IsDataComplete, Is.True);
       DomainObjectCollection newCustomer2Orders = newCustomer2.Orders;
@@ -76,544 +75,688 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       DomainObjectCollection newOrder2OrderItems = newOrder2.OrderItems;
       Assert.That(newOrder2OrderItems.IsDataComplete, Is.True);
 
-      var newCustomer1EventReceiver = mockRepository.StrictMock<DomainObjectMockEventReceiver>(newCustomer1);
-      var newCustomer2EventReceiver = mockRepository.StrictMock<DomainObjectMockEventReceiver>(newCustomer2);
-      var official2EventReceiver = mockRepository.StrictMock<DomainObjectMockEventReceiver>(official2);
-      var newCeo1EventReceiver = mockRepository.StrictMock<DomainObjectMockEventReceiver>(newCeo1);
-      var newCeo2EventReceiver = mockRepository.StrictMock<DomainObjectMockEventReceiver>(newCeo2);
-      var newOrder1EventReceiver = mockRepository.StrictMock<DomainObjectMockEventReceiver>(newOrder1);
-      var newOrder2EventReceiver = mockRepository.StrictMock<DomainObjectMockEventReceiver>(newOrder2);
-      var newOrderItem1EventReceiver = mockRepository.StrictMock<DomainObjectMockEventReceiver>(newOrderItem1);
-      var newOrderItem2EventReceiver = mockRepository.StrictMock<DomainObjectMockEventReceiver>(newOrderItem2);
+      var newCustomer1EventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, newCustomer1);
+      var newCustomer2EventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, newCustomer2);
+      var official2EventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, official2);
+      var newCeo1EventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, newCeo1);
+      var newCeo2EventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, newCeo2);
+      var newOrder1EventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, newOrder1);
+      var newOrder2EventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, newOrder2);
+      var newOrderItem1EventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, newOrderItem1);
+      var newOrderItem2EventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, newOrderItem2);
 
       var newCustomer1OrdersEventReceiver =
-          mockRepository.StrictMock<DomainObjectCollectionMockEventReceiver>(newCustomer1.Orders);
+          DomainObjectCollectionMockEventReceiver.CreateMock(MockBehavior.Strict, newCustomer1Orders);
       var newCustomer2OrdersEventReceiver =
-          mockRepository.StrictMock<DomainObjectCollectionMockEventReceiver>(newCustomer2.Orders);
+          DomainObjectCollectionMockEventReceiver.CreateMock(MockBehavior.Strict, newCustomer2Orders);
       var official2OrdersEventReceiver =
-          mockRepository.StrictMock<DomainObjectCollectionMockEventReceiver>(official2.Orders);
+          DomainObjectCollectionMockEventReceiver.CreateMock(MockBehavior.Strict, official2Orders);
       var newOrder1OrderItemsEventReceiver =
-          mockRepository.StrictMock<DomainObjectCollectionMockEventReceiver>(newOrder1.OrderItems);
+          DomainObjectCollectionMockEventReceiver.CreateMock(MockBehavior.Strict, newOrder1OrderItems);
       var newOrder2OrderItemsEventReceiver =
-          mockRepository.StrictMock<DomainObjectCollectionMockEventReceiver>(newOrder2.OrderItems);
-
-      var extension = mockRepository.StrictMock<IClientTransactionExtension>();
-
-      using (mockRepository.Ordered())
-      {
-        //1
-        //newCeo1.Company = newCustomer1;
-        extension.RelationChanging(
-            TestableClientTransaction, newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1);
-        newCeo1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1);
-
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newCustomer1,
-            GetEndPointDefinition(typeof(Company), "Ceo"),
-            null,
-            newCeo1);
-        newCustomer1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Company), "Ceo"), null, newCeo1);
-
-        newCustomer1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Company), "Ceo"), null, newCeo1);
-        extension.RelationChanged(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Company), "Ceo"), null, newCeo1);
-
-        newCeo1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1);
-        extension.RelationChanged(TestableClientTransaction, newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1);
-
-
-        //2
-        //newCeo2.Company = newCustomer1;
-        extension.RelationChanging(
-            TestableClientTransaction, newCeo2, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1);
-        newCeo2EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1);
-
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newCustomer1,
-            GetEndPointDefinition(typeof(Company), "Ceo"),
-            newCeo1,
-            newCeo2);
-        newCustomer1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Company), "Ceo"), newCeo1, newCeo2);
-
-        extension.RelationChanging(
-            TestableClientTransaction, newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer1, null);
-        newCeo1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer1, null);
-
-        newCeo1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer1, null);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newCeo1,
-            GetEndPointDefinition(typeof(Ceo), "Company"),
-            newCustomer1,
-            null);
-
-        newCustomer1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Company), "Ceo"), newCeo1, newCeo2);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newCustomer1,
-            GetEndPointDefinition(typeof(Company), "Ceo"),
-            newCeo1,
-            newCeo2);
-
-        newCeo2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newCeo2,
-            GetEndPointDefinition(typeof(Ceo), "Company"),
-             null,
-            newCustomer1);
-
-        //3
-        //newCeo1.Company = newCustomer2;
-        extension.RelationChanging(
-            TestableClientTransaction, newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer2);
-        newCeo1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer2);
-
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newCustomer2,
-            GetEndPointDefinition(typeof(Company), "Ceo"),
-            null,
-            newCeo1);
-        newCustomer2EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Company), "Ceo"), null, newCeo1);
-
-        newCustomer2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Company), "Ceo"), null, newCeo1);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newCustomer2,
-            GetEndPointDefinition(typeof(Company), "Ceo"),
-            null,
-            newCeo1);
-
-        newCeo1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer2);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newCeo1,
-            GetEndPointDefinition(typeof(Ceo), "Company"),
-            null,
-            newCustomer2);
-
-
-        //4
-        //newCeo1.Company = null;
-        extension.RelationChanging(
-            TestableClientTransaction, newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer2, null);
-        newCeo1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer2, null);
-
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newCustomer2,
-            GetEndPointDefinition(typeof(Company), "Ceo"),
-            newCeo1,
-            null);
-        newCustomer2EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Company), "Ceo"), newCeo1, null);
-
-        newCustomer2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Company), "Ceo"), newCeo1, null);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newCustomer2,
-            GetEndPointDefinition(typeof(Company), "Ceo"),
-            newCeo1,
-            null);
-
-        newCeo1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer2, null);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newCeo1,
-            GetEndPointDefinition(typeof(Ceo), "Company"),
-            newCustomer2,
-            null);
-
-
-        //5
-        //newCustomer1.Orders.Add (newOrder1);
-        extension.RelationReading(
-            TestableClientTransaction,
-            newCustomer1,
-            GetEndPointDefinition(typeof(Customer), "Orders"),
-            ValueAccess.Current);
-        extension.Expect(
-            mock => mock.RelationRead(
-                Arg.Is(ClientTransactionScope.CurrentTransaction),
-                Arg.Is(newCustomer1),
-                Arg.Is(GetEndPointDefinition(typeof(Customer), "Orders")),
-                Arg<IReadOnlyCollectionData<DomainObject>>.Matches(data => data.Count == 0),
-                Arg.Is(ValueAccess.Current)));
-
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newOrder1,
-            GetEndPointDefinition(typeof(Order), "Customer"),
-            null,
-            newCustomer1);
-        newOrder1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "Customer"), null, newCustomer1);
-
-        newCustomer1OrdersEventReceiver.Adding(newCustomer1Orders, newOrder1);
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newCustomer1,
-            GetEndPointDefinition(typeof(Customer), "Orders"),
-            null,
-            newOrder1);
-        newCustomer1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder1);
-
-        newCustomer1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder1);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newCustomer1,
-            GetEndPointDefinition(typeof(Customer), "Orders"),
-            null,
-            newOrder1);
-        newCustomer1OrdersEventReceiver.Added(newCustomer1Orders, newOrder1);
-
-        newOrder1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "Customer"), null, newCustomer1);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newOrder1,
-            GetEndPointDefinition(typeof(Order), "Customer"),
-            null,
-            newCustomer1);
-
-
-        //6
-        //newCustomer1.Orders.Add (newOrder2);
-        extension.RelationReading(
-            TestableClientTransaction,
-            newCustomer1,
-            GetEndPointDefinition(typeof(Customer), "Orders"),
-            ValueAccess.Current);
-        extension.Expect(
-            mock => mock.RelationRead(
-                Arg.Is(ClientTransactionScope.CurrentTransaction),
-                Arg.Is(newCustomer1),
-                Arg.Is(GetEndPointDefinition(typeof(Customer), "Orders")),
-                Arg<IReadOnlyCollectionData<DomainObject>>.Matches(data => data.Count == 1 && data.GetObject(newOrder1.ID) == newOrder1),
-                Arg.Is(ValueAccess.Current)));
-
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newOrder2,
-            GetEndPointDefinition(typeof(Order), "Customer"),
-            null,
-            newCustomer1);
-        newOrder2EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "Customer"), null, newCustomer1);
-
-        newCustomer1OrdersEventReceiver.Adding(newCustomer1Orders, newOrder2);
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newCustomer1,
-            GetEndPointDefinition(typeof(Customer), "Orders"),
-            null,
-            newOrder2);
-        newCustomer1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2);
-
-        newCustomer1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newCustomer1,
-            GetEndPointDefinition(typeof(Customer), "Orders"),
-            null,
-            newOrder2);
-        newCustomer1OrdersEventReceiver.Added(newCustomer1Orders, newOrder2);
-
-        newOrder2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "Customer"), null, newCustomer1);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newOrder2,
-            GetEndPointDefinition(typeof(Order), "Customer"),
-            null,
-            newCustomer1);
-
-
-        //7
-        //newCustomer1.Orders.Remove (newOrder2);
-        extension.RelationReading(
-            TestableClientTransaction,
-            newCustomer1,
-            GetEndPointDefinition(typeof(Customer), "Orders"),
-            ValueAccess.Current);
-        extension.Expect(
-            mock => mock.RelationRead(
-                Arg.Is(ClientTransactionScope.CurrentTransaction),
-                Arg.Is(newCustomer1),
-                Arg.Is(GetEndPointDefinition(typeof(Customer), "Orders")),
-                Arg<IReadOnlyCollectionData<DomainObject>>.Matches(
-                    data => data.Count == 2 && data.GetObject(newOrder1.ID) == newOrder1 && data.GetObject(newOrder2.ID) == newOrder2),
-                Arg.Is(ValueAccess.Current)));
-
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newOrder2,
-            GetEndPointDefinition(typeof(Order), "Customer"),
-            newCustomer1,
-            null);
-        newOrder2EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "Customer"), newCustomer1, null);
-
-        newCustomer1OrdersEventReceiver.Removing(newCustomer1Orders, newOrder2);
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newCustomer1,
-            GetEndPointDefinition(typeof(Customer), "Orders"),
-            newOrder2,
-            null);
-        newCustomer1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null);
-
-        newCustomer1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newCustomer1,
-            GetEndPointDefinition(typeof(Customer), "Orders"),
-            newOrder2,
-            null);
-        newCustomer1OrdersEventReceiver.Removed(newCustomer1Orders, newOrder2);
-
-        newOrder2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "Customer"), newCustomer1, null);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newOrder2,
-            GetEndPointDefinition(typeof(Order), "Customer"),
-            newCustomer1,
-            null);
-
-
-        //8
-        //newOrderItem1.Order = newOrder1;
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newOrderItem1,
-            GetEndPointDefinition(typeof(OrderItem), "Order"),
-            null,
-            newOrder1);
-        newOrderItem1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder1);
-
-        newOrder1OrderItemsEventReceiver.Adding(newOrder1OrderItems, newOrderItem1);
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newOrder1,
-            GetEndPointDefinition(typeof(Order), "OrderItems"),
-            null,
-            newOrderItem1);
-        newOrder1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem1);
-
-        newOrder1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem1);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newOrder1,
-            GetEndPointDefinition(typeof(Order), "OrderItems"),
-            null,
-            newOrderItem1);
-        newOrder1OrderItemsEventReceiver.Added(newOrder1OrderItems, newOrderItem1);
-
-        newOrderItem1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder1);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newOrderItem1,
-            GetEndPointDefinition(typeof(OrderItem), "Order"),
-            null,
-            newOrder1);
-
-
-        //9
-        //newOrderItem2.Order = newOrder1;
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newOrderItem2,
-            GetEndPointDefinition(typeof(OrderItem), "Order"),
-            null,
-            newOrder1);
-        newOrderItem2EventReceiver.RelationChanging(GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder1);
-
-        newOrder1OrderItemsEventReceiver.Adding(newOrder1OrderItems, newOrderItem2);
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newOrder1,
-            GetEndPointDefinition(typeof(Order), "OrderItems"),
-            null,
-            newOrderItem2);
-        newOrder1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem2);
-
-        newOrder1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem2);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newOrder1,
-            GetEndPointDefinition(typeof(Order), "OrderItems"),
-            null,
-            newOrderItem2);
-        newOrder1OrderItemsEventReceiver.Added(newOrder1OrderItems, newOrderItem2);
-
-        newOrderItem2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder1);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newOrderItem2,
-            GetEndPointDefinition(typeof(OrderItem), "Order"),
-            null,
-            newOrder1);
-
-
-        //10
-        //newOrderItem1.Order = null;
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newOrderItem1,
-            GetEndPointDefinition(typeof(OrderItem), "Order"),
-            newOrder1,
-            null);
-        newOrderItem1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(OrderItem), "Order"), newOrder1, null);
-
-        newOrder1OrderItemsEventReceiver.Removing(newOrder1OrderItems, newOrderItem1);
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newOrder1,
-            GetEndPointDefinition(typeof(Order), "OrderItems"),
-            newOrderItem1,
-            null);
-        newOrder1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem1, null);
-
-        newOrder1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem1, null);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newOrder1,
-            GetEndPointDefinition(typeof(Order), "OrderItems"),
-            newOrderItem1,
-            null);
-        newOrder1OrderItemsEventReceiver.Removed(newOrder1OrderItems, newOrderItem1);
-
-        newOrderItem1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(OrderItem), "Order"), newOrder1, null);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newOrderItem1,
-            GetEndPointDefinition(typeof(OrderItem), "Order"),
-            newOrder1,
-            null);
-
-
-        //11
-        //newOrderItem1.Order = newOrder2;
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newOrderItem1,
-            GetEndPointDefinition(typeof(OrderItem), "Order"),
-            null,
-            newOrder2);
-        newOrderItem1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder2);
-
-        newOrder2OrderItemsEventReceiver.Adding(newOrder2OrderItems, newOrderItem1);
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newOrder2,
-            GetEndPointDefinition(typeof(Order), "OrderItems"),
-            null,
-            newOrderItem1);
-        newOrder2EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem1);
-
-        newOrder2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem1);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newOrder2,
-            GetEndPointDefinition(typeof(Order), "OrderItems"),
-            null,
-            newOrderItem1);
-        newOrder2OrderItemsEventReceiver.Added(newOrder2OrderItems, newOrderItem1);
-
-        newOrderItem1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder2);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newOrderItem1,
-            GetEndPointDefinition(typeof(OrderItem), "Order"),
-            null,
-            newOrder2);
-
-
-        //12
-        //newOrder1.Official = official2;
-        extension.RelationChanging(
-            TestableClientTransaction,
-            newOrder1,
-            GetEndPointDefinition(typeof(Order), "Official"),
-            null,
-            official2);
-        newOrder1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "Official"), null, official2);
-
-        official2OrdersEventReceiver.Adding(official2Orders, newOrder1);
-        extension.RelationChanging(
-            TestableClientTransaction,
-            official2,
-            GetEndPointDefinition(typeof(Official), "Orders"),
-            null,
-            newOrder1);
-        official2EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Official), "Orders"), null, newOrder1);
-
-
-        official2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Official), "Orders"), null, newOrder1);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            official2,
-            GetEndPointDefinition(typeof(Official), "Orders"),
-            null,
-            newOrder1);
-        official2OrdersEventReceiver.Added(official2Orders, newOrder1);
-
-        newOrder1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "Official"), null, official2);
-        extension.RelationChanged(
-            TestableClientTransaction,
-            newOrder1,
-            GetEndPointDefinition(typeof(Order), "Official"),
-            null,
-            official2);
-
-
-        //13
-        //OrderTicket newOrderTicket1 = OrderTicket.NewObject (newOrder1);
-
-        extension.NewObjectCreating(TestableClientTransaction, typeof(OrderTicket));
-
-        extension.RelationChanging(
-            Arg.Is(ClientTransactionScope.CurrentTransaction),
-            Arg<OrderTicket>.Is.TypeOf,
-            Arg.Is(GetEndPointDefinition(typeof(OrderTicket), "Order")),
-            Arg.Is((DomainObject)null),
-            Arg.Is(newOrder1));
-
-        extension.RelationChanging(
-            Arg.Is(ClientTransactionScope.CurrentTransaction),
-            Arg.Is(newOrder1),
-            Arg.Is(GetEndPointDefinition(typeof(Order), "OrderTicket")),
-            Arg.Is((DomainObject)null),
-            Arg<OrderTicket>.Is.TypeOf);
-        newOrder1EventReceiver.RelationChanging(
-            Arg.Is(newOrder1),
-            Arg<RelationChangingEventArgs>.Matches(
-                args =>
-                args.RelationEndPointDefinition == GetEndPointDefinition(typeof(Order), "OrderTicket")
-                && args.OldRelatedObject == null
-                && args.NewRelatedObject is OrderTicket));
-
-        newOrder1EventReceiver.RelationChanged(Arg.Is(newOrder1),
-            Arg<RelationChangedEventArgs>.Matches(
-                args =>
-                args.RelationEndPointDefinition == GetEndPointDefinition(typeof(Order), "OrderTicket")
-                && args.OldRelatedObject == null
-                && args.NewRelatedObject is OrderTicket));
-        extension.RelationChanged(
-            Arg.Is(ClientTransactionScope.CurrentTransaction),
-            Arg.Is(newOrder1),
-            Arg.Is(GetEndPointDefinition(typeof(Order), "OrderTicket")),
-            Arg.Is((DomainObject)null),
-            Arg<OrderTicket>.Is.TypeOf);
-
-        extension.RelationChanged(
-            Arg.Is(ClientTransactionScope.CurrentTransaction),
-            Arg<OrderTicket>.Is.TypeOf,
-            Arg.Is(GetEndPointDefinition(typeof(OrderTicket), "Order")),
-            Arg.Is((DomainObject)null),
-            Arg.Is(newOrder1));
-      }
-
-      extension.Stub(stub => stub.Key).Return("Extension");
-      mockRepository.ReplayAll();
-
-      ClientTransactionScope.CurrentTransaction.Extensions.Add(extension);
+          DomainObjectCollectionMockEventReceiver.CreateMock(MockBehavior.Strict, newOrder2OrderItems);
+
+      var extension = new Mock<IClientTransactionExtension>(MockBehavior.Strict);
+
+      var sequence1 = new MockSequence();
+      //1
+      //newCeo1.Company = newCustomer1;
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1))
+          .Verifiable();
+      newCeo1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Company), "Ceo"), null, newCeo1))
+          .Verifiable();
+      newCustomer1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newCustomer1, GetEndPointDefinition(typeof(Company), "Ceo"), null, newCeo1)
+          .Verifiable();
+
+      newCustomer1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newCustomer1, GetEndPointDefinition(typeof(Company), "Ceo"), null, newCeo1)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Company), "Ceo"), null, newCeo1))
+          .Verifiable();
+
+      newCeo1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1))
+          .Verifiable();
+
+      //2
+      //newCeo2.Company = newCustomer1;
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newCeo2, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1))
+          .Verifiable();
+      newCeo2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newCeo2, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Company), "Ceo"), newCeo1, newCeo2))
+          .Verifiable();
+      newCustomer1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newCustomer1, GetEndPointDefinition(typeof(Company), "Ceo"), newCeo1, newCeo2)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer1, null))
+          .Verifiable();
+      newCeo1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer1, null)
+          .Verifiable();
+
+      newCeo1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer1, null)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer1, null))
+          .Verifiable();
+
+      newCustomer1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newCustomer1, GetEndPointDefinition(typeof(Company), "Ceo"), newCeo1, newCeo2)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Company), "Ceo"), newCeo1, newCeo2))
+          .Verifiable();
+
+      newCeo2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newCeo2, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newCeo2, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer1))
+          .Verifiable();
+
+      //3
+      //newCeo1.Company = newCustomer2;
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer2))
+        .Verifiable();
+      newCeo1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer2)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newCustomer2, GetEndPointDefinition(typeof(Company), "Ceo"), null, newCeo1))
+          .Verifiable();
+      newCustomer2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newCustomer2, GetEndPointDefinition(typeof(Company), "Ceo"), null, newCeo1)
+          .Verifiable();
+
+      newCustomer2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newCustomer2, GetEndPointDefinition(typeof(Company), "Ceo"), null, newCeo1)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newCustomer2, GetEndPointDefinition(typeof(Company), "Ceo"), null, newCeo1))
+          .Verifiable();
+      newCeo1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer2)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), null, newCustomer2))
+          .Verifiable();
+
+      //4
+      //newCeo1.Company = null;
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer2, null))
+          .Verifiable();
+      newCeo1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer2, null)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newCustomer2, GetEndPointDefinition(typeof(Company), "Ceo"), newCeo1, null))
+          .Verifiable();
+      newCustomer2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newCustomer2, GetEndPointDefinition(typeof(Company), "Ceo"), newCeo1, null)
+          .Verifiable();
+
+      newCustomer2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newCustomer2, GetEndPointDefinition(typeof(Company), "Ceo"), newCeo1, null)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newCustomer2, GetEndPointDefinition(typeof(Company), "Ceo"), newCeo1, null))
+          .Verifiable();
+
+      newCeo1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer2, null)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newCeo1, GetEndPointDefinition(typeof(Ceo), "Company"), newCustomer2, null))
+          .Verifiable();
+
+      //5
+      //newCustomer1.Orders.Add (newOrder1);
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationReading(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), ValueAccess.Current))
+        .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(
+              mock => mock.RelationRead(
+                  ClientTransactionScope.CurrentTransaction,
+                  newCustomer1,
+                  GetEndPointDefinition(typeof(Customer), "Orders"),
+                  It.Is<IReadOnlyCollectionData<DomainObject>>(data => data.Count == 0),
+                  ValueAccess.Current))
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder1, orderCustomerRelationEndPointDefinition, null, newCustomer1))
+          .Verifiable();
+      newOrder1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newOrder1, orderCustomerRelationEndPointDefinition, null, newCustomer1)
+          .Verifiable();
+
+      newCustomer1OrdersEventReceiver
+          .InSequence(sequence1)
+          .SetupAdding(newCustomer1Orders,  newOrder1)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder1))
+          .Verifiable();
+      newCustomer1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder1)
+          .Verifiable();
+
+      newCustomer1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder1)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder1))
+          .Verifiable();
+
+      newCustomer1OrdersEventReceiver
+          .InSequence(sequence1)
+          .SetupAdded(newCustomer1Orders, newOrder1)
+          .Verifiable();
+
+      newOrder1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newOrder1, orderCustomerRelationEndPointDefinition, null, newCustomer1)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder1, orderCustomerRelationEndPointDefinition, null, newCustomer1))
+          .Verifiable();
+
+      //6
+      //newCustomer1.Orders.Add (newOrder2);
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationReading(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), ValueAccess.Current))
+        .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(
+          mock => mock.RelationRead(
+              ClientTransactionScope.CurrentTransaction,
+              newCustomer1,
+              GetEndPointDefinition(typeof(Customer), "Orders"),
+              It.Is<IReadOnlyCollectionData<DomainObject>>(data => data.Count == 1 && data.GetObject(newOrder1.ID) == newOrder1),
+              ValueAccess.Current))
+        .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder2, orderCustomerRelationEndPointDefinition, null, newCustomer1))
+          .Verifiable();
+      newOrder2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newOrder2, orderCustomerRelationEndPointDefinition, null, newCustomer1)
+          .Verifiable();
+
+      newCustomer1OrdersEventReceiver
+          .InSequence(sequence1)
+          .SetupAdding(newCustomer1Orders, newOrder2)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2))
+        .Verifiable();
+
+      newCustomer1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2)
+          .Verifiable();
+
+      newCustomer1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2))
+          .Verifiable();
+
+      newCustomer1OrdersEventReceiver
+          .InSequence(sequence1)
+          .SetupAdded(newCustomer1Orders, newOrder2)
+          .Verifiable();
+
+      newOrder2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newOrder2, orderCustomerRelationEndPointDefinition, null, newCustomer1)
+        .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder2, orderCustomerRelationEndPointDefinition, null, newCustomer1))
+          .Verifiable();
+
+      //7
+      //newCustomer1.Orders.Remove (newOrder2);
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationReading(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), ValueAccess.Current))
+        .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(
+              mock => mock.RelationRead(
+                  ClientTransactionScope.CurrentTransaction,
+                  newCustomer1,
+                  GetEndPointDefinition(typeof(Customer), "Orders"),
+                  It.Is<IReadOnlyCollectionData<DomainObject>>(
+                      data => data.Count == 2 && data.GetObject(newOrder1.ID) == newOrder1 && data.GetObject(newOrder2.ID) == newOrder2),
+                  ValueAccess.Current))
+        .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder2, orderCustomerRelationEndPointDefinition, newCustomer1, null))
+        .Verifiable();
+      newOrder2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newOrder2, orderCustomerRelationEndPointDefinition, newCustomer1, null)
+        .Verifiable();
+
+      newCustomer1OrdersEventReceiver
+          .InSequence(sequence1)
+          .SetupRemoving(newCustomer1Orders, newOrder2)
+        .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null))
+        .Verifiable();
+      newCustomer1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null)
+        .Verifiable();
+
+      newCustomer1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null)
+        .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null))
+        .Verifiable();
+
+      newCustomer1OrdersEventReceiver
+          .InSequence(sequence1)
+          .SetupRemoved(newCustomer1Orders, newOrder2)
+        .Verifiable();
+
+      newOrder2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newOrder2, orderCustomerRelationEndPointDefinition, newCustomer1, null)
+        .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder2, orderCustomerRelationEndPointDefinition, newCustomer1, null))
+        .Verifiable();
+
+      //8
+      //newOrderItem1.Order = newOrder1;
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder1))
+        .Verifiable();
+
+      newOrderItem1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder1)
+          .Verifiable();
+
+      newOrder1OrderItemsEventReceiver
+          .InSequence(sequence1)
+          .SetupAdding(newOrder1OrderItems, newOrderItem1)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem1))
+          .Verifiable();
+      newOrder1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newOrder1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem1)
+          .Verifiable();
+
+      newOrder1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newOrder1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem1)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem1))
+          .Verifiable();
+
+      newOrder1OrderItemsEventReceiver
+          .InSequence(sequence1)
+          .SetupAdded(newOrder1OrderItems, newOrderItem1)
+          .Verifiable();
+
+      newOrderItem1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder1)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder1))
+          .Verifiable();
+
+      //9
+      //newOrderItem2.Order = newOrder1;
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrderItem2, GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder1))
+          .Verifiable();
+      newOrderItem2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newOrderItem2, GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder1)
+          .Verifiable();
+
+      newOrder1OrderItemsEventReceiver
+          .InSequence(sequence1)
+          .SetupAdding(newOrder1OrderItems, newOrderItem2)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem2))
+          .Verifiable();
+      newOrder1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newOrder1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem2)
+          .Verifiable();
+
+      newOrder1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newOrder1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem2)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem2))
+          .Verifiable();
+
+      newOrder1OrderItemsEventReceiver
+          .InSequence(sequence1)
+          .SetupAdded(newOrder1OrderItems, newOrderItem2)
+          .Verifiable();
+
+      newOrderItem2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newOrderItem2, GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder1)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrderItem2, GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder1))
+          .Verifiable();
+
+      //10
+      //newOrderItem1.Order = null;
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), newOrder1, null))
+          .Verifiable();
+      newOrderItem1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), newOrder1, null)
+          .Verifiable();
+
+      newOrder1OrderItemsEventReceiver
+          .InSequence(sequence1)
+          .SetupRemoving(newOrder1OrderItems, newOrderItem1)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem1, null))
+          .Verifiable();
+      newOrder1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newOrder1, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem1, null)
+          .Verifiable();
+
+      newOrder1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newOrder1, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem1, null)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem1, null))
+          .Verifiable();
+
+      newOrder1OrderItemsEventReceiver
+          .InSequence(sequence1)
+          .SetupRemoved(newOrder1OrderItems, newOrderItem1)
+          .Verifiable();
+
+      newOrderItem1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), newOrder1, null)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), newOrder1, null))
+          .Verifiable();
+
+      //11
+      //newOrderItem1.Order = newOrder2;
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder2))
+          .Verifiable();
+      newOrderItem1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder2)
+          .Verifiable();
+
+      newOrder2OrderItemsEventReceiver
+          .InSequence(sequence1)
+          .SetupAdding(newOrder2OrderItems, newOrderItem1)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder2, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem1))
+          .Verifiable();
+      newOrder2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newOrder2, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem1)
+          .Verifiable();
+
+      newOrder2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newOrder2, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem1)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder2, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem1))
+          .Verifiable();
+
+      newOrder2OrderItemsEventReceiver
+          .InSequence(sequence1)
+          .SetupAdded(newOrder2OrderItems, newOrderItem1)
+          .Verifiable();
+
+      newOrderItem1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder2)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), null, newOrder2))
+          .Verifiable();
+
+      //12
+      //newOrder1.Official = official2;
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "Official"), null, official2))
+          .Verifiable();
+      newOrder1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(newOrder1, GetEndPointDefinition(typeof(Order), "Official"), null, official2)
+          .Verifiable();
+
+      official2OrdersEventReceiver
+          .InSequence(sequence1)
+          .SetupAdding(official2Orders, newOrder1)
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, official2, GetEndPointDefinition(typeof(Official), "Orders"), null, newOrder1))
+          .Verifiable();
+      official2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanging(official2, GetEndPointDefinition(typeof(Official), "Orders"), null, newOrder1)
+          .Verifiable();
+
+      official2EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(official2, GetEndPointDefinition(typeof(Official), "Orders"), null, newOrder1)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, official2, GetEndPointDefinition(typeof(Official), "Orders"), null, newOrder1))
+        .Verifiable();
+
+      official2OrdersEventReceiver
+          .InSequence(sequence1)
+          .SetupAdded(official2Orders, newOrder1)
+          .Verifiable();
+
+      newOrder1EventReceiver
+          .InSequence(sequence1)
+          .SetupRelationChanged(newOrder1, GetEndPointDefinition(typeof(Order), "Official"), null, official2)
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "Official"), null, official2))
+          .Verifiable();
+
+      //13
+      //OrderTicket newOrderTicket1 = OrderTicket.NewObject (newOrder1);
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.NewObjectCreating(TestableClientTransaction, typeof(OrderTicket)))
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, It.IsNotNull<OrderTicket>(), GetEndPointDefinition(typeof(OrderTicket), "Order"), null, newOrder1))
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "OrderTicket"), null, It.IsNotNull<OrderTicket>()))
+          .Verifiable();
+      newOrder1EventReceiver
+          .InSequence(sequence1)
+          .Setup(
+              _ => _.RelationChanging(
+                  newOrder1,
+                  It.Is<RelationChangingEventArgs>(
+                      args =>
+                          args.RelationEndPointDefinition == GetEndPointDefinition(typeof(Order), "OrderTicket")
+                          && args.OldRelatedObject == null
+                          && args.NewRelatedObject is OrderTicket)))
+          .Verifiable();
+
+      newOrder1EventReceiver
+          .InSequence(sequence1)
+          .Setup(
+              _ => _.RelationChanged(
+                  newOrder1,
+                  It.Is<RelationChangedEventArgs>(
+                      args =>
+                          args.RelationEndPointDefinition == GetEndPointDefinition(typeof(Order), "OrderTicket")
+                          && args.OldRelatedObject == null
+                          && args.NewRelatedObject is OrderTicket)))
+          .Verifiable();
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "OrderTicket"), null, It.IsNotNull<OrderTicket>()))
+          .Verifiable();
+
+      extension
+          .InSequence(sequence1)
+          .Setup(_ => _.RelationChanged(TestableClientTransaction, It.IsNotNull<OrderTicket>(), GetEndPointDefinition(typeof(OrderTicket), "Order"), null, newOrder1))
+          .Verifiable();
+
+      extension.Setup(stub => stub.Key).Returns("Extension");
+
+      ClientTransactionScope.CurrentTransaction.Extensions.Add(extension.Object);
       try
       {
         //1
@@ -643,340 +786,479 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         //13
         OrderTicket newOrderTicket1 = OrderTicket.NewObject(newOrder1);
 
-        mockRepository.VerifyAll();
+        newCustomer1EventReceiver.Verify();
+        newCustomer2EventReceiver.Verify();
+        official2EventReceiver.Verify();
+        newCeo1EventReceiver.Verify();
+        newCeo2EventReceiver.Verify();
+        newOrder1EventReceiver.Verify();
+        newOrder2EventReceiver.Verify();
+        newOrderItem1EventReceiver.Verify();
+        newOrderItem2EventReceiver.Verify();
+        newCustomer1OrdersEventReceiver.Verify();
+        newCustomer2OrdersEventReceiver.Verify();
+        official2OrdersEventReceiver.Verify();
+        newOrder1OrderItemsEventReceiver.Verify();
+        newOrder2OrderItemsEventReceiver.Verify();
+        extension.Verify();
 
-        BackToRecord(
-            mockRepository,
-            extension,
-            newCustomer1EventReceiver,
-            newCustomer2EventReceiver,
-            official2EventReceiver,
-            newCeo1EventReceiver,
-            newCeo2EventReceiver,
-            newOrder1EventReceiver,
-            newOrder2EventReceiver,
-            newOrderItem1EventReceiver,
-            newOrderItem2EventReceiver,
-            newCustomer1OrdersEventReceiver,
-            newCustomer2OrdersEventReceiver,
-            official2OrdersEventReceiver,
-            newOrder1OrderItemsEventReceiver,
-            newOrder2OrderItemsEventReceiver);
+        extension.Reset();
+        newCustomer1EventReceiver.Reset();
+        newCustomer2EventReceiver.Reset();
+        official2EventReceiver.Reset();
+        newCeo1EventReceiver.Reset();
+        newCeo2EventReceiver.Reset();
+        newOrder1EventReceiver.Reset();
+        newOrder2EventReceiver.Reset();
+        newOrderItem1EventReceiver.Reset();
+        newOrderItem2EventReceiver.Reset();
+        newCustomer1OrdersEventReceiver.Reset();
+        newCustomer2OrdersEventReceiver.Reset();
+        official2OrdersEventReceiver.Reset();
+        newOrder1OrderItemsEventReceiver.Reset();
+        newOrder2OrderItemsEventReceiver.Reset();
 
-        var newOrderTicket1EventReceiver = mockRepository.StrictMock<DomainObjectMockEventReceiver>(newOrderTicket1);
+        var newOrderTicket1EventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, newOrderTicket1);
 
-        using (mockRepository.Ordered())
-        {
-          //14
-          //newOrderTicket1.Order = newOrder2;
-          extension.RelationChanging(
-              TestableClientTransaction,
-              newOrderTicket1,
-              GetEndPointDefinition(typeof(OrderTicket), "Order"),
-              newOrder1,
-              newOrder2);
-          newOrderTicket1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(OrderTicket), "Order"), newOrder1, newOrder2);
+        var sequence2 = new MockSequence();
 
-          extension.RelationChanging(
-              TestableClientTransaction,
-              newOrder1,
-              GetEndPointDefinition(typeof(Order), "OrderTicket"),
-              newOrderTicket1,
-              null);
-          newOrder1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "OrderTicket"), newOrderTicket1, null);
+        //14
+        //newOrderTicket1.Order = newOrder2;
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), newOrder1, newOrder2))
+            .Verifiable();
+        newOrderTicket1EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanging(newOrderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), newOrder1, newOrder2)
+            .Verifiable();
 
-          extension.RelationChanging(
-              TestableClientTransaction,
-              newOrder2,
-              GetEndPointDefinition(typeof(Order), "OrderTicket"),
-              null,
-              newOrderTicket1);
-          newOrder2EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "OrderTicket"), null, newOrderTicket1);
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "OrderTicket"), newOrderTicket1, null))
+            .Verifiable();
+        newOrder1EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanging(newOrder1, GetEndPointDefinition(typeof(Order), "OrderTicket"), newOrderTicket1, null)
+            .Verifiable();
 
-          newOrder2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "OrderTicket"), null, newOrderTicket1);
-          extension.RelationChanged(
-              TestableClientTransaction,
-              newOrder2,
-              GetEndPointDefinition(typeof(Order), "OrderTicket"),
-              null,
-              newOrderTicket1);
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder2, GetEndPointDefinition(typeof(Order), "OrderTicket"), null, newOrderTicket1))
+            .Verifiable();
+        newOrder2EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanging(newOrder2, GetEndPointDefinition(typeof(Order), "OrderTicket"), null, newOrderTicket1)
+            .Verifiable();
 
-          newOrder1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "OrderTicket"), newOrderTicket1, null);
-          extension.RelationChanged(
-              TestableClientTransaction,
-              newOrder1,
-              GetEndPointDefinition(typeof(Order), "OrderTicket"),
-              newOrderTicket1,
-              null);
+        newOrder2EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanged(newOrder2, GetEndPointDefinition(typeof(Order), "OrderTicket"), null, newOrderTicket1)
+            .Verifiable();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder2, GetEndPointDefinition(typeof(Order), "OrderTicket"), null, newOrderTicket1))
+            .Verifiable();
 
-          newOrderTicket1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(OrderTicket), "Order"), newOrder1, newOrder2);
-          extension.RelationChanged(
-              TestableClientTransaction,
-              newOrderTicket1,
-              GetEndPointDefinition(typeof(OrderTicket), "Order"),
-              newOrder1,
-              newOrder2);
+        newOrder1EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanged(newOrder1, GetEndPointDefinition(typeof(Order), "OrderTicket"), newOrderTicket1, null)
+            .Verifiable();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "OrderTicket"), newOrderTicket1, null))
+            .Verifiable();
 
+        newOrderTicket1EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanged(newOrderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), newOrder1, newOrder2)
+            .Verifiable();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), newOrder1, newOrder2))
+            .Verifiable();
 
-          //15a
-          //newOrder2.Customer = newCustomer1;
-          extension.RelationChanging(
-              TestableClientTransaction,
-              newOrder2,
-              GetEndPointDefinition(typeof(Order), "Customer"),
-              null,
-              newCustomer1);
-          newOrder2EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "Customer"), null, newCustomer1);
+        //15a
+        //newOrder2.Customer = newCustomer1;
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder2, orderCustomerRelationEndPointDefinition, null, newCustomer1))
+            .Verifiable();
+        newOrder2EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanging(newOrder2, orderCustomerRelationEndPointDefinition, null, newCustomer1)
+            .Verifiable();
 
-          newCustomer1OrdersEventReceiver.Adding(newCustomer1Orders, newOrder2);
-          extension.RelationChanging(
-              TestableClientTransaction,
-              newCustomer1,
-              GetEndPointDefinition(typeof(Customer), "Orders"),
-              null,
-              newOrder2);
-          newCustomer1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2);
+        newCustomer1OrdersEventReceiver
+            .InSequence(sequence2)
+            .SetupAdding(newCustomer1Orders, newOrder2)
+            .Verifiable();
 
-          newCustomer1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2);
-          extension.RelationChanged(
-              TestableClientTransaction,
-              newCustomer1,
-              GetEndPointDefinition(typeof(Customer), "Orders"),
-              null,
-              newOrder2);
-          newCustomer1OrdersEventReceiver.Added(newCustomer1Orders, newOrder2);
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanging(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2))
+            .Verifiable();
+        newCustomer1EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanging(newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2)
+            .Verifiable();
 
-          newOrder2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "Customer"), null, newCustomer1);
-          extension.RelationChanged(
-              TestableClientTransaction,
-              newOrder2,
-              GetEndPointDefinition(typeof(Order), "Customer"),
-              null,
-              newCustomer1);
+        newCustomer1EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanged(newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2)
+            .Verifiable();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanged(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2))
+            .Verifiable();
 
+        newCustomer1OrdersEventReceiver
+            .InSequence(sequence2)
+            .SetupAdded(newCustomer1Orders, newOrder2)
+            .Verifiable();
 
-          //15b
-          //newOrder2.Customer = newCustomer2;
-          extension.RelationChanging(
-              TestableClientTransaction,
-              newOrder2,
-              GetEndPointDefinition(typeof(Order), "Customer"),
-              newCustomer1,
-              newCustomer2);
-          newOrder2EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "Customer"), newCustomer1, newCustomer2);
+        newOrder2EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanged(newOrder2, orderCustomerRelationEndPointDefinition, null, newCustomer1)
+            .Verifiable();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder2, orderCustomerRelationEndPointDefinition, null, newCustomer1))
+            .Verifiable();
 
-          newCustomer2OrdersEventReceiver.Adding(newCustomer2Orders, newOrder2);
-          extension.RelationChanging(
-              TestableClientTransaction,
-              newCustomer2,
-              GetEndPointDefinition(typeof(Customer), "Orders"),
-              null,
-              newOrder2);
-          newCustomer2EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2);
+        //15b
+        //newOrder2.Customer = newCustomer2;
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder2, orderCustomerRelationEndPointDefinition, newCustomer1, newCustomer2))
+            .Verifiable();
+        newOrder2EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanging(newOrder2, orderCustomerRelationEndPointDefinition, newCustomer1, newCustomer2)
+            .Verifiable();
 
-          newCustomer1OrdersEventReceiver.Removing(newCustomer1Orders, newOrder2);
-          extension.RelationChanging(
-              TestableClientTransaction,
-              newCustomer1,
-              GetEndPointDefinition(typeof(Customer), "Orders"),
-              newOrder2,
-              null);
-          newCustomer1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null);
+        newCustomer2OrdersEventReceiver
+            .InSequence(sequence2)
+            .SetupAdding(newCustomer2Orders, newOrder2)
+            .Verifiable();
 
-          newCustomer1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null);
-          extension.RelationChanged(
-              TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null);
-          newCustomer1OrdersEventReceiver.Removed(newCustomer1Orders, newOrder2);
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanging(TestableClientTransaction, newCustomer2, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2))
+            .Verifiable();
+        newCustomer2EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanging(newCustomer2, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2)
+            .Verifiable();
 
-          newCustomer2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2);
-          extension.RelationChanged(
-              TestableClientTransaction, newCustomer2, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2);
-          newCustomer2OrdersEventReceiver.Added(newCustomer2Orders, newOrder2);
+        newCustomer1OrdersEventReceiver
+            .InSequence(sequence2)
+            .SetupRemoving(newCustomer1Orders, newOrder2)
+            .Verifiable();
 
-          newOrder2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "Customer"), newCustomer1, newCustomer2);
-          extension.RelationChanged(
-              TestableClientTransaction, newOrder2, GetEndPointDefinition(typeof(Order), "Customer"), newCustomer1, newCustomer2);
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanging(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null))
+            .Verifiable();
+        newCustomer1EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanging(newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null)
+            .Verifiable();
 
+        newCustomer1EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanged(newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null)
+            .Verifiable();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanged(TestableClientTransaction, newCustomer1, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null))
+            .Verifiable();
 
-          //16
-          //newOrder2.Delete ();
-          extension.ObjectDeleting(TestableClientTransaction, newOrder2);
-          newOrder2EventReceiver.Deleting(Arg.Is(newOrder2), Arg<EventArgs>.Is.NotNull);
-          newOrder2OrderItemsEventReceiver.Deleting();
+        newCustomer1OrdersEventReceiver
+            .InSequence(sequence2)
+            .SetupRemoved(newCustomer1Orders, newOrder2)
+            .Verifiable();
 
-          using (mockRepository.Unordered())
-          {
-            newCustomer2OrdersEventReceiver.Removing(newCustomer2Orders, newOrder2);
-            extension.RelationChanging(
-                TestableClientTransaction,
-                newCustomer2,
-                GetEndPointDefinition(typeof(Customer), "Orders"),
-                newOrder2,
-                null);
-            newCustomer2EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null);
+        newCustomer2EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanged(newCustomer2, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2)
+            .Verifiable();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanged(TestableClientTransaction, newCustomer2, GetEndPointDefinition(typeof(Customer), "Orders"), null, newOrder2))
+            .Verifiable();
 
-            extension.RelationChanging(
-                TestableClientTransaction,
-                newOrderTicket1,
-                GetEndPointDefinition(typeof(OrderTicket), "Order"),
-                newOrder2,
-                null);
-            newOrderTicket1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(OrderTicket), "Order"), newOrder2, null);
+        newCustomer2OrdersEventReceiver
+            .InSequence(sequence2)
+            .SetupAdded(newCustomer2Orders, newOrder2)
+            .Verifiable();
 
-            extension.RelationChanging(
-                TestableClientTransaction,
-                newOrderItem1,
-                GetEndPointDefinition(typeof(OrderItem), "Order"),
-                newOrder2,
-                null);
-            newOrderItem1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(OrderItem), "Order"), newOrder2, null);
-          }
+        newOrder2EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanged(newOrder2, orderCustomerRelationEndPointDefinition, newCustomer1, newCustomer2)
+            .Verifiable();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder2, orderCustomerRelationEndPointDefinition, newCustomer1, newCustomer2))
+            .Verifiable();
 
-          using (mockRepository.Unordered())
-          {
-            newCustomer2EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null);
-            extension.RelationChanged(
-                TestableClientTransaction, newCustomer2, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null);
-            newCustomer2OrdersEventReceiver.Removed(newCustomer2Orders, newOrder2);
+        //16
+        //newOrder2.Delete ();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.ObjectDeleting(TestableClientTransaction, newOrder2))
+            .Verifiable();
 
-            newOrderTicket1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(OrderTicket), "Order"), newOrder2, null);
-            extension.RelationChanged(
-                TestableClientTransaction,
-                newOrderTicket1,
-                GetEndPointDefinition(typeof(OrderTicket), "Order"), newOrder2, null);
+        newOrder2EventReceiver
+            .InSequence(sequence2)
+            .Setup(_ => _.Deleting(newOrder2, EventArgs.Empty))
+            .Verifiable();
 
-            newOrderItem1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(OrderItem), "Order"), newOrder2, null);
-            extension.RelationChanged(
-                TestableClientTransaction, newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), newOrder2, null);
-          }
+        newOrder2OrderItemsEventReceiver
+            .InSequence(sequence2)
+            .Setup(_ => _.Deleting(newOrder2OrderItems, EventArgs.Empty))
+            .Verifiable();
 
-          newOrder2OrderItemsEventReceiver.Deleted();
-          newOrder2EventReceiver.Deleted(Arg.Is(newOrder2), Arg<EventArgs>.Is.NotNull);
-          extension.ObjectDeleted(TestableClientTransaction, newOrder2);
+        newCustomer2OrdersEventReceiver
+            .SetupRemoving(newCustomer2Orders, newOrder2)
+            .Verifiable();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanging(TestableClientTransaction, newCustomer2, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null))
+            .Verifiable();
+        newCustomer2EventReceiver
+            .SetupRelationChanging(newCustomer2, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null)
+            .Verifiable();
 
+        extension
+            .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), newOrder2, null))
+            .Verifiable();
+        newOrderTicket1EventReceiver
+            .SetupRelationChanging(newOrderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), newOrder2, null)
+            .Verifiable();
 
-          //17
-          //newOrderTicket1.Order = newOrder1;
-          extension.RelationChanging(
-              TestableClientTransaction,
-              newOrderTicket1,
-              GetEndPointDefinition(typeof(OrderTicket), "Order"),
-              null,
-              newOrder1);
-          newOrderTicket1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(OrderTicket), "Order"), null, newOrder1);
+        extension
+            .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), newOrder2, null))
+            .Verifiable();
+        newOrderItem1EventReceiver
+            .SetupRelationChanging(newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), newOrder2, null)
+            .Verifiable();
 
-          extension.RelationChanging(
-              TestableClientTransaction,
-              newOrder1,
-              GetEndPointDefinition(typeof(Order), "OrderTicket"),
-              null,
-              newOrderTicket1);
-          newOrder1EventReceiver.RelationChanging(GetEndPointDefinition(typeof(Order), "OrderTicket"), null, newOrderTicket1);
+        newCustomer2EventReceiver
+            .SetupRelationChanged(newCustomer2, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null)
+            .Verifiable();
+        extension
+            .Setup(_ => _.RelationChanged(TestableClientTransaction, newCustomer2, GetEndPointDefinition(typeof(Customer), "Orders"), newOrder2, null))
+            .Verifiable();
+        newCustomer2OrdersEventReceiver
+            .SetupRemoved(newCustomer2Orders, newOrder2)
+            .Verifiable();
 
-          newOrder1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(Order), "OrderTicket"), null, newOrderTicket1);
-          extension.RelationChanged(
-              TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "OrderTicket"), null, newOrderTicket1);
+        newOrderTicket1EventReceiver
+            .SetupRelationChanged(newOrderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), newOrder2, null)
+            .Verifiable();
+        extension
+            .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), newOrder2, null))
+            .Verifiable();
 
-          newOrderTicket1EventReceiver.RelationChanged(GetEndPointDefinition(typeof(OrderTicket), "Order"), null, newOrder1);
-          extension.RelationChanged(
-              TestableClientTransaction,
-              newOrderTicket1,
-              GetEndPointDefinition(typeof(OrderTicket), "Order"), null, newOrder1);
+        newOrderItem1EventReceiver
+            .SetupRelationChanged(newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), newOrder2, null)
+            .Verifiable();
+        extension
+            .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), newOrder2, null))
+            .Verifiable();
 
+        newOrder2OrderItemsEventReceiver
+            .InSequence(sequence2)
+            .Setup(_ => _.Deleted(newOrder2OrderItems, It.IsAny<EventArgs>()))
+            .Verifiable();
 
-          //cleanup for commit
-          //18
-          //newCustomer2.Delete ();
-          extension.ObjectDeleting(TestableClientTransaction, newCustomer2);
-          newCustomer2EventReceiver.Deleting(Arg.Is(newCustomer2), Arg<EventArgs>.Is.NotNull);
-          newCustomer2OrdersEventReceiver.Deleting();
+        newOrder2EventReceiver
+            .InSequence(sequence2)
+            .Setup(_ => _.Deleted(newOrder2, It.IsNotNull<EventArgs>()))
+            .Verifiable();
 
-          newCustomer2OrdersEventReceiver.Deleted();
-          newCustomer2EventReceiver.Deleted(Arg.Is(newCustomer2), Arg<EventArgs>.Is.NotNull);
-          extension.ObjectDeleted(TestableClientTransaction, newCustomer2);
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.ObjectDeleted(TestableClientTransaction, newOrder2))
+            .Verifiable();
 
+        //17
+        //newOrderTicket1.Order = newOrder1;
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), null, newOrder1))
+            .Verifiable();
+        newOrderTicket1EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanging(newOrderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), null, newOrder1)
+            .Verifiable();
 
-          //19
-          //newCeo1.Delete ();
-          extension.ObjectDeleting(TestableClientTransaction, newCeo1);
-          newCeo1EventReceiver.Deleting(Arg.Is(newCeo1), Arg<EventArgs>.Is.NotNull);
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "OrderTicket"), null, newOrderTicket1))
+            .Verifiable();
+        newOrder1EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanging(newOrder1, GetEndPointDefinition(typeof(Order), "OrderTicket"), null, newOrderTicket1)
+            .Verifiable();
 
-          newCeo1EventReceiver.Deleted(Arg.Is(newCeo1), Arg<EventArgs>.Is.NotNull);
-          extension.ObjectDeleted(TestableClientTransaction, newCeo1);
+        newOrder1EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanged(newOrder1, GetEndPointDefinition(typeof(Order), "OrderTicket"), null, newOrderTicket1)
+            .Verifiable();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrder1, GetEndPointDefinition(typeof(Order), "OrderTicket"), null, newOrderTicket1))
+            .Verifiable();
 
+        newOrderTicket1EventReceiver
+            .InSequence(sequence2)
+            .SetupRelationChanged(newOrderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), null, newOrder1)
+            .Verifiable();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), null, newOrder1))
+            .Verifiable();
 
-          //20
-          //newOrderItem1.Delete ();
-          extension.ObjectDeleting(TestableClientTransaction, newOrderItem1);
-          newOrderItem1EventReceiver.Deleting(Arg.Is(newOrderItem1), Arg<EventArgs>.Is.NotNull);
+        //cleanup for commit
+        //18
+        //newCustomer2.Delete ();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.ObjectDeleting(TestableClientTransaction, newCustomer2))
+            .Verifiable();
+        newCustomer2EventReceiver
+            .InSequence(sequence2)
+            .Setup(_ => _.Deleting(newCustomer2, It.IsNotNull<EventArgs>()))
+            .Verifiable();
+        newCustomer2OrdersEventReceiver
+            .InSequence(sequence2)
+            .Setup(_ => _.Deleting(newCustomer2Orders, It.IsAny<EventArgs>()))
+            .Verifiable();
 
-          newOrderItem1EventReceiver.Deleted(Arg.Is(newOrderItem1), Arg<EventArgs>.Is.NotNull);
-          extension.ObjectDeleted(TestableClientTransaction, newOrderItem1);
+        newCustomer2OrdersEventReceiver
+            .InSequence(sequence2)
+            .Setup(_ => _.Deleted(newCustomer2Orders, It.IsAny<EventArgs>()))
+            .Verifiable();
+        newCustomer2EventReceiver
+            .InSequence(sequence2)
+            .Setup(_ => _.Deleted(newCustomer2, It.IsNotNull<EventArgs>()))
+            .Verifiable();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.ObjectDeleted(TestableClientTransaction, newCustomer2))
+            .Verifiable();
 
+        //19
+        //newCeo1.Delete ();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.ObjectDeleting(TestableClientTransaction, newCeo1))
+            .Verifiable();
+        newCeo1EventReceiver
+            .InSequence(sequence2)
+            .Setup(_ => _.Deleting(newCeo1, It.IsNotNull<EventArgs>()))
+            .Verifiable();
 
-          //21
-          //ClientTransactionScope.CurrentTransaction.Commit ();
+        newCeo1EventReceiver
+            .InSequence(sequence2)
+            .Setup(_ => _.Deleted(newCeo1, It.IsNotNull<EventArgs>()))
+            .Verifiable();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.ObjectDeleted(TestableClientTransaction, newCeo1))
+            .Verifiable();
 
-          extension.Committing(
-              Arg.Is(ClientTransactionScope.CurrentTransaction),
-              Arg<ReadOnlyCollection<DomainObject>>.Matches(
-                  c => c.SetEquals(new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 })),
-              Arg<ICommittingEventRegistrar>.Is.Anything);
+        //20
+        //newOrderItem1.Delete ();
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.ObjectDeleting(TestableClientTransaction, newOrderItem1))
+            .Verifiable();
 
-          using (mockRepository.Unordered())
-          {
-            newCustomer1EventReceiver.Committing(null, null);
-            LastCall.Constraints(Mocks_Is.Same(newCustomer1), Mocks_Is.NotNull());
+        newOrderItem1EventReceiver
+            .InSequence(sequence2)
+            .Setup(_ => _.Deleting(newOrderItem1, It.IsNotNull<EventArgs>()))
+            .Verifiable();
 
-            official2EventReceiver.Committing(null, null);
-            LastCall.Constraints(Mocks_Is.Same(official2), Mocks_Is.NotNull());
+        newOrderItem1EventReceiver
+            .InSequence(sequence2)
+            .Setup(_ => _.Deleted(newOrderItem1, It.IsNotNull<EventArgs>()))
+            .Verifiable();
 
-            newCeo2EventReceiver.Committing(null, null);
-            LastCall.Constraints(Mocks_Is.Same(newCeo2), Mocks_Is.NotNull());
+        extension
+            .InSequence(sequence2)
+            .Setup(_ => _.ObjectDeleted(TestableClientTransaction, newOrderItem1))
+            .Verifiable();
 
-            newOrder1EventReceiver.Committing(null, null);
-            LastCall.Constraints(Mocks_Is.Same(newOrder1), Mocks_Is.NotNull());
+        //21
+        //ClientTransactionScope.CurrentTransaction.Commit ();
 
-            newOrderItem2EventReceiver.Committing(null, null);
-            LastCall.Constraints(Mocks_Is.Same(newOrderItem2), Mocks_Is.NotNull());
+        extension
+            .InSequence(sequence2)
+            .Setup(
+                _ => _.Committing(
+                    TestableClientTransaction,
+                    It.Is<ReadOnlyCollection<DomainObject>>(c => c.SetEquals(new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 })),
+                    It.IsAny<ICommittingEventRegistrar>()))
+            .Verifiable();
 
-            newOrderTicket1EventReceiver.Committing(null, null);
-            LastCall.Constraints(Mocks_Is.Same(newOrderTicket1), Mocks_Is.NotNull());
-          }
+        newCustomer1EventReceiver
+            .Setup(_ => _.Committing(newCustomer1, It.IsNotNull<DomainObjectCommittingEventArgs>()))
+            .Verifiable();
+        official2EventReceiver
+            .Setup(_ => _.Committing(official2, It.IsNotNull<DomainObjectCommittingEventArgs>()))
+            .Verifiable();
+        newCeo2EventReceiver
+            .Setup(_ => _.Committing(newCeo2, It.IsNotNull<DomainObjectCommittingEventArgs>()))
+            .Verifiable();
+        newOrder1EventReceiver
+            .Setup(_ => _.Committing(newOrder1, It.IsNotNull<DomainObjectCommittingEventArgs>()))
+            .Verifiable();
+        newOrderItem2EventReceiver
+            .Setup(_ => _.Committing(newOrderItem2, It.IsNotNull<DomainObjectCommittingEventArgs>()))
+            .Verifiable();
+        newOrderTicket1EventReceiver
+            .Setup(_ => _.Committing(newOrderTicket1, It.IsNotNull<DomainObjectCommittingEventArgs>()))
+            .Verifiable();
 
-          extension.CommitValidate(
-              Arg.Is(ClientTransactionScope.CurrentTransaction),
-              Arg<ReadOnlyCollection<PersistableData>>.Matches(
-                  collection => collection.Select(c => c.DomainObject)
-                      .SetEquals(new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 })));
+        extension
+            .InSequence(sequence2)
+            .Setup(
+                _ => _.CommitValidate(
+                    TestableClientTransaction,
+                    It.Is<ReadOnlyCollection<PersistableData>>(
+                        collection => collection.Select(c => c.DomainObject)
+                            .SetEquals(new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 }))))
+            .Verifiable();
 
-          using (mockRepository.Unordered())
-          {
-            newCustomer1EventReceiver.Committed(null, null);
-            LastCall.Constraints(Mocks_Is.Same(newCustomer1), Mocks_Is.Anything());
+        newCustomer1EventReceiver
+            .Setup(_ => _.Committed(newCustomer1, It.IsNotNull<EventArgs>()))
+            .Verifiable();
+        official2EventReceiver
+            .Setup(_ => _.Committed(official2, It.IsNotNull<EventArgs>()))
+            .Verifiable();
+        newCeo2EventReceiver
+            .Setup(_ => _.Committed(newCeo2, It.IsNotNull<EventArgs>()))
+            .Verifiable();
+        newOrder1EventReceiver
+            .Setup(_ => _.Committed(newOrder1, It.IsNotNull<EventArgs>()))
+            .Verifiable();
+        newOrderItem2EventReceiver
+            .Setup(_ => _.Committed(newOrderItem2, It.IsNotNull<EventArgs>()))
+            .Verifiable();
+        newOrderTicket1EventReceiver
+            .Setup(_ => _.Committed(newOrderTicket1, It.IsNotNull<EventArgs>()))
+            .Verifiable();
 
-            official2EventReceiver.Committed(null, null);
-            LastCall.Constraints(Mocks_Is.Same(official2), Mocks_Is.NotNull());
-
-            newCeo2EventReceiver.Committed(null, null);
-            LastCall.Constraints(Mocks_Is.Same(newCeo2), Mocks_Is.NotNull());
-
-            newOrder1EventReceiver.Committed(null, null);
-            LastCall.Constraints(Mocks_Is.Same(newOrder1), Mocks_Is.NotNull());
-
-            newOrderItem2EventReceiver.Committed(null, null);
-            LastCall.Constraints(Mocks_Is.Same(newOrderItem2), Mocks_Is.NotNull());
-
-            newOrderTicket1EventReceiver.Committed(null, null);
-            LastCall.Constraints(Mocks_Is.Same(newOrderTicket1), Mocks_Is.NotNull());
-          }
-          extension.Committed(
-              Arg.Is(ClientTransactionScope.CurrentTransaction),
-              Arg<ReadOnlyCollection<DomainObject>>.Matches(
-                  c => c.SetEquals(new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 })));
-        }
-
-        mockRepository.ReplayAll();
+        extension
+            .InSequence(sequence2)
+            .Setup(
+                _ => _.Committed(
+                    TestableClientTransaction,
+                    It.Is<ReadOnlyCollection<DomainObject>>(c => c.SetEquals(new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 }))))
+            .Verifiable();
 
         //14
         newOrderTicket1.Order = newOrder2;
@@ -997,9 +1279,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         newOrderItem1.Delete();
 
         //21
-        ClientTransactionScope.CurrentTransaction.Commit();
+        TestableClientTransaction.Commit();
 
-        mockRepository.VerifyAll();
+        newCustomer1EventReceiver.Verify();
+        newCustomer2EventReceiver.Verify();
+        official2EventReceiver.Verify();
+        newCeo1EventReceiver.Verify();
+        newCeo2EventReceiver.Verify();
+        newOrder1EventReceiver.Verify();
+        newOrder2EventReceiver.Verify();
+        newOrderItem1EventReceiver.Verify();
+        newOrderItem2EventReceiver.Verify();
+        newCustomer1OrdersEventReceiver.Verify();
+        newCustomer2OrdersEventReceiver.Verify();
+        official2OrdersEventReceiver.Verify();
+        newOrder1OrderItemsEventReceiver.Verify();
+        newOrder2OrderItemsEventReceiver.Verify();
+        extension.Verify();
+        newOrderTicket1EventReceiver.Verify();
       }
       finally
       {
@@ -1162,12 +1459,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       Assert.That(eventReceiver.HasChangedEventBeenCalled, Is.True);
       Assert.That(eventReceiver.ChangingPropertyDefinition, Is.SameAs(propertyDefinition));
       Assert.That(eventReceiver.ChangedPropertyDefinition, Is.SameAs(propertyDefinition));
-    }
-
-    private void BackToRecord (MockRepository mockRepository, params object[] objects)
-    {
-      foreach (object obj in objects)
-        mockRepository.BackToRecord(obj);
     }
   }
 }

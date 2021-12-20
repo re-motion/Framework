@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Validation
 {
@@ -29,15 +29,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     public void CreateClientTransactionExtensions_InRootTransaction_CreatesExtension ()
     {
       var clientTransaction = ClientTransaction.CreateRootTransaction();
-      var persistableDataValidatorStub = MockRepository.GenerateStub<IPersistableDataValidator>();
-      var factory = new CommitValidationClientTransactionExtensionFactory(persistableDataValidatorStub);
+      var persistableDataValidatorStub = new Mock<IPersistableDataValidator>();
+      var factory = new CommitValidationClientTransactionExtensionFactory(persistableDataValidatorStub.Object);
 
       var result = factory.CreateClientTransactionExtensions(clientTransaction).ToArray();
 
       Assert.That(result.Count(), Is.EqualTo(1));
       var clientTransactionExtension = result.First();
       Assert.That(clientTransactionExtension, Is.TypeOf<CommitValidationClientTransactionExtension>());
-      Assert.That(((CommitValidationClientTransactionExtension)clientTransactionExtension).Validator, Is.SameAs(persistableDataValidatorStub));
+      Assert.That(((CommitValidationClientTransactionExtension)clientTransactionExtension).Validator, Is.SameAs(persistableDataValidatorStub.Object));
     }
 
     [Test]
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var clientTransaction = ClientTransaction.CreateRootTransaction();
       var subTransaction = clientTransaction.CreateSubTransaction();
-      var factory = new CommitValidationClientTransactionExtensionFactory(MockRepository.GenerateStub<IPersistableDataValidator>());
+      var factory = new CommitValidationClientTransactionExtensionFactory(new Mock<IPersistableDataValidator>().Object);
 
       var result = factory.CreateClientTransactionExtensions(subTransaction).ToArray();
 

@@ -1,10 +1,8 @@
 ﻿using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects;
-using Remotion.Data.DomainObjects.UnitTests;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Remotion.Data.UnitTests.UnitTesting
+namespace Remotion.Data.DomainObjects.UnitTests.UnitTesting
 {
   [TestFixture]
   public class NoDatabaseWriteSectionTest : StandardMappingTest

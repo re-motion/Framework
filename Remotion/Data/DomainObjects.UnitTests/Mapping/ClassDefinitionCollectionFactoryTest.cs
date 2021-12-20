@@ -17,11 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -30,15 +30,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   {
     private Dictionary<Type, ClassDefinition> _classDefinitions;
     private ClassDefinitionCollectionFactory _classDefinitionCollectionFactory;
-    private IMappingObjectFactory _mappingObjectFactoryMock;
+    private Mock<IMappingObjectFactory> _mappingObjectFactoryMock;
     private ClassDefinition _fakeClassDefinition;
 
     [SetUp]
     public void SetUp ()
     {
       _classDefinitions = new Dictionary<Type, ClassDefinition>();
-      _mappingObjectFactoryMock = MockRepository.GenerateStrictMock<IMappingObjectFactory>();
-      _classDefinitionCollectionFactory = new ClassDefinitionCollectionFactory(_mappingObjectFactoryMock);
+      _mappingObjectFactoryMock = new Mock<IMappingObjectFactory>(MockBehavior.Strict);
+      _classDefinitionCollectionFactory = new ClassDefinitionCollectionFactory(_mappingObjectFactoryMock.Object);
       _fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order));
     }
 
@@ -46,13 +46,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void CreateClassDefinitionCollection ()
     {
       _mappingObjectFactoryMock
-          .Expect(mock => mock.CreateClassDefinition(typeof(Order), null))
-          .Return(_fakeClassDefinition);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreateClassDefinition(typeof(Order), null))
+          .Returns(_fakeClassDefinition)
+          .Verifiable();
 
       var classDefinitions = _classDefinitionCollectionFactory.CreateClassDefinitionCollection(new[] { typeof(Order) });
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
+      _mappingObjectFactoryMock.Verify();
 
       Assert.That(classDefinitions, Is.EqualTo(new[] { _fakeClassDefinition }));
     }
@@ -73,24 +73,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var fakeClassDefinitionCustomer = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Customer), baseClass: fakeClassDefinitionCompany);
 
       _mappingObjectFactoryMock
-          .Expect(mock => mock.CreateClassDefinition(typeof(Order), null))
-          .Return(_fakeClassDefinition);
+          .Setup(mock => mock.CreateClassDefinition(typeof(Order), null))
+          .Returns(_fakeClassDefinition)
+          .Verifiable();
       _mappingObjectFactoryMock
-          .Expect(mock => mock.CreateClassDefinition(typeof(Company), null))
-          .Return(fakeClassDefinitionCompany);
+          .Setup(mock => mock.CreateClassDefinition(typeof(Company), null))
+          .Returns(fakeClassDefinitionCompany)
+          .Verifiable();
       _mappingObjectFactoryMock
-          .Expect(mock => mock.CreateClassDefinition(typeof(Partner), fakeClassDefinitionCompany))
-          .Return(fakeClassDefinitionPartner);
+          .Setup(mock => mock.CreateClassDefinition(typeof(Partner), fakeClassDefinitionCompany))
+          .Returns(fakeClassDefinitionPartner)
+          .Verifiable();
       _mappingObjectFactoryMock
-          .Expect(mock => mock.CreateClassDefinition(typeof(Customer), fakeClassDefinitionCompany))
-          .Return(fakeClassDefinitionCustomer);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreateClassDefinition(typeof(Customer), fakeClassDefinitionCompany))
+          .Returns(fakeClassDefinitionCustomer)
+          .Verifiable();
 
       var classDefinitions =
           _classDefinitionCollectionFactory.CreateClassDefinitionCollection(
               new[] { typeof(Order), typeof(Company), typeof(Partner), typeof(Customer) });
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
+      _mappingObjectFactoryMock.Verify();
 
       Assert.That(classDefinitions.Length, Is.EqualTo(4));
 
@@ -105,13 +108,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetClassDefinition_ForDerivedClass_WithStorageGroupAttribute_IgnoresBaseClass ()
     {
       _mappingObjectFactoryMock
-          .Expect(mock => mock.CreateClassDefinition(typeof(ClassWithDifferentProperties), null))
-          .Return(_fakeClassDefinition);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreateClassDefinition(typeof(ClassWithDifferentProperties), null))
+          .Returns(_fakeClassDefinition)
+          .Verifiable();
 
       var result = _classDefinitionCollectionFactory.GetClassDefinition(_classDefinitions, typeof(ClassWithDifferentProperties));
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
+      _mappingObjectFactoryMock.Verify();
       Assert.That(result, Is.SameAs(_fakeClassDefinition));
     }
 
@@ -119,13 +122,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetClassDefinition_ForNonDerivedClass_WithoutStorageGroupAttribute ()
     {
       _mappingObjectFactoryMock
-          .Expect(mock => mock.CreateClassDefinition(typeof(ClassWithoutStorageGroupWithDifferentProperties), null))
-          .Return(_fakeClassDefinition);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreateClassDefinition(typeof(ClassWithoutStorageGroupWithDifferentProperties), null))
+          .Returns(_fakeClassDefinition)
+          .Verifiable();
 
       var result = _classDefinitionCollectionFactory.GetClassDefinition(_classDefinitions, typeof(ClassWithoutStorageGroupWithDifferentProperties));
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
+      _mappingObjectFactoryMock.Verify();
       Assert.That(result, Is.SameAs(_fakeClassDefinition));
     }
 
@@ -134,16 +137,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var fakeBaseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassWithDifferentProperties));
       _mappingObjectFactoryMock
-          .Expect(mock => mock.CreateClassDefinition(typeof(ClassWithDifferentProperties), null))
-          .Return(fakeBaseClassDefinition);
+          .Setup(mock => mock.CreateClassDefinition(typeof(ClassWithDifferentProperties), null))
+          .Returns(fakeBaseClassDefinition)
+          .Verifiable();
       _mappingObjectFactoryMock
-          .Expect(mock => mock.CreateClassDefinition(typeof(DerivedClassWithDifferentProperties), fakeBaseClassDefinition))
-          .Return(_fakeClassDefinition);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreateClassDefinition(typeof(DerivedClassWithDifferentProperties), fakeBaseClassDefinition))
+          .Returns(_fakeClassDefinition)
+          .Verifiable();
 
       var result = _classDefinitionCollectionFactory.GetClassDefinition(_classDefinitions, typeof(DerivedClassWithDifferentProperties));
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
+      _mappingObjectFactoryMock.Verify();
       Assert.That(result, Is.SameAs(_fakeClassDefinition));
     }
 
@@ -154,13 +158,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _classDefinitions.Add(expectedBaseClass.ClassType, expectedBaseClass);
 
       _mappingObjectFactoryMock
-          .Expect(mock => mock.CreateClassDefinition(typeof(DerivedClassWithDifferentProperties), expectedBaseClass))
-          .Return(_fakeClassDefinition);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreateClassDefinition(typeof(DerivedClassWithDifferentProperties), expectedBaseClass))
+          .Returns(_fakeClassDefinition)
+          .Verifiable();
 
       var actual = _classDefinitionCollectionFactory.GetClassDefinition(_classDefinitions, typeof(DerivedClassWithDifferentProperties));
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
+      _mappingObjectFactoryMock.Verify();
       Assert.That(actual, Is.Not.Null);
       Assert.That(_classDefinitions.Count, Is.EqualTo(2));
       Assert.That(_fakeClassDefinition, Is.SameAs(actual));
@@ -172,11 +176,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var existing = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order));
       _classDefinitions.Add(existing.ClassType, existing);
 
-      _mappingObjectFactoryMock.Replay();
-
       var actual = _classDefinitionCollectionFactory.GetClassDefinition(_classDefinitions, typeof(Order));
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
+      _mappingObjectFactoryMock.Verify();
       Assert.That(actual, Is.Not.Null);
       Assert.That(_classDefinitions.Count, Is.EqualTo(1));
       Assert.That(_classDefinitions[typeof(Order)], Is.SameAs(actual));

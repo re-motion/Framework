@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -87,22 +87,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void RolledBackEventWithNewObject ()
     {
-      MockRepository mockRepository = new MockRepository();
+      var clientTransactionMockEventReceiver = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, TestableClientTransaction);
 
-      ClientTransactionMockEventReceiver clientTransactionMockEventReceiver =
-          mockRepository.StrictMock<ClientTransactionMockEventReceiver>(TestableClientTransaction);
+      var sequence = new MockSequence();
 
-      using (mockRepository.Ordered())
-      {
-        clientTransactionMockEventReceiver.RollingBack(_newCustomer);
-        clientTransactionMockEventReceiver.RolledBack();
-      }
+      clientTransactionMockEventReceiver.InSequence(sequence).SetupRollingBack(TestableClientTransaction, _newCustomer).Verifiable();
 
-      mockRepository.ReplayAll();
+      clientTransactionMockEventReceiver.InSequence(sequence).SetupRolledBack(TestableClientTransaction).Verifiable();
 
       TestableClientTransaction.Rollback();
 
-      mockRepository.VerifyAll();
+      clientTransactionMockEventReceiver.Verify();
     }
 
     private void NewCustomer_RollingBack_MustNotBeCalled (object sender, EventArgs e)

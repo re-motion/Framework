@@ -18,24 +18,24 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.ObjectMothers;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Model
 {
   [TestFixture]
   public class SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecoratorTest
   {
-    private TypeConverter _typeConverterStub;
+    private Mock<TypeConverter> _typeConverterStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _typeConverterStub = MockRepository.GenerateStub<TypeConverter>();
+      _typeConverterStub = new Mock<TypeConverter>();
     }
 
     [Test]
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           BooleanObjectMother.GetRandomBoolean(),
           new Random().Next(),
           typeof(int),
-          _typeConverterStub);
+          _typeConverterStub.Object);
 
       var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformation, 4000);
 
@@ -66,10 +66,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       object originalValue = new object();
       object expectedValue = new object();
 
-      var innerStorageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
-      innerStorageTypeInformationStub.Stub(_ => _.ConvertFromStorageType(originalValue)).Return(expectedValue);
+      var innerStorageTypeInformationStub = new Mock<IStorageTypeInformation>();
+      innerStorageTypeInformationStub.Setup(_ => _.ConvertFromStorageType(originalValue)).Returns(expectedValue);
 
-      var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, 4000);
+      var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub.Object, 4000);
       var actualValue = storageTypeInformation.ConvertFromStorageType(originalValue);
       Assert.That(actualValue, Is.SameAs(expectedValue));
     }
@@ -80,10 +80,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       object originalValue = new object();
       object expectedValue = new object();
 
-      var innerStorageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
-      innerStorageTypeInformationStub.Stub(_ => _.ConvertToStorageType(originalValue)).Return(expectedValue);
+      var innerStorageTypeInformationStub = new Mock<IStorageTypeInformation>();
+      innerStorageTypeInformationStub.Setup(_ => _.ConvertToStorageType(originalValue)).Returns(expectedValue);
 
-      var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, 4000);
+      var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub.Object, 4000);
       var actualValue = storageTypeInformation.ConvertToStorageType(originalValue);
       Assert.That(actualValue, Is.SameAs(expectedValue));
     }
@@ -92,13 +92,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     public void Read_DelegatesToInnerStorageTypeInformation ()
     {
       object expectedValue = new object();
-      var dataReaderStub = MockRepository.GenerateStub<IDataReader>();
+      var dataReaderStub = new Mock<IDataReader>();
 
-      var innerStorageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
-      innerStorageTypeInformationStub.Stub(_ => _.Read(dataReaderStub, 1)).Return(expectedValue);
+      var innerStorageTypeInformationStub = new Mock<IStorageTypeInformation>();
+      innerStorageTypeInformationStub.Setup(_ => _.Read(dataReaderStub.Object, 1)).Returns(expectedValue);
 
-      var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, 4000);
-      var actualValue = storageTypeInformation.Read(dataReaderStub, 1);
+      var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub.Object, 4000);
+      var actualValue = storageTypeInformation.Read(dataReaderStub.Object, 1);
       Assert.That(actualValue, Is.SameAs(expectedValue));
     }
 
@@ -107,21 +107,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     {
       var upperLimit = 4242;
       object originalValue = "input";
-      var dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      var dbParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter>();
+      var dbCommandStub = new Mock<IDbCommand>();
+      var dbParameterMock = new Mock<IDbDataParameter>(MockBehavior.Strict);
       bool isValueRead = false;
 
-      var innerStorageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
-      innerStorageTypeInformationStub.Stub(_ => _.CreateDataParameter(dbCommandStub, originalValue)).Return(dbParameterMock);
-      dbParameterMock.Stub(_ => _.Value).Return(new string('a', upperLimit)).WhenCalled(mi => isValueRead = true);
-      dbParameterMock.Expect(_ => _.Size = upperLimit).WhenCalled(mi => Assert.That(isValueRead));
+      var innerStorageTypeInformationStub = new Mock<IStorageTypeInformation>();
+      innerStorageTypeInformationStub.Setup(_ => _.CreateDataParameter(dbCommandStub.Object, originalValue)).Returns(dbParameterMock.Object);
+      dbParameterMock.Setup(_ => _.Value).Returns(new string('a', upperLimit)).Callback(()=> isValueRead = true);
+      dbParameterMock.SetupSet(_ => _.Size = upperLimit).Callback(()=> Assert.That(isValueRead)).Verifiable();
 
-      var storageTypeInformation =
-          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, upperLimit);
-      var actual = storageTypeInformation.CreateDataParameter(dbCommandStub, originalValue);
+      var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub.Object, upperLimit);
+      var actual = storageTypeInformation.CreateDataParameter(dbCommandStub.Object, originalValue);
 
-      Assert.That(actual, Is.SameAs(dbParameterMock));
-      dbParameterMock.VerifyAllExpectations();
+      Assert.That(actual, Is.SameAs(dbParameterMock.Object));
+      dbParameterMock.Verify();
     }
 
     [Test]
@@ -131,18 +130,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
 
       var upperLimit = 4242;
       object originalValue = "input";
-      var dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      var dbParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter>();
+      var dbCommandStub = new Mock<IDbCommand>();
+      var dbParameterMock = new Mock<IDbDataParameter>(MockBehavior.Strict);
 
-      var innerStorageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
-      innerStorageTypeInformationStub.Stub(_ => _.CreateDataParameter(dbCommandStub, originalValue)).Return(dbParameterMock);
-      dbParameterMock.Stub(_ => _.Value).Return(new string('a', upperLimit + 1));
+      var innerStorageTypeInformationStub = new Mock<IStorageTypeInformation>();
+      innerStorageTypeInformationStub.Setup(_ => _.CreateDataParameter(dbCommandStub.Object, originalValue)).Returns(dbParameterMock.Object);
+      dbParameterMock.Setup(_ => _.Value).Returns(new string('a', upperLimit + 1));
 
-      var storageTypeInformation =
-          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, upperLimit);
-      var actual = storageTypeInformation.CreateDataParameter(dbCommandStub, originalValue);
+      var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub.Object, upperLimit);
+      var actual = storageTypeInformation.CreateDataParameter(dbCommandStub.Object, originalValue);
 
-      Assert.That(actual, Is.SameAs(dbParameterMock));
+      Assert.That(actual, Is.SameAs(dbParameterMock.Object));
     }
 
     [Test]
@@ -150,21 +148,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     {
       var upperLimit = 4242;
       object originalValue = "input";
-      var dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      var dbParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter>();
+      var dbCommandStub = new Mock<IDbCommand>();
+      var dbParameterMock = new Mock<IDbDataParameter>(MockBehavior.Strict);
       bool isValueRead = false;
 
-      var innerStorageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
-      innerStorageTypeInformationStub.Stub(_ => _.CreateDataParameter(dbCommandStub, originalValue)).Return(dbParameterMock);
-      dbParameterMock.Stub(_ => _.Value).Return(new char[upperLimit]).WhenCalled(mi => isValueRead = true);
-      dbParameterMock.Expect(_ => _.Size = upperLimit).WhenCalled(mi => Assert.That(isValueRead));
+      var innerStorageTypeInformationStub = new Mock<IStorageTypeInformation>();
+      innerStorageTypeInformationStub.Setup(_ => _.CreateDataParameter(dbCommandStub.Object, originalValue)).Returns(dbParameterMock.Object);
+      dbParameterMock.Setup(_ => _.Value).Returns(new char[upperLimit]).Callback(()=> isValueRead = true);
+      dbParameterMock.SetupSet(_ => _.Size = upperLimit).Callback(()=> Assert.That(isValueRead)).Verifiable();
 
-      var storageTypeInformation =
-          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, upperLimit);
-      var actual = storageTypeInformation.CreateDataParameter(dbCommandStub, originalValue);
+      var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub.Object, upperLimit);
+      var actual = storageTypeInformation.CreateDataParameter(dbCommandStub.Object, originalValue);
 
-      Assert.That(actual, Is.SameAs(dbParameterMock));
-      dbParameterMock.VerifyAllExpectations();
+      Assert.That(actual, Is.SameAs(dbParameterMock.Object));
+      dbParameterMock.Verify();
     }
 
     [Test]
@@ -174,18 +171,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
 
       var upperLimit = 4242;
       object originalValue = "input";
-      var dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      var dbParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter>();
+      var dbCommandStub = new Mock<IDbCommand>();
+      var dbParameterMock = new Mock<IDbDataParameter>(MockBehavior.Strict);
 
-      var innerStorageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
-      innerStorageTypeInformationStub.Stub(_ => _.CreateDataParameter(dbCommandStub, originalValue)).Return(dbParameterMock);
-      dbParameterMock.Stub(_ => _.Value).Return(new char[upperLimit + 1]);
+      var innerStorageTypeInformationStub = new Mock<IStorageTypeInformation>();
+      innerStorageTypeInformationStub.Setup(_ => _.CreateDataParameter(dbCommandStub.Object, originalValue)).Returns(dbParameterMock.Object);
+      dbParameterMock.Setup(_ => _.Value).Returns(new char[upperLimit + 1]);
 
-      var storageTypeInformation =
-          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, upperLimit);
-      var actual = storageTypeInformation.CreateDataParameter(dbCommandStub, originalValue);
+      var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub.Object, upperLimit);
+      var actual = storageTypeInformation.CreateDataParameter(dbCommandStub.Object, originalValue);
 
-      Assert.That(actual, Is.SameAs(dbParameterMock));
+      Assert.That(actual, Is.SameAs(dbParameterMock.Object));
     }
 
     [Test]
@@ -193,21 +189,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     {
       var upperLimit = 4242;
       object originalValue = "input";
-      var dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      var dbParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter>();
+      var dbCommandStub = new Mock<IDbCommand>();
+      var dbParameterMock = new Mock<IDbDataParameter>(MockBehavior.Strict);
       bool isValueRead = false;
 
-      var innerStorageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
-      innerStorageTypeInformationStub.Stub(_ => _.CreateDataParameter(dbCommandStub, originalValue)).Return(dbParameterMock);
-      dbParameterMock.Stub(_ => _.Value).Return(null).WhenCalled(mi => isValueRead = true);
-      dbParameterMock.Expect(_ => _.Size = upperLimit).WhenCalled(mi => Assert.That(isValueRead));
+      var innerStorageTypeInformationStub = new Mock<IStorageTypeInformation>();
+      innerStorageTypeInformationStub.Setup(_ => _.CreateDataParameter(dbCommandStub.Object, originalValue)).Returns(dbParameterMock.Object);
+      dbParameterMock.Setup(_ => _.Value).Returns((object)null).Callback(()=> isValueRead = true);
+      dbParameterMock.SetupSet(_ => _.Size = upperLimit).Callback(()=> Assert.That(isValueRead)).Verifiable();
 
-      var storageTypeInformation =
-          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, upperLimit);
-      var actual = storageTypeInformation.CreateDataParameter(dbCommandStub, originalValue);
+      var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub.Object, upperLimit);
+      var actual = storageTypeInformation.CreateDataParameter(dbCommandStub.Object, originalValue);
 
-      Assert.That(actual, Is.SameAs(dbParameterMock));
-      dbParameterMock.VerifyAllExpectations();
+      Assert.That(actual, Is.SameAs(dbParameterMock.Object));
+      dbParameterMock.Verify();
     }
 
     [Test]
@@ -215,45 +210,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     {
       var upperLimit = 4242;
       object originalValue = "input";
-      var dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      var dbParameterMock = MockRepository.GenerateStrictMock<IDbDataParameter>();
+      var dbCommandStub = new Mock<IDbCommand>();
+      var dbParameterMock = new Mock<IDbDataParameter>(MockBehavior.Strict);
       bool isValueRead = false;
 
-      var innerStorageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
-      innerStorageTypeInformationStub.Stub(_ => _.CreateDataParameter(dbCommandStub, originalValue)).Return(dbParameterMock);
-      dbParameterMock.Stub(_ => _.Value).Return(DBNull.Value).WhenCalled(mi => isValueRead = true);
-      dbParameterMock.Expect(_ => _.Size = upperLimit).WhenCalled(mi => Assert.That(isValueRead));
+      var innerStorageTypeInformationStub = new Mock<IStorageTypeInformation>();
+      innerStorageTypeInformationStub.Setup(_ => _.CreateDataParameter(dbCommandStub.Object, originalValue)).Returns(dbParameterMock.Object);
+      dbParameterMock.Setup(_ => _.Value).Returns(DBNull.Value).Callback(()=> isValueRead = true);
+      dbParameterMock.SetupSet(_ => _.Size = upperLimit).Callback(()=> Assert.That(isValueRead)).Verifiable();
 
-      var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, upperLimit);
-      var actual = storageTypeInformation.CreateDataParameter(dbCommandStub, originalValue);
+      var storageTypeInformation = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub.Object, upperLimit);
+      var actual = storageTypeInformation.CreateDataParameter(dbCommandStub.Object, originalValue);
 
-      Assert.That(actual, Is.SameAs(dbParameterMock));
-      dbParameterMock.VerifyAllExpectations();
+      Assert.That(actual, Is.SameAs(dbParameterMock.Object));
+      dbParameterMock.Verify();
     }
 
     [Test]
     public void UnifyForEquivalentProperties_DelegatesToInnerStorageTypeInformation ()
     {
       var fulltextCompatibleMaxLength = 4242;
-      var innerStorageTypeInformationStub1 = MockRepository.GenerateStub<IStorageTypeInformation>();
-      var innerStorageTypeInformationStub2 = MockRepository.GenerateStub<IStorageTypeInformation>();
-      var innerStorageTypeInformationStubUnified = MockRepository.GenerateStub<IStorageTypeInformation>();
+      var innerStorageTypeInformationStub1 = new Mock<IStorageTypeInformation>();
+      var innerStorageTypeInformationStub2 = new Mock<IStorageTypeInformation>();
+      var innerStorageTypeInformationStubUnified = new Mock<IStorageTypeInformation>();
 
-      var innerStorageTypeInformationStubSource = MockRepository.GenerateStub<IStorageTypeInformation>();
+      var innerStorageTypeInformationStubSource = new Mock<IStorageTypeInformation>();
       innerStorageTypeInformationStubSource
-          .Stub(
-              _ => _.UnifyForEquivalentProperties(
-                  Arg<IEnumerable<IStorageTypeInformation>>.List.Equal(new[] { innerStorageTypeInformationStub1, innerStorageTypeInformationStub2 })))
-          .Return(innerStorageTypeInformationStubUnified);
+          .Setup(_ => _.UnifyForEquivalentProperties(new[] { innerStorageTypeInformationStub1.Object, innerStorageTypeInformationStub2.Object }))
+          .Returns(innerStorageTypeInformationStubUnified.Object);
 
       IStorageTypeInformation[] equivalentStorageTypes =
       {
-          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub1, fulltextCompatibleMaxLength),
-          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub2, fulltextCompatibleMaxLength)
+          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub1.Object, fulltextCompatibleMaxLength),
+          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub2.Object, fulltextCompatibleMaxLength)
       };
 
       var source = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(
-          innerStorageTypeInformationStubSource,
+          innerStorageTypeInformationStubSource.Object,
           fulltextCompatibleMaxLength);
 
       var unifiedResult = source.UnifyForEquivalentProperties(equivalentStorageTypes);
@@ -262,7 +255,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       Assert.That(unifiedResult, Is.InstanceOf<SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator>());
       Assert.That(
           ((SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator)unifiedResult).InnerStorageTypeInformation,
-          Is.SameAs(innerStorageTypeInformationStubUnified));
+          Is.SameAs(innerStorageTypeInformationStubUnified.Object));
       Assert.That(
           ((SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator)unifiedResult).FulltextCompatibleMaxLength,
           Is.EqualTo(fulltextCompatibleMaxLength));
@@ -271,21 +264,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     [Test]
     public void UnifyForEquivalentProperties_ThrowsForDifferentFulltextCompatibleMaxLength ()
     {
-      var innerStorageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
-      var innerStorageTypeInformationStubUnified = MockRepository.GenerateStub<IStorageTypeInformation>();
+      var innerStorageTypeInformationStub = new Mock<IStorageTypeInformation>();
+      var innerStorageTypeInformationStubUnified = new Mock<IStorageTypeInformation>();
 
-      var innerStorageTypeInformationStubSource = MockRepository.GenerateStub<IStorageTypeInformation>();
+      var innerStorageTypeInformationStubSource = new Mock<IStorageTypeInformation>();
       innerStorageTypeInformationStubSource
-          .Stub(
-              _ => _.UnifyForEquivalentProperties(Arg<IEnumerable<IStorageTypeInformation>>.List.Equal(new[] { innerStorageTypeInformationStub })))
-          .Return(innerStorageTypeInformationStubUnified);
+          .Setup(_ => _.UnifyForEquivalentProperties(new[] { innerStorageTypeInformationStub.Object }))
+          .Returns(innerStorageTypeInformationStubUnified.Object);
 
       IStorageTypeInformation[] equivalentStorageTypes =
       {
-          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub, 42),
+          new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStub.Object, 42),
       };
 
-      var source = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStubSource, 13);
+      var source = new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(innerStorageTypeInformationStubSource.Object, 13);
 
       Assert.That(
           () => source.UnifyForEquivalentProperties(equivalentStorageTypes),

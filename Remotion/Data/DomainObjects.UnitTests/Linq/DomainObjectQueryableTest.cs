@@ -16,12 +16,12 @@
 // 
 using System;
 using System.Linq.Expressions;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Linq;
 using Remotion.Linq.Parsing.Structure;
-using Rhino.Mocks;
 
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq
@@ -29,28 +29,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
   [TestFixture]
   public class DomainObjectQueryableTest : ClientTransactionBaseTest
   {
-    private IQueryParser _queryParserStub;
-    private IQueryExecutor _executorStub;
+    private Mock<IQueryParser> _queryParserStub;
+    private Mock<IQueryExecutor> _executorStub;
 
     [SetUp]
     public override void SetUp ()
     {
       base.SetUp();
 
-      _queryParserStub = MockRepository.GenerateStub<IQueryParser>();
-      _executorStub = MockRepository.GenerateStub<IQueryExecutor>();
+      _queryParserStub = new Mock<IQueryParser>();
+      _executorStub = new Mock<IQueryExecutor>();
     }
 
     [Test]
     public void Provider_AutoInitialized ()
     {
-      var queryableWithOrder = new DomainObjectQueryable<Order>(_queryParserStub, _executorStub);
+      var queryableWithOrder = new DomainObjectQueryable<Order>(_queryParserStub.Object, _executorStub.Object);
 
       Assert.That(queryableWithOrder.Provider, Is.Not.Null);
       Assert.That(queryableWithOrder.Provider, Is.InstanceOf(typeof(DefaultQueryProvider)));
       Assert.That(((DefaultQueryProvider)queryableWithOrder.Provider).QueryableType, Is.SameAs(typeof(DomainObjectQueryable<>)));
-      Assert.That(queryableWithOrder.Provider.Executor, Is.SameAs(_executorStub));
-      Assert.That(queryableWithOrder.Provider.QueryParser, Is.SameAs(_queryParserStub));
+      Assert.That(queryableWithOrder.Provider.Executor, Is.SameAs(_executorStub.Object));
+      Assert.That(queryableWithOrder.Provider.QueryParser, Is.SameAs(_queryParserStub.Object));
     }
 
     [Test]
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       var expectedProvider = new DefaultQueryProvider(
           typeof(DomainObjectQueryable<>),
-          _queryParserStub, _executorStub);
+          _queryParserStub.Object, _executorStub.Object);
 
       var queryable = new DomainObjectQueryable<Order>(expectedProvider, Expression.Constant(null, typeof(DomainObjectQueryable<Order>)));
 

@@ -15,40 +15,38 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
   [TestFixture]
   public class NullEndPointModificationCommandTest : ClientTransactionBaseTest
   {
-    private MockRepository _mockRepository;
-    private IRelationEndPoint _endPointMock;
+    private Mock<IRelationEndPoint> _endPointMock;
     private NullEndPointModificationCommand _command;
     private RelationEndPointID _id;
 
     public override void SetUp ()
     {
       base.SetUp();
-      _mockRepository = new MockRepository();
       _id = RelationEndPointID.Create(DomainObjectIDs.Computer1,
                    ReflectionMappingHelper.GetPropertyName(typeof(Computer), "Employee"));
 
-      _endPointMock = _mockRepository.StrictMock<IRelationEndPoint>();
+      _endPointMock = new Mock<IRelationEndPoint>(MockBehavior.Strict);
 
-      _command = new NullEndPointModificationCommand(_endPointMock);
+      _command = new NullEndPointModificationCommand(_endPointMock.Object);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That(_command.AffectedEndPoint, Is.SameAs(_endPointMock));
+      Assert.That(_command.AffectedEndPoint, Is.SameAs(_endPointMock.Object));
     }
 
     [Test]
@@ -68,31 +66,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Begin_DoesNothing ()
     {
-      _mockRepository.ReplayAll();
-
       _command.Begin();
 
-      _mockRepository.VerifyAll();
+      _endPointMock.Verify();
     }
 
     [Test]
     public void PerformDoesNothing ()
     {
-      _mockRepository.ReplayAll();
-
       _command.Perform();
 
-      _mockRepository.VerifyAll();
+      _endPointMock.Verify();
     }
 
     [Test]
     public void End_DoesNothing ()
     {
-      _mockRepository.ReplayAll();
-
       _command.End();
 
-      _mockRepository.VerifyAll();
+      _endPointMock.Verify();
     }
 
     [Test]

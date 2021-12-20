@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -23,7 +24,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation.Reflection;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
 {
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     {
       var type = typeof(BaseMappingAttributesClass);
       var classDefinition = new ClassDefinitionWithUnresolvedClassType(
-          "Test", type, true, null, MockRepository.GenerateStub<IPersistentMixinFinder>(), MockRepository.GenerateStub<IDomainObjectCreator>());
+          "Test", type, true, null, new Mock<IPersistentMixinFinder>().Object, new Mock<IDomainObjectCreator>().Object);
       Assert.That(
           () => _validationRule.Validate(classDefinition),
           Throws.InvalidOperationException

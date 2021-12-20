@@ -149,8 +149,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       ChangeState[] expectedStates =
       {
           new ObjectDeletionState(_product, "1. Deleting event of product"),
-          new RelationChangeState(_productReview, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product", _product, null, "2. Relation changing event of productReview"),
-          new RelationChangeState(_productReview, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product", null, null, "3. Relation changed event of productReview"),
+          new RelationChangeState(
+              _productReview,
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product",
+              _product,
+              null,
+              "2. Relation changing event of productReview"),
+          new RelationChangeState(
+              _productReview,
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product",
+              null,
+              null,
+              "3. Relation changed event of productReview"),
           new ObjectDeletionState(_product, "4. Deleted event of product"),
       };
 

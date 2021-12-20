@@ -169,7 +169,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       CheckSyncState(industrialSector, s => s.Companies, true);
     }
 
-    protected void PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse (out Computer computer, out Employee nonMatchingEmployee, out Employee matchingEmployee)
+    protected void PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse (
+        out Computer computer,
+        out Employee nonMatchingEmployee,
+        out Employee matchingEmployee)
     {
       computer = CreateComputerAndSetEmployeeInOtherTransaction(DomainObjectIDs.Employee2).GetObject<Computer>();
       Assert.That(computer.Employee.ID, Is.EqualTo(DomainObjectIDs.Employee2));

@@ -16,25 +16,25 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
   [TestFixture]
   public class DataManagementCommandDecoratorBaseTest
   {
-    private IDataManagementCommand _decoratedCommandMock;
+    private Mock<IDataManagementCommand> _decoratedCommandMock;
     private TestableDataManagementCommandDecoratorBase _decorator;
 
     [SetUp]
     public void SetUp ()
     {
-      _decoratedCommandMock = MockRepository.GenerateStrictMock<IDataManagementCommand>();
-      _decorator = new TestableDataManagementCommandDecoratorBase(_decoratedCommandMock);
+      _decoratedCommandMock = new Mock<IDataManagementCommand>(MockBehavior.Strict);
+      _decorator = new TestableDataManagementCommandDecoratorBase(_decoratedCommandMock.Object);
     }
 
     [Test]
@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var exception1 = new Exception("Test1");
       var exception2 = new Exception("Test2");
       var fakeExceptions = new[] { exception1, exception2 };
-      _decoratedCommandMock.Stub(stub => stub.GetAllExceptions()).Return(fakeExceptions);
+      _decoratedCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(fakeExceptions);
 
       Assert.That(_decorator.GetAllExceptions(), Is.EqualTo(fakeExceptions));
     }
@@ -51,38 +51,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Begin ()
     {
-      _decoratedCommandMock.Expect(mock => mock.Begin());
+      _decoratedCommandMock.Setup(mock => mock.Begin()).Verifiable();
 
       _decorator.Begin();
 
-      _decoratedCommandMock.VerifyAllExpectations();
+      _decoratedCommandMock.Verify();
     }
 
     [Test]
     public void Perform ()
     {
-      _decoratedCommandMock.Expect(mock => mock.Perform());
+      _decoratedCommandMock.Setup(mock => mock.Perform()).Verifiable();
 
       _decorator.Perform();
 
-      _decoratedCommandMock.VerifyAllExpectations();
+      _decoratedCommandMock.Verify();
     }
 
     [Test]
     public void End ()
     {
-      _decoratedCommandMock.Expect(mock => mock.End());
+      _decoratedCommandMock.Setup(mock => mock.End()).Verifiable();
 
       _decorator.End();
 
-      _decoratedCommandMock.VerifyAllExpectations();
+      _decoratedCommandMock.Verify();
     }
 
     [Test]
     public void ExpandToAllRelatedObjects ()
     {
       var fakeExpanded = new ExpandedCommand();
-      _decoratedCommandMock.Stub(stub => stub.ExpandToAllRelatedObjects()).Return(fakeExpanded);
+      _decoratedCommandMock.Setup(stub => stub.ExpandToAllRelatedObjects()).Returns(fakeExpanded);
 
       var result = _decorator.ExpandToAllRelatedObjects();
 

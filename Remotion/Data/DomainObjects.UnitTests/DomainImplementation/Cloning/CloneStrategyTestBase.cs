@@ -15,35 +15,28 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation.Cloning;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
 {
   public abstract class CloneStrategyTestBase : StandardMappingTest
   {
-    private MockRepository _mockRepository;
     private DomainObjectCloner _cloner;
-    private CloneContext _contextMock;
+    private Mock<CloneContext> _contextMock;
     private ClientTransaction _sourceTransaction;
     private ClientTransaction _cloneTransaction;
 
     public override void SetUp ()
     {
       base.SetUp();
-      _mockRepository = new MockRepository();
       _cloner = new DomainObjectCloner();
-      _contextMock = MockRepository.StrictMock<CloneContext>(Cloner);
+      _contextMock = new Mock<CloneContext>(MockBehavior.Strict, Cloner);
       _sourceTransaction = ClientTransaction.CreateRootTransaction();
       _cloneTransaction = ClientTransaction.CreateRootTransaction();
-    }
-
-    protected MockRepository MockRepository
-    {
-      get { return _mockRepository; }
     }
 
     protected DomainObjectCloner Cloner
@@ -51,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       get { return _cloner; }
     }
 
-    protected CloneContext ContextMock
+    protected Mock<CloneContext> ContextMock
     {
       get { return _contextMock; }
     }
@@ -83,7 +76,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       HandleReference_OneOne_RealSide_Checks(sourceRelated, sourceReference, cloneRelated, cloneReference);
     }
 
-    protected abstract void HandleReference_OneOne_RealSide_Checks (Employee sourceRelated, PropertyAccessor sourceReference, Employee cloneRelated, PropertyAccessor cloneReference);
+    protected abstract void HandleReference_OneOne_RealSide_Checks (
+        Employee sourceRelated,
+        PropertyAccessor sourceReference,
+        Employee cloneRelated,
+        PropertyAccessor cloneReference);
 
     [Test]
     public void HandleReference_OneOne_RealSide_Null ()
@@ -101,7 +98,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       HandleReference_OneOne_RealSide_Checks_Null(sourceRelated, sourceReference, cloneRelated, cloneReference);
     }
 
-    protected abstract void HandleReference_OneOne_RealSide_Checks_Null (Employee sourceRelated, PropertyAccessor sourceReference, Employee cloneRelated, PropertyAccessor cloneReference);
+    protected abstract void HandleReference_OneOne_RealSide_Checks_Null (
+        Employee sourceRelated,
+        PropertyAccessor sourceReference,
+        Employee cloneRelated,
+        PropertyAccessor cloneReference);
 
     [Test]
     public void HandleReference_OneOne_VirtualSide ()
@@ -119,7 +120,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       HandleReference_OneOne_VirtualSide_Checks(sourceRelated, sourceReference, cloneRelated, cloneReference);
     }
 
-    protected abstract void HandleReference_OneOne_VirtualSide_Checks (Computer sourceRelated, PropertyAccessor sourceReference, Computer cloneRelated, PropertyAccessor cloneReference);
+    protected abstract void HandleReference_OneOne_VirtualSide_Checks (
+        Computer sourceRelated,
+        PropertyAccessor sourceReference,
+        Computer cloneRelated,
+        PropertyAccessor cloneReference);
 
     [Test]
     public void HandleReference_OneOne_VirtualSide_Null ()
@@ -137,7 +142,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       HandleReference_OneOne_VirtualSide_Checks_Null(sourceRelated, sourceReference, cloneRelated, cloneReference);
     }
 
-    protected abstract void HandleReference_OneOne_VirtualSide_Checks_Null (Computer sourceRelated, PropertyAccessor sourceReference, Computer cloneRelated, PropertyAccessor cloneReference);
+    protected abstract void HandleReference_OneOne_VirtualSide_Checks_Null (
+        Computer sourceRelated,
+        PropertyAccessor sourceReference,
+        Computer cloneRelated,
+        PropertyAccessor cloneReference);
 
     [Test]
     public virtual void HandleReference_OneMany_RealSide ()
@@ -155,7 +164,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       HandleReference_OneMany_RealSide_Checks(sourceRelated, sourceReference, cloneRelated, cloneReference);
     }
 
-    protected abstract void HandleReference_OneMany_RealSide_Checks (Order sourceRelated, PropertyAccessor sourceReference, Order cloneRelated, PropertyAccessor cloneReference);
+    protected abstract void HandleReference_OneMany_RealSide_Checks (
+        Order sourceRelated,
+        PropertyAccessor sourceReference,
+        Order cloneRelated,
+        PropertyAccessor cloneReference);
 
     [Test]
     public void HandleReference_OneMany_RealSide_Null ()
@@ -173,7 +186,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       HandleReference_OneMany_RealSide_Checks_Null(sourceRelated, sourceReference, cloneRelated, cloneReference);
     }
 
-    protected abstract void HandleReference_OneMany_RealSide_Checks_Null (Order sourceRelated, PropertyAccessor sourceReference, Order cloneRelated, PropertyAccessor cloneReference);
+    protected abstract void HandleReference_OneMany_RealSide_Checks_Null (
+        Order sourceRelated,
+        PropertyAccessor sourceReference,
+        Order cloneRelated,
+        PropertyAccessor cloneReference);
 
     [Test]
     public void HandleReference_OneMany_VirtualSide ()
@@ -193,7 +210,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
       HandleReference_OneMany_VirtualSide_Checks(sourceRelated, sourceReference, cloneRelated, cloneReference);
     }
 
-    protected abstract void HandleReference_OneMany_VirtualSide_Checks (OrderItem sourceRelated, PropertyAccessor sourceReference, OrderItem cloneRelated, PropertyAccessor cloneReference);
+    protected abstract void HandleReference_OneMany_VirtualSide_Checks (
+        OrderItem sourceRelated,
+        PropertyAccessor sourceReference,
+        OrderItem cloneRelated,
+        PropertyAccessor cloneReference);
 
     [Test]
     public void HandleReference_OneMany_VirtualSide_Empty ()

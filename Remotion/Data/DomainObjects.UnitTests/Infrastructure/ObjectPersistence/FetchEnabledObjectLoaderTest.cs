@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
@@ -24,19 +25,17 @@ using Remotion.Data.DomainObjects.Queries.EagerFetching;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
   [TestFixture]
   public class FetchEnabledObjectLoaderTest : StandardMappingTest
   {
-    private MockRepository _mockRepository;
 
-    private IFetchEnabledPersistenceStrategy _persistenceStrategyMock;
-    private ILoadedObjectDataRegistrationAgent _loadedObjectDataRegistrationAgentMock;
-    private ILoadedObjectDataProvider _loadedObjectDataProviderStub;
-    private IEagerFetcher _eagerFetcherMock;
+    private Mock<IFetchEnabledPersistenceStrategy> _persistenceStrategyMock;
+    private Mock<ILoadedObjectDataRegistrationAgent> _loadedObjectDataRegistrationAgentMock;
+    private Mock<ILoadedObjectDataProvider> _loadedObjectDataProviderStub;
+    private Mock<IEagerFetcher> _eagerFetcherMock;
 
     private FetchEnabledObjectLoader _fetchEnabledObjectLoader;
 
@@ -53,21 +52,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     {
       base.SetUp();
 
-      _mockRepository = new MockRepository();
-
-      _persistenceStrategyMock = _mockRepository.StrictMock<IFetchEnabledPersistenceStrategy>();
-      _loadedObjectDataRegistrationAgentMock = _mockRepository.StrictMock<ILoadedObjectDataRegistrationAgent>();
-      _loadedObjectDataProviderStub = _mockRepository.Stub<ILoadedObjectDataProvider>();
-      _eagerFetcherMock = _mockRepository.StrictMock<IEagerFetcher>();
+      _persistenceStrategyMock = new Mock<IFetchEnabledPersistenceStrategy>(MockBehavior.Strict);
+      _loadedObjectDataRegistrationAgentMock = new Mock<ILoadedObjectDataRegistrationAgent>(MockBehavior.Strict);
+      _loadedObjectDataProviderStub = new Mock<ILoadedObjectDataProvider>();
+      _eagerFetcherMock = new Mock<IEagerFetcher>(MockBehavior.Strict);
 
       _fetchEnabledObjectLoader = new FetchEnabledObjectLoader(
-          _persistenceStrategyMock,
-          _loadedObjectDataRegistrationAgentMock,
-          _loadedObjectDataProviderStub,
-          _eagerFetcherMock);
+          _persistenceStrategyMock.Object,
+          _loadedObjectDataRegistrationAgentMock.Object,
+          _loadedObjectDataProviderStub.Object,
+          _eagerFetcherMock.Object);
 
-      _resultItem1 = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order1);
-      _resultItem2 = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order3);
+      _resultItem1 = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order1).Object;
+      _resultItem2 = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order3).Object;
       _resultItemWithSourceData1 = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(DomainObjectIDs.Order1);
       _resultItemWithSourceData2 = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(DomainObjectIDs.Order3);
 
@@ -88,32 +85,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       var consolidatedResultItems = new[] { CreateEquivalentData(_resultItem1), CreateEquivalentData(_resultItem2) };
 
-      using (_mockRepository.Ordered())
-      {
-        _persistenceStrategyMock
-            .Expect(mock => mock.ExecuteCollectionQuery(_queryWithFetchQueries, _loadedObjectDataProviderStub))
-            .Return(new[] { _resultItem1, _resultItem2 });
-        _loadedObjectDataRegistrationAgentMock
-          .Expect(
+      var sequence = new MockSequence();
+
+      _persistenceStrategyMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ExecuteCollectionQuery(_queryWithFetchQueries, _loadedObjectDataProviderStub.Object))
+          .Returns(new[] { _resultItem1, _resultItem2 })
+          .Verifiable();
+      _loadedObjectDataRegistrationAgentMock
+          .InSequence(sequence)
+          .Setup(
               mock => mock.BeginRegisterIfRequired(
-                  Arg.Is(new[] { _resultItem1, _resultItem2 }), Arg.Is(true), Arg<LoadedObjectDataPendingRegistrationCollector>.Is.NotNull))
-          .WhenCalled(mi => collector = (LoadedObjectDataPendingRegistrationCollector)mi.Arguments[2])
-          .Return(consolidatedResultItems);
-        _eagerFetcherMock
-            .Expect(
+                  new[] { _resultItem1, _resultItem2 },
+                  true,
+                  It.IsNotNull<LoadedObjectDataPendingRegistrationCollector>()))
+          .Callback(
+              (IEnumerable<ILoadedObjectData> _, bool throwOnNotFound, LoadedObjectDataPendingRegistrationCollector pendingLoadedObjectDataCollector) =>
+                  collector = pendingLoadedObjectDataCollector)
+          .Returns(consolidatedResultItems)
+          .Verifiable();
+      _eagerFetcherMock
+          .InSequence(sequence)
+            .Setup(
                 mock => mock.PerformEagerFetching(
-                    Arg.Is(consolidatedResultItems),
-                    Arg.Is(_queryWithFetchQueries.EagerFetchQueries),
-                    Arg.Is(_fetchEnabledObjectLoader),
-                    Arg<LoadedObjectDataPendingRegistrationCollector>.Matches(c => c == collector)));
-        _loadedObjectDataRegistrationAgentMock
-            .Expect(mock => mock.EndRegisterIfRequired(Arg<LoadedObjectDataPendingRegistrationCollector>.Matches(c => c == collector)));
-      }
-      _mockRepository.ReplayAll();
+                    consolidatedResultItems,
+                    _queryWithFetchQueries.EagerFetchQueries,
+                    _fetchEnabledObjectLoader,
+                    It.Is<LoadedObjectDataPendingRegistrationCollector>(c => c == collector)))
+            .Verifiable();
+      _loadedObjectDataRegistrationAgentMock
+          .InSequence(sequence)
+            .Setup(mock => mock.EndRegisterIfRequired(It.Is<LoadedObjectDataPendingRegistrationCollector>(c => c == collector)))
+            .Verifiable();
 
       var result = _fetchEnabledObjectLoader.GetOrLoadCollectionQueryResult(_queryWithFetchQueries);
 
-      _mockRepository.VerifyAll();
+      _persistenceStrategyMock.Verify();
+      _loadedObjectDataRegistrationAgentMock.Verify();
+      _eagerFetcherMock.Verify();
       Assert.That(result, Is.EqualTo(consolidatedResultItems));
     }
 
@@ -125,29 +134,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       LoadedObjectDataPendingRegistrationCollector collector = null;
 
       _persistenceStrategyMock
-          .Expect(mock => mock.ExecuteCollectionQuery(_queryWithFetchQueries, _loadedObjectDataProviderStub))
-          .Return(new[] { _resultItem1, _resultItem2 });
+          .Setup(mock => mock.ExecuteCollectionQuery(_queryWithFetchQueries, _loadedObjectDataProviderStub.Object))
+          .Returns(new[] { _resultItem1, _resultItem2 })
+          .Verifiable();
       _loadedObjectDataRegistrationAgentMock
-          .Expect(
+          .Setup(
               mock => mock.BeginRegisterIfRequired(
-                  Arg.Is(new[] { _resultItem1, _resultItem2 }), Arg.Is(true), Arg<LoadedObjectDataPendingRegistrationCollector>.Is.NotNull))
-          .WhenCalled(mi => collector = (LoadedObjectDataPendingRegistrationCollector)mi.Arguments[2])
-          .Return(new[] { _resultItem1, _resultItem2 });
+                  new[] { _resultItem1, _resultItem2 },
+                  true,
+                  It.IsNotNull<LoadedObjectDataPendingRegistrationCollector>()))
+          .Callback(
+              (IEnumerable<ILoadedObjectData> _, bool throwOnNotFound, LoadedObjectDataPendingRegistrationCollector pendingLoadedObjectDataCollector) =>
+                  collector = pendingLoadedObjectDataCollector)
+          .Returns(new[] { _resultItem1, _resultItem2 })
+          .Verifiable();
       _eagerFetcherMock
-          .Expect(
+          .Setup(
               mock => mock.PerformEagerFetching(
-                  Arg.Is(new[] { _resultItem1, _resultItem2 }),
-                  Arg.Is(_queryWithFetchQueries.EagerFetchQueries),
-                  Arg.Is(_fetchEnabledObjectLoader),
-                  Arg<LoadedObjectDataPendingRegistrationCollector>.Matches(c => c == collector)))
-          .Throw(exception);
+                  new[] { _resultItem1, _resultItem2 },
+                  _queryWithFetchQueries.EagerFetchQueries,
+                  _fetchEnabledObjectLoader,
+                  It.Is<LoadedObjectDataPendingRegistrationCollector>(c => c == collector)))
+          .Throws(exception)
+          .Verifiable();
       _loadedObjectDataRegistrationAgentMock
-          .Expect(mock => mock.EndRegisterIfRequired(Arg<LoadedObjectDataPendingRegistrationCollector>.Matches(c => c == collector)));
-      _mockRepository.ReplayAll();
+          .Setup(mock => mock.EndRegisterIfRequired(It.Is<LoadedObjectDataPendingRegistrationCollector>(c => c == collector)))
+          .Verifiable();
 
       Assert.That(() => _fetchEnabledObjectLoader.GetOrLoadCollectionQueryResult(_queryWithFetchQueries), Throws.Exception.SameAs(exception));
 
-      _mockRepository.VerifyAll();
+      _persistenceStrategyMock.Verify();
+      _loadedObjectDataRegistrationAgentMock.Verify();
+      _eagerFetcherMock.Verify();
     }
 
     [Test]
@@ -161,33 +179,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
               CreateEquivalentData(_resultItemWithSourceData2.LoadedObjectData)
           };
 
-      using (_mockRepository.Ordered())
-      {
-        _persistenceStrategyMock
-            .Expect(mock => mock.ExecuteFetchQuery(_queryWithFetchQueries, _loadedObjectDataProviderStub))
-            .Return(new[] { _resultItemWithSourceData1, _resultItemWithSourceData2 });
-        _loadedObjectDataRegistrationAgentMock
-            .Expect(
-                mock => mock.BeginRegisterIfRequired(
-                    Arg<IEnumerable<ILoadedObjectData>>.List.Equal(
-                        new[] { _resultItemWithSourceData1.LoadedObjectData, _resultItemWithSourceData2.LoadedObjectData }),
-                    Arg.Is(true),
-                    Arg.Is(pendingRegistrationCollector)))
-            .Return(consolidatedResultItems);
-        _eagerFetcherMock
-            .Expect(
-                mock => mock.PerformEagerFetching(
-                    Arg<ICollection<ILoadedObjectData>>.List.Equal(consolidatedResultItems),
-                    Arg.Is(_queryWithFetchQueries.EagerFetchQueries),
-                    Arg.Is(_fetchEnabledObjectLoader),
-                    Arg.Is(pendingRegistrationCollector)));
-      }
+      var sequence = new MockSequence();
 
-      _mockRepository.ReplayAll();
+      _persistenceStrategyMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ExecuteFetchQuery(_queryWithFetchQueries, _loadedObjectDataProviderStub.Object))
+          .Returns(new[] { _resultItemWithSourceData1, _resultItemWithSourceData2 })
+          .Verifiable();
+      _loadedObjectDataRegistrationAgentMock
+            .InSequence(sequence)
+            .Setup(
+                mock => mock.BeginRegisterIfRequired(
+                    new[] { _resultItemWithSourceData1.LoadedObjectData, _resultItemWithSourceData2.LoadedObjectData },
+                    true,
+                    pendingRegistrationCollector))
+            .Returns(consolidatedResultItems)
+            .Verifiable();
+      _eagerFetcherMock
+            .InSequence(sequence)
+            .Setup(
+                mock => mock.PerformEagerFetching(
+                    consolidatedResultItems,
+                    _queryWithFetchQueries.EagerFetchQueries,
+                    _fetchEnabledObjectLoader,
+                    pendingRegistrationCollector))
+            .Verifiable();
 
       var result = _fetchEnabledObjectLoader.GetOrLoadFetchQueryResult(_queryWithFetchQueries, pendingRegistrationCollector);
 
-      _mockRepository.VerifyAll();
+      _persistenceStrategyMock.Verify();
+      _loadedObjectDataRegistrationAgentMock.Verify();
+      _eagerFetcherMock.Verify();
       Assert.That(
           result,
           Is.EqualTo(
@@ -200,7 +222,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
     private ILoadedObjectData CreateEquivalentData (ILoadedObjectData loadedObjectData)
     {
-      return LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(loadedObjectData.ObjectID);
+      return LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(loadedObjectData.ObjectID).Object;
     }
 
     [Test]

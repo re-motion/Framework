@@ -19,7 +19,7 @@ using System.Linq.Expressions;
 using NUnit.Framework.Constraints;
 using Remotion.Utilities;
 
-namespace Remotion.Data.UnitTests.UnitTesting
+namespace Remotion.Data.DomainObjects.UnitTests.UnitTesting
 {
   public static class ConstraintExpressionExtensions
   {

@@ -16,19 +16,19 @@
 // 
 using System;
 using System.Data.SqlClient;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
   [TestFixture]
   public class SqlDatabaseSelectionScriptElementBuilderTest : SchemaGenerationTestBase
   {
-    private IScriptBuilder _innerScriptBuilderMock;
+    private Mock<IScriptBuilder> _innerScriptBuilderMock;
     private SqlDatabaseSelectionScriptElementBuilder _builder;
 
     public override void SetUp ()
@@ -36,21 +36,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       base.SetUp();
 
       var connectionString = "Data Source=myServerAddress;Initial Catalog=MyDataBase;User Id=myUsername;Password=myPassword;";
-      _innerScriptBuilderMock = MockRepository.GenerateMock<IScriptBuilder>();
-      _builder = new SqlDatabaseSelectionScriptElementBuilder(_innerScriptBuilderMock, connectionString);
+      _innerScriptBuilderMock = new Mock<IScriptBuilder>();
+      _builder = new SqlDatabaseSelectionScriptElementBuilder(_innerScriptBuilderMock.Object, connectionString);
     }
 
     [Test]
     public void AddEntityDefinition ()
     {
-      var entityDefinitionStub = MockRepository.GenerateStub<IRdbmsStorageEntityDefinition>();
+      var entityDefinitionStub = new Mock<IRdbmsStorageEntityDefinition>();
 
-      _innerScriptBuilderMock.Expect(mock => mock.AddEntityDefinition(entityDefinitionStub));
-      _innerScriptBuilderMock.Replay();
+      _innerScriptBuilderMock.Setup(mock => mock.AddEntityDefinition(entityDefinitionStub.Object)).Verifiable();
 
-      _builder.AddEntityDefinition(entityDefinitionStub);
+      _builder.AddEntityDefinition(entityDefinitionStub.Object);
 
-      _innerScriptBuilderMock.VerifyAllExpectations();
+      _innerScriptBuilderMock.Verify();
     }
 
     [Test]
@@ -65,8 +64,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       fakeDropResult.AddElement(statement2);
       fakeDropResult.AddElement(statement1);
 
-      _innerScriptBuilderMock.Expect(mock => mock.GetCreateScript()).Return(fakeCreateResult);
-      _innerScriptBuilderMock.Expect(mock => mock.GetDropScript()).Return(fakeDropResult);
+      _innerScriptBuilderMock.Setup(mock => mock.GetCreateScript()).Returns(fakeCreateResult).Verifiable();
+      _innerScriptBuilderMock.Setup(mock => mock.GetDropScript()).Returns(fakeDropResult).Verifiable();
 
       var createScriptResult = _builder.GetCreateScript();
       var dropScriptResult = _builder.GetDropScript();
@@ -83,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     public void GetCreateScript_WithConnectionStringMissingInitialCatalog_ThrowsInvalidOperationException ()
     {
       var builder = new SqlDatabaseSelectionScriptElementBuilder(
-          _innerScriptBuilderMock,
+          _innerScriptBuilderMock.Object,
           new SqlConnectionStringBuilder { DataSource = "localhost" }.ToString());
 
       Assert.That(
@@ -96,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     public void GetDropScript_WithConnectionStringMissingInitialCatalog_ThrowsInvalidOperationException ()
     {
       var builder = new SqlDatabaseSelectionScriptElementBuilder(
-          _innerScriptBuilderMock,
+          _innerScriptBuilderMock.Object,
           new SqlConnectionStringBuilder { DataSource = "localhost" }.ToString());
 
       Assert.That(

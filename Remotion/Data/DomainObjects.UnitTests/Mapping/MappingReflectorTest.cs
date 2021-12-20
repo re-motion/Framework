@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
@@ -23,14 +24,12 @@ using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
 using Remotion.Data.DomainObjects.Mapping.Validation.Reflection;
-using Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -49,14 +48,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateDomainObjectCreator ()
     {
-      var registryStub = MockRepository.GenerateStub<IPipelineRegistry>();
+      var registryStub = new Mock<IPipelineRegistry>();
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<IPipelineRegistry>(() => registryStub);
+      serviceLocator.RegisterSingle<IPipelineRegistry>(() => registryStub.Object);
       using (new ServiceLocatorScope(serviceLocator))
       {
         var creator = MappingReflector.CreateDomainObjectCreator();
-        Assert.That(creator.PipelineRegistry, Is.SameAs(registryStub));
+        Assert.That(creator.PipelineRegistry, Is.SameAs(registryStub.Object));
       }
     }
 

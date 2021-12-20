@@ -50,7 +50,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope();
 
       _employee1.Computer.EnsureDataAvailable();
-      _virtualObjectEndPoint = (VirtualObjectEndPoint)GetEndPoint<StateUpdateRaisingVirtualObjectEndPointDecorator>(RelationEndPointID.Resolve(_employee1, o => o.Computer)).InnerEndPoint;
+      _virtualObjectEndPoint =
+          (VirtualObjectEndPoint)GetEndPoint<StateUpdateRaisingVirtualObjectEndPointDecorator>(RelationEndPointID.Resolve(_employee1, o => o.Computer)).InnerEndPoint;
 
       _computer1EndPoint = GetEndPoint<RealObjectEndPoint>(RelationEndPointID.Resolve(_computer1, oi => oi.Employee));
       _computer2EndPoint = GetEndPoint<RealObjectEndPoint>(RelationEndPointID.Resolve(_computer2, oi => oi.Employee));

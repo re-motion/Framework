@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -25,14 +26,13 @@ using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
 {
   [TestFixture]
   public class StoragePropertyDefinitionResolverTest
   {
-    private IRdbmsPersistenceModelProvider _persistenceModelProviderStub;
+    private Mock<IRdbmsPersistenceModelProvider> _persistenceModelProviderStub;
 
     private StoragePropertyDefinitionResolver _resolver;
 
@@ -49,8 +49,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [SetUp]
     public void SetUp ()
     {
-      _persistenceModelProviderStub = MockRepository.GenerateStub<IRdbmsPersistenceModelProvider>();
-      _resolver = new StoragePropertyDefinitionResolver(_persistenceModelProviderStub);
+      _persistenceModelProviderStub = new Mock<IRdbmsPersistenceModelProvider>();
+      _resolver = new StoragePropertyDefinitionResolver(_persistenceModelProviderStub.Object);
       _testModel = new RdbmsPersistenceModelLoaderTestHelper();
 
       _fakeStorageProperyDefinition1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test1");
@@ -62,29 +62,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _fakeStorageProperyDefinition7 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test7");
 
       _persistenceModelProviderStub
-          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.BaseBasePropertyDefinition))
-          .Return(_fakeStorageProperyDefinition1);
+          .Setup(stub => stub.GetStoragePropertyDefinition(_testModel.BaseBasePropertyDefinition))
+          .Returns(_fakeStorageProperyDefinition1);
       _persistenceModelProviderStub
-          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.BaseBasePropertyDefinition))
-          .Return(_fakeStorageProperyDefinition1);
+          .Setup(stub => stub.GetStoragePropertyDefinition(_testModel.BaseBasePropertyDefinition))
+          .Returns(_fakeStorageProperyDefinition1);
       _persistenceModelProviderStub
-          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.BasePropertyDefinition))
-          .Return(_fakeStorageProperyDefinition2);
+          .Setup(stub => stub.GetStoragePropertyDefinition(_testModel.BasePropertyDefinition))
+          .Returns(_fakeStorageProperyDefinition2);
       _persistenceModelProviderStub
-          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.TablePropertyDefinition1))
-          .Return(_fakeStorageProperyDefinition3);
+          .Setup(stub => stub.GetStoragePropertyDefinition(_testModel.TablePropertyDefinition1))
+          .Returns(_fakeStorageProperyDefinition3);
       _persistenceModelProviderStub
-          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.TablePropertyDefinition2))
-          .Return(_fakeStorageProperyDefinition4);
+          .Setup(stub => stub.GetStoragePropertyDefinition(_testModel.TablePropertyDefinition2))
+          .Returns(_fakeStorageProperyDefinition4);
       _persistenceModelProviderStub
-          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.DerivedPropertyDefinition1))
-          .Return(_fakeStorageProperyDefinition5);
+          .Setup(stub => stub.GetStoragePropertyDefinition(_testModel.DerivedPropertyDefinition1))
+          .Returns(_fakeStorageProperyDefinition5);
       _persistenceModelProviderStub
-          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.DerivedPropertyDefinition2))
-          .Return(_fakeStorageProperyDefinition6);
+          .Setup(stub => stub.GetStoragePropertyDefinition(_testModel.DerivedPropertyDefinition2))
+          .Returns(_fakeStorageProperyDefinition6);
       _persistenceModelProviderStub
-          .Stub(stub => stub.GetStoragePropertyDefinition(_testModel.DerivedDerivedPropertyDefinition))
-          .Return(_fakeStorageProperyDefinition7);
+          .Setup(stub => stub.GetStoragePropertyDefinition(_testModel.DerivedDerivedPropertyDefinition))
+          .Returns(_fakeStorageProperyDefinition7);
     }
 
     [Test]
@@ -193,18 +193,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       PropertyDefinition propertyDefinition = PropertyDefinitionObjectMother.CreateForPropertyInformation(classDefinition, propertyName, propertyInfo);
 
       _persistenceModelProviderStub
-          .Stub(stub => stub.GetStoragePropertyDefinition(propertyDefinition))
-          .Return(storagePropertyDefinition);
+          .Setup(stub => stub.GetStoragePropertyDefinition(propertyDefinition))
+          .Returns(storagePropertyDefinition);
       return propertyDefinition;
     }
 
     private IPropertyInformation CreateFakePropertyInfo (Type declaringType, string propertyName)
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub(stub => stub.Name).Return(propertyName);
-      propertyInformationStub.Stub(stub => stub.DeclaringType).Return(TypeAdapter.Create(declaringType));
-      propertyInformationStub.Stub(_ => _.PropertyType).Return(typeof(string));
-      return propertyInformationStub;
+      var propertyInformationStub = new Mock<IPropertyInformation>();
+      propertyInformationStub.Setup(stub => stub.Name).Returns(propertyName);
+      propertyInformationStub.Setup(stub => stub.DeclaringType).Returns(TypeAdapter.Create(declaringType));
+      propertyInformationStub.Setup(_ => _.PropertyType).Returns(typeof(string));
+      return propertyInformationStub.Object;
     }
   }
 }

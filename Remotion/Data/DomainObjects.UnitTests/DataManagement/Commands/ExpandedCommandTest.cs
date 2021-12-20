@@ -15,24 +15,23 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 {
   [TestFixture]
   public class ExpandedCommandTest
   {
-    private MockRepository _mockRepository;
 
-    private IDataManagementCommand _commandMock1;
-    private IDataManagementCommand _commandMock2;
-    private IDataManagementCommand _commandMock3;
+    private Mock<IDataManagementCommand> _commandMock1;
+    private Mock<IDataManagementCommand> _commandMock2;
+    private Mock<IDataManagementCommand> _commandMock3;
 
-    private IDataManagementCommand _nonExecutableCommandMock1;
-    private IDataManagementCommand _nonExecutableCommandMock2;
+    private Mock<IDataManagementCommand> _nonExecutableCommandMock1;
+    private Mock<IDataManagementCommand> _nonExecutableCommandMock2;
 
     private Exception _exception1;
     private Exception _exception2;
@@ -41,42 +40,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
+      _commandMock1 = new Mock<IDataManagementCommand>(MockBehavior.Strict);
+      _commandMock1.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      _commandMock1 = _mockRepository.StrictMock<IDataManagementCommand>();
-      _commandMock1.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
+      _commandMock2 = new Mock<IDataManagementCommand>(MockBehavior.Strict);
+      _commandMock2.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      _commandMock2 = _mockRepository.StrictMock<IDataManagementCommand>();
-      _commandMock2.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
+      _commandMock3 = new Mock<IDataManagementCommand>(MockBehavior.Strict);
+      _commandMock3.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      _commandMock3 = _mockRepository.StrictMock<IDataManagementCommand>();
-      _commandMock3.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-
-      _nonExecutableCommandMock1 = _mockRepository.StrictMock<IDataManagementCommand>();
-      _nonExecutableCommandMock2 = _mockRepository.StrictMock<IDataManagementCommand>();
+      _nonExecutableCommandMock1 = new Mock<IDataManagementCommand>(MockBehavior.Strict);
+      _nonExecutableCommandMock2 = new Mock<IDataManagementCommand>(MockBehavior.Strict);
 
       _exception1 = new Exception("1");
       _exception2 = new Exception("2");
       _exception3 = new Exception("3");
 
-      _nonExecutableCommandMock1.Stub(stub => stub.GetAllExceptions()).Return(new[] { _exception1, _exception2 });
-      _nonExecutableCommandMock2.Stub(stub => stub.GetAllExceptions()).Return(new[] { _exception3 });
+      _nonExecutableCommandMock1.Setup(stub => stub.GetAllExceptions()).Returns(new[] { _exception1, _exception2 });
+      _nonExecutableCommandMock2.Setup(stub => stub.GetAllExceptions()).Returns(new[] { _exception3 });
     }
 
     [Test]
     public void GetNestedCommands ()
     {
-      _mockRepository.ReplayAll();
-
       var expandedCommand = CreateExpandedCommand();
-      Assert.That(expandedCommand.GetNestedCommands(), Is.EqualTo(new[] { _commandMock1, _commandMock2, _commandMock3 }));
+      Assert.That(expandedCommand.GetNestedCommands(), Is.EqualTo(new[] { _commandMock1.Object, _commandMock2.Object, _commandMock3.Object }));
     }
 
     [Test]
     public void GetAllExceptions_None ()
     {
-      _mockRepository.ReplayAll();
-
       var expandedCommand = CreateExpandedCommand();
       Assert.That(expandedCommand.GetAllExceptions(), Is.Empty);
     }
@@ -84,8 +77,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void GetAllExceptions_Some ()
     {
-      _mockRepository.ReplayAll();
-
       var expandedCommand = CreateNonExecutableExpandedCommand();
       Assert.That(expandedCommand.GetAllExceptions(), Is.EqualTo(new[] { _exception1, _exception2, _exception3 }));
     }
@@ -93,105 +84,99 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void Perform ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _commandMock1.Expect(mock => mock.Perform());
-        _commandMock2.Expect(mock => mock.Perform());
-        _commandMock3.Expect(mock => mock.Perform());
-      }
-
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _commandMock1.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock2.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock3.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
 
       var compositeCommand = CreateExpandedCommand();
       compositeCommand.Perform();
 
-      _mockRepository.VerifyAll();
+      _commandMock1.Verify();
+      _commandMock2.Verify();
+      _commandMock3.Verify();
+      _nonExecutableCommandMock1.Verify();
+      _nonExecutableCommandMock2.Verify();
     }
 
     [Test]
     public void Perform_NonExecutable ()
     {
-      _mockRepository.ReplayAll();
-
       var nonExecutableComposite = CreateNonExecutableExpandedCommand();
       Assert.Throws<Exception>(nonExecutableComposite.Perform);
 
-      _commandMock1.AssertWasNotCalled(mock => mock.Perform());
-      _nonExecutableCommandMock1.AssertWasNotCalled(mock => mock.Perform());
-      _nonExecutableCommandMock2.AssertWasNotCalled(mock => mock.Perform());
+      _commandMock1.Verify(mock => mock.Perform(), Times.Never());
+      _nonExecutableCommandMock1.Verify(mock => mock.Perform(), Times.Never());
+      _nonExecutableCommandMock2.Verify(mock => mock.Perform(), Times.Never());
     }
 
     [Test]
     public void Begin ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _commandMock1.Expect(mock => mock.Begin());
-        _commandMock2.Expect(mock => mock.Begin());
-        _commandMock3.Expect(mock => mock.Begin());
-      }
-
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _commandMock1.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock2.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock3.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
 
       var compositeCommand = CreateExpandedCommand();
       compositeCommand.Begin();
 
-      _mockRepository.VerifyAll();
+      _commandMock1.Verify();
+      _commandMock2.Verify();
+      _commandMock3.Verify();
+      _nonExecutableCommandMock1.Verify();
+      _nonExecutableCommandMock2.Verify();
     }
 
     [Test]
     public void Begin_NonExecutable ()
     {
-      _mockRepository.ReplayAll();
-
       var nonExecutableComposite = CreateNonExecutableExpandedCommand();
       Assert.Throws<Exception>(nonExecutableComposite.Begin);
 
-      _commandMock1.AssertWasNotCalled(mock => mock.Begin());
-      _nonExecutableCommandMock1.AssertWasNotCalled(mock => mock.Begin());
-      _nonExecutableCommandMock2.AssertWasNotCalled(mock => mock.Begin());
+      _commandMock1.Verify(mock => mock.Begin(), Times.Never());
+      _nonExecutableCommandMock1.Verify(mock => mock.Begin(), Times.Never());
+      _nonExecutableCommandMock2.Verify(mock => mock.Begin(), Times.Never());
     }
 
 
     [Test]
     public void End ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _commandMock3.Expect(mock => mock.End());
-        _commandMock2.Expect(mock => mock.End());
-        _commandMock1.Expect(mock => mock.End());
-      }
-
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _commandMock3.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      _commandMock2.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      _commandMock1.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
 
       var compositeCommand = CreateExpandedCommand();
       compositeCommand.End();
 
-      _mockRepository.VerifyAll();
+      _commandMock1.Verify();
+      _commandMock2.Verify();
+      _commandMock3.Verify();
+      _nonExecutableCommandMock1.Verify();
+      _nonExecutableCommandMock2.Verify();
     }
 
     [Test]
     public void End_NonExecutable ()
     {
-      _mockRepository.ReplayAll();
-
       var nonExecutableComposite = CreateNonExecutableExpandedCommand();
       Assert.Throws<Exception>(nonExecutableComposite.End);
 
-      _commandMock1.AssertWasNotCalled(mock => mock.End());
-      _nonExecutableCommandMock1.AssertWasNotCalled(mock => mock.End());
-      _nonExecutableCommandMock2.AssertWasNotCalled(mock => mock.End());
+      _commandMock1.Verify(mock => mock.End(), Times.Never());
+      _nonExecutableCommandMock1.Verify(mock => mock.End(), Times.Never());
+      _nonExecutableCommandMock2.Verify(mock => mock.End(), Times.Never());
     }
 
     private ExpandedCommand CreateExpandedCommand ()
     {
-      return new ExpandedCommand(_commandMock1, _commandMock2, _commandMock3);
+      return new ExpandedCommand(_commandMock1.Object, _commandMock2.Object, _commandMock3.Object);
     }
 
     private ExpandedCommand CreateNonExecutableExpandedCommand ()
     {
-      return new ExpandedCommand(_commandMock1, _nonExecutableCommandMock1, _nonExecutableCommandMock2);
+      return new ExpandedCommand(_commandMock1.Object, _nonExecutableCommandMock1.Object, _nonExecutableCommandMock2.Object);
     }
   }
 }

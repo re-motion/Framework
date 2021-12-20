@@ -42,7 +42,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       persistentPropertyValues.Add(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name"), "Kunde 1");
       persistentPropertyValues.Add(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.CustomerSince"), new DateTime(2000, 1, 1));
       persistentPropertyValues.Add(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Type"), Customer.CustomerType.Standard);
-      persistentPropertyValues.Add(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"), _domainObjectIDs.IndustrialSector1);
+      persistentPropertyValues.Add(
+          classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"),
+          _domainObjectIDs.IndustrialSector1);
 
       DataContainer dataContainer = CreateExistingDataContainer(id, persistentPropertyValues);
 
@@ -65,13 +67,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.EnumProperty"], ClassWithAllDataTypes.EnumType.Value1);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.ExtensibleEnumProperty"], Color.Values.Red());
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.FlagsProperty"], ClassWithAllDataTypes.FlagsType.Flag2);
-      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"], new Guid("{236C2DCE-43BD-45ad-BDE6-15F8C05C4B29}"));
+      persistentPropertyValues.Add(
+          classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.GuidProperty"],
+          new Guid("{236C2DCE-43BD-45ad-BDE6-15F8C05C4B29}"));
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int16Property"], (short)32767);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int32Property"], 2147483647);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.Int64Property"], (long)9223372036854775807);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.SingleProperty"], (float)6789.321);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty"], "abcdeföäü");
-      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"], "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
+      persistentPropertyValues.Add(
+          classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringPropertyWithoutMaxLength"],
+          "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890");
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty"], ResourceManager.GetImage1());
 
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaBooleanProperty"], true);
@@ -81,8 +87,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDecimalProperty"], 765.098m);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaDoubleProperty"], 654321.789d);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaEnumProperty"], ClassWithAllDataTypes.EnumType.Value2);
-      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaFlagsProperty"], ClassWithAllDataTypes.FlagsType.Flag1|ClassWithAllDataTypes.FlagsType.Flag2);
-      persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"], new Guid("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"));
+      persistentPropertyValues.Add(
+          classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaFlagsProperty"],
+          ClassWithAllDataTypes.FlagsType.Flag1 | ClassWithAllDataTypes.FlagsType.Flag2);
+      persistentPropertyValues.Add(
+          classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaGuidProperty"],
+          new Guid("{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}"));
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt16Property"], (short)12000);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt32Property"], -2147483647);
       persistentPropertyValues.Add(classDefinition["Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.NaInt64Property"], 3147483647L);
@@ -120,7 +130,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       // use GetPropertyDefinition because we are setting properties from the base class here
       persistentPropertyValues.Add(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name"), "Partner 1");
       persistentPropertyValues.Add(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson"), _domainObjectIDs.Person1);
-      persistentPropertyValues.Add(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"), _domainObjectIDs.IndustrialSector1);
+      persistentPropertyValues.Add(
+          classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"),
+          _domainObjectIDs.IndustrialSector1);
 
       DataContainer dataContainer = CreateExistingDataContainer(id, persistentPropertyValues);
 
@@ -137,7 +149,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       // use GetPropertyDefinition because we are setting properties from the base class here
       persistentPropertyValues.Add(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name"), "Händler 2");
       persistentPropertyValues.Add(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Partner.ContactPerson"), _domainObjectIDs.Person6);
-      persistentPropertyValues.Add(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"), _domainObjectIDs.IndustrialSector1);
+      persistentPropertyValues.Add(
+          classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.IndustrialSector"),
+          _domainObjectIDs.IndustrialSector1);
       persistentPropertyValues.Add(classDefinition.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Distributor.NumberOfShops"), 10);
 
       DataContainer dataContainer = CreateExistingDataContainer(id, persistentPropertyValues);

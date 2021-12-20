@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
@@ -33,7 +34,6 @@ using Remotion.Linq.Parsing.Structure.NodeTypeProviders;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Linq.SqlBackend.SqlPreparation.MethodCallTransformers;
 using Remotion.Linq.SqlBackend.SqlPreparation.ResultOperatorHandlers;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
@@ -51,14 +51,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQueryable ()
     {
-      var executorStub = MockRepository.GenerateStub<IQueryExecutor>();
-      var queryParserStub = MockRepository.GenerateStub<IQueryParser>();
+      var executorStub = new Mock<IQueryExecutor>();
+      var queryParserStub = new Mock<IQueryParser>();
 
-      var result = _factory.CreateQueryable<Order>(queryParserStub, executorStub);
+      var result = _factory.CreateQueryable<Order>(queryParserStub.Object, executorStub.Object);
 
       Assert.That(result, Is.TypeOf(typeof(DomainObjectQueryable<Order>)));
-      Assert.That(((DomainObjectQueryable<Order>)result).Provider.Executor, Is.SameAs(executorStub));
-      Assert.That(((DomainObjectQueryable<Order>)result).Provider.QueryParser, Is.SameAs(queryParserStub));
+      Assert.That(((DomainObjectQueryable<Order>)result).Provider.Executor, Is.SameAs(executorStub.Object));
+      Assert.That(((DomainObjectQueryable<Order>)result).Provider.QueryParser, Is.SameAs(queryParserStub.Object));
     }
 
     [Test]

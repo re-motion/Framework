@@ -24,10 +24,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 {
   public class ExtendedStorageObjectFactory : SqlStorageObjectFactory
   {
-    protected override IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition, IStorageTypeInformationProvider storageTypeInformationProvider, IStorageNameProvider storageNameProvider, IStorageProviderDefinitionFinder providerDefinitionFinder)
+    protected override IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (
+        RdbmsProviderDefinition storageProviderDefinition,
+        IStorageTypeInformationProvider storageTypeInformationProvider,
+        IStorageNameProvider storageNameProvider,
+        IStorageProviderDefinitionFinder providerDefinitionFinder)
     {
       return new RelationStoragePropertyDefinitionFactory(
-          storageProviderDefinition, true, storageNameProvider, storageTypeInformationProvider, providerDefinitionFinder);
+          storageProviderDefinition,
+          true,
+          storageNameProvider,
+          storageTypeInformationProvider,
+          providerDefinitionFinder);
     }
   }
 }

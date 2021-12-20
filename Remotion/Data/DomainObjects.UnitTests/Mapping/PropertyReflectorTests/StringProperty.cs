@@ -19,7 +19,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
 {
@@ -29,15 +28,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithNullableFalse ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties>("NoAttribute", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties>("NoAttribute", DomainModelConstraintProviderStub.Object);
 
       DomainModelConstraintProviderStub
-         .Stub(stub => stub.IsNullable(propertyReflector.PropertyInfo))
-         .Return(false);
+          .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+          .Returns(false);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithStringProperties.NoAttribute"));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithStringProperties.NoAttribute"));
       Assert.That(actual.PropertyType, Is.SameAs(typeof(string)));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.Null);
@@ -48,15 +49,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     public void GetMetadata_WithNullableTrue ()
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties>(
-          "NullableFromAttribute", DomainModelConstraintProviderStub);
+          "NullableFromAttribute",
+          DomainModelConstraintProviderStub.Object);
 
       DomainModelConstraintProviderStub
-         .Stub(stub => stub.IsNullable(propertyReflector.PropertyInfo))
-         .Return(true);
+          .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+          .Returns(true);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithStringProperties.NullableFromAttribute"));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithStringProperties.NullableFromAttribute"));
       Assert.That(actual.PropertyType, Is.SameAs(typeof(string)));
       Assert.That(actual.IsNullable, Is.True);
       Assert.That(actual.MaxLength, Is.Null);
@@ -66,18 +70,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithMaximumLength ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties>("MaximumLength", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties>("MaximumLength", DomainModelConstraintProviderStub.Object);
 
       DomainModelConstraintProviderStub
-         .Stub(stub => stub.IsNullable(propertyReflector.PropertyInfo))
-         .Return(true);
+          .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+          .Returns(true);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.GetMaxLength(propertyReflector.PropertyInfo))
-          .Return(100);
+          .Setup(stub => stub.GetMaxLength(propertyReflector.PropertyInfo))
+          .Returns(100);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithStringProperties.MaximumLength"));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithStringProperties.MaximumLength"));
       Assert.That(actual.PropertyType, Is.SameAs(typeof(string)));
       Assert.That(actual.IsNullable, Is.True);
       Assert.That(actual.MaxLength, Is.EqualTo(100));
@@ -88,18 +94,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     public void GetMetadata_WithNotNullableAndMaximumLength ()
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties>(
-          "NotNullableAndMaximumLength", DomainModelConstraintProviderStub);
+          "NotNullableAndMaximumLength",
+          DomainModelConstraintProviderStub.Object);
 
       DomainModelConstraintProviderStub
-         .Stub(stub => stub.IsNullable(propertyReflector.PropertyInfo))
-         .Return(false);
+          .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+          .Returns(false);
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.GetMaxLength(propertyReflector.PropertyInfo))
-          .Return(100);
+          .Setup(stub => stub.GetMaxLength(propertyReflector.PropertyInfo))
+          .Returns(100);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithStringProperties.NotNullableAndMaximumLength"));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithStringProperties.NotNullableAndMaximumLength"));
       Assert.That(actual.PropertyType, Is.SameAs(typeof(string)));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.EqualTo(100));

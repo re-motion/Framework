@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -25,7 +26,6 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     private DomainObjectCollection _collection;
     private DomainObjectCollection _readOnlyCollection;
 
-    private IDomainObjectCollectionData _dataStrategyMock;
+    private Mock<IDomainObjectCollectionData> _dataStrategyMock;
     private DomainObjectCollection _collectionWithDataStrategyMock;
 
     public override void SetUp ()
@@ -55,27 +55,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
           typeof(DomainObjectCollection),
           new[] { _customer1, _customer2 });
 
-      _dataStrategyMock = MockRepository.GenerateMock<IDomainObjectCollectionData>();
-      _collectionWithDataStrategyMock = new DomainObjectCollection(_dataStrategyMock);
+      _dataStrategyMock = new Mock<IDomainObjectCollectionData>();
+      _collectionWithDataStrategyMock = new DomainObjectCollection(_dataStrategyMock.Object);
     }
 
     [Test]
     public void CreateDataStrategyForStandAloneCollection ()
     {
-      var dataStoreStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
-      var eventRaiserStub = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser>();
+      var dataStoreStub = new Mock<IDomainObjectCollectionData>();
+      var eventRaiserStub = new Mock<IDomainObjectCollectionEventRaiser>();
 
       var modificationCheckingDecorator =
-          DomainObjectCollection.CreateDataStrategyForStandAloneCollection(dataStoreStub, typeof(Order), eventRaiserStub);
+          DomainObjectCollection.CreateDataStrategyForStandAloneCollection(dataStoreStub.Object, typeof(Order), eventRaiserStub.Object);
       Assert.That(modificationCheckingDecorator, Is.InstanceOf(typeof(ModificationCheckingDomainObjectCollectionDataDecorator)));
       Assert.That(modificationCheckingDecorator.RequiredItemType, Is.SameAs(typeof(Order)));
 
       var eventRaisingDecorator = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<EventRaisingDomainObjectCollectionDataDecorator>(
           (ModificationCheckingDomainObjectCollectionDataDecorator)modificationCheckingDecorator);
-      Assert.That(eventRaisingDecorator.EventRaiser, Is.SameAs(eventRaiserStub));
+      Assert.That(eventRaisingDecorator.EventRaiser, Is.SameAs(eventRaiserStub.Object));
 
       var dataStore = DomainObjectCollectionDataTestHelper.GetWrappedDataAndCheckType<IDomainObjectCollectionData>(eventRaisingDecorator);
-      Assert.That(dataStore, Is.SameAs(dataStoreStub));
+      Assert.That(dataStore, Is.SameAs(dataStoreStub.Object));
     }
 
     [Test]
@@ -138,11 +138,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void IsDataComplete ()
     {
-      _dataStrategyMock.Stub(mock => mock.IsDataComplete).Return(true);
+      _dataStrategyMock.Setup(mock => mock.IsDataComplete).Returns(true);
       Assert.That(_collectionWithDataStrategyMock.IsDataComplete, Is.True);
 
-      _dataStrategyMock.BackToRecord();
-      _dataStrategyMock.Stub(mock => mock.IsDataComplete).Return(false);
+      _dataStrategyMock.Reset();
+      _dataStrategyMock.Setup(mock => mock.IsDataComplete).Returns(false);
       Assert.That(_collectionWithDataStrategyMock.IsDataComplete, Is.False);
     }
 
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void EnsureDataComplete_DelegatesToStrategy ()
     {
       _collectionWithDataStrategyMock.EnsureDataComplete();
-      _dataStrategyMock.AssertWasCalled(mock => mock.EnsureDataComplete());
+      _dataStrategyMock.Verify(mock => mock.EnsureDataComplete(), Times.AtLeastOnce());
     }
 
     [Test]
@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void AssociatedEndPointID_AssociatedCollection ()
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
-      _dataStrategyMock.Stub(stub => stub.AssociatedEndPointID).Return(endPointID);
+      _dataStrategyMock.Setup(stub => stub.AssociatedEndPointID).Returns(endPointID);
 
       Assert.That(_collectionWithDataStrategyMock.AssociatedEndPointID, Is.EqualTo(endPointID));
     }
@@ -276,7 +276,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Item_Get_ByIndex ()
     {
-      _dataStrategyMock.Stub(stub => stub.GetObject(12)).Return(_customer1);
+      _dataStrategyMock.Setup(stub => stub.GetObject(12)).Returns(_customer1);
 
       Assert.That(_collectionWithDataStrategyMock[12], Is.SameAs(_customer1));
     }
@@ -284,7 +284,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Item_Get_ByID ()
     {
-      _dataStrategyMock.Stub(stub => stub.GetObject(_customer1.ID)).Return(_customer1);
+      _dataStrategyMock.Setup(stub => stub.GetObject(_customer1.ID)).Returns(_customer1);
 
       Assert.That(_collectionWithDataStrategyMock[_customer1.ID], Is.SameAs(_customer1));
     }
@@ -293,16 +293,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void Item_Set ()
     {
       _collectionWithDataStrategyMock[12] = _customer1;
-      _dataStrategyMock.AssertWasCalled(mock => mock.Replace(12, _customer1));
+      _dataStrategyMock.Verify(mock => mock.Replace(12, _customer1), Times.AtLeastOnce());
     }
 
     [Test]
     public void Item_Set_Null ()
     {
-      _dataStrategyMock.Stub(stub => stub.GetObject(12)).Return(_customer2);
+      _dataStrategyMock.Setup(stub => stub.GetObject(12)).Returns(_customer2);
       _collectionWithDataStrategyMock[12] = null;
 
-      _dataStrategyMock.AssertWasCalled(mock => mock.Remove(_customer2));
+      _dataStrategyMock.Verify(mock => mock.Remove(_customer2), Times.AtLeastOnce());
     }
 
     [Test]
@@ -364,10 +364,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void RemoveAt ()
     {
-      _dataStrategyMock.Stub(stub => stub.GetObject(12)).Return(_customer2);
+      _dataStrategyMock.Setup(stub => stub.GetObject(12)).Returns(_customer2);
       _collectionWithDataStrategyMock.RemoveAt(12);
 
-      _dataStrategyMock.AssertWasCalled(mock => mock.Remove(_customer2));
+      _dataStrategyMock.Verify(mock => mock.Remove(_customer2), Times.AtLeastOnce());
     }
 
     [Test]
@@ -385,7 +385,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _collectionWithDataStrategyMock.Remove(_customer1.ID);
 
-      _dataStrategyMock.AssertWasCalled(mock => mock.Remove(_customer1.ID));
+      _dataStrategyMock.Verify(mock => mock.Remove(_customer1.ID), Times.AtLeastOnce());
     }
 
     [Test]
@@ -403,7 +403,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _collectionWithDataStrategyMock.Remove(_customer1);
 
-      _dataStrategyMock.AssertWasCalled(mock => mock.Remove(_customer1));
+      _dataStrategyMock.Verify(mock => mock.Remove(_customer1), Times.AtLeastOnce());
     }
 
     [Test]
@@ -421,7 +421,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _collectionWithDataStrategyMock.Clear();
 
-      _dataStrategyMock.AssertWasCalled(mock => mock.Clear());
+      _dataStrategyMock.Verify(mock => mock.Clear(), Times.AtLeastOnce());
     }
 
     [Test]
@@ -437,7 +437,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       _collectionWithDataStrategyMock.Insert(12, _customer1);
 
-      _dataStrategyMock.AssertWasCalled(mock => mock.Insert(12, _customer1));
+      _dataStrategyMock.Verify(mock => mock.Insert(12, _customer1), Times.AtLeastOnce());
     }
 
     [Test]
@@ -701,18 +701,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
     private OrderCollection CreateAssociatedCollectionWithEndPointStub ()
     {
-      var collectionEndPointStub = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint>();
+      var collectionEndPointStub = new Mock<IDomainObjectCollectionEndPoint>();
       var endPointDataStub = new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData());
 
-      collectionEndPointStub.Stub(stub => stub.GetData()).Return(endPointDataStub);
+      collectionEndPointStub.Setup(stub => stub.GetData()).Returns(endPointDataStub);
 
-      var virtualEndPointProviderStub = MockRepository.GenerateStub<IVirtualEndPointProvider>();
+      var virtualEndPointProviderStub = new Mock<IVirtualEndPointProvider>();
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
-      virtualEndPointProviderStub.Stub(stub => stub.GetOrCreateVirtualEndPoint(endPointID)).Return(collectionEndPointStub);
+      virtualEndPointProviderStub.Setup(stub => stub.GetOrCreateVirtualEndPoint(endPointID)).Returns(collectionEndPointStub.Object);
 
-      var delegatingStrategy = new EndPointDelegatingDomainObjectCollectionData(endPointID, virtualEndPointProviderStub);
+      var delegatingStrategy = new EndPointDelegatingDomainObjectCollectionData(endPointID, virtualEndPointProviderStub.Object);
       var associatedCollection = new OrderCollection(new ModificationCheckingDomainObjectCollectionDataDecorator(typeof(Order), delegatingStrategy));
-      Assert.That(DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint(associatedCollection), Is.SameAs(collectionEndPointStub));
+      Assert.That(DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint(associatedCollection), Is.SameAs(collectionEndPointStub.Object));
       return associatedCollection;
     }
   }

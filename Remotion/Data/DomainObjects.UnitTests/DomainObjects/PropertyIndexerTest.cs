@@ -215,14 +215,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void ShortNameAndTypeWithShadowedProperties ()
     {
-      var classWithDifferentProperties = (DerivedClassWithDifferentProperties)LifetimeService.NewObject(_transaction, typeof(DerivedClassWithDifferentProperties), ParamList.Empty);
+      var classWithDifferentProperties =
+          (DerivedClassWithDifferentProperties)LifetimeService.NewObject(_transaction, typeof(DerivedClassWithDifferentProperties), ParamList.Empty);
 
       var indexer = new PropertyIndexer(classWithDifferentProperties);
       Assert.That(
           indexer[typeof(DerivedClassWithDifferentProperties), "String"],
           Is.EqualTo(indexer[typeof(DerivedClassWithDifferentProperties).FullName + ".String"]));
       Assert.That(
-          indexer[typeof(ClassWithDifferentProperties), "String"], Is.EqualTo(indexer[typeof(ClassWithDifferentProperties).FullName + ".String"]));
+          indexer[typeof(ClassWithDifferentProperties), "String"],
+          Is.EqualTo(indexer[typeof(ClassWithDifferentProperties).FullName + ".String"]));
     }
 
     [Test]

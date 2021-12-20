@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.IntegrationTests;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Validation
 {
@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     [Test]
     public void Key ()
     {
-      var extension = new CommitValidationClientTransactionExtension(MockRepository.GenerateStub<IPersistableDataValidator>());
+      var extension = new CommitValidationClientTransactionExtension(new Mock<IPersistableDataValidator>().Object);
       Assert.That(extension.Key, Is.EqualTo(CommitValidationClientTransactionExtension.DefaultKey));
     }
 
@@ -47,16 +47,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
 
       var transaction = ClientTransaction.CreateRootTransaction();
 
-      var validatorMock = MockRepository.GenerateStrictMock<IPersistableDataValidator>();
-      var extension = new CommitValidationClientTransactionExtension(validatorMock);
+      var validatorMock = new Mock<IPersistableDataValidator>(MockBehavior.Strict);
+      var extension = new CommitValidationClientTransactionExtension(validatorMock.Object);
 
-      validatorMock.Expect(mock => mock.Validate(transaction, data1));
-      validatorMock.Expect(mock => mock.Validate(transaction, data2));
-      validatorMock.Replay();
+      validatorMock.Setup(mock => mock.Validate(transaction, data1)).Verifiable();
+      validatorMock.Setup(mock => mock.Validate(transaction, data2)).Verifiable();
 
       extension.CommitValidate(transaction, Array.AsReadOnly(new[] { data1, data2 }));
 
-      validatorMock.VerifyAllExpectations();
+      validatorMock.Verify();
     }
 
     [Test]

@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Development.UnitTesting;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -30,13 +30,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         bool isMandatory,
         Type propertyType)
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub(stub => stub.Name).Return(propertyName);
-      propertyInformationStub.Stub(stub => stub.PropertyType).Return(propertyType);
-      propertyInformationStub.Stub(stub => stub.DeclaringType).Return(TypeAdapter.Create(classDefinition.ClassType));
+      var propertyInformationStub = new Mock<IPropertyInformation>();
+      propertyInformationStub.Setup(stub => stub.Name).Returns(propertyName);
+      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(propertyType);
+      propertyInformationStub.Setup(stub => stub.DeclaringType).Returns(TypeAdapter.Create(classDefinition.ClassType));
 
       return new VirtualObjectRelationEndPointDefinition(
-          classDefinition, propertyName, isMandatory, propertyInformationStub);
+          classDefinition, propertyName, isMandatory, propertyInformationStub.Object);
     }
 
     public static VirtualObjectRelationEndPointDefinition Create (

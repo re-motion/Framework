@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     {
       base.SetUp();
 
-      _loadedObjectData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order1);
+      _loadedObjectData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order1).Object;
       _dataSourceData = DataContainer.CreateForExisting(DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     [Test]
     public void Initialization_IDsDontMatch ()
     {
-      var loadedObjectDataStub = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order3);
+      var loadedObjectDataStub = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order3).Object;
       Assert.That(
           () => new LoadedObjectDataWithDataSourceData(loadedObjectDataStub, _dataSourceData),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(

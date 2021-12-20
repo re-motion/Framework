@@ -69,7 +69,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
 
       Assert.That(validationResult.IsValid, Is.False);
       var expectedMessage =
-         @"Type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.ClassOutOfInheritanceHierarchy, Remotion.Data.DomainObjects.UnitTests, Version=.*, Culture=.*, PublicKeyToken=.*' of class 'Derived' is not derived from type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.BaseOfBaseValidationDomainObjectClass, Remotion.Data.DomainObjects.UnitTests, Version=.*, Culture=.*, PublicKeyToken=.*' of base class 'Base'\.";
+          @"Type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.ClassOutOfInheritanceHierarchy, Remotion.Data.DomainObjects.UnitTests, Version=.*, Culture=.*, PublicKeyToken=.*'"
+          + " of class 'Derived' is not derived from type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.BaseOfBaseValidationDomainObjectClass, Remotion.Data.DomainObjects.UnitTests, Version=.*, Culture=.*, PublicKeyToken=.*' of base class 'Base'.";
       Assert.That(validationResult.Message, Does.Match(expectedMessage));
     }
   }

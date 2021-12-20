@@ -25,7 +25,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
   [Serializable]
   public class SerializableFetchedRelationDataRegistrationAgentFake : IFetchedRelationDataRegistrationAgent
   {
-    public void GroupAndRegisterRelatedObjects (IRelationEndPointDefinition relationEndPointDefinition, ICollection<ILoadedObjectData> originatingObjects, ICollection<LoadedObjectDataWithDataSourceData> relatedObjects)
+    public void GroupAndRegisterRelatedObjects (
+        IRelationEndPointDefinition relationEndPointDefinition,
+        ICollection<ILoadedObjectData> originatingObjects,
+        ICollection<LoadedObjectDataWithDataSourceData> relatedObjects)
     {
       throw new NotImplementedException();
     }

@@ -18,48 +18,45 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProviderCommands
 {
   [TestFixture]
   public class MultiObjectIDLoadCommandTest : StandardMappingTest
   {
-    private IDbCommandBuilder _dbCommandBuilder1Mock;
-    private IDbCommandBuilder _dbCommandBuilder2Mock;
+    private Mock<IDbCommandBuilder> _dbCommandBuilder1Mock;
+    private Mock<IDbCommandBuilder> _dbCommandBuilder2Mock;
     private MultiObjectIDLoadCommand _command;
-    private IDbCommand _dbCommandMock1;
-    private IDbCommand _dbCommandMock2;
-    private IDataReader _dataReaderMock;
-    private IObjectReader<ObjectID> _objectIDReaderStub;
+    private Mock<IDbCommand> _dbCommandMock1;
+    private Mock<IDbCommand> _dbCommandMock2;
+    private Mock<IDataReader> _dataReaderMock;
+    private Mock<IObjectReader<ObjectID>> _objectIDReaderStub;
     private ObjectID[] _fakeResult;
     private ObjectID _objectID1;
-    private IRdbmsProviderCommandExecutionContext _commandExecutionContextStub;
-    private MockRepository _repository;
+    private Mock<IRdbmsProviderCommandExecutionContext> _commandExecutionContextStub;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _repository = new MockRepository();
+      _dbCommandBuilder1Mock = new Mock<IDbCommandBuilder>(MockBehavior.Strict);
+      _dbCommandBuilder2Mock = new Mock<IDbCommandBuilder>(MockBehavior.Strict);
 
-      _dbCommandBuilder1Mock = _repository.StrictMock<IDbCommandBuilder>();
-      _dbCommandBuilder2Mock = _repository.StrictMock<IDbCommandBuilder>();
+      _commandExecutionContextStub = new Mock<IRdbmsProviderCommandExecutionContext>();
+      _objectIDReaderStub = new Mock<IObjectReader<ObjectID>>();
 
-      _commandExecutionContextStub = _repository.Stub<IRdbmsProviderCommandExecutionContext>();
-      _objectIDReaderStub = _repository.Stub<IObjectReader<ObjectID>>();
+      _dbCommandMock1 = new Mock<IDbCommand>(MockBehavior.Strict);
+      _dbCommandMock2 = new Mock<IDbCommand>(MockBehavior.Strict);
+      _dataReaderMock = new Mock<IDataReader>(MockBehavior.Strict);
 
-      _dbCommandMock1 = _repository.StrictMock<IDbCommand>();
-      _dbCommandMock2 = _repository.StrictMock<IDbCommand>();
-      _dataReaderMock = _repository.StrictMock<IDataReader>();
-
-      _command = new MultiObjectIDLoadCommand(new[] { _dbCommandBuilder1Mock, _dbCommandBuilder2Mock }, _objectIDReaderStub);
+      _command = new MultiObjectIDLoadCommand(new[] { _dbCommandBuilder1Mock.Object, _dbCommandBuilder2Mock.Object }, _objectIDReaderStub.Object);
 
       _objectID1 = new ObjectID("Order", Guid.NewGuid());
       _fakeResult = new[] { _objectID1 };
@@ -68,78 +65,102 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [Test]
     public void Initialization ()
     {
-      Assert.That(_command.DbCommandBuilders, Is.EqualTo(new[] { _dbCommandBuilder1Mock, _dbCommandBuilder2Mock }));
-      Assert.That(_command.ObjectIDReader, Is.SameAs(_objectIDReaderStub));
+      Assert.That(_command.DbCommandBuilders, Is.EqualTo(new[] { _dbCommandBuilder1Mock.Object, _dbCommandBuilder2Mock.Object }));
+      Assert.That(_command.ObjectIDReader, Is.SameAs(_objectIDReaderStub.Object));
     }
 
     [Test]
     public void Execute_OneDbCommandBuilder ()
     {
-      _dbCommandBuilder1Mock.Expect(mock => mock.Create(_commandExecutionContextStub)).Return(_dbCommandMock1);
-      _dbCommandMock1.Expect(mock => mock.Dispose());
-      _dataReaderMock.Expect(mock => mock.Dispose());
-      _commandExecutionContextStub.Stub(stub => stub.ExecuteReader(_dbCommandMock1, CommandBehavior.SingleResult)).Return(_dataReaderMock);
-      _objectIDReaderStub.Stub(stub => stub.ReadSequence(_dataReaderMock)).Return(_fakeResult);
-      _repository.ReplayAll();
+      _dbCommandBuilder1Mock.Setup(mock => mock.Create(_commandExecutionContextStub.Object)).Returns(_dbCommandMock1.Object).Verifiable();
+      _dbCommandMock1.Setup(mock => mock.Dispose()).Verifiable();
+      _dataReaderMock.Setup(mock => mock.Dispose()).Verifiable();
+      _commandExecutionContextStub.Setup(stub => stub.ExecuteReader(_dbCommandMock1.Object, CommandBehavior.SingleResult)).Returns(_dataReaderMock.Object);
+      _objectIDReaderStub.Setup(stub => stub.ReadSequence(_dataReaderMock.Object)).Returns(_fakeResult);
 
-      var command = new MultiObjectIDLoadCommand(new[] { _dbCommandBuilder1Mock }, _objectIDReaderStub);
+      var command = new MultiObjectIDLoadCommand(new[] { _dbCommandBuilder1Mock.Object }, _objectIDReaderStub.Object);
 
-      var result = command.Execute(_commandExecutionContextStub).ToArray();
+      var result = command.Execute(_commandExecutionContextStub.Object).ToArray();
 
-      _repository.VerifyAll();
+      _dbCommandBuilder1Mock.Verify();
+      _dbCommandBuilder2Mock.Verify();
+      _dbCommandMock1.Verify();
+      _dbCommandMock2.Verify();
+      _dataReaderMock.Verify();
       Assert.That(result, Is.EqualTo(new[] { _objectID1 }));
     }
 
     [Test]
     public void Execute_SeveralDbCommandBuilders ()
     {
-      _dbCommandBuilder1Mock.Expect(mock => mock.Create(_commandExecutionContextStub)).Return(_dbCommandMock1);
-      _dbCommandBuilder2Mock.Expect(mock => mock.Create(_commandExecutionContextStub)).Return(_dbCommandMock2);
-      _dbCommandMock1.Expect(mock => mock.Dispose());
-      _dbCommandMock2.Expect(mock => mock.Dispose());
-      _dataReaderMock.Expect(mock => mock.Dispose()).Repeat.Twice();
-      _repository.ReplayAll();
+      _dbCommandBuilder1Mock.Setup(mock => mock.Create(_commandExecutionContextStub.Object)).Returns(_dbCommandMock1.Object).Verifiable();
+      _dbCommandBuilder2Mock.Setup(mock => mock.Create(_commandExecutionContextStub.Object)).Returns(_dbCommandMock2.Object).Verifiable();
+      _dbCommandMock1.Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock2.Setup(mock => mock.Dispose()).Verifiable();
+      _dataReaderMock.Setup(mock => mock.Dispose()).Verifiable();
 
-      _commandExecutionContextStub.Stub(stub => stub.ExecuteReader(_dbCommandMock1, CommandBehavior.SingleResult)).Return(_dataReaderMock);
-      _commandExecutionContextStub.Stub(stub => stub.ExecuteReader(_dbCommandMock2, CommandBehavior.SingleResult)).Return(_dataReaderMock);
-      _objectIDReaderStub.Stub(stub => stub.ReadSequence(_dataReaderMock)).Return(_fakeResult);
+      _commandExecutionContextStub.Setup(stub => stub.ExecuteReader(_dbCommandMock1.Object, CommandBehavior.SingleResult)).Returns(_dataReaderMock.Object);
+      _commandExecutionContextStub.Setup(stub => stub.ExecuteReader(_dbCommandMock2.Object, CommandBehavior.SingleResult)).Returns(_dataReaderMock.Object);
+      _objectIDReaderStub.Setup(stub => stub.ReadSequence(_dataReaderMock.Object)).Returns(_fakeResult);
 
       var command = new MultiObjectIDLoadCommand(
-          new[] { _dbCommandBuilder1Mock, _dbCommandBuilder2Mock }, _objectIDReaderStub);
+          new[] { _dbCommandBuilder1Mock.Object, _dbCommandBuilder2Mock.Object }, _objectIDReaderStub.Object);
 
-      var result = command.Execute(_commandExecutionContextStub).ToArray();
+      var result = command.Execute(_commandExecutionContextStub.Object).ToArray();
 
-      _repository.VerifyAll();
+      _dbCommandBuilder1Mock.Verify();
+      _dbCommandBuilder2Mock.Verify();
+      _dbCommandMock1.Verify();
+      _dbCommandMock2.Verify();
+      _dataReaderMock.Verify(mock => mock.Dispose(), Times.Exactly(2));
       Assert.That(result, Is.EqualTo(new[] { _objectID1, _objectID1 }));
     }
 
     [Test]
     public void LoadObjectIDsFromCommandBuilder ()
     {
-      var enumerableStub = _repository.Stub<IEnumerable<ObjectID>>();
-      var enumeratorMock = _repository.StrictMock<IEnumerator<ObjectID>>();
+      var enumerableStub = new Mock<IEnumerable<ObjectID>>();
+      var enumeratorMock = new Mock<IEnumerator<ObjectID>>(MockBehavior.Strict);
 
-      using (_repository.Ordered())
-      {
-        _dbCommandBuilder1Mock.Expect(mock => mock.Create(_commandExecutionContextStub)).Return(_dbCommandMock1);
-        _commandExecutionContextStub.Stub(stub => stub.ExecuteReader(_dbCommandMock1, CommandBehavior.SingleResult)).Return(_dataReaderMock);
-        _objectIDReaderStub.Stub(stub => stub.ReadSequence(_dataReaderMock)).Return(enumerableStub);
-        enumerableStub.Stub(stub => stub.GetEnumerator()).Return(enumeratorMock);
-        enumeratorMock.Expect(mock => mock.MoveNext()).Return(false);
-        enumeratorMock.Expect(mock => mock.Dispose());
-        _dataReaderMock.Expect(mock => mock.Dispose());
-        _dbCommandMock1.Expect(mock => mock.Dispose());
-      }
+      var sequence = new MockSequence();
 
-      _repository.ReplayAll();
+      _dbCommandBuilder1Mock
+          .InSequence(sequence)
+          .Setup(mock => mock.Create(_commandExecutionContextStub.Object))
+          .Returns(_dbCommandMock1.Object)
+          .Verifiable();
 
-      var command = new MultiObjectIDLoadCommand(new[] { _dbCommandBuilder1Mock, _dbCommandBuilder2Mock }, _objectIDReaderStub);
+      _commandExecutionContextStub
+          .InSequence(sequence)
+          .Setup(stub => stub.ExecuteReader(_dbCommandMock1.Object, CommandBehavior.SingleResult))
+          .Returns(_dataReaderMock.Object);
+
+      _objectIDReaderStub
+          .InSequence(sequence)
+          .Setup(stub => stub.ReadSequence(_dataReaderMock.Object))
+          .Returns(enumerableStub.Object);
+
+      enumerableStub.Setup(stub => stub.GetEnumerator()).Returns(enumeratorMock.Object);
+      enumeratorMock.InSequence(sequence).Setup(mock => mock.MoveNext()).Returns(false).Verifiable();
+      enumeratorMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _dataReaderMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock1.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      var command = new MultiObjectIDLoadCommand(new[] { _dbCommandBuilder1Mock.Object, _dbCommandBuilder2Mock.Object }, _objectIDReaderStub.Object);
 
       var result =
-          (IEnumerable<ObjectID>)PrivateInvoke.InvokeNonPublicMethod(command, "LoadObjectIDsFromCommandBuilder", _dbCommandBuilder1Mock, _commandExecutionContextStub);
+          (IEnumerable<ObjectID>)PrivateInvoke.InvokeNonPublicMethod(
+              command,
+              "LoadObjectIDsFromCommandBuilder",
+              _dbCommandBuilder1Mock.Object,
+              _commandExecutionContextStub.Object);
       result.ToArray();
 
-      _repository.VerifyAll();
+      _dbCommandBuilder1Mock.Verify();
+      _dbCommandBuilder2Mock.Verify();
+      _dbCommandMock1.Verify();
+      _dbCommandMock2.Verify();
+      _dataReaderMock.Verify();
+      enumeratorMock.Verify();
     }
   }
 }

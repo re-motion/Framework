@@ -126,8 +126,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(accessor.PropertyIdentifier, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies"));
       Assert.That(accessor.PropertyDefinition, Is.Null);
       Assert.That(accessor.RelationEndPointDefinition, Is.Not.Null);
-      Assert.That(accessor.RelationEndPointDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector))
-                                                                                       .GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies")));
+      Assert.That(
+          accessor.RelationEndPointDefinition,
+          Is.SameAs(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector))
+                  .GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies")));
     }
 
     [Test]
@@ -136,8 +139,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       PropertyAccessorData accessor = CreateAccessorData(typeof(IndustrialSector), "Name");
 
       Assert.That(accessor.PropertyDefinition, Is.Not.Null);
-      Assert.That(accessor.PropertyDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector))
-                                                                               .GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name")));
+      Assert.That(
+          accessor.PropertyDefinition,
+          Is.SameAs(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(IndustrialSector))
+                  .GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Name")));
       Assert.That(accessor.RelationEndPointDefinition, Is.Null);
     }
 
@@ -147,12 +153,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       PropertyAccessorData accessor = CreateAccessorData(typeof(Computer), "Employee");
 
       Assert.That(accessor.PropertyDefinition, Is.Not.Null);
-      Assert.That(accessor.PropertyDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof(Computer))
-                                                                               .GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee")));
+      Assert.That(
+          accessor.PropertyDefinition,
+          Is.SameAs(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(Computer))
+                  .GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee")));
 
       Assert.That(accessor.RelationEndPointDefinition, Is.Not.Null);
-      Assert.That(accessor.RelationEndPointDefinition, Is.SameAs(MappingConfiguration.Current.GetTypeDefinition(typeof(Computer))
-                                                                                       .GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee")));
+      Assert.That(
+          accessor.RelationEndPointDefinition,
+          Is.SameAs(
+              MappingConfiguration.Current.GetTypeDefinition(typeof(Computer))
+                  .GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee")));
     }
 
     [Test]
