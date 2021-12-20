@@ -15,13 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
@@ -72,13 +72,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     [Test]
     public void Accept ()
     {
-      var visitorMock = MockRepository.GenerateStrictMock<ILoadedObjectVisitor>();
-      visitorMock.Expect(mock => mock.VisitAlreadyExistingLoadedObject(_loadedObjectData));
-      visitorMock.Replay();
+      var visitorMock = new Mock<ILoadedObjectVisitor>(MockBehavior.Strict);
+      visitorMock.Setup(mock => mock.VisitAlreadyExistingLoadedObject(_loadedObjectData)).Verifiable();
 
-      _loadedObjectData.Accept(visitorMock);
+      _loadedObjectData.Accept(visitorMock.Object);
 
-      visitorMock.VerifyAllExpectations();
+      visitorMock.Verify();
     }
 
     [Test]

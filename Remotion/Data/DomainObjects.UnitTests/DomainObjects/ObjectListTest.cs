@@ -17,12 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -61,10 +61,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Initialization_WithData_InvalidRequiredItemType ()
     {
-      var dataStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
-      dataStub.Stub(stub => stub.RequiredItemType).Return(null);
+      var dataStub = new Mock<IDomainObjectCollectionData>();
+      dataStub.Setup(stub => stub.RequiredItemType).Returns((Type)null);
       Assert.That(
-          () => new ObjectList<Customer>(dataStub),
+          () => new ObjectList<Customer>(dataStub.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "The given data strategy must have a required item type of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' in order to be used "
@@ -74,24 +74,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void Initialization_WithData_NoRequiredItemType_ReadOnly ()
     {
-      var dataStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
-      dataStub.Stub(stub => stub.RequiredItemType).Return(null);
-      dataStub.Stub(stub => stub.IsReadOnly).Return(true);
+      var dataStub = new Mock<IDomainObjectCollectionData>();
+      dataStub.Setup(stub => stub.RequiredItemType).Returns((Type)null);
+      dataStub.Setup(stub => stub.IsReadOnly).Returns(true);
 
-      var collection = new ObjectList<Customer>(dataStub);
+      var collection = new ObjectList<Customer>(dataStub.Object);
 
       var actualData = DomainObjectCollectionDataTestHelper.GetDataStrategy(collection);
-      Assert.That(actualData, Is.SameAs(dataStub));
+      Assert.That(actualData, Is.SameAs(dataStub.Object));
       Assert.That(actualData.RequiredItemType, Is.Null);
     }
 
     [Test]
     public void Initialization_WithData_DerivedRequiredItemType ()
     {
-      var dataStub = MockRepository.GenerateStub<IDomainObjectCollectionData>();
-      dataStub.Stub(stub => stub.RequiredItemType).Return(typeof(Order));
+      var dataStub = new Mock<IDomainObjectCollectionData>();
+      dataStub.Setup(stub => stub.RequiredItemType).Returns(typeof(Order));
 
-      var collection = new ObjectList<DomainObject>(dataStub);
+      var collection = new ObjectList<DomainObject>(dataStub.Object);
 
       Assert.That(collection.RequiredItemType, Is.SameAs(typeof(Order)));
     }

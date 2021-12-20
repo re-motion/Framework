@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -23,15 +24,14 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
   [TestFixture]
   public class ExistingDataContainerEndPointsRegistrationAgentTest : StandardMappingTest
   {
-    private IRelationEndPointFactory _endPointFactoryStub;
-    private IRelationEndPointRegistrationAgent _registrationAgentStub;
+    private Mock<IRelationEndPointFactory> _endPointFactoryStub;
+    private Mock<IRelationEndPointRegistrationAgent> _registrationAgentStub;
     private RelationEndPointMap _map;
 
     private ExistingDataContainerEndPointsRegistrationAgent _agent;
@@ -40,11 +40,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _endPointFactoryStub = MockRepository.GenerateStub<IRelationEndPointFactory>();
-      _registrationAgentStub = MockRepository.GenerateStub<IRelationEndPointRegistrationAgent>();
-      _map = new RelationEndPointMap(MockRepository.GenerateStub<IClientTransactionEventSink>());
+      _endPointFactoryStub = new Mock<IRelationEndPointFactory>();
+      _registrationAgentStub = new Mock<IRelationEndPointRegistrationAgent>();
+      _map = new RelationEndPointMap(new Mock<IClientTransactionEventSink>().Object);
 
-      _agent = new ExistingDataContainerEndPointsRegistrationAgent(_endPointFactoryStub, _registrationAgentStub);
+      _agent = new ExistingDataContainerEndPointsRegistrationAgent(_endPointFactoryStub.Object, _registrationAgentStub.Object);
     }
 
     [Test]
@@ -67,11 +67,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetUnregisterProblem_EndPointHasChanged ()
     {
-      var endPointStub = MockRepository.GenerateStub<IRelationEndPoint>();
-      endPointStub.Stub(stub => stub.HasChanged).Return(true);
-      endPointStub.Stub(stub => stub.ID).Return(RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer"));
+      var endPointStub = new Mock<IRelationEndPoint>();
+      endPointStub.Setup(stub => stub.HasChanged).Returns(true);
+      endPointStub.Setup(stub => stub.ID).Returns(RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer"));
 
-      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub.Object, _map);
 
       Assert.That(result, Is.EqualTo(
           "Relation end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' "
@@ -83,20 +83,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
 
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPointStub.Stub(stub => stub.HasChanged).Return(false);
-      endPointStub.Stub(stub => stub.ID).Return(relationEndPointID);
-      endPointStub.Stub(stub => stub.Definition).Return(relationEndPointID.Definition);
-      endPointStub.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.Customer1);
+      var endPointStub = new Mock<IRealObjectEndPoint>();
+      endPointStub.Setup(stub => stub.HasChanged).Returns(false);
+      endPointStub.Setup(stub => stub.ID).Returns(relationEndPointID);
+      endPointStub.Setup(stub => stub.Definition).Returns(relationEndPointID.Definition);
+      endPointStub.Setup(stub => stub.OppositeObjectID).Returns(DomainObjectIDs.Customer1);
 
       var oppositeEndPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
-      var oppositeEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      oppositeEndPointStub.Stub(stub => stub.ID).Return(oppositeEndPointID);
-      oppositeEndPointStub.Stub(stub => stub.Definition).Return(oppositeEndPointID.Definition);
-      oppositeEndPointStub.Stub(stub => stub.HasChanged).Return(true);
-      _map.AddEndPoint(oppositeEndPointStub);
+      var oppositeEndPointStub = new Mock<IRealObjectEndPoint>();
+      oppositeEndPointStub.Setup(stub => stub.ID).Returns(oppositeEndPointID);
+      oppositeEndPointStub.Setup(stub => stub.Definition).Returns(oppositeEndPointID.Definition);
+      oppositeEndPointStub.Setup(stub => stub.HasChanged).Returns(true);
+      _map.AddEndPoint(oppositeEndPointStub.Object);
 
-      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub.Object, _map);
 
       Assert.That(result, Is.EqualTo(
           "The opposite relation property "
@@ -110,18 +110,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
 
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPointStub.Stub(stub => stub.HasChanged).Return(false);
-      endPointStub.Stub(stub => stub.ID).Return(relationEndPointID);
-      endPointStub.Stub(stub => stub.Definition).Return(relationEndPointID.Definition);
-      endPointStub.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.Customer1);
+      var endPointStub = new Mock<IRealObjectEndPoint>();
+      endPointStub.Setup(stub => stub.HasChanged).Returns(false);
+      endPointStub.Setup(stub => stub.ID).Returns(relationEndPointID);
+      endPointStub.Setup(stub => stub.Definition).Returns(relationEndPointID.Definition);
+      endPointStub.Setup(stub => stub.OppositeObjectID).Returns(DomainObjectIDs.Customer1);
 
-      var oppositeEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      oppositeEndPointStub.Stub(stub => stub.ID).Return(RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders"));
-      oppositeEndPointStub.Stub(stub => stub.HasChanged).Return(false);
-      _map.AddEndPoint(oppositeEndPointStub);
+      var oppositeEndPointStub = new Mock<IRealObjectEndPoint>();
+      oppositeEndPointStub.Setup(stub => stub.ID).Returns(RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders"));
+      oppositeEndPointStub.Setup(stub => stub.HasChanged).Returns(false);
+      _map.AddEndPoint(oppositeEndPointStub.Object);
 
-      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub.Object, _map);
 
       Assert.That(result, Is.Null);
     }
@@ -131,13 +131,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
 
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPointStub.Stub(stub => stub.HasChanged).Return(false);
-      endPointStub.Stub(stub => stub.ID).Return(relationEndPointID);
-      endPointStub.Stub(stub => stub.Definition).Return(relationEndPointID.Definition);
-      endPointStub.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.Customer1);
+      var endPointStub = new Mock<IRealObjectEndPoint>();
+      endPointStub.Setup(stub => stub.HasChanged).Returns(false);
+      endPointStub.Setup(stub => stub.ID).Returns(relationEndPointID);
+      endPointStub.Setup(stub => stub.Definition).Returns(relationEndPointID.Definition);
+      endPointStub.Setup(stub => stub.OppositeObjectID).Returns(DomainObjectIDs.Customer1);
 
-      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub.Object, _map);
 
       Assert.That(result, Is.Null);
     }
@@ -147,13 +147,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
 
-      var endPointStub = MockRepository.GenerateStub<IVirtualObjectEndPoint>();
-      endPointStub.Stub(stub => stub.HasChanged).Return(false);
-      endPointStub.Stub(stub => stub.ID).Return(relationEndPointID);
-      endPointStub.Stub(stub => stub.Definition).Return(relationEndPointID.Definition);
-      endPointStub.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.OrderTicket1);
+      var endPointStub = new Mock<IVirtualObjectEndPoint>();
+      endPointStub.Setup(stub => stub.HasChanged).Returns(false);
+      endPointStub.Setup(stub => stub.ID).Returns(relationEndPointID);
+      endPointStub.Setup(stub => stub.Definition).Returns(relationEndPointID.Definition);
+      endPointStub.Setup(stub => stub.OppositeObjectID).Returns(DomainObjectIDs.OrderTicket1);
 
-      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub, _map);
+      var result = (string)PrivateInvoke.InvokeNonPublicMethod(_agent, "GetUnregisterProblem", endPointStub.Object, _map);
 
       Assert.That(result, Is.Null);
     }

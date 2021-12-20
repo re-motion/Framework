@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -23,7 +24,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       _endPointID = RelationEndPointID.Resolve(_domainObject, o => o.OrderTicket);
       _endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(_endPointID, _oldRelatedObject.ID);
 
-      _command = new ObjectEndPointSetOneOneCommand(_endPoint, _newRelatedObject, OppositeObjectSetter, TransactionEventSinkWithMock);
+      _command = new ObjectEndPointSetOneOneCommand(_endPoint, _newRelatedObject, OppositeObjectSetter, TransactionEventSinkWithMock.Object);
     }
 
     [Test]
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       var endPoint = new NullObjectEndPoint(TestableClientTransaction, _endPointID.Definition);
       Assert.That(
-          () => new ObjectEndPointSetOneOneCommand(endPoint, _newRelatedObject, OppositeObjectSetter, TransactionEventSinkWithMock),
+          () => new ObjectEndPointSetOneOneCommand(endPoint, _newRelatedObject, OppositeObjectSetter, TransactionEventSinkWithMock.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Modified end point is null, a NullEndPointModificationCommand is needed.",
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var id = RelationEndPointID.Create(client.ID, definition);
       var endPoint = (IObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(id);
       Assert.That(
-          () => new ObjectEndPointSetOneOneCommand(endPoint, Client.NewObject(), mi => { }, TransactionEventSinkWithMock),
+          () => new ObjectEndPointSetOneOneCommand(endPoint, Client.NewObject(), mi => { }, TransactionEventSinkWithMock.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "EndPoint 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient' "
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var endPoint =
           (IObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
       Assert.That(
-          () => new ObjectEndPointSetOneOneCommand(endPoint, Order.NewObject(), mi => { }, TransactionEventSinkWithMock),
+          () => new ObjectEndPointSetOneOneCommand(endPoint, Order.NewObject(), mi => { }, TransactionEventSinkWithMock.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "EndPoint 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' "
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       var endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(_endPointID, _oldRelatedObject.ID);
       Assert.That(
-          () => new ObjectEndPointSetOneOneCommand(endPoint, _oldRelatedObject, mi => { }, TransactionEventSinkWithMock),
+          () => new ObjectEndPointSetOneOneCommand(endPoint, _oldRelatedObject, mi => { }, TransactionEventSinkWithMock.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "New related object for EndPoint "
@@ -142,31 +142,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public virtual void Begin ()
     {
-      TransactionEventSinkWithMock.Expect(mock => mock.RaiseRelationChangingEvent(
-          _endPoint.GetDomainObject(),
-          _endPoint.Definition,
-          _oldRelatedObject,
-          _newRelatedObject));
-      TransactionEventSinkWithMock.Replay();
+      TransactionEventSinkWithMock
+          .Setup(mock => mock.RaiseRelationChangingEvent(_endPoint.GetDomainObject(), _endPoint.Definition, _oldRelatedObject, _newRelatedObject))
+          .Verifiable();
 
       _command.Begin();
 
-      TransactionEventSinkWithMock.VerifyAllExpectations();
+      TransactionEventSinkWithMock.Verify();
     }
 
     [Test]
     public virtual void End ()
     {
-      TransactionEventSinkWithMock.Expect(mock => mock.RaiseRelationChangedEvent(
-          _endPoint.GetDomainObject(),
-          _endPoint.Definition,
-          _oldRelatedObject,
-          _newRelatedObject));
-      TransactionEventSinkWithMock.Replay();
+      TransactionEventSinkWithMock
+          .Setup(mock => mock.RaiseRelationChangedEvent(_endPoint.GetDomainObject(), _endPoint.Definition, _oldRelatedObject, _newRelatedObject))
+          .Verifiable();
 
       _command.End();
 
-      TransactionEventSinkWithMock.VerifyAllExpectations();
+      TransactionEventSinkWithMock.Verify();
     }
 
     [Test]
@@ -214,7 +208,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       Assert.That(steps[3], Is.InstanceOf(typeof(VirtualEndPointStateUpdatedRaisingCommandDecorator)));
       var setOrderTicketOfOldOrderOfNewOrderTicketCommand = ((ObjectEndPointSetCommand)((VirtualEndPointStateUpdatedRaisingCommandDecorator)steps[3]).DecoratedCommand);
-      Assert.That(setOrderTicketOfOldOrderOfNewOrderTicketCommand.ModifiedEndPoint, Is.SameAs(((StateUpdateRaisingVirtualObjectEndPointDecorator)orderTicketOfOldOrderOfNewOrderTicketEndPoint).InnerEndPoint));
+      Assert.That(
+          setOrderTicketOfOldOrderOfNewOrderTicketCommand.ModifiedEndPoint,
+          Is.SameAs(((StateUpdateRaisingVirtualObjectEndPointDecorator)orderTicketOfOldOrderOfNewOrderTicketEndPoint).InnerEndPoint));
       Assert.That(setOrderTicketOfOldOrderOfNewOrderTicketCommand.OldRelatedObject, Is.SameAs(_newRelatedObject));
       Assert.That(setOrderTicketOfOldOrderOfNewOrderTicketCommand.NewRelatedObject, Is.SameAs(null));
     }

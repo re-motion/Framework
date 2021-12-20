@@ -16,13 +16,13 @@
 // 
 using System;
 using System.Collections.ObjectModel;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 {
@@ -88,27 +88,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     {
       ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvent(
           ClientTransaction.Current,
-          mock => mock.ObjectsLoading(Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
+          mock => mock.ObjectsLoading(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<ObjectID>>()));
     }
 
-    protected void AssertObjectWasLoaded (IClientTransactionListener listenerMock, DomainObject loadedObject)
+    protected void AssertObjectWasLoaded (Mock<IClientTransactionListener> listenerMock, DomainObject loadedObject)
     {
       ArgumentUtility.CheckNotNull("listenerMock", listenerMock);
       ArgumentUtility.CheckNotNull("loadedObject", loadedObject);
 
-      listenerMock.AssertWasCalled(mock => mock.ObjectsLoaded(
-          Arg.Is(ClientTransaction.Current),
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { loadedObject })));
+      listenerMock.Verify(
+          mock => mock.ObjectsLoaded(ClientTransaction.Current, new[] { loadedObject }),
+          Times.AtLeastOnce());
     }
 
-    protected void AssertObjectWasLoadedAmongOthers (IClientTransactionListener listenerMock, DomainObject loadedObject)
+    protected void AssertObjectWasLoadedAmongOthers (Mock<IClientTransactionListener> listenerMock, DomainObject loadedObject)
     {
       ArgumentUtility.CheckNotNull("listenerMock", listenerMock);
       ArgumentUtility.CheckNotNull("loadedObject", loadedObject);
 
-      listenerMock.AssertWasCalled(mock => mock.ObjectsLoaded(
-          Arg.Is(ClientTransaction.Current),
-          Arg<ReadOnlyCollection<DomainObject>>.List.IsIn(loadedObject)));
+      listenerMock.Verify(
+          mock => mock.ObjectsLoaded(ClientTransaction.Current, It.Is<ReadOnlyCollection<DomainObject>>(_ => _.Contains(loadedObject))),
+          Times.AtLeastOnce());
     }
   }
 }

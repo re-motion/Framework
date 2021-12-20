@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;
@@ -22,7 +23,6 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -34,11 +34,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public const string c_nonPersistentTestDomainProviderID = "NonPersistentTestDomain";
     public const string c_unitTestStorageProviderStubID = "UnitTestStorageProviderStub";
 
-    protected IClassIDProvider ClassIDProviderStub { get; private set; }
-    protected IDomainModelConstraintProvider DomainModelConstraintProviderStub { get; private set; }
-    protected ISortExpressionDefinitionProvider SortExpressionDefinitionProviderStub { get; private set; }
+    protected Mock<IClassIDProvider> ClassIDProviderStub { get; private set; }
+    protected Mock<IDomainModelConstraintProvider> DomainModelConstraintProviderStub { get; private set; }
+    protected Mock<ISortExpressionDefinitionProvider> SortExpressionDefinitionProviderStub { get; private set; }
     protected ReflectionBasedMappingObjectFactory MappingObjectFactory { get; private set; }
-    protected IDomainObjectCreator DomainObjectCreatorStub { get; private set; }
+    protected Mock<IDomainObjectCreator> DomainObjectCreatorStub { get; private set; }
     protected IPropertyMetadataProvider PropertyMetadataProvider { get; private set; }
 
     [SetUp]
@@ -48,19 +48,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       MappingConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent(null);
 
-      ClassIDProviderStub = MockRepository.GenerateStub<IClassIDProvider>();
-      DomainModelConstraintProviderStub = MockRepository.GenerateStub<IDomainModelConstraintProvider>();
-      DomainObjectCreatorStub = MockRepository.GenerateStub<IDomainObjectCreator>();
-      SortExpressionDefinitionProviderStub = MockRepository.GenerateStub<ISortExpressionDefinitionProvider>();
+      ClassIDProviderStub = new Mock<IClassIDProvider>();
+      DomainModelConstraintProviderStub = new Mock<IDomainModelConstraintProvider>();
+      DomainObjectCreatorStub = new Mock<IDomainObjectCreator>();
+      SortExpressionDefinitionProviderStub = new Mock<ISortExpressionDefinitionProvider>();
       PropertyMetadataProvider = new PropertyMetadataReflector();
 
       MappingObjectFactory = new ReflectionBasedMappingObjectFactory(
           Configuration.NameResolver,
-          ClassIDProviderStub,
+          ClassIDProviderStub.Object,
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub,
-          SortExpressionDefinitionProviderStub,
-          DomainObjectCreatorStub);
+          DomainModelConstraintProviderStub.Object,
+          SortExpressionDefinitionProviderStub.Object,
+          DomainObjectCreatorStub.Object);
     }
 
     [TearDown]

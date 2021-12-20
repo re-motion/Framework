@@ -18,13 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 using EagerFetching_BaseClass = Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching.BaseClass;
 using EagerFetching_DerivedClass1 = Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching.DerivedClass1;
 using EagerFetching_DerivedClass2 = Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching.DerivedClass2;
@@ -341,52 +341,65 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void EagerFetching_CollectionPropertyVirtualSide_ViaDownCastInSelect ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<EagerFetching_BaseClass>()
-                   where o.ID == DomainObjectIDs.EagerFetching_DerivedClass1_WithCollectionVirtualEndPoint
-                         || o.ID == DomainObjectIDs.EagerFetching_BaseClass
-                   select o)
-                   .FetchMany(o => ((EagerFetching_DerivedClass1)o).CollectionPropertyManySide);
+          where o.ID == DomainObjectIDs.EagerFetching_DerivedClass1_WithCollectionVirtualEndPoint
+                || o.ID == DomainObjectIDs.EagerFetching_BaseClass
+          select o)
+          .FetchMany(o => ((EagerFetching_DerivedClass1)o).CollectionPropertyManySide);
 
       CheckQueryResult(query, DomainObjectIDs.EagerFetching_BaseClass, DomainObjectIDs.EagerFetching_DerivedClass1_WithCollectionVirtualEndPoint);
-      CheckDataContainersRegistered(DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint1, DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint2);
-      CheckDomainObjectCollectionRelationRegistered(DomainObjectIDs.EagerFetching_DerivedClass1_WithCollectionVirtualEndPoint, "CollectionPropertyManySide", false, DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint1, DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint2);
+      CheckDataContainersRegistered(
+          DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint1,
+          DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint2);
+      CheckDomainObjectCollectionRelationRegistered(
+          DomainObjectIDs.EagerFetching_DerivedClass1_WithCollectionVirtualEndPoint,
+          "CollectionPropertyManySide",
+          false,
+          DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint1,
+          DomainObjectIDs.EagerFetching_RelationTarget_WithCollectionRealEndPoint2);
     }
 
     [Test]
     public void EagerFetching_ScalarPropertyVirtualSide_ViaDownCastInSelect ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<EagerFetching_BaseClass>()
-                   where o.ID == DomainObjectIDs.EagerFetching_DerivedClass1_WithScalarVirtualEndPoint
-                         || o.ID == DomainObjectIDs.EagerFetching_BaseClass
-                   select o)
-                   .FetchOne(o => ((EagerFetching_DerivedClass1)o).ScalarProperty1VirtualSide);
+          where o.ID == DomainObjectIDs.EagerFetching_DerivedClass1_WithScalarVirtualEndPoint
+                || o.ID == DomainObjectIDs.EagerFetching_BaseClass
+          select o)
+          .FetchOne(o => ((EagerFetching_DerivedClass1)o).ScalarProperty1VirtualSide);
 
       CheckQueryResult(query, DomainObjectIDs.EagerFetching_BaseClass, DomainObjectIDs.EagerFetching_DerivedClass1_WithScalarVirtualEndPoint);
       CheckDataContainersRegistered(DomainObjectIDs.EagerFetching_RelationTarget_WithScalarRealEndPoint);
-      CheckObjectRelationRegistered(DomainObjectIDs.EagerFetching_DerivedClass1_WithScalarVirtualEndPoint, "ScalarProperty1VirtualSide", DomainObjectIDs.EagerFetching_RelationTarget_WithScalarRealEndPoint);
+      CheckObjectRelationRegistered(
+          DomainObjectIDs.EagerFetching_DerivedClass1_WithScalarVirtualEndPoint,
+          "ScalarProperty1VirtualSide",
+          DomainObjectIDs.EagerFetching_RelationTarget_WithScalarRealEndPoint);
     }
 
     [Test]
     public void EagerFetching_ScalarPropertyRealSide_ViaDownCastInSelect ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<EagerFetching_BaseClass>()
-                   where o.ID == DomainObjectIDs.EagerFetching_DerivedClass2_WithScalarRealEndPoint
-                         || o.ID == DomainObjectIDs.EagerFetching_BaseClass
-                   select o)
-                   .FetchOne(o => ((EagerFetching_DerivedClass2)o).ScalarProperty2RealSide);
+          where o.ID == DomainObjectIDs.EagerFetching_DerivedClass2_WithScalarRealEndPoint
+                || o.ID == DomainObjectIDs.EagerFetching_BaseClass
+          select o)
+          .FetchOne(o => ((EagerFetching_DerivedClass2)o).ScalarProperty2RealSide);
 
       CheckQueryResult(query, DomainObjectIDs.EagerFetching_BaseClass, DomainObjectIDs.EagerFetching_DerivedClass2_WithScalarRealEndPoint);
       CheckDataContainersRegistered(DomainObjectIDs.EagerFetching_RelationTarget_WithScalarVirtualEndPoint);
-      CheckObjectRelationRegistered(DomainObjectIDs.EagerFetching_RelationTarget_WithScalarVirtualEndPoint, "ScalarProperty2VirtualSide", DomainObjectIDs.EagerFetching_DerivedClass2_WithScalarRealEndPoint);
+      CheckObjectRelationRegistered(
+          DomainObjectIDs.EagerFetching_RelationTarget_WithScalarVirtualEndPoint,
+          "ScalarProperty2VirtualSide",
+          DomainObjectIDs.EagerFetching_DerivedClass2_WithScalarRealEndPoint);
     }
 
     [Test]
     public void EagerFetching_UnidirectionalProperty_ViaDownCastInSelect ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<EagerFetching_BaseClass>()
-                   where o.ID == DomainObjectIDs.EagerFetching_DerivedClass2_WithUnidirectionalEndPoint
-                         || o.ID == DomainObjectIDs.EagerFetching_BaseClass
-                   select o)
-                   .FetchOne(o => ((EagerFetching_DerivedClass2)o).UnidirectionalProperty);
+          where o.ID == DomainObjectIDs.EagerFetching_DerivedClass2_WithUnidirectionalEndPoint
+                || o.ID == DomainObjectIDs.EagerFetching_BaseClass
+          select o)
+          .FetchOne(o => ((EagerFetching_DerivedClass2)o).UnidirectionalProperty);
 
       CheckQueryResult(query, DomainObjectIDs.EagerFetching_BaseClass, DomainObjectIDs.EagerFetching_DerivedClass2_WithUnidirectionalEndPoint);
       //CheckDataContainersRegistered (DomainObjectIDs.TargetClassReceivingReferenceToDerivedClass2, DomainObjectIDs.DerivedClassWithBaseReferenceViaMixin1);
@@ -397,9 +410,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void EagerFetching_MixedProperty_ViaCastInFetchClause ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
-                   where o.ID == DomainObjectIDs.TargetClassForPersistentMixins2
-                   select o)
-                   .FetchMany(o => ((IMixinAddingPersistentProperties)o).CollectionProperty1Side);
+          where o.ID == DomainObjectIDs.TargetClassForPersistentMixins2
+          select o)
+          .FetchMany(o => ((IMixinAddingPersistentProperties)o).CollectionProperty1Side);
 
       CheckQueryResult(query, DomainObjectIDs.TargetClassForPersistentMixins2);
 
@@ -410,9 +423,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void EagerFetching_MixedProperty_ViaCastInSelect ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
-                   where o.ID == DomainObjectIDs.TargetClassForPersistentMixins2
-                   select (IMixinAddingPersistentProperties)o)
-                   .FetchMany(o => o.CollectionProperty1Side);
+          where o.ID == DomainObjectIDs.TargetClassForPersistentMixins2
+          select (IMixinAddingPersistentProperties)o)
+          .FetchMany(o => o.CollectionProperty1Side);
 
       CheckQueryResult(query.AsEnumerable().Cast<DomainObject>(), DomainObjectIDs.TargetClassForPersistentMixins2);
 
@@ -423,9 +436,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void EagerFetching_MixedProperty_ViaRedirection ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
-                   where o.ID == DomainObjectIDs.TargetClassForPersistentMixins2
-                   select o)
-                   .FetchMany(o => o.RedirectedCollectionProperty1Side);
+          where o.ID == DomainObjectIDs.TargetClassForPersistentMixins2
+          select o)
+          .FetchMany(o => o.RedirectedCollectionProperty1Side);
 
       CheckQueryResult(query, DomainObjectIDs.TargetClassForPersistentMixins2);
 
@@ -436,9 +449,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void EagerFetching_MixedProperty_ViaLinqCast ()
     {
       var query = (from o in QueryFactory.CreateLinqQuery<TargetClassForPersistentMixin>()
-                   where o.ID == DomainObjectIDs.TargetClassForPersistentMixins2
-                   select o)
-                   .FetchMany(o => o.MixedMembers.CollectionProperty1Side);
+          where o.ID == DomainObjectIDs.TargetClassForPersistentMixins2
+          select o)
+          .FetchMany(o => o.MixedMembers.CollectionProperty1Side);
 
       CheckQueryResult(query, DomainObjectIDs.TargetClassForPersistentMixins2);
 
@@ -485,13 +498,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void EagerFetching_TransparentlyIgnoreFetchClausesOnNonRelinqBasedQueries_ ()
     {
       var orders = new[] { (Order)LifetimeService.GetObject(ClientTransaction.Current, DomainObjectIDs.Order1, false) };
-      var queryProviderStub = MockRepository.GenerateStub<IQueryProvider>();
-      queryProviderStub.Stub(_ => _.Execute<IEnumerable<Order>>(Arg<Expression>.Is.Anything)).Return(orders);
+      var queryProviderStub = new Mock<IQueryProvider>();
+      queryProviderStub.Setup(_ => _.Execute<IEnumerable<Order>>(It.IsAny<Expression>())).Returns(orders);
 
-      var queryableStub = MockRepository.GenerateStub<IQueryable<Order>>();
-      queryableStub.Stub(_ => _.Expression).Return(Expression.Constant(null, typeof(IQueryable<Order>)));
-      queryableStub.Stub(_ => _.Provider).Return(queryProviderStub);
-      var queryableWithFetch = queryableStub.FetchOne(o => o.Customer);
+      var queryableStub = new Mock<IQueryable<Order>>();
+      queryableStub.Setup(_ => _.Expression).Returns(Expression.Constant(null, typeof(IQueryable<Order>)));
+      queryableStub.Setup(_ => _.Provider).Returns(queryProviderStub.Object);
+      var queryableWithFetch = EagerFetchingExtensionMethods.FetchOne(queryableStub.Object, o => o.Customer);
 
       var result = queryableWithFetch.ToArray();
 

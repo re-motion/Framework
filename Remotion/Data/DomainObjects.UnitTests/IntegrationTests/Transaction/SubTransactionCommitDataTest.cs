@@ -650,41 +650,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         orderTicket.Order = newOrder;
         oldOrder.OrderTicket = oldOrderTicket;
-        Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.True);
-        Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(oldOrder.ID));
+        Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.True);
+        Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(oldOrder.ID));
 
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
           Assert.That(orderTicket.Order, Is.EqualTo(newOrder));
 
-          Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.False);
-          Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(newOrder.ID));
+          Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.False);
+          Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(newOrder.ID));
 
           orderTicket.Order = newOrder2;
           oldOrderTicket2.Order = newOrder;
 
-          Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.True);
-          Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(newOrder.ID));
+          Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.True);
+          Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(newOrder.ID));
 
           ClientTransaction.Current.Commit();
-          Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.False);
-          Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(newOrder2.ID));
+          Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.False);
+          Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(newOrder2.ID));
         }
 
-        Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.True);
-        Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(oldOrder.ID));
+        Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.True);
+        Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(oldOrder.ID));
 
         ClientTransaction.Current.Commit();
-        Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.False);
-        Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(newOrder2.ID));
+        Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.False);
+        Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(newOrder2.ID));
       }
-      Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.True);
-      Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(oldOrder.ID));
+      Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.True);
+      Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(oldOrder.ID));
 
       ClientTransaction.Current.Commit();
 
-      Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.False);
-      Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(newOrder2.ID));
+      Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.False);
+      Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(newOrder2.ID));
     }
 
     [Test]
@@ -706,41 +706,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         order4.OrderTicket = orderTicket1;
         orderTicket3.Order = order1;
 
-        Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.True);
-        Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket3.ID));
+        Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.True);
+        Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket3.ID));
 
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
           Assert.That(order4.OrderTicket, Is.EqualTo(orderTicket1));
 
-          Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.False);
-          Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket1.ID));
+          Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.False);
+          Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket1.ID));
 
           order4.OrderTicket = orderTicket2;
           orderTicket1.Order = order3;
 
-          Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.True);
-          Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket1.ID));
+          Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.True);
+          Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket1.ID));
 
           ClientTransaction.Current.Commit();
-          Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.False);
-          Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket2.ID));
+          Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.False);
+          Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket2.ID));
         }
 
-        Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.True);
-        Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket3.ID));
+        Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.True);
+        Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket3.ID));
 
         ClientTransaction.Current.Commit();
-        Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.False);
-        Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket2.ID));
+        Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.False);
+        Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket2.ID));
       }
-      Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.True);
-      Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket3.ID));
+      Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.True);
+      Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket3.ID));
 
       ClientTransaction.Current.Commit();
 
-      Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.False);
-      Assert.That(((IObjectEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket2.ID));
+      Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.False);
+      Assert.That(((IObjectEndPoint)GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID)).OriginalOppositeObjectID, Is.EqualTo(orderTicket2.ID));
     }
 
     [Test]
@@ -756,50 +756,50 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         order.OrderItems.Add(newItem);
 
-        Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.True);
-        Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(newItem), Is.False);
-        Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(firstItem), Is.True);
+        Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.True);
+        Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(newItem), Is.False);
+        Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(firstItem), Is.True);
 
         using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
         {
           Assert.That(order.OrderItems.ContainsObject(newItem), Is.True);
 
-          Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.False);
-          Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(newItem), Is.True);
-          Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(firstItem), Is.True);
+          Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.False);
+          Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(newItem), Is.True);
+          Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(firstItem), Is.True);
 
           order.OrderItems[0].Delete();
           Assert.That(order.OrderItems.ContainsObject(newItem), Is.True);
 
-          Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.True);
-          Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(newItem), Is.True);
-          Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(firstItem), Is.True);
+          Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.True);
+          Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(newItem), Is.True);
+          Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(firstItem), Is.True);
 
           ClientTransaction.Current.Commit();
 
-          Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.False);
-          Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(newItem), Is.True);
-          Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(firstItem), Is.False);
+          Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.False);
+          Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(newItem), Is.True);
+          Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(firstItem), Is.False);
         }
 
-        Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.True);
-        Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(newItem), Is.False);
-        Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(firstItem), Is.True);
+        Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.True);
+        Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(newItem), Is.False);
+        Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(firstItem), Is.True);
 
         ClientTransaction.Current.Commit();
-        Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.False);
-        Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(newItem), Is.True);
-        Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(firstItem), Is.False);
+        Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.False);
+        Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(newItem), Is.True);
+        Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(firstItem), Is.False);
       }
-      Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.True);
-      Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(newItem), Is.False);
-      Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(firstItem), Is.True);
+      Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.True);
+      Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(newItem), Is.False);
+      Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(firstItem), Is.True);
 
       ClientTransaction.Current.Commit();
 
-      Assert.That(GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID).HasChanged, Is.False);
-      Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(newItem), Is.True);
-      Assert.That(((IDomainObjectCollectionEndPoint)GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(propertyID)).GetCollectionWithOriginalData().ContainsObject(firstItem), Is.False);
+      Assert.That(GetRelationEndPointWithoutLoading(ClientTransaction.Current, propertyID).HasChanged, Is.False);
+      Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(newItem), Is.True);
+      Assert.That(GetCollectionWithOriginalData(ClientTransaction.Current, propertyID).ContainsObject(firstItem), Is.False);
     }
 
     [Test]
@@ -828,6 +828,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
     }
 
+    private DomainObjectCollection GetCollectionWithOriginalData (ClientTransaction clientTransaction, RelationEndPointID propertyID)
+    {
+      return ((IDomainObjectCollectionEndPoint)GetRelationEndPointWithoutLoading(clientTransaction, propertyID)).GetCollectionWithOriginalData();
+    }
+
+    private IRelationEndPoint GetRelationEndPointWithoutLoading (ClientTransaction clientTransaction, RelationEndPointID propertyID)
+    {
+      return GetDataManager(clientTransaction).GetRelationEndPointWithoutLoading(propertyID);
+    }
 
     private DataManager GetDataManager (ClientTransaction transaction)
     {

@@ -64,8 +64,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _tableClassDefinition2 = ClassDefinitionObjectMother.CreateClassDefinition("Table2Class", typeof(Table2Class), baseClass: _baseClassDefinition);
       _derivedClassDefinition1 = ClassDefinitionObjectMother.CreateClassDefinition("Derived1Class", typeof(Derived1Class), baseClass: _tableClassDefinition2);
       _derivedClassDefinition2 = ClassDefinitionObjectMother.CreateClassDefinition("Derived2Class", typeof(Derived2Class), baseClass: _tableClassDefinition2);
-      _derivedDerivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition("DerivedDerivedClass", typeof(DerivedDerivedClass), baseClass: _derivedClassDefinition2);
-      _derivedDerivedDerivedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition("DerivedDerivedDerivedClass", typeof(DerivedDerivedDerivedClass), baseClass: _derivedDerivedClassDefinition);
+      _derivedDerivedClassDefinition =
+          ClassDefinitionObjectMother.CreateClassDefinition("DerivedDerivedClass", typeof(DerivedDerivedClass), baseClass: _derivedClassDefinition2);
+      _derivedDerivedDerivedClassDefinition =
+          ClassDefinitionObjectMother.CreateClassDefinition("DerivedDerivedDerivedClass", typeof(DerivedDerivedDerivedClass), baseClass: _derivedDerivedClassDefinition);
 
       _baseBaseClassDefinition.SetDerivedClasses(new[] { _baseClassDefinition });
       _baseClassDefinition.SetDerivedClasses(new[] { _tableClassDefinition1, _tableClassDefinition2 });

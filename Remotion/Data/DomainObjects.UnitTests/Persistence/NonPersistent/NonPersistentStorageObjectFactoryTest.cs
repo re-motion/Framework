@@ -1,11 +1,11 @@
 ﻿using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Linq.SqlBackend.SqlPreparation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
 {
@@ -17,7 +17,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     [SetUp]
     public void SetUp ()
     {
-      _storageProviderDefinition = new NonPersistentProviderDefinition("Test", MockRepository.GenerateStub<INonPersistentStorageObjectFactory>());
+      _storageProviderDefinition = new NonPersistentProviderDefinition("Test", new Mock<INonPersistentStorageObjectFactory>().Object);
     }
 
     [Test]
@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
 
       var result = factory.CreatePersistenceModelLoader(
           _storageProviderDefinition,
-          MockRepository.GenerateStub<IStorageProviderDefinitionFinder>());
+          new Mock<IStorageProviderDefinitionFinder>().Object);
 
       Assert.That(result, Is.InstanceOf<NonPersistentPersistenceModelLoader>());
       var nonPersistentPersistenceModelLoader = (NonPersistentPersistenceModelLoader)result;
@@ -38,15 +38,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
     public void CreateStorageProvider ()
     {
       var factory = new NonPersistentStorageObjectFactory();
-      var persistenceExtensionStub = MockRepository.GenerateStub<IPersistenceExtension>();
+      var persistenceExtensionStub = new Mock<IPersistenceExtension>();
 
-      var result=  factory.CreateStorageProvider(_storageProviderDefinition, persistenceExtensionStub);
-
+      var result=  factory.CreateStorageProvider(_storageProviderDefinition, persistenceExtensionStub.Object);
 
      Assert.That(result, Is.InstanceOf<NonPersistentProvider>());
      var nonPersistentProvider = (NonPersistentProvider)result;
      Assert.That(nonPersistentProvider.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
-     Assert.That(nonPersistentProvider.PersistenceExtension, Is.SameAs(persistenceExtensionStub));
+     Assert.That(nonPersistentProvider.PersistenceExtension, Is.SameAs(persistenceExtensionStub.Object));
     }
 
     [Test]
@@ -56,9 +55,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => factory.CreateDomainObjectQueryGenerator(
               _storageProviderDefinition,
-              MockRepository.GenerateStub<IMethodCallTransformerProvider>(),
+              new Mock<IMethodCallTransformerProvider>().Object,
               new ResultOperatorHandlerRegistry(),
-              MockRepository.GenerateStub<IMappingConfiguration>()),
+              new Mock<IMappingConfiguration>().Object),
           Throws.TypeOf<NotSupportedException>().With.Message.EqualTo("Non-persistent DomainObjects do not support querying."));
     }
   }

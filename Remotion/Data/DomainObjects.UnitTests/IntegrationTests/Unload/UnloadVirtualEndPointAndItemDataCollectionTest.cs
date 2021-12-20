@@ -15,13 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 {
@@ -128,50 +128,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var orderItemB = order1.OrderItems[1];
 
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(TestableClientTransaction);
-      using (listenerMock.GetMockRepository().Ordered())
-      {
-        listenerMock
-            .Expect(mock => mock.ObjectsUnloading(
-                Arg.Is(TestableClientTransaction),
-                Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { orderItemA, orderItemB })))
-            .WhenCalled(
-            mi =>
-            {
-              Assert.That(orderItemA.OnUnloadingCalled, Is.False, "items unloaded after this method is called");
-              Assert.That(orderItemB.OnUnloadingCalled, Is.False, "items unloaded after this method is called");
-              Assert.That(orderItemA.OnUnloadedCalled, Is.False, "items unloaded after this method is called");
-              Assert.That(orderItemB.OnUnloadedCalled, Is.False, "items unloaded after this method is called");
+      var sequence = new MockSequence();
+      listenerMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, new[] { orderItemA, orderItemB }))
+          .Callback(
+              (ClientTransaction _, IReadOnlyList<DomainObject> _) =>
+              {
+                Assert.That(orderItemA.OnUnloadingCalled, Is.False, "items unloaded after this method is called");
+                Assert.That(orderItemB.OnUnloadingCalled, Is.False, "items unloaded after this method is called");
+                Assert.That(orderItemA.OnUnloadedCalled, Is.False, "items unloaded after this method is called");
+                Assert.That(orderItemB.OnUnloadedCalled, Is.False, "items unloaded after this method is called");
 
-              Assert.That(orderItemA.State.IsUnchanged, Is.True);
-              Assert.That(orderItemB.State.IsUnchanged, Is.True);
-            });
-        listenerMock
-            .Expect(mock => mock.ObjectsUnloaded(
-                Arg.Is(TestableClientTransaction),
-                Arg<ReadOnlyCollection<DomainObject>>.List.Equal(new[] { orderItemA, orderItemB })))
-            .WhenCalled(
-            mi =>
-            {
-              Assert.That(orderItemA.OnUnloadingCalled, Is.True, "items unloaded before this method is called");
-              Assert.That(orderItemB.OnUnloadingCalled, Is.True, "items unloaded before this method is called");
-              Assert.That(orderItemA.OnUnloadedCalled, Is.True, "items unloaded before this method is called");
-              Assert.That(orderItemB.OnUnloadedCalled, Is.True, "items unloaded before this method is called");
+                Assert.That(orderItemA.State.IsUnchanged, Is.True);
+                Assert.That(orderItemB.State.IsUnchanged, Is.True);
+              })
+          .Verifiable();
+      listenerMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsUnloaded(TestableClientTransaction, new[] { orderItemA, orderItemB }))
+          .Callback(
+              (ClientTransaction _, IReadOnlyList<DomainObject> _) =>
+              {
+                Assert.That(orderItemA.OnUnloadingCalled, Is.True, "items unloaded before this method is called");
+                Assert.That(orderItemB.OnUnloadingCalled, Is.True, "items unloaded before this method is called");
+                Assert.That(orderItemA.OnUnloadedCalled, Is.True, "items unloaded before this method is called");
+                Assert.That(orderItemB.OnUnloadedCalled, Is.True, "items unloaded before this method is called");
 
-              Assert.That(orderItemA.State.IsNotLoadedYet, Is.True);
-              Assert.That(orderItemB.State.IsNotLoadedYet, Is.True);
-            });
-      }
-
-      listenerMock.Replay();
+                Assert.That(orderItemA.State.IsNotLoadedYet, Is.True);
+                Assert.That(orderItemB.State.IsNotLoadedYet, Is.True);
+              })
+          .Verifiable();
 
       try
       {
         UnloadService.UnloadVirtualEndPointAndItemData(TestableClientTransaction, order1.OrderItems.AssociatedEndPointID);
-        listenerMock.VerifyAllExpectations();
+        listenerMock.Verify();
       }
       finally
       {
-        listenerMock.BackToRecord(); // For Discarding
+        listenerMock.Reset(); // For Discarding
       }
 
       Assert.That(orderItemA.UnloadingState.IsUnchanged, Is.True, "OnUnloading before state change");

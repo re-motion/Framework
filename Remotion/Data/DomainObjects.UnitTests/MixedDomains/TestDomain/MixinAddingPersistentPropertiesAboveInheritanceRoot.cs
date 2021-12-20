@@ -29,7 +29,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
     [DBBidirectionalRelation("RelationProperty1", ContainsForeignKey = true)]
     public RelationTargetForPersistentMixinAboveInheritanceRoot PersistentRelationProperty
     {
-      get { return Properties[typeof(MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentRelationProperty"].GetValue<RelationTargetForPersistentMixinAboveInheritanceRoot>(); }
+      get
+      {
+        return Properties[typeof(MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentRelationProperty"]
+            .GetValue<RelationTargetForPersistentMixinAboveInheritanceRoot>();
+      }
       set { Properties[typeof(MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentRelationProperty"].SetValue(value); }
     }
   }

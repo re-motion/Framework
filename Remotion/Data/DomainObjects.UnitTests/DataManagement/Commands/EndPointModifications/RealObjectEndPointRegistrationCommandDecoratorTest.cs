@@ -15,24 +15,24 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq.Expressions;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
   [TestFixture]
   public class RealObjectEndPointRegistrationCommandDecoratorTest
   {
-    private MockRepository _mockRepository;
 
-    private IDataManagementCommand _decoratedCommandMock;
-    private IRealObjectEndPoint _realObjectEndPointStub;
-    private IVirtualEndPoint _oldRelatedEndPointMock;
-    private IVirtualEndPoint _newRelatedEndPointMock;
+    private Mock<IDataManagementCommand> _decoratedCommandMock;
+    private Mock<IRealObjectEndPoint> _realObjectEndPointStub;
+    private Mock<IVirtualEndPoint> _oldRelatedEndPointMock;
+    private Mock<IVirtualEndPoint> _newRelatedEndPointMock;
 
     private RealObjectEndPointRegistrationCommandDecorator _decorator;
 
@@ -42,18 +42,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
-
-      _decoratedCommandMock = _mockRepository.StrictMock<IDataManagementCommand>();
-      _realObjectEndPointStub = _mockRepository.Stub<IRealObjectEndPoint>();
-      _oldRelatedEndPointMock = _mockRepository.StrictMock<IVirtualEndPoint>();
-      _newRelatedEndPointMock = _mockRepository.StrictMock<IVirtualEndPoint>();
+      _decoratedCommandMock = new Mock<IDataManagementCommand>(MockBehavior.Strict);
+      _realObjectEndPointStub = new Mock<IRealObjectEndPoint>();
+      _oldRelatedEndPointMock = new Mock<IVirtualEndPoint>(MockBehavior.Strict);
+      _newRelatedEndPointMock = new Mock<IVirtualEndPoint>(MockBehavior.Strict);
 
       _decorator = new RealObjectEndPointRegistrationCommandDecorator(
-          _decoratedCommandMock,
-          _realObjectEndPointStub,
-          _oldRelatedEndPointMock,
-          _newRelatedEndPointMock);
+          _decoratedCommandMock.Object,
+          _realObjectEndPointStub.Object,
+          _oldRelatedEndPointMock.Object,
+          _newRelatedEndPointMock.Object);
 
       _exception1 = new Exception("1");
       _exception2 = new Exception("2");
@@ -62,8 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void GetAllExceptions ()
     {
-      _decoratedCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new[] { _exception1, _exception2 });
-      _mockRepository.ReplayAll();
+      _decoratedCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(new[] { _exception1, _exception2 });
 
       var result = _decorator.GetAllExceptions();
 
@@ -73,31 +70,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Perform ()
     {
-      _decoratedCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-      using (_mockRepository.Ordered())
-      {
-        _oldRelatedEndPointMock.Expect(mock => mock.UnregisterCurrentOppositeEndPoint(_realObjectEndPointStub));
-        _decoratedCommandMock.Expect(mock => mock.Perform());
-        _newRelatedEndPointMock.Expect(mock => mock.RegisterCurrentOppositeEndPoint(_realObjectEndPointStub));
-      }
-
-      _mockRepository.ReplayAll();
+      _decoratedCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
+      var sequence = new MockSequence();
+      _oldRelatedEndPointMock.InSequence(sequence).Setup(mock => mock.UnregisterCurrentOppositeEndPoint(_realObjectEndPointStub.Object)).Verifiable();
+      _decoratedCommandMock.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _newRelatedEndPointMock.InSequence(sequence).Setup(mock => mock.RegisterCurrentOppositeEndPoint(_realObjectEndPointStub.Object)).Verifiable();
 
       _decorator.Perform();
 
-      _mockRepository.VerifyAll();
+      _decoratedCommandMock.Verify();
+      _oldRelatedEndPointMock.Verify();
+      _newRelatedEndPointMock.Verify();
     }
 
     [Test]
     public void Perform_NonExecutable ()
     {
-      _decoratedCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new[] { _exception1 });
-      _mockRepository.ReplayAll();
+      _decoratedCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(new[] { _exception1 });
 
       var exception = Assert.Throws<Exception>(_decorator.Perform);
       Assert.That(exception, Is.SameAs(_exception1));
 
-      _mockRepository.VerifyAll();
+      _decoratedCommandMock.Verify();
+      _oldRelatedEndPointMock.Verify();
+      _newRelatedEndPointMock.Verify();
     }
 
     [Test]
@@ -105,9 +101,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       var fakeExpandedCommand = new ExpandedCommand();
       _decoratedCommandMock
-          .Stub(stub => stub.ExpandToAllRelatedObjects())
-          .Return(fakeExpandedCommand);
-      _mockRepository.ReplayAll();
+          .Setup(stub => stub.ExpandToAllRelatedObjects())
+          .Returns(fakeExpandedCommand);
 
       var result = _decorator.ExpandToAllRelatedObjects();
 
@@ -119,9 +114,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       var innerExpandedCommand = (RealObjectEndPointRegistrationCommandDecorator)nestedCommands[0];
       Assert.That(innerExpandedCommand.DecoratedCommand, Is.SameAs(fakeExpandedCommand));
-      Assert.That(innerExpandedCommand.RealObjectEndPoint, Is.SameAs(_realObjectEndPointStub));
-      Assert.That(innerExpandedCommand.OldRelatedEndPoint, Is.SameAs(_oldRelatedEndPointMock));
-      Assert.That(innerExpandedCommand.NewRelatedEndPoint, Is.SameAs(_newRelatedEndPointMock));
+      Assert.That(innerExpandedCommand.RealObjectEndPoint, Is.SameAs(_realObjectEndPointStub.Object));
+      Assert.That(innerExpandedCommand.OldRelatedEndPoint, Is.SameAs(_oldRelatedEndPointMock.Object));
+      Assert.That(innerExpandedCommand.NewRelatedEndPoint, Is.SameAs(_newRelatedEndPointMock.Object));
     }
 
     [Test]
@@ -133,15 +128,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       CheckOperationIsDelegated(c => c.End());
     }
 
-    private void CheckOperationIsDelegated (Action<IDataManagementCommand> action)
+    private void CheckOperationIsDelegated (Expression<Action<IDataManagementCommand>> action)
     {
-      _decoratedCommandMock.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-      _decoratedCommandMock.Expect(action);
-      _mockRepository.ReplayAll();
+      _decoratedCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
+      _decoratedCommandMock.Setup(action).Verifiable();
 
-      action(_decorator);
+      var compiledAction = action.Compile();
+      compiledAction(_decorator);
 
-      _mockRepository.VerifyAll();
+      _decoratedCommandMock.Verify();
+      _oldRelatedEndPointMock.Verify();
+      _newRelatedEndPointMock.Verify();
     }
   }
 }

@@ -15,15 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Data.UnitTests.UnitTesting;
-using Remotion.Development.UnitTesting;
+using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       _removedRelatedObject = DomainObjectIDs.Order1.GetObject<Order>(Transaction);
 
       _command = new DomainObjectCollectionEndPointRemoveCommand(
-          CollectionEndPoint, _removedRelatedObject, CollectionDataMock, EndPointProviderStub, TransactionEventSinkMock);
+          CollectionEndPoint, _removedRelatedObject, CollectionDataMock.Object, EndPointProviderStub.Object, TransactionEventSinkMock.Object);
     }
 
     [Test]
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That(_command.OldRelatedObject, Is.SameAs(_removedRelatedObject));
       Assert.That(_command.NewRelatedObject, Is.Null);
       Assert.That(_command.ModifiedCollectionEventRaiser, Is.SameAs(CollectionEndPoint.Collection));
-      Assert.That(_command.ModifiedCollectionData, Is.SameAs(CollectionDataMock));
+      Assert.That(_command.ModifiedCollectionData, Is.SameAs(CollectionDataMock.Object));
     }
 
     [Test]
@@ -58,7 +58,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       var endPoint = new NullDomainObjectCollectionEndPoint(Transaction, RelationEndPointID.Definition);
       Assert.That(
-          () => new DomainObjectCollectionEndPointRemoveCommand(endPoint, _removedRelatedObject, CollectionDataMock, EndPointProviderStub, TransactionEventSinkMock),
+          () => new DomainObjectCollectionEndPointRemoveCommand(
+              endPoint,
+              _removedRelatedObject,
+              CollectionDataMock.Object,
+              EndPointProviderStub.Object,
+              TransactionEventSinkMock.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Modified end point is null, a NullEndPointModificationCommand is needed.",
@@ -68,50 +73,55 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Begin ()
     {
-      var counter = new OrderedExpectationCounter();
+      var sequence = new MockSequence();
       CollectionMockEventReceiver
-          .Expect(mock => mock.Removing(_removedRelatedObject))
-          .WhenCalledOrdered(counter, mi => Assert.That(ClientTransaction.Current, Is.SameAs(Transaction)));
+          .InSequence(sequence)
+          .SetupRemoving(CollectionEndPoint.Collection, _removedRelatedObject)
+          .WithCurrentTransaction(Transaction)
+          .Verifiable();
       TransactionEventSinkMock
-          .Expect(mock => mock.RaiseRelationChangingEvent(DomainObject, CollectionEndPoint.Definition, _removedRelatedObject, null))
-          .Ordered(counter);
+          .InSequence(sequence)
+          .Setup(mock => mock.RaiseRelationChangingEvent(DomainObject, CollectionEndPoint.Definition, _removedRelatedObject, null))
+          .Verifiable();
 
       _command.Begin();
 
-      CollectionMockEventReceiver.VerifyAllExpectations();
-      TransactionEventSinkMock.VerifyAllExpectations();
+      CollectionMockEventReceiver.Verify();
+      TransactionEventSinkMock.Verify();
     }
 
     [Test]
     public void End ()
     {
-      var counter = new OrderedExpectationCounter();
+      var sequence = new MockSequence();
       TransactionEventSinkMock
-          .Expect(mock => mock.RaiseRelationChangedEvent(DomainObject, CollectionEndPoint.Definition, _removedRelatedObject, null))
-          .Ordered(counter);
+          .InSequence(sequence)
+          .Setup(mock => mock.RaiseRelationChangedEvent(DomainObject, CollectionEndPoint.Definition, _removedRelatedObject, null))
+          .Verifiable();
       CollectionMockEventReceiver
-          .Expect(mock => mock.Removed(_removedRelatedObject))
-          .WhenCalledOrdered(counter, mi => Assert.That(ClientTransaction.Current, Is.SameAs(Transaction)));
+          .InSequence(sequence)
+          .SetupRemoved(CollectionEndPoint.Collection, _removedRelatedObject)
+          .WithCurrentTransaction(Transaction)
+          .Verifiable();
 
       _command.End();
 
-      TransactionEventSinkMock.VerifyAllExpectations();
-      CollectionMockEventReceiver.VerifyAllExpectations();
+      TransactionEventSinkMock.Verify();
+      CollectionMockEventReceiver.Verify();
     }
 
     [Test]
     public void Perform ()
     {
-      CollectionDataMock.BackToRecord();
-      CollectionDataMock.Expect(mock => mock.Remove(_removedRelatedObject)).Return(true);
-      CollectionDataMock.Replay();
+      CollectionDataMock.Reset();
+      CollectionDataMock.Setup(mock => mock.Remove(_removedRelatedObject)).Returns(true).Verifiable();
 
       _command.Perform();
 
-      CollectionDataMock.VerifyAllExpectations();
+      CollectionDataMock.Verify();
 
-      CollectionMockEventReceiver.AssertWasNotCalled(mock => mock.Removing());
-      CollectionMockEventReceiver.AssertWasNotCalled(mock => mock.Removed());
+      CollectionMockEventReceiver.Verify(mock => mock.Removing(It.IsAny<object>(), It.IsAny<DomainObjectCollectionChangeEventArgs>()), Times.Never());
+      CollectionMockEventReceiver.Verify(mock => mock.Removed(It.IsAny<object>(), It.IsAny<DomainObjectCollectionChangeEventArgs>()), Times.Never());
       Assert.That(CollectionEndPoint.HasBeenTouched, Is.True);
     }
 
@@ -122,7 +132,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var removedEndPoint = (IObjectEndPoint)DataManager.GetRelationEndPointWithoutLoading(removedEndPointID);
       Assert.That(removedEndPoint, Is.Not.Null);
 
-      EndPointProviderStub.Stub(stub => stub.GetRelationEndPointWithLazyLoad(removedEndPoint.ID)).Return(removedEndPoint);
+      EndPointProviderStub.Setup(stub => stub.GetRelationEndPointWithLazyLoad(removedEndPoint.ID)).Returns(removedEndPoint);
 
       var bidirectionalModification = _command.ExpandToAllRelatedObjects();
 

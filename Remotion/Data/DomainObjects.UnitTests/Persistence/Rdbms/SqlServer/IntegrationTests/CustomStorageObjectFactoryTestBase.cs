@@ -17,6 +17,7 @@
 
 using System;
 using System.Linq;
+using Moq;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
@@ -31,7 +32,6 @@ using Remotion.Development.UnitTesting.Data.SqlClient;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
 {
@@ -60,12 +60,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           new SortExpressionDefinitionProvider(),
           SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
       _storageObjectFactory = CreateSqlStorageObjectFactory();
-      var storageProviderDefinitionFinderStub = MockRepository.GenerateStub<IStorageProviderDefinitionFinder>();
+      var storageProviderDefinitionFinderStub = new Mock<IStorageProviderDefinitionFinder>();
       _storageProviderDefinition = new RdbmsProviderDefinition("test", _storageObjectFactory, DatabaseTest.TestDomainConnectionString);
       storageProviderDefinitionFinderStub
-          .Stub(stub => stub.GetStorageProviderDefinition(Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
-          .Return(_storageProviderDefinition);
-      var persistenceModelLoader = _storageObjectFactory.CreatePersistenceModelLoader(_storageProviderDefinition, storageProviderDefinitionFinderStub);
+          .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<ClassDefinition>(), It.IsAny<string>()))
+          .Returns(_storageProviderDefinition);
+      var persistenceModelLoader = _storageObjectFactory.CreatePersistenceModelLoader(_storageProviderDefinition, storageProviderDefinitionFinderStub.Object);
       _mappingConfiguration = new MappingConfiguration(mappingLoader, persistenceModelLoader);
 
       MappingConfiguration.SetCurrent(_mappingConfiguration);

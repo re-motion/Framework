@@ -19,45 +19,48 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
 {
   [TestFixture]
-  public class BinaryProperty: BaseTest
+  public class BinaryProperty : BaseTest
   {
 
     [Test]
     public void GetMetadata_NoDomainObjectAndNoValueType_NullableTrue ()
     {
-      var propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("NoAttribute", DomainModelConstraintProviderStub);
+      var propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("NoAttribute", DomainModelConstraintProviderStub.Object);
 
       DomainModelConstraintProviderStub
-         .Stub(stub => stub.IsNullable(propertyReflector.PropertyInfo))
-         .Return(true);
+          .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+          .Returns(true);
 
       var actual = propertyReflector.GetMetadata();
 
-      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithBinaryProperties.NoAttribute"));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithBinaryProperties.NoAttribute"));
       Assert.That(actual.PropertyType, Is.SameAs(typeof(byte[])));
       Assert.That(actual.IsNullable, Is.True);
       Assert.That(actual.MaxLength, Is.Null);
       Assert.That(actual.DefaultValue, Is.EqualTo(null));
-      DomainModelConstraintProviderStub.VerifyAllExpectations();
+      DomainModelConstraintProviderStub.Verify();
     }
 
     [Test]
     public void GetMetadata_NoDomainObjectAndNoValueType_NullableFalse ()
     {
-      var propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("NoAttribute", DomainModelConstraintProviderStub);
+      var propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("NoAttribute", DomainModelConstraintProviderStub.Object);
 
       DomainModelConstraintProviderStub
-         .Stub(stub => stub.IsNullable(propertyReflector.PropertyInfo))
-         .Return(false);
+          .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+          .Returns(false);
 
       var actual = propertyReflector.GetMetadata();
 
-      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithBinaryProperties.NoAttribute"));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithBinaryProperties.NoAttribute"));
       Assert.That(actual.PropertyType, Is.SameAs(typeof(byte[])));
       Assert.That(actual.IsNullable, Is.False);
       Assert.That(actual.MaxLength, Is.Null);
@@ -67,18 +70,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithMaximumLength ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("MaximumLength", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("MaximumLength", DomainModelConstraintProviderStub.Object);
 
       DomainModelConstraintProviderStub
-         .Stub(stub => stub.IsNullable(propertyReflector.PropertyInfo))
-         .Return(true);
+          .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+          .Returns(true);
       DomainModelConstraintProviderStub
-         .Stub(stub => stub.GetMaxLength(propertyReflector.PropertyInfo))
-         .Return(100);
+          .Setup(stub => stub.GetMaxLength(propertyReflector.PropertyInfo))
+          .Returns(100);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithBinaryProperties.MaximumLength"));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithBinaryProperties.MaximumLength"));
       Assert.That(actual.PropertyType, Is.SameAs(typeof(byte[])));
       Assert.That(actual.IsNullable, Is.True);
       Assert.That(actual.MaxLength, Is.EqualTo(100));

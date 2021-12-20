@@ -98,10 +98,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       var objectLoader = CreateObjectLoader(
           constructedTransaction, eventSink, persistenceStrategy, invalidDomainObjectManager, delegatingDataManager, hierarchyManager);
 
+      var relationEndPointProvider = GetEndPointProvider(delegatingDataManager);
+      var lazyLoader = GetLazyLoader(delegatingDataManager);
+
       var endPointManager = CreateRelationEndPointManager(
           constructedTransaction,
-          GetEndPointProvider(delegatingDataManager),
-          GetLazyLoader(delegatingDataManager),
+          relationEndPointProvider,
+          lazyLoader,
           eventSink,
           delegatingDataContainerMap);
 

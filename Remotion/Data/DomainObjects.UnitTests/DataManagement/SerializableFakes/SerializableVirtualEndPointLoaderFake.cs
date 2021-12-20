@@ -21,10 +21,11 @@ using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 {
-  public class SerializableVirtualEndPointLoaderFake<TEndPoint, TData, TDataManager, TLoadStateInterface> : IncompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager, TLoadStateInterface>.IEndPointLoader
-    where TEndPoint : IVirtualEndPoint<TData>
-    where TDataManager : IVirtualEndPointDataManager
-    where TLoadStateInterface : IVirtualEndPointLoadState<TEndPoint, TData, TDataManager>
+  public class SerializableVirtualEndPointLoaderFake<TEndPoint, TData, TDataManager, TLoadStateInterface>
+      : IncompleteVirtualEndPointLoadStateBase<TEndPoint, TData, TDataManager, TLoadStateInterface>.IEndPointLoader
+      where TEndPoint : IVirtualEndPoint<TData>
+      where TDataManager : IVirtualEndPointDataManager
+      where TLoadStateInterface : IVirtualEndPointLoadState<TEndPoint, TData, TDataManager>
   {
     public SerializableVirtualEndPointLoaderFake ()
     {
@@ -36,6 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
     }
 
     #region Serialization
+
     public SerializableVirtualEndPointLoaderFake (FlattenedDeserializationInfo info)
     {
     }
@@ -43,6 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
     }
+
     #endregion
   }
 }

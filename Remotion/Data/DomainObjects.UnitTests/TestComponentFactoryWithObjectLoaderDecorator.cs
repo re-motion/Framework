@@ -34,7 +34,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
       _factory = factory;
     }
 
-    protected override IObjectLoader CreateObjectLoader (ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink, IPersistenceStrategy persistenceStrategy, IInvalidDomainObjectManager invalidDomainObjectManager, IDataManager dataManager, ITransactionHierarchyManager hierarchyManager)
+    protected override IObjectLoader CreateObjectLoader (
+        ClientTransaction constructedTransaction,
+        IClientTransactionEventSink eventSink,
+        IPersistenceStrategy persistenceStrategy,
+        IInvalidDomainObjectManager invalidDomainObjectManager,
+        IDataManager dataManager,
+        ITransactionHierarchyManager hierarchyManager)
     {
       var objectLoader = base.CreateObjectLoader(constructedTransaction, eventSink, persistenceStrategy, invalidDomainObjectManager, dataManager, hierarchyManager);
       return _factory(objectLoader);

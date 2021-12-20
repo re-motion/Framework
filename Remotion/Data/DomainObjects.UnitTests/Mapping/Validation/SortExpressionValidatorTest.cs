@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
 {
@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
     private RelationDefinition _relationDefinition1;
     private RelationDefinition _relationDefinition2;
     private RelationDefinition _relationDefinition3;
-    private IRelationDefinitionValidatorRule _validationRuleMock;
+    private Mock<IRelationDefinitionValidatorRule> _validationRuleMock;
     private MappingValidationResult _fakeValidMappingValidationResult;
     private MappingValidationResult _fakeInvalidMappingValidationResult;
 
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
       _relationDefinition2 = CreateRelationDefinition("RelationDefinition2");
       _relationDefinition3 = CreateRelationDefinition("RelationDefinition3");
 
-      _validationRuleMock = MockRepository.GenerateStrictMock<IRelationDefinitionValidatorRule>();
+      _validationRuleMock = new Mock<IRelationDefinitionValidatorRule>(MockBehavior.Strict);
       _fakeValidMappingValidationResult = MappingValidationResult.CreateValidResult();
       _fakeInvalidMappingValidationResult = MappingValidationResult.CreateInvalidResult("Test");
     }
@@ -48,67 +48,63 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
     [Test]
     public void ValidateWithOneRelationDefinition_ValidResult ()
     {
-      var validator = new SortExpressionValidator(_validationRuleMock);
+      var validator = new SortExpressionValidator(_validationRuleMock.Object);
 
-      _validationRuleMock.Expect(mock => mock.Validate(_relationDefinition1)).Return(_fakeValidMappingValidationResult);
-      _validationRuleMock.Replay();
+      _validationRuleMock.Setup(mock => mock.Validate(_relationDefinition1)).Returns(_fakeValidMappingValidationResult).Verifiable();
 
       var mappingValidationResults = validator.Validate(new[] { _relationDefinition1 }).ToArray();
 
-      _validationRuleMock.VerifyAllExpectations();
+      _validationRuleMock.Verify();
       Assert.That(mappingValidationResults.Length, Is.EqualTo(0));
     }
 
     [Test]
     public void ValidateWithOneRelationDefinition_InvalidValidResult ()
     {
-      var validator = new SortExpressionValidator(_validationRuleMock);
+      var validator = new SortExpressionValidator(_validationRuleMock.Object);
 
-      _validationRuleMock.Expect(mock => mock.Validate(_relationDefinition1)).Return(_fakeInvalidMappingValidationResult);
-      _validationRuleMock.Replay();
+      _validationRuleMock.Setup(mock => mock.Validate(_relationDefinition1)).Returns(_fakeInvalidMappingValidationResult).Verifiable();
 
       var mappingValidationResults = validator.Validate(new[] { _relationDefinition1 }).ToArray();
 
-      _validationRuleMock.VerifyAllExpectations();
+      _validationRuleMock.Verify();
       Assert.That(mappingValidationResults.Length, Is.EqualTo(1));
     }
 
     [Test]
     public void ValidateWithSeveralRelationDefinitions_ValidResult ()
     {
-      var validator = new SortExpressionValidator(_validationRuleMock);
+      var validator = new SortExpressionValidator(_validationRuleMock.Object);
 
-      _validationRuleMock.Expect(mock => mock.Validate(_relationDefinition1)).Return(_fakeValidMappingValidationResult);
-      _validationRuleMock.Expect(mock => mock.Validate(_relationDefinition2)).Return(_fakeValidMappingValidationResult);
-      _validationRuleMock.Expect(mock => mock.Validate(_relationDefinition3)).Return(_fakeValidMappingValidationResult);
-      _validationRuleMock.Replay();
+      _validationRuleMock.Setup(mock => mock.Validate(_relationDefinition1)).Returns(_fakeValidMappingValidationResult).Verifiable();
+      _validationRuleMock.Setup(mock => mock.Validate(_relationDefinition2)).Returns(_fakeValidMappingValidationResult).Verifiable();
+      _validationRuleMock.Setup(mock => mock.Validate(_relationDefinition3)).Returns(_fakeValidMappingValidationResult).Verifiable();
 
       var mappingValidationResults = validator.Validate(new[] { _relationDefinition1, _relationDefinition2, _relationDefinition3 }).ToArray();
 
-      _validationRuleMock.VerifyAllExpectations();
+      _validationRuleMock.Verify();
       Assert.That(mappingValidationResults.Length, Is.EqualTo(0));
     }
 
     [Test]
     public void ValidateWithSeveralRelationDefinitions_InvalidValidResult ()
     {
-      var validator = new SortExpressionValidator(_validationRuleMock);
+      var validator = new SortExpressionValidator(_validationRuleMock.Object);
 
-      _validationRuleMock.Expect(mock => mock.Validate(_relationDefinition1)).Return(_fakeInvalidMappingValidationResult);
-      _validationRuleMock.Expect(mock => mock.Validate(_relationDefinition2)).Return(_fakeInvalidMappingValidationResult);
-      _validationRuleMock.Expect(mock => mock.Validate(_relationDefinition3)).Return(_fakeInvalidMappingValidationResult);
-      _validationRuleMock.Replay();
+      _validationRuleMock.Setup(mock => mock.Validate(_relationDefinition1)).Returns(_fakeInvalidMappingValidationResult).Verifiable();
+      _validationRuleMock.Setup(mock => mock.Validate(_relationDefinition2)).Returns(_fakeInvalidMappingValidationResult).Verifiable();
+      _validationRuleMock.Setup(mock => mock.Validate(_relationDefinition3)).Returns(_fakeInvalidMappingValidationResult).Verifiable();
 
       var mappingValidationResults = validator.Validate(new[] { _relationDefinition1, _relationDefinition2, _relationDefinition3 }).ToArray();
 
-      _validationRuleMock.VerifyAllExpectations();
+      _validationRuleMock.Verify();
       Assert.That(mappingValidationResults.Length, Is.EqualTo(3));
     }
 
     private RelationDefinition CreateRelationDefinition (string id)
     {
       return new RelationDefinition(
-          id, MockRepository.GenerateStub<IRelationEndPointDefinition>(), MockRepository.GenerateStub<IRelationEndPointDefinition>());
+          id, new Mock<IRelationEndPointDefinition>().Object, new Mock<IRelationEndPointDefinition>().Object);
     }
   }
 }

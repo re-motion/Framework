@@ -17,13 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -438,9 +438,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void ToITransaction_Override ()
     {
-      var wrapperStub = MockRepository.GenerateMock<ITransaction>();
-      var transaction = new ClientTransactionWithCustomITransaction(wrapperStub);
-      Assert.That(transaction.ToITransaction(), Is.SameAs(wrapperStub));
+      var wrapperStub = new Mock<ITransaction>();
+      var transaction = new ClientTransactionWithCustomITransaction(wrapperStub.Object);
+      Assert.That(transaction.ToITransaction(), Is.SameAs(wrapperStub.Object));
     }
   }
 }

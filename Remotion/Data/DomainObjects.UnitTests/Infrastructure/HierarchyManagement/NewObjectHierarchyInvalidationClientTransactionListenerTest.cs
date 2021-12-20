@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
@@ -22,7 +23,6 @@ using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManagement
 {
@@ -150,9 +150,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     {
       var listener = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(clientTransaction);
       listener
-          .Stub(stub => stub.ObjectMarkedInvalid(Arg<ClientTransaction>.Is.Anything, Arg<DomainObject>.Is.Anything))
-          .WhenCalled(
-              mi => Assert.That(((ClientTransaction)mi.Arguments[0]).IsWriteable, Is.True, "MarkInvalid requires the transaction to be unlocked."));
+          .Setup(stub => stub.ObjectMarkedInvalid(It.IsAny<ClientTransaction>(), It.IsAny<DomainObject>()))
+          .Callback(
+              (ClientTransaction transaction, DomainObject _) =>
+                  Assert.That(transaction.IsWriteable, Is.True, "MarkInvalid requires the transaction to be unlocked."));
     }
   }
 }

@@ -19,7 +19,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
 {
@@ -29,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithBasicType ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("BooleanProperty", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("BooleanProperty", DomainModelConstraintProviderStub.Object);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
@@ -43,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithNullableBasicType ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("NaBooleanProperty", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("NaBooleanProperty", DomainModelConstraintProviderStub.Object);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
@@ -57,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithEnumProperty ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("EnumProperty", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>("EnumProperty", DomainModelConstraintProviderStub.Object);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
@@ -72,11 +71,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     public void GetMetadata_WithExtensibleEnumProperty ()
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>(
-          "ExtensibleEnumProperty", DomainModelConstraintProviderStub);
+          "ExtensibleEnumProperty", DomainModelConstraintProviderStub.Object);
 
       DomainModelConstraintProviderStub
-          .Stub(stub => stub.IsNullable(propertyReflector.PropertyInfo))
-          .Return(false);
+          .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+          .Returns(false);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
@@ -91,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     public void GetMetadata_WithOptionalRelationProperty ()
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithGuidKey>(
-          "ClassWithValidRelationsOptional", DomainModelConstraintProviderStub);
+          "ClassWithValidRelationsOptional", DomainModelConstraintProviderStub.Object);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 

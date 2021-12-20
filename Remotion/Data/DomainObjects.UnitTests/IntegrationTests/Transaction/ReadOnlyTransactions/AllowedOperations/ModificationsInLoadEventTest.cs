@@ -16,12 +16,12 @@
 // 
 using System;
 using System.Linq.Expressions;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.ReadOnlyTransactions.AllowedOperations
 {
@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
   {
     private Order _order;
     private Location _location;
-    private ILoadEventReceiver _loadEventReceiverMock;
+    private Mock<ILoadEventReceiver> _loadEventReceiverMock;
     private Client _client1;
     private Client _client2;
     private Client _client3;
@@ -47,29 +47,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       _client3 = (Client)LifetimeService.GetObject(WriteableSubTransaction, DomainObjectIDs.Client3, false);
       _client4 = (Client)LifetimeService.NewObject(WriteableSubTransaction, typeof(Client), ParamList.Empty);
 
-      _loadEventReceiverMock = MockRepository.GenerateStrictMock<ILoadEventReceiver>();
-      _order.SetLoadEventReceiver(_loadEventReceiverMock);
-      _location.SetLoadEventReceiver(_loadEventReceiverMock);
+      _loadEventReceiverMock = new Mock<ILoadEventReceiver>(MockBehavior.Strict);
+      _order.SetLoadEventReceiver(_loadEventReceiverMock.Object);
+      _location.SetLoadEventReceiver(_loadEventReceiverMock.Object);
     }
 
     [Test]
     public void OnLoaded_CanModifyThisObject_PropertyValues ()
     {
-      using (_loadEventReceiverMock.GetMockRepository().Ordered())
-      {
-        _loadEventReceiverMock
-            .Expect(mock => mock.OnLoaded(_order))
-            .WhenCalled(mi => CheckTransactionAndSetProperty(ReadOnlyRootTransaction, _order, o => o.OrderNumber, expectedValue: 1, newValue: 2));
-        _loadEventReceiverMock
-            .Expect(mock => mock.OnLoaded(_order))
-            .WhenCalled(mi => CheckTransactionAndSetProperty(ReadOnlyMiddleTransaction, _order, o => o.OrderNumber, expectedValue: 2, newValue: 3));
-        _loadEventReceiverMock
-            .Expect(mock => mock.OnLoaded(_order))
-            .WhenCalled(mi => CheckTransactionAndSetProperty(WriteableSubTransaction, _order, o => o.OrderNumber, expectedValue: 3, newValue: 4));
-      }
+      var sequence = new MockSequence();
+      _loadEventReceiverMock
+            .InSequence(sequence)
+            .Setup(mock => mock.OnLoaded(_order))
+            .Callback((DomainObject domainObject) => CheckTransactionAndSetProperty(ReadOnlyRootTransaction, _order, o => o.OrderNumber, expectedValue: 1, newValue: 2))
+            .Verifiable();
+      _loadEventReceiverMock
+            .InSequence(sequence)
+            .Setup(mock => mock.OnLoaded(_order))
+            .Callback((DomainObject domainObject) => CheckTransactionAndSetProperty(ReadOnlyMiddleTransaction, _order, o => o.OrderNumber, expectedValue: 2, newValue: 3))
+            .Verifiable();
+      _loadEventReceiverMock
+            .InSequence(sequence)
+            .Setup(mock => mock.OnLoaded(_order))
+            .Callback((DomainObject domainObject) => CheckTransactionAndSetProperty(WriteableSubTransaction, _order, o => o.OrderNumber, expectedValue: 3, newValue: 4))
+            .Verifiable();
       WriteableSubTransaction.EnsureDataAvailable(_order.ID);
 
-      _loadEventReceiverMock.VerifyAllExpectations();
+      _loadEventReceiverMock.Verify();
 
       CheckProperty(ReadOnlyRootTransaction, _order, o => o.OrderNumber, expectedOriginalValue: 1, expectedCurrentValue: 2);
       CheckProperty(ReadOnlyMiddleTransaction, _order, o => o.OrderNumber, expectedOriginalValue: 2, expectedCurrentValue: 3);
@@ -79,22 +83,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void OnLoaded_CanModifyThisObject_UnidirectionalRelations ()
     {
-      using (_loadEventReceiverMock.GetMockRepository().Ordered())
-      {
-        _loadEventReceiverMock
-            .Expect(mock => mock.OnLoaded(_location))
-            .WhenCalled(mi => CheckTransactionAndSetProperty(ReadOnlyRootTransaction, _location, l => l.Client, expectedValue: _client1, newValue: _client2));
-        _loadEventReceiverMock
-            .Expect(mock => mock.OnLoaded(_location))
-            .WhenCalled(mi => CheckTransactionAndSetProperty(ReadOnlyMiddleTransaction, _location, l => l.Client, expectedValue: _client2, newValue: _client3));
-        _loadEventReceiverMock
-            .Expect(mock => mock.OnLoaded(_location))
-            .WhenCalled(mi => CheckTransactionAndSetProperty(WriteableSubTransaction, _location, l => l.Client, expectedValue: _client3, newValue: _client4));
-      }
+      var sequence = new MockSequence();
+      _loadEventReceiverMock
+            .InSequence(sequence)
+            .Setup(mock => mock.OnLoaded(_location))
+            .Callback((DomainObject _) => CheckTransactionAndSetProperty(ReadOnlyRootTransaction, _location, l => l.Client, expectedValue: _client1, newValue: _client2))
+            .Verifiable();
+      _loadEventReceiverMock
+            .InSequence(sequence)
+            .Setup(mock => mock.OnLoaded(_location))
+            .Callback((DomainObject _) => CheckTransactionAndSetProperty(ReadOnlyMiddleTransaction, _location, l => l.Client, expectedValue: _client2, newValue: _client3))
+            .Verifiable();
+      _loadEventReceiverMock
+            .InSequence(sequence)
+            .Setup(mock => mock.OnLoaded(_location))
+            .Callback((DomainObject _) => CheckTransactionAndSetProperty(WriteableSubTransaction, _location, l => l.Client, expectedValue: _client3, newValue: _client4))
+            .Verifiable();
 
       WriteableSubTransaction.EnsureDataAvailable(_location.ID);
 
-      _loadEventReceiverMock.VerifyAllExpectations();
+      _loadEventReceiverMock.Verify();
 
       CheckProperty(ReadOnlyRootTransaction, _location, l => l.Client, expectedOriginalValue: _client1, expectedCurrentValue: _client2);
       CheckProperty(ReadOnlyMiddleTransaction, _location, l => l.Client, expectedOriginalValue: _client2, expectedCurrentValue: _client3);

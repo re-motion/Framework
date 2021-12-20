@@ -54,7 +54,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope();
 
       _folder1.FileSystemItems.EnsureDataComplete();
-      _collectionEndPoint = (DomainObjectCollectionEndPoint)GetEndPoint<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(RelationEndPointID.Resolve(_folder1, o => o.FileSystemItems)).InnerEndPoint;
+      _collectionEndPoint =
+          (DomainObjectCollectionEndPoint)GetEndPoint<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(RelationEndPointID.Resolve(_folder1, o => o.FileSystemItems))
+              .InnerEndPoint;
 
       _fileSystemItem1EndPoint = GetEndPoint<RealObjectEndPoint>(RelationEndPointID.Resolve(_fileSystemItem1, oi => oi.ParentFolder));
       _fileSystemItem2EndPoint = GetEndPoint<RealObjectEndPoint>(RelationEndPointID.Resolve(_fileSystemItem2, oi => oi.ParentFolder));

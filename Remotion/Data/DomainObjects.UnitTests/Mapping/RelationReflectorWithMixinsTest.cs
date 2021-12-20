@@ -41,20 +41,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       base.SetUp();
 
-      _mixinTargetClassDefinition =
-          ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(
-              typeof(TargetClassForPersistentMixin), typeof(MixinAddingPersistentProperties));
-      _multiMixinTargetClassDefinition =
-          ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(
-              typeof(TargetClassReceivingTwoReferencesToDerivedClass),
-              typeof(MixinAddingTwoReferencesToDerivedClass1),
-              typeof(MixinAddingTwoReferencesToDerivedClass2));
-      _multiMixinRelatedClassDefinition =
-          ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedClassWithTwoBaseReferencesViaMixins));
-      _relatedClassDefinition =
-          ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(
-              typeof(RelationTargetForPersistentMixin), typeof(MixinAddingPersistentProperties));
-      _inheritanceRootInheritingMixinClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(InheritanceRootInheritingPersistentMixin), persistentMixinFinder: new PersistentMixinFinder(typeof(InheritanceRootInheritingPersistentMixin), true));
+      _mixinTargetClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(
+          typeof(TargetClassForPersistentMixin),
+          typeof(MixinAddingPersistentProperties));
+      _multiMixinTargetClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(
+          typeof(TargetClassReceivingTwoReferencesToDerivedClass),
+          typeof(MixinAddingTwoReferencesToDerivedClass1),
+          typeof(MixinAddingTwoReferencesToDerivedClass2));
+      _multiMixinRelatedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedClassWithTwoBaseReferencesViaMixins));
+      _relatedClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(
+          typeof(RelationTargetForPersistentMixin),
+          typeof(MixinAddingPersistentProperties));
+      _inheritanceRootInheritingMixinClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(
+          classType: typeof(InheritanceRootInheritingPersistentMixin),
+          persistentMixinFinder: new PersistentMixinFinder(typeof(InheritanceRootInheritingPersistentMixin), true));
 
       _classDefinitions = new[] { _mixinTargetClassDefinition, _relatedClassDefinition, _multiMixinTargetClassDefinition }
           .ToDictionary(cd => cd.ClassType);
@@ -238,8 +238,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetMetadata_Mixed_PropertyAboveInheritanceRoot ()
     {
       var classAboveInheritanceRoot = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(RelationTargetForPersistentMixinAboveInheritanceRoot));
-      CreateRelationReflectorForProperty(
-          classAboveInheritanceRoot, typeof(RelationTargetForPersistentMixinAboveInheritanceRoot), "RelationProperty1");
+      CreateRelationReflectorForProperty(classAboveInheritanceRoot, typeof(RelationTargetForPersistentMixinAboveInheritanceRoot), "RelationProperty1");
       var relationReflector = CreateRelationReflectorForProperty(
           _inheritanceRootInheritingMixinClassDefinition,
           typeof(MixinAddingPersistentPropertiesAboveInheritanceRoot),
@@ -252,14 +251,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private RelationReflector CreateRelationReflectorForProperty (
         ClassDefinition classDefinition, Type declaringType, string propertyName)
     {
-      var propertyInfo =
-          PropertyInfoAdapter.Create(declaringType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
+      var propertyInfo = PropertyInfoAdapter.Create(declaringType.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
       var propertyReflector = new PropertyReflector(
           classDefinition,
           propertyInfo,
           new ReflectionBasedMemberInformationNameResolver(),
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub);
+          DomainModelConstraintProviderStub.Object);
       var propertyDefinition = propertyReflector.GetMetadata();
       var properties = new List<PropertyDefinition>();
       properties.Add(propertyDefinition);

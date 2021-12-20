@@ -53,7 +53,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
       get { return new UnitTestStorageProviderStubDefinition("DefaultStorageProvider"); }
     }
 
-    protected RelationDefinition CreateRelationDefinitionAndSetBackReferences (string id, IRelationEndPointDefinition endPointDefinition1, IRelationEndPointDefinition endPointDefinition2)
+    protected RelationDefinition CreateRelationDefinitionAndSetBackReferences (
+        string id,
+        IRelationEndPointDefinition endPointDefinition1,
+        IRelationEndPointDefinition endPointDefinition2)
     {
       var relationDefinition = new RelationDefinition(id, endPointDefinition1, endPointDefinition2);
       ((IRelationEndPointDefinitionSetter)endPointDefinition1).SetRelationDefinition(relationDefinition);

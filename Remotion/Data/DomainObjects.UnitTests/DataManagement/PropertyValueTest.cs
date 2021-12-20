@@ -308,7 +308,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(string));
 
       Assert.That(
-          () =>  new PropertyValue(definition, 123),
+          () => new PropertyValue(definition, 123),
           Throws.TypeOf<InvalidTypeException>()
               .With.Message.EqualTo("Actual type 'System.Int32' of property 'test' does not match expected type 'System.String'."));
     }
@@ -320,7 +320,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var propertyValue = new PropertyValue(definition, "123");
 
       Assert.That(
-          () =>  propertyValue.Value = 123,
+          () => propertyValue.Value = 123,
           Throws.TypeOf<InvalidTypeException>()
               .With.Message.EqualTo("Actual type 'System.Int32' of property 'test' does not match expected type 'System.String'."));
     }
@@ -362,7 +362,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(byte[]));
 
       Assert.That(
-          () =>  new PropertyValue(definition, new int[0]),
+          () => new PropertyValue(definition, new int[0]),
           Throws.TypeOf<InvalidTypeException>()
               .With.Message.EqualTo("Actual type 'System.Int32[]' of property 'test' does not match expected type 'System.Byte[]'."));
     }
@@ -410,7 +410,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Color), false);
 
       Assert.That(
-          () =>  new PropertyValue(definition, 12),
+          () => new PropertyValue(definition, 12),
           Throws.TypeOf<InvalidTypeException>()
               .With.Message.EqualTo("Actual type 'System.Int32' of property 'test' does not match expected type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Color'."));
     }
@@ -458,7 +458,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       PropertyDefinition definition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo("test", typeof(Tuple<int>), false);
 
       Assert.That(
-          () =>  new PropertyValue(definition, 12),
+          () => new PropertyValue(definition, 12),
           Throws.TypeOf<InvalidTypeException>()
               .With.Message.EqualTo("Actual type 'System.Int32' of property 'test' does not match expected type 'System.Tuple`1[System.Int32]'."));
     }

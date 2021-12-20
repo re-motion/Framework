@@ -16,12 +16,12 @@
 // 
 using System;
 using System.Text;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuilders.Specifications
 {
@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var sb = new StringBuilder();
 
-      AllSelectedColumnsSpecification.Instance.AppendProjection(sb, MockRepository.GenerateStub<ISqlDialect>());
+      AllSelectedColumnsSpecification.Instance.AppendProjection(sb, new Mock<ISqlDialect>().Object);
 
       Assert.That(sb.ToString(), Is.EqualTo("*"));
     }

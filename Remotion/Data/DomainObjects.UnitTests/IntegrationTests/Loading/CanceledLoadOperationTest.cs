@@ -16,17 +16,17 @@
 // 
 using System;
 using System.Collections.ObjectModel;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Loading
 {
   [TestFixture]
   public class CanceledLoadOperationTest : ClientTransactionBaseTest
   {
-    private IClientTransactionListener _listenerDynamicMock;
+    private Mock<IClientTransactionListener> _listenerDynamicMock;
 
     public override void SetUp ()
     {
@@ -42,9 +42,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Loading
 
       // First, load an object and throw in ObjectsLoading.
 
+      var sequence = new MockSequence();
       _listenerDynamicMock
-          .Expect(mock => mock.ObjectsLoading(Arg<ClientTransaction>.Is.Anything, Arg<ReadOnlyCollection<ObjectID>>.Is.Anything))
-          .Throw(exception).Repeat.Once();
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<ObjectID>>()))
+          .Throws(exception);
+      _listenerDynamicMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<ObjectID>>()));
 
       var abortedDomainObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObjectReference<ClassWithAllDataTypes>();
       Assert.That(() => abortedDomainObject.EnsureDataAvailable(), Throws.Exception.SameAs(exception));

@@ -22,6 +22,7 @@ using log4net;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -32,7 +33,6 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
@@ -209,14 +209,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RelationReading ()
     {
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      relationEndPointDefinition.Stub(n => n.PropertyName).Return("Name");
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      relationEndPointDefinition.Setup(n => n.PropertyName).Returns("Name");
       CheckLoggingMethod(
-          () => _listener.RelationReading(_clientTransaction, _domainObject, relationEndPointDefinition, ValueAccess.Current),
+          () => _listener.RelationReading(_clientTransaction, _domainObject, relationEndPointDefinition.Object, ValueAccess.Current),
           string.Format(
               "{0} RelationReading: {1} ({2}, {3})",
               _clientTransaction.ID,
-              relationEndPointDefinition.PropertyName,
+              relationEndPointDefinition.Object.PropertyName,
               ValueAccess.Current,
               _domainObject.ID));
     }
@@ -224,15 +224,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RelationRead ()
     {
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      relationEndPointDefinition.Stub(n => n.PropertyName).Return("Name");
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      relationEndPointDefinition.Setup(n => n.PropertyName).Returns("Name");
 
       CheckLoggingMethod(
-          () => _listener.RelationRead(_clientTransaction, _domainObject, relationEndPointDefinition, _domainObject, ValueAccess.Current),
+          () => _listener.RelationRead(_clientTransaction, _domainObject, relationEndPointDefinition.Object, _domainObject, ValueAccess.Current),
           string.Format(
               "{0} RelationRead: {1}=={2} ({3}, {4})",
               _clientTransaction.ID,
-              relationEndPointDefinition.PropertyName,
+              relationEndPointDefinition.Object.PropertyName,
               _domainObject.ID,
               ValueAccess.Current,
               _domainObject.ID));
@@ -241,17 +241,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RelationRead_Collection ()
     {
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      relationEndPointDefinition.Stub(n => n.PropertyName).Return("Items");
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      relationEndPointDefinition.Setup(n => n.PropertyName).Returns("Items");
 
       var values =
           new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(new DomainObjectCollection(new[] { _domainObject2, _domainObject3 }, null));
       CheckLoggingMethod(
-          () => _listener.RelationRead(_clientTransaction, _domainObject, relationEndPointDefinition, values, ValueAccess.Current),
+          () => _listener.RelationRead(_clientTransaction, _domainObject, relationEndPointDefinition.Object, values, ValueAccess.Current),
           string.Format(
               "{0} RelationRead: {1} ({2}, {3}): {4}, {5}",
               _clientTransaction.ID,
-              relationEndPointDefinition.PropertyName,
+              relationEndPointDefinition.Object.PropertyName,
               ValueAccess.Current,
               _domainObject.ID,
               _domainObject2.ID,
@@ -261,19 +261,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RelationRead_LongCollection ()
     {
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      relationEndPointDefinition.Stub(n => n.PropertyName).Return("Items");
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      relationEndPointDefinition.Setup(n => n.PropertyName).Returns("Items");
 
       var values = new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(
           new DomainObjectCollection(
               Enumerable.Range(0, 100).Select(i => LifetimeService.NewObject(_clientTransaction, typeof(Client), ParamList.Empty)),
               null));
       CheckLoggingMethod(
-          () => _listener.RelationRead(_clientTransaction, _domainObject, relationEndPointDefinition, values, ValueAccess.Current),
+          () => _listener.RelationRead(_clientTransaction, _domainObject, relationEndPointDefinition.Object, values, ValueAccess.Current),
           string.Format(
               "{0} RelationRead: {1} ({2}, {3}): {4}, +90",
               _clientTransaction.ID,
-              relationEndPointDefinition.PropertyName,
+              relationEndPointDefinition.Object.PropertyName,
               ValueAccess.Current,
               _domainObject.ID,
               string.Join(", ", values.Take(10))));
@@ -282,15 +282,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RelationChanging ()
     {
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      relationEndPointDefinition.Stub(n => n.PropertyName).Return("Name");
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      relationEndPointDefinition.Setup(n => n.PropertyName).Returns("Name");
 
       CheckLoggingMethod(
-          () => _listener.RelationChanging(_clientTransaction, _domainObject, relationEndPointDefinition, _domainObject2, _domainObject3),
+          () => _listener.RelationChanging(_clientTransaction, _domainObject, relationEndPointDefinition.Object, _domainObject2, _domainObject3),
           string.Format(
               "{0} RelationChanging: {1}: {2}->{3} /{4}",
               _clientTransaction.ID,
-              relationEndPointDefinition.PropertyName,
+              relationEndPointDefinition.Object.PropertyName,
               _domainObject2.ID,
               _domainObject3.ID,
               _domainObject.ID));
@@ -299,15 +299,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RelationChanged ()
     {
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      relationEndPointDefinition.Stub(n => n.PropertyName).Return("Name");
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      relationEndPointDefinition.Setup(n => n.PropertyName).Returns("Name");
 
       CheckLoggingMethod(
-          () => _listener.RelationChanged(_clientTransaction, _domainObject, relationEndPointDefinition, _domainObject2, _domainObject3),
+          () => _listener.RelationChanged(_clientTransaction, _domainObject, relationEndPointDefinition.Object, _domainObject2, _domainObject3),
           string.Format(
               "{0} RelationChanged: {1}: {2}->{3} /{4}",
               _clientTransaction.ID,
-              relationEndPointDefinition.PropertyName,
+              relationEndPointDefinition.Object.PropertyName,
               _domainObject2.ID,
               _domainObject3.ID,
               _domainObject.ID));
@@ -316,11 +316,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void FilterQueryResult ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery>();
-      queryStub.Stub(stub => stub.ID).Return("a_query");
-      queryStub.Stub(stub => stub.Statement).Return("SELECT SMTH");
+      var queryStub = new Mock<IQuery>();
+      queryStub.Setup(stub => stub.ID).Returns("a_query");
+      queryStub.Setup(stub => stub.Statement).Returns("SELECT SMTH");
 
-      var queryResult = new QueryResult<Order>(queryStub, new[] { DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order1) });
+      var queryResult = new QueryResult<Order>(queryStub.Object, new[] { DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order1) });
       CheckLoggingMethod(
           () => _listener.FilterQueryResult(_clientTransaction, queryResult),
           string.Format("{0} FilterQueryResult: a_query (SELECT SMTH): Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid", _clientTransaction.ID));
@@ -329,13 +329,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void FilterCustomQueryResult ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery>();
-      queryStub.Stub(stub => stub.ID).Return("a_query");
-      queryStub.Stub(stub => stub.Statement).Return("SELECT SMTH");
+      var queryStub = new Mock<IQuery>();
+      queryStub.Setup(stub => stub.ID).Returns("a_query");
+      queryStub.Setup(stub => stub.Statement).Returns("SELECT SMTH");
 
       var results = new[] { "item" };
       CheckLoggingMethod(
-          () => _listener.FilterCustomQueryResult(_clientTransaction, queryStub, results),
+          () => _listener.FilterCustomQueryResult(_clientTransaction, queryStub.Object, results),
           string.Format("{0} FilterCustomQueryResult: a_query (SELECT SMTH)", _clientTransaction.ID));
     }
 
@@ -347,7 +347,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           _listener.TransactionCommitting(
               _clientTransaction,
               new ReadOnlyCollection<DomainObject>(new List<DomainObject> { _domainObject }),
-              MockRepository.GenerateStub<ICommittingEventRegistrar>()),
+              new Mock<ICommittingEventRegistrar>().Object),
           string.Format(
               "{0} TransactionCommitting: {1}",
               _clientTransaction.ID,

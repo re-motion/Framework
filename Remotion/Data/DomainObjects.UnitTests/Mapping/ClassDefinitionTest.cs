@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
@@ -32,7 +33,6 @@ using Remotion.Development.UnitTesting.Enumerables;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -75,8 +75,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void Initialize ()
     {
-      var persistentMixinFinder = MockRepository.GenerateStub<IPersistentMixinFinder>();
-      var instanceCreator = MockRepository.GenerateStub<IDomainObjectCreator>();
+      var persistentMixinFinder = new Mock<IPersistentMixinFinder>();
+      var instanceCreator = new Mock<IDomainObjectCreator>();
 
       var actual = new ClassDefinition(
               "Order",
@@ -85,8 +85,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               null,
               null,
               DefaultStorageClass.Transaction,
-              persistentMixinFinder,
-              instanceCreator);
+              persistentMixinFinder.Object,
+              instanceCreator.Object);
       actual.SetDerivedClasses(new ClassDefinition[0]);
 
       Assert.That(actual.ID, Is.EqualTo("Order"));
@@ -99,15 +99,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(actual.DefaultStorageClass, Is.EqualTo(DefaultStorageClass.Transaction));
       //Assert.That (actual.DerivedClasses.AreResolvedTypesRequired, Is.True);
       Assert.That(actual.IsReadOnly, Is.False);
-      Assert.That(actual.PersistentMixinFinder, Is.SameAs(persistentMixinFinder));
-      Assert.That(actual.InstanceCreator, Is.SameAs(instanceCreator));
+      Assert.That(actual.PersistentMixinFinder, Is.SameAs(persistentMixinFinder.Object));
+      Assert.That(actual.InstanceCreator, Is.SameAs(instanceCreator.Object));
     }
 
     [Test]
     public void Initialize_IDCreator_CreatesGenericObjectIDs ()
     {
-      var persistentMixinFinder = MockRepository.GenerateStub<IPersistentMixinFinder>();
-      var instanceCreator = MockRepository.GenerateStub<IDomainObjectCreator>();
+      var persistentMixinFinder = new Mock<IPersistentMixinFinder>();
+      var instanceCreator = new Mock<IDomainObjectCreator>();
 
       var classDefinition = new ClassDefinition(
               "Order",
@@ -116,8 +116,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               null,
               null,
               DefaultStorageClass.Persistent,
-              persistentMixinFinder,
-              instanceCreator);
+              persistentMixinFinder.Object,
+              instanceCreator.Object);
 
       Assert.That(classDefinition.HandleCreator, Is.Not.Null);
 
@@ -132,8 +132,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void Initialize_IDCreator_ThrowsWhenNoDomainObject ()
     {
-      var persistentMixinFinder = MockRepository.GenerateStub<IPersistentMixinFinder>();
-      var instanceCreator = MockRepository.GenerateStub<IDomainObjectCreator>();
+      var persistentMixinFinder = new Mock<IPersistentMixinFinder>();
+      var instanceCreator = new Mock<IDomainObjectCreator>();
 
       var classDefinition = new ClassDefinition(
               "Order",
@@ -142,8 +142,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               null,
               null,
               DefaultStorageClass.Persistent,
-              persistentMixinFinder,
-              instanceCreator);
+              persistentMixinFinder.Object,
+              instanceCreator.Object);
 
       Assert.That(classDefinition.HandleCreator, Is.Not.Null);
       Assert.That(
@@ -232,7 +232,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void SetRelationEndPointDefinitions ()
     {
       var endPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          _domainBaseClass, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          _domainBaseClass, "Test", false, new Mock<IPropertyInformation>().Object);
 
       _domainBaseClass.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointDefinition }, false));
 
@@ -245,7 +245,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void SetRelationEndPointDefinitions_DifferentClassDefinition_ThrowsException ()
     {
       var endPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          _distributorClass, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          _distributorClass, "Test", false, new Mock<IPropertyInformation>().Object);
       Assert.That(
           () => _domainBaseClass.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointDefinition }, false)),
           Throws.InstanceOf<MappingException>()
@@ -257,9 +257,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void SetRelationEndPointDefinitions_EndPointWithSamePropertyNameWasAlreadyAdded_ThrowsException ()
     {
       var baseEndPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          _domainBaseClass, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          _domainBaseClass, "Test", false, new Mock<IPropertyInformation>().Object);
       var derivedEndPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          _personClass, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          _personClass, "Test", false, new Mock<IPropertyInformation>().Object);
 
       _domainBaseClass.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { baseEndPointDefinition }, true));
       Assert.That(
@@ -274,7 +274,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void SetRelationEndPointDefinitions_Twice_ThrowsException ()
     {
       var endPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          _domainBaseClass, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          _domainBaseClass, "Test", false, new Mock<IPropertyInformation>().Object);
 
       _domainBaseClass.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointDefinition }, false));
       Assert.That(
@@ -446,12 +446,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       RelationDefinition partnerToPerson =
           FakeMappingConfiguration.Current.RelationDefinitions[
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Partner:"
-              +
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Partner.ContactPerson->Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Person.AssociatedPartnerCompany"
-              ];
+              + "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Partner.ContactPerson->Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Person.AssociatedPartnerCompany"];
       IRelationEndPointDefinition partnerEndPoint =
           partnerToPerson.GetEndPointDefinition(
-              "Partner", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Partner.ContactPerson");
+              "Partner",
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Partner.ContactPerson");
 
       Assert.That(_distributorClass.IsRelationEndPoint(partnerEndPoint), Is.True);
     }
@@ -460,8 +459,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetPropertyDefinition ()
     {
       Assert.That(
-          _orderClass.GetPropertyDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderNumber"),
+          _orderClass.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderNumber"),
           Is.Not.Null);
     }
 
@@ -482,16 +480,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(
           () => _orderClass.GetPropertyDefinition(string.Empty),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'propertyName' cannot be empty.", "propertyName"));
+              .With.ArgumentExceptionMessageEqualTo("Parameter 'propertyName' cannot be empty.", "propertyName"));
     }
 
     [Test]
     public void GetInheritedPropertyDefinition ()
     {
       Assert.That(
-          _distributorClass.GetPropertyDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Partner.ContactPerson"),
+          _distributorClass.GetPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Partner.ContactPerson"),
           Is.Not.Null);
     }
 
@@ -515,8 +511,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(
           () => classDefinition.GetPropertyDefinitions(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo(
-                  "No property definitions have been set for class 'Order'."));
+              .With.Message.EqualTo("No property definitions have been set for class 'Order'."));
     }
 
     [Test]
@@ -591,27 +586,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(
           () => supplierClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { supplierPropertyDefinition }, true)),
           Throws.InstanceOf<MappingException>()
-              .With.Message.EqualTo(
-                  "Property 'Name' cannot be added to class 'Supplier', because base class 'Company' already defines a property with the same name."));
+              .With.Message.EqualTo("Property 'Name' cannot be added to class 'Supplier', because base class 'Company' already defines a property with the same name."));
     }
 
     [Test]
     public void ConstructorWithoutBaseClass ()
     {
-      var persistentMixinFinder = MockRepository.GenerateStub<IPersistentMixinFinder>();
-      var instanceCreator = MockRepository.GenerateStub<IDomainObjectCreator>();
+      var persistentMixinFinder = new Mock<IPersistentMixinFinder>();
+      var instanceCreator = new Mock<IDomainObjectCreator>();
 
       Assert.That(
-              () => new ClassDefinition(
-                      "id",
-                      typeof(Company),
-                      false,
-                      null,
-                      null,
-                      DefaultStorageClass.Persistent,
-                      persistentMixinFinder,
-                      instanceCreator),
-              Throws.Nothing);
+          () => new ClassDefinition("id", typeof(Company), false, null, null, DefaultStorageClass.Persistent, persistentMixinFinder.Object, instanceCreator.Object),
+          Throws.Nothing);
     }
 
     [Test]
@@ -620,8 +606,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(
           () => _orderClass.GetMandatoryRelationEndPointDefinition("UndefinedProperty"),
           Throws.InstanceOf<MappingException>()
-              .With.Message.EqualTo(
-                  "No relation found for class 'Order' and property 'UndefinedProperty'."));
+              .With.Message.EqualTo("No relation found for class 'Order' and property 'UndefinedProperty'."));
     }
 
     [Test]
@@ -629,8 +614,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       classDefinition.SetDerivedClasses(new ClassDefinition[0]);
-      var endPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          classDefinition, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition(classDefinition, "Test", false, new Mock<IPropertyInformation>().Object);
       classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointDefinition }, true));
       classDefinition.SetReadOnly();
 
@@ -646,8 +630,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(
           () => classDefinition.GetRelationEndPointDefinitions(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo(
-                  "No relation end point definitions have been set for class 'Order'."));
+              .With.Message.EqualTo("No relation end point definitions have been set for class 'Order'."));
     }
 
     [Test]
@@ -656,7 +639,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       classDefinition.SetDerivedClasses(new ClassDefinition[0]);
       var endPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          classDefinition, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+          classDefinition, "Test", false, new Mock<IPropertyInformation>().Object);
       classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointDefinition }, true));
       classDefinition.SetReadOnly();
 
@@ -671,8 +654,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       classDefinition.SetDerivedClasses(new ClassDefinition[0]);
-      var endPointDefinition = new VirtualObjectRelationEndPointDefinition(
-          classDefinition, "Test", false, MockRepository.GenerateStub<IPropertyInformation>());
+      var endPointDefinition = new VirtualObjectRelationEndPointDefinition(classDefinition, "Test", false, new Mock<IPropertyInformation>().Object);
       classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointDefinition }, true));
       classDefinition.SetReadOnly();
 
@@ -687,17 +669,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var relationEndPointDefinitions = _orderClass.GetRelationEndPointDefinitions();
 
       IRelationEndPointDefinition customerEndPoint =
-          _orderClass.GetRelationEndPointDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer");
+          _orderClass.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer");
       IRelationEndPointDefinition orderTicketEndPoint =
-          _orderClass.GetRelationEndPointDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderTicket");
+          _orderClass.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderTicket");
       IRelationEndPointDefinition orderItemsEndPoint =
-          _orderClass.GetRelationEndPointDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderItems");
+          _orderClass.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderItems");
       IRelationEndPointDefinition officialEndPoint =
-          _orderClass.GetRelationEndPointDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Official");
+          _orderClass.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Official");
 
       Assert.That(
           relationEndPointDefinitions, Is.EquivalentTo(new[] { customerEndPoint, orderTicketEndPoint, orderItemsEndPoint, officialEndPoint }));
@@ -709,14 +687,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var relationEndPointDefinitions = _distributorClass.GetRelationEndPointDefinitions();
 
       IRelationEndPointDefinition contactPersonEndPoint =
-          _distributorClass.GetRelationEndPointDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Partner.ContactPerson");
+          _distributorClass.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Partner.ContactPerson");
       IRelationEndPointDefinition ceoEndPoint =
-          _distributorClass.GetRelationEndPointDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Ceo");
+          _distributorClass.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Ceo");
       IRelationEndPointDefinition industrialSectorEndPoint =
-          _distributorClass.GetRelationEndPointDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.IndustrialSector");
+          _distributorClass.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.IndustrialSector");
 
       Assert.That(relationEndPointDefinitions, Is.Not.Null);
       Assert.That(
@@ -790,8 +765,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(
           () => classDefinition.MyPropertyDefinitions.ForceEnumeration(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo(
-                  "No property definitions have been set for class 'Order'."));
+              .With.Message.EqualTo("No property definitions have been set for class 'Order'."));
     }
 
     [Test]
@@ -803,8 +777,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That(endPointDefinitions.Length, Is.EqualTo(1));
       Assert.That(
-          Contains(
-              endPointDefinitions, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Client.ParentClient"),
+          Contains(endPointDefinitions, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Client.ParentClient"),
           Is.True);
     }
 
@@ -815,8 +788,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(
           () => classDefinition.MyRelationEndPointDefinitions.ForceEnumeration(),
           Throws.InvalidOperationException
-              .With.Message.EqualTo(
-                  "No relation end point definitions have been set for class 'Order'."));
+              .With.Message.EqualTo("No relation end point definitions have been set for class 'Order'."));
     }
 
     [Test]
@@ -828,9 +800,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That(endPointDefinitions.Length, Is.EqualTo(1));
       Assert.That(
-          Contains(
-              endPointDefinitions,
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder"),
+          Contains(endPointDefinitions, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder"),
           Is.True);
     }
 
@@ -840,11 +810,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       ClassDefinition folderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Folder));
 
       IRelationEndPointDefinition folderEndPoint =
-          folderDefinition.GetRelationEndPointDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Folder.FileSystemItems");
+          folderDefinition.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Folder.FileSystemItems");
       IRelationEndPointDefinition fileSystemItemEndPoint =
-          folderDefinition.GetRelationEndPointDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder");
+          folderDefinition.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder");
 
       Assert.That(folderDefinition.IsMyRelationEndPoint(folderEndPoint), Is.True);
       Assert.That(folderDefinition.IsMyRelationEndPoint(fileSystemItemEndPoint), Is.False);
@@ -859,8 +827,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That(endPointDefinitions.Length, Is.EqualTo(1));
       Assert.That(
-          Contains(
-              endPointDefinitions, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Folder.FileSystemItems"),
+          Contains(endPointDefinitions, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Folder.FileSystemItems"),
           Is.True);
     }
 
@@ -873,9 +840,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That(endPointDefinitions.Count(), Is.EqualTo(1));
       Assert.That(
-          Contains(
-              endPointDefinitions,
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder"),
+          Contains(endPointDefinitions, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder"),
           Is.True);
     }
 
@@ -888,13 +853,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       Assert.That(endPointDefinitions.Count(), Is.EqualTo(2));
       Assert.That(
-          Contains(
-              endPointDefinitions, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Folder.FileSystemItems"),
+          Contains(endPointDefinitions, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Folder.FileSystemItems"),
           Is.True);
       Assert.That(
-          Contains(
-              endPointDefinitions,
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder"),
+          Contains(endPointDefinitions, "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder"),
           Is.True);
     }
 
@@ -904,12 +866,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       ClassDefinition fileSystemItemDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(FileSystemItem));
 
       Assert.That(
-          fileSystemItemDefinition.GetRelationEndPointDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder"),
+          fileSystemItemDefinition.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder"),
           Is.Not.Null);
       Assert.That(
-          fileSystemItemDefinition.GetRelationEndPointDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Folder.FileSystemItems"),
+          fileSystemItemDefinition.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Folder.FileSystemItems"),
           Is.Null);
     }
 
@@ -919,12 +879,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       ClassDefinition folderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Folder));
 
       Assert.That(
-          folderDefinition.GetRelationEndPointDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder"),
+          folderDefinition.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.FileSystemItem.ParentFolder"),
           Is.Not.Null);
       Assert.That(
-          folderDefinition.GetRelationEndPointDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Folder.FileSystemItems"),
+          folderDefinition.GetRelationEndPointDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Folder.FileSystemItems"),
           Is.Not.Null);
     }
 
@@ -932,19 +890,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetMandatoryPropertyDefinition ()
     {
       Assert.That(
-          _orderClass.GetMandatoryPropertyDefinition(
-              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderNumber"),
+          _orderClass.GetMandatoryPropertyDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderNumber"),
           Is.Not.Null);
     }
 
     [Test]
-    public void GetMandatoryPropertyDefinitionWithInvalidPropertName ()
+    public void GetMandatoryPropertyDefinitionWithInvalidPropertyName ()
     {
       Assert.That(
           () => _orderClass.GetMandatoryPropertyDefinition("InvalidProperty"),
           Throws.InstanceOf<MappingException>()
-              .With.Message.EqualTo(
-                  "Class 'Order' does not contain the property 'InvalidProperty'."));
+              .With.Message.EqualTo("Class 'Order' does not contain the property 'InvalidProperty'."));
     }
 
     [Test]

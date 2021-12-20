@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -23,14 +24,13 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   [TestFixture]
   public class VirtualCollectionEndPointCollectionProviderTest : StandardMappingTest
   {
-    private IVirtualEndPointProvider _virtualEndPointProviderMock;
+    private Mock<IVirtualEndPointProvider> _virtualEndPointProviderMock;
     private RelationEndPointID _endPointID;
 
     private VirtualCollectionEndPointCollectionProvider _provider;
@@ -39,9 +39,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _virtualEndPointProviderMock = MockRepository.GenerateStrictMock<IVirtualEndPointProvider>();
+      _virtualEndPointProviderMock = new Mock<IVirtualEndPointProvider>(MockBehavior.Strict);
 
-      _provider = new VirtualCollectionEndPointCollectionProvider(_virtualEndPointProviderMock);
+      _provider = new VirtualCollectionEndPointCollectionProvider(_virtualEndPointProviderMock.Object);
 
       _endPointID = RelationEndPointID.Create(DomainObjectIDs.Product1, typeof(Product), "Reviews");
     }
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(virtualCollectionData, Is.TypeOf<EndPointDelegatingVirtualCollectionData>());
       Assert.That(
           ((EndPointDelegatingVirtualCollectionData)virtualCollectionData).VirtualEndPointProvider,
-          Is.SameAs(_virtualEndPointProviderMock));
+          Is.SameAs(_virtualEndPointProviderMock.Object));
       Assert.That(virtualCollectionData.AssociatedEndPointID, Is.SameAs(_endPointID));
 
       Assert.That(result, Is.SameAs(_provider.GetCollection(_endPointID)));

@@ -33,7 +33,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new System.NotImplementedException();
     }
 
-    public IEnumerable<ILoadedObjectData> BeginRegisterIfRequired (IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound, LoadedObjectDataPendingRegistrationCollector pendingLoadedObjectDataCollector)
+    public IEnumerable<ILoadedObjectData> BeginRegisterIfRequired (
+        IEnumerable<ILoadedObjectData> loadedObjects,
+        bool throwOnNotFound,
+        LoadedObjectDataPendingRegistrationCollector pendingLoadedObjectDataCollector)
     {
       throw new NotImplementedException();
     }

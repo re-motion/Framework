@@ -40,18 +40,25 @@ namespace Remotion.Data.DomainObjects.UnitTests
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
       var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
-          "storageProviderDefinition", storageProviderDefinition);
+          "storageProviderDefinition",
+          storageProviderDefinition);
       return new UnitTestStorageProviderStub(providerDefiniton, persistenceExtension);
     }
 
-    public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition, IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+    public IPersistenceModelLoader CreatePersistenceModelLoader (
+        StorageProviderDefinition storageProviderDefinition,
+        IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
       return new SqlStorageObjectFactory().CreatePersistenceModelLoader(storageProviderDefinition, storageProviderDefinitionFinder);
     }
 
-    public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (StorageProviderDefinition storageProviderDefinition, IMethodCallTransformerProvider methodCallTransformerProvider, ResultOperatorHandlerRegistry resultOperatorHandlerRegistry, IMappingConfiguration mappingConfiguration)
+    public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (
+        StorageProviderDefinition storageProviderDefinition,
+        IMethodCallTransformerProvider methodCallTransformerProvider,
+        ResultOperatorHandlerRegistry resultOperatorHandlerRegistry,
+        IMappingConfiguration mappingConfiguration)
     {
       throw new NotImplementedException();
     }
@@ -156,7 +163,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
       throw new NotImplementedException();
     }
 
-    public ISqlQueryGenerator CreateSqlQueryGenerator (RdbmsProviderDefinition storageProviderDefinition, IMethodCallTransformerProvider methodCallTransformerProvider, ResultOperatorHandlerRegistry resultOperatorHandlerRegistry)
+    public ISqlQueryGenerator CreateSqlQueryGenerator (
+        RdbmsProviderDefinition storageProviderDefinition,
+        IMethodCallTransformerProvider methodCallTransformerProvider,
+        ResultOperatorHandlerRegistry resultOperatorHandlerRegistry)
     {
       throw new NotImplementedException();
     }

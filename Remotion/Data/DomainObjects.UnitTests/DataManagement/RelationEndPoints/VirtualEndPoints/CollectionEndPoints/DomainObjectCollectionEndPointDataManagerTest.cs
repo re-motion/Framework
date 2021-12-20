@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -26,7 +27,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
@@ -34,16 +34,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   public class DomainObjectCollectionEndPointDataManagerTest : StandardMappingTest
   {
     private RelationEndPointID _endPointID;
-    private IDomainObjectCollectionEndPointChangeDetectionStrategy _changeDetectionStrategyMock;
+    private Mock<IDomainObjectCollectionEndPointChangeDetectionStrategy> _changeDetectionStrategyMock;
 
     private DomainObject _domainObject1;
     private DomainObject _domainObject2;
     private DomainObject _domainObject3;
     private DomainObject _domainObject4;
 
-    private IRealObjectEndPoint _domainObjectEndPoint1;
-    private IRealObjectEndPoint _domainObjectEndPoint2;
-    private IRealObjectEndPoint _domainObjectEndPoint3;
+    private Mock<IRealObjectEndPoint> _domainObjectEndPoint1;
+    private Mock<IRealObjectEndPoint> _domainObjectEndPoint2;
+    private Mock<IRealObjectEndPoint> _domainObjectEndPoint3;
 
     private DomainObjectCollectionEndPointDataManager _dataManager;
 
@@ -54,26 +54,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       base.SetUp();
 
       _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Customer1, "Orders");
-      _changeDetectionStrategyMock = MockRepository.GenerateStrictMock<IDomainObjectCollectionEndPointChangeDetectionStrategy>();
+      _changeDetectionStrategyMock = new Mock<IDomainObjectCollectionEndPointChangeDetectionStrategy>(MockBehavior.Strict);
 
       _domainObject1 = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order1);
       _domainObject2 = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order3);
       _domainObject3 = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order4);
       _domainObject4 = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order5);
 
-      _domainObjectEndPoint1 = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      _domainObjectEndPoint1.Stub(stub => stub.GetDomainObjectReference()).Return(_domainObject1);
-      _domainObjectEndPoint1.Stub(stub => stub.ObjectID).Return(_domainObject1.ID);
+      _domainObjectEndPoint1 = new Mock<IRealObjectEndPoint>();
+      _domainObjectEndPoint1.Setup(stub => stub.GetDomainObjectReference()).Returns(_domainObject1);
+      _domainObjectEndPoint1.Setup(stub => stub.ObjectID).Returns(_domainObject1.ID);
 
-      _domainObjectEndPoint2 = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      _domainObjectEndPoint2.Stub(stub => stub.GetDomainObjectReference()).Return(_domainObject2);
-      _domainObjectEndPoint2.Stub(stub => stub.ObjectID).Return(_domainObject2.ID);
+      _domainObjectEndPoint2 = new Mock<IRealObjectEndPoint>();
+      _domainObjectEndPoint2.Setup(stub => stub.GetDomainObjectReference()).Returns(_domainObject2);
+      _domainObjectEndPoint2.Setup(stub => stub.ObjectID).Returns(_domainObject2.ID);
 
-      _domainObjectEndPoint3 = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      _domainObjectEndPoint3.Stub(stub => stub.GetDomainObjectReference()).Return(_domainObject3);
-      _domainObjectEndPoint3.Stub(stub => stub.ObjectID).Return(_domainObject3.ID);
+      _domainObjectEndPoint3 = new Mock<IRealObjectEndPoint>();
+      _domainObjectEndPoint3.Setup(stub => stub.GetDomainObjectReference()).Returns(_domainObject3);
+      _domainObjectEndPoint3.Setup(stub => stub.ObjectID).Returns(_domainObject3.ID);
 
-      _dataManager = new DomainObjectCollectionEndPointDataManager(_endPointID, _changeDetectionStrategyMock);
+      _dataManager = new DomainObjectCollectionEndPointDataManager(_endPointID, _changeDetectionStrategyMock.Object);
 
       _comparison123 = Compare123;
     }
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Initialization ()
     {
-      var dataManager = new DomainObjectCollectionEndPointDataManager(_endPointID, _changeDetectionStrategyMock);
+      var dataManager = new DomainObjectCollectionEndPointDataManager(_endPointID, _changeDetectionStrategyMock.Object);
 
       Assert.That(dataManager.CollectionData, Is.TypeOf(typeof(ChangeCachingDomainObjectCollectionDataDecorator)));
       Assert.That(dataManager.CollectionData.ToArray(), Is.Empty);
@@ -123,21 +123,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.Empty);
 
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPointStub.Stub(stub => stub.GetDomainObjectReference()).Return(_domainObject2);
-      endPointStub.Stub(stub => stub.ObjectID).Return(_domainObject2.ID);
+      var endPointStub = new Mock<IRealObjectEndPoint>();
+      endPointStub.Setup(stub => stub.GetDomainObjectReference()).Returns(_domainObject2);
+      endPointStub.Setup(stub => stub.ObjectID).Returns(_domainObject2.ID);
 
       Assert.That(_dataManager.CollectionData.ToArray(), Has.No.Member(_domainObject2));
       Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.No.Member(_domainObject2));
       Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Has.No.Member(_domainObject2));
 
-      _dataManager.RegisterOriginalOppositeEndPoint(endPointStub);
+      _dataManager.RegisterOriginalOppositeEndPoint(endPointStub.Object);
 
       Assert.That(_dataManager.HasDataChanged(), Is.False);
       Assert.That(_dataManager.CollectionData.ToArray(), Has.Member(_domainObject2));
       Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.Member(_domainObject2));
-      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointStub }));
-      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointStub }));
+      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointStub.Object }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointStub.Object }));
     }
 
     [Test]
@@ -157,9 +157,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.Empty);
 
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPointStub.Stub(stub => stub.GetDomainObjectReference()).Return(_domainObject2);
-      endPointStub.Stub(stub => stub.ObjectID).Return(_domainObject2.ID);
+      var endPointStub = new Mock<IRealObjectEndPoint>();
+      endPointStub.Setup(stub => stub.GetDomainObjectReference()).Returns(_domainObject2);
+      endPointStub.Setup(stub => stub.ObjectID).Returns(_domainObject2.ID);
 
       _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject2);
 
@@ -169,24 +169,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(_dataManager.CurrentOppositeEndPoints, Is.Empty);
       Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Has.Member(_domainObject2));
 
-      _dataManager.RegisterOriginalOppositeEndPoint(endPointStub);
+      _dataManager.RegisterOriginalOppositeEndPoint(endPointStub.Object);
 
       Assert.That(_dataManager.HasDataChanged(), Is.False);
       Assert.That(_dataManager.CollectionData.ToArray(), Has.Member(_domainObject2));
       Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.Member(_domainObject2));
-      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointStub }));
+      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointStub.Object }));
       Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Has.No.Member(_domainObject2));
-      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EqualTo(new[]{endPointStub}));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EqualTo(new[]{endPointStub.Object}));
     }
 
     [Test]
     public void RegisterOriginalOppositeEndPoint_NullOppositeEndPoint ()
     {
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPointStub.Stub(stub => stub.IsNull).Return(true);
+      var endPointStub = new Mock<IRealObjectEndPoint>();
+      endPointStub.Setup(stub => stub.IsNull).Returns(true);
 
       Assert.That(
-          () => _dataManager.RegisterOriginalOppositeEndPoint(endPointStub),
+          () => _dataManager.RegisterOriginalOppositeEndPoint(endPointStub.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("End point must not be a null object.", "oppositeEndPoint"));
     }
@@ -194,19 +194,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void UnregisterOriginalOppositeEndPoint ()
     {
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPointStub.Stub(stub => stub.GetDomainObjectReference()).Return(_domainObject2);
-      endPointStub.Stub(stub => stub.ObjectID).Return(_domainObject2.ID);
-      endPointStub.Stub(stub => stub.MarkSynchronized());
+      var endPointStub = new Mock<IRealObjectEndPoint>();
+      endPointStub.Setup(stub => stub.GetDomainObjectReference()).Returns(_domainObject2);
+      endPointStub.Setup(stub => stub.ObjectID).Returns(_domainObject2.ID);
+      endPointStub.Setup(stub => stub.MarkSynchronized());
 
-      _dataManager.RegisterOriginalOppositeEndPoint(endPointStub);
+      _dataManager.RegisterOriginalOppositeEndPoint(endPointStub.Object);
 
       Assert.That(_dataManager.OriginalOppositeEndPoints.Length, Is.EqualTo(1));
       Assert.That(_dataManager.CollectionData.ToArray(), Has.Member(_domainObject2));
       Assert.That(_dataManager.OriginalCollectionData.ToArray(), Has.Member(_domainObject2));
-      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointStub }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EqualTo(new[] { endPointStub.Object }));
 
-      _dataManager.UnregisterOriginalOppositeEndPoint(endPointStub);
+      _dataManager.UnregisterOriginalOppositeEndPoint(endPointStub.Object);
 
       Assert.That(_dataManager.HasDataChanged(), Is.False);
       Assert.That(_dataManager.CollectionData.ToArray(), Has.No.Member(_domainObject2));
@@ -229,11 +229,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void UnregisterOriginalOppositeEndPoint_NullOppositeEndPoint ()
     {
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPointStub.Stub(stub => stub.IsNull).Return(true);
+      var endPointStub = new Mock<IRealObjectEndPoint>();
+      endPointStub.Setup(stub => stub.IsNull).Returns(true);
 
       Assert.That(
-          () => _dataManager.UnregisterOriginalOppositeEndPoint(endPointStub),
+          () => _dataManager.UnregisterOriginalOppositeEndPoint(endPointStub.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("End point must not be a null object.", "oppositeEndPoint"));
     }
@@ -241,21 +241,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void ContainsCurrentOppositeEndPoint ()
     {
-      Assert.That(_dataManager.ContainsCurrentOppositeEndPoint(_domainObjectEndPoint1), Is.False);
+      Assert.That(_dataManager.ContainsCurrentOppositeEndPoint(_domainObjectEndPoint1.Object), Is.False);
 
-      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1.Object);
 
-      Assert.That(_dataManager.ContainsCurrentOppositeEndPoint(_domainObjectEndPoint1), Is.True);
+      Assert.That(_dataManager.ContainsCurrentOppositeEndPoint(_domainObjectEndPoint1.Object), Is.True);
     }
 
     [Test]
     public void ContainsCurrentOppositeEndPoint_NullOppositeEndPoint ()
     {
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPointStub.Stub(stub => stub.IsNull).Return(true);
+      var endPointStub = new Mock<IRealObjectEndPoint>();
+      endPointStub.Setup(stub => stub.IsNull).Returns(true);
 
       Assert.That(
-          () => _dataManager.ContainsCurrentOppositeEndPoint(endPointStub),
+          () => _dataManager.ContainsCurrentOppositeEndPoint(endPointStub.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("End point must not be a null object.", "oppositeEndPoint"));
     }
@@ -265,17 +265,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.Empty);
 
-      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1.Object);
 
-      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EqualTo(new[] { _domainObjectEndPoint1 }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EqualTo(new[] { _domainObjectEndPoint1.Object }));
     }
 
     [Test]
     public void RegisterCurrentOppositeEndPoint_AlreadyRegistered ()
     {
-      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1.Object);
       Assert.That(
-          () => _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1),
+          () => _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The opposite end-point has already been registered."));
@@ -284,11 +284,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void RegisterCurrentOppositeEndPoint_NullOppositeEndPoint ()
     {
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPointStub.Stub(stub => stub.IsNull).Return(true);
+      var endPointStub = new Mock<IRealObjectEndPoint>();
+      endPointStub.Setup(stub => stub.IsNull).Returns(true);
 
       Assert.That(
-          () => _dataManager.RegisterCurrentOppositeEndPoint(endPointStub),
+          () => _dataManager.RegisterCurrentOppositeEndPoint(endPointStub.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("End point must not be a null object.", "oppositeEndPoint"));
     }
@@ -296,20 +296,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void UnregisterCurrentOppositeEndPoint ()
     {
-      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1.Object);
 
-      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Has.Member(_domainObjectEndPoint1));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Has.Member(_domainObjectEndPoint1.Object));
 
-      _dataManager.UnregisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
+      _dataManager.UnregisterCurrentOppositeEndPoint(_domainObjectEndPoint1.Object);
 
-      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Has.No.Member(_domainObjectEndPoint1));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Has.No.Member(_domainObjectEndPoint1.Object));
     }
 
     [Test]
     public void UnregisterCurrentOppositeEndPoint_NotRegistered ()
     {
       Assert.That(
-          () => _dataManager.UnregisterCurrentOppositeEndPoint(_domainObjectEndPoint1),
+          () => _dataManager.UnregisterCurrentOppositeEndPoint(_domainObjectEndPoint1.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The opposite end-point has not been registered."));
@@ -318,11 +318,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void UnregisterCurrentOppositeEndPoint_NullOppositeEndPoint ()
     {
-      var endPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPointStub.Stub(stub => stub.IsNull).Return(true);
+      var endPointStub = new Mock<IRealObjectEndPoint>();
+      endPointStub.Setup(stub => stub.IsNull).Returns(true);
 
       Assert.That(
-          () => _dataManager.UnregisterCurrentOppositeEndPoint(endPointStub),
+          () => _dataManager.UnregisterCurrentOppositeEndPoint(endPointStub.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("End point must not be a null object.", "oppositeEndPoint"));
     }
@@ -370,7 +370,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void RegisterOriginalItemWithoutEndPoint_AlreadyRegisteredWithEndPoint ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint2);
+      _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint2.Object);
 
       Assert.That(
           () => _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject2),
@@ -379,7 +379,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
                   "The original collection already contains a domain object with ID 'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid'."));
 
       Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Has.No.Member(_domainObject2));
-
     }
 
     [Test]
@@ -411,7 +410,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void UnregisterOriginalItemWithoutEndPoint_RegisteredWithEndPoint ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint2);
+      _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint2.Object);
 
       Assert.That(
           () => _dataManager.UnregisterOriginalItemWithoutEndPoint(_domainObject2),
@@ -425,11 +424,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void HasDataChanged ()
     {
       _changeDetectionStrategyMock
-          .Expect(mock => mock.HasDataChanged(
-              Arg.Is(_dataManager.CollectionData),
-              Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
-          .Return(true);
-      _changeDetectionStrategyMock.Replay();
+          .Setup(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
+          .Returns(true)
+          .Verifiable();
 
       // require use of strategy
       _dataManager.CollectionData.Add(_domainObject2);
@@ -437,7 +434,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var result = _dataManager.HasDataChanged();
 
-      _changeDetectionStrategyMock.VerifyAllExpectations();
+      _changeDetectionStrategyMock.Verify();
       Assert.That(result, Is.EqualTo(true));
     }
 
@@ -445,12 +442,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void HasDataChanged_Cached ()
     {
       _changeDetectionStrategyMock
-          .Expect(mock => mock.HasDataChanged(
-              Arg.Is(_dataManager.CollectionData),
-              Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
-          .Return(true)
-          .Repeat.Once();
-      _changeDetectionStrategyMock.Replay();
+          .Setup(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
+          .Returns(true)
+          .Verifiable();
 
       // require use of strategy
       _dataManager.CollectionData.Add(_domainObject2);
@@ -459,7 +453,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var result1 = _dataManager.HasDataChanged();
       var result2 = _dataManager.HasDataChanged();
 
-      _changeDetectionStrategyMock.VerifyAllExpectations();
+      _changeDetectionStrategyMock.Verify(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData), Times.Once());
 
       Assert.That(result1, Is.EqualTo(true));
       Assert.That(result2, Is.EqualTo(true));
@@ -468,20 +462,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void HasDataChanged_Cache_InvalidatedOnModifyingOperations ()
     {
-      using (_changeDetectionStrategyMock.GetMockRepository().Ordered())
-      {
-        _changeDetectionStrategyMock
-            .Expect(mock => mock.HasDataChanged(
-                Arg.Is(_dataManager.CollectionData),
-                Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
-            .Return(true).Repeat.Once();
-        _changeDetectionStrategyMock
-            .Expect(mock => mock.HasDataChanged(
-                Arg.Is(_dataManager.CollectionData),
-                Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
-            .Return(false).Repeat.Once();
-      }
-      _changeDetectionStrategyMock.Replay();
+      var sequence = new MockSequence();
+      _changeDetectionStrategyMock
+            .InSequence(sequence)
+            .Setup(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
+            .Returns(true)
+            .Verifiable();
+      _changeDetectionStrategyMock
+            .InSequence(sequence)
+            .Setup(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
+            .Returns(false)
+            .Verifiable();
 
       // require use of strategy
       _dataManager.CollectionData.Add(_domainObject2);
@@ -494,7 +485,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var result2 = _dataManager.HasDataChanged();
 
-      _changeDetectionStrategyMock.VerifyAllExpectations();
+      _changeDetectionStrategyMock.Verify();
       Assert.That(result1, Is.EqualTo(true));
       Assert.That(result2, Is.EqualTo(false));
     }
@@ -502,14 +493,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void HasDataChangedFast_CacheNotUpToDate ()
     {
-      _changeDetectionStrategyMock.Replay();
-
       _dataManager.CollectionData.Add(_domainObject2); // invalidate cache
 
       var result = _dataManager.HasDataChangedFast();
 
-      _changeDetectionStrategyMock.AssertWasNotCalled(
-          mock => mock.HasDataChanged(Arg<IDomainObjectCollectionData>.Is.Anything, Arg<IDomainObjectCollectionData>.Is.Anything));
+      _changeDetectionStrategyMock.Verify(mock => mock.HasDataChanged(It.IsAny<IDomainObjectCollectionData>(), It.IsAny<IDomainObjectCollectionData>()), Times.Never());
       Assert.That(result, Is.Null);
     }
 
@@ -517,18 +505,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void HasDataChangedFast_CacheUpToDate ()
     {
       _changeDetectionStrategyMock
-            .Stub(mock => mock.HasDataChanged(Arg<IDomainObjectCollectionData>.Is.Anything, Arg<IDomainObjectCollectionData>.Is.Anything))
-            .Return(true);
-      _changeDetectionStrategyMock.Replay();
+            .Setup(mock => mock.HasDataChanged(It.IsAny<IDomainObjectCollectionData>(), It.IsAny<IDomainObjectCollectionData>()))
+            .Returns(true);
 
       Dev.Null = _dataManager.HasDataChanged();
-      _changeDetectionStrategyMock.BackToRecord();
-      _changeDetectionStrategyMock.Replay();
+      _changeDetectionStrategyMock.Reset();
 
       var result = _dataManager.HasDataChangedFast();
 
-      _changeDetectionStrategyMock.AssertWasNotCalled(
-          mock => mock.HasDataChanged(Arg<IDomainObjectCollectionData>.Is.Anything, Arg<IDomainObjectCollectionData>.Is.Anything));
+      _changeDetectionStrategyMock.Verify(mock => mock.HasDataChanged(It.IsAny<IDomainObjectCollectionData>(), It.IsAny<IDomainObjectCollectionData>()), Times.Never());
       Assert.That(result, Is.False);
     }
 
@@ -570,43 +555,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Commit_UpdatesOriginalContentsAndEndPoints ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint1);
+      _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint1.Object);
       _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject2);
 
       _dataManager.CollectionData.Insert(0, _domainObject3);
-      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint3);
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint3.Object);
 
       _dataManager.CollectionData.Insert(0, _domainObject4);
 
       Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject4, _domainObject3, _domainObject1, _domainObject2 }));
-      Assert.That(_dataManager.CurrentOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint1, _domainObjectEndPoint3 }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint1.Object, _domainObjectEndPoint3.Object }));
 
       Assert.That(_dataManager.OriginalCollectionData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
-      Assert.That(_dataManager.OriginalOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint1 }));
+      Assert.That(_dataManager.OriginalOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint1.Object }));
       Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Is.EquivalentTo(new[] { _domainObject2 }));
 
       _dataManager.Commit();
 
       Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject4, _domainObject3, _domainObject1, _domainObject2 }));
-      Assert.That(_dataManager.CurrentOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint1, _domainObjectEndPoint3 }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint1.Object, _domainObjectEndPoint3.Object }));
 
       Assert.That(_dataManager.OriginalCollectionData.ToArray(), Is.EqualTo(new[] { _domainObject4, _domainObject3, _domainObject1, _domainObject2 }));
-      Assert.That(_dataManager.OriginalOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint1, _domainObjectEndPoint3 }));
+      Assert.That(_dataManager.OriginalOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint1.Object, _domainObjectEndPoint3.Object }));
       Assert.That(_dataManager.OriginalItemsWithoutEndPoints, Is.EquivalentTo(new[] { _domainObject2, _domainObject4 }));
     }
 
     [Test]
     public void Commit_InvalidatesHasChangedCache ()
     {
-      using (_changeDetectionStrategyMock.GetMockRepository().Ordered())
-      {
-        _changeDetectionStrategyMock
-            .Expect(mock => mock.HasDataChanged(
-                Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.CollectionData),
-                Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
-            .Return(true);
-      }
-      _changeDetectionStrategyMock.Replay();
+      _changeDetectionStrategyMock
+          .Setup(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
+          .Returns(true)
+          .Verifiable();
 
       // require use of strategy
       _dataManager.CollectionData.Add(_domainObject2);
@@ -622,39 +602,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Rollback_UpdatesCurrentContentsAndEndPoints ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint1);
+      _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint1.Object);
       _dataManager.RegisterOriginalItemWithoutEndPoint(_domainObject2);
 
       _dataManager.CollectionData.Insert(0, _domainObject3);
-      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint3);
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint3.Object);
 
       Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject3, _domainObject1, _domainObject2 }));
-      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObjectEndPoint1, _domainObjectEndPoint3 }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObjectEndPoint1.Object, _domainObjectEndPoint3.Object }));
       Assert.That(_dataManager.OriginalCollectionData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
-      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObjectEndPoint1 }));
+      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObjectEndPoint1.Object }));
       Assert.That(_dataManager.OriginalItemsWithoutEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObject2 }));
 
       _dataManager.Rollback();
 
       Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
-      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObjectEndPoint1 }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObjectEndPoint1.Object }));
       Assert.That(_dataManager.OriginalCollectionData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
-      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObjectEndPoint1 }));
+      Assert.That(_dataManager.OriginalOppositeEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObjectEndPoint1.Object }));
       Assert.That(_dataManager.OriginalItemsWithoutEndPoints.ToArray(), Is.EquivalentTo(new[] { _domainObject2 }));
     }
 
     [Test]
     public void Rollback_InvalidatesHasChangedCache ()
     {
-      using (_changeDetectionStrategyMock.GetMockRepository().Ordered())
-      {
-        _changeDetectionStrategyMock
-            .Expect(mock => mock.HasDataChanged(
-                Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.CollectionData),
-                Arg<IDomainObjectCollectionData>.List.Equal(_dataManager.OriginalCollectionData)))
-            .Return(true);
-      }
-      _changeDetectionStrategyMock.Replay();
+      var sequence = new MockSequence();
+      _changeDetectionStrategyMock
+            .InSequence(sequence)
+            .Setup(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
+            .Returns(true)
+            .Verifiable();
 
       // require use of strategy
       _dataManager.CollectionData.Add(_domainObject2);
@@ -670,26 +647,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void SetDataFromSubTransaction ()
     {
-      var sourceOppositeEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      sourceOppositeEndPointStub.Stub(stub => stub.ID).Return(_domainObjectEndPoint2.ID);
-      sourceOppositeEndPointStub.Stub(stub => stub.ObjectID).Return(_domainObjectEndPoint2.ObjectID);
+      var sourceOppositeEndPointStub = new Mock<IRealObjectEndPoint>();
+      sourceOppositeEndPointStub.Setup(stub => stub.ID).Returns(_domainObjectEndPoint2.Object.ID);
+      sourceOppositeEndPointStub.Setup(stub => stub.ObjectID).Returns(_domainObjectEndPoint2.Object.ObjectID);
 
       _dataManager.CollectionData.Add(_domainObject1);
-      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1);
+      _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1.Object);
 
-      var sourceDataManager = new DomainObjectCollectionEndPointDataManager(_endPointID, MockRepository.GenerateStub<IDomainObjectCollectionEndPointChangeDetectionStrategy>());
+      var sourceDataManager = new DomainObjectCollectionEndPointDataManager(_endPointID, new Mock<IDomainObjectCollectionEndPointChangeDetectionStrategy>().Object);
       sourceDataManager.CollectionData.Add(_domainObject2);
-      sourceDataManager.RegisterCurrentOppositeEndPoint(sourceOppositeEndPointStub);
+      sourceDataManager.RegisterCurrentOppositeEndPoint(sourceOppositeEndPointStub.Object);
 
-      var endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider>();
+      var endPointProviderStub = new Mock<IRelationEndPointProvider>();
       endPointProviderStub
-          .Stub(stub => stub.GetRelationEndPointWithoutLoading(sourceOppositeEndPointStub.ID))
-          .Return(_domainObjectEndPoint2);
+          .Setup(stub => stub.GetRelationEndPointWithoutLoading(sourceOppositeEndPointStub.Object.ID))
+          .Returns(_domainObjectEndPoint2.Object);
 
-      _dataManager.SetDataFromSubTransaction(sourceDataManager, endPointProviderStub);
+      _dataManager.SetDataFromSubTransaction(sourceDataManager, endPointProviderStub.Object);
 
       Assert.That(_dataManager.CollectionData.ToArray(), Is.EqualTo(new[] { _domainObject2 }));
-      Assert.That(_dataManager.CurrentOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint2 }));
+      Assert.That(_dataManager.CurrentOppositeEndPoints, Is.EquivalentTo(new[] { _domainObjectEndPoint2.Object }));
     }
 
     [Test]

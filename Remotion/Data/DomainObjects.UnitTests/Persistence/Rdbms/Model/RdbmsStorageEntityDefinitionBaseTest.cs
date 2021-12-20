@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       _property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column2");
       _property3 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column3");
 
-      _indexes = new[] { MockRepository.GenerateStub<IIndexDefinition>() };
+      _indexes = new[] { new Mock<IIndexDefinition>().Object };
       _synonyms = new[] { new EntityNameDefinition(null, "Test") };
 
       _rdbmsStorageEntityDefinition = new TestableRdbmsStorageEntityDefinitionBase(

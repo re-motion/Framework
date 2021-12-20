@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderCommands
 {
@@ -29,10 +29,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
     public void Execute ()
     {
       var executionContext = new object();
-      var innerCommandStub = MockRepository.GenerateStub<IStorageProviderCommand<string, object>>();
-      var delegateBasedCommand = new DelegateBasedCommand<string, int, object>(innerCommandStub, s => s.Length);
+      var innerCommandStub = new Mock<IStorageProviderCommand<string, object>>();
+      var delegateBasedCommand = new DelegateBasedCommand<string, int, object>(innerCommandStub.Object, s => s.Length);
 
-      innerCommandStub.Stub(stub => stub.Execute(executionContext)).Return("Test1");
+      innerCommandStub.Setup(stub => stub.Execute(executionContext)).Returns("Test1");
 
       var result = delegateBasedCommand.Execute(executionContext);
 
@@ -42,12 +42,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
     [Test]
     public void Create ()
     {
-      var innerCommandStub = MockRepository.GenerateStub<IStorageProviderCommand<string, object>>();
+      var innerCommandStub = new Mock<IStorageProviderCommand<string, object>>();
       Func<string, int> operation = s => s.Length;
-      var instance = DelegateBasedCommand.Create(innerCommandStub, operation);
+      var instance = DelegateBasedCommand.Create(innerCommandStub.Object, operation);
 
       Assert.That(instance, Is.TypeOf(typeof(DelegateBasedCommand<string, int, object>)));
-      Assert.That(instance.Command, Is.SameAs(innerCommandStub));
+      Assert.That(instance.Command, Is.SameAs(innerCommandStub.Object));
       Assert.That(instance.Operation, Is.SameAs(operation));
     }
   }

@@ -17,10 +17,10 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
 {
@@ -30,10 +30,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_CreatesEnumTypeElement ()
     {
-      var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
-      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub);
+      var enumSerializerStub = new Mock<IEnumSerializer>();
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub.Object);
       enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
-      enumSerializerStub.Stub(_ => _.Serialize()).Return(new XElement[0]);
+      enumSerializerStub.Setup(_ => _.Serialize()).Returns(new XElement[0]);
       var actual = enumSerializer.Serialize().Single();
 
       Assert.That(actual.Name.LocalName, Is.EqualTo("enumType"));
@@ -42,11 +42,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_AddsElementsFromInnerEnumSerializer ()
     {
-      var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
-      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub);
+      var enumSerializerStub = new Mock<IEnumSerializer>();
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub.Object);
       enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
 
-      enumSerializerStub.Stub(_ => _.Serialize()).Return(new[] { new XElement("innerResult1"), new XElement("innerResult2") });
+      enumSerializerStub.Setup(_ => _.Serialize()).Returns(new[] { new XElement("innerResult1"), new XElement("innerResult2") });
 
       var actual = enumSerializer.Serialize();
 
@@ -56,11 +56,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_AddsTypeAttribute ()
     {
-      var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
-      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub);
+      var enumSerializerStub = new Mock<IEnumSerializer>();
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub.Object);
       enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
 
-      enumSerializerStub.Stub(_ => _.Serialize()).Return(new XElement[0]);
+      enumSerializerStub.Setup(_ => _.Serialize()).Returns(new XElement[0]);
       var actual = enumSerializer.Serialize().Single();
 
       Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("type"));
@@ -72,10 +72,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_AddsValueElementsForExtensibleEnumType ()
     {
-      var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
-      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub);
+      var enumSerializerStub = new Mock<IEnumSerializer>();
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub.Object);
       enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
-      enumSerializerStub.Stub(_ => _.Serialize()).Return(new XElement[0]);
+      enumSerializerStub.Setup(_ => _.Serialize()).Returns(new XElement[0]);
       var actual = enumSerializer.Serialize().Single();
 
       Assert.That(actual.Elements().Count(), Is.EqualTo(3));
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void CollectPropertyType_CollectsExtensibleEnumType ()
     {
-      var enumSerializer = new ExtensibleEnumSerializerDecorator(MockRepository.GenerateStub<IEnumSerializer>());
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(new Mock<IEnumSerializer>().Object);
       enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
 
       Assert.That(enumSerializer.EnumTypes, Contains.Item(typeof(Color)));
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void CollectPropertyType_DoesNotCollectDuplicates ()
     {
-      var enumSerializer = new ExtensibleEnumSerializerDecorator(MockRepository.GenerateStub<IEnumSerializer>());
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(new Mock<IEnumSerializer>().Object);
       enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
       enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.ExtensibleEnumProperty));
 
@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void CollectPropertyType_DoesNotCollectNonEnumTypes ()
     {
-      var enumSerializer = new ExtensibleEnumSerializerDecorator(MockRepository.GenerateStub<IEnumSerializer>());
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(new Mock<IEnumSerializer>().Object);
       enumSerializer.CollectPropertyType(GetPropertyDefinition((ClassWithAllDataTypes _) => _.Int32Property));
 
       Assert.That(enumSerializer.EnumTypes, Is.Empty);
@@ -139,12 +139,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void CollectPropertyType_DelegatesOtherTypesToInnerEnumSerializer ()
     {
-      var enumSerializerStub = MockRepository.GenerateStub<IEnumSerializer>();
-      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub);
+      var enumSerializerStub = new Mock<IEnumSerializer>();
+      var enumSerializer = new ExtensibleEnumSerializerDecorator(enumSerializerStub.Object);
       var expectedProperty = GetPropertyDefinition((ClassWithAllDataTypes _) => _.ByteProperty);
       enumSerializer.CollectPropertyType(expectedProperty);
 
-      enumSerializerStub.AssertWasCalled(_ => _.CollectPropertyType(expectedProperty));
+      enumSerializerStub.Verify(_ => _.CollectPropertyType(expectedProperty), Times.AtLeastOnce());
     }
   }
 }

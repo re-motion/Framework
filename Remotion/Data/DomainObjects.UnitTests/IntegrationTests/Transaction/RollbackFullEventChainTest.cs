@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -25,118 +27,164 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void FullEventChain ()
     {
-      using (MockRepository.Ordered())
-      {
-        ExpectRollingBackEvents(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(NewObject, NewObjectEventReceiverMock),
-            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock));
+      var sequence = new MockSequence();
 
-        ExpectRolledBackEvents(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock));
-      }
-      MockRepository.ReplayAll();
+      ExpectRollingBackEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (NewObject, NewObjectEventReceiverMock, null),
+              (DeletedObject, DeletedObjectEventReceiverMock, null)
+          });
+
+      ExpectRolledBackEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (DeletedObject, DeletedObjectEventReceiverMock, null)
+          });
 
       Assert.That(ClientTransaction.Current, Is.Not.SameAs(Transaction));
 
       Transaction.Rollback();
 
       Assert.That(ClientTransaction.Current, Is.Not.SameAs(Transaction));
-      MockRepository.VerifyAll();
+      VerifyAll();
     }
 
     [Test]
     public void FullEventChain_WithReiterationDueToAddedObject_InExtension ()
     {
-      using (MockRepository.Ordered())
-      {
-        ExpectRollingBackEventsWithCustomOptions(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(NewObject, NewObjectEventReceiverMock),
-            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock))
-            .ExtensionOptions
-          // This triggers one additional run
-            .WhenCalled(mi => Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit()));
+      var sequence = new MockSequence();
 
-        ExpectRollingBackEventsWithCustomOptions(
-            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock))
-            .ExtensionOptions
-          // This does not trigger an additional run because the object is no longer new to the Rollback set
-            .WhenCalled(mi => Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit()));
+      ExpectRollingBackEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (NewObject, NewObjectEventReceiverMock, null),
+              (DeletedObject, DeletedObjectEventReceiverMock, null)
+          },
+          extensionCallback: _ =>
+          {
+            // This triggers one additional run
+            Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit());
+          });
 
-        ExpectRolledBackEvents(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock),
-            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock));
-      }
-      MockRepository.ReplayAll();
+      ExpectRollingBackEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (UnchangedObject, UnchangedObjectEventReceiverMock, null)
+          },
+          extensionCallback: _ =>
+          {
+            // This does not trigger an additional run because the object is no longer new to the Rollback set
+            Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit());
+          });
+
+      ExpectRolledBackEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (DeletedObject, DeletedObjectEventReceiverMock, null),
+              (UnchangedObject, UnchangedObjectEventReceiverMock, null)
+          });
 
       Transaction.Rollback();
 
-      MockRepository.VerifyAll();
+      VerifyAll();
     }
 
     [Test]
     public void FullEventChain_WithReiterationDueToAddedObject_InTransaction ()
     {
-      using (MockRepository.Ordered())
-      {
-        ExpectRollingBackEventsWithCustomOptions(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(NewObject, NewObjectEventReceiverMock),
-            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock))
-            .TransactionOptions
-          // This triggers one additional run
-            .WhenCalled(mi => RegisterForCommitWithDisabledListener(UnchangedObject));
+      var sequence = new MockSequence();
 
-        ExpectRollingBackEventsWithCustomOptions(
-            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock))
-            .TransactionOptions
-          // This does not trigger an additional run because the object is no longer new to the Rollback set
-            .WhenCalled(mi => RegisterForCommitWithDisabledListener(UnchangedObject));
+      ExpectRollingBackEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (NewObject, NewObjectEventReceiverMock, null),
+              (DeletedObject, DeletedObjectEventReceiverMock, null)
+          },
+          transactionCallback: _ =>
+          {
+            // This triggers one additional run
+            Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit());
+          });
 
-        ExpectRolledBackEvents(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock),
-            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock));
-      }
-      MockRepository.ReplayAll();
+      ExpectRollingBackEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (UnchangedObject, UnchangedObjectEventReceiverMock, null)
+          },
+          transactionCallback: _ =>
+          {
+            // This does not trigger an additional run because the object is no longer new to the Rollback set
+            Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit());
+          });
+
+      ExpectRolledBackEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (DeletedObject, DeletedObjectEventReceiverMock, null),
+              (UnchangedObject, UnchangedObjectEventReceiverMock, null)
+          });
 
       Transaction.Rollback();
 
-      MockRepository.VerifyAll();
+      VerifyAll();
     }
 
-     [Test]
+    [Test]
     public void FullEventChain_WithReiterationDueToAddedObject_InDomainObject ()
     {
-      using (MockRepository.Ordered())
-      {
-        ExpectRollingBackEventsWithCustomOptions(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(NewObject, NewObjectEventReceiverMock),
-            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock))
-            .DomainObjectOptions[1]
-          // This triggers one additional run
-            .WhenCalled(mi => Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit()));
+      var sequence = new MockSequence();
 
-        ExpectRollingBackEventsWithCustomOptions(
-            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock))
-            .DomainObjectOptions[0]
-          // This does not trigger an additional run because the object is no longer new to the Rollback set
-            .WhenCalled(mi => Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit()));
+      ExpectRollingBackEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (NewObject, NewObjectEventReceiverMock, _ =>
+              {
+                // This triggers one additional run
+                Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit());
+              }),
+              (DeletedObject, DeletedObjectEventReceiverMock, null)
+          });
 
-        ExpectRolledBackEvents(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock),
-            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock));
-      }
-      MockRepository.ReplayAll();
+      ExpectRollingBackEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (UnchangedObject, UnchangedObjectEventReceiverMock, _ =>
+              {
+                // This does not trigger an additional run because the object is no longer new to the Rollback set
+                Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit());
+              })
+          });
+
+      ExpectRolledBackEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (DeletedObject, DeletedObjectEventReceiverMock, null),
+              (UnchangedObject, UnchangedObjectEventReceiverMock, null)
+          });
 
       Transaction.Rollback();
 
-      MockRepository.VerifyAll();
+      VerifyAll();
     }
   }
 }

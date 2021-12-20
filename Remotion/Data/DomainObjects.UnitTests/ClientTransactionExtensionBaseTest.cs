@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       CheckNopEvent(e => e.RelationChanging(null, null, null, null, null));
       CheckNopEvent(e => e.RelationChanged(null, null, null, null, null));
 
-      var fakeResult = new QueryResult<DomainObject>(MockRepository.GenerateStub<IQuery>(), new DomainObject[0]);
+      var fakeResult = new QueryResult<DomainObject>(new Mock<IQuery>().Object, new DomainObject[0]);
       CheckNopEvent(e => e.FilterQueryResult(null, fakeResult), fakeResult);
 
       CheckNopEvent(e => e.Committing(null, null, null));
@@ -88,15 +88,15 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void TryInstall_NoSuccess ()
     {
       var transaction = ClientTransaction.CreateRootTransaction();
-      var otherExtensionWithSameName = MockRepository.GenerateStub<IClientTransactionExtension>();
-      otherExtensionWithSameName.Stub(stub => stub.Key).Return(_extension.Key);
+      var otherExtensionWithSameName = new Mock<IClientTransactionExtension>();
+      otherExtensionWithSameName.Setup(stub => stub.Key).Returns(_extension.Key);
 
-      transaction.Extensions.Add(otherExtensionWithSameName);
+      transaction.Extensions.Add(otherExtensionWithSameName.Object);
 
       var result = _extension.TryInstall(transaction);
 
       Assert.That(result, Is.False);
-      Assert.That(transaction.Extensions, Has.Member(otherExtensionWithSameName));
+      Assert.That(transaction.Extensions, Has.Member(otherExtensionWithSameName.Object));
       Assert.That(transaction.Extensions, Has.No.Member(_extension));
     }
 

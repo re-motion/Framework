@@ -17,12 +17,12 @@
 using System;
 using System.Data;
 using System.Text;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuilders.Specifications
 {
@@ -36,9 +36,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     private object _value2;
     private ColumnValue _columnValue1;
     private ColumnValue _columnValue2;
-    private ISqlDialect _sqlDialectStub;
+    private Mock<ISqlDialect> _sqlDialectStub;
     private InsertedColumnsSpecification _insertedColumnsSpecification;
-    private IDbCommand _dbCommandStub;
+    private Mock<IDbCommand> _dbCommandStub;
     private StringBuilder _statement;
 
     [SetUp]
@@ -55,18 +55,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       _insertedColumnsSpecification = new InsertedColumnsSpecification(new[] { _columnValue1,  _columnValue2 });
 
-      _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect>();
-      _dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
+      _sqlDialectStub = new Mock<ISqlDialect>();
+      _dbCommandStub = new Mock<IDbCommand>();
       _statement = new StringBuilder();
     }
 
     [Test]
     public void AppendColumnNames ()
     {
-      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("ID")).Return("[ID]");
-      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Timestamp")).Return("[Timestamp]");
+      _sqlDialectStub.Setup(stub => stub.DelimitIdentifier("ID")).Returns("[ID]");
+      _sqlDialectStub.Setup(stub => stub.DelimitIdentifier("Timestamp")).Returns("[Timestamp]");
 
-      _insertedColumnsSpecification.AppendColumnNames(_statement, _dbCommandStub, _sqlDialectStub);
+      _insertedColumnsSpecification.AppendColumnNames(_statement, _dbCommandStub.Object, _sqlDialectStub.Object);
 
       Assert.That(_statement.ToString(), Is.EqualTo("[ID], [Timestamp]"));
     }
@@ -74,40 +74,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     [Test]
     public void AppendColumnValues ()
     {
-      var parameter1StrictMock = MockRepository.GenerateStrictMock<IDbDataParameter>();
-      parameter1StrictMock.Expect(mock => mock.ParameterName = "@ID");
-      parameter1StrictMock.Expect(mock => mock.ParameterName).Return("@ID");
-      parameter1StrictMock.Expect(mock => mock.Value = _value1);
-      parameter1StrictMock.Expect(mock => mock.DbType = DbType.Guid);
-      parameter1StrictMock.Replay();
+      var parameter1StrictMock = new Mock<IDbDataParameter>(MockBehavior.Strict);
+      parameter1StrictMock.SetupSet(mock => mock.ParameterName = "@ID").Verifiable();
+      parameter1StrictMock.Setup(mock => mock.ParameterName).Returns("@ID").Verifiable();
+      parameter1StrictMock.SetupSet(mock => mock.Value = _value1).Verifiable();
+      parameter1StrictMock.SetupSet(mock => mock.DbType = DbType.Guid).Verifiable();
 
-      var parameter2StrictMock = MockRepository.GenerateStrictMock<IDbDataParameter>();
-      parameter2StrictMock.Expect(mock => mock.ParameterName = "@Timestamp");
-      parameter2StrictMock.Expect(mock => mock.ParameterName).Return("@Timestamp");
-      parameter2StrictMock.Expect(mock => mock.Value = _value2);
-      parameter2StrictMock.Expect(mock => mock.DbType = DbType.DateTime);
-      parameter2StrictMock.Replay();
+      var parameter2StrictMock = new Mock<IDbDataParameter>(MockBehavior.Strict);
+      parameter2StrictMock.SetupSet(mock => mock.ParameterName = "@Timestamp").Verifiable();
+      parameter2StrictMock.Setup(mock => mock.ParameterName).Returns("@Timestamp").Verifiable();
+      parameter2StrictMock.SetupSet(mock => mock.Value = _value2).Verifiable();
+      parameter2StrictMock.SetupSet(mock => mock.DbType = DbType.DateTime).Verifiable();
 
-      var dataParameterCollectionMock = MockRepository.GenerateStrictMock<IDataParameterCollection>();
+      var dataParameterCollectionMock = new Mock<IDataParameterCollection>(MockBehavior.Strict);
 
-      _dbCommandStub.Stub(stub => stub.Parameters).Return(dataParameterCollectionMock);
-      _dbCommandStub.Stub(stub => stub.CreateParameter()).Return(parameter1StrictMock).Repeat.Once();
-      _dbCommandStub.Stub(stub => stub.CreateParameter()).Return(parameter2StrictMock).Repeat.Once();
+      _dbCommandStub.Setup(stub => stub.Parameters).Returns(dataParameterCollectionMock.Object);
+      _dbCommandStub.SetupProperty(stub => stub.CommandText);
+      var sequence = new MockSequence();
+      _dbCommandStub.InSequence(sequence).Setup(stub => stub.CreateParameter()).Returns(parameter1StrictMock.Object);
+      _dbCommandStub.InSequence(sequence).Setup(stub => stub.CreateParameter()).Returns(parameter2StrictMock.Object);
 
-      dataParameterCollectionMock.Expect(mock => mock.Add(parameter1StrictMock)).Return(0).Repeat.Once();
-      dataParameterCollectionMock.Expect(mock => mock.Add(parameter2StrictMock)).Return(1).Repeat.Once();
-      dataParameterCollectionMock.Replay();
+      dataParameterCollectionMock.Setup(mock => mock.Add(parameter1StrictMock.Object)).Returns(0).Verifiable();
+      dataParameterCollectionMock.Setup(mock => mock.Add(parameter2StrictMock.Object)).Returns(1).Verifiable();
 
-      _sqlDialectStub.Stub(stub => stub.GetParameterName("ID")).Return("@ID");
-      _sqlDialectStub.Stub(stub => stub.GetParameterName("Timestamp")).Return("@Timestamp");
+      _sqlDialectStub.Setup(stub => stub.GetParameterName("ID")).Returns("@ID");
+      _sqlDialectStub.Setup(stub => stub.GetParameterName("Timestamp")).Returns("@Timestamp");
 
-      _insertedColumnsSpecification.AppendColumnValues(_statement, _dbCommandStub, _sqlDialectStub);
+      _insertedColumnsSpecification.AppendColumnValues(_statement, _dbCommandStub.Object, _sqlDialectStub.Object);
 
-      dataParameterCollectionMock.VerifyAllExpectations();
-      parameter1StrictMock.VerifyAllExpectations();
-      parameter2StrictMock.VerifyAllExpectations();
+      dataParameterCollectionMock.Verify();
+      parameter1StrictMock.Verify();
+      parameter2StrictMock.Verify();
       Assert.That(_statement.ToString(), Is.EqualTo("@ID, @Timestamp"));
-      Assert.That(_dbCommandStub.Parameters, Is.SameAs(dataParameterCollectionMock));
     }
   }
 }

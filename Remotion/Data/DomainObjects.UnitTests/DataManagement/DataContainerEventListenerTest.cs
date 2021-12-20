@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -38,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       base.SetUp();
 
-      _eventListener = new DataContainerEventListener(EventSinkWithMock);
+      _eventListener = new DataContainerEventListener(EventSinkWithMock.Object);
 
       _domainObject = DomainObjectMother.CreateFakeObject();
       _dataContainer = DataContainerObjectMother.Create(domainObject: _domainObject);
@@ -53,79 +52,72 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void PropertyValueReading ()
     {
-      EventSinkWithMock.Expect(mock => mock.RaisePropertyValueReadingEvent( _domainObject, _propertyDefinition, ValueAccess.Original));
-      EventSinkWithMock.Replay();
+      EventSinkWithMock.Setup(mock => mock.RaisePropertyValueReadingEvent(_domainObject, _propertyDefinition, ValueAccess.Original)).Verifiable();
 
       EventListener.PropertyValueReading(_dataContainer, _propertyDefinition, ValueAccess.Original);
 
-      EventSinkWithMock.VerifyAllExpectations();
+      EventSinkWithMock.VerifyAll();
     }
 
     [Test]
     public void PropertyValueRead ()
     {
-      EventSinkWithMock.Expect(mock => mock.RaisePropertyValueReadEvent( _domainObject, _propertyDefinition, "value", ValueAccess.Original));
-      EventSinkWithMock.Replay();
+      EventSinkWithMock.Setup(mock => mock.RaisePropertyValueReadEvent(_domainObject, _propertyDefinition, "value", ValueAccess.Original)).Verifiable();
 
       EventListener.PropertyValueRead(_dataContainer, _propertyDefinition, "value", ValueAccess.Original);
 
-      EventSinkWithMock.VerifyAllExpectations();
+      EventSinkWithMock.VerifyAll();
     }
 
     [Test]
     public void PropertyValueChanging ()
     {
-      EventSinkWithMock.Expect(mock1 => mock1.RaisePropertyValueChangingEvent( _domainObject, _propertyDefinition, "oldValue", "newValue"));
-      EventSinkWithMock.Replay();
+      EventSinkWithMock.Setup(mock1 => mock1.RaisePropertyValueChangingEvent(_domainObject, _propertyDefinition, "oldValue", "newValue")).Verifiable();
 
       EventListener.PropertyValueChanging(_dataContainer, _propertyDefinition, "oldValue", "newValue");
 
-      EventSinkWithMock.VerifyAllExpectations();
+      EventSinkWithMock.VerifyAll();
     }
 
     [Test]
     public void PropertyValueChanging_WithObjectIDProperty_DoesNotRaiseEvent ()
     {
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID();
-      EventSinkWithMock.Replay();
 
       EventListener.PropertyValueChanging(_dataContainer, propertyDefinition, "oldValue", "newValue");
 
-      EventSinkWithMock.VerifyAllExpectations();
+      EventSinkWithMock.VerifyAll();
     }
 
     [Test]
     public void PropertyValueChanged ()
     {
-      EventSinkWithMock.Expect(mock => mock.RaisePropertyValueChangedEvent( _domainObject, _propertyDefinition, "oldValue", "newValue"));
-      EventSinkWithMock.Replay();
+      EventSinkWithMock.Setup(mock => mock.RaisePropertyValueChangedEvent(_domainObject, _propertyDefinition, "oldValue", "newValue")).Verifiable();
 
       EventListener.PropertyValueChanged(_dataContainer, _propertyDefinition, "oldValue", "newValue");
 
-      EventSinkWithMock.VerifyAllExpectations();
+      EventSinkWithMock.VerifyAll();
     }
 
     [Test]
     public void PropertyValueChanged_WithObjectIDProperty_DoesNotRaiseEvent ()
     {
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID();
-      EventSinkWithMock.Replay();
 
       EventListener.PropertyValueChanged(_dataContainer, propertyDefinition, "oldValue", "newValue");
 
-      EventSinkWithMock.VerifyAllExpectations();
+      EventSinkWithMock.VerifyAll();
     }
 
     [Test]
     public void StateUpdated ()
     {
       var state = new DataContainerState.Builder().SetChanged().Value;
-      EventSinkWithMock.Expect(mock => mock.RaiseDataContainerStateUpdatedEvent( _dataContainer, state));
-      EventSinkWithMock.Replay();
+      EventSinkWithMock.Setup(mock => mock.RaiseDataContainerStateUpdatedEvent(_dataContainer, state)).Verifiable();
 
       EventListener.StateUpdated(_dataContainer, state);
 
-      EventSinkWithMock.VerifyAllExpectations();
+      EventSinkWithMock.VerifyAll();
     }
 
     [Test]

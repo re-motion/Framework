@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Model
 {
@@ -54,24 +54,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     [Test]
     public void Accept_IndexDefinitionVisitor ()
     {
-      var visitorMock = MockRepository.GenerateStrictMock<IIndexDefinitionVisitor>();
-      visitorMock.Replay();
+      var visitorMock = new Mock<IIndexDefinitionVisitor>(MockBehavior.Strict);
 
-      _indexDefinition.Accept(visitorMock);
+      _indexDefinition.Accept(visitorMock.Object);
 
-      visitorMock.VerifyAllExpectations();
+      visitorMock.Verify();
     }
 
     [Test]
     public void Accept_SqlIndexDefinitionVisitor ()
     {
-      var visitorMock = MockRepository.GenerateStrictMock<ISqlIndexDefinitionVisitor>();
-      visitorMock.Expect(mock => mock.VisitPrimaryXmlIndexDefinition(_indexDefinition));
-      visitorMock.Replay();
+      var visitorMock = new Mock<ISqlIndexDefinitionVisitor>(MockBehavior.Strict);
+      visitorMock.Setup(mock => mock.VisitPrimaryXmlIndexDefinition(_indexDefinition)).Verifiable();
 
-      _indexDefinition.Accept(visitorMock);
+      _indexDefinition.Accept(visitorMock.Object);
 
-      visitorMock.VerifyAllExpectations();
+      visitorMock.Verify();
     }
   }
 }
