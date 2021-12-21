@@ -19,6 +19,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
@@ -87,7 +88,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
 
     private WebTabRenderer CreateWebTabRenderer ()
     {
-      return new WebTabRenderer(RenderingFeatures.Default);
+      return new WebTabRenderer(new NoneHotkeyFormatter(), RenderingFeatures.Default);
     }
   }
 }

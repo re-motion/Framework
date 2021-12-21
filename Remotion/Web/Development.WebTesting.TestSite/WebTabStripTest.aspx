@@ -19,9 +19,9 @@
   <h3>WebTabStrip1</h3>
   <remotion:WebTabStrip ID="MyTabStrip1" style="width: 300px" runat="server">
     <Tabs>
-      <remotion:WebTab ItemID="Tab1" Text="Tab1Label" AccessKey="A"/>
-      <remotion:WebTab ItemID="Tab2" Text="Tab2Label" AccessKey="B"/>
-      <remotion:WebTab ItemID="Tab3" Text="Tab3 disabled" IsDisabled="True" AccessKey="C"/>
+      <remotion:WebTab ItemID="Tab1" Text="Tab1Label"/>
+      <remotion:WebTab ItemID="Tab2" Text="Tab2Label"/>
+      <remotion:WebTab ItemID="Tab3" Text="Tab3 disabled" IsDisabled="True"/>
     </Tabs>
   </remotion:WebTabStrip>
   <div id="scope">
@@ -33,4 +33,14 @@
       </Tabs>
     </remotion:WebTabStrip>
   </div>
+  <remotion:WebTabStrip ID="MyTabStripWithAccessKeys" runat="server">
+    <Tabs>
+      <remotion:WebTab ItemID="Tab1" Text="Tab1Label"/>
+      <remotion:WebTab ItemID="Tab2" Text="Tab2Label"/>
+      <remotion:WebTab ItemID="Tab3" Text="Tab3 disabled" IsDisabled="True"/>
+      <remotion:WebTab ItemID="TabWithAccessKey" Text="Tab with access key" AccessKey="A"/>
+      <remotion:WebTab ItemID="TabWithImplicitAccessKey" Text="Tab with implicit access &key"/>
+      <remotion:WebTab ItemID="TabDisabledWithAccessKey" Text="Tab disabled with access key" IsDisabled="True" AccessKey="D"/>
+    </Tabs>
+  </remotion:WebTabStrip>
 </asp:Content>

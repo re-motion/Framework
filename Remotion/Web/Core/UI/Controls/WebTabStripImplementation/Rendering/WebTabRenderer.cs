@@ -18,9 +18,11 @@ using System;
 using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 
@@ -32,21 +34,21 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
   [ImplementationFor(typeof(IWebTabRenderer), Lifetime = LifetimeKind.Singleton)]
   public class WebTabRenderer : IWebTabRenderer
   {
-    private readonly IRenderingFeatures _renderingFeatures;
+    private static readonly NoneHotkeyFormatter s_noneHotkeyFormatter = new NoneHotkeyFormatter();
 
-    public WebTabRenderer (IRenderingFeatures renderingFeatures)
+    /// <summary> Returns the configured <see cref="IHotkeyFormatter"/> object. </summary>
+    public IHotkeyFormatter HotkeyFormatter { get; }
+
+    /// <summary> Returns the configured <see cref="IRenderingFeatures"/> object. </summary>
+    public IRenderingFeatures RenderingFeatures { get; }
+
+    public WebTabRenderer (IHotkeyFormatter hotkeyFormatter, IRenderingFeatures renderingFeatures)
     {
+      ArgumentUtility.CheckNotNull("hotkeyFormatter", hotkeyFormatter);
       ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 
-      _renderingFeatures = renderingFeatures;
-    }
-
-    /// <summary>
-    /// Returns the configured <see cref="IRenderingFeatures"/> object.
-    /// </summary>
-    public IRenderingFeatures RenderingFeatures
-    {
-      get { return _renderingFeatures; }
+      HotkeyFormatter = hotkeyFormatter;
+      RenderingFeatures = renderingFeatures;
     }
 
     public void Render (WebTabStripRenderingContext renderingContext, IWebTab tab, bool isEnabled, bool isLast, WebTabStyle style)
@@ -105,7 +107,12 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
           renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.ItemID, tab.ItemID);
 
         if (!tab.Text.IsEmpty)
-          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(tab.Text));
+        {
+          if (tab.Text.Type == WebStringType.Encoded)
+            renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(tab.Text));
+          else
+            s_noneHotkeyFormatter.GetFormattedText(tab.Text).AddAttributeTo(renderingContext.Writer, DiagnosticMetadataAttributes.Content);
+        }
 
         renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsDisabled, (isDisabled).ToString().ToLower());
       }
@@ -147,6 +154,12 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       {
         command.Type = CommandType.Event;
         command.AccessKey = tab.AccessKey;
+        if (string.IsNullOrEmpty(command.AccessKey))
+        {
+          var accessKey = HotkeyFormatter.GetAccessKey(tab.Text);
+          if (accessKey.HasValue)
+            command.AccessKey = accessKey.Value.ToString();
+        }
 
         if (tab.IsSelected)
         {
@@ -223,7 +236,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       if (hasText)
       {
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin text span
-        tab.Text.WriteTo(renderingContext.Writer);
+        HotkeyFormatter.WriteTo(renderingContext.Writer, tab.Text);
         renderingContext.Writer.RenderEndTag(); // End text span
       }
       if (!hasIcon && !hasText)

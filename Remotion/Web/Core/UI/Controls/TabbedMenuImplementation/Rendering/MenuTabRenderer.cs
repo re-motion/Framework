@@ -19,6 +19,7 @@ using System.Collections.Specialized;
 using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
@@ -32,8 +33,8 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
   [ImplementationFor(typeof(IMenuTabRenderer), Lifetime = LifetimeKind.Singleton)]
   public class MenuTabRenderer : WebTabRenderer, IMenuTabRenderer
   {
-    public MenuTabRenderer (IRenderingFeatures renderingFeatures)
-        : base(renderingFeatures)
+    public MenuTabRenderer (IHotkeyFormatter hotkeyFormatter, IRenderingFeatures renderingFeatures)
+        : base(hotkeyFormatter, renderingFeatures)
     {
     }
 
@@ -46,11 +47,19 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 
       var additionalUrlParameters = menuTab.GetUrlParameters();
       var backupID = command.ItemID;
+      var backupAccessKey = command.AccessKey;
 
       try
       {
         if (string.IsNullOrEmpty(command.ItemID) && !string.IsNullOrEmpty(tab.ItemID))
           command.ItemID = tab.ItemID + "_Command";
+
+        if (string.IsNullOrEmpty(command.AccessKey))
+        {
+          var accessKey = HotkeyFormatter.GetAccessKey(tab.Text);
+          if (accessKey.HasValue)
+            command.AccessKey = accessKey.Value.ToString();
+        }
 
         command.RenderBegin(
             renderingContext.Writer,
@@ -69,6 +78,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
       finally
       {
         command.ItemID = backupID;
+        command.AccessKey = backupAccessKey;
       }
     }
 

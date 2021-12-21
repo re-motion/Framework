@@ -28,6 +28,7 @@ using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
+using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.WebButtonImplementation;
 using Remotion.Web.UI.Controls.WebButtonImplementation.Rendering;
@@ -48,6 +49,7 @@ namespace Remotion.Web.UI.Controls
           IPostBackDataHandler
   {
     private static readonly object s_clickEvent = new object();
+    private static readonly NoneHotkeyFormatter s_noneHotkeyFormatter = new NoneHotkeyFormatter();
 
     private const string c_textViewStateKey = nameof(Text);
     private const string c_textWebStringViewStateKey = c_textViewStateKey + "_" + nameof(WebStringType);
@@ -65,11 +67,13 @@ namespace Remotion.Web.UI.Controls
     private bool _hasPagePreRenderCompleted;
 
     private ButtonType _buttonType;
+    private readonly IHotkeyFormatter _hotkeyFormatter;
 
     public WebButton ()
     {
       _icon = new IconInfo();
       _renderingFeatures = SafeServiceLocator.Current.GetInstance<IRenderingFeatures>();
+      _hotkeyFormatter = SafeServiceLocator.Current.GetInstance<IHotkeyFormatter>();
     }
 
     [Category("Appearance")]
@@ -163,6 +167,13 @@ namespace Remotion.Web.UI.Controls
 
     protected override void AddAttributesToRender (HtmlTextWriter writer)
     {
+      if (string.IsNullOrEmpty(AccessKey))
+      {
+        var accessKey = _hotkeyFormatter.GetAccessKey(Text);
+        if (accessKey.HasValue)
+          writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, accessKey.Value.ToString());
+      }
+
       if (Page != null)
         Page.VerifyRenderingInServerForm(this);
 
@@ -251,11 +262,10 @@ namespace Remotion.Web.UI.Controls
 
       if (!Text.IsEmpty)
       {
-        writer.AddAttribute(
-            DiagnosticMetadataAttributes.Content,
-            Text.Type == WebStringType.Encoded
-                ? HtmlUtility.StripHtmlTags(Text.GetValue())
-                : Text.GetValue());
+        if (Text.Type == WebStringType.Encoded)
+          writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(Text));
+        else
+          s_noneHotkeyFormatter.GetFormattedText(Text).AddAttributeTo(writer, DiagnosticMetadataAttributes.Content);
       }
 
       if (!string.IsNullOrEmpty(CommandName))
@@ -338,7 +348,7 @@ namespace Remotion.Web.UI.Controls
         if (hasText)
         {
           writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin text span
-          Text.WriteTo(writer);
+          _hotkeyFormatter.WriteTo(writer, Text);
           writer.RenderEndTag(); // End text span
         }
       }

@@ -18,7 +18,9 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.ServiceLocation;
 using Remotion.Web.Infrastructure;
+using Remotion.Web.UI.Controls.Hotkey;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -28,13 +30,23 @@ namespace Remotion.Web.UI.Controls
   [ToolboxItem(false)]
   public class WebLinkButton : LinkButton, IControl
   {
+    private readonly IHotkeyFormatter _hotkeyFormatter;
     private const string c_textViewStateKey = nameof(Text);
     private const string c_textWebStringViewStateKey = c_textViewStateKey + "_" + nameof(WebStringType);
+
+    public WebLinkButton ()
+    {
+      _hotkeyFormatter = SafeServiceLocator.Current.GetInstance<IHotkeyFormatter>();
+    }
 
     protected override void AddAttributesToRender (HtmlTextWriter writer)
     {
       if (string.IsNullOrEmpty(AccessKey))
-        writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, AccessKey);
+      {
+        var accessKey = _hotkeyFormatter.GetAccessKey(Text);
+        if (accessKey.HasValue)
+          writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, accessKey.Value.ToString());
+      }
 
       base.AddAttributesToRender(writer);
     }
@@ -47,7 +59,7 @@ namespace Remotion.Web.UI.Controls
       if (HasControls())
         base.RenderContents(writer);
       else
-        Text.WriteTo(writer);
+        _hotkeyFormatter.WriteTo(writer, Text);
     }
 
     public new IPage? Page

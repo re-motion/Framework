@@ -19,7 +19,7 @@
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>
       <h3>WebButton1</h3>
-      <remotion:WebButton ID="MyWebButton1Sync" Text="SyncButton" AccessKey="A" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
+      <remotion:WebButton ID="MyWebButton1Sync" Text="SyncButton" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
       <remotion:WebButton ID="MyWebButtonPrimary1Sync" Text="SyncButton" ButtonType="Primary" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
       <remotion:WebButton ID="MyWebButtonSupplemental1Sync" Text="SyncButton" ButtonType="Supplemental" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
       <h3>WebButton2</h3>
@@ -41,6 +41,9 @@
       <remotion:WebButton ID="MyWebButtonWithIcon" Text="This text should wrap correctly because it is too long to fit" Width="100px" Icon-Url="Images/SampleIcon.gif" CommandName="Disabled" runat="server"/>
       <h3>WebButton UseLegacyButton="True"</h3>
       <remotion:WebButton ID="MyWebButtonWithUseLegacyButton" Text="LegacyButton" CommandName="Sync" RequiresSynchronousPostBack="true" UseLegacyButton="True" runat="server" />
+      <h3>WebButton with Access Keys</h3>
+      <remotion:WebButton ID="MyWebButtonWithAccessKey" Text="Button with access key" AccessKey="A" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
+      <remotion:WebButton ID="MyWebButtonWithImplicitAccessKey" Text="Button with implicit access &key" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>
