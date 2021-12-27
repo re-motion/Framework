@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private const string c_userNameParameter = "<userName>";
 
-    private static readonly ILog s_log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+    private static readonly ILog s_log = LogManager.GetLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
 
     // Note: Parsing the query takes about 1/6 of the total query time when connected to a local database instance.
     // Unfortunately, the first query also causes the initialization of various caches in re-store, 
@@ -95,14 +95,16 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           "Fetched data into CachedUser for user '" + userName + "'. Time taken: {elapsed:ms}ms"))
       {
         var queryTemplate = s_queryCache.GetQuery<User>(
-            MethodBase.GetCurrentMethod().Name,
+            MethodBase.GetCurrentMethod()!.Name,
             users => users.Where(u => u.UserName == c_userNameParameter).Select(u => u)
                           .FetchMany(u => u.Roles)
                           .FetchMany(User.SelectSubstitutions()).ThenFetchOne(s => s.SubstitutedRole));
 
-        var query = queryTemplate.CreateCopyFromTemplate(new Dictionary<object, object> { { c_userNameParameter, userName } });
+        var query = queryTemplate.CreateCopyFromTemplate(new Dictionary<object, object?> { { c_userNameParameter, userName } });
         return clientTransaction.QueryManager.GetCollection<User>(query)
                                 .AsEnumerable()
+                                .Where(user => user != null)
+                                .Select(user => user!)
                                 .Single(() => CreateAccessControlException("The user '{0}' could not be found.", userName));
       }
     }

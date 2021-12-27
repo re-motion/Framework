@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
              select t;
     }
 
-    public static Tenant FindByUnqiueIdentifier (string uniqueIdentifier)
+    public static Tenant? FindByUnqiueIdentifier (string uniqueIdentifier)
     {
       ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
 
@@ -95,7 +95,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     [DBBidirectionalRelation("Children")]
     [SearchAvailableObjectsServiceType(typeof(TenantPropertyTypeSearchService))]
-    public abstract Tenant Parent { get; set; }
+    public abstract Tenant? Parent { get; set; }
 
     [DBBidirectionalRelation("Parent")]
     public abstract ObjectList<Tenant> Children { get; }

@@ -23,7 +23,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
 {
   public class TextWriterData
   {
-    public TextWriterData (TextWriter textWriter, string directory, string extension)
+    public TextWriterData (TextWriter textWriter, string directory, string? extension)
     {
       ArgumentUtility.CheckNotNull("textWriter", textWriter);
       ArgumentUtility.CheckNotNull("directory", directory); // directory empty OK
@@ -35,6 +35,6 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
 
     public TextWriter TextWriter { get; private set; }
     public string Directory { get; private set; }
-    public string Extension { get; private set; }
+    public string? Extension { get; private set; }
   }
 }

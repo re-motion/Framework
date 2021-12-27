@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     // IEqualityComparer which ignores differences in states (AclExpansionEntry.StateCombinations) to
     // group AclExpansionEntry|s together which only differ in state.
     private static readonly CompoundValueEqualityComparer<AclExpansionEntry> _aclExpansionEntryIgnoreStateEqualityComparer =
-        new CompoundValueEqualityComparer<AclExpansionEntry>(a => new object[] {
+        new CompoundValueEqualityComparer<AclExpansionEntry>(a => new object?[] {
             a.Class, a.Role, a.User,
             a.AccessConditions.AbstractRole,
             a.AccessConditions.GroupHierarchyCondition,
@@ -86,9 +86,11 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
 
     private IEnumerable<AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>> RoleGrouping (IGrouping<User, AclExpansionEntry> grouping)
     {
-      return (grouping.OrderBy(roleEntry => roleEntry.Role.Group.DisplayName).ThenBy(roleEntry => roleEntry.Role.Position.DisplayName).
-          GroupBy(roleEntry => roleEntry.Role).Select(
-          roleGrouping => AclExpansionTreeNode.New(roleGrouping.Key, CountRowsBelow(roleGrouping), ClassGrouping(roleGrouping).ToList())));
+      return grouping
+          .OrderBy(roleEntry => roleEntry.Role.Group?.DisplayName)
+          .ThenBy(roleEntry => roleEntry.Role.Position?.DisplayName)
+          .GroupBy(roleEntry => roleEntry.Role)
+          .Select(roleGrouping => AclExpansionTreeNode.New(roleGrouping.Key, CountRowsBelow(roleGrouping), ClassGrouping(roleGrouping).ToList()));
     }
 
     private IEnumerable<AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>> ClassGrouping (IGrouping<Role, AclExpansionEntry> roleGrouping)

@@ -34,12 +34,12 @@ namespace Remotion.SecurityManager.Domain
       get { return s_globalKey; }
     }
 
-    public string LocalKey
+    public string? LocalKey
     {
       get { return null; }
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       return obj is RevisionKey;
     }

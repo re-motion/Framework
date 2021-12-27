@@ -32,6 +32,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       ArgumentUtility.CheckNotNull("acl", acl);
 
+      Assertion.IsNotNull(acl.Class, "AccessControlList{{{0}}}.Class must not be null when used in a query.", acl.ID);
       return acl.Class;
     }
 
@@ -40,6 +41,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       ArgumentUtility.CheckNotNull("acl", acl);
 
+      Assertion.IsNotNull(acl.Class, "AccessControlList{{{0}}}.Class must not be null when used in a query.", acl.ID);
       return acl.Class;
     }
 

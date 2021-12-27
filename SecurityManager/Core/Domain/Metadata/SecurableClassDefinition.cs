@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       return NewObject<SecurableClassDefinition>();
     }
 
-    public static SecurableClassDefinition FindByName (string name)
+    public static SecurableClassDefinition? FindByName (string name)
     {
       ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
@@ -70,7 +70,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       return result.ToObjectList();
     }
 
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     protected SecurableClassDefinition ()
     {
@@ -78,7 +78,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     [DBBidirectionalRelation("DerivedClasses")]
     [DBColumn("BaseSecurableClassID")]
-    public abstract SecurableClassDefinition BaseClass { get; set; }
+    public abstract SecurableClassDefinition? BaseClass { get; set; }
 
     [DBBidirectionalRelation("BaseClass", SortExpression = "Index ASC")]
     public abstract ObjectList<SecurableClassDefinition> DerivedClasses { get; }
@@ -123,7 +123,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     }
 
     [DBBidirectionalRelation("MyClass")]
-    public abstract StatelessAccessControlList StatelessAccessControlList { get; set; }
+    public abstract StatelessAccessControlList? StatelessAccessControlList { get; set; }
 
     [DBBidirectionalRelation("MyClass", SortExpression = "Index ASC")]
     public abstract ObjectList<StatefulAccessControlList> StatefulAccessControlLists { get; }
@@ -339,7 +339,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
               Name));
     }
 
-    public StateCombination FindStateCombination (IList<StateDefinition> states)
+    public StateCombination? FindStateCombination (IList<StateDefinition> states)
     {
       return StateCombinations.Where(sc => sc.MatchesStates(states)).SingleOrDefault();
     }
@@ -427,10 +427,10 @@ namespace Remotion.SecurityManager.Domain.Metadata
     {
       base.OnRelationChanged(args);
       if (args.IsRelation(this, "StatefulAccessControlLists"))
-        HandleStatefulAccessControlListsChanged((StatefulAccessControlList)args.NewRelatedObject);
+        HandleStatefulAccessControlListsChanged((StatefulAccessControlList?)args.NewRelatedObject);
     }
 
-    private void HandleStatefulAccessControlListsChanged (StatefulAccessControlList acl)
+    private void HandleStatefulAccessControlListsChanged (StatefulAccessControlList? acl)
     {
       if (acl != null)
         acl.Index = StatefulAccessControlLists.IndexOf(acl);
@@ -453,7 +453,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       base.OnDeleted(args);
 
       //TODO: Rewrite with test
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
 
     private ArgumentException CreateArgumentException (string argumentName, string format, params object[] args)

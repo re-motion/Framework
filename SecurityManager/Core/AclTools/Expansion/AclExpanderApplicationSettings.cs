@@ -24,13 +24,13 @@ namespace Remotion.SecurityManager.AclTools.Expansion
   public class AclExpanderApplicationSettings : ConsoleApplicationSettings
   {
     [CommandLineStringArgument("user", true, Placeholder = "accountants/john.doe", Description = "Fully qualified name of user(s) to query access types for.")]
-    public string UserName;
+    public string? UserName;
 
     [CommandLineStringArgument("last", true, Placeholder = "Doe", Description = "Last name of user(s) to query access types for.")]
-    public string UserLastName;
+    public string? UserLastName;
 
     [CommandLineStringArgument("first", true, Placeholder = "John", Description = "First name of user(s) to query access types for.")]
-    public string UserFirstName;
+    public string? UserFirstName;
 
     [CommandLineStringArgument("dir", true, Placeholder = "c:\\temp", Description = "Directory the ACL-expansion gets written to (e.g. /dir:c:\\temp).")]
     public string Directory = ".";

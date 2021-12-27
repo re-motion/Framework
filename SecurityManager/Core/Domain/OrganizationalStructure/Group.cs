@@ -60,12 +60,12 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       ArgumentUtility.CheckNotNull("tenantHandle", tenantHandle);
 
       return from g in QueryFactory.CreateLinqQuery<Group>()
-                   where g.Tenant.ID == tenantHandle.ObjectID
+                   where g.Tenant!.ID == tenantHandle.ObjectID
                    orderby g.Name, g.ShortName
                    select g;
     }
 
-    public static Group FindByUnqiueIdentifier (string uniqueIdentifier)
+    public static Group? FindByUnqiueIdentifier (string uniqueIdentifier)
     {
       ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
 
@@ -91,7 +91,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     // member fields
 
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     // construction and disposing
 
@@ -113,23 +113,23 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     public abstract string Name { get; set; }
 
     [StringProperty(MaximumLength = 20)]
-    public abstract string ShortName { get; set; }
+    public abstract string? ShortName { get; set; }
 
     [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string UniqueIdentifier { get; set; }
 
     [Mandatory]
-    public abstract Tenant Tenant { get; set; }
+    public abstract Tenant? Tenant { get; set; }
 
     [DBBidirectionalRelation("Children")]
     [SearchAvailableObjectsServiceType(typeof(GroupPropertyTypeSearchService))]
-    public abstract Group Parent { get; set; }
+    public abstract Group? Parent { get; set; }
 
     [DBBidirectionalRelation("Parent")]
     public abstract ObjectList<Group> Children { get; }
 
     [SearchAvailableObjectsServiceType(typeof(GroupTypePropertyTypeSearchService))]
-    public abstract GroupType GroupType { get; set; }
+    public abstract GroupType? GroupType { get; set; }
 
 
     [DBBidirectionalRelation("Group")]
@@ -151,7 +151,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
       base.OnDeleted(args);
 
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
 
     public override string DisplayName
@@ -165,7 +165,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       }
     }
 
-    protected override string GetOwningTenant ()
+    protected override string? GetOwningTenant ()
     {
       return Tenant == null ? null : Tenant.UniqueIdentifier;
     }
@@ -264,13 +264,13 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       var parents = GetParentObjectReference().CreateSequenceWithCycleCheck(
           g => g.GetParentObjectReference(),
           g => new InvalidOperationException(
-              string.Format("Group '{0}' cannot be committed because it would result in a cirucular parent hierarchy.", ID)));
+              string.Format("Group '{0}' cannot be committed because it would result in a circular parent hierarchy.", ID)));
 
       foreach (var group in parents)
         group.RegisterForCommit();
     }
 
-    private Group GetParentObjectReference ()
+    private Group? GetParentObjectReference ()
     {
       var parentID = Properties[typeof(Group), "Parent"].GetRelatedObjectID();
       if (parentID == null)

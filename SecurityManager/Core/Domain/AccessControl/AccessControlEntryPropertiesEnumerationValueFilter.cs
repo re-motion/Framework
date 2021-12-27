@@ -37,14 +37,14 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
     }
 
-    public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject businessObject, IBusinessObjectEnumerationProperty property)
+    public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject? businessObject, IBusinessObjectEnumerationProperty property)
     {
       ArgumentUtility.CheckNotNull("value", value);
-      ArgumentUtility.CheckNotNullAndType<AccessControlEntry>("businessObject", businessObject);
+      ArgumentUtility.CheckType<AccessControlEntry>("businessObject", businessObject);
       ArgumentUtility.CheckNotNull("property", property);
 
-      AccessControlEntry ace = (AccessControlEntry)businessObject;
-      bool isStateful = ace.AccessControlList is StatefulAccessControlList;
+      AccessControlEntry? ace = (AccessControlEntry?)businessObject;
+      bool isStateful = ace?.AccessControlList is StatefulAccessControlList;
 
       switch (property.Identifier)
       {

@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using Remotion.Data.DomainObjects;
-using Remotion.Security.Metadata;
 using Remotion.Security.Schemas;
 using Remotion.Utilities;
 
@@ -71,14 +70,16 @@ namespace Remotion.SecurityManager.Domain.Metadata
         XmlNamespaceManager namespaceManager = new XmlNamespaceManager(document.NameTable);
         namespaceManager.AddNamespace("mdl", schema.SchemaUri);
 
-        Culture culture = ImportCulture(document.DocumentElement, namespaceManager);
+        var rootElement = document.DocumentElement;
+        Assertion.IsNotNull(rootElement, "/ != null");
+        Culture culture = ImportCulture(rootElement, namespaceManager);
         ImportLocalizedNames(culture, document, namespaceManager);
       }
     }
 
     private Culture ImportCulture (XmlElement rootElement, XmlNamespaceManager namespaceManager)
     {
-      string cultureName = rootElement.Attributes["culture"].Value;
+      string cultureName = Assertion.IsNotNull(rootElement.Attributes["culture"], "{0}/@culture != null", rootElement.Name).Value;
       // TODO: Convert to CultureInfo via GetCulture
       Culture culture = Culture.NewObject(cultureName);
 
@@ -89,7 +90,10 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     private void ImportLocalizedNames (Culture culture, XmlNode parentNode, XmlNamespaceManager namespaceManager)
     {
-      XmlNodeList nameNodes = parentNode.SelectNodes("/mdl:localizedNames/mdl:localizedName", namespaceManager);
+      XmlNodeList nameNodes = Assertion.IsNotNull(
+          parentNode.SelectNodes("/mdl:localizedNames/mdl:localizedName", namespaceManager),
+          "{0}/localizedNames/localizedName != null",
+          parentNode.Name);
 
       foreach (XmlNode nameNode in nameNodes)
       {
@@ -100,10 +104,10 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     private LocalizedName ImportLocalizedName (Culture culture, XmlNamespaceManager namespaceManager, XmlNode nameNode)
     {
-      string metadataID = nameNode.Attributes["ref"].Value;
-      XmlAttribute commentAttribute = nameNode.Attributes["comment"];
+      string metadataID = Assertion.IsNotNull(nameNode.Attributes!["ref"], "{0}/@ref != null", nameNode.Name).Value;
+      XmlAttribute? commentAttribute = nameNode.Attributes["comment"];
 
-      MetadataObject metadataObject = MetadataObject.Find(metadataID);
+      MetadataObject? metadataObject = MetadataObject.Find(metadataID);
       if (metadataObject == null)
       {
         string objectDetails = commentAttribute == null ? string.Empty : "('" + commentAttribute.Value + "') ";
@@ -112,7 +116,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
       string text = nameNode.InnerText.Trim();
 
-      LocalizedName localizedName = metadataObject.GetLocalizedName(culture);
+      LocalizedName? localizedName = metadataObject.GetLocalizedName(culture);
       if (localizedName != null)
       {
         localizedName.Text = text;

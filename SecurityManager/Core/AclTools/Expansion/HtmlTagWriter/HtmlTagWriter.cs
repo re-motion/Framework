@@ -112,7 +112,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.HtmlTagWriter
 
 
 
-    public HtmlTagWriter Value (string s)
+    public HtmlTagWriter Value (string? s)
     {
       _xmlWriter.WriteValue(s ?? string.Empty);
       return this;

@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   [SecurityManagerStorageGroup]
   public abstract class Role : OrganizationalStructureObject
   {
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     public static Role NewObject ()
     {
@@ -45,16 +45,16 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     [DBBidirectionalRelation("Roles")]
     [Mandatory]
     [SearchAvailableObjectsServiceType(typeof(GroupPropertyTypeSearchService))]
-    public abstract Group Group { get; set; }
+    public abstract Group? Group { get; set; }
 
     [Mandatory]
     [SearchAvailableObjectsServiceType(typeof(RolePropertiesSearchService))]
-    public abstract Position Position { get; set; }
+    public abstract Position? Position { get; set; }
 
     [DBBidirectionalRelation("Roles")]
     [Mandatory]
     [SearchAvailableObjectsServiceType(typeof(UserPropertyTypeSearchService))]
-    public abstract User User { get; set; }
+    public abstract User? User { get; set; }
 
     [DBBidirectionalRelation("SubstitutedRole")]
     public abstract ObjectList<Substitution> SubstitutedBy { get; }
@@ -70,7 +70,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
       base.OnDeleted(args);
 
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
@@ -78,22 +78,24 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       base.OnCommitting(args);
 
       var userProperty = Properties[typeof(Role), "User"];
-      if (userProperty.GetValue<User>() != null)
-        userProperty.GetValue<User>().RegisterForCommit();
-      else if (userProperty.GetOriginalValue<User>() != null)
-        userProperty.GetOriginalValue<User>().RegisterForCommit();
+      var currentUser = userProperty.GetValue<User>();
+      var originalUser = userProperty.GetOriginalValue<User>();
+      if (currentUser != null)
+        currentUser.RegisterForCommit();
+      else if (originalUser != null)
+        originalUser.RegisterForCommit();
 
       foreach (var substitution in SubstitutedBy)
         substitution.RegisterForCommit();
     }
 
-    protected override string GetOwningTenant ()
+    protected override string? GetOwningTenant ()
     {
       if (User != null)
-        return User.Tenant.UniqueIdentifier;
+        return User.Tenant?.UniqueIdentifier;
 
       if (Group != null)
-        return Group.Tenant.UniqueIdentifier;
+        return Group.Tenant?.UniqueIdentifier;
 
       return null;
     }
@@ -102,8 +104,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
       get
       {
-        string positionName = Position != null ? Position.DisplayName : null;
-        string groupName = Group != null ? Group.DisplayName : null;
+        string? positionName = Position != null ? Position.DisplayName : null;
+        string? groupName = Group != null ? Group.DisplayName : null;
 
         return string.Format("{0} / {1}", positionName ?? "?", groupName ?? "?" );
       }

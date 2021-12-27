@@ -80,12 +80,26 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
     [Test]
     public void Search_WithDisplayNameConstraint_FindShortNameContainingPrefix ()
     {
+      var groupsWithShortNameNull = Group.FindByTenant(_tenantConstraint.Value).AsEnumerable().Where(g => g.ShortName == null).ToArray();
+      Assert.That(groupsWithShortNameNull, Is.Not.Empty);
+
       var expected = Group.FindByTenant(_tenantConstraint.Value).Where(g => g.ShortName.Contains("G1")).ToArray();
       Assert.That(expected.Length, Is.GreaterThan(1));
 
       var actual = _searchService.Search(null, _property, CreateSecurityManagerSearchArguments("G1"));
 
       Assert.That(actual, Is.EquivalentTo(expected));
+    }
+
+    [Test]
+    public void Search_WithoutTenantConstraint_FindsNoGroups ()
+    {
+      IBusinessObject[] actual = _searchService.Search(
+          null,
+          _property,
+          new SecurityManagerSearchArguments(null, null, new DisplayNameConstraint("Group1")));
+
+      Assert.That(actual, Is.Empty);
     }
 
     private SecurityManagerSearchArguments CreateSecurityManagerSearchArguments (string displayName)

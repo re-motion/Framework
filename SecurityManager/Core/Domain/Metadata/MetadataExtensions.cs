@@ -86,7 +86,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       ArgumentUtility.CheckNotNull("query", query);
 
       return query.FetchOne(cd => cd.StatelessAccessControlList)
-                  .ThenFetchMany(acl => acl.AccessControlEntries)
+                  .ThenFetchMany(acl => acl!.AccessControlEntries)
                   .ThenFetchMany(ace => ace.GetPermissionsForQuery());
     }
 

@@ -39,7 +39,6 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     private readonly ITextWriterFactory _textWriterFactory;
     private readonly bool _indentXml;
     private AclExpansionHtmlWriterSettings _detailHtmlWriterSettings = new AclExpansionHtmlWriterSettings();
-    private AclExpansionHtmlWriterImplementationBase _implementation;
 
     public AclExpansionMultiFileHtmlWriter (ITextWriterFactory textWriterFactory, bool indentXml)
     {
@@ -60,31 +59,31 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       ArgumentUtility.CheckNotNull("aclExpansion", aclExpansion);
       using (var textWriter = _textWriterFactory.CreateTextWriter(MasterFileName))
       {
-        _implementation = new AclExpansionHtmlWriterImplementationBase(textWriter, _indentXml);
+        var writerImplementation = new AclExpansionHtmlWriterImplementationBase(textWriter, _indentXml);
 
-        _implementation.WritePageStart(AclToolsExpansion.PageTitle);
-        _implementation.WriteTableStart("remotion-user-table");
-        WriteTableHeaders();
-        WriteTableBody(aclExpansion);
-        _implementation.WriteTableEnd();
-        _implementation.WritePageEnd();
+        writerImplementation.WritePageStart(AclToolsExpansion.PageTitle);
+        writerImplementation.WriteTableStart("remotion-user-table");
+        WriteTableHeaders(writerImplementation);
+        WriteTableBody(writerImplementation, aclExpansion);
+        writerImplementation.WriteTableEnd();
+        writerImplementation.WritePageEnd();
       }
     }
 
-    private void WriteTableHeaders ()
+    private void WriteTableHeaders (AclExpansionHtmlWriterImplementationBase writerImplementation)
     {
-      _implementation.HtmlTagWriter.Tags.tr();
-      _implementation.WriteHeaderCell(AclToolsExpansion.UserTableHeader);
-      _implementation.WriteHeaderCell(AclToolsExpansion.FirstNameTableHeader);
-      _implementation.WriteHeaderCell(AclToolsExpansion.LastNameTableHeader);
-      _implementation.WriteHeaderCell(AclToolsExpansion.AccessRightsNameTableHeader);
-      _implementation.HtmlTagWriter.Tags.trEnd();
+      writerImplementation.HtmlTagWriter.Tags.tr();
+      writerImplementation.WriteHeaderCell(AclToolsExpansion.UserTableHeader);
+      writerImplementation.WriteHeaderCell(AclToolsExpansion.FirstNameTableHeader);
+      writerImplementation.WriteHeaderCell(AclToolsExpansion.LastNameTableHeader);
+      writerImplementation.WriteHeaderCell(AclToolsExpansion.AccessRightsNameTableHeader);
+      writerImplementation.HtmlTagWriter.Tags.trEnd();
     }
 
 
 
 
-    private void WriteTableBody (List<AclExpansionEntry> aclExpansion)
+    private void WriteTableBody (AclExpansionHtmlWriterImplementationBase writerImplementation, List<AclExpansionEntry> aclExpansion)
     {
       var users = GetUsers(aclExpansion);
 
@@ -92,18 +91,18 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       {
         // Note: Due to HTML-table-cells using rowspan attribute it is not safe to assume that we are already in a table row here
         // (i.e. that a <tr>-tag has already been written).
-        _implementation.WriteTableRowBeginIfNotInTableRow();
-        WriteTableBody_ProcessUser(user, aclExpansion);
-        _implementation.WriteTableRowEnd();
+        writerImplementation.WriteTableRowBeginIfNotInTableRow();
+        WriteTableBody_ProcessUser(writerImplementation, user, aclExpansion);
+        writerImplementation.WriteTableRowEnd();
       }
     }
 
     // Note: Method name has been picked in analogy to method names in AclExpansionHtmlWriter.
-    private void WriteTableBody_ProcessUser (User user, List<AclExpansionEntry> aclExpansion)
+    private void WriteTableBody_ProcessUser (AclExpansionHtmlWriterImplementationBase writerImplementation, User user, List<AclExpansionEntry> aclExpansion)
     {
-      _implementation.WriteTableData(user.UserName);
-      _implementation.WriteTableData(user.FirstName);
-      _implementation.WriteTableData(user.LastName);
+      writerImplementation.WriteTableData(user.UserName);
+      writerImplementation.WriteTableData(user.FirstName);
+      writerImplementation.WriteTableData(user.LastName);
 
       string userDetailFileName = AclExpansionHtmlWriterImplementationBase.ToValidFileName(user.UserName);
       using (var detailTextWriter = _textWriterFactory.CreateTextWriter(userDetailFileName))
@@ -115,14 +114,14 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       }
 
       string relativePath = _textWriterFactory.GetRelativePath(MasterFileName, userDetailFileName);
-      _implementation.WriteTableRowBeginIfNotInTableRow();
-      _implementation.HtmlTagWriter.Tags.td();
-      _implementation.HtmlTagWriter.Tags.a();
-      _implementation.HtmlTagWriter.Attribute("href", relativePath);
-      _implementation.HtmlTagWriter.Attribute("target", "_blank");
-      _implementation.HtmlTagWriter.Value(relativePath);
-      _implementation.HtmlTagWriter.Tags.aEnd();
-      _implementation.HtmlTagWriter.Tags.tdEnd();
+      writerImplementation.WriteTableRowBeginIfNotInTableRow();
+      writerImplementation.HtmlTagWriter.Tags.td();
+      writerImplementation.HtmlTagWriter.Tags.a();
+      writerImplementation.HtmlTagWriter.Attribute("href", relativePath);
+      writerImplementation.HtmlTagWriter.Attribute("target", "_blank");
+      writerImplementation.HtmlTagWriter.Value(relativePath);
+      writerImplementation.HtmlTagWriter.Tags.aEnd();
+      writerImplementation.HtmlTagWriter.Tags.tdEnd();
     }
 
 

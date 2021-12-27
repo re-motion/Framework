@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       Assert.That(
           () => ClientTransactionScope.CurrentTransaction.Commit(),
           Throws.InvalidOperationException
-              .And.Message.EqualTo("Group '" + grandParent.ID + "' cannot be committed because it would result in a cirucular parent hierarchy."));
+              .And.Message.EqualTo("Group '" + grandParent.ID + "' cannot be committed because it would result in a circular parent hierarchy."));
     }
 
     [Test]
@@ -56,7 +56,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       Assert.That(
           () => ClientTransactionScope.CurrentTransaction.Commit(),
           Throws.InvalidOperationException
-              .And.Message.EqualTo("Group '" + root.ID + "' cannot be committed because it would result in a cirucular parent hierarchy."));
+              .And.Message.EqualTo("Group '" + root.ID + "' cannot be committed because it would result in a circular parent hierarchy."));
     }
 
     [Test]
@@ -78,7 +78,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       Assert.That(
           () => ClientTransactionScope.CurrentTransaction.Commit(),
           Throws.InvalidOperationException
-              .And.Message.EqualTo("Group '" + child.ID + "' cannot be committed because it would result in a cirucular parent hierarchy."));
+              .And.Message.EqualTo("Group '" + child.ID + "' cannot be committed because it would result in a circular parent hierarchy."));
     }
 
     [Test]
@@ -103,7 +103,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       Assert.That(
           () => ClientTransactionScope.CurrentTransaction.Commit(),
           Throws.InvalidOperationException
-              .And.Message.EqualTo("Group '" + grandParent.ID + "' cannot be committed because it would result in a cirucular parent hierarchy."));
+              .And.Message.EqualTo("Group '" + grandParent.ID + "' cannot be committed because it would result in a circular parent hierarchy."));
     }
 
     [Test]

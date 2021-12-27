@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       }
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod().DeclaringType);
+    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod()!.DeclaringType!);
 
     public SecurityContextUserNamesRevisionBasedCache (IUserNamesRevisionProvider revisionProvider)
         : base(revisionProvider)
@@ -78,7 +78,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private IReadOnlyDictionary<string, IDomainObjectHandle<User>> LoadUsers ()
     {
       var result = GetOrCreateQuery(
-          MethodInfo.GetCurrentMethod(),
+          MethodInfo.GetCurrentMethod()!,
           () => from u in QueryFactory.CreateLinqQuery<User>()
                 select new { Key = u.UserName, Value = u.ID.GetHandle<User>() });
 

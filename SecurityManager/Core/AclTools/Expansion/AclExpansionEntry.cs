@@ -43,7 +43,10 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       ArgumentUtility.CheckNotNull("role", role);
       ArgumentUtility.CheckNotNull("accessControlList", accessControlList);
       ArgumentUtility.CheckNotNull("accessConditions", accessConditions);
-      ArgumentUtility.CheckNotNull("accessTypeDefinitions", allowedAccessTypes);
+      ArgumentUtility.CheckNotNull("allowedAccessTypes", allowedAccessTypes);
+      if (accessControlList.Class == null)
+        throw new ArgumentException("AccessControlList must have a Class set.", "accessControlList");
+
       User = user;
       Role = role;
       _accessControlList = accessControlList;
@@ -57,7 +60,11 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     public SecurableClassDefinition Class
     {
-      get { return AccessControlList.Class; }
+      get
+      {
+        Assertion.DebugIsNotNull(AccessControlList.Class, "AccessControlList.Class != null");
+        return AccessControlList.Class;
+      }
     }
 
 

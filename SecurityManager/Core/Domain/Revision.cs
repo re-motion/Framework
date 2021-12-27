@@ -51,7 +51,7 @@ namespace Remotion.SecurityManager.Domain
 
       return QueryFactory.CreateQuery(
           new QueryDefinition(
-              typeof(Revision) + "." + MethodBase.GetCurrentMethod().Name,
+              typeof(Revision) + "." + MethodBase.GetCurrentMethod()!.Name,
               storageProviderDefinition,
               statement.ToString(),
               QueryType.Scalar),
@@ -109,9 +109,9 @@ namespace Remotion.SecurityManager.Domain
       statement.Append(",");
       statement.Append(revisionValueColumn);
       statement.Append(") VALUES (");
-      statement.Append(parameters[revisionGlobalKeyParameter].Name);
+      statement.Append(Assertion.IsNotNull(parameters[revisionGlobalKeyParameter], "parameters[revisionGlobalKeyParameter] != null").Name);
       statement.Append(",");
-      statement.Append(parameters[revisionLocalKeyParameter].Name);
+      statement.Append(Assertion.IsNotNull(parameters[revisionLocalKeyParameter], "parameters[revisionLocalKeyParameter] != null").Name);
       statement.Append(",");
       statement.Append(revisionValueParameter);
       statement.Append(")");
@@ -125,7 +125,7 @@ namespace Remotion.SecurityManager.Domain
 
       return QueryFactory.CreateQuery(
           new QueryDefinition(
-              typeof(Revision) + "." + MethodBase.GetCurrentMethod().Name,
+              typeof(Revision) + "." + MethodBase.GetCurrentMethod()!.Name,
               storageProviderDefinition,
               statement.ToString(),
               QueryType.Scalar),

@@ -17,7 +17,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
@@ -63,10 +62,10 @@ namespace Remotion.SecurityManager.Persistence
       _storageProviderCommandFactory = storageProviderCommandFactory;
 
       _userNamePropertyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(User))
-          .GetPropertyDefinition(GetPropertyIdentifierFromTypeAndShortName(typeof(User), "UserName"));
+          .GetMandatoryPropertyDefinition(GetPropertyIdentifierFromTypeAndShortName(typeof(User), "UserName"));
 
       _substitutionUserPropertyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Substitution))
-          .GetPropertyDefinition(GetPropertyIdentifierFromTypeAndShortName(typeof(Substitution), "SubstitutingUser"));
+          .GetMandatoryPropertyDefinition(GetPropertyIdentifierFromTypeAndShortName(typeof(Substitution), "SubstitutingUser"));
     }
 
     public virtual void Saved (IRdbmsProviderCommandExecutionContext executionContext, IEnumerable<DataContainer> dataContainers)
@@ -118,7 +117,9 @@ namespace Remotion.SecurityManager.Persistence
         var userDataContainer = loadedUsers.GetValueOrDefault(userID);
         if (userDataContainer != null)
         {
-          userNamesToInvalidate.Add(GetValue<string>(userDataContainer, _userNamePropertyDefinition));
+          var userName = GetValue<string>(userDataContainer, _userNamePropertyDefinition);
+          Assertion.IsNotNull(userName, "User{{{0}}}.UserName must not be null.", userDataContainer.ID);
+          userNamesToInvalidate.Add(userName);
 
           // For changed user names, also invalidate the original revision to ensure that the old user name cannot be used with state cache values.
           var originalUserName = GetOriginalValueOrDefault<string>(userDataContainer, _userNamePropertyDefinition);
@@ -162,7 +163,11 @@ namespace Remotion.SecurityManager.Persistence
 
       var storageProviderCommand = _storageProviderCommandFactory.CreateForCustomQuery(query);
       foreach (var queryResultRow in storageProviderCommand.Execute(executionContext))
-        yield return queryResultRow.GetConvertedValue<string>(0);
+      {
+        var loadUserName = queryResultRow.GetConvertedValue<string>(0);
+        Assertion.IsNotNull(loadUserName, "Expected database result cannot contain null values.");
+        yield return loadUserName;
+      }
     }
 
     private bool IsDomainRevisionRelevant (DataContainer dataContainer)
@@ -204,7 +209,7 @@ namespace Remotion.SecurityManager.Persistence
       return false;
     }
 
-    private IDomainObjectHandle<User> GetUserForInvalidation (DataContainer dataContainer)
+    private IDomainObjectHandle<User>? GetUserForInvalidation (DataContainer dataContainer)
     {
       if (typeof(User).IsAssignableFrom(dataContainer.DomainObjectType))
         return dataContainer.ID.GetHandle<User>();
@@ -223,13 +228,13 @@ namespace Remotion.SecurityManager.Persistence
           "dataContainer");
     }
 
-    private TResult GetValue<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)
+    private TResult? GetValue<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)
     {
       var valueAccess = dataContainer.State.IsDeleted ? ValueAccess.Original : ValueAccess.Current;
-      return (TResult)dataContainer.GetValueWithoutEvents(propertyDefinition, valueAccess);
+      return (TResult?)dataContainer.GetValueWithoutEvents(propertyDefinition, valueAccess);
     }
 
-    private TResult GetOriginalValueOrDefault<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)
+    private TResult? GetOriginalValueOrDefault<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)
     {
       if (!dataContainer.HasValueChanged(propertyDefinition))
         return default(TResult);
@@ -237,7 +242,7 @@ namespace Remotion.SecurityManager.Persistence
       if (!dataContainer.State.IsChanged)
         return default(TResult);
 
-      return (TResult)dataContainer.GetValueWithoutEvents(propertyDefinition, ValueAccess.Original);
+      return (TResult?)dataContainer.GetValueWithoutEvents(propertyDefinition, ValueAccess.Original);
     }
 
     private string GetPropertyIdentifierFromTypeAndShortName (Type domainObjectType, string shortPropertyName)

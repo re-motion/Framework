@@ -30,14 +30,14 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   [SecurityManagerStorageGroup]
   public abstract class AccessControlList : AccessControlObject
   {
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     protected AccessControlList ()
     {
     }
 
     [StorageClassNone]
-    public abstract SecurableClassDefinition Class { get; }
+    public abstract SecurableClassDefinition? Class { get; }
 
     [DBBidirectionalRelation("AccessControlList", SortExpression = "Index ASC")]
     public abstract ObjectList<AccessControlEntry> AccessControlEntries { get; }
@@ -62,7 +62,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       return entries.ToArray();
     }
 
-    public AccessInformation GetAccessTypes (SecurityToken token, AccessTypeStatistics accessTypeStatistics)
+    public AccessInformation GetAccessTypes (SecurityToken token, AccessTypeStatistics? accessTypeStatistics)
     {
       ArgumentUtility.CheckNotNull("token", token);
 
@@ -106,10 +106,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       base.OnRelationChanged(args);
       if (args.IsRelation(this, "AccessControlEntries"))
-        HandleAccessControlEntriesChanged((AccessControlEntry)args.NewRelatedObject);
+        HandleAccessControlEntriesChanged((AccessControlEntry?)args.NewRelatedObject);
     }
 
-    private void HandleAccessControlEntriesChanged (AccessControlEntry ace)
+    private void HandleAccessControlEntriesChanged (AccessControlEntry? ace)
     {
       if (ace != null)
         ace.Index = AccessControlEntries.IndexOf(ace);
@@ -136,7 +136,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       base.OnDeleted(args);
 
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
 
     public AccessControlEntry CreateAccessControlEntry ()

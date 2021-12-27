@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   [SecurityManagerStorageGroup]
   public abstract class Position : OrganizationalStructureObject, ISupportsGetObject
   {
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     public enum Methods
     {
@@ -130,7 +130,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
       base.OnDeleted(args);
 
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
 
     protected override IDictionary<string, Enum> GetStates ()

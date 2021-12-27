@@ -44,10 +44,11 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
     protected override IQueryable<IBusinessObject> CreateQuery (
         BaseSecurityManagerObject referencingObject,
         IBusinessObjectReferenceProperty property,
-        TenantConstraint tenantConstraint,
-        DisplayNameConstraint displayNameConstraint)
+        TenantConstraint? tenantConstraint,
+        DisplayNameConstraint? displayNameConstraint)
     {
-      ArgumentUtility.CheckNotNull("tenantConstraint", tenantConstraint);
+      if (tenantConstraint == null)
+        return Enumerable.Empty<IBusinessObject>().AsQueryable();
 
       return Group.FindByTenant(tenantConstraint.Value).Apply(displayNameConstraint).Cast<IBusinessObject>();
     }

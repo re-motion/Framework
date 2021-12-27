@@ -24,8 +24,15 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 {
   public class StateCombinationComparer : IEqualityComparer<StateCombination>
   {
-    public bool Equals (StateCombination x, StateCombination y)
+    public bool Equals (StateCombination? x, StateCombination? y)
     {
+      if (x == null && y == null)
+        return true;
+      if (x == null)
+        return false;
+      if (y == null)
+        return false;
+
       HashSet<StateDefinition> statesX = new HashSet<StateDefinition>(x.GetStates());
       StateDefinition[] statesY = y.GetStates();
 

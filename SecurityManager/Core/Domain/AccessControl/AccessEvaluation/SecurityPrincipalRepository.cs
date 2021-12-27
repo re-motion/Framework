@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private readonly IUserRevisionProvider _revisionProvider;
 
     private readonly ICache<string, CachedUser> _cache = CacheFactory.CreateWithSynchronization<string, CachedUser>();
-    private Func<string, CachedUser> _userCacheValueFactory;
+    private Func<string, CachedUser>? _userCacheValueFactory;
 
     public SecurityPrincipalRepository (IUserRevisionProvider revisionProvider)
     {

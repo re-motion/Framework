@@ -51,15 +51,15 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     [DBBidirectionalRelation("SubstitutingFor")]
     [Mandatory]
     [SearchAvailableObjectsServiceType(typeof(UserPropertyTypeSearchService))]
-    public abstract User SubstitutingUser { get; set; }
+    public abstract User? SubstitutingUser { get; set; }
 
     [DBBidirectionalRelation("SubstitutedBy")]
     [Mandatory]
-    public abstract User SubstitutedUser { get; set; }
+    public abstract User? SubstitutedUser { get; set; }
 
     [DBBidirectionalRelation("SubstitutedBy")]
     [SearchAvailableObjectsServiceType(typeof(SubstitutionPropertiesSearchService))]
-    public abstract Role SubstitutedRole { get; set; }
+    public abstract Role? SubstitutedRole { get; set; }
 
     [DateProperty]
     public abstract DateTime? BeginDate { get; set; }
@@ -99,8 +99,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
       get
       {
-        string userName = SubstitutedUser != null ? SubstitutedUser.DisplayName : null;
-        string roleName = SubstitutedRole != null ? SubstitutedRole.DisplayName : null;
+        string? userName = SubstitutedUser != null ? SubstitutedUser.DisplayName : null;
+        string? roleName = SubstitutedRole != null ? SubstitutedRole.DisplayName : null;
 
         string displayName = userName ?? "?";
         if (roleName != null)
@@ -115,10 +115,13 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       base.OnCommitting(args);
 
       var substitutedUserProperty = Properties[typeof(Substitution), "SubstitutedUser"];
-      if (substitutedUserProperty.GetValue<User>() != null)
-        substitutedUserProperty.GetValue<User>().RegisterForCommit();
-      else if (substitutedUserProperty.GetOriginalValue<User>() != null)
-        substitutedUserProperty.GetOriginalValue<User>().RegisterForCommit();
+      var currentUser = substitutedUserProperty.GetValue<User>();
+      var originalUser = substitutedUserProperty.GetOriginalValue<User>();
+
+      if (currentUser != null)
+        currentUser.RegisterForCommit();
+      else if (originalUser != null)
+        originalUser.RegisterForCommit();
     }
   }
 }

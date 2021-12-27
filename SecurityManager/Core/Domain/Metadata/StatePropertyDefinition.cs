@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       return NewObject<StatePropertyDefinition>(ParamList.Create(metadataItemID, name));
     }
 
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     protected StatePropertyDefinition ()
     {
@@ -168,7 +168,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       base.OnDeleted(args);
 
       //TODO: Rewrite with test
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
 
     private ArgumentException CreateArgumentException (string argumentName, string format, params object[] args)

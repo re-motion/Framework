@@ -31,23 +31,23 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   [Serializable]
   public abstract class OrganizationalStructureObject : BaseSecurityManagerObject, ISecurableObject, IDomainObjectSecurityContextFactory
   {
-    private IObjectSecurityStrategy _securityStrategy;
+    private IObjectSecurityStrategy? _securityStrategy;
 
     protected OrganizationalStructureObject ()
     {
     }
 
-    protected virtual string GetOwningTenant ()
+    protected virtual string? GetOwningTenant ()
     {
       return null;
     }
 
-    protected virtual string GetOwner ()
+    protected virtual string? GetOwner ()
     {
       return null;
     }
 
-    protected virtual string GetOwningGroup ()
+    protected virtual string? GetOwningGroup ()
     {
       return null;
     }

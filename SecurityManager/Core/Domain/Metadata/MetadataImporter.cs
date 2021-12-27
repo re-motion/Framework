@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using Remotion.Data.DomainObjects;
-using Remotion.Security.Metadata;
 using Remotion.Security.Schemas;
 using Remotion.Utilities;
 
@@ -133,7 +132,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
         XmlNamespaceManager namespaceManager,
         CreateItemDelegate<T> createItemDelegate) where T: MetadataObject
     {
-      XmlNodeList itemNodes = parentNode.SelectNodes(xpath, namespaceManager);
+      XmlNodeList itemNodes = parentNode.SelectNodes(xpath, namespaceManager)!;
       foreach (XmlNode itemNode in itemNodes)
       {
         T item = createItemDelegate(namespaceManager, itemNode);
@@ -191,14 +190,15 @@ namespace Remotion.SecurityManager.Domain.Metadata
     private SecurableClassDefinition CreateSecurableClassDefinition (XmlNamespaceManager namespaceManager, XmlNode securableClassDefinitionNode)
     {
       SecurableClassDefinition securableClassDefinition = SecurableClassDefinition.NewObject();
-      securableClassDefinition.Name = securableClassDefinitionNode.Attributes["name"].Value;
-      securableClassDefinition.MetadataItemID = new Guid(securableClassDefinitionNode.Attributes["id"].Value);
+      securableClassDefinition.Name = GetAttributeValue(securableClassDefinitionNode, "name");
+      securableClassDefinition.MetadataItemID = new Guid(GetAttributeValue(securableClassDefinitionNode, "id"));
       securableClassDefinition.Index = _securableClassDefinitionCount;
       _securableClassDefinitionCount++;
 
-      if (securableClassDefinitionNode.Attributes["base"] != null)
+      var baseClassAttribute = securableClassDefinitionNode.Attributes!["base"];
+      if (baseClassAttribute != null)
       {
-        Guid baseClassID = new Guid(securableClassDefinitionNode.Attributes["base"].Value);
+        Guid baseClassID = new Guid(baseClassAttribute.Value);
         _baseClassReferences.Add(securableClassDefinition.MetadataItemID, baseClassID);
       }
 
@@ -218,7 +218,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
         Dictionary<Guid, List<Guid>> referenceRegistry)
     {
       List<Guid> references = new List<Guid>();
-      XmlNodeList referenceNodes = securableClassDefinitionNode.SelectNodes(xpath, namespaceManager);
+      XmlNodeList referenceNodes = securableClassDefinitionNode.SelectNodes(xpath, namespaceManager)!;
 
       foreach (XmlNode referenceNode in referenceNodes)
         references.Add(new Guid(referenceNode.InnerText));
@@ -229,11 +229,11 @@ namespace Remotion.SecurityManager.Domain.Metadata
     private AbstractRoleDefinition CreateAbstractRoleDefinition (XmlNamespaceManager namespaceManager, XmlNode abstractRoleDefinitionNode)
     {
       AbstractRoleDefinition roleDefinition = AbstractRoleDefinition.NewObject();
-      roleDefinition.Name = abstractRoleDefinitionNode.Attributes["name"].Value;
-      roleDefinition.MetadataItemID = new Guid(abstractRoleDefinitionNode.Attributes["id"].Value);
+      roleDefinition.Name = GetAttributeValue(abstractRoleDefinitionNode, "name");
+      roleDefinition.MetadataItemID = new Guid(GetAttributeValue(abstractRoleDefinitionNode, "id"));
       roleDefinition.Index = _abstractRoleDefinitionCount;
       _abstractRoleDefinitionCount++;
-      roleDefinition.Value = int.Parse(abstractRoleDefinitionNode.Attributes["value"].Value);
+      roleDefinition.Value = int.Parse(GetAttributeValue(abstractRoleDefinitionNode, "value"));
 
       return roleDefinition;
     }
@@ -241,9 +241,9 @@ namespace Remotion.SecurityManager.Domain.Metadata
     private AccessTypeDefinition CreateAccessTypeDefinition (XmlNamespaceManager namespaceManager, XmlNode accessTypeDefinitionNode)
     {
       AccessTypeDefinition accessTypeDefinition = AccessTypeDefinition.NewObject();
-      accessTypeDefinition.Name = accessTypeDefinitionNode.Attributes["name"].Value;
-      accessTypeDefinition.MetadataItemID = new Guid(accessTypeDefinitionNode.Attributes["id"].Value);
-      accessTypeDefinition.Value = int.Parse(accessTypeDefinitionNode.Attributes["value"].Value);
+      accessTypeDefinition.Name = GetAttributeValue(accessTypeDefinitionNode, "name");
+      accessTypeDefinition.MetadataItemID = new Guid(GetAttributeValue(accessTypeDefinitionNode, "id"));
+      accessTypeDefinition.Value = int.Parse(GetAttributeValue(accessTypeDefinitionNode, "value"));
       accessTypeDefinition.Index = _accessTypeDefinitionCount;
       _accessTypeDefinitionCount++;
 
@@ -253,12 +253,12 @@ namespace Remotion.SecurityManager.Domain.Metadata
     private StatePropertyDefinition CreateStatePropertyDefinition (XmlNamespaceManager namespaceManager, XmlNode statePropertyDefinitionNode)
     {
       StatePropertyDefinition statePropertyDefinition = StatePropertyDefinition.NewObject();
-      statePropertyDefinition.MetadataItemID = new Guid(statePropertyDefinitionNode.Attributes["id"].Value);
-      statePropertyDefinition.Name = statePropertyDefinitionNode.Attributes["name"].Value;
+      statePropertyDefinition.MetadataItemID = new Guid(GetAttributeValue(statePropertyDefinitionNode, "id"));
+      statePropertyDefinition.Name = GetAttributeValue(statePropertyDefinitionNode, "name");
       statePropertyDefinition.Index = _statePropertyDefinitionCount;
       _statePropertyDefinitionCount++;
 
-      XmlNodeList stateNodes = statePropertyDefinitionNode.SelectNodes("md:state", namespaceManager);
+      XmlNodeList stateNodes = statePropertyDefinitionNode.SelectNodes("md:state", namespaceManager)!;
       foreach (XmlNode stateNode in stateNodes)
         statePropertyDefinition.AddState(CreateStateDefinition(namespaceManager, stateNode));
 
@@ -268,11 +268,19 @@ namespace Remotion.SecurityManager.Domain.Metadata
     private StateDefinition CreateStateDefinition (XmlNamespaceManager namespaceManager, XmlNode stateDefinitionNode)
     {
       StateDefinition stateDefinition = StateDefinition.NewObject();
-      stateDefinition.Name = stateDefinitionNode.Attributes["name"].Value;
-      stateDefinition.Value = int.Parse(stateDefinitionNode.Attributes["value"].Value);
+      stateDefinition.Name = GetAttributeValue(stateDefinitionNode, "name");
+      stateDefinition.Value = int.Parse(GetAttributeValue(stateDefinitionNode, "value"));
       stateDefinition.Index = stateDefinition.Value;
 
       return stateDefinition;
+    }
+
+    private string GetAttributeValue (XmlNode node, string attributeName)
+    {
+      var attribute = node.Attributes![attributeName];
+      Assertion.IsNotNull(attribute, "{0}/@{1}", node.Name, attribute);
+
+      return attribute.Value;
     }
   }
 }

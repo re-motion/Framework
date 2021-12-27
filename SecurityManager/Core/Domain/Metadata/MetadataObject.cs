@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     // static members and constants
 
-    public static MetadataObject Find (string metadataID)
+    public static MetadataObject? Find (string metadataID)
     {
       ArgumentUtility.CheckNotNullOrEmpty("metadataID", metadataID);
 
@@ -45,7 +45,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     }
 
     // member fields
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     // construction and disposing
 
@@ -72,7 +72,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       {
         foreach (CultureInfo cultureInfo in CultureInfo.CurrentUICulture.GetCultureHierarchy())
         {
-          LocalizedName localizedName = GetLocalizedName(cultureInfo.Name);
+          LocalizedName? localizedName = GetLocalizedName(cultureInfo.Name);
           if (localizedName != null)
             return localizedName.Text;
         }
@@ -81,14 +81,14 @@ namespace Remotion.SecurityManager.Domain.Metadata
       }
     }
 
-    public LocalizedName GetLocalizedName (Culture culture)
+    public LocalizedName? GetLocalizedName (Culture culture)
     {
       ArgumentUtility.CheckNotNull("culture", culture);
 
       return GetLocalizedName(culture.CultureName);
     }
 
-    public LocalizedName GetLocalizedName (string cultureName)
+    public LocalizedName? GetLocalizedName (string cultureName)
     {
       ArgumentUtility.CheckNotNull("cultureName", cultureName);
 
@@ -114,7 +114,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       base.OnDeleted(args);
 
       //TODO: Rewrite with test
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
   }
 }

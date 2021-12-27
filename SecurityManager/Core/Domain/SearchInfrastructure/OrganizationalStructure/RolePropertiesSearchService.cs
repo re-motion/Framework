@@ -49,9 +49,9 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
     }
 
     public IBusinessObject[] Search (
-        IBusinessObject referencingObject,
+        IBusinessObject? referencingObject,
         IBusinessObjectReferenceProperty property,
-        ISearchAvailableObjectsArguments searchArguments)
+        ISearchAvailableObjectsArguments? searchArguments)
     {
       ArgumentUtility.CheckNotNull("property", property);
       var rolePropertiesSearchArguments = ArgumentUtility.CheckType<RolePropertiesSearchArguments>("searchArguments", searchArguments);
@@ -78,9 +78,9 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
       return positions.Where(p => p.GroupTypes.Any(gtp => gtp.GroupType == groupType));
     }
 
-    private GroupType GetGroupType (RolePropertiesSearchArguments searchArguments)
+    private GroupType? GetGroupType (RolePropertiesSearchArguments? searchArguments)
     {
-      if (searchArguments == null || searchArguments.GroupHandle == null)
+      if (searchArguments == null)
         return null;
 
       using (SecurityFreeSection.Activate())

@@ -35,8 +35,8 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.Metadata
     protected override IQueryable<IBusinessObject> CreateQuery (
         BaseSecurityManagerObject referencingObject,
         IBusinessObjectReferenceProperty property,
-        TenantConstraint tenantConstraint,
-        DisplayNameConstraint displayNameConstraint)
+        TenantConstraint? tenantConstraint,
+        DisplayNameConstraint? displayNameConstraint)
     {
       return AbstractRoleDefinition.FindAll().AsEnumerable().Apply(displayNameConstraint).Cast<IBusinessObject>().AsQueryable();
     }

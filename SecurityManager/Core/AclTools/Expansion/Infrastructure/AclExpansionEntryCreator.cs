@@ -25,11 +25,11 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
 {
   public class AclExpansionEntryCreator
   {
-    public virtual AclExpansionEntry CreateAclExpansionEntry (UserRoleAclAceCombination userRoleAclAce)
+    public virtual AclExpansionEntry? CreateAclExpansionEntry (UserRoleAclAceCombination userRoleAclAce)
     {
       var accessTypesResult = GetAccessTypes(userRoleAclAce);
 
-      AclExpansionEntry aclExpansionEntry = null;
+      AclExpansionEntry? aclExpansionEntry = null;
 
       // Create an AclExpansionEntry, if the current probe ACE contributed to the result and returned allowed access types.
       if (accessTypesResult.AccessTypeStatistics.IsInAccessTypesContributingAces(userRoleAclAce.Ace) && accessTypesResult.AccessInformation.AllowedAccessTypes.Length > 0)

@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.SecurityProvider
     private readonly ISecurityProvider _innerSecurityProvider;
     private readonly IUserRevisionProvider _userRevisionProvider;
     private readonly SecurityContextCache _securityContextCache;
-    private Func<ISecurityPrincipal, AccessTypeCache> _securityContextCacheValueFactory;
+    private Func<ISecurityPrincipal, AccessTypeCache>? _securityContextCacheValueFactory;
 
     public RevisionBasedCachingSecurityProviderDecorator (
         ISecurityProvider innerSecurityProvider,
@@ -70,9 +70,21 @@ namespace Remotion.SecurityManager.SecurityProvider
       ArgumentUtility.CheckNotNull("context", context);
       ArgumentUtility.CheckNotNull("principal", principal);
 
+      if (principal.IsNull)
+        return _innerSecurityProvider.GetAccess(context, principal);
+
+      Assertion.IsNotNull(principal.User, "SecurityPrincipal.User must not be null unless SecurityPrincipal is defined as a null object.");
+
       // Optimized for memory allocations
       if (_securityContextCacheValueFactory == null)
-        _securityContextCacheValueFactory = key => new AccessTypeCache(_userRevisionProvider, key.User);
+      {
+        _securityContextCacheValueFactory = key =>
+        {
+          Assertion.DebugAssert(key.IsNull == false, "key.IsNull == false");
+          Assertion.DebugIsNotNull(key.User, "key.User != null when key.IsNull == false");
+          return new AccessTypeCache(_userRevisionProvider, key.User);
+        };
+      }
 
       var accessTypeCache = _securityContextCache.Items.GetOrCreateValue(principal, _securityContextCacheValueFactory);
 

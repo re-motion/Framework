@@ -55,8 +55,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     protected override sealed QueryFactory GetQueryFactory (IBusinessObjectReferenceProperty property)
     {
-      QueryFactory queryFactory;
-      if (!_queryFactories.TryGetValue(property.Identifier, out queryFactory))
+      if (!_queryFactories.TryGetValue(property.Identifier, out var queryFactory))
       {
         throw new ArgumentException(
             string.Format("The property '{0}' is not supported by the '{1}' type.", property.Identifier, GetType().GetFullNameSafe()));

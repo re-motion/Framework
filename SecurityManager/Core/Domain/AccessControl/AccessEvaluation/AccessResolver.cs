@@ -35,7 +35,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   [ImplementationFor(typeof(IAccessResolver), Lifetime = LifetimeKind.Singleton)]
   public class AccessResolver : IAccessResolver
   {
-    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod().DeclaringType);
+    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod()!.DeclaringType!);
     private static readonly QueryCache s_queryCache = new QueryCache();
 
     public AccessType[] GetAccessTypes (IDomainObjectHandle<AccessControlList> aclHandle, SecurityToken token)
@@ -45,7 +45,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
       using (SecurityFreeSection.Activate())
       {
-        using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+        var clientTransaction = ClientTransaction.CreateRootTransaction();
+        using (clientTransaction.EnterDiscardingScope())
         {
           using (StopwatchScope.CreateScope(
               s_log,
@@ -55,8 +56,9 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
                   aclHandle.ObjectID,
                   token.Principal.User != null ? token.Principal.User.ObjectID.ToString() : "<unknown>")))
           {
-            LoadAccessTypeDefinitions();
-            var acl = LoadAccessControlList(aclHandle);
+            Assertion.DebugAssert(ClientTransaction.Current == clientTransaction, "ClientTransaction.Current == clientTransaction");
+            LoadAccessTypeDefinitions(clientTransaction);
+            var acl = LoadAccessControlList(clientTransaction, aclHandle);
 
             var accessInformation = acl.GetAccessTypes(token);
             return Array.ConvertAll(accessInformation.AllowedAccessTypes, ConvertToAccessType);
@@ -67,7 +69,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private static readonly Guid s_aclParameter = Guid.Empty;
 
-    private AccessControlList LoadAccessControlList (IDomainObjectHandle<AccessControlList> aclHandle)
+    private AccessControlList LoadAccessControlList (ClientTransaction clientTransaction, IDomainObjectHandle<AccessControlList> aclHandle)
     {
       using (StopwatchScope.CreateScope(
           s_log,
@@ -75,26 +77,28 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           "Fetched ACL '" + aclHandle.ObjectID + "' for AccessResolver. Time taken: {elapsed:ms}ms"))
       {
         var queryTemplate = s_queryCache.GetQuery<AccessControlList>(
-            MethodInfo.GetCurrentMethod().Name,
+            MethodInfo.GetCurrentMethod()!.Name,
             acls => acls.Where(o => s_aclParameter.Equals(o.ID.Value))
                         .Select(o => o)
                         .FetchMany(o => o.AccessControlEntries)
                         .ThenFetchMany(ace => ace.GetPermissionsForQuery()));
 
-        var query = queryTemplate.CreateCopyFromTemplate(new Dictionary<object, object> { { s_aclParameter, aclHandle.ObjectID.Value } });
-        return ClientTransaction.Current.QueryManager.GetCollection<AccessControlList>(query)
-                                .AsEnumerable()
-                                .Single(() => new ObjectsNotFoundException(EnumerableUtility.Singleton(aclHandle.ObjectID)));
+        var query = queryTemplate.CreateCopyFromTemplate(new Dictionary<object, object?> { { s_aclParameter, aclHandle.ObjectID.Value } });
+        return clientTransaction.QueryManager.GetCollection<AccessControlList>(query)
+            .AsEnumerable()
+            .Where(acl => acl != null)
+            .Select(acl => acl!)
+            .Single(() => new ObjectsNotFoundException(EnumerableUtility.Singleton(aclHandle.ObjectID)));
       }
     }
 
-    private void LoadAccessTypeDefinitions ()
+    private void LoadAccessTypeDefinitions (ClientTransaction clientTransaction)
     {
       using (StopwatchScope.CreateScope(s_log, LogLevel.Debug, "Fetched access types for AccessResolver. Time taken: {elapsed:ms}ms"))
       {
         s_queryCache.ExecuteCollectionQuery<AccessTypeDefinition>(
-            ClientTransaction.Current,
-            MethodInfo.GetCurrentMethod().Name,
+            clientTransaction,
+            MethodInfo.GetCurrentMethod()!.Name,
             accessTypes => accessTypes);
       }
     }
