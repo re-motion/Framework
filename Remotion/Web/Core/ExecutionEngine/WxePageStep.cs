@@ -18,6 +18,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Web.UI;
 using Remotion.Utilities;
@@ -222,6 +223,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   During the execution of a page, specifies whether the current postback cycle was caused by returning from a 
     ///   <see cref="WxeFunction"/>.
     /// </summary>
+    [MemberNotNullWhen(true, nameof(ReturningFunction))]
     public bool IsReturningPostBack
     {
       get { return _isReturningPostBack; }

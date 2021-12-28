@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Web.UI;
 // ReSharper disable RedundantUsingDirective
 using System.Web.UI;
@@ -39,6 +40,7 @@ namespace Remotion.Web.ExecutionEngine
     void ExecuteFunction (WxeFunction function, IWxeCallArguments callArguments);
 
     /// <summary> Gets a flag describing whether this post-back has been triggered by returning from a WXE function. </summary>
+    [MemberNotNullWhen(true, nameof(ReturningFunction))]
     bool IsReturningPostBack { get; }
 
     /// <summary> Gets the WXE function that has been executed in the current page. </summary>

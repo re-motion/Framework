@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web;
 using System.Web.UI;
 using Remotion.Collections;
@@ -53,6 +54,7 @@ namespace Remotion.Web.ExecutionEngine
 
     /// <summary> Gets a flag describing whether this post-back has been triggered by returning from a WXE function. </summary>
     [Browsable(false)]
+    [MemberNotNullWhen(true, nameof(ReturningFunction))]
     public bool IsReturningPostBack
     {
       get { return _wxePageInfo.IsReturningPostBack; }
