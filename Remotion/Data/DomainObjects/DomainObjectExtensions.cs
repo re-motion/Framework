@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects
     [CanBeNull]
     [ContractAnnotation("null => null; notnull => notnull")]
     [return: NotNullIfNotNull("domainObjectOrNull")]
-    public static IDomainObjectHandle<T>? GetSafeHandle<T> ([CanBeNull] this T domainObjectOrNull) where T : class, IDomainObject
+    public static IDomainObjectHandle<T>? GetSafeHandle<T> ([CanBeNull] this T? domainObjectOrNull) where T : class, IDomainObject
     {
       return domainObjectOrNull != null ? domainObjectOrNull.GetHandle() : null;
     }
