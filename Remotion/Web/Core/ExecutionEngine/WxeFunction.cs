@@ -54,7 +54,7 @@ namespace Remotion.Web.ExecutionEngine
     private string? _returnUrl;
     private string? _executionCompletedScript;
 
-    protected WxeFunction (ITransactionMode transactionMode, params object[] actualParameters)
+    protected WxeFunction (ITransactionMode transactionMode, params object?[] actualParameters)
     {
       ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
       ArgumentUtility.CheckNotNull("actualParameters", actualParameters);
@@ -63,7 +63,7 @@ namespace Remotion.Web.ExecutionEngine
       _variablesContainer = new WxeVariablesContainer(this, actualParameters);
     }
 
-    protected WxeFunction (ITransactionMode transactionMode, WxeParameterDeclaration[] parameterDeclarations, object[] actualParameters)
+    protected WxeFunction (ITransactionMode transactionMode, WxeParameterDeclaration[] parameterDeclarations, object?[] actualParameters)
     {
       ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
       ArgumentUtility.CheckNotNull("parameterDeclarations", parameterDeclarations);
@@ -272,7 +272,7 @@ namespace Remotion.Web.ExecutionEngine
       {
         if (i > 0)
           sb.Append(", ");
-        object value = _variablesContainer.ActualParameters[i];
+        object? value = _variablesContainer.ActualParameters[i];
         if (value is WxeVariableReference)
           sb.Append("@" + ((WxeVariableReference)value).Name);
         else if (value is string)
