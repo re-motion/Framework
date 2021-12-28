@@ -1157,18 +1157,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class BocTreeNodeEventArgs : WebTreeNodeEventArgs
   {
     public BocTreeNodeEventArgs (BusinessObjectTreeNode node)
-        : base(node)
+        : base(ArgumentUtility.CheckNotNull("node", node))
     {
     }
 
     public BocTreeNodeEventArgs (BusinessObjectPropertyTreeNode node)
-        : base(node)
+        : base(ArgumentUtility.CheckNotNull("node", node))
     {
     }
 
-    public new BocTreeNode? Node
+    public new BocTreeNode Node
     {
-      get { return (BocTreeNode?)base.Node; }
+      get
+      {
+        var node = (BocTreeNode?)base.Node;
+        Assertion.DebugIsNotNull(node, "node != null");
+        return node;
+      }
     }
 
     public BusinessObjectTreeNode? BusinessObjectTreeNode
