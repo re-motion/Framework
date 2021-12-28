@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="value"> A <see cref="String"/> to load or <see langword="null"/>. </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     /// <include file='..\..\doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
-    public void LoadUnboundValue (string value, bool interim)
+    public void LoadUnboundValue (string? value, bool interim)
     {
       LoadValueInternal(value, interim);
     }

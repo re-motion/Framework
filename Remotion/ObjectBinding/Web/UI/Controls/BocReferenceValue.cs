@@ -362,7 +362,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Populates the <see cref="BocReferenceValueBase.Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadUnboundValue/*' />
-    public void LoadUnboundValue (IBusinessObjectWithIdentity value, bool interim)
+    public void LoadUnboundValue (IBusinessObjectWithIdentity? value, bool interim)
     {
       LoadValueInternal(value, interim);
     }
