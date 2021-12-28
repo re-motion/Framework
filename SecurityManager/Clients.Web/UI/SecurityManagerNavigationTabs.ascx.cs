@@ -27,17 +27,17 @@ namespace Remotion.SecurityManager.Clients.Web.UI
   {
     protected override void OnPreRender (EventArgs e)
     {
-      var mainMenuTab = TabbedMenu.Tabs.Find("OrganizationalStructureTab") as MainMenuTab;
+      var mainMenuTab = (MainMenuTab)TabbedMenu.Tabs.FindMandatory("OrganizationalStructureTab");
       mainMenuTab.Text = GlobalResourcesHelper.GetText(GlobalResources.OrganizationalStructure);
-      mainMenuTab.SubMenuTabs.Find("UserTab").Text = GlobalResourcesHelper.GetText(GlobalResources.User);
-      mainMenuTab.SubMenuTabs.Find("GroupTab").Text = GlobalResourcesHelper.GetText(GlobalResources.Group);
-      mainMenuTab.SubMenuTabs.Find("TenantTab").Text = GlobalResourcesHelper.GetText(GlobalResources.Tenant);
-      mainMenuTab.SubMenuTabs.Find("PositionTab").Text = GlobalResourcesHelper.GetText(GlobalResources.Position);
-      mainMenuTab.SubMenuTabs.Find("GroupTypeTab").Text = GlobalResourcesHelper.GetText(GlobalResources.GroupType);
+      mainMenuTab.SubMenuTabs.FindMandatory("UserTab").Text = GlobalResourcesHelper.GetText(GlobalResources.User);
+      mainMenuTab.SubMenuTabs.FindMandatory("GroupTab").Text = GlobalResourcesHelper.GetText(GlobalResources.Group);
+      mainMenuTab.SubMenuTabs.FindMandatory("TenantTab").Text = GlobalResourcesHelper.GetText(GlobalResources.Tenant);
+      mainMenuTab.SubMenuTabs.FindMandatory("PositionTab").Text = GlobalResourcesHelper.GetText(GlobalResources.Position);
+      mainMenuTab.SubMenuTabs.FindMandatory("GroupTypeTab").Text = GlobalResourcesHelper.GetText(GlobalResources.GroupType);
 
-      var accessControlTab = TabbedMenu.Tabs.Find("AccessControlTab") as MainMenuTab;
+      var accessControlTab = (MainMenuTab)TabbedMenu.Tabs.FindMandatory("AccessControlTab");
       accessControlTab.Text = GlobalResourcesHelper.GetText(GlobalResources.AccessControl);
-      accessControlTab.SubMenuTabs.Find("SecurableClassDefinitionTab").Text =
+      accessControlTab.SubMenuTabs.FindMandatory("SecurableClassDefinitionTab").Text =
           GlobalResourcesHelper.GetText(GlobalResources.SecurableClassDefinition);
 
       base.OnPreRender(e);

@@ -22,6 +22,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Utilities;
 using Remotion.Web;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
@@ -35,7 +36,11 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected SecurableClassDefinition CurrentClassDefinition
     {
-      get { return (SecurableClassDefinition)CurrentObject.BusinessObject; }
+      get
+      {
+        Assertion.IsNotNull(CurrentObject.BusinessObject, "CurrentClassDefinition has not been set.");
+        return (SecurableClassDefinition)CurrentObject.BusinessObject;
+      }
     }
 
     public override void LoadValues (bool interim)
@@ -60,7 +65,12 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
       WebString GetDisplayNameForProperty (BindableObjectClass bindableObjectClass, string propertyIdentifier)
       {
-        return WebString.CreateFromText(bindableObjectClass.GetPropertyDefinition(propertyIdentifier).DisplayName);
+        return WebString.CreateFromText(
+            Assertion.IsNotNull(
+                bindableObjectClass.GetPropertyDefinition(propertyIdentifier),
+                "Business object class '{0}' does not contain property '{1}'",
+                bindableObjectClass.Identifier,
+                propertyIdentifier).DisplayName);
       }
     }
 

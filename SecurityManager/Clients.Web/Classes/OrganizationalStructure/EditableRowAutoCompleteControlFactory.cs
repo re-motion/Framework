@@ -56,7 +56,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       bocAutoCompleteReferenceValue.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
-    protected override IBusinessObjectBoundEditableWebControl CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
+    protected override IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
       ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
@@ -77,7 +77,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       {
         control.PreRender += delegate
         {
-          BasePage page = (BasePage)control.Page;
+          BasePage page = Assertion.IsNotNull((BasePage?)control.Page, "Page != null when processing page lifecycle events.");
           control.ControlServiceArguments = page.CurrentFunction.TenantHandle.AsArgument();
         };
       }

@@ -48,25 +48,29 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     // methods and properties
 
-    public new BasePage Page
+    public new BasePage? Page
     {
-      get { return (BasePage)base.Page; }
-      set { base.Page = value; }
+      get { return (BasePage?)base.Page; }
     }
 
     protected BaseTransactedFunction CurrentFunction
     {
-      get { return Page.CurrentFunction; }
+      get
+      {
+        Assertion.IsNotNull(Page, "Page != null.");
+
+        return Page.CurrentFunction;
+      }
     }
 
-    public virtual IFocusableControl InitialFocusControl
+    public virtual IFocusableControl? InitialFocusControl
     {
       get { return null; }
     }
 
-    protected IDomainObjectHandle<Tenant> CurrentTenantHandle
+    protected IDomainObjectHandle<Tenant>? CurrentTenantHandle
     {
-      get { return (IDomainObjectHandle<Tenant>)ViewState[s_currentTenantHandleKey]; }
+      get { return (IDomainObjectHandle<Tenant>?)ViewState[s_currentTenantHandleKey]; }
       set { ViewState[s_currentTenantHandleKey] = value; }
     }
 

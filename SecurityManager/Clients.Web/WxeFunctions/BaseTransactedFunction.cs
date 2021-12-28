@@ -19,6 +19,7 @@ using System;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
@@ -31,7 +32,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
     {
     }
 
-    protected BaseTransactedFunction (ITransactionMode transactionMode, params object[] args)
+    protected BaseTransactedFunction (ITransactionMode transactionMode, params object?[] args)
         : base(transactionMode, args)
     {
       Initialize();
@@ -43,7 +44,9 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
       {
         var securityManagerPrincipal = SecurityManagerPrincipal.Current;
         if (securityManagerPrincipal.IsNull)
-          throw new InvalidOperationException("The Seucrity Manager principal is not set. Possible reason: session timeout");
+          throw new InvalidOperationException("The Security Manager principal is not set. Possible reason: session timeout");
+
+        Assertion.DebugIsNotNull(securityManagerPrincipal.Tenant, "SecurityManagerPrincipal.Tenant != null when SecurityManagerPrincipal.IsNull == false");
         return securityManagerPrincipal.Tenant.Handle;
       }
     }

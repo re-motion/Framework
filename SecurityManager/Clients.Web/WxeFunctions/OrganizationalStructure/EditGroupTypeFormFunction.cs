@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
     {
     }
 
-    public EditGroupTypeFormFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<GroupType> currentObjectHandle)
+    public EditGroupTypeFormFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<GroupType>? currentObjectHandle)
         : base(transactionMode, currentObjectHandle)
     {
     }

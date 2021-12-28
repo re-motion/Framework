@@ -23,6 +23,7 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.Utilities;
 using Remotion.Web.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
@@ -82,6 +83,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private void EnableNewStateCombinationButton ()
     {
+      Assertion.IsNotNull(CurrentAccessControlList.Class, "CurrentAccessControlList.Class != null");
       NewStateCombinationButton.Enabled = CurrentAccessControlList.Class.AreStateCombinationsComplete();
     }
 
@@ -171,6 +173,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected void NewStateCombinationButton_Click (object sender, EventArgs e)
     {
+      Assertion.IsNotNull(Page, "Page != null when processing page life cycle events.");
+
       _isCreatingNewStateCombination = true;
       Page.PrepareValidation();
       bool isValid = Validate();
@@ -187,16 +191,18 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       _isCreatingNewStateCombination = false;
     }
 
-    void EditStateCombinationControl_Delete (object sender, EventArgs e)
+    void EditStateCombinationControl_Delete (object? sender, EventArgs e)
     {
-      EditStateCombinationControl editStateCombinationControl = (EditStateCombinationControl)sender;
+      EditStateCombinationControl editStateCombinationControl = ArgumentUtility.CheckNotNullAndType<EditStateCombinationControl>("sender", sender!);
+      Assertion.IsNotNull(Page, "Page != null when processing page life cycle events.");
+
       Page.PrepareValidation();
       bool isValid = ValidateStateCombinations(editStateCombinationControl);
       if (!isValid)
         return;
 
       _editStateCombinationControls.Remove(editStateCombinationControl);
-      StateCombination accessControlEntry = (StateCombination)editStateCombinationControl.DataSource.BusinessObject;
+      StateCombination accessControlEntry = editStateCombinationControl.CurrentStateCombination;
       accessControlEntry.Delete();
 
       SaveStateCombinations(false);

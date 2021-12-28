@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     {
     }
 
-    protected override IBusinessObjectBoundEditableWebControl CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
+    protected override IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
       ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
@@ -67,12 +67,17 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       return control;
     }
 
-    private void HandleSubstitutedRolePreRender (object sender, EventArgs e)
+    private void HandleSubstitutedRolePreRender (object? sender, EventArgs e)
     {
-      var substituededRoleReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender);
-      var substitution = substituededRoleReferenceValue.DataSource.BusinessObject;
-      var roles = substituededRoleReferenceValue.Property.SearchAvailableObjects(substitution, new DefaultSearchArguments(null));
-      substituededRoleReferenceValue.SetBusinessObjectList(roles);
+      var substitutedRoleReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender!);
+
+      Assertion.IsNotNull(substitutedRoleReferenceValue.DataSource, "BocReferenceValue{{{0}}}.DataSource != null", substitutedRoleReferenceValue.ID);
+      Assertion.IsNotNull(substitutedRoleReferenceValue.DataSource.BusinessObject, "BocReferenceValue{{{0}}}.DataSource.BusinessObject != null", substitutedRoleReferenceValue.ID);
+      Assertion.IsNotNull(substitutedRoleReferenceValue.Property, "BocReferenceValue{{{0}}}.Property != null", substitutedRoleReferenceValue.ID);
+
+      var substitution = substitutedRoleReferenceValue.DataSource.BusinessObject;
+      var roles = substitutedRoleReferenceValue.Property.SearchAvailableObjects(substitution, new DefaultSearchArguments(null));
+      substitutedRoleReferenceValue.SetBusinessObjectList(roles);
     }
   }
 }

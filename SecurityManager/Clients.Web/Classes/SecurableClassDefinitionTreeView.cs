@@ -51,7 +51,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
       WebString text = base.GetText(businessObject);
 
-      SecurableClassDefinition classDefinition = businessObject as SecurableClassDefinition;
+      SecurableClassDefinition? classDefinition = businessObject as SecurableClassDefinition;
       if (classDefinition == null)
         return text;
 

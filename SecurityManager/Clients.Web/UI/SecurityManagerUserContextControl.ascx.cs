@@ -100,7 +100,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
     protected void CurrentTenantField_SelectionChanged (object sender, EventArgs e)
     {
-      string tenantID = CurrentTenantField.BusinessObjectUniqueIdentifier;
+      string? tenantID = CurrentTenantField.BusinessObjectUniqueIdentifier;
       Assertion.IsNotNull(tenantID);
       var possibleTenants = GetPossibleTenants();
       CurrentTenantField.SetBusinessObjectList(possibleTenants);
@@ -111,18 +111,22 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       }
 
       var oldSecurityManagerPrincipal = SecurityManagerPrincipal.Current;
-      var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.Create(
-          ObjectID.Parse(tenantID).GetHandle<Tenant>(),
-          oldSecurityManagerPrincipal.User.Handle,
-          oldSecurityManagerPrincipal.Substitution != null ? oldSecurityManagerPrincipal.Substitution.Handle : null);
-      ApplicationInstance.SetCurrentPrincipal(newSecurityManagerPrincipal);
+      if (!oldSecurityManagerPrincipal.IsNull)
+      {
+        Assertion.IsNotNull(oldSecurityManagerPrincipal.User, "SecurityManagerPrincipal.User != null when SecurityManagerPrincipal.IsNull == false");
+        var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.Create(
+            ObjectID.Parse(tenantID).GetHandle<Tenant>(),
+            oldSecurityManagerPrincipal.User.Handle,
+            oldSecurityManagerPrincipal.Substitution != null ? oldSecurityManagerPrincipal.Substitution.Handle : null);
+        ApplicationInstance.SetCurrentPrincipal(newSecurityManagerPrincipal);
+      }
 
       CurrentTenantField.IsDirty = false;
     }
 
     protected void CurrentSubstitutionField_SelectionChanged (object sender, EventArgs e)
     {
-      string substitutionID = CurrentSubstitutionField.BusinessObjectUniqueIdentifier;
+      string? substitutionID = CurrentSubstitutionField.BusinessObjectUniqueIdentifier;
       var possibleSubstitutions = GetPossibleSubstitutions();
       CurrentSubstitutionField.SetBusinessObjectList(possibleSubstitutions);
       if (substitutionID != null && !possibleSubstitutions.Where(s=>s.UniqueIdentifier == substitutionID).Any())
@@ -132,11 +136,16 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       }
 
       var oldSecurityManagerPrincipal = SecurityManagerPrincipal.Current;
-      var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.Create(
-          oldSecurityManagerPrincipal.Tenant.Handle,
-          oldSecurityManagerPrincipal.User.Handle,
-          substitutionID != null ? ObjectID.Parse(substitutionID).GetHandle<Substitution>() : null);
-      ApplicationInstance.SetCurrentPrincipal(newSecurityManagerPrincipal);
+      if (!oldSecurityManagerPrincipal.IsNull)
+      {
+        Assertion.IsNotNull(oldSecurityManagerPrincipal.Tenant, "SecurityManagerPrincipal.Tenant != null when SecurityManagerPrincipal.IsNull == false");
+        Assertion.IsNotNull(oldSecurityManagerPrincipal.User, "SecurityManagerPrincipal.User != null when SecurityManagerPrincipal.IsNull == false");
+        var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.Create(
+            oldSecurityManagerPrincipal.Tenant.Handle,
+            oldSecurityManagerPrincipal.User.Handle,
+            substitutionID != null ? ObjectID.Parse(substitutionID).GetHandle<Substitution>() : null);
+        ApplicationInstance.SetCurrentPrincipal(newSecurityManagerPrincipal);
+      }
 
       CurrentSubstitutionField.IsDirty = false;
     }

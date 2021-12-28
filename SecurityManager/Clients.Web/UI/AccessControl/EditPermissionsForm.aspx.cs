@@ -27,6 +27,7 @@ using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Clients.Web.Classes.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Globalization;
@@ -63,7 +64,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private SecurableClassDefinition CurrentSecurableClassDefinition
     {
-      get { return CurrentFunction.CurrentObject; }
+      get { return Assertion.IsNotNull(CurrentFunction.CurrentObject, "CurrentSecurableClassDefinition has not been set."); }
     }
 
     protected override void LoadValues (bool interim)
@@ -267,16 +268,17 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       _editAccessControlListControls.Where(o => o.BusinessObject == accessControlList).Single().ExpandAllAccessControlEntries();
     }
 
-    private void EditAccessControlListControl_Delete (object sender, EventArgs e)
+    private void EditAccessControlListControl_Delete (object? sender, EventArgs e)
     {
-      var accessControlListControl = (EditAccessControlListControlBase)sender;
+      var accessControlListControl = ArgumentUtility.CheckNotNullAndType<EditAccessControlListControlBase>("sender", sender!);
+
       PrepareValidation();
       bool isValid = ValidateAccessControlLists(accessControlListControl);
       if (!isValid)
         return;
 
       _editAccessControlListControls.Remove(accessControlListControl);
-      var accessControlList = (AccessControlList)accessControlListControl.DataSource.BusinessObject;
+      var accessControlList = accessControlListControl.CurrentAccessControlList;
       accessControlList.Delete();
 
       SaveAccessControlLists(false);

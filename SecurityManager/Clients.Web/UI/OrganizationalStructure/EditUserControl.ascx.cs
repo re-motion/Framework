@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes;
@@ -36,7 +37,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       UserLabelText,
     }
 
-    private BocAutoCompleteReferenceValue _owningGroupField;
+    /// <remarks>Initialized during <see cref="OnInit"/>.</remarks>
+    private BocAutoCompleteReferenceValue _owningGroupField = default!;
 
     public override IBusinessObjectDataSourceControl DataSource
     {
@@ -58,6 +60,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       get { return UserNameField; }
     }
 
+    [MemberNotNull(nameof(_owningGroupField))]
     protected override void OnInit (EventArgs e)
     {
       base.OnInit(e);
@@ -83,8 +86,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       if (!IsPostBack)
       {
         RolesList.SetSortingOrder(
-            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.Find("Group"), SortingDirection.Ascending),
-            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.Find("Position"), SortingDirection.Ascending));
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.FindMandatory("Group"), SortingDirection.Ascending),
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.FindMandatory("Position"), SortingDirection.Ascending));
       }
 
       if (RolesList.IsReadOnly)

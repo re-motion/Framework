@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       get { return (BaseTransactedFunction)base.CurrentFunction; }
     }
 
-    protected virtual IFocusableControl InitialFocusControl
+    protected virtual IFocusableControl? InitialFocusControl
     {
       get { return null; }
     }

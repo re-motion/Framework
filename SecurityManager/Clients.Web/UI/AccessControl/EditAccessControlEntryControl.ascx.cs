@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -72,6 +73,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     private const string c_denyAllMenuItemID = "DenyAllPermissions";
     private const string c_clearAllMenuItemID = "ClearAllPermissions";
 
+    private string? _cssClass;
     // construction and disposing
 
     // methods and properties
@@ -89,7 +91,12 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     [Browsable(false)]
-    public string CssClass { get; set; }
+    [AllowNull]
+    public string CssClass
+    {
+      get { return _cssClass ?? string.Empty; }
+      set { _cssClass = value; }
+    }
 
     public bool IsCollapsed
     {
@@ -97,9 +104,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       set { ViewState["IsCollapsed"] = value; }
     }
 
-    protected AccessControlEntry CurrentAccessControlEntry
+    public AccessControlEntry CurrentAccessControlEntry
     {
-      get { return (AccessControlEntry)CurrentObject.BusinessObject; }
+      get { return Assertion.IsNotNull((AccessControlEntry?)CurrentObject.BusinessObject, "CurrentAccessControlEntry has not been set."); }
     }
 
     protected override void OnInit (EventArgs e)
@@ -274,7 +281,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected void DeleteAccessControlEntryButton_Click (object sender, EventArgs e)
     {
-      EventHandler handler = (EventHandler)Events[s_deleteEvent];
+      var handler = (EventHandler?)Events[s_deleteEvent];
       if (handler != null)
         handler(this, e);
     }

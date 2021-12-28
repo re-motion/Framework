@@ -10,8 +10,10 @@
     <Description>Provides the web user interface for administering the organizational structure and access-control domain of the re-motion Security Manager.</Description>
     <AssemblyName>Remotion.SecurityManager.Clients.Web</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Remotion\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Remotion\Core\Reflection\Core.Reflection.csproj" />

@@ -90,7 +90,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       return User.FindByTenant(CurrentFunction.TenantHandle).ToArray();
     }
 
-    protected override FormFunction<User> CreateEditFunction (ITransactionMode transactionMode, IDomainObjectHandle<User> editedObject)
+    protected override FormFunction<User> CreateEditFunction (ITransactionMode transactionMode, IDomainObjectHandle<User>? editedObject)
     {
       ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
 

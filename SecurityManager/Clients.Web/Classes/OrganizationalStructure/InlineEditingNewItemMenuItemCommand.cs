@@ -43,6 +43,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     {
       base.OnClick(menuItem);
 
+      Assertion.IsNotNull(OwnerControl, "OwnerControl != null when processing page lifecycle events.");
       ((BocList)OwnerControl).AddAndEditRow(_newObjectFactory());
     }
   }

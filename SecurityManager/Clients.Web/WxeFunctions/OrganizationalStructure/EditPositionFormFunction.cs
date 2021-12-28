@@ -37,7 +37,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
     {
     }
 
-    public EditPositionFormFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<Position> currentObjectHandle)
+    public EditPositionFormFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<Position>? currentObjectHandle)
         : base(transactionMode, currentObjectHandle)
     {
     }

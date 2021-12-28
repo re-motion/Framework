@@ -23,13 +23,14 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Security;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain;
+using Remotion.Utilities;
 using SecurityManagerUser = Remotion.SecurityManager.Domain.OrganizationalStructure.User;
 
 namespace Remotion.SecurityManager.Clients.Web
 {
   public partial class DefaultPage : Page
   {
-    private ClientTransaction _clientTransaction;
+    private ClientTransaction? _clientTransaction;
 
     protected SecurityManagerHttpApplication ApplicationInstance
     {
@@ -55,13 +56,15 @@ namespace Remotion.SecurityManager.Clients.Web
 
     protected void UsersField_SelectionChanged (object sender, EventArgs e)
     {
-      var user = (SecurityManagerUser)UsersField.Value;
+      var user = (SecurityManagerUser?)UsersField.Value;
       if (user == null)
       {
         ApplicationInstance.SetCurrentPrincipal(SecurityManagerPrincipal.Null);
       }
       else
       {
+        Assertion.IsNotNull(user.Tenant, "User{{{0}}}.Tenant != null", user.ID);
+
         var securityManagerPrincipal =
             ApplicationInstance.SecurityManagerPrincipalFactory.Create(user.Tenant.GetHandle(), user.GetHandle(), null);
         ApplicationInstance.SetCurrentPrincipal(securityManagerPrincipal);
@@ -70,6 +73,7 @@ namespace Remotion.SecurityManager.Clients.Web
 
     protected override void OnPreRender (EventArgs e)
     {
+      Assertion.IsNotNull(_clientTransaction, "_clientTransaction != null");
       _clientTransaction.EnterDiscardingScope();
       base.OnPreRender(e);
     }

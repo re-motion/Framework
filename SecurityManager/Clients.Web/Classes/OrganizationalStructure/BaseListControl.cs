@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   {
     protected abstract IReadOnlyList<T> GetValues ();
 
-    protected abstract FormFunction<T> CreateEditFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<T> editedObject);
+    protected abstract FormFunction<T> CreateEditFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<T>? editedObject);
 
     protected new BaseListTransactedFunction CurrentFunction
     {
@@ -42,6 +42,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     protected void HandleEditItemClick (BocList sender, BocListItemCommandClickEventArgs e)
     {
       ArgumentUtility.CheckNotNull("sender", sender);
+      Assertion.IsNotNull(Page, "Page != null when processing page life cycle events.");
 
       if (!Page.IsReturningPostBack)
       {
@@ -61,6 +62,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     protected void HandleNewButtonClick (BocList sender)
     {
       ArgumentUtility.CheckNotNull("sender", sender);
+      Assertion.IsNotNull(Page, "Page != null when processing page life cycle events.");
 
       if (!Page.IsReturningPostBack)
       {

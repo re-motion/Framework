@@ -59,7 +59,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
     [WebMethod(EnableSession = true)]
     [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
-    public IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments)
+    public IconProxy? GetIcon (string? businessObjectClass, string? businessObject, string? arguments)
     {
       return null;
     }
@@ -69,10 +69,10 @@ namespace Remotion.SecurityManager.Clients.Web.UI
     public WebMenuItemProxy[] GetMenuItemStatusForOptionsMenu (
         string controlID,
         string controlType,
-        string businessObjectClass,
-        string businessObjectProperty,
-        string businessObject,
-        string arguments,
+        string? businessObjectClass,
+        string? businessObjectProperty,
+        string? businessObject,
+        string? arguments,
         string[] itemIDs)
     {
       return itemIDs.Select(itemID => WebMenuItemProxy.Create(itemID, isDisabled: false)).ToArray();
@@ -83,13 +83,14 @@ namespace Remotion.SecurityManager.Clients.Web.UI
     public BocAutoCompleteReferenceValueSearchResult Search (
         string searchString,
         int? completionSetCount,
-        string businessObjectClass,
-        string businessObjectProperty,
-        string businessObject,
-        string args)
+        string? businessObjectClass,
+        string? businessObjectProperty,
+        string? businessObject,
+        string? args)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("businessObjectClass", businessObjectClass);
-      ArgumentUtility.CheckNotNullOrEmpty("businessObjectProperty", businessObjectProperty);
+      ArgumentUtility.CheckNotNullOrEmpty("businessObjectClass", businessObjectClass!);
+      ArgumentUtility.CheckNotNullOrEmpty("businessObjectProperty", businessObjectProperty!);
+      ArgumentUtility.CheckNotNullOrEmpty("businessObject", businessObject!);
 
       var businessObjectClassWithIdentity = GetBusinessObjectClassWithIdentity(businessObjectClass);
       var referenceProperty = GetReferenceProperty(businessObjectProperty, businessObjectClassWithIdentity);
@@ -97,6 +98,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
+        Assertion.DebugIsNotNull(ClientTransaction.Current, "ClientTransaction.Current != null");
         ClientTransaction.Current.Extensions.Add(new SecurityClientTransactionExtension());
         var referencingObject = businessObjectClassWithIdentity.GetObject(businessObject);
         var result = referenceProperty.SearchAvailableObjects(referencingObject, securityManagerSearchArguments);
@@ -107,21 +109,21 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
     [WebMethod(EnableSession = true)]
     [ScriptMethod(UseHttpGet = false, ResponseFormat = ResponseFormat.Json)]
-    public BusinessObjectWithIdentityProxy SearchExact (
+    public BusinessObjectWithIdentityProxy? SearchExact (
         string searchString,
-        string businessObjectClass,
-        string businessObjectProperty,
-        string businessObject,
-        string args)
+        string? businessObjectClass,
+        string? businessObjectProperty,
+        string? businessObject,
+        string? args)
     {
       var resultWithValueList = Search(searchString, 2, businessObjectClass, businessObjectProperty, businessObject, args);
       var result = ((BocAutoCompleteReferenceValueSearchResultWithValueList)resultWithValueList).Values;
-      var hasSingleMatch = result.Count() == 1;
+      var hasSingleMatch = result.Length == 1;
       if (hasSingleMatch)
         return result.Single();
 
       var exactMatches = result.Where(r => string.Equals(r.DisplayName, searchString, StringComparison.CurrentCultureIgnoreCase)).ToArray();
-      var hasExactMatch = exactMatches.Count() == 1;
+      var hasExactMatch = exactMatches.Length == 1;
       if (hasExactMatch)
         return exactMatches.Single();
 
@@ -140,7 +142,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
     private IBusinessObjectClassWithIdentity GetBusinessObjectClassWithIdentity (string businessObjectClass)
     {
-      var type = TypeUtility.GetType(businessObjectClass, true);
+      var type = TypeUtility.GetType(businessObjectClass, throwOnError: true)!;
       var provider = BindableObjectProvider.GetProviderForBindableObjectType(type);
       var bindableObjectClass = provider.GetBindableObjectClass(type);
       Assertion.IsNotNull(bindableObjectClass);
@@ -149,7 +151,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       return (IBusinessObjectClassWithIdentity)bindableObjectClass;
     }
 
-    private SecurityManagerSearchArguments GetSearchArguments (string args, int? completionSetCount, string prefixText)
+    private SecurityManagerSearchArguments GetSearchArguments (string? args, int? completionSetCount, string? prefixText)
     {
       return new SecurityManagerSearchArguments(
           GetTenantConstraint(args),
@@ -157,7 +159,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
           GetDisplayNameConstraint(prefixText));
     }
 
-    private TenantConstraint GetTenantConstraint (string args)
+    private TenantConstraint? GetTenantConstraint (string? args)
     {
       if (string.IsNullOrEmpty(args))
         return null;
@@ -165,7 +167,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       return new TenantConstraint(ObjectID.Parse(args).GetHandle<Tenant>());
     }
 
-    private ResultSizeConstraint GetResultSizeConstraint (int? completionSetCount)
+    private ResultSizeConstraint? GetResultSizeConstraint (int? completionSetCount)
     {
       if (!completionSetCount.HasValue)
         return null;
@@ -173,7 +175,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       return new ResultSizeConstraint(completionSetCount.Value);
     }
 
-    private DisplayNameConstraint GetDisplayNameConstraint (string prefixText)
+    private DisplayNameConstraint? GetDisplayNameConstraint (string? prefixText)
     {
       if (string.IsNullOrEmpty(prefixText))
         return null;

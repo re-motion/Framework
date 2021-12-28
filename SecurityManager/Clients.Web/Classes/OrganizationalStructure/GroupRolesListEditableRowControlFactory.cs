@@ -45,7 +45,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     {
     }
 
-    protected override IBusinessObjectBoundEditableWebControl CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
+    protected override IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
       ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
@@ -72,11 +72,18 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       return control;
     }
 
-    private void HandlePositionPreRender (object sender, EventArgs e)
+    private void HandlePositionPreRender (object? sender, EventArgs e)
     {
-      var positionReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender);
+      var positionReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender!);
 
-      var group = ((Role)positionReferenceValue.DataSource.BusinessObject).Group;
+      Assertion.IsNotNull(positionReferenceValue.DataSource, "BocReferenceValue{{{0}}}.DataSource != null", positionReferenceValue.ID);
+      Assertion.IsNotNull(positionReferenceValue.DataSource.BusinessObject, "BocReferenceValue{{{0}}}.DataSource.BusinessObject != null", positionReferenceValue.ID);
+      Assertion.IsNotNull(positionReferenceValue.Property, "BocReferenceValue{{{0}}}.Property != null", positionReferenceValue.ID);
+
+      var role = (Role)positionReferenceValue.DataSource.BusinessObject;
+      var group = role.Group;
+      Assertion.IsNotNull(group, "Role{{{0}}}.Group != null", role.ID);
+
       var positions = positionReferenceValue.Property.SearchAvailableObjects(null, new RolePropertiesSearchArguments(group.GetHandle()));
       positionReferenceValue.SetBusinessObjectList(positions);
       if (!positions.Contains(positionReferenceValue.Value))
