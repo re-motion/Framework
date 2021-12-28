@@ -42,6 +42,10 @@ namespace Remotion.UnitTests.Collections
       var testClassCopy = new CompoundValueEqualityComparerTestClass();
       var testClass2 = new CompoundValueEqualityComparerTestClass { Text = "changed1" };
 
+      Assert.That(comparer.Equals(null, null), Is.True);
+      Assert.That(comparer.Equals(testClass, null), Is.False);
+      Assert.That(comparer.Equals(null, testClass), Is.False);
+      Assert.That(comparer.Equals(testClass, testClass), Is.True);
       Assert.That(comparer.Equals(testClass, testClassCopy), Is.True);
       Assert.That(comparer.Equals(testClass, testClass2), Is.False);
 
@@ -60,7 +64,9 @@ namespace Remotion.UnitTests.Collections
       Object obj = new Object();
       const Object objNull = null;
 
+      Assert.That(comparer.Equals(null, objNull), Is.True);
       Assert.That(comparer.Equals(testClass, objNull), Is.False);
+      Assert.That(comparer.Equals(null, (object)testClass), Is.False);
       Assert.That(comparer.Equals(testClass, obj), Is.False);
       Assert.That(comparer.Equals(testClass, (object)testClass), Is.True);
       Assert.That(comparer.Equals(testClass, (object)testClassCopy), Is.True);
