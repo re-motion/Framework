@@ -227,6 +227,25 @@ namespace Remotion.Web.UI.Controls
       return null;
     }
 
+    /// <summary>
+    ///   Finds the <see cref="IControlItem"/> with an <see cref="IControlItem.ItemID"/> of <paramref name="id"/>.
+    /// </summary>
+    /// <param name="id"> The ID to look for. </param>
+    /// <returns> A <see cref="IControlItem"/>. </returns>
+    /// <exception cref="KeyNotFoundException">
+    /// Thrown if the <see cref="IControlItem"/> with an <see cref="IControlItem.ItemID"/> of <paramref name="id"/> was not found.
+    /// </exception>
+    public IControlItem FindMandatory (string id)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+
+      var item = Find(id);
+      if (item == null)
+        throw new KeyNotFoundException(string.Format("Control item with id '{0}' was not found in the collection.", id));
+
+      return  item;
+    }
+
     /// <remarks> 
     ///   Do not redefine the indexer as a public member in any derived class if you intend to use it in a peristed
     ///   property. Otherwise ASP.net will not know which property to use, this one or the new one.
