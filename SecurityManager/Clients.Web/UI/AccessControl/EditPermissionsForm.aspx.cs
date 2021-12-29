@@ -56,7 +56,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
           string.Format(
               GlobalizationService.GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.Title),
               CurrentSecurableClassDefinition.DisplayName));
-      TitleLabel.InnerText = title.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
+      TitleLabel.InnerHtml = title.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
       HtmlHeadAppender.Current.SetTitle(title.ToString(WebStringEncoding.Html));
       base.OnPreRenderComplete(e);
     }
@@ -316,7 +316,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     private HtmlGenericControl CreateAccessControlListTitle (WebString title)
     {
       var control = new HtmlGenericControl("h2");
-      control.InnerText = title.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
+      control.InnerHtml = title.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
       control.Attributes["class"] = "accessControlListTitle";
       return control;
     }

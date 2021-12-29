@@ -22,6 +22,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Web;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 {
@@ -47,24 +48,29 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
       var cssHorizontal = "titleCellHorizontal";
       var cssVertical = "titleCellVertical";
-      HeaderCells.Controls.Add(CreateTableCell(string.Empty, cssHorizontal)); //ExpandButton
-      HeaderCells.Controls.Add(CreateTableCell(string.Empty, cssHorizontal)); //DeleteButton
-      HeaderCells.Controls.Add(CreateTableCell(aceClass.GetPropertyDefinition("TenantCondition").DisplayName, cssHorizontal));
-      HeaderCells.Controls.Add(CreateTableCell(aceClass.GetPropertyDefinition("GroupCondition").DisplayName, cssHorizontal));
-      HeaderCells.Controls.Add(CreateTableCell(aceClass.GetPropertyDefinition("UserCondition").DisplayName, cssHorizontal));
-      HeaderCells.Controls.Add(CreateTableCell(aceClass.GetPropertyDefinition("SpecificAbstractRole").DisplayName, cssHorizontal));
-      HeaderCells.Controls.Add(CreateTableCell(string.Empty, cssHorizontal)); //Toggle Permissions
+      HeaderCells.Controls.Add(CreateTableCell(WebString.Empty, cssHorizontal)); //ExpandButton
+      HeaderCells.Controls.Add(CreateTableCell(WebString.Empty, cssHorizontal)); //DeleteButton
+      HeaderCells.Controls.Add(CreateTableCell(GetDisplayNameForProperty(aceClass, "TenantCondition"), cssHorizontal));
+      HeaderCells.Controls.Add(CreateTableCell(GetDisplayNameForProperty(aceClass, "GroupCondition"), cssHorizontal));
+      HeaderCells.Controls.Add(CreateTableCell(GetDisplayNameForProperty(aceClass, "UserCondition"), cssHorizontal));
+      HeaderCells.Controls.Add(CreateTableCell(GetDisplayNameForProperty(aceClass, "SpecificAbstractRole"), cssHorizontal));
+      HeaderCells.Controls.Add(CreateTableCell(WebString.Empty, cssHorizontal)); //Toggle Permissions
       foreach (var accessType in CurrentClassDefinition.AccessTypes)
-        HeaderCells.Controls.Add(CreateTableCell(accessType.DisplayName, cssVertical));
+        HeaderCells.Controls.Add(CreateTableCell(WebString.CreateFromText(accessType.DisplayName), cssVertical));
+
+      WebString GetDisplayNameForProperty (BindableObjectClass bindableObjectClass, string propertyIdentifier)
+      {
+        return WebString.CreateFromText(bindableObjectClass.GetPropertyDefinition(propertyIdentifier).DisplayName);
+      }
     }
 
-    private HtmlGenericControl CreateTableCell (string title, string cssClass)
+    private HtmlGenericControl CreateTableCell (WebString title, string cssClass)
     {
       var th = new HtmlGenericControl("th");
       th.Attributes.Add("class", cssClass);
 
       var div = new HtmlGenericControl("div");
-      div.InnerText = title;
+      div.InnerHtml = title.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
       th.Controls.Add(div);
 
       return th;
