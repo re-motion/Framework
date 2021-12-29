@@ -71,7 +71,7 @@ namespace Remotion.Security
     /// </param>
     /// <returns>A new instance of the <see cref="SecurityContext"/> type.</returns>
     public static SecurityContext Create (
-        Type type, string owner, string ownerGroup, string ownerTenant, IDictionary<string, Enum> states, ICollection<Enum> abstractRoles)
+        Type type, string? owner, string? ownerGroup, string? ownerTenant, IDictionary<string, Enum> states, ICollection<Enum> abstractRoles)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
       ArgumentUtility.CheckNotNull("states", states);
