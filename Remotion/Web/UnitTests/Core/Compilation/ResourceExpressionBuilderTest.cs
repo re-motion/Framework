@@ -145,13 +145,11 @@ namespace Remotion.Web.UnitTests.Core.Compilation
     }
 
     [Test]
-    public void GetStringForResourceID_WithoutControlImplementingIObjectWithResources_ThrowsInvalidOperationException ()
+    public void GetStringForResourceID_WithoutControlImplementingIObjectWithResources_ReturnsResourceID ()
     {
-      Assert.That(
-          () => ResourceExpressionBuilder.GetStringForResourceID(new Control(), "resourceID"),
-          Throws.InvalidOperationException
-              .With.Message.EqualTo(
-                  "Remotion.Web.Compilation.ResourceExpressionBuilder can only be used on controls embedded within a parent implementing IObjectWithResources."));
+      var result = ResourceExpressionBuilder.GetStringForResourceID(new Control(), "resourceID");
+
+      Assert.That(result, Is.EqualTo("resourceID"));
     }
 
     [Test]
@@ -187,13 +185,11 @@ namespace Remotion.Web.UnitTests.Core.Compilation
     }
 
     [Test]
-    public void GetWebStringForResourceID_WithoutControlImplementingIObjectWithResources_ThrowsInvalidOperationException ()
+    public void GetWebStringForResourceID_WithoutControlImplementingIObjectWithResources_ReturnsResourceID ()
     {
-      Assert.That(
-          () => ResourceExpressionBuilder.GetWebStringForResourceID(new Control(), "resourceID"),
-          Throws.InvalidOperationException
-              .With.Message.EqualTo(
-                  "Remotion.Web.Compilation.ResourceExpressionBuilder can only be used on controls embedded within a parent implementing IObjectWithResources."));
+      var result = ResourceExpressionBuilder.GetWebStringForResourceID(new Control(), "resourceID");
+
+      Assert.That(result, Is.EqualTo(WebString.CreateFromText("resourceID")));
     }
 
     [Test]
@@ -213,13 +209,11 @@ namespace Remotion.Web.UnitTests.Core.Compilation
     }
 
     [Test]
-    public void GetPlainTextStringForResourceID_WithoutControlImplementingIObjectWithResources_ThrowsInvalidOperationException ()
+    public void GetPlainTextStringForResourceID_WithoutControlImplementingIObjectWithResources_ReturnsResourceID ()
     {
-      Assert.That(
-          () => ResourceExpressionBuilder.GetPlainTextStringForResourceID(new Control(), "resourceID"),
-          Throws.InvalidOperationException
-              .With.Message.EqualTo(
-                  "Remotion.Web.Compilation.ResourceExpressionBuilder can only be used on controls embedded within a parent implementing IObjectWithResources."));
+      var result = ResourceExpressionBuilder.GetPlainTextStringForResourceID(new Control(), "resourceID");
+
+      Assert.That(result, Is.EqualTo(PlainTextString.CreateFromText("resourceID")));
     }
 
     private static string StringProperty { get; set; }

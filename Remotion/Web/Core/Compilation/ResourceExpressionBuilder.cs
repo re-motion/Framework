@@ -16,7 +16,6 @@
 // 
 using System;
 using System.CodeDom;
-using System.Diagnostics;
 using System.Web.Compilation;
 using System.Web.UI;
 using Remotion.Globalization;
@@ -44,8 +43,6 @@ namespace Remotion.Web.Compilation
       ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
 
       IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager(parent, true);
-      if (resourceManager.IsNull)
-        throw new InvalidOperationException("Remotion.Web.Compilation.ResourceExpressionBuilder can only be used on controls embedded within a parent implementing IObjectWithResources.");
 
       return resourceManager.GetString(resourceID);
     }
@@ -55,11 +52,9 @@ namespace Remotion.Web.Compilation
       ArgumentUtility.CheckNotNull("parent", parent);
       ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
 
-      var resourceIDAsWebString = (WebString)s_webStringConverter.ConvertFromString(resourceID);
+      var resourceIDAsWebString = (WebString?)s_webStringConverter.ConvertFromString(resourceID) ?? WebString.Empty;
 
       IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager(parent, true);
-      if (resourceManager.IsNull)
-        throw new InvalidOperationException("Remotion.Web.Compilation.ResourceExpressionBuilder can only be used on controls embedded within a parent implementing IObjectWithResources.");
 
       return resourceManager.GetWebString(resourceIDAsWebString.GetValue(), resourceIDAsWebString.Type);
     }
@@ -70,8 +65,6 @@ namespace Remotion.Web.Compilation
       ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
 
       IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager(parent, true);
-      if (resourceManager.IsNull)
-        throw new InvalidOperationException("Remotion.Web.Compilation.ResourceExpressionBuilder can only be used on controls embedded within a parent implementing IObjectWithResources.");
 
       return resourceManager.GetText(resourceID);
     }
