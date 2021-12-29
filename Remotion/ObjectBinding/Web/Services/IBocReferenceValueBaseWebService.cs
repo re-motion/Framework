@@ -24,9 +24,9 @@ namespace Remotion.ObjectBinding.Web.Services
     ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the bound <see cref="IBusinessObjectWithIdentity"/> or <see langword="null" />
     ///   if no business object is set, i.e. the control's value is <see langword="null"/>.
     /// </param>
-    /// <param name="arguments">Additional arguments required for retrieving the icon.</param>
+    /// <param name="arguments">Additional arguments required for retrieving the icon or <see langword="null" />.</param>
     /// <returns>An <see cref="IconProxy"/> object or <see langword="null" />.</returns>
-    IconProxy GetIcon (string businessObjectClass, string businessObject, string arguments);
+    IconProxy? GetIcon (string? businessObjectClass, string? businessObject, string? arguments);
 
     /// <summary>
     /// Retrieves the status for a set of menu items displayed by <see cref="DropDownMenu"/> of the <see cref="BocReferenceValueBase{T}"/>.
@@ -45,16 +45,16 @@ namespace Remotion.ObjectBinding.Web.Services
     ///   The <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the bound <see cref="IBusinessObjectWithIdentity"/> or <see langword="null" />
     ///   if the bound object only implements the <see cref="IBusinessObject"/> interface.
     /// </param>
-    /// <param name="arguments">Additional search arguments.</param>
+    /// <param name="arguments">Additional search arguments or <see langword="null" />.</param>
     /// <param name="itemIDs">The IDs for the menu items displayed by the <see cref="DropDownMenu"/> before they are filtered based on the result.</param>
     /// <returns>An array of <see cref="BusinessObjectWithIdentityProxy"/> objects containing the search result.</returns>
     WebMenuItemProxy[] GetMenuItemStatusForOptionsMenu (
         string controlID,
         string controlType,
-        string businessObjectClass,
-        string businessObjectProperty,
-        string businessObject,
-        string arguments,
+        string? businessObjectClass,
+        string? businessObjectProperty,
+        string? businessObject,
+        string? arguments,
         string[] itemIDs);
   }
 }

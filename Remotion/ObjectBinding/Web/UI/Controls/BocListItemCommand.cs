@@ -300,8 +300,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocCommandEnabledColumnDefinition column,
         int listIndex,
         IBusinessObject businessObject)
-        : base(command, businessObject)
+        : base(command, ArgumentUtility.CheckNotNull("businessObject", businessObject))
     {
+      ArgumentUtility.CheckNotNull("column", column);
+
       _column = column;
       _listIndex = listIndex;
     }
@@ -322,6 +324,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public int ListIndex
     {
       get { return _listIndex; }
+    }
+
+    /// <summary>
+    ///   The <see cref="IBusinessObject"/> on which the rendered command is applied on.
+    /// </summary>
+    public new IBusinessObject BusinessObject
+    {
+      get
+      {
+        Assertion.DebugIsNotNull(base.BusinessObject, "base.BusinessObject != null");
+        return base.BusinessObject;
+      }
     }
   }
 

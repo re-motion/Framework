@@ -269,7 +269,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   ///   The object implementing <see cref="IBusinessObject"/> to load, or <see langword="null"/>. 
   /// </param>
   /// <param name="interim"> Not used. </param>
-  public void LoadUnboundValue (IBusinessObject value, bool interim)
+  public void LoadUnboundValue (IBusinessObject? value, bool interim)
   {
     LoadValueInternal(value, interim);
   }

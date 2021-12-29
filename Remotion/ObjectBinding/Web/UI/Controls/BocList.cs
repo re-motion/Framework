@@ -1479,7 +1479,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
-    public void LoadUnboundValue (IReadOnlyList<IBusinessObject> value, bool interim)
+    public void LoadUnboundValue (IReadOnlyList<IBusinessObject>? value, bool interim)
     {
       LoadValueInternal(value, interim);
     }
