@@ -35,14 +35,14 @@ namespace Remotion.Collections
   /// <typeparam name="T">Type for which <see cref="Equals(T,T)"/>, <see cref="Equals(T,object)"/> and <see cref="GetHashCode"/> are supplied.</typeparam>
   public class CompoundValueEqualityComparer<T> : IEqualityComparer<T> where T : class
   {
-    private readonly Func<T, object[]> _equalityParticipantsProvider;
+    private readonly Func<T, object?[]> _equalityParticipantsProvider;
 
     /// <summary>
     /// Ctor which takes the <see cref="Func{T,TResult}"/> which must return an <see cref="object"/>-array
     /// of the members which shall participate in the equality/hash code calculation.
     /// </summary>
     /// <param name="relevantValueProvider"></param>
-    public CompoundValueEqualityComparer (Func<T, object[]> relevantValueProvider)
+    public CompoundValueEqualityComparer (Func<T, object?[]> relevantValueProvider)
     {
       _equalityParticipantsProvider = relevantValueProvider;
     }
@@ -52,14 +52,13 @@ namespace Remotion.Collections
     /// Standard conforming <see cref="object.Equals(object)"/> implementation comparing <typeparamref name="T"/> with an <see cref="object"/>,
     /// using <see cref="Equals(T,T)"/>
     /// </summary>
-    public bool Equals (T x, Object? obj)
+    public bool Equals (T? x, Object? obj)
     {
-      var y = obj as T;
-      if (Object.ReferenceEquals(y, null))
+      if (obj != null && obj is not T)
       {
         return false;
       }
-      return Equals(x,y);
+      return Equals(x, (T?)obj);
     }
 
     /// <summary>
@@ -68,13 +67,13 @@ namespace Remotion.Collections
     public bool Equals (T? x, T? y)
     {
       // Note: We do not use "x == null" etc since an overloaded operator== would lead to endless recursion.
+      if (Object.ReferenceEquals(x,y))
+      {
+        return true;
+      }
       if (Object.ReferenceEquals(x,null) || Object.ReferenceEquals(y,null))
       {
         return false;
-      }
-      else if (Object.ReferenceEquals(x,y))
-      {
-        return true;
       }
 
       var equalityParticipantsX = _equalityParticipantsProvider(x);
@@ -97,9 +96,9 @@ namespace Remotion.Collections
     /// <summary>
     /// Returns the <see cref="object"/>-array of the objects participating in the equality/hash code calculation for the passed instance.
     /// </summary>
-    public ReadOnlyCollection<object> GetEqualityParticipatingObjects (T x)
+    public ReadOnlyCollection<object?> GetEqualityParticipatingObjects (T x)
     {
-      return new ReadOnlyCollection<object>(_equalityParticipantsProvider(x));
+      return new ReadOnlyCollection<object?>(_equalityParticipantsProvider(x));
     }
 
   }
