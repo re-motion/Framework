@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using Remotion.Reflection;
@@ -182,13 +183,26 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary>
-    ///   Finds the <see cref="WebTab"/> with a <see cref="WebTab.ItemID"/> of <paramref name="id"/>.
+    ///   Finds the <see cref="WebTab"/> with an <see cref="WebTab.ItemID"/> of <paramref name="id"/>.
     /// </summary>
     /// <param name="id"> The ID to look for. </param>
     /// <returns> A <see cref="WebTab"/> or <see langword="null"/> if no matching tab was found. </returns>
-    public new WebTab? Find (string id)
+    public new WebTab? Find (string? id)
     {
       return (WebTab?)base.Find(id);
+    }
+
+    /// <summary>
+    ///   Finds the <see cref="WebTab"/> with an <see cref="WebTab.ItemID"/> of <paramref name="id"/>.
+    /// </summary>
+    /// <param name="id"> The ID to look for. </param>
+    /// <returns> A <see cref="WebTab"/>. </returns>
+    /// <exception cref="KeyNotFoundException">
+    /// Thrown if the <see cref="WebTab"/> with an <see cref="WebTab.ItemID"/> of <paramref name="id"/> was not found.
+    /// </exception>
+    public new WebTab FindMandatory (string id)
+    {
+      return (WebTab)base.FindMandatory(id);
     }
 
     private void InitalizeSelectedTab ()

@@ -16,12 +16,12 @@
 // 
 using System;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.Reflection;
@@ -464,6 +464,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Implements <see cref="IWxePage.IsReturningPostBack">IWxePage.IsReturningPostBack</see>. </summary>
+    [MemberNotNullWhen(true, nameof(ReturningFunction))]
     public bool IsReturningPostBack
     {
       get { return CurrentPageStep.IsReturningPostBack; }
@@ -528,8 +529,8 @@ namespace Remotion.Web.ExecutionEngine
       }
     }
 
-    [NotNull]
-    public Exception WrapProcessRequestException ([NotNull] HttpException exception)
+    [JetBrains.Annotations.NotNull]
+    public Exception WrapProcessRequestException ([JetBrains.Annotations.NotNull] HttpException exception)
     {
       ArgumentUtility.CheckNotNull("exception", exception);
 

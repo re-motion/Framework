@@ -211,16 +211,16 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private readonly WxeFunction _function;
     private readonly WxeParameterDeclaration[] _parameterDeclarations;
     private readonly NameObjectCollection _variables;
-    private object[] _actualParameters;
+    private object?[] _actualParameters;
     private bool _parametersInitialized;
     private static readonly Func<Type, WxeParameterDeclaration[]> s_getParameterDeclarationsUncheckedFunc = GetParameterDeclarationsUnchecked;
 
-    public WxeVariablesContainer (WxeFunction function, object[] actualParameters)
+    public WxeVariablesContainer (WxeFunction function, object?[] actualParameters)
         : this(ArgumentUtility.CheckNotNull("function", function), actualParameters, GetParameterDeclarations(function.GetType()))
     {
     }
 
-    public WxeVariablesContainer (WxeFunction function, object[] actualParameters, WxeParameterDeclaration[] parameterDeclarations)
+    public WxeVariablesContainer (WxeFunction function, object?[] actualParameters, WxeParameterDeclaration[] parameterDeclarations)
     {
       ArgumentUtility.CheckNotNull("function", function);
       ArgumentUtility.CheckNotNull("actualParameters", actualParameters);
@@ -237,7 +237,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       get { return _variables; }
     }
 
-    public object[] ActualParameters
+    public object?[] ActualParameters
     {
       get { return _actualParameters; }
     }

@@ -80,7 +80,7 @@ public class WxeParameterDeclaration
   }
 
   /// <summary> Copy a value to a callee parameter. </summary>
-  public void CopyToCallee (object parameterValue, NameObjectCollection calleeVariables)
+  public void CopyToCallee (object? parameterValue, NameObjectCollection calleeVariables)
   {
     if (_direction == WxeParameterDirection.Out)
       throw new ApplicationException("Constant provided for output parameter.");
