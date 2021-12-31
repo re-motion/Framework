@@ -39,22 +39,22 @@ namespace Remotion.SecurityManager.Domain
     {
     }
 
-    public TenantProxy Tenant
+    public TenantProxy? Tenant
     {
       get { return null; }
     }
 
-    public UserProxy User
+    public UserProxy? User
     {
       get { return null; }
     }
 
-    public IReadOnlyList<RoleProxy> Roles
+    public IReadOnlyList<RoleProxy>? Roles
     {
       get { return null; }
     }
 
-    public SubstitutionProxy Substitution
+    public SubstitutionProxy? Substitution
     {
       get { return null; }
     }

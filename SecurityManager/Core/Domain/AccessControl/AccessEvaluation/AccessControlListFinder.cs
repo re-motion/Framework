@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     ///   <paramref name="context"/> is not state-less and a <see cref="StatePropertyDefinition"/> is missing.<br/>- or -<br/>
     ///   <paramref name="context"/> is not state-less and contains an invalid state for a <see cref="StatePropertyDefinition"/>.
     /// </exception>
-    public IDomainObjectHandle<AccessControlList> Find (ISecurityContext context)
+    public IDomainObjectHandle<AccessControlList>? Find (ISecurityContext context)
     {
       ArgumentUtility.CheckNotNull("context", context);
 
@@ -70,14 +70,14 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       return null;
     }
 
-    private SecurableClassDefinitionData GetClass (string className)
+    private SecurableClassDefinitionData? GetClass (string? className)
     {
       if (className == null)
         return null;
       return _securityContextRepository.GetClass(className);
     }
 
-    private IDomainObjectHandle<AccessControlList> FindAccessControlList (SecurableClassDefinitionData classData, ISecurityContext context)
+    private IDomainObjectHandle<AccessControlList>? FindAccessControlList (SecurableClassDefinitionData classData, ISecurityContext context)
     {
       if (context.IsStateless)
         return classData.StatelessAccessControlList;

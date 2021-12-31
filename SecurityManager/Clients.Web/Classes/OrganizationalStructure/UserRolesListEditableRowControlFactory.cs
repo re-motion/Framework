@@ -45,7 +45,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     {
     }
 
-    protected override IBusinessObjectBoundEditableWebControl CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
+    protected override IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
       ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
@@ -82,7 +82,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
         return referenceValue;
       }
       else
-        throw new InvalidOperationException(string.Format("Control type '{0}' is not supported for property 'Group'", control.GetType()));
+        throw new InvalidOperationException(string.Format("Control type '{0}' is not supported for property 'Group'", control?.GetType()));
     }
 
     private IBusinessObjectBoundEditableWebControl CreateControlForPosition (IBusinessObjectPropertyPath propertyPath)
@@ -95,13 +95,17 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       return control;
     }
 
-    private void HandlePositionPreRender (object sender, EventArgs e)
+    private void HandlePositionPreRender (object? sender, EventArgs e)
     {
-      var positionReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender);
+      var positionReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender!);
+
+      Assertion.IsNotNull(positionReferenceValue.DataSource, "BocReferenceValue{{{0}}}.DataSource != null", positionReferenceValue.ID);
+      Assertion.IsNotNull(positionReferenceValue.DataSource.BusinessObject, "BocReferenceValue{{{0}}}.DataSource.BusinessObject != null", positionReferenceValue.ID);
+      Assertion.IsNotNull(positionReferenceValue.Property, "BocReferenceValue{{{0}}}.Property != null", positionReferenceValue.ID);
 
       var groupReferenceValue = GetGroupReferenceValue(positionReferenceValue.DataSource);
 
-      var group = (Group)groupReferenceValue.Value;
+      var group = (Group?)groupReferenceValue.Value;
       if (group == null)
       {
         positionReferenceValue.ClearBusinessObjectList();
@@ -117,6 +121,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     private IBusinessObjectBoundControl GetGroupReferenceValue (IBusinessObjectDataSource dataSource)
     {
+      Assertion.DebugIsNotNull(dataSource.BusinessObject, "dataSource.BusinessObject != null");
+
       var groupProperty = dataSource.BusinessObject.BusinessObjectClass.GetPropertyDefinition("Group");
       return dataSource.GetBoundControlsWithValidBinding()
           .Where(c => c.Property == groupProperty)

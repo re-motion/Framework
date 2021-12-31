@@ -24,6 +24,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
@@ -46,9 +47,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       get { return CurrentObject; }
     }
 
-    protected StateCombination CurrentStateCombination
+    public StateCombination CurrentStateCombination
     {
-      get { return (StateCombination)CurrentObject.BusinessObject; }
+      get { return Assertion.IsNotNull((StateCombination?)CurrentObject.BusinessObject, "CurrentStateCombination has not been set."); }
     }
 
     protected override void OnInit (EventArgs e)
@@ -65,6 +66,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     {
       base.LoadValues(interim);
 
+      Assertion.IsNotNull(CurrentStateCombination.Class, "CurrentStateCombination.Class != null");
       if (CurrentStateCombination.Class.StateProperties.Count == 1)
       {
         if (!interim)
@@ -90,6 +92,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private void FillStateDefinitionField ()
     {
+      Assertion.IsNotNull(CurrentStateCombination.Class, "CurrentStateCombination.Class != null");
       var stateProperties = CurrentStateCombination.Class.StateProperties;
       if (stateProperties.Count > 1)
         throw new NotSupportedException("Only classes with a zero or one StatePropertyDefinition are supported.");
@@ -100,7 +103,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       StateDefinitionField.SetBusinessObjectList(possibleStateDefinitions);
     }
 
-    private StateDefinition GetStateDefinition (StateCombination stateCombination)
+    private StateDefinition? GetStateDefinition (StateCombination stateCombination)
     {
       return stateCombination.GetStates().SingleOrDefault();
     }
@@ -117,6 +120,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     private bool ValidateStateCombination ()
     {
       bool isValid = true;
+      Assertion.IsNotNull(CurrentStateCombination.Class, "CurrentStateCombination.Class != null");
       if (CurrentStateCombination.Class.StateProperties.Count == 1)
       {
         RequiredStateCombinationValidator.Validate();
@@ -129,11 +133,13 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     {
       var hasSaved = base.SaveValues(interim);
 
+      Assertion.IsNotNull(CurrentStateCombination.Class, "CurrentStateCombination.Class != null");
       if (CurrentStateCombination.Class.StateProperties.Count == 1)
       {
-        var stateDefinition = (StateDefinition)StateDefinitionField.Value;
+        var stateDefinition = (StateDefinition?)StateDefinitionField.Value;
         CurrentStateCombination.ClearStates();
-        CurrentStateCombination.AttachState(stateDefinition);
+        if (stateDefinition != null)
+          CurrentStateCombination.AttachState(stateDefinition);
       }
 
       return hasSaved;
@@ -141,7 +147,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected void DeleteStateDefinitionButton_Click (object sender, EventArgs e)
     {
-      var handler = (EventHandler)Events[s_deleteEvent];
+      var handler = (EventHandler?)Events[s_deleteEvent];
       if (handler != null)
         handler(this, EventArgs.Empty);
     }

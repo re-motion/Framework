@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       CheckDomainObjectSerializability(delegate { return StatefulAccessControlList.NewObject(); });
       CheckDomainObjectSerializability(delegate { return Permission.NewObject(); });
       CheckDomainObjectSerializability(delegate { return StateCombination.NewObject(); });
-      CheckDomainObjectSerializability(delegate { return StateUsage.NewObject(); });
+      CheckDomainObjectSerializability(delegate { return StateUsage.NewObject(StateDefinition.NewObject()); });
       CheckDomainObjectSerializability(delegate { return AbstractRoleDefinition.NewObject(); });
       CheckDomainObjectSerializability(delegate { return AccessTypeDefinition.NewObject(); });
       CheckDomainObjectSerializability(delegate { return AccessTypeReference.NewObject(); });

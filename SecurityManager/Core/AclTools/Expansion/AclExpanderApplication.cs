@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
   {
     public const string CssFileName = "AclExpansion";
 
-    private AclExpanderApplicationSettings _settings;
+    private AclExpanderApplicationSettings? _settings;
 
     private readonly ITextWriterFactory _textWriterFactory;
 
@@ -50,7 +50,11 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     public AclExpanderApplicationSettings Settings
     {
-      get { return _settings; }
+      get
+      {
+        Assertion.IsNotNull(_settings, "Settings have not been initialized via Init(...) method.");
+        return _settings;
+      }
     }
 
     public virtual void Run (AclExpanderApplicationSettings settings, TextWriter errorWriter, TextWriter logWriter)
@@ -61,7 +65,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
       Init(settings);
 
-      string cultureName = GetCultureName();
+      string? cultureName = GetCultureName();
 
       using (new CultureScope(cultureName))
       {
@@ -74,9 +78,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       }
     }
 
-    public string GetCultureName ()
+    public string? GetCultureName ()
     {
-      string cultureName = Settings.CultureName;
+      string? cultureName = Settings.CultureName;
       if (String.IsNullOrEmpty(cultureName))
       {
         cultureName = null; // Passing null to CultureScope-ctor below means "keep current culture".
@@ -131,7 +135,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     private void WriteCssFile ()
     {
-      using (var cssTextWriter = _textWriterFactory.CreateTextWriter(_textWriterFactory.Directory,CssFileName,"css"))
+      Assertion.DebugIsNotNull(_textWriterFactory.Directory, "_textWriterFactory.Directory != null");
+      using (var cssTextWriter = _textWriterFactory.CreateTextWriter(_textWriterFactory.Directory, CssFileName,"css"))
       {
         string resource = GetEmbeddedStringResource("AclExpansion.css");
         Assertion.IsNotNull(resource);
@@ -144,7 +149,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     {
       Type type = GetType();
       Assembly assembly = type.Assembly;
-      using (StreamReader reader = new StreamReader(assembly.GetManifestResourceStream(type, name)))
+      using (StreamReader reader = new StreamReader(Assertion.IsNotNull(assembly.GetManifestResourceStream(type, name), "assembly.GetManifestResourceStream(type, name) != null")))
       {
         return reader.ReadToEnd();
       }

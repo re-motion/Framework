@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.Utilities;
@@ -25,7 +26,7 @@ namespace Remotion.SecurityManager.Domain
 {
   public class DomainObjectDeleteHandler
   {
-    private BaseSecurityManagerObject[] _objectsToBeDeleted;
+    private BaseSecurityManagerObject[]? _objectsToBeDeleted;
 
     public DomainObjectDeleteHandler (params IEnumerable[] lists)
     {
@@ -34,6 +35,7 @@ namespace Remotion.SecurityManager.Domain
       _objectsToBeDeleted = lists.SelectMany(objects => objects.Cast<BaseSecurityManagerObject>()).ToArray();
     }
 
+    [MemberNotNullWhen(false, nameof(_objectsToBeDeleted))]
     public bool IsDeleted
     {
       get { return _objectsToBeDeleted == null; }

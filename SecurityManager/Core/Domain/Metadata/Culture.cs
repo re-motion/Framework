@@ -35,7 +35,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
       return NewObject<Culture>(ParamList.Create(cultureName));
     }
 
-    public static Culture Find (string cultureName)
+    public static Culture? Find (string cultureName)
     {
       ArgumentUtility.CheckNotNull("cultureName", cultureName);
 

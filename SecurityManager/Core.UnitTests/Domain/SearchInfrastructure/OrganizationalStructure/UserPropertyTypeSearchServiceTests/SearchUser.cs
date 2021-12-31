@@ -80,12 +80,26 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
     [Test]
     public void Search_WithDisplayNameConstraint_FindFirstNameContainingPrefix ()
     {
+      var usersWithFirstNameNull = User.FindByTenant(_tenantConstraint.Value).AsEnumerable().Where(u => u.FirstName == null).ToArray();
+      Assert.That(usersWithFirstNameNull, Is.Not.Empty);
+
       var expected = User.FindByTenant(_tenantConstraint.Value).Where(u => u.FirstName.Contains("est")).ToArray();
       Assert.That(expected, Is.Not.Empty);
 
       var actual = _searchService.Search(null, _property, CreateSecurityManagerSearchArguments("est"));
 
       Assert.That(actual, Is.EquivalentTo(expected));
+    }
+
+    [Test]
+    public void Search_WithoutTenantConstraint_FindsNoUsers ()
+    {
+      IBusinessObject[] actual = _searchService.Search(
+          null,
+          _property,
+          new SecurityManagerSearchArguments(null, null, new DisplayNameConstraint("user")));
+
+      Assert.That(actual, Is.Empty);
     }
 
     private SecurityManagerSearchArguments CreateSecurityManagerSearchArguments (string displayName)

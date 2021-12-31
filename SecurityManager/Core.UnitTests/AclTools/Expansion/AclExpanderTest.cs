@@ -135,10 +135,13 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
     {
       var ace = TestHelper.CreateAceWithPositionAndGroupCondition(Position, GroupCondition.OwningGroup);
       AttachAccessTypeReadWriteDelete(ace, true, null, true);
-      List<AclExpansionEntry> aclExpansionEntryList =
-        GetAclExpansionEntryList(
-          ListObjectMother.New(User),
-          ListObjectMother.New(TestHelper.CreateStatefulAcl(ace)), false);
+
+      var userList = ListObjectMother.New(User);
+      var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(ace));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
+
+      List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
 
       var accessTypeDefinitionsExpected = new[] { ReadAccessType, DeleteAccessType };
       var accessConditions = new AclExpansionAccessConditions
@@ -164,10 +167,12 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       var aceGroupAll = TestHelper.CreateAceWithoutGroupCondition();
       AttachAccessTypeReadWriteDelete(aceGroupAll, true, true, null);
 
-      List<AclExpansionEntry> aclExpansionEntryList =
-        GetAclExpansionEntryList(
-          ListObjectMother.New(User),
-          ListObjectMother.New(TestHelper.CreateStatefulAcl(aceGroupOwning, aceAbstractRole, aceGroupAll)), false);
+      var userList = ListObjectMother.New(User);
+      var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(aceGroupOwning, aceAbstractRole, aceGroupAll));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
+
+      List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
 
       Assert.That(aclExpansionEntryList.Count, Is.EqualTo(3));
 
@@ -196,10 +201,12 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       var aceGroupSpecificTenant = TestHelper.CreateAceWithSpecificTenant(otherTenant);
       AttachAccessTypeReadWriteDelete(aceGroupSpecificTenant, null, true, null);
 
-      List<AclExpansionEntry> aclExpansionEntryList =
-        GetAclExpansionEntryList(
-          ListObjectMother.New(otherTenantUser),
-          ListObjectMother.New(TestHelper.CreateStatefulAcl(aceGroupSpecificTenant)), false);
+      var userList = ListObjectMother.New(otherTenantUser);
+      var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(aceGroupSpecificTenant));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
+
+      List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
 
       Assert.That(aclExpansionEntryList.Count, Is.EqualTo(1));
 
@@ -224,10 +231,12 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       var aceGroupOwningTenant = TestHelper.CreateAceWithOwningTenant();
       AttachAccessTypeReadWriteDelete(aceGroupOwningTenant, null, null, true);
 
-      List<AclExpansionEntry> aclExpansionEntryList =
-        GetAclExpansionEntryList(
-          ListObjectMother.New(otherTenantUser),
-          ListObjectMother.New(TestHelper.CreateStatefulAcl(aceGroupSpecificTenant, aceGroupOwningTenant)), false);
+      var userList = ListObjectMother.New(otherTenantUser);
+      var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(aceGroupSpecificTenant, aceGroupOwningTenant));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
+
+      List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
 
       Assert.That(aclExpansionEntryList.Count, Is.EqualTo(2));
 
@@ -257,11 +266,13 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
       AttachAccessTypeReadWriteDelete(ace, null, true, null);
       Assert.That(ace.Validate().IsValid);
-      var acl = TestHelper.CreateStatefulAcl(ace);
-      List<AccessControlList> aclList = new List<AccessControlList>();
-      aclList.Add(acl);
 
-      List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(ListObjectMother.New(User), aclList);
+      var userList = ListObjectMother.New(User);
+      var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(ace));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
+
+      List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList);
 
       var owningTenant = aclExpansionEntryList[0].User.Tenant;
       var tenantHierarchyCondition = TenantHierarchyCondition.ThisAndParent;
@@ -299,11 +310,12 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       var aceGroupOwning = TestHelper.CreateAceWithPositionAndGroupCondition(Position, GroupCondition.OwningGroup);
       AttachAccessTypeReadWriteDelete(aceGroupOwning, true, null, true);
 
-      List<AclExpansionEntry> aclExpansionEntryList =
-        GetAclExpansionEntryList(
-          ListObjectMother.New(otherTenantUser, User),
-          ListObjectMother.New(TestHelper.CreateStatefulAcl(aceSpecificTenantWithOtherTenant, aceGroupOwning)),
-          false);
+      var userList = ListObjectMother.New(otherTenantUser, User);
+      var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(aceSpecificTenantWithOtherTenant, aceGroupOwning));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
+
+      List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
 
       Assert.That(aclExpansionEntryList.Count, Is.EqualTo(2));
 
@@ -327,10 +339,12 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       var aceGroupOwning = TestHelper.CreateAceWithPositionAndGroupCondition(Position, GroupCondition.OwningGroup);
       AttachAccessTypeReadWriteDelete(aceGroupOwning, true, false, null);
 
-      List<AclExpansionEntry> aclExpansionEntryList =
-        GetAclExpansionEntryList(
-          ListObjectMother.New(User),
-          ListObjectMother.New(TestHelper.CreateStatefulAcl(aceOwningTenant, acePosition, aceGroupOwning)), false);
+      var userList = ListObjectMother.New(User);
+      var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(aceOwningTenant, acePosition, aceGroupOwning));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
+
+      List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
 
       Assert.That(aclExpansionEntryList.Count, Is.EqualTo(2));
 
@@ -355,11 +369,16 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       var aceGroupOwning = TestHelper.CreateAceWithPositionAndGroupCondition(Position, GroupCondition.OwningGroup);
       AttachAccessTypeReadWriteDelete(aceGroupOwning, true, null, true);
 
-      List<AclExpansionEntry> aclExpansionEntryList =
-        GetAclExpansionEntryList(
-          ListObjectMother.New(User),
-          ListObjectMother.New(TestHelper.CreateStatefulAcl(aceOwningTenant), TestHelper.CreateStatefulAcl(aceSpecificTenant),
-                    TestHelper.CreateStatefulAcl(aceGroupOwning)), false);
+      var userList = ListObjectMother.New(User);
+
+      var aclList = ListObjectMother.New(
+          TestHelper.CreateStatefulAcl(aceOwningTenant),
+          TestHelper.CreateStatefulAcl(aceSpecificTenant),
+          TestHelper.CreateStatefulAcl(aceGroupOwning));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
+
+      List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
 
       var aclExpansionEntryListEnumerator = aclExpansionEntryList.GetEnumerator();
 
@@ -390,6 +409,8 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       Assert.That(testAce.Validate().IsValid);
       var userList = ListObjectMother.New(User, User2);
       var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(testAce));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
 
       // ACE with specific otherTenant should not match any AclProbe|s
       AssertIsNotInMatchingAces(userList, aclList);
@@ -409,6 +430,8 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
       var userList = ListObjectMother.New(User2);
       var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(testAce));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
 
       // ACE with specific position should not match any AclProbe|s
       List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
@@ -438,6 +461,9 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       Assert.That(ace.Validate().IsValid);
       var userList = ListObjectMother.New(User, User2);
       var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(ace));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
+
       List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
       Assert.That(aclExpansionEntryList.Count, Is.EqualTo(User.Roles.Count + User2.Roles.Count));
     }
@@ -479,6 +505,8 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
       var userList = ListObjectMother.New(User);
       var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(ace, aceDeny));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
 
       List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
 
@@ -516,6 +544,8 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
       var userList = ListObjectMother.New(otherTenantUser);
       var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(aceSpecificGroup, aceOwningGroup));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
 
       List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
 
@@ -560,6 +590,8 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
       var userList = ListObjectMother.New(otherTenantUser);
       var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(aceSpecificGroupType1, aceSpecificGroupType2));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
 
       List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
 
@@ -627,6 +659,8 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
       var userList = ListObjectMother.New(otherTenantUser);
       var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(aceWithBranchOfOwningGroup, aceSpecificGroupType2, aceSpecificGroupType3));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
 
       List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
 
@@ -658,6 +692,8 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
       var userList = ListObjectMother.New(User);
       var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(aceSpecificUser, aceOwningUser));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
 
       List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
 
@@ -689,6 +725,8 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
       var userList = ListObjectMother.New(User);
       var aclList = ListObjectMother.New(TestHelper.CreateStatefulAcl(aceSpecificPosition, aceSpecificPosition2));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
 
       List<AclExpansionEntry> aclExpansionEntryList = GetAclExpansionEntryList(userList, aclList, false);
 
@@ -763,8 +801,9 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
 
       AttachAccessTypeReadWriteDelete(ace, true, null, true);
       Assert.That(ace.Validate().IsValid);
-      var acl = TestHelper.CreateStatefulAcl(ace);
-      aclList.Add(acl);
+      aclList.Add(TestHelper.CreateStatefulAcl(ace));
+      var @class = TestHelper.CreateClassDefinition("FakeClass");
+      @class.StatefulAccessControlLists.AddRange(aclList);
 
       var aclFinderStub = new Mock<IAclExpanderAclFinder>();
       aclFinderStub.Setup(mock => mock.FindAccessControlLists()).Returns(aclList).Verifiable();

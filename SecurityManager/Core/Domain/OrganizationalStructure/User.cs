@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       return NewObject<User>();
     }
 
-    public static User FindByUserName (string userName)
+    public static User? FindByUserName (string userName)
     {
       ArgumentUtility.CheckNotNull("userName", userName);
 
@@ -71,7 +71,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       ArgumentUtility.CheckNotNull("tenantHandle", tenantHandle);
 
       return from u in QueryFactory.CreateLinqQuery<User>()
-             where u.Tenant.ID == tenantHandle.ObjectID
+             where u.Tenant!.ID == tenantHandle.ObjectID
              orderby u.LastName, u.FirstName
              select u;
     }
@@ -89,17 +89,17 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       throw new NotImplementedException("This method is only intended for framework support and should never be called.");
     }
 
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     protected User ()
     {
     }
 
     [StringProperty(MaximumLength = 100)]
-    public abstract string Title { get; set; }
+    public abstract string? Title { get; set; }
 
     [StringProperty(MaximumLength = 100)]
-    public abstract string FirstName { get; set; }
+    public abstract string? FirstName { get; set; }
 
     [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string LastName { get; set; }
@@ -111,11 +111,11 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     public abstract ObjectList<Role> Roles { get; [DemandPermission(SecurityManagerAccessTypes.AssignRole)] protected set; }
 
     [Mandatory]
-    public abstract Tenant Tenant { get; set; }
+    public abstract Tenant? Tenant { get; set; }
 
     [Mandatory]
     [SearchAvailableObjectsServiceType(typeof(GroupPropertyTypeSearchService))]
-    public abstract Group OwningGroup { get; set; }
+    public abstract Group? OwningGroup { get; set; }
 
     [DBBidirectionalRelation("SubstitutingUser")]
     protected abstract ObjectList<Substitution> SubstitutingFor { get; }
@@ -148,7 +148,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
       base.OnDeleted(args);
 
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
 
     public override string DisplayName
@@ -174,12 +174,12 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       return UserName;
     }
 
-    protected override string GetOwningTenant ()
+    protected override string? GetOwningTenant ()
     {
       return Tenant == null ? null : Tenant.UniqueIdentifier;
     }
 
-    protected override string GetOwningGroup ()
+    protected override string? GetOwningGroup ()
     {
       return OwningGroup == null ? null : OwningGroup.UniqueIdentifier;
     }

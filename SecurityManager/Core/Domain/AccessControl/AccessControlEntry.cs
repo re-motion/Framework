@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     }
 
     private SecurityTokenMatcher _matcher;
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     protected AccessControlEntry ()
     {
@@ -83,28 +83,28 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     public abstract UserCondition UserCondition { get; set; }
 
     [SearchAvailableObjectsServiceType(typeof(TenantPropertyTypeSearchService))]
-    public abstract Tenant SpecificTenant { get; set; }
+    public abstract Tenant? SpecificTenant { get; set; }
 
     [SearchAvailableObjectsServiceType(typeof(GroupPropertyTypeSearchService))]
-    public abstract Group SpecificGroup { get; set; }
+    public abstract Group? SpecificGroup { get; set; }
 
     [SearchAvailableObjectsServiceType(typeof(GroupTypePropertyTypeSearchService))]
-    public abstract GroupType SpecificGroupType { get; set; }
+    public abstract GroupType? SpecificGroupType { get; set; }
 
     [SearchAvailableObjectsServiceType(typeof(PositionPropertyTypeSearchService))]
-    public abstract Position SpecificPosition { get; set; }
+    public abstract Position? SpecificPosition { get; set; }
 
     [SearchAvailableObjectsServiceType(typeof(UserPropertyTypeSearchService))]
-    public abstract User SpecificUser { get; set; }
+    public abstract User? SpecificUser { get; set; }
 
     [SearchAvailableObjectsServiceType(typeof(AbstractRoleDefinitionPropertyTypeSearchService))]
-    public abstract AbstractRoleDefinition SpecificAbstractRole { get; set; }
+    public abstract AbstractRoleDefinition? SpecificAbstractRole { get; set; }
 
     [DBBidirectionalRelation("AccessControlEntries")]
-    public abstract AccessControlList AccessControlList { get; set; }
+    public abstract AccessControlList? AccessControlList { get; set; }
 
     [StorageClassNone]
-    public SecurableClassDefinition Class
+    public SecurableClassDefinition? Class
     {
       get
       {
@@ -119,6 +119,9 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public ReadOnlyCollection<Permission> GetPermissions ()
     {
+      if (Class == null)
+        throw new InvalidOperationException("Cannot get permissions if no securable class definition is assigned to this access control entry.");
+
       if (Class.AccessTypes.Count != PermissionsInternal.Count)
       {
         throw new InvalidOperationException(
@@ -222,7 +225,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       return permission;
     }
 
-    private Permission FindPermission (AccessTypeDefinition accessType)
+    private Permission? FindPermission (AccessTypeDefinition accessType)
     {
       return PermissionsInternal.Where(p => p.AccessType.ID == accessType.ID).SingleOrDefault();
     }
@@ -240,7 +243,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       base.OnDeleted(args);
 
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
 
     public AccessControlEntryValidationResult Validate ()

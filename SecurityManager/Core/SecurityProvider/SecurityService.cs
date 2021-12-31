@@ -59,7 +59,7 @@ namespace Remotion.SecurityManager
 
       using (SecurityFreeSection.Activate())
       {
-        IDomainObjectHandle<AccessControlList> acl;
+        IDomainObjectHandle<AccessControlList>? acl;
         SecurityToken token;
         try
         {

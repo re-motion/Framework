@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     // IEqualityComparer for value based comparison of AclExpansionEntry|s.
     private static readonly CompoundValueEqualityComparer<AclExpansionEntry> _aclExpansionEntryEqualityComparer =
-      new CompoundValueEqualityComparer<AclExpansionEntry>(a => new object[] {
+      new CompoundValueEqualityComparer<AclExpansionEntry>(a => new object?[] {
           a.User,
           a.Role,
           a.Class,
@@ -108,7 +108,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     {
       foreach (UserRoleAclAceCombination userRoleAclAce in _userRoleAclAceCombinationFinder)
       {
-        AclExpansionEntry aclExpansionEntry = AclExpansionEntryCreator.CreateAclExpansionEntry(userRoleAclAce);
+        AclExpansionEntry? aclExpansionEntry = AclExpansionEntryCreator.CreateAclExpansionEntry(userRoleAclAce);
         if (aclExpansionEntry != null)
         {
           yield return aclExpansionEntry;

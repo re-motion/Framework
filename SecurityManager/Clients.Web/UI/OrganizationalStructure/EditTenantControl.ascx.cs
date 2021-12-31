@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
@@ -39,7 +40,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       TenantLabelText,
     }
 
-    private BocAutoCompleteReferenceValue _parentField;
+    /// <remarks>Initialized during <see cref="OnInit"/>.</remarks>
+    private BocAutoCompleteReferenceValue _parentField = default!;
 
     public override IBusinessObjectDataSourceControl DataSource
     {
@@ -61,6 +63,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       get { return NameField; }
     }
 
+    [MemberNotNull(nameof(_parentField))]
     protected override void OnInit (EventArgs e)
     {
       base.OnInit(e);
@@ -91,15 +94,15 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected void ParentValidator_ServerValidate (object source, ServerValidateEventArgs args)
     {
-      args.IsValid = IsParentHierarchyValid((Tenant)_parentField.Value);
+      args.IsValid = IsParentHierarchyValid((Tenant?)_parentField.Value);
     }
 
-    private bool IsParentHierarchyValid (Tenant group)
+    private bool IsParentHierarchyValid (Tenant? tenant)
     {
-      var groups = group.CreateSequence(g => g.Parent, g => g != null && g != CurrentFunction.CurrentObject && g.Parent != group).ToArray();
-      if (groups.Length == 0)
+      var tenants = tenant.CreateSequence(g => g.Parent, g => g != CurrentFunction.CurrentObject && g.Parent != tenant).ToArray();
+      if (tenants.Length == 0)
         return false;
-      if (groups.Last().Parent != null)
+      if (tenants.Last().Parent != null)
         return false;
       return true;
     }

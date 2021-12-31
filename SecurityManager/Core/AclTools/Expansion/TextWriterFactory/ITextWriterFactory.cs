@@ -30,7 +30,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
     TextWriter CreateTextWriter (string name);
     string GetRelativePath (string fromName, string toName);
 
-    string Directory { get; set; }
-    string Extension { get; set; }
+    string? Directory { get; set; }
+    string? Extension { get; set; }
   }
 }

@@ -18,7 +18,6 @@
 using System;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.Domain
 {
@@ -38,6 +37,6 @@ namespace Remotion.SecurityManager.Domain
     ISecurityManagerPrincipal Create (
         IDomainObjectHandle<Tenant> tenantHandle,
         IDomainObjectHandle<User> userHandle,
-        IDomainObjectHandle<Substitution> substitutionHandle);
+        IDomainObjectHandle<Substitution>? substitutionHandle);
   }
 }

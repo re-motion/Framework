@@ -28,8 +28,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
 
     public abstract TextWriter CreateTextWriter (string directory, string name, string extension);
     public abstract TextWriter CreateTextWriter (string name);
-    public string Directory { get; set; }
-    public string Extension { get; set; }
+    public string? Directory { get; set; }
+    public string? Extension { get; set; }
 
     public Dictionary<string, TextWriterData> NameToTextWriterData
     {
@@ -37,7 +37,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
     }
 
 
-    public static string AppendExtension (string name, string extension)
+    public static string AppendExtension (string name, string? extension)
     {
       ArgumentUtility.CheckNotNull("name", name);
       if (String.IsNullOrEmpty(extension))

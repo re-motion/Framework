@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   [SecurityManagerStorageGroup]
   public abstract class GroupType : OrganizationalStructureObject, ISupportsGetObject
   {
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     public enum Methods
     {
@@ -93,7 +93,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
       base.OnDeleted(args);
 
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
 
     public override string DisplayName

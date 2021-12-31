@@ -26,6 +26,7 @@ using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -82,6 +83,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     {
       if (!IsReturningPostBack)
       {
+        Assertion.IsNotNull(e.BusinessObjectTreeNode, "e.BusinessObjectTreeNode != null");
+        Assertion.IsNotNull(e.BusinessObjectTreeNode.BusinessObject, "e.BusinessObjectTreeNode.BusinessObject != null");
+
         var classDefinition = (SecurableClassDefinition)e.BusinessObjectTreeNode.BusinessObject;
         var function = new EditPermissionsFormFunction(WxeTransactionMode.CreateRootWithAutoCommit , classDefinition.GetHandle());
         var options = new WxeCallOptionsExternal(
@@ -96,7 +100,11 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       }
       else
       {
-        var classDefinition = ((EditPermissionsFormFunction)ReturningFunction).CurrentObjectHandle.GetObject();
+        var classDefinition = ((EditPermissionsFormFunction)ReturningFunction).CurrentObject;
+
+        Assertion.IsNotNull(ClientTransaction.Current, "ClientTransaction.Current != null");
+        Assertion.IsNotNull(classDefinition, "ReturningFunction.CurrentObject != null");
+
         UnloadService.UnloadVirtualEndPoint(
             ClientTransaction.Current,
             RelationEndPointID.Resolve(classDefinition, c => c.StatelessAccessControlList));

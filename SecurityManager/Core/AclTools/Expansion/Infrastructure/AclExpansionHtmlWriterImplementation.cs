@@ -51,7 +51,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     }
 
 
-    private void WriteTableDataAddendum (object addendum)
+    private void WriteTableDataAddendum (object? addendum)
     {
       if (addendum != null)
       {
@@ -89,9 +89,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       WriteTableRowBeginIfNotInTableRow();
       HtmlTagWriter.Tags.td();
       WriteRowspanAttribute(rowCount);
-      HtmlTagWriter.Value(role.Group.DisplayName);
+      HtmlTagWriter.Value(role.Group?.DisplayName ?? "<null>");
       HtmlTagWriter.Value(", ");
-      HtmlTagWriter.Value(role.Position.DisplayName);
+      HtmlTagWriter.Value(role.Position?.DisplayName ?? "<null>");
       if (_settings.OutputRowCount)
       {
         WriteTableDataAddendum(rowCount);

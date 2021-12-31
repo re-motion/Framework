@@ -19,6 +19,7 @@ using System;
 using System.Configuration;
 using Remotion.Configuration;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Configuration
 {
@@ -55,7 +56,12 @@ namespace Remotion.SecurityManager.Configuration
       _xmlnsProperty = new ConfigurationProperty("xmlns", typeof(string), null, ConfigurationPropertyOptions.None);
 
       _organizationalStructureFactory = new DoubleCheckedLockingContainer<IOrganizationalStructureFactory>(
-          delegate { return OrganizationalStructureFactoryElement.CreateInstance(); });
+          delegate
+          {
+            var organizationalStructureFactory = OrganizationalStructureFactoryElement.CreateInstance();
+            Assertion.IsNotNull(organizationalStructureFactory, "No implementation of IOrganizationalStructureFactory has been registered.");
+            return organizationalStructureFactory;
+          });
       _organizationalStructureFactoryProperty = new ConfigurationProperty(
           "organizationalStructureFactory",
           typeof(TypeElement<IOrganizationalStructureFactory, OrganizationalStructureFactory>),

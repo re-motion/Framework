@@ -80,7 +80,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       }
     }
 
-    private bool MatchPrincipalAgainstTenant (Principal principal, Tenant referenceTenant)
+    private bool MatchPrincipalAgainstTenant (Principal principal, Tenant? referenceTenant)
     {
       if (referenceTenant == null)
         return false;
@@ -124,7 +124,13 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           return MatchPrincipalAgainstUser(token.Principal, token.OwningUser);
 
         case UserCondition.SpecificUser:
+        {
+          Assertion.IsNotNull(
+              _ace.SpecificUser,
+              "AccessControlEntry{{{0}}}.SpecificUser != null when AccessControlEntry.UserCondition == UserCondition.SpecificUser",
+              _ace.ID);
           return MatchPrincipalAgainstUser(token.Principal, _ace.SpecificUser.GetHandle());
+        }
 
         case UserCondition.SpecificPosition:
           return MatchPrincipalAgainstPosition(token.Principal);
@@ -134,7 +140,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       }
     }
 
-    private bool MatchPrincipalAgainstUser (Principal principal, IDomainObjectHandle<User> referenceUser)
+    private bool MatchPrincipalAgainstUser (Principal principal, IDomainObjectHandle<User>? referenceUser)
     {
       // User is only compared using the DomainObjectHandle to prevent spamming the ClientTransaction with unnecessary User-objects
 
@@ -186,17 +192,22 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     // Starting at the passed group, returns the first group in the parent hierarchy of the passed group whose
     // GroupType is equal to the ACE specific GroupType.
-    private Group FindBranchRoot (Group referenceGroup)
+    private Group? FindBranchRoot (Group? referenceGroup)
     {
       Assertion.IsTrue(_ace.GroupCondition == GroupCondition.BranchOfOwningGroup);
 
       if (referenceGroup == null)
         return null;
 
+      Assertion.IsNotNull(
+          _ace.SpecificGroupType,
+          "AccessControlEntry{{{0}}}.SpecificGroupType != null when AccessControlEntry.GroupCondition == GroupCondition.BranchOfOwningGroup",
+          _ace.ID);
+
       return GetGroupAndParents(referenceGroup).FirstOrDefault(g => _ace.SpecificGroupType.Equals(g.GroupType));
     }
 
-    private bool MatchPrincipalAgainstGroup (Principal principal, Group referenceGroup, GroupHierarchyCondition groupHierarchyCondition)
+    private bool MatchPrincipalAgainstGroup (Principal principal, Group? referenceGroup, GroupHierarchyCondition groupHierarchyCondition)
     {
       if (referenceGroup == null)
         return false;
@@ -240,19 +251,49 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     {
       var roles = (IEnumerable<PrincipalRole>)principal.Roles;
       if (_ace.UserCondition == UserCondition.SpecificPosition)
-        roles = roles.Where(r => _ace.SpecificPosition.Equals(r.Position.GetObjectReference(_clientTransaction)));
+      {
+        Assertion.IsNotNull(
+            _ace.SpecificPosition,
+            "AccessControlEntry{{{0}}}.SpecificPosition != null when AccessControlEntry.UserCondition == UserCondition.SpecificPosition",
+            _ace.ID);
 
-      bool hasSpecificPositionAndGroupType =
-          _ace.UserCondition == UserCondition.SpecificPosition && _ace.GroupCondition == GroupCondition.BranchOfOwningGroup
-          || _ace.GroupCondition == GroupCondition.AnyGroupWithSpecificGroupType;
+        roles = roles.Where(r => _ace.SpecificPosition.Equals(r.Position.GetObjectReference(_clientTransaction)));
+      }
+
+      bool hasSpecificPositionAndGroupType;
+      if (_ace.UserCondition == UserCondition.SpecificPosition && _ace.GroupCondition == GroupCondition.BranchOfOwningGroup)
+      {
+        Assertion.IsNotNull(
+            _ace.SpecificGroupType,
+            "AccessControlEntry{{{0}}}.SpecificGroupType != null when AccessControlEntry.GroupCondition == GroupCondition.BranchOfOwningGroup",
+            _ace.ID);
+
+        hasSpecificPositionAndGroupType = true;
+      }
+      else if (_ace.GroupCondition == GroupCondition.AnyGroupWithSpecificGroupType)
+      {
+        Assertion.IsNotNull(
+            _ace.SpecificGroupType,
+            "AccessControlEntry{{{0}}}.SpecificGroupType != null when AccessControlEntry.GroupCondition == GroupCondition.AnyGroupWithSpecificGroupType",
+            _ace.ID);
+
+        hasSpecificPositionAndGroupType = true;
+      }
+      else
+      {
+        hasSpecificPositionAndGroupType = false;
+      }
 
       if (hasSpecificPositionAndGroupType)
+      {
+        Assertion.DebugIsNotNull(_ace.SpecificGroupType, "_ace.SpecificGroupType != null");
         roles = roles.Where(r => _ace.SpecificGroupType.Equals(r.Group.GetObject(_clientTransaction).GroupType));
+      }
 
       return roles;
     }
 
-    private Tenant GetPrincipalTenant (Principal principal)
+    private Tenant? GetPrincipalTenant (Principal principal)
     {
       if (principal.Tenant == null)
         return null;
@@ -260,7 +301,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       return principal.Tenant.GetObjectReference(_clientTransaction);
     }
 
-    private Tenant GetOwningTenant (SecurityToken token)
+    private Tenant? GetOwningTenant (SecurityToken token)
     {
       if (token.OwningTenant == null)
         return null;
@@ -268,7 +309,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       return token.OwningTenant.GetObjectReference(_clientTransaction);
     }
 
-    private Group GetOwningGroup (SecurityToken token)
+    private Group? GetOwningGroup (SecurityToken token)
     {
       if (token.OwningGroup == null)
         return null;

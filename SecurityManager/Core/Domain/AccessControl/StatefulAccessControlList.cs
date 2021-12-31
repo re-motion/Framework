@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       return NewObject<StatefulAccessControlList>();
     }
 
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     protected StatefulAccessControlList ()
     {
@@ -48,10 +48,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       base.OnRelationChanged(args);
       if (args.IsRelation(this, "StateCombinationsInternal"))
-        HandleStateCombinationsChanged((StateCombination)args.NewRelatedObject);
+        HandleStateCombinationsChanged((StateCombination?)args.NewRelatedObject);
     }
 
-    private void HandleStateCombinationsChanged (StateCombination stateCombination)
+    private void HandleStateCombinationsChanged (StateCombination? stateCombination)
     {
       if (stateCombination != null)
         stateCombination.Index = StateCombinationsInternal.IndexOf(stateCombination);
@@ -62,7 +62,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     [DBBidirectionalRelation("StatefulAccessControlLists")]
     [DBColumn("StatefulAcl_ClassID")]
     [Mandatory]
-    protected abstract SecurableClassDefinition MyClass { get; }
+    protected abstract SecurableClassDefinition? MyClass { get; }
 
     [DBBidirectionalRelation("AccessControlList", SortExpression = "Index ASC")]
     [Mandatory]
@@ -74,7 +74,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       get { return StateCombinationsInternal.AsReadOnlyCollection(); }
     }
 
-    public override SecurableClassDefinition Class
+    public override SecurableClassDefinition? Class
     {
       get { return MyClass; }
     }
@@ -92,7 +92,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       base.OnDeleted(args);
 
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
 
     public StateCombination CreateStateCombination ()

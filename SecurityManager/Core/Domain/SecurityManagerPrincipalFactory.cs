@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.Domain
     public ISecurityManagerPrincipal Create (
         IDomainObjectHandle<Tenant> tenantHandle,
         IDomainObjectHandle<User> userHandle,
-        IDomainObjectHandle<Substitution> substitutionHandle)
+        IDomainObjectHandle<Substitution>? substitutionHandle)
     {
       ArgumentUtility.CheckNotNull("tenantHandle", tenantHandle);
       ArgumentUtility.CheckNotNull("userHandle", userHandle);

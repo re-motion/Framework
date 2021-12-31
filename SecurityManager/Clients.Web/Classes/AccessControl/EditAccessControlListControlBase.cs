@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -24,6 +25,7 @@ using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
 using Remotion.SecurityManager.Clients.Web.UI.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 {
@@ -39,6 +41,12 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     private static readonly object s_deleteEvent = new object();
 
+
+    public AccessControlList CurrentAccessControlList
+    {
+      get { return Assertion.IsNotNull((AccessControlList?)DataSource.BusinessObject, "CurrentAccessControlList has not been set."); }
+    }
+
     public event EventHandler Delete
     {
       add { Events.AddHandler(s_deleteEvent, value); }
@@ -47,7 +55,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     protected void DeleteAccessControlListButton_Click (object sender, EventArgs e)
     {
-      EventHandler handler = (EventHandler)Events[s_deleteEvent];
+      var handler = (EventHandler?)Events[s_deleteEvent];
       if (handler != null)
         handler(this, e);
     }
@@ -60,7 +68,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
       where TAccessControlList: AccessControlList
   {
     private readonly List<EditAccessControlEntryControl> _editAccessControlEntryControls = new List<EditAccessControlEntryControl>();
-    private EditAccessControlEntryHeaderControl _editAccessControlEntryHeaderControl;
+    private EditAccessControlEntryHeaderControl? _editAccessControlEntryHeaderControl;
 
     protected abstract ControlCollection GetAccessControlEntryControls ();
 
@@ -71,9 +79,9 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
       LoadAccessControlEntries(interim);
     }
 
-    protected TAccessControlList CurrentAccessControlList
+    public new TAccessControlList CurrentAccessControlList
     {
-      get { return (TAccessControlList)DataSource.BusinessObject; }
+      get { return (TAccessControlList)base.CurrentAccessControlList; }
     }
 
     private void LoadAccessControlEntries (bool interim)
@@ -84,14 +92,15 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
         control.LoadValues(interim);
     }
 
+    [MemberNotNull(nameof(_editAccessControlEntryHeaderControl))]
     private void CreateEditAccessControlEntryControls (DomainObjectCollection accessControlEntries)
     {
       ControlCollection accessControlEntryControls = GetAccessControlEntryControls();
       accessControlEntryControls.Clear();
 
       var collapsedStates = new Dictionary<ObjectID, bool>();
-      foreach (var editAccessControlEntryControl in _editAccessControlEntryControls)
-        collapsedStates.Add(((AccessControlEntry)editAccessControlEntryControl.BusinessObject).ID, editAccessControlEntryControl.IsCollapsed);
+      foreach (EditAccessControlEntryControl editAccessControlEntryControl in _editAccessControlEntryControls)
+        collapsedStates.Add(editAccessControlEntryControl.CurrentAccessControlEntry.ID, editAccessControlEntryControl.IsCollapsed);
 
       _editAccessControlEntryControls.Clear();
 
@@ -182,6 +191,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     protected void NewAccessControlEntryButton_Click (object sender, EventArgs e)
     {
+      Assertion.IsNotNull(Page, "Page != null when processing page life cycle events.");
+
       Page.PrepareValidation();
       bool isValid = ValidateAccessControlEntries();
       if (!isValid)
@@ -196,16 +207,18 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
       _editAccessControlEntryControls.Where(o => o.BusinessObject == accessControlEntry).Single().IsCollapsed = false;
     }
 
-    private void EditAccessControlEntryControl_Delete (object sender, EventArgs e)
+    private void EditAccessControlEntryControl_Delete (object? sender, EventArgs e)
     {
-      EditAccessControlEntryControl editAccessControlEntryControl = (EditAccessControlEntryControl)sender;
+      var editAccessControlEntryControl = ArgumentUtility.CheckNotNullAndType<EditAccessControlEntryControl>("sender", sender!);
+      Assertion.IsNotNull(Page, "Page != null when processing page life cycle events.");
+
       Page.PrepareValidation();
       bool isValid = ValidateAccessControlEntries(editAccessControlEntryControl);
       if (!isValid)
         return;
 
       _editAccessControlEntryControls.Remove(editAccessControlEntryControl);
-      AccessControlEntry accessControlEntry = (AccessControlEntry)editAccessControlEntryControl.DataSource.BusinessObject;
+      var accessControlEntry = editAccessControlEntryControl.CurrentAccessControlEntry;
       accessControlEntry.Delete();
 
       SaveAccessControlEntries(false);

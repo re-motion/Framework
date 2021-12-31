@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions;
 using Remotion.SecurityManager.Domain;
+using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes
 {
@@ -69,6 +70,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected void SaveButton_Click (object sender, EventArgs e)
     {
+      Assertion.IsNotNull(ClientTransaction.Current, "ClientTransaction.Current !=  when executing page lifecycle events.");
       bool isValid = true;
 
       PrepareValidation();
@@ -137,7 +139,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       return true;
     }
 
-    protected override object SaveControlState ()
+    protected override object? SaveControlState ()
     {
       foreach (DataEditUserControl control in _dataEditUserControls)
         control.SaveValues(true);

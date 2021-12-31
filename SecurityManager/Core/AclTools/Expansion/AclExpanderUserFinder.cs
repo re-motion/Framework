@@ -26,13 +26,13 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 {
   public class AclExpanderUserFinder : IAclExpanderUserFinder
   {
-    private readonly string _firstName;
-    private readonly string _lastName;
-    private readonly string _userName;
+    private readonly string? _firstName;
+    private readonly string? _lastName;
+    private readonly string? _userName;
 
     public AclExpanderUserFinder () : this(null,null,null) {}
 
-    public AclExpanderUserFinder (string firstName, string lastName, string userName)
+    public AclExpanderUserFinder (string? firstName, string? lastName, string? userName)
     {
       _firstName = firstName;
       _lastName = lastName;

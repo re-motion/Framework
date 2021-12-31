@@ -61,7 +61,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       }
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod().DeclaringType);
+    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod()!.DeclaringType!);
     private static readonly RevisionKey s_revisionKey = new RevisionKey();
 
     public SecurityContextRevisionBasedCache (IDomainRevisionProvider revisionProvider)
@@ -104,7 +104,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private IReadOnlyDictionary<string, IDomainObjectHandle<Tenant>> LoadTenants ()
     {
       var result = GetOrCreateQuery(
-          MethodInfo.GetCurrentMethod(),
+          MethodInfo.GetCurrentMethod()!,
           () => from t in QueryFactory.CreateLinqQuery<Tenant>()
                 select new { Key = t.UniqueIdentifier, Value = t.ID.GetHandle<Tenant>() });
 
@@ -117,7 +117,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private IReadOnlyDictionary<string, IDomainObjectHandle<Group>> LoadGroups ()
     {
       var result = GetOrCreateQuery(
-          MethodInfo.GetCurrentMethod(),
+          MethodInfo.GetCurrentMethod()!,
           () => from g in QueryFactory.CreateLinqQuery<Group>()
                 select new { Key = g.UniqueIdentifier, Value = g.ID.GetHandle<Group>() });
 
@@ -130,7 +130,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private IReadOnlyDictionary<string, IDomainObjectHandle<Position>> LoadPositions ()
     {
       var result = GetOrCreateQuery(
-          MethodInfo.GetCurrentMethod(),
+          MethodInfo.GetCurrentMethod()!,
           () => from g in QueryFactory.CreateLinqQuery<Position>()
                 select new { Key = g.UniqueIdentifier, Value = g.ID.GetHandle<Position>() });
 
@@ -143,7 +143,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private IReadOnlyDictionary<EnumWrapper, IDomainObjectHandle<AbstractRoleDefinition>> LoadAbstractRoles ()
     {
       var result = GetOrCreateQuery(
-          MethodInfo.GetCurrentMethod(),
+          MethodInfo.GetCurrentMethod()!,
           () => from r in QueryFactory.CreateLinqQuery<AbstractRoleDefinition>()
                 select new { Key = r.Name, Value = r.ID.GetHandle<AbstractRoleDefinition>() });
 
@@ -153,28 +153,28 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       }
     }
 
-    private IReadOnlyDictionary<ObjectID, Tuple<string, ObjectID>> LoadSecurableClassDefinitions ()
+    private IReadOnlyDictionary<ObjectID, Tuple<string, ObjectID?>> LoadSecurableClassDefinitions ()
     {
       var result = GetOrCreateQuery(
-          MethodInfo.GetCurrentMethod(),
+          MethodInfo.GetCurrentMethod()!,
           () => from @class in QueryFactory.CreateLinqQuery<SecurableClassDefinition>()
                 select new
                        {
                            @class.ID,
                            @class.Name,
-                           BaseClassID = @class.BaseClass.ID
+                           BaseClassID = @class.BaseClass!.ID
                        });
 
       using (CreateStopwatchScopeForQueryExecution("securable classes"))
       {
-        return result.ToDictionary(c => c.ID, c => Tuple.Create(c.Name, c.BaseClassID)).AsReadOnly();
+        return result.ToDictionary(c => c.ID, c => Tuple.Create<string, ObjectID?>(c.Name, c.BaseClassID)).AsReadOnly();
       }
     }
 
     private ILookup<ObjectID, StatefulAccessControlListData> LoadStatefulAccessControlLists ()
     {
       var result = GetOrCreateQuery(
-          MethodInfo.GetCurrentMethod(),
+          MethodInfo.GetCurrentMethod()!,
           () => from acl in QueryFactory.CreateLinqQuery<StatefulAccessControlList>()
                 from sc in acl.GetStateCombinationsForQuery()
                 from usage in sc.GetStateUsagesForQuery().DefaultIfEmpty()
@@ -184,7 +184,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
                            Class = acl.GetClassForQuery().ID,
                            StateCombination = sc.ID.GetHandle<StateCombination>(),
                            Acl = acl.ID.GetHandle<StatefulAccessControlList>(),
-                           StatePropertyID = propertyReference.StateProperty.ID,
+                           StatePropertyID = (ObjectID?)propertyReference.StateProperty.ID,
                            StatePropertyName = propertyReference.StateProperty.Name,
                            StateValue = usage.StateDefinition.Name
                        });
@@ -192,21 +192,21 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       using (CreateStopwatchScopeForQueryExecution("stateful ACLs"))
       {
         return result.GroupBy(
-            row => new { row.Class, row.Acl, row.StateCombination },
-            row => row.StatePropertyID != null
-                       ? new State(
-                             row.StatePropertyID.GetHandle<StatePropertyDefinition>(),
-                             row.StatePropertyName,
-                             row.StateValue)
-                       : null)
-                     .ToLookup(g => g.Key.Class, g => new StatefulAccessControlListData(g.Key.Acl, g.Where(s => s != null)));
+                row => new { row.Class, row.Acl, row.StateCombination },
+                row => row.StatePropertyID != null
+                    ? new State(
+                        row.StatePropertyID.GetHandle<StatePropertyDefinition>(),
+                        row.StatePropertyName,
+                        row.StateValue)
+                    : null)
+            .ToLookup(g => g.Key.Class, g => new StatefulAccessControlListData(g.Key.Acl, g.Where(s => s != null).Select(s => s!)));
       }
     }
 
     private IReadOnlyDictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> LoadStatelessAccessControlLists ()
     {
       var result = GetOrCreateQuery(
-          MethodInfo.GetCurrentMethod(),
+          MethodInfo.GetCurrentMethod()!,
           () => from acl in QueryFactory.CreateLinqQuery<StatelessAccessControlList>()
                 select new { Class = acl.GetClassForQuery().ID, Acl = acl.ID.GetHandle<StatelessAccessControlList>() });
 
@@ -217,7 +217,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     }
 
     private IReadOnlyDictionary<string, SecurableClassDefinitionData> BuildClassCache (
-        IReadOnlyDictionary<ObjectID, Tuple<string, ObjectID>> classes,
+        IReadOnlyDictionary<ObjectID, Tuple<string, ObjectID?>> classes,
         IReadOnlyDictionary<ObjectID, IDomainObjectHandle<StatelessAccessControlList>> statelessAcls,
         ILookup<ObjectID, StatefulAccessControlListData> statefulAcls)
     {
@@ -232,7 +232,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     private IReadOnlyDictionary<IDomainObjectHandle<StatePropertyDefinition>, IReadOnlyCollection<string>> LoadStatePropertyValues ()
     {
       var result = GetOrCreateQuery(
-          MethodInfo.GetCurrentMethod(),
+          MethodInfo.GetCurrentMethod()!,
           () => from s in QueryFactory.CreateLinqQuery<StateDefinition>()
                 select
                     new

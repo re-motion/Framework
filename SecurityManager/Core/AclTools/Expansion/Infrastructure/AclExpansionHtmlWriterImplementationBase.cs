@@ -91,7 +91,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       _htmlTagWriter.Tags.thEnd();
     }
 
-    public virtual void WriteTableData (string value)
+    public virtual void WriteTableData (string? value)
     {
       WriteTableRowBeginIfNotInTableRow();
       _htmlTagWriter.Tags.td();

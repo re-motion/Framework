@@ -25,42 +25,42 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 {
   internal static class DisplayNameConstraintExtensions
   {
-    public static IQueryable<Tenant> Apply (this IQueryable<Tenant> query, DisplayNameConstraint constraint)
+    public static IQueryable<Tenant> Apply (this IQueryable<Tenant> query, DisplayNameConstraint? constraint)
     {
       if (constraint == null)
         return query;
       return constraint.ApplyTo(query);
     }
 
-    public static IQueryable<Group> Apply (this IQueryable<Group> query, DisplayNameConstraint constraint)
+    public static IQueryable<Group> Apply (this IQueryable<Group> query, DisplayNameConstraint? constraint)
     {
       if (constraint == null)
         return query;
       return constraint.ApplyTo(query);
     }
 
-    public static IQueryable<User> Apply (this IQueryable<User> query, DisplayNameConstraint constraint)
+    public static IQueryable<User> Apply (this IQueryable<User> query, DisplayNameConstraint? constraint)
     {
       if (constraint == null)
         return query;
       return constraint.ApplyTo(query);
     }
 
-    public static IQueryable<Position> Apply (this IQueryable<Position> query, DisplayNameConstraint constraint)
+    public static IQueryable<Position> Apply (this IQueryable<Position> query, DisplayNameConstraint? constraint)
     {
       if (constraint == null)
         return query;
       return constraint.ApplyTo(query);
     }
 
-    public static IQueryable<GroupType> Apply (this IQueryable<GroupType> query, DisplayNameConstraint constraint)
+    public static IQueryable<GroupType> Apply (this IQueryable<GroupType> query, DisplayNameConstraint? constraint)
     {
       if (constraint == null)
         return query;
       return constraint.ApplyTo(query);
     }
 
-    public static IEnumerable<T> Apply<T> (this IEnumerable<T> query, DisplayNameConstraint constraint)
+    public static IEnumerable<T> Apply<T> (this IEnumerable<T> query, DisplayNameConstraint? constraint)
         where T: MetadataObject
     {
       if (constraint == null)

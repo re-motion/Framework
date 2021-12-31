@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       where TRevisionKey : IRevisionKey
       where TRevisionValue : IRevisionValue
   {
-    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod().DeclaringType);
+    private static readonly ILog s_log = LogManager.GetLogger(MethodInfo.GetCurrentMethod()!.DeclaringType!);
     private static readonly ConcurrentDictionary<string, IQuery> s_queryCache = new ConcurrentDictionary<string, IQuery>();
 
     protected SecurityContextRevisionBasedCacheBase (IRevisionProvider<TRevisionKey, TRevisionValue> revisionProvider)
@@ -63,9 +63,9 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     protected IEnumerable<T> GetOrCreateQuery<T> (MethodBase caller, Func<IQueryable<T>> queryCreator)
     {
       // C# compiler 7.2 does not provide caching for delegate but during query execution there is already a significant amount of GC pressure so the delegate creation does not matter
-      var executableQuery =
-          (IExecutableQuery<IEnumerable<T>>)s_queryCache.GetOrAdd(caller.Name, key => CreateExecutableQuery(key, queryCreator));
+      var executableQuery = (IExecutableQuery<IEnumerable<T>>)s_queryCache.GetOrAdd(caller.Name, key => CreateExecutableQuery(key, queryCreator));
 
+      Assertion.IsNotNull(ClientTransaction.Current, "ClientTransaction.Current != null");
       return executableQuery.Execute(ClientTransaction.Current.QueryManager);
     }
 

@@ -164,6 +164,7 @@ th
       var textWriterFactoryMock = new Mock<ITextWriterFactory>();
 
       textWriterFactoryMock.SetupSet(mock => mock.Directory = directory).Verifiable();
+      textWriterFactoryMock.SetupGet(mock => mock.Directory).Returns("Used Directory");
       textWriterFactoryMock.Setup(mock => mock.CreateTextWriter(It.IsAny<String>())).Returns(new StringWriter()).Verifiable();
       textWriterFactoryMock.Setup(mock => mock.CreateTextWriter(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<String>())).Returns(new StringWriter()).Verifiable();
 

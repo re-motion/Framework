@@ -25,6 +25,7 @@ using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Utilities;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 
@@ -40,8 +41,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       ParentValidatorErrorMessage
     }
 
-    private BocAutoCompleteReferenceValue _parentField;
-    private BocAutoCompleteReferenceValue _groupTypeField;
+    private BocAutoCompleteReferenceValue _parentField = default!;
+    private BocAutoCompleteReferenceValue _groupTypeField = default!;
 
     public override IBusinessObjectDataSourceControl DataSource
     {
@@ -91,8 +92,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       if (!IsPostBack)
       {
         RolesList.SetSortingOrder(
-            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.Find("User"), SortingDirection.Ascending),
-            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.Find("Position"), SortingDirection.Ascending));
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.FindMandatory("User"), SortingDirection.Ascending),
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.FindMandatory("Position"), SortingDirection.Ascending));
       }
 
       if (ChildrenList.IsReadOnly)
@@ -116,19 +117,20 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected void ParentValidator_ServerValidate (object source, ServerValidateEventArgs args)
     {
-      args.IsValid = IsParentHierarchyValid((Group)_parentField.Value);
+      args.IsValid = IsParentHierarchyValid((Group?)_parentField.Value);
     }
 
-    private void GroupTypeField_SelectionChanged (object sender, EventArgs e)
+    private void GroupTypeField_SelectionChanged (object? sender, EventArgs e)
     {
-      var referenceValue = ((BocAutoCompleteReferenceValue)sender);
+      var referenceValue = ArgumentUtility.CheckNotNullAndType<BocAutoCompleteReferenceValue>("sender", sender!);
+
       referenceValue.SaveValue(false);
       referenceValue.IsDirty = true;
     }
 
-    private bool IsParentHierarchyValid (Group group)
+    private bool IsParentHierarchyValid (Group? group)
     {
-      var groups = group.CreateSequence(g => g.Parent, g => g != null && g != CurrentFunction.CurrentObject && g.Parent != group).ToArray();
+      var groups = group.CreateSequence(g => g.Parent, g => g != CurrentFunction.CurrentObject && g.Parent != group).ToArray();
       if (groups.Length == 0)
         return false;
       if (groups.Last().Parent != null)

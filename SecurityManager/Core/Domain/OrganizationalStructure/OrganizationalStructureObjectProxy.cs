@@ -64,7 +64,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       get { return _displayName; }
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;

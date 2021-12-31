@@ -35,7 +35,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       return NewObject<StateCombination>();
     }
 
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     protected StateCombination ()
     {
@@ -47,14 +47,14 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     protected abstract ObjectList<StateUsage> StateUsages { get; }
 
     [StorageClassNone]
-    public SecurableClassDefinition Class
+    public SecurableClassDefinition? Class
     {
       get { return AccessControlList != null ? AccessControlList.Class : null; }
     }
 
     [DBBidirectionalRelation("StateCombinationsInternal")]
     [Mandatory]
-    public abstract StatefulAccessControlList AccessControlList { get; }
+    public abstract StatefulAccessControlList? AccessControlList { get; }
 
     public bool MatchesStates (IList<StateDefinition> states)
     {
@@ -69,8 +69,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     public void AttachState (StateDefinition state)
     {
       ArgumentUtility.CheckNotNull("state", state);
-      StateUsage stateUsage = StateUsage.NewObject();
-      stateUsage.StateDefinition = state;
+      StateUsage stateUsage = StateUsage.NewObject(state);
       StateUsages.Add(stateUsage);
     }
 
@@ -106,7 +105,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       base.OnDeleted(args);
 
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
   }
 }

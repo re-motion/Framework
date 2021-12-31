@@ -17,8 +17,11 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.SecurityManager.AclTools.Expansion;
+using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
 
 namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
@@ -40,6 +43,20 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       Assert.That(aclExpansionEntry.DeniedAccessTypes, Is.EqualTo(AccessTypeDefinitions2));
     }
 
+    [Test]
+    public void Initialize_WithAclHavingNullClass_ThrowsArgumentException ()
+    {
+      StatelessAccessControlList acl;
+      using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
+      {
+        acl = StatelessAccessControlList.NewObject();
+      }
+
+      var accessConditions = new AclExpansionAccessConditions();
+      Assert.That(
+          () => new AclExpansionEntry(User, Role, acl, accessConditions, AccessTypeDefinitions, AccessTypeDefinitions2),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("AccessControlList must have a Class set.", "accessControlList"));
+    }
 
     [Test]
     public void StateCombinationsForStatelessAclThrowsTest ()

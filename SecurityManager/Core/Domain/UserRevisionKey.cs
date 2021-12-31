@@ -27,7 +27,7 @@ namespace Remotion.SecurityManager.Domain
 
     private const string c_permanentGuid = "{7ABCDBE8-B3F8-41FB-826B-990DC3D4CB51}";
     private static readonly Guid s_globalKey = new Guid(c_permanentGuid);
-    private readonly string _localKey;
+    private readonly string? _localKey;
 
     public UserRevisionKey (string userName)
     {
@@ -46,12 +46,12 @@ namespace Remotion.SecurityManager.Domain
       get { return s_globalKey; }
     }
 
-    public string LocalKey
+    public string? LocalKey
     {
       get { return _localKey; }
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       var otherRevisionKey = obj as UserRevisionKey;
       if (otherRevisionKey == null)

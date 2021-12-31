@@ -51,7 +51,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private readonly IRevisionProvider<TRevisionKey, TRevisionValue> _revisionProvider;
     private readonly object _syncRoot = new object();
-    private TData _cachedData;
+    private TData? _cachedData;
 
     protected RepositoryBase (IRevisionProvider<TRevisionKey, TRevisionValue> revisionProvider)
     {

@@ -57,7 +57,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
       ArgumentUtility.CheckNotNull("groups", groups);
 
       if (HasConstraint())
-        return groups.Where(g => g.Name.Contains(Value) || g.ShortName.Contains(Value));
+        return groups.Where(g => g.Name.Contains(Value) || (g.ShortName != null && g.ShortName.Contains(Value)));
 
       return groups;
     }
@@ -67,7 +67,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
       ArgumentUtility.CheckNotNull("users", users);
 
       if (HasConstraint())
-        return users.Where(u => u.LastName.Contains(Value) || u.FirstName.Contains(Value));
+        return users.Where(u => u.LastName.Contains(Value) || (u.FirstName != null && u.FirstName.Contains(Value)));
 
       return users;
     }

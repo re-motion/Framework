@@ -37,6 +37,27 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
+    public void Equals_TwoNull ()
+    {
+
+      StateCombinationComparer comparer = new StateCombinationComparer();
+
+      Assert.That(comparer.Equals(null,null), Is.True);
+    }
+
+    [Test]
+    public void Equals_OneNull ()
+    {
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();
+      StateCombination combination = _testHelper.CreateStateCombination(orderClass);
+
+      StateCombinationComparer comparer = new StateCombinationComparer();
+
+      Assert.That(comparer.Equals(combination,null), Is.False);
+      Assert.That(comparer.Equals(null, combination), Is.False);
+    }
+
+    [Test]
     public void Equals_TwoStatelessCombinations ()
     {
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition();

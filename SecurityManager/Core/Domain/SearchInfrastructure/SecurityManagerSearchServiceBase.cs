@@ -35,17 +35,17 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
     protected delegate IQueryable<IBusinessObject> QueryFactory (
         TReferencingObject referencingObject,
         IBusinessObjectReferenceProperty property,
-        TenantConstraint tenantConstraint,
-        DisplayNameConstraint displayNameConstraint);
+        TenantConstraint? tenantConstraint,
+        DisplayNameConstraint? displayNameConstraint);
 
     public abstract bool SupportsProperty (IBusinessObjectReferenceProperty property);
 
     protected abstract QueryFactory GetQueryFactory (IBusinessObjectReferenceProperty property);
 
     public IBusinessObject[] Search (
-        IBusinessObject referencingObject,
+        IBusinessObject? referencingObject,
         IBusinessObjectReferenceProperty property,
-        ISearchAvailableObjectsArguments searchArguments)
+        ISearchAvailableObjectsArguments? searchArguments)
     {
       var referencingSecurityManagerObject = ArgumentUtility.CheckType<TReferencingObject>("referencingObject", referencingObject);
       ArgumentUtility.CheckNotNull("property", property);
@@ -66,7 +66,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
       return query.Apply(searchArguments.ResultSizeConstraint);
     }
 
-    private SecurityManagerSearchArguments CreateSearchArguments (ISearchAvailableObjectsArguments searchArguments)
+    private SecurityManagerSearchArguments CreateSearchArguments (ISearchAvailableObjectsArguments? searchArguments)
     {
       if (searchArguments == null)
         return new SecurityManagerSearchArguments(null, null, null);

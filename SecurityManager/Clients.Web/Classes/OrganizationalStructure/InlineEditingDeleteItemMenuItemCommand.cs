@@ -18,6 +18,7 @@
 using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Domain;
+using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
@@ -38,6 +39,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     {
       base.OnClick(menuItem);
 
+      Assertion.IsNotNull(OwnerControl, "OwnerControl != null when processing page lifecycle events.");
       var bocList = (BocList)OwnerControl;
       foreach (TBusinessObject businessObject in bocList.GetSelectedBusinessObjects())
       {
