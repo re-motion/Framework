@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 {
@@ -33,10 +32,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     void OnBeforeTransactionInitialize ();
     void OnTransactionDiscard ();
-    void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs);
+    void OnBeforeObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs);
     // Calls to OnAfterObjectRegistration must be exactly matched with OnBeforeObjectRegistration; they must not be swallowed in case of exceptions.
-    void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> objectIDsToBeLoaded);
-    void OnBeforeSubTransactionObjectRegistration (ICollection<ObjectID> loadedObjectIDs);
+    void OnAfterObjectRegistration (IReadOnlyList<ObjectID> objectIDsToBeLoaded);
+    void OnBeforeSubTransactionObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs);
 
     ClientTransaction CreateSubTransaction (Func<ClientTransaction, ClientTransaction> subTransactionFactory);
     void RemoveSubTransaction ();
