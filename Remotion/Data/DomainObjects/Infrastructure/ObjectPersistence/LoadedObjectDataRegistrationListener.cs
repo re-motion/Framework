@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Utilities;
 
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _hierarchyManager; }
     }
 
-    public void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs)
+    public void OnBeforeObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs)
     {
       ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
 
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    public void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs, ReadOnlyCollection<DomainObject> actuallyLoadedDomainObjects)
+    public void OnAfterObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs, IReadOnlyList<DomainObject> actuallyLoadedDomainObjects)
     {
       ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
       ArgumentUtility.CheckNotNull("actuallyLoadedDomainObjects", actuallyLoadedDomainObjects);
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    public void OnObjectsNotFound (ReadOnlyCollection<ObjectID> notFoundObjectIDs)
+    public void OnObjectsNotFound (IReadOnlyList<ObjectID> notFoundObjectIDs)
     {
       ArgumentUtility.CheckNotNull("notFoundObjectIDs", notFoundObjectIDs);
 
