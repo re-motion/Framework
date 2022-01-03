@@ -68,7 +68,10 @@ namespace Remotion.Development.Moq.UnitTesting
       _decoratedMock.Verify();
     }
 
-    public void CheckDelegationWithContinuation<TR> (Expression<Func<TInterface, TR>> mockSetupExpression, TR fakeResult, Action whenCalled)
+    public void CheckDelegationWithContinuation<TR> (
+        Expression<Func<TInterface, TR>> mockSetupExpression,
+        TR fakeResult,
+        Func<IInvocation, TR> whenCalled)
     {
       _decoratedMock.Setup(mockSetupExpression).Returns(fakeResult).Callback(whenCalled).Verifiable();
 
@@ -78,7 +81,9 @@ namespace Remotion.Development.Moq.UnitTesting
       Assert.That(result, Is.EqualTo(fakeResult));
     }
 
-    public void CheckDelegationWithContinuation (Expression<Action<TInterface>> mockSetupExpression, Action whenCalled)
+    public void CheckDelegationWithContinuation (
+        Expression<Action<TInterface>> mockSetupExpression,
+        Action<IInvocation> whenCalled)
     {
       _decoratedMock.Setup(mockSetupExpression).Callback(whenCalled).Verifiable();
 
