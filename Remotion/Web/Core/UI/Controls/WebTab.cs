@@ -38,7 +38,7 @@ public class WebTab: IWebTab, IControlStateManager
   private IControl? _ownerControl;
   private string _itemID = "";
   private WebString _text = WebString.Empty;
-  private IconInfo _icon;
+  private IconInfo? _icon;
   private bool _isVisible = true;
   private bool _isDisabled;
   private WebTabStrip? _tabStrip;
@@ -201,7 +201,7 @@ public class WebTab: IWebTab, IControlStateManager
   [Category("Appearance")]
   [Description("The icon displayed in this tab.")]
   [NotifyParentProperty(true)]
-  public virtual IconInfo Icon
+  public virtual IconInfo? Icon
   {
     get { return _icon; }
     set { _icon = value; }
@@ -243,16 +243,6 @@ public class WebTab: IWebTab, IControlStateManager
       if (_isDisabled && _tabStrip != null)
         _tabStrip.Tabs.DeselectTabInternal(this);
     }
-  }
-
-  private bool ShouldSerializeIcon ()
-  {
-    return IconInfo.ShouldSerialize(_icon);
-  }
-
-  private void ResetIcon ()
-  {
-    _icon.Reset();
   }
 
   /// <summary> Gets the <see cref="WebTabStrip"/> to which this tab belongs. </summary>
