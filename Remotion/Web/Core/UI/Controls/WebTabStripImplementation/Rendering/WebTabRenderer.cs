@@ -212,10 +212,14 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabAnchorBody);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin anchor body span
 
-      bool hasIcon = tab.Icon.HasRenderingInformation;
+      bool hasIcon = tab.Icon != null && tab.Icon.HasRenderingInformation;
       bool hasText = !tab.Text.IsEmpty;
       if (hasIcon)
+      {
+        Assertion.DebugIsNotNull(tab.Icon, "tab.Icon != null");
         tab.Icon.Render(renderingContext.Writer, renderingContext.Control);
+      }
+
       if (hasText)
       {
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin text span
