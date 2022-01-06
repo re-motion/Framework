@@ -26,6 +26,10 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
   {
   }
 
+  public partial class DotNetSdk48EVerifyPathSource
+  {
+  }
+
   public partial class FixedPEVerifyPathSource
   {
   }
