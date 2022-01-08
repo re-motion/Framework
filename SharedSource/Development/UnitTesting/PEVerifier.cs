@@ -32,6 +32,7 @@ namespace Remotion.Development.UnitTesting
       return
           new PEVerifier(
               new CompoundPEVerifyPathSource(
+                  new DotNetSdk48PEVerifyPathSource(),
                   new WindowsSdk81aPEVerifyPathSource(),
                   new WindowsSdk80aPEVerifyPathSource(),
                   new WindowsSdk71PEVerifyPathSource(),
