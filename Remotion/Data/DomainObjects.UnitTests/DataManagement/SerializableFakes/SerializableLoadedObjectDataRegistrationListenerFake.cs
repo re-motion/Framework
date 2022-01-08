@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
@@ -23,17 +23,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
   [Serializable]
   public class SerializableLoadedObjectDataRegistrationListenerFake : ILoadedObjectDataRegistrationListener
   {
-    public void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs)
+    public void OnBeforeObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs)
     {
       throw new NotImplementedException();
     }
 
-    public void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs, ReadOnlyCollection<DomainObject> actuallyLoadedDomainObjects)
+    public void OnAfterObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs, IReadOnlyList<DomainObject> actuallyLoadedDomainObjects)
     {
       throw new NotImplementedException();
     }
 
-    public void OnObjectsNotFound (ReadOnlyCollection<ObjectID> notFoundObjectIDs)
+    public void OnObjectsNotFound (IReadOnlyList<ObjectID> notFoundObjectIDs)
     {
       throw new NotImplementedException();
     }

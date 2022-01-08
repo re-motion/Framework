@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
@@ -24,9 +24,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// </summary>
   public interface ILoadedObjectDataRegistrationListener
   {
-    void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs);
+    void OnBeforeObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs);
     // Calls to OnAfterObjectRegistration must be exactly matched with OnBeforeObjectRegistration; they must not be swallowed in case of exceptions.
-    void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs, ReadOnlyCollection<DomainObject> actuallyLoadedDomainObjects);
-    void OnObjectsNotFound (ReadOnlyCollection<ObjectID> notFoundObjectIDs);
+    void OnAfterObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs, IReadOnlyList<DomainObject> actuallyLoadedDomainObjects);
+    void OnObjectsNotFound (IReadOnlyList<ObjectID> notFoundObjectIDs);
   }
 }
