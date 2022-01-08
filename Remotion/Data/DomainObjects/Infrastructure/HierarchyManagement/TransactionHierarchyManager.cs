@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
@@ -214,7 +213,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         _parentHierarchyManager.RemoveSubTransaction();
     }
 
-    public void OnBeforeObjectRegistration (ReadOnlyCollection<ObjectID> loadedObjectIDs)
+    public void OnBeforeObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs)
     {
       ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
       if (_parentHierarchyManager != null)
@@ -222,13 +221,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       _readOnlyClientTransactionListener.AddCurrentlyLoadingObjectIDs(loadedObjectIDs);
     }
 
-    public void OnAfterObjectRegistration (ReadOnlyCollection<ObjectID> objectIDsToBeLoaded)
+    public void OnAfterObjectRegistration (IReadOnlyList<ObjectID> objectIDsToBeLoaded)
     {
       ArgumentUtility.CheckNotNull("objectIDsToBeLoaded", objectIDsToBeLoaded);
       _readOnlyClientTransactionListener.RemoveCurrentlyLoadingObjectIDs(objectIDsToBeLoaded);
     }
 
-    public void OnBeforeSubTransactionObjectRegistration (ICollection<ObjectID> loadedObjectIDs)
+    public void OnBeforeSubTransactionObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs)
     {
       ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
 
