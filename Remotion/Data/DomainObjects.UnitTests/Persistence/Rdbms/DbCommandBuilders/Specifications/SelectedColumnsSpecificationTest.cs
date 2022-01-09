@@ -16,13 +16,13 @@
 // 
 using System;
 using System.Text;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuilders.Specifications
 {
@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     private ColumnDefinition _column2;
     private ColumnDefinition _column3;
     private SelectedColumnsSpecification _specification;
-    private ISqlDialect _sqlDialectStub;
+    private Mock<ISqlDialect> _sqlDialectStub;
 
     public override void SetUp ()
     {
@@ -43,10 +43,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       _column2 = ColumnDefinitionObjectMother.CreateColumn("Column2");
       _column3 = ColumnDefinitionObjectMother.CreateColumn("Column3");
       _specification = new SelectedColumnsSpecification(new[] { _column1, _column2, _column3 });
-      _sqlDialectStub = MockRepository.GenerateStub<ISqlDialect>();
-      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Column1")).Return("[delimited Column1]");
-      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Column2")).Return("[delimited Column2]");
-      _sqlDialectStub.Stub(stub => stub.DelimitIdentifier("Column3")).Return("[delimited Column3]");
+      _sqlDialectStub = new Mock<ISqlDialect>();
+      _sqlDialectStub.Setup(stub => stub.DelimitIdentifier("Column1")).Returns("[delimited Column1]");
+      _sqlDialectStub.Setup(stub => stub.DelimitIdentifier("Column2")).Returns("[delimited Column2]");
+      _sqlDialectStub.Setup(stub => stub.DelimitIdentifier("Column3")).Returns("[delimited Column3]");
     }
 
     [Test]
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var sb = new StringBuilder("xx");
 
-      _specification.AppendProjection(sb, _sqlDialectStub);
+      _specification.AppendProjection(sb, _sqlDialectStub.Object);
 
       Assert.That(sb.ToString(), Is.EqualTo("xx[delimited Column1], [delimited Column2], [delimited Column3]"));
     }
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       var sb = new StringBuilder();
 
       var specification = new SelectedColumnsSpecification(new[] { null, _column2, null });
-      specification.AppendProjection(sb, _sqlDialectStub);
+      specification.AppendProjection(sb, _sqlDialectStub.Object);
 
       Assert.That(sb.ToString(), Is.EqualTo("NULL, [delimited Column2], NULL"));
     }

@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Linq.SqlBackend.SqlGeneration;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq
 {
@@ -28,25 +28,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
   public class ScalarResultRowAdapterTest
   {
     private ScalarResultRowAdapter _queryResultRowAdapter;
-    private IStorageTypeInformationProvider _storageTypeInformationProviderStub;
-    private IStorageTypeInformation _storageTypeInformationStub;
+    private Mock<IStorageTypeInformationProvider> _storageTypeInformationProviderStub;
+    private Mock<IStorageTypeInformation> _storageTypeInformationStub;
     private string _scalarValue;
 
     [SetUp]
     public void SetUp ()
     {
-      _storageTypeInformationProviderStub = MockRepository.GenerateStub<IStorageTypeInformationProvider>();
-      _storageTypeInformationStub = MockRepository.GenerateStub<IStorageTypeInformation>();
+      _storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();
+      _storageTypeInformationStub = new Mock<IStorageTypeInformation>();
 
       _scalarValue = "5";
-      _queryResultRowAdapter = new ScalarResultRowAdapter(_scalarValue, _storageTypeInformationProviderStub);
+      _queryResultRowAdapter = new ScalarResultRowAdapter(_scalarValue, _storageTypeInformationProviderStub.Object);
     }
 
     [Test]
     public void GetValue ()
     {
-      _storageTypeInformationProviderStub.Stub(stub => stub.GetStorageType(typeof(int))).Return(_storageTypeInformationStub);
-      _storageTypeInformationStub.Stub(stub => stub.ConvertFromStorageType(_scalarValue)).Return(1);
+      _storageTypeInformationProviderStub.Setup(stub => stub.GetStorageType(typeof(int))).Returns(_storageTypeInformationStub.Object);
+      _storageTypeInformationStub.Setup(stub => stub.ConvertFromStorageType(_scalarValue)).Returns(1);
 
       var result = _queryResultRowAdapter.GetValue<int>(new ColumnID("column1", 0));
 

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -29,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     private DomainObject _notLoadedObject2;
     private DomainObject _invalidObject;
     private DomainObject _notLoadedNonExistingObject;
-    private IClientTransactionListener _listenerMock;
+    private Mock<IClientTransactionListener> _listenerMock;
 
     public override void SetUp ()
     {
@@ -75,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       get { return _notLoadedNonExistingObject; }
     }
 
-    protected IClientTransactionListener ListenerMock
+    protected Mock<IClientTransactionListener> ListenerMock
     {
       get { return _listenerMock; }
     }

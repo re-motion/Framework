@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
@@ -23,14 +24,13 @@ using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   [TestFixture]
   public class SortedPropertyComparerTest : StandardMappingTest
   {
-    private IDataContainerMapReadOnlyView _dataContainerMapStub;
+    private Mock<IDataContainerMapReadOnlyView> _dataContainerMapStub;
     private PropertyDefinition _orderNumberPropertyDefinition;
     private PropertyDefinition _officialPropertyDefinition;
 
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _dataContainerMapStub = MockRepository.GenerateStub<IDataContainerMapReadOnlyView>();
+      _dataContainerMapStub = new Mock<IDataContainerMapReadOnlyView>();
       _orderNumberPropertyDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryPropertyDefinition(typeof(Order).FullName + ".OrderNumber");
       _officialPropertyDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryPropertyDefinition(typeof(Order).FullName + ".Official");
     }
@@ -49,14 +49,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var specification1 = new SortedPropertySpecification(_orderNumberPropertyDefinition, SortOrder.Ascending);
       var specification2 = new SortedPropertySpecification(_orderNumberPropertyDefinition, SortOrder.Descending);
 
-      var compoundComparer = (CompoundComparer<DomainObject>)SortedPropertyComparer.CreateCompoundComparer(new[] { specification1, specification2 }, _dataContainerMapStub, ValueAccess.Current);
+      var compoundComparer = (CompoundComparer<DomainObject>)SortedPropertyComparer.CreateCompoundComparer(
+          new[] { specification1, specification2 },
+          _dataContainerMapStub.Object,
+          ValueAccess.Current);
       Assert.That(compoundComparer.Comparers.Count, Is.EqualTo(2));
 
       Assert.That(((SortedPropertyComparer)compoundComparer.Comparers[0]).SortedPropertySpecification, Is.SameAs(specification1));
-      Assert.That(((SortedPropertyComparer)compoundComparer.Comparers[0]).DataContainerMap, Is.SameAs(_dataContainerMapStub));
+      Assert.That(((SortedPropertyComparer)compoundComparer.Comparers[0]).DataContainerMap, Is.SameAs(_dataContainerMapStub.Object));
 
       Assert.That(((SortedPropertyComparer)compoundComparer.Comparers[1]).SortedPropertySpecification, Is.SameAs(specification2));
-      Assert.That(((SortedPropertyComparer)compoundComparer.Comparers[1]).DataContainerMap, Is.SameAs(_dataContainerMapStub));
+      Assert.That(((SortedPropertyComparer)compoundComparer.Comparers[1]).DataContainerMap, Is.SameAs(_dataContainerMapStub.Object));
     }
 
     [Test]
@@ -69,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       PrepareDataContainer(_dataContainerMapStub, domainObject2, 2);
 
       var specification = new SortedPropertySpecification(_orderNumberPropertyDefinition, SortOrder.Ascending);
-      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub, ValueAccess.Current);
+      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub.Object, ValueAccess.Current);
 
       Assert.That(comparer.Compare(domainObject1, domainObject1), Is.EqualTo(0));
       Assert.That(comparer.Compare(domainObject1, domainObject2), Is.EqualTo(-1));
@@ -87,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       PrepareDataContainer(_dataContainerMapStub, domainObject2, 2);
 
       var specification = new SortedPropertySpecification(_orderNumberPropertyDefinition, SortOrder.Descending);
-      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub, ValueAccess.Current);
+      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub.Object, ValueAccess.Current);
 
       Assert.That(comparer.Compare(domainObject1, domainObject1), Is.EqualTo(0));
       Assert.That(comparer.Compare(domainObject1, domainObject2), Is.EqualTo(1));
@@ -103,7 +106,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       PrepareDataContainer(_dataContainerMapStub, domainObject1, 1);
 
       var specification = new SortedPropertySpecification(_officialPropertyDefinition, SortOrder.Ascending);
-      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub, ValueAccess.Current);
+      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub.Object, ValueAccess.Current);
 
       Assert.That(comparer.Compare(domainObject1, domainObject1), Is.EqualTo(0));
       Assert.That(comparer.Compare(domainObject1, null), Is.EqualTo(-1));
@@ -119,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       PrepareDataContainer(_dataContainerMapStub, domainObject1, 1);
 
       var specification = new SortedPropertySpecification(_officialPropertyDefinition, SortOrder.Descending);
-      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub, ValueAccess.Current);
+      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub.Object, ValueAccess.Current);
 
       Assert.That(comparer.Compare(domainObject1, domainObject1), Is.EqualTo(0));
       Assert.That(comparer.Compare(domainObject1, null), Is.EqualTo(1));
@@ -143,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       ClientTransactionTestHelperWithMocks.EnsureTransactionThrowsOnEvents(transaction);
 
       var specification = new SortedPropertySpecification(_orderNumberPropertyDefinition, SortOrder.Descending);
-      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub, ValueAccess.Current);
+      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub.Object, ValueAccess.Current);
 
       Assert.That(comparer.Compare(domainObject1, domainObject1), Is.EqualTo(0));
     }
@@ -158,7 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       PrepareDataContainer(_dataContainerMapStub, domainObject2);
 
       var specification = new SortedPropertySpecification(_orderNumberPropertyDefinition, SortOrder.Descending);
-      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub, ValueAccess.Current);
+      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub.Object, ValueAccess.Current);
 
       Assert.That(comparer.Compare(domainObject1, domainObject1), Is.EqualTo(0));
       Assert.That(comparer.Compare(domainObject1, domainObject2), Is.EqualTo(-1));
@@ -181,7 +184,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       dataContainer2.SetValue(propertyDefinition, "B");
 
       var specification = new SortedPropertySpecification(propertyDefinition, SortOrder.Ascending);
-      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub, ValueAccess.Current);
+      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub.Object, ValueAccess.Current);
 
       Assert.That(comparer.Compare(domainObject1, domainObject1), Is.EqualTo(0));
       Assert.That(comparer.Compare(domainObject1, domainObject2), Is.EqualTo(-1));
@@ -205,7 +208,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       dataContainer2.SetValue(propertyDefinition, "B");
 
       var specification = new SortedPropertySpecification(propertyDefinition, SortOrder.Ascending);
-      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub, ValueAccess.Current);
+      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub.Object, ValueAccess.Current);
 
       Assert.That(comparer.Compare(domainObject1, domainObject1), Is.EqualTo(0));
       Assert.That(comparer.Compare(domainObject1, domainObject2), Is.EqualTo(-1));
@@ -224,7 +227,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       PrepareDataContainer(_dataContainerMapStub, domainObject, 1);
 
       var specification = new SortedPropertySpecification(_orderNumberPropertyDefinition, SortOrder.Descending);
-      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub, ValueAccess.Current);
+      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub.Object, ValueAccess.Current);
 
       Assert.That(comparer.Compare(domainObject, domainObject), Is.EqualTo(0));
       Assert.That(comparer.Compare(domainObject, unloadedDomainObject), Is.EqualTo(-1));
@@ -244,7 +247,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       PrepareDataContainer(_dataContainerMapStub, domainObject2, 2);
 
       var specification = new SortedPropertySpecification(_orderNumberPropertyDefinition, SortOrder.Ascending);
-      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub, ValueAccess.Original);
+      var comparer = new SortedPropertyComparer(specification, _dataContainerMapStub.Object, ValueAccess.Original);
 
       Assert.That(comparer.Compare(domainObject1, domainObject1), Is.EqualTo(0));
       Assert.That(comparer.Compare(domainObject1, domainObject2), Is.EqualTo(1));
@@ -252,17 +255,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(comparer.Compare(domainObject2, domainObject2), Is.EqualTo(0));
     }
 
-    private DataContainer PrepareDataContainer (IDataContainerMapReadOnlyView dataContainerMapStub, Order domainObject, int orderNumber)
+    private DataContainer PrepareDataContainer (Mock<IDataContainerMapReadOnlyView> dataContainerMapStub, Order domainObject, int orderNumber)
     {
       var dataContainer = PrepareDataContainer(dataContainerMapStub, domainObject);
       SetOrderNumber(dataContainer, orderNumber);
       return dataContainer;
     }
 
-    private DataContainer PrepareDataContainer (IDataContainerMapReadOnlyView dataContainerMapStub, DomainObject domainObject)
+    private DataContainer PrepareDataContainer (Mock<IDataContainerMapReadOnlyView> dataContainerMapStub, DomainObject domainObject)
     {
       var dataContainer = DataContainer.CreateNew(domainObject.ID);
-      dataContainerMapStub.Stub(stub => stub[domainObject.ID]).Return(dataContainer);
+      dataContainerMapStub.Setup(stub => stub[domainObject.ID]).Returns(dataContainer);
       return dataContainer;
     }
 

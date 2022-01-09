@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
@@ -22,7 +23,6 @@ using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflectorTests
 {
@@ -46,14 +46,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       var propertyInfo = PropertyInfoAdapter.Create(_classType.GetProperty("NoAttributeForDomainObjectCollection"));
       var relationEndPointReflector = CreateRelationEndPointReflector(propertyInfo);
 
-      DomainModelConstraintProviderStub.Stub(stub => stub.IsNullable(propertyInfo)).Return(true);
+      DomainModelConstraintProviderStub.Setup(stub => stub.IsNullable(propertyInfo)).Returns(true);
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition), actual);
-      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NoAttributeForDomainObjectCollection"));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo(
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NoAttributeForDomainObjectCollection"));
       Assert.That(actual.IsMandatory, Is.False);
-      DomainModelConstraintProviderStub.VerifyAllExpectations();
+      DomainModelConstraintProviderStub.Verify();
     }
 
     [Test]
@@ -62,14 +65,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       var propertyInfo = PropertyInfoAdapter.Create(_classType.GetProperty("NoAttributeForVirtualCollection"));
       var relationEndPointReflector = CreateRelationEndPointReflector(propertyInfo);
 
-      DomainModelConstraintProviderStub.Stub(stub => stub.IsNullable(propertyInfo)).Return(true);
+      DomainModelConstraintProviderStub.Setup(stub => stub.IsNullable(propertyInfo)).Returns(true);
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOf(typeof(VirtualCollectionRelationEndPointDefinition), actual);
-      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NoAttributeForVirtualCollection"));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo(
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NoAttributeForVirtualCollection"));
       Assert.That(actual.IsMandatory, Is.False);
-      DomainModelConstraintProviderStub.VerifyAllExpectations();
+      DomainModelConstraintProviderStub.Verify();
     }
 
     [Test]
@@ -78,14 +84,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       var propertyInfo = PropertyInfoAdapter.Create(_classType.GetProperty("NotNullableForDomainObjectCollection"));
       var relationEndPointReflector = CreateRelationEndPointReflector(propertyInfo);
 
-      DomainModelConstraintProviderStub.Stub(stub => stub.IsNullable(propertyInfo)).Return(false);
+      DomainModelConstraintProviderStub.Setup(stub => stub.IsNullable(propertyInfo)).Returns(false);
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition), actual);
-      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NotNullableForDomainObjectCollection"));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo(
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NotNullableForDomainObjectCollection"));
       Assert.That(actual.IsMandatory, Is.True);
-      DomainModelConstraintProviderStub.VerifyAllExpectations();
+      DomainModelConstraintProviderStub.Verify();
     }
 
     [Test]
@@ -94,14 +103,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       var propertyInfo = PropertyInfoAdapter.Create(_classType.GetProperty("NotNullableForVirtualCollection"));
       var relationEndPointReflector = CreateRelationEndPointReflector(propertyInfo);
 
-      DomainModelConstraintProviderStub.Stub(stub => stub.IsNullable(propertyInfo)).Return(false);
+      DomainModelConstraintProviderStub.Setup(stub => stub.IsNullable(propertyInfo)).Returns(false);
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOf(typeof(VirtualCollectionRelationEndPointDefinition), actual);
-      Assert.That(actual.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NotNullableForVirtualCollection"));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo(
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.NotNullableForVirtualCollection"));
       Assert.That(actual.IsMandatory, Is.True);
-      DomainModelConstraintProviderStub.VerifyAllExpectations();
+      DomainModelConstraintProviderStub.Verify();
     }
 
     [Test]
@@ -110,18 +122,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       var propertyInfo = PropertyInfoAdapter.Create(_classType.GetProperty("BidirectionalOneToOne"));
       var relationEndPointReflector = CreateRelationEndPointReflector(propertyInfo);
 
-      DomainModelConstraintProviderStub.Stub(stub => stub.IsNullable(propertyInfo)).Return(true);
+      DomainModelConstraintProviderStub.Setup(stub => stub.IsNullable(propertyInfo)).Returns(true);
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOf(typeof(VirtualObjectRelationEndPointDefinition), actual);
       VirtualObjectRelationEndPointDefinition relationEndPointDefinition = (VirtualObjectRelationEndPointDefinition)actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
-      Assert.That(relationEndPointDefinition.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToOne"));
+      Assert.That(
+          relationEndPointDefinition.PropertyName,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToOne"));
       Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(ClassWithRealRelationEndPoints)));
       Assert.That(relationEndPointDefinition.Cardinality, Is.EqualTo(CardinalityType.One));
       Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
-      DomainModelConstraintProviderStub.VerifyAllExpectations();
+      DomainModelConstraintProviderStub.Verify();
     }
 
     [Test]
@@ -130,36 +144,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       var propertyInfo = PropertyInfoAdapter.Create(_classType.GetProperty("BidirectionalOneToManyForDomainObjectCollection"));
       var relationEndPointReflector = CreateRelationEndPointReflector(propertyInfo);
 
-      DomainModelConstraintProviderStub.Stub(stub => stub.IsNullable(propertyInfo)).Return(true);
+      DomainModelConstraintProviderStub.Setup(stub => stub.IsNullable(propertyInfo)).Returns(true);
       SortExpressionDefinitionProviderStub
-          .Stub(stub => stub.GetSortExpression(Arg<IPropertyInformation>.Is.Anything, Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
-          .Throw(new InvalidOperationException("GetSortExpression() should not be called during GetMetadata()"));
+          .Setup(stub => stub.GetSortExpression(It.IsAny<IPropertyInformation>(), It.IsAny<ClassDefinition>(), It.IsAny<string>()))
+          .Throws(new InvalidOperationException("GetSortExpression() should not be called during GetMetadata()"));
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition), actual);
       DomainObjectCollectionRelationEndPointDefinition relationEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition)actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
-      Assert.That(relationEndPointDefinition.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToManyForDomainObjectCollection"));
+      Assert.That(
+          relationEndPointDefinition.PropertyName,
+          Is.EqualTo(
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToManyForDomainObjectCollection"));
       Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(ObjectList<ClassWithRealRelationEndPoints>)));
       Assert.That(relationEndPointDefinition.Cardinality, Is.EqualTo(CardinalityType.Many));
       Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
 
       var oppositeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
-      var oppositeEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      oppositeEndPointDefinition.Stub(stub => stub.ClassDefinition).Return(oppositeClassDefinition);
-      var relationDefinition = new RelationDefinition("relation", relationEndPointDefinition, oppositeEndPointDefinition);
+      var oppositeEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      oppositeEndPointDefinition.Setup(stub => stub.ClassDefinition).Returns(oppositeClassDefinition);
+      var relationDefinition = new RelationDefinition("relation", relationEndPointDefinition, oppositeEndPointDefinition.Object);
       relationEndPointDefinition.SetRelationDefinition(relationDefinition);
       var oppositePropertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
           oppositeClassDefinition,
           oppositeClassDefinition.ClassType,
           "NoAttributeForDomainObjectCollection");
       var sortExpressionDefinition = new SortExpressionDefinition(new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(oppositePropertyDefinition) });
-      SortExpressionDefinitionProviderStub.BackToRecord();
+      SortExpressionDefinitionProviderStub.Reset();
       SortExpressionDefinitionProviderStub
-          .Stub(stub => stub.GetSortExpression(relationEndPointDefinition.PropertyInfo, oppositeClassDefinition, "NoAttributeForDomainObjectCollection"))
-          .Return(sortExpressionDefinition);
-      SortExpressionDefinitionProviderStub.Replay();
+          .Setup(stub => stub.GetSortExpression(relationEndPointDefinition.PropertyInfo, oppositeClassDefinition, "NoAttributeForDomainObjectCollection"))
+          .Returns(sortExpressionDefinition);
 
       Assert.That(relationEndPointDefinition.GetSortExpression(), Is.SameAs(sortExpressionDefinition));
     }
@@ -170,36 +186,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
       var propertyInfo = PropertyInfoAdapter.Create(_classType.GetProperty("BidirectionalOneToManyForVirtualCollection"));
       var relationEndPointReflector = CreateRelationEndPointReflector(propertyInfo);
 
-      DomainModelConstraintProviderStub.Stub(stub => stub.IsNullable(propertyInfo)).Return(true);
+      DomainModelConstraintProviderStub.Setup(stub => stub.IsNullable(propertyInfo)).Returns(true);
       SortExpressionDefinitionProviderStub
-          .Stub(stub => stub.GetSortExpression(Arg<IPropertyInformation>.Is.Anything, Arg<ClassDefinition>.Is.Anything, Arg<string>.Is.Anything))
-          .Throw(new InvalidOperationException("GetSortExpression() should not be called during GetMetadata()"));
+          .Setup(stub => stub.GetSortExpression(It.IsAny<IPropertyInformation>(), It.IsAny<ClassDefinition>(), It.IsAny<string>()))
+          .Throws(new InvalidOperationException("GetSortExpression() should not be called during GetMetadata()"));
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
       Assert.IsInstanceOf(typeof(VirtualCollectionRelationEndPointDefinition), actual);
       VirtualCollectionRelationEndPointDefinition relationEndPointDefinition = (VirtualCollectionRelationEndPointDefinition)actual;
       Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
-      Assert.That(relationEndPointDefinition.PropertyName, Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToManyForVirtualCollection"));
+      Assert.That(
+          relationEndPointDefinition.PropertyName,
+          Is.EqualTo(
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithVirtualRelationEndPoints.BidirectionalOneToManyForVirtualCollection"));
       Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(IObjectList<ClassWithRealRelationEndPoints>)));
       Assert.That(relationEndPointDefinition.Cardinality, Is.EqualTo(CardinalityType.Many));
       Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
 
       var oppositeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
-      var oppositeEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      oppositeEndPointDefinition.Stub(stub => stub.ClassDefinition).Return(oppositeClassDefinition);
-      var relationDefinition = new RelationDefinition("relation", relationEndPointDefinition, oppositeEndPointDefinition);
+      var oppositeEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      oppositeEndPointDefinition.Setup(stub => stub.ClassDefinition).Returns(oppositeClassDefinition);
+      var relationDefinition = new RelationDefinition("relation", relationEndPointDefinition, oppositeEndPointDefinition.Object);
       relationEndPointDefinition.SetRelationDefinition(relationDefinition);
       var oppositePropertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
           oppositeClassDefinition,
           oppositeClassDefinition.ClassType,
           "NoAttributeForVirtualCollection");
       var sortExpressionDefinition = new SortExpressionDefinition(new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(oppositePropertyDefinition) });
-      SortExpressionDefinitionProviderStub.BackToRecord();
+      SortExpressionDefinitionProviderStub.Reset();
       SortExpressionDefinitionProviderStub
-          .Stub(stub => stub.GetSortExpression(relationEndPointDefinition.PropertyInfo, oppositeClassDefinition, "NoAttributeForVirtualCollection"))
-          .Return(sortExpressionDefinition);
-      SortExpressionDefinitionProviderStub.Replay();
+          .Setup(stub => stub.GetSortExpression(relationEndPointDefinition.PropertyInfo, oppositeClassDefinition, "NoAttributeForVirtualCollection"))
+          .Returns(sortExpressionDefinition);
 
       Assert.That(relationEndPointDefinition.GetSortExpression(), Is.SameAs(sortExpressionDefinition));
     }
@@ -238,8 +256,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub,
-          SortExpressionDefinitionProviderStub);
+          DomainModelConstraintProviderStub.Object,
+          SortExpressionDefinitionProviderStub.Object);
     }
   }
 }

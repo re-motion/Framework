@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
@@ -23,7 +24,6 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
 using Remotion.Mixins.Utilities;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 {
@@ -149,12 +149,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
 
     private ClientTransaction CreateTransactionWithStubbedLoading (DataContainer loadableDataContainer)
     {
-      var persistenceStrategyStub = MockRepository.GenerateStub<IFetchEnabledPersistenceStrategy>();
-      persistenceStrategyStub.Stub(stub => stub.LoadObjectData(loadableDataContainer.ID)).Return(new FreshlyLoadedObjectData(loadableDataContainer));
+      var persistenceStrategyStub = new Mock<IFetchEnabledPersistenceStrategy>();
+      persistenceStrategyStub.Setup(stub => stub.LoadObjectData(loadableDataContainer.ID)).Returns(new FreshlyLoadedObjectData(loadableDataContainer));
       persistenceStrategyStub
-          .Stub(stub => stub.LoadObjectData(Arg<IEnumerable<ObjectID>>.List.Equal(new[] { loadableDataContainer.ID })))
-          .Return(new[] { new FreshlyLoadedObjectData(loadableDataContainer)});
-      return ClientTransactionObjectMother.CreateTransactionWithPersistenceStrategy<ClientTransaction>(persistenceStrategyStub);
+          .Setup(stub => stub.LoadObjectData(new[] { loadableDataContainer.ID }))
+          .Returns(new[] { new FreshlyLoadedObjectData(loadableDataContainer)});
+      return ClientTransactionObjectMother.CreateTransactionWithPersistenceStrategy<ClientTransaction>(persistenceStrategyStub.Object);
     }
   }
 }

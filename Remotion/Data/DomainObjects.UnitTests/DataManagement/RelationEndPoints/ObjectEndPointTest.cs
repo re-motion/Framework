@@ -16,13 +16,13 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -30,14 +30,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   public class ObjectEndPointTest : ClientTransactionBaseTest
   {
     private RelationEndPointID _endPointID;
-    private TestableObjectEndPoint _endPointPartialMock;
+    private Mock<TestableObjectEndPoint> _endPointPartialMock;
 
     public override void SetUp ()
     {
       base.SetUp();
 
       _endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
-      _endPointPartialMock = MockRepository.GeneratePartialMock<TestableObjectEndPoint>(TestableClientTransaction, _endPointID);
+      _endPointPartialMock = new Mock<TestableObjectEndPoint>(TestableClientTransaction, _endPointID) { CallBase = true };
     }
 
     [Test]
@@ -58,15 +58,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var sourceID = RelationEndPointID.Create(DomainObjectIDs.OrderItem2, _endPointID.Definition);
       var source = RelationEndPointObjectMother.CreateObjectEndPoint(sourceID, DomainObjectIDs.OrderTicket2);
-      _endPointPartialMock.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.OrderTicket1);
-      _endPointPartialMock.Expect(mock => mock.CallSetOppositeObjectDataFromSubTransaction(source));
-      _endPointPartialMock.Stub(stub => stub.Touch());
-      _endPointPartialMock.Stub(stub => stub.HasChanged).Return(false);
-      _endPointPartialMock.Replay();
+      _endPointPartialMock.Setup(stub => stub.OppositeObjectID).Returns(DomainObjectIDs.OrderTicket1);
+      _endPointPartialMock.Object.SetupSetOppositeObjectDataFromSubTransaction(_endPointPartialMock, source).Verifiable();
+      _endPointPartialMock.Setup(stub => stub.Touch());
+      _endPointPartialMock.Setup(stub => stub.HasChanged).Returns(false);
 
-      _endPointPartialMock.SetDataFromSubTransaction(source);
+      _endPointPartialMock.Object.SetDataFromSubTransaction(source);
 
-      _endPointPartialMock.VerifyAllExpectations();
+      _endPointPartialMock.Verify();
     }
 
     [Test]
@@ -74,15 +73,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var sourceID = RelationEndPointID.Create(DomainObjectIDs.OrderItem2, _endPointID.Definition);
       var source = RelationEndPointObjectMother.CreateObjectEndPoint(sourceID, DomainObjectIDs.OrderTicket1);
-      _endPointPartialMock.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.OrderTicket1);
-      _endPointPartialMock.Expect(mock => mock.CallSetOppositeObjectDataFromSubTransaction(source));
-      _endPointPartialMock.Stub(stub => stub.Touch());
-      _endPointPartialMock.Stub(stub => stub.HasChanged).Return(false);
-      _endPointPartialMock.Replay();
+      _endPointPartialMock.Setup(stub => stub.OppositeObjectID).Returns(DomainObjectIDs.OrderTicket1);
+      _endPointPartialMock.Object.SetupSetOppositeObjectDataFromSubTransaction(_endPointPartialMock, source).Verifiable();
+      _endPointPartialMock.Setup(stub => stub.Touch());
+      _endPointPartialMock.Setup(stub => stub.HasChanged).Returns(false);
 
-      _endPointPartialMock.SetDataFromSubTransaction(source);
+      _endPointPartialMock.Object.SetDataFromSubTransaction(source);
 
-      _endPointPartialMock.VerifyAllExpectations();
+      _endPointPartialMock.Verify();
     }
 
     [Test]
@@ -93,15 +91,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       source.Touch();
       Assert.That(source.HasBeenTouched, Is.True);
 
-      _endPointPartialMock.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.OrderTicket1);
-      _endPointPartialMock.Stub(stub => stub.HasBeenTouched).Return(false);
-      _endPointPartialMock.Stub(stub => stub.CallSetOppositeObjectDataFromSubTransaction(source));
-      _endPointPartialMock.Expect(mock => mock.Touch());
-      _endPointPartialMock.Replay();
+      _endPointPartialMock.Setup(stub => stub.OppositeObjectID).Returns(DomainObjectIDs.OrderTicket1);
+      _endPointPartialMock.Setup(stub => stub.HasBeenTouched).Returns(false);
+      _endPointPartialMock.Object.SetupSetOppositeObjectDataFromSubTransaction(_endPointPartialMock, source);
+      _endPointPartialMock.Setup(mock => mock.Touch()).Verifiable();
 
-      _endPointPartialMock.SetDataFromSubTransaction(source);
+      _endPointPartialMock.Object.SetDataFromSubTransaction(source);
 
-      _endPointPartialMock.VerifyAllExpectations();
+      _endPointPartialMock.Verify();
     }
 
     [Test]
@@ -111,16 +108,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       ObjectEndPoint source = RelationEndPointObjectMother.CreateObjectEndPoint(sourceID, DomainObjectIDs.OrderTicket2);
       Assert.That(source.HasBeenTouched, Is.False);
 
-      _endPointPartialMock.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.OrderTicket1);
-      _endPointPartialMock.Stub(stub => stub.HasBeenTouched).Return(false);
-      _endPointPartialMock.Stub(stub => stub.HasChanged).Return(true);
-      _endPointPartialMock.Stub(stub => stub.CallSetOppositeObjectDataFromSubTransaction(source));
-      _endPointPartialMock.Expect(mock => mock.Touch());
-      _endPointPartialMock.Replay();
+      _endPointPartialMock.Setup(stub => stub.OppositeObjectID).Returns(DomainObjectIDs.OrderTicket1);
+      _endPointPartialMock.Setup(stub => stub.HasBeenTouched).Returns(false);
+      _endPointPartialMock.Setup(stub => stub.HasChanged).Returns(true);
+      _endPointPartialMock.Object.SetupSetOppositeObjectDataFromSubTransaction(_endPointPartialMock, source);
+      _endPointPartialMock.Setup(mock => mock.Touch()).Verifiable();
 
-      _endPointPartialMock.SetDataFromSubTransaction(source);
+      _endPointPartialMock.Object.SetDataFromSubTransaction(source);
 
-      _endPointPartialMock.VerifyAllExpectations();
+      _endPointPartialMock.Verify();
     }
 
     [Test]
@@ -130,15 +126,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       ObjectEndPoint source = RelationEndPointObjectMother.CreateObjectEndPoint(sourceID, DomainObjectIDs.OrderTicket1);
       Assert.That(source.HasBeenTouched, Is.False);
 
-      _endPointPartialMock.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.OrderTicket1);
-      _endPointPartialMock.Stub(stub => stub.HasBeenTouched).Return(false);
-      _endPointPartialMock.Stub(stub => stub.HasChanged).Return(false);
-      _endPointPartialMock.Stub(stub => stub.CallSetOppositeObjectDataFromSubTransaction(source));
-      _endPointPartialMock.Replay();
+      _endPointPartialMock.Setup(stub => stub.OppositeObjectID).Returns(DomainObjectIDs.OrderTicket1);
+      _endPointPartialMock.Setup(stub => stub.HasBeenTouched).Returns(false);
+      _endPointPartialMock.Setup(stub => stub.HasChanged).Returns(false);
+      _endPointPartialMock.Object.SetupSetOppositeObjectDataFromSubTransaction(_endPointPartialMock, source);
 
-      _endPointPartialMock.SetDataFromSubTransaction(source);
+      _endPointPartialMock.Object.SetDataFromSubTransaction(source);
 
-      _endPointPartialMock.AssertWasNotCalled(mock => mock.Touch());
+      _endPointPartialMock.Verify(mock => mock.Touch(), Times.Never());
     }
 
     [Test]
@@ -147,7 +142,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var otherID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.OrderTicket1, "Order");
       ObjectEndPoint source = RelationEndPointObjectMother.CreateRealObjectEndPoint(otherID);
       Assert.That(
-          () => _endPointPartialMock.SetDataFromSubTransaction(source),
+          () => _endPointPartialMock.Object.SetDataFromSubTransaction(source),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Cannot set this end point's value from "
@@ -158,26 +153,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void CreateRemoveCommand ()
     {
-      var fakeSetCommand = MockRepository.GenerateStub<IDataManagementCommand>();
-      _endPointPartialMock.Expect(mock => mock.CreateSetCommand(null)).Return(fakeSetCommand);
-      _endPointPartialMock.Stub(mock => mock.OppositeObjectID).Return(DomainObjectIDs.OrderTicket1);
-      _endPointPartialMock.Replay();
-      var relatedObject = DomainObjectMother.CreateFakeObject<OrderTicket>(_endPointPartialMock.OppositeObjectID);
+      var fakeSetCommand = new Mock<IDataManagementCommand>();
+      _endPointPartialMock.Setup(mock => mock.CreateSetCommand(null)).Returns(fakeSetCommand.Object).Verifiable();
+      _endPointPartialMock.Setup(mock => mock.OppositeObjectID).Returns(DomainObjectIDs.OrderTicket1);
+      var relatedObject = DomainObjectMother.CreateFakeObject<OrderTicket>(_endPointPartialMock.Object.OppositeObjectID);
 
-      var result = _endPointPartialMock.CreateRemoveCommand(relatedObject);
+      var result = _endPointPartialMock.Object.CreateRemoveCommand(relatedObject);
 
-      _endPointPartialMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(fakeSetCommand));
+      _endPointPartialMock.Verify();
+      Assert.That(result, Is.SameAs(fakeSetCommand.Object));
     }
 
     [Test]
     public void CreateRemoveCommand_InvalidID ()
     {
-      _endPointPartialMock.Stub(mock => mock.OppositeObjectID).Return(DomainObjectIDs.OrderTicket1);
+      _endPointPartialMock.Setup(mock => mock.OppositeObjectID).Returns(DomainObjectIDs.OrderTicket1);
 
       var orderTicket = DomainObjectIDs.OrderTicket4.GetObject<OrderTicket>();
       Assert.That(
-          () => _endPointPartialMock.CreateRemoveCommand(orderTicket),
+          () => _endPointPartialMock.Object.CreateRemoveCommand(orderTicket),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "Cannot remove object 'OrderTicket|6768db2b-9c66-4e2f-bba2-89c56718ff2b|System.Guid' from object end point "
@@ -188,11 +182,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetOppositeRelationEndPointID_NullEndPoint ()
     {
-      _endPointPartialMock.Stub(stub => stub.OppositeObjectID).Return(null);
+      _endPointPartialMock.Setup(stub => stub.OppositeObjectID).Returns((ObjectID)null);
 
-      var oppositeEndPointID = _endPointPartialMock.GetOppositeRelationEndPointID();
+      var oppositeEndPointID = _endPointPartialMock.Object.GetOppositeRelationEndPointID();
 
-      var expectedID = RelationEndPointID.Create(null, _endPointPartialMock.Definition.GetOppositeEndPointDefinition());
+      var expectedID = RelationEndPointID.Create(null, _endPointPartialMock.Object.Definition.GetOppositeEndPointDefinition());
       Assert.That(oppositeEndPointID, Is.EqualTo(expectedID));
     }
 
@@ -211,9 +205,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetOppositeRelationEndPointID_NonNullEndPoint ()
     {
-      _endPointPartialMock.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.OrderTicket1);
+      _endPointPartialMock.Setup(stub => stub.OppositeObjectID).Returns(DomainObjectIDs.OrderTicket1);
 
-      var oppositeEndPointID = _endPointPartialMock.GetOppositeRelationEndPointID();
+      var oppositeEndPointID = _endPointPartialMock.Object.GetOppositeRelationEndPointID();
 
       var expectedID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.OrderTicket1, "Order");
       Assert.That(oppositeEndPointID, Is.EqualTo(expectedID));
@@ -235,8 +229,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetOppositeRelationEndPointIDs_BidirectionalEndPoint ()
     {
-      _endPointPartialMock.Stub(stub => stub.OppositeObjectID).Return(DomainObjectIDs.OrderTicket1);
-      var oppositeEndPointIDs = _endPointPartialMock.GetOppositeRelationEndPointIDs().ToArray();
+      _endPointPartialMock.Setup(stub => stub.OppositeObjectID).Returns(DomainObjectIDs.OrderTicket1);
+      var oppositeEndPointIDs = _endPointPartialMock.Object.GetOppositeRelationEndPointIDs().ToArray();
 
       var expectedID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.OrderTicket1, "Order");
       Assert.That(oppositeEndPointIDs, Is.EqualTo(new[] { expectedID }));

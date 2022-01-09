@@ -16,6 +16,7 @@
 // 
 using System;
 using System.IO;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.ConfigurationLoader.XmlBasedConfigurationLoader;
@@ -25,7 +26,6 @@ using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting.Configuration;
 using Remotion.Utilities;
-using Rhino.Mocks;
 using File = System.IO.File;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
@@ -147,34 +147,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
 #endif
     public void GetDefaultQueryFilePath_WithRelativeSearchPath ()
     {
-      IAppContextProvider providerStub = MockRepository.GenerateStub<IAppContextProvider>();
-      providerStub.Stub(_ => _.BaseDirectory).Return(Path.GetPathRoot(_tempQueriesDirectory));
-      providerStub.Stub(_ => _.RelativeSearchPath)
-          .Return(Path.GetFullPath(_tempQueriesDirectory).Substring(Path.GetPathRoot(_tempQueriesDirectory).Length)); // make a relative path
+      var providerStub = new Mock<IAppContextProvider>();
+      providerStub.Setup(_ => _.BaseDirectory).Returns(Path.GetPathRoot(_tempQueriesDirectory));
+      providerStub
+          .Setup(_ => _.RelativeSearchPath)
+          .Returns(Path.GetFullPath(_tempQueriesDirectory).Substring(Path.GetPathRoot(_tempQueriesDirectory).Length)); // make a relative path
 
-      QueryConfiguration configuration = new QueryConfiguration(providerStub);
+      QueryConfiguration configuration = new QueryConfiguration(providerStub.Object);
       Assert.That(configuration.GetDefaultQueryFilePath(), Is.EqualTo(Path.Combine(_tempQueriesDirectory, "queries.xml")));
     }
 
     [Test]
     public void GetDefaultQueryFilePath_WithMultipleRelativeSearchPaths ()
     {
-      IAppContextProvider providerStub = MockRepository.GenerateStub<IAppContextProvider>();
-      providerStub.Stub(_ => _.BaseDirectory).Return(Path.GetPathRoot(_tempQueriesDirectory));
-      providerStub.Stub(_ => _.RelativeSearchPath)
-          .Return(@"A;B;C;Foo;" + Path.GetFullPath(_tempQueriesDirectory).Substring(Path.GetPathRoot(_tempQueriesDirectory).Length)); // make a relative path
+      var providerStub = new Mock<IAppContextProvider>();
+      providerStub.Setup(_ => _.BaseDirectory).Returns(Path.GetPathRoot(_tempQueriesDirectory));
+      providerStub
+          .Setup(_ => _.RelativeSearchPath)
+          .Returns(@"A;B;C;Foo;" + Path.GetFullPath(_tempQueriesDirectory).Substring(Path.GetPathRoot(_tempQueriesDirectory).Length)); // make a relative path
 
-      QueryConfiguration configuration = new QueryConfiguration(providerStub);
+      QueryConfiguration configuration = new QueryConfiguration(providerStub.Object);
       Assert.That(configuration.GetDefaultQueryFilePath(), Is.EqualTo(Path.Combine(_tempQueriesDirectory, "queries.xml")));
     }
 
     [Test]
     public void GetDefaultQueryFilePath_ThrowsIfNoQueryFileExists ()
     {
-      IAppContextProvider providerStub = MockRepository.GenerateStub<IAppContextProvider>();
-      providerStub.Stub(_ => _.BaseDirectory).Return(@"C:\");
+      var providerStub = new Mock<IAppContextProvider>();
+      providerStub.Setup(_ => _.BaseDirectory).Returns(@"C:\");
 
-      QueryConfiguration config = new QueryConfiguration(providerStub);
+      QueryConfiguration config = new QueryConfiguration(providerStub.Object);
       Assert.That(
           () => config.GetDefaultQueryFilePath(),
           Throws.InstanceOf<ConfigurationException>().With.Message.EqualTo(
@@ -184,11 +186,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void GetDefaultQueryFilePath_ThrowsIfNoQueryFileExists_WithMultipleRelativeSearchPaths ()
     {
-      IAppContextProvider providerStub = MockRepository.GenerateStub<IAppContextProvider>();
-      providerStub.Stub(_ => _.BaseDirectory).Return(@"C:\");
-      providerStub.Stub(_ => _.RelativeSearchPath).Return(@"Bin;Foo");
+      var providerStub = new Mock<IAppContextProvider>();
+      providerStub.Setup(_ => _.BaseDirectory).Returns(@"C:\");
+      providerStub.Setup(_ => _.RelativeSearchPath).Returns(@"Bin;Foo");
 
-      QueryConfiguration configuration = new QueryConfiguration(providerStub);
+      QueryConfiguration configuration = new QueryConfiguration(providerStub.Object);
       Assert.That(
           () => configuration.GetDefaultQueryFilePath(),
           Throws.InstanceOf<ConfigurationException>().With.Message.EqualTo(
@@ -198,11 +200,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void GetDefaultQueryFilePath_ThrowsIfMultipleQueryFilesExist ()
     {
-      IAppContextProvider providerStub = MockRepository.GenerateStub<IAppContextProvider>();
-      providerStub.Stub(_ => _.BaseDirectory).Return(_tempQueriesDirectory);
-      providerStub.Stub(_ => _.RelativeSearchPath).Return("."); // simulate multiple files by searching the same directory twice
+      var providerStub = new Mock<IAppContextProvider>();
+      providerStub.Setup(_ => _.BaseDirectory).Returns(_tempQueriesDirectory);
+      providerStub.Setup(_ => _.RelativeSearchPath).Returns("."); // simulate multiple files by searching the same directory twice
 
-      QueryConfiguration configuration = new QueryConfiguration(providerStub);
+      QueryConfiguration configuration = new QueryConfiguration(providerStub.Object);
       Assert.That(
           () => configuration.GetDefaultQueryFilePath(),
           Throws.InstanceOf<ConfigurationException>().With.Message.Contains(@"Two default query configuration files found"));
@@ -211,11 +213,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     [Test]
     public void GetDefaultQueryFilePath_WithEmptyRelativeSearchPath ()
     {
-      IAppContextProvider providerStub = MockRepository.GenerateStub<IAppContextProvider>();
-      providerStub.Stub(_ => _.BaseDirectory).Return(_tempQueriesDirectory);
-      providerStub.Stub(_ => _.RelativeSearchPath).Return("");
+      var providerStub = new Mock<IAppContextProvider>();
+      providerStub.Setup(_ => _.BaseDirectory).Returns(_tempQueriesDirectory);
+      providerStub.Setup(_ => _.RelativeSearchPath).Returns("");
 
-      QueryConfiguration configuration = new QueryConfiguration(providerStub);
+      QueryConfiguration configuration = new QueryConfiguration(providerStub.Object);
       Assert.That(configuration.GetDefaultQueryFilePath(), Is.EqualTo(Path.Combine(_tempQueriesDirectory, "queries.xml")));
     }
 

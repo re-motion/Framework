@@ -32,28 +32,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "The relation between property 'RelationProperty2', declared on type 'InvalidRelationClass1', and property 'RelationProperty1' declared on type "
-                  +"'InvalidRelationClass2', contains two non-virtual end points. One of the two properties must set 'ContainsForeignKey' to 'false' on the "
-                  +"'DBBidirectionalRelationAttribute'.\r\n\r\n"
-                  +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass1\r\n"
-                  +"Property: RelationProperty2\r\n"
-                  +"Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass1:Remotion.Data.DomainObjects.UnitTests.Mapping."
-                  +"TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsTrueOnBothSites."
-                  +"InvalidRelationClass1.RelationProperty2->Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration."
-                  +"NotSupportedRelations.OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2.RelationProperty1\r\n"
-                  +"----------\r\n"
-                  +"The relation between property 'RelationProperty1', declared on type 'InvalidRelationClass2', and property 'RelationProperty2' declared on type "
-                  +"'InvalidRelationClass1', contains two non-virtual end points. One of the two properties must set 'ContainsForeignKey' to 'false' on the "
-                  +"'DBBidirectionalRelationAttribute'.\r\n\r\n"
-                  +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2\r\n"
-                  +"Property: RelationProperty1\r\n"
-                  +"Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2:Remotion.Data.DomainObjects.UnitTests.Mapping."
-                  +"TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsTrueOnBothSites."
-                  +"InvalidRelationClass2.RelationProperty1->Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration."
-                  +"NotSupportedRelations.OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass1.RelationProperty2"));
+                  + "'InvalidRelationClass2', contains two non-virtual end points. One of the two properties must set 'ContainsForeignKey' to 'false' on the "
+                  + "'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass1\r\n"
+                  + "Property: RelationProperty2\r\n"
+                  + "Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass1:Remotion.Data.DomainObjects.UnitTests.Mapping."
+                  + "TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsTrueOnBothSites."
+                  + "InvalidRelationClass1.RelationProperty2->Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration."
+                  + "NotSupportedRelations.OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2.RelationProperty1\r\n"
+                  + "----------\r\n"
+                  + "The relation between property 'RelationProperty1', declared on type 'InvalidRelationClass2', and property 'RelationProperty2' declared on type "
+                  + "'InvalidRelationClass1', contains two non-virtual end points. One of the two properties must set 'ContainsForeignKey' to 'false' on the "
+                  + "'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2\r\n"
+                  + "Property: RelationProperty1\r\n"
+                  + "Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2:Remotion.Data.DomainObjects.UnitTests.Mapping."
+                  + "TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsTrueOnBothSites."
+                  + "InvalidRelationClass2.RelationProperty1->Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration."
+                  + "NotSupportedRelations.OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass1.RelationProperty2"));
     }
 
     //RelationEndPointCombinationIsSupportedValidationRule
@@ -65,27 +65,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "The relation between property 'RelationProperty2', declared on type 'InvalidRelationClass1', and property 'RelationProperty1' declared on type "
-                  +"'InvalidRelationClass2', contains two virtual end points. One of the two properties must set 'ContainsForeignKey' to 'true' on the "
-                  +"'DBBidirectionalRelationAttribute'.\r\n\r\n"
-                  +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass1\r\n"
-                  +"Property: RelationProperty2\r\n"
-                  +"Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass2:Remotion.Data.DomainObjects.UnitTests.Mapping."
-                  +"TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsFalseOnBothSites."
+                  + "'InvalidRelationClass2', contains two virtual end points. One of the two properties must set 'ContainsForeignKey' to 'true' on the "
+                  + "'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass1\r\n"
+                  + "Property: RelationProperty2\r\n"
+                  + "Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass2:Remotion.Data.DomainObjects.UnitTests.Mapping."
+                  + "TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsFalseOnBothSites."
                   + "InvalidRelationClass2.RelationProperty1->Remotion.Data.DomainObjects.UnitTests.Mapping."
                   + "TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsFalseOnBothSites."
                   + "InvalidRelationClass1.RelationProperty2\r\n"
-                  +"----------\r\n"
-                  +"The relation between property 'RelationProperty1', declared on type 'InvalidRelationClass2', and property 'RelationProperty2' declared on type "
-                  +"'InvalidRelationClass1', contains two virtual end points. One of the two properties must set 'ContainsForeignKey' to 'true' on the "
-                  +"'DBBidirectionalRelationAttribute'.\r\n\r\n"
-                  +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass2\r\n"
-                  +"Property: RelationProperty1\r\n"
-                  +"Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass1:Remotion.Data.DomainObjects.UnitTests.Mapping."
-                  +"TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsFalseOnBothSites."
+                  + "----------\r\n"
+                  + "The relation between property 'RelationProperty1', declared on type 'InvalidRelationClass2', and property 'RelationProperty2' declared on type "
+                  + "'InvalidRelationClass1', contains two virtual end points. One of the two properties must set 'ContainsForeignKey' to 'true' on the "
+                  + "'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass2\r\n"
+                  + "Property: RelationProperty1\r\n"
+                  + "Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass1:Remotion.Data.DomainObjects.UnitTests.Mapping."
+                  + "TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsFalseOnBothSites."
                   + "InvalidRelationClass1.RelationProperty2->Remotion.Data.DomainObjects.UnitTests.Mapping."
                   + "TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsFalseOnBothSites."
                   + "InvalidRelationClass2.RelationProperty1"));
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("NotSupportedRelations.OneToMany_ContainsForeignKeyIsTrueOnManySite"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "Only relation end points with a property type of 'DomainObject' can contain the foreign key.\r\n\r\n"+
+                  "Only relation end points with a property type of 'DomainObject' can contain the foreign key.\r\n\r\n" +
                   "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
                   + "OneToMany_ContainsForeignKeyIsTrueOnManySite.InvalidRelationClass2\r\nProperty: RelationProperty2"));
     }
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
               .With.Message.EqualTo(
                   "Only relation end points with a property type of 'DomainObject' can contain the foreign key.\r\n\r\n"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"OneToMany_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2\r\nProperty: RelationProperty2"));
+                  + "OneToMany_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2\r\nProperty: RelationProperty2"));
     }
 
     //SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRule
@@ -139,10 +139,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "SortExpression 'InvalidProperty' cannot be parsed: 'InvalidProperty' is not a valid mapped property name. Expected the .NET property name of a property declared by the "
-                  +"'InvalidRelationClass1' class or its base classes. Alternatively, to resolve ambiguities or to use a property declared by a mixin or a "
-                  +"derived class of 'InvalidRelationClass1', the full unique re-store property identifier can be specified.\r\n\r\n"
-                  +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"OneToMany_WithInvalidSortExpression.InvalidRelationClass2\r\nProperty: RelationProperty2"));
+                  + "'InvalidRelationClass1' class or its base classes. Alternatively, to resolve ambiguities or to use a property declared by a mixin or a "
+                  + "derived class of 'InvalidRelationClass1', the full unique re-store property identifier can be specified.\r\n\r\n"
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "OneToMany_WithInvalidSortExpression.InvalidRelationClass2\r\nProperty: RelationProperty2"));
     }
 
     //RelationEndPointNamesAreConsistentValidationRule
@@ -249,26 +249,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
                   "The relation between property 'RelationProperty', declared on type 'InvalidRelationClass1', and property 'RelationProperty' declared on type "
-                  +"'InvalidRelationClass2', contains two virtual end points. One of the two properties must set 'ContainsForeignKey' to 'true' on the "
-                  +"'DBBidirectionalRelationAttribute'.\r\n\r\n"
-                  +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"ManyToMany.InvalidRelationClass1\r\n"
-                  +"Property: RelationProperty\r\n"
-                  +"Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"ManyToMany.InvalidRelationClass2:Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration."
-                  +"NotSupportedRelations.ManyToMany.InvalidRelationClass2.RelationProperty->Remotion.Data.DomainObjects.UnitTests.Mapping."
-                  +"TestDomain.Validation.Integration.NotSupportedRelations.ManyToMany.InvalidRelationClass1.RelationProperty\r\n"
-                  +"----------\r\n"
-                  +"The relation between property 'RelationProperty', declared on type 'InvalidRelationClass2', and property 'RelationProperty' declared on type "
-                  +"'InvalidRelationClass1', contains two virtual end points. One of the two properties must set 'ContainsForeignKey' to 'true' on the "
-                  +"'DBBidirectionalRelationAttribute'.\r\n\r\n"
-                  +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"ManyToMany.InvalidRelationClass2\r\n"
-                  +"Property: RelationProperty\r\n"
-                  +"Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  +"ManyToMany.InvalidRelationClass1:Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration."
-                  +"NotSupportedRelations.ManyToMany.InvalidRelationClass1.RelationProperty->Remotion.Data.DomainObjects.UnitTests."
-                  +"Mapping.TestDomain.Validation.Integration.NotSupportedRelations.ManyToMany.InvalidRelationClass2.RelationProperty"));
+                  + "'InvalidRelationClass2', contains two virtual end points. One of the two properties must set 'ContainsForeignKey' to 'true' on the "
+                  + "'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "ManyToMany.InvalidRelationClass1\r\n"
+                  + "Property: RelationProperty\r\n"
+                  + "Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "ManyToMany.InvalidRelationClass2:Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration."
+                  + "NotSupportedRelations.ManyToMany.InvalidRelationClass2.RelationProperty->Remotion.Data.DomainObjects.UnitTests.Mapping."
+                  + "TestDomain.Validation.Integration.NotSupportedRelations.ManyToMany.InvalidRelationClass1.RelationProperty\r\n"
+                  + "----------\r\n"
+                  + "The relation between property 'RelationProperty', declared on type 'InvalidRelationClass2', and property 'RelationProperty' declared on type "
+                  + "'InvalidRelationClass1', contains two virtual end points. One of the two properties must set 'ContainsForeignKey' to 'true' on the "
+                  + "'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "ManyToMany.InvalidRelationClass2\r\n"
+                  + "Property: RelationProperty\r\n"
+                  + "Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
+                  + "ManyToMany.InvalidRelationClass1:Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration."
+                  + "NotSupportedRelations.ManyToMany.InvalidRelationClass1.RelationProperty->Remotion.Data.DomainObjects.UnitTests."
+                  + "Mapping.TestDomain.Validation.Integration.NotSupportedRelations.ManyToMany.InvalidRelationClass2.RelationProperty"));
     }
 
     [Test]

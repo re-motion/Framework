@@ -18,189 +18,182 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Tracing;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 {
   [TestFixture]
   public class TracingDbCommandTest
   {
-    private MockRepository _mockRepository;
     private TracingDbCommand _command;
-    private IDbCommand _innerCommandMock;
-    private IPersistenceExtension _extensionMock;
+    private Mock<IDbCommand> _innerCommandMock;
+    private Mock<IPersistenceExtension> _extensionMock;
     private Guid _connectionID;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
-      _innerCommandMock = _mockRepository.StrictMock<IDbCommand>();
-      _extensionMock = _mockRepository.StrictMock<IPersistenceExtension>();
+      _innerCommandMock = new Mock<IDbCommand>(MockBehavior.Strict);
+      _extensionMock = new Mock<IPersistenceExtension>(MockBehavior.Strict);
       _connectionID = Guid.NewGuid();
 
-      _command = new TracingDbCommand(_innerCommandMock, _extensionMock, _connectionID);
+      _command = new TracingDbCommand(_innerCommandMock.Object, _extensionMock.Object, _connectionID);
     }
 
     [Test]
     public void Dispose ()
     {
-      _innerCommandMock.Expect(mock => mock.Dispose());
-      _mockRepository.ReplayAll();
+      _innerCommandMock.Setup(mock => mock.Dispose()).Verifiable();
 
       _command.Dispose();
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void Prepare ()
     {
-      _innerCommandMock.Expect(mock => mock.Prepare());
-      _mockRepository.ReplayAll();
+      _innerCommandMock.Setup(mock => mock.Prepare()).Verifiable();
 
       _command.Prepare();
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void Cancel ()
     {
-      _innerCommandMock.Expect(mock => mock.Cancel());
-      _mockRepository.ReplayAll();
+      _innerCommandMock.Setup(mock => mock.Cancel()).Verifiable();
 
       _command.Cancel();
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void CreateParameter ()
     {
-      IDbDataParameter parameterStub = MockRepository.GenerateStub<IDbDataParameter>();
-      _innerCommandMock.Stub(mock => mock.CreateParameter()).Return(parameterStub);
-      _mockRepository.ReplayAll();
+      var parameterStub = new Mock<IDbDataParameter>();
+      _innerCommandMock.Setup(mock => mock.CreateParameter()).Returns(parameterStub.Object);
 
-      Assert.That(_command.CreateParameter(), Is.SameAs(parameterStub));
+      Assert.That(_command.CreateParameter(), Is.SameAs(parameterStub.Object));
     }
 
     [Test]
     public void GetConnectionFromInterface ()
     {
-      IDbConnection connectionStub = MockRepository.GenerateStub<IDbConnection>();
-      _innerCommandMock.Stub(mock => mock.Connection).Return(connectionStub);
-      _mockRepository.ReplayAll();
+      var connectionStub = new Mock<IDbConnection>();
+      _innerCommandMock.Setup(mock => mock.Connection).Returns(connectionStub.Object);
 
-      Assert.That(((IDbCommand)_command).Connection, Is.SameAs(connectionStub));
+      Assert.That(((IDbCommand)_command).Connection, Is.SameAs(connectionStub.Object));
     }
 
     [Test]
     public void SetConnectionFromInterface ()
     {
-      IDbConnection connectionStub = MockRepository.GenerateStub<IDbConnection>();
-      _innerCommandMock.Expect(mock => mock.Connection = connectionStub);
-      _mockRepository.ReplayAll();
+      var connectionStub = new Mock<IDbConnection>();
+      _innerCommandMock.SetupSet(mock => mock.Connection = connectionStub.Object).Verifiable();
 
-      ((IDbCommand)_command).Connection = connectionStub;
+      ((IDbCommand)_command).Connection = connectionStub.Object;
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void SetInnerConnection_WithInstance ()
     {
-      IDbConnection connectionStub = MockRepository.GenerateStub<IDbConnection>();
-      _innerCommandMock.Expect(mock => mock.Connection = connectionStub);
-      _mockRepository.ReplayAll();
+      var connectionStub = new Mock<IDbConnection>();
+      _innerCommandMock.SetupSet(mock => mock.Connection = connectionStub.Object).Verifiable();
 
-      _command.SetInnerConnection(new TracingDbConnection(connectionStub, MockRepository.GenerateStub<IPersistenceExtension>()));
+      _command.SetInnerConnection(new TracingDbConnection(connectionStub.Object, new Mock<IPersistenceExtension>().Object));
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void SetInnerConnection_WithNull ()
     {
-      _innerCommandMock.Expect(mock => mock.Connection = null);
-      _mockRepository.ReplayAll();
+      _innerCommandMock.SetupSet(mock => mock.Connection = null).Verifiable();
 
       _command.SetInnerConnection(null);
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void GetTransactionFromInterface ()
     {
-      IDbTransaction transactionStub = MockRepository.GenerateStub<IDbTransaction>();
-      _innerCommandMock.Stub(mock => mock.Transaction).Return(transactionStub);
-      _mockRepository.ReplayAll();
+      var transactionStub = new Mock<IDbTransaction>();
+      _innerCommandMock.Setup(mock => mock.Transaction).Returns(transactionStub.Object);
 
-      Assert.That(((IDbCommand)_command).Transaction, Is.SameAs(transactionStub));
+      Assert.That(((IDbCommand)_command).Transaction, Is.SameAs(transactionStub.Object));
     }
 
     [Test]
     public void SetTransactionFromInterface ()
     {
-      IDbTransaction transactionStub = MockRepository.GenerateStub<IDbTransaction>();
-      _innerCommandMock.Expect(mock => mock.Transaction = transactionStub);
-      _mockRepository.ReplayAll();
+      var transactionStub = new Mock<IDbTransaction>();
+      _innerCommandMock.SetupSet(mock => mock.Transaction = transactionStub.Object).Verifiable();
 
-      ((IDbCommand)_command).Transaction = transactionStub;
+      ((IDbCommand)_command).Transaction = transactionStub.Object;
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void SetInnerTransaction_WithInstance ()
     {
-      IDbTransaction transactionStub = MockRepository.GenerateStub<IDbTransaction>();
-      _innerCommandMock.Expect(mock => mock.Transaction = transactionStub);
-      _mockRepository.ReplayAll();
+      var transactionStub = new Mock<IDbTransaction>();
+      _innerCommandMock.SetupSet(mock => mock.Transaction = transactionStub.Object).Verifiable();
 
-      _command.SetInnerTransaction(new TracingDbTransaction(transactionStub, MockRepository.GenerateStub<IPersistenceExtension>(), Guid.NewGuid()));
+      _command.SetInnerTransaction(new TracingDbTransaction(transactionStub.Object, new Mock<IPersistenceExtension>().Object, Guid.NewGuid()));
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void SetInnerTransaction_WithNull ()
     {
-      _innerCommandMock.Expect(mock => mock.Connection = null);
-      _mockRepository.ReplayAll();
+      _innerCommandMock.SetupSet(mock => mock.Connection = null).Verifiable();
 
       _command.SetInnerConnection(null);
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void GetCommandText ()
     {
-      _innerCommandMock.Stub(mock => mock.CommandText).Return("commandText");
-      _mockRepository.ReplayAll();
+      _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
       Assert.That(_command.CommandText, Is.EqualTo("commandText"));
     }
 
     [Test]
     public void SetCommandText ()
     {
-      _innerCommandMock.Expect(mock => mock.CommandText = "commandText");
-      _mockRepository.ReplayAll();
+      _innerCommandMock.SetupSet(mock => mock.CommandText = "commandText").Verifiable();
 
       _command.CommandText = "commandText";
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void GetCommandTimeout ()
     {
-      _innerCommandMock.Stub(mock => mock.CommandTimeout).Return(100);
-      _mockRepository.ReplayAll();
+      _innerCommandMock.Setup(mock => mock.CommandTimeout).Returns(100);
 
       Assert.That(_command.CommandTimeout, Is.EqualTo(100));
     }
@@ -208,267 +201,264 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void SetCommandTimeout ()
     {
-      _innerCommandMock.Expect(mock => mock.CommandTimeout = 100);
-      _mockRepository.ReplayAll();
+      _innerCommandMock.SetupSet(mock => mock.CommandTimeout = 100).Verifiable();
 
       _command.CommandTimeout = 100;
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void GetCommandType ()
     {
-      _innerCommandMock.Stub(mock => mock.CommandType).Return(CommandType.TableDirect);
-      _mockRepository.ReplayAll();
+      _innerCommandMock.Setup(mock => mock.CommandType).Returns(CommandType.TableDirect);
       Assert.That(_command.CommandType, Is.EqualTo(CommandType.TableDirect));
     }
 
     [Test]
     public void SetCommandType ()
     {
-      _innerCommandMock.Expect(mock => mock.CommandType = CommandType.TableDirect);
-      _mockRepository.ReplayAll();
+      _innerCommandMock.SetupSet(mock => mock.CommandType = CommandType.TableDirect).Verifiable();
 
       _command.CommandType = CommandType.TableDirect;
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void GetParameters ()
     {
-      IDataParameterCollection collectionStub = MockRepository.GenerateStub<IDataParameterCollection>();
-      _innerCommandMock.Stub(mock => mock.Parameters).Return(collectionStub);
-      _mockRepository.ReplayAll();
-      Assert.That(_command.Parameters, Is.SameAs(collectionStub));
+      var collectionStub = new Mock<IDataParameterCollection>();
+      _innerCommandMock.Setup(mock => mock.Parameters).Returns(collectionStub.Object);
+      Assert.That(_command.Parameters, Is.SameAs(collectionStub.Object));
     }
 
     [Test]
     public void GetUpdatedRowSource ()
     {
-      _innerCommandMock.Stub(mock => mock.UpdatedRowSource).Return(UpdateRowSource.FirstReturnedRecord);
-      _mockRepository.ReplayAll();
+      _innerCommandMock.Setup(mock => mock.UpdatedRowSource).Returns(UpdateRowSource.FirstReturnedRecord);
       Assert.That(_command.UpdatedRowSource, Is.EqualTo(UpdateRowSource.FirstReturnedRecord));
     }
 
     [Test]
     public void SetUpdatedRowSource ()
     {
-      _innerCommandMock.Expect(mock => mock.UpdatedRowSource = UpdateRowSource.FirstReturnedRecord);
-      _mockRepository.ReplayAll();
+      _innerCommandMock.SetupSet(mock => mock.UpdatedRowSource = UpdateRowSource.FirstReturnedRecord).Verifiable();
 
       _command.UpdatedRowSource = UpdateRowSource.FirstReturnedRecord;
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void ExecuteNonQuery ()
     {
-      _innerCommandMock.Stub(mock => mock.CommandText).Return("commandText");
-      _innerCommandMock.Stub(mock => mock.Parameters).Return(CreateParameterCollection());
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.QueryExecuting(Arg.Is(_connectionID),Arg.Is( _command.QueryID), Arg.Is("commandText"), Arg<IDictionary<string,object>>.Is.NotNull);
-        _innerCommandMock.Expect(mock => mock.ExecuteNonQuery()).Return(100);
-        _extensionMock.QueryExecuted(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg<TimeSpan>.Is.GreaterThan(TimeSpan.Zero));
-        _extensionMock.QueryCompleted(_connectionID, _command.QueryID, TimeSpan.Zero, 100);
-      }
-      _mockRepository.ReplayAll();
+      _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
+      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
+      var sequence = new MockSequence();
+      _extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
+          .Verifiable();
+      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteNonQuery()).Returns(100).Verifiable();
+      _extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.QueryExecuted(_connectionID, _command.QueryID, It.Is<TimeSpan>(_ => _ > TimeSpan.Zero)))
+          .Verifiable();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.QueryCompleted(_connectionID, _command.QueryID, TimeSpan.Zero, 100)).Verifiable();
 
       Assert.That(_command.ExecuteNonQuery(), Is.EqualTo(100));
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void ExecuteNonQuery_WithError ()
     {
       Exception exception = new Exception("TestException");
-      _innerCommandMock.Stub(mock => mock.CommandText).Return("commandText");
-      _innerCommandMock.Stub(mock => mock.Parameters).Return(CreateParameterCollection());
+      _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
+      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.QueryExecuting(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg.Is("commandText"), CreateParametersArgumentExpectation());
-        _innerCommandMock.Expect(mock => mock.ExecuteNonQuery()).Throw(exception);
-        _extensionMock.QueryError(_connectionID, _command.QueryID, exception);
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
+          .Verifiable();
+      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteNonQuery()).Throws(exception).Verifiable();
 
-      try
-      {
-        _command.ExecuteNonQuery();
-        Assert.Fail("No exception");
-      }
-      catch (Exception ex)
-      {
-        Assert.That(ex, Is.SameAs(exception));
-      }
-      _mockRepository.VerifyAll();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
+
+      Assert.That(() => _command.ExecuteNonQuery(), Throws.Exception.SameAs(exception));
+
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void ExecuteReader ()
     {
-      IDataReader readerStub = MockRepository.GenerateStub<IDataReader>();
-      _innerCommandMock.Stub(mock => mock.CommandText).Return("commandText");
-      _innerCommandMock.Stub(mock => mock.Parameters).Return(CreateParameterCollection());
+      var readerStub = new Mock<IDataReader>();
+      _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
+      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.QueryExecuting(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg.Is("commandText"), CreateParametersArgumentExpectation());
-        _innerCommandMock.Expect(mock => mock.ExecuteReader()).Return(readerStub);
-        _extensionMock.QueryExecuted(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg<TimeSpan>.Is.GreaterThan(TimeSpan.Zero));
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
+          .Verifiable();
+      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteReader()).Returns(readerStub.Object).Verifiable();
+
+      _extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.QueryExecuted(_connectionID, _command.QueryID, It.Is<TimeSpan>(_ => _ > TimeSpan.Zero)))
+          .Verifiable();
 
       IDataReader actualReader = _command.ExecuteReader();
+
       Assert.That(actualReader, Is.InstanceOf(typeof(TracingDataReader)));
-      Assert.That(((TracingDataReader)actualReader).WrappedInstance, Is.SameAs(readerStub));
+      Assert.That(((TracingDataReader)actualReader).WrappedInstance, Is.SameAs(readerStub.Object));
       Assert.That(((TracingDataReader)actualReader).ConnectionID, Is.EqualTo(_connectionID));
       Assert.That(((TracingDataReader)actualReader).QueryID, Is.EqualTo(_command.QueryID));
-      Assert.That(((TracingDataReader)actualReader).PersistenceExtension, Is.SameAs(_extensionMock));
+      Assert.That(((TracingDataReader)actualReader).PersistenceExtension, Is.SameAs(_extensionMock.Object));
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void ExecuteReader_WithError ()
     {
       Exception exception = new Exception("TestException");
-      _innerCommandMock.Stub(mock => mock.CommandText).Return("commandText");
-      _innerCommandMock.Stub(mock => mock.Parameters).Return(CreateParameterCollection());
+      _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
+      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.QueryExecuting(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg.Is("commandText"), CreateParametersArgumentExpectation());
-        _innerCommandMock.Expect(mock => mock.ExecuteReader()).Throw(exception);
-        _extensionMock.QueryError(_connectionID, _command.QueryID, exception);
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
+          .Verifiable();
+      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteReader()).Throws(exception).Verifiable();
 
-      try
-      {
-        _command.ExecuteReader();
-        Assert.Fail("No exception");
-      }
-      catch (Exception ex)
-      {
-        Assert.That(ex, Is.SameAs(exception));
-      }
-      _mockRepository.VerifyAll();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
+
+      Assert.That(() => _command.ExecuteReader(), Throws.Exception.SameAs(exception));
+
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void ExecuteReaderWithOverload ()
     {
-      IDataReader readerStub = MockRepository.GenerateStub<IDataReader>();
-      _innerCommandMock.Stub(mock => mock.CommandText).Return("commandText");
-      _innerCommandMock.Stub(mock => mock.Parameters).Return(CreateParameterCollection());
+      var readerStub = new Mock<IDataReader>();
+      _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
+      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.QueryExecuting(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg.Is("commandText"), CreateParametersArgumentExpectation());
-        _innerCommandMock.Expect(mock => mock.ExecuteReader(CommandBehavior.SchemaOnly)).Return(readerStub);
-        _extensionMock.QueryExecuted(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg<TimeSpan>.Is.GreaterThan(TimeSpan.Zero));
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
+          .Verifiable();
+      _innerCommandMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ExecuteReader(CommandBehavior.SchemaOnly)).Returns(readerStub.Object)
+          .Verifiable();
+
+      _extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.QueryExecuted(_connectionID, _command.QueryID, It.Is<TimeSpan>(_ => _ > TimeSpan.Zero)))
+          .Verifiable();
 
       IDataReader actualReader = _command.ExecuteReader(CommandBehavior.SchemaOnly);
+
       Assert.That(actualReader, Is.InstanceOf(typeof(TracingDataReader)));
-      Assert.That(((TracingDataReader)actualReader).WrappedInstance, Is.SameAs(readerStub));
+      Assert.That(((TracingDataReader)actualReader).WrappedInstance, Is.SameAs(readerStub.Object));
       Assert.That(((TracingDataReader)actualReader).ConnectionID, Is.EqualTo(_connectionID));
       Assert.That(((TracingDataReader)actualReader).QueryID, Is.EqualTo(_command.QueryID));
-      Assert.That(((TracingDataReader)actualReader).PersistenceExtension, Is.SameAs(_extensionMock));
+      Assert.That(((TracingDataReader)actualReader).PersistenceExtension, Is.SameAs(_extensionMock.Object));
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void ExecuteReaderWithOverload_WithError ()
     {
       Exception exception = new Exception("TestException");
-      _innerCommandMock.Stub(mock => mock.CommandText).Return("commandText");
-      _innerCommandMock.Stub(mock => mock.Parameters).Return(CreateParameterCollection());
+      _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
+      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.QueryExecuting(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg.Is("commandText"), CreateParametersArgumentExpectation());
-        _innerCommandMock.Expect(mock => mock.ExecuteReader(CommandBehavior.SchemaOnly)).Throw(exception);
-        _extensionMock.QueryError(_connectionID, _command.QueryID, exception);
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
+          .Verifiable();
+      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteReader(CommandBehavior.SchemaOnly)).Throws(exception).Verifiable();
 
-      try
-      {
-        _command.ExecuteReader(CommandBehavior.SchemaOnly);
-        Assert.Fail("No exception");
-      }
-      catch (Exception ex)
-      {
-        Assert.That(ex, Is.SameAs(exception));
-      }
-      _mockRepository.VerifyAll();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
+
+      Assert.That(() => _command.ExecuteReader(CommandBehavior.SchemaOnly), Throws.Exception.SameAs(exception));
+
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void ExecuteScalar ()
     {
-      _innerCommandMock.Stub(mock => mock.CommandText).Return("commandText");
-      _innerCommandMock.Stub(mock => mock.Parameters).Return(CreateParameterCollection());
+      _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
+      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.QueryExecuting(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg.Is("commandText"), CreateParametersArgumentExpectation());
-        _innerCommandMock.Expect(mock => mock.ExecuteScalar()).Return(30);
-        _extensionMock.QueryExecuted(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg<TimeSpan>.Is.GreaterThan(TimeSpan.Zero));
-        _extensionMock.QueryCompleted(_connectionID, _command.QueryID, TimeSpan.Zero, 1);
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
+          .Verifiable();
+      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteScalar()).Returns(30).Verifiable();
+
+      _extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.QueryExecuted(_connectionID, _command.QueryID, It.Is<TimeSpan>(_ => _ > TimeSpan.Zero)))
+          .Verifiable();
+
+      _extensionMock.InSequence(sequence).Setup(mock => mock.QueryCompleted(_connectionID, _command.QueryID, TimeSpan.Zero, 1)).Verifiable();
 
       Assert.That(_command.ExecuteScalar(), Is.EqualTo(30));
 
-      _mockRepository.VerifyAll();
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void ExecuteScalar_WithError ()
     {
       Exception exception = new Exception("TestException");
-      _innerCommandMock.Stub(mock => mock.CommandText).Return("commandText");
-      _innerCommandMock.Stub(mock => mock.Parameters).Return(CreateParameterCollection());
+      _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
+      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.QueryExecuting(Arg.Is(_connectionID), Arg.Is(_command.QueryID), Arg.Is("commandText"), CreateParametersArgumentExpectation());
-        _innerCommandMock.Expect(mock => mock.ExecuteScalar()).Throw(exception);
-        _extensionMock.QueryError(_connectionID, _command.QueryID, exception);
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
+          .Verifiable();
+      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteScalar()).Throws(exception).Verifiable();
 
-      try
-      {
-        _command.ExecuteScalar();
-        Assert.Fail("No exception");
-      }
-      catch (Exception ex)
-      {
-        Assert.That(ex, Is.SameAs(exception));
-      }
-      _mockRepository.VerifyAll();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
+
+      Assert.That(() => _command.ExecuteScalar(), Throws.Exception.SameAs(exception));
+
+      _innerCommandMock.Verify();
+      _extensionMock.Verify();
     }
 
     private IDataParameterCollection CreateParameterCollection ()
     {
       var command = new SqlCommand();
       return command.Parameters;
-    }
-
-    private IDictionary<string, object> CreateParametersArgumentExpectation ()
-    {
-      return Arg<IDictionary<string, object>>.Is.NotNull;
     }
   }
 }

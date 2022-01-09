@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -23,17 +24,16 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoi
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Data.UnitTests.UnitTesting;
-using Remotion.Development.RhinoMocks.UnitTesting;
-using Rhino.Mocks;
+using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
+using Remotion.Development.Moq.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
   [TestFixture]
   public class StateUpdateRaisingRelationEndPointFactoryDecoratorTest : StandardMappingTest
   {
-    private IRelationEndPointFactory _innerFactoryMock;
-    private IVirtualEndPointStateUpdateListener _listenerStub;
+    private Mock<IRelationEndPointFactory> _innerFactoryMock;
+    private Mock<IVirtualEndPointStateUpdateListener> _listenerStub;
 
     private StateUpdateRaisingRelationEndPointFactoryDecorator _decorator;
     private DecoratorTestHelper<IRelationEndPointFactory> _decoratorTestHelper;
@@ -42,10 +42,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       base.SetUp();
 
-      _innerFactoryMock = MockRepository.GenerateStrictMock<IRelationEndPointFactory>();
-      _listenerStub = MockRepository.GenerateStub<IVirtualEndPointStateUpdateListener>();
+      _innerFactoryMock = new Mock<IRelationEndPointFactory>(MockBehavior.Strict);
+      _listenerStub = new Mock<IVirtualEndPointStateUpdateListener>();
 
-      _decorator = new StateUpdateRaisingRelationEndPointFactoryDecorator(_innerFactoryMock, _listenerStub);
+      _decorator = new StateUpdateRaisingRelationEndPointFactoryDecorator(_innerFactoryMock.Object, _listenerStub.Object);
       _decoratorTestHelper = new DecoratorTestHelper<IRelationEndPointFactory>(_decorator, _innerFactoryMock);
     }
 
@@ -56,22 +56,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Order1);
 
       _decoratorTestHelper.CheckDelegation(
-          f => f.CreateRealObjectEndPoint(endPointID, dataContainer), MockRepository.GenerateStub<IRealObjectEndPoint>());
+          f => f.CreateRealObjectEndPoint(endPointID, dataContainer), new Mock<IRealObjectEndPoint>().Object);
     }
 
     [Test]
     public void CreateVirtualObjectEndPoint ()
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
-      var fakeResult = MockRepository.GenerateStub<IVirtualObjectEndPoint>();
+      var fakeResult = new Mock<IVirtualObjectEndPoint>();
       _decoratorTestHelper.CheckDelegation(
           f => f.CreateVirtualObjectEndPoint(endPointID),
-          fakeResult,
+          fakeResult.Object,
           result => Assert.That(
               result,
               Is.TypeOf<StateUpdateRaisingVirtualObjectEndPointDecorator>()
-                .With.Property<StateUpdateRaisingVirtualObjectEndPointDecorator>(d => d.Listener).SameAs(_listenerStub)
-                .And.Property<StateUpdateRaisingVirtualObjectEndPointDecorator>(d => d.InnerEndPoint).SameAs(fakeResult)));
+                .With.Property<StateUpdateRaisingVirtualObjectEndPointDecorator>(d => d.Listener).SameAs(_listenerStub.Object)
+                .And.Property<StateUpdateRaisingVirtualObjectEndPointDecorator>(d => d.InnerEndPoint).SameAs(fakeResult.Object)));
     }
 
     [Test]
@@ -79,15 +79,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Product1, typeof(Product), "Reviews");
 
-      var fakeResult = MockRepository.GenerateStub<IVirtualCollectionEndPoint>();
+      var fakeResult = new Mock<IVirtualCollectionEndPoint>();
       _decoratorTestHelper.CheckDelegation(
           f => f.CreateVirtualCollectionEndPoint(endPointID),
-          fakeResult,
+          fakeResult.Object,
           result => Assert.That(
               result,
               Is.TypeOf<StateUpdateRaisingVirtualCollectionEndPointDecorator>()
-                  .With.Property<StateUpdateRaisingVirtualCollectionEndPointDecorator>(d => d.Listener).SameAs(_listenerStub)
-                  .And.Property<StateUpdateRaisingVirtualCollectionEndPointDecorator>(d => d.InnerEndPoint).SameAs(fakeResult)));
+                  .With.Property<StateUpdateRaisingVirtualCollectionEndPointDecorator>(d => d.Listener).SameAs(_listenerStub.Object)
+                  .And.Property<StateUpdateRaisingVirtualCollectionEndPointDecorator>(d => d.InnerEndPoint).SameAs(fakeResult.Object)));
     }
 
     [Test]
@@ -95,15 +95,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
 
-      var fakeResult = MockRepository.GenerateStub<IDomainObjectCollectionEndPoint>();
+      var fakeResult = new Mock<IDomainObjectCollectionEndPoint>();
       _decoratorTestHelper.CheckDelegation(
           f => f.CreateDomainObjectCollectionEndPoint(endPointID),
-          fakeResult,
+          fakeResult.Object,
           result => Assert.That(
               result,
               Is.TypeOf<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>()
-                .With.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(d => d.Listener).SameAs(_listenerStub)
-                .And.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(d => d.InnerEndPoint).SameAs(fakeResult)));
+                .With.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(d => d.Listener).SameAs(_listenerStub.Object)
+                .And.Property<StateUpdateRaisingDomainObjectCollectionEndPointDecorator>(d => d.InnerEndPoint).SameAs(fakeResult.Object)));
     }
 
     [Test]

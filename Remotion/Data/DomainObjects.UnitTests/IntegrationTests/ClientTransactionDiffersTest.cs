@@ -34,7 +34,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
           () => order1.OrderItems.Add(orderItem3),
           Throws.InstanceOf<ClientTransactionsDifferException>()
               .With.Message.Matches(
-                  "Cannot insert DomainObject '.*'  at position 2 into collection of property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction."));
+                  "Cannot insert DomainObject '.*'  at position 2 into collection of property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems'"
+                  + " of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction."));
     }
 
     [Test]
@@ -46,7 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
           () => order1.OrderItems.Insert(0, orderItem3),
           Throws.InstanceOf<ClientTransactionsDifferException>()
               .With.Message.Matches(
-                  "Cannot insert DomainObject '.*' at position 0 into collection of property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction."));
+                  "Cannot insert DomainObject '.*' at position 0 into collection of property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems'"
+                  + " of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because the objects do not belong to the same ClientTransaction."));
     }
 
     [Test]

@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -25,123 +27,168 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void FullEventChain ()
     {
-      using (MockRepository.Ordered())
-      {
-        ExpectCommittingEvents(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(NewObject, NewObjectEventReceiverMock),
-            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock));
+      var sequence = new MockSequence();
+      ExpectCommittingEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (NewObject, NewObjectEventReceiverMock, null),
+              (DeletedObject, DeletedObjectEventReceiverMock, null)
+          });
 
-        ExpectCommitValidateEvents(ChangedObject, NewObject, DeletedObject);
+      ExpectCommitValidateEvents(sequence, new[] { ChangedObject, NewObject, DeletedObject });
 
-        ExpectCommittedEvents(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(NewObject, NewObjectEventReceiverMock));
-      }
-      MockRepository.ReplayAll();
+      ExpectCommittedEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (NewObject, NewObjectEventReceiverMock, null)
+          });
 
       Assert.That(ClientTransaction.Current, Is.Not.SameAs(Transaction));
 
       Transaction.Commit();
 
       Assert.That(ClientTransaction.Current, Is.Not.SameAs(Transaction));
-      MockRepository.VerifyAll();
+      VerifyAll();
     }
 
     [Test]
     public void FullEventChain_WithReiterationDueToAddedObject_InExtension ()
     {
-      using (MockRepository.Ordered())
-      {
-        ExpectCommittingEventsWithCustomOptions(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(NewObject, NewObjectEventReceiverMock),
-            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock))
+      var sequence = new MockSequence();
+      ExpectCommittingEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (NewObject, NewObjectEventReceiverMock, null),
+              (DeletedObject, DeletedObjectEventReceiverMock, null)
+          },
+          extensionCallback: _ =>
+          {
             // This triggers one additional run
-            .ExtensionOptions
-            .WhenCalled(mi => Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit()));
+            Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit());
+          });
 
-        ExpectCommittingEventsWithCustomOptions(Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock))
+      ExpectCommittingEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (UnchangedObject, UnchangedObjectEventReceiverMock, null)
+          },
+          extensionCallback: _ =>
+          {
             // This does not trigger an additional run because the object is no longer new to the commit set
-            .ExtensionOptions
-            .WhenCalled(mi => Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit()));
+            Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit());
+          });
 
-        ExpectCommitValidateEvents(ChangedObject, NewObject, DeletedObject, UnchangedObject);
+      ExpectCommitValidateEvents(sequence, new[] { ChangedObject, NewObject, DeletedObject, UnchangedObject });
 
-        ExpectCommittedEvents(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(NewObject, NewObjectEventReceiverMock),
-            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock));
-      }
-      MockRepository.ReplayAll();
+      ExpectCommittedEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (NewObject, NewObjectEventReceiverMock, null),
+              (UnchangedObject, UnchangedObjectEventReceiverMock, null)
+          });
 
       Transaction.Commit();
 
-      MockRepository.VerifyAll();
+      VerifyAll();
     }
 
     [Test]
     public void FullEventChain_WithReiterationDueToAddedObject_InTransaction ()
     {
-      using (MockRepository.Ordered())
-      {
-        ExpectCommittingEventsWithCustomOptions(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(NewObject, NewObjectEventReceiverMock),
-            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock))
-          // This triggers one additional run
-            .TransactionOptions
-            .WhenCalled(mi => RegisterForCommitWithDisabledListener(UnchangedObject));
+      var sequence = new MockSequence();
+      ExpectCommittingEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (NewObject, NewObjectEventReceiverMock, null),
+              (DeletedObject, DeletedObjectEventReceiverMock, null)
+          },
+          transactionCallback: _ =>
+          {
+            // This triggers one additional run
+            Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit());
+          });
 
-        ExpectCommittingEventsWithCustomOptions(Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock))
-          // This does not trigger an additional run because the object is no longer new to the commit set
-            .TransactionOptions
-            .WhenCalled(mi => RegisterForCommitWithDisabledListener(UnchangedObject));
+      ExpectCommittingEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (UnchangedObject, UnchangedObjectEventReceiverMock, null)
+          },
+          transactionCallback: _ =>
+          {
+            // This does not trigger an additional run because the object is no longer new to the commit set
+            Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit());
+          });
 
-        ExpectCommitValidateEvents(ChangedObject, NewObject, DeletedObject, UnchangedObject);
+      ExpectCommitValidateEvents(sequence, new[] { ChangedObject, NewObject, DeletedObject, UnchangedObject });
 
-        ExpectCommittedEvents(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(NewObject, NewObjectEventReceiverMock),
-            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock));
-      }
-      MockRepository.ReplayAll();
+      ExpectCommittedEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (NewObject, NewObjectEventReceiverMock, null),
+              (UnchangedObject, UnchangedObjectEventReceiverMock, null)
+          });
 
       Transaction.Commit();
 
-      MockRepository.VerifyAll();
+      VerifyAll();
     }
 
     [Test]
     public void FullEventChain_WithReiterationDueToAddedObject_InDomainObject ()
     {
-      using (MockRepository.Ordered())
-      {
-        ExpectCommittingEventsWithCustomOptions(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(NewObject, NewObjectEventReceiverMock),
-            Tuple.Create(DeletedObject, DeletedObjectEventReceiverMock))
-          // This triggers one additional run
-            .DomainObjectOptions[1]
-            .WhenCalled(mi => Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit()));
+      var sequence = new MockSequence();
+      ExpectCommittingEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (NewObject, NewObjectEventReceiverMock, _ =>
+              {
+                // This triggers one additional run
+                Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit());
+              }),
+              (DeletedObject, DeletedObjectEventReceiverMock, null)
+          });
 
-        ExpectCommittingEventsWithCustomOptions(Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock))
-          // This does not trigger an additional run because the object is no longer new to the commit set
-            .DomainObjectOptions[0]
-            .WhenCalled(mi => Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit()));
+      ExpectCommittingEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (UnchangedObject, UnchangedObjectEventReceiverMock, _ =>
+              {
+                // This does not trigger an additional run because the object is no longer new to the commit set
+                Transaction.ExecuteInScope(() => UnchangedObject.RegisterForCommit());
+              })
+          });
 
-        ExpectCommitValidateEvents(ChangedObject, NewObject, DeletedObject, UnchangedObject);
+      ExpectCommitValidateEvents(sequence, new[] { ChangedObject, NewObject, DeletedObject, UnchangedObject });
 
-        ExpectCommittedEvents(
-            Tuple.Create(ChangedObject, ChangedObjectEventReceiverMock),
-            Tuple.Create(NewObject, NewObjectEventReceiverMock),
-            Tuple.Create(UnchangedObject, UnchangedObjectEventReceiverMock));
-      }
-      MockRepository.ReplayAll();
+      ExpectCommittedEvents(
+          sequence,
+          new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
+          {
+              (ChangedObject, ChangedObjectEventReceiverMock, null),
+              (NewObject, NewObjectEventReceiverMock, null),
+              (UnchangedObject, UnchangedObjectEventReceiverMock, null)
+          });
 
       Transaction.Commit();
 
-      MockRepository.VerifyAll();
+      VerifyAll();
     }
   }
 }

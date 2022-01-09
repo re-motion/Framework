@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -131,18 +131,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction();
       Assert.That(subTransaction.Extensions, Is.Not.SameAs(TestableClientTransaction.Extensions));
 
-      var extensionStub1 = MockRepository.GenerateStub<IClientTransactionExtension>();
-      extensionStub1.Stub(stub => stub.Key).Return("E1");
-      var extensionStub2 = MockRepository.GenerateStub<IClientTransactionExtension>();
-      extensionStub2.Stub(stub => stub.Key).Return("E2");
+      var extensionStub1 = new Mock<IClientTransactionExtension>();
+      extensionStub1.Setup(stub => stub.Key).Returns("E1");
+      var extensionStub2 = new Mock<IClientTransactionExtension>();
+      extensionStub2.Setup(stub => stub.Key).Returns("E2");
 
-      TestableClientTransaction.Extensions.Add(extensionStub1);
-      Assert.That(TestableClientTransaction.Extensions, Has.Member(extensionStub1));
-      Assert.That(subTransaction.Extensions, Has.No.Member(extensionStub1));
+      TestableClientTransaction.Extensions.Add(extensionStub1.Object);
+      Assert.That(TestableClientTransaction.Extensions, Has.Member(extensionStub1.Object));
+      Assert.That(subTransaction.Extensions, Has.No.Member(extensionStub1.Object));
 
-      subTransaction.Extensions.Add(extensionStub2);
-      Assert.That(subTransaction.Extensions, Has.Member(extensionStub2));
-      Assert.That(TestableClientTransaction.Extensions, Has.No.Member(extensionStub2));
+      subTransaction.Extensions.Add(extensionStub2.Object);
+      Assert.That(subTransaction.Extensions, Has.Member(extensionStub2.Object));
+      Assert.That(TestableClientTransaction.Extensions, Has.No.Member(extensionStub2.Object));
     }
 
     [Test]

@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -43,37 +43,42 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void CreateRootTransaction_WithExtension ()
     {
-      ITransactionFactory factory = MockRepository.GenerateMock<ClientTransactionFactory>();
+      var factory = new Mock<ClientTransactionFactory>();
 
-      var extensionStub = MockRepository.GenerateStub<IClientTransactionExtension>();
-      extensionStub.Stub(stub => stub.Key).Return("extension");
+      var extensionStub = new Mock<IClientTransactionExtension>();
+      extensionStub.Setup(stub => stub.Key).Returns("extension");
 
-      factory.Expect(mock => PrivateInvoke.InvokeNonPublicMethod(mock, "OnTransactionCreated", Arg<ClientTransaction>.Is.NotNull)).WhenCalled(
-          invocation => ((ClientTransaction)invocation.Arguments[0]).Extensions.Add(extensionStub));
+      factory
+          .Protected()
+          .Setup("OnTransactionCreated", true, ItExpr.Is<ClientTransaction>(obj => obj != null))
+          .Callback((ClientTransaction transaction) => transaction.Extensions.Add(extensionStub.Object))
+          .Verifiable();
 
-      ITransaction transaction = factory.CreateRootTransaction();
+      ITransaction transaction = factory.Object.CreateRootTransaction();
 
       var clientTransaction = transaction.To<ClientTransaction>();
-      Assert.That(clientTransaction.Extensions, Has.Member(extensionStub));
+      Assert.That(clientTransaction.Extensions, Has.Member(extensionStub.Object));
     }
 
     [Test]
     public void CreateChildTransaction_WithExtension ()
     {
-      ITransactionFactory factory = MockRepository.GenerateMock<ClientTransactionFactory>();
+      var factory = new Mock<ClientTransactionFactory>();
 
-      var extensionStub = MockRepository.GenerateStub<IClientTransactionExtension>();
-      extensionStub.Stub(stub => stub.Key).Return("extension");
+      var extensionStub = new Mock<IClientTransactionExtension>();
+      extensionStub.Setup(stub => stub.Key).Returns("extension");
 
       factory
-          .Expect(mock => PrivateInvoke.InvokeNonPublicMethod(mock, "OnTransactionCreated", Arg<ClientTransaction>.Is.NotNull))
-          .WhenCalled(invocation => ((ClientTransaction)invocation.Arguments[0]).Extensions.Add(extensionStub));
+          .Protected()
+          .Setup("OnTransactionCreated", true, ItExpr.Is<ClientTransaction>(obj => obj != null))
+          .Callback((ClientTransaction transaction) => transaction.Extensions.Add(extensionStub.Object))
+          .Verifiable();
 
-      ITransaction rootTransaction = factory.CreateRootTransaction();
+      ITransaction rootTransaction = factory.Object.CreateRootTransaction();
       ITransaction childTransaction = rootTransaction.CreateChild();
 
-      Assert.That(rootTransaction.To<ClientTransaction>().Extensions, Has.Member(extensionStub));
-      Assert.That(childTransaction.To<ClientTransaction>().Extensions, Has.No.Member(extensionStub));
+      Assert.That(rootTransaction.To<ClientTransaction>().Extensions, Has.Member(extensionStub.Object));
+      Assert.That(childTransaction.To<ClientTransaction>().Extensions, Has.No.Member(extensionStub.Object));
     }
   }
 }

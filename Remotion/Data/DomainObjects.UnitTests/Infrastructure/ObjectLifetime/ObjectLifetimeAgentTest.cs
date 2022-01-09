@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
@@ -29,12 +30,11 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Data.UnitTests.UnitTesting;
+using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
 {
@@ -42,11 +42,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
   public class ObjectLifetimeAgentTest : StandardMappingTest
   {
     private ClientTransaction _transaction;
-    private IClientTransactionEventSink _eventSinkWithMock;
-    private IInvalidDomainObjectManager _invalidDomainObjectManagerMock;
-    private IDataManager _dataManagerMock;
-    private IEnlistedDomainObjectManager _enlistedDomainObjectManagerMock;
-    private IPersistenceStrategy _persistenceStrategyMock;
+    private Mock<IClientTransactionEventSink> _eventSinkWithMock;
+    private Mock<IInvalidDomainObjectManager> _invalidDomainObjectManagerMock;
+    private Mock<IDataManager> _dataManagerMock;
+    private Mock<IEnlistedDomainObjectManager> _enlistedDomainObjectManagerMock;
+    private Mock<IPersistenceStrategy> _persistenceStrategyMock;
 
     private ObjectLifetimeAgent _agent;
 
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     private ObjectID _objectID2;
     private DomainObject _domainObject2;
     private DataContainer _dataContainer2;
-    private IDomainObjectCreator _domainObjectCreatorMock;
+    private Mock<IDomainObjectCreator> _domainObjectCreatorMock;
     private ClassDefinition _typeDefinitionWithCreatorMock;
     private ObjectID _objectIDWithCreatorMock;
 
@@ -66,19 +66,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       base.SetUp();
 
       _transaction = ClientTransactionObjectMother.Create();
-      _eventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
-      _invalidDomainObjectManagerMock = MockRepository.GenerateStrictMock<IInvalidDomainObjectManager>();
-      _dataManagerMock = MockRepository.GenerateStrictMock<IDataManager>();
-      _enlistedDomainObjectManagerMock = MockRepository.GenerateStrictMock<IEnlistedDomainObjectManager>();
-      _persistenceStrategyMock = MockRepository.GenerateStrictMock<IPersistenceStrategy>();
+      _eventSinkWithMock = new Mock<IClientTransactionEventSink>(MockBehavior.Strict);
+      _invalidDomainObjectManagerMock = new Mock<IInvalidDomainObjectManager>(MockBehavior.Strict);
+      _dataManagerMock = new Mock<IDataManager>(MockBehavior.Strict);
+      _enlistedDomainObjectManagerMock = new Mock<IEnlistedDomainObjectManager>(MockBehavior.Strict);
+      _persistenceStrategyMock = new Mock<IPersistenceStrategy>(MockBehavior.Strict);
 
       _agent = new ObjectLifetimeAgent(
           _transaction,
-          _eventSinkWithMock,
-          _invalidDomainObjectManagerMock,
-          _dataManagerMock,
-          _enlistedDomainObjectManagerMock,
-          _persistenceStrategyMock);
+          _eventSinkWithMock.Object,
+          _invalidDomainObjectManagerMock.Object,
+          _dataManagerMock.Object,
+          _enlistedDomainObjectManagerMock.Object,
+          _persistenceStrategyMock.Object);
 
       _objectID1 = DomainObjectIDs.Order1;
       _domainObject1 = DomainObjectMother.CreateFakeObject(_objectID1);
@@ -88,11 +88,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       _domainObject2 = DomainObjectMother.CreateFakeObject(_objectID2);
       _dataContainer2 = DataContainerObjectMother.CreateExisting(_domainObject2);
 
-      _domainObjectCreatorMock = MockRepository.GenerateStrictMock<IDomainObjectCreator>();
+      _domainObjectCreatorMock = new Mock<IDomainObjectCreator>(MockBehavior.Strict);
       _typeDefinitionWithCreatorMock = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(
           TestDomainStorageProviderDefinition,
           classType: typeof(OrderItem),
-          instanceCreator: _domainObjectCreatorMock);
+          instanceCreator: _domainObjectCreatorMock.Object);
 
       _objectIDWithCreatorMock = new ObjectID(_typeDefinitionWithCreatorMock, Guid.NewGuid());
     }
@@ -102,20 +102,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     {
       var constructorParameters = ParamList.Create("Some Product");
 
-      _eventSinkWithMock.Expect(mock => mock.RaiseNewObjectCreatingEvent( _typeDefinitionWithCreatorMock.ClassType));
-      _persistenceStrategyMock.Expect(mock => mock.CreateNewObjectID(_typeDefinitionWithCreatorMock)).Return(_objectID1);
+      _eventSinkWithMock.Setup(mock => mock.RaiseNewObjectCreatingEvent(_typeDefinitionWithCreatorMock.ClassType)).Verifiable();
+      _persistenceStrategyMock.Setup(mock => mock.CreateNewObjectID(_typeDefinitionWithCreatorMock)).Returns(_objectID1).Verifiable();
 
       _domainObjectCreatorMock
-          .Expect(
-              mock => mock.CreateNewObject(Arg<IObjectInitializationContext>.Is.Anything, Arg.Is(constructorParameters), Arg.Is(_transaction)))
-          .WhenCalled(mi => CheckInitializationContext<NewObjectInitializationContext>(mi.Arguments[0], _objectID1, _transaction))
-          .Return(_domainObject1);
+          .Setup(
+              mock => mock.CreateNewObject(It.IsAny<IObjectInitializationContext>(), constructorParameters, _transaction))
+          .Callback((IObjectInitializationContext objectInitializationContext, ParamList _, ClientTransaction _) =>
+              CheckInitializationContext<NewObjectInitializationContext>(objectInitializationContext, _objectID1, _transaction))
+          .Returns(_domainObject1)
+          .Verifiable();
 
       var result = _agent.NewObject(_typeDefinitionWithCreatorMock, constructorParameters);
 
-      _eventSinkWithMock.VerifyAllExpectations();
-      _persistenceStrategyMock.VerifyAllExpectations();
-      _domainObjectCreatorMock.VerifyAllExpectations();
+      _eventSinkWithMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _domainObjectCreatorMock.Verify();
 
       Assert.That(result, Is.SameAs(_domainObject1));
     }
@@ -126,22 +128,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       var subTransaction = _transaction.CreateSubTransaction();
       var agent = new ObjectLifetimeAgent(
           subTransaction,
-          _eventSinkWithMock,
-          _invalidDomainObjectManagerMock,
-          _dataManagerMock,
-          _enlistedDomainObjectManagerMock,
-          _persistenceStrategyMock);
+          _eventSinkWithMock.Object,
+          _invalidDomainObjectManagerMock.Object,
+          _dataManagerMock.Object,
+          _enlistedDomainObjectManagerMock.Object,
+          _persistenceStrategyMock.Object);
 
-      _eventSinkWithMock.Stub(mock => mock.RaiseNewObjectCreatingEvent(Arg<Type>.Is.Anything));
-      _persistenceStrategyMock.Stub(mock => mock.CreateNewObjectID(Arg<ClassDefinition>.Is.Anything)).Return(_objectID1);
+      _eventSinkWithMock.Setup(mock => mock.RaiseNewObjectCreatingEvent(It.IsAny<Type>()));
+      _persistenceStrategyMock.Setup(mock => mock.CreateNewObjectID(It.IsAny<ClassDefinition>())).Returns(_objectID1);
       _domainObjectCreatorMock
-          .Expect(mock => mock.CreateNewObject(Arg<IObjectInitializationContext>.Is.Anything, Arg.Is(ParamList.Empty), Arg.Is(subTransaction)))
-          .WhenCalled(mi => CheckInitializationContext<NewObjectInitializationContext>(mi.Arguments[0], _objectID1, _transaction))
-          .Return(_domainObject1);
+          .Setup(mock => mock.CreateNewObject(It.IsAny<IObjectInitializationContext>(), ParamList.Empty, subTransaction))
+          .Callback((IObjectInitializationContext objectInitializationContext, ParamList _, ClientTransaction _) =>
+              CheckInitializationContext<NewObjectInitializationContext>(objectInitializationContext, _objectID1, _transaction))
+          .Returns(_domainObject1)
+          .Verifiable();
 
       agent.NewObject(_typeDefinitionWithCreatorMock, ParamList.Empty);
 
-      _domainObjectCreatorMock.VerifyAllExpectations();
+      _domainObjectCreatorMock.Verify();
     }
 
     [Test]
@@ -160,29 +164,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     {
       var constructorParameters = ParamList.Empty;
 
-      _eventSinkWithMock.Stub(stub => stub.RaiseNewObjectCreatingEvent( _typeDefinitionWithCreatorMock.ClassType));
-      _persistenceStrategyMock.Stub(stub => stub.CreateNewObjectID(_typeDefinitionWithCreatorMock)).Return(_objectID1);
+      _eventSinkWithMock.Setup(stub => stub.RaiseNewObjectCreatingEvent(_typeDefinitionWithCreatorMock.ClassType));
+      _persistenceStrategyMock.Setup(stub => stub.CreateNewObjectID(_typeDefinitionWithCreatorMock)).Returns(_objectID1);
 
       var exception = new Exception("Test");
       _domainObjectCreatorMock
-          .Expect(mock => mock.CreateNewObject(Arg<IObjectInitializationContext>.Is.Anything, Arg.Is(constructorParameters), Arg.Is(_transaction)))
-          .WhenCalled(mi =>
-          {
-            // Pretend an object was registered, then throw an exception - that way, the registered object needs to be cleaned up
-            FakeRegisteredObject((NewObjectInitializationContext)mi.Arguments[0], _domainObject1);
-            throw exception;
-          })
-          .Return(null);
+          .Setup(mock => mock.CreateNewObject(It.IsAny<IObjectInitializationContext>(), constructorParameters, _transaction))
+          .Callback(
+              (IObjectInitializationContext objectInitializationContext, ParamList _, ClientTransaction _) =>
+              {
+                // Pretend an object was registered, then throw an exception - that way, the registered object needs to be cleaned up
+                FakeRegisteredObject((NewObjectInitializationContext)objectInitializationContext, _domainObject1);
+                throw exception;
+              })
+          .Returns((DomainObject)null)
+          .Verifiable();
 
       var deleteCommandMock = SetupDeleteExpectations(_dataManagerMock, _domainObject1);
-      _enlistedDomainObjectManagerMock.Expect(mock => mock.DisenlistDomainObject(_domainObject1));
+      _enlistedDomainObjectManagerMock.Setup(mock => mock.DisenlistDomainObject(_domainObject1)).Verifiable();
 
       Assert.That(() => _agent.NewObject(_typeDefinitionWithCreatorMock, constructorParameters), Throws.Exception.SameAs(exception));
 
-      _domainObjectCreatorMock.VerifyAllExpectations();
-      _dataManagerMock.VerifyAllExpectations();
-      deleteCommandMock.VerifyAllExpectations();
-      _enlistedDomainObjectManagerMock.VerifyAllExpectations();
+      _domainObjectCreatorMock.Verify();
+      _dataManagerMock.Verify();
+      deleteCommandMock.Verify();
+      _enlistedDomainObjectManagerMock.Verify();
     }
 
     [Test]
@@ -190,19 +196,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     {
       var constructorParameters = ParamList.Empty;
 
-      _eventSinkWithMock.Stub(stub => stub.RaiseNewObjectCreatingEvent( _typeDefinitionWithCreatorMock.ClassType));
-      _persistenceStrategyMock.Stub(stub => stub.CreateNewObjectID(_typeDefinitionWithCreatorMock)).Return(_objectID1);
+      _eventSinkWithMock.Setup(stub => stub.RaiseNewObjectCreatingEvent(_typeDefinitionWithCreatorMock.ClassType));
+      _persistenceStrategyMock.Setup(stub => stub.CreateNewObjectID(_typeDefinitionWithCreatorMock)).Returns(_objectID1);
 
       var exceptionInCreate = new Exception("Test");
       _domainObjectCreatorMock
-          .Expect(mock => mock.CreateNewObject(Arg<IObjectInitializationContext>.Is.Anything, Arg.Is(constructorParameters), Arg.Is(_transaction)))
-          .WhenCalled(mi =>
-          {
+          .Setup(mock => mock.CreateNewObject(It.IsNotNull<IObjectInitializationContext>(), constructorParameters, _transaction))
+          .Callback((IObjectInitializationContext objectInitializationContext, ParamList _, ClientTransaction _) =>
+{
             // Pretend an object was registered, then throw an exception - that way, the registered object needs to be cleaned up
-            FakeRegisteredObject((NewObjectInitializationContext)mi.Arguments[0], _domainObject1);
+            FakeRegisteredObject((NewObjectInitializationContext)objectInitializationContext, _domainObject1);
             throw exceptionInCreate;
           })
-          .Return(null);
+          .Returns((DomainObject)null)
+          .Verifiable();
 
       var exceptionInDelete = new InvalidOperationException("Cancelled");
       var deleteCommandMock = SetupDeleteExpectationsWithException(_dataManagerMock, _domainObject1, exceptionInDelete);
@@ -221,9 +228,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
               .And.InnerException.SameAs(exceptionInCreate)
               .And.Property("CleanupException").SameAs(exceptionInDelete));
 
-      _domainObjectCreatorMock.VerifyAllExpectations();
-      _dataManagerMock.VerifyAllExpectations();
-      deleteCommandMock.VerifyAllExpectations();
+      _domainObjectCreatorMock.Verify();
+      _dataManagerMock.Verify();
+      deleteCommandMock.Verify();
     }
 
     [Test]
@@ -231,31 +238,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     {
       var constructorParameters = ParamList.Empty;
 
-      _eventSinkWithMock.Stub(stub => stub.RaiseNewObjectCreatingEvent( _typeDefinitionWithCreatorMock.ClassType));
-      _persistenceStrategyMock.Stub(stub => stub.CreateNewObjectID(_typeDefinitionWithCreatorMock)).Return(_objectID1);
+      _eventSinkWithMock.Setup(stub => stub.RaiseNewObjectCreatingEvent(_typeDefinitionWithCreatorMock.ClassType));
+      _persistenceStrategyMock.Setup(stub => stub.CreateNewObjectID(_typeDefinitionWithCreatorMock)).Returns(_objectID1);
 
       var exception = new Exception("Test");
       // No object is registered before the exception is thrown
       _domainObjectCreatorMock
-          .Expect(mock => mock.CreateNewObject(Arg<IObjectInitializationContext>.Is.Anything, Arg.Is(constructorParameters), Arg.Is(_transaction)))
-          .Throw(exception);
+          .Setup(mock => mock.CreateNewObject(It.IsAny<IObjectInitializationContext>(), constructorParameters, _transaction))
+          .Throws(exception)
+          .Verifiable();
 
       Assert.That(() => _agent.NewObject(_typeDefinitionWithCreatorMock, constructorParameters), Throws.Exception.SameAs(exception));
 
-      _domainObjectCreatorMock.VerifyAllExpectations();
+      _domainObjectCreatorMock.Verify();
     }
 
     [Test]
     public void GetObjectReference_KnownObject_Invalid_Works ()
     {
-      _invalidDomainObjectManagerMock.Expect(mock => mock.IsInvalid(_objectIDWithCreatorMock)).Return(true);
-      _invalidDomainObjectManagerMock.Expect(mock => mock.GetInvalidObjectReference(_objectIDWithCreatorMock)).Return(_domainObject1);
+      _invalidDomainObjectManagerMock.Setup(mock => mock.IsInvalid(_objectIDWithCreatorMock)).Returns(true).Verifiable();
+      _invalidDomainObjectManagerMock.Setup(mock => mock.GetInvalidObjectReference(_objectIDWithCreatorMock)).Returns(_domainObject1).Verifiable();
 
       var result = _agent.GetObjectReference(_objectIDWithCreatorMock);
 
-      _invalidDomainObjectManagerMock.VerifyAllExpectations();
-      _domainObjectCreatorMock.AssertWasNotCalled(
-          mock => mock.CreateObjectReference(Arg<IObjectInitializationContext>.Is.Anything, Arg<ClientTransaction>.Is.Anything));
+      _invalidDomainObjectManagerMock.Verify();
+      _domainObjectCreatorMock.Verify(mock => mock.CreateObjectReference(It.IsAny<IObjectInitializationContext>(), It.IsAny<ClientTransaction>()), Times.Never());
 
       Assert.That(result, Is.SameAs(_domainObject1));
     }
@@ -263,14 +270,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void GetObjectReference_KnownObject_ReturnedWithoutLoading ()
     {
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(_objectIDWithCreatorMock)).Return(false);
-      _enlistedDomainObjectManagerMock.Expect(mock => mock.GetEnlistedDomainObject(_objectIDWithCreatorMock)).Return(_domainObject1);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectIDWithCreatorMock)).Returns(false);
+      _enlistedDomainObjectManagerMock.Setup(mock => mock.GetEnlistedDomainObject(_objectIDWithCreatorMock)).Returns(_domainObject1).Verifiable();
 
       var result = _agent.GetObjectReference(_objectIDWithCreatorMock);
 
-      _enlistedDomainObjectManagerMock.VerifyAllExpectations();
-      _domainObjectCreatorMock.AssertWasNotCalled(
-          mock => mock.CreateObjectReference(Arg<IObjectInitializationContext>.Is.Anything, Arg<ClientTransaction>.Is.Anything));
+      _enlistedDomainObjectManagerMock.Verify();
+      _domainObjectCreatorMock.Verify(mock => mock.CreateObjectReference(It.IsAny<IObjectInitializationContext>(), It.IsAny<ClientTransaction>()), Times.Never());
 
       Assert.That(result, Is.SameAs(_domainObject1));
     }
@@ -278,18 +284,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void GetObjectReference_UnknownObject_ReturnsUnloadedObject ()
     {
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(_objectIDWithCreatorMock)).Return(false);
-      _enlistedDomainObjectManagerMock.Stub(stub => stub.GetEnlistedDomainObject(_objectIDWithCreatorMock)).Return(null);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectIDWithCreatorMock)).Returns(false);
+      _enlistedDomainObjectManagerMock.Setup(stub => stub.GetEnlistedDomainObject(_objectIDWithCreatorMock)).Returns((DomainObject)null);
 
       _domainObjectCreatorMock
-          .Expect(mock => mock.CreateObjectReference(Arg<IObjectInitializationContext>.Is.Anything, Arg.Is(_transaction)))
-          .Return(_domainObject1)
-          .WhenCalled(
-              mi => CheckInitializationContext<ObjectReferenceInitializationContext>(mi.Arguments[0], _objectIDWithCreatorMock, _transaction));
+          .Setup(mock => mock.CreateObjectReference(It.IsAny<IObjectInitializationContext>(), _transaction))
+          .Returns(_domainObject1)
+          .Callback(
+              (IObjectInitializationContext objectInitializationContext, ClientTransaction _) =>
+                  CheckInitializationContext<ObjectReferenceInitializationContext>(objectInitializationContext, _objectIDWithCreatorMock, _transaction))
+          .Verifiable();
 
       var result = _agent.GetObjectReference(_objectIDWithCreatorMock);
 
-      _domainObjectCreatorMock.VerifyAllExpectations();
+      _domainObjectCreatorMock.Verify();
       Assert.That(result, Is.SameAs(_domainObject1));
     }
 
@@ -299,24 +307,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       var subTransaction = _transaction.CreateSubTransaction();
       var agent = new ObjectLifetimeAgent(
           subTransaction,
-          _eventSinkWithMock,
-          _invalidDomainObjectManagerMock,
-          _dataManagerMock,
-          _enlistedDomainObjectManagerMock,
-          _persistenceStrategyMock);
+          _eventSinkWithMock.Object,
+          _invalidDomainObjectManagerMock.Object,
+          _dataManagerMock.Object,
+          _enlistedDomainObjectManagerMock.Object,
+          _persistenceStrategyMock.Object);
 
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(_objectIDWithCreatorMock)).Return(false);
-      _enlistedDomainObjectManagerMock.Stub(stub => stub.GetEnlistedDomainObject(_objectIDWithCreatorMock)).Return(null);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectIDWithCreatorMock)).Returns(false);
+      _enlistedDomainObjectManagerMock.Setup(stub => stub.GetEnlistedDomainObject(_objectIDWithCreatorMock)).Returns((DomainObject)null);
 
       _domainObjectCreatorMock
-          .Expect(mock => mock.CreateObjectReference(Arg<ObjectReferenceInitializationContext>.Is.TypeOf, Arg.Is(subTransaction)))
-          .Return(_domainObject1)
-          .WhenCalled(
-              mi => CheckInitializationContext<ObjectReferenceInitializationContext>(mi.Arguments[0], _objectIDWithCreatorMock, _transaction));
+          .Setup(mock => mock.CreateObjectReference(It.IsAny<ObjectReferenceInitializationContext>(), subTransaction))
+          .Returns(_domainObject1)
+          .Callback(
+              (IObjectInitializationContext objectInitializationContext, ClientTransaction _) =>
+                  CheckInitializationContext<ObjectReferenceInitializationContext>(objectInitializationContext, _objectIDWithCreatorMock, _transaction))
+          .Verifiable();
 
       var result = agent.GetObjectReference(_objectIDWithCreatorMock);
 
-      _domainObjectCreatorMock.VerifyAllExpectations();
+      _domainObjectCreatorMock.Verify();
       Assert.That(result, Is.SameAs(_domainObject1));
     }
 
@@ -325,11 +335,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     {
       Assert.That(_dataContainer1.State.IsDeleted, Is.False);
 
-      _dataManagerMock.Expect(mock => mock.GetDataContainerWithLazyLoad(_objectID1, true)).Return(_dataContainer1);
+      _dataManagerMock.Setup(mock => mock.GetDataContainerWithLazyLoad(_objectID1, true)).Returns(_dataContainer1).Verifiable();
 
       var result = _agent.GetObject(_objectID1, BooleanObjectMother.GetRandomBoolean());
 
-      _dataManagerMock.VerifyAllExpectations();
+      _dataManagerMock.Verify();
       Assert.That(result, Is.SameAs(_dataContainer1.DomainObject));
     }
 
@@ -339,7 +349,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       var dataContainer = DataContainerObjectMother.CreateDeleted(_domainObject1);
       Assert.That(dataContainer.State.IsDeleted, Is.True);
 
-      _dataManagerMock.Stub(stub => stub.GetDataContainerWithLazyLoad(_objectID1, true)).Return(dataContainer);
+      _dataManagerMock.Setup(stub => stub.GetDataContainerWithLazyLoad(_objectID1, true)).Returns(dataContainer);
 
       var result = _agent.GetObject(_objectID1, true);
 
@@ -352,7 +362,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       var dataContainer = DataContainerObjectMother.CreateDeleted(_domainObject1);
       Assert.That(dataContainer.State.IsDeleted, Is.True);
 
-      _dataManagerMock.Stub(stub => stub.GetDataContainerWithLazyLoad(_objectID1, true)).Return(dataContainer);
+      _dataManagerMock.Setup(stub => stub.GetDataContainerWithLazyLoad(_objectID1, true)).Returns(dataContainer);
 
       Assert.That(
           () => _agent.GetObject(_objectID1, false),
@@ -362,36 +372,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void TryGetObject_InvalidObject ()
     {
-      _invalidDomainObjectManagerMock.Expect(stub => stub.IsInvalid(_objectID1)).Return(true);
-      _invalidDomainObjectManagerMock.Expect(stub => stub.GetInvalidObjectReference(_objectID1)).Return(_domainObject1);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectID1)).Returns(true).Verifiable();
+      _invalidDomainObjectManagerMock.Setup(stub => stub.GetInvalidObjectReference(_objectID1)).Returns(_domainObject1).Verifiable();
 
       var result = _agent.TryGetObject(_objectID1);
 
-      _dataManagerMock.AssertWasNotCalled(mock => mock.GetDataContainerWithLazyLoad(Arg<ObjectID>.Is.Anything, Arg<bool>.Is.Anything));
+      _dataManagerMock.Verify(mock => mock.GetDataContainerWithLazyLoad(It.IsAny<ObjectID>(), It.IsAny<bool>()), Times.Never());
       Assert.That(result, Is.SameAs(_domainObject1));
     }
 
     [Test]
     public void TryGetObject_LoadsViaDataManager_Found ()
     {
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(_objectID1)).Return(false);
-      _dataManagerMock.Expect(mock => mock.GetDataContainerWithLazyLoad(_objectID1, false)).Return(_dataContainer1);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectID1)).Returns(false);
+      _dataManagerMock.Setup(mock => mock.GetDataContainerWithLazyLoad(_objectID1, false)).Returns(_dataContainer1).Verifiable();
 
       var result = _agent.TryGetObject(_objectID1);
 
-      _dataManagerMock.VerifyAllExpectations();
+      _dataManagerMock.Verify();
       Assert.That(result, Is.SameAs(_dataContainer1.DomainObject));
     }
 
     [Test]
     public void TryGetObject_LoadsViaDataManager_NotFound ()
     {
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(_objectID1)).Return(false);
-      _dataManagerMock.Expect(mock => mock.GetDataContainerWithLazyLoad(_objectID1, false)).Return(null);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectID1)).Returns(false);
+      _dataManagerMock.Setup(mock => mock.GetDataContainerWithLazyLoad(_objectID1, false)).Returns((DataContainer)null).Verifiable();
 
       var result = _agent.TryGetObject(_objectID1);
 
-      _dataManagerMock.VerifyAllExpectations();
+      _dataManagerMock.Verify();
       Assert.That(result, Is.Null);
     }
 
@@ -399,12 +409,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     public void GetObjects ()
     {
       _dataManagerMock
-          .Expect(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, true))
-          .Return(new[] { _dataContainer1, _dataContainer2 });
+          .Setup(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, true))
+          .Returns(new[] { _dataContainer1, _dataContainer2 })
+          .Verifiable();
 
       var result = _agent.GetObjects<Order>(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
 
-      _dataManagerMock.VerifyAllExpectations();
+      _dataManagerMock.Verify();
       Assert.That(result, Is.TypeOf<Order[]>().And.EqualTo(new[] { _domainObject1, _domainObject2 }));
     }
 
@@ -412,8 +423,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     public void GetObjects_InvalidType ()
     {
       _dataManagerMock
-          .Stub(stub => stub.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, true))
-          .Return(new[] { _dataContainer1, _dataContainer2 });
+          .Setup(stub => stub.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, true))
+          .Returns(new[] { _dataContainer1, _dataContainer2 });
 
       Assert.That(
           () => _agent.GetObjects<ClassWithAllDataTypes>(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }),
@@ -423,28 +434,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void TryGetObjects ()
     {
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(_objectID1)).Return(false);
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(_objectID2)).Return(false);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectID1)).Returns(false);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectID2)).Returns(false);
 
       _dataManagerMock
-          .Expect(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, false))
-          .Return(new[] { _dataContainer1, _dataContainer2 });
+          .Setup(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, false))
+          .Returns(new[] { _dataContainer1, _dataContainer2 })
+          .Verifiable();
 
       var result = _agent.TryGetObjects<Order>(new[] { _objectID1, _objectID2 });
 
-      _dataManagerMock.VerifyAllExpectations();
+      _dataManagerMock.Verify();
       Assert.That(result, Is.TypeOf<Order[]>().And.EqualTo(new[] { _domainObject1, _domainObject2 }));
     }
 
     [Test]
     public void TryGetObjects_WithNotFoundObjects ()
     {
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(_objectID1)).Return(false);
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(_objectID2)).Return(false);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectID1)).Returns(false);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectID2)).Returns(false);
 
       _dataManagerMock
-          .Stub(stub => stub.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, false))
-          .Return(new[] { null, _dataContainer2 });
+          .Setup(stub => stub.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, false))
+          .Returns(new[] { null, _dataContainer2 });
 
       var result = _agent.TryGetObjects<Order>(new[] { _objectID1, _objectID2 });
 
@@ -454,13 +466,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void TryGetObjects_WithInvalidObjects ()
     {
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(_objectID1)).Return(true);
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(_objectID2)).Return(false);
-      _invalidDomainObjectManagerMock.Stub(stub => stub.GetInvalidObjectReference(_objectID1)).Return(_domainObject1);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectID1)).Returns(true);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectID2)).Returns(false);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.GetInvalidObjectReference(_objectID1)).Returns(_domainObject1);
 
       _dataManagerMock
-            .Stub(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID2 }, false))
-            .Return(new[] { _dataContainer2 });
+            .Setup(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID2 }, false))
+            .Returns(new[] { _dataContainer2 });
 
       var result = _agent.TryGetObjects<Order>(new[] { _objectID1, _objectID2 });
       Assert.That(result, Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
@@ -469,12 +481,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void TryGetObjects_InvalidType ()
     {
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(_objectID1)).Return(false);
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(_objectID2)).Return(false);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectID1)).Returns(false);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(_objectID2)).Returns(false);
 
       _dataManagerMock
-          .Expect(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, false))
-          .Return(new[] { _dataContainer1, _dataContainer2 });
+          .Setup(mock => mock.GetDataContainersWithLazyLoad(new[] { _objectID1, _objectID2 }, false))
+          .Returns(new[] { _dataContainer1, _dataContainer2 })
+          .Verifiable();
 
       Assert.That(
           () => _agent.TryGetObjects<ClassWithAllDataTypes>(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }),
@@ -488,8 +501,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
 
       _agent.Delete(_domainObject1);
 
-      _dataManagerMock.VerifyAllExpectations();
-      deleteCommandMock.VerifyAllExpectations();
+      _dataManagerMock.Verify();
+      deleteCommandMock.Verify();
     }
 
     [Test]
@@ -515,31 +528,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       Assert.That(deserializedInstance.PersistenceStrategy, Is.Not.Null);
     }
 
-    private IDataManagementCommand SetupDeleteExpectations (IDataManager dataManagerMock, DomainObject deletedObject)
+    private Mock<IDataManagementCommand> SetupDeleteExpectations (Mock<IDataManager> dataManagerMock, DomainObject deletedObject)
     {
-      var initialCommandStub = MockRepository.GenerateStrictMock<IDataManagementCommand>();
-      var actualCommandMock = MockRepository.GenerateStrictMock<IDataManagementCommand>();
+      var initialCommandStub = new Mock<IDataManagementCommand>(MockBehavior.Strict);
+      var actualCommandMock = new Mock<IDataManagementCommand>(MockBehavior.Strict);
 
-      var counter = new OrderedExpectationCounter();
-      actualCommandMock.Stub(stub => stub.GetAllExceptions()).Return(Enumerable.Empty<Exception>());
-      initialCommandStub.Stub(stub => stub.ExpandToAllRelatedObjects()).Return(new ExpandedCommand(actualCommandMock)).Ordered(counter);
-      actualCommandMock.Expect(mock => mock.Begin()).Ordered(counter);
-      actualCommandMock.Expect(mock => mock.Perform()).Ordered(counter);
-      actualCommandMock.Expect(mock => mock.End()).Ordered(counter);
-      dataManagerMock.Expect(mock => mock.CreateDeleteCommand(deletedObject)).Return(initialCommandStub);
+      var sequence = new MockSequence();
+      actualCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(Enumerable.Empty<Exception>());
+      initialCommandStub
+          .InSequence(sequence)
+          .Setup(stub => stub.ExpandToAllRelatedObjects()).Returns(new ExpandedCommand(actualCommandMock.Object))
+          .Verifiable();
+      actualCommandMock
+          .InSequence(sequence)
+          .Setup(mock => mock.Begin())
+          .Verifiable();
+      actualCommandMock
+          .InSequence(sequence)
+          .Setup(mock => mock.Perform())
+          .Verifiable();
+      actualCommandMock
+          .InSequence(sequence)
+          .Setup(mock => mock.End())
+          .Verifiable();
+      dataManagerMock
+          .Setup(mock => mock.CreateDeleteCommand(deletedObject))
+          .Returns(initialCommandStub.Object)
+          .Verifiable();
       return actualCommandMock;
     }
 
-    private IDataManagementCommand SetupDeleteExpectationsWithException (IDataManager dataManagerMock, DomainObject deletedObject, Exception exception)
+    private Mock<IDataManagementCommand> SetupDeleteExpectationsWithException (Mock<IDataManager> dataManagerMock, DomainObject deletedObject, Exception exception)
     {
-      var initialCommandStub = MockRepository.GenerateStrictMock<IDataManagementCommand>();
-      var actualCommandMock = MockRepository.GenerateStrictMock<IDataManagementCommand>();
+      var initialCommandStub = new Mock<IDataManagementCommand>(MockBehavior.Strict);
+      var actualCommandMock = new Mock<IDataManagementCommand>(MockBehavior.Strict);
 
-      var counter = new OrderedExpectationCounter();
-      actualCommandMock.Stub(stub => stub.GetAllExceptions()).Return(Enumerable.Empty<Exception>());
-      initialCommandStub.Stub(stub => stub.ExpandToAllRelatedObjects()).Return(new ExpandedCommand(actualCommandMock)).Ordered(counter);
-      actualCommandMock.Expect(mock => mock.Begin()).Throw(exception);
-      dataManagerMock.Expect(mock => mock.CreateDeleteCommand(deletedObject)).Return(initialCommandStub);
+      var sequence = new MockSequence();
+      actualCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(Enumerable.Empty<Exception>());
+      initialCommandStub
+          .InSequence(sequence)
+          .Setup(stub => stub.ExpandToAllRelatedObjects())
+          .Returns(new ExpandedCommand(actualCommandMock.Object))
+          .Verifiable();
+      actualCommandMock
+          .InSequence(sequence)
+          .Setup(mock => mock.Begin())
+          .Throws(exception)
+          .Verifiable();
+      dataManagerMock
+          .Setup(mock => mock.CreateDeleteCommand(deletedObject))
+          .Returns(initialCommandStub.Object)
+          .Verifiable();
       return actualCommandMock;
     }
 

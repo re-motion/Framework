@@ -63,7 +63,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       DomainObject orderTicket = TestableClientTransaction.GetObject(DomainObjectIDs.OrderTicket1, false);
       _eventReceiver.Clear();
-      DomainObject order = TestableClientTransaction.GetRelatedObject(RelationEndPointID.Create(orderTicket.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
+      DomainObject order =
+          TestableClientTransaction.GetRelatedObject(RelationEndPointID.Create(orderTicket.ID, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order"));
 
       Assert.That(order, Is.Not.Null);
       Assert.That(order.ID, Is.EqualTo(DomainObjectIDs.Order1));

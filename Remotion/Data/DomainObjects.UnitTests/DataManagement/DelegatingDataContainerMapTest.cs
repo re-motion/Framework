@@ -17,10 +17,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Development.RhinoMocks.UnitTesting;
-using Rhino.Mocks;
+using Remotion.Development.Moq.UnitTesting;
+using Remotion.Development.UnitTesting;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -32,27 +35,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var objectID = DomainObjectIDs.Order1;
       var dataContainer = DataContainer.CreateNew(objectID);
-      var enumeratorGeneric = MockRepository.GenerateStub<IEnumerator<DataContainer>>();
-      var enumeratorObject = MockRepository.GenerateStub<IEnumerator>();
+      var enumeratorGeneric = new Mock<IEnumerator<DataContainer>>();
+      var enumeratorObject = new Mock<IEnumerator>();
 
-      CheckDelegation(dm => dm.Count, 5);
-      CheckDelegation(dm => dm[objectID], dataContainer);
-      CheckDelegation(dm => dm.GetEnumerator(), enumeratorGeneric);
-      CheckDelegation(dm => ((IEnumerable)dm).GetEnumerator(), enumeratorObject);
+      CheckDelegation<IDataContainerMapReadOnlyView, int>(dm => dm.Count, 5);
+      CheckDelegation<IDataContainerMapReadOnlyView, DataContainer>(dm => dm[objectID], dataContainer);
+      CheckDelegation<IDataContainerMapReadOnlyView, IEnumerator<DataContainer>>(dm => dm.GetEnumerator(), enumeratorGeneric.Object);
+      CheckDelegation<IEnumerable, IEnumerator>(dm => dm.GetEnumerator(), enumeratorObject.Object);
     }
 
-    private void CheckDelegation<TR> (Func<IDataContainerMapReadOnlyView, TR> func, TR fakeResult)
+    private void CheckDelegation<TMock, TR> (Expression<Func<TMock, TR>> func, TR fakeResult)
+        where TMock : class
     {
-      var innerMock = MockRepository.GenerateStrictMock<IDataContainerMapReadOnlyView>();
-      var delegatingDataContainerMap = new DelegatingDataContainerMap();
-      delegatingDataContainerMap.InnerDataContainerMap = innerMock;
+      Assertion.IsTrue(typeof(TMock).IsAssignableFrom(typeof(IDataContainerMapReadOnlyView)));
 
-      var helper = new DecoratorTestHelper<IDataContainerMapReadOnlyView>(delegatingDataContainerMap, innerMock);
+      var innerMock = new Mock<IDataContainerMapReadOnlyView>(MockBehavior.Strict);
+      var delegatingDataContainerMap = new DelegatingDataContainerMap();
+      delegatingDataContainerMap.InnerDataContainerMap = innerMock.Object;
+
+      var helper = new DecoratorTestHelper<TMock>((TMock)(object)delegatingDataContainerMap, innerMock.As<TMock>());
       helper.CheckDelegation(func, fakeResult);
 
       delegatingDataContainerMap.InnerDataContainerMap = null;
+      var compiledFunc = func.Compile();
       Assert.That(
-          () => func(delegatingDataContainerMap),
+          () => compiledFunc((TMock)(object)delegatingDataContainerMap),
           Throws.InvalidOperationException.With.Message.EqualTo("InnerDataContainerMap property must be set before it can be used."));
     }
   }

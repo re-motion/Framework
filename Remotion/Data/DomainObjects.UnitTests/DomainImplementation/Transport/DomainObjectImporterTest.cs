@@ -18,17 +18,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.DomainImplementation.Transport;
 using Remotion.Data.DomainObjects.Infrastructure;
+using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.Persistence;
+using Remotion.Data.DomainObjects.UnitTests.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Data.UnitTests.UnitTesting;
+using Remotion.Mixins;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 {
@@ -353,21 +356,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
         items = new[] { TransportItem.PackageDataContainer(DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer) };
       }
 
-      var repository = new MockRepository();
-      var strategyMock = repository.StrictMock<IImportStrategy>();
-      var streamFake = repository.Stub<Stream>();
+      var strategyMock = new Mock<IImportStrategy>(MockBehavior.Strict);
+      var streamFake = new Mock<Stream>();
 
-      strategyMock.Expect(mock => mock.Import(streamFake)).Return(items);
+      strategyMock.Setup(mock => mock.Import(streamFake.Object)).Returns(items).Verifiable();
 
-      strategyMock.Replay();
-
-      var importer = DomainObjectImporter.CreateImporterFromStream(streamFake, strategyMock);
+      var importer = DomainObjectImporter.CreateImporterFromStream(streamFake.Object, strategyMock.Object);
       TransportedDomainObjects result = importer.GetImportedObjects();
       Assert.That(
           result.TransportedObjects,
           Is.EquivalentTo(LifetimeService.GetObjects<Order>(result.DataTransaction, DomainObjectIDs.Order1)));
 
-      strategyMock.VerifyAllExpectations();
+      strategyMock.Verify();
     }
 
     [Test]
@@ -379,9 +379,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       byte[] binaryData = DomainObjectTransporterTestHelper.GetBinaryDataFor(transporter);
 
-      var facade = RootPersistenceStrategyMockFacade.CreateWithStrictMock();
-      facade.ExpectLoadObjectData(new[] { instance.ID });
-      using (facade.CreateScope())
+      var persistenceStrategyMock = new Mock<IFetchEnabledPersistenceStrategy>(MockBehavior.Strict);
+      persistenceStrategyMock
+          .Setup(mock => mock.LoadObjectData(new[] { instance.ID }))
+          .Returns(new[] { (ILoadedObjectData)new FreshlyLoadedObjectData(DataContainerObjectMother.CreateExisting(instance.ID)) });
+
+      using (RootClientTransactionComponentFactoryMixin.CreatePersistenceStrategyScope(persistenceStrategyMock.Object))
       {
         var imported = DomainObjectTransporterTestHelper.ImportObjects(binaryData);
 
@@ -429,8 +432,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
         PropertyValueInCallback = Property;
         CallbackTransaction = importTransaction;
       }
+    }
 
+    public class RootClientTransactionComponentFactoryMixin : Mixin<RootClientTransactionComponentFactory>
+    {
+      public static IDisposable CreatePersistenceStrategyScope (IFetchEnabledPersistenceStrategy persistenceStrategy)
+      {
+        var mixinConfigurationScope = MixinConfiguration.BuildFromActive()
+            .ForClass<RootClientTransactionComponentFactory>()
+            .AddMixin<RootClientTransactionComponentFactoryMixin>()
+            .EnterScope();
+        s_persistenceStrategy = persistenceStrategy;
+        return new PostActionDisposableDecorator(mixinConfigurationScope, () => { s_persistenceStrategy = null; });
+      }
 
+      [ThreadStatic]
+      private static IFetchEnabledPersistenceStrategy s_persistenceStrategy;
+
+      public RootClientTransactionComponentFactoryMixin ()
+      {
+      }
+
+      [OverrideTarget]
+      public IPersistenceStrategy CreatePersistenceStrategy ([UsedImplicitly] ClientTransaction constructedTransaction)
+      {
+        if (s_persistenceStrategy == null)
+          throw new InvalidOperationException("No persistence strategy has been given.");
+        return s_persistenceStrategy;
+      }
     }
   }
 }

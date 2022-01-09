@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -22,7 +23,6 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
     private RelationEndPointID _endPointID;
     private ObjectEndPoint _endPoint;
-    private IClientTransactionEventSink _transactionEventSinkWithMock;
+    private Mock<IClientTransactionEventSink> _transactionEventSinkWithMock;
 
     private ObjectEndPointSetSameCommand _command;
 
@@ -47,9 +47,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       _endPointID = RelationEndPointID.Resolve(_domainObject, c => c.Employee);
       _endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(_endPointID, _relatedObject.ID);
-      _transactionEventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
+      _transactionEventSinkWithMock = new Mock<IClientTransactionEventSink>(MockBehavior.Strict);
 
-      _command = new ObjectEndPointSetSameCommand(_endPoint, _transactionEventSinkWithMock);
+      _command = new ObjectEndPointSetSameCommand(_endPoint, _transactionEventSinkWithMock.Object);
     }
 
     [Test]
@@ -71,29 +71,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Begin ()
     {
-      _transactionEventSinkWithMock.Replay();
-
       _command.Begin();
 
-      _transactionEventSinkWithMock.AssertWasNotCalled(mock => mock.RaiseRelationChangingEvent(
-          Arg<DomainObject>.Is.Anything,
-          Arg<IRelationEndPointDefinition>.Is.Anything,
-          Arg<DomainObject>.Is.Anything,
-          Arg<DomainObject>.Is.Anything));
+      _transactionEventSinkWithMock.Verify(mock => mock.RaiseRelationChangingEvent(
+          It.IsAny<DomainObject>(),
+          It.IsAny<IRelationEndPointDefinition>(),
+          It.IsAny<DomainObject>(),
+          It.IsAny<DomainObject>()), Times.Never());
     }
 
     [Test]
     public void End ()
     {
-      _transactionEventSinkWithMock.Replay();
-
       _command.Begin();
 
-      _transactionEventSinkWithMock.AssertWasNotCalled(mock => mock.RaiseRelationChangedEvent(
-          Arg<DomainObject>.Is.Anything,
-          Arg<IRelationEndPointDefinition>.Is.Anything,
-          Arg<DomainObject>.Is.Anything,
-          Arg<DomainObject>.Is.Anything));
+      _transactionEventSinkWithMock.Verify(mock => mock.RaiseRelationChangedEvent(
+          It.IsAny<DomainObject>(),
+          It.IsAny<IRelationEndPointDefinition>(),
+          It.IsAny<DomainObject>(),
+          It.IsAny<DomainObject>()), Times.Never());
     }
 
     [Test]
@@ -105,7 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
           (IObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(unidirectionalEndPointID);
       Assert.That(unidirectionalEndPoint.Definition.GetOppositeEndPointDefinition().IsAnonymous, Is.True);
 
-      var setSameModification = new ObjectEndPointSetSameCommand(unidirectionalEndPoint, _transactionEventSinkWithMock);
+      var setSameModification = new ObjectEndPointSetSameCommand(unidirectionalEndPoint, _transactionEventSinkWithMock.Object);
 
       var bidirectionalModification = setSameModification.ExpandToAllRelatedObjects();
       Assert.That(bidirectionalModification.GetNestedCommands(), Is.EqualTo(new[] { setSameModification }));

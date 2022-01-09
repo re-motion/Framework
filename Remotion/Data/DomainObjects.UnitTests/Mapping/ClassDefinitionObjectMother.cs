@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       classType = classType ?? typeof(Order);
       var defaultStorageClassNotNullable = defaultStorageClass ?? DefaultStorageClass.Persistent;
       persistentMixinFinder = persistentMixinFinder ?? new PersistentMixinFinderStub(classType, Type.EmptyTypes);
-      instanceCreator = instanceCreator ?? MockRepository.GenerateStrictMock<IDomainObjectCreator>();
+      instanceCreator = instanceCreator ?? new Mock<IDomainObjectCreator>(MockBehavior.Strict).Object;
 
       return new ClassDefinition(
               id,

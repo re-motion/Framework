@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
@@ -24,7 +25,6 @@ using Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.Validation
 {
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     private PropertyDefinition _transactionPropertyDefinitionOnPersistentClassDefinition;
     private PropertyDefinition _transactionPropertyDefinitionOnNonPersistentClassDefinition;
 
-    private IStorageEntityDefinition _persistentStorageEntityDefinition;
+    private Mock<IStorageEntityDefinition> _persistentStorageEntityDefinition;
     private IStorageEntityDefinition _nonPersistentStorageEntityDefinition;
 
     [SetUp]
@@ -50,8 +50,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
           "Order",
           typeof(Order),
           storageGroupType: typeof(TestDomainAttribute));
-      _persistentStorageEntityDefinition = MockRepository.GenerateStub<IStorageEntityDefinition>();
-      _persistentClassDefinition.SetStorageEntity(_persistentStorageEntityDefinition);
+      _persistentStorageEntityDefinition = new Mock<IStorageEntityDefinition>();
+      _persistentClassDefinition.SetStorageEntity(_persistentStorageEntityDefinition.Object);
 
       _nonPersistentClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(
           "OrderViewModel",

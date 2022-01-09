@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -27,13 +27,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   public class PropertyDefinitionCollectionFactoryTest
   {
     private PropertyDefinitionCollectionFactory _factory;
-    private IMappingObjectFactory _mappingObjectFactoryMock;
+    private Mock<IMappingObjectFactory> _mappingObjectFactoryMock;
 
     [SetUp]
     public void SetUp ()
     {
-      _mappingObjectFactoryMock = MockRepository.GenerateStrictMock<IMappingObjectFactory>();
-      _factory = new PropertyDefinitionCollectionFactory(_mappingObjectFactoryMock);
+      _mappingObjectFactoryMock = new Mock<IMappingObjectFactory>(MockBehavior.Strict);
+      _factory = new PropertyDefinitionCollectionFactory(_mappingObjectFactoryMock.Object);
     }
 
     [Test]
@@ -48,16 +48,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var fakePropertyDefinition2 = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "P2");
 
       _mappingObjectFactoryMock
-          .Expect(mock => mock.CreatePropertyDefinition(classDefinition, propertyInfo1))
-          .Return(fakePropertyDefinition1);
+          .Setup(mock => mock.CreatePropertyDefinition(classDefinition, propertyInfo1))
+          .Returns(fakePropertyDefinition1)
+          .Verifiable();
       _mappingObjectFactoryMock
-          .Expect(mock => mock.CreatePropertyDefinition(classDefinition, propertyInfo2))
-          .Return(fakePropertyDefinition2);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreatePropertyDefinition(classDefinition, propertyInfo2))
+          .Returns(fakePropertyDefinition2)
+          .Verifiable();
 
       var result = _factory.CreatePropertyDefinitions(classDefinition, new[] { propertyInfo1, propertyInfo2 });
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
+      _mappingObjectFactoryMock.Verify();
       Assert.That(result.Count, Is.EqualTo(2));
       Assert.That(result[0], Is.SameAs(fakePropertyDefinition1));
       Assert.That(result[1], Is.SameAs(fakePropertyDefinition2));

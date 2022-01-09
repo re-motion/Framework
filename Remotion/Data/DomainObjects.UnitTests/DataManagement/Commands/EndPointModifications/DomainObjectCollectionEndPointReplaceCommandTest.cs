@@ -15,14 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
+using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Data.UnitTests.UnitTesting;
-using Remotion.Development.UnitTesting;
+using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       _command =
           new DomainObjectCollectionEndPointReplaceCommand(
-              CollectionEndPoint, _replacedRelatedObject, 12, _replacementRelatedObject, CollectionDataMock, TransactionEventSinkMock);
+              CollectionEndPoint, _replacedRelatedObject, 12, _replacementRelatedObject, CollectionDataMock.Object, TransactionEventSinkMock.Object);
     }
 
     [Test]
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That(_command.OldRelatedObject, Is.SameAs(_replacedRelatedObject));
       Assert.That(_command.NewRelatedObject, Is.SameAs(_replacementRelatedObject));
       Assert.That(_command.ModifiedCollectionEventRaiser, Is.SameAs(CollectionEndPoint.GetCollectionEventRaiser()));
-      Assert.That(_command.ModifiedCollectionData, Is.SameAs(CollectionDataMock));
+      Assert.That(_command.ModifiedCollectionData, Is.SameAs(CollectionDataMock.Object));
     }
 
     [Test]
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       var endPoint = new NullDomainObjectCollectionEndPoint(Transaction, RelationEndPointID.Definition);
       Assert.That(
           () => new DomainObjectCollectionEndPointReplaceCommand(
-          endPoint, _replacedRelatedObject, 12, _replacementRelatedObject, CollectionDataMock, TransactionEventSinkMock),
+          endPoint, _replacedRelatedObject, 12, _replacementRelatedObject, CollectionDataMock.Object, TransactionEventSinkMock.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Modified end point is null, a NullEndPointModificationCommand is needed.",
@@ -71,60 +71,67 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Begin ()
     {
-      var counter = new OrderedExpectationCounter();
+      var sequence = new MockSequence();
       CollectionMockEventReceiver
-          .Expect(mock => mock.Removing(_replacedRelatedObject))
-          .WhenCalledOrdered(counter, mi => Assert.That(ClientTransaction.Current, Is.SameAs(Transaction)));
+          .InSequence(sequence)
+          .SetupRemoving(CollectionEndPoint.Collection, _replacedRelatedObject)
+          .WithCurrentTransaction(Transaction)
+          .Verifiable();
       CollectionMockEventReceiver
-          .Expect(mock => mock.Adding(_replacementRelatedObject))
-          .WhenCalledOrdered(counter, mi => Assert.That(ClientTransaction.Current, Is.SameAs(Transaction)));
+          .InSequence(sequence)
+          .SetupAdding(CollectionEndPoint.Collection, _replacementRelatedObject)
+          .WithCurrentTransaction(Transaction)
+          .Verifiable();
       TransactionEventSinkMock
-          .Expect(
-              mock => mock.RaiseRelationChangingEvent(DomainObject, CollectionEndPoint.Definition, _replacedRelatedObject, _replacementRelatedObject))
-          .Ordered(counter);
+          .InSequence(sequence)
+          .Setup(mock => mock.RaiseRelationChangingEvent(DomainObject, CollectionEndPoint.Definition, _replacedRelatedObject, _replacementRelatedObject))
+          .Verifiable();
 
       _command.Begin();
 
-      TransactionEventSinkMock.VerifyAllExpectations();
-      CollectionMockEventReceiver.VerifyAllExpectations();
+      TransactionEventSinkMock.Verify();
+      CollectionMockEventReceiver.Verify();
     }
 
     [Test]
     public void End ()
     {
-      var counter = new OrderedExpectationCounter();
+      var sequence = new MockSequence();
       TransactionEventSinkMock
-          .Expect(
-              mock => mock.RaiseRelationChangedEvent(DomainObject, CollectionEndPoint.Definition, _replacedRelatedObject, _replacementRelatedObject))
-          .Ordered(counter);
+          .InSequence(sequence)
+          .Setup(mock => mock.RaiseRelationChangedEvent(DomainObject, CollectionEndPoint.Definition, _replacedRelatedObject, _replacementRelatedObject))
+          .Verifiable();
       CollectionMockEventReceiver
-          .Expect(mock => mock.Added(_replacementRelatedObject))
-          .WhenCalledOrdered(counter, mi => Assert.That(ClientTransaction.Current, Is.SameAs(Transaction)));
+          .InSequence(sequence)
+          .SetupAdded(CollectionEndPoint.Collection, _replacementRelatedObject)
+          .WithCurrentTransaction(Transaction)
+          .Verifiable();
       CollectionMockEventReceiver
-          .Expect(mock => mock.Removed(_replacedRelatedObject))
-          .WhenCalledOrdered(counter, mi => Assert.That(ClientTransaction.Current, Is.SameAs(Transaction)));
+          .InSequence(sequence)
+          .SetupRemoved(CollectionEndPoint.Collection, _replacedRelatedObject)
+          .WithCurrentTransaction(Transaction)
+          .Verifiable();
 
       _command.End();
 
-      TransactionEventSinkMock.VerifyAllExpectations();
-      CollectionMockEventReceiver.VerifyAllExpectations();
+      TransactionEventSinkMock.Verify();
+      CollectionMockEventReceiver.Verify();
     }
 
     [Test]
     public void Perform ()
     {
-      CollectionDataMock.BackToRecord();
-      CollectionDataMock.Expect(mock => mock.Replace(12, _replacementRelatedObject));
-      CollectionDataMock.Replay();
+      CollectionDataMock.Reset();
+      CollectionDataMock.Setup(mock => mock.Replace(12, _replacementRelatedObject)).Verifiable();
 
       _command.Perform();
 
-      CollectionDataMock.VerifyAllExpectations();
+      CollectionDataMock.Verify();
 
-      CollectionMockEventReceiver.AssertWasNotCalled(mock => mock.Adding());
-      CollectionMockEventReceiver.AssertWasNotCalled(mock => mock.Added());
-      CollectionMockEventReceiver.AssertWasNotCalled(mock => mock.Removing());
-      CollectionMockEventReceiver.AssertWasNotCalled(mock => mock.Removed());
+      CollectionMockEventReceiver.Verify(mock => mock.Adding(It.IsAny<object>(), It.IsAny<DomainObjectCollectionChangeEventArgs>()), Times.Never());
+      CollectionMockEventReceiver.Verify(mock => mock.Added(It.IsAny<object>(), It.IsAny<DomainObjectCollectionChangeEventArgs>()), Times.Never());
+      CollectionMockEventReceiver.Verify(mock => mock.Removing(It.IsAny<object>(), It.IsAny<DomainObjectCollectionChangeEventArgs>()), Times.Never());
+      CollectionMockEventReceiver.Verify(mock => mock.Removed(It.IsAny<object>(), It.IsAny<DomainObjectCollectionChangeEventArgs>()), Times.Never());
       Assert.That(CollectionEndPoint.HasBeenTouched, Is.True);
     }
 

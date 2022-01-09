@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
@@ -24,7 +25,6 @@ using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
@@ -81,12 +81,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       var strategy = (IDefaultValueStrategy)new BindableDomainObjectDefaultValueStrategy();
       var instance = SampleBindableDomainObject.NewObject();
 
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub(stub => stub.PropertyType).Return(typeof(bool));
-      propertyInformationStub.Stub(stub => stub.GetIndexParameters()).Return(new ParameterInfo[0]);
-      propertyInformationStub.Stub(stub => stub.DeclaringType).Return(TypeAdapter.Create(typeof(bool)));
-      propertyInformationStub.Stub(stub => stub.GetOriginalDeclaringType()).Return(TypeAdapter.Create(typeof(bool)));
-      var property = CreateProperty(propertyInformationStub);
+      var propertyInformationStub = new Mock<IPropertyInformation>();
+      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(bool));
+      propertyInformationStub.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
+      propertyInformationStub.Setup(stub => stub.DeclaringType).Returns(TypeAdapter.Create(typeof(bool)));
+      propertyInformationStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns(TypeAdapter.Create(typeof(bool)));
+      var property = CreateProperty(propertyInformationStub.Object);
 
       var result = strategy.IsDefaultValue(instance, property);
 
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 
     private BindableObjectProvider CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ()
     {
-      return new BindableObjectProvider(BindableObjectMetadataFactory.Create(), MockRepository.GenerateStub<IBusinessObjectServiceFactory>());
+      return new BindableObjectProvider(BindableObjectMetadataFactory.Create(), new Mock<IBusinessObjectServiceFactory>().Object);
     }
 
     private PropertyBase.Parameters GetPropertyParameters (IPropertyInformation property, BindableObjectProvider provider)

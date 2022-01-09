@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -31,13 +31,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         Type propertyType,
         Lazy<SortExpressionDefinition> sortExpressionDefinition)
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub(stub => stub.Name).Return(propertyName);
-      propertyInformationStub.Stub(stub => stub.PropertyType).Return(propertyType);
-      propertyInformationStub.Stub(stub => stub.DeclaringType).Return(TypeAdapter.Create(classDefinition.ClassType));
+      var propertyInformationStub = new Mock<IPropertyInformation>();
+      propertyInformationStub.Setup(stub => stub.Name).Returns(propertyName);
+      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(propertyType);
+      propertyInformationStub.Setup(stub => stub.DeclaringType).Returns(TypeAdapter.Create(classDefinition.ClassType));
 
       return new VirtualCollectionRelationEndPointDefinition(
-          classDefinition, propertyName, isMandatory, sortExpressionDefinition, propertyInformationStub);
+          classDefinition, propertyName, isMandatory, sortExpressionDefinition, propertyInformationStub.Object);
     }
 
     public static VirtualCollectionRelationEndPointDefinition Create (

@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
@@ -27,26 +28,25 @@ using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
   [TestFixture]
   public class BindableDomainObjectTest : TestBase
   {
-    private IBindableDomainObjectImplementation _implementationMock;
-    private IBusinessObjectProperty _propertyFake;
-    private IBusinessObjectClass _businessObjectClassFake;
+    private Mock<IBindableDomainObjectImplementation> _implementationMock;
+    private Mock<IBusinessObjectProperty> _propertyFake;
+    private Mock<IBusinessObjectClass> _businessObjectClassFake;
 
     [SetUp]
     public override void SetUp ()
     {
       base.SetUp();
 
-      _implementationMock = MockRepository.GenerateMock<IBindableDomainObjectImplementation>();
+      _implementationMock = new Mock<IBindableDomainObjectImplementation>();
 
-      _propertyFake = MockRepository.GenerateMock<IBusinessObjectProperty>();
-      _businessObjectClassFake = MockRepository.GenerateMock<IBusinessObjectClass>();
+      _propertyFake = new Mock<IBusinessObjectProperty>();
+      _businessObjectClassFake = new Mock<IBusinessObjectClass>();
     }
 
     [Test]
@@ -158,73 +158,67 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void GetProperty ()
     {
-      var instance = SampleBindableDomainObject.NewObject(_implementationMock);
+      var instance = SampleBindableDomainObject.NewObject(_implementationMock.Object);
 
-      _implementationMock.Expect(mock => mock.GetProperty(_propertyFake)).Return(12);
-      _implementationMock.Replay();
+      _implementationMock.Setup(mock => mock.GetProperty(_propertyFake.Object)).Returns(12).Verifiable();
 
-      Assert.That(((IBusinessObject)instance).GetProperty(_propertyFake), Is.EqualTo(12));
-      _implementationMock.VerifyAllExpectations();
+      Assert.That(((IBusinessObject)instance).GetProperty(_propertyFake.Object), Is.EqualTo(12));
+      _implementationMock.Verify();
     }
 
     [Test]
     public void SetProperty ()
     {
-      var instance = SampleBindableDomainObject.NewObject(_implementationMock);
+      var instance = SampleBindableDomainObject.NewObject(_implementationMock.Object);
 
-      _implementationMock.Expect(mock => mock.SetProperty(_propertyFake, 174));
-      _implementationMock.Replay();
+      _implementationMock.Setup(mock => mock.SetProperty(_propertyFake.Object, 174)).Verifiable();
 
-      ((IBusinessObject)instance).SetProperty(_propertyFake, 174);
-      _implementationMock.VerifyAllExpectations();
+      ((IBusinessObject)instance).SetProperty(_propertyFake.Object, 174);
+      _implementationMock.Verify();
     }
 
     [Test]
     public void GetPropertyString ()
     {
-      var instance = SampleBindableDomainObject.NewObject(_implementationMock);
+      var instance = SampleBindableDomainObject.NewObject(_implementationMock.Object);
 
-      _implementationMock.Expect(mock => mock.GetPropertyString(_propertyFake, "gj")).Return("yay");
-      _implementationMock.Replay();
+      _implementationMock.Setup(mock => mock.GetPropertyString(_propertyFake.Object, "gj")).Returns("yay").Verifiable();
 
-      Assert.That(((IBusinessObject)instance).GetPropertyString(_propertyFake, "gj"), Is.EqualTo("yay"));
-      _implementationMock.VerifyAllExpectations();
+      Assert.That(((IBusinessObject)instance).GetPropertyString(_propertyFake.Object, "gj"), Is.EqualTo("yay"));
+      _implementationMock.Verify();
     }
 
     [Test]
     public void DisplayName ()
     {
-      var instance = SampleBindableDomainObject.NewObject(_implementationMock);
+      var instance = SampleBindableDomainObject.NewObject(_implementationMock.Object);
 
-      _implementationMock.Expect(mock => mock.BaseDisplayName).Return("Philips");
-      _implementationMock.Replay();
+      _implementationMock.Setup(mock => mock.BaseDisplayName).Returns("Philips").Verifiable();
 
       Assert.That(instance.DisplayName, Is.EqualTo("Philips"));
-      _implementationMock.VerifyAllExpectations();
+      _implementationMock.Verify();
     }
 
     [Test]
     public void BusinessObjectClass ()
     {
-      var instance = SampleBindableDomainObject.NewObject(_implementationMock);
+      var instance = SampleBindableDomainObject.NewObject(_implementationMock.Object);
 
-      _implementationMock.Expect(mock => mock.BusinessObjectClass).Return(_businessObjectClassFake);
-      _implementationMock.Replay();
+      _implementationMock.Setup(mock => mock.BusinessObjectClass).Returns(_businessObjectClassFake.Object).Verifiable();
 
-      Assert.That(((IBusinessObject)instance).BusinessObjectClass, Is.SameAs(_businessObjectClassFake));
-      _implementationMock.VerifyAllExpectations();
+      Assert.That(((IBusinessObject)instance).BusinessObjectClass, Is.SameAs(_businessObjectClassFake.Object));
+      _implementationMock.Verify();
     }
 
     [Test]
     public void UniqueIdentifier ()
     {
-      var instance = SampleBindableDomainObject.NewObject(_implementationMock);
+      var instance = SampleBindableDomainObject.NewObject(_implementationMock.Object);
 
-      _implementationMock.Expect(mock => mock.BaseUniqueIdentifier).Return("123");
-      _implementationMock.Replay();
+      _implementationMock.Setup(mock => mock.BaseUniqueIdentifier).Returns("123").Verifiable();
 
       Assert.That(((IBusinessObjectWithIdentity)instance).UniqueIdentifier, Is.EqualTo("123"));
-      _implementationMock.VerifyAllExpectations();
+      _implementationMock.Verify();
     }
 
     [Test]

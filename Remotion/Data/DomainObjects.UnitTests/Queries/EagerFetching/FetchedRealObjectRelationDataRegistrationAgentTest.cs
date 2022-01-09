@@ -17,7 +17,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
-using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
 using Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -47,8 +46,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       var originatingOrderTicket1 = DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket1);
       var originatingOrderTicket2 = DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket2);
 
-      _originatingOrderTicketData1 = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingOrderTicket1);
-      _originatingOrderTicketData2 = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingOrderTicket2);
+      _originatingOrderTicketData1 = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingOrderTicket1).Object;
+      _originatingOrderTicketData2 = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingOrderTicket2).Object;
 
       var fetchedOrder1 = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order1);
       var fetchedOrder2 = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order3);
@@ -96,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       var endPointDefinition = GetEndPointDefinition(typeof(FileSystemItem), "ParentFolder");
 
       var originatingFile = DomainObjectMother.CreateFakeObject<File>();
-      var originatingFileData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingFile);
+      var originatingFileData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingFile).Object;
 
       var fetchedParentFolder = DomainObjectMother.CreateFakeObject<Folder>();
       var fetchedParentFolderData = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(fetchedParentFolder);
@@ -115,13 +114,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       var endPointDefinition = GetEndPointDefinition(typeof(Partner), "ContactPerson");
 
       var originatingCompany = DomainObjectMother.CreateFakeObject<Company>();
-      var originatingCompanyData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingCompany);
+      var originatingCompanyData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingCompany).Object;
 
       var originatingPartner = DomainObjectMother.CreateFakeObject<Partner>();
-      var originatingPartnerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingPartner);
+      var originatingPartnerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingPartner).Object;
 
       var originatingCustomer = DomainObjectMother.CreateFakeObject<Customer>();
-      var originatingCustomerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingCustomer);
+      var originatingCustomerData = LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(originatingCustomer).Object;
 
       var fetchedPerson = DomainObjectMother.CreateFakeObject<Person>();
       var fetchedPersonData = LoadedObjectDataObjectMother.CreateLoadedObjectDataWithDataSourceData(fetchedPerson);
@@ -141,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
       Assert.That(
           () => _agent.GroupAndRegisterRelatedObjects(
           endPointDefinition,
-          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order1) },
+          new[] { LoadedObjectDataObjectMother.CreateLoadedObjectDataStub(DomainObjectIDs.Order1).Object },
           new LoadedObjectDataWithDataSourceData[0]),
           Throws.InvalidOperationException
               .With.Message.EqualTo(

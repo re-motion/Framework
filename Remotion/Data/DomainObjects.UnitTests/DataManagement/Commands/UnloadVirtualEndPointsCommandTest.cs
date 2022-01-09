@@ -15,22 +15,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 {
   [TestFixture]
   public class UnloadVirtualEndPointsCommandTest
   {
-    private MockRepository _mockRepository;
-    private IVirtualEndPoint _endPointMock1;
-    private IVirtualEndPoint _endPointMock2;
+    private Mock<IVirtualEndPoint> _endPointMock1;
+    private Mock<IVirtualEndPoint> _endPointMock2;
 
-    private IRelationEndPointRegistrationAgent _registrationAgentMock;
+    private Mock<IRelationEndPointRegistrationAgent> _registrationAgentMock;
     private RelationEndPointMap _relationEndPointMap;
 
     private UnloadVirtualEndPointsCommand _command;
@@ -38,61 +37,58 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
-      _endPointMock1 = _mockRepository.StrictMock<IVirtualEndPoint>();
-      _endPointMock2 = _mockRepository.StrictMock<IVirtualEndPoint>();
+      _endPointMock1 = new Mock<IVirtualEndPoint>(MockBehavior.Strict);
+      _endPointMock2 = new Mock<IVirtualEndPoint>(MockBehavior.Strict);
 
-      _registrationAgentMock = _mockRepository.StrictMock<IRelationEndPointRegistrationAgent>();
-      _relationEndPointMap = new RelationEndPointMap(MockRepository.GenerateStub<IClientTransactionEventSink>());
+      _registrationAgentMock = new Mock<IRelationEndPointRegistrationAgent>(MockBehavior.Strict);
+      _relationEndPointMap = new RelationEndPointMap(new Mock<IClientTransactionEventSink>().Object);
 
-      _command = new UnloadVirtualEndPointsCommand(new[] { _endPointMock1, _endPointMock2 }, _registrationAgentMock, _relationEndPointMap);
+      _command = new UnloadVirtualEndPointsCommand(new[] { _endPointMock1.Object, _endPointMock2.Object }, _registrationAgentMock.Object, _relationEndPointMap);
     }
 
     [Test]
     public void Begin ()
     {
-      _mockRepository.ReplayAll();
-
       _command.Begin();
     }
 
     [Test]
     public void Perform__NonCollectible ()
     {
-      _endPointMock1.Expect(mock => mock.MarkDataIncomplete());
-      _endPointMock1.Stub(stub => stub.CanBeCollected).Return(false);
+      _endPointMock1.Setup(mock => mock.MarkDataIncomplete()).Verifiable();
+      _endPointMock1.Setup(stub => stub.CanBeCollected).Returns(false);
 
-      _endPointMock2.Expect(mock => mock.MarkDataIncomplete());
-      _endPointMock2.Stub(stub => stub.CanBeCollected).Return(false);
-      _mockRepository.ReplayAll();
+      _endPointMock2.Setup(mock => mock.MarkDataIncomplete()).Verifiable();
+      _endPointMock2.Setup(stub => stub.CanBeCollected).Returns(false);
 
       _command.Perform();
 
-      _mockRepository.VerifyAll();
+      _endPointMock1.Verify();
+      _endPointMock2.Verify();
+      _registrationAgentMock.Verify();
     }
 
     [Test]
     public void Perform_Collectible ()
     {
-      _endPointMock1.Expect(mock => mock.MarkDataIncomplete());
-      _endPointMock1.Stub(stub => stub.CanBeCollected).Return(true);
+      _endPointMock1.Setup(mock => mock.MarkDataIncomplete()).Verifiable();
+      _endPointMock1.Setup(stub => stub.CanBeCollected).Returns(true);
 
-      _registrationAgentMock.Expect(mock => mock.UnregisterEndPoint(_endPointMock1, _relationEndPointMap));
+      _registrationAgentMock.Setup(mock => mock.UnregisterEndPoint(_endPointMock1.Object, _relationEndPointMap)).Verifiable();
 
-      _endPointMock2.Expect(mock => mock.MarkDataIncomplete());
-      _endPointMock2.Stub(stub => stub.CanBeCollected).Return(false);
-      _mockRepository.ReplayAll();
+      _endPointMock2.Setup(mock => mock.MarkDataIncomplete()).Verifiable();
+      _endPointMock2.Setup(stub => stub.CanBeCollected).Returns(false);
 
       _command.Perform();
 
-      _mockRepository.VerifyAll();
+      _endPointMock1.Verify();
+      _endPointMock2.Verify();
+      _registrationAgentMock.Verify();
     }
 
     [Test]
     public void End ()
     {
-      _mockRepository.ReplayAll();
-
       _command.End();
     }
   }

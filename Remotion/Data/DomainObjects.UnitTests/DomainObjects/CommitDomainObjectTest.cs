@@ -130,9 +130,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       TestableClientTransaction.Commit();
 
-      Assert.That(order.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Is.Not.SameAs(originalOrderItems));
-      Assert.That(order.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"), Is.EqualTo(order.OrderItems));
-      Assert.That(order.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems").IsReadOnly, Is.True);
+      Assert.That(
+          order.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"),
+          Is.Not.SameAs(originalOrderItems));
+      Assert.That(
+          order.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"),
+          Is.EqualTo(order.OrderItems));
+      Assert.That(
+          order.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems").IsReadOnly,
+          Is.True);
     }
 
     [Test]
@@ -149,8 +155,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       TestableClientTransaction.Commit();
 
-      Assert.That(product.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"), Is.Not.SameAs(originalProductReviews));
-      Assert.That(product.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"), Is.EqualTo(product.Reviews));
+      Assert.That(
+          product.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"),
+          Is.Not.SameAs(originalProductReviews));
+      Assert.That(
+          product.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"),
+          Is.EqualTo(product.Reviews));
     }
   }
 }

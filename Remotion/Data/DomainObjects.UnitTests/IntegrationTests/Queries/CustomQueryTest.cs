@@ -17,11 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
 {
@@ -96,16 +96,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void InvokesFilterQueryResultEvent ()
     {
-      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
+      var listenerMock = new Mock<IClientTransactionListener>();
 
       var fakeResult = new[] { new object[0] };
       listenerMock
-          .Expect(
-              mock => mock.FilterCustomQueryResult(
-                  Arg.Is(TestableClientTransaction), Arg.Is(_query), Arg<IEnumerable<object[]>>.Matches(e=>e.Count()==2)))
-          .Return(fakeResult);
+          .Setup(mock => mock.FilterCustomQueryResult(TestableClientTransaction, _query, It.Is<IEnumerable<object[]>>(e => e.Count() == 2)))
+          .Returns(fakeResult)
+          .Verifiable();
 
-      TestableClientTransaction.AddListener(listenerMock);
+      TestableClientTransaction.AddListener(listenerMock.Object);
 
       var result = QueryManager.GetCustom(_query, QueryResultRowTestHelper.ExtractRawValues);
 

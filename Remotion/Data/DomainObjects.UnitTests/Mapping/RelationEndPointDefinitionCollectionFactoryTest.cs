@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -28,17 +28,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   public class RelationEndPointDefinitionCollectionFactoryTest
   {
     private RelationEndPointDefinitionCollectionFactory _factory;
-    private IMappingObjectFactory _mappingObjectFactoryMock;
-    private IMemberInformationNameResolver _memberInformationNameResolverMock;
+    private Mock<IMappingObjectFactory> _mappingObjectFactoryMock;
+    private Mock<IMemberInformationNameResolver> _memberInformationNameResolverMock;
 
     [SetUp]
     public void SetUp ()
     {
-      _mappingObjectFactoryMock = MockRepository.GenerateStrictMock<IMappingObjectFactory>();
-      _memberInformationNameResolverMock = MockRepository.GenerateStrictMock<IMemberInformationNameResolver>();
+      _mappingObjectFactoryMock = new Mock<IMappingObjectFactory>(MockBehavior.Strict);
+      _memberInformationNameResolverMock = new Mock<IMemberInformationNameResolver>(MockBehavior.Strict);
       _factory = new RelationEndPointDefinitionCollectionFactory(
-          _mappingObjectFactoryMock,
-          _memberInformationNameResolverMock,
+          _mappingObjectFactoryMock.Object,
+          _memberInformationNameResolverMock.Object,
           new PropertyMetadataReflector());
     }
 
@@ -53,17 +53,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var expectedPropertyInfo = PropertyInfoAdapter.Create(typeof(OrderTicket).GetProperty("Order"));
 
       _mappingObjectFactoryMock
-          .Expect(
-              mock =>
-              mock.CreateRelationEndPointDefinition(
-                  Arg.Is(classDefinition), Arg.Is(PropertyInfoAdapter.Create(expectedPropertyInfo.PropertyInfo))))
-          .Return(fakeRelationEndPoint);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreateRelationEndPointDefinition(classDefinition, PropertyInfoAdapter.Create(expectedPropertyInfo.PropertyInfo)))
+          .Returns(fakeRelationEndPoint)
+          .Verifiable();
 
       var result = _factory.CreateRelationEndPointDefinitionCollection(classDefinition);
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
-      _memberInformationNameResolverMock.VerifyAllExpectations();
+      _mappingObjectFactoryMock.Verify();
+      _memberInformationNameResolverMock.Verify();
       Assert.That(result.Count, Is.EqualTo(1));
       Assert.That(result[0], Is.SameAs(fakeRelationEndPoint));
     }

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -28,7 +29,6 @@ using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -135,13 +135,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       return CreateDomainObjectCollectionEndPoint(customerEndPointID, initialContents);
     }
 
-    public static IRelationEndPoint CreateStub (RelationEndPointID endPointID = null)
+    public static Mock<IRelationEndPoint> CreateStub (RelationEndPointID endPointID = null)
     {
       endPointID = endPointID ?? CreateRelationEndPointID();
-      var endPoint = MockRepository.GenerateStub<IRelationEndPoint>();
-      endPoint.Stub(stub => stub.ID).Return(endPointID);
-      endPoint.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPoint.Stub(stub => stub.ObjectID).Return(endPointID.ObjectID);
+      var endPoint = new Mock<IRelationEndPoint>();
+      endPoint.Setup(stub => stub.ID).Returns(endPointID);
+      endPoint.Setup(stub => stub.Definition).Returns(endPointID.Definition);
+      endPoint.Setup(stub => stub.ObjectID).Returns(endPointID.ObjectID);
       return endPoint;
     }
   }

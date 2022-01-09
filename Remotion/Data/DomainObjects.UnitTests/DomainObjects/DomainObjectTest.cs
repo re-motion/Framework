@@ -37,7 +37,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 
       Assert.That(classWithAllDataTypes.ID.Value, Is.EqualTo(DomainObjectIDs.ClassWithAllDataTypes1.Value), "ID.Value");
       Assert.That(classWithAllDataTypes.ID.ClassID, Is.EqualTo(DomainObjectIDs.ClassWithAllDataTypes1.ClassID), "ID.ClassID");
-      Assert.That(classWithAllDataTypes.ID.StorageProviderDefinition, Is.SameAs(DomainObjectIDs.ClassWithAllDataTypes1.StorageProviderDefinition), "ID.StorageProviderDefinition");
+      Assert.That(
+          classWithAllDataTypes.ID.StorageProviderDefinition,
+          Is.SameAs(DomainObjectIDs.ClassWithAllDataTypes1.StorageProviderDefinition),
+          "ID.StorageProviderDefinition");
 
       Assert.That(classWithAllDataTypes.BooleanProperty, Is.EqualTo(false), "BooleanProperty");
       Assert.That(classWithAllDataTypes.ByteProperty, Is.EqualTo(85), "ByteProperty");
@@ -54,7 +57,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(classWithAllDataTypes.Int64Property, Is.EqualTo(9223372036854775807L), "Int64Property");
       Assert.That(classWithAllDataTypes.SingleProperty, Is.EqualTo(6789.321f), "SingleProperty");
       Assert.That(classWithAllDataTypes.StringProperty, Is.EqualTo("abcdeföäü"), "StringProperty");
-      Assert.That(classWithAllDataTypes.StringPropertyWithoutMaxLength, Is.EqualTo("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"), "StringPropertyWithoutMaxLength");
+      Assert.That(
+          classWithAllDataTypes.StringPropertyWithoutMaxLength,
+          Is.EqualTo("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"),
+          "StringPropertyWithoutMaxLength");
       ResourceManager.IsEqualToImage1(classWithAllDataTypes.BinaryProperty, "BinaryProperty");
 
       Assert.That(classWithAllDataTypes.NaBooleanProperty, Is.EqualTo(true), "NaBooleanProperty");

@@ -26,9 +26,6 @@
     <ProjectReference Include="..\Core\Data.Core.csproj" />
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CoreRhinoMocks" Version="3.6.1.2" PrivateAssets="all" />
-  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="System.Transactions" />
   </ItemGroup>

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
@@ -23,7 +24,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       _endPointID = RelationEndPointID.Resolve(_domainObject, oi => oi.Order);
       _endPoint = (RealObjectEndPoint)RelationEndPointObjectMother.CreateObjectEndPoint(_endPointID, _oldRelatedObject.ID);
 
-      _command = new ObjectEndPointSetOneManyCommand(_endPoint, _newRelatedObject, OppositeObjectSetter, EndPointProviderStub, TransactionEventSinkWithMock);
+      _command = new ObjectEndPointSetOneManyCommand(_endPoint, _newRelatedObject, OppositeObjectSetter, EndPointProviderStub.Object, TransactionEventSinkWithMock.Object);
     }
 
     [Test]
@@ -64,10 +64,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Initialization_FromNullEndPoint ()
     {
-      var endPoint = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      endPoint.Stub(stub => stub.IsNull).Return(true);
+      var endPoint = new Mock<IRealObjectEndPoint>();
+      endPoint.Setup(stub => stub.IsNull).Returns(true);
       Assert.That(
-          () => new ObjectEndPointSetOneManyCommand(endPoint, _newRelatedObject, OppositeObjectSetter, EndPointProviderStub, TransactionEventSinkWithMock),
+          () => new ObjectEndPointSetOneManyCommand(endPoint.Object, _newRelatedObject, OppositeObjectSetter, EndPointProviderStub.Object, TransactionEventSinkWithMock.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Modified end point is null, a NullEndPointModificationCommand is needed.",
@@ -77,35 +77,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Initialization_Unidirectional ()
     {
-      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof(Client))
-          .GetMandatoryRelationEndPointDefinition(typeof(Client).FullName + ".ParentClient");
+      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof(Client)).GetMandatoryRelationEndPointDefinition(typeof(Client).FullName + ".ParentClient");
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.Client1.GetObject<Client>().ID, definition);
       var endPoint = (IRealObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
       Assert.That(
-          () => new ObjectEndPointSetOneManyCommand(endPoint, Client.NewObject(), mi => { }, EndPointProviderStub, TransactionEventSinkWithMock),
+          () => new ObjectEndPointSetOneManyCommand(endPoint, Client.NewObject(), mi => { }, EndPointProviderStub.Object, TransactionEventSinkWithMock.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "EndPoint 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Client.ParentClient' "
-                  +
-                  "is from a unidirectional relation - use a ObjectEndPointSetUnidirectionalCommand instead.", "modifiedEndPoint"
-));
+                  + "is from a unidirectional relation - use a ObjectEndPointSetUnidirectionalCommand instead.",
+                  "modifiedEndPoint"));
     }
 
     [Test]
     public void Initialization_Bidirectional_OneOne ()
     {
-      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderTicket))
-          .GetMandatoryRelationEndPointDefinition(typeof(OrderTicket).FullName + ".Order");
+      var definition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderTicket)).GetMandatoryRelationEndPointDefinition(typeof(OrderTicket).FullName + ".Order");
       var relationEndPointID = RelationEndPointID.Create(DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>().ID, definition);
       var endPoint = (IRealObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
       Assert.That(
-          () => new ObjectEndPointSetOneManyCommand(endPoint, Order.NewObject(), mi => { }, EndPointProviderStub, TransactionEventSinkWithMock),
+          () => new ObjectEndPointSetOneManyCommand(endPoint, Order.NewObject(), mi => { }, EndPointProviderStub.Object, TransactionEventSinkWithMock.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "EndPoint 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' "
-                  +
-                  "is from a 1:1 relation - use a ObjectEndPointSetOneOneCommand instead.", "modifiedEndPoint"
-));
+                  + "is from a 1:1 relation - use a ObjectEndPointSetOneOneCommand instead.",
+                  "modifiedEndPoint"));
     }
 
     [Test]
@@ -113,13 +109,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     {
       var endPoint = (IRealObjectEndPoint)RelationEndPointObjectMother.CreateObjectEndPoint(_endPointID, _oldRelatedObject.ID);
       Assert.That(
-          () => new ObjectEndPointSetOneManyCommand(endPoint, _oldRelatedObject, mi => { }, EndPointProviderStub, TransactionEventSinkWithMock),
+          () => new ObjectEndPointSetOneManyCommand(endPoint, _oldRelatedObject, mi => { }, EndPointProviderStub.Object, TransactionEventSinkWithMock.Object),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "New related object for EndPoint "
-                  +
-                  "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' is the same as its old value - use a ObjectEndPointSetSameCommand "
-                  + "instead.", "newRelatedObject"));
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Order' is the same as its old value - use a ObjectEndPointSetSameCommand instead.",
+                  "newRelatedObject"));
     }
 
     [Test]
@@ -138,31 +133,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public virtual void Begin ()
     {
-      TransactionEventSinkWithMock.Expect(mock => mock.RaiseRelationChangingEvent(
-          _endPoint.GetDomainObject(),
-          _endPoint.Definition,
-          _oldRelatedObject,
-          _newRelatedObject));
-      TransactionEventSinkWithMock.Replay();
+      TransactionEventSinkWithMock
+          .Setup(mock => mock.RaiseRelationChangingEvent(_endPoint.GetDomainObject(), _endPoint.Definition, _oldRelatedObject, _newRelatedObject))
+          .Verifiable();
 
       _command.Begin();
 
-      TransactionEventSinkWithMock.VerifyAllExpectations();
+      TransactionEventSinkWithMock.Verify();
     }
 
     [Test]
     public virtual void End ()
     {
-      TransactionEventSinkWithMock.Expect(mock => mock.RaiseRelationChangedEvent(
-          _endPoint.GetDomainObject(),
-          _endPoint.Definition,
-          _oldRelatedObject,
-          _newRelatedObject));
-      TransactionEventSinkWithMock.Replay();
+      TransactionEventSinkWithMock
+          .Setup(mock => mock.RaiseRelationChangedEvent(_endPoint.GetDomainObject(), _endPoint.Definition, _oldRelatedObject, _newRelatedObject))
+          .Verifiable();
 
       _command.End();
 
-      TransactionEventSinkWithMock.VerifyAllExpectations();
+      TransactionEventSinkWithMock.Verify();
     }
 
     [Test]
@@ -171,31 +160,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       // Scenario: orderItem.Order = newOrder;
 
       var oldRelatedEndPointID = RelationEndPointID.Resolve(_oldRelatedObject, o => o.OrderItems);
-      var oldRelatedEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
+      var oldRelatedEndPointMock = new Mock<ICollectionEndPoint<ICollectionEndPointData>>(MockBehavior.Strict);
 
       var newRelatedEndPointID = RelationEndPointID.Resolve(_newRelatedObject, o => o.OrderItems);
-      var newRelatedEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
+      var newRelatedEndPointMock = new Mock<ICollectionEndPoint<ICollectionEndPointData>>(MockBehavior.Strict);
 
-      EndPointProviderStub.Stub(stub => stub.GetRelationEndPointWithLazyLoad(oldRelatedEndPointID)).Return(oldRelatedEndPointMock);
-      EndPointProviderStub.Stub(stub => stub.GetRelationEndPointWithLazyLoad(newRelatedEndPointID)).Return(newRelatedEndPointMock);
-
+      EndPointProviderStub.Setup(stub => stub.GetRelationEndPointWithLazyLoad(oldRelatedEndPointID)).Returns(oldRelatedEndPointMock.Object);
+      EndPointProviderStub.Setup(stub => stub.GetRelationEndPointWithLazyLoad(newRelatedEndPointID)).Returns(newRelatedEndPointMock.Object);
 
       // oldOrder.OrderItems.Remove (orderItem)
-      var fakeRemoveCommand = MockRepository.GenerateStub<IDataManagementCommand>();
-      fakeRemoveCommand.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-      oldRelatedEndPointMock.Expect(mock => mock.CreateRemoveCommand(_domainObject)).Return(fakeRemoveCommand);
-      oldRelatedEndPointMock.Replay();
+      var fakeRemoveCommand = new Mock<IDataManagementCommand>();
+      fakeRemoveCommand.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
+      oldRelatedEndPointMock.Setup(mock => mock.CreateRemoveCommand(_domainObject)).Returns(fakeRemoveCommand.Object).Verifiable();
 
       // newOrder.OrderItems.Add (orderItem);
-      var fakeAddCommand = MockRepository.GenerateStub<IDataManagementCommand>();
-      fakeAddCommand.Stub(stub => stub.GetAllExceptions()).Return(new Exception[0]);
-      newRelatedEndPointMock.Expect(mock => mock.CreateAddCommand(_domainObject)).Return(fakeAddCommand);
-      newRelatedEndPointMock.Replay();
+      var fakeAddCommand = new Mock<IDataManagementCommand>();
+      fakeAddCommand.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
+      newRelatedEndPointMock.Setup(mock => mock.CreateAddCommand(_domainObject)).Returns(fakeAddCommand.Object).Verifiable();
 
       var bidirectionalModification = _command.ExpandToAllRelatedObjects();
 
-      oldRelatedEndPointMock.VerifyAllExpectations();
-      newRelatedEndPointMock.VerifyAllExpectations();
+      oldRelatedEndPointMock.Verify();
+      newRelatedEndPointMock.Verify();
 
       var steps = bidirectionalModification.GetNestedCommands();
       Assert.That(steps.Count, Is.EqualTo(3));
@@ -204,10 +190,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       Assert.That(steps[0], Is.SameAs(_command));
 
       // newOrder.OrderItems.Add (orderItem);
-      Assert.That(steps[1], Is.SameAs(fakeAddCommand));
+      Assert.That(steps[1], Is.SameAs(fakeAddCommand.Object));
 
       // oldOrder.OrderItems.Remove (orderItem)
-      Assert.That(steps[2], Is.SameAs(fakeRemoveCommand));
+      Assert.That(steps[2], Is.SameAs(fakeRemoveCommand.Object));
     }
   }
 }

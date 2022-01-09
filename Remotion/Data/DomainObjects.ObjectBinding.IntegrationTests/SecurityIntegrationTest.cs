@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Collections.Caching;
@@ -24,17 +25,16 @@ using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
 using Remotion.Security;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
 {
   [TestFixture]
   public class SecurityIntegrationTest : TestBase
   {
-    private ISecurityProvider _securityProviderStub;
-    private IPrincipalProvider _principalProviderStub;
+    private Mock<ISecurityProvider> _securityProviderStub;
+    private Mock<IPrincipalProvider> _principalProviderStub;
     private ClientTransaction _clientTransaction;
-    private ISecurityPrincipal _securityPrincipalStub;
+    private Mock<ISecurityPrincipal> _securityPrincipalStub;
     private ServiceLocatorScope _serviceLocatorScope;
 
     public override void SetUp ()
@@ -43,11 +43,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
 
       BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
 
-      _securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
-      _principalProviderStub = MockRepository.GenerateStub<IPrincipalProvider>();
-      _securityPrincipalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
+      _securityProviderStub = new Mock<ISecurityProvider>();
+      _principalProviderStub = new Mock<IPrincipalProvider>();
+      _securityPrincipalStub = new Mock<ISecurityPrincipal>();
 
-      _principalProviderStub.Stub(stub => stub.GetPrincipal()).Return(_securityPrincipalStub);
+      _principalProviderStub.Setup(stub => stub.GetPrincipal()).Returns(_securityPrincipalStub.Object);
 
       _clientTransaction = ClientTransaction.CreateRootTransaction();
       _clientTransaction.Extensions.Add(new SecurityClientTransactionExtension());
@@ -55,8 +55,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
       _clientTransaction.EnterNonDiscardingScope();
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle(() => _securityProviderStub);
-      serviceLocator.RegisterSingle(() => _principalProviderStub);
+      serviceLocator.RegisterSingle(() => _securityProviderStub.Object);
+      serviceLocator.RegisterSingle(() => _principalProviderStub.Object);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
@@ -73,16 +73,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadonly_PropertyWithDefaultPermission_False ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(GeneralAccessTypes.Edit) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(GeneralAccessTypes.Edit) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("PropertyWithDefaultPermission");
@@ -93,16 +93,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadonly_PropertyWithDefaultPermission_True ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new AccessType[0]);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("PropertyWithDefaultPermission");
@@ -113,16 +113,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsAccessible_PropertyWithDefaultPermission_True ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(GeneralAccessTypes.Read) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("PropertyWithDefaultPermission");
@@ -133,16 +133,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsAccessible_PropertyWithDefaultPermission_False ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new AccessType[0]);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("PropertyWithDefaultPermission");
@@ -153,16 +153,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadonly_PropertyWitCustomPermission_False ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(TestAccessTypes.Second) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(TestAccessTypes.Second) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("PropertyWithCustomPermission");
@@ -173,16 +173,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadonly_PropertyWithCustomPermission_True ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new AccessType[0]);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("PropertyWithCustomPermission");
@@ -193,16 +193,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsAccessible_PropertyWithCustomPermission_True ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(TestAccessTypes.First) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(TestAccessTypes.First) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("PropertyWithCustomPermission");
@@ -213,16 +213,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsAccessible_PropertyWithCustomPermission_False ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new AccessType[0]);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("PropertyWithCustomPermission");
@@ -234,15 +234,15 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadonly_ReadOnlyProperty_True ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("ReadOnlyProperty");
@@ -253,16 +253,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadonly_CollectionPropertyWithoutSetter_False ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(GeneralAccessTypes.Edit) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(GeneralAccessTypes.Edit) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("Children");
@@ -273,16 +273,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadonly_CollectionPropertyWithoutSetter_True ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new AccessType[0]);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("Children");
@@ -293,16 +293,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadOnly_MixedPropertyWithDefaultPermission ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(GeneralAccessTypes.Read) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("MixedPropertyWithDefaultPermission");
@@ -313,16 +313,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsAccessible_MixedPropertyWithDefaultPermission_True ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(GeneralAccessTypes.Read) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("MixedPropertyWithDefaultPermission");
@@ -333,16 +333,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadOnly_MixedPropertyWithReadPermission ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(GeneralAccessTypes.Read) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("MixedPropertyWithReadPermission");
@@ -353,16 +353,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsAccessible_MixedPropertyWithReadPermission_False ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new AccessType[0]);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("MixedPropertyWithReadPermission");
@@ -373,16 +373,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadOnly_MixedPropertyWithWritePermission ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(GeneralAccessTypes.Read) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("MixedPropertyWithWritePermission");
@@ -393,16 +393,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsAccessible_MixedPropertyWithWritePermission_True ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(GeneralAccessTypes.Read) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("MixedPropertyWithWritePermission");
@@ -413,16 +413,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadOnly_DerivedReadOnlyProperty ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(GeneralAccessTypes.Read) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateDerivedBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateDerivedBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("PropertyToOverride");
@@ -433,16 +433,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void NoTest_DerivedReadOnlyProperty_IsNotAccessible ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(TestAccessTypes.First) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(TestAccessTypes.First) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateDerivedBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateDerivedBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("PropertyToOverride");
@@ -455,16 +455,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadOnly_DefaultPermissionMixedProperty_False ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(GeneralAccessTypes.Edit) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(GeneralAccessTypes.Edit) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("DefaultPermissionMixedProperty");
@@ -475,16 +475,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadOnly_DefaultPermissionMixedProperty_True ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new AccessType[0]);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("DefaultPermissionMixedProperty");
@@ -495,16 +495,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsAccessible_DefaultPermissionMixedProperty_True ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(GeneralAccessTypes.Read) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("DefaultPermissionMixedProperty");
@@ -515,16 +515,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsAccessible_DefaultPermissionMixedProperty_False ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new AccessType[0]);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("DefaultPermissionMixedProperty");
@@ -535,16 +535,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadonly_CustomPermissionMixedProperty_False ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(TestAccessTypes.Second) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(TestAccessTypes.Second) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("CustomPermissionMixedProperty");
@@ -555,16 +555,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsReadonly_CustomPermissionMixedProperty_True ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new AccessType[0]);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("CustomPermissionMixedProperty");
@@ -575,16 +575,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsAccessible_CustomPermissionMixedProperty_True ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new[] { AccessType.Get(TestAccessTypes.First) });
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new[] { AccessType.Get(TestAccessTypes.First) });
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("CustomPermissionMixedProperty");
@@ -595,16 +595,16 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsAccessible_CustomPermissionMixedProperty_False ()
     {
-      var securityContextStub = MockRepository.GenerateStub<ISecurityContext>();
-      var securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory>();
+      var securityContextStub = new Mock<ISecurityContext>();
+      var securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      securityContextFactoryStub.Stub(mock => mock.CreateSecurityContext()).Return(securityContextStub);
-      _securityProviderStub.Stub(mock => mock.GetAccess(securityContextStub, _securityPrincipalStub)).Return(new AccessType[0]);
+      securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(securityContextStub.Object);
+      _securityProviderStub.Setup(mock => mock.GetAccess(securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       IBusinessObject bindableSecurableObject;
       using (SecurityFreeSection.Activate())
       {
-        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub);
+        bindableSecurableObject = CreateBindableSecurableObject(securityContextFactoryStub.Object);
       }
       var businessObjectClass = bindableSecurableObject.BusinessObjectClass;
       var property = businessObjectClass.GetPropertyDefinition("CustomPermissionMixedProperty");

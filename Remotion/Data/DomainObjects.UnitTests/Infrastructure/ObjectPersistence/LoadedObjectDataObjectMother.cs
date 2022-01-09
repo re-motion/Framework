@@ -15,34 +15,34 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
   public static class LoadedObjectDataObjectMother
   {
-    public static ILoadedObjectData CreateLoadedObjectDataStub (DomainObject domainObjectReference = null)
+    public static Mock<ILoadedObjectData> CreateLoadedObjectDataStub (DomainObject domainObjectReference = null)
     {
       domainObjectReference = domainObjectReference ?? DomainObjectMother.CreateFakeObject<Order>();
       var loadedObjectDataStub = CreateLoadedObjectDataStub(domainObjectReference.ID);
-      loadedObjectDataStub.Stub(stub => stub.GetDomainObjectReference()).Return(domainObjectReference);
+      loadedObjectDataStub.Setup(stub => stub.GetDomainObjectReference()).Returns(domainObjectReference);
       return loadedObjectDataStub;
     }
 
-    public static ILoadedObjectData CreateLoadedObjectDataStub (ObjectID objectID)
+    public static Mock<ILoadedObjectData> CreateLoadedObjectDataStub (ObjectID objectID)
     {
-      var loadedObjectDataStub = MockRepository.GenerateStub<ILoadedObjectData>();
-      loadedObjectDataStub.Stub(stub => stub.ObjectID).Return(objectID);
+      var loadedObjectDataStub = new Mock<ILoadedObjectData>();
+      loadedObjectDataStub.Setup(stub => stub.ObjectID).Returns(objectID);
       return loadedObjectDataStub;
     }
 
     public static LoadedObjectDataWithDataSourceData CreateLoadedObjectDataWithDataSourceData (DomainObject domainObjectReference)
     {
-      var loadedObjectDataStub = CreateLoadedObjectDataStub(domainObjectReference);
+      var loadedObjectDataStub = CreateLoadedObjectDataStub(domainObjectReference).Object;
       return CreateLoadedObjectDataWithDataSourceData(loadedObjectDataStub);
     }
 

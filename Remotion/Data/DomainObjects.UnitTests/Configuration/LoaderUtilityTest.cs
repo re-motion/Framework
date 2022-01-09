@@ -62,7 +62,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     [Test]
     public void GetConfigurationFileNameForNonExistingAppSettingsKey ()
     {
-      Assert.That(LoaderUtility.GetConfigurationFileName("AppSettingKeyDoesNotExist", "Mapping.xml"), Is.EqualTo(Path.Combine(ReflectionUtility.GetConfigFileDirectory(), "Mapping.xml")));
+      Assert.That(
+          LoaderUtility.GetConfigurationFileName("AppSettingKeyDoesNotExist", "Mapping.xml"),
+          Is.EqualTo(Path.Combine(ReflectionUtility.GetConfigFileDirectory(), "Mapping.xml")));
     }
 
     [Test]

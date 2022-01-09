@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
@@ -23,7 +24,6 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     private DataContainer _deletedDataContainer;
     private DataContainer _discardedDataContainer;
     private ObjectID _invalidObjectID;
-    private IDataContainerEventListener _eventListenerMock;
+    private Mock<IDataContainerEventListener> _eventListenerMock;
 
     private PropertyDefinition _orderNumberProperty;
     private PropertyDefinition _deliveryDateProperty;
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       _discardedDataContainer = DataContainer.CreateNew(_invalidObjectID);
       _discardedDataContainer.Discard();
 
-      _eventListenerMock = MockRepository.GenerateMock<IDataContainerEventListener>();
+      _eventListenerMock = new Mock<IDataContainerEventListener>();
 
       _orderNumberProperty = GetPropertyDefinition(typeof(Order), "OrderNumber");
       _deliveryDateProperty = GetPropertyDefinition(typeof(Order), "DeliveryDate");
@@ -117,17 +117,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       Assert.That(_existingDataContainer.EventListener, Is.Null);
 
-      _existingDataContainer.SetEventListener(_eventListenerMock);
+      _existingDataContainer.SetEventListener(_eventListenerMock.Object);
 
-      Assert.That(_existingDataContainer.EventListener, Is.Not.Null.And.SameAs(_eventListenerMock));
+      Assert.That(_existingDataContainer.EventListener, Is.Not.Null.And.SameAs(_eventListenerMock.Object));
     }
 
     [Test]
     public void SetEventListener_Twice ()
     {
-      _existingDataContainer.SetEventListener(_eventListenerMock);
+      _existingDataContainer.SetEventListener(_eventListenerMock.Object);
       Assert.That(
-          () => _existingDataContainer.SetEventListener(_eventListenerMock),
+          () => _existingDataContainer.SetEventListener(_eventListenerMock.Object),
           Throws.InvalidOperationException.With.Message.EqualTo("Only one event listener can be registered for a DataContainer."));
     }
 
@@ -150,28 +150,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetValue_RaisesEvent ()
     {
-      _existingDataContainer.SetEventListener(_eventListenerMock);
+      _existingDataContainer.SetEventListener(_eventListenerMock.Object);
 
       _existingDataContainer.GetValue(_orderNumberProperty, ValueAccess.Original);
 
-      _eventListenerMock.AssertWasCalled(mock => mock.PropertyValueReading(_existingDataContainer, _orderNumberProperty, ValueAccess.Original));
-      _eventListenerMock.AssertWasCalled(mock => mock.PropertyValueRead(_existingDataContainer, _orderNumberProperty, 0, ValueAccess.Original));
+      _eventListenerMock.Verify(mock => mock.PropertyValueReading(_existingDataContainer, _orderNumberProperty, ValueAccess.Original), Times.AtLeastOnce());
+      _eventListenerMock.Verify(mock => mock.PropertyValueRead(_existingDataContainer, _orderNumberProperty, 0, ValueAccess.Original), Times.AtLeastOnce());
     }
 
     [Test]
     public void GetValue_RaisesEvent_Cancellation ()
     {
-      _existingDataContainer.SetEventListener(_eventListenerMock);
+      _existingDataContainer.SetEventListener(_eventListenerMock.Object);
 
       var exception = new Exception();
       _eventListenerMock
-          .Expect(mock => mock.PropertyValueReading(_existingDataContainer, _orderNumberProperty, ValueAccess.Original))
-          .Throw(exception);
+          .Setup(mock => mock.PropertyValueReading(_existingDataContainer, _orderNumberProperty, ValueAccess.Original))
+          .Throws(exception)
+          .Verifiable();
 
       Assert.That(() => _existingDataContainer.GetValue(_orderNumberProperty, ValueAccess.Original), Throws.Exception.SameAs(exception));
-      _eventListenerMock.AssertWasNotCalled(
-          mock => mock.PropertyValueRead(
-              Arg<DataContainer>.Is.Anything, Arg<PropertyDefinition>.Is.Anything, Arg<object>.Is.Anything, Arg<ValueAccess>.Is.Anything));
+      _eventListenerMock.Verify(
+          mock => mock.PropertyValueRead(It.IsAny<DataContainer>(), It.IsAny<PropertyDefinition>(), It.IsAny<object>(), It.IsAny<ValueAccess>()),
+          Times.Never());
     }
 
     [Test]
@@ -207,36 +208,47 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void SetValue_RaisesEvent ()
     {
-      _existingDataContainer.SetEventListener(_eventListenerMock);
+      _existingDataContainer.SetEventListener(_eventListenerMock.Object);
 
       _eventListenerMock
-          .Expect(mock => mock.PropertyValueChanging(_existingDataContainer, _orderNumberProperty, 0, 17))
-          .WhenCalled(mi => Assert.That(_existingDataContainer.GetValueWithoutEvents(_orderNumberProperty, ValueAccess.Current), Is.EqualTo(0)));
+          .Setup(mock => mock.PropertyValueChanging(_existingDataContainer, _orderNumberProperty, 0, 17))
+          .Callback(
+              (DataContainer dataContainer, PropertyDefinition propertyDefinition, object oldValue, object newValue) =>
+                  Assert.That(
+                      _existingDataContainer.GetValueWithoutEvents(_orderNumberProperty, ValueAccess.Current),
+                      Is.EqualTo(0)))
+          .Verifiable();
       _eventListenerMock
-          .Expect(mock => mock.PropertyValueChanged(_existingDataContainer, _orderNumberProperty, 0, 17))
-          .WhenCalled(mi => Assert.That(_existingDataContainer.GetValueWithoutEvents(_orderNumberProperty, ValueAccess.Current), Is.EqualTo(17)));
+          .Setup(mock => mock.PropertyValueChanged(_existingDataContainer, _orderNumberProperty, 0, 17))
+          .Callback(
+              (DataContainer dataContainer, PropertyDefinition propertyDefinition, object oldValue, object newValue) =>
+                  Assert.That(
+                      _existingDataContainer.GetValueWithoutEvents(_orderNumberProperty, ValueAccess.Current),
+                      Is.EqualTo(17)))
+          .Verifiable();
 
       _existingDataContainer.SetValue(_orderNumberProperty, 17);
 
-      _eventListenerMock.VerifyAllExpectations();
+      _eventListenerMock.Verify();
       Assert.That(_existingDataContainer.GetValueWithoutEvents(_orderNumberProperty, ValueAccess.Current), Is.EqualTo(17));
     }
 
     [Test]
     public void SetValue_RaisesEvent_Cancellation ()
     {
-      _existingDataContainer.SetEventListener(_eventListenerMock);
+      _existingDataContainer.SetEventListener(_eventListenerMock.Object);
 
       var exception = new Exception();
       _eventListenerMock
-          .Expect(mock => mock.PropertyValueChanging(_existingDataContainer, _orderNumberProperty, 0, 17))
-          .Throw(exception);
+          .Setup(mock => mock.PropertyValueChanging(_existingDataContainer, _orderNumberProperty, 0, 17))
+          .Throws(exception)
+          .Verifiable();
 
       Assert.That(() => _existingDataContainer.SetValue(_orderNumberProperty, 17), Throws.Exception.SameAs(exception));
 
-      _eventListenerMock.AssertWasNotCalled(
-          mock => mock.PropertyValueChanged(
-              Arg<DataContainer>.Is.Anything, Arg<PropertyDefinition>.Is.Anything, Arg<object>.Is.Anything, Arg<object>.Is.Anything));
+      _eventListenerMock.Verify(
+          mock => mock.PropertyValueChanged(It.IsAny<DataContainer>(), It.IsAny<PropertyDefinition>(), It.IsAny<object>(), It.IsAny<object>()),
+          Times.Never());
 
       Assert.That(_existingDataContainer.GetValue(_orderNumberProperty), Is.EqualTo(0));
     }
@@ -245,22 +257,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void SetValue_SameValue_NoEventButStillTouched ()
     {
       var currentValue = _existingDataContainer.GetValue(_orderNumberProperty);
-      _existingDataContainer.SetEventListener(_eventListenerMock);
+      _existingDataContainer.SetEventListener(_eventListenerMock.Object);
 
       _existingDataContainer.SetValue(_orderNumberProperty, currentValue);
 
-      _eventListenerMock.AssertWasNotCalled(
-          mock => mock.PropertyValueChanging(
-              Arg<DataContainer>.Is.Anything,
-              Arg<PropertyDefinition>.Is.Anything,
-              Arg<object>.Is.Anything,
-              Arg<object>.Is.Anything));
-      _eventListenerMock.AssertWasNotCalled(
-          mock => mock.PropertyValueChanged(
-              Arg<DataContainer>.Is.Anything,
-              Arg<PropertyDefinition>.Is.Anything,
-              Arg<object>.Is.Anything,
-              Arg<object>.Is.Anything));
+      _eventListenerMock.Verify(
+          mock => mock.PropertyValueChanging(It.IsAny<DataContainer>(), It.IsAny<PropertyDefinition>(), It.IsAny<object>(), It.IsAny<object>()),
+          Times.Never());
+      _eventListenerMock.Verify(
+          mock => mock.PropertyValueChanged(It.IsAny<DataContainer>(), It.IsAny<PropertyDefinition>(), It.IsAny<object>(), It.IsAny<object>()),
+          Times.Never());
 
       Assert.That(_existingDataContainer.HasValueBeenTouched(_orderNumberProperty), Is.True);
       Assert.That(_existingDataContainer.HasValueChanged(_orderNumberProperty), Is.False);
@@ -309,15 +315,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetValueWithoutEvents_RaisesNoEvent ()
     {
-      _existingDataContainer.SetEventListener(_eventListenerMock);
+      _existingDataContainer.SetEventListener(_eventListenerMock.Object);
 
       _existingDataContainer.GetValueWithoutEvents(_orderNumberProperty, ValueAccess.Original);
 
-      _eventListenerMock.AssertWasNotCalled(
-          mock => mock.PropertyValueReading(Arg<DataContainer>.Is.Anything, Arg<PropertyDefinition>.Is.Anything, Arg<ValueAccess>.Is.Anything));
-      _eventListenerMock.AssertWasNotCalled(
-          mock => mock.PropertyValueRead(
-              Arg<DataContainer>.Is.Anything, Arg<PropertyDefinition>.Is.Anything, Arg<object>.Is.Anything, Arg<ValueAccess>.Is.Anything));
+      _eventListenerMock.Verify(
+          mock => mock.PropertyValueReading(It.IsAny<DataContainer>(), It.IsAny<PropertyDefinition>(), It.IsAny<ValueAccess>()),
+          Times.Never());
+      _eventListenerMock.Verify(
+          mock => mock.PropertyValueRead(It.IsAny<DataContainer>(), It.IsAny<PropertyDefinition>(), It.IsAny<object>(), It.IsAny<ValueAccess>()),
+          Times.Never());
     }
 
     [Test]
@@ -767,7 +774,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void Clone_EventListenerEmpty ()
     {
-      _existingDataContainer.SetEventListener(_eventListenerMock);
+      _existingDataContainer.SetEventListener(_eventListenerMock.Object);
       Assert.That(_existingDataContainer.EventListener, Is.Not.Null);
 
       var clone = _existingDataContainer.Clone(DomainObjectIDs.Order1);
@@ -985,7 +992,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void Discard_DisassociatesFromEventListener ()
     {
-      _newDataContainer.SetEventListener(_eventListenerMock);
+      _newDataContainer.SetEventListener(_eventListenerMock.Object);
       Assert.That(_newDataContainer.EventListener, Is.Not.Null);
 
       _newDataContainer.Discard();
@@ -1365,11 +1372,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
     private void CheckStateNotification (DataContainer dataContainer, Action<DataContainer> action, DataContainerState expectedState)
     {
-      dataContainer.SetEventListener(_eventListenerMock);
+      dataContainer.SetEventListener(_eventListenerMock.Object);
 
       action(dataContainer);
 
-      _eventListenerMock.AssertWasCalled(mock => mock.StateUpdated(dataContainer, expectedState));
+      _eventListenerMock.Verify(mock => mock.StateUpdated(dataContainer, expectedState), Times.AtLeastOnce());
     }
 
     private int GetNumberOfSetFlags (DataContainerState dataContainerState)

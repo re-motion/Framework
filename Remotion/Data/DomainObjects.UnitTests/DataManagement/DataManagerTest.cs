@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -30,7 +31,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.ObjectMothers;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -39,11 +39,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
   {
     private DataManager _dataManager;
 
-    private IClientTransactionEventSink _transactionEventSinkStub;
-    private IDataContainerEventListener _dataContainerEventListenerStub;
-    private IObjectLoader _objectLoaderMock;
-    private IRelationEndPointManager _endPointManagerMock;
-    private IInvalidDomainObjectManager _invalidDomainObjectManagerMock;
+    private Mock<IClientTransactionEventSink> _transactionEventSinkStub;
+    private Mock<IDataContainerEventListener> _dataContainerEventListenerStub;
+    private Mock<IObjectLoader> _objectLoaderMock;
+    private Mock<IRelationEndPointManager> _endPointManagerMock;
+    private Mock<IInvalidDomainObjectManager> _invalidDomainObjectManagerMock;
 
     private DataManager _dataManagerWithMocks;
 
@@ -53,31 +53,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       _dataManager = TestableClientTransaction.DataManager;
 
-      _transactionEventSinkStub = MockRepository.GenerateStub<IClientTransactionEventSink>();
-      _dataContainerEventListenerStub = MockRepository.GenerateStub<IDataContainerEventListener>();
-      _objectLoaderMock = MockRepository.GenerateStrictMock<IObjectLoader>();
-      _endPointManagerMock = MockRepository.GenerateStrictMock<IRelationEndPointManager>();
-      _invalidDomainObjectManagerMock = MockRepository.GenerateMock<IInvalidDomainObjectManager>();
+      _transactionEventSinkStub = new Mock<IClientTransactionEventSink>();
+      _dataContainerEventListenerStub = new Mock<IDataContainerEventListener>();
+      _objectLoaderMock = new Mock<IObjectLoader>(MockBehavior.Strict);
+      _endPointManagerMock = new Mock<IRelationEndPointManager>(MockBehavior.Strict);
+      _invalidDomainObjectManagerMock = new Mock<IInvalidDomainObjectManager>();
 
       _dataManagerWithMocks = new DataManager(
           TestableClientTransaction,
-          _transactionEventSinkStub,
-          _dataContainerEventListenerStub,
-          _invalidDomainObjectManagerMock,
-          _objectLoaderMock,
-          _endPointManagerMock);
+          _transactionEventSinkStub.Object,
+          _dataContainerEventListenerStub.Object,
+          _invalidDomainObjectManagerMock.Object,
+          _objectLoaderMock.Object,
+          _endPointManagerMock.Object);
     }
 
     [Test]
     public void Initialization ()
     {
       Assert.That(_dataManagerWithMocks.ClientTransaction, Is.SameAs(TestableClientTransaction));
-      Assert.That(_dataManagerWithMocks.TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
-      Assert.That(_dataManagerWithMocks.DataContainerEventListener, Is.SameAs(_dataContainerEventListenerStub));
-      Assert.That(DataManagerTestHelper.GetRelationEndPointManager(_dataManagerWithMocks), Is.SameAs(_endPointManagerMock));
+      Assert.That(_dataManagerWithMocks.TransactionEventSink, Is.SameAs(_transactionEventSinkStub.Object));
+      Assert.That(_dataManagerWithMocks.DataContainerEventListener, Is.SameAs(_dataContainerEventListenerStub.Object));
+      Assert.That(DataManagerTestHelper.GetRelationEndPointManager(_dataManagerWithMocks), Is.SameAs(_endPointManagerMock.Object));
 
       var dataContainerMap = DataManagerTestHelper.GetDataContainerMap(_dataManagerWithMocks);
-      Assert.That(dataContainerMap.TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
+      Assert.That(dataContainerMap.TransactionEventSink, Is.SameAs(_transactionEventSinkStub.Object));
     }
 
     [Test]
@@ -305,18 +305,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void MarkInvalid ()
     {
       var domainObject = DomainObjectMother.CreateObjectInTransaction<Order>(_dataManagerWithMocks.ClientTransaction);
-      _invalidDomainObjectManagerMock.Expect(mock => mock.MarkInvalid(domainObject)).Return(true);
-      _invalidDomainObjectManagerMock.Replay();
+      _invalidDomainObjectManagerMock.Setup(mock => mock.MarkInvalid(domainObject)).Returns(true).Verifiable();
 
       Assert.That(_dataManagerWithMocks.ClientTransaction.IsEnlisted(domainObject), Is.True);
       Assert.That(_dataManagerWithMocks.GetDataContainerWithoutLoading(domainObject.ID), Is.Null);
       _endPointManagerMock
-          .Stub(stub => stub.GetRelationEndPointWithoutLoading(Arg<RelationEndPointID>.Is.Anything))
-          .Return(null);
+          .Setup(stub => stub.GetRelationEndPointWithoutLoading(It.IsAny<RelationEndPointID>()))
+          .Returns((IRelationEndPoint)null);
 
       _dataManagerWithMocks.MarkInvalid(domainObject);
 
-      _invalidDomainObjectManagerMock.VerifyAllExpectations();
+      _invalidDomainObjectManagerMock.Verify();
     }
 
     [Test]
@@ -327,7 +326,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       Assert.That(() => _dataManagerWithMocks.MarkInvalid(domainObject), Throws.TypeOf<ClientTransactionsDifferException>());
 
-      _invalidDomainObjectManagerMock.AssertWasNotCalled(mock => mock.MarkInvalid(Arg<DomainObject>.Is.Anything));
+      _invalidDomainObjectManagerMock.Verify(mock => mock.MarkInvalid(It.IsAny<DomainObject>()), Times.Never());
     }
 
     [Test]
@@ -341,43 +340,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(() => _dataManagerWithMocks.MarkInvalid(domainObject), Throws.InvalidOperationException.With.Message.EqualTo(
           "Cannot mark DomainObject '" + domainObject.ID + "' invalid because there is data registered for the object."));
 
-      _invalidDomainObjectManagerMock.AssertWasNotCalled(mock => mock.MarkInvalid(Arg<DomainObject>.Is.Anything));
+      _invalidDomainObjectManagerMock.Verify(mock => mock.MarkInvalid(It.IsAny<DomainObject>()), Times.Never());
     }
 
     [Test]
     public void MarkNotInvalid ()
     {
-      _invalidDomainObjectManagerMock.Expect(mock => mock.MarkNotInvalid(DomainObjectIDs.Order1)).Return(true);
-      _invalidDomainObjectManagerMock.Replay();
+      _invalidDomainObjectManagerMock.Setup(mock => mock.MarkNotInvalid(DomainObjectIDs.Order1)).Returns(true).Verifiable();
 
       _dataManagerWithMocks.MarkNotInvalid(DomainObjectIDs.Order1);
 
-      _invalidDomainObjectManagerMock.VerifyAllExpectations();
+      _invalidDomainObjectManagerMock.Verify();
     }
 
     [Test]
     public void MarkNotInvalid_NotInvalid ()
     {
-      _invalidDomainObjectManagerMock.Expect(mock => mock.MarkNotInvalid(DomainObjectIDs.Order1)).Return(false);
-      _invalidDomainObjectManagerMock.Replay();
+      _invalidDomainObjectManagerMock.Setup(mock => mock.MarkNotInvalid(DomainObjectIDs.Order1)).Returns(false).Verifiable();
 
       Assert.That(
           () => _dataManagerWithMocks.MarkNotInvalid(DomainObjectIDs.Order1),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "Cannot clear the invalid state from object '" + DomainObjectIDs.Order1 + "' - it wasn't marked invalid in the first place."));
 
-      _invalidDomainObjectManagerMock.VerifyAllExpectations();
+      _invalidDomainObjectManagerMock.Verify();
     }
 
     [Test]
     public void Commit_CommitsRelationEndPoints ()
     {
-      _endPointManagerMock.Expect(mock => mock.CommitAllEndPoints());
-      _endPointManagerMock.Replay();
+      _endPointManagerMock.Setup(mock => mock.CommitAllEndPoints()).Verifiable();
 
       _dataManagerWithMocks.Commit();
 
-      _endPointManagerMock.VerifyAllExpectations();
+      _endPointManagerMock.Verify();
     }
 
     [Test]
@@ -460,12 +456,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void Rollback_RollsBackRelationEndPoints ()
     {
-      _endPointManagerMock.Expect(mock => mock.RollbackAllEndPoints());
-      _endPointManagerMock.Replay();
+      _endPointManagerMock.Setup(mock => mock.RollbackAllEndPoints()).Verifiable();
 
       _dataManagerWithMocks.Rollback();
 
-      _endPointManagerMock.VerifyAllExpectations();
+      _endPointManagerMock.Verify();
     }
 
     [Test]
@@ -694,12 +689,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var dataContainerOfChangedObject = PrepareLoadedDataContainer(_dataManagerWithMocks, endPointIDOfChangedObject.ObjectID);
       dataContainerOfChangedObject.MarkAsChanged();
 
-      var fakeCommand = MockRepository.GenerateStub<IDataManagementCommand>();
+      var fakeCommand = new Mock<IDataManagementCommand>();
       _endPointManagerMock
-          .Expect(mock => mock.CreateUnloadVirtualEndPointsCommand(
-              new[] { endPointIDOfUnloadedObject, endPointIDOfUnchangedObject, endPointIDOfNullValue, endPointIDOfChangedObject }))
-          .Return(fakeCommand);
-      _endPointManagerMock.Replay();
+          .Setup(
+              mock => mock.CreateUnloadVirtualEndPointsCommand(new[] { endPointIDOfUnloadedObject, endPointIDOfUnchangedObject, endPointIDOfNullValue, endPointIDOfChangedObject }))
+          .Returns(fakeCommand.Object)
+          .Verifiable();
 
       var result = _dataManagerWithMocks.CreateUnloadVirtualEndPointsCommand(
           endPointIDOfUnloadedObject,
@@ -707,8 +702,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
           endPointIDOfNullValue,
           endPointIDOfChangedObject);
 
-      _endPointManagerMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(fakeCommand));
+      _endPointManagerMock.Verify();
+      Assert.That(result, Is.SameAs(fakeCommand.Object));
     }
 
     [Test]
@@ -721,8 +716,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       PrepareNewDataContainer(_dataManagerWithMocks, endPointIDOfNewObject.ObjectID);
       var dataContainerOfDeletedObject = PrepareLoadedDataContainer(_dataManagerWithMocks, endPointIDOfDeletedObject.ObjectID);
       dataContainerOfDeletedObject.Delete();
-
-      _endPointManagerMock.Replay();
 
       var result = _dataManagerWithMocks.CreateUnloadVirtualEndPointsCommand(endPointIDOfUnloadedObject, endPointIDOfNewObject, endPointIDOfDeletedObject);
 
@@ -748,7 +741,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(unloadAllCommand.RelationEndPointManager, Is.SameAs(DataManagerTestHelper.GetRelationEndPointManager(_dataManagerWithMocks)));
       Assert.That(unloadAllCommand.DataContainerMap, Is.SameAs(DataManagerTestHelper.GetDataContainerMap(_dataManagerWithMocks)));
       Assert.That(unloadAllCommand.InvalidDomainObjectManager, Is.SameAs(DataManagerTestHelper.GetInvalidDomainObjectManager(_dataManagerWithMocks)));
-      Assert.That(unloadAllCommand.TransactionEventSink, Is.SameAs(_transactionEventSinkStub));
+      Assert.That(unloadAllCommand.TransactionEventSink, Is.SameAs(_transactionEventSinkStub.Object));
     }
 
     [Test]
@@ -771,7 +764,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void GetDataContainerWithoutLoading_Invalid ()
     {
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(DomainObjectIDs.Order1)).Return(true);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(DomainObjectIDs.Order1)).Returns(true);
       Assert.That(
           () => _dataManagerWithMocks.GetDataContainerWithoutLoading(DomainObjectIDs.Order1),
           Throws.InstanceOf<ObjectInvalidException>());
@@ -782,12 +775,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var dataContainer = PrepareLoadedDataContainer(_dataManagerWithMocks);
 
-      _objectLoaderMock.Replay();
-
       var throwOnNotFound = BooleanObjectMother.GetRandomBoolean();
       var result = _dataManagerWithMocks.GetDataContainerWithLazyLoad(dataContainer.ID, throwOnNotFound);
 
-      _objectLoaderMock.VerifyAllExpectations();
+      _objectLoaderMock.Verify();
       Assert.That(result, Is.SameAs(dataContainer));
     }
 
@@ -798,14 +789,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var throwOnNotFound = BooleanObjectMother.GetRandomBoolean();
       _objectLoaderMock
-          .Expect(mock => mock.LoadObject(dataContainer.ID, throwOnNotFound))
-          .WhenCalled(mi => DataManagerTestHelper.AddDataContainer(_dataManagerWithMocks, dataContainer))
-          .Return(new FreshlyLoadedObjectData(dataContainer));
-      _objectLoaderMock.Replay();
+          .Setup(mock => mock.LoadObject(dataContainer.ID, throwOnNotFound))
+          .Callback((ObjectID id, bool throwOnNotFound) => DataManagerTestHelper.AddDataContainer(_dataManagerWithMocks, dataContainer))
+          .Returns(new FreshlyLoadedObjectData(dataContainer))
+          .Verifiable();
 
       var result = _dataManagerWithMocks.GetDataContainerWithLazyLoad(dataContainer.ID, throwOnNotFound);
 
-      _objectLoaderMock.VerifyAllExpectations();
+      _objectLoaderMock.Verify();
       Assert.That(result, Is.SameAs(dataContainer));
     }
 
@@ -817,21 +808,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var throwOnNotFound = BooleanObjectMother.GetRandomBoolean();
 
       _objectLoaderMock
-          .Expect(mock => mock.LoadObject(notFoundID, throwOnNotFound))
-          .WhenCalled(mi => _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(notFoundID)).Return(true))
-          .Return(new NotFoundLoadedObjectData(notFoundID));
-      _objectLoaderMock.Replay();
+          .Setup(mock => mock.LoadObject(notFoundID, throwOnNotFound))
+          .Callback((ObjectID id, bool throwOnNotFound) => _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(notFoundID)).Returns(true))
+          .Returns(new NotFoundLoadedObjectData(notFoundID))
+          .Verifiable();
 
       var result = _dataManagerWithMocks.GetDataContainerWithLazyLoad(notFoundID, throwOnNotFound);
 
-      _objectLoaderMock.VerifyAllExpectations();
+      _objectLoaderMock.Verify();
       Assert.That(result, Is.Null);
     }
 
     [Test]
     public void GetDataContainerWithLazyLoad_Invalid ()
     {
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(DomainObjectIDs.Order1)).Return(true);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(DomainObjectIDs.Order1)).Returns(true);
       Assert.That(
           () => _dataManagerWithMocks.GetDataContainerWithLazyLoad(DomainObjectIDs.Order1, BooleanObjectMother.GetRandomBoolean()),
           Throws.InstanceOf<ObjectInvalidException>());
@@ -848,37 +839,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var throwOnNotFound = BooleanObjectMother.GetRandomBoolean();
 
       _objectLoaderMock
-          .Expect(mock => mock.LoadObjects(
-              Arg<IEnumerable<ObjectID>>.List.Equal(new[] { nonLoadedDataContainer1.ID, nonLoadedDataContainer2.ID }),
-              Arg.Is(throwOnNotFound)))
-          .WhenCalled(
-              mi =>
+          .Setup(mock => mock.LoadObjects(new[] { nonLoadedDataContainer1.ID, nonLoadedDataContainer2.ID }, throwOnNotFound))
+          .Callback(
+              (IEnumerable<ObjectID> idsToBeLoaded, bool throwOnNotFound) =>
               {
                 DataManagerTestHelper.AddDataContainer(_dataManagerWithMocks, nonLoadedDataContainer1);
                 DataManagerTestHelper.AddDataContainer(_dataManagerWithMocks, nonLoadedDataContainer2);
               })
-          .Return(new[] { new FreshlyLoadedObjectData(nonLoadedDataContainer1), new FreshlyLoadedObjectData(nonLoadedDataContainer2) });
-      _objectLoaderMock.Replay();
+          .Returns(new[] { new FreshlyLoadedObjectData(nonLoadedDataContainer1), new FreshlyLoadedObjectData(nonLoadedDataContainer2) })
+          .Verifiable();
 
       var result = _dataManagerWithMocks.GetDataContainersWithLazyLoad(
           new[] { nonLoadedDataContainer1.ID, loadedDataContainer.ID, nonLoadedDataContainer2.ID },
           throwOnNotFound);
 
-      _objectLoaderMock.VerifyAllExpectations();
+      _objectLoaderMock.Verify();
       Assert.That(result, Is.EqualTo(new[] { nonLoadedDataContainer1, loadedDataContainer, nonLoadedDataContainer2 }));
     }
 
     [Test]
     public void GetDataContainersWithLazyLoad_WithInvalidID ()
     {
-      _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(DomainObjectIDs.Order1)).Return(true);
+      _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(DomainObjectIDs.Order1)).Returns(true);
 
       _objectLoaderMock
-          .Expect(mock => mock.LoadObjects(Arg<IEnumerable<ObjectID>>.Is.Anything, Arg<bool>.Is.Anything))
+          .Setup(mock => mock.LoadObjects(It.IsAny<IEnumerable<ObjectID>>(), It.IsAny<bool>()))
           // evaluate args to trigger exception
-          .WhenCalled(mi => ((IEnumerable<ObjectID>)mi.Arguments[0]).ToList())
-          .Return(null);
-      _objectLoaderMock.Replay();
+          .Callback((IEnumerable<ObjectID> idsToBeLoaded, bool throwOnNotFound) => idsToBeLoaded.ToList())
+          .Returns((ICollection<ILoadedObjectData>)null)
+          .Verifiable();
 
       Assert.That(
           () =>
@@ -898,23 +887,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var throwOnNotFound = BooleanObjectMother.GetRandomBoolean();
 
       _objectLoaderMock
-          .Expect(mock => mock.LoadObjects(
-              Arg<IEnumerable<ObjectID>>.List.Equal(new[] { nonLoadedDataContainer.ID, notFoundID }),
-              Arg.Is(throwOnNotFound)))
-          .WhenCalled(
-              mi =>
+          .Setup(mock => mock.LoadObjects(new[] { nonLoadedDataContainer.ID, notFoundID }, throwOnNotFound))
+          .Callback(
+              (IEnumerable<ObjectID> idsToBeLoaded, bool throwOnNotFound) =>
               {
                 DataManagerTestHelper.AddDataContainer(_dataManagerWithMocks, nonLoadedDataContainer);
-                _invalidDomainObjectManagerMock.Stub(stub => stub.IsInvalid(notFoundID)).Return(true);
+                _invalidDomainObjectManagerMock.Setup(stub => stub.IsInvalid(notFoundID)).Returns(true);
               })
-          .Return(new ILoadedObjectData[] { new FreshlyLoadedObjectData(nonLoadedDataContainer), new NotFoundLoadedObjectData(notFoundID) });
-      _objectLoaderMock.Replay();
+          .Returns(new ILoadedObjectData[] { new FreshlyLoadedObjectData(nonLoadedDataContainer), new NotFoundLoadedObjectData(notFoundID) })
+          .Verifiable();
 
       var result = _dataManagerWithMocks.GetDataContainersWithLazyLoad(
           new[] { nonLoadedDataContainer.ID, loadedDataContainer.ID, notFoundID },
           throwOnNotFound);
 
-      _objectLoaderMock.VerifyAllExpectations();
+      _objectLoaderMock.Verify();
       Assert.That(result, Is.EqualTo(new[] { nonLoadedDataContainer, loadedDataContainer, null}));
     }
 
@@ -927,7 +914,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
           new[] { loadedDataContainer.ID },
           true);
 
-      _objectLoaderMock.AssertWasNotCalled(mock => mock.LoadObjects(Arg<IEnumerable<ObjectID>>.Is.Anything, Arg<bool>.Is.Anything));
+      _objectLoaderMock.Verify(mock => mock.LoadObjects(It.IsAny<IEnumerable<ObjectID>>(), It.IsAny<bool>()), Times.Never());
       Assert.That(result, Is.EqualTo(new[] { loadedDataContainer }));
     }
 
@@ -937,34 +924,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderItems");
 
       var fakeOrderItem = DomainObjectMother.CreateFakeObject<OrderItem>();
-      var loadedObjectDataStub = MockRepository.GenerateStub<ILoadedObjectData>();
-      loadedObjectDataStub.Stub(stub => stub.GetDomainObjectReference()).Return(fakeOrderItem);
+      var loadedObjectDataStub = new Mock<ILoadedObjectData>();
+      loadedObjectDataStub.Setup(stub => stub.GetDomainObjectReference()).Returns(fakeOrderItem);
 
-      var endPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint<ICollectionEndPointData>>();
-      endPointMock.Stub(stub => stub.ID).Return(endPointID);
-      endPointMock.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPointMock.Stub(stub => stub.IsDataComplete).Return(false);
-      endPointMock.Expect(mock => mock.MarkDataComplete(Arg<DomainObject[]>.List.Equal(new[] { fakeOrderItem })));
-      endPointMock.Replay();
+      var endPointMock = new Mock<ICollectionEndPoint<ICollectionEndPointData>>(MockBehavior.Strict);
+      endPointMock.Setup(stub => stub.ID).Returns(endPointID);
+      endPointMock.Setup(stub => stub.Definition).Returns(endPointID.Definition);
+      endPointMock.Setup(stub => stub.IsDataComplete).Returns(false);
+      endPointMock.Setup(mock => mock.MarkDataComplete(new[] { fakeOrderItem })).Verifiable();
 
-      _endPointManagerMock.Stub(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Return(endPointMock);
+      _endPointManagerMock.Setup(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Returns(endPointMock.Object);
 
       _objectLoaderMock
-          .Expect(mock => mock.GetOrLoadRelatedObjects(Arg.Is(endPointID)))
-          .Return(new[] { loadedObjectDataStub });
-      _objectLoaderMock.Replay();
+          .Setup(mock => mock.GetOrLoadRelatedObjects(endPointID))
+          .Returns(new[] { loadedObjectDataStub.Object })
+          .Verifiable();
 
       _dataManagerWithMocks.LoadLazyCollectionEndPoint(endPointID);
 
-      _objectLoaderMock.VerifyAllExpectations();
-      endPointMock.VerifyAllExpectations();
+      _objectLoaderMock.Verify();
+      endPointMock.Verify();
     }
 
     [Test]
     public void LoadLazyCollectionEndPoint_NotRegistered ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderItems");
-      _endPointManagerMock.Stub(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Return(null);
+      _endPointManagerMock.Setup(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Returns((IRelationEndPoint)null);
       Assert.That(
           () => _dataManagerWithMocks.LoadLazyCollectionEndPoint(endPointID),
           Throws.ArgumentException
@@ -976,8 +962,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void LoadLazyCollectionEndPoint_NotICollectionEndPoint ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
-      var endPointStub = MockRepository.GenerateStub<IVirtualObjectEndPoint>();
-      _endPointManagerMock.Stub(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Return(endPointStub);
+      var endPointStub = new Mock<IVirtualObjectEndPoint>();
+      _endPointManagerMock.Setup(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Returns(endPointStub.Object);
       Assert.That(
           () => _dataManagerWithMocks.LoadLazyCollectionEndPoint(endPointID),
           Throws.ArgumentException
@@ -989,11 +975,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void LoadLazyCollectionEndPoint_AlreadyLoaded ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderItems");
-      var endPointStub = MockRepository.GenerateStub<ICollectionEndPoint<ICollectionEndPointData>>();
-      endPointStub.Stub(stub => stub.ID).Return(endPointID);
-      endPointStub.Stub(stub => stub.IsDataComplete).Return(true);
+      var endPointStub = new Mock<ICollectionEndPoint<ICollectionEndPointData>>();
+      endPointStub.Setup(stub => stub.ID).Returns(endPointID);
+      endPointStub.Setup(stub => stub.IsDataComplete).Returns(true);
 
-      _endPointManagerMock.Stub(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Return(endPointStub);
+      _endPointManagerMock.Setup(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Returns(endPointStub.Object);
       Assert.That(
           () => _dataManagerWithMocks.LoadLazyCollectionEndPoint(endPointID),
           Throws.InvalidOperationException
@@ -1007,29 +993,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
 
       var fakeOrderTicket = DomainObjectMother.CreateFakeObject<OrderTicket>();
-      var loadedObjectDataStub = MockRepository.GenerateStub<ILoadedObjectData>();
-      loadedObjectDataStub.Stub(stub => stub.GetDomainObjectReference()).Return(fakeOrderTicket);
+      var loadedObjectDataStub = new Mock<ILoadedObjectData>();
+      loadedObjectDataStub.Setup(stub => stub.GetDomainObjectReference()).Returns(fakeOrderTicket);
 
-      var endPointMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPoint>();
-      endPointMock.Stub(stub => stub.ID).Return(endPointID);
-      endPointMock.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPointMock.Stub(stub => stub.IsDataComplete).Return(false).Repeat.Once();
-      endPointMock.Replay();
+      var endPointMock = new Mock<IVirtualObjectEndPoint>(MockBehavior.Strict);
+      endPointMock.Setup(stub => stub.ID).Returns(endPointID);
+      endPointMock.Setup(stub => stub.Definition).Returns(endPointID.Definition);
+      endPointMock.Setup(stub => stub.IsDataComplete).Returns(false);
 
-      _endPointManagerMock.Stub(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Return(endPointMock);
+      _endPointManagerMock.Setup(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Returns(endPointMock.Object);
 
       _objectLoaderMock
-          .Expect(mock => mock.GetOrLoadRelatedObject(Arg.Is(endPointID)))
-          .Return(loadedObjectDataStub)
-          .WhenCalled(mi => endPointMock.Stub(stub => stub.IsDataComplete).Return(true));
-      _objectLoaderMock.Replay();
+          .Setup(mock => mock.GetOrLoadRelatedObject(endPointID))
+          .Returns(loadedObjectDataStub.Object)
+          .Callback((RelationEndPointID relationEndPointID) => endPointMock.Setup(stub => stub.IsDataComplete).Returns(true))
+          .Verifiable();
 
       _dataManagerWithMocks.LoadLazyVirtualObjectEndPoint(endPointID);
 
-      _objectLoaderMock.VerifyAllExpectations();
-
-      endPointMock.AssertWasNotCalled(mock => mock.MarkDataComplete(fakeOrderTicket));
-      endPointMock.VerifyAllExpectations();
+      _objectLoaderMock.Verify();
+      endPointMock.Verify();
     }
 
     [Test]
@@ -1038,34 +1021,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
 
       var fakeOrderTicket = DomainObjectMother.CreateFakeObject<OrderTicket>();
-      var loadedObjectDataStub = MockRepository.GenerateStub<ILoadedObjectData>();
-      loadedObjectDataStub.Stub(stub => stub.GetDomainObjectReference()).Return(fakeOrderTicket);
+      var loadedObjectDataStub = new Mock<ILoadedObjectData>();
+      loadedObjectDataStub.Setup(stub => stub.GetDomainObjectReference()).Returns(fakeOrderTicket);
 
-      var endPointMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPoint>();
-      endPointMock.Stub(stub => stub.ID).Return(endPointID);
-      endPointMock.Stub(stub => stub.Definition).Return(endPointID.Definition);
-      endPointMock.Stub(stub => stub.IsDataComplete).Return(false);
-      endPointMock.Expect(mock => mock.MarkDataComplete(fakeOrderTicket));
-      endPointMock.Replay();
+      var endPointMock = new Mock<IVirtualObjectEndPoint>(MockBehavior.Strict);
+      endPointMock.Setup(stub => stub.ID).Returns(endPointID);
+      endPointMock.Setup(stub => stub.Definition).Returns(endPointID.Definition);
+      endPointMock.Setup(stub => stub.IsDataComplete).Returns(false);
+      endPointMock.Setup(mock => mock.MarkDataComplete(fakeOrderTicket)).Verifiable();
 
-      _endPointManagerMock.Stub(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Return(endPointMock);
+      _endPointManagerMock.Setup(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Returns(endPointMock.Object);
 
       _objectLoaderMock
-          .Expect(mock => mock.GetOrLoadRelatedObject(Arg.Is(endPointID)))
-          .Return(loadedObjectDataStub);
-      _objectLoaderMock.Replay();
+          .Setup(mock => mock.GetOrLoadRelatedObject(endPointID))
+          .Returns(loadedObjectDataStub.Object)
+          .Verifiable();
 
       _dataManagerWithMocks.LoadLazyVirtualObjectEndPoint(endPointID);
 
-      _objectLoaderMock.VerifyAllExpectations();
-      endPointMock.VerifyAllExpectations();
+      _objectLoaderMock.Verify();
+      endPointMock.Verify();
     }
 
     [Test]
     public void LoadLazyVirtualObjectEndPoint_NotRegistered ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
-      _endPointManagerMock.Stub(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Return(null);
+      _endPointManagerMock.Setup(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Returns((IRelationEndPoint)null);
       Assert.That(
           () => _dataManagerWithMocks.LoadLazyVirtualObjectEndPoint(endPointID),
           Throws.ArgumentException
@@ -1077,8 +1059,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void LoadLazyVirtualObjectEndPoint_NotIVirtualObjectEndPoint ()
     {
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderItems");
-      var endPointStub = MockRepository.GenerateStub<ICollectionEndPoint<ICollectionEndPointData>>();
-      _endPointManagerMock.Stub(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Return(endPointStub);
+      var endPointStub = new Mock<ICollectionEndPoint<ICollectionEndPointData>>();
+      _endPointManagerMock.Setup(stub => stub.GetRelationEndPointWithoutLoading(endPointID)).Returns(endPointStub.Object);
       Assert.That(
           () => _dataManagerWithMocks.LoadLazyVirtualObjectEndPoint(endPointID),
           Throws.ArgumentException
@@ -1105,14 +1087,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var fakeDataContainer = PrepareNonLoadedDataContainer();
 
       _objectLoaderMock
-          .Expect(mock => mock.LoadObject(fakeDataContainer.ID, true))
-          .Return(new FreshlyLoadedObjectData(fakeDataContainer))
-          .WhenCalled(mi => DataManagerTestHelper.AddDataContainer(_dataManagerWithMocks, fakeDataContainer));
-      _objectLoaderMock.Replay();
+          .Setup(mock => mock.LoadObject(fakeDataContainer.ID, true))
+          .Returns(new FreshlyLoadedObjectData(fakeDataContainer))
+          .Callback((ObjectID id, bool throwOnNotFound) => DataManagerTestHelper.AddDataContainer(_dataManagerWithMocks, fakeDataContainer))
+          .Verifiable();
 
       var result = _dataManagerWithMocks.LoadLazyDataContainer(fakeDataContainer.ID);
 
-      _objectLoaderMock.VerifyAllExpectations();
+      _objectLoaderMock.Verify();
       Assert.That(result, Is.SameAs(fakeDataContainer));
     }
 
@@ -1124,8 +1106,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       fakeDataContainer.SetDomainObject(fakeObject);
       DataManagerTestHelper.AddDataContainer(_dataManagerWithMocks, fakeDataContainer);
 
-      _objectLoaderMock.Replay();
-
       Assert.That(
           () => _dataManagerWithMocks.LoadLazyDataContainer(DomainObjectIDs.Order1),
           Throws.InvalidOperationException.With.Message.EquivalentTo(
@@ -1136,45 +1116,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void GetRelationEndPointWithLazyLoad ()
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetPropertyIdentifier(typeof(Order), "OrderTicket"));
-      var fakeEndPoint = MockRepository.GenerateStub<IRelationEndPoint>();
+      var fakeEndPoint = new Mock<IRelationEndPoint>();
 
-      _endPointManagerMock.Expect(mock => mock.GetRelationEndPointWithLazyLoad(endPointID)).Return(fakeEndPoint);
-      _endPointManagerMock.Replay();
+      _endPointManagerMock.Setup(mock => mock.GetRelationEndPointWithLazyLoad(endPointID)).Returns(fakeEndPoint.Object).Verifiable();
 
       var result = _dataManagerWithMocks.GetRelationEndPointWithLazyLoad(endPointID);
 
-      _endPointManagerMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(fakeEndPoint));
+      _endPointManagerMock.Verify();
+      Assert.That(result, Is.SameAs(fakeEndPoint.Object));
     }
 
     [Test]
     public void GetRelationEndPointWithoutLoading ()
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetPropertyIdentifier(typeof(Order), "OrderTicket"));
-      var fakeEndPoint = MockRepository.GenerateStub<IRelationEndPoint>();
+      var fakeEndPoint = new Mock<IRelationEndPoint>();
 
-      _endPointManagerMock.Expect(mock => mock.GetRelationEndPointWithoutLoading(endPointID)).Return(fakeEndPoint);
-      _endPointManagerMock.Replay();
+      _endPointManagerMock.Setup(mock => mock.GetRelationEndPointWithoutLoading(endPointID)).Returns(fakeEndPoint.Object).Verifiable();
 
       var result = _dataManagerWithMocks.GetRelationEndPointWithoutLoading(endPointID);
 
-      _endPointManagerMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(fakeEndPoint));
+      _endPointManagerMock.Verify();
+      Assert.That(result, Is.SameAs(fakeEndPoint.Object));
     }
 
     [Test]
     public void GetOrCreateVirtualEndPoint ()
     {
       var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, GetPropertyIdentifier(typeof(Order), "OrderTicket"));
-      var fakeVirtualEndPoint = MockRepository.GenerateStub<IVirtualEndPoint>();
+      var fakeVirtualEndPoint = new Mock<IVirtualEndPoint>();
 
-      _endPointManagerMock.Expect(mock => mock.GetOrCreateVirtualEndPoint(endPointID)).Return(fakeVirtualEndPoint);
-      _endPointManagerMock.Replay();
+      _endPointManagerMock.Setup(mock => mock.GetOrCreateVirtualEndPoint(endPointID)).Returns(fakeVirtualEndPoint.Object).Verifiable();
 
       var result = _dataManagerWithMocks.GetOrCreateVirtualEndPoint(endPointID);
 
-      _endPointManagerMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(fakeVirtualEndPoint));
+      _endPointManagerMock.Verify();
+      Assert.That(result, Is.SameAs(fakeVirtualEndPoint.Object));
     }
 
     private PersistableData CreatePersistableData (DomainObject domainObject)

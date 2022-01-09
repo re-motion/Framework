@@ -415,12 +415,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       subordinate.Name = "Zarniwoop";
       supervisor.Subordinates.Add(subordinate);
 
-      Assert.That(supervisor.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates").Count, Is.EqualTo(0));
+      Assert.That(
+          supervisor.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates").Count,
+          Is.EqualTo(0));
       Assert.That(subordinate.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"), Is.Null);
 
       TestableClientTransaction.Commit();
 
-      DomainObjectCollection originalSubordinates = supervisor.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
+      DomainObjectCollection originalSubordinates =
+          supervisor.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
       Assert.That(originalSubordinates.Count, Is.EqualTo(1));
       Assert.That(originalSubordinates[subordinate.ID], Is.SameAs(subordinate));
       Assert.That(subordinate.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor"), Is.SameAs(supervisor));
@@ -440,7 +443,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       productReview.Comment = "Test";
       productReview.CreatedAt = DateTime.Now;
 
-      Assert.That(product.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews").Count, Is.EqualTo(0));
+      Assert.That(
+          product.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews").Count,
+          Is.EqualTo(0));
       Assert.That(productReview.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.ProductReview.Product"), Is.Null);
 
       TestableClientTransaction.Commit();

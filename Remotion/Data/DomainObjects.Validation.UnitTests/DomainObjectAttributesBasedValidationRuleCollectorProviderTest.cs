@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
@@ -23,7 +24,6 @@ using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests
 {
@@ -31,17 +31,20 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
   public class DomainObjectAttributesBasedValidationRuleCollectorProviderTest
   {
     private DomainObjectAttributesBasedValidationRuleCollectorProvider _provider;
-    private IValidationMessageFactory _validationMessageFactoryStub;
+    private Mock<IValidationMessageFactory> _validationMessageFactoryStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _validationMessageFactoryStub = MockRepository.GenerateStub<IValidationMessageFactory>();
+      _validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
       _validationMessageFactoryStub
-          .Stub(_ => _.CreateValidationMessageForPropertyValidator(Arg<IPropertyValidator>.Is.NotNull, Arg<IPropertyInformation>.Is.NotNull))
-          .Return(new InvariantValidationMessage("Fake Message"));
+          .Setup(
+                  _ => _.CreateValidationMessageForPropertyValidator(
+                          It.IsNotNull<IPropertyValidator>(),
+                          It.IsNotNull<IPropertyInformation>()))
+          .Returns(new InvariantValidationMessage("Fake Message"));
 
-      _provider = new DomainObjectAttributesBasedValidationRuleCollectorProvider(new DomainModelConstraintProvider(), _validationMessageFactoryStub);
+      _provider = new DomainObjectAttributesBasedValidationRuleCollectorProvider(new DomainModelConstraintProvider(), _validationMessageFactoryStub.Object);
     }
 
     [Test]

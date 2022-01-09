@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -23,7 +24,6 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.IntegrationTests;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Validation
 {
@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     {
       var validators = new[]
                        {
-                           MockRepository.GenerateStub<IPersistableDataValidator>(),
-                           MockRepository.GenerateStub<IPersistableDataValidator>()
+                           new Mock<IPersistableDataValidator>().Object,
+                           new Mock<IPersistableDataValidator>().Object
                        };
       var compoundValidator = new CompoundPersistableDataValidator(validators);
 
@@ -46,10 +46,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     [Test]
     public void Validate ()
     {
-      var validators = new[]
+      var validatorMocks = new[]
                        {
-                           MockRepository.GenerateStub<IPersistableDataValidator>(),
-                           MockRepository.GenerateStub<IPersistableDataValidator>()
+                           new Mock<IPersistableDataValidator>(),
+                           new Mock<IPersistableDataValidator>()
                        };
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
@@ -61,12 +61,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
             new DomainObjectState.Builder().SetChanged().Value,
             dataContainer,
             Enumerable.Empty<IRelationEndPoint>());
-        var compoundValidator = new CompoundPersistableDataValidator(validators);
+        var compoundValidator = new CompoundPersistableDataValidator(validatorMocks.Select(v => v.Object));
 
         compoundValidator.Validate(ClientTransaction.Current, persistableData);
 
-        validators[0].AssertWasCalled(_ => _.Validate(ClientTransaction.Current, persistableData));
-        validators[1].AssertWasCalled(_ => _.Validate(ClientTransaction.Current, persistableData));
+        foreach (var validatorMock in validatorMocks)
+          validatorMock.Verify(_ => _.Validate(ClientTransaction.Current, persistableData), Times.AtLeastOnce());
       }
     }
   }

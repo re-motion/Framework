@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation.Transport;
 using Remotion.Data.DomainObjects.Persistence;
@@ -25,7 +26,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.NUnit;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 {
@@ -264,17 +264,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       DomainObject loadedObject1 = _transporter.Load(DomainObjectIDs.Order1);
       DomainObject loadedObject2 = _transporter.Load(DomainObjectIDs.Order3);
 
-      var repository = new MockRepository();
-      var strategyMock = repository.StrictMock<IExportStrategy>();
+      var strategyMock = new Mock<IExportStrategy>(MockBehavior.Strict);
 
-      strategyMock.Expect(
-          mock => mock.Export(
-                      Arg.Is(_stream),
-                      Arg<TransportItem[]>.Matches(items => items.Length == 2 && items[0].ID == loadedObject1.ID && items[1].ID == loadedObject2.ID)));
+      strategyMock
+          .Setup(mock => mock.Export(_stream, It.Is<TransportItem[]>(items => items.Length == 2 && items[0].ID == loadedObject1.ID && items[1].ID == loadedObject2.ID)))
+          .Verifiable();
 
-      strategyMock.Replay();
-      _transporter.Export(_stream, strategyMock);
-      strategyMock.VerifyAllExpectations();
+      _transporter.Export(_stream, strategyMock.Object);
+      strategyMock.Verify();
     }
 
     [Test]

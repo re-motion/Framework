@@ -83,9 +83,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
 
       var validationResult = _validationRule.Validate(classDefinition);
 
-      string message = "The domain object type cannot redefine the 'StorageGroupAttribute' already defined on base type 'BaseClassWithStorageGroupAttribute'.\r\n\r\n"
-        +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
-        +"StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule.DerivedClassWithStorageGroupAttribute";
+      string message =
+          "The domain object type cannot redefine the 'StorageGroupAttribute' already defined on base type 'BaseClassWithStorageGroupAttribute'.\r\n\r\n"
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
+          + "StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule.DerivedClassWithStorageGroupAttribute";
       AssertMappingValidationResult(validationResult, false, message);
     }
 
@@ -97,9 +98,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
 
       var validationResult = _validationRule.Validate(classDefinition);
 
-      string message = "The domain object type cannot redefine the 'StorageGroupAttribute' already defined on base type 'NonDomainObjectBaseTypeWithStorageGroupAttribute'.\r\n\r\n"
-                       +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
-                       +"StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule.DerivedClassWithStorageGroupAttributeAndNonDomainObjectBaseTypeWithStorageGroupAttribute";
+      string message =
+          "The domain object type cannot redefine the 'StorageGroupAttribute' already defined on base type 'NonDomainObjectBaseTypeWithStorageGroupAttribute'.\r\n\r\n"
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
+          + "StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule.DerivedClassWithStorageGroupAttributeAndNonDomainObjectBaseTypeWithStorageGroupAttribute";
       AssertMappingValidationResult(validationResult, false, message);
     }
   }

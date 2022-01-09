@@ -16,13 +16,13 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGeneration
 {
@@ -75,9 +75,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     [Test]
     public void GetEntityDefinitions_OnClassWithNoIEntityDefinition ()
     {
-      var storageEntityDefinitionStub = MockRepository.GenerateStub<IStorageEntityDefinition>();
-      storageEntityDefinitionStub.Stub(stub => stub.StorageProviderDefinition).Return(_storageProviderDefinition);
-      _classDefinition1.SetStorageEntity(storageEntityDefinitionStub);
+      var storageEntityDefinitionStub = new Mock<IStorageEntityDefinition>();
+      storageEntityDefinitionStub.Setup(stub => stub.StorageProviderDefinition).Returns(_storageProviderDefinition);
+      _classDefinition1.SetStorageEntity(storageEntityDefinitionStub.Object);
 
       var result = _entityDefinitionProvider.GetEntityDefinitions(new[] { _classDefinition1, _classDefinition2, _classDefinition3 });
 

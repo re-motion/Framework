@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -409,36 +409,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void Leave_ExecutesAutoDiscardBehavior ()
     {
-      var transactionMock = ClientTransactionObjectMother.CreateStrictMock();
+      var transactionPartialMock = ClientTransactionObjectMother.CreateStrictMock();
 
-      transactionMock
-          .Expect(mock => mock.EnterScope(AutoRollbackBehavior.Discard))
-          .Return(
-              (ClientTransactionScope)PrivateInvoke.CreateInstanceNonPublicCtor(typeof(ClientTransactionScope), transactionMock, AutoRollbackBehavior.Discard, null));
-      transactionMock.Expect(mock => mock.Discard());
+      transactionPartialMock
+          .Setup(mock => mock.EnterScope(AutoRollbackBehavior.Discard))
+          .Returns(
+              (ClientTransactionScope)PrivateInvoke.CreateInstanceNonPublicCtor(
+                  typeof(ClientTransactionScope),
+                  transactionPartialMock.Object,
+                  AutoRollbackBehavior.Discard,
+                  null))
+          .Verifiable();
+      transactionPartialMock.Setup(mock => mock.Discard()).Verifiable();
 
-      transactionMock.Replay();
-
-      using (transactionMock.EnterScope(AutoRollbackBehavior.Discard))
+      using (transactionPartialMock.Object.EnterScope(AutoRollbackBehavior.Discard))
       {
       }
 
-      transactionMock.VerifyAllExpectations();
+      transactionPartialMock.Verify();
     }
 
     [Test]
     public void Leave_ExecutesAttachedScope_AfterAutoDiscardBehavior ()
     {
       var scopedTransaction = ClientTransactionObjectMother.Create();
-      var attachedScopeMock = MockRepository.GenerateStrictMock<IDisposable>();
-      attachedScopeMock.Expect(mock => mock.Dispose()).WhenCalled(mock => Assert.That(scopedTransaction.IsDiscarded, Is.True));
+      var attachedScopeMock = new Mock<IDisposable>(MockBehavior.Strict);
+      attachedScopeMock.Setup(mock => mock.Dispose()).Callback(() => Assert.That(scopedTransaction.IsDiscarded, Is.True)).Verifiable();
 
       var scope = (ClientTransactionScope)PrivateInvoke.CreateInstanceNonPublicCtor(
-          typeof(ClientTransactionScope), scopedTransaction, AutoRollbackBehavior.Discard, attachedScopeMock);
+          typeof(ClientTransactionScope), scopedTransaction, AutoRollbackBehavior.Discard, attachedScopeMock.Object);
 
       scope.Leave();
 
-      attachedScopeMock.VerifyAllExpectations();
+      attachedScopeMock.Verify();
     }
 
     [Test]

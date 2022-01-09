@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -22,7 +23,6 @@ using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private IRelationEndPointDefinition _definition;
     private NullDomainObjectCollectionEndPoint _nullEndPoint;
     private OrderItem _relatedObject;
-    private IRealObjectEndPoint _relatedEndPointStub;
+    private Mock<IRealObjectEndPoint> _relatedEndPointStub;
 
     public override void SetUp ()
     {
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           .GetRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems");
       _nullEndPoint = new NullDomainObjectCollectionEndPoint(TestableClientTransaction, _definition);
       _relatedObject = OrderItem.NewObject();
-      _relatedEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
+      _relatedEndPointStub = new Mock<IRealObjectEndPoint>();
     }
 
     [Test]
@@ -233,37 +233,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void RegisterOriginalOppositeEndPoint ()
     {
-      var relatedEndPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
-      relatedEndPointMock.Expect(mock => mock.MarkSynchronized());
-      relatedEndPointMock.Replay();
+      var relatedEndPointMock = new Mock<IRealObjectEndPoint>(MockBehavior.Strict);
+      relatedEndPointMock.Setup(mock => mock.MarkSynchronized()).Verifiable();
 
-      _nullEndPoint.RegisterOriginalOppositeEndPoint(relatedEndPointMock);
+      _nullEndPoint.RegisterOriginalOppositeEndPoint(relatedEndPointMock.Object);
 
-      relatedEndPointMock.VerifyAllExpectations();
+      relatedEndPointMock.Verify();
     }
 
     [Test]
     public void UnregisterOriginalOppositeEndPoint ()
     {
-      var relatedEndPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint>();
-      relatedEndPointMock.Expect(mock => mock.ResetSyncState());
-      relatedEndPointMock.Replay();
+      var relatedEndPointMock = new Mock<IRealObjectEndPoint>(MockBehavior.Strict);
+      relatedEndPointMock.Setup(mock => mock.ResetSyncState()).Verifiable();
 
-      _nullEndPoint.UnregisterOriginalOppositeEndPoint(relatedEndPointMock);
+      _nullEndPoint.UnregisterOriginalOppositeEndPoint(relatedEndPointMock.Object);
 
-      relatedEndPointMock.VerifyAllExpectations();
+      relatedEndPointMock.Verify();
     }
 
     [Test]
     public void RegisterCurrentOppositeEndPoint ()
     {
-      _nullEndPoint.RegisterCurrentOppositeEndPoint(_relatedEndPointStub);
+      _nullEndPoint.RegisterCurrentOppositeEndPoint(_relatedEndPointStub.Object);
     }
 
     [Test]
     public void UnregisterCurrentOppositeEndPoint ()
     {
-      _nullEndPoint.UnregisterCurrentOppositeEndPoint(_relatedEndPointStub);
+      _nullEndPoint.UnregisterCurrentOppositeEndPoint(_relatedEndPointStub.Object);
     }
 
     [Test]
@@ -284,7 +282,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void SynchronizeOppositeEndPoint ()
     {
       Assert.That(
-          () => _nullEndPoint.SynchronizeOppositeEndPoint(_relatedEndPointStub),
+          () => _nullEndPoint.SynchronizeOppositeEndPoint(_relatedEndPointStub.Object),
           Throws.InvalidOperationException);
     }
 
@@ -316,7 +314,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void SetDataFromSubTransaction ()
     {
       Assert.That(
-          () => _nullEndPoint.SetDataFromSubTransaction(MockRepository.GenerateStub<IRelationEndPoint>()),
+          () => _nullEndPoint.SetDataFromSubTransaction(new Mock<IRelationEndPoint>().Object),
           Throws.InvalidOperationException);
     }
 

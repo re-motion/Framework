@@ -15,17 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGeneration
 {
   [TestFixture]
   public class ScriptToStringConverterTest : SchemaGenerationTestBase
   {
-    private IScriptBuilder _scriptBuilderStub;
+    private Mock<IScriptBuilder> _scriptBuilderStub;
     private ScriptElementCollection _fakeCreateElements;
     private ScriptElementCollection _fakeDropElements;
     private ScriptToStringConverter _converter;
@@ -39,9 +39,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _converter = new ScriptToStringConverter();
       _fakeCreateElements = new ScriptElementCollection();
       _fakeDropElements = new ScriptElementCollection();
-      _scriptBuilderStub = MockRepository.GenerateStub<IScriptBuilder>();
-      _scriptBuilderStub.Stub(stub => stub.GetCreateScript()).Return(_fakeCreateElements);
-      _scriptBuilderStub.Stub(stub => stub.GetDropScript()).Return(_fakeDropElements);
+      _scriptBuilderStub = new Mock<IScriptBuilder>();
+      _scriptBuilderStub.Setup(stub => stub.GetCreateScript()).Returns(_fakeCreateElements);
+      _scriptBuilderStub.Setup(stub => stub.GetDropScript()).Returns(_fakeDropElements);
 
       _scriptElement1 = new ScriptStatement("Test1");
       _scriptElement2 = new ScriptStatement("Test2");
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _fakeCreateElements.AddElement(_scriptElement1);
       _fakeDropElements.AddElement(_scriptElement2);
 
-      var result = _converter.Convert(_scriptBuilderStub);
+      var result = _converter.Convert(_scriptBuilderStub.Object);
 
       Assert.That(result.SetUpScript, Is.EqualTo("Test1\r\n"));
       Assert.That(result.TearDownScript, Is.EqualTo("Test2\r\n"));
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _fakeDropElements.AddElement(_scriptElement2);
       _fakeDropElements.AddElement(_scriptElement1);
 
-      var result = _converter.Convert(_scriptBuilderStub);
+      var result = _converter.Convert(_scriptBuilderStub.Object);
 
       Assert.That(result.SetUpScript, Is.EqualTo("Test1\r\nTest2\r\n"));
       Assert.That(result.TearDownScript, Is.EqualTo("Test2\r\nTest1\r\n"));

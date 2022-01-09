@@ -15,34 +15,34 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
 {
   [TestFixture]
   public class DataStoragePropertyDefinitionFactoryTest : StandardMappingTest
   {
-    private IValueStoragePropertyDefinitionFactory _valuePropertyFactoryMock;
-    private IRelationStoragePropertyDefinitionFactory _relationPropertyFactoryMock;
+    private Mock<IValueStoragePropertyDefinitionFactory> _valuePropertyFactoryMock;
+    private Mock<IRelationStoragePropertyDefinitionFactory> _relationPropertyFactoryMock;
 
     private DataStoragePropertyDefinitionFactory _factory;
 
-    private IRdbmsStoragePropertyDefinition _fakeStoragePropertyDefinition;
+    private Mock<IRdbmsStoragePropertyDefinition> _fakeStoragePropertyDefinition;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _valuePropertyFactoryMock = MockRepository.GenerateStrictMock<IValueStoragePropertyDefinitionFactory>();
-      _relationPropertyFactoryMock = MockRepository.GenerateStrictMock<IRelationStoragePropertyDefinitionFactory>();
+      _valuePropertyFactoryMock = new Mock<IValueStoragePropertyDefinitionFactory>(MockBehavior.Strict);
+      _relationPropertyFactoryMock = new Mock<IRelationStoragePropertyDefinitionFactory>(MockBehavior.Strict);
 
-      _factory = new DataStoragePropertyDefinitionFactory(_valuePropertyFactoryMock, _relationPropertyFactoryMock);
+      _factory = new DataStoragePropertyDefinitionFactory(_valuePropertyFactoryMock.Object, _relationPropertyFactoryMock.Object);
 
-      _fakeStoragePropertyDefinition = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
+      _fakeStoragePropertyDefinition = new Mock<IRdbmsStoragePropertyDefinition>();
     }
 
     [Test]
@@ -50,46 +50,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     {
       var endPointDefinition = GetNonVirtualEndPointDefinition(typeof(OrderItem), "Order");
       var propertyDefinition = endPointDefinition.PropertyDefinition;
-      _relationPropertyFactoryMock.Expect(mock => mock.CreateStoragePropertyDefinition(endPointDefinition)).Return(_fakeStoragePropertyDefinition);
+      _relationPropertyFactoryMock.Setup(mock => mock.CreateStoragePropertyDefinition(endPointDefinition)).Returns(_fakeStoragePropertyDefinition.Object).Verifiable();
 
       var result = _factory.CreateStoragePropertyDefinition(propertyDefinition);
 
-      _relationPropertyFactoryMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition));
+      _relationPropertyFactoryMock.Verify();
+      Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition.Object));
     }
 
     [Test]
     public void CreateStoragePropertyDefinition_PropertyDefinition_NoRelationEndPoint ()
     {
       var propertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
-      _valuePropertyFactoryMock.Expect(mock => mock.CreateStoragePropertyDefinition(propertyDefinition)).Return(_fakeStoragePropertyDefinition);
+      _valuePropertyFactoryMock.Setup(mock => mock.CreateStoragePropertyDefinition(propertyDefinition)).Returns(_fakeStoragePropertyDefinition.Object).Verifiable();
 
       var result = _factory.CreateStoragePropertyDefinition(propertyDefinition);
 
-      _valuePropertyFactoryMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition));
+      _valuePropertyFactoryMock.Verify();
+      Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition.Object));
     }
 
     [Test]
     public void CreateStoragePropertyDefinition_Value_Null ()
     {
-      _valuePropertyFactoryMock.Expect(mock => mock.CreateStoragePropertyDefinition(null, "Value")).Return(_fakeStoragePropertyDefinition);
+      _valuePropertyFactoryMock.Setup(mock => mock.CreateStoragePropertyDefinition(null, "Value")).Returns(_fakeStoragePropertyDefinition.Object).Verifiable();
 
       var result = _factory.CreateStoragePropertyDefinition((object)null);
 
-      _valuePropertyFactoryMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition));
+      _valuePropertyFactoryMock.Verify();
+      Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition.Object));
     }
 
     [Test]
     public void CreateStoragePropertyDefinition_Value_NonObjectID ()
     {
-      _valuePropertyFactoryMock.Expect(mock => mock.CreateStoragePropertyDefinition("test", "Value")).Return(_fakeStoragePropertyDefinition);
+      _valuePropertyFactoryMock.Setup(mock => mock.CreateStoragePropertyDefinition("test", "Value")).Returns(_fakeStoragePropertyDefinition.Object).Verifiable();
 
       var result = _factory.CreateStoragePropertyDefinition("test");
 
-      _valuePropertyFactoryMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition));
+      _valuePropertyFactoryMock.Verify();
+      Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition.Object));
     }
 
     [Test]
@@ -97,13 +97,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     {
       var expectedClassDefinition = GetTypeDefinition(typeof(Order));
       _relationPropertyFactoryMock
-          .Expect(mock => mock.CreateStoragePropertyDefinition(expectedClassDefinition, "Value", "ValueClassID"))
-          .Return(_fakeStoragePropertyDefinition);
+          .Setup(mock => mock.CreateStoragePropertyDefinition(expectedClassDefinition, "Value", "ValueClassID"))
+          .Returns(_fakeStoragePropertyDefinition.Object)
+          .Verifiable();
 
       var result = _factory.CreateStoragePropertyDefinition(DomainObjectIDs.Order1);
 
-      _relationPropertyFactoryMock.VerifyAllExpectations();
-      Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition));
+      _relationPropertyFactoryMock.Verify();
+      Assert.That(result, Is.SameAs(_fakeStoragePropertyDefinition.Object));
     }
   }
 }

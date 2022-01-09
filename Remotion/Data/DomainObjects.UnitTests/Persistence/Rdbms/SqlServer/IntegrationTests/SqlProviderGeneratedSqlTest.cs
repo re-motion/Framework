@@ -17,6 +17,7 @@
 using System;
 using System.Data;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
@@ -48,7 +49,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainer ()
     {
+      var sequence = new MockSequence();
       _testHelper.ExpectExecuteReader(
+          sequence,
           CommandBehavior.SingleRow,
           "SELECT [ID], [ClassID], [Timestamp], [SerialNumber], [EmployeeID] FROM [Computer] WHERE [ID] = @ID;",
           Tuple.Create("@ID", DbType.Guid, DomainObjectIDs.Computer1.Value));
@@ -62,7 +65,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainers_SingleID ()
     {
+      var sequence = new MockSequence();
       _testHelper.ExpectExecuteReader(
+          sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [SerialNumber], [EmployeeID] FROM [Computer] WHERE [ID] = @ID;",
           Tuple.Create("@ID", DbType.Guid, DomainObjectIDs.Computer1.Value));
@@ -76,7 +81,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainers_MultiIDs_SameTable ()
     {
+      var sequence = new MockSequence();
       _testHelper.ExpectExecuteReader(
+          sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [SerialNumber], [EmployeeID] FROM [Computer] "
           + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
@@ -91,12 +98,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainers_MultiIDs_DifferentTables ()
     {
+      var sequence = new MockSequence();
       _testHelper.ExpectExecuteReader(
+          sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [SerialNumber], [EmployeeID] FROM [Computer] "
           + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
           Tuple.Create("@ID", DbType.Xml, (object)"<L><I>c7c26bf5-871d-48c7-822a-e9b05aac4e5a</I><I>176a0ff6-296d-4934-bd1a-23cf52c22411</I></L>"));
       _testHelper.ExpectExecuteReader(
+          sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [Name], [SupervisorID] FROM [Employee] "
           + "WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
@@ -112,7 +122,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainersByRelatedID_NoSortExpression ()
     {
+      var sequence = new MockSequence();
       _testHelper.ExpectExecuteReader(
+          sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [ContactPersonID], [NumberOfShops], [SupplierQuality], [CustomerSince], [CustomerType] "
           + "FROM [Company] WHERE [IndustrialSectorID] = @IndustrialSectorID;",
@@ -128,7 +140,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainersByRelatedID_WithSortExpression ()
     {
+      var sequence = new MockSequence();
       _testHelper.ExpectExecuteReader(
+          sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [ContactPersonID], [NumberOfShops], [SupplierQuality], [CustomerSince], [CustomerType] "
           + "FROM [Company] WHERE [IndustrialSectorID] = @IndustrialSectorID ORDER BY [CustomerSince] DESC, [Name] ASC;",
@@ -150,7 +164,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void ExecuteCollectionQuery ()
     {
+      var sequence = new MockSequence();
       _testHelper.ExpectExecuteReader(
+          sequence,
           CommandBehavior.SingleResult,
           "SELECT * FROM [Order] WHERE OrderNo=@p1 OR ID=@p2 OR OfficialID=@p3 OR OfficialID=@p4",
           Tuple.Create("@p1", DbType.Int32, (object)1),
@@ -182,7 +198,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void ExecuteScalarQuery ()
     {
+      var sequence = new MockSequence();
       _testHelper.ExpectExecuteScalar(
+          sequence,
           "SELECT COUNT(*) FROM [Order] WHERE OrderNo=@p1 OR ID=@p2 OR OfficialID=@p3 OR OfficialID=@p4",
           Tuple.Create("@p1", DbType.Int32, (object)1),
           Tuple.Create("@p2", DbType.Guid, DomainObjectIDs.Order3.Value),
@@ -224,32 +242,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       SetPropertyValue(deletedDataContainer, typeof(Employee), "Supervisor", null);
       deletedDataContainer.Delete();
 
+      var sequence = new MockSequence();
       _testHelper.ExpectExecuteNonQuery(
+          sequence,
           "INSERT INTO [Employee] ([ID], [ClassID], [Name]) VALUES (@ID, @ClassID, @Name);",
           Tuple.Create("@ID", DbType.Guid, newDataContainer.ID.Value),
           Tuple.Create("@ClassID", DbType.AnsiString, (object)"Employee"),
           Tuple.Create("@Name", DbType.String, (object)""));
       _testHelper.ExpectExecuteNonQuery(
+          sequence,
           "UPDATE [Employee] SET [Name] = @Name WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
           Tuple.Create("@Name", DbType.String, (object)"George"),
           Tuple.Create("@ID", DbType.Guid, changedDataContainer.ID.Value),
           Tuple.Create("@Timestamp", DbType.Binary, changedDataContainer.Timestamp)
           );
       _testHelper.ExpectExecuteNonQuery(
+          sequence,
           "UPDATE [Employee] SET [SupervisorID] = @SupervisorID WHERE [ID] = @ID;",
           Tuple.Create("@SupervisorID", DbType.Guid, (object)DBNull.Value),
           Tuple.Create("@ID", DbType.Guid, newDataContainer.ID.Value));
       _testHelper.ExpectExecuteNonQuery(
+          sequence,
           "UPDATE [Employee] SET [SupervisorID] = @SupervisorID WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
           Tuple.Create("@SupervisorID", DbType.Guid, (object)DBNull.Value),
           Tuple.Create("@ID", DbType.Guid, deletedDataContainer.ID.Value),
           Tuple.Create("@Timestamp", DbType.Binary, deletedDataContainer.Timestamp));
       _testHelper.ExpectExecuteNonQuery(
+          sequence,
           "UPDATE [Employee] SET [ClassID] = @ClassID WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
           Tuple.Create("@ClassID", DbType.AnsiString, (object)"Employee"),
           Tuple.Create("@ID", DbType.Guid, markedAsChangedDataContainer.ID.Value),
           Tuple.Create("@Timestamp", DbType.Binary, markedAsChangedDataContainer.Timestamp));
       _testHelper.ExpectExecuteNonQuery(
+          sequence,
           "DELETE FROM [Employee] WHERE [ID] = @ID;",
           Tuple.Create("@ID", DbType.Guid, deletedDataContainer.ID.Value));
       _testHelper.Replay();
@@ -264,7 +289,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       var dataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee1);
 
+      var sequence = new MockSequence();
       _testHelper.ExpectExecuteReader(
+          sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp] FROM [Employee] WHERE [ID] = @ID;",
           Tuple.Create("@ID", DbType.Guid, dataContainer.ID.Value));
@@ -282,7 +309,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var dataContainer1 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee1);
       var dataContainer2 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee2);
 
+      var sequence = new MockSequence();
       _testHelper.ExpectExecuteReader(
+          sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp] FROM [Employee] WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
           Tuple.Create("@ID", DbType.Xml, (object)"<L><I>51ece39b-f040-45b0-8b72-ad8b45353990</I><I>c3b2bbc3-e083-4974-bac7-9cee1fb85a5e</I></L>"));
@@ -302,11 +331,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       var dataContainer3 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Customer1);
       var dataContainer4 = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Partner1);
 
+      var sequence = new MockSequence();
       _testHelper.ExpectExecuteReader(
+          sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp] FROM [Employee] WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
           Tuple.Create("@ID", DbType.Xml, (object)"<L><I>51ece39b-f040-45b0-8b72-ad8b45353990</I><I>c3b2bbc3-e083-4974-bac7-9cee1fb85a5e</I></L>"));
       _testHelper.ExpectExecuteReader(
+          sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp] FROM [Company] WHERE [ID] IN (SELECT T.c.value('.', 'uniqueidentifier') FROM @ID.nodes('/L/I') T(c));",
           Tuple.Create("@ID", DbType.Xml, (object)"<L><I>55b52e75-514b-4e82-a91b-8f0bb59b80ad</I><I>5587a9c0-be53-477d-8c0a-4803c7fae1a9</I></L>"));

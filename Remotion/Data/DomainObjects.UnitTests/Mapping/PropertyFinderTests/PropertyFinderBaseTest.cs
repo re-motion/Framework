@@ -15,25 +15,25 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
 {
   [TestFixture]
   public class PropertyFinderBaseTest : PropertyFinderBaseTestBase
   {
-    private IPersistentMixinFinder _persistentMixinFinderStub;
+    private Mock<IPersistentMixinFinder> _persistentMixinFinderStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _persistentMixinFinderStub = MockRepository.GenerateStub<IPersistentMixinFinder>();
+      _persistentMixinFinderStub = new Mock<IPersistentMixinFinder>();
     }
 
     [Test]
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
       bool includeBaseProperties = BooleanObjectMother.GetRandomBoolean();
       bool includeMixinProperties = BooleanObjectMother.GetRandomBoolean();
       var propertyFinder = new StubPropertyFinderBase(
-          typeof(ClassWithDifferentProperties), includeBaseProperties, includeMixinProperties, _persistentMixinFinderStub);
+          typeof(ClassWithDifferentProperties), includeBaseProperties, includeMixinProperties, _persistentMixinFinderStub.Object);
 
       Assert.That(propertyFinder.Type, Is.SameAs(typeof(ClassWithDifferentProperties)));
       Assert.That(propertyFinder.IncludeBaseProperties, Is.EqualTo(includeBaseProperties));
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     [Test]
     public void FindPropertyInfos_ForInheritanceRoot ()
     {
-      var propertyFinder = new StubPropertyFinderBase(typeof(ClassWithDifferentProperties), true, false, _persistentMixinFinderStub);
+      var propertyFinder = new StubPropertyFinderBase(typeof(ClassWithDifferentProperties), true, false, _persistentMixinFinderStub.Object);
 
       Assert.That(
           propertyFinder.FindPropertyInfos(),
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     [Test]
     public void FindPropertyInfos_ForDerivedClass ()
     {
-      var propertyFinder = new StubPropertyFinderBase(typeof(ClassWithDifferentProperties), false, false, _persistentMixinFinderStub);
+      var propertyFinder = new StubPropertyFinderBase(typeof(ClassWithDifferentProperties), false, false, _persistentMixinFinderStub.Object);
 
       Assert.That(
           propertyFinder.FindPropertyInfos(),
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     [Test]
     public void FindPropertyInfos_ForClassWithInterface ()
     {
-      var propertyFinder = new StubPropertyFinderBase(typeof(ClassWithInterface), false, false, _persistentMixinFinderStub);
+      var propertyFinder = new StubPropertyFinderBase(typeof(ClassWithInterface), false, false, _persistentMixinFinderStub.Object);
 
       Assert.That(
           propertyFinder.FindPropertyInfos(),
@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     [Test]
     public void FindPropertyInfos_ForDomainObjectType ()
     {
-      var propertyFinder = new StubPropertyFinderBase(typeof(DomainObject), true, false, _persistentMixinFinderStub);
+      var propertyFinder = new StubPropertyFinderBase(typeof(DomainObject), true, false, _persistentMixinFinderStub.Object);
 
       Assert.That(propertyFinder.FindPropertyInfos(), Is.Not.Empty.And.Member(PropertyInfoAdapter.Create(typeof(DomainObject).GetProperty("ID"))));
     }
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     [Test]
     public void FindPropertyInfos_ForObjectType ()
     {
-      var propertyFinder = new StubPropertyFinderBase(typeof(object), true, false, _persistentMixinFinderStub);
+      var propertyFinder = new StubPropertyFinderBase(typeof(object), true, false, _persistentMixinFinderStub.Object);
 
       Assert.That(propertyFinder.FindPropertyInfos(), Is.Empty);
     }
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     [Test]
     public void FindPropertyInfos_ForNonDomainObject ()
     {
-      var propertyFinder = new StubPropertyFinderBase(typeof(int), true, false, _persistentMixinFinderStub);
+      var propertyFinder = new StubPropertyFinderBase(typeof(int), true, false, _persistentMixinFinderStub.Object);
 
       Assert.That(propertyFinder.FindPropertyInfos(), Is.Empty);
     }

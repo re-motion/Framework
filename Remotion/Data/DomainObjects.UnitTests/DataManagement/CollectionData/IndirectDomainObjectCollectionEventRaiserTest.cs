@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq.Expressions;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
@@ -45,10 +46,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Initialization_WithEventRaiser ()
     {
-      var innerRaiserStub = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser>();
-      var indirectRaiser = new IndirectDomainObjectCollectionEventRaiser(innerRaiserStub);
+      var innerRaiserStub = new Mock<IDomainObjectCollectionEventRaiser>();
+      var indirectRaiser = new IndirectDomainObjectCollectionEventRaiser(innerRaiserStub.Object);
 
-      Assert.That(indirectRaiser.EventRaiser, Is.SameAs(innerRaiserStub));
+      Assert.That(indirectRaiser.EventRaiser, Is.SameAs(innerRaiserStub.Object));
     }
 
     [Test]
@@ -82,15 +83,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       Serializer.SerializeAndDeserialize(indirectRaiser);
     }
 
-    private void CheckDelegation (Action<IDomainObjectCollectionEventRaiser> action)
+    private void CheckDelegation (Expression<Action<IDomainObjectCollectionEventRaiser>> action)
     {
       var indirectRaiser = new IndirectDomainObjectCollectionEventRaiser();
-      var actualRaiserMock = MockRepository.GenerateMock<IDomainObjectCollectionEventRaiser>();
-      indirectRaiser.EventRaiser = actualRaiserMock;
+      var actualRaiserMock = new Mock<IDomainObjectCollectionEventRaiser>();
+      indirectRaiser.EventRaiser = actualRaiserMock.Object;
 
-      action(indirectRaiser);
+      var compiledAction = action.Compile();
+      compiledAction(indirectRaiser);
 
-      actualRaiserMock.AssertWasCalled(action);
+      actualRaiserMock.Verify(action, Times.AtLeastOnce());
     }
 
     private void CheckThrowOnNoEventRaiser (Action<IDomainObjectCollectionEventRaiser> action)

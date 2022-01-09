@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -85,13 +85,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       Type declaringType = classDefinition.ClassType;
 
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub(stub => stub.Name).Return(propertyName + "FakeProperty");
-      propertyInformationStub.Stub(stub => stub.PropertyType).Return(propertyType);
-      propertyInformationStub.Stub(stub => stub.DeclaringType).Return(TypeAdapter.Create(declaringType));
-      propertyInformationStub.Stub(stub => stub.GetOriginalDeclaringType()).Return(TypeAdapter.Create(declaringType));
+      var propertyInformationStub = new Mock<IPropertyInformation>();
+      propertyInformationStub.Setup(stub => stub.Name).Returns(propertyName + "FakeProperty");
+      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(propertyType);
+      propertyInformationStub.Setup(stub => stub.DeclaringType).Returns(TypeAdapter.Create(declaringType));
+      propertyInformationStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns(TypeAdapter.Create(declaringType));
 
-      return CreateForPropertyInformation(classDefinition, propertyName, isObjectID, isNullable, maxLength, storageClass, propertyInformationStub);
+      return CreateForPropertyInformation(classDefinition, propertyName, isObjectID, isNullable, maxLength, storageClass, propertyInformationStub.Object);
     }
 
     public static PropertyDefinition CreateForFakePropertyInfo_ObjectID ()

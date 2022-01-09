@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
@@ -30,8 +30,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       var innerFactories = new[]
                            {
-                               MockRepository.GenerateStub<IClientTransactionExtensionFactory>(),
-                               MockRepository.GenerateStub<IClientTransactionExtensionFactory>()
+                               new Mock<IClientTransactionExtensionFactory>().Object,
+                               new Mock<IClientTransactionExtensionFactory>().Object
                            };
       var compoundFactory = new CompoundClientTransactionExtensionFactory(innerFactories);
 
@@ -44,25 +44,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       var firstExtensions =  new[]
                            {
-                               MockRepository.GenerateStub<IClientTransactionExtension>(),
-                               MockRepository.GenerateStub<IClientTransactionExtension>()
+                               new Mock<IClientTransactionExtension>().Object,
+                               new Mock<IClientTransactionExtension>().Object
                            };
       var secondExtensions =  new[]
                            {
-                               MockRepository.GenerateStub<IClientTransactionExtension>(),
-                               MockRepository.GenerateStub<IClientTransactionExtension>()
+                               new Mock<IClientTransactionExtension>().Object,
+                               new Mock<IClientTransactionExtension>().Object
                            };
       var innerFactories = new[]
                            {
-                               MockRepository.GenerateStub<IClientTransactionExtensionFactory>(),
-                               MockRepository.GenerateStub<IClientTransactionExtensionFactory>()
+                               new Mock<IClientTransactionExtensionFactory>(),
+                               new Mock<IClientTransactionExtensionFactory>()
                            };
 
       var clientTransaction = ClientTransaction.CreateRootTransaction();
-      innerFactories[0].Stub(_ => _.CreateClientTransactionExtensions(clientTransaction)).Return(firstExtensions);
-      innerFactories[1].Stub(_ => _.CreateClientTransactionExtensions(clientTransaction)).Return(secondExtensions);
+      innerFactories[0].Setup(_ => _.CreateClientTransactionExtensions(clientTransaction)).Returns(firstExtensions);
+      innerFactories[1].Setup(_ => _.CreateClientTransactionExtensions(clientTransaction)).Returns(secondExtensions);
 
-      var compoundFactory = new CompoundClientTransactionExtensionFactory(innerFactories);
+      var compoundFactory = new CompoundClientTransactionExtensionFactory(innerFactories.Select(f => f.Object));
 
       var extensions = compoundFactory.CreateClientTransactionExtensions(clientTransaction);
 
