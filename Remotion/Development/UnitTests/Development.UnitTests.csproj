@@ -24,7 +24,6 @@
     <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
     <ProjectReference Include="..\Core\Development.Core.csproj" />
     <ProjectReference Include="..\Data\Development.Data.csproj" />
-    <ProjectReference Include="..\RhinoMocks\Development.RhinoMocks.csproj" />
     <ProjectReference Include="..\Web\Development.Web.csproj" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

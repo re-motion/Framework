@@ -17,9 +17,9 @@
 using System;
 using System.IO;
 using System.Web.Hosting;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.ResourceHosting;
-using Rhino.Mocks;
 
 namespace Remotion.Development.UnitTests.Web.ResourceHosting
 {
@@ -125,11 +125,11 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     [Test]
     public void FileExists_NotMappedDirectory_FallsBackToPreviousProvider ()
     {
-      var previousProviderStub = MockRepository.GenerateStub<VirtualPathProvider>();
+      var previousProviderStub = new Mock<VirtualPathProvider>();
       var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
-      provider.SetPrevious(previousProviderStub);
+      provider.SetPrevious(previousProviderStub.Object);
 
-      previousProviderStub.Stub(_ => _.FileExists("~/res/UnknownDirectory/testfile.txt")).Return(true);
+      previousProviderStub.Setup(_ => _.FileExists("~/res/UnknownDirectory/testfile.txt")).Returns(true);
 
       Assert.That(provider.FileExists("~/res/UnknownDirectory/testfile.txt"), Is.True);
     }
@@ -171,12 +171,12 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     [Test]
     public void GetFile_NotMappedPath_FallsBackToPreviousProvider ()
     {
-      var previousProviderStub = MockRepository.GenerateStub<VirtualPathProvider>();
+      var previousProviderStub = new Mock<VirtualPathProvider>();
       var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
-      provider.SetPrevious(previousProviderStub);
+      provider.SetPrevious(previousProviderStub.Object);
 
       var expectedFile = new ResourceVirtualFile("test", new FileInfo(Path.Combine(_testDirectory, "file.txt")));
-      previousProviderStub.Stub(_ => _.GetFile("~/res/UnknownDirectory/testfile.txt")).Return(expectedFile);
+      previousProviderStub.Setup(_ => _.GetFile("~/res/UnknownDirectory/testfile.txt")).Returns(expectedFile);
 
       var actual = (ResourceVirtualFile)provider.GetFile("~/res/UnknownDirectory/testfile.txt");
 
@@ -231,11 +231,11 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     [Test]
     public void DirectoryExists_NotMappedDirectory_FallsBackToPreviousProvider ()
     {
-      var previousProviderStub = MockRepository.GenerateStub<VirtualPathProvider>();
+      var previousProviderStub = new Mock<VirtualPathProvider>();
       var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
-      provider.SetPrevious(previousProviderStub);
+      provider.SetPrevious(previousProviderStub.Object);
 
-      previousProviderStub.Stub(_ => _.DirectoryExists("~/res/UnknownDirectory/test")).Return(true);
+      previousProviderStub.Setup(_ => _.DirectoryExists("~/res/UnknownDirectory/test")).Returns(true);
 
       Assert.That(provider.DirectoryExists("~/res/UnknownDirectory/test"), Is.True);
     }
@@ -278,12 +278,12 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     [Test]
     public void GetDirectory_NotMappedPath_FallsBackToPreviousProvider ()
     {
-      var previousProviderStub = MockRepository.GenerateStub<VirtualPathProvider>();
+      var previousProviderStub = new Mock<VirtualPathProvider>();
       var provider = new TestableResourceVirtualPathProvider(new[] { new ResourcePathMapping("test", "testResourceFolder") }, _testDirectory);
-      provider.SetPrevious(previousProviderStub);
+      provider.SetPrevious(previousProviderStub.Object);
 
       var expectedDirectory = new ResourceVirtualDirectory("test", new DirectoryInfo(Path.Combine(_testDirectory, "Directory.txt")));
-      previousProviderStub.Stub(_ => _.GetDirectory("~/res/UnknownDirectory/testDirectory")).Return(expectedDirectory);
+      previousProviderStub.Setup(_ => _.GetDirectory("~/res/UnknownDirectory/testDirectory")).Returns(expectedDirectory);
 
       var actual = (ResourceVirtualDirectory)provider.GetDirectory("~/res/UnknownDirectory/testDirectory");
 

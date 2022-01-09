@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Runtime.Serialization;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Moq.UnitTesting;
 using Remotion.Development.UnitTesting;
@@ -81,10 +82,14 @@ namespace Remotion.Development.Moq.UnitTests
     {
       Assert.That(
           () => new SerializationCallbackTester<BrokenClass>(new BrokenClass(), BrokenClass.SetReceiver)
-          .Test_DeserializationCallbacks(),
-          Throws.InstanceOf<ArgumentException>()
-              .With.Message.EqualTo(
-                  "ISerializationEventReceiver.OnDeserialization(any); Expected #1, Actual #0."));
+              .Test_DeserializationCallbacks(),
+          Throws.InstanceOf<MockException>()
+              .With.Message.StartsWith(
+                  "Mock<ISerializationEventReceiver:1>:\n"
+                  + "This mock failed verification due to the following:\r\n"
+                  + "\r\n"
+                  + "   ISerializationEventReceiver _ => _.OnDeserialization(It.IsAny<object>()):\n"
+                  + "   This setup was not matched."));
     }
   }
 }

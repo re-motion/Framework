@@ -16,20 +16,18 @@
 // 
 using System;
 using System.IO;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.ResourceHosting;
-using Rhino.Mocks;
-
 namespace Remotion.Development.UnitTests.Web.ResourceHosting
 {
   [TestFixture]
   public class RootMappingVirtualDirectoryTest
   {
-
     [Test]
     public void Directories_ReturnsMappedPaths ()
     {
-      var factoryStub = MockRepository.GenerateStub<Func<string, ResourceVirtualDirectory>>();
+      var factoryStub = new Mock<Func<string, ResourceVirtualDirectory>>();
 
       var directory= new RootMappingVirtualDirectory(
           "~/test/",
@@ -39,13 +37,13 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
               new ResourcePathMapping("dir2", "testResourceFolder"),
           },
           new DirectoryInfo("c:\\temp"),
-          factoryStub);
+          factoryStub.Object);
 
       var expectedVirtualDirectory1 = new ResourceVirtualDirectory("~/test/dir1/", new DirectoryInfo("c:\\temp\\dir1"));
       var expectedVirtualDirectory2 = new ResourceVirtualDirectory("~/test/dir2/", new DirectoryInfo("c:\\temp\\dir2"));
 
-      factoryStub.Stub(_ => _("~/test/dir1/")).Return(expectedVirtualDirectory1);
-      factoryStub.Stub(_ => _("~/test/dir2/")).Return(expectedVirtualDirectory2);
+      factoryStub.Setup(_ => _("~/test/dir1/")).Returns(expectedVirtualDirectory1);
+      factoryStub.Setup(_ => _("~/test/dir2/")).Returns(expectedVirtualDirectory2);
 
       Assert.That(directory.Directories, Is.EqualTo(new[] { expectedVirtualDirectory1, expectedVirtualDirectory2 }));
     }

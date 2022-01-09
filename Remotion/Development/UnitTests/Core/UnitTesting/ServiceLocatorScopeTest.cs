@@ -16,10 +16,10 @@
 // 
 using System;
 using CommonServiceLocator;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.Development.UnitTests.Core.UnitTesting
 {
@@ -32,8 +32,8 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [SetUp]
     public void SetUp ()
     {
-      _locator1 = MockRepository.GenerateStub<IServiceLocator>();
-      _locator2 = MockRepository.GenerateStub<IServiceLocator>();
+      _locator1 = Mock.Of<IServiceLocator>();
+      _locator2 = Mock.Of<IServiceLocator>();
 
       ServiceLocator.SetLocatorProvider(null);
     }
