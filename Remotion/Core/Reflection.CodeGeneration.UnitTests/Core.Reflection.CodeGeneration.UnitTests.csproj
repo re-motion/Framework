@@ -14,7 +14,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Reflection.CodeGeneration\Core.Reflection.CodeGeneration.csproj" />
-    <ProjectReference Include="..\..\Development\RhinoMocks\Development.RhinoMocks.csproj" />
     <ProjectReference Include="..\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
   </ItemGroup>

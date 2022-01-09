@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
 {
@@ -35,53 +35,66 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
                                       "</TopLevelElement>";
 
     private HtmlHelperBase _htmlHelper;
-    private IAsserter _asserter;
+    private Mock<IAsserter> _asserter;
 
     [SetUp]
     public void SetUp ()
     {
-      _asserter = MockRepository.GenerateStub<IAsserter>();
-      _asserter.Stub(stub => stub.NotNull(null, null, null)).IgnoreArguments().WhenCalled(
-          invocation =>
-          {
-            if (invocation.Arguments[0] == null)
-              throw new Exception(string.Format((string)invocation.Arguments[1], (object[])invocation.Arguments[2]));
-          });
-      _asserter.Stub(stub => stub.IsNull(null, null, null)).IgnoreArguments().WhenCalled(
-          invocation =>
-          {
-            if (invocation.Arguments[0] != null)
-              throw new Exception(string.Format((string)invocation.Arguments[1], (object[])invocation.Arguments[2]));
-          });
-      _asserter.Stub(stub => stub.AreEqual(null, null, null, null)).IgnoreArguments().WhenCalled(
-          invocation =>
-          {
-            if (invocation.Arguments[0] != null)
-            {
-              if (!invocation.Arguments[0].Equals(invocation.Arguments[1]))
-                throw new Exception(string.Format((string)invocation.Arguments[2], (object[])invocation.Arguments[3]));
-            }
-            else if (invocation.Arguments[1] != null)
-              throw new Exception(string.Format((string)invocation.Arguments[2], (object[])invocation.Arguments[3]));
-          });
-      _asserter.Stub(stub => stub.GreaterThan(null, null, null, null)).IgnoreArguments().WhenCalled(
-          invocation =>
-          {
-            if (invocation.Arguments[0] != null)
-            {
-              if (((IComparable)invocation.Arguments[0]).CompareTo(invocation.Arguments[1]) <= 0)
-                throw new Exception(string.Format((string)invocation.Arguments[2], (object[])invocation.Arguments[3]));
-            }
-          });
-      _asserter.Stub(stub => stub.IsTrue(true, null, new object[3])).IgnoreArguments().WhenCalled(
-          invocation =>
-          {
-            if (!((bool)invocation.Arguments[0]))
-              throw new Exception(string.Format((string)invocation.Arguments[1], (object[])invocation.Arguments[2]));
-          })
-          ;
+      _asserter = new Mock<IAsserter>();
+      _asserter
+          .Setup(stub => stub.NotNull(It.IsAny<object>(), It.IsAny<string>(), It.IsAny<object[]>()))
+          .Callback(
+              (object actual, string message, object[] args) =>
+              {
+                if (actual == null)
+                  throw new Exception(string.Format(message, args));
+              });
 
-      _htmlHelper = new ConcreteHtmlHelper(_asserter);
+      _asserter
+          .Setup(stub => stub.IsNull(It.IsAny<object>(), It.IsAny<string>(), It.IsAny<object[]>()))
+          .Callback(
+              (object actual, string message, object[] args) =>
+              {
+                if (actual != null)
+                  throw new Exception(string.Format(message, args));
+              });
+
+      _asserter
+          .Setup(stub => stub.AreEqual(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<string>(), It.IsAny<object[]>()))
+          .Callback(
+              (object actual, object expected, string message, object[] args) =>
+              {
+                if (actual != null)
+                {
+                  if (!actual.Equals(expected))
+                    throw new Exception(string.Format(message, args));
+                }
+                else if (expected != null)
+                  throw new Exception(string.Format(message, args));
+              });
+
+      _asserter
+          .Setup(stub => stub.GreaterThan(It.IsAny<IComparable>(), It.IsAny<IComparable>(), It.IsAny<string>(), It.IsAny<object[]>()))
+          .Callback(
+              (IComparable actual, IComparable expected, string message, object[] args) =>
+              {
+                if (actual != null)
+                {
+                  if (actual.CompareTo(expected) <= 0)
+                    throw new Exception(string.Format(message, args));
+                }
+              });
+
+      _asserter
+          .Setup(stub => stub.IsTrue(It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<object[]>()))
+          .Callback(
+              (bool condition, string message, object[] args) =>
+              {
+                if (!condition)
+                  throw new Exception(string.Format(message, args));
+              });
+
+      _htmlHelper = new ConcreteHtmlHelper(_asserter.Object);
       _htmlHelper.Writer.Write(c_document);
     }
 
@@ -248,7 +261,11 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
       var document = _htmlHelper.GetResultDocument();
       var topLevelElement = document.DocumentElement;
       Assert.That(
-          () => _htmlHelper.AssertAttribute(topLevelElement, "topLevelAttribute", "otherAttributeValue", HtmlHelperBase.AttributeValueCompareMode.Contains),
+          () => _htmlHelper.AssertAttribute(
+              topLevelElement,
+              "topLevelAttribute",
+              "otherAttributeValue",
+              HtmlHelperBase.AttributeValueCompareMode.Contains),
           Throws.Exception
               .With.Message.EqualTo(
                   "Unexpected attribute value in TopLevelElement.topLevelAttribute: " +

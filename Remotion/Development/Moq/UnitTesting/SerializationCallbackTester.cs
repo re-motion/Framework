@@ -82,22 +82,22 @@ namespace Remotion.Development.Moq.UnitTesting
 
       Serializer.Deserialize(bytes);
 
-      receiver.Verify();
+      receiver.VerifyAll();
     }
 
     private void ExpectSerializationCallbacks (Mock<ISerializationEventReceiver> receiver)
     {
-      var sequence = new MockSequence();
-      receiver.InSequence(sequence).Setup(_ => _.OnSerializing(It.IsAny<StreamingContext>())).Verifiable();
-      receiver.InSequence(sequence).Setup(_ => _.OnSerialized(It.IsAny<StreamingContext>())).Verifiable();
+      int sequenceCounter = 0;
+      receiver.Setup(_ => _.OnSerializing(It.IsAny<StreamingContext>())).InSequence(ref sequenceCounter, 0).Verifiable();
+      receiver.Setup(_ => _.OnSerialized(It.IsAny<StreamingContext>())).InSequence(ref sequenceCounter, 1).Verifiable();
     }
 
     private void ExpectDeserializationCallbacks (Mock<ISerializationEventReceiver> receiver)
     {
-      var sequence = new MockSequence();
-      receiver.InSequence(sequence).Setup(_ => _.OnDeserializing(It.IsAny<StreamingContext>())).Verifiable();
-      receiver.InSequence(sequence).Setup(_ => _.OnDeserialized(It.IsAny<StreamingContext>())).Verifiable();
-      receiver.InSequence(sequence).Setup(_ => _.OnDeserialization(It.IsAny<object>())).Verifiable();
+      int sequenceCounter = 0;
+      receiver.Setup(_ => _.OnDeserializing(It.IsAny<StreamingContext>())).InSequence(ref sequenceCounter, 0).Verifiable();
+      receiver.Setup(_ => _.OnDeserialized(It.IsAny<StreamingContext>())).InSequence(ref sequenceCounter, 1).Verifiable();
+      receiver.Setup(_ => _.OnDeserialization(It.IsAny<object>())).InSequence(ref sequenceCounter, 2).Verifiable();
     }
   }
 }

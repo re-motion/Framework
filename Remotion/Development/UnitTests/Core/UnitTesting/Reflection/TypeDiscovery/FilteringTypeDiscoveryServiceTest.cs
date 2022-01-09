@@ -19,9 +19,9 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
-using Rhino.Mocks;
 
 namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscovery
 {
@@ -38,14 +38,12 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
                       typeof(DateTime)
                   };
 
-      var mockRepository = new MockRepository();
-      var decoratedTypeDiscoveryServiceMock = mockRepository.Stub<ITypeDiscoveryService>();
+      var decoratedTypeDiscoveryServiceMock = new Mock<ITypeDiscoveryService>();
 
-      decoratedTypeDiscoveryServiceMock.Stub(service => service.GetTypes(Arg<Type>.Is.Anything, Arg<bool>.Is.Anything)).Return(types);
-      mockRepository.ReplayAll();
+      decoratedTypeDiscoveryServiceMock.Setup(service => service.GetTypes(It.IsAny<Type>(), It.IsAny<bool>())).Returns(types);
 
-      var filteringTypeDiscoveryService = FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist(
-          decoratedTypeDiscoveryServiceMock, typeof(Color).Namespace);
+      var filteringTypeDiscoveryService =
+          FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist(decoratedTypeDiscoveryServiceMock.Object, typeof(Color).Namespace);
       var filteredTypes = filteringTypeDiscoveryService.GetTypes(null, false);
 
       Assert.That(
@@ -69,14 +67,12 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
                       typeof(ImageFlags)
                   };
 
-      var mockRepository = new MockRepository();
-      var decoratedTypeDiscoveryServiceMock = mockRepository.Stub<ITypeDiscoveryService>();
+      var decoratedTypeDiscoveryServiceMock = new Mock<ITypeDiscoveryService>();
 
-      decoratedTypeDiscoveryServiceMock.Stub(service => service.GetTypes(Arg<Type>.Is.Anything, Arg<bool>.Is.Anything)).Return(types);
-      mockRepository.ReplayAll();
+      decoratedTypeDiscoveryServiceMock.Setup(service => service.GetTypes(It.IsAny<Type>(), It.IsAny<bool>())).Returns(types);
 
-      var filteringTypeDiscoveryService = FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist(
-          decoratedTypeDiscoveryServiceMock, typeof(Color).Namespace);
+      var filteringTypeDiscoveryService =
+          FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist(decoratedTypeDiscoveryServiceMock.Object, typeof(Color).Namespace);
       var filteredTypes = filteringTypeDiscoveryService.GetTypes(null, false);
 
       Assert.That(
@@ -95,14 +91,12 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
     {
       var types = new[] { typeof(TypeWithNullNamespace) };
 
-      var mockRepository = new MockRepository();
-      var decoratedTypeDiscoveryServiceMock = mockRepository.Stub<ITypeDiscoveryService>();
+      var decoratedTypeDiscoveryServiceMock = new Mock<ITypeDiscoveryService>();
 
-      decoratedTypeDiscoveryServiceMock.Stub(service => service.GetTypes(Arg<Type>.Is.Anything, Arg<bool>.Is.Anything)).Return(types);
-      mockRepository.ReplayAll();
+      decoratedTypeDiscoveryServiceMock.Setup(service => service.GetTypes(It.IsAny<Type>(), It.IsAny<bool>())).Returns(types);
 
-      var filteringTypeDiscoveryService = FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist(
-          decoratedTypeDiscoveryServiceMock, typeof(Color).Namespace);
+      var filteringTypeDiscoveryService =
+          FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist(decoratedTypeDiscoveryServiceMock.Object, typeof(Color).Namespace);
       var filteredTypes = filteringTypeDiscoveryService.GetTypes(null, false);
 
       Assert.That(filteredTypes, Is.Empty);
@@ -113,13 +107,12 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
     {
       var types = new[] { typeof(TypeWithNullNamespace) };
 
-      var mockRepository = new MockRepository();
-      var decoratedTypeDiscoveryServiceMock = mockRepository.Stub<ITypeDiscoveryService>();
+      var decoratedTypeDiscoveryServiceMock = new Mock<ITypeDiscoveryService>();
 
-      decoratedTypeDiscoveryServiceMock.Stub(service => service.GetTypes(Arg<Type>.Is.Anything, Arg<bool>.Is.Anything)).Return(types);
-      mockRepository.ReplayAll();
+      decoratedTypeDiscoveryServiceMock.Setup(service => service.GetTypes(It.IsAny<Type>(), It.IsAny<bool>())).Returns(types);
 
-      var filteringTypeDiscoveryService = FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist(decoratedTypeDiscoveryServiceMock, "");
+      var filteringTypeDiscoveryService =
+          FilteringTypeDiscoveryService.CreateFromNamespaceWhitelist(decoratedTypeDiscoveryServiceMock.Object, "");
       var filteredTypes = filteringTypeDiscoveryService.GetTypes(null, false);
 
       Assert.That(filteredTypes, Is.EqualTo(types));
@@ -135,14 +128,12 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
                       typeof(DateTime)
                   };
 
-      var mockRepository = new MockRepository();
-      var decoratedTypeDiscoveryServiceMock = mockRepository.Stub<ITypeDiscoveryService>();
+      var decoratedTypeDiscoveryServiceMock = new Mock<ITypeDiscoveryService>();
 
-      decoratedTypeDiscoveryServiceMock.Stub(service => service.GetTypes(Arg<Type>.Is.Anything, Arg<bool>.Is.Anything)).Return(types);
-      mockRepository.ReplayAll();
+      decoratedTypeDiscoveryServiceMock.Setup(service => service.GetTypes(It.IsAny<Type>(), It.IsAny<bool>())).Returns(types);
 
-      var filteringTypeDiscoveryService = FilteringTypeDiscoveryService.CreateFromNamespaceBlacklist(
-          decoratedTypeDiscoveryServiceMock, typeof(Color).Namespace);
+      var filteringTypeDiscoveryService =
+          FilteringTypeDiscoveryService.CreateFromNamespaceBlacklist(decoratedTypeDiscoveryServiceMock.Object, typeof(Color).Namespace);
       var filteredTypes = filteringTypeDiscoveryService.GetTypes(null, false);
 
       Assert.That(
@@ -165,14 +156,12 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
                       typeof(ImageFlags)
                   };
 
-      var mockRepository = new MockRepository();
-      var decoratedTypeDiscoveryServiceMock = mockRepository.Stub<ITypeDiscoveryService>();
+      var decoratedTypeDiscoveryServiceMock = new Mock<ITypeDiscoveryService>();
 
-      decoratedTypeDiscoveryServiceMock.Stub(service => service.GetTypes(Arg<Type>.Is.Anything, Arg<bool>.Is.Anything)).Return(types);
-      mockRepository.ReplayAll();
+      decoratedTypeDiscoveryServiceMock.Setup(service => service.GetTypes(It.IsAny<Type>(), It.IsAny<bool>())).Returns(types);
 
-      var filteringTypeDiscoveryService = FilteringTypeDiscoveryService.CreateFromNamespaceBlacklist(
-          decoratedTypeDiscoveryServiceMock, typeof(Color).Namespace);
+      var filteringTypeDiscoveryService =
+          FilteringTypeDiscoveryService.CreateFromNamespaceBlacklist(decoratedTypeDiscoveryServiceMock.Object, typeof(Color).Namespace);
       var filteredTypes = filteringTypeDiscoveryService.GetTypes(null, false);
 
       Assert.That(
@@ -189,13 +178,12 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
     {
       var types = new[] { typeof(TypeWithNullNamespace) };
 
-      var mockRepository = new MockRepository();
-      var decoratedTypeDiscoveryServiceMock = mockRepository.Stub<ITypeDiscoveryService>();
+      var decoratedTypeDiscoveryServiceMock = new Mock<ITypeDiscoveryService>();
 
-      decoratedTypeDiscoveryServiceMock.Stub(service => service.GetTypes(Arg<Type>.Is.Anything, Arg<bool>.Is.Anything)).Return(types);
-      mockRepository.ReplayAll();
+      decoratedTypeDiscoveryServiceMock.Setup(service => service.GetTypes(It.IsAny<Type>(), It.IsAny<bool>())).Returns(types);
 
-      var filteringTypeDiscoveryService = FilteringTypeDiscoveryService.CreateFromNamespaceBlacklist(decoratedTypeDiscoveryServiceMock, "");
+      var filteringTypeDiscoveryService =
+          FilteringTypeDiscoveryService.CreateFromNamespaceBlacklist(decoratedTypeDiscoveryServiceMock.Object, "");
       var filteredTypes = filteringTypeDiscoveryService.GetTypes(null, false);
 
       Assert.That(filteredTypes, Is.Empty);
@@ -206,14 +194,12 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
     {
       var types = new[] { typeof(TypeWithNullNamespace) };
 
-      var mockRepository = new MockRepository();
-      var decoratedTypeDiscoveryServiceMock = mockRepository.Stub<ITypeDiscoveryService>();
+      var decoratedTypeDiscoveryServiceMock = new Mock<ITypeDiscoveryService>();
 
-      decoratedTypeDiscoveryServiceMock.Stub(service => service.GetTypes(Arg<Type>.Is.Anything, Arg<bool>.Is.Anything)).Return(types);
-      mockRepository.ReplayAll();
+      decoratedTypeDiscoveryServiceMock.Setup(service => service.GetTypes(It.IsAny<Type>(), It.IsAny<bool>())).Returns(types);
 
-      var filteringTypeDiscoveryService = FilteringTypeDiscoveryService.CreateFromNamespaceBlacklist(
-          decoratedTypeDiscoveryServiceMock, typeof(Color).Namespace);
+      var filteringTypeDiscoveryService =
+          FilteringTypeDiscoveryService.CreateFromNamespaceBlacklist(decoratedTypeDiscoveryServiceMock.Object, typeof(Color).Namespace);
       var filteredTypes = filteringTypeDiscoveryService.GetTypes(null, false);
 
       Assert.That(filteredTypes, Is.EqualTo(types));

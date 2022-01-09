@@ -16,11 +16,12 @@
 // 
 using System;
 using System.Runtime.Serialization;
+using Moq;
 using NUnit.Framework;
+using Remotion.Development.Moq.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks.Exceptions;
 
-namespace Remotion.Development.UnitTests.Core.UnitTesting
+namespace Remotion.Development.Moq.UnitTests
 {
   [TestFixture]
   public class SerializationCallbackTesterTest
@@ -44,14 +45,14 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [Test]
     public void TestSerializationCallbacks_ViaOrdinaryInstance ()
     {
-      new SerializationCallbackTester<OrdinaryClass>(new RhinoMocksRepositoryAdapter(), new OrdinaryClass(), OrdinaryClass.SetReceiver)
+      new SerializationCallbackTester<OrdinaryClass>(new OrdinaryClass(), OrdinaryClass.SetReceiver)
           .Test_SerializationCallbacks();
     }
 
     [Test]
     public void TestDeserializationCallbacks_ViaOrdinaryInstance ()
     {
-      new SerializationCallbackTester<OrdinaryClass>(new RhinoMocksRepositoryAdapter(), new OrdinaryClass(), OrdinaryClass.SetReceiver)
+      new SerializationCallbackTester<OrdinaryClass>(new OrdinaryClass(), OrdinaryClass.SetReceiver)
           .Test_DeserializationCallbacks();
     }
 
@@ -80,11 +81,15 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     public void TestDeserializationCallbacks_ViaBrokenInstance ()
     {
       Assert.That(
-          () => new SerializationCallbackTester<BrokenClass>(new RhinoMocksRepositoryAdapter(), new BrokenClass(), BrokenClass.SetReceiver)
-          .Test_DeserializationCallbacks(),
-          Throws.InstanceOf<ExpectationViolationException>()
-              .With.Message.EqualTo(
-                  "ISerializationEventReceiver.OnDeserialization(any); Expected #1, Actual #0."));
+          () => new SerializationCallbackTester<BrokenClass>(new BrokenClass(), BrokenClass.SetReceiver)
+              .Test_DeserializationCallbacks(),
+          Throws.InstanceOf<MockException>()
+              .With.Message.StartsWith(
+                  "Mock<ISerializationEventReceiver:1>:\n"
+                  + "This mock failed verification due to the following:\r\n"
+                  + "\r\n"
+                  + "   ISerializationEventReceiver _ => _.OnDeserialization(It.IsAny<object>()):\n"
+                  + "   This setup was not matched."));
     }
   }
 }
