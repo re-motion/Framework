@@ -252,15 +252,6 @@ Addendum (Development Dependencies):
 "
 
 $output +=
-"RhinoMocks
-ProjectUrl: http://hibernatingrhinos.com/oss/rhino-mocks
-License: 2-Clause BSD License
-LicenseUrl: http://opensource.org/licenses/bsd-license.php
-Description: Mocking Framework
-
-"
-
-$output +=
 "MSBuild Community Tasks
 ProjectUrl: https://github.com/loresoft/msbuildtasks/
 License: 2-Clause BSD License
@@ -286,13 +277,6 @@ LicenseUrl: https://github.com/SeleniumHQ/selenium/blob/master/LICENSE
 Description: Javascript-based testrunner web clients
 
 "
-
-$output +=
-"Subversion Client
-ProjectUrl: https://subversion.apache.org/
-License: Apache License 2.0
-LicenseUrl: http://www.apache.org/licenses/LICENSE-2.0
-Description: Source Control Client"
 
 $output > re-motion_3rdParty.txt
 
