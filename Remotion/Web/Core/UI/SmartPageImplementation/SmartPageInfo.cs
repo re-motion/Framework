@@ -54,12 +54,14 @@ namespace Remotion.Web.UI.SmartPageImplementation
     }
 
     public static readonly string CacheDetectionID = "SmartPage_CacheDetectionField";
+    private const string c_smartPageTokenID = "SmartPage_TokenField";
     private const string c_smartScrollingID = "smartScrolling";
     private const string c_smartFocusID = "smartFocus";
     private const string c_scriptFileUrl = "SmartPage.js";
     private const string c_styleFileUrl = "SmartPage.css";
     private const string c_smartNavigationScriptFileUrl = "SmartNavigation.js";
 
+    private static readonly DateTime s_pageTokenStartDate = new(2022, 01, 01);
     private static readonly string s_scriptFileKey = typeof(SmartPageInfo).GetFullNameChecked() + "_Script";
     private static readonly string s_styleFileKey = typeof(SmartPageInfo).GetFullNameChecked() + "_Style";
     private static readonly string s_smartNavigationScriptKey = typeof(SmartPageInfo).GetFullNameChecked() + "_SmartNavigation";
@@ -302,6 +304,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private void PreRenderSmartPage ()
     {
+      var smartPageTokenValue = (long)(DateTime.UtcNow - s_pageTokenStartDate).TotalMilliseconds;
+
+      _page.ClientScript.RegisterHiddenField(_page, c_smartPageTokenID, smartPageTokenValue.ToString());
       _page.ClientScript.RegisterHiddenField(_page, CacheDetectionID, null);
 
       RegisterSmartPageInitializationScript();
@@ -375,6 +380,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       initScript.Append("        ").Append(statusIsSubmittingMessage).AppendLine(",");
       initScript.Append("        ").Append(smartScrollingFieldID).AppendLine(",");
       initScript.Append("        ").Append(smartFocusFieldID).AppendLine(",");
+      initScript.Append("        '").Append(c_smartPageTokenID).AppendLine("',");
       initScript.Append("        ").Append(checkFormStateFunction).AppendLine(");");
 
       initScript.AppendLine("  }");

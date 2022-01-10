@@ -121,6 +121,6 @@
     <value>&lt;p&gt;Sie sind dabei, die Seite zu verlassen.&lt;/p&gt;&lt;p&gt;Sie können keine weiteren Eingaben an den Server senden.&lt;/p&gt;</value>
   </data>
   <data name="Remotion.Web.ExecutionEngine.WxePageInfo.StatusIsCachedMessage" xml:space="preserve">
-    <value>Die Navigation mit den Schaltflächen Vorwärts und Zurück wird nicht unterstützt.</value>
+    <value>Duplizieren oder laden Sie Tabs nicht neu und verwenden Sie nicht die Schaltflächen "Vorwärts" und "Zurück".</value>
   </data>
 </root>
