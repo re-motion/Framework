@@ -17,10 +17,10 @@
 
 using System;
 using System.IO;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.PEVerifyPathSources;
-using Rhino.Mocks;
 
 #nullable enable
 // ReSharper disable once CheckNamespace
@@ -32,9 +32,9 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [Test]
     public void GetVerifierPath ()
     {
-      var pathSourceStub = MockRepository.GenerateStub<IPEVerifyPathSource>();
-      pathSourceStub.Stub(stub => stub.GetPEVerifyPath(PEVerifyVersion.DotNet4)).Return("test");
-      var verifier = new PEVerifier(pathSourceStub);
+      var pathSourceStub = new Mock<IPEVerifyPathSource>();
+      pathSourceStub.Setup(stub => stub.GetPEVerifyPath(PEVerifyVersion.DotNet4)).Returns("test");
+      var verifier = new PEVerifier(pathSourceStub.Object);
 
       var path = verifier.GetVerifierPath(PEVerifyVersion.DotNet4);
 
@@ -44,10 +44,10 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [Test]
     public void GetVerifierPath_NotFound ()
     {
-      var pathSourceStub = MockRepository.GenerateStub<IPEVerifyPathSource>();
-      pathSourceStub.Stub(stub => stub.GetPEVerifyPath(PEVerifyVersion.DotNet4)).Return(null);
-      pathSourceStub.Stub(stub => stub.GetLookupDiagnostics(PEVerifyVersion.DotNet4)).Return("x");
-      var verifier = new PEVerifier(pathSourceStub);
+      var pathSourceStub = new Mock<IPEVerifyPathSource>();
+      pathSourceStub.Setup(stub => stub.GetPEVerifyPath(PEVerifyVersion.DotNet4)).Returns((string?)null);
+      pathSourceStub.Setup(stub => stub.GetLookupDiagnostics(PEVerifyVersion.DotNet4)).Returns("x");
+      var verifier = new PEVerifier(pathSourceStub.Object);
       Assert.That(
           () => verifier.GetVerifierPath(PEVerifyVersion.DotNet4),
           Throws.InstanceOf<PEVerifyException>()
