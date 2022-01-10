@@ -30,3 +30,4 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Remotion.SharedSource.UnitTests")]
 [assembly: InternalsVisibleTo(Rhino.Mocks.RhinoMocks.NormalName)]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
