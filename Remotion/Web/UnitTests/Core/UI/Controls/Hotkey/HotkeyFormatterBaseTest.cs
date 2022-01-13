@@ -28,10 +28,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Hotkey
   {
     private class TestableHotkeyFormatterBase : HotkeyFormatterBase
     {
-      protected override void AppendHotkeyBeginTag (HtmlTextWriter writer, string hotkey)
+      protected override void AppendHotkeyBeginTag (HtmlTextWriter writer, char hotkey)
       {
-        if (!string.IsNullOrEmpty(hotkey))
-          writer.AddAttribute("key", hotkey);
+        writer.AddAttribute("key", hotkey.ToString());
         writer.RenderBeginTag(HtmlTextWriterTag.Span);
       }
 

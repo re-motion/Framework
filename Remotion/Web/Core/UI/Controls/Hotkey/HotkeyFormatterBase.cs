@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Text;
 using System.Web.UI;
 using Remotion.Utilities;
 
@@ -59,13 +58,19 @@ namespace Remotion.Web.UI.Controls.Hotkey
   /// </remarks>
   public abstract class HotkeyFormatterBase : IHotkeyFormatter
   {
+    private enum HotkeyIndex
+    {
+      NoHotkey = -1,
+      AmbiguousHotkey = -2
+    }
+
     private const char c_hotkeyMarker = '&';
 
     protected HotkeyFormatterBase ()
     {
     }
 
-    protected abstract void AppendHotkeyBeginTag (HtmlTextWriter writer, string hotkey);
+    protected abstract void AppendHotkeyBeginTag (HtmlTextWriter writer, char hotkey);
     protected abstract void AppendHotkeyEndTag (HtmlTextWriter writer);
 
     public char? GetAccessKey (WebString value)
@@ -76,11 +81,15 @@ namespace Remotion.Web.UI.Controls.Hotkey
       }
       else
       {
-        var textWithHotkey = Parse(value.GetValue());
-        if (textWithHotkey.HotkeyIndex.HasValue)
-          return Char.ToUpperInvariant(textWithHotkey.Text[textWithHotkey.HotkeyIndex.Value]);
-        else
-          return null;
+        var valueAsString = value.GetValue();
+        var hotkeyIndex = GetHotkeyIndex(valueAsString);
+
+        return hotkeyIndex switch
+        {
+            HotkeyIndex.AmbiguousHotkey => null,
+            HotkeyIndex.NoHotkey => null,
+            _ => GetNormalizedHotkeyCharacter(valueAsString[(int)hotkeyIndex + 1])
+        };
       }
     }
 
@@ -94,61 +103,87 @@ namespace Remotion.Web.UI.Controls.Hotkey
       }
       else
       {
-        var textWithHotkey = Parse(value.GetValue());
-        var textParts = GetTextParts(textWithHotkey.Text, textWithHotkey.HotkeyIndex);
+        var textParts = Parse(value.GetValue());
 
         WebString.CreateFromText(textParts.BeforeHotkey).WriteTo(writer);
-        if (!string.IsNullOrEmpty(textParts.Hotkey))
+        if (textParts.Hotkey.HasValue)
         {
-          AppendHotkeyBeginTag(writer, textParts.Hotkey.ToUpperInvariant());
-          WebString.CreateFromText(textParts.Hotkey).WriteTo(writer);
+          AppendHotkeyBeginTag(writer, GetNormalizedHotkeyCharacter(textParts.Hotkey.Value));
+          WebString.CreateFromText(textParts.Hotkey.Value.ToString()).WriteTo(writer);
           AppendHotkeyEndTag(writer);
           WebString.CreateFromText(textParts.AfterHotkey).WriteTo(writer);
         }
       }
     }
 
-    private static (string BeforeHotkey, string? Hotkey, string? AfterHotkey) GetTextParts (string text, int? hotkeyIndex)
+    private static (string BeforeHotkey, char? Hotkey, string? AfterHotkey) Parse (string value)
     {
-      if (!hotkeyIndex.HasValue)
-        return (BeforeHotkey: text, Hotkey: null, AfterHotkey: null);
+      var hotkeyIndex = GetHotkeyIndex(value);
+
+      if (hotkeyIndex == HotkeyIndex.AmbiguousHotkey)
+        return (BeforeHotkey: value, Hotkey: null, AfterHotkey: null);
+
+      if (hotkeyIndex == HotkeyIndex.NoHotkey)
+        return (BeforeHotkey: GetSubStringWithEscapedHotkeys(value, 0, value.Length), Hotkey: null, AfterHotkey: null);
 
       return (
-          BeforeHotkey: text.Substring(0, hotkeyIndex.Value),
-          Hotkey: text.Substring(hotkeyIndex.Value, 1),
-          AfterHotkey: text.Substring(hotkeyIndex.Value + 1));
+          BeforeHotkey: GetSubStringWithEscapedHotkeys(value, 0, (int)hotkeyIndex),
+          Hotkey: value[(int)hotkeyIndex + 1],
+          AfterHotkey: GetSubStringWithEscapedHotkeys(value, (int)hotkeyIndex + 2, value.Length - ((int)hotkeyIndex + 2)));
     }
 
-    private static (string Text, int? HotkeyIndex) Parse (string value)
+    private static string GetSubStringWithEscapedHotkeys (string value, int startIndex, int length)
     {
-      var resultBuilder = new StringBuilder(value.Length);
-      int? hotkeyIndex = null;
-      for (int i = 0; i < value.Length; i++)
+      if (value.IndexOf(c_hotkeyMarker, startIndex, length) < 0)
+        return value.Substring(startIndex, length);
+
+      var buffer = new char[length];
+      int charCount = 0;
+      var maxCount = startIndex + length;
+      for (int i = startIndex; i < maxCount; i++)
       {
         var currentChar = value[i];
-        if (currentChar == c_hotkeyMarker && i + 1 < value.Length)
-        {
-          if (IsValidHotkeyCharacter(value, i + 1))
-          {
-            if (hotkeyIndex.HasValue)
-              return (Text: value, HotkeyIndex: null);
+        if (currentChar == c_hotkeyMarker && i + 1 < maxCount && value[i + 1] == c_hotkeyMarker)
+          i++;
 
-            hotkeyIndex = resultBuilder.Length;
-            continue;
-          }
-          else if (value[i + 1] == c_hotkeyMarker)
-            i++;
-        }
-
-        resultBuilder.Append(currentChar);
+        buffer[charCount] = currentChar;
+        charCount++;
       }
 
-      return (Text: resultBuilder.ToString(), HotkeyIndex: hotkeyIndex);
+      return new string(buffer, 0, charCount);
+    }
+
+    private static HotkeyIndex GetHotkeyIndex (string value)
+    {
+      var hotkeyIndex = HotkeyIndex.NoHotkey;
+      for (int i = 0; i < value.Length; i++)
+      {
+        if (value[i] == c_hotkeyMarker && i + 1 < value.Length)
+        {
+          if (value[i + 1] == c_hotkeyMarker)
+          {
+            i++;
+          }
+          else if (IsValidHotkeyCharacter(value, i + 1))
+          {
+            if (hotkeyIndex == HotkeyIndex.NoHotkey)
+              hotkeyIndex = (HotkeyIndex)i;
+            else
+              return HotkeyIndex.AmbiguousHotkey;
+          }
+        }
+      }
+      return hotkeyIndex;
     }
 
     private static bool IsValidHotkeyCharacter (string text, int index)
     {
       return Char.IsLetterOrDigit(text, index);
+    }
+
+    private static char GetNormalizedHotkeyCharacter (char hotkey)
+    {
+      return Char.ToUpperInvariant(hotkey);
     }
   }
 }
