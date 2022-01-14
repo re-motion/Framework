@@ -86,6 +86,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     [Test]
     public void RenderEmptyMenuWithoutTitle ()
     {
+      _control.Setup(stub => stub.ShowTitle).Returns(true);
       XmlNode containerDiv = GetAssertedContainerSpan();
       AssertTitleSpan(containerDiv, false, false);
     }
@@ -94,6 +95,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     public void RenderEmptyMenuWithTitle ()
     {
       _control.Setup(stub=>stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.ShowTitle).Returns(true);
 
       XmlNode containerDiv = GetAssertedContainerSpan();
       AssertTitleSpan(containerDiv, true, false);
@@ -104,6 +106,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     {
       _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
       _control.Setup(stub => stub.TitleIcon).Returns(s_titleIcon);
+      _control.Setup(stub => stub.ShowTitle).Returns(true);
 
       XmlNode containerDiv = GetAssertedContainerSpan();
       AssertTitleSpan(containerDiv, true, true);
@@ -113,6 +116,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     public void RenderPopulatedMenu ()
     {
       _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.ShowTitle).Returns(true);
       PopulateMenu();
 
       XmlNode containerDiv = GetAssertedContainerSpan();
@@ -120,9 +124,22 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     }
 
     [Test]
+    public void RenderMenuWithHiddenTitle ()
+    {
+      _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.ShowTitle).Returns(false);
+
+      PopulateMenu();
+
+      XmlNode containerDiv = GetAssertedContainerSpan();
+      AssertTitleSpanWithHiddenTitle(containerDiv, true, false);
+    }
+
+    [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
       _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.ShowTitle).Returns(true);
       PopulateMenu();
 
       var renderer = new DropDownMenuRenderer(_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new StubLabelReferenceRenderer());
@@ -162,6 +179,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       AssertDropDownButton(titleDiv, hasTitle);
     }
 
+    private void AssertTitleSpanWithHiddenTitle (XmlNode containerDiv, bool withTitle, bool withIcon)
+    {
+      var titleDiv = containerDiv.GetAssertedChildElement("span", 0);
+      titleDiv.AssertAttributeValueEquals("class", "DropDownMenuSelect");
+      titleDiv.AssertChildElementCount(2);
+
+      AssertHiddenTitle(titleDiv, withTitle, withIcon);
+      AssertDropDownButton(titleDiv, false);
+    }
+
     private void AssertDropDownButton (XmlNode titleDiv, bool hasTitle)
     {
       var buttonAnchor = titleDiv.GetAssertedChildElement("a", 1);
@@ -182,6 +209,24 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       var image = buttonAnchor.GetAssertedChildElement("img", 0);
       image.AssertAttributeValueEquals("src", IconInfo.CreateSpacer(_resourceUrlFactory).Url);
       image.AssertAttributeValueEquals("alt", "");
+    }
+
+    private void AssertHiddenTitle (XmlNode titleDiv, bool withTitle, bool withIcon)
+    {
+      if (!(withTitle || withIcon))
+        return;
+
+      var titleBody = titleDiv.GetAssertedChildElement("span", 0);
+      titleBody.AssertAttributeValueEquals("hidden", "hidden");
+      if (withTitle)
+      {
+        titleBody.AssertTextNode(c_MenuTitle, 0);
+      }
+      else
+      {
+        titleBody.AssertTextNode(c_MenuTitle, 0);
+        titleBody.AssertTextNode("c_IconAlternateText", 0);
+      }
     }
 
     private void AssertTitleAnchor (XmlNode titleDiv, bool withTitle, bool withIcon)

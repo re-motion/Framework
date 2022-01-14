@@ -7,182 +7,184 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Development.WebTesting.TestSite {
-    
-    
-    public partial class DropDownMenuTest {
-        
+namespace Remotion.Web.Development.WebTesting.TestSite
+{
+
+
+    public partial class DropDownMenuTest
+    {
+
         /// <summary>
         /// UpdatePanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel;
-        
+
         /// <summary>
         /// MyDropDownMenu control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu;
-        
+
         /// <summary>
         /// MyDropDownMenuPrimary control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenuPrimary;
-        
+
         /// <summary>
         /// MyDropDownMenuSupplemental control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenuSupplemental;
-        
+
         /// <summary>
         /// MyDropDownMenu2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu2;
-        
+
         /// <summary>
         /// MyDropDownMenu2Primary control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu2Primary;
-        
+
         /// <summary>
         /// MyDropDownMenu2Supplemental control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu2Supplemental;
-        
+
         /// <summary>
         /// MyDropDownMenu_Disabled control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_Disabled;
-        
+
         /// <summary>
         /// MyDropDownMenu_DisabledPrimary control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_DisabledPrimary;
-        
+
         /// <summary>
         /// MyDropDownMenu_DisabledSupplemental control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_DisabledSupplemental;
-        
+
         /// <summary>
         /// MyDropDownMenu_Delayed control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_Delayed;
-        
+
         /// <summary>
         /// MyDropDownMenu_DelayedPrimary control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_DelayedPrimary;
-        
+
         /// <summary>
         /// MyDropDownMenu_DelayedSupplemental control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_DelayedSupplemental;
-        
+
         /// <summary>
         /// MyDropDownMenu_DelayedLongerThanTimeout control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_DelayedLongerThanTimeout;
-        
+
         /// <summary>
         /// MyDropDownMenu_DelayedLongerThanTimeoutPrimary control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_DelayedLongerThanTimeoutPrimary;
-        
+
         /// <summary>
         /// MyDropDownMenu_DelayedLongerThanTimeoutSupplemental control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_DelayedLongerThanTimeoutSupplemental;
-        
+
         /// <summary>
         /// MyDropDownMenu_Error control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_Error;
-        
+
         /// <summary>
         /// MyDropDownMenu_ErrorPrimary control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_ErrorPrimary;
-        
+
         /// <summary>
         /// MyDropDownMenu_ErrorSupplemental control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
-        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_ErrorSupplemental;
-        
+
         /// <summary>
         /// MyDropDownMenu_Wrapping control.
         /// </summary>
@@ -191,15 +193,26 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_Wrapping;
-        
+
+        /// <summary>
+        /// MyDropDownMenu_HiddenTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_HiddenTitle;
+
         /// <summary>
         /// Master property.
         /// </summary>
         /// <remarks>
         /// Auto-generated property.
         /// </remarks>
-        public new Remotion.Web.Development.WebTesting.TestSite.Layout Master {
-            get {
+        public new Remotion.Web.Development.WebTesting.TestSite.Layout Master
+        {
+            get
+            {
                 return ((Remotion.Web.Development.WebTesting.TestSite.Layout)(base.Master));
             }
         }

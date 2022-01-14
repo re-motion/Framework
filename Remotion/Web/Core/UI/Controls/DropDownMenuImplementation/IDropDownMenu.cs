@@ -31,6 +31,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation
     bool EnableGrouping { get; }
     WebMenuItemCollection MenuItems { get; }
     bool IsReadOnly { get; }
+    bool ShowTitle { get; }
     IconInfo? TitleIcon { get; }
     WebString TitleText { get; }
     ButtonType ButtonType { get; }

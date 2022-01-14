@@ -119,21 +119,17 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       renderingContext.Control.TitleText.AddAttributeTo(renderingContext.Writer, HtmlTextWriterAttribute.Title);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-      if (HasDefaultTitle(renderingContext))
-      {
-        RenderDefaultTitle(renderingContext);
-      }
+      if (HasVisibleTitle(renderingContext))
+        RenderVisibleTitle(renderingContext);
       else
-      {
-        RenderFallbackTitle(renderingContext);
-      }
+        RenderScreenReaderOnlyTitle(renderingContext);
 
       RenderDropdownButton(renderingContext);
 
       renderingContext.Writer.RenderEndTag();
     }
 
-    private void RenderDefaultTitle (DropDownMenuRenderingContext renderingContext)
+    private void RenderVisibleTitle (DropDownMenuRenderingContext renderingContext)
     {
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassDropDownLabel);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "_DropDownMenuLabel");
@@ -155,7 +151,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
     }
 
-    private void RenderFallbackTitle (DropDownMenuRenderingContext renderingContext)
+    private void RenderScreenReaderOnlyTitle (DropDownMenuRenderingContext renderingContext)
     {
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "_DropDownMenuLabel");
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
@@ -176,7 +172,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
     private void RenderDropdownButton (DropDownMenuRenderingContext renderingContext)
     {
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassDropDownButton);
-      if (!HasDefaultTitle(renderingContext))
+      if (!HasVisibleTitle(renderingContext))
       {
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID + "_DropDownMenuButton");
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Button);
@@ -201,9 +197,9 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
     }
 
-    private bool HasDefaultTitle (DropDownMenuRenderingContext renderingContext)
+    private bool HasVisibleTitle (DropDownMenuRenderingContext renderingContext)
     {
-      return HasTitleIcon(renderingContext) || HasTitleText(renderingContext);
+      return renderingContext.Control.ShowTitle && (HasTitleIcon(renderingContext) || HasTitleText(renderingContext));
     }
 
     private bool HasTitleText (DropDownMenuRenderingContext renderingContext)
