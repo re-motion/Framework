@@ -257,6 +257,12 @@
             <remotion:WebMenuItem Category="Category1" ItemID="ItemID1" Text="Very long text that is so big that the drop down menu overflows to the right out of the visible screen."/>
         </MenuItems>
       </remotion:DropDownMenu>
+      <h3>DropDownMenu (hidden title)</h3>
+      <remotion:DropDownMenu ID="MyDropDownMenu_HiddenTitle" Mode="DropDownMenu" TitleText="Title should not be displayed" ShowTitle="False" runat="server" Width="0">
+        <MenuItems>
+            <remotion:WebMenuItem Category="Category1" ItemID="ItemID1" Text="Very long text that is so big that the drop down menu overflows to the right out of the visible screen."/>
+        </MenuItems>
+      </remotion:DropDownMenu>
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

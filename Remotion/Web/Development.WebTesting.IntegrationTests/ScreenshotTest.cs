@@ -475,6 +475,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
           test);
     }
 
+    [Category("Screenshot")]
+    [Test]
+    public void DropDownMenu_WithHiddenTitle ()
+    {
+      ScreenshotTestingDelegate<FluentScreenshotElement<DropDownMenuControlObject>> test = (builder, target) =>
+      {
+        builder.AnnotateBox(target, Pens.Magenta, WebPadding.Inner);
+
+        builder.Crop(target, new WebPadding(1));
+      };
+
+      var home = Start();
+      var fluentDropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenuWithHiddenTitle").ForControlObjectScreenshot();
+
+      Helper.RunScreenshotTestExact<FluentScreenshotElement<DropDownMenuControlObject>, DropDownMenuControlObjectTest>(
+          fluentDropDownMenu,
+          ScreenshotTestingType.Both,
+          test);
+    }
+
     [Test]
     public void DropDownMenu_WithDerivedControlObject ()
     {
