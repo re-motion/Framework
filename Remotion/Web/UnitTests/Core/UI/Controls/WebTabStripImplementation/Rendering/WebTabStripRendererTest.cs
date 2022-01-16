@@ -28,6 +28,7 @@ using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
@@ -46,6 +47,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
     private Mock<HttpContextBase> _httpContextStub;
     private HtmlHelper _htmlHelper;
     private WebTabStyle _style;
+    private readonly UnderscoreHotkeyFormatter _hotkeyFormatter = new UnderscoreHotkeyFormatter();
+    private readonly NoneHotkeyFormatter _noneHotkeyFormatter = new NoneHotkeyFormatter();
 
     [SetUp]
     public void SetUp ()
@@ -247,7 +250,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       var wrapper = item.GetAssertedChildElement("span", 0);
       var tab = wrapper.GetAssertedChildElement("span", 1);
       tab.AssertAttributeValueEquals(DiagnosticMetadataAttributes.ItemID, _tab0.Object.ItemID);
-      tab.AssertAttributeValueEquals(DiagnosticMetadataAttributes.Content, _tab0.Object.Text.GetValue());
+      tab.AssertAttributeValueEquals(DiagnosticMetadataAttributes.Content, _noneHotkeyFormatter.GetFormattedText(_tab0.Object.Text));
       tab.AssertAttributeValueEquals(DiagnosticMetadataAttributes.IsDisabled, (!_tab0.Object.EvaluateEnabled()).ToString().ToLower());
     }
 
@@ -287,7 +290,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
     {
       _tab0 = new Mock<IMenuTab>();
       _tab0.Setup(stub => stub.ItemID).Returns("Tab0");
-      _tab0.Setup(stub => stub.Text).Returns(WebString.CreateFromText("First Tab"));
+      _tab0.Setup(stub => stub.Text).Returns(WebString.CreateFromText("First &Tab"));
       _tab0.Setup(stub => stub.Icon).Returns(new IconInfo());
       _tab0.Setup(stub => stub.EvaluateEnabled()).Returns(true);
       _tab0.Setup(stub => stub.GetPostBackClientEvent()).Returns(_pageStub.Object.ClientScript.GetPostBackClientHyperlink(_webTabStrip.Object, _tab0.Object.ItemID));
@@ -486,12 +489,17 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
         childIndex++;
       }
 
+      var hotkey = _hotkeyFormatter.GetAccessKey(text);
+      if (hotkey.HasValue)
+        link.AssertAttributeValueEquals("accesskey", hotkey.ToString());
+
       if (!text.IsEmpty)
       {
         if (text.Type == WebStringType.PlainText)
         {
+          var textString = _hotkeyFormatter.GetFormattedText(text);
           var textBody = anchorBody.GetAssertedChildElement("span", childIndex);
-          textBody.AssertTextNode(text.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
+          Assert.That(textBody.InnerXml, Is.EqualTo(textString.GetValue()));
         }
         else
         {
@@ -509,7 +517,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
 
     private WebTabRenderer CreateWebTabRenderer (IRenderingFeatures renderingFeatures)
     {
-      return new WebTabRenderer(renderingFeatures);
+      return new WebTabRenderer(_hotkeyFormatter, renderingFeatures);
     }
   }
 }

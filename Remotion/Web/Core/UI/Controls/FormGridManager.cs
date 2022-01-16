@@ -33,6 +33,7 @@ using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.FormGridManagerImplementation;
+using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
@@ -964,6 +965,7 @@ namespace Remotion.Web.UI.Controls
     // static members
 
     private static readonly ILog s_log = LogManager.GetLogger(typeof(FormGridManager));
+    private static NoneHotkeyFormatter s_noneHotkeyFormatter = new NoneHotkeyFormatter();
 
     // member fields
 
@@ -1020,6 +1022,7 @@ namespace Remotion.Web.UI.Controls
     private IInfrastructureResourceUrlFactory? _infrastructureResourceUrlFactory;
     private IResourceUrlFactory? _resourceUrlFactory;
     private IRenderingFeatures? _renderingFeatures;
+    private IHotkeyFormatter? _hotkeyFormatter;
 
     // construction and disposing
 
@@ -1178,6 +1181,31 @@ namespace Remotion.Web.UI.Controls
               resourceDispatchTarget.Dispatch(controlValues);
             else
               ResourceDispatcher.DispatchGeneric(control, controlValues);
+
+            //  Access key support for Labels
+            Label? label = control as Label;
+            if (label != null)
+            {
+#pragma warning disable 184
+              Assertion.IsFalse(label is SmartLabel);
+#pragma warning restore 184
+
+              var labelTextAsWebString = WebString.CreateFromHtml(label.Text);
+
+              //  Label has associated control
+              if (!string.IsNullOrEmpty(label.AssociatedControlID))
+              {
+                var labelAccessKey = HotkeyFormatter.GetAccessKey(labelTextAsWebString);
+                if (labelAccessKey.HasValue)
+                  label.AccessKey = labelAccessKey.Value.ToString();
+                label.Text = HotkeyFormatter.GetFormattedText(labelTextAsWebString).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
+              }
+              else
+              {
+                label.AccessKey = null;
+                label.Text = s_noneHotkeyFormatter.GetFormattedText(labelTextAsWebString).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
+              }
+            }
           }
           else
           {
@@ -1231,6 +1259,16 @@ namespace Remotion.Web.UI.Controls
         if (_renderingFeatures == null)
           _renderingFeatures = SafeServiceLocator.Current.GetInstance<IRenderingFeatures>();
         return _renderingFeatures;
+      }
+    }
+
+    private IHotkeyFormatter HotkeyFormatter
+    {
+      get
+      {
+        if (_hotkeyFormatter == null)
+          _hotkeyFormatter = SafeServiceLocator.Current.GetInstance<IHotkeyFormatter>();
+        return _hotkeyFormatter;
       }
     }
 

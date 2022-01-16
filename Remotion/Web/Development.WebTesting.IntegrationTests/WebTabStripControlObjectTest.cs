@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
@@ -110,13 +111,35 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestGetAccessKey_ValidAccessKey ()
+    public void Test_TabWithAccessKey ()
     {
       var home = Start();
 
-      var tabStrip = home.WebTabStrips().First();
-      var tab = tabStrip.GetTabDefinitions()[1];
-      Assert.That(tab.AccessKey, Is.EqualTo("B"));
+      var tabStrip = home.WebTabStrips().GetByLocalID("MyTabStripWithAccessKeys");
+      var tab = tabStrip.GetTabDefinitions().Single(t => t.ItemID == "TabWithAccessKey");
+      Assert.That(tab.Title, Is.EqualTo("Tab with access key"));
+      Assert.That(tab.AccessKey, Is.EqualTo("A"));
+    }
+
+    [Test]
+    public void Test_TabWithImplicitAccessKey ()
+    {
+      var home = Start();
+
+      var tabStrip = home.WebTabStrips().GetByLocalID("MyTabStripWithAccessKeys");
+      var tab = tabStrip.GetTabDefinitions().Single(t => t.ItemID == "TabWithImplicitAccessKey");
+      Assert.That(tab.Title, Is.EqualTo("Tab with implicit access key"));
+      Assert.That(tab.AccessKey, Is.EqualTo("K"));
+    }
+
+    [Test]
+    public void Test_TabDisabledWithAccessKey ()
+    {
+      var home = Start();
+
+      var tabStrip = home.WebTabStrips().GetByLocalID("MyTabStripWithAccessKeys");
+      var tab = tabStrip.GetTabDefinitions().Single(t => t.ItemID == "TabDisabledWithAccessKey");
+      Assert.That(tab.AccessKey, Is.Empty);
     }
 
     [Test]

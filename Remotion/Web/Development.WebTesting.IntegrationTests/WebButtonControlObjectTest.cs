@@ -78,8 +78,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.WebButtons().GetByLocalID("MyWebButton1Sync");
+      var webButton = home.WebButtons().GetByLocalID("MyWebButtonWithAccessKey");
+      Assert.That(webButton.GetText(), Is.EqualTo("Button with access key"));
       Assert.That(webButton.GetAccessKey(), Is.EqualTo("A"));
+    }
+
+    [Test]
+    public void TestGetImplicitAccessKey ()
+    {
+      var home = Start();
+
+      var webButton = home.WebButtons().GetByLocalID("MyWebButtonWithImplicitAccessKey");
+      Assert.That(webButton.GetText(), Is.EqualTo("Button with implicit access key"));
+      Assert.That(webButton.GetAccessKey(), Is.EqualTo("K"));
     }
 
     [Test]
@@ -87,7 +98,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var webButton = home.WebButtons().GetByLocalID("MyWebButtonPrimary1Sync");
+      var webButton = home.WebButtons().GetByLocalID("MyWebButton1Sync");
       Assert.That(webButton.GetAccessKey(), Is.Null);
     }
 
