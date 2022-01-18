@@ -24,15 +24,28 @@ using Remotion.Utilities;
 
 namespace Remotion.Context
 {
+  /// <summary>
+  /// Implements a storage mechanism for <see cref="SafeContext"/> that uses <see cref="AsyncLocal{T}"/> to store the values.
+  /// Values flow by default and <see cref="OpenSafeContextBoundary"/> is necessary to prevent flow. 
+  /// </summary>
 #if !NETFRAMEWORK
   [ImplementationFor(typeof(ISafeContextStorageProvider), Lifetime = LifetimeKind.Singleton, Position = 1)]
 #endif
-  public class AsyncLocalStorageProvider : ISafeContextStorageProvider
+  public class AsyncLocalStorageProvider : ISafeContextStorageProvider, ISafeContextBoundaryStrategy
   {
-    private readonly AsyncLocal<Hashtable> _context = new();
+    private readonly AsyncLocal<Hashtable?> _context = new();
 
     public AsyncLocalStorageProvider ()
     {
+    }
+
+    /// <inheritdoc />
+    public SafeContextBoundary OpenSafeContextBoundary ()
+    {
+      var hashtable = _context.Value;
+      _context.Value = null;
+
+      return new SafeContextBoundary(this, hashtable);
     }
 
     /// <inheritdoc />
@@ -69,6 +82,12 @@ namespace Remotion.Context
       ArgumentUtility.CheckNotNull(nameof(key), key);
 
       _context.Value?.Remove(key);
+    }
+
+    /// <inheritdoc />
+    void ISafeContextBoundaryStrategy.RestorePreviousSafeContext (object? state)
+    {
+      _context.Value = (Hashtable?)state;
     }
   }
 }

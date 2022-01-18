@@ -25,6 +25,13 @@ namespace Remotion.Context
   public interface ISafeContextStorageProvider
   {
     /// <summary>
+    /// Opens a <see cref="SafeContextBoundary"/>, preventing the values in the current context from flowing to the new context.
+    /// The previous context is restored when the <see cref="SafeContextBoundary"/> is disposed.
+    /// </summary>
+    /// <returns>A <see cref="SafeContextBoundary"/> object with which the previous context can be restored.</returns>
+    SafeContextBoundary OpenSafeContextBoundary ();
+
+    /// <summary>
     /// Retrieves a data item from the context storage.
     /// </summary>
     /// <param name="key">The key identifying the data item.</param>

@@ -34,6 +34,11 @@ namespace Remotion.Web.Context
 #pragma warning restore 618
 #endif
 
+    public SafeContextBoundary OpenSafeContextBoundary ()
+    {
+      return default;
+    }
+
     public object? GetData (string key)
     {
       ArgumentUtility.CheckNotNull("key", key);
