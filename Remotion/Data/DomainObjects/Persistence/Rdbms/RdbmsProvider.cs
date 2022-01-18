@@ -101,21 +101,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       get { return _storageProviderCommandFactory; }
     }
 
-    protected override void Dispose (bool disposing)
+    public override void Dispose ()
     {
       if (!IsDisposed)
       {
         try
         {
-          if (disposing)
-          {
-            DisposeTransaction();
-            DisposeConnection();
-          }
+          DisposeTransaction();
+          DisposeConnection();
         }
         finally
         {
-          base.Dispose(disposing);
+          base.Dispose();
         }
       }
     }

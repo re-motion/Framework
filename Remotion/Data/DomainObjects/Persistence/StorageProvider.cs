@@ -56,22 +56,9 @@ namespace Remotion.Data.DomainObjects.Persistence
       _persistenceExtension = persistenceExtension;
     }
 
-    ~StorageProvider ()
+    public virtual void Dispose ()
     {
-      Dispose(false);
-    }
-
-    public void Dispose ()
-    {
-      Dispose(true);
-      GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose (bool disposing)
-    {
-      if (disposing)
-        _storageProviderDefinition = null!;
-
+      _storageProviderDefinition = null!;
       _disposed = true;
     }
 
