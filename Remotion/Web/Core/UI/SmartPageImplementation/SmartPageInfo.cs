@@ -347,9 +347,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
       }
 
       string isDirtyStateTrackingEnabled = "false";
-      string isDirty = "false";
 
       StringBuilder initScript = new StringBuilder(500);
+      StringBuilder startupScript = new StringBuilder(500);
 
       initScript.AppendLine("function SmartPage_Initialize ()");
       initScript.AppendLine("{");
@@ -361,12 +361,21 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       const string trackedControlsArray = "trackedControls";
       initScript.Append("  var ").Append(trackedControlsArray).AppendLine(" = new Array();");
+
+      const string dirtyStatesSet = "dirtyStates";
+      startupScript.Append("  var ").Append(dirtyStatesSet).AppendLine(" = new Set();");
+
       if (_page.IsDirtyStateTrackingEnabled)
       {
         isDirtyStateTrackingEnabled = "true";
-        if (_page.GetDirtyStates().Any())
-          isDirty = "true";
-        else
+        bool isDirtyOnServerSide = false;
+        foreach (var dirtyState in _page.GetDirtyStates())
+        {
+          isDirtyOnServerSide = true;
+          startupScript.Append(dirtyStatesSet).Append(".add('").Append(dirtyState).AppendLine("');");
+        }
+
+        if (!isDirtyOnServerSide)
           FormatPopulateTrackedControlsArrayClientScript(initScript, trackedControlsArray);
       }
       initScript.AppendLine();
@@ -408,7 +417,8 @@ namespace Remotion.Web.UI.SmartPageImplementation
       string isAsynchronous = "false";
       if (IsInAsyncPostBack)
         isAsynchronous = "true";
-      _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(SmartPageInfo), "smartPageStartUp", "SmartPage_Context.Instance.OnStartUp (" + isAsynchronous + ", " + isDirty + ");");
+      startupScript.Append("SmartPage_Context.Instance.OnStartUp (").Append(isAsynchronous).Append(", ").Append(dirtyStatesSet).AppendLine(");");
+      _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(SmartPageInfo), "smartPageStartUp", startupScript.ToString());
 
       // Ensure the __doPostBack function and the __EventTarget and __EventArgument hidden fields on the rendered page
       _page.ClientScript.GetPostBackEventReference(new PostBackOptions(_page.WrappedInstance) { ClientSubmit = true }, false);

@@ -58,13 +58,19 @@ enum SmartPage_CacheDetection
   HasLoaded,
 }
 
+enum SmartPage_DirtyStates
+{
+  CurrentPage = 'CurrentPage',
+  ClientSide = 'ClientSide'
+}
+
 // The context contains all information required by the smart page.
 class SmartPage_Context
 {
   private _theForm: HTMLFormElement;
 
   private _isDirtyStateTrackingEnabled: boolean;
-  private _isDirty: boolean = false;
+  private _dirtyStates: Set<string> = new Set<string>();
 
   // The message displayed when the user attempts to leave the page.
   // null to disable the message.
@@ -242,12 +248,12 @@ class SmartPage_Context
 
   // Called after page's html content is complete.
   // Used to perform initalization code that only requires complete the HTML source but not necessarily all images.
-  public OnStartUp (isAsynchronous: boolean, isDirty: boolean): void
+  public OnStartUp (isAsynchronous: boolean, dirtyStates: Set<string>): void
   {
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('isAsynchronous', isAsynchronous);
-    ArgumentUtility.CheckNotNullAndTypeIsBoolean('isDirty', isDirty);
+    ArgumentUtility.CheckNotNullAndTypeIsObject('dirtyStates', dirtyStates);
 
-    this._isDirty = isDirty;
+    this._dirtyStates = dirtyStates;
 
     if (this._isDirtyStateTrackingEnabled)
       this.AttachDataChangedEventHandlers();
@@ -309,7 +315,7 @@ class SmartPage_Context
   // Event handler attached to the change event of tracked form elements
   public OnValueChanged(e: Event): void
   {
-    this._isDirty = true;
+    this._dirtyStates.add(SmartPage_DirtyStates.ClientSide);
   };
 
   public OnMouseDown (e: MouseEvent): void
@@ -533,7 +539,7 @@ class SmartPage_Context
         var submitterElement = this.GetSubmitterOrActiveElement();
         var isJavaScriptAnchor = this.IsJavaScriptAnchor(submitterElement);
         var isAbortConfirmationRequired = !isJavaScriptAnchor
-          && (!this._isDirtyStateTrackingEnabled || this._isDirty);
+          && (!this._isDirtyStateTrackingEnabled || this.IsDirty(undefined));
 
         if (isAbortConfirmationRequired)
         {
@@ -1224,14 +1230,25 @@ class SmartPage_Context
     return this._submitState != null;
   };
 
+  public IsDirty(conditions: Optional<string[]>): boolean
+  {
+    if (this._dirtyStates == null)
+      return false;
+
+    if (conditions)
+      return conditions.some(c => this._dirtyStates.has(c));
+
+    return this._dirtyStates.size > 0;
+  }
+
   public DisableAbortConfirmation(): void
   {
     this._isAbortConfirmationEnabled = false;
   };
 
-  public ShowAbortConfirmation(): boolean
+  public ShowAbortConfirmation(conditions: Optional<string[]>): boolean
   {
-    if (this._isAbortConfirmationEnabled && (!this._isDirtyStateTrackingEnabled || this._isDirty))
+    if (this._isAbortConfirmationEnabled && (!this._isDirtyStateTrackingEnabled || this.IsDirty(conditions)))
       return window.confirm(this._abortMessage!);
     else
       return true;

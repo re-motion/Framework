@@ -27,6 +27,11 @@ namespace Remotion.Web.UI
     /// <summary>
     /// Represents the current page and the tracked <see cref="IEditableControl"/> objects.
     /// </summary>
-    public static readonly string CurrentPage = "CurrentPage";
+    public static readonly string CurrentPage = "CurrentPage"; // Any changes must be reflected in SmartPage.ts - SmartPage_DirtyStates enum
+
+    /// <summary>
+    /// Represents the client side of the tracked <see cref="IEditableControl"/> objects.
+    /// </summary>
+    public static readonly string ClientSide = "ClientSide"; // Any changes must be reflected in SmartPage.ts - SmartPage_DirtyStates enum
   }
 }
