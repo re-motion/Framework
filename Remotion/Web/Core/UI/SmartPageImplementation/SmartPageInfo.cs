@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
@@ -79,9 +78,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
         new AutoInitDictionary<SmartPageEvents, NameValueCollection>();
 
     private string? _checkFormStateFunction;
-    private readonly Hashtable _trackedControls = new Hashtable();
+    private readonly HashSet<IEditableControl> _trackedControls = new HashSet<IEditableControl>();
     private readonly StringCollection _trackedControlsByID = new StringCollection();
-    private readonly Hashtable _navigationControls = new Hashtable();
+    private readonly HashSet<INavigationControl> _navigationControls = new HashSet<INavigationControl>();
     private readonly List<Tuple<Control, string>> _synchronousPostBackCommands = new List<Tuple<Control, string>>();
 
     private ResourceManagerSet? _cachedResourceManager;
@@ -134,7 +133,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       }
 
       // Registration is typically done during the Control's init-phase to allow the page's code-behind logic access to the complete dirty state.
-      _trackedControls[control] = control;
+      _trackedControls.Add(control);
       control.Unload += UnregisterControlForDirtyStateTracking;
     }
 
@@ -171,7 +170,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary> Implements <see cref="ISmartPage.EvaluateDirtyState">ISmartPage.EvaluateDirtyState</see>. </summary>
     public bool EvaluateDirtyState ()
     {
-      foreach (IEditableControl control in _trackedControls.Values)
+      foreach (IEditableControl control in _trackedControls)
       {
         if (control.IsDirty)
           return true;
@@ -481,7 +480,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private void FormatPopulateTrackedControlsArrayClientScript (StringBuilder script, string trackedControlsArray)
     {
-      foreach (IEditableControl control in _trackedControls.Values)
+      foreach (IEditableControl control in _trackedControls)
       {
         if (control.Visible)
         {
@@ -608,7 +607,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       // Registration is typically done during the Control's init-phase to allow building of navigation urls during the entire life cycle.
       // Note: If the control is removed again, the previously built navigation urls will no longer be valid.
-      _navigationControls[control] = control;
+      _navigationControls.Add(control);
       control.Unload += UnregisterNavigationControl;
     }
 
@@ -634,7 +633,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     public NameValueCollection GetNavigationUrlParameters ()
     {
       NameValueCollection urlParameters = new NameValueCollection();
-      foreach (INavigationControl control in _navigationControls.Values)
+      foreach (INavigationControl control in _navigationControls)
         NameValueCollectionUtility.Append(urlParameters, control.GetNavigationUrlParameters());
 
       return urlParameters;
