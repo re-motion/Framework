@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web;
@@ -293,7 +294,27 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _validatableControlInitializer.EnsureValidatableControlsInitialized();
   }
 
-
+  /// <summary>
+  /// Evaluates the page's dirty state and returns a list of identifiers, one for each distinct dirty state condition.
+  /// </summary>
+  /// <param name="requestedStates">
+  /// Optional list of dirty state conditions the caller is interested in. When this parameter is set, the implementation may optimize the evaluation of the dirty state
+  /// to only test for a specific dirty state condition if it was actually requested.
+  /// </param>
+  /// <returns>
+  /// The set of dirty states. Note that the result may contain values that have not been requested by the caller.
+  /// </returns>
+  /// <remarks>
+  ///  Evaluates if either <see cref="IsDirty"/> is <see langword="true" />
+  ///  or if any control registered using <see cref="RegisterControlForDirtyStateTracking"/> has values that must be persisted before the user leaves the page.
+  ///  <note type="inheritinfo">
+  ///    Override to introduce additional flags for specific dirty scenarios (e.g. unpersistent changes in the session).
+  ///   </note>
+  /// </remarks>
+  public virtual IEnumerable<string> GetDirtyStates (IReadOnlyCollection<string>? requestedStates)
+  {
+    return _smartPageInfo.GetDirtyStates(requestedStates);
+  }
 
   /// <summary> Gets or sets a flag describing whether the page is dirty. </summary>
   /// <value> <see langword="true"/> if the page requires saving. Defaults to <see langword="false"/>.  </value>
@@ -301,18 +322,6 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   {
     get { return _isDirty; }
     set { _isDirty = value; }
-  }
-
-  /// <summary> 
-  ///   Evaluates whether any control regsitered using <see cref="RegisterControlForDirtyStateTracking"/>
-  ///   has values that must be persisted before the user leaves the page. 
-  /// </summary>
-  /// <value> The value returned by <see cref="IsDirty"/>. </value>
-  public virtual bool EvaluateDirtyState ()
-  {
-    if (_isDirty)
-      return true;
-    return _smartPageInfo.EvaluateDirtyState();
   }
 
   /// <summary> Gets a flag whether to only show the abort confirmation if the page is dirty. </summary>

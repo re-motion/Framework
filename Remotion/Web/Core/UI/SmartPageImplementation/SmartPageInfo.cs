@@ -17,11 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Collections;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -64,6 +66,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     private static readonly string s_scriptFileKey = typeof(SmartPageInfo).GetFullNameChecked() + "_Script";
     private static readonly string s_styleFileKey = typeof(SmartPageInfo).GetFullNameChecked() + "_Style";
     private static readonly string s_smartNavigationScriptKey = typeof(SmartPageInfo).GetFullNameChecked() + "_SmartNavigation";
+    private static IEnumerable<string> s_dirtyStateForCurrentPage = EnumerableUtility.Singleton(SmartPageDirtyStates.CurrentPage);
 
     private readonly ISmartPage _page;
 
@@ -167,17 +170,23 @@ namespace Remotion.Web.UI.SmartPageImplementation
         _trackedControlsByID.Add(clientID);
     }
 
-    /// <summary> Implements <see cref="ISmartPage.EvaluateDirtyState">ISmartPage.EvaluateDirtyState</see>. </summary>
-    public bool EvaluateDirtyState ()
+    public IEnumerable<string> GetDirtyStates (IReadOnlyCollection<string>? requestedStates)
     {
-      foreach (IEditableControl control in _trackedControls)
-      {
-        if (control.IsDirty)
-          return true;
-      }
-      return false;
-    }
+      var isDirtyStateForCurrentPageRequested =
+          requestedStates == null
+          || s_dirtyStateForCurrentPage.Intersect(requestedStates, StringComparer.InvariantCultureIgnoreCase).Any();
 
+      if (isDirtyStateForCurrentPageRequested)
+      {
+        if (_page.IsDirty)
+          return s_dirtyStateForCurrentPage;
+
+        if (_trackedControls.Any(c => c.IsDirty))
+          return s_dirtyStateForCurrentPage;
+      }
+
+      return Enumerable.Empty<string>();
+    }
 
     public string? CheckFormStateFunction
     {
@@ -355,7 +364,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       if (_page.IsDirtyStateTrackingEnabled)
       {
         isDirtyStateTrackingEnabled = "true";
-        if (_page.EvaluateDirtyState())
+        if (_page.GetDirtyStates().Any())
           isDirty = "true";
         else
           FormatPopulateTrackedControlsArrayClientScript(initScript, trackedControlsArray);

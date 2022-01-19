@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
@@ -39,6 +40,26 @@ namespace Remotion.Web.UI
     /// <summary> Gets the post back data for the page. </summary>
     NameValueCollection? GetPostBackCollection ();
 
+    /// <summary> Gets or sets a flag describing whether the page is dirty. </summary>
+    /// <value> <see langword="true"/> if the page requires saving. Defaults to <see langword="false"/>.  </value>
+    bool IsDirty { get; set; }
+
+    /// <summary>
+    /// Evaluates the page's dirty state and returns a list of identifiers, one for each distinct dirty state condition.
+    /// </summary>
+    /// <param name="requestedStates">
+    /// Optional list of dirty state conditions the caller is interested in. When this parameter is set, the implementation may optimize the evaluation of the dirty state
+    /// to only test for a specific dirty state condition if it was actually requested.
+    /// </param>
+    /// <returns>
+    /// The set of dirty states. Note that the result may contain values that have not been requested by the caller.
+    /// </returns>
+    /// <remarks>
+    ///   Evaluates if either <see cref="IsDirty"/> is <see langword="true" />
+    ///   or if any control registered using <see cref="RegisterControlForDirtyStateTracking"/> has values that must be persisted before the user leaves the page.
+    /// </remarks>
+    IEnumerable<string> GetDirtyStates (IReadOnlyCollection<string>? requestedStates = null);
+
     /// <summary>
     ///   Registers a control implementing <see cref="IEditableControl"/> for tracking of it's server- and client-side
     ///   dirty state.
@@ -56,19 +77,12 @@ namespace Remotion.Web.UI
     /// </remarks>
     void RegisterControlForClientSideDirtyStateTracking (string clientID);
 
-    /// <summary> 
-    ///   Evaluates whether any control regsitered using <see cref="RegisterControlForDirtyStateTracking"/>
-    ///   has values that must be persisted before the user leaves the page. 
-    /// </summary>
-    /// <returns> <see langword="true"/> if the page is dirty (i.e. has unpersisted changes). </returns>
-    bool EvaluateDirtyState ();
-
     /// <summary>
     ///   Gets a flag that determines whether the dirty state will be taken into account when displaying the abort 
     ///   confirmation dialog.
     /// </summary>
     /// <value> 
-    ///   <see langword="true"/> to invoke <see cref="EvaluateDirtyState"/> and track changes on the client. 
+    ///   <see langword="true"/> to invoke <see cref="GetDirtyStates"/> and track changes on the client.
     /// </value>
     bool IsDirtyStateTrackingEnabled { get; }
 
