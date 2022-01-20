@@ -33,6 +33,8 @@ namespace Remotion.Context
 #endif
   public class CallContextStorageProvider : ISafeContextStorageProvider
   {
+    public SafeContextBoundary OpenSafeContextBoundary () => default;
+
     public object GetData (string key)
     {
 #if NETFRAMEWORK

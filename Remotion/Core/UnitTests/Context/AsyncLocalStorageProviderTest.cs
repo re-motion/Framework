@@ -20,12 +20,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Remotion.Context;
-#if NETFRAMEWORK
-using System.Runtime.Remoting.Messaging;
-#endif
-
-// Ignore the obsolete warnings for AsyncLocalStorageProvider
-#pragma warning disable 618
 
 namespace Remotion.UnitTests.Context
 {
@@ -33,34 +27,16 @@ namespace Remotion.UnitTests.Context
   public class AsyncLocalStorageProviderTest
   {
     private const string c_testKey = "Foo";
-    private const string c_testKey2 = "Foo2";
     private AsyncLocalStorageProvider _provider;
 
     [SetUp]
     public void SetUp ()
     {
       _provider = new();
-      _provider.FreeData(c_testKey);
-      _provider.FreeData(c_testKey2);
-#if NETFRAMEWORK
-      CallContext.FreeNamedDataSlot(c_testKey);
-      CallContext.FreeNamedDataSlot(c_testKey2);
-#endif
-    }
-
-    [TearDown]
-    public void TearDown ()
-    {
-      _provider.FreeData(c_testKey);
-      _provider.FreeData(c_testKey2);
-#if NETFRAMEWORK
-      CallContext.FreeNamedDataSlot(c_testKey);
-      CallContext.FreeNamedDataSlot(c_testKey2);
-#endif
     }
 
     [Test]
-    public void GetData_WithoutValue ()
+    public void GetData_WithoutSetData_ReturnsNull ()
     {
       Assert.That(_provider.GetData(c_testKey), Is.Null);
     }
@@ -73,14 +49,6 @@ namespace Remotion.UnitTests.Context
     }
 
     [Test]
-    public void SetData_Null ()
-    {
-      _provider.SetData(c_testKey, 45);
-      _provider.SetData(c_testKey, null);
-      Assert.That(_provider.GetData(c_testKey), Is.Null);
-    }
-
-    [Test]
     public void FreeData ()
     {
       _provider.SetData(c_testKey, 45);
@@ -89,14 +57,14 @@ namespace Remotion.UnitTests.Context
     }
 
     [Test]
-    public void FreeData_WithoutValue ()
+    public void FreeData_WithoutSetData ()
     {
       _provider.FreeData(c_testKey);
       Assert.That(_provider.GetData(c_testKey), Is.Null);
     }
 
     [Test]
-    public void SetData_FromOtherThread_NotAccessible ()
+    public void SetData_FromThreadWithNoExecutionContext_DoesNotSetDataOnMainThread ()
     {
       var t = new Thread(() => _provider.SetData(c_testKey, "1"));
       t.Start();
@@ -106,7 +74,7 @@ namespace Remotion.UnitTests.Context
     }
 
     [Test]
-    public void SetData_FromOtherThread_DoesNotOverride ()
+    public void SetData_FromThread_OverridesValueOnMainThread ()
     {
       _provider.SetData(c_testKey, "1");
 
@@ -114,11 +82,96 @@ namespace Remotion.UnitTests.Context
       t.Start();
       t.Join();
 
+      // difference to CallContext: we need a guard to prevent flow in/out
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo("2"));
+    }
+
+    [Test]
+    public void SetData_FromThreadWithSafeContextBoundary_DoesNotOverrideValueOnMainThread ()
+    {
+      _provider.SetData(c_testKey, "1");
+
+      var t = new Thread(() =>
+      {
+        using (_provider.OpenSafeContextBoundary())
+        {
+          _provider.SetData(c_testKey, "2");
+        }
+      });
+      t.Start();
+      t.Join();
+
       Assert.That(_provider.GetData(c_testKey), Is.EqualTo("1"));
     }
 
     [Test]
-    public void SetData_OnThreadPoolThread_IsResetForNextWorkItem ()
+    public void SetData_FromThreadWithUnclosedSafeContextBoundary_DoesNotOverrideValueOnMainThread ()
+    {
+      _provider.SetData(c_testKey, "1");
+
+      var t = new Thread(() =>
+      {
+        _provider.OpenSafeContextBoundary();
+        _provider.SetData(c_testKey, "2");
+      });
+      t.Start();
+      t.Join();
+
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo("1"));
+    }
+
+    [Test]
+    public void GetData_FromThread_CanAccessValuesFromMainThread ()
+    {
+      _provider.SetData(c_testKey, "1");
+
+      object result = null;
+      var t = new Thread(() => result = _provider.GetData(c_testKey));
+      t.Start();
+      t.Join();
+
+      // difference to CallContext: we need a guard to prevent flow in/out
+      Assert.That(result, Is.EqualTo("1"));
+    }
+
+    [Test]
+    public void GetData_FromThreadWithSafeContextBoundary_CannotAccessValuesFromMainThread ()
+    {
+      _provider.SetData(c_testKey, "1");
+
+      object result = null;
+      var t = new Thread(() =>
+      {
+        using (_provider.OpenSafeContextBoundary())
+        {
+          result = _provider.GetData(c_testKey);
+        }
+      });
+      t.Start();
+      t.Join();
+
+      Assert.That(result, Is.Null);
+    }
+
+    [Test]
+    public void GetData_FromThreadWithUnclosedSafeContextBoundary_CannotAccessValuesFromMainThread ()
+    {
+      _provider.SetData(c_testKey, "1");
+
+      object result = null;
+      var t = new Thread(() =>
+      {
+        _provider.OpenSafeContextBoundary();
+        result = _provider.GetData(c_testKey);
+      });
+      t.Start();
+      t.Join();
+
+      Assert.That(result, Is.Null);
+    }
+
+    [Test]
+    public void SetData_FromThreadPoolThread_IsResetWhenThreadIsReused ()
     {
       object result = string.Empty;
 
@@ -149,7 +202,7 @@ namespace Remotion.UnitTests.Context
               resetEvent.Set();
             });
 
-        if (!resetEvent.WaitOne(TimeSpan.FromSeconds(3)))
+        if (!resetEvent.WaitOne(TimeSpan.FromSeconds(1)))
           Assert.Fail("Queued thread pool work item did not complete within the expected time.");
       }
 
@@ -157,12 +210,9 @@ namespace Remotion.UnitTests.Context
     }
 
     [Test]
-    public void SetValuesAreRestoredWhenReturningToExecutionContext ()
+    public void GetData_InExecutionContextRunWithSameExecutionContext_CanAccessValuesFromPrevious ()
     {
       _provider.SetData(c_testKey, 34);
-#if NETFRAMEWORK
-      CallContext.SetData(c_testKey, 34);
-#endif
 
       var ec = ExecutionContext.Capture();
       Assert.That(ec, Is.Not.Null);
@@ -171,76 +221,216 @@ namespace Remotion.UnitTests.Context
           ec,
           _ =>
           {
-            // difference: In CallContext this would be a new scope but we cannot differentiate as there is no event fired
+            // difference to CallContext: we need a guard to prevent flow in/out
             Assert.That(_provider.GetData(c_testKey), Is.EqualTo(34));
-#if NETFRAMEWORK
-            Assert.That(CallContext.GetData(c_testKey), Is.Null);
-#endif
+          },
+          null);
+    }
 
+    [Test]
+    public void GetData_InExecutionContextRunWithSameExecutionContextAndSafeContextBoundary_CannotAccessValuesFromPrevious ()
+    {
+      _provider.SetData(c_testKey, 34);
+
+      var ec = ExecutionContext.Capture();
+      Assert.That(ec, Is.Not.Null);
+
+      ExecutionContext.Run(
+          ec,
+          _ =>
+          {
+            using (_provider.OpenSafeContextBoundary())
+            {
+              Assert.That(_provider.GetData(c_testKey), Is.Null);
+            }
+          },
+          null);
+    }
+
+    [Test]
+    public void GetData_InExecutionContextRunWithSameExecutionContextAndUnclosedSafeContextBoundary_CannotAccessValuesFromPrevious ()
+    {
+      _provider.SetData(c_testKey, 34);
+
+      var ec = ExecutionContext.Capture();
+      Assert.That(ec, Is.Not.Null);
+
+      ExecutionContext.Run(
+          ec,
+          _ =>
+          {
+            _provider.OpenSafeContextBoundary();
+            Assert.That(_provider.GetData(c_testKey), Is.Null);
+          },
+          null);
+    }
+
+    [Test]
+    public void SetData_InExecutionContextRunWithDifferentExecutionContext_GetsNewerVersionOfValue ()
+    {
+      _provider.SetData(c_testKey, 12);
+
+      var ec = ExecutionContext.Capture();
+      Assert.That(ec, Is.Not.Null);
+
+      _provider.SetData(c_testKey, 34);
+
+      ExecutionContext.Run(
+          ec,
+          _ =>
+          {
+            // difference to CallContext: we need a guard to prevent flow in/out
+            Assert.That(_provider.GetData(c_testKey), Is.EqualTo(34));
+          },
+          null);
+    }
+
+    [Test]
+    public void SetData_InExecutionContextRunWithDifferentExecutionContextAndSafeContextBoundary_CannotAccessOuterValue ()
+    {
+      _provider.SetData(c_testKey, 12);
+
+      var ec = ExecutionContext.Capture();
+      Assert.That(ec, Is.Not.Null);
+
+      _provider.SetData(c_testKey, 34);
+
+      ExecutionContext.Run(
+          ec,
+          _ =>
+          {
+            using (_provider.OpenSafeContextBoundary())
+            {
+              Assert.That(_provider.GetData(c_testKey), Is.Null);
+            }
+          },
+          null);
+    }
+
+    [Test]
+    public void SetData_InExecutionContextRunWithDifferentExecutionContextAndUnclosedSafeContextBoundary_CannotAccessOuterValue ()
+    {
+      _provider.SetData(c_testKey, 12);
+
+      var ec = ExecutionContext.Capture();
+      Assert.That(ec, Is.Not.Null);
+
+      _provider.SetData(c_testKey, 34);
+
+      ExecutionContext.Run(
+          ec,
+          _ =>
+          {
+            _provider.OpenSafeContextBoundary();
+            Assert.That(_provider.GetData(c_testKey), Is.Null);
+          },
+          null);
+    }
+
+    [Test]
+    public void SetData_InExecutionContextRunWithNullExecutionContext_CannotAccessValues ()
+    {
+      var ec = ExecutionContext.Capture();
+      Assert.That(ec, Is.Not.Null);
+
+      _provider.SetData(c_testKey, 34);
+
+      ExecutionContext.Run(
+          ec,
+          _ => { Assert.That(_provider.GetData(c_testKey), Is.Null); },
+          null);
+    }
+
+    [Test]
+    public void SetData_InExecutionContextRunWithSameContext_ChangesValuesInOuterExecutionContext ()
+    {
+      _provider.SetData(c_testKey, 34);
+
+      var ec = ExecutionContext.Capture();
+      Assert.That(ec, Is.Not.Null);
+
+      ExecutionContext.Run(
+          ec,
+          _ => { _provider.SetData(c_testKey, 123); },
+          null);
+
+      // difference to CallContext: we need a guard to prevent flow in/out
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo(123));
+    }
+
+    [Test]
+    public void SetData_InExecutionContextRunWithSameContextAndSafeContextBoundary_DoesNotChangeValuesInOuterExecutionContext ()
+    {
+      _provider.SetData(c_testKey, 34);
+
+      var ec = ExecutionContext.Capture();
+      Assert.That(ec, Is.Not.Null);
+
+      ExecutionContext.Run(
+          ec,
+          _ =>
+          {
+            using (_provider.OpenSafeContextBoundary())
+            {
+              _provider.SetData(c_testKey, 123);
+            }
+          },
+          null);
+
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo(34));
+    }
+
+    [Test]
+    public void SetData_InExecutionContextRunWithSameContextAndUnclosedSafeContextBoundary_DoesNotChangeValuesInOuterExecutionContext ()
+    {
+      _provider.SetData(c_testKey, 34);
+
+      var ec = ExecutionContext.Capture();
+      Assert.That(ec, Is.Not.Null);
+
+      ExecutionContext.Run(
+          ec,
+          _ =>
+          {
+            _provider.OpenSafeContextBoundary();
             _provider.SetData(c_testKey, 123);
           },
           null);
 
-      // difference: In CallContext this would restore the original context but since we got no notification for the initial change
-      // we cannot detect that we are restoring an old the data is now inaccessible
-      Assert.That(_provider.GetData(c_testKey)!, Is.Null);
-#if NETFRAMEWORK
-      Assert.That(CallContext.GetData(c_testKey), Is.EqualTo(34));
-#endif
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo(34));
     }
 
     [Test]
-    public void SetValuesAreRestoredInRunExecutionContext ()
+    public void SetData_InExecutionContextRunWithDifferentContext_ChangesValuesInOuterNewerExecutionContext ()
     {
-      _provider.SetData(c_testKey, 34);
-#if NETFRAMEWORK
-      CallContext.SetData(c_testKey, 34);
-#endif
+      _provider.SetData(c_testKey, 12);
 
       var ec = ExecutionContext.Capture();
       Assert.That(ec, Is.Not.Null);
 
-#if NETFRAMEWORK
-#endif
+      _provider.SetData(c_testKey, 34);
+
       ExecutionContext.Run(
           ec,
-          _ =>
-          {
-            // difference: In CallContext the delegate would run in a new context, but this is not possibles
-            // as there is notification indicating a context switch
-            Assert.That(_provider.GetData(c_testKey), Is.EqualTo(34));
-#if NETFRAMEWORK
-            Assert.That(CallContext.GetData(c_testKey), Is.Null);
-#endif
-          },
+          _ => { _provider.SetData(c_testKey, 123); },
           null);
+
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo(123));
     }
 
     [Test]
-    public void SetDataInExecutionContextRunDoesNotAffectOuterScope ()
+    public void SetData_InExecutionContextRunWithNullContext_DoesNotChangeValueInOuterExecutionContext ()
     {
-      var ec = ExecutionContext.Capture().CreateCopy();
+      var ec = ExecutionContext.Capture();
 
       _provider.SetData(c_testKey, "1");
-#if NETFRAMEWORK
-      CallContext.SetData(c_testKey, "1");
-#endif
 
       ExecutionContext.Run(
           ec,
-          _ =>
-          {
-            _provider.SetData(c_testKey, "2");
-#if NETFRAMEWORK
-            CallContext.SetData(c_testKey, "2");
-#endif
-          },
+          _ => { _provider.SetData(c_testKey, "2"); },
           null);
 
       Assert.That(_provider.GetData(c_testKey), Is.EqualTo("1"));
-#if NETFRAMEWORK
-      Assert.That(CallContext.GetData(c_testKey), Is.EqualTo("1"));
-#endif
     }
 
     [Test]
@@ -253,19 +443,10 @@ namespace Remotion.UnitTests.Context
         ExecutionContext.SuppressFlow();
 
         _provider.SetData(c_testKey, "1");
-#if NETFRAMEWORK
-        CallContext.SetData(c_testKey, "1");
-#endif
 
         ExecutionContext.Run(
             ec,
-            _ =>
-            {
-              Assert.That(_provider.GetData(c_testKey), Is.Null);
-#if NETFRAMEWORK
-              Assert.That(CallContext.GetData(c_testKey), Is.Null);
-#endif
-            },
+            _ => { Assert.That(_provider.GetData(c_testKey), Is.Null); },
             null);
       }
       finally
@@ -274,96 +455,225 @@ namespace Remotion.UnitTests.Context
       }
 
       Assert.That(_provider.GetData(c_testKey), Is.EqualTo("1"));
-#if NETFRAMEWORK
-      Assert.That(CallContext.GetData(c_testKey), Is.EqualTo("1"));
-#endif
     }
 
     [Test]
-    public void FlowsToThread ()
+    public void GetData_InTaskRun_ReturnsValueFromOuterContext ()
     {
       _provider.SetData(c_testKey, 34);
 
       object result = null;
-#if NETFRAMEWORK
-      object result2 = null;
-#endif
-      var thread = new Thread(
-          _ =>
-          {
-            result = _provider.GetData(c_testKey);
-#if NETFRAMEWORK
-            result2 = CallContext.GetData(c_testKey);
-#endif
-          });
-      thread.Start();
-      thread.Join();
 
-      Assert.That(result, Is.Null);
-#if NETFRAMEWORK
-      Assert.That(result2, Is.Null);
-#endif
+      Task.Run(
+          () => { result = _provider.GetData(c_testKey); }).GetAwaiter().GetResult();
+
+      // difference to CallContext: we need a guard to prevent flow in/out
+      Assert.That(result, Is.EqualTo(34));
     }
 
     [Test]
-    public void FlowsWithTaskRun ()
+    public void GetData_InTaskRunWithSafeContextBoundary_DoesNotReturnValueFromOuterContext ()
     {
       _provider.SetData(c_testKey, 34);
 
       object result = null;
-#if NETFRAMEWORK
-      object result2 = null;
-#endif
 
       Task.Run(
           () =>
           {
-            result = _provider.GetData(c_testKey);
-#if NETFRAMEWORK
-            result2 = CallContext.GetData(c_testKey);
-#endif
+            using (_provider.OpenSafeContextBoundary())
+            {
+              result = _provider.GetData(c_testKey);
+            }
           }).GetAwaiter().GetResult();
 
       Assert.That(result, Is.Null);
-#if NETFRAMEWORK
-      Assert.That(result2, Is.Null);
-#endif
+    }
+
+    [Test]
+    public void GetData_InTaskRunWithUnclosedSafeContextBoundary_DoesNotReturnValueFromOuterContext ()
+    {
+      _provider.SetData(c_testKey, 34);
+
+      object result = null;
+
+      Task.Run(
+          () =>
+          {
+            _provider.OpenSafeContextBoundary();
+            result = _provider.GetData(c_testKey);
+          }).GetAwaiter().GetResult();
+
+      Assert.That(result, Is.Null);
+    }
+
+    [Test]
+    public void SetData_InTaskRun_SetsValueInOuterExecutionContext ()
+    {
+      _provider.SetData(c_testKey, 34);
+
+      Task.Run(
+          () => { _provider.SetData(c_testKey, 129); }).GetAwaiter().GetResult();
+
+      // difference to CallContext: we need a guard to prevent flow in/out
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo(129));
+    }
+
+    [Test]
+    public void SetData_InTaskRunWithSafeContextBoundary_DoesNotSetValueInOuterExecutionContext ()
+    {
+      _provider.SetData(c_testKey, 34);
+
+      Task.Run(
+          () =>
+          {
+            using (_provider.OpenSafeContextBoundary())
+            {
+              _provider.SetData(c_testKey, 129);
+            }
+          }).GetAwaiter().GetResult();
+
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo(34));
+    }
+
+    [Test]
+    public void SetData_InTaskRunWithUnclosedSafeContextBoundary_DoesNotSetValueInOuterExecutionContext ()
+    {
+      _provider.SetData(c_testKey, 34);
+
+      Task.Run(
+          () =>
+          {
+            _provider.OpenSafeContextBoundary();
+            _provider.SetData(c_testKey, 129);
+          }).GetAwaiter().GetResult();
+
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo(34));
     }
 
     [Test]
     public async Task Async ()
     {
       _provider.SetData(c_testKey, "1");
-#if NETFRAMEWORK
-      CallContext.SetData(c_testKey, "1");
-#endif
 
       await AsyncTask();
 
-      Assert.That(_provider.GetData(c_testKey), Is.Null);
-#if NETFRAMEWORK
-      Assert.That(CallContext.GetData(c_testKey), Is.Null);
-#endif
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo("3"));
     }
 
     private async Task AsyncTask ()
     {
       Assert.That(_provider.GetData(c_testKey), Is.EqualTo("1"));
-#if NETFRAMEWORK
-      Assert.That(CallContext.GetData(c_testKey), Is.EqualTo("1"));
-#endif
 
       _provider.SetData(c_testKey, "2");
 
       await Task.Delay(10);
 
-      Assert.That(_provider.GetData(c_testKey), Is.Null);
-#if NETFRAMEWORK
-      Assert.That(CallContext.GetData(c_testKey), Is.Null);
-#endif
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo("2"));
 
       _provider.SetData(c_testKey, "3");
     }
+
+    [Test]
+    public void GetData_InParallelForeach_ReturnsValueFromOuterScope ()
+    {
+      _provider.SetData(c_testKey, "initial");
+
+      Parallel.For(
+          0,
+          100,
+          _ => { Assert.That(_provider.GetData(c_testKey), Is.EqualTo("initial")); });
+
+      // difference to CallContext: we need a guard to prevent flow in/out
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo("initial"));
+    }
+
+    [Test]
+    public void GetData_InParallelForeachWithSafeContextBoundary_DoesNotReturnValueFromOuterScope ()
+    {
+      _provider.SetData(c_testKey, "initial");
+
+      Parallel.For(
+          0,
+          100,
+          _ =>
+          {
+            using (_provider.OpenSafeContextBoundary())
+            {
+              Assert.That(_provider.GetData(c_testKey), Is.Null);
+            }
+          });
+
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo("initial"));
+    }
+
+    [Test]
+    public void GetData_InParallelForeachWithUnclosedSafeContextBoundary_DoesNotReturnValueFromOuterScope ()
+    {
+      _provider.SetData(c_testKey, "initial");
+
+      Parallel.For(
+          0,
+          100,
+          _ =>
+          {
+            _provider.OpenSafeContextBoundary();
+            Assert.That(_provider.GetData(c_testKey), Is.Null);
+          });
+
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo("initial"));
+    }
+
+    [Test]
+    public void SetData_InParallelForeach_SetsValueForOuterScope ()
+    {
+      _provider.SetData(c_testKey, "initial");
+
+      Parallel.For(
+          0,
+          100,
+          v => { _provider.SetData(c_testKey, v); });
+
+      // difference to CallContext: we need a guard to prevent flow in/out
+      Assert.That(_provider.GetData(c_testKey), Is.TypeOf<int>());
+    }
+
+    [Test]
+    public void SetData_InParallelForeachWithSafeContextBoundary_DoesNotSetValueForOuterScope ()
+    {
+      _provider.SetData(c_testKey, "initial");
+
+      Parallel.For(
+          0,
+          100,
+          v =>
+          {
+            using (_provider.OpenSafeContextBoundary())
+            {
+              _provider.SetData(c_testKey, v);
+            }
+          });
+
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo("initial"));
+    }
+
+    [Test]
+    public void SetData_InParallelForeachWithUnclosedSafeContextBoundary_DoesNotSetValueForOuterScope ()
+    {
+      _provider.SetData(c_testKey, "initial");
+
+      Parallel.For(
+          0,
+          100,
+          v =>
+          {
+            _provider.OpenSafeContextBoundary();
+            _provider.SetData(c_testKey, v);
+          });
+
+      Assert.That(_provider.GetData(c_testKey), Is.EqualTo("initial"));
+    }
+
 
 #if NETFRAMEWORK && DEBUG
     [Test]
