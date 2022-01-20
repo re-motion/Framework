@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.UI
@@ -22,6 +23,7 @@ namespace Remotion.Web.UI
   /// <summary>
   /// Defines states for <see cref="ISmartPage"/>.<see cref="ISmartPage.GetDirtyStates"/>.
   /// </summary>
+  /// <seealso cref="WxePageDirtyStates"/>
   public static class SmartPageDirtyStates
   {
     /// <summary>

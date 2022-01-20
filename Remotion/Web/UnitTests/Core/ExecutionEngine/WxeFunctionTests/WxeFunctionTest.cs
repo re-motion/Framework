@@ -15,9 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Threading;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
@@ -25,13 +27,13 @@ using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 {
   [TestFixture]
-  public class WxeFunctionTest
+  public class WxeFunctionTest : WxeTest
   {
     private Mock<IWxeFunctionExecutionListener> _executionListenerMock;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp();
       _executionListenerMock = new Mock<IWxeFunctionExecutionListener>(MockBehavior.Strict);
     }
 
@@ -235,6 +237,113 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       function.Execute(context);
 
       Assert.That(actualStep, Is.SameAs(expectedStep));
+    }
+
+    [Test]
+    public void EvaluateDirtyState_WithExecutionHasNotStarted_ReturnsFalse ()
+    {
+      TestFunction2 function = new TestFunction2();
+
+      Assert.That(function.IsDirty, Is.False);
+      Assert.That(function.EvaluateDirtyState(), Is.False);
+    }
+
+    [Test]
+    public void EvaluateDiEvaluateDirtyState_WithExecutionHasNotStarted_AndIsDirtySetTrue_ReturnsTrue ()
+    {
+      TestFunction2 function = new TestFunction2();
+      function.IsDirty = true;
+
+      Assert.That(function.IsDirty, Is.True);
+      Assert.That(function.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void EvaluateDirtyState_DirtyFromExecutedStep_AndIsDirtySetFalse_ReturnsTrue ()
+    {
+      var function = new TestFunction2();
+
+      var dirtyStepStub = new Mock<WxeStep>();
+      dirtyStepStub.Setup(_ => _.EvaluateDirtyState()).Returns(true);
+
+      function.Add(dirtyStepStub.Object);
+      function.Execute(CurrentWxeContext);
+
+      Assert.That(function.IsDirty, Is.False);
+      Assert.That(function.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void EvaluateDirtyState_DirtyFromExecutingStep_AndIsDirtySetFalse_ReturnsTrue ()
+    {
+      var function = new TestFunction2();
+
+      var notCompletedStepStub = new Mock<WxeStep>();
+      notCompletedStepStub.Setup(mock => mock.Execute(CurrentWxeContext)).Callback((WxeContext context) => WxeThreadAbortHelper.Abort()).Verifiable();
+      notCompletedStepStub.Setup(_ => _.EvaluateDirtyState()).Returns(true);
+
+      function.Add(notCompletedStepStub.Object);
+
+      try
+      {
+        function.Execute(CurrentWxeContext);
+        Assert.Fail();
+      }
+      catch (ThreadAbortException)
+      {
+        WxeThreadAbortHelper.ResetAbort();
+      }
+
+      Assert.That(function.IsDirty, Is.False);
+      Assert.That(function.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void EvaluateDirtyState_DirtyFromExecutingStep_AndIsDirtySetTrue_ReturnsTrue_AndDoesNotEvaluateExecutingStep ()
+    {
+      var function = new TestFunction2();
+      function.IsDirty = true;
+
+      var notCompletedStepStub = new Mock<WxeStep>();
+      notCompletedStepStub.Setup(mock => mock.Execute(CurrentWxeContext)).Callback((WxeContext context) => WxeThreadAbortHelper.Abort()).Verifiable();
+      notCompletedStepStub.Setup(_ => _.EvaluateDirtyState()).Returns(true);
+
+      function.Add(notCompletedStepStub.Object);
+
+      try
+      {
+        function.Execute(CurrentWxeContext);
+        Assert.Fail();
+      }
+      catch (ThreadAbortException)
+      {
+        WxeThreadAbortHelper.ResetAbort();
+      }
+
+      Assert.That(function.IsDirty, Is.True);
+      Assert.That(function.EvaluateDirtyState(), Is.True);
+      notCompletedStepStub.Verify(_ => _.EvaluateDirtyState(), Times.Never());
+    }
+
+    [Test]
+    public void ResetDirtyStateForExecutedSteps_DoesNotResetIsDirtyFlag ()
+    {
+      var function = new TestFunction2();
+      function.IsDirty = true;
+
+      var dirtyStepStub = new Mock<WxeStep>();
+      dirtyStepStub.Setup(_ => _.EvaluateDirtyState()).Returns(true);
+
+      function.Add(dirtyStepStub.Object);
+      function.Execute(CurrentWxeContext);
+
+      Assert.That(function.EvaluateDirtyState(), Is.True);
+      function.ResetDirtyStateForExecutedSteps();
+      Assert.That(function.IsDirty, Is.True);
+      dirtyStepStub.Verify(_=>_.ResetDirtyStateForExecutedSteps(), Times.Once());
+
+      dirtyStepStub.Setup(_ => _.EvaluateDirtyState()).Returns(false);
+      Assert.That(function.EvaluateDirtyState(), Is.True);
     }
   }
 }

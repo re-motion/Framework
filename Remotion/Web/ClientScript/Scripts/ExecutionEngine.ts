@@ -15,6 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+enum WxePage_DirtyStates
+{
+  CurrentFunction = 'CurrentFunction',
+  RootFunction = 'RootFunction'
+}
+
 // The context contains all information required by the WXE page.
 class WxePage_Context
 {

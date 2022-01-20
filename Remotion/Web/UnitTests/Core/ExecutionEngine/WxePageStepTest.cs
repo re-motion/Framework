@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.UI;
@@ -27,6 +28,7 @@ using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute;
 using Remotion.Web.ExecutionEngine.UrlMapping;
+using Remotion.Web.UI;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
 using PreProcessingSubFunctionState_WithRedirect =
     Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect.PreProcessingSubFunctionState;
@@ -145,6 +147,54 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
+    public void ExecuteFunction_CopiesDirtyStateFromPageBeforeInnerExecuteWhenPageIsDirty ()
+    {
+      WxeContextMock.SetCurrent(_wxeContext);
+
+      _pageMock.Setup(_=> _.GetDirtyStates(new[] { SmartPageDirtyStates.CurrentPage })).Returns(new[] { SmartPageDirtyStates.CurrentPage });
+      _pageStep
+          .Setup(mock => mock.Execute(_wxeContext))
+          .Callback(
+              (WxeContext _) =>
+              {
+                Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+              })
+          .Verifiable();
+
+      _pageStep.Object.ExecuteFunction(
+          new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, new WxePermaUrlOptions()), WxeRepostOptions.DoRepost(null));
+
+      _pageStep.Verify();
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void ExecuteFunction_CopiesDirtyStateFromPageBeforeInnerExecuteWhenPageStepWhenPageIsNotDirty ()
+    {
+      WxeContextMock.SetCurrent(_wxeContext);
+
+      _pageStep.Object.SetDirtyStateForCurrentPage(true);
+
+      _pageMock.Setup(_=> _.GetDirtyStates(new[] { SmartPageDirtyStates.CurrentPage })).Returns(new[] { WxePageDirtyStates.CurrentFunction });
+      _pageStep
+          .Setup(mock => mock.Execute(_wxeContext))
+          .Callback(
+              (WxeContext _) =>
+              {
+                Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.False);
+              })
+          .Verifiable();
+
+      _pageStep.Object.ExecuteFunction(
+          new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, new WxePermaUrlOptions()), WxeRepostOptions.DoRepost(null));
+
+      _pageStep.Verify();
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.False);
+    }
+
+    [Test]
     public void ExecuteFunctionExternalByRedirect ()
     {
       WxeContextMock.SetCurrent(_wxeContext);
@@ -201,6 +251,54 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
+    public void ExecuteFunctionExternalByRedirect_CopiesDirtyStateFromPageBeforeInnerExecuteWhenPageIsDirty ()
+    {
+      WxeContextMock.SetCurrent(_wxeContext);
+
+      _pageMock.Setup(_=> _.GetDirtyStates(new[] { SmartPageDirtyStates.CurrentPage })).Returns(new[] { SmartPageDirtyStates.CurrentPage });
+      _pageStep
+          .Setup(mock => mock.Execute(_wxeContext))
+          .Callback(
+              (WxeContext _) =>
+              {
+                Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+              })
+          .Verifiable();
+
+      _pageStep.Object.ExecuteFunctionExternalByRedirect(
+          new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, new WxePermaUrlOptions()), new WxeReturnOptions());
+
+      _pageStep.Verify();
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void ExecuteFunctionExternalByRedirect_CopiesDirtyStateFromPageBeforeInnerExecuteWhenPageStepWhenPageIsNotDirty ()
+    {
+      WxeContextMock.SetCurrent(_wxeContext);
+
+      _pageStep.Object.SetDirtyStateForCurrentPage(true);
+
+      _pageMock.Setup(_=> _.GetDirtyStates(new[] { SmartPageDirtyStates.CurrentPage })).Returns(new[] { WxePageDirtyStates.CurrentFunction });
+      _pageStep
+          .Setup(mock => mock.Execute(_wxeContext))
+          .Callback(
+              (WxeContext _) =>
+              {
+                Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.False);
+              })
+          .Verifiable();
+
+      _pageStep.Object.ExecuteFunctionExternalByRedirect(
+          new PreProcessingSubFunctionStateParameters(_pageMock.Object, _subFunction.Object, new WxePermaUrlOptions()), new WxeReturnOptions());
+
+      _pageStep.Verify();
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.False);
+    }
+
+    [Test]
     public void IExecutionStateContext_GetAndSetExecutionState ()
     {
       var executionStateContext = (IExecutionStateContext)_pageStep.Object;
@@ -237,6 +335,224 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       Assert.That(
           () => executionStateContext.CurrentFunction,
           Throws.Exception.TypeOf<WxeException>().With.Message.EqualTo("There must be a function associated to the current step while executing."));
+    }
+
+    [Test]
+    public void SetReturnState_SetsReturningFunction ()
+    {
+      var returningFunction = new TestFunction2();
+
+      _pageStep.Object.SetReturnState(returningFunction, true, new NameValueCollection());
+
+      Assert.That(_pageStep.Object.ReturningFunction, Is.SameAs(returningFunction));
+    }
+
+    [Test]
+    public void SetReturnState_SetsIsReturningPostback ()
+    {
+      Assert.That(_pageStep.Object.IsReturningPostBack, Is.False);
+
+      _pageStep.Object.SetReturnState(new TestFunction2(), true, new NameValueCollection());
+
+      Assert.That(_pageStep.Object.IsReturningPostBack, Is.True);
+    }
+
+    [Test]
+    public void SetReturnState_SetsPostbackCollection ()
+    {
+      var previousPostBackCollection = new NameValueCollection();
+
+      _pageStep.Object.SetReturnState(new TestFunction2(), true, previousPostBackCollection);
+
+      Assert.That(_pageStep.Object.PostBackCollection, Is.SameAs(previousPostBackCollection));
+    }
+
+    [Test]
+    public void SetReturnState_CopiesDirtyStateFromReturningFunctionWhenReturningFunctionIsDirty ()
+    {
+      var returningFunction = new TestFunction2();
+      returningFunction.IsDirty = true;
+      _pageStep.Object.SetReturnState(returningFunction, true, new NameValueCollection());
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void SetReturnState_AggregatesDirtyStateFromReturningFunctionWhenPreviousReturningFunctionWasAlreadyDirty ()
+    {
+      var returningFunction1 = new TestFunction2();
+      returningFunction1.IsDirty = true;
+      _pageStep.Object.SetReturnState(returningFunction1, true, new NameValueCollection());
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+
+      var returningFunction2 = new Mock<TestFunction2>();
+
+      _pageStep.Object.SetReturnState(returningFunction2.Object, true, new NameValueCollection());
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+      returningFunction2.Verify(_=>_.EvaluateDirtyState(), Times.Never());
+    }
+
+    [Test]
+    public void Execute_ClearsReturnStateBySettingReturningFunctionToNull ()
+    {
+      _pageStep.Object.SetReturnState(new TestFunction2(), true, new NameValueCollection());
+      _pageStep.Object.SetPageExecutor(Mock.Of<IWxePageExecutor>());
+
+      _pageStep.Object.Execute(_wxeContext);
+
+      Assert.That(_pageStep.Object.ReturningFunction, Is.Null);
+    }
+
+    [Test]
+    public void Execute_ClearsReturnStateBySettingIsReturningPostbackToFalse ()
+    {
+      _pageStep.Object.SetReturnState(new TestFunction2(), true, new NameValueCollection());
+      _pageStep.Object.SetPageExecutor(Mock.Of<IWxePageExecutor>());
+
+      _pageStep.Object.Execute(_wxeContext);
+
+      Assert.That(_pageStep.Object.IsReturningPostBack, Is.False);
+    }
+
+    [Test]
+    public void Execute_ClearsReturnStateBySettingPostbackCollectionToNull ()
+    {
+      _pageStep.Object.SetReturnState(new TestFunction2(), true, new NameValueCollection());
+      _pageStep.Object.SetPageExecutor(Mock.Of<IWxePageExecutor>());
+
+      _pageStep.Object.Execute(_wxeContext);
+
+      Assert.That(_pageStep.Object.PostBackCollection, Is.Null);
+    }
+
+    [Test]
+    public void Execute_PreservesDirtyStateFromPreviousReturningFunction ()
+    {
+      var returningFunction = new TestFunction2();
+      returningFunction.IsDirty = true;
+      _pageStep.Object.SetReturnState(returningFunction, true, new NameValueCollection());
+      _pageStep.Object.SetPageExecutor(Mock.Of<IWxePageExecutor>());
+
+      _pageStep.Object.Execute(_wxeContext);
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void SetDirtyStateForCurrentPage_WithTrue_SetsPageStepDirty ()
+    {
+      _pageStep.Object.SetDirtyStateForCurrentPage(true);
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void SetDirtyStateForCurrentPage_WithFalse_SetsPageStepNotDirty ()
+    {
+      _pageStep.Object.SetDirtyStateForCurrentPage(true);
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+
+      _pageStep.Object.SetDirtyStateForCurrentPage(false);
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.False);
+    }
+
+    [Test]
+    public void ResetDirtyStateForExecutedSteps_ResetsDirtyStateFromCurrentPage ()
+    {
+      _pageStep.Object.SetDirtyStateForCurrentPage(true);
+
+      _pageStep.Object.ResetDirtyStateForExecutedSteps();
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.False);
+    }
+
+    [Test]
+    public void ResetDirtyStateForExecutedSteps_ResetsDirtyStateFromReturningFunction ()
+    {
+      var returningFunction = new TestFunction2();
+      returningFunction.IsDirty = true;
+      _pageStep.Object.SetReturnState(returningFunction, true, new NameValueCollection());
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+
+      _pageStep.Object.ResetDirtyStateForExecutedSteps();
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.False);
+    }
+
+    [Test]
+    public void EvaluateDirtyState_WithoutAnyInformation_ReturnsFalse ()
+    {
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.False);
+    }
+
+    [Test]
+    public void EvaluateDirtyState_ReturnsDirtyStateFromReturningFunction ()
+    {
+      var returningFunction = new TestFunction2();
+      returningFunction.IsDirty = true;
+      _pageStep.Object.SetReturnState(returningFunction, true, new NameValueCollection());
+      _pageStep.Object.SetPageExecutor(Mock.Of<IWxePageExecutor>());
+
+      _pageStep.Object.Execute(_wxeContext);
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void EvaluateDirtyState_ReturnsDirtyStateFromCurrentPage ()
+    {
+      _pageStep.Object.SetDirtyStateForCurrentPage(true);
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void EvaluateDirtyState_EvaluatesDirtyStateForExecutingSubFunction ()
+    {
+      var dirtyFunction = new TestFunction2();
+      dirtyFunction.IsDirty = true;
+
+      var parametersStub = new Mock<IExecutionStateParameters>();
+      parametersStub.Setup(_ => _.SubFunction).Returns(dirtyFunction);
+
+      var executionStateStub = new Mock<IExecutionState>();
+      executionStateStub.Setup(_ => _.IsExecuting).Returns(true);
+      executionStateStub.Setup(_ => _.Parameters).Returns(parametersStub.Object);
+      ((IExecutionStateContext)_pageStep.Object).SetExecutionState(executionStateStub.Object);
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void EvaluateDirtyState_EvaluatesDirtyStateForExecutingStepWhenDirtyFromReturningFunction ()
+    {
+      var returningFunction = new TestFunction2();
+      returningFunction.IsDirty = true;
+      _pageStep.Object.SetReturnState(returningFunction, true, new NameValueCollection());
+      _pageStep.Object.SetPageExecutor(Mock.Of<IWxePageExecutor>());
+
+      var dirtyStepStub = new Mock<WxeStep>();
+      _pageStep.Setup(_ => _.ExecutingStep).Returns(dirtyStepStub.Object);
+
+      _pageStep.Object.Execute(_wxeContext);
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+      dirtyStepStub.Verify(_ => _.EvaluateDirtyState(), Times.Never());
+    }
+
+    [Test]
+    public void EvaluateDirtyState_EvaluatesDirtyStateForExecutingStepWhenDirtyFromCurrentPage ()
+    {
+      _pageStep.Object.SetDirtyStateForCurrentPage(true);
+
+      var dirtyStepStub = new Mock<WxeStep>();
+      _pageStep.Setup(_ => _.ExecutingStep).Returns(dirtyStepStub.Object);
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
+      dirtyStepStub.Verify(_ => _.EvaluateDirtyState(), Times.Never());
     }
   }
 }

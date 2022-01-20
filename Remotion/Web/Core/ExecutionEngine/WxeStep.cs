@@ -199,6 +199,22 @@ public abstract class WxeStep
   protected virtual void AbortRecursive ()
   {
   }
+
+  /// <summary>
+  /// Allows clearing the accumulated dirty state history for this <see cref="WxeStep"/>.
+  /// </summary>
+  public virtual void ResetDirtyStateForExecutedSteps ()
+  {
+  }
+
+  /// <summary>
+  /// Evaluates the current dirty state for this <see cref="WxeStep"/>.
+  /// </summary>
+  /// <returns><see langword="true" /> if the <see cref="WxeStep"/> represents unsaved changes.</returns>
+  public virtual bool EvaluateDirtyState ()
+  {
+    return false;
+  }
 }
 
 }

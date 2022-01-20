@@ -16,10 +16,13 @@
 // 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Web.UI;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -38,7 +41,17 @@ namespace Remotion.Web.ExecutionEngine
   public class WxePageStep : WxeStep, IExecutionStateContext
   {
     private const int c_estimatedLargeObjectHeapThreshold = 85000;
+
+    internal static readonly IReadOnlyCollection<string> PageDirtyStates = new ReadOnlyCollection<string>(new[] { SmartPageDirtyStates.CurrentPage });
+
     private static readonly ConcurrentBag<MemoryStream> s_viewStateSerializationBufferPool = new ConcurrentBag<MemoryStream>();
+
+    internal static bool EvaluateDirtyStateOfPage (IWxePage wxePage)
+    {
+      ArgumentUtility.CheckNotNull("wxePage", wxePage);
+
+      return wxePage.GetDirtyStates(PageDirtyStates).Intersect(PageDirtyStates, StringComparer.InvariantCultureIgnoreCase).Any();
+    }
 
     private IWxePageExecutor _pageExecutor = new WxePageExecutor();
     private readonly ResourceObjectBase _page;
@@ -50,6 +63,8 @@ namespace Remotion.Web.ExecutionEngine
     private bool _isReturningPostBack;
     private WxeFunction? _returningFunction;
     private NameValueCollection? _postBackCollection;
+    private bool _isPageDirty;
+    private bool _isDirtyFromReturnState;
 
     [NonSerialized]
     private WxeHandler? _wxeHandler;
@@ -157,6 +172,7 @@ namespace Remotion.Web.ExecutionEngine
       _wxeHandler = parameters.Page.WxeHandler;
 
       _executionState = new PreProcessingSubFunctionState(this, parameters, repostOptions);
+      SetDirtyStateForCurrentPage(EvaluateDirtyStateOfPage(parameters.Page));
       Execute();
     }
 
@@ -172,6 +188,7 @@ namespace Remotion.Web.ExecutionEngine
       _wxeHandler = parameters.Page.WxeHandler;
 
       _executionState = new ExecuteByRedirect_PreProcessingSubFunctionState(this, parameters, returnOptions);
+      SetDirtyStateForCurrentPage(EvaluateDirtyStateOfPage(parameters.Page));
       Execute();
     }
 
@@ -190,6 +207,7 @@ namespace Remotion.Web.ExecutionEngine
       IReplaceableControl replaceableControl = userControl;
       replaceableControl.Replacer.Controls.Clear();
       wxePage.SaveAllState();
+      SetDirtyStateForCurrentPage(EvaluateDirtyStateOfPage(wxePage));
 
       Execute();
     }
@@ -267,6 +285,7 @@ namespace Remotion.Web.ExecutionEngine
       _returningFunction = returningFunction;
       _isReturningPostBack = isReturningPostBack;
       _postBackCollection = previousPostBackCollection;
+      _isDirtyFromReturnState = _isDirtyFromReturnState || returningFunction.EvaluateDirtyState();
     }
 
     private void ClearReturnState ()
@@ -390,6 +409,47 @@ namespace Remotion.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull("executionState", executionState);
 
       _executionState = executionState;
+    }
+
+    public void SetDirtyStateForCurrentPage (bool isDirty)
+    {
+      _isPageDirty = isDirty;
+    }
+
+    /// <summary>
+    /// Resets the dirty state set via <see cref="SetDirtyStateForCurrentPage"/> or any previously returned sub function.
+    /// </summary>
+    public override void ResetDirtyStateForExecutedSteps ()
+    {
+      base.ResetDirtyStateForExecutedSteps();
+
+      _isPageDirty = false;
+      _isDirtyFromReturnState = false;
+    }
+
+    /// <summary>
+    /// Evaluates the current dirty state for this <see cref="WxePageStep"/>.
+    /// </summary>
+    /// <remarks>
+    /// The evaluation includes the information for the currently executing <see cref="WxePage"/> (set via <see cref="SetDirtyStateForCurrentPage"/> during the page life cycle),
+    /// a currently executing sub function, and the aggregated dirty state of previously executed sub functions.
+    /// </remarks>
+    /// <returns><see langword="true" /> if the <see cref="WxePageStep"/> represents unsaved changes.</returns>
+    public override bool EvaluateDirtyState ()
+    {
+      if (_isPageDirty)
+        return true;
+
+      if (_isDirtyFromReturnState)
+        return true;
+
+      if (_executionState.IsExecuting && _executionState.Parameters.SubFunction.EvaluateDirtyState())
+        return true;
+
+      if (!_userControlExecutor.IsNull && _userControlExecutor.Function.EvaluateDirtyState())
+        return true;
+
+      return base.EvaluateDirtyState();
     }
   }
 }

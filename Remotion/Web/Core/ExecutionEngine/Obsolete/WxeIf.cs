@@ -87,5 +87,20 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       if (_stepList != null)
         _stepList.Abort();
     }
+
+    public override void ResetDirtyStateForExecutedSteps ()
+    {
+      base.ResetDirtyStateForExecutedSteps();
+
+      _stepList?.ResetDirtyStateForExecutedSteps();
+    }
+
+    public override bool EvaluateDirtyState ()
+    {
+      if (_stepList != null && _stepList.EvaluateDirtyState())
+        return true;
+
+      return base.EvaluateDirtyState();
+    }
   }
 }

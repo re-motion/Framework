@@ -205,6 +205,12 @@ public class WxeStepTest: WxeTest
     NameObjectCollection variables = _standAloneStep.Variables;
     Assert.That(variables, Is.Null);
   }
+
+  [Test]
+  public void EvaluateDirtyState_ReturnsFalse ()
+  {
+    Assert.That(_standAloneStep.EvaluateDirtyState(), Is.False);
+  }
 }
 
 }

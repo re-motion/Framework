@@ -15,14 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Remotion.Collections;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -69,6 +73,11 @@ namespace Remotion.Web.ExecutionEngine
     private static readonly string s_scriptFileKey = typeof(WxePageInfo).GetFullNameChecked() + "_Script";
     private static readonly string s_styleFileKey = typeof(WxePageInfo).GetFullNameChecked() + "_Style";
     private static readonly string s_styleFileKeyForIE = typeof(WxePageInfo).GetFullNameChecked() + "_StyleIE";
+
+    private static IEnumerable<string> s_dirtyStatesForForCurrentFunctionAndRootFunction =
+        new ReadOnlyCollection<string>(new[] { WxePageDirtyStates.CurrentFunction, WxePageDirtyStates.RootFunction });
+    private static IEnumerable<string> s_dirtyStatesForCurrentFunction = EnumerableUtility.Singleton(WxePageDirtyStates.CurrentFunction);
+    private static IEnumerable<string> s_dirtyStatesForRootFunction = EnumerableUtility.Singleton(WxePageDirtyStates.RootFunction);
 
     private readonly IWxePage _page;
     private WxeForm? _wxeForm;
@@ -285,6 +294,9 @@ namespace Remotion.Web.ExecutionEngine
     {
       Assertion.DebugIsNotNull(_wxeForm, "_wxeForm must not be null.");
 
+      var isPageDirty = WxePageStep.EvaluateDirtyStateOfPage(_page);
+      CurrentPageStep.SetDirtyStateForCurrentPage(isPageDirty);
+
       WxeContext? wxeContext = WxeContext.Current;
 
       _page.ClientScript.RegisterHiddenField(_page, WxeHandler.Parameters.WxeFunctionToken, wxeContext!.FunctionToken); // TODO RM-8118: not null assertion
@@ -414,6 +426,9 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> Implements <see cref="IWxePage.ExecuteNextStep">IWxePage.ExecuteNextStep</see>. </summary>
     public void ExecuteNextStep ()
     {
+      var isPageDirty = WxePageStep.EvaluateDirtyStateOfPage(_page);
+      CurrentPageStep.SetDirtyStateForCurrentPage(isPageDirty);
+
       _executeNextStep = true;
       _page.Visible = false; // suppress prerender and render events
     }
@@ -552,6 +567,33 @@ namespace Remotion.Web.ExecutionEngine
       return GetResourceManager(typeof(ResourceIdentifier));
     }
 
+    public IEnumerable<string> GetDirtyStates (IReadOnlyCollection<string>? requestedStates)
+    {
+      var isDirtyStateForCurrentFunctionRequested =
+          requestedStates == null
+          || s_dirtyStatesForCurrentFunction.Intersect(requestedStates, StringComparer.InvariantCultureIgnoreCase).Any();
+
+      var isDirtyStateForRootFunctionRequested =
+          requestedStates == null
+          || s_dirtyStatesForRootFunction.Intersect(requestedStates, StringComparer.InvariantCultureIgnoreCase).Any();
+
+      var isCurrentFunctionDirty = isDirtyStateForCurrentFunctionRequested && CurrentFunction.EvaluateDirtyState();
+
+      var isRootFunctionDirty =
+          isDirtyStateForRootFunctionRequested
+          && (CurrentFunction.RootFunction?.EvaluateDirtyState() ?? false);
+
+      if (isCurrentFunctionDirty && isRootFunctionDirty)
+        return s_dirtyStatesForForCurrentFunctionAndRootFunction;
+
+      if (isCurrentFunctionDirty)
+        return s_dirtyStatesForCurrentFunction;
+
+      if (isRootFunctionDirty)
+        return s_dirtyStatesForRootFunction;
+
+      return Enumerable.Empty<string>();
+    }
 
     private NameObjectCollection WindowState
     {

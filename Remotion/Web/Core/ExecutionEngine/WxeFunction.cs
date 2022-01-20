@@ -53,6 +53,7 @@ namespace Remotion.Web.ExecutionEngine
     private string? _functionToken;
     private string? _returnUrl;
     private string? _executionCompletedScript;
+    private bool _isDirty;
 
     protected WxeFunction (ITransactionMode transactionMode, params object?[] actualParameters)
     {
@@ -225,6 +226,30 @@ namespace Remotion.Web.ExecutionEngine
 
       _returnUrl = null;
       _executionCompletedScript = script;
+    }
+
+    /// <summary> Gets or sets a flag describing whether the <see cref="WxeFunction"/> is dirty. </summary>
+    /// <value> <see langword="true"/> if aborting the <see cref="WxeFunction"/> would result in the loss of unsaved changes. Defaults to <see langword="false"/>.  </value>
+    public bool IsDirty
+    {
+      get { return _isDirty; }
+      set { _isDirty = value; }
+    }
+
+    /// <summary>
+    /// Evaluates the current dirty state for this <see cref="WxeFunction"/>.
+    /// </summary>
+    /// <remarks>
+    /// The evaluation includes the <see cref="IsDirty"/> flag, the information for the currently executing <see cref="WxeStep"/>,
+    /// and the aggregated dirty state of previously executed steps.
+    /// </remarks>
+    /// <returns><see langword="true" /> if the <see cref="WxeFunction"/> represents unsaved changes.</returns>
+    public override bool EvaluateDirtyState ()
+    {
+      if (_isDirty)
+        return true;
+
+      return base.EvaluateDirtyState();
     }
 
     public override NameObjectCollection Variables
