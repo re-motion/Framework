@@ -18,7 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Context;
 
-namespace Remotion.UnitTests.Context
+namespace Remotion.UnitTests.Context.SafeContextTests
 {
   [TestFixture]
   public class SafeContextTest
