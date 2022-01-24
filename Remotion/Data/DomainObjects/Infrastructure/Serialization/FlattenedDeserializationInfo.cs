@@ -73,7 +73,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
     [return: MaybeNull]
     private T GetValue<T> (bool allowNull)
     {
-      if (typeof(IFlattenedSerializable).IsAssignableFrom(typeof(T)))
+      if (typeof(T) == typeof(Type))
+      {
+        var typeName = allowNull
+            ? GetNullableValueForHandle<string>()
+            : GetValueForHandle<string>();
+
+        return typeName != null
+            ? (T)(object)GetTypeFromTypeNameOrThrow(typeName)
+            : default;
+      }
+      else if (typeof(IFlattenedSerializable).IsAssignableFrom(typeof(T)))
       {
         return GetFlattenedSerializable<T>(allowNull: allowNull);
       }
@@ -114,7 +124,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 
     private Func<FlattenedDeserializationInfo, object> GetInstanceFactory (string typeName)
     {
-      var type = Type.GetType(typeName, throwOnError: true, ignoreCase: false)!;
+      var type = GetTypeFromTypeNameOrThrow(typeName);
       var ctorInfo = type.GetConstructor(
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
           null,
@@ -223,6 +233,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 
       if (DeserializationFinished != null)
         DeserializationFinished(this, EventArgs.Empty);
+    }
+
+    private static Type GetTypeFromTypeNameOrThrow (string typeName)
+    {
+      return Type.GetType(typeName, throwOnError: true, ignoreCase: false)!;
     }
   }
 }
