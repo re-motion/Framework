@@ -15,13 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Threading;
 using NUnit.Framework;
 using Remotion.Context;
+using Remotion.Development.UnitTesting;
+using Remotion.ServiceLocation;
 
 namespace Remotion.UnitTests.Context
 {
   [TestFixture]
-  public class SafeContextTest
+  public partial class SafeContextTest
   {
     [Test]
     public void Instance_AutoInitialization ()
@@ -29,6 +32,24 @@ namespace Remotion.UnitTests.Context
       ISafeContextStorageProvider instance = SafeContext.Instance;
       Assert.That(instance, Is.Not.Null);
       Assert.That(SafeContext.Instance, Is.SameAs(instance));
+    }
+
+    private static IDisposable SetupImplicitSafeContextStorageProvider (ISafeContextStorageProvider safeContextStorageProvider)
+    {
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle(() => safeContextStorageProvider);
+
+      return new ServiceLocatorScope(serviceLocator);
+    }
+
+    private static void ResetSafeContextStorageProvider ()
+    {
+      PrivateInvoke.SetNonPublicStaticField(
+          typeof(SafeContext),
+          "s_instance",
+          new Lazy<ISafeContextStorageProvider>(
+                  () => SafeServiceLocator.Current.GetInstance<ISafeContextStorageProvider>(),
+                  LazyThreadSafetyMode.ExecutionAndPublication));
     }
   }
 }

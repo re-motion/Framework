@@ -39,9 +39,11 @@ namespace Remotion.Context
   /// The data managed by this class is thread-local. The class is safe to be used from multiple threads at the same time, but each thread will have 
   /// its own copy of the data.
   /// </threadsafety>
-  public static class SafeContext
+  public static partial class SafeContext
   {
-    private static readonly Lazy<ISafeContextStorageProvider> s_instance = new Lazy<ISafeContextStorageProvider>(
+    // We need this field non-readonly to be able to re-set it from the unit tests
+    // ReSharper disable once FieldCanBeMadeReadOnly.Local
+    private static Lazy<ISafeContextStorageProvider> s_instance = new Lazy<ISafeContextStorageProvider>(
         () => SafeServiceLocator.Current.GetInstance<ISafeContextStorageProvider>(),
         LazyThreadSafetyMode.ExecutionAndPublication);
 
