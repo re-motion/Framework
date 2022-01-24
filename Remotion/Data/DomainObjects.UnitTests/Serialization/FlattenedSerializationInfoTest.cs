@@ -38,6 +38,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       serializationInfo.AddValue<object>(null);
       serializationInfo.AddValue<int?>(null);
       serializationInfo.AddValue("Foo");
+      serializationInfo.AddValue(typeof(int));
+      serializationInfo.AddValue<Type?>(null);
       object[] data = serializationInfo.GetData();
 
       FlattenedDeserializationInfo deserializationInfo = new FlattenedDeserializationInfo(data);
@@ -49,6 +51,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       Assert.That(deserializationInfo.GetNullableValue<object>(), Is.EqualTo(null));
       Assert.That(deserializationInfo.GetNullableValue<int?>(), Is.EqualTo(null));
       Assert.That(deserializationInfo.GetValue<string>(), Is.EqualTo("Foo"));
+      Assert.That(deserializationInfo.GetValue<Type>(), Is.EqualTo(typeof(int)));
+      Assert.That(deserializationInfo.GetNullableValue<Type>(), Is.Null);
     }
 
     [Test]
