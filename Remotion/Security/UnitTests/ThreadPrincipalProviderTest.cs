@@ -17,6 +17,7 @@
 using System;
 using System.Security.Principal;
 using System.Threading;
+using Moq;
 using NUnit.Framework;
 
 namespace Remotion.Security.UnitTests
@@ -48,6 +49,29 @@ namespace Remotion.Security.UnitTests
     {
       Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(string.Empty), new string[0]);
       Assert.That(Thread.CurrentPrincipal.Identity.IsAuthenticated, Is.False);
+      Assert.That(_principalProvider.GetPrincipal().IsNull, Is.True);
+    }
+
+    [Test]
+    public void GetPrincipal_WithCurrentPrincipalNull_ReturnsNullObject ()
+    {
+      Thread.CurrentPrincipal = null;
+#if NETFRAMEWORK
+      Assert.That(Thread.CurrentPrincipal, Is.Not.Null);
+#else
+      Assert.That(Thread.CurrentPrincipal, Is.Null);
+#endif
+      Assert.That(_principalProvider.GetPrincipal().IsNull, Is.True);
+    }
+
+    [Test]
+    public void GetPrincipal_WithCurrentPrincipalIdentityNull_ReturnsNullObject ()
+    {
+      var principalStub = new Mock<IPrincipal>();
+      Thread.CurrentPrincipal = principalStub.Object;
+
+      Assert.That(Thread.CurrentPrincipal, Is.Not.Null);
+      Assert.That(Thread.CurrentPrincipal.Identity, Is.Null);
       Assert.That(_principalProvider.GetPrincipal().IsNull, Is.True);
     }
 

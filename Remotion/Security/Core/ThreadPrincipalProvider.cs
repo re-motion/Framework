@@ -33,9 +33,9 @@ namespace Remotion.Security
 
     public ISecurityPrincipal GetPrincipal ()
     {
-      // TODO RM-7872: Add notnull assertions
-      IIdentity identity = Thread.CurrentPrincipal!.Identity!;
-      if (!identity.IsAuthenticated)
+      var identity = Thread.CurrentPrincipal?.Identity;
+
+      if (identity is null or { IsAuthenticated: false })
         return s_nullSecurityPrincipal;
 
       // TODO RM-7873: Add notnull assertion
