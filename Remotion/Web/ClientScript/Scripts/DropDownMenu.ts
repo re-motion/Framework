@@ -139,6 +139,8 @@ class DropDownMenu
         eventType,
         function (evt)
         {
+          evt.preventDefault();
+
           menuButton.focus();
           DropDownMenu.OnClick (openTarget, menuID, getSelectionCount, moveToMousePosition ? evt as MouseEvent : null);
         });
