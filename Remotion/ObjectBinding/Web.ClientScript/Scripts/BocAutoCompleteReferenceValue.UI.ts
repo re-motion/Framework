@@ -1769,31 +1769,24 @@ namespace Remotion.BocAutoCompleteReferenceValue
         let topPosition;
         let bottomPosition;
         let maxHeight;
+        let elementHeight: number | string;
         if (position.spaceVertical == 'T' && requiredHeight > position.bottom)
         {
             topPosition = 'auto';
             bottomPosition = Math.max(0, position.bottom + LayoutUtility.GetOuterHeight(reference));
             maxHeight = Math.min(position.top, maxHeightSafe);
+            elementHeight = Math.round(window.innerHeight - bottomPosition);
         }
         else
         {
             topPosition = Math.max(0, (offset.top - window.pageYOffset) + LayoutUtility.GetOuterHeight(reference));
             bottomPosition = 'auto';
             maxHeight = Math.min(position.bottom, maxHeightSafe);
+            elementHeight = Math.round(window.innerHeight - topPosition);
         }
-
-        const popUpOuterHeight = LayoutUtility.GetOuterHeight(popUp);
-        const popUpInnerHeight = LayoutUtility.GetInnerHeight(popUpDiv);
 
         const scrollLeft = popUpDiv.scrollLeft;
         const scrollTop = popUpDiv.scrollTop;
-
-        if (requiredHeight > popUpOuterHeight || requiredHeight < popUpInnerHeight)
-        {
-            //Reset height if content has changed to calculate new height
-            popUp.style.height = 'auto';
-        }
-        let elementHeight: number | string = LayoutUtility.GetOuterHeight(popUp);
 
         if (requiredHeight < maxHeightSafe)
         {
