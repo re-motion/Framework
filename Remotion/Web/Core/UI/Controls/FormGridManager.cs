@@ -2788,6 +2788,8 @@ namespace Remotion.Web.UI.Controls
       if (dataRow.ValidationErrors != null)
       {
         var validationMessages = new HtmlGenericControl("div");
+        validationMessages.EnableViewState = false;
+
         //  Get validation messages
         for (int i = 0; i < dataRow.ValidationErrors.Length; i++)
         {
