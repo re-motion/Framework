@@ -2726,6 +2726,7 @@ namespace Remotion.Web.UI.Controls
           if (textBox.ReadOnly)
           {
             LiteralControl readOnlyValue = new LiteralControl();
+            readOnlyValue.EnableViewState = false;
             readOnlyValue.Text = HttpUtility.HtmlEncode(textBox.Text);
             readOnlyValue.ID = textBox.ID;
             dataRow.ControlsCell.Controls.RemoveAt(idxControl);
