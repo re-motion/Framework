@@ -143,6 +143,7 @@ namespace Remotion.Web.UI.Controls
     public HtmlGenericControl ToLabel (string cssClass)
     {
       HtmlGenericControl label = new HtmlGenericControl("label");
+      label.EnableViewState = false;
 
       label.Controls.Add(ToSpan(ValidationMessage.GetValue()));
       if (_validatedControl != null)
@@ -163,6 +164,7 @@ namespace Remotion.Web.UI.Controls
     public HyperLink ToHyperLink (string cssClass)
     {
       HyperLink hyperLink = new HyperLink();
+      hyperLink.EnableViewState = false;
 
       hyperLink.Controls.Add(ToSpan(ValidationMessage.GetValue()));
       if (_validatedControl != null)
@@ -204,6 +206,8 @@ namespace Remotion.Web.UI.Controls
     private HtmlGenericControl ToGenericControl (string cssClass, string tag)
     {
       HtmlGenericControl genericControl = new HtmlGenericControl(tag);
+      genericControl.EnableViewState = false;
+
       if (!string.IsNullOrEmpty(cssClass))
         genericControl.Attributes["class"] = cssClass;
       genericControl.InnerHtml = ValidationMessage.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);

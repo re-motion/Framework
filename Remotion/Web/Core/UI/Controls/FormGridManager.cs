@@ -2273,8 +2273,8 @@ namespace Remotion.Web.UI.Controls
     {
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
 
-      dataRow.ControlsCell.Controls.AddAt(0, new LiteralControl("<div>"));
-      dataRow.ControlsCell.Controls.Add(new LiteralControl("</div>"));
+      dataRow.ControlsCell.Controls.AddAt(0, new LiteralControl("<div>") { EnableViewState = false });
+      dataRow.ControlsCell.Controls.Add(new LiteralControl("</div>") { EnableViewState = false });
     }
 
     /// <summary>
@@ -2379,11 +2379,11 @@ namespace Remotion.Web.UI.Controls
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
       Assertion.IsNotNull(dataRow.LabelsCell, "dataRow.LabelsCell must not be null.");
 
-      dataRow.LabelsCell.Controls.AddAt(0, new LiteralControl("<div>"));
-      dataRow.LabelsCell.Controls.Add(new LiteralControl("</div>"));
+      dataRow.LabelsCell.Controls.AddAt(0, new LiteralControl("<div>") { EnableViewState = false });
+      dataRow.LabelsCell.Controls.Add(new LiteralControl("</div>") { EnableViewState = false });
 
-      dataRow.ControlsCell.Controls.AddAt(0, new LiteralControl("<div>"));
-      dataRow.ControlsCell.Controls.Add(new LiteralControl("</div>"));
+      dataRow.ControlsCell.Controls.AddAt(0, new LiteralControl("<div>") { EnableViewState = false });
+      dataRow.ControlsCell.Controls.Add(new LiteralControl("</div>") { EnableViewState = false });
     }
 
     /// <summary>
@@ -2726,6 +2726,7 @@ namespace Remotion.Web.UI.Controls
           if (textBox.ReadOnly)
           {
             LiteralControl readOnlyValue = new LiteralControl();
+            readOnlyValue.EnableViewState = false;
             readOnlyValue.Text = HttpUtility.HtmlEncode(textBox.Text);
             readOnlyValue.ID = textBox.ID;
             dataRow.ControlsCell.Controls.RemoveAt(idxControl);
@@ -2788,6 +2789,8 @@ namespace Remotion.Web.UI.Controls
       if (dataRow.ValidationErrors != null)
       {
         var validationMessages = new HtmlGenericControl("div");
+        validationMessages.EnableViewState = false;
+
         //  Get validation messages
         for (int i = 0; i < dataRow.ValidationErrors.Length; i++)
         {
@@ -2960,7 +2963,7 @@ namespace Remotion.Web.UI.Controls
     {
       if (cell != null && cell.Controls.Count == 0)
       {
-        cell.Controls.Add(new LiteralControl("&nbsp;"));
+        cell.Controls.Add(new LiteralControl("&nbsp;") { EnableViewState = false });
       }
     }
 
