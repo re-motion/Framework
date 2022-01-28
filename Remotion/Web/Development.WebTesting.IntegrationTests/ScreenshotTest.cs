@@ -343,6 +343,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
+      // Chromium browsers show the remote control overlay since RM-7184, which is drawn shortly after the page load. The
+      // content however needs a small timespan to be adapted to the slightly smaller viewport.
+      if (Helper.BrowserConfiguration.IsChromium())
+        Thread.Sleep(100);
+
       ScreenshotTestingDelegate<IFluentScreenshotElement<ElementScope>> test =
           (builder, target) =>
           {
