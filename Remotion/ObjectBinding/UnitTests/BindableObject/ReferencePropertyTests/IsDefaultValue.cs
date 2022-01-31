@@ -52,14 +52,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       var value = new Mock<IBusinessObject>();
       var emptyProperties = new IBusinessObjectProperty[0];
 
-      var sequence = new MockSequence();
-      mockService.InSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
-      mockService.InSequence(sequence).Setup(_ => _.IsDefaultValue(stubBusinessObject.Object, property, value.Object, emptyProperties)).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      mockService.InVerifiableSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
+      mockService.InVerifiableSequence(sequence).Setup(_ => _.IsDefaultValue(stubBusinessObject.Object, property, value.Object, emptyProperties)).Returns(true).Verifiable();
 
       _bindableObjectProviderForDeclaringType.AddService(mockService.Object);
       bool actual = property.IsDefaultValue(stubBusinessObject.Object, value.Object, emptyProperties);
 
       mockService.Verify();
+      sequence.Verify();
       Assert.That(actual, Is.True);
     }
 
@@ -71,14 +72,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       var value = new Mock<IBusinessObject>();
       var emptyProperties = new IBusinessObjectProperty[0];
 
-      var sequence = new MockSequence();
-      mockService.InSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
-      mockService.InSequence(sequence).Setup(_ => _.IsDefaultValue(null, property, value.Object, emptyProperties)).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      mockService.InVerifiableSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
+      mockService.InVerifiableSequence(sequence).Setup(_ => _.IsDefaultValue(null, property, value.Object, emptyProperties)).Returns(true).Verifiable();
 
       _bindableObjectProviderForPropertyType.AddService(mockService.Object);
       bool actual = property.IsDefaultValue(null, value.Object, emptyProperties);
 
       mockService.Verify();
+      sequence.Verify();
       Assert.That(actual, Is.True);
     }
 

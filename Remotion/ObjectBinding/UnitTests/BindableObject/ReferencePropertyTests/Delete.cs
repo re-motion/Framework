@@ -51,14 +51,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       IBusinessObjectReferenceProperty property = DeleteProperty("DeleteObjectServiceFromPropertyDeclaration");
       var value = new Mock<IBusinessObject>();
 
-      var sequence = new MockSequence();
-      mockService.InSequence(sequence).Setup(mock => mock.SupportsProperty(property)).Returns(true).Verifiable();
-      mockService.InSequence(sequence).Setup(mock => mock.Delete(stubBusinessObject.Object, property, value.Object)).Verifiable();
+      var sequence = new VerifiableSequence();
+      mockService.InVerifiableSequence(sequence).Setup(mock => mock.SupportsProperty(property)).Returns(true).Verifiable();
+      mockService.InVerifiableSequence(sequence).Setup(mock => mock.Delete(stubBusinessObject.Object, property, value.Object)).Verifiable();
 
       _bindableObjectProviderForDeclaringType.AddService(mockService.Object);
       property.Delete(stubBusinessObject.Object, value.Object);
 
       mockService.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -68,14 +69,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       var property = DeleteProperty("DeleteObjectServiceFromPropertyType");
       var value = new Mock<IBusinessObject>();
 
-      var sequence = new MockSequence();
-      mockService.InSequence(sequence).Setup(mock => mock.SupportsProperty(property)).Returns(true).Verifiable();
-      mockService.InSequence(sequence).Setup(mock => mock.Delete(null, property, value.Object)).Verifiable();
+      var sequence = new VerifiableSequence();
+      mockService.InVerifiableSequence(sequence).Setup(mock => mock.SupportsProperty(property)).Returns(true).Verifiable();
+      mockService.InVerifiableSequence(sequence).Setup(mock => mock.Delete(null, property, value.Object)).Verifiable();
 
       _bindableObjectProviderForPropertyType.AddService(mockService.Object);
       property.Delete(null, value.Object);
 
       mockService.Verify();
+      sequence.Verify();
     }
 
     [Test]

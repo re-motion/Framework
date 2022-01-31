@@ -51,14 +51,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       IBusinessObjectReferenceProperty property = CreateProperty("DefaultValueServiceFromPropertyDeclaration");
       var expected = new Mock<IBusinessObject>();
 
-      var sequence = new MockSequence();
-      mockService.InSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
-      mockService.InSequence(sequence).Setup(_ => _.Create(stubBusinessObject.Object, property)).Returns(expected.Object).Verifiable();
+      var sequence = new VerifiableSequence();
+      mockService.InVerifiableSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
+      mockService.InVerifiableSequence(sequence).Setup(_ => _.Create(stubBusinessObject.Object, property)).Returns(expected.Object).Verifiable();
 
       _bindableObjectProviderForDeclaringType.AddService(mockService.Object);
       IBusinessObject actual = property.CreateDefaultValue(stubBusinessObject.Object);
 
       mockService.Verify();
+      sequence.Verify();
       Assert.That(actual, Is.SameAs(expected.Object));
     }
 
@@ -69,14 +70,15 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       var property = CreateProperty("DefaultValueServiceFromPropertyType");
       var expected = new Mock<IBusinessObject>();
 
-      var sequence = new MockSequence();
-      mockService.InSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
-      mockService.InSequence(sequence).Setup(_ => _.Create(null, property)).Returns(expected.Object).Verifiable();
+      var sequence = new VerifiableSequence();
+      mockService.InVerifiableSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
+      mockService.InVerifiableSequence(sequence).Setup(_ => _.Create(null, property)).Returns(expected.Object).Verifiable();
 
       _bindableObjectProviderForPropertyType.AddService(mockService.Object);
       IBusinessObject actual = property.CreateDefaultValue(null);
 
       mockService.Verify();
+      sequence.Verify();
       Assert.That(actual, Is.SameAs(expected.Object));
     }
 
