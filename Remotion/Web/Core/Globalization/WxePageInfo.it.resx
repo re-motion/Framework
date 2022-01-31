@@ -121,6 +121,6 @@
     <value>&lt;p&gt;Si sta per lasciare questa pagina.&lt;/p&gt;&lt;p&gt;Non è possibile inviare altri input al server.&lt;/p&gt;</value>
   </data>
   <data name="Remotion.Web.ExecutionEngine.WxePageInfo.StatusIsCachedMessage" xml:space="preserve">
-    <value>Non è supportata la navigazione con i pulsanti Avanti e Indietro.</value>
+    <value>Non duplicare o ricaricare le schede e non usare i pulsanti "Avanti" e "Indietro".</value>
   </data>
 </root>

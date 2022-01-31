@@ -51,6 +51,12 @@ type SmartPage_EventMap = {
 };
 type SmartPage_Event = keyof SmartPage_EventMap;
 
+enum SmartPage_CacheDetection
+{
+  Undefined,
+  HasSubmitted,
+  HasLoaded,
+}
 
 // The context contains all information required by the smart page.
 class SmartPage_Context
@@ -101,15 +107,14 @@ class SmartPage_Context
   private _smartScrollingFieldID: Nullable<string> = null;
   // The hidden field containing the smart focusing data.
   private _smartFocusFieldID: Nullable<string> = null;
+  // The hidden field containing the page token guid.
+  private _smartPageTokenFieldID: string;
 
   private _activeElement = null;
   // The hashtable of eventhandlers: Hashtable < event-key, Array < event-handler > >
   private _eventHandlers: string[][] = [];
   private _trackedIDs: string[] = [];
   private _synchronousPostBackCommands: string[] = [];
-
-  private _cacheStateHasSubmitted = 'hasSubmitted';
-  private _cacheStateHasLoaded = 'hasLoaded';
 
   private _loadHandler = function () { SmartPage_Context.Instance!.OnLoad(); };
   private _beforeUnloadHandler = function () { return SmartPage_Context.Instance!.OnBeforeUnload(); };
@@ -139,7 +144,7 @@ class SmartPage_Context
       isDirtyStateTrackingEnabled: boolean,
       abortMessage: Nullable<string>, statusIsSubmittingMessage: Nullable<string>,
       smartScrollingFieldID: Nullable<string>, smartFocusFieldID: Nullable<string>,
-      checkFormStateFunctionName: Nullable<string>)
+      smartPageTokenFieldID: string, checkFormStateFunctionName: Nullable<string>)
   {
     ArgumentUtility.CheckNotNullAndTypeIsString('theFormID', theFormID);
     ArgumentUtility.CheckNotNullAndTypeIsBoolean('isDirtyStateTrackingEnabled', isDirtyStateTrackingEnabled);
@@ -147,6 +152,7 @@ class SmartPage_Context
     ArgumentUtility.CheckTypeIsString('statusIsSubmittingMessage', statusIsSubmittingMessage);
     ArgumentUtility.CheckTypeIsString('smartScrollingFieldID', smartScrollingFieldID);
     ArgumentUtility.CheckTypeIsString('smartFocusFieldID', smartFocusFieldID);
+    ArgumentUtility.CheckNotNullAndTypeIsString('smartPageTokenFieldID', smartPageTokenFieldID);
     ArgumentUtility.CheckTypeIsString('checkFormStateFunctionName', checkFormStateFunctionName);
 
     this._isDirtyStateTrackingEnabled = isDirtyStateTrackingEnabled;
@@ -172,6 +178,7 @@ class SmartPage_Context
 
     this._smartScrollingFieldID = smartScrollingFieldID;
     this._smartFocusFieldID = smartFocusFieldID;
+    this._smartPageTokenFieldID = smartPageTokenFieldID
 
     this.AttachPageLevelEventHandlers();
   }
@@ -461,16 +468,24 @@ class SmartPage_Context
     }
   };
 
+  private GetPageToken(): string
+  {
+    return this.GetFormElement(this._smartPageTokenFieldID).value;
+  }
+
   // Determines whether the page was loaded from cache.
   public CheckIfCached(): void
   {
-    var field = this._theForm.SmartPage_CacheDetectionField;
-    if (field.value == this._cacheStateHasSubmitted)
+    const pageToken = this.GetPageToken();
+    const pageTokenValue = window.sessionStorage.getItem(pageToken);
+    const cacheDetection = SmartPage_CacheDetection[pageTokenValue as keyof typeof SmartPage_CacheDetection];
+
+    if (cacheDetection === SmartPage_CacheDetection.HasSubmitted)
     {
       this._hasSubmitted = true;
       this._isCached = true;
     }
-    else if (field.value == this._cacheStateHasLoaded)
+    else if (cacheDetection === SmartPage_CacheDetection.HasLoaded)
     {
       this._isCached = true;
     }
@@ -483,15 +498,13 @@ class SmartPage_Context
   // Marks the page as loaded.
   public SetCacheDetectionFieldLoaded(): void
   {
-    var field = this._theForm.SmartPage_CacheDetectionField;
-    field.value = this._cacheStateHasLoaded;
+    window.sessionStorage.setItem(this.GetPageToken(), SmartPage_CacheDetection[SmartPage_CacheDetection.HasLoaded]);
   };
 
   // Marks the page as submitted.
   public SetCacheDetectionFieldSubmitted(): void
   {
-    var field = this._theForm.SmartPage_CacheDetectionField;
-    field.value = this._cacheStateHasSubmitted;
+    window.sessionStorage.setItem(this.GetPageToken(), SmartPage_CacheDetection[SmartPage_CacheDetection.HasSubmitted]);
   };
 
   // Event handler for window.OnBeforeUnload.

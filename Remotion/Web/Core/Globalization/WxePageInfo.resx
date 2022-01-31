@@ -121,6 +121,6 @@
     <value>&lt;p&gt;You are about to leave this page.&lt;/p&gt;&lt;p&gt;You will not be able to send any further input to the server.&lt;/p&gt;</value>
   </data>
   <data name="Remotion.Web.ExecutionEngine.WxePageInfo.StatusIsCachedMessage" xml:space="preserve">
-    <value>You cannot use the Forward and Back buttons.</value>
+    <value>Do not duplicate or refresh tabs, or use the "Forward" and "Back" buttons.</value>
   </data>
 </root>
