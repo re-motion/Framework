@@ -37,13 +37,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     [Test]
     public void Test ()
     {
-      var sequence = new MockSequence();
-      TransactionMock.InSequence(sequence).Setup(mock => mock.EnterScope()).Returns(ScopeMock.Object).Verifiable();
-      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(Context, ExecutionListenerStub.Object)).Verifiable();
+      var sequence = new VerifiableSequence();
+      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.EnterScope()).Returns(ScopeMock.Object).Verifiable();
+      ChildTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPlay(Context, ExecutionListenerStub.Object)).Verifiable();
 
       _strategy.OnExecutionPlay(Context, ExecutionListenerStub.Object);
 
       VerifyAll();
+      sequence.Verify();
       Assert.That(_strategy.Scope, Is.SameAs(ScopeMock.Object));
     }
 
@@ -92,9 +93,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     {
       var innerException = new ApplicationException("InnerListener Exception");
 
-      var sequence = new MockSequence();
-      TransactionMock.InSequence(sequence).Setup(mock => mock.EnterScope()).Returns(ScopeMock.Object).Verifiable();
-      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();
+      var sequence = new VerifiableSequence();
+      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.EnterScope()).Returns(ScopeMock.Object).Verifiable();
+      ChildTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPlay(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();
 
       try
       {
@@ -107,6 +108,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       }
 
       VerifyAll();
+      sequence.Verify();
       Assert.That(_strategy.Scope, Is.Not.Null);
     }
 
@@ -115,9 +117,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     {
       var innerException = new WxeFatalExecutionException(new Exception("InnerListener Exception"), null);
 
-      var sequence = new MockSequence();
-      TransactionMock.InSequence(sequence).Setup(mock => mock.EnterScope()).Returns(ScopeMock.Object).Verifiable();
-      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();
+      var sequence = new VerifiableSequence();
+      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.EnterScope()).Returns(ScopeMock.Object).Verifiable();
+      ChildTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPlay(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();
 
       try
       {
@@ -130,6 +132,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       }
 
       VerifyAll();
+      sequence.Verify();
       Assert.That(_strategy.Scope, Is.Not.Null);
     }
   }

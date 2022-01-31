@@ -99,9 +99,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions();
       WxeRepostOptions repostOptions = WxeRepostOptions.SuppressRepost(new Mock<Control>().Object, true);
 
-      var sequence = new MockSequence();
-      _pageMock.InSequence(sequence).Setup(mock => mock.WxeHandler).Returns(_wxeHandler).Verifiable();
-      _pageStep.InSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback(
+      var sequence = new VerifiableSequence();
+      _pageMock.InVerifiableSequence(sequence).Setup(mock => mock.WxeHandler).Returns(_wxeHandler).Verifiable();
+      _pageStep.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback(
           (WxeContext context) =>
           {
             var executionState = (PreProcessingSubFunctionState)((IExecutionStateContext)_pageStep.Object).ExecutionState;
@@ -117,6 +117,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       _httpContextMock.Verify();
       _pageStep.Verify();
       _pageMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -202,9 +203,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions();
       WxeReturnOptions returnOptions = new WxeReturnOptions();
 
-      var sequence = new MockSequence();
-      _pageMock.InSequence(sequence).Setup(mock => mock.WxeHandler).Returns(_wxeHandler).Verifiable();
-      _pageStep.InSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback(
+      var sequence = new VerifiableSequence();
+      _pageMock.InVerifiableSequence(sequence).Setup(mock => mock.WxeHandler).Returns(_wxeHandler).Verifiable();
+      _pageStep.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback(
           (WxeContext context) =>
           {
             var executionState = (PreProcessingSubFunctionState_WithRedirect)((IExecutionStateContext)_pageStep.Object).ExecutionState;
@@ -221,6 +222,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       _httpContextMock.Verify();
       _pageStep.Verify();
       _pageMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

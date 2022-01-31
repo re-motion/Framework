@@ -35,15 +35,16 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var strategy = CreateScopedTransactionStrategy(false, NullTransactionStrategy.Null).Object;
 
       InvokeOnExecutionPlay(strategy);
-      var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
-      ExecutionContextMock.InSequence(sequence).Setup(mock => mock.GetOutParameters()).Returns(new object[0]).Verifiable();
-      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
-      TransactionMock.InSequence(sequence).Setup(mock => mock.Release()).Verifiable();
+      var sequence = new VerifiableSequence();
+      ChildTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
+      ExecutionContextMock.InVerifiableSequence(sequence).Setup(mock => mock.GetOutParameters()).Returns(new object[0]).Verifiable();
+      ScopeMock.InVerifiableSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
+      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Release()).Verifiable();
 
       strategy.OnExecutionStop(Context, ExecutionListenerStub.Object);
 
       VerifyAll();
+      sequence.Verify();
       Assert.That(strategy.Scope, Is.Null);
     }
 
@@ -53,16 +54,17 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var strategy = CreateScopedTransactionStrategy(true, NullTransactionStrategy.Null).Object;
 
       InvokeOnExecutionPlay(strategy);
-      var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
-      TransactionMock.InSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
-      ExecutionContextMock.InSequence(sequence).Setup(mock => mock.GetOutParameters()).Returns(new object[0]).Verifiable();
-      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
-      TransactionMock.InSequence(sequence).Setup(mock => mock.Release()).Verifiable();
+      var sequence = new VerifiableSequence();
+      ChildTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
+      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
+      ExecutionContextMock.InVerifiableSequence(sequence).Setup(mock => mock.GetOutParameters()).Returns(new object[0]).Verifiable();
+      ScopeMock.InVerifiableSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
+      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Release()).Verifiable();
 
       strategy.OnExecutionStop(Context, ExecutionListenerStub.Object);
 
       VerifyAll();
+      sequence.Verify();
       Assert.That(strategy.Scope, Is.Null);
     }
 
@@ -73,19 +75,20 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var expectedObjects = new[] { new object() };
 
       InvokeOnExecutionPlay(strategy);
-      var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
-      TransactionMock.InSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
+      var sequence = new VerifiableSequence();
+      ChildTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
+      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
 
-      ExecutionContextMock.InSequence(sequence).Setup(mock => mock.GetOutParameters()).Returns(expectedObjects).Verifiable();
-      OuterTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.EnsureCompatibility(expectedObjects)).Verifiable();
+      ExecutionContextMock.InVerifiableSequence(sequence).Setup(mock => mock.GetOutParameters()).Returns(expectedObjects).Verifiable();
+      OuterTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.EnsureCompatibility(expectedObjects)).Verifiable();
 
-      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
-      TransactionMock.InSequence(sequence).Setup(mock => mock.Release()).Verifiable();
+      ScopeMock.InVerifiableSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
+      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Release()).Verifiable();
 
       strategy.OnExecutionStop(Context, ExecutionListenerStub.Object);
 
       VerifyAll();
+      sequence.Verify();
       Assert.That(strategy.Scope, Is.Null);
     }
 

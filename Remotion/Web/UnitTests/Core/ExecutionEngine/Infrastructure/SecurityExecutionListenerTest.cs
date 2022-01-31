@@ -58,14 +58,15 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     {
       var securityListener = CreateSecurityListener(_securityAdapterMock.Object);
 
-      var sequence = new MockSequence();
-      _securityAdapterMock.InSequence(sequence).Setup(mock => mock.CheckAccess(_function)).Verifiable();
-      _innerListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(_wxeContext)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _securityAdapterMock.InVerifiableSequence(sequence).Setup(mock => mock.CheckAccess(_function)).Verifiable();
+      _innerListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPlay(_wxeContext)).Verifiable();
 
       securityListener.OnExecutionPlay(_wxeContext);
 
       _securityAdapterMock.Verify();
       _innerListenerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

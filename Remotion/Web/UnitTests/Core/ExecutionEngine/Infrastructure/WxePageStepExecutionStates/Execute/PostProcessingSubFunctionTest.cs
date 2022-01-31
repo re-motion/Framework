@@ -46,13 +46,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     {
       PrivateInvoke.SetNonPublicField(FunctionState, "_postBackID", 100);
 
-      var sequence = new MockSequence();
-      ExecutionStateContextMock.InSequence(sequence).Setup(mock => mock.SetReturnState(SubFunction.Object, true, PostBackCollection)).Verifiable();
-      ExecutionStateContextMock.InSequence(sequence).Setup(mock => mock.SetExecutionState(NullExecutionState.Null)).Verifiable();
+      var sequence = new VerifiableSequence();
+      ExecutionStateContextMock.InVerifiableSequence(sequence).Setup(mock => mock.SetReturnState(SubFunction.Object, true, PostBackCollection)).Verifiable();
+      ExecutionStateContextMock.InVerifiableSequence(sequence).Setup(mock => mock.SetExecutionState(NullExecutionState.Null)).Verifiable();
 
       _executionState.ExecuteSubFunction(WxeContext);
 
       VerifyAll();
+      sequence.Verify();
 
       Assert.That(PostBackCollection[WxePageInfo.PostBackSequenceNumberID], Is.EqualTo("100"));
     }
