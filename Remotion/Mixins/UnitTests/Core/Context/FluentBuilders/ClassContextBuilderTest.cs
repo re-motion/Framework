@@ -895,11 +895,11 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       var r2 = new MixinConfiguration();
       var r3 = new Mock<IDisposable>(MockBehavior.Strict);
 
-      var sequence = new MockSequence();
-      _parentBuilderMock.InSequence(sequence).Setup(mock => mock.ForClass<object>()).Returns(r1).Verifiable();
-      _parentBuilderMock.InSequence(sequence).Setup(mock => mock.ForClass<string>()).Returns(r1).Verifiable();
-      _parentBuilderMock.InSequence(sequence).Setup(mock => mock.BuildConfiguration()).Returns(r2).Verifiable();
-      _parentBuilderMock.InSequence(sequence).Setup(mock => mock.EnterScope()).Returns(r3.Object).Verifiable();
+      var sequence = new VerifiableSequence();
+      _parentBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.ForClass<object>()).Returns(r1).Verifiable();
+      _parentBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.ForClass<string>()).Returns(r1).Verifiable();
+      _parentBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.BuildConfiguration()).Returns(r2).Verifiable();
+      _parentBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.EnterScope()).Returns(r3.Object).Verifiable();
 
 
       Assert.That(_classBuilder.ForClass<object>(), Is.SameAs(r1));
@@ -911,6 +911,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       _classBuilderMock.Verify();
       _mixinBuilderMock.Verify();
       r3.Verify();
+      sequence.Verify();
     }
   }
 }
