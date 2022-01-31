@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Moq;
 using NUnit.Framework;
@@ -52,9 +53,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     [Test]
     public void ExecuteSubFunction_GoesToPostProcessingSubFunction ()
     {
-      var sequence = new MockSequence();
-      SubFunction.InSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Verifiable();
-      ExecutionStateContextMock.InSequence(sequence)
+      var sequence = new VerifiableSequence();
+      SubFunction.InVerifiableSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Verifiable();
+      ExecutionStateContextMock.InVerifiableSequence(sequence)
           .Setup(mock => mock.SetExecutionState(It.IsNotNull<PostProcessingSubFunctionState>()))
           .Callback((IExecutionState executionState) => CheckExecutionState((PostProcessingSubFunctionState)executionState))
           .Verifiable();
@@ -62,15 +63,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       _executionState.ExecuteSubFunction(WxeContext);
 
       VerifyAll();
+      sequence.Verify();
     }
 
     [Test]
     public void ExecuteSubFunction_ReEntrancy_GoesToPostProcessingSubFunction ()
     {
-      var sequence = new MockSequence();
-      SubFunction.InSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Callback((WxeContext context) => WxeThreadAbortHelper.Abort()).Verifiable();
-      SubFunction.InSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Verifiable();
-      ExecutionStateContextMock.InSequence(sequence).Setup(mock => mock.SetExecutionState(It.IsNotNull<IExecutionState>())).Verifiable();
+      var sequence = new VerifiableSequence();
+      var executeCallbacks = new Queue<Action>();
+      executeCallbacks.Enqueue(() => WxeThreadAbortHelper.Abort());
+      SubFunction.InVerifiableSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Callback((WxeContext _) => executeCallbacks.Dequeue().Invoke()).Verifiable();
+      executeCallbacks.Enqueue(() => { /* NOP */ });
+      SubFunction.InVerifiableSequence(sequence).Setup(mock => mock.Execute(WxeContext)).Callback((WxeContext _) => executeCallbacks.Dequeue().Invoke()).Verifiable();
+      ExecutionStateContextMock.InVerifiableSequence(sequence).Setup(mock => mock.SetExecutionState(It.IsNotNull<IExecutionState>())).Verifiable();
 
       try
       {
@@ -85,6 +90,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       _executionState.ExecuteSubFunction(WxeContext);
 
       VerifyAll();
+      sequence.Verify();
     }
   }
 }

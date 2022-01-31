@@ -41,13 +41,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var object1 = new object();
       var object2 = new object();
 
-      var sequence = new MockSequence();
-      ExecutionContextMock.InSequence(sequence).Setup(mock => mock.GetInParameters()).Returns(new[] { object1, object2 }).Verifiable();
-      TransactionMock.InSequence(sequence).Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2 }.All(_.Contains)))).Verifiable();
+      var sequence = new VerifiableSequence();
+      ExecutionContextMock.InVerifiableSequence(sequence).Setup(mock => mock.GetInParameters()).Returns(new[] { object1, object2 }).Verifiable();
+      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2 }.All(_.Contains)))).Verifiable();
 
       new RootTransactionStrategy(false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object);
 
       VerifyAll();
+      sequence.Verify();
     }
 
     [Test]
@@ -76,13 +77,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var object1 = new object();
       var object2 = new object();
 
-      var sequence = new MockSequence();
-      ExecutionContextMock.InSequence(sequence).Setup(mock => mock.GetInParameters()).Returns(new[] { object1, null, object2 }).Verifiable();
-      TransactionMock.InSequence(sequence).Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2 }.All(_.Contains)))).Verifiable();
+      var sequence = new VerifiableSequence();
+      ExecutionContextMock.InVerifiableSequence(sequence).Setup(mock => mock.GetInParameters()).Returns(new[] { object1, null, object2 }).Verifiable();
+      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2 }.All(_.Contains)))).Verifiable();
 
       new RootTransactionStrategy(false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object);
 
       VerifyAll();
+      sequence.Verify();
     }
 
     [Test]
@@ -92,20 +94,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var object2 = new object();
       var object3 = new object();
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExecutionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.GetInParameters())
           .Returns(new[] { object1, new[] { object2, object3 } })
           .Verifiable();
       TransactionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2, object3 }.All(_.Contains))))
           .Verifiable();
 
       new RootTransactionStrategy(false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object);
 
       VerifyAll();
+      sequence.Verify();
     }
 
     [Test]
@@ -115,13 +118,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var object2 = new object();
       var object3 = new object();
 
-      var sequence = new MockSequence();
-      ExecutionContextMock.InSequence(sequence).Setup(mock => mock.GetInParameters()).Returns(new[] { object1, new[] { object2, null, object3 } }).Verifiable();
-      TransactionMock.InSequence(sequence).Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2, object3 }.All(_.Contains)))).Verifiable();
+      var sequence = new VerifiableSequence();
+      ExecutionContextMock.InVerifiableSequence(sequence).Setup(mock => mock.GetInParameters()).Returns(new[] { object1, new[] { object2, null, object3 } }).Verifiable();
+      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2, object3 }.All(_.Contains)))).Verifiable();
 
       new RootTransactionStrategy(false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object);
 
       VerifyAll();
+      sequence.Verify();
     }
   }
 }
