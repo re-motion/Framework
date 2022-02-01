@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject allowedObject = _testHelper.CreateSecurableObject();
       var query = new Mock<IQuery>();
       var queryResult = new QueryResult<DomainObject>(query.Object, new DomainObject[] { allowedObject });
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), allowedObject, GeneralAccessTypes.Find, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), allowedObject, GeneralAccessTypes.Find, true);
 
       var finalResult = _extension.FilterQueryResult(_testHelper.Transaction, queryResult);
 
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject deniedObject = _testHelper.CreateSecurableObject();
       var query = new Mock<IQuery>();
       var queryResult = new QueryResult<DomainObject>(query.Object, new DomainObject[] { deniedObject });
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), deniedObject, GeneralAccessTypes.Find, false);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), deniedObject, GeneralAccessTypes.Find, false);
 
       var finalResult = _extension.FilterQueryResult(_testHelper.Transaction, queryResult);
 
@@ -107,8 +107,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject deniedObject = _testHelper.CreateSecurableObject();
       var query = new Mock<IQuery>();
       var queryResult = new QueryResult<DomainObject>(query.Object, new DomainObject[] { deniedObject, allowedObject });
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), deniedObject, GeneralAccessTypes.Find, false);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), allowedObject, GeneralAccessTypes.Find, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), deniedObject, GeneralAccessTypes.Find, false);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), allowedObject, GeneralAccessTypes.Find, true);
 
       var finalResult = _extension.FilterQueryResult(_testHelper.Transaction, queryResult);
 
@@ -160,8 +160,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
         Assert.That(filteredResult.ToArray(), Is.EqualTo(new[] { allowedObject }));
         return true;
       };
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), allowedObject, GeneralAccessTypes.Find, true);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), deniedObject, GeneralAccessTypes.Find, false);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), allowedObject, GeneralAccessTypes.Find, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), deniedObject, GeneralAccessTypes.Find, false);
 
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       IQuery query = _testHelper.CreateSecurableObjectQuery();
@@ -235,7 +235,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       var query = new Mock<IQuery>();
       var queryResult = new QueryResult<DomainObject>(query.Object, new DomainObject[] { securableObject });
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, GeneralAccessTypes.Find, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), securableObject, GeneralAccessTypes.Find, true);
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
@@ -251,7 +251,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       var query = new Mock<IQuery>();
       var queryResult = new QueryResult<DomainObject>(query.Object, new DomainObject[] { securableObject });
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, GeneralAccessTypes.Find, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), securableObject, GeneralAccessTypes.Find, true);
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {
