@@ -28,6 +28,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     }
 
     public abstract TTransaction? GetNativeTransaction<TTransaction> ();
+    public abstract bool EvaluateDirtyState ();
     public abstract void Commit ();
     public abstract void Rollback ();
     public abstract void Reset ();

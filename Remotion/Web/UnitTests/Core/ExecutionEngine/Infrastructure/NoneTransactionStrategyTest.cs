@@ -46,6 +46,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     }
 
     [Test]
+    public void EvaluateDirtyState ()
+    {
+      Assert.That(_strategy.EvaluateDirtyState(), Is.False);
+    }
+
+    [Test]
     public void Commit ()
     {
       Assert.That(

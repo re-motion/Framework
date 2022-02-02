@@ -241,12 +241,15 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     /// <remarks>
     /// The evaluation includes the <see cref="IsDirty"/> flag, the information for the currently executing <see cref="WxeStep"/>,
-    /// and the aggregated dirty state of previously executed steps.
+    /// the <see cref="Transaction"/>'s dirty state, and the aggregated dirty state of previously executed steps.
     /// </remarks>
     /// <returns><see langword="true" /> if the <see cref="WxeFunction"/> represents unsaved changes.</returns>
     public override bool EvaluateDirtyState ()
     {
       if (_isDirty)
+        return true;
+
+      if (TransactionStrategy.EvaluateDirtyState())
         return true;
 
       return base.EvaluateDirtyState();

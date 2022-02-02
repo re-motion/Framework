@@ -259,6 +259,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     }
 
     [Test]
+    public void EvaluateDirtyState_WithIsDirtyFromTransactionStrategy_ReturnsTrue ()
+    {
+      TestFunction2 function = new TestFunction2(WxeTransactionMode<TestTransactionFactory>.CreateRoot);
+
+      function.Execute(CurrentWxeContext);
+
+      Assert.That(function.EvaluateDirtyState(), Is.False);
+
+      var transaction = function.TransactionStrategy.GetNativeTransaction<TestTransaction>();
+      transaction.HasUncommittedChanges = true;
+
+      Assert.That(function.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
     public void EvaluateDirtyState_DirtyFromExecutedStep_AndIsDirtySetFalse_ReturnsTrue ()
     {
       var function = new TestFunction2();

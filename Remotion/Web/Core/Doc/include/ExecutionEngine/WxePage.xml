@@ -85,7 +85,9 @@
       <para>
         The <see cref="WxePage"/> extends the dirty state tracking provided by the <see cref="SmartPage"/> by
         including the dirty state of the <see cref="WxeFunction"/> this <see cref="WxePage"/> belongs to as well as
-        the entire function stack (i.e. the dirty state of the shared root <see cref="WxeFunction"/>).
+        the entire function stack (i.e. the dirty state of the shared root <see cref="WxeFunction"/>)
+        and the <see cref="Remotion.Web.ExecutionEngine.Infrastructure.ITransactionStrategy"/> associated with the
+        respective <see cref="WxeFunction"/>.
       </para>
 
       <h4 class="dtH4">Page State Management</h4>

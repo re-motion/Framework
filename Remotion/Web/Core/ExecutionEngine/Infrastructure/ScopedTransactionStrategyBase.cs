@@ -102,6 +102,11 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       get { return _executionContext; }
     }
 
+    public override bool EvaluateDirtyState ()
+    {
+      return _transaction.HasUncommittedChanges;
+    }
+
     public override void Commit ()
     {
       _transaction.Commit();

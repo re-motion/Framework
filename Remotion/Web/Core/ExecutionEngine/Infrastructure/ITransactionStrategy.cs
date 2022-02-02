@@ -23,6 +23,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   public interface ITransactionStrategy : INullObject
   {
     TTransaction? GetNativeTransaction<TTransaction> ();
+    bool EvaluateDirtyState ();
     void Commit ();
     void Rollback ();
     void EnsureCompatibility (IEnumerable objects);
