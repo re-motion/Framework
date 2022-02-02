@@ -120,6 +120,7 @@
     <Content Include="CompletionDetectionStrategyTest.aspx" />
     <Content Include="AspNetRequestErrorDetectionParserStaticPages\InvalidErrorPageWithMessageMissing.html" />
     <Content Include="AspNetRequestErrorDetectionParserStaticPages\InvalidErrorPageWithStacktraceMissing.html" />
+    <Content Include="DirtyStates\DirtyStateTest.aspx" />
     <Content Include="DropDownMenuWebService.asmx" />
     <Content Include="RequestErrorDetectionStrategyTest.aspx" />
     <Content Include="CoypuElementScopeFindExtensionsTest.aspx" />
@@ -194,6 +195,15 @@
       <DependentUpon>CompletionDetectionStrategyTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="CompletionDetectionStrategyTestFunction.cs" />
+    <Compile Include="DirtyStates\DirtyStateSubFunction.cs" />
+    <Compile Include="DirtyStates\DirtyStateTest.aspx.cs">
+      <DependentUpon>DirtyStateTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DirtyStates\DirtyStateTest.aspx.designer.cs">
+      <DependentUpon>DirtyStateTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DirtyStates\DirtyStateRootFunction.cs" />
     <Compile Include="DropDownMenuWebService.asmx.cs">
       <DependentUpon>DropDownMenuWebService.asmx</DependentUpon>
       <SubType>Component</SubType>
