@@ -16,6 +16,7 @@
 // 
 
 using System;
+using System.Reflection;
 using System.Threading;
 using Remotion.Utilities;
 
@@ -56,26 +57,29 @@ namespace Remotion.Development.UnitTesting
       Exception? lastException = null;
 
       // Use anonymous delegate to catch and store exceptions from the thread in the current scope.
-      Thread otherThread =
-        new Thread((ThreadStart)delegate
-          {
-            try
-            {
-              _threadStart();
-            }
-            catch (ThreadAbortException)
-            {
-              // Explicitely reset the ThreadAbortException
-              Thread.ResetAbort();
-              // Do not report exception in lastException, since aborting is expected behavior.
-            }
-            catch (Exception e)
-            {
-              lastException = e;
-            }
-          }
-         );
+      var threadStart = new ThreadStart(() =>
+      {
+        try
+        {
+          _threadStart();
+        }
+        catch (ThreadAbortException)
+        {
+          // Explicitely reset the ThreadAbortException
+          Thread.ResetAbort();
+          // Do not report exception in lastException, since aborting is expected behavior.
+        }
+        catch (Exception e)
+        {
+          lastException = e;
+        }
+      });
 
+      // TODO RM-8354: Remove ThreadRunner from SharedSource to allow reference to Core.Core
+      Type? type = Type.GetType("Remotion.Context.SafeContext, Remotion")?.GetNestedType("Thread");
+      Thread otherThread = type != null
+          ? (Thread)PrivateInvoke.InvokePublicStaticMethod(type, "New", threadStart)!
+          : new Thread(threadStart);
       otherThread.Start();
       bool timedOut = !JoinThread(otherThread);
 
