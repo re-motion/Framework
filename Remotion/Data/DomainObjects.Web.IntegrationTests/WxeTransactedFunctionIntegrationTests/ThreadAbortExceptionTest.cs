@@ -17,6 +17,7 @@
 using System;
 using System.Threading;
 using NUnit.Framework;
+using Remotion.Context;
 using Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests.WxeFunctions;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.ExecutionEngine;
@@ -106,18 +107,21 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       ThreadRunner.Run(
           delegate
           {
-            Assert.That(ClientTransactionScope.ActiveScope, Is.Null, "ActiveScope is not null before execute.");
-            Assert.That(nestedFunction.FirstStepExecuted, Is.True);
-            Assert.That(nestedFunction.SecondStepExecuted, Is.False);
-            Assert.That(nestedFunction.ThreadAborted, Is.True);
+            using (SafeContext.Instance.OpenSafeContextBoundary())
+            {
+              Assert.That(ClientTransactionScope.ActiveScope, Is.Null, "ActiveScope is not null before execute.");
+              Assert.That(nestedFunction.FirstStepExecuted, Is.True);
+              Assert.That(nestedFunction.SecondStepExecuted, Is.False);
+              Assert.That(nestedFunction.ThreadAborted, Is.True);
 
-            parentFunction.Execute(Context);
+              parentFunction.Execute(Context);
 
-            Assert.That(nestedFunction.FirstStepExecuted, Is.True);
-            Assert.That(nestedFunction.SecondStepExecuted, Is.True);
-            Assert.That(ClientTransactionScope.ActiveScope, Is.Null, "ActiveScope is not null after execute.");
-            //TODO: Before there was a transaction, now there isn't                           
-            //Assert.That ( ClientTransactionScope.CurrentTransaction, Is.SameAs (originalScope.ScopedTransaction)); // but same transaction as on old thread
+              Assert.That(nestedFunction.FirstStepExecuted, Is.True);
+              Assert.That(nestedFunction.SecondStepExecuted, Is.True);
+              Assert.That(ClientTransactionScope.ActiveScope, Is.Null, "ActiveScope is not null after execute.");
+              //TODO: Before there was a transaction, now there isn't                           
+              //Assert.That ( ClientTransactionScope.CurrentTransaction, Is.SameAs (originalScope.ScopedTransaction)); // but same transaction as on old thread
+            }
           });
 
       originalScope.Leave();

@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Context;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Security.UnitTests
@@ -155,12 +156,15 @@ namespace Remotion.Security.UnitTests
       ThreadRunner.Run(
           delegate
           {
-            Assert.That(SecurityFreeSection.IsActive, Is.False);
-            using (SecurityFreeSection.Activate())
+            using (SafeContext.Instance.OpenSafeContextBoundary())
             {
-              Assert.That(SecurityFreeSection.IsActive, Is.True);
+              Assert.That(SecurityFreeSection.IsActive, Is.False);
+              using (SecurityFreeSection.Activate())
+              {
+                Assert.That(SecurityFreeSection.IsActive, Is.True);
+              }
+              Assert.That(SecurityFreeSection.IsActive, Is.False);
             }
-            Assert.That(SecurityFreeSection.IsActive, Is.False);
           });
 
       scope.Dispose();
