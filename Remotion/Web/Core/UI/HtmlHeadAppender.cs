@@ -139,14 +139,12 @@ namespace Remotion.Web.UI
     ///   </para><para>
     ///     Remove the title tag from the aspx-source.
     ///   </para><para>
-    ///     Registeres the title with a default priority of Page.
+    ///     Registers the title with a default priority of Page.
     ///   </para>
     /// </remarks>
-    /// <param name="title"> The stirng to be isnerted as the title. </param>
-    public void SetTitle (string title)
+    /// <param name="title"> The <see cref="WebString"/> to be inserted as the title. </param>
+    public void SetTitle (WebString title)
     {
-      ArgumentUtility.CheckNotNull("title", title);
-
       _title = new TitleTag(title);
     }
 
