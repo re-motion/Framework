@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
       return new ObjectLookupResult<DataContainer>(id, LoadDataContainerResult);
     }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
+    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
     {
       throw new NotImplementedException();
     }

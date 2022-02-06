@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public abstract ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id);
 
-    public abstract IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids);
+    public abstract IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids);
 
     public abstract IEnumerable<DataContainer> LoadDataContainersByRelatedID (
         RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition? sortExpressionDefinition, ObjectID relatedID);

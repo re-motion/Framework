@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
       throw new NotImplementedException();
     }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
+    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
     {
       throw new NotImplementedException();
     }

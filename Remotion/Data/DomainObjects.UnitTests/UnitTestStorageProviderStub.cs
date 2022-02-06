@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       }
     }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
+    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
     {
       if (InnerProvider != null)
         return InnerProvider.LoadDataContainers(ids);
