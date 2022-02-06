@@ -34,7 +34,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     [Test]
     public void Render ()
     {
-      var titleTag = new TitleTag("My Title");
+      var titleTag = new TitleTag(WebString.CreateFromText("My Title"));
 
       titleTag.Render(_htmlHelper.Writer);
 
@@ -46,7 +46,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     [Test]
     public void Render_UsesHtmlEncoding ()
     {
-      var titleTag = new TitleTag("My <Title>");
+      var titleTag = new TitleTag(WebString.CreateFromText("My <Title>"));
 
       titleTag.Render(_htmlHelper.Writer);
 

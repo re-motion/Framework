@@ -36,7 +36,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.HtmlHeadContentsImplementation
                              {
                                  new StubStyleSheetElement("stylesheet-1"),
                                  new JavaScriptInclude(new StaticResourceUrl("javscript-1")),
-                                 new TitleTag("title"),
+                                 new TitleTag(WebString.CreateFromText("title")),
                                  new StubHtmlHeadElement("head-1"),
                                  new StubStyleSheetElement("stylesheet-2"),
                                  new JavaScriptInclude(new StaticResourceUrl("javscript-2")),
@@ -72,8 +72,8 @@ head-2
     {
       var htmlHeadElements = new List<HtmlHeadElement>
                              {
-                                 new TitleTag("title-1"),
-                                 new TitleTag("title-2"),
+                                 new TitleTag(WebString.CreateFromText("title-1")),
+                                 new TitleTag(WebString.CreateFromText("title-2")),
                              };
       var renderer = new HtmlHeadContentsRenderer();
       var htmlHelper = new HtmlHelper();
