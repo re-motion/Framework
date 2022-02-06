@@ -476,8 +476,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
         storageProviderMock.Setup(mock => mock.BeginTransaction()).Verifiable();
         storageProviderMock
-            .Setup(mock => mock.Save(It.IsNotNull<IEnumerable<DataContainer>>()))
-            .Callback((IEnumerable<DataContainer> dataContainers) => Assert.That(dataContainers, Is.EquivalentTo(secondStorageProvider)))
+            .Setup(mock => mock.Save(It.IsNotNull<IReadOnlyCollection<DataContainer>>()))
+            .Callback((IReadOnlyCollection<DataContainer> dataContainers) => Assert.That(dataContainers, Is.EquivalentTo(secondStorageProvider)))
             .Verifiable();
         storageProviderMock
             .Setup(mock => mock.UpdateTimestamps(It.IsNotNull<IReadOnlyCollection<DataContainer>>()))
@@ -548,8 +548,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
         persistenceManager.BeginTransactionCallback = _ => contextMock.Object;
         storageProviderMock
-            .Setup(mock => mock.Save(It.IsNotNull<IEnumerable<DataContainer>>()))
-            .Callback((IEnumerable<DataContainer> dataContainers) => Assert.That(dataContainers, Is.EquivalentTo(secondStorageProvider)))
+            .Setup(mock => mock.Save(It.IsNotNull<IReadOnlyCollection<DataContainer>>()))
+            .Callback((IReadOnlyCollection<DataContainer> dataContainers) => Assert.That(dataContainers, Is.EquivalentTo(secondStorageProvider)))
             .Verifiable();
         storageProviderMock
             .Setup(mock => mock.UpdateTimestamps(It.IsNotNull<IReadOnlyCollection<DataContainer>>()))
@@ -600,7 +600,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
         persistenceManager.BeginTransactionCallback = _ => contextMock.Object;
         storageProviderMock
-            .Setup(mock => mock.Save(It.IsNotNull<IEnumerable<DataContainer>>()))
+            .Setup(mock => mock.Save(It.IsNotNull<IReadOnlyCollection<DataContainer>>()))
             .Throws(exception);
         persistenceManager.RollbackTransactionCallback = (_, context) =>
         {

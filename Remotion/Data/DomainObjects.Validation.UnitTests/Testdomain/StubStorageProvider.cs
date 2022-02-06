@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
       throw new NotImplementedException();
     }
 
-    public override void Save (IEnumerable<DataContainer> dataContainers)
+    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
     }
 

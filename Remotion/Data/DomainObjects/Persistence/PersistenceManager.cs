@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 
       var groupedDataContainers = dataContainers
           .ToLookup(dataContainer => dataContainer.ClassDefinition.StorageEntityDefinition.StorageProviderDefinition)
-          .Select(group => new { Provider = _storageProviderManager.GetMandatory(group.Key.Name), DataContainers = group })
+          .Select(group => new { Provider = _storageProviderManager.GetMandatory(group.Key.Name), DataContainers = group.ToArray() })
           .ToArray();
 
       var providers = groupedDataContainers.Select(group => group.Provider).ToArray();

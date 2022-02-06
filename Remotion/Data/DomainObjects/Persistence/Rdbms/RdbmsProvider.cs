@@ -293,7 +293,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return new DataContainerCollection(checkedSequence, true);
     }
 
-    public override void Save (IEnumerable<DataContainer> dataContainers)
+    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);

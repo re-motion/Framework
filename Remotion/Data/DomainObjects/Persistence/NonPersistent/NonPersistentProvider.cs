@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
       return new DataContainerCollection();
     }
 
-    public override void Save (IEnumerable<DataContainer> dataContainers)
+    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
