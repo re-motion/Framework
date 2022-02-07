@@ -488,9 +488,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     [CanBeNull]
-    protected virtual Badge? GetBadge (IBusinessObjectProperty businessObjectProperty)
+    protected virtual Badge? GetBadge (IBusinessObjectProperty businessObjectProperty, IBusinessObjectWithIdentity businessObject)
     {
       ArgumentUtility.CheckNotNull("businessObjectProperty", businessObjectProperty);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+
       return null;
     }
 
@@ -548,18 +550,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
               && referenceProperty.IsList
               && referenceProperty.ReferenceClass is IBusinessObjectClassWithIdentity
               && referenceProperty.IsAccessible(parentBusinessObject))
-            referenceListPropertyInfos.Add(CreateBusinessObjectPropertyTreeNodeInfo(referenceProperty));
+            referenceListPropertyInfos.Add(CreateBusinessObjectPropertyTreeNodeInfo(referenceProperty, parentBusinessObject));
         }
         return (BusinessObjectPropertyTreeNodeInfo[])referenceListPropertyInfos.ToArray(typeof(BusinessObjectPropertyTreeNodeInfo));
       }
 
-      return new[] { CreateBusinessObjectPropertyTreeNodeInfo(Property) };
+      return new[] { CreateBusinessObjectPropertyTreeNodeInfo(Property, parentBusinessObject) };
     }
 
-    private BusinessObjectPropertyTreeNodeInfo CreateBusinessObjectPropertyTreeNodeInfo (IBusinessObjectReferenceProperty property)
+    private BusinessObjectPropertyTreeNodeInfo CreateBusinessObjectPropertyTreeNodeInfo (IBusinessObjectReferenceProperty property, IBusinessObjectWithIdentity businessObject)
     {
       var businessObjectPropertyTreeNodeInfo = new BusinessObjectPropertyTreeNodeInfo(property);
-      businessObjectPropertyTreeNodeInfo.Badge = GetBadge(property);
+      businessObjectPropertyTreeNodeInfo.Badge = GetBadge(property, businessObject);
 
       return businessObjectPropertyTreeNodeInfo;
     }
