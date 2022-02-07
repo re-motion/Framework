@@ -102,6 +102,8 @@ class DropDownMenu
   private static _statusPopupRepositionTimer: Nullable<number> = null;
   private static _blurTimer: Nullable<number> = null;
   private static _updateFocus: boolean = true;
+  // Keyboard navigation might trigger mouse events that would reset the selection
+  private static _ignoreMouseEvents: boolean = false;
 
   public static AddMenuInfo(menuInfo: DropDownMenu_MenuInfo): void
   {
@@ -151,8 +153,23 @@ class DropDownMenu
       menuButton.addEventListener ("blur", function () { openTarget.querySelectorAll ('.' + DropDownMenu._buttonClassName).forEach (b => b.classList.remove (DropDownMenu._focusClassName)); });
 
       var allButMenuButton = Array.from (openTarget.querySelectorAll ('a[href]')).filter (b => menuButton !== b);
-      allButMenuButton.forEach (b => b.addEventListener ("mouseover", function () { openTarget.querySelectorAll ('.' + DropDownMenu._buttonClassName).forEach (b => b.classList.add (DropDownMenu._nestedHoverClassName)); }));
-      allButMenuButton.forEach (b => b.addEventListener ("mouseout", function () { openTarget.querySelectorAll ('.' + DropDownMenu._buttonClassName).forEach (b => b.classList.remove (DropDownMenu._nestedHoverClassName)); }));
+      const mouseOverHandler = function () { 
+        if (DropDownMenu._ignoreMouseEvents)
+          return;
+
+          openTarget.querySelectorAll ('.' + DropDownMenu._buttonClassName)
+            .forEach (b => b.classList.add (DropDownMenu._nestedHoverClassName));
+      };
+      allButMenuButton.forEach (b => b.addEventListener ("mouseover", mouseOverHandler));
+
+      const mouseOutHandler = function () {
+        if (DropDownMenu._ignoreMouseEvents)
+          return;
+
+        openTarget.querySelectorAll ('.' + DropDownMenu._buttonClassName)
+          .forEach (b => b.classList.remove (DropDownMenu._nestedHoverClassName));
+      };
+      allButMenuButton.forEach (b => b.addEventListener ("mouseout", mouseOutHandler));
     }
   }
 
@@ -408,10 +425,16 @@ class DropDownMenu
 
     ul.addEventListener ('mouseleave', function ()
     {
+      if (DropDownMenu._ignoreMouseEvents)
+        return;
+
       ul.querySelectorAll ("li").forEach (b => b.classList.remove (DropDownMenu._itemSelectedClassName));
     });
     ul.addEventListener ('mouseover', function (event)
     {
+      if (DropDownMenu._ignoreMouseEvents)
+        return;
+
       var eventTarget = DropDownMenu.GetTarget (event, "LI");
 
       ul.querySelectorAll ("li").forEach (b => b.classList.remove (DropDownMenu._itemSelectedClassName));
@@ -501,6 +524,10 @@ class DropDownMenu
     var left = clickEvent ? clickEvent.clientX + 'px' : 'auto';
     var right = clickEvent ? 'auto' : Math.max (0, document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - referenceElement.offsetWidth) + 'px';
 
+    const verticalSpacing = parseInt(getComputedStyle(popUpDiv).fontSize) * 2;
+    const minimumPopUpHeight = verticalSpacing * 6;
+
+    var scrollTop = popUpDiv.scrollTop;
     popUpDiv.style.top = top + 'px';
     popUpDiv.style.bottom = 'auto';
     popUpDiv.style.right = right;
@@ -517,15 +544,23 @@ class DropDownMenu
         popUpDiv.style.right = 'auto';
       }
     }
-    if (LayoutUtility.GetHeight (popUpDiv) > space_bottom)
+
+    const popUpHeight = LayoutUtility.GetHeight (popUpDiv);
+    if (popUpHeight > space_bottom - verticalSpacing)
     {
-      if (LayoutUtility.GetHeight (popUpDiv) > document.documentElement.clientHeight)
+      const maximumPopUpHeight = document.documentElement.clientHeight - verticalSpacing * 2;
+      if (popUpHeight > maximumPopUpHeight)
       {
-        popUpDiv.style.top = '0';
+        // Ensure that the popup retains the minimum size and overflows out of the page
+        const targetPopUpHeight = Math.max(minimumPopUpHeight, maximumPopUpHeight);
+        const bottom = document.documentElement.clientHeight - verticalSpacing - targetPopUpHeight;
+
+        popUpDiv.style.top = verticalSpacing + 'px';
+        popUpDiv.style.bottom = Math.max(0, bottom) + 'px';
       }
-      else if (space_top > LayoutUtility.GetHeight (popUpDiv))
+      else if (space_top > popUpHeight + verticalSpacing)
       {
-        var bottom = Math.max (0, document.documentElement.clientHeight - LayoutUtility.GetOffset (referenceElement).top - (referenceElement.offsetHeight - LayoutUtility.GetHeight (referenceElement)));
+        const bottom = Math.max (verticalSpacing, document.documentElement.clientHeight - LayoutUtility.GetOffset (referenceElement).top - (referenceElement.offsetHeight - LayoutUtility.GetHeight (referenceElement)));
 
         popUpDiv.style.top = 'auto';
         popUpDiv.style.bottom = bottom + 'px';
@@ -533,9 +568,11 @@ class DropDownMenu
       else
       {
         popUpDiv.style.top = 'auto';
-        popUpDiv.style.bottom = '0';
+        popUpDiv.style.bottom = verticalSpacing + 'px';
       }
     }
+
+    popUpDiv.scrollTop = scrollTop;
   }
 
   public static ClosePopUp (updateFocus: boolean): void
@@ -865,6 +902,11 @@ class DropDownMenu
           anchor.focus();
         }
       }
+
+      // A selection change might trigger hover events that, in turn, would trigger selection events
+      // So we ignore mouse events for a small amount of time to deal with cascading events
+      DropDownMenu._ignoreMouseEvents = true;
+      setTimeout(() => DropDownMenu._ignoreMouseEvents = false, 50);
     }
   }
 

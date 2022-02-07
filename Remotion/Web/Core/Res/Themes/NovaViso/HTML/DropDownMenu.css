@@ -173,15 +173,24 @@ div.DropDownMenuOptions
      the relative DropDownMenuSelect. */
   position: absolute;
   z-index: var(--z-index-max);
+  overflow: hidden;
+  overflow-y: auto;
+  box-shadow: var(--remotion-themed-popup-shadow);
+  background-color: var(--remotion-themed-background-color-control);
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+div.DropDownMenuOptions::-webkit-scrollbar
+{
+  display: none;
 }
 
 ul.DropDownMenuOptions
 {
   list-style: none;
   margin: 0;
-  box-shadow: var(--remotion-themed-popup-shadow);
   padding: var(--remotion-themed-spacing);
-  background-color: var(--remotion-themed-background-color-control);
 }
 
 ul.DropDownMenuOptions li a

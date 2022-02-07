@@ -214,21 +214,30 @@ div.DropDownMenuOptions
   right: 0;
   margin: 0;
   padding: 0;
-}
-
-ul.DropDownMenuOptions
-{
+  overflow: hidden;
+  overflow-y: auto;
   border: solid 1px #AAAAAA;
-  left: 0;
-  right: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
   background-color: White;
   background-image: url('../Image/DropDownMenuItemIconPane.gif');
   background-size: 22px 1px;
   background-repeat: repeat-y;
   background-position: top left;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+div.DropDownMenuOptions::-webkit-scrollbar
+{
+  display: none;
+}
+
+ul.DropDownMenuOptions
+{
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 ul.DropDownMenuOptions li a
