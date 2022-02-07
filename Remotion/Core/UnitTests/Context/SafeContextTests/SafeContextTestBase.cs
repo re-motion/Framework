@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -16,25 +16,34 @@
 // 
 using System;
 using System.Threading;
+using Moq;
 using NUnit.Framework;
 using Remotion.Context;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 
-namespace Remotion.UnitTests.Context
+namespace Remotion.UnitTests.Context.SafeContextTests
 {
-  [TestFixture]
-  public partial class SafeContextTest
+  public abstract class SafeContextTestBase
   {
-    [Test]
-    public void Instance_AutoInitialization ()
+    protected Mock<ISafeContextStorageProvider> _safeContextProviderMock;
+
+    [SetUp]
+    public void SetUp ()
     {
-      ISafeContextStorageProvider instance = SafeContext.Instance;
-      Assert.That(instance, Is.Not.Null);
-      Assert.That(SafeContext.Instance, Is.SameAs(instance));
+      ResetSafeContextStorageProvider();
+
+      _safeContextProviderMock = new Mock<ISafeContextStorageProvider>(MockBehavior.Strict);
+      _safeContextProviderMock.Setup(e => e.OpenSafeContextBoundary()).Returns((SafeContextBoundary)default);
     }
 
-    private static IDisposable SetupImplicitSafeContextStorageProvider (ISafeContextStorageProvider safeContextStorageProvider)
+    [TearDown]
+    public void TearDown ()
+    {
+      ResetSafeContextStorageProvider();
+    }
+
+    protected static IDisposable SetupImplicitSafeContextStorageProvider (ISafeContextStorageProvider safeContextStorageProvider)
     {
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle(() => safeContextStorageProvider);
@@ -48,8 +57,8 @@ namespace Remotion.UnitTests.Context
           typeof(SafeContext),
           "s_instance",
           new Lazy<ISafeContextStorageProvider>(
-                  () => SafeServiceLocator.Current.GetInstance<ISafeContextStorageProvider>(),
-                  LazyThreadSafetyMode.ExecutionAndPublication));
+              () => SafeServiceLocator.Current.GetInstance<ISafeContextStorageProvider>(),
+              LazyThreadSafetyMode.ExecutionAndPublication));
     }
   }
 }
