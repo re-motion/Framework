@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
       throw new NotImplementedException();
     }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
+    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
     {
       throw new NotImplementedException();
     }
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
       throw new NotImplementedException();
     }
 
-    public override void Save (IEnumerable<DataContainer> dataContainers)
+    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
     }
 

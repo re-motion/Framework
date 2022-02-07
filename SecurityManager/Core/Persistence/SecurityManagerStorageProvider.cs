@@ -51,12 +51,11 @@ namespace Remotion.SecurityManager.Persistence
           commandFactory);
     }
 
-    public override void Save (IEnumerable<DataContainer> dataContainers)
+    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
 
-      //TODO RM-5638: Refactor to Streaming-API
-      var dataContainersList = dataContainers.ToList();
+      var dataContainersList = dataContainers;
       base.Save(dataContainersList);
       _revisionExtension.Saved(this, dataContainersList);
     }

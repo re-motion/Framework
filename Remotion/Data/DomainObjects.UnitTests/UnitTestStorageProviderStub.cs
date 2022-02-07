@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       }
     }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
+    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
     {
       if (InnerProvider != null)
         return InnerProvider.LoadDataContainers(ids);
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         return null;
     }
 
-    public override void Save (IEnumerable<DataContainer> dataContainers)
+    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
       if (InnerProvider != null)
         InnerProvider.Save(dataContainers);

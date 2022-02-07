@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void DeleteSingleDataContainer ()
     {
-      IEnumerable<DataContainer> containers = new[] { GetDeletedOrderTicketContainer() };
+      IReadOnlyCollection<DataContainer> containers = new[] { GetDeletedOrderTicketContainer() };
       Provider.Connect();
       Provider.Save(containers);
 
@@ -47,12 +47,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       subordinate.Delete();
       computer.Delete();
 
-      IEnumerable<DataContainer> containers = new[]
-                                              {
-                                                  supervisor.InternalDataContainer,
-                                                  subordinate.InternalDataContainer,
-                                                  computer.InternalDataContainer
-                                              };
+      IReadOnlyCollection<DataContainer> containers = new[]
+                                                      {
+                                                          supervisor.InternalDataContainer,
+                                                          subordinate.InternalDataContainer,
+                                                          computer.InternalDataContainer
+                                                      };
 
       Provider.Connect();
       Provider.Save(containers);

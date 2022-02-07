@@ -64,12 +64,12 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     public abstract ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id);
 
-    public abstract IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids);
+    public abstract IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids);
 
     public abstract IEnumerable<DataContainer> LoadDataContainersByRelatedID (
         RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition? sortExpressionDefinition, ObjectID relatedID);
 
-    public abstract void Save (IEnumerable<DataContainer> dataContainers);
+    public abstract void Save (IReadOnlyCollection<DataContainer> dataContainers);
     public abstract void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers);
     public abstract void BeginTransaction ();
     public abstract void Commit ();

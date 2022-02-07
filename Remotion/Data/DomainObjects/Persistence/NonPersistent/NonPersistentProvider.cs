@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
       return new ObjectLookupResult<DataContainer>(id, null);
     }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
+    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("ids", ids);
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
       return new DataContainerCollection();
     }
 
-    public override void Save (IEnumerable<DataContainer> dataContainers)
+    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);

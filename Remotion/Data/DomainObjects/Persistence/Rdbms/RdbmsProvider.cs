@@ -256,7 +256,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return command.Execute(this);
     }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
+    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("ids", ids);
@@ -293,7 +293,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return new DataContainerCollection(checkedSequence, true);
     }
 
-    public override void Save (IEnumerable<DataContainer> dataContainers)
+    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
       CheckDisposed();
       ArgumentUtility.CheckNotNull("dataContainers", dataContainers);

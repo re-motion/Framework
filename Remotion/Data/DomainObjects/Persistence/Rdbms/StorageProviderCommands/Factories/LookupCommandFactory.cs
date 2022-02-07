@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-      var objectIDList = objectIDs.ToList();
+      var objectIDList = objectIDs as IReadOnlyCollection<ObjectID> ?? objectIDs.ToList();
       var dbCommandBuildersAndReaders =
           from id in objectIDList
           let tableDefinition = _tableDefinitionFinder.GetTableDefinition(id)
