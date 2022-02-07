@@ -122,6 +122,12 @@ class SmartPage_Context
   private _trackedIDs: string[] = [];
   private _synchronousPostBackCommands: string[] = [];
 
+  private _pageTokenSessionStoragePrefix = 'pt_';
+  private _pageTokenEntryCountKey = 'pageTokenEntryCount';
+
+  private _pageTokenDeletionThreshold: number = 150;
+  private _pageTokenDeletionKeepCount: number = 100;
+
   private _loadHandler = function () { SmartPage_Context.Instance!.OnLoad(); };
   private _beforeUnloadHandler = function () { return SmartPage_Context.Instance!.OnBeforeUnload(); };
   private _unloadHandler = function () { return SmartPage_Context.Instance!.OnUnload(); };
@@ -483,7 +489,7 @@ class SmartPage_Context
   public CheckIfCached(): void
   {
     const pageToken = this.GetPageToken();
-    const pageTokenValue = window.sessionStorage.getItem(pageToken);
+    const pageTokenValue = window.sessionStorage.getItem(this._pageTokenSessionStoragePrefix + pageToken);
     const cacheDetection = SmartPage_CacheDetection[pageTokenValue as keyof typeof SmartPage_CacheDetection];
 
     if (cacheDetection !== undefined)
@@ -509,14 +515,61 @@ class SmartPage_Context
   // Marks the page as loaded.
   public SetCacheDetectionFieldLoaded(): void
   {
-    window.sessionStorage.setItem(this.GetPageToken(), SmartPage_CacheDetection[SmartPage_CacheDetection.HasLoaded]);
+    this.SetCacheDetectionField(SmartPage_CacheDetection.HasLoaded);
   };
 
   // Marks the page as submitted.
   public SetCacheDetectionFieldSubmitted(): void
   {
-    window.sessionStorage.setItem(this.GetPageToken(), SmartPage_CacheDetection[SmartPage_CacheDetection.HasSubmitted]);
+    this.SetCacheDetectionField(SmartPage_CacheDetection.HasSubmitted);
   };
+
+  private SetCacheDetectionField(cacheDetectionValue: SmartPage_CacheDetection): void
+  {
+    const tokenKey = this._pageTokenSessionStoragePrefix + this.GetPageToken();
+
+    if (window.sessionStorage.getItem(tokenKey) === null)
+    {
+      this.IncreasePageTokenSessionStorageEntryCount();
+      this.ClearOldPageTokenSessionStorageEntries();
+    }
+
+    window.sessionStorage.setItem(tokenKey, SmartPage_CacheDetection[cacheDetectionValue]);
+  }
+
+  private IncreasePageTokenSessionStorageEntryCount(): void
+  {
+    const currentCount = window.sessionStorage.getItem(this._pageTokenEntryCountKey);
+    if (currentCount === null)
+      window.sessionStorage.setItem(this._pageTokenEntryCountKey, (1).toString());
+    else
+      window.sessionStorage.setItem(this._pageTokenEntryCountKey, (parseInt(currentCount) + 1).toString());
+  }
+
+  private ClearOldPageTokenSessionStorageEntries(): void
+  {
+    const pageTokenEntryCountValue = window.sessionStorage.getItem(this._pageTokenEntryCountKey);
+
+    if (pageTokenEntryCountValue === null)
+      return;
+
+    const pageTokenEntryCount = parseInt(pageTokenEntryCountValue);
+
+    if (pageTokenEntryCount <= this._pageTokenDeletionThreshold)
+      return;
+
+    const pageTokenEntries = Object.keys(window.sessionStorage).filter(t => t.startsWith(this._pageTokenSessionStoragePrefix));
+    const pageTokensToDelete = pageTokenEntries
+      .map(t => ({ key: t, number: parseInt(t.substring(this._pageTokenSessionStoragePrefix.length)) }))
+      .sort((a, b) => (a.number > b.number) ? 1 : -1)
+      .splice(0, pageTokenEntryCount - this._pageTokenDeletionKeepCount);
+    setTimeout(
+      () =>
+      {
+        pageTokensToDelete.forEach(t => window.sessionStorage.removeItem(t.key));
+        window.sessionStorage.setItem(this._pageTokenEntryCountKey, this._pageTokenDeletionKeepCount.toString());
+      }, 0);
+  }
 
   // Event handler for window.OnBeforeUnload.
   // __doPostBack
