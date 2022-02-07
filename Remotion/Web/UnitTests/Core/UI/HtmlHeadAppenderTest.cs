@@ -39,7 +39,7 @@ namespace Remotion.Web.UnitTests.Core.UI
     [Test]
     public void SetTitle ()
     {
-      _htmlHeadAppender.SetTitle("The Title");
+      _htmlHeadAppender.SetTitle(WebString.CreateFromText("The Title"));
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
@@ -47,21 +47,21 @@ namespace Remotion.Web.UnitTests.Core.UI
 
       Assert.That(htmlHeadElements[0], Is.InstanceOf(typeof(TitleTag)));
       var titleTag = (TitleTag)htmlHeadElements[0];
-      Assert.That(titleTag.Title, Is.EqualTo("The Title"));
+      Assert.That(titleTag.Title, Is.EqualTo(WebString.CreateFromText("The Title")));
     }
 
     [Test]
     public void SetTitle_Twice ()
     {
-      _htmlHeadAppender.SetTitle("The Title1");
-      _htmlHeadAppender.SetTitle("The Title2");
+      _htmlHeadAppender.SetTitle(WebString.CreateFromText("The Title1"));
+      _htmlHeadAppender.SetTitle(WebString.CreateFromText("The Title2"));
 
       var htmlHeadElements = _htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
       Assert.That(htmlHeadElements.Length, Is.EqualTo(1));
 
       var titleTag = (TitleTag)htmlHeadElements[0];
-      Assert.That(titleTag.Title, Is.EqualTo("The Title2"));
+      Assert.That(titleTag.Title, Is.EqualTo(WebString.CreateFromText("The Title2")));
     }
 
     [Test]
@@ -256,7 +256,7 @@ namespace Remotion.Web.UnitTests.Core.UI
       var element1 = new Mock<HtmlHeadElement>();
       _htmlHeadAppender.RegisterHeadElement("element1", element1.Object, HtmlHeadAppender.Priority.Library);
 
-      _htmlHeadAppender.SetTitle("The Title");
+      _htmlHeadAppender.SetTitle(WebString.CreateFromText("The Title"));
 
       var element2 = new Mock<HtmlHeadElement>();
       _htmlHeadAppender.RegisterHeadElement("element2", element2.Object, HtmlHeadAppender.Priority.Library);

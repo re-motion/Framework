@@ -25,16 +25,16 @@ namespace Remotion.Web.UI.Controls
   /// </summary>
   public class TitleTag : HtmlHeadElement
   {
-    private readonly string _title;
+    private readonly WebString _title;
 
-    public TitleTag (string title)
+    public TitleTag (WebString title)
     {
       ArgumentUtility.CheckNotNull("title", title);
 
       _title = title;
     }
 
-    public string Title
+    public WebString Title
     {
       get { return _title; }
     }
@@ -44,7 +44,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull("writer", writer);
 
       writer.RenderBeginTag(HtmlTextWriterTag.Title);
-      writer.WriteEncodedText(_title);
+      _title.WriteTo(writer);
       writer.RenderEndTag();
       writer.WriteLine();
     }
