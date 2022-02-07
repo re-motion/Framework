@@ -58,7 +58,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
               GlobalizationService.GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.Title),
               CurrentSecurableClassDefinition.DisplayName));
       TitleLabel.InnerHtml = title.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
-      HtmlHeadAppender.Current.SetTitle(title.ToString(WebStringEncoding.Html));
+      HtmlHeadAppender.Current.SetTitle(title);
       base.OnPreRenderComplete(e);
     }
 
