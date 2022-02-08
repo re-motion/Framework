@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
@@ -45,6 +46,21 @@ namespace Remotion.Web.Development.WebTesting.TestSite
           "DropDownMenuWebService.asmx",
           nameof(DropDownMenuWebService.GetMenuItemStatusWithError),
           new Dictionary<string, string>());
+
+      foreach (var i in Enumerable.Range(0, 100))
+      {
+        MyDropDownMenu_ManyMenuItems.MenuItems.Add(
+            new WebMenuItem(
+                "MenuItem" + i,
+                null,
+                WebString.CreateFromText("Item " + i),
+                new IconInfo(),
+                new IconInfo(),
+                WebMenuItemStyle.Text,
+                RequiredSelection.ExactlyOne,
+                false,
+                null));
+      }
     }
 
     private void MyDropDownMenuOnCommandClick (object sender, WebMenuItemClickEventArgs webMenuItemClickEventArgs)

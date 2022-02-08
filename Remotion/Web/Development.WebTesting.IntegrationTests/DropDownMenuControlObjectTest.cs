@@ -15,15 +15,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Drawing;
+using System.Threading;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
@@ -297,6 +303,75 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var dropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenuSupplemental");
       Assert.That(dropDownMenu.GetButtonType(), Is.EqualTo(ButtonType.Supplemental));
+    }
+
+    [Category("Screenshot")]
+    [Test]
+    public void ScrollIntoView_WithLongDropDownMenu_ScrollInvisibleItemIntoView ()
+    {
+      ScreenshotTestingDelegate<FluentScreenshotElement<DropDownMenuControlObject>> test = (builder, target) =>
+      {
+        builder.AnnotateBox(target.GetMenu(), Pens.Magenta, WebPadding.Inner);
+
+        builder.AnnotateBox(target.SelectItem().WithIndex(95).ScrollIntoView(), Pens.Chartreuse, WebPadding.Inner);
+        builder.AnnotateBox(target.SelectItem().WithIndex(92).ScrollIntoView(), Pens.Red, WebPadding.Inner);
+
+        builder.Crop(target.GetMenu(), new WebPadding(1));
+      };
+
+      var home = Start();
+      try
+      {
+        ResizeBrowserWindowTo(new Size(600, 400));
+        var fluentDropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu_ManyMenuItems").ForControlObjectScreenshot();
+        fluentDropDownMenu.OpenMenu();
+
+        Helper.RunScreenshotTestExact<FluentScreenshotElement<DropDownMenuControlObject>, DropDownMenuControlObjectTest>(
+            fluentDropDownMenu,
+            ScreenshotTestingType.Both,
+            test);
+      }
+      finally
+      {
+        home.Driver.MaximiseWindow(home.Scope);
+      }
+    }
+
+    [Category("Screenshot")]
+    [Test]
+    public void ScrollIntoView_WithLongDropDownMenu_ScrollsBackUp ()
+    {
+      ScreenshotTestingDelegate<FluentScreenshotElement<DropDownMenuControlObject>> test = (builder, target) =>
+      {
+        builder.AnnotateBox(target.GetMenu(), Pens.Magenta, WebPadding.Inner);
+
+        target.SelectItem().WithIndex(90).ScrollIntoView();
+        builder.AnnotateBox(target.SelectItem().WithIndex(2).ScrollIntoView(), Pens.Chartreuse, WebPadding.Inner);
+
+        builder.Crop(target.GetMenu(), new WebPadding(1));
+      };
+
+      var home = Start();
+      try
+      {
+        ResizeBrowserWindowTo(new Size(600, 400));
+        var fluentDropDownMenu = home.DropDownMenus().GetByLocalID("MyDropDownMenu_ManyMenuItems").ForControlObjectScreenshot();
+        fluentDropDownMenu.OpenMenu();
+
+        Helper.RunScreenshotTestExact<FluentScreenshotElement<DropDownMenuControlObject>, DropDownMenuControlObjectTest>(
+            fluentDropDownMenu,
+            ScreenshotTestingType.Both,
+            test);
+      }
+      finally
+      {
+        home.Driver.MaximiseWindow(home.Scope);
+      }
+    }
+
+    private void ResizeBrowserWindowTo (Size size)
+    {
+      Helper.BrowserConfiguration.BrowserHelper.ResizeBrowserWindowTo(Helper.MainBrowserSession.Window, size);
     }
 
     private WxePageObject Start ()
