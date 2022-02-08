@@ -15,9 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Web;
 using System.Web.UI;
 using Remotion.Collections;
@@ -300,6 +302,11 @@ namespace Remotion.Web.ExecutionEngine
       {
         throw _wxePageInfo.WrapProcessRequestException(ex);
       }
+    }
+
+    public override IEnumerable<string> GetDirtyStates (IReadOnlyCollection<string>? requestedStates)
+    {
+      return base.GetDirtyStates(requestedStates).Concat(_wxePageInfo.GetDirtyStates(requestedStates));
     }
 
     /// <summary> Gets or sets the flag that determines whether to abort the session upon closing the window. </summary>

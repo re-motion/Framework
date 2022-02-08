@@ -16,8 +16,11 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Reflection;
+using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
@@ -60,8 +63,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
 
     private WxeStepList _trySteps;
 
-    /// <summary> ArrayList&lt;WxeCatchBlock&gt; </summary>
-    private ArrayList _catchBlocks;
+    private List<WxeCatchBlock> _catchBlocks;
 
     private WxeStepList? _finallySteps;
 
@@ -73,7 +75,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       _trySteps = (WxeStepList)Activator.CreateInstance(tryStepListType)!;
       _trySteps.SetParentStep(this);
 
-      _catchBlocks = new ArrayList();
+      _catchBlocks = new List<WxeCatchBlock>();
       if (catchBlockTypes != null)
       {
         foreach (Type catchBlockType in catchBlockTypes)
@@ -125,7 +127,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
           MemberTypes.NestedType,
           BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
 
-      _catchBlocks = new ArrayList();
+      _catchBlocks = new List<WxeCatchBlock>();
       foreach (Type catchBlockType in catchBlockTypes)
       {
         if (! typeof(WxeCatchBlock).IsAssignableFrom(catchBlockType))
@@ -207,7 +209,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
           case -2:
             return _finallySteps;
           default:
-            return (WxeCatchBlock)_catchBlocks[_executingCatchBlock]!;
+            return _catchBlocks[_executingCatchBlock]!;
         }
       }
     }
@@ -218,14 +220,14 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       catchBlock.SetParentStep(this);
     }
 
-    public WxeStepList? TrySteps
+    public WxeStepList TrySteps
     {
       get { return _trySteps; }
     }
 
     public WxeCatchBlock[] CatchBlocks
     {
-      get { return (WxeCatchBlock[])_catchBlocks.ToArray(typeof(WxeCatchBlock)); }
+      get { return _catchBlocks.ToArray(); }
     }
 
     protected override void AbortRecursive ()
@@ -233,14 +235,37 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
       base.AbortRecursive();
       _trySteps.Abort();
 
-      if (_catchBlocks != null)
-      {
-        foreach (WxeStepList catchBlock in _catchBlocks)
-          catchBlock.Abort();
-      }
+      foreach (WxeStepList catchBlock in _catchBlocks)
+        catchBlock.Abort();
 
       if (_finallySteps != null)
         _finallySteps.Abort();
+    }
+
+    public override void ResetDirtyStateForExecutedSteps ()
+    {
+      base.ResetDirtyStateForExecutedSteps();
+
+      _trySteps.ResetDirtyStateForExecutedSteps();
+
+      foreach (var catchBlock in _catchBlocks)
+        catchBlock.ResetDirtyStateForExecutedSteps();
+
+      _finallySteps?.ResetDirtyStateForExecutedSteps();
+    }
+
+    public override bool EvaluateDirtyState ()
+    {
+      if (_trySteps.EvaluateDirtyState())
+        return true;
+
+      if (_catchBlocks.Any(b => b.EvaluateDirtyState()))
+        return true;
+
+      if (_finallySteps != null && _finallySteps.EvaluateDirtyState())
+        return true;
+
+      return base.EvaluateDirtyState();
     }
   }
 

@@ -19,6 +19,7 @@ using System.Collections;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data;
+using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
@@ -55,6 +56,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     {
       TransactionMock.Setup(mock => mock.To<ITransaction>()).Returns(TransactionMock.Object).Verifiable();
       Assert.That(_strategy.Object.GetNativeTransaction<ITransaction>(), Is.SameAs(TransactionMock.Object));
+    }
+
+    [Test]
+    public void EvaluateDirtyState ()
+    {
+      var expectedResult = BooleanObjectMother.GetRandomBoolean();
+      TransactionMock.Setup(mock => mock.HasUncommittedChanges).Returns(expectedResult).Verifiable();
+      Assert.That(_strategy.Object.EvaluateDirtyState(), Is.EqualTo(expectedResult));
     }
 
     [Test]

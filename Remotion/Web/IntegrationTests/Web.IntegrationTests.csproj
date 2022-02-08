@@ -18,5 +18,8 @@
     <ProjectReference Include="..\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj" />
     <ProjectReference Include="..\Development.WebTesting\Web.Development.WebTesting.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DirtyState" />
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

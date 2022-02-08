@@ -34,6 +34,8 @@ namespace Remotion.Web.ExecutionEngine
 
     private int _executingStep = -1;
 
+    private bool _isDirtyFromExecutedSteps;
+
     public WxeStepList ()
     {
       InitializeSteps();
@@ -76,6 +78,9 @@ namespace Remotion.Web.ExecutionEngine
         if (currentStep.IsAborted)
           throw new InvalidOperationException("Step " + _executingStep + " of " + this.GetType().GetFullNameSafe() + " is aborted.");
         currentStep.Execute(context);
+
+        _isDirtyFromExecutedSteps = _isDirtyFromExecutedSteps || currentStep.EvaluateDirtyState();
+
         _executingStep++;
       }
     }
@@ -186,6 +191,43 @@ namespace Remotion.Web.ExecutionEngine
       base.AbortRecursive();
       foreach (WxeStep step in _steps)
         step.Abort();
+    }
+
+    /// <summary>
+    /// Resets the dirty state for any previously executed steps recursively.
+    /// </summary>
+    public override void ResetDirtyStateForExecutedSteps ()
+    {
+      base.ResetDirtyStateForExecutedSteps();
+
+      for (var i = 0; i < _executingStep; i++)
+      {
+        var step = _steps[i];
+        step.ResetDirtyStateForExecutedSteps();
+      }
+
+      _isDirtyFromExecutedSteps = false;
+    }
+
+    /// <summary>
+    /// Evaluates the current dirty state for this <see cref="WxeStepList"/>.
+    /// </summary>
+    /// <remarks>
+    /// The evaluation includes the information for the currently executing <see cref="WxeStep"/>, the aggregated dirty state of previously executed steps.
+    /// </remarks>
+    /// <returns><see langword="true" /> if the <see cref="WxePageStep"/> represents unsaved changes.</returns>
+    public override bool EvaluateDirtyState ()
+    {
+      if (_isDirtyFromExecutedSteps)
+        return true;
+
+      // Using WxeStepList.ExecutingStep instead of LastExecutedStep would return the most-nested executing step,
+      // thus skipping the recursive evaluation of the dirty state.
+      var currentStepInThisStepList = LastExecutedStep;
+      if (currentStepInThisStepList?.EvaluateDirtyState() == true)
+        return true;
+
+      return base.EvaluateDirtyState();
     }
   }
 

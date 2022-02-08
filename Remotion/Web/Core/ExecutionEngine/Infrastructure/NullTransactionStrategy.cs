@@ -69,6 +69,11 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       //NOP
     }
 
+    public override bool EvaluateDirtyState ()
+    {
+      return false;
+    }
+
     public override void Commit ()
     {
       //NOP

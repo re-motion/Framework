@@ -33,6 +33,11 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       _outerTransactionStrategy = outerTransactionStrategy;
     }
 
+    public override bool EvaluateDirtyState ()
+    {
+      return false;
+    }
+
     public override void Commit ()
     {
       throw new NotSupportedException();

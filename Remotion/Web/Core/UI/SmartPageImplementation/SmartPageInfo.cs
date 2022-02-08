@@ -15,14 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Collections;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -65,6 +66,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     private static readonly string s_scriptFileKey = typeof(SmartPageInfo).GetFullNameChecked() + "_Script";
     private static readonly string s_styleFileKey = typeof(SmartPageInfo).GetFullNameChecked() + "_Style";
     private static readonly string s_smartNavigationScriptKey = typeof(SmartPageInfo).GetFullNameChecked() + "_SmartNavigation";
+    private static IEnumerable<string> s_dirtyStateForCurrentPage = EnumerableUtility.Singleton(SmartPageDirtyStates.CurrentPage);
 
     private readonly ISmartPage _page;
 
@@ -79,9 +81,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
         new AutoInitDictionary<SmartPageEvents, NameValueCollection>();
 
     private string? _checkFormStateFunction;
-    private readonly Hashtable _trackedControls = new Hashtable();
+    private readonly HashSet<IEditableControl> _trackedControls = new HashSet<IEditableControl>();
     private readonly StringCollection _trackedControlsByID = new StringCollection();
-    private readonly Hashtable _navigationControls = new Hashtable();
+    private readonly HashSet<INavigationControl> _navigationControls = new HashSet<INavigationControl>();
     private readonly List<Tuple<Control, string>> _synchronousPostBackCommands = new List<Tuple<Control, string>>();
 
     private ResourceManagerSet? _cachedResourceManager;
@@ -134,7 +136,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       }
 
       // Registration is typically done during the Control's init-phase to allow the page's code-behind logic access to the complete dirty state.
-      _trackedControls[control] = control;
+      _trackedControls.Add(control);
       control.Unload += UnregisterControlForDirtyStateTracking;
     }
 
@@ -168,17 +170,23 @@ namespace Remotion.Web.UI.SmartPageImplementation
         _trackedControlsByID.Add(clientID);
     }
 
-    /// <summary> Implements <see cref="ISmartPage.EvaluateDirtyState">ISmartPage.EvaluateDirtyState</see>. </summary>
-    public bool EvaluateDirtyState ()
+    public IEnumerable<string> GetDirtyStates (IReadOnlyCollection<string>? requestedStates)
     {
-      foreach (IEditableControl control in _trackedControls.Values)
-      {
-        if (control.IsDirty)
-          return true;
-      }
-      return false;
-    }
+      var isDirtyStateForCurrentPageRequested =
+          requestedStates == null
+          || s_dirtyStateForCurrentPage.Intersect(requestedStates, StringComparer.InvariantCultureIgnoreCase).Any();
 
+      if (isDirtyStateForCurrentPageRequested)
+      {
+        if (_page.IsDirty)
+          return s_dirtyStateForCurrentPage;
+
+        if (_trackedControls.Any(c => c.IsDirty))
+          return s_dirtyStateForCurrentPage;
+      }
+
+      return Enumerable.Empty<string>();
+    }
 
     public string? CheckFormStateFunction
     {
@@ -339,9 +347,9 @@ namespace Remotion.Web.UI.SmartPageImplementation
       }
 
       string isDirtyStateTrackingEnabled = "false";
-      string isDirty = "false";
 
       StringBuilder initScript = new StringBuilder(500);
+      StringBuilder startupScript = new StringBuilder(500);
 
       initScript.AppendLine("function SmartPage_Initialize ()");
       initScript.AppendLine("{");
@@ -353,12 +361,21 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       const string trackedControlsArray = "trackedControls";
       initScript.Append("  var ").Append(trackedControlsArray).AppendLine(" = new Array();");
+
+      const string dirtyStatesSet = "dirtyStates";
+      startupScript.Append("  var ").Append(dirtyStatesSet).AppendLine(" = new Set();");
+
       if (_page.IsDirtyStateTrackingEnabled)
       {
         isDirtyStateTrackingEnabled = "true";
-        if (_page.EvaluateDirtyState())
-          isDirty = "true";
-        else
+        bool isDirtyOnServerSide = false;
+        foreach (var dirtyState in _page.GetDirtyStates())
+        {
+          isDirtyOnServerSide = true;
+          startupScript.Append(dirtyStatesSet).Append(".add('").Append(dirtyState).AppendLine("');");
+        }
+
+        if (!isDirtyOnServerSide)
           FormatPopulateTrackedControlsArrayClientScript(initScript, trackedControlsArray);
       }
       initScript.AppendLine();
@@ -400,7 +417,8 @@ namespace Remotion.Web.UI.SmartPageImplementation
       string isAsynchronous = "false";
       if (IsInAsyncPostBack)
         isAsynchronous = "true";
-      _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(SmartPageInfo), "smartPageStartUp", "SmartPage_Context.Instance.OnStartUp (" + isAsynchronous + ", " + isDirty + ");");
+      startupScript.Append("SmartPage_Context.Instance.OnStartUp (").Append(isAsynchronous).Append(", ").Append(dirtyStatesSet).AppendLine(");");
+      _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(SmartPageInfo), "smartPageStartUp", startupScript.ToString());
 
       // Ensure the __doPostBack function and the __EventTarget and __EventArgument hidden fields on the rendered page
       _page.ClientScript.GetPostBackEventReference(new PostBackOptions(_page.WrappedInstance) { ClientSubmit = true }, false);
@@ -481,7 +499,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private void FormatPopulateTrackedControlsArrayClientScript (StringBuilder script, string trackedControlsArray)
     {
-      foreach (IEditableControl control in _trackedControls.Values)
+      foreach (IEditableControl control in _trackedControls)
       {
         if (control.Visible)
         {
@@ -608,7 +626,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       // Registration is typically done during the Control's init-phase to allow building of navigation urls during the entire life cycle.
       // Note: If the control is removed again, the previously built navigation urls will no longer be valid.
-      _navigationControls[control] = control;
+      _navigationControls.Add(control);
       control.Unload += UnregisterNavigationControl;
     }
 
@@ -634,7 +652,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     public NameValueCollection GetNavigationUrlParameters ()
     {
       NameValueCollection urlParameters = new NameValueCollection();
-      foreach (INavigationControl control in _navigationControls.Values)
+      foreach (INavigationControl control in _navigationControls)
         NameValueCollectionUtility.Append(urlParameters, control.GetNavigationUrlParameters());
 
       return urlParameters;
