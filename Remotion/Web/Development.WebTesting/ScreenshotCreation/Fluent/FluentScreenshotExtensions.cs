@@ -16,12 +16,14 @@
 // 
 using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Automation;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 {
@@ -81,6 +83,23 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
       ArgumentUtility.CheckNotNull("webElement", webElement);
 
       return FluentUtility.CreateFluentWebElement(webElement);
+    }
+
+    /// <summary>
+    /// Scrolls the target element into view.
+    /// </summary>
+    public static FluentScreenshotElement<T> ScrollIntoView<T> ([NotNull] this FluentScreenshotElement<T> element)
+        where T : ElementScope
+    {
+      ArgumentUtility.CheckNotNull("element", element);
+
+      var elementScope = element.GetTarget();
+      JavaScriptExecutor.GetJavaScriptExecutor(elementScope).ExecuteScript("arguments[0].scrollIntoView(true);", elementScope.Native);
+
+      // The scrolling sometimes takes some time - 250ms should be enough.
+      Thread.Sleep(250);
+
+      return element;
     }
 
     /// <summary>

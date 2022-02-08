@@ -263,6 +263,8 @@
             <remotion:WebMenuItem Category="Category1" ItemID="ItemID1" Text="Very long text that is so big that the drop down menu overflows to the right out of the visible screen."/>
         </MenuItems>
       </remotion:DropDownMenu>
+      <h3>DropDownMenu (many menu items)</h3>
+      <remotion:DropDownMenu ID="MyDropDownMenu_ManyMenuItems" Mode="DropDownMenu" TitleText="Many menu items" runat="server" />
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>
