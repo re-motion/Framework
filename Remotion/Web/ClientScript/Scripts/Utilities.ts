@@ -520,3 +520,13 @@ class LayoutUtility
     return typeof value === "number" ? value + "px" : value;
   }
 }
+
+/**
+ * Contains all the CSS class definitions needed throughout UI control rendering.
+ * Changes should also be reflected in CssClassDefinition.cs.
+ */
+class CssClassDefinition
+{
+  public static Scrollable = "scrollable";
+  public static Themed = "remotion-themed";
+}
