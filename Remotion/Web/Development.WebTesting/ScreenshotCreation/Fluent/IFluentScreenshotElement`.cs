@@ -45,5 +45,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     /// </summary>
     [NotNull]
     ScreenshotTransformationCollection<T> Transformations { get; set; }
+
+    /// <summary>
+    /// Scrolls the target element into view. This method must only be used with <see cref="Coypu.ElementScope"/> targets.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">The target is not an <see cref="Coypu.ElementScope"/> instance.</exception>
+    FluentScreenshotElement<T> ScrollIntoView ();
   }
 }

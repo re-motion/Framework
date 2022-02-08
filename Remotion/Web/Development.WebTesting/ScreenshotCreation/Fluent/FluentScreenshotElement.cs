@@ -15,8 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Threading;
+using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 {
@@ -53,6 +56,19 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 
       _transformations = new ScreenshotTransformationCollection<T>();
       _minimumElementVisibility = minimumElementVisibility;
+    }
+
+    public FluentScreenshotElement<T> ScrollIntoView ()
+    {
+      if (_target is not ElementScope elementScope)
+        throw new InvalidOperationException($"'{nameof(ScrollIntoView)}' can only be used with Coypu.ElementScope instances.");
+
+      JavaScriptExecutor.GetJavaScriptExecutor(elementScope).ExecuteScript("arguments[0].scrollIntoView(true);", elementScope.Native);
+
+      // The scrolling sometimes takes some time - 200ms should be enough.
+      Thread.Sleep(200);
+
+      return this;
     }
 
     /// <inheritdoc />
