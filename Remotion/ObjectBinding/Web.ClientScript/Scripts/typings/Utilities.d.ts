@@ -75,3 +75,11 @@ declare class LayoutUtility {
     static Show(element: HTMLElement): void;
     static FormatPixelProperty(value: string | number): string
 }
+/**
+ * Contains all the CSS class definitions needed throughout UI control rendering.
+ * Changes should also be reflected in CssClassDefinition.cs.
+ */
+declare class CssClassDefinition {
+    static Scrollable: string;
+    static Themed: string;
+}

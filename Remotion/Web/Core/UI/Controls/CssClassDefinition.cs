@@ -42,6 +42,18 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary>
+    /// Gets the CSS-Class applied to an UI control when it should become scrollable.
+    /// </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>scrollable</c>. </para>
+    ///   <para> Applied in addition to the regular CSS-Class.</para>
+    /// </remarks>
+    public static string Scrollable
+    {
+      get { return "scrollable"; } // also change in Utilities.ts class CssClassDefinition 
+    }
+
+    /// <summary>
     /// Gets the CSS-Class applied to an UI control when itself and child elements
     /// that are standard browser controls (e.g. input elements) should be styled in the current theme.
     /// </summary>
@@ -51,7 +63,7 @@ namespace Remotion.Web.UI.Controls
     /// </remarks>
     public static string Themed
     {
-      get { return "remotion-themed"; }
+      get { return "remotion-themed"; } // also change in Utilities.ts class CssClassDefinition 
     }
 
     /// <summary>
