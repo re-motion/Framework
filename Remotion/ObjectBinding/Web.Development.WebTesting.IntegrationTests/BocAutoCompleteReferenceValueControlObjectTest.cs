@@ -557,6 +557,47 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       ItemDefinition GetDropDownMenuItem3 () => dropDownMenu.GetItemDefinitions().Single(x => x.ItemID == "OptCmd3");
     }
 
+    [Test]
+    public void JS_clear_WithAutoPostBack_ClearsBothInputs ()
+    {
+      var home = Start();
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
+      var jsExecutor = JavaScriptExecutor.GetJavaScriptExecutor(bocAutoComplete);
+      var inputScope = bocAutoComplete.Scope.FindChild("TextValue");
+      var hiddenInputScope = bocAutoComplete.Scope.FindChild("KeyValue");
+
+      var completionDetectionStrategy = new WxePostBackCompletionDetectionStrategy(1);
+      var sequenceNumber = completionDetectionStrategy.PrepareWaitForCompletion(home.Context);
+      JavaScriptExecutor.ExecuteVoidStatement(jsExecutor, "arguments[0].clear()", inputScope.Native);
+      completionDetectionStrategy.WaitForCompletion(home.Context, sequenceNumber);
+
+      var inputText = bocAutoComplete.GetText();
+      var hiddenInputValue = hiddenInputScope.Value;
+      Assert.That(inputText, Is.Empty);
+      Assert.That(hiddenInputValue, Is.EqualTo("==null=="));
+      Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.Empty);
+    }
+
+    [Test]
+    public void JS_clear_WithNoAutoPostBack_ClearsBothInputs ()
+    {
+      const string daLabel = "00000000-0000-0000-0000-000000000009";
+
+      var home = Start();
+      var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_NoAutoPostBack");
+      var jsExecutor = JavaScriptExecutor.GetJavaScriptExecutor(bocAutoComplete);
+      var inputScope = bocAutoComplete.Scope.FindChild("TextValue");
+      var hiddenInputScope = bocAutoComplete.Scope.FindChild("KeyValue");
+
+      JavaScriptExecutor.ExecuteVoidStatement(jsExecutor, "arguments[0].clear()", inputScope.Native);
+
+      var inputText = bocAutoComplete.GetText();
+      var hiddenInputValue = hiddenInputScope.Value;
+      Assert.That(inputText, Is.Empty);
+      Assert.That(hiddenInputValue, Is.EqualTo("==null=="));
+      Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.EqualTo(daLabel));
+    }
+
     private WxePageObject Start ()
     {
       return Start("BocAutoCompleteReferenceValue");

@@ -152,6 +152,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
         getAutoCompleteSelectList(): Remotion.BocAutoCompleteReferenceValue.Select;
         getAutoCompleteInformationPopUp(): Remotion.BocAutoCompleteReferenceValue.InformationPopUp;
         hideInformationPopUp(): this;
+        clear(): this;
         setOptions(options: Options): this;
         showInformationPopUp(message: string): this;
         unautocomplete(): void;
@@ -174,6 +175,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
         getAutoCompleteSelectList: null,
         getAutoCompleteInformationPopUp: null,
         hideInformationPopUp: null,
+        clear: null,
         setOptions: null,
         showInformationPopUp: null,
         unautocomplete: null,
@@ -573,6 +575,11 @@ namespace Remotion.BocAutoCompleteReferenceValue
             },
             hideInformationPopUp: function(): AutoCompletePublicApi {
                 informationPopUp.hide();
+                return this;
+            },
+            clear: function(): AutoCompletePublicApi {
+                input.value = '';
+                acceptCurrent(true, false);
                 return this;
             },
             setOptions: function(newOptions: Options): AutoCompletePublicApi {
