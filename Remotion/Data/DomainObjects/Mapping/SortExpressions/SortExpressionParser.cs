@@ -106,10 +106,11 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
       var propertyAccessorData =
           _typeDefinition.PropertyAccessorDataCache.GetPropertyAccessorData(fullOrShortPropertyName)
           ?? _typeDefinition.PropertyAccessorDataCache.FindPropertyAccessorData(_typeDefinition.Type, fullOrShortPropertyName)
-          ?? _typeDefinition.GetTypeHierarchy()
-              .Skip(1)
-              .Select(cd => cd.PropertyAccessorDataCache.GetPropertyAccessorData(fullOrShortPropertyName))
-              .FirstOrDefault(data => data != null);
+          ?? InlineTypeDefinitionWalker.WalkDescendants(
+              _typeDefinition,
+              classDefinition => classDefinition.PropertyAccessorDataCache.GetPropertyAccessorData(fullOrShortPropertyName),
+              interfaceDefinition => throw new NotImplementedException("Interfaces are not supported."),
+              match: propertyAccessorData => propertyAccessorData != null); // TODO R2I Mapping: Add support for interfaces
 
       if (propertyAccessorData == null)
       {

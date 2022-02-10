@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -53,14 +54,14 @@ namespace Remotion.Data.DomainObjects.Mapping
       return ReferenceEquals(this, other);
     }
 
-    public override TypeDefinition[] GetTypeHierarchy ()
+    public override void Accept (ITypeDefinitionVisitor visitor)
     {
-      return Array.Empty<TypeDefinition>();
     }
 
-    public override TypeDefinition GetInheritanceRoot ()
+    [return: MaybeNull]
+    public override T Accept<T> (ITypeDefinitionVisitor<T> visitor)
     {
-      return this;
+      return default;
     }
 
     protected override void CheckPropertyDefinitions (IEnumerable<PropertyDefinition> propertyDefinitions)
@@ -70,5 +71,9 @@ namespace Remotion.Data.DomainObjects.Mapping
     protected override void CheckRelationEndPointDefinitions (IEnumerable<IRelationEndPointDefinition> relationEndPoints)
     {
     }
+
+    protected override PropertyDefinitionCollection CreatePropertyDefinitionCollection () => new();
+
+    protected override RelationEndPointDefinitionCollection CreateRelationEndPointDefinitionCollection () => new();
   }
 }

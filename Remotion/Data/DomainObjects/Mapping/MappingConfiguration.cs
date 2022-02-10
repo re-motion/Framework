@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
         mappingConfigurationValidationHelper.ValidateRelationDefinitions(_relationDefinitions.Values);
 
-        foreach (var inheritanceRoot in GetInheritanceRoots(_typeDefinitions.Values))
+        foreach (var inheritanceRoot in TypeDefinitionHierarchy.GetHierarchyRoots(typeDefinitions))
         {
           persistenceModelLoader.ApplyPersistenceModelToHierarchy(inheritanceRoot);
           mappingConfigurationValidationHelper.VerifyPersistenceModelApplied(inheritanceRoot);
@@ -174,13 +174,6 @@ namespace Remotion.Data.DomainObjects.Mapping
     public IMemberInformationNameResolver NameResolver
     {
       get { return _nameResolver; }
-    }
-
-    private IEnumerable<TypeDefinition> GetInheritanceRoots (IEnumerable<TypeDefinition> typeDefinitions)
-    {
-      return typeDefinitions
-          .Select(e => e.GetInheritanceRoot())
-          .ToHashSet();
     }
 
     private void SetMappingReadOnly ()

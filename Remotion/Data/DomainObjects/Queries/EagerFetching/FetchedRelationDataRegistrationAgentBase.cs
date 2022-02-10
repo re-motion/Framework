@@ -73,10 +73,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       Assertion.DebugAssert(originatingObject.IsNull == false, "originatingObject.IsNull == false");
       Assertion.DebugIsNotNull(originatingObject.ObjectID, "originatingObject.ObjectID != null");
 
-      var relationEndPointDefinitionInheritanceRoot = relationEndPointDefinition.TypeDefinition.GetInheritanceRoot();
-      var originatingObjectInheritanceRoot = originatingObject.ObjectID.ClassDefinition.GetInheritanceRoot();
-
-      if (ReferenceEquals(relationEndPointDefinitionInheritanceRoot, originatingObjectInheritanceRoot))
+      if (TypeDefinitionHierarchy.ArePartOfSameHierarchy(relationEndPointDefinition.TypeDefinition, originatingObject.ObjectID.ClassDefinition))
         return;
 
       var message = string.Format(
