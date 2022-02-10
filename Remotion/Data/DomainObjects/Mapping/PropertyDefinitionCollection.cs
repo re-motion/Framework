@@ -30,11 +30,13 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      if (typeDefinition is not ClassDefinition classDefinition) // TODO R2I Mapping: Maybe move this into TypeDefinition instead
-        throw new NotSupportedException("Only class definitions are supported");
+      var properties = new List<PropertyDefinition>();
+      InlineTypeDefinitionWalker.WalkAncestors(
+          typeDefinition,
+          classDefinition => properties.AddRange(classDefinition.MyPropertyDefinitions),
+          interfaceDefinition => properties.AddRange(interfaceDefinition.MyPropertyDefinitions));
 
-      return new PropertyDefinitionCollection(
-          classDefinition.CreateSequence(cd => cd.BaseClass).SelectMany(cd => cd.MyPropertyDefinitions), makeCollectionReadOnly);
+      return new PropertyDefinitionCollection(properties, makeCollectionReadOnly);
     }
 
     public PropertyDefinitionCollection ()

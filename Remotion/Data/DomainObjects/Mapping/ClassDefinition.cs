@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -43,6 +44,8 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public ClassDefinition? BaseClass { get; }
 
+    public ReadOnlyCollection<InterfaceDefinition> ImplementedInterfaces { get; }
+
     public IPersistentMixinFinder PersistentMixinFinder { get; }
 
     public ClassDefinition (
@@ -50,6 +53,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         Type type,
         bool isAbstract,
         ClassDefinition? baseClass,
+        IEnumerable<InterfaceDefinition> implementedInterfaces,
         Type? storageGroupType,
         DefaultStorageClass defaultStorageClass,
         IPersistentMixinFinder persistentMixinFinder,
@@ -59,12 +63,17 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNullOrEmpty("id", id);
       ArgumentUtility.CheckNotNull("persistentMixinFinder", persistentMixinFinder);
 
+      var implementedInterfacesReadOnly = implementedInterfaces.ToList().AsReadOnly();
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(implementedInterfaces), implementedInterfacesReadOnly);
+
       ID = id;
 
       PersistentMixinFinder = persistentMixinFinder;
       IsAbstract = isAbstract;
 
       BaseClass = baseClass;
+      ImplementedInterfaces = implementedInterfacesReadOnly;
+
       InstanceCreator = instanceCreator;
       _handleCreator = new Lazy<Func<ObjectID, IDomainObjectHandle<DomainObject>>>(BuildHandleCreator, LazyThreadSafetyMode.PublicationOnly);
     }
@@ -98,32 +107,11 @@ namespace Remotion.Data.DomainObjects.Mapping
       return DerivedClasses.Any(e => e.IsAssignableFrom(other));
     }
 
-    public override TypeDefinition[] GetTypeHierarchy ()
-    {
-      var allDerivedClasses = new List<ClassDefinition>();
-      allDerivedClasses.Add(this);
-      FillAllDerivedClasses(allDerivedClasses);
-
-      var allDerivedTypes = new TypeDefinition[allDerivedClasses.Count];
-      for (var i = 0; i < allDerivedTypes.Length; i++)
-        allDerivedTypes[i] = allDerivedClasses[i];
-
-      return allDerivedTypes;
-    }
-
     public ClassDefinition[] GetAllDerivedClasses ()
     {
       var allDerivedClasses = new List<ClassDefinition>();
       FillAllDerivedClasses(allDerivedClasses);
       return allDerivedClasses.ToArray();
-    }
-
-    public override TypeDefinition GetInheritanceRoot ()
-    {
-      if (BaseClass != null)
-        return BaseClass.GetInheritanceRoot();
-
-      return this;
     }
 
     public bool IsMyRelationEndPoint (IRelationEndPointDefinition relationEndPointDefinition)
@@ -160,9 +148,6 @@ namespace Remotion.Data.DomainObjects.Mapping
     public void SetDerivedClasses (IEnumerable<ClassDefinition> derivedClasses)
     {
       ArgumentUtility.CheckNotNull("derivedClasses", derivedClasses);
-
-      if (_derivedClasses != null)
-        throw new InvalidOperationException($"The derived-classes for class '{ID}' have already been set.");
 
       if (IsReadOnly)
         throw new NotSupportedException($"Class '{ID}' is read-only.");
@@ -222,6 +207,29 @@ namespace Remotion.Data.DomainObjects.Mapping
         allDerivedClasses.Add(derivedClass);
         derivedClass.FillAllDerivedClasses(allDerivedClasses);
       }
+    }
+
+    public override void Accept (ITypeDefinitionVisitor visitor)
+    {
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+
+      visitor.VisitClassDefinition(this);
+    }
+
+    [return: MaybeNull]
+    public override T Accept<T> (ITypeDefinitionVisitor<T> visitor)
+    {
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+
+      return visitor.VisitClassDefinition(this);
+    }
+
+    public override void SetReadOnly ()
+    {
+      if (_derivedClasses == null)
+        throw new InvalidOperationException("Cannot set the type definition read-only as the derived classes are not set.");
+
+      base.SetReadOnly();
     }
 
     public override string ToString () => $"{GetType().Name}: {ID}";
