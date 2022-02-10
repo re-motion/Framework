@@ -486,6 +486,11 @@ class SmartPage_Context
     const pageTokenValue = window.sessionStorage.getItem(pageToken);
     const cacheDetection = SmartPage_CacheDetection[pageTokenValue as keyof typeof SmartPage_CacheDetection];
 
+    if (cacheDetection !== undefined)
+    {
+      window.history.pushState(history.state, "");
+    }
+
     if (cacheDetection === SmartPage_CacheDetection.HasSubmitted)
     {
       this._hasSubmitted = true;
