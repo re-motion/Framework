@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     public void SetUp ()
     {
       _validationRule = new PropertyTypeIsSupportedByStorageProviderValidationRule();
-      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
+      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixinsAndDefaultProperties(typeof(DerivedValidationDomainObjectClass));
     }
 
     [Test]

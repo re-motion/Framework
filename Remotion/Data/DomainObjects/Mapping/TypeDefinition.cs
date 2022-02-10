@@ -52,28 +52,35 @@ namespace Remotion.Data.DomainObjects.Mapping
 
       PropertyAccessorDataCache = new PropertyAccessorDataCache(this);
       _cachedRelationEndPointDefinitions = new Lazy<RelationEndPointDefinitionCollection>(
-           () => RelationEndPointDefinitionCollection.CreateForAllRelationEndPoints(this, true),
+           CreateRelationEndPointDefinitionCollection,
            LazyThreadSafetyMode.ExecutionAndPublication);
       _cachedPropertyDefinitions =
           new Lazy<PropertyDefinitionCollection>(
-              () => new PropertyDefinitionCollection(PropertyDefinitionCollection.CreateForAllProperties(this, true), true),
+              CreatePropertyDefinitionCollection,
               LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
+    public abstract void Accept (ITypeDefinitionVisitor visitor);
+
+    public abstract T? Accept<T> (ITypeDefinitionVisitor<T> visitor);
+
     public abstract bool IsPartOfInheritanceHierarchy { get; }
 
-    public abstract TypeDefinition GetInheritanceRoot ();
-
     public abstract bool IsAssignableFrom (TypeDefinition other);
-
-    /// <summary>
-    /// Returns all types that are part of this type's hierarchy, including itself, using depth-first.
-    /// </summary>
-    public abstract TypeDefinition[] GetTypeHierarchy ();
 
     protected abstract void CheckPropertyDefinitions (IEnumerable<PropertyDefinition> propertyDefinitions);
 
     protected abstract void CheckRelationEndPointDefinitions (IEnumerable<IRelationEndPointDefinition> relationEndPoints);
+
+    protected virtual PropertyDefinitionCollection CreatePropertyDefinitionCollection ()
+    {
+      return PropertyDefinitionCollection.CreateForAllProperties(this, true);
+    }
+
+    protected virtual RelationEndPointDefinitionCollection CreateRelationEndPointDefinitionCollection ()
+    {
+      return RelationEndPointDefinitionCollection.CreateForAllRelationEndPoints(this, true);
+    }
 
     public IStorageEntityDefinition StorageEntityDefinition
     {
@@ -133,14 +140,16 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PropertyDefinitionCollection GetPropertyDefinitions ()
     {
-      return _cachedPropertyDefinitions.Value;
+      return IsReadOnly
+          ? _cachedPropertyDefinitions.Value
+          : CreatePropertyDefinitionCollection();
     }
 
     public virtual PropertyDefinition? GetPropertyDefinition (string propertyName)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
 
-      return MyPropertyDefinitions[propertyName];
+      return GetPropertyDefinitions()[propertyName];
     }
 
     [Obsolete(
@@ -166,9 +175,6 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull(nameof(propertyDefinitions), propertyDefinitions);
 
-      if (_propertyDefinitions != null)
-        throw new InvalidOperationException($"The property-definitions for type '{Type.GetFullNameSafe()}' have already been set.");
-
       if (IsReadOnly)
         throw new NotSupportedException($"Type '{Type.GetFullNameSafe()}' is read-only.");
 
@@ -180,14 +186,16 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationEndPointDefinitionCollection GetRelationEndPointDefinitions ()
     {
-      return _cachedRelationEndPointDefinitions.Value;
+      return IsReadOnly
+        ? _cachedRelationEndPointDefinitions.Value
+        : CreateRelationEndPointDefinitionCollection();
     }
 
     public IRelationEndPointDefinition? GetRelationEndPointDefinition (string propertyName)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
 
-      return _cachedRelationEndPointDefinitions.Value[propertyName];
+      return GetRelationEndPointDefinitions()[propertyName];
     }
 
     public IRelationEndPointDefinition GetMandatoryRelationEndPointDefinition (string propertyName)
@@ -204,9 +212,6 @@ namespace Remotion.Data.DomainObjects.Mapping
     public void SetRelationEndPointDefinitions (RelationEndPointDefinitionCollection relationEndPoints)
     {
       ArgumentUtility.CheckNotNull(nameof(relationEndPoints), relationEndPoints);
-
-      if (_relationEndPoints != null)
-        throw new InvalidOperationException($"The relation end point definitions for type '{Type.GetFullNameSafe()}' have already been set.");
 
       if (IsReadOnly)
         throw new NotSupportedException($"Type '{Type.GetFullNameSafe()}' is read-only.");
@@ -233,8 +238,15 @@ namespace Remotion.Data.DomainObjects.Mapping
       return propertyAccessorData?.RelationEndPointDefinition;
     }
 
-    public void SetReadOnly ()
+    public virtual void SetReadOnly ()
     {
+      if (_storageEntityDefinition == null)
+        throw new InvalidOperationException("Cannot set the type definition read-only as the storage entity definition is not set.");
+      if (_propertyDefinitions == null)
+        throw new InvalidOperationException("Cannot set the type definition read-only as the property definitions are not set.");
+      if (_relationEndPoints == null)
+        throw new InvalidOperationException("Cannot set the type definition read-only as the relation endpoint definitions are not set.");
+
       IsReadOnly = true;
     }
 

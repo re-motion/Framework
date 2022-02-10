@@ -17,7 +17,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       _validationRule = new MandatoryNetEnumTypeHasValuesDefinedValidationRule();
 
-      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(EnumTypeValidationDomainObjectClass));
+      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixinsAndDefaultProperties(typeof(EnumTypeValidationDomainObjectClass));
     }
 
     [Test]

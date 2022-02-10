@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Moq;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
@@ -31,6 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         Type classType = null,
         bool isAbstract = false,
         ClassDefinition baseClass = null,
+        IEnumerable<InterfaceDefinition> implementedInterfaces = null,
         Type storageGroupType = null,
         DefaultStorageClass? defaultStorageClass = null,
         IPersistentMixinFinder persistentMixinFinder = null,
@@ -41,6 +43,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           classType,
           isAbstract,
           baseClass,
+          implementedInterfaces,
+          storageGroupType,
+          defaultStorageClass,
+          persistentMixinFinder,
+          instanceCreator);
+    }
+
+    public static TypeDefinition CreateClassDefinitionWithDefaultProperties (
+        string id = null,
+        Type classType = null,
+        bool isAbstract = false,
+        ClassDefinition baseClass = null,
+        IEnumerable<InterfaceDefinition> implementedInterfaces = null,
+        Type storageGroupType = null,
+        DefaultStorageClass? defaultStorageClass = null,
+        IPersistentMixinFinder persistentMixinFinder = null,
+        IDomainObjectCreator instanceCreator = null)
+    {
+      return ClassDefinitionObjectMother.CreateClassDefinitionWithDefaultProperties(
+          id,
+          classType,
+          isAbstract,
+          baseClass,
+          implementedInterfaces,
           storageGroupType,
           defaultStorageClass,
           persistentMixinFinder,
@@ -61,6 +87,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         Type classType = null,
         bool isAbstract = false,
         ClassDefinition baseClass = null,
+        IEnumerable<InterfaceDefinition> implementedInterfaces = null,
         Type storageGroupType = null,
         DefaultStorageClass? defaultStorageClass = null,
         IPersistentMixinFinder persistentMixinFinder = null,
@@ -72,6 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           classType,
           isAbstract,
           baseClass,
+          implementedInterfaces,
           storageGroupType,
           defaultStorageClass,
           persistentMixinFinder,
@@ -81,6 +109,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public static TypeDefinition CreateClassDefinitionWithMixins (Type type, params Type[] mixins)
     {
       return ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type, mixins);
+    }
+
+    public static TypeDefinition CreateClassDefinitionWithMixinsAndDefaultProperties (Type type, params Type[] mixins)
+    {
+      return ClassDefinitionObjectMother.CreateClassDefinitionWithMixinsWithDefaultProperties(type, mixins);
+    }
+
+    public static TypeDefinition CreateInterfaceDefinition (
+        Type type = null,
+        IEnumerable<InterfaceDefinition> extendedInterfaces = null,
+        Type storageGroupType = null,
+        DefaultStorageClass? defaultStorageClass = null)
+    {
+      return InterfaceDefinitionObjectMother.CreateInterfaceDefinition(type, extendedInterfaces, storageGroupType, defaultStorageClass);
+    }
+
+    public static TypeDefinition CreateInterfaceDefinitionWithDefaultProperties (
+        Type type = null,
+        IEnumerable<InterfaceDefinition> extendedInterfaces = null,
+        Type storageGroupType = null,
+        DefaultStorageClass? defaultStorageClass = null)
+    {
+      return InterfaceDefinitionObjectMother.CreateInterfaceDefinitionWithDefaultProperties(type, extendedInterfaces, storageGroupType, defaultStorageClass);
     }
   }
 }

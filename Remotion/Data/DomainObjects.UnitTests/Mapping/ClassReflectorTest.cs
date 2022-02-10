@@ -603,13 +603,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       return PropertyInfoAdapter.Create(propertyInfo);
     }
 
-    private ClassDefinition CreateClassDefinition (string id, Type classType, bool isAbstract, ClassDefinition baseClass = null)
+    private ClassDefinition CreateClassDefinition (string id, Type classType, bool isAbstract, ClassDefinition baseClass = null, params InterfaceDefinition[] implementedInterfaces)
     {
         return new ClassDefinition(
                 id,
                 classType,
                 isAbstract,
                 baseClass,
+                implementedInterfaces,
                 null,
                 DefaultStorageClass.Persistent,
                 new PersistentMixinFinderStub(classType),

@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       _validtionRule = new MappingAttributesAreSupportedForPropertyTypeValidationRule();
       _validType = typeof(ClassWithValidPropertyAttributes);
       _invalidType = typeof(ClassWithInvalidPropertyAttributes);
-      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: _validType);
+      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithDefaultProperties(classType: _validType);
     }
 
     [Test]
