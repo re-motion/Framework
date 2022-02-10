@@ -90,18 +90,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     {
       ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      var allTypeDefinitions = typeDefinition.GetTypeHierarchy();
+      InlineTypeDefinitionWalker.WalkDescendants(
+          typeDefinition,
+          EnsureStoragePropertiesCreated,
+          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported.")); // TODO R2I Linq: Add support for interfaces
 
-      // ReSharper disable PossibleMultipleEnumeration - multiple enumeration is okay here.
-      EnsureAllStoragePropertiesCreated(allTypeDefinitions);
-      EnsureAllStorageEntitiesCreated(allTypeDefinitions);
-      // ReSharper restore PossibleMultipleEnumeration
-    }
-
-    private void EnsureAllStorageEntitiesCreated (IEnumerable<TypeDefinition> typeDefinitions)
-    {
-      foreach (var typeDefinition in typeDefinitions)
-        EnsureStorageEntitiesCreated(typeDefinition);
+      InlineTypeDefinitionWalker.WalkDescendants(
+          typeDefinition,
+          EnsureStorageEntitiesCreated,
+          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported.")); // TODO R2I Linq: Add support for interfaces
     }
 
     private void EnsureStorageEntitiesCreated (TypeDefinition typeDefinition)
@@ -121,12 +118,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       }
 
       Assertion.DebugIsNotNull(typeDefinition.StorageEntityDefinition, "typeDefinition.StorageEntityDefinition != null");
-    }
-
-    private void EnsureAllStoragePropertiesCreated (IEnumerable<TypeDefinition> typeDefinitions)
-    {
-      foreach (var typeDefinition in typeDefinitions)
-        EnsureStoragePropertiesCreated(typeDefinition);
     }
 
     private void EnsureStoragePropertiesCreated (TypeDefinition typeDefinition)

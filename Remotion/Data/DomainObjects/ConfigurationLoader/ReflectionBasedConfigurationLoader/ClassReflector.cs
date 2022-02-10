@@ -94,6 +94,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
               Type,
               IsAbstract(),
               baseClassDefinition,
+              Enumerable.Empty<InterfaceDefinition>(), // TODO R2I Mapping: Support interfaces
               storageGroupType,
               defaultStorageClass,
               persistentMixinFinder,

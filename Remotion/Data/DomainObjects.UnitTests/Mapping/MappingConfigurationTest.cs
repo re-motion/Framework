@@ -103,13 +103,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetTypeDefinitions ()
     {
-      var classDefinition1 = ClassDefinitionObjectMother.CreateClassDefinition("C1", typeof(RelationEndPointPropertyClass));
-      classDefinition1.SetPropertyDefinitions(new PropertyDefinitionCollection());
-      classDefinition1.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
-
-      var classDefinition2 = ClassDefinitionObjectMother.CreateClassDefinition("C2", typeof(RelationEndPointPropertyClass1));
-      classDefinition2.SetPropertyDefinitions(new PropertyDefinitionCollection());
-      classDefinition2.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
+      var classDefinition1 = ClassDefinitionObjectMother.CreateClassDefinitionWithDefaultProperties("C1", typeof(RelationEndPointPropertyClass));
+      var classDefinition2 = ClassDefinitionObjectMother.CreateClassDefinitionWithDefaultProperties("C2", typeof(RelationEndPointPropertyClass1));
 
       StubMockMappingLoader(new[] { classDefinition1, classDefinition2 }, _emptyRelationDefinitions);
       var persistenceModelLoaderStub = CreatePersistenceModelLoaderStub();
@@ -121,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ContainsTypeDefinition_ValueFound ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(RelationEndPointPropertyClass));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixinsWithDefaultProperties(typeof(RelationEndPointPropertyClass));
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
       classDefinition.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
       StubMockMappingLoader(new[] { classDefinition }, _emptyRelationDefinitions);
@@ -144,7 +139,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetTypeDefinition_ValueFound ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(RelationEndPointPropertyClass));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixinsWithDefaultProperties(typeof(RelationEndPointPropertyClass));
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
       classDefinition.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
       StubMockMappingLoader(new[] { classDefinition }, _emptyRelationDefinitions);
@@ -183,7 +178,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void ContainsClassDefinition_ValueFound ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(RelationEndPointPropertyClass));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixinsWithDefaultProperties(typeof(RelationEndPointPropertyClass));
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
       classDefinition.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
       StubMockMappingLoader(new[] { classDefinition }, _emptyRelationDefinitions);
@@ -206,7 +201,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetClassDefinition_ValueFound ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(RelationEndPointPropertyClass));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixinsWithDefaultProperties(typeof(RelationEndPointPropertyClass));
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
       classDefinition.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
       StubMockMappingLoader(new[] { classDefinition }, _emptyRelationDefinitions);

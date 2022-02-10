@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       _validationRule = new PropertyTypeIsSupportedValidationRule();
 
-      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
+      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixinsAndDefaultProperties(typeof(DerivedValidationDomainObjectClass));
     }
 
     [Test]

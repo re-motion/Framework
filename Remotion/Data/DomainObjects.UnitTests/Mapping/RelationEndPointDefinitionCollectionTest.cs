@@ -99,6 +99,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
+    public void CreateForAllRelationEndPoints_ClassDefinitionWithImplementedInterfaces ()
+    {
+      var iPerson = InterfaceDefinitionObjectMother.CreateInterfaceDefinition();
+      var iCustomer = InterfaceDefinitionObjectMother.CreateInterfaceDefinition(extendedInterfaces: new[] { iPerson });
+      var customer = ClassDefinitionObjectMother.CreateClassDefinition(implementedInterfaces: new[] { iCustomer });
+
+      var propertyDefinitionInIPerson = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(iPerson, "A");
+      var propertyDefinitionInICustomer = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(iCustomer, "B");
+      var propertyDefinitionInCustomer = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(customer, "C");
+
+      var endPointInIPerson = new RelationEndPointDefinition(propertyDefinitionInIPerson, false);
+      var endPointInICustomer = new RelationEndPointDefinition(propertyDefinitionInICustomer, false);
+      var endPointInCustomer = new RelationEndPointDefinition(propertyDefinitionInCustomer, false);
+
+      iPerson.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointInIPerson }, true));
+      iCustomer.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointInICustomer }, true));
+      customer.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection(new[] { endPointInCustomer }, true));
+
+      var relationEndPoints = RelationEndPointDefinitionCollection.CreateForAllRelationEndPoints(customer, false);
+
+      Assert.That(relationEndPoints.Count, Is.EqualTo(3));
+      Assert.That(relationEndPoints[0], Is.SameAs(endPointInCustomer));
+      Assert.That(relationEndPoints[1], Is.SameAs(endPointInICustomer));
+      Assert.That(relationEndPoints[2], Is.SameAs(endPointInIPerson));
+    }
+
+    [Test]
     public void Add ()
     {
       _collection.Add(_endPoint1);
