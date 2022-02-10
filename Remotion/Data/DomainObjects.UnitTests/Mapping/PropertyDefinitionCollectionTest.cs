@@ -87,6 +87,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
+    public void CreateForAllPropertyDefinitions_ClassDefinitionWithImplementedInterfaces ()
+    {
+      var iPerson = InterfaceDefinitionObjectMother.CreateInterfaceDefinition();
+      var iCustomer = InterfaceDefinitionObjectMother.CreateInterfaceDefinition(extendedInterfaces: new[] { iPerson });
+      var customer = ClassDefinitionObjectMother.CreateClassDefinition(implementedInterfaces: new[] { iCustomer });
+
+      var propertyDefinitionInIPerson = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(iPerson, "A");
+      var propertyDefinitionInICustomer = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(iCustomer, "B");
+      var propertyDefinitionInCustomer = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(customer, "C");
+
+      iPerson.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinitionInIPerson }, true));
+      iCustomer.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinitionInICustomer }, true));
+      customer.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinitionInCustomer }, true));
+
+      var propertyDefinitions = PropertyDefinitionCollection.CreateForAllProperties(customer, false);
+
+      Assert.That(propertyDefinitions.Count, Is.EqualTo(3));
+      Assert.That(propertyDefinitions[0], Is.SameAs(propertyDefinitionInCustomer));
+      Assert.That(propertyDefinitions[1], Is.SameAs(propertyDefinitionInICustomer));
+      Assert.That(propertyDefinitions[2], Is.SameAs(propertyDefinitionInIPerson));
+    }
+
+    [Test]
     public void Add ()
     {
       _collection.Add(_propertyDefinition);
