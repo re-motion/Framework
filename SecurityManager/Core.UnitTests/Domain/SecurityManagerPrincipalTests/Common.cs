@@ -19,6 +19,7 @@ using System;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using Remotion.Context;
 using Remotion.Data.DomainObjects;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
@@ -73,14 +74,17 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       ThreadRunner.Run(
           delegate
           {
-            using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+            using (SafeContext.Instance.OpenSafeContextBoundary())
             {
-              User otherUser = User.FindByUserName("group1/user1");
-              var otherPrincipal = CreateSecurityManagerPrincipal(otherUser.Tenant, otherUser, null, null);
+              using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+              {
+                User otherUser = User.FindByUserName("group1/user1");
+                var otherPrincipal = CreateSecurityManagerPrincipal(otherUser.Tenant, otherUser, null, null);
 
-              Assert.That(SecurityManagerPrincipal.Current.IsNull, Is.True);
-              SecurityManagerPrincipal.Current = otherPrincipal;
-              Assert.That(SecurityManagerPrincipal.Current, Is.SameAs(otherPrincipal));
+                Assert.That(SecurityManagerPrincipal.Current.IsNull, Is.True);
+                SecurityManagerPrincipal.Current = otherPrincipal;
+                Assert.That(SecurityManagerPrincipal.Current, Is.SameAs(otherPrincipal));
+              }
             }
           });
 

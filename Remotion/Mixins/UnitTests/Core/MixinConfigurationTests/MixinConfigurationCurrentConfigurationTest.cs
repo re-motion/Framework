@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Context;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
@@ -47,7 +48,13 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
       var newConfiguration = new MixinConfiguration();
       MixinConfiguration.SetActiveConfiguration(newConfiguration);
 
-      ThreadRunner.Run(() => Assert.That(MixinConfiguration.ActiveConfiguration, Is.Not.SameAs(newConfiguration)));
+      ThreadRunner.Run(() =>
+      {
+        using (SafeContext.Instance.OpenSafeContextBoundary())
+        {
+          Assert.That(MixinConfiguration.ActiveConfiguration, Is.Not.SameAs(newConfiguration));
+        }
+      });
     }
 
     [Test]
@@ -85,7 +92,13 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
         var newMasterConfiguration = new MixinConfiguration();
         MixinConfiguration.SetMasterConfiguration(newMasterConfiguration);
 
-        ThreadRunner.Run(() => Assert.That(MixinConfiguration.ActiveConfiguration, Is.SameAs(newMasterConfiguration)));
+        ThreadRunner.Run(() =>
+        {
+          using (SafeContext.Instance.OpenSafeContextBoundary())
+          {
+            Assert.That(MixinConfiguration.ActiveConfiguration, Is.SameAs(newMasterConfiguration));
+          }
+        });
       }
       finally
       {

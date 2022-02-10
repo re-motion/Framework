@@ -39,15 +39,22 @@ namespace Remotion.Context
   /// The data managed by this class is thread-local. The class is safe to be used from multiple threads at the same time, but each thread will have 
   /// its own copy of the data.
   /// </threadsafety>
-  public static class SafeContext
+  public static partial class SafeContext
   {
-    private static readonly Lazy<ISafeContextStorageProvider> s_instance = new Lazy<ISafeContextStorageProvider>(
-        () => SafeServiceLocator.Current.GetInstance<ISafeContextStorageProvider>(),
-        LazyThreadSafetyMode.ExecutionAndPublication);
+    /// <summary>Workaround to allow reflection to reset the fields since setting a static readonly field is not supported in .NET 3.0 and later.</summary>
+    private class Fields
+    {
+      public readonly Lazy<ISafeContextStorageProvider> SafeContextStorageProvider =
+          new Lazy<ISafeContextStorageProvider>(
+              () => SafeServiceLocator.Current.GetInstance<ISafeContextStorageProvider>(),
+              LazyThreadSafetyMode.ExecutionAndPublication);
+    }
+
+    private static readonly Fields s_fields = new Fields();
 
     public static ISafeContextStorageProvider Instance
     {
-      get { return s_instance.Value; }
+      get { return s_fields.SafeContextStorageProvider.Value; }
     }
   }
 }
