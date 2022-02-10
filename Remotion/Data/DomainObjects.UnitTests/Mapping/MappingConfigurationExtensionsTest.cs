@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition();
       var mappingConfigurationMock = new Mock<IMappingConfiguration>(MockBehavior.Strict);
-      mappingConfigurationMock.Setup(e => e.GetTypeDefinition(typeof(IDummyInterface), It.IsAny<Func<Type, Exception>>())).Returns(typeDefinition);
+      mappingConfigurationMock.Setup(_ => _.GetTypeDefinition(typeof(IDummyInterface), It.IsAny<Func<Type, Exception>>())).Returns(typeDefinition);
 
       var result = mappingConfigurationMock.Object.GetTypeDefinition(typeof(IDummyInterface));
       Assert.That(result, Is.SameAs(typeDefinition));
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void ContainsClassDefinition (bool value)
     {
       var mappingConfigurationMock = new Mock<IMappingConfiguration>(MockBehavior.Strict);
-      mappingConfigurationMock.Setup(e => e.ContainsTypeDefinition(typeof(DummyClass)))
+      mappingConfigurationMock.Setup(_ => _.ContainsTypeDefinition(typeof(DummyClass)))
           .Returns(value)
           .Verifiable();
 
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       var mappingConfigurationMock = new Mock<IMappingConfiguration>(MockBehavior.Strict);
       mappingConfigurationMock
-          .Setup(e => e.GetTypeDefinition(typeof(DummyClass), It.IsAny<Func<Type, Exception>>()))
+          .Setup(_ => _.GetTypeDefinition(typeof(DummyClass), It.IsAny<Func<Type, Exception>>()))
           .Returns(classDefinition);
 
       var result = mappingConfigurationMock.Object.GetClassDefinition(typeof(DummyClass));
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var exceptionFactory = new Func<Type, Exception>(_ => new Exception());
       var mappingConfigurationMock = new Mock<IMappingConfiguration>(MockBehavior.Strict);
       mappingConfigurationMock
-          .Setup(e => e.GetTypeDefinition(typeof(DummyClass), exceptionFactory))
+          .Setup(_ => _.GetTypeDefinition(typeof(DummyClass), exceptionFactory))
           .Returns(typeDefinition);
 
       var result = mappingConfigurationMock.Object.GetClassDefinition(typeof(DummyClass), exceptionFactory);
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       var mappingConfigurationMock = new Mock<IMappingConfiguration>(MockBehavior.Strict);
-      mappingConfigurationMock.Setup(e => e.GetClassDefinition("asdNonExistent", It.IsAny<Func<string, Exception>>())).Returns(classDefinition);
+      mappingConfigurationMock.Setup(_ => _.GetClassDefinition("asdNonExistent", It.IsAny<Func<string, Exception>>())).Returns(classDefinition);
 
       var result = mappingConfigurationMock.Object.GetClassDefinition("asdNonExistent");
       Assert.That(result, Is.SameAs(classDefinition));

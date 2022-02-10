@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     public void SetUp ()
     {
       _validationRule = new PropertyStorageClassIsSupportedByStorageProviderValidationRule();
-      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
+      _typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixinsAndDefaultProperties(typeof(DerivedValidationDomainObjectClass));
       _persistentStorageEntityDefinition = new Mock<IStorageEntityDefinition>();
       _nonPersistentStorageEntityDefinition =
           new NonPersistentStorageEntity(new NonPersistentProviderDefinition("NonPersistent", new NonPersistentStorageObjectFactory()));

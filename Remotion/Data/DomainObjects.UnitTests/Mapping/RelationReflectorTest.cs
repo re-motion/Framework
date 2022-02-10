@@ -551,7 +551,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetMetadata_RelatedPropertyTypeIsNotInMapping ()
     {
       var originatingClass =
-          TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(TestDomain.RelationReflector.RelatedPropertyTypeIsNotInMapping.Class1));
+          TypeDefinitionObjectMother.CreateClassDefinitionWithMixinsAndDefaultProperties(typeof(TestDomain.RelationReflector.RelatedPropertyTypeIsNotInMapping.Class1));
       originatingClass.SetPropertyDefinitions(new PropertyDefinitionCollection());
       originatingClass.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
       var originatingProperty = EnsurePropertyDefinitionExisitsOnClassDefinition(

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -60,6 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
           typeof(DerivedValidationDomainObjectClass),
           false,
           null,
+          Enumerable.Empty<InterfaceDefinition>(),
           new Mock<IPersistentMixinFinder>().Object,
           new Mock<IDomainObjectCreator>().Object);
       classDefinition.SetStorageEntity(_unionViewDefinition);

@@ -34,11 +34,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     {
       MappingReflector mappingReflector = MappingReflectorObjectMother.CreateMappingReflector(TestMappingConfiguration.GetTypeDiscoveryService());
 
-      var actualClassDefinitions = mappingReflector.GetTypeDefinitions().ToDictionary(td => td.Type);
-      mappingReflector.GetRelationDefinitions(actualClassDefinitions);
-      Assert.That(actualClassDefinitions, Is.Not.Null);
+      var actualTypeDefinitions = mappingReflector.GetTypeDefinitions().ToDictionary(td => td.Type);
+      mappingReflector.GetRelationDefinitions(actualTypeDefinitions);
+      Assert.That(actualTypeDefinitions, Is.Not.Null);
 
-      var inheritanceRootClasses = actualClassDefinitions.Values.Select(td => td.GetInheritanceRoot()).Distinct();
+      var inheritanceRoots = TypeDefinitionHierarchy.GetHierarchyRoots(actualTypeDefinitions.Values);
 
       // Pretend that all classes have the storage provider definition used by FakeMappingConfiguration
       var defaultStorageProviderDefinition = FakeMappingConfiguration.Current.DefaultStorageProviderDefinition;
@@ -53,26 +53,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
           .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<TypeDefinition>()))
           .Returns(nonPersistentStorageProviderDefinition);
 
-      foreach (ClassDefinition classDefinition in inheritanceRootClasses.Cast<ClassDefinition>())
+      foreach (var inheritanceRoot in inheritanceRoots)
       {
-        if (typeof(OrderViewModel).IsAssignableFrom(classDefinition.Type))
+        if (typeof(OrderViewModel).IsAssignableFrom(inheritanceRoot.Type))
         {
           var persistenceModelLoader = nonPersistentStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
               nonPersistentStorageProviderDefinition);
-          persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);
+          persistenceModelLoader.ApplyPersistenceModelToHierarchy(inheritanceRoot);
         }
         else
         {
           var persistenceModelLoader = defaultStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
               defaultStorageProviderDefinition);
-          persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);
+          persistenceModelLoader.ApplyPersistenceModelToHierarchy(inheritanceRoot);
         }
       }
 
       var typeDefinitionChecker = new TypeDefinitionChecker();
-      typeDefinitionChecker.Check(FakeMappingConfiguration.Current.TypeDefinitions.Values.Cast<ClassDefinition>(), actualClassDefinitions, false, true);
-      typeDefinitionChecker.CheckPersistenceModel(FakeMappingConfiguration.Current.TypeDefinitions.Values.Cast<ClassDefinition>(), actualClassDefinitions);
-      Assert.That(actualClassDefinitions.ContainsKey(typeof(TestDomainBase)), Is.False);
+      typeDefinitionChecker.Check(FakeMappingConfiguration.Current.TypeDefinitions.Values.Cast<ClassDefinition>(), actualTypeDefinitions, false, true);
+      typeDefinitionChecker.CheckPersistenceModel(FakeMappingConfiguration.Current.TypeDefinitions.Values.Cast<ClassDefinition>(), actualTypeDefinitions);
+      Assert.That(actualTypeDefinitions.ContainsKey(typeof(TestDomainBase)), Is.False);
     }
   }
 }

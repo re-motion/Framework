@@ -274,9 +274,11 @@ namespace Remotion.Data.DomainObjects.Linq
       }
 
       var propertyInfoAdapter = PropertyInfoAdapter.Create(propertyInfo);
-      var endPoint = typeDefinition.GetTypeHierarchy()
-                         .Select(cd => cd.ResolveRelationEndPoint(propertyInfoAdapter))
-                         .FirstOrDefault(ep => ep != null);
+      var endPoint = InlineTypeDefinitionWalker.WalkDescendants(
+          typeDefinition,
+          classDefinition => classDefinition.ResolveRelationEndPoint(propertyInfoAdapter),
+          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported."),
+          match: relationEndPoint => relationEndPoint != null); // TODO R2I Mapping: Add support for interfaces
 
       if (endPoint == null)
       {

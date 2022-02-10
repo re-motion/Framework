@@ -30,12 +30,13 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      if (typeDefinition is not ClassDefinition classDefinition) // TODO R2I Mapping: Maybe move this into TypeDefinition instead
-        return new RelationEndPointDefinitionCollection(typeDefinition.MyRelationEndPointDefinitions, makeCollectionReadOnly);
+      var endPoints = new List<IRelationEndPointDefinition>();
+      InlineTypeDefinitionWalker.WalkAncestors(
+          typeDefinition,
+          classDefinition => endPoints.AddRange(classDefinition.MyRelationEndPointDefinitions),
+          interfaceDefinition => endPoints.AddRange(interfaceDefinition.MyRelationEndPointDefinitions));
 
-      return
-          new RelationEndPointDefinitionCollection(
-              classDefinition.CreateSequence(cd => cd.BaseClass).SelectMany(cd => cd.MyRelationEndPointDefinitions), makeCollectionReadOnly);
+      return new RelationEndPointDefinitionCollection(endPoints, makeCollectionReadOnly);
     }
 
     public RelationEndPointDefinitionCollection ()

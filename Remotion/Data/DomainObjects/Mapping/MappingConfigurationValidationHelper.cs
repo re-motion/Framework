@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull("rootType", rootType);
 
       var validator = _persistenceModelValidatorFactory.CreatePersistenceMappingValidator(rootType);
-      var typeDefinitionsToValidate = rootType.GetTypeHierarchy();
+      var typeDefinitionsToValidate = TypeDefinitionHierarchy.GetDescendantsAndSelf(rootType);
       AnalyzeMappingValidationResults(validator.Validate(typeDefinitionsToValidate));
     }
 

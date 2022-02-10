@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -98,10 +99,11 @@ namespace Remotion.Data.DomainObjects.Linq
       if (property.Equals(s_idProperty))
         return _storageSpecificExpressionResolver.ResolveIDProperty(originatingEntity, entityTypeDefinition);
 
-      var allTypeDefinitions = entityTypeDefinition.GetTypeHierarchy();
-      var resolvedMember = allTypeDefinitions
-          .Select(cd => ResolveMemberInTypeDefinition(originatingEntity, property, cd))
-          .FirstOrDefault(e => e != null);
+      var resolvedMember = InlineTypeDefinitionWalker.WalkDescendants(
+          entityTypeDefinition,
+          classDefinition => ResolveMemberInTypeDefinition(originatingEntity, property, classDefinition),
+          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported"),
+          match: expression => expression != null); // TODO R2I Mapping: Add support for interfaces
 
       if (resolvedMember == null)
       {
@@ -159,10 +161,14 @@ namespace Remotion.Data.DomainObjects.Linq
         var typeDefinition = GetTypeDefinition(desiredType);
         var idExpression = Expression.MakeMemberAccess(checkedExpression, s_idProperty.PropertyInfo);
         var classIDExpression = Expression.MakeMemberAccess(idExpression, s_classIDProperty.PropertyInfo);
-        var allClassDefinitions = typeDefinition.GetTypeHierarchy().OfType<ClassDefinition>();
-        var allClassIDExpressions = allClassDefinitions.Select(cd => new SqlLiteralExpression(cd.ID));
 
-        return new SqlInExpression(classIDExpression, new SqlCollectionExpression(typeof(string[]), allClassIDExpressions.Cast<Expression>()));
+        var allClassIDExpressions = new List<Expression>();
+        InlineTypeDefinitionWalker.WalkDescendants(
+            typeDefinition,
+            classDefinition => allClassIDExpressions.Add(new SqlLiteralExpression(classDefinition.ID)),
+            interfaceDefinition => throw new NotImplementedException("Interfaces are not supported")); // TODO R2I Mapping: Add support for interfaces
+
+        return new SqlInExpression(classIDExpression, new SqlCollectionExpression(typeof(string[]), allClassIDExpressions));
       }
       else
       {
@@ -247,10 +253,11 @@ namespace Remotion.Data.DomainObjects.Linq
       var property = GetMemberAsProperty(originatingEntity, memberInfo);
       var entityTypeDefinition = GetTypeDefinition(originatingEntity.Type);
 
-      var allTypeDefinitions = entityTypeDefinition.GetTypeHierarchy();
-      var leftEndPointDefinition = allTypeDefinitions
-          .Select(cd => cd.ResolveRelationEndPoint(property))
-          .FirstOrDefault(e => e != null);
+      var leftEndPointDefinition = InlineTypeDefinitionWalker.WalkDescendants(
+          entityTypeDefinition,
+          classDefinition => classDefinition.ResolveRelationEndPoint(property),
+          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported"),
+          match: relationEndPoint => relationEndPoint != null); // TODO R2I Mapping: Add support for interfaces
 
       if (leftEndPointDefinition == null)
       {

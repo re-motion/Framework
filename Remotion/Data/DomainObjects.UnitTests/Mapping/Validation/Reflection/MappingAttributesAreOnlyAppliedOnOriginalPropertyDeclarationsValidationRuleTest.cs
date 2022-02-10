@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     {
       var type = typeof(BaseMappingAttributesClass);
       var classDefinition = new ClassDefinitionWithUnresolvedType(
-          "Test", type, true, null, new Mock<IPersistentMixinFinder>().Object, new Mock<IDomainObjectCreator>().Object);
+          "Test", type, true, null, Enumerable.Empty<InterfaceDefinition>(), new Mock<IPersistentMixinFinder>().Object, new Mock<IDomainObjectCreator>().Object);
       Assert.That(
           () => _validationRule.Validate(classDefinition),
           Throws.InvalidOperationException

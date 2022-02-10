@@ -46,14 +46,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
     {
       _validationRule = new RelationPropertyStorageClassMatchesReferencedTypeDefinitionStorageClassValidationRule();
 
-      _persistentTypeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(
+      _persistentTypeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithDefaultProperties(
           "Order",
           typeof(Order),
           storageGroupType: typeof(TestDomainAttribute));
       _persistentStorageEntityDefinition = new Mock<IStorageEntityDefinition>();
       _persistentTypeDefinition.SetStorageEntity(_persistentStorageEntityDefinition.Object);
 
-      _nonPersistentTypeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(
+      _nonPersistentTypeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithDefaultProperties(
           "OrderViewModel",
           typeof(OrderViewModel),
           storageGroupType: typeof(NonPersistentTestDomainAttribute));

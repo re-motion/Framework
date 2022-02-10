@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateRelationDefinitionCollection ()
     {
-      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(OrderItem));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinitionWithMixinsAndDefaultProperties(typeof(OrderItem));
       var propertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(typeDefinition, typeof(OrderItem), "Order");
       var endPoint = new RelationEndPointDefinition(propertyDefinition, false);
       typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));

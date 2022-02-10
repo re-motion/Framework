@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
@@ -31,6 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         Type classType = null,
         bool isAbstract = false,
         ClassDefinition baseClass = null,
+        IEnumerable<InterfaceDefinition> implementedInterfaces = null,
         Type storageGroupType = null,
         DefaultStorageClass? defaultStorageClass = null,
         IPersistentMixinFinder persistentMixinFinder = null,
@@ -38,6 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       id = id ?? "Test";
       classType = classType ?? typeof(Order);
+      implementedInterfaces = implementedInterfaces ?? Enumerable.Empty<InterfaceDefinition>();
       var defaultStorageClassNotNullable = defaultStorageClass ?? DefaultStorageClass.Persistent;
       persistentMixinFinder = persistentMixinFinder ?? new PersistentMixinFinderStub(classType, Type.EmptyTypes);
       instanceCreator = instanceCreator ?? new Mock<IDomainObjectCreator>(MockBehavior.Strict).Object;
@@ -47,10 +51,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               classType,
               isAbstract,
               baseClass,
+              implementedInterfaces,
               storageGroupType,
               defaultStorageClassNotNullable,
               persistentMixinFinder,
               instanceCreator);
+    }
+
+    public static ClassDefinition CreateClassDefinitionWithDefaultProperties (
+        string id = null,
+        Type classType = null,
+        bool isAbstract = false,
+        ClassDefinition baseClass = null,
+        IEnumerable<InterfaceDefinition> implementedInterfaces = null,
+        Type storageGroupType = null,
+        DefaultStorageClass? defaultStorageClass = null,
+        IPersistentMixinFinder persistentMixinFinder = null,
+        IDomainObjectCreator instanceCreator = null)
+    {
+      var classDefinition = CreateClassDefinition(id, classType, isAbstract, baseClass, implementedInterfaces, storageGroupType, defaultStorageClass, persistentMixinFinder, instanceCreator);
+
+      classDefinition.SetStorageEntity(new FakeStorageEntityDefinition(new UnitTestStorageProviderStubDefinition("stub"), "stub"));
+      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
+      classDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+      classDefinition.SetDerivedClasses(Array.Empty<ClassDefinition>());
+
+      return classDefinition;
     }
 
     public static ClassDefinition CreateClassDefinition_WithEmptyMembers_AndDerivedClasses (string id = null, Type classType = null, ClassDefinition baseClass = null)
@@ -70,6 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         Type classType = null,
         bool isAbstract = false,
         ClassDefinition baseClass = null,
+        IEnumerable<InterfaceDefinition> implementedInterfaces = null,
         Type storageGroupType = null,
         DefaultStorageClass? defaultStorageClass = null,
         IPersistentMixinFinder persistentMixinFinder = null,
@@ -80,6 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
                 classType,
                 isAbstract,
                 baseClass,
+                implementedInterfaces,
                 storageGroupType,
                 defaultStorageClass,
                 persistentMixinFinder,
@@ -91,6 +119,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public static ClassDefinition CreateClassDefinitionWithMixins (Type type, params Type[] mixins)
     {
       return CreateClassDefinition(classType: type, persistentMixinFinder: new PersistentMixinFinderStub(type, mixins));
+    }
+
+    public static ClassDefinition CreateClassDefinitionWithMixinsWithDefaultProperties (Type type, params Type[] mixins)
+    {
+      return CreateClassDefinitionWithDefaultProperties(classType: type, persistentMixinFinder: new PersistentMixinFinderStub(type, mixins));
     }
   }
 }

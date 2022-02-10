@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
         mappingConfigurationValidationHelper.ValidateRelationDefinitions(relationDefinitionsDictionary.Values);
 
-        foreach (var inheritanceRoot in GetInheritanceRoots(typeDefinitionsDictionary.Values))
+        foreach (var inheritanceRoot in TypeDefinitionHierarchy.GetHierarchyRoots(typeDefinitionsDictionary.Values))
         {
           persistenceModelLoader.ApplyPersistenceModelToHierarchy(inheritanceRoot);
           mappingConfigurationValidationHelper.VerifyPersistenceModelApplied(inheritanceRoot);
@@ -218,13 +218,6 @@ namespace Remotion.Data.DomainObjects.Mapping
     public IMemberInformationNameResolver NameResolver
     {
       get { return _nameResolver; }
-    }
-
-    private IEnumerable<TypeDefinition> GetInheritanceRoots (IEnumerable<TypeDefinition> typeDefinitions)
-    {
-      return typeDefinitions
-          .Select(e => e.GetInheritanceRoot())
-          .ToHashSet();
     }
 
     private MappingException CreateMappingException (string message, params object[] args)
