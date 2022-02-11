@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return SafeInnerDataManager.GetDataContainersWithLazyLoad(objectIDs, throwOnNotFound);
     }
 
-    public IEnumerable<PersistableData> GetLoadedDataByObjectState (Func<DomainObjectState, bool> predicate)
+    public IEnumerable<PersistableData> GetLoadedDataByObjectState (Predicate<DomainObjectState> predicate)
     {
       return SafeInnerDataManager.GetLoadedDataByObjectState(predicate);
     }

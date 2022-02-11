@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     DataContainer? GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound);
     IEnumerable<DataContainer?> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound);
 
-    IEnumerable<PersistableData> GetLoadedDataByObjectState (Func<DomainObjectState, bool> predicate);
+    IEnumerable<PersistableData> GetLoadedDataByObjectState (Predicate<DomainObjectState> predicate);
 
     void RegisterDataContainer (DataContainer dataContainer);
     void Discard (DataContainer dataContainer);

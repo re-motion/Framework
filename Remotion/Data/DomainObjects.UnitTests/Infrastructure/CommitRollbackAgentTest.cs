@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     private PersistableData _fakeChangedPersistableItem;
     private PersistableData _fakeNewPersistableItem;
     private PersistableData _fakeDeletedPersistableItem;
-    private Func<DomainObjectState, bool> _isPersistenceRelevantStatePredicate;
+    private Predicate<DomainObjectState> _isPersistenceRelevantStatePredicate;
 
     public override void SetUp ()
     {
@@ -91,11 +91,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           fakeDataContainer3,
           new IRelationEndPoint[0]);
 
-      Func<DomainObjectState, bool> isPersistenceRelevantStatePredicate = null;
+      Predicate<DomainObjectState> isPersistenceRelevantStatePredicate = null;
       _dataManagerMock
-          .Setup(stub => stub.GetLoadedDataByObjectState(It.IsAny<Func<DomainObjectState, bool>>()))
+          .Setup(stub => stub.GetLoadedDataByObjectState(It.IsAny<Predicate<DomainObjectState>>()))
           .Returns(new PersistableData[0])
-          .Callback((Func<DomainObjectState, bool> predicate) => isPersistenceRelevantStatePredicate = predicate);
+          .Callback((Predicate<DomainObjectState> predicate) => isPersistenceRelevantStatePredicate = predicate);
 
       _agent.HasDataChanged();
       Assert.That(isPersistenceRelevantStatePredicate, Is.Not.Null);
