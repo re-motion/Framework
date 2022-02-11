@@ -467,6 +467,19 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
+    public void HasObjectsWithState ()
+    {
+      var expectedResult = BooleanObjectMother.GetRandomBoolean();
+      Predicate<DomainObjectState> predicate = _ => true;
+      _commitRollbackAgentMock
+          .Setup(mock => mock.HasData(It.Is<Predicate<DomainObjectState>>(v=> object.ReferenceEquals(v, predicate))))
+          .Returns(expectedResult);
+
+      var result = _transactionWithMocks.HasObjectsWithState(predicate);
+      Assert.That(result, Is.EqualTo(expectedResult));
+    }
+
+    [Test]
     public void Commit ()
     {
       _commitRollbackAgentMock.Setup(mock => mock.CommitData()).Verifiable();

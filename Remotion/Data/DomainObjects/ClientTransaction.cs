@@ -662,6 +662,20 @@ public class ClientTransaction
   }
 
   /// <summary>
+  /// Returns whether at least one <see cref="DomainObject"/> in this <see cref="ClassDefinition"/> matches the supplied <see cref="DomainObjectState"/> predicate.
+  /// </summary>
+  /// <returns>
+  /// <see langword="true"/> if at least one <see cref="DomainObject"/> in this <see cref="ClassDefinition"/> matches the supplied <see cref="DomainObjectState"/> predicate;
+  /// otherwise, <see langword="false"/>.
+  /// </returns>
+  public bool HasObjectsWithState (Predicate<DomainObjectState> predicate)
+  {
+    ArgumentUtility.CheckNotNull("predicate", predicate);
+
+    return _commitRollbackAgent.HasData(predicate);
+  }
+
+  /// <summary>
   /// Commits all changes within the <b>ClientTransaction</b> to the underlying data source.
   /// </summary>
   /// <exception cref="Persistence.PersistenceException">Changes to objects from multiple storage providers were made.</exception>
