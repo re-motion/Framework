@@ -652,16 +652,6 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Returns whether at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed.
-  /// </summary>
-  /// <returns><see langword="true"/> if at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed; otherwise, <see langword="false"/>.</returns>
-  public virtual bool HasChanged ()
-  {
-    // Place tests in order of probability to reduce number of checks required until a match for a typical usage scenario
-    return _commitRollbackAgent.HasData(state => state.IsChanged || state.IsNew || state.IsDeleted);
-  }
-
-  /// <summary>
   /// Returns whether at least one <see cref="DomainObject"/> in this <see cref="ClassDefinition"/> matches the supplied <see cref="DomainObjectState"/> predicate.
   /// </summary>
   /// <returns>

@@ -433,40 +433,6 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void HasChanged ()
-    {
-      Expression<Func<Predicate<DomainObjectState>, bool>> matchesHasChangedPredicate =
-          predicate => predicate(new DomainObjectState.Builder().SetNew().Value)
-                       && predicate(new DomainObjectState.Builder().SetChanged().Value)
-                       && predicate(new DomainObjectState.Builder().SetDeleted().Value)
-                       && predicate(new DomainObjectState.Builder().SetChanged().SetDeleted().Value)
-                       && predicate(new DomainObjectState.Builder().SetChanged().SetNotLoadedYet().Value)
-                       && !predicate(new DomainObjectState.Builder().SetUnchanged().Value)
-                       && !predicate(new DomainObjectState.Builder().SetInvalid().Value)
-                       && !predicate(new DomainObjectState.Builder().SetNotLoadedYet().Value);
-
-      var sequence = new MockSequence();
-      _commitRollbackAgentMock.InSequence(sequence).Setup(mock => mock.HasData(It.Is(matchesHasChangedPredicate))).Returns(true).Verifiable();
-      _commitRollbackAgentMock.InSequence(sequence).Setup(mock => mock.HasData(It.Is(matchesHasChangedPredicate))).Returns(false).Verifiable();
-
-      var result1 = _transactionWithMocks.HasChanged();
-      var result2 = _transactionWithMocks.HasChanged();
-
-      _eventBrokerMock.Verify();
-      _hierarchyManagerMock.Verify();
-      _enlistedObjectManagerMock.Verify();
-      _invalidDomainObjectManagerMock.Verify();
-      _persistenceStrategyMock.Verify();
-      _dataManagerMock.Verify();
-      _objectLifetimeAgentMock.Verify();
-      _queryManagerMock.Verify();
-      _commitRollbackAgentMock.Verify();
-
-      Assert.That(result1, Is.True);
-      Assert.That(result2, Is.False);
-    }
-
-    [Test]
     public void HasObjectsWithState ()
     {
       var expectedResult = BooleanObjectMother.GetRandomBoolean();

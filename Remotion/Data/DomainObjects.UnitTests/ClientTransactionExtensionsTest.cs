@@ -222,5 +222,31 @@ namespace Remotion.Data.DomainObjects.UnitTests
         }
       }
     }
+
+    [Test]
+    public void HasChanged ()
+    {
+      var commitRollbackAgentMock = new Mock<ICommitRollbackAgent>(MockBehavior.Strict);
+
+      var transactionWithMocks = ClientTransactionObjectMother.CreateWithComponents<TestableClientTransaction>(
+          commitRollbackAgent: commitRollbackAgentMock.Object);
+
+      var expectedResult = BooleanObjectMother.GetRandomBoolean();
+      Expression<Func<Predicate<DomainObjectState>, bool>> matchesHasChangedPredicate =
+          predicate => predicate(new DomainObjectState.Builder().SetNew().Value)
+                       && predicate(new DomainObjectState.Builder().SetChanged().Value)
+                       && predicate(new DomainObjectState.Builder().SetDeleted().Value)
+                       && predicate(new DomainObjectState.Builder().SetChanged().SetDeleted().Value)
+                       && predicate(new DomainObjectState.Builder().SetChanged().SetNotLoadedYet().Value)
+                       && !predicate(new DomainObjectState.Builder().SetUnchanged().Value)
+                       && !predicate(new DomainObjectState.Builder().SetInvalid().Value)
+                       && !predicate(new DomainObjectState.Builder().SetNotLoadedYet().Value);
+
+      commitRollbackAgentMock.Setup(mock => mock.HasData(It.Is(matchesHasChangedPredicate))).Returns(expectedResult).Verifiable();
+
+      var result = transactionWithMocks.HasChanged();
+
+      Assert.That(result, Is.EqualTo(expectedResult));
+    }
   }
 }
