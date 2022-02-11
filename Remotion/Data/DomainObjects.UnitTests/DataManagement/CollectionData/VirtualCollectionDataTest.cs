@@ -146,31 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     }
 
     [Test]
-    public void Commit_RevertsOriginalObjects_ToCurrentObjects ()
-    {
-      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub.Object, ValueAccess.Current);
-      ((IVirtualCollectionData)decorator).Add(_domainObject);
-      Assert.That(decorator.GetOriginalData().ToArray(), Is.Empty);
-
-      decorator.ResetCachedDomainObjects();
-
-      Assert.That(decorator.GetOriginalData().ToArray(), Is.EqualTo(new[] { _domainObject }));
-      CheckOriginalDataNotCopied(decorator);
-    }
-
-    [Test]
-    public void Commit_SetsFlagUnchanged ()
-    {
-      var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub.Object, ValueAccess.Current);
-      ((IVirtualCollectionData)decorator).Add(_domainObject);
-
-      decorator.ResetCachedDomainObjects();
-
-      Assert.That(decorator.IsCacheUpToDate, Is.True);
-    }
-
-    [Test]
-    public void Rollback_RevertsCurrentObjects_ToOriginalObjects ()
+    public void ResetCachedDomainObjects_RevertsCurrentObjects_ToOriginalObjects ()
     {
       var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub.Object, ValueAccess.Current);
       ((IVirtualCollectionData)decorator).Add(_domainObject);
@@ -186,14 +162,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     }
 
     [Test]
-    public void Rollback_SetsFlagUnchanged ()
+    public void ResetCachedDomainObjects_SetsFlagUnchanged ()
     {
       var decorator = new VirtualCollectionData(_endPointID, _dataContainerMapStub.Object, ValueAccess.Current);
       ((IVirtualCollectionData)decorator).Add(_domainObject);
 
       decorator.ResetCachedDomainObjects();
 
-      Assert.That(decorator.IsCacheUpToDate, Is.False);
+      Assert.That(decorator.IsCacheUpToDate, Is.True);
     }
 
     [Test]

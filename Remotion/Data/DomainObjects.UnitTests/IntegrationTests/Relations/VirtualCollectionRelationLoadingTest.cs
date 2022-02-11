@@ -1,8 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
@@ -30,6 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       Assert.That(orderItems.IsDataComplete, Is.False);
       Assert.That(_product.State.IsUnchanged, Is.True);
     }
+
     [Test]
     public void AccessingRelatedVirtualCollection_ReturnsCollectionWithIncompleteContents_ContentsIsLoadedWhenNeeded ()
     {
@@ -67,5 +66,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       Assert.That(_product.Reviews.IsDataComplete, Is.True);
     }
 
+    [Test]
+    public void CommittingNestedSubTransactions_PropagatesItemsAddedToCollectionOnEveryHop ()
+    {
+      var product = DomainObjectIDs.Product1.GetObject<Product>();
+      ProductReview productReview;
+
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+      {
+        using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+        {
+          productReview = ProductReview.NewObject();
+          productReview.Reviewer = DomainObjectIDs.Person1.GetObject<Person>();
+          productReview.Comment = "Test Comment";
+          productReview.Product = product;
+          Assert.That(product.Reviews.Count, Is.EqualTo(4));
+          Assert.That(product.Reviews, Has.Member(productReview));
+          ClientTransaction.Current.Commit();
+        }
+
+        Assert.That(product.Reviews.Count, Is.EqualTo(4));
+        Assert.That(product.Reviews, Has.Member(productReview));
+        ClientTransaction.Current.Commit();
+      }
+
+      Assert.That(product.Reviews.Count, Is.EqualTo(4));
+      Assert.That(product.Reviews, Has.Member(productReview));
+    }
+
+    [Test]
+    public void CommittingNestedSubTransactions_PropagatesItemsRemovedFromCollectionOnEveryHop ()
+    {
+      var product = DomainObjectIDs.Product1.GetObject<Product>();
+      ProductReview productReview = DomainObjectIDs.ProductReview1.GetObject<ProductReview>();
+
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+      {
+        using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+        {
+          productReview.Delete();
+          Assert.That(product.Reviews.Count, Is.EqualTo(2));
+          Assert.That(product.Reviews, Has.No.Member(productReview));
+          ClientTransaction.Current.Commit();
+        }
+
+        Assert.That(product.Reviews.Count, Is.EqualTo(2));
+        Assert.That(product.Reviews, Has.No.Member(productReview));
+        ClientTransaction.Current.Commit();
+      }
+
+      Assert.That(product.Reviews.Count, Is.EqualTo(2));
+      Assert.That(product.Reviews, Has.No.Member(productReview));
+    }
   }
 }

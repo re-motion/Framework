@@ -421,6 +421,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         if (sourceDataManager != null)
         {
           _dataManager.SetDataFromSubTransaction(sourceDataManager, _endPointProvider);
+          foreach (var addedDomainObject in sourceCollectionEndPoint._addedDomainObjects)
+          {
+            if (!_removedDomainObjects.Remove(addedDomainObject))
+              _addedDomainObjects.Add(addedDomainObject);
+          }
+
+          foreach (var removedDomainObject in sourceCollectionEndPoint._removedDomainObjects)
+          {
+            if (!_addedDomainObjects.Remove(removedDomainObject))
+              _removedDomainObjects.Add(removedDomainObject);
+          }
         }
         else
         {
@@ -437,8 +448,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         }
       }
 
-      // TODO: RM-7294: this.HasChanged can be removed, it's redundant since _dataManager.SetDataFromSubTransaction doesn't affect this.HasChanged.
-      if (sourceCollectionEndPoint.HasBeenTouched || HasChanged)
+      if (sourceCollectionEndPoint.HasBeenTouched)
         Touch();
     }
 
