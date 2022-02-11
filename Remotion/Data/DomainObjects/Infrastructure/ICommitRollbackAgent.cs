@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// </summary>
   public interface ICommitRollbackAgent
   {
-    bool HasDataChanged ();
+    bool HasData (Predicate<DomainObjectState> predicate);
     void CommitData ();
     void RollbackData ();
   }

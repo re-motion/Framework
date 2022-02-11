@@ -104,31 +104,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
-    public void HasDataChanged_True ()
+    public void HasData_WithNonEmptyResult_ReturnsTrue ()
     {
       var fakeDomainObject = DomainObjectMother.CreateFakeObject<Order>();
       var fakeDataContainer = DataContainer.CreateNew(fakeDomainObject.ID);
 
       var item = new PersistableData(
           fakeDomainObject,
-          new DomainObjectState.Builder().SetChanged().Value,
+          new DomainObjectState.Builder().Value,
           fakeDataContainer,
           new IRelationEndPoint[0]);
 
-      _dataManagerMock.Setup(stub => stub.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers))).Returns(new[] { item });
+      var data = new[] { item };
+      Predicate<DomainObjectState> predicate = _ => true;
+      _dataManagerMock.Setup(stub => stub.GetLoadedDataByObjectState(predicate)).Returns(data);
 
-      var result = _agent.HasDataChanged();
+      var result = _agent.HasData(predicate);
       Assert.That(result, Is.True);
     }
 
     [Test]
-    public void HasDataChanged_False ()
+    public void HasData_WithEmptyResult_ReturnsFalse ()
     {
-      _dataManagerMock
-          .Setup(stub => stub.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers)))
-          .Returns(new PersistableData[0]);
+      var data = new PersistableData[0];
+      Predicate<DomainObjectState> predicate = _ => true;
+      _dataManagerMock.Setup(stub => stub.GetLoadedDataByObjectState(predicate)).Returns(data);
 
-      var result = _agent.HasDataChanged();
+      var result = _agent.HasData(predicate);
       Assert.That(result, Is.False);
     }
 
