@@ -15,30 +15,27 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq.Expressions;
+using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.Development.UnitTesting.ObjectMothers;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
   [TestFixture]
   public class ClientTransactionExtensionsTest : StandardMappingTest
   {
-    private ClientTransaction _transaction;
-
-    public override void SetUp ()
-    {
-      base.SetUp();
-
-      _transaction = ClientTransaction.CreateRootTransaction();
-    }
-
     [Test]
     public void ExecuteInScope_Action_RunsDelegate ()
     {
+      var transaction = ClientTransaction.CreateRootTransaction();
+
       bool delegateRun = false;
       Action action = () => delegateRun = true;
 
-      _transaction.ExecuteInScope(action);
+      transaction.ExecuteInScope(action);
 
       Assert.That(delegateRun, Is.True);
     }
@@ -46,28 +43,32 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void ExecuteInScope_Action_SetsCurrentTx ()
     {
+      var transaction = ClientTransaction.CreateRootTransaction();
+
       Assert.That(ClientTransaction.Current, Is.Null);
 
       ClientTransaction currentInDelegate = null;
       Action action = () => currentInDelegate = ClientTransaction.Current;
 
-      _transaction.ExecuteInScope(action);
+      transaction.ExecuteInScope(action);
 
-      Assert.That(currentInDelegate, Is.SameAs(_transaction));
+      Assert.That(currentInDelegate, Is.SameAs(transaction));
       Assert.That(ClientTransaction.Current, Is.Null);
     }
 
     [Test]
     public void ExecuteInScope_Action_ReusesScopeIfPossible ()
     {
-      using (var scope = _transaction.EnterNonDiscardingScope())
+      var transaction = ClientTransaction.CreateRootTransaction();
+
+      using (var scope = transaction.EnterNonDiscardingScope())
       {
         Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(scope));
 
         ClientTransactionScope scopeInDelegate = null;
         Action action = () => scopeInDelegate = ClientTransactionScope.ActiveScope;
 
-        _transaction.ExecuteInScope(action);
+        transaction.ExecuteInScope(action);
 
         Assert.That(scopeInDelegate, Is.SameAs(scope));
         Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(scope));
@@ -77,17 +78,19 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void ExecuteInScope_Action_ActivatesTransaction ()
     {
-      using (ClientTransactionTestHelper.MakeInactive(_transaction))
+      var transaction = ClientTransaction.CreateRootTransaction();
+
+      using (ClientTransactionTestHelper.MakeInactive(transaction))
       {
         var delegateRun = false;
         Action action = () =>
         {
-          Assert.That(_transaction.ActiveTransaction, Is.SameAs(_transaction));
-          Assert.That(ClientTransaction.Current, Is.SameAs(_transaction));
+          Assert.That(transaction.ActiveTransaction, Is.SameAs(transaction));
+          Assert.That(ClientTransaction.Current, Is.SameAs(transaction));
           delegateRun = true;
         };
 
-        _transaction.ExecuteInScope(action);
+        transaction.ExecuteInScope(action);
 
         Assert.That(delegateRun, Is.True);
       }
@@ -96,19 +99,21 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void ExecuteInScope_Action_ActivatesTransaction_EvenWhenAlreadyCurrent ()
     {
-      using (_transaction.EnterNonDiscardingScope())
+      var transaction = ClientTransaction.CreateRootTransaction();
+
+      using (transaction.EnterNonDiscardingScope())
       {
-        using (ClientTransactionTestHelper.MakeInactive(_transaction))
+        using (ClientTransactionTestHelper.MakeInactive(transaction))
         {
           var delegateRun = false;
           Action action = () =>
           {
-            Assert.That(_transaction.ActiveTransaction, Is.SameAs(_transaction));
-            Assert.That(ClientTransaction.Current, Is.SameAs(_transaction));
+            Assert.That(transaction.ActiveTransaction, Is.SameAs(transaction));
+            Assert.That(ClientTransaction.Current, Is.SameAs(transaction));
             delegateRun = true;
           };
 
-          _transaction.ExecuteInScope(action);
+          transaction.ExecuteInScope(action);
 
           Assert.That(delegateRun, Is.True);
         }
@@ -118,8 +123,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void ExecuteInScope_Func_RunsDelegate ()
     {
+      var transaction = ClientTransaction.CreateRootTransaction();
+
       Func<int> func = () => 17;
-      var result = _transaction.ExecuteInScope(func);
+      var result = transaction.ExecuteInScope(func);
 
       Assert.That(result, Is.EqualTo(17));
     }
@@ -127,6 +134,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void ExecuteInScope_Func_SetsCurrentTx ()
     {
+      var transaction = ClientTransaction.CreateRootTransaction();
+
       Assert.That(ClientTransaction.Current, Is.Null);
 
       ClientTransaction currentInDelegate = null;
@@ -136,16 +145,18 @@ namespace Remotion.Data.DomainObjects.UnitTests
         return 4;
       };
 
-      _transaction.ExecuteInScope(func);
+      transaction.ExecuteInScope(func);
 
-      Assert.That(currentInDelegate, Is.SameAs(_transaction));
+      Assert.That(currentInDelegate, Is.SameAs(transaction));
       Assert.That(ClientTransaction.Current, Is.Null);
     }
 
     [Test]
     public void ExecuteInScope_Func_ReusesScopeIfPossible ()
     {
-      using (var scope = _transaction.EnterNonDiscardingScope())
+      var transaction = ClientTransaction.CreateRootTransaction();
+
+      using (var scope = transaction.EnterNonDiscardingScope())
       {
         Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(scope));
 
@@ -156,7 +167,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
           return 4;
         };
 
-        _transaction.ExecuteInScope(func);
+        transaction.ExecuteInScope(func);
 
         Assert.That(scopeInDelegate, Is.SameAs(scope));
         Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(scope));
@@ -166,18 +177,20 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void ExecuteInScope_Func_ActivatesTransaction ()
     {
-      using (ClientTransactionTestHelper.MakeInactive(_transaction))
+      var transaction = ClientTransaction.CreateRootTransaction();
+
+      using (ClientTransactionTestHelper.MakeInactive(transaction))
       {
         var delegateRun = false;
         Func<int> func = () =>
         {
-          Assert.That(_transaction.ActiveTransaction, Is.SameAs(_transaction));
-          Assert.That(ClientTransaction.Current, Is.SameAs(_transaction));
+          Assert.That(transaction.ActiveTransaction, Is.SameAs(transaction));
+          Assert.That(ClientTransaction.Current, Is.SameAs(transaction));
           delegateRun = true;
           return 7;
         };
 
-        var result = _transaction.ExecuteInScope(func);
+        var result = transaction.ExecuteInScope(func);
 
         Assert.That(delegateRun, Is.True);
         Assert.That(result, Is.EqualTo(7));
@@ -187,20 +200,22 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void ExecuteInScope_Func_ActivatesTransaction_EvenWhenAlreadyCurrent ()
     {
-      using (_transaction.EnterNonDiscardingScope())
+      var transaction = ClientTransaction.CreateRootTransaction();
+
+      using (transaction.EnterNonDiscardingScope())
       {
-        using (ClientTransactionTestHelper.MakeInactive(_transaction))
+        using (ClientTransactionTestHelper.MakeInactive(transaction))
         {
           var delegateRun = false;
           Func<int> func = () =>
           {
-            Assert.That(_transaction.ActiveTransaction, Is.SameAs(_transaction));
-            Assert.That(ClientTransaction.Current, Is.SameAs(_transaction));
+            Assert.That(transaction.ActiveTransaction, Is.SameAs(transaction));
+            Assert.That(ClientTransaction.Current, Is.SameAs(transaction));
             delegateRun = true;
             return 7;
           };
 
-          var result = _transaction.ExecuteInScope(func);
+          var result = transaction.ExecuteInScope(func);
 
           Assert.That(delegateRun, Is.True);
           Assert.That(result, Is.EqualTo(7));
