@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public IEnumerable<PersistableData> GetLoadedDataByObjectState (Func<DomainObjectState, bool> predicate)
+    public IEnumerable<PersistableData> GetLoadedDataByObjectState (Predicate<DomainObjectState> predicate)
     {
       throw new NotImplementedException();
     }

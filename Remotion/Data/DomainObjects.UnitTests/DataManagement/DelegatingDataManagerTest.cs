@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       CheckDelegation(dm => dm.GetState(objectID), new DomainObjectState.Builder().SetDeleted().Value);
       CheckDelegation(dm => dm.GetDataContainerWithLazyLoad(objectID, randomBoolean), dataContainer);
       CheckDelegation(dm => dm.GetDataContainersWithLazyLoad(new[] { objectID }, true), new[] { dataContainer });
-      Func<DomainObjectState, bool> expectedPredicate = state => state.IsUnchanged;
+      Predicate<DomainObjectState> expectedPredicate = state => state.IsUnchanged;
       CheckDelegation(dm => dm.GetLoadedDataByObjectState(expectedPredicate), new[] { persistableData });
       CheckDelegation(dm => dm.MarkInvalid(domainObject));
       CheckDelegation(dm => dm.MarkNotInvalid(objectID));

@@ -652,12 +652,17 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Returns whether at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed.
+  /// Returns whether at least one <see cref="DomainObject"/> in this <see cref="ClassDefinition"/> matches the supplied <see cref="DomainObjectState"/> predicate.
   /// </summary>
-  /// <returns><see langword="true"/> if at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed; otherwise, <see langword="false"/>.</returns>
-  public virtual bool HasChanged ()
+  /// <returns>
+  /// <see langword="true"/> if at least one <see cref="DomainObject"/> in this <see cref="ClassDefinition"/> matches the supplied <see cref="DomainObjectState"/> predicate;
+  /// otherwise, <see langword="false"/>.
+  /// </returns>
+  public bool HasObjectsWithState (Predicate<DomainObjectState> predicate)
   {
-    return _commitRollbackAgent.HasDataChanged();
+    ArgumentUtility.CheckNotNull("predicate", predicate);
+
+    return _commitRollbackAgent.HasData(predicate);
   }
 
   /// <summary>

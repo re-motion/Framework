@@ -72,9 +72,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get { return _dataManager; }
     }
 
-    public bool HasDataChanged ()
+    public bool HasData (Predicate<DomainObjectState> predicate)
     {
-      return GetNewChangedDeletedData().Any();
+      ArgumentUtility.CheckNotNull("predicate", predicate);
+
+      return _dataManager.GetLoadedDataByObjectState(predicate).Any();
     }
 
     public void CommitData ()

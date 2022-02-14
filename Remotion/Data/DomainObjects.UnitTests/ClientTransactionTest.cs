@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Moq;
 using NUnit.Framework;
@@ -432,27 +433,16 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void HasChanged ()
+    public void HasObjectsWithState ()
     {
-      var sequence = new MockSequence();
-      _commitRollbackAgentMock.InSequence(sequence).Setup(mock => mock.HasDataChanged()).Returns(true).Verifiable();
-      _commitRollbackAgentMock.InSequence(sequence).Setup(mock => mock.HasDataChanged()).Returns(false).Verifiable();
+      var expectedResult = BooleanObjectMother.GetRandomBoolean();
+      Predicate<DomainObjectState> predicate = _ => true;
+      _commitRollbackAgentMock
+          .Setup(mock => mock.HasData(It.Is<Predicate<DomainObjectState>>(v=> object.ReferenceEquals(v, predicate))))
+          .Returns(expectedResult);
 
-      var result1 = _transactionWithMocks.HasChanged();
-      var result2 = _transactionWithMocks.HasChanged();
-
-      _eventBrokerMock.Verify();
-      _hierarchyManagerMock.Verify();
-      _enlistedObjectManagerMock.Verify();
-      _invalidDomainObjectManagerMock.Verify();
-      _persistenceStrategyMock.Verify();
-      _dataManagerMock.Verify();
-      _objectLifetimeAgentMock.Verify();
-      _queryManagerMock.Verify();
-      _commitRollbackAgentMock.Verify();
-
-      Assert.That(result1, Is.True);
-      Assert.That(result2, Is.False);
+      var result = _transactionWithMocks.HasObjectsWithState(predicate);
+      Assert.That(result, Is.EqualTo(expectedResult));
     }
 
     [Test]
