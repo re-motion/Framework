@@ -23,9 +23,7 @@ using OpenQA.Selenium.Remote;
 using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.Accessibility.Implementation;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
-using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 using Remotion.Web.Development.WebTesting.PageObjects;
-using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
 {
@@ -128,9 +126,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
     [Test]
     public void AccessibilityContrast ()
     {
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore("Internet Explorer cannot detect this violation.");
-
       Start<HtmlPageObject>("Accessibility/Contrast.html");
       var config = new AccessibilityConfiguration(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA);
       var analyzer = CreateAnalyzer(config);
@@ -189,9 +184,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
 
       var result = analyzer.Analyze();
 
-      var expectedRules = Helper.BrowserConfiguration.IsInternetExplorer()
-          ? new[] { AccessibilityRuleID.ImageAlt }
-          : new[] { AccessibilityRuleID.ColorContrast, AccessibilityRuleID.ImageAlt };
+      var expectedRules = new[] { AccessibilityRuleID.ColorContrast, AccessibilityRuleID.ImageAlt };
 
       Assert.That(result.ConformanceLevel, Is.EqualTo(AccessibilityConformanceLevel.Wcag20_ConformanceLevelDoubleA));
       Assert.That(
@@ -232,9 +225,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
                               AccessibilityRuleID.LabelContentNameMismatch,
                               AccessibilityRuleID.AutocompleteValid
                           };
-
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-        expectedRules.Remove(AccessibilityRuleID.ColorContrast);
 
       Assert.That(result.ConformanceLevel, Is.EqualTo(AccessibilityConformanceLevel.Wcag21_ConformanceLevelDoubleA));
       Assert.That(result.Violations.Select(v => v.Rule.ID), Is.EquivalentTo(expectedRules));

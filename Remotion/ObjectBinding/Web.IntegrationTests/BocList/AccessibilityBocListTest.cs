@@ -20,7 +20,6 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests;
 using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 
 namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
 {
@@ -36,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
 
       var result = bocList.Analyze(analyzer);
 
-      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
@@ -50,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
       var result = bocList.Analyze(analyzer);
 
       Assert.That(bocList.GetValidationErrors(), Is.Not.Empty);
-      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
@@ -62,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
 
       var result = bocList.Analyze(analyzer);
 
-      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
@@ -74,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
 
       var result = bocList.Analyze(analyzer);
 
-      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
@@ -86,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
 
       var result = bocList.Analyze(analyzer);
 
-      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
@@ -98,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
 
       var result = bocList.Analyze(analyzer);
 
-      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
@@ -113,8 +112,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
       // TODO RM-7333 remove ignore once issue is resolved
       var filteredViolations = result.Violations.IgnoreByRuleIDAndXPath(
               AccessibilityRuleID.AriaRequiredChildren,
-              "/div[@id='body_DataEditControl_JobList_Empty_WithoutPlaceholder_TableScrollContainer']/table/tbody")
-          .IgnoreKnownWorkarounds(Helper.BrowserConfiguration);
+              "/div[@id='body_DataEditControl_JobList_Empty_WithoutPlaceholder_TableScrollContainer']/table/tbody");
 
       Assert.That(filteredViolations, Is.Empty);
     }
@@ -128,7 +126,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
 
       var result = bocList.Analyze(analyzer);
 
-      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
@@ -141,7 +139,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
 
       var result = bocList.Analyze(analyzer);
 
-      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
@@ -155,7 +153,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocList
 
       var result = bocList.Analyze(analyzer);
 
-      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()

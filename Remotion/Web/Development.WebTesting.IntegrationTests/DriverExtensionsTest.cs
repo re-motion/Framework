@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
@@ -36,27 +35,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void GetBrowserVersion_ReturnsBrowserVersion ()
     {
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-      {
-        Assert.That(Driver.GetBrowserVersion(), Is.EqualTo(c_unknown));
-      }
-      else
-      {
-        Assert.That(Driver.GetBrowserVersion(), Does.Match(c_versionPattern));
-      }
+      Assert.That(Driver.GetBrowserVersion(), Does.Match(c_versionPattern));
     }
 
     [Test]
     public void GetWebDriverVersion_ReturnsWebDriverVersion ()
     {
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-      {
-        Assert.That(Driver.GetWebDriverVersion(), Is.EqualTo(c_unknown));
-      }
-      else
-      {
-        Assert.That(Driver.GetWebDriverVersion(), Does.Match(c_versionPattern));
-      }
+      Assert.That(Driver.GetWebDriverVersion(), Does.Match(c_versionPattern));
     }
   }
 }

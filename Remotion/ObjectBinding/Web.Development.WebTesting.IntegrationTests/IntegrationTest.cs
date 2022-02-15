@@ -21,7 +21,6 @@ using NUnit.Framework.Interfaces;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 
@@ -74,10 +73,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void IntegrationTestSetUp ()
     {
       _webTestHelper.OnSetUp(GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
-
-      // Prevent failing IE tests due to topmost windows
-      if (_webTestHelper.BrowserConfiguration.IsInternetExplorer())
-        KillAnyExistingWindowsErrorReportingProcesses();
     }
 
     [TearDown]
@@ -102,11 +97,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       _webTestHelper.AcceptPossibleModalDialog();
 
       return _webTestHelper.CreateInitialPageObject<WxePageObject>(_webTestHelper.MainBrowserSession);
-    }
-
-    private static void KillAnyExistingWindowsErrorReportingProcesses ()
-    {
-      ProcessUtils.KillAllProcessesWithName("WerFault");
     }
   }
 }

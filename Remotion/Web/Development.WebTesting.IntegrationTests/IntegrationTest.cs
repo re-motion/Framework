@@ -19,7 +19,6 @@ using Coypu;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
-using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 
@@ -77,10 +76,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
           (DiagnosticInformationCollectioningRequestErrorDetectionStrategy)Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
 
       _aspNetRequestErrorDetectionScope = requestErrorDetection.CreateAspNetRequestErrorDetectionStrategyScope();
-
-      // Prevent failing IE tests due to topmost windows
-      if (_webTestHelper.BrowserConfiguration.IsInternetExplorer())
-        KillAnyExistingWindowsErrorReportingProcesses();
     }
 
     [TearDown]
@@ -104,11 +99,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       _webTestHelper.MainBrowserSession.Window.Visit(url);
 
       return _webTestHelper.CreateInitialPageObject<TPageObject>(_webTestHelper.MainBrowserSession);
-    }
-
-    private static void KillAnyExistingWindowsErrorReportingProcesses ()
-    {
-      ProcessUtils.KillAllProcessesWithName("WerFault");
     }
   }
 }

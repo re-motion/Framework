@@ -49,17 +49,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         new Size(12, 18),
         new Size(970, 110));
 
-    public static readonly ScreenshotTooltipStyle InternetExplorer = new ScreenshotTooltipStyle(
-        new Font("Arial", 9, FontStyle.Regular),
-        new SolidBrush(Color.FromArgb(0x66, 0x66, 0x66)),
-        Brushes.White,
-        new Pen(Color.FromArgb(0x80, 0x80, 0x80), 2),
-        TooltipPositioning.TopCenter,
-        new WebPadding(9, 8, 9, 7),
-        false,
-        new Size(20, 29),
-        new Size(378, 209));
-
     public static readonly ScreenshotTooltipStyle Firefox = new ScreenshotTooltipStyle(
         new Font("Sans-Serif", 9, FontStyle.Regular),
         new SolidBrush(Color.FromArgb(0x0, 0x0, 0x0)),

@@ -10,7 +10,8 @@ A single reference image is stored in the following format:
 
 The following values are valid for `browser`:
  - _Chrome_
- - _InternetExplorer_ 
+ - _Edge_ 
+ - _Firefox_
 
 The following values are valid for `type`:
  - _any_ (matches any of the following)
@@ -21,7 +22,7 @@ Examples:
 
 ```
 Chrome.any.Test.png
-InternetExplorer.Browser.Test.png
+Firefox.Browser.Test.png
 Desktop.Test.png
 Test.png
 ```
