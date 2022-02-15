@@ -20,13 +20,16 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using Coypu;
 using NUnit.Framework;
+using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -71,6 +74,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
         [CallerMemberName] string methodName = null)
     {
       var home = Start();
+
+      // TODO RM-8379: In Edge and Chrome, the web test is too fast, resulting in screenshotting an empty page.
+      if (Helper.BrowserConfiguration.IsChromium())
+        Thread.Sleep(TimeSpan.FromMilliseconds(1000));
 
       var box = home.Scope.FindId(boxId);
       var block = home.Scope.FindId(blockId);
