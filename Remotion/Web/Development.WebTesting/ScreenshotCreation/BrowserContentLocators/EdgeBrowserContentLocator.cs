@@ -77,7 +77,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       return ResolveBoundsFromWindow(automationElement);
     }
 
-    [CanBeNull]
     private AutomationElement ResolveByChangingWindowTitle (IWebDriver driver, IReadOnlyCollection<AutomationElement> windows)
     {
       var id = Guid.NewGuid().ToString();

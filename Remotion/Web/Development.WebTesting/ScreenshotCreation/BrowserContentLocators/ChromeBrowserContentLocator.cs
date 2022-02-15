@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Automation;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
@@ -49,48 +50,27 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     {
       ArgumentUtility.CheckNotNull("driver", driver);
 
-      // Chrome does not support getting the content area from JS
-      // which is why we need to search the Automation tree for the
-      // correct browser window in order to retrieve the content area
-
-      var foregroundWindowHandle = GetForegroundWindow();
-      uint processID;
-      if (foregroundWindowHandle != IntPtr.Zero)
-        GetWindowThreadProcessId(foregroundWindowHandle, out processID);
-      else
-        processID = 0;
-
       var windows = AutomationElement.RootElement.FindAll(
           TreeScope.Children,
           new AndCondition(
               new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Pane),
               new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_WidgetWin_1")))
           .Cast<AutomationElement>()
-          .Select(w => RateWindow(driver, w, (int)processID))
           .ToArray();
 
       if (windows.Length == 1)
-        return ResolveBoundsFromWindow(windows[0].Value);
+        return ResolveBoundsFromWindow(windows[0]);
 
       if (windows.Length == 0)
         throw new InvalidOperationException("Could not find a Chrome window in order to resolve the bounds of the content area.");
 
-      var highestRating = windows.Max(w => w.Key);
-      var results = windows.Where(w => w.Key == highestRating).Take(2).ToArray();
+      // If the result are ambiguous we try to find the browser by changing the window title
+      var automationElement = ResolveByChangingWindowTitle(driver, windows);
 
-      // If the result are ambiguous we try to find the browser by changing the window title 
-      AutomationElement? automationElement = null;
-      if (results.Length == 2)
-        automationElement = ResolveByChangingWindowTitle(driver);
-
-      if (highestRating == 0 || results.Length == 2 && automationElement == null)
-        throw new InvalidOperationException("Could not find a Chrome window in order to resolve the bounds of the content area.");
-
-      return ResolveBoundsFromWindow(automationElement ?? results[0].Value);
+      return ResolveBoundsFromWindow(automationElement);
     }
 
-    [CanBeNull]
-    private AutomationElement? ResolveByChangingWindowTitle (IWebDriver driver)
+    private AutomationElement ResolveByChangingWindowTitle (IWebDriver driver, IReadOnlyCollection<AutomationElement> windows)
     {
       var id = Guid.NewGuid().ToString();
 
@@ -99,9 +79,22 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
           JavaScriptExecutor.ExecuteStatement<string>(executor, c_setWindowTitle, id),
           "The Javascript code changing and fetching the window title must not return null.");
 
-      var result = AutomationElement.RootElement.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, id));
+      AutomationElement? result;
+      try
+      {
+        result = RetryUntilValueChanges(
+            () => windows.SingleOrDefault(w => w.Current.Name.StartsWith(id)),
+            null,
+            3,
+            TimeSpan.FromMilliseconds(100));
+      }
+      finally
+      {
+        JavaScriptExecutor.ExecuteStatement<string>(executor, c_setWindowTitle, previousTitle);
+      }
 
-      JavaScriptExecutor.ExecuteStatement<string>(executor, c_setWindowTitle, previousTitle);
+      if (result == null)
+        throw new InvalidOperationException("Could not find a matching Chrome window by changing its window title.");
 
       return result;
     }
@@ -135,35 +128,19 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
           (int)Math.Round(rawBounds.Height));
     }
 
-    private KeyValuePair<int, AutomationElement> RateWindow (IWebDriver driver, AutomationElement automationWindow, int processID)
+    private TResult RetryUntilValueChanges<TResult> (Func<TResult> func, TResult value, int retries, TimeSpan interval)
     {
-      var rating = 0;
+      for (var i = 0; i < retries; i++)
+      {
+        var result = func();
 
-      // Check if the title matches
-      var name = automationWindow.Current.Name;
-      if (name == driver.Title || name == driver.Url)
-        rating += 2;
-      else if (name.Contains(driver.Url))
-        rating += 1;
+        if (!EqualityComparer<TResult>.Default.Equals(result, value))
+          return result;
 
-      // Check if the bounds match the ones specified by the driver
-      var rawBounds = automationWindow.Current.BoundingRectangle;
-      var bounds = new Rectangle(
-          (int)Math.Round(rawBounds.X),
-          (int)Math.Round(rawBounds.Y),
-          (int)Math.Round(rawBounds.Width),
-          (int)Math.Round(rawBounds.Height));
+        Thread.Sleep(interval);
+      }
 
-      var window = driver.Manage().Window;
-      var windowBounds = new Rectangle(window.Position, window.Size);
-      if (bounds == windowBounds)
-        rating += 2;
-
-      // Check if the window belongs to the right process
-      if (processID != 0 && automationWindow.Current.ProcessId == processID)
-        rating += 4;
-
-      return new KeyValuePair<int, AutomationElement>(rating, automationWindow);
+      return value;
     }
   }
 }
