@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// <summary>
     /// First Chrome version supported by <see cref="ChromeBinariesProvider"/>.
     /// </summary>
-    private static readonly Version s_minimumSupportedChromeVersion = new Version(73, 0);
+    private static readonly Version s_minimumSupportedChromeVersion = new Version(98, 0);
 
     /// <summary>
     /// Returns the <see cref="ChromeExecutable"/> that contains the installed Chrome browser location, the corresponding ChromeDriver location,
