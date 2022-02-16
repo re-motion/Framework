@@ -70,7 +70,6 @@
   <Target Name="Server_CIBuild_Chrome" DependsOnTargets="TestBuild_ChromeConfiguration;CheckProperties;SetVersionCiAndNightlyBuild;TestBuild" />
   <Target Name="Server_CIBuild_Edge" DependsOnTargets="TestBuild_EdgeConfiguration;CheckProperties;SetVersionCiAndNightlyBuild;TestBuild" />
   <Target Name="Server_CIBuild_Firefox" DependsOnTargets="TestBuild_FirefoxConfiguration;CheckProperties;SetVersionCiAndNightlyBuild;TestBuild" />
-  <Target Name="Server_CIBuild_InternetExplorer" DependsOnTargets="TestBuild_InternetExplorerConfiguration;CheckProperties;SetVersionCiAndNightlyBuild;TestBuild" />
   <Target Name="Server_ArtifactBuild" DependsOnTargets="ArtifactBuild_Configuration;CheckProperties;SetVersionCiAndNightlyBuild;FullBuild" />
 
 </Project>

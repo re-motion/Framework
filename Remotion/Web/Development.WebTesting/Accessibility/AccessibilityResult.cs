@@ -83,9 +83,6 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// </summary>
     public IReadOnlyCollection<AccessibilityRuleResult> Violations { get; }
 
-    /// <remarks>
-    /// Internet Explorer does return null for the orientation type.
-    /// </remarks>
     public AccessibilityResult (
         DateTime timestamp,
         [NotNull] string url,

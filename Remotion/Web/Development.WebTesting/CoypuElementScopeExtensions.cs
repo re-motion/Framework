@@ -254,11 +254,9 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNullOrEmpty("color", color);
 
-      // Chrome
       if (color == "rgba(0, 0, 0, 0)")
         return true;
 
-      // IE11
       if (color == "transparent")
         return true;
 

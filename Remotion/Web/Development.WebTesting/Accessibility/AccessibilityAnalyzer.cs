@@ -215,7 +215,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         result = (string)JsExecutor.ExecuteAsyncScript(axeRunFunctionCall);
 
         if (result == null)
-          result = GetRawAxeResultForInternetExplorer(axeRunFunctionCall);
+          throw new InvalidOperationException("Could not obtain accessibility analysis result.");
       }
 
       var parsedResult = AxeResultParser.Parse(result);
@@ -317,21 +317,6 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         stringBuilder.Append(string.Join(", ", ExcludedElements.Select(s => $"['{s}']")));
         stringBuilder.Append(']');
       }
-    }
-
-    private string GetRawAxeResultForInternetExplorer (string axeRunFunctionCall)
-    {
-      // Internet Explorer does sometimes return a null result instead of the actual result, which will be available after a short delay.
-      foreach (var _ in Enumerable.Range(0, 5))
-      {
-        var result = (string)JsExecutor.ExecuteAsyncScript(axeRunFunctionCall);
-        if (result == null)
-          Thread.Sleep(500);
-        else
-          return result;
-      }
-
-      throw new InvalidOperationException("Could not obtain accessibility analysis result.");
     }
   }
 }

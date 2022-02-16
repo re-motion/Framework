@@ -23,7 +23,6 @@ using System.Text.RegularExpressions;
 using Coypu.Drivers;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
-using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
@@ -87,16 +86,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       var firefoxExecutable = new FirefoxExecutable(customBrowserBinary, customDriverBinary);
 
       return new FirefoxConfiguration(configSettings, firefoxExecutable);
-    }
-
-    protected override IBrowserConfiguration CreateCustomBrowserConfiguration (WebTestConfigurationSection configSettings)
-    {
-      var configuredBrowser = Browser.Parse(configSettings.BrowserName);
-
-      if (configuredBrowser == Browser.InternetExplorer)
-        return new InternetExplorerConfiguration(configSettings);
-
-      return base.CreateCustomBrowserConfiguration(configSettings);
     }
 
     private string GetVersionedBrowserFolderName (string browserName, string versionArchivePath, string latestTestedMajorBrowserVersion)

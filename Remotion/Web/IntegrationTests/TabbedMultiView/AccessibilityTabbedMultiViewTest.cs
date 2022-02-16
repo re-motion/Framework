@@ -17,12 +17,9 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests;
-using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
-using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.IntegrationTests.TabbedMultiView
 {
@@ -39,9 +36,6 @@ namespace Remotion.Web.IntegrationTests.TabbedMultiView
       var result = analyzer.Analyze(tabbedMultiView);
 
       var violations = result.Violations.AsEnumerable();
-
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-        violations = result.Violations.IgnoreByRuleID(AccessibilityRuleID.AriaHiddenFocus);
 
       Assert.That(violations, Is.Empty);
     }

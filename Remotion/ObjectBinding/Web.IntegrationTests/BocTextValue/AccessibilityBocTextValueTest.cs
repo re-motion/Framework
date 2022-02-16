@@ -20,7 +20,6 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests;
 using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 
 namespace Remotion.ObjectBinding.Web.IntegrationTests.BocTextValue
 {
@@ -126,9 +125,6 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocTextValue
     [Test]
     public void NormalRequired_WithValidationErrors ()
     {
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.Ignore("RM-7412 This test currently does not work in Internet Explorer.");
-
       var home = Start();
       var bocTextValue = home.TextValues().GetByLocalID("LastNameField_Normal_Required");
       bocTextValue.FillWith("");

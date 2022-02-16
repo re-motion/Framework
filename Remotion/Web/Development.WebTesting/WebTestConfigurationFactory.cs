@@ -122,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <summary>
-    /// Responsible for handling Browsers other than Chrome and Internet Explorer.
+    /// Responsible for handling Browsers other than Chrome, Edge, and Firefox.
     /// Note that the <see cref="WebTestConfigurationFactory"/> itself does not provide support for other browsers so this implementation throws an not supported exception.
     /// </summary>
     /// <param name="configSettings">Receives app.config settings when called in <see cref="CreateBrowserConfiguration"/></param>

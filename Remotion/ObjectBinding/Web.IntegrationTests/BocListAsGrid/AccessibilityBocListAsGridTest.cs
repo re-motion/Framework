@@ -20,7 +20,6 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests;
 using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
-using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.InternetExplorer;
 
 namespace Remotion.ObjectBinding.Web.IntegrationTests.BocListAsGrid
 {
@@ -36,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocListAsGrid
 
       var result = bocListAsGrid.Analyze(analyzer);
 
-      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     [Test]
@@ -50,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocListAsGrid
       var result = bocList.Analyze(analyzer);
 
       Assert.That(bocList.GetValidationErrors(), Is.Not.Empty);
-      Assert.That(result.Violations.IgnoreKnownWorkarounds(Helper.BrowserConfiguration), Is.Empty);
+      Assert.That(result.Violations, Is.Empty);
     }
 
     private WxePageObject Start ()
