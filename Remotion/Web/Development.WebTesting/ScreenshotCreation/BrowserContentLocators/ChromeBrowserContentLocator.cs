@@ -24,6 +24,7 @@ using System.Windows.Automation;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Condition = System.Windows.Automation.Condition;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators
 {
@@ -91,13 +92,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     private Rectangle ResolveBoundsFromWindow (AutomationElement window)
     {
       // Sometimes we do not find a window on the first try
-      var contentElement = RetryUntilValueChanges<AutomationElement?>(() => GetContentElement(window), null, 5, TimeSpan.Zero);
+      var contentElement = RetryUntilValueChanges(() => GetContentElement(window), null, 5, TimeSpan.Zero);
       if (contentElement == null)
-        throw new InvalidOperationException("Could not find the content window of the found Edge browser window.");
+        throw new InvalidOperationException("Could not find the content window of the found Chrome browser window.");
 
       var rawBounds = contentElement.Current.BoundingRectangle;
       if (rawBounds == Rect.Empty)
-        throw new InvalidOperationException("Could not resolve the bounds of the Edge browser window.");
+        throw new InvalidOperationException("Could not resolve the bounds of the Chrome browser window.");
 
       return new Rectangle(
           (int)Math.Round(rawBounds.X),
@@ -106,17 +107,21 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
           (int)Math.Round(rawBounds.Height));
     }
 
-    private AutomationElement GetContentElement (AutomationElement window)
+    private AutomationElement? GetContentElement (AutomationElement window)
     {
-      var automationElement = window.FindAll(
-              TreeScope.Subtree,
-              // Matching FrameworkIdProperty == "Chrome" or ControlTypeProperty == "Document" does not work. The value of FrameworkId is instead "Win32".
-              // Since there does not seem to be an issue with detecting the correct window using a simple comparison, no extra conditions are added at this time.
-              new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_RenderWidgetHostHWND")
+      return window.FindFirst(
+          TreeScope.Children,
+          new AndCondition(
+              new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Document),
+              new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_RenderWidgetHostHWND"),
+              new OrCondition(
+                  // UI Automation tools tell us that the FrameworkIdProperty == "Chrome", but when executing the code, the value is returned as "Win32".
+                  // In order to prevent strange effects, both values are tested since there is a) no ambiguity and b) the underlying reason for this
+                  // mismatch is not easily discoverable. It may be related to a timing effect.
+                  new PropertyCondition(AutomationElement.FrameworkIdProperty, "Chrome"),
+                  new PropertyCondition(AutomationElement.FrameworkIdProperty, "Win32"))
               )
-          .Cast<AutomationElement>()
-          .Aggregate(GetElementWithLargerArea);
-      return automationElement;
+          );
     }
 
     private TResult RetryUntilValueChanges<TResult> (Func<TResult> func, TResult value, int retries, TimeSpan interval)
@@ -132,27 +137,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       }
 
       return value;
-    }
-
-    private AutomationElement GetElementWithLargerArea (AutomationElement firstAutomationElement, AutomationElement secondAutomationElement)
-    {
-      var firstRectangle = firstAutomationElement.Current.BoundingRectangle;
-      var secondRectangle = secondAutomationElement.Current.BoundingRectangle;
-
-      // Attention: These are not System.Drawing.Rectangle but System.Windows.Rect whose empty width and height are not 0 but Infinity,
-      // meaning we have to handle these cases separately
-      if (firstRectangle == Rect.Empty)
-        return secondAutomationElement;
-
-      if (secondRectangle == Rect.Empty)
-        return firstAutomationElement;
-
-      var firstRectangleArea = firstRectangle.Height * firstRectangle.Width;
-      var secondRectangleArea = secondRectangle.Height * secondRectangle.Width;
-
-      return firstRectangleArea >= secondRectangleArea
-          ? firstAutomationElement
-          : secondAutomationElement;
     }
   }
 }
