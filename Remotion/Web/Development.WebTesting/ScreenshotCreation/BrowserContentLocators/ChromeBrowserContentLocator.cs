@@ -19,11 +19,14 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows;
 using System.Windows.Automation;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Condition = System.Windows.Automation.Condition;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators
 {
@@ -49,48 +52,27 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     {
       ArgumentUtility.CheckNotNull("driver", driver);
 
-      // Chrome does not support getting the content area from JS
-      // which is why we need to search the Automation tree for the
-      // correct browser window in order to retrieve the content area
-
-      var foregroundWindowHandle = GetForegroundWindow();
-      uint processID;
-      if (foregroundWindowHandle != IntPtr.Zero)
-        GetWindowThreadProcessId(foregroundWindowHandle, out processID);
-      else
-        processID = 0;
-
       var windows = AutomationElement.RootElement.FindAll(
           TreeScope.Children,
           new AndCondition(
               new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Pane),
               new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_WidgetWin_1")))
           .Cast<AutomationElement>()
-          .Select(w => RateWindow(driver, w, (int)processID))
           .ToArray();
 
       if (windows.Length == 1)
-        return ResolveBoundsFromWindow(windows[0].Value);
+        return ResolveBoundsFromWindow(windows[0]);
 
       if (windows.Length == 0)
         throw new InvalidOperationException("Could not find a Chrome window in order to resolve the bounds of the content area.");
 
-      var highestRating = windows.Max(w => w.Key);
-      var results = windows.Where(w => w.Key == highestRating).Take(2).ToArray();
+      // If the result are ambiguous we try to find the browser by changing the window title
+      var automationElement = ResolveByChangingWindowTitle(driver, windows);
 
-      // If the result are ambiguous we try to find the browser by changing the window title 
-      AutomationElement? automationElement = null;
-      if (results.Length == 2)
-        automationElement = ResolveByChangingWindowTitle(driver);
-
-      if (highestRating == 0 || results.Length == 2 && automationElement == null)
-        throw new InvalidOperationException("Could not find a Chrome window in order to resolve the bounds of the content area.");
-
-      return ResolveBoundsFromWindow(automationElement ?? results[0].Value);
+      return ResolveBoundsFromWindow(automationElement);
     }
 
-    [CanBeNull]
-    private AutomationElement? ResolveByChangingWindowTitle (IWebDriver driver)
+    private AutomationElement ResolveByChangingWindowTitle (IWebDriver driver, IReadOnlyCollection<AutomationElement> windows)
     {
       var id = Guid.NewGuid().ToString();
 
@@ -99,35 +81,43 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
           JavaScriptExecutor.ExecuteStatement<string>(executor, c_setWindowTitle, id),
           "The Javascript code changing and fetching the window title must not return null.");
 
-      var result = AutomationElement.RootElement.FindFirst(TreeScope.Children, new PropertyCondition(AutomationElement.NameProperty, id));
+      AutomationElement? result;
+      try
+      {
+        result = RetryUntilValueChanges(
+            () => windows.SingleOrDefault(w => w.Current.Name.StartsWith(id)),
+            null,
+            3,
+            TimeSpan.FromMilliseconds(100));
+      }
+      finally
+      {
+        JavaScriptExecutor.ExecuteStatement<string>(executor, c_setWindowTitle, previousTitle);
+      }
 
-      JavaScriptExecutor.ExecuteStatement<string>(executor, c_setWindowTitle, previousTitle);
+      if (result == null)
+        throw new InvalidOperationException("Could not find a matching Chrome window by changing its window title.");
 
       return result;
     }
 
     private Rectangle ResolveBoundsFromWindow (AutomationElement window)
     {
-      AutomationElement? element = null;
-      const int retryCount = 5;
+      var contentElement = RetryUntilValueChanges<AutomationElement?>(
+          () => GetContentElement(window),
+          null,
+          5,
+          TimeSpan.Zero);
 
-      // Sometimes we do not find a window on the first try
-      for (var i = 0; i < retryCount; i++)
-      {
-        element = window.FindFirst(
-            TreeScope.Children,
-            new AndCondition(
-                new PropertyCondition(AutomationElement.NameProperty, "Chrome Legacy Window"),
-                new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_RenderWidgetHostHWND")));
+      if (contentElement == null)
+        throw new InvalidOperationException("Could not find the content window of the found Edge browser window.");
 
-        if (element != null)
-          break;
-      }
+      // The content element must always be fetched anew. If the content element from the first query is reused, this yields wrong coordinates in some cases.
+      var rawBounds = RetryUntilValueChanges(() => GetContentElement(window).Current.BoundingRectangle, Rect.Empty, 3, TimeSpan.FromMilliseconds(100));
 
-      if (element == null)
-        throw new InvalidOperationException("Could not find the content window of the found Chrome browser window.");
+      if (rawBounds == Rect.Empty)
+        throw new InvalidOperationException("Could not resolve the bounds of the Edge browser window.");
 
-      var rawBounds = element.Current.BoundingRectangle;
       return new Rectangle(
           (int)Math.Round(rawBounds.X),
           (int)Math.Round(rawBounds.Y),
@@ -135,35 +125,53 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
           (int)Math.Round(rawBounds.Height));
     }
 
-    private KeyValuePair<int, AutomationElement> RateWindow (IWebDriver driver, AutomationElement automationWindow, int processID)
+    private AutomationElement GetContentElement (AutomationElement window)
     {
-      var rating = 0;
+      var automationElement = window.FindAll(
+              TreeScope.Subtree,
+              // Matching FrameworkIdProperty == "Chrome" or ControlTypeProperty == "Document" does not work. The value of FrameworkId is instead "Win32".
+              // Since there does not seem to be an issue with detecting the correct window using a simple comparison, no extra conditions are added at this time.
+              new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_RenderWidgetHostHWND")
+              )
+          .Cast<AutomationElement>()
+          .Aggregate(GetElementWithLargerArea);
+      return automationElement;
+    }
 
-      // Check if the title matches
-      var name = automationWindow.Current.Name;
-      if (name == driver.Title || name == driver.Url)
-        rating += 2;
-      else if (name.Contains(driver.Url))
-        rating += 1;
+    private TResult RetryUntilValueChanges<TResult> (Func<TResult> func, TResult value, int retries, TimeSpan interval)
+    {
+      for (var i = 0; i < retries; i++)
+      {
+        var result = func();
 
-      // Check if the bounds match the ones specified by the driver
-      var rawBounds = automationWindow.Current.BoundingRectangle;
-      var bounds = new Rectangle(
-          (int)Math.Round(rawBounds.X),
-          (int)Math.Round(rawBounds.Y),
-          (int)Math.Round(rawBounds.Width),
-          (int)Math.Round(rawBounds.Height));
+        if (!EqualityComparer<TResult>.Default.Equals(result, value))
+          return result;
 
-      var window = driver.Manage().Window;
-      var windowBounds = new Rectangle(window.Position, window.Size);
-      if (bounds == windowBounds)
-        rating += 2;
+        Thread.Sleep(interval);
+      }
 
-      // Check if the window belongs to the right process
-      if (processID != 0 && automationWindow.Current.ProcessId == processID)
-        rating += 4;
+      return value;
+    }
 
-      return new KeyValuePair<int, AutomationElement>(rating, automationWindow);
+    private AutomationElement GetElementWithLargerArea (AutomationElement firstAutomationElement, AutomationElement secondAutomationElement)
+    {
+      var firstRectangle = firstAutomationElement.Current.BoundingRectangle;
+      var secondRectangle = secondAutomationElement.Current.BoundingRectangle;
+
+      // Attention: These are not System.Drawing.Rectangle but System.Windows.Rect whose empty width and height are not 0 but Infinity,
+      // meaning we have to handle these cases separately
+      if (firstRectangle == Rect.Empty)
+        return secondAutomationElement;
+
+      if (secondRectangle == Rect.Empty)
+        return firstAutomationElement;
+
+      var firstRectangleArea = firstRectangle.Height * firstRectangle.Width;
+      var secondRectangleArea = secondRectangle.Height * secondRectangle.Width;
+
+      return firstRectangleArea >= secondRectangleArea
+          ? firstAutomationElement
+          : secondAutomationElement;
     }
   }
 }
