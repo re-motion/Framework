@@ -75,7 +75,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       AutomationElement? result;
       try
       {
-        result = RetryUntilValueChanges(() => windows.SingleOrDefault(w => w.Current.Name.StartsWith(id)), null, 3, TimeSpan.FromMilliseconds(100));
+        result = RetryUntilValueChanges(() => windows.SingleOrDefault(w => w.Current.Name.StartsWith(id)), null, 30, TimeSpan.FromMilliseconds(10));
       }
       finally
       {
@@ -96,7 +96,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
         throw new InvalidOperationException("Could not find the content window of the found Edge browser window.");
 
       // The content element must always be fetched anew. If the content element from the first query is reused, this yields wrong coordinates in some cases.
-      var rawBounds = RetryUntilValueChanges(() => GetContentElement(window).Current.BoundingRectangle, Rect.Empty, 3, TimeSpan.FromMilliseconds(100));
+      var rawBounds = RetryUntilValueChanges(() => GetContentElement(window).Current.BoundingRectangle, Rect.Empty, 30, TimeSpan.FromMilliseconds(10));
 
       if (rawBounds == Rect.Empty)
         throw new InvalidOperationException("Could not resolve the bounds of the Edge browser window.");
