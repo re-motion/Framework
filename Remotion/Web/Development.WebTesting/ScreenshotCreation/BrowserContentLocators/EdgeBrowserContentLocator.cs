@@ -89,11 +89,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       AutomationElement? result;
       try
       {
-        result = RetryUntilValueChanges(
-            () => windows.SingleOrDefault(w => w.Current.Name.StartsWith(id)),
-            null,
-            3,
-            TimeSpan.FromMilliseconds(100));
+        result = RetryUntilValueChanges(() => windows.SingleOrDefault(w => w.Current.Name.StartsWith(id)), null, 3, TimeSpan.FromMilliseconds(100));
       }
       finally
       {
@@ -108,11 +104,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
     private Rectangle ResolveBoundsFromWindow (AutomationElement window)
     {
-      var contentElement = RetryUntilValueChanges<AutomationElement?>(
-          () => GetContentElement(window),
-          null,
-          5,
-          TimeSpan.Zero);
+      // Sometimes we do not find a window on the first try
+      var contentElement = RetryUntilValueChanges<AutomationElement?>(() => GetContentElement(window), null, 5, TimeSpan.Zero);
 
       if (contentElement == null)
         throw new InvalidOperationException("Could not find the content window of the found Edge browser window.");
