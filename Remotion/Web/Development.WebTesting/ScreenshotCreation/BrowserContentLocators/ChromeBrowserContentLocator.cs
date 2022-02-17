@@ -18,15 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
-using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
-using Condition = System.Windows.Automation.Condition;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators
 {
@@ -36,13 +33,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
   public class ChromeBrowserContentLocator : IBrowserContentLocator
   {
     private const string c_setWindowTitle = "var w = window; while (w.frameElement) w = w.frameElement.ownerDocument.defaultView; var t = w.document.title; w.document.title = arguments[0]; return t;";
-
-    [DllImport("user32.dll")]
-    private static extern IntPtr GetForegroundWindow ();
-
-    [DllImport("user32.dll", SetLastError = true)]
-    static extern uint GetWindowThreadProcessId (IntPtr handle, out uint processID);
-
     public ChromeBrowserContentLocator ()
     {
     }
