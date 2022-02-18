@@ -118,7 +118,7 @@ public class BocListUserControl : BaseUserControl
     JobList.ListMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
-    menuItem.Text = WebString.CreateFromText("<b>Wxe</b>");
+    menuItem.Text = WebString.CreateFromHtml("<b>Wxe</b>");
     menuItem.Category = "PostBacks";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.WxeFunction;
@@ -126,7 +126,7 @@ public class BocListUserControl : BaseUserControl
     JobList.ListMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
-    menuItem.Text = WebString.CreateFromText("<b>Wxe</b>");
+    menuItem.Text = WebString.CreateFromHtml("<b>Wxe</b>");
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.WxeFunction;
     menuItem.Command.WxeFunctionCommand.TypeName = "MyType, MyAssembly";
