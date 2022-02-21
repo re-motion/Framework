@@ -18,11 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
-using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -35,14 +33,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
   /// </summary>
   public class ChromeBrowserContentLocator : IBrowserContentLocator
   {
-    private const string c_setWindowTitle = "var w = window; while (w.frameElement) w = w.frameElement.ownerDocument.defaultView; var t = w.document.title; w.document.title = arguments[0]; return t;";
-
-    [DllImport("user32.dll")]
-    private static extern IntPtr GetForegroundWindow ();
-
-    [DllImport("user32.dll", SetLastError = true)]
-    static extern uint GetWindowThreadProcessId (IntPtr handle, out uint processID);
-
+    private const string c_setWindowTitle =
+        "var w = window; while (w.frameElement) w = w.frameElement.ownerDocument.defaultView; var t = w.document.title; w.document.title = arguments[0]; return t;";
     public ChromeBrowserContentLocator ()
     {
     }
@@ -53,10 +45,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       ArgumentUtility.CheckNotNull("driver", driver);
 
       var windows = AutomationElement.RootElement.FindAll(
-          TreeScope.Children,
-          new AndCondition(
-              new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Pane),
-              new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_WidgetWin_1")))
+              TreeScope.Children,
+              new AndCondition(
+                  new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Pane),
+                  new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_WidgetWin_1")))
           .Cast<AutomationElement>()
           .ToArray();
 
@@ -84,11 +76,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       AutomationElement? result;
       try
       {
-        result = RetryUntilValueChanges(
-            () => windows.SingleOrDefault(w => w.Current.Name.StartsWith(id)),
-            null,
-            3,
-            TimeSpan.FromMilliseconds(100));
+        result = RetryUntilValueChanges(() => windows.SingleOrDefault(w => w.Current.Name.StartsWith(id)), null, 30, TimeSpan.FromMilliseconds(10));
       }
       finally
       {
@@ -103,20 +91,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
     private Rectangle ResolveBoundsFromWindow (AutomationElement window)
     {
-      var contentElement = RetryUntilValueChanges<AutomationElement?>(
-          () => GetContentElement(window),
-          null,
-          5,
-          TimeSpan.Zero);
-
+      // Sometimes we do not find a window on the first try
+      var contentElement = RetryUntilValueChanges(() => GetContentElement(window), null, 5, TimeSpan.Zero);
       if (contentElement == null)
-        throw new InvalidOperationException("Could not find the content window of the found Edge browser window.");
+        throw new InvalidOperationException("Could not find the content window of the found Chrome browser window.");
 
-      // The content element must always be fetched anew. If the content element from the first query is reused, this yields wrong coordinates in some cases.
-      var rawBounds = RetryUntilValueChanges(() => GetContentElement(window).Current.BoundingRectangle, Rect.Empty, 3, TimeSpan.FromMilliseconds(100));
-
+      var rawBounds = contentElement.Current.BoundingRectangle;
       if (rawBounds == Rect.Empty)
-        throw new InvalidOperationException("Could not resolve the bounds of the Edge browser window.");
+        throw new InvalidOperationException("Could not resolve the bounds of the Chrome browser window.");
 
       return new Rectangle(
           (int)Math.Round(rawBounds.X),
@@ -125,17 +107,21 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
           (int)Math.Round(rawBounds.Height));
     }
 
-    private AutomationElement GetContentElement (AutomationElement window)
+    private AutomationElement? GetContentElement (AutomationElement window)
     {
-      var automationElement = window.FindAll(
-              TreeScope.Subtree,
-              // Matching FrameworkIdProperty == "Chrome" or ControlTypeProperty == "Document" does not work. The value of FrameworkId is instead "Win32".
-              // Since there does not seem to be an issue with detecting the correct window using a simple comparison, no extra conditions are added at this time.
-              new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_RenderWidgetHostHWND")
+      return window.FindFirst(
+          TreeScope.Children,
+          new AndCondition(
+              new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Document),
+              new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_RenderWidgetHostHWND"),
+              new OrCondition(
+                  // UI Automation tools tell us that the FrameworkIdProperty == "Chrome", but when executing the code, the value is returned as "Win32".
+                  // In order to prevent strange effects, both values are tested since there is a) no ambiguity and b) the underlying reason for this
+                  // mismatch is not easily discoverable. It may be related to a timing effect.
+                  new PropertyCondition(AutomationElement.FrameworkIdProperty, "Chrome"),
+                  new PropertyCondition(AutomationElement.FrameworkIdProperty, "Win32"))
               )
-          .Cast<AutomationElement>()
-          .Aggregate(GetElementWithLargerArea);
-      return automationElement;
+          );
     }
 
     private TResult RetryUntilValueChanges<TResult> (Func<TResult> func, TResult value, int retries, TimeSpan interval)
@@ -151,27 +137,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       }
 
       return value;
-    }
-
-    private AutomationElement GetElementWithLargerArea (AutomationElement firstAutomationElement, AutomationElement secondAutomationElement)
-    {
-      var firstRectangle = firstAutomationElement.Current.BoundingRectangle;
-      var secondRectangle = secondAutomationElement.Current.BoundingRectangle;
-
-      // Attention: These are not System.Drawing.Rectangle but System.Windows.Rect whose empty width and height are not 0 but Infinity,
-      // meaning we have to handle these cases separately
-      if (firstRectangle == Rect.Empty)
-        return secondAutomationElement;
-
-      if (secondRectangle == Rect.Empty)
-        return firstAutomationElement;
-
-      var firstRectangleArea = firstRectangle.Height * firstRectangle.Width;
-      var secondRectangleArea = secondRectangle.Height * secondRectangle.Width;
-
-      return firstRectangleArea >= secondRectangleArea
-          ? firstAutomationElement
-          : secondAutomationElement;
     }
   }
 }
