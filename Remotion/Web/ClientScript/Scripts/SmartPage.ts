@@ -1323,7 +1323,14 @@ class SmartPage_Context
 
   private GetFormElementOrNull(name: string): Nullable<HTMLInputElement>
   {
-    return this._theForm.elements[name as any] as Optional<Nullable<HTMLInputElement>> || null;
+    const element = this._theForm.elements[name as any] as Optional<Nullable<HTMLInputElement>> || null;
+    if (element instanceof RadioNodeList)
+    {
+      console.error(`${element.length} elements were found for the given id '${name}'. The first found element was returned to ensure graceful execution.`);
+      return element[0] as HTMLInputElement;
+    }
+
+    return element;
   }
 
   // The single instance of the SmartPage_Context object
