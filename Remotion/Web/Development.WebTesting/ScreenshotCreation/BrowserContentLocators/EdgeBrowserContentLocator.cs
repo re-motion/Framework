@@ -21,7 +21,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
-using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -45,6 +44,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     /// Edge exposes Chrome IDs to the automation api.
     /// </summary>
     private const string c_edgeFrameworkID = "Chrome";
+
+    /// <summary>
+    /// Edge nests the expected View several layers deep but there are other matches outside of the specified stack.
+    /// To allow a targeted match, the full stack walk must be specified.
+    /// </summary>
+    private static string[] s_edgePaneElementClassNamesStack = new[] { "BrowserRootView", "NonClientView", "GlassBrowserFrameView", "BrowserView", "View" };
 
     public EdgeBrowserContentLocator ()
     {
@@ -89,11 +94,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       AutomationElement? result;
       try
       {
-        result = RetryUntilValueChanges(
-            () => windows.SingleOrDefault(w => w.Current.Name.StartsWith(id)),
-            null,
-            3,
-            TimeSpan.FromMilliseconds(100));
+        result = RetryUntilValueChanges(() => windows.SingleOrDefault(w => w.Current.Name.StartsWith(id)), null, 30, TimeSpan.FromMilliseconds(10));
       }
       finally
       {
@@ -108,18 +109,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
     private Rectangle ResolveBoundsFromWindow (AutomationElement window)
     {
-      var contentElement = RetryUntilValueChanges<AutomationElement?>(
-          () => GetContentElement(window),
-          null,
-          5,
-          TimeSpan.Zero);
-
+      // Sometimes we do not find a window on the first try
+      var contentElement = RetryUntilValueChanges(() => GetContentElement(window), null, 5, TimeSpan.Zero);
       if (contentElement == null)
         throw new InvalidOperationException("Could not find the content window of the found Edge browser window.");
 
-      // The content element must always be fetched anew. If the content element from the first query is reused, this yields wrong coordinates in some cases.
-      var rawBounds = RetryUntilValueChanges(() => GetContentElement(window).Current.BoundingRectangle, Rect.Empty, 3, TimeSpan.FromMilliseconds(100));
-
+      var rawBounds = contentElement.Current.BoundingRectangle;
       if (rawBounds == Rect.Empty)
         throw new InvalidOperationException("Could not resolve the bounds of the Edge browser window.");
 
@@ -130,16 +125,23 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
           (int)Math.Round(rawBounds.Height));
     }
 
-    private AutomationElement GetContentElement (AutomationElement window)
+    private AutomationElement? GetContentElement (AutomationElement window)
     {
-      return window.FindAll(
-              TreeScope.Subtree,
-              new AndCondition(
-                  new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Pane),
-                  new PropertyCondition(AutomationElement.ClassNameProperty, "View"),
-                  new PropertyCondition(AutomationElement.FrameworkIdProperty, c_edgeFrameworkID)))
-          .Cast<AutomationElement>()
-          .Aggregate(GetElementWithLargerArea);
+      // Stack walk is more efficient (ca 30x) than a SubTree-select
+      AutomationElement? automationElement = window;
+      for (int i = 0; i < s_edgePaneElementClassNamesStack.Length; i++)
+      {
+        automationElement = automationElement.FindFirst(
+            TreeScope.Children,
+            new AndCondition(
+                new PropertyCondition(AutomationElement.ClassNameProperty, s_edgePaneElementClassNamesStack[i]),
+                new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Pane),
+                new PropertyCondition(AutomationElement.FrameworkIdProperty, c_edgeFrameworkID)));
+
+        if (automationElement == null)
+          return null;
+      }
+      return automationElement;
     }
 
     private TResult RetryUntilValueChanges<TResult> (Func<TResult> func, TResult value, int retries, TimeSpan interval)
@@ -155,27 +157,6 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
       }
 
       return value;
-    }
-
-    private AutomationElement GetElementWithLargerArea (AutomationElement firstAutomationElement, AutomationElement secondAutomationElement)
-    {
-      var firstRectangle = firstAutomationElement.Current.BoundingRectangle;
-      var secondRectangle = secondAutomationElement.Current.BoundingRectangle;
-
-      // Attention: These are not System.Drawing.Rectangle but System.Windows.Rect whose empty width and height are not 0 but Infinity,
-      // meaning we have to handle these cases separately
-      if (firstRectangle == Rect.Empty)
-        return secondAutomationElement;
-
-      if (secondRectangle == Rect.Empty)
-        return firstAutomationElement;
-
-      var firstRectangleArea = firstRectangle.Height * firstRectangle.Width;
-      var secondRectangleArea = secondRectangle.Height * secondRectangle.Width;
-
-      return firstRectangleArea >= secondRectangleArea
-          ? firstAutomationElement
-          : secondAutomationElement;
     }
   }
 }
