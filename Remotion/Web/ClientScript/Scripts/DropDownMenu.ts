@@ -21,6 +21,13 @@ interface DropDownMenuResources
   LoadingStatusMessage: string;
 }
 
+interface DropDownMenuPositioningDetails
+{
+  align: "left" | "right";
+  offsetX: number;
+  offsetY: number;
+}
+
 type DropDownMenu_MenuInfo_LoadMenuItemsSuccessHandler = (itemInfos: DropDownMenu_ItemInfo[]) => void;
 type DropDownMenu_MenuInfo_LoadMenuItemsErrorHandler = () => void;
 type DropDownMenu_MenuInfo_LoadMenuItemsCallback = (successHandler: DropDownMenu_MenuInfo_LoadMenuItemsSuccessHandler, errorHandler: DropDownMenu_MenuInfo_LoadMenuItemsErrorHandler) => void;
@@ -343,7 +350,8 @@ class DropDownMenu
     DropDownMenu._currentStatusPopup = statusPopup;
     document.getElementById (menuID)!.closest ('div, td, th, body')!.append (statusPopup);
 
-    DropDownMenu.ApplyPosition (statusPopup, evt, titleDivFunc(), false);
+    const positioningDetails = this.CalculatePositioningDetails(titleDivFunc(), evt);
+    DropDownMenu.ApplyPosition (statusPopup, positioningDetails, titleDivFunc(), false);
 
     if (DropDownMenu._statusPopupRepositionTimer)
       clearTimeout(DropDownMenu._statusPopupRepositionTimer);
@@ -354,14 +362,12 @@ class DropDownMenu
 
       if (DropDownMenu._currentStatusPopup && DropDownMenu._currentStatusPopup === statusPopup)
       {
-        DropDownMenu.ApplyPosition (statusPopup, null, titleDivFunc(), true);
+        DropDownMenu.ApplyPosition (statusPopup, positioningDetails, titleDivFunc(), true);
         DropDownMenu._statusPopupRepositionTimer = setTimeout(repositionHandler, DropDownMenu._repositionInterval);
       }
     };
 
-    // Only reposition if opened via titleDiv
-    if (evt === null)
-      DropDownMenu._statusPopupRepositionTimer = setTimeout(repositionHandler, DropDownMenu._repositionInterval);
+    DropDownMenu._statusPopupRepositionTimer = setTimeout(repositionHandler, DropDownMenu._repositionInterval);
 
     menuButton.addEventListener ('focus', DropDownMenu.FocusHandler);
     menuButton.addEventListener ('blur', DropDownMenu.BlurHandler);
@@ -448,7 +454,8 @@ class DropDownMenu
     }
 
     var titleDivFunc = DropDownMenu.CreateTitleDivGetter (context);
-    DropDownMenu.ApplyPosition (div, evt, titleDivFunc(), false);
+    const positioningDetails = this.CalculatePositioningDetails(titleDivFunc(), evt);
+    DropDownMenu.ApplyPosition (div, positioningDetails, titleDivFunc(), false);
 
     if (DropDownMenu._repositionTimer) 
       clearTimeout(DropDownMenu._repositionTimer);
@@ -459,14 +466,12 @@ class DropDownMenu
 
       if (DropDownMenu._currentPopup && DropDownMenu._currentPopup == div && LayoutUtility.IsVisible (div))
       {
-        DropDownMenu.ApplyPosition (div, null, titleDivFunc(), true);
+        DropDownMenu.ApplyPosition (div, positioningDetails, titleDivFunc(), true);
         DropDownMenu._repositionTimer = setTimeout (repositionHandler, DropDownMenu._repositionInterval);
       }
     };
 
-    // Only reposition if opened via titleDiv
-    if (evt == null)
-      DropDownMenu._repositionTimer = setTimeout(repositionHandler, DropDownMenu._repositionInterval);
+    DropDownMenu._repositionTimer = setTimeout(repositionHandler, DropDownMenu._repositionInterval);
 
     if (menuButton.dataset[DropDownMenu._button_timestampDataKey] !== undefined)
     {
@@ -498,23 +503,23 @@ class DropDownMenu
     }
   }
 
-  private static ApplyPosition (popUpDiv: HTMLDivElement, clickEvent: Nullable<MouseEvent>, referenceElement: HTMLElement, onlyUpdateIfNecessary: boolean): void
+  private static ApplyPosition (popUpDiv: HTMLDivElement, details: DropDownMenuPositioningDetails, referenceElement: HTMLElement, onlyUpdateIfNecessary: boolean): void
   {
     var space_top = Math.round (LayoutUtility.GetOffset (referenceElement).top - window.pageYOffset);
     var space_bottom = Math.round (document.documentElement.clientHeight - LayoutUtility.GetOffset (referenceElement).top - LayoutUtility.GetHeight (referenceElement) + window.pageYOffset);
     var space_left = LayoutUtility.GetOffset (referenceElement).left;
     var space_right = document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - LayoutUtility.GetWidth (referenceElement);
     
-    var positionString = `${space_top};${space_right};${space_bottom};${space_left};`;
+    var positionString = `${space_top};${space_right};${space_bottom};${space_left};${JSON.stringify(details)}`;
     if (onlyUpdateIfNecessary && positionString === this._lastPositionInformation)
       return;
 
     this._lastPositionInformation = positionString;
 
     // position drop-down list
-    var top = clickEvent ? clickEvent.clientY : Math.max (0, space_top + referenceElement.offsetHeight);
-    var left = clickEvent ? clickEvent.clientX + 'px' : 'auto';
-    var right = clickEvent ? 'auto' : Math.max (0, document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - referenceElement.offsetWidth) + 'px';
+    var top = Math.max (0, space_top + referenceElement.offsetHeight + details.offsetY);
+    var left = details.align === 'left' ? Math.max (0, LayoutUtility.GetOffset (referenceElement).left + details.offsetX) + 'px' : 'auto';
+    var right = details.align === 'right' ? Math.max (0, document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - referenceElement.offsetWidth - details.offsetX) + 'px' : 'auto';
 
     const verticalSpacing = parseInt(getComputedStyle(popUpDiv).fontSize) * 2;
 
@@ -971,6 +976,26 @@ class DropDownMenu
       clearTimeout (DropDownMenu._blurTimer);
 
     DropDownMenu._blurTimer = setTimeout (function () { DropDownMenu.ClosePopUp (!DropDownMenu._updateFocus); }, 50);
+  }
+
+  private static CalculatePositioningDetails (referenceElement: HTMLElement, evt: Nullable<MouseEvent>): DropDownMenuPositioningDetails
+  {
+    // offset origin is below the element either at the left or right edge depending on the align property
+    if (evt === null)
+    {
+      return {
+        align: "right",
+        offsetX: 0,
+        offsetY: 0
+      };
+    }
+
+    const referencePosition = referenceElement.getBoundingClientRect();
+    return {
+      align: "left",
+      offsetX: evt.clientX - referencePosition.left,
+      offsetY: evt.clientY - referencePosition.top - referencePosition.height
+    };
   }
 }
 
