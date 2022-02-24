@@ -204,6 +204,15 @@ namespace Remotion.Web.Development.WebTesting.TestSite
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_HiddenTitle;
 
         /// <summary>
+        /// MyDropDownMenu_ManyMenuItems control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu_ManyMenuItems;
+
+        /// <summary>
         /// Master property.
         /// </summary>
         /// <remarks>
