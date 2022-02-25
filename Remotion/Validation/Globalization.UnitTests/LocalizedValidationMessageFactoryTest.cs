@@ -187,7 +187,7 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.Not.Null);
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
-      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter no more than {0} characters."));
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter no more than {1} characters."));
     }
 
     [Test]

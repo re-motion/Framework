@@ -200,8 +200,8 @@
     <value>Ne saisissez pas plus de 1 caractère.</value>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMaximumLengthValidationMessage" xml:space="preserve">
-    <value>Ne saisissez pas plus de {0} caractères.</value>
-    <comment>{0} = expected length</comment>
+    <value>Ne saisissez pas plus de {1} caractères.</value>
+    <comment>{1} = expected length</comment>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustHaveMinimumLengthOfOneValidationMessage" xml:space="preserve">
     <value>Saisissez au moins 1 caractère.</value>
