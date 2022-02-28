@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
 
         if (relationEndPointDefinition.PropertyDefinition.StorageClass == StorageClass.Persistent
             && oppositeEndPointDefinition.ClassDefinition.HasStorageEntityDefinitionBeenSet
-            && oppositeEndPointDefinition.ClassDefinition.StorageEntityDefinition is NonPersistentStorageEntity)
+            && oppositeEndPointDefinition.ClassDefinition.IsNonPersistent())
         {
           return MappingValidationResult.CreateInvalidResultForProperty(
               relationEndPointDefinition.PropertyInfo,
