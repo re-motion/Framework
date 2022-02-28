@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Validation.Attributes.Validation;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA
@@ -25,5 +26,9 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA
     public virtual string Position { get; set; }
 
     public virtual decimal Salary { get; set; }
+
+    public virtual string CV { get; set; }
+
+    public virtual string[] CVLines { get; set; } = Array.Empty<string>();
   }
 }

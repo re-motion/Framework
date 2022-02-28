@@ -15,7 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
+using Remotion.Reflection;
+using Remotion.Utilities;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.IntegrationTests.TestDomain.Validators;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationCollectors
@@ -24,6 +28,13 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
   {
     public EmployeeValidationRuleCollector1 ()
     {
+      var propertyInfo = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty<Employee, string>(e => e.CV));
+      AddRule<string>(propertyInfo, e => ((Employee)e).CVLines)
+          .SetValidator(
+              _ => new PredicateValidator(
+                  (_, value, _) => ((string[])value).All(l => l.Length <= 25),
+                  new InvariantValidationMessage("A line exceeds the maximum length of 25 characters.")));
+
       AddRule(e => e.Salary)
           .SetValidator(_ => new NotEqualValidator(0m, new InvariantValidationMessage("Conditional Message Text: Kein Gehalt definiert")));
       AddRule(e => e.Salary)

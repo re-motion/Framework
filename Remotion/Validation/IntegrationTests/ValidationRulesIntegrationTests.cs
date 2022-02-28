@@ -144,6 +144,29 @@ namespace Remotion.Validation.IntegrationTests
     }
 
     [Test]
+    public void BuildEmployeeValidator_WithExplicitPropertyGetter ()
+    {
+      var cvLines = new[]
+                    {
+                        "Manager at some firm.",
+                        "Intern at some other firm."
+                    };
+      var cv = string.Join(Environment.NewLine, cvLines);
+      var employee = new Employee { FirstName = "FirstName", LastName = "LastName", Salary = 9000, CV = cv, CVLines = cvLines };
+
+      var validator = ValidationBuilder.BuildValidator<Employee>();
+
+      var result = validator.Validate(employee);
+
+      Assert.That(result.IsValid, Is.False);
+      Assert.That(result.Errors.Count, Is.EqualTo(1));
+      Assert.That(result.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+      Assert.That(result.Errors.OfType<PropertyValidationFailure>().First().ValidatedProperty.Name, Is.EqualTo("CV"));
+      Assert.That(result.Errors.OfType<PropertyValidationFailure>().First().ValidatedPropertyValue, Is.EqualTo(cvLines));
+      Assert.That(result.Errors.First().LocalizedValidationMessage, Is.EqualTo("A line exceeds the maximum length of 25 characters."));
+    }
+
+    [Test]
     public void BuildSpecialPersonValidator_ConstraintRemovedByPredicate ()
     {
       var person1 = new SpecialPerson1 { FirstName = "Name", LastName = null };
