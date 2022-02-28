@@ -18,7 +18,10 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using NUnit.Framework;
+using Remotion.Reflection;
+using Remotion.Utilities;
 using Remotion.Validation.RuleBuilders;
+using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.UnitTests.TestDomain;
 using Remotion.Validation.UnitTests.TestHelpers;
 
@@ -75,6 +78,33 @@ namespace Remotion.Validation.UnitTests
     }
 
     [Test]
+    public void AddRule_ForPropertyViaPropertyInformation_OneRule ()
+    {
+      var propertyInfo = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty(_firstNameExpression));
+      Func<object,object> propertyGetter = o => ((Customer)o).FirstName;
+      var result = _customerValidationRuleCollector.AddRule<string>(propertyInfo, propertyGetter);
+
+      Assert.That(_customerValidationRuleCollector.AddedPropertyRules.Count, Is.EqualTo(1));
+      Assert.That(_customerValidationRuleCollector.PropertyMetaValidationRules.Count, Is.EqualTo(1));
+      Assert.That(_customerValidationRuleCollector.RemovedPropertyRules.Count, Is.EqualTo(0));
+
+      var propertyRule = _customerValidationRuleCollector.AddedPropertyRules.First();
+      var metaValidationPropertyRule = _customerValidationRuleCollector.PropertyMetaValidationRules.First();
+
+      Assert.That(result, Is.TypeOf(typeof(AddingPropertyValidationRuleBuilder<Customer, string>)));
+      var resultAsComponentRuleBuilder = (AddingPropertyValidationRuleBuilder<Customer, string>)result;
+      Assert.That(resultAsComponentRuleBuilder.AddingPropertyValidationRuleCollector.CollectorType, Is.SameAs(_customerValidationRuleCollector.GetType()));
+      Assert.That(resultAsComponentRuleBuilder.AddingPropertyValidationRuleCollector.Property, Is.SameAs(propertyInfo));
+      Assert.That(resultAsComponentRuleBuilder.AddingPropertyValidationRuleCollector, Is.SameAs(propertyRule));
+      Assert.That(resultAsComponentRuleBuilder.AddingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo(0));
+      var resultCollector = (AddingPropertyValidationRuleCollector<Customer, string>)resultAsComponentRuleBuilder.AddingPropertyValidationRuleCollector;
+      Assert.That(resultCollector.PropertyFunc, Is.SameAs(propertyGetter));
+
+      Assert.That(resultAsComponentRuleBuilder.PropertyMetaValidationRuleCollector.CollectorType, Is.SameAs(_customerValidationRuleCollector.GetType()));
+      Assert.That(resultAsComponentRuleBuilder.PropertyMetaValidationRuleCollector, Is.SameAs(metaValidationPropertyRule));
+    }
+
+    [Test]
     public void AddRule_ForProperty_ThreeRules ()
     {
       var result1 = _customerValidationRuleCollector.AddRule(_firstNameExpression);
@@ -103,6 +133,26 @@ namespace Remotion.Validation.UnitTests
       Assert.That(resultAsComponentRuleBuilder.RemovingPropertyValidationRuleCollector.CollectorType, Is.SameAs(_customerValidationRuleCollector.GetType()));
       Assert.That(resultAsComponentRuleBuilder.RemovingPropertyValidationRuleCollector, Is.SameAs(propertyRule));
       Assert.That(resultAsComponentRuleBuilder.RemovingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void RemoveRule_ForPropertyViaPropertyInfo_OneRule ()
+    {
+      var propertyInfo = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty(_firstNameExpression));
+      var result = _customerValidationRuleCollector.RemoveRule<string>(propertyInfo);
+
+      Assert.That(_customerValidationRuleCollector.RemovedPropertyRules.Count, Is.EqualTo(1));
+      Assert.That(_customerValidationRuleCollector.AddedPropertyRules.Count, Is.EqualTo(0));
+
+      var propertyRule = _customerValidationRuleCollector.RemovedPropertyRules.First();
+      Assert.That(result, Is.TypeOf(typeof(RemovingPropertyValidationRuleBuilder<Customer, string>)));
+      var resultAsComponentRuleBuilder = (RemovingPropertyValidationRuleBuilder<Customer, string>)result;
+      Assert.That(resultAsComponentRuleBuilder.RemovingPropertyValidationRuleCollector.CollectorType, Is.SameAs(_customerValidationRuleCollector.GetType()));
+      Assert.That(resultAsComponentRuleBuilder.RemovingPropertyValidationRuleCollector.Property, Is.SameAs(propertyInfo));
+      Assert.That(resultAsComponentRuleBuilder.RemovingPropertyValidationRuleCollector, Is.SameAs(propertyRule));
+      Assert.That(resultAsComponentRuleBuilder.RemovingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo(0));
+      var resultCollector = (RemovingPropertyValidationRuleCollector)resultAsComponentRuleBuilder.RemovingPropertyValidationRuleCollector;
+      Assert.That(resultCollector.Property, Is.SameAs(propertyInfo));
     }
 
     [Test]

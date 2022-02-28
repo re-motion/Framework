@@ -17,6 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.RuleBuilders;
 using Remotion.Validation.RuleCollectors;
@@ -89,6 +91,32 @@ namespace Remotion.Validation
     }
 
     /// <summary>
+    /// Registers a new validation rule for a property with a custom property value lookup.
+    /// </summary>
+    /// <typeparam name="TProperty">The <see cref="Type"/> of the validated property (used only for syntactical sugar).</typeparam>
+    /// <param name="propertyInfo">Specifies the property for which the validation rule is added.</param>
+    /// <param name="propertyGetter">Specifies a custom getter for the <paramref name="propertyInfo"/>.</param>
+    /// <returns>A builder object used for specifying the validation rules of the property.</returns>
+    /// <remarks>TODO RM-5906: usage sample</remarks>
+    public IConditionalAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> AddRule<TProperty> (
+        IPropertyInformation propertyInfo,
+        Func<object, object> propertyGetter)
+    {
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("propertyGetter", propertyGetter);
+
+      var collectorType = GetType();
+
+      var propertyRule = new AddingPropertyValidationRuleCollector<TValidatedType, TProperty>(propertyInfo, propertyGetter, collectorType);
+      _addedPropertyRules.Add(propertyRule);
+
+      var metaValidationPropertyRule = new PropertyMetaValidationRuleCollector(propertyInfo, collectorType);
+      _propertyMetaValidationRules.Add(metaValidationPropertyRule);
+
+      return new AddingPropertyValidationRuleBuilder<TValidatedType, TProperty>(propertyRule, metaValidationPropertyRule);
+    }
+
+    /// <summary>
     /// Registers which validation rules should be removed from the property. This is used to remove validation rules introduced by other validation 
     /// collectors of <typeparamref name="TValidatedType"/>.
     /// </summary>
@@ -102,6 +130,25 @@ namespace Remotion.Validation
       ArgumentUtility.CheckNotNull("propertySelector", propertySelector);
 
       var propertyRule = RemovingPropertyValidationRuleCollector.Create(propertySelector, GetType());
+      _removedPropertyRules.Add(propertyRule);
+
+      return new RemovingPropertyValidationRuleBuilder<TValidatedType, TProperty>(propertyRule);
+    }
+
+    /// <summary>
+    /// Registers which validation rules should be removed from the property. This is used to remove validation rules introduced by other validation
+    /// collectors of <typeparamref name="TValidatedType"/>.
+    /// </summary>
+    /// <typeparam name="TProperty">The <see cref="Type"/> of the validated property (used only for syntactical sugar).</typeparam>
+    /// <param name="propertyInformation">Specifies the property for which a specific validation rule should be removed.</param>
+    /// <returns>A builder object used for specifying the validation rules to be removed from the property.</returns>
+    /// <remarks>TODO RM-5906: usage sample</remarks>
+    public IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> RemoveRule<TProperty> (
+        IPropertyInformation propertyInformation)
+    {
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+
+      var propertyRule = new RemovingPropertyValidationRuleCollector(propertyInformation, GetType());
       _removedPropertyRules.Add(propertyRule);
 
       return new RemovingPropertyValidationRuleBuilder<TValidatedType, TProperty>(propertyRule);
