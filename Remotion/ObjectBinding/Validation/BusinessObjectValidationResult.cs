@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Results;
@@ -34,11 +35,16 @@ namespace Remotion.ObjectBinding.Validation
     {
       ArgumentUtility.CheckNotNull("validationResult", validationResult);
 
-      var validationFailures = validationResult.Errors.Select(e => (CreateBusinessObjectValidationFailure(e), e));
-      return new BusinessObjectValidationResult(validationFailures);
+      return new BusinessObjectValidationResult(
+          validationResult.Errors
+              .SelectMany(validationFailure =>
+              {
+                return CreateBusinessObjectValidationFailures(validationFailure)
+                        .Select(businessObjectValidationFailure => (businessObjectValidationFailure, validationFailure));
+              }));
     }
 
-    private static BusinessObjectValidationFailure CreateBusinessObjectValidationFailure (ValidationFailure validationFailure)
+    private static IEnumerable<BusinessObjectValidationFailure> CreateBusinessObjectValidationFailures (ValidationFailure validationFailure)
     {
       // TODO: RM-6056: Implementation: Find a way to not requiring a soft-cast to BindableProperty to get to the IPropertyInformation.
       // Instead, either support matching via visitor or some other good idea. Keep in mind to not clutter the
@@ -48,26 +54,77 @@ namespace Remotion.ObjectBinding.Validation
       {
         case PropertyValidationFailure propertyValidationFailure
             when validationFailure.ValidatedObject is IBusinessObject validatedBusinessObject
-                 && GetBusinessObjectProperty(validatedBusinessObject, propertyValidationFailure.ValidatedProperty) is IBusinessObjectProperty validatedBusinessObjectProperty:
+                 && GetBusinessObjectProperty(validatedBusinessObject, propertyValidationFailure.ValidatedProperty) is { } validatedBusinessObjectProperty:
         {
-          return BusinessObjectValidationFailure.CreateForBusinessObjectProperty(
-              propertyValidationFailure.LocalizedValidationMessage,
-              validatedBusinessObject,
-              validatedBusinessObjectProperty);
+          return EnumerableUtility.Singleton(
+              BusinessObjectValidationFailure.CreateForBusinessObjectProperty(
+                  propertyValidationFailure.LocalizedValidationMessage,
+                  validatedBusinessObject,
+                  validatedBusinessObjectProperty));
+        }
+
+        case ObjectValidationFailure objectValidationFailure
+            when objectValidationFailure.ValidatedProperties.Count > 0:
+        {
+          return CreateBusinessObjectValidationFailuresFromValidatedProperties(
+              objectValidationFailure.ValidatedProperties,
+              objectValidationFailure.LocalizedValidationMessage);
         }
 
         case ObjectValidationFailure objectValidationFailure
             when validationFailure.ValidatedObject is IBusinessObject validatedBusinessObject:
         {
-          return BusinessObjectValidationFailure.CreateForBusinessObject(
-              validatedBusinessObject,
-              objectValidationFailure.LocalizedValidationMessage);
+          return EnumerableUtility.Singleton(
+              BusinessObjectValidationFailure.CreateForBusinessObject(
+                  validatedBusinessObject,
+                  objectValidationFailure.LocalizedValidationMessage));
         }
 
         default:
         {
-          return BusinessObjectValidationFailure.Create(validationFailure.LocalizedValidationMessage);
+          return EnumerableUtility.Singleton(BusinessObjectValidationFailure.Create(validationFailure.LocalizedValidationMessage));
         }
+      }
+    }
+
+    private static IEnumerable<BusinessObjectValidationFailure> CreateBusinessObjectValidationFailuresFromValidatedProperties (
+        IEnumerable<ValidatedProperty> validatedProperties,
+        string localizedValidationMessage)
+    {
+      var reportedAnyFailure = false;
+      foreach (var validatedProperty in validatedProperties)
+      {
+        var failure = CreateBusinessObjectValidationFailureFromValidatedProperty(validatedProperty, localizedValidationMessage);
+        if (failure == null)
+          continue;
+
+        yield return failure;
+        reportedAnyFailure = true;
+      }
+
+      if (!reportedAnyFailure)
+        yield return BusinessObjectValidationFailure.Create(localizedValidationMessage);
+    }
+
+    private static BusinessObjectValidationFailure? CreateBusinessObjectValidationFailureFromValidatedProperty (
+        ValidatedProperty validatedProperty,
+        string localizedValidationMessage)
+    {
+      if (validatedProperty.Object is not IBusinessObject validatedBusinessObject)
+        return null;
+
+      if (GetBusinessObjectProperty(validatedBusinessObject, validatedProperty.Property) is { } validatedBusinessObjectProperty)
+      {
+        return BusinessObjectValidationFailure.CreateForBusinessObjectProperty(
+            localizedValidationMessage,
+            validatedBusinessObject,
+            validatedBusinessObjectProperty);
+      }
+      else
+      {
+        return BusinessObjectValidationFailure.CreateForBusinessObject(
+            validatedBusinessObject,
+            localizedValidationMessage);
       }
     }
 
@@ -82,13 +139,16 @@ namespace Remotion.ObjectBinding.Validation
     private readonly IReadOnlyCollection<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)> _validationFailures;
 
     private readonly HashSet<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)> _unhandledValidationFailures;
+    private readonly HashSet<ValidationFailure> _handledValidationFailures;
 
-    private BusinessObjectValidationResult (IEnumerable<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)> businessObjectValidationFailures)
+    private BusinessObjectValidationResult (
+        IEnumerable<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)> businessObjectValidationFailures)
     {
       ArgumentUtility.CheckNotNull("businessObjectValidationFailures", businessObjectValidationFailures);
 
       _validationFailures = businessObjectValidationFailures.ToArray();
       _unhandledValidationFailures = new HashSet<(BusinessObjectValidationFailure BusinessObjectValidationFailure, ValidationFailure ValidationFailure)>(_validationFailures);
+      _handledValidationFailures = new HashSet<ValidationFailure>();
     }
 
     public IReadOnlyCollection<BusinessObjectValidationFailure> GetValidationFailures (
@@ -104,31 +164,41 @@ namespace Remotion.ObjectBinding.Validation
           .Where(f => f.BusinessObjectValidationFailure.ValidatedProperty?.Identifier == businessObjectProperty.Identifier);
 
       var result = new List<BusinessObjectValidationFailure>();
-      foreach (var validationFailure in validationFailures)
+      foreach (var (businessObjectValidationFailure, validationFailure) in validationFailures)
       {
-        result.Add(validationFailure.BusinessObjectValidationFailure);
+        result.Add(businessObjectValidationFailure);
 
         if (markAsHandled)
-          _unhandledValidationFailures.Remove(validationFailure);
+        {
+          _unhandledValidationFailures.Remove((businessObjectValidationFailure, validationFailure));
+          _handledValidationFailures.Add(validationFailure);
+        }
       }
 
       return result;
     }
 
-    public IReadOnlyCollection<UnhandledBusinessObjectValidationFailure> GetUnhandledValidationFailures (IBusinessObject businessObject)
+    public IReadOnlyCollection<UnhandledBusinessObjectValidationFailure> GetUnhandledValidationFailures (
+        IBusinessObject businessObject,
+        bool includePartiallyHandledFailures = false)
     {
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
       return _unhandledValidationFailures
           .Where(f => Equals(f.BusinessObjectValidationFailure.ValidatedObject, businessObject))
+          .Where(f => includePartiallyHandledFailures || !_handledValidationFailures.Contains(f.ValidationFailure))
           .Select(f => f.BusinessObjectValidationFailure)
           .Select(f => new UnhandledBusinessObjectValidationFailure(f.ErrorMessage, f.ValidatedProperty))
           .ToArray();
     }
 
-    public IReadOnlyCollection<ValidationFailure> GetUnhandledValidationFailures ()
+    public IReadOnlyCollection<ValidationFailure> GetUnhandledValidationFailures (bool includePartiallyHandledFailures = false)
     {
-      return _unhandledValidationFailures.Select(f => f.ValidationFailure).ToArray();
+      return _unhandledValidationFailures
+          .Where(f => includePartiallyHandledFailures || !_handledValidationFailures.Contains(f.ValidationFailure))
+          .Select(f => f.ValidationFailure)
+          .Distinct()
+          .ToArray();
     }
   }
 }

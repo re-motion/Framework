@@ -15,18 +15,36 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Validation.Results
 {
   public class ObjectValidationFailure : ValidationFailure
   {
+    [NotNull]
+    public IReadOnlyCollection<ValidatedProperty> ValidatedProperties { get; }
+
     public ObjectValidationFailure (
         [NotNull] object validatedObject,
         [NotNull] string errorMessage,
         [NotNull] string localizedValidationMessage)
-        :base(validatedObject, errorMessage, localizedValidationMessage)
+        : this(validatedObject, Array.Empty<ValidatedProperty>(), errorMessage, localizedValidationMessage)
     {
+    }
+
+    public ObjectValidationFailure (
+        [NotNull] object validatedObject,
+        [NotNull] IReadOnlyCollection<ValidatedProperty> validatedProperties,
+        [NotNull] string errorMessage,
+        [NotNull] string localizedValidationMessage)
+        : base(validatedObject, errorMessage, localizedValidationMessage)
+    {
+      ArgumentUtility.CheckNotNull("validatedProperties", validatedProperties);
+
+      ValidatedProperties = validatedProperties;
     }
   }
 }

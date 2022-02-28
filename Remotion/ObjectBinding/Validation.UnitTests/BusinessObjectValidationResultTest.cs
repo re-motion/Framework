@@ -1,4 +1,20 @@
-﻿using System;
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+// 
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
+// 
+// re-motion is distributed in the hope that it will be useful, 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
+// 
+using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
@@ -44,6 +60,84 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       _phoneNumberProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((Person _) => _.PhoneNumber));
       _phoneNumberInterfaceProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((ICustomer _) => _.PhoneNumber));
       _customerNumberInterfaceProperty = PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty((ICustomer _) => _.CustomerNumber));
+    }
+
+    [Test]
+    public void Create_WithObjectValidationFailureAndNoAffectedProperties_ReturnsSingleBusinessObjectValidationFailure ()
+    {
+      var person = new Person();
+      var objectValidationFailure = new ObjectValidationFailure(
+          person,
+          "Error",
+          "Localized error");
+      var validationResult = new ValidationResult(new[] { objectValidationFailure });
+      var businessObjectValidationResult = BusinessObjectValidationResult.Create(validationResult);
+
+      var unhandledPersonValidationFailures = businessObjectValidationResult.GetUnhandledValidationFailures(person).ToArray();
+      Assert.That(unhandledPersonValidationFailures.Count, Is.EqualTo(1));
+      Assert.That(unhandledPersonValidationFailures[0].ErrorMessage, Is.EqualTo("Localized error"));
+      Assert.That(unhandledPersonValidationFailures[0].ValidatedProperty, Is.Null);
+
+      var unhandledValidationFailures = businessObjectValidationResult.GetUnhandledValidationFailures().ToArray();
+      Assert.That(unhandledValidationFailures.Count, Is.EqualTo(1));
+      Assert.That(unhandledValidationFailures[0].ErrorMessage, Is.EqualTo("Error"));
+      Assert.That(unhandledValidationFailures[0].LocalizedValidationMessage, Is.EqualTo("Localized error"));
+      Assert.That(unhandledValidationFailures[0].ValidatedObject, Is.SameAs(person));
+    }
+
+    [Test]
+    public void Create_WithObjectValidationFailureAndAffectedProperties_ReturnsBusinessObjectValidationFailureForEachAffectedProperty ()
+    {
+      var person = new Person();
+      var objectValidationFailure = new ObjectValidationFailure(
+          person,
+          new ValidatedProperty[]
+          {
+              new(person, _firstNameProperty),
+              new(person, _lastNameProperty),
+              new(new object(), _phoneNumberProperty)
+          },
+          "Error",
+          "Localized error");
+      var validationResult = new ValidationResult(new[] { objectValidationFailure });
+      var businessObjectValidationResult = BusinessObjectValidationResult.Create(validationResult);
+
+      var unhandledPersonValidationFailures = businessObjectValidationResult.GetUnhandledValidationFailures(person).ToArray();
+      Assert.That(unhandledPersonValidationFailures.Count, Is.EqualTo(2));
+      Assert.That(unhandledPersonValidationFailures[0].ErrorMessage, Is.EqualTo("Localized error"));
+      Assert.That(unhandledPersonValidationFailures[0].ValidatedProperty, Is.SameAs(_firstNameBusinessObjectProperty));
+      Assert.That(unhandledPersonValidationFailures[1].ErrorMessage, Is.EqualTo("Localized error"));
+      Assert.That(unhandledPersonValidationFailures[1].ValidatedProperty, Is.SameAs(_lastNameBusinessObjectProperty));
+
+      var unhandledValidationFailures = businessObjectValidationResult.GetUnhandledValidationFailures().ToArray();
+      Assert.That(unhandledValidationFailures.Count, Is.EqualTo(1));
+      Assert.That(unhandledValidationFailures[0].ErrorMessage, Is.EqualTo("Error"));
+      Assert.That(unhandledValidationFailures[0].LocalizedValidationMessage, Is.EqualTo("Localized error"));
+      Assert.That(unhandledValidationFailures[0].ValidatedObject, Is.SameAs(person));
+    }
+
+    [Test]
+    public void Create_WithObjectValidationFailureAndAffectedPropertiesButNoBusinessObject_ReturnsDefaultFailure ()
+    {
+      var person = new Person();
+      var objectValidationFailure = new ObjectValidationFailure(
+          person,
+          new ValidatedProperty[]
+          {
+              new(new object(), _phoneNumberProperty)
+          },
+          "Error",
+          "Localized error");
+      var validationResult = new ValidationResult(new[] { objectValidationFailure });
+      var businessObjectValidationResult = BusinessObjectValidationResult.Create(validationResult);
+
+      Assert.That(businessObjectValidationResult.GetUnhandledValidationFailures(person), Is.Empty);
+
+      var unhandledValidationFailures = businessObjectValidationResult.GetUnhandledValidationFailures().ToArray();
+      Assert.That(unhandledValidationFailures.Count, Is.EqualTo(1));
+      Assert.That(unhandledValidationFailures[0].ErrorMessage, Is.EqualTo("Error"));
+      Assert.That(unhandledValidationFailures[0].LocalizedValidationMessage, Is.EqualTo("Localized error"));
+      Assert.That(unhandledValidationFailures[0].ValidatedObject, Is.SameAs(person));
     }
 
     [Test]
@@ -273,6 +367,60 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
           .Where(f => f.ValidatedProperty.Equals(_firstNameProperty) || f.ValidatedProperty.Equals(_lastNameProperty));
 
       Assert.That(unhandledValidationFailures, Is.EquivalentTo(combinedValidationResult.Errors.Except(unhandledValidationFailuresForResult1)));
+    }
+
+    [Test]
+    public void GetUnhandledValidationFailures_WithMultipleBusinessObjectFailuresForSameValidationFailure_DoesNotReturnPartiallyHandledValidationFailure ()
+    {
+      var person1 = new Person();
+      var objectValidationFailure = new ObjectValidationFailure(
+          person1,
+          new ValidatedProperty[]
+          {
+              new(person1, _firstNameProperty),
+              new(person1, _lastNameProperty)
+          },
+          "Error",
+          "Localized error");
+      var validationResult = new ValidationResult(new[] { objectValidationFailure });
+      var businessObjectValidationResult = BusinessObjectValidationResult.Create(validationResult);
+      Assert.That(businessObjectValidationResult.GetUnhandledValidationFailures().Count, Is.EqualTo(1));
+      Assert.That(businessObjectValidationResult.GetUnhandledValidationFailures(person1).Count, Is.EqualTo(2));
+
+      var failure = businessObjectValidationResult.GetValidationFailures(person1, _firstNameBusinessObjectProperty, markAsHandled: true).ToArray();
+      Assert.That(failure.Length, Is.EqualTo(1));
+
+      Assert.That(businessObjectValidationResult.GetUnhandledValidationFailures(), Is.Empty);
+      Assert.That(businessObjectValidationResult.GetUnhandledValidationFailures(person1), Is.Empty);
+    }
+
+    [Test]
+    public void GetUnhandledValidationFailures_WithMultipleBusinessObjectFailuresForSameValidationFailureAndIncludePartiallyHandled_ReturnsPartiallyHandledValidationFailure ()
+    {
+      var person1 = new Person();
+      var objectValidationFailure = new ObjectValidationFailure(
+          person1,
+          new ValidatedProperty[]
+          {
+              new(person1, _firstNameProperty),
+              new(person1, _lastNameProperty)
+          },
+          "Error",
+          "Localized error");
+      var validationResult = new ValidationResult(new[] { objectValidationFailure });
+      var businessObjectValidationResult = BusinessObjectValidationResult.Create(validationResult);
+      Assert.That(businessObjectValidationResult.GetUnhandledValidationFailures().Count, Is.EqualTo(1));
+
+      var failure = businessObjectValidationResult.GetValidationFailures(person1, _firstNameBusinessObjectProperty, markAsHandled: true).ToArray();
+      Assert.That(failure.Length, Is.EqualTo(1));
+
+      var unhandledValidationFailures = businessObjectValidationResult.GetUnhandledValidationFailures(true).ToArray();
+      Assert.That(unhandledValidationFailures.Count, Is.EqualTo(1));
+      Assert.That(unhandledValidationFailures[0], Is.SameAs(objectValidationFailure));
+
+      var unhandledBusinessObjectValidationFailures = businessObjectValidationResult.GetUnhandledValidationFailures(person1, true).ToArray();
+      Assert.That(unhandledBusinessObjectValidationFailures.Count, Is.EqualTo(1));
+      Assert.That(unhandledBusinessObjectValidationFailures[0].ValidatedProperty, Is.SameAs(_lastNameBusinessObjectProperty));
     }
   }
 }
