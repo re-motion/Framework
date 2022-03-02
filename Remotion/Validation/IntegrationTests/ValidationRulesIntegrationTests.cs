@@ -222,6 +222,9 @@ namespace Remotion.Validation.IntegrationTests
       Assert.That(
           result1.Errors.OfType<ObjectValidationFailure>().First().LocalizedValidationMessage,
           Is.EqualTo("Localized validation message for 'RealPersonValidator': 'FirstName' or 'LastName' property is null or empty."));
+      Assert.That(
+          result1.Errors.OfType<ObjectValidationFailure>().First().ValidatedProperties,
+          Is.Empty);
 
       var result2 = validator.Validate(person2);
 
@@ -233,6 +236,9 @@ namespace Remotion.Validation.IntegrationTests
       Assert.That(
           result2.Errors.OfType<ObjectValidationFailure>().First().LocalizedValidationMessage,
           Is.EqualTo("Localized validation message for 'RealPersonValidator': 'FirstName' or 'LastName' property is null or empty."));
+      Assert.That(
+          result2.Errors.OfType<ObjectValidationFailure>().First().ValidatedProperties,
+          Is.Empty);
 
       var result3 = validator.Validate(person3);
 
@@ -258,6 +264,9 @@ namespace Remotion.Validation.IntegrationTests
       Assert.That(
           result1.Errors.OfType<ObjectValidationFailure>().First().LocalizedValidationMessage,
           Is.EqualTo("Localized validation message for 'RealPersonValidator': 'FirstName' or 'LastName' property is null or empty."));
+      Assert.That(
+          result1.Errors.OfType<ObjectValidationFailure>().First().ValidatedProperties,
+          Is.Empty);
 
       var result2 = validator.Validate(employee2);
 
@@ -269,6 +278,9 @@ namespace Remotion.Validation.IntegrationTests
       Assert.That(
           result2.Errors.OfType<ObjectValidationFailure>().First().LocalizedValidationMessage,
           Is.EqualTo("Localized validation message for 'RealPersonValidator': 'FirstName' or 'LastName' property is null or empty."));
+      Assert.That(
+          result2.Errors.OfType<ObjectValidationFailure>().First().ValidatedProperties,
+          Is.Empty);
 
       var result3 = validator.Validate(employee3);
       Assert.That(result3.Errors.OfType<ObjectValidationFailure>(), Is.Empty);

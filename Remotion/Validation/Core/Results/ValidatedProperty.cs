@@ -14,22 +14,27 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
+using Remotion.Reflection;
+using Remotion.Utilities;
 
-namespace Remotion.ObjectBinding.Validation
+namespace Remotion.Validation.Results
 {
-  /// <threadsafety static="true" instance="false" />
-  public interface IBusinessObjectValidationResult
+  /// <summary>
+  /// Represents a validated property and its declaring object which caused a <see cref="ObjectValidationFailure"/>.
+  /// </summary>
+  public class ValidatedProperty
   {
-    IReadOnlyCollection<BusinessObjectValidationFailure> GetValidationFailures (
-        [NotNull] IBusinessObject businessObject,
-        [NotNull] IBusinessObjectProperty businessObjectProperty,
-        bool markAsHandled);
+    public object Object { get; }
 
-    IReadOnlyCollection<UnhandledBusinessObjectValidationFailure> GetUnhandledValidationFailures (
-        [NotNull] IBusinessObject businessObject,
-        bool includePartiallyHandledFailures = false);
+    public IPropertyInformation Property { get; }
+
+    public ValidatedProperty (object @object, IPropertyInformation property)
+    {
+      ArgumentUtility.CheckNotNull("object", @object);
+      ArgumentUtility.CheckNotNull("property", property);
+
+      Object = @object;
+      Property = property;
+    }
   }
 }
