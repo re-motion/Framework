@@ -284,7 +284,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _hasBeenChangedForNonPersistentData = null;
     }
 
-    public void SetPropertyDataFromSubTransaction (DataContainer sourceDataContainer)
+    public void SetDataFromSubTransaction (DataContainer sourceDataContainer)
     {
       ArgumentUtility.CheckNotNull("sourceDataContainer", sourceDataContainer);
 

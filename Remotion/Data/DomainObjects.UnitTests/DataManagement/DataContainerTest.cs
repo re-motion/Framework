@@ -1409,7 +1409,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var newDataContainer = DataContainer.CreateNew(DomainObjectIDs.Order3);
       Assert.That(newDataContainer.GetValue(_orderNumberProperty), Is.Not.EqualTo(1));
 
-      newDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);
+      newDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
       Assert.That(newDataContainer.GetValue(_orderNumberProperty), Is.EqualTo(1));
     }
@@ -1422,7 +1422,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var newDataContainer = DataContainer.CreateNew(new ObjectID(sourceDataContainer.ClassDefinition, Guid.NewGuid()));
       Assert.That(newDataContainer.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.Not.EqualTo(42));
 
-      newDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);
+      newDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
       Assert.That(newDataContainer.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.EqualTo(42));
     }
@@ -1435,7 +1435,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var propertyDefinition = GetPropertyDefinition(typeof(OrderTicket), "Order");
       Assert.That(newDataContainer.GetValue(propertyDefinition), Is.Not.EqualTo(DomainObjectIDs.Order1));
 
-      newDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);
+      newDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
       Assert.That(newDataContainer.GetValue(propertyDefinition), Is.EqualTo(DomainObjectIDs.Order1));
     }
@@ -1450,7 +1450,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(1));
       Assert.That(existingDataContainer.State.IsUnchanged, Is.True);
 
-      existingDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);
+      existingDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
       var stateAfterChange = existingDataContainer.State;
       Assert.That(stateAfterChange.IsChanged, Is.True);
@@ -1476,7 +1476,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(1));
       Assert.That(existingDataContainer.State.IsUnchanged, Is.True);
 
-      existingDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);
+      existingDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
       var stateAfterChange = existingDataContainer.State;
       Assert.That(stateAfterChange.IsChanged, Is.True);
@@ -1499,7 +1499,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(targetDataContainer.State.IsChanged, Is.True);
       Assert.That(targetDataContainer.State.IsPersistentDataChanged, Is.True);
 
-      targetDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);
+      targetDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
       var stateAfterChange = targetDataContainer.State;
       Assert.That(stateAfterChange.IsUnchanged, Is.True);
@@ -1521,7 +1521,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(targetDataContainer.State.IsChanged, Is.True);
       Assert.That(targetDataContainer.State.IsNonPersistentDataChanged, Is.True);
 
-      targetDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);
+      targetDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
       var stateAfterChange = targetDataContainer.State;
       Assert.That(stateAfterChange.IsUnchanged, Is.True);
@@ -1543,7 +1543,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       CheckStateNotification(
           targetDataContainer,
-          dc => dc.SetPropertyDataFromSubTransaction(sourceDataContainer),
+          dc => dc.SetDataFromSubTransaction(sourceDataContainer),
           new DataContainerState.Builder().SetChanged().SetPersistentDataChanged().Value);
     }
 
@@ -1562,7 +1562,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       CheckStateNotification(
           targetDataContainer,
-          dc => dc.SetPropertyDataFromSubTransaction(sourceDataContainer),
+          dc => dc.SetDataFromSubTransaction(sourceDataContainer),
           new DataContainerState.Builder().SetUnchanged().Value);
     }
 
@@ -1579,7 +1579,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       CheckStateNotification(
           targetDataContainer,
-          dc => dc.SetPropertyDataFromSubTransaction(sourceDataContainer),
+          dc => dc.SetDataFromSubTransaction(sourceDataContainer),
           new DataContainerState.Builder().SetDeleted().Value);
     }
 
@@ -1592,7 +1592,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(sourceDataContainer.HasBeenMarkedChanged, Is.True);
       Assert.That(targetDataContainer.HasBeenMarkedChanged, Is.False);
 
-      targetDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);
+      targetDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
       Assert.That(targetDataContainer.HasBeenMarkedChanged, Is.False);
     }
@@ -1603,7 +1603,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
       var targetDataContainer = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>().InternalDataContainer;
       Assert.That(
-          () => targetDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer),
+          () => targetDataContainer.SetDataFromSubTransaction(sourceDataContainer),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Cannot set this data container's property values from 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'; the data containers do not "

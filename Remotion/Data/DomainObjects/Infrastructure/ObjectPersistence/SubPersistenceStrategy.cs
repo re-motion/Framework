@@ -260,7 +260,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       var parentDataContainer = DataContainer.CreateNew(dataContainer.ID);
       parentDataContainer.SetDomainObject(dataContainer.DomainObject);
 
-      parentDataContainer.SetPropertyDataFromSubTransaction(dataContainer);
+      parentDataContainer.SetDataFromSubTransaction(dataContainer);
 
       Assertion.IsFalse(dataContainer.HasBeenMarkedChanged);
       Assertion.IsNull(dataContainer.Timestamp);
@@ -280,7 +280,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       Assertion.IsTrue(parentDataContainer.DomainObject == dataContainer.DomainObject, "invariant");
 
       parentDataContainer.SetTimestamp(dataContainer.Timestamp);
-      parentDataContainer.SetPropertyDataFromSubTransaction(dataContainer);
+      parentDataContainer.SetDataFromSubTransaction(dataContainer);
 
       if (dataContainer.HasBeenMarkedChanged && (parentDataContainer.State.IsUnchanged || parentDataContainer.State.IsChanged))
         parentDataContainer.MarkAsChanged();
