@@ -397,7 +397,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       {
         Assert.That(ex.Message, Is.EqualTo(
             "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-            + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' (DataContainerState (Changed))."));
+            + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' (DataContainerState (Changed, PersistentDataChanged))."));
       }
 
       Assert.That(order1.State.IsUnchanged, Is.True);
@@ -424,7 +424,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       {
         Assert.That(ex.Message, Is.EqualTo(
             "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-            + string.Format("'Order|{0}|System.Guid' (DataContainerState (New)).", orderNew.ID.Value)));
+            + string.Format("'Order|{0}|System.Guid' (DataContainerState (New, PersistentDataChanged)).", orderNew.ID.Value)));
       }
 
       Assert.That(orderNew.State.IsNew, Is.True);

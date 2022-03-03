@@ -645,7 +645,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var exceptionCommand = (ExceptionCommand)result;
       Assert.That(exceptionCommand.Exception.Message, Is.EqualTo(
           "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-          + "'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' (DataContainerState (Changed)), "
+          + "'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' (DataContainerState (Changed, PersistentDataChanged)), "
           + "'Order|3c0fb6ed-de1c-4e70-8d80-218e0bf58df3|System.Guid' (DataContainerState (Deleted)), "
           + "'Order|90e26c86-611f-4735-8d1b-e1d0918515c2|System.Guid' (DataContainerState (Discarded))."));
     }

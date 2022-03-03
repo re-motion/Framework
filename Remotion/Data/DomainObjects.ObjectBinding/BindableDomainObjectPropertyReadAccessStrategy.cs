@@ -48,19 +48,74 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
       var domainObjectState = domainObject.State;
       if (domainObjectState.IsUnchanged)
+      {
         return true;
+      }
       else if (domainObjectState.IsChanged)
+      {
         return true;
+      }
       else if (domainObjectState.IsNew)
+      {
         return true;
+      }
       else if (domainObjectState.IsDeleted)
+      {
         return false;
+      }
       else if (domainObjectState.IsInvalid)
+      {
         return false;
+      }
       else if (domainObjectState.IsNotLoadedYet)
+      {
         return domainObject.TryEnsureDataAvailable();
+      }
+      else if (domainObjectState.IsDataChanged)
+      {
+        throw new InvalidOperationException(
+            string.Format(
+                "The {0} is already covered by {1}, {2}, and {3}.",
+                domainObjectState,
+                nameof(DomainObjectState.IsNew),
+                nameof(DomainObjectState.IsChanged),
+                nameof(DomainObjectState.IsDeleted)));
+      }
+      else if (domainObjectState.IsPersistentDataChanged)
+      {
+        throw new InvalidOperationException(
+            string.Format(
+                "The {0} is already covered by {1}, {2}, and {3}.",
+                domainObjectState,
+                nameof(DomainObjectState.IsNew),
+                nameof(DomainObjectState.IsChanged),
+                nameof(DomainObjectState.IsDeleted)));
+      }
+      else if (domainObjectState.IsNonPersistentDataChanged)
+      {
+        throw new InvalidOperationException(
+            string.Format(
+                "The {0} is already covered by {1}, {2}, and {3}.",
+                domainObjectState,
+                nameof(DomainObjectState.IsNew),
+                nameof(DomainObjectState.IsChanged),
+                nameof(DomainObjectState.IsDeleted)));
+      }
+      else if (domainObjectState.IsRelationChanged)
+      {
+        throw new InvalidOperationException(
+            string.Format(
+                "The {0} is already covered by {1}, {2}, {3}, {4}.",
+                domainObjectState,
+                nameof(DomainObjectState.IsNew),
+                nameof(DomainObjectState.IsChanged),
+                nameof(DomainObjectState.IsDeleted),
+                nameof(DomainObjectState.IsNotLoadedYet)));
+      }
       else
+      {
         throw new NotSupportedException(string.Format("The {0} is not supported.", domainObjectState));
+      }
     }
 
     public bool IsPropertyAccessException (

@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
             () => ResurrectionService.ResurrectInvalidObject(TestableClientTransaction, objectInvalidInSubOnly.ID),
             Throws.InvalidOperationException.With.Message.EqualTo(
                 "Cannot resurrect object '" + objectInvalidInSubOnly.ID + "' because it is not invalid within the whole transaction hierarchy. "
-                + "In transaction '" + TestableClientTransaction + "', the object has DomainObjectState (Deleted)."));
+                + "In transaction '" + TestableClientTransaction + "', the object has DomainObjectState (Deleted, DataChanged, PersistentDataChanged, RelationChanged)."));
 
         Assert.That(TestableClientTransaction.IsInvalid(objectInvalidInSubOnly.ID), Is.False);
         Assert.That(subTransaction.IsInvalid(objectInvalidInSubOnly.ID), Is.True);

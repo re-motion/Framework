@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
 
       if (propertyDefinition.StorageClass == StorageClass.Persistent && propertyDefinition.ClassDefinition.HasStorageEntityDefinitionBeenSet)
       {
-        if (propertyDefinition.ClassDefinition.StorageEntityDefinition is NonPersistentStorageEntity)
+        if (propertyDefinition.ClassDefinition.IsNonPersistent())
         {
           return MappingValidationResult.CreateInvalidResultForProperty(
               propertyDefinition.PropertyInfo,
