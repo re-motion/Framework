@@ -455,7 +455,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
           () => UnloadService.UnloadData(TestableClientTransaction, DomainObjectIDs.Order1),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-              + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' (DataContainerState (Changed))."));
+              + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' (DataContainerState (Changed, PersistentDataChanged))."));
 
     }
 

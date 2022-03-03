@@ -116,6 +116,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(state.IsDiscarded, Is.True);
     }
 
+
+    [Test]
+    public void IsPersistentDataChanged_WithBuilderDefault_ReturnsFalse ()
+    {
+      var state = new DataContainerState.Builder().Value;
+      Assert.That(state.IsPersistentDataChanged, Is.False);
+    }
+
+    [Test]
+    public void IsPersistentDataChanged_WithBuilderSettingOther_ReturnsFalse ()
+    {
+      var state = new DataContainerState.Builder().SetNew().Value;
+      Assert.That(state.IsPersistentDataChanged, Is.False);
+    }
+
+    [Test]
+    public void IsPersistentDataChanged_WithBuilderSettingChanged_ReturnsTrue ()
+    {
+      var state = new DataContainerState.Builder().SetPersistentDataChanged().Value;
+      Assert.That(state.IsPersistentDataChanged, Is.True);
+    }
+
+
+    [Test]
+    public void IsNonPersistentDataChanged_WithBuilderDefault_ReturnsFalse ()
+    {
+      var state = new DataContainerState.Builder().Value;
+      Assert.That(state.IsNonPersistentDataChanged, Is.False);
+    }
+
+    [Test]
+    public void IsNonPersistentDataChanged_WithBuilderSettingOther_ReturnsFalse ()
+    {
+      var state = new DataContainerState.Builder().SetNew().Value;
+      Assert.That(state.IsNonPersistentDataChanged, Is.False);
+    }
+
+    [Test]
+    public void IsNonPersistentDataChanged_WithBuilderSettingChanged_ReturnsTrue ()
+    {
+      var state = new DataContainerState.Builder().SetNonPersistentDataChanged().Value;
+      Assert.That(state.IsNonPersistentDataChanged, Is.True);
+    }
+
+
     [Test]
     public void To_String ()
     {

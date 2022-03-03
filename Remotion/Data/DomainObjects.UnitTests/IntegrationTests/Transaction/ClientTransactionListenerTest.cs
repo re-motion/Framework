@@ -203,7 +203,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Verifiable();
       _strictListenerMock
           .InSequence(sequence)
-          .Setup(mock => mock.DataContainerStateUpdated(TestableClientTransaction, order.InternalDataContainer, new DataContainerState.Builder().SetChanged().Value))
+          .Setup(
+              mock => mock.DataContainerStateUpdated(
+                  TestableClientTransaction,
+                  order.InternalDataContainer,
+                  new DataContainerState.Builder().SetChanged().SetPersistentDataChanged().Value))
           .Verifiable();
       _strictListenerMock
           .InSequence(sequence)
@@ -290,7 +294,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Verifiable();
       _strictListenerMock
           .InSequence(sequence)
-          .Setup(mock => mock.DataContainerStateUpdated(TestableClientTransaction, order.InternalDataContainer, new DataContainerState.Builder().SetChanged().Value))
+          .Setup(
+              mock => mock.DataContainerStateUpdated(
+                  TestableClientTransaction,
+                  order.InternalDataContainer,
+                  new DataContainerState.Builder().SetChanged().SetPersistentDataChanged().Value))
           .Verifiable();
       _strictListenerMock
           .InSequence(sequence)
