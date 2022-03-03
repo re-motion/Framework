@@ -304,7 +304,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       RaiseStateUpdatedNotification();
     }
 
-    public void SetValueDataFromSubTransaction (PropertyDefinition propertyDefinition, DataContainer sourceContainer)
+    public void SetPropertyValueFromSubTransaction (PropertyDefinition propertyDefinition, DataContainer sourceContainer)
     {
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
       ArgumentUtility.CheckNotNull("sourceContainer", sourceContainer);

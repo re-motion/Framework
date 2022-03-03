@@ -807,7 +807,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void SetValueDataFromSubTransaction_SetsOnlyGivenPropertyValue_AndUpdatesState ()
+    public void SetPropertyValueDataFromSubTransaction_SetsOnlyGivenPropertyValue_AndUpdatesState ()
     {
       var sourceDataContainer = DataContainerObjectMother.CreateExisting(_existingDataContainer.ID);
       sourceDataContainer.SetValue(_orderNumberProperty, 17);
@@ -820,7 +820,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(1));
       Assert.That(_existingDataContainer.State.IsUnchanged, Is.True);
 
-      _existingDataContainer.SetValueDataFromSubTransaction(_orderNumberProperty, sourceDataContainer);
+      _existingDataContainer.SetPropertyValueFromSubTransaction(_orderNumberProperty, sourceDataContainer);
 
       Assert.That(_existingDataContainer.GetValue(_orderNumberProperty), Is.EqualTo(17));
       Assert.That(_existingDataContainer.GetValue(_deliveryDateProperty), Is.EqualTo(new DateTime()));
@@ -833,7 +833,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void SetValueDataFromSubTransaction_SetsOnlyGivenPropertyValue_AndUpdatesState_WithNonPersistentProperty ()
+    public void SetPropertyValueDataFromSubTransaction_SetsOnlyGivenPropertyValue_AndUpdatesState_WithNonPersistentProperty ()
     {
       var sourceDataContainer = DataContainerObjectMother.CreateExisting(_dataContainerWithNonPersistentProperty.ID);
       sourceDataContainer.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 17);
@@ -844,7 +844,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(1));
       Assert.That(_dataContainerWithNonPersistentProperty.State.IsUnchanged, Is.True);
 
-      _dataContainerWithNonPersistentProperty.SetValueDataFromSubTransaction(_nonPersistentPropertyOnPersistentDataContainer, sourceDataContainer);
+      _dataContainerWithNonPersistentProperty.SetPropertyValueFromSubTransaction(_nonPersistentPropertyOnPersistentDataContainer, sourceDataContainer);
 
       Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.EqualTo(17));
       var stateAfterChange = _dataContainerWithNonPersistentProperty.State;
@@ -856,40 +856,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void SetValueDataFromSubTransaction_Discarded ()
+    public void SetPropertyValueDataFromSubTransaction_Discarded ()
     {
       var sourceDataContainer = DataContainerObjectMother.Create(_existingDataContainer.ID);
       _existingDataContainer.Discard();
       Assert.That(
-          () => _existingDataContainer.SetValueDataFromSubTransaction(_orderNumberProperty, sourceDataContainer),
+          () => _existingDataContainer.SetPropertyValueFromSubTransaction(_orderNumberProperty, sourceDataContainer),
           Throws.TypeOf<ObjectInvalidException>());
     }
 
     [Test]
-    public void SetValueDataFromSubTransaction_DiscardedSource ()
+    public void SetPropertyValueDataFromSubTransaction_DiscardedSource ()
     {
       var sourceDataContainer = DataContainerObjectMother.Create(_existingDataContainer.ID);
       sourceDataContainer.Discard();
       Assert.That(
-          () => _existingDataContainer.SetValueDataFromSubTransaction(_orderNumberProperty, sourceDataContainer),
+          () => _existingDataContainer.SetPropertyValueFromSubTransaction(_orderNumberProperty, sourceDataContainer),
           Throws.TypeOf<ObjectInvalidException>());
     }
 
     [Test]
-    public void SetValueDataFromSubTransaction_InvalidProperty ()
+    public void SetPropertyValueDataFromSubTransaction_InvalidProperty ()
     {
       var sourceDataContainer = DataContainerObjectMother.Create(_existingDataContainer.ID);
       Assert.That(
-          () => _existingDataContainer.SetValueDataFromSubTransaction(_nonOrderProperty, sourceDataContainer),
+          () => _existingDataContainer.SetPropertyValueFromSubTransaction(_nonOrderProperty, sourceDataContainer),
           Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo("propertyDefinition"));
     }
 
     [Test]
-    public void SetValueDataFromSubTransaction_InvalidSource ()
+    public void SetPropertyValueDataFromSubTransaction_InvalidSource ()
     {
       var sourceDataContainer = DataContainerObjectMother.Create(DomainObjectIDs.Customer1);
       Assert.That(
-          () => _existingDataContainer.SetValueDataFromSubTransaction(_orderNumberProperty, sourceDataContainer),
+          () => _existingDataContainer.SetPropertyValueFromSubTransaction(_orderNumberProperty, sourceDataContainer),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "Cannot set this data container's property values from 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'; the data "
               + "containers do not have the same class definition.", "source"));
