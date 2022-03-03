@@ -117,12 +117,29 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       var dataContainer = _clientTransaction.DataManager.DataContainers[objectID];
       if (dataContainer == null)
+      {
+        if (HasRelationChangedForNotLoadedYetDataContainer(objectID))
+          stateBuilder = stateBuilder.SetRelationChanged();
         return stateBuilder.SetNotLoadedYet().Value;
+      }
 
       var dataContainerState = dataContainer.State;
 
+      if (dataContainerState.IsDiscarded)
+        throw new InvalidOperationException($"DataContainer for object '{objectID}' has been discarded without removing the instance from the DataManager.");
+
+      var hasRelationChanged = HasRelationChanged(dataContainer);
+      if (hasRelationChanged)
+        stateBuilder = stateBuilder.SetRelationChanged();
+
       if (dataContainerState.IsUnchanged)
-        return HasRelationChanged(dataContainer) ? stateBuilder.SetChanged().Value : stateBuilder.SetUnchanged().Value;
+        return hasRelationChanged ? stateBuilder.SetChanged().Value : stateBuilder.SetUnchanged().Value;
+
+      if (dataContainerState.IsPersistentDataChanged)
+        stateBuilder = stateBuilder.SetPersistentDataChanged();
+
+      if (dataContainerState.IsNonPersistentDataChanged)
+        stateBuilder = stateBuilder.SetNonPersistentDataChanged();
 
       if (dataContainerState.IsChanged)
         return stateBuilder.SetChanged().Value;
@@ -133,18 +150,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       if (dataContainerState.IsDeleted)
         return stateBuilder.SetDeleted().Value;
 
-      if (dataContainerState.IsDiscarded)
-      {
-        throw new InvalidOperationException(
-            $"DataContainer for object '{objectID}' has been discarded without removing the instance from the DataManager.");
-      }
-
       throw new InvalidOperationException($"DomainObjectState for '{objectID}' cannot be calculated.");
     }
 
     private bool HasRelationChanged (DataContainer dataContainer)
     {
       return dataContainer.AssociatedRelationEndPointIDs
+          .Select(id => _clientTransaction.DataManager.GetRelationEndPointWithoutLoading(id))
+          .Any(endPoint => endPoint != null && endPoint.HasChanged);
+    }
+
+    private bool HasRelationChangedForNotLoadedYetDataContainer (ObjectID objectID)
+    {
+      return RelationEndPointID.GetAllRelationEndPointIDs(objectID)
           .Select(id => _clientTransaction.DataManager.GetRelationEndPointWithoutLoading(id))
           .Any(endPoint => endPoint != null && endPoint.HasChanged);
     }
