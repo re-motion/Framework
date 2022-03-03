@@ -284,6 +284,26 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _hasBeenChangedForNonPersistentData = null;
     }
 
+    public void SetPropertyDataFromSubTransaction (DataContainer sourceDataContainer)
+    {
+      ArgumentUtility.CheckNotNull("sourceDataContainer", sourceDataContainer);
+
+      CheckNotDiscarded();
+      sourceDataContainer.CheckNotDiscarded();
+      CheckSourceForSetDataFromSubTransaction(sourceDataContainer);
+
+      var allPropertyValues = _persistentPropertyValues.Concat(_nonPersistentPropertyValues);
+      foreach (var kvp in allPropertyValues)
+      {
+        var sourcePropertyValue = sourceDataContainer.GetPropertyValue(kvp.Key);
+        kvp.Value.SetDataFromSubTransaction(sourcePropertyValue);
+      }
+
+      _hasBeenChangedForPersistentData = null;
+      _hasBeenChangedForNonPersistentData = null;
+      RaiseStateUpdatedNotification();
+    }
+
     public void SetValueDataFromSubTransaction (PropertyDefinition propertyDefinition, DataContainer sourceContainer)
     {
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
@@ -583,26 +603,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       _clientTransaction = null;
       _eventListener = null;
-    }
-
-    public void SetPropertyDataFromSubTransaction (DataContainer source)
-    {
-      ArgumentUtility.CheckNotNull("source", source);
-
-      CheckNotDiscarded();
-      source.CheckNotDiscarded();
-      CheckSourceForSetDataFromSubTransaction(source);
-
-      var allPropertyValues = _persistentPropertyValues.Concat(_nonPersistentPropertyValues);
-      foreach (var kvp in allPropertyValues)
-      {
-        var sourcePropertyValue = source.GetPropertyValue(kvp.Key);
-        kvp.Value.SetDataFromSubTransaction(sourcePropertyValue);
-      }
-
-      _hasBeenChangedForPersistentData = null;
-      _hasBeenChangedForNonPersistentData = null;
-      RaiseStateUpdatedNotification();
     }
 
     public void SetDomainObject (DomainObject domainObject)
