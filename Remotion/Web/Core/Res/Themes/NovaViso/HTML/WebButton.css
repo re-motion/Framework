@@ -2,7 +2,7 @@
 :root
 {
   --webbutton-min-height-standard: calc(var(--remotion-themed-singleline-min-height));
-  --webbutton-min-height-large: calc(var(--remotion-themed-singleline-min-height) + 2 * var(--remotion-themed-spacing));
+  --webbutton-min-height-large: calc(var(--remotion-themed-singleline-min-height) + var(--remotion-themed-spacing));
   --webbutton-min-height: var(--webbutton-min-height-standard);
 }
 
