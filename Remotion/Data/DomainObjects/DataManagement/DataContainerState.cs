@@ -1,5 +1,8 @@
 using System;
 using JetBrains.Annotations;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 
 namespace Remotion.Data.DomainObjects.DataManagement
 {
@@ -11,11 +14,13 @@ namespace Remotion.Data.DomainObjects.DataManagement
     [Flags]
     private enum Flags
     {
-      Unchanged = 1,
+      Unchanged = 1 << 0,
       Changed = 1 << 1,
       New = 1 << 2,
       Deleted = 1 << 3,
       Discarded = 1 << 4,
+      PersistentDataChanged = 1 << 5,
+      NonPersistentDataChanged = 1 << 6,
     }
 
     /// <summary>
@@ -58,6 +63,14 @@ namespace Remotion.Data.DomainObjects.DataManagement
       [MustUseReturnValue]
       public Builder SetDiscarded () => SetFlag(Flags.Discarded);
 
+      /// <summary>Sets <see cref="DataContainerState"/>.<see cref="DataContainerState.IsPersistentDataChanged"/></summary>
+      [MustUseReturnValue]
+      public Builder SetPersistentDataChanged () => SetFlag(Flags.PersistentDataChanged);
+
+      /// <summary>Sets <see cref="DataContainerState"/>.<see cref="DataContainerState.IsNonPersistentDataChanged"/></summary>
+      [MustUseReturnValue]
+      public Builder SetNonPersistentDataChanged () => SetFlag(Flags.NonPersistentDataChanged);
+
       private Builder SetFlag (Flags flag)
       {
         _flags |= flag;
@@ -77,6 +90,10 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <summary>
     /// The <see cref="DataContainer"/> has been changed since it was loaded.
     /// </summary>
+    /// <remarks>
+    /// A <see cref="DataContainer"/> is classified as changed if it exists (i.e. it is neither new nor deleted)
+    /// and has a changed property value or has been explicitly marked as changed.
+    /// </remarks>
     public bool IsChanged => (_flags & Flags.Changed) != 0;
 
     /// <summary>
@@ -93,6 +110,26 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// The <see cref="DataContainerState"/> reference is no longer or not yet valid for use in this transaction.
     /// </summary>
     public bool IsDiscarded => (_flags & Flags.Discarded) != 0;
+
+    /// <summary>
+    /// The <see cref="DataContainer"/>'s persistent data has been changed. The <see cref="DataContainer"/> itself can be new, changed, or deleted when this flag is set.
+    /// </summary>
+    /// <remarks>
+    /// A <see cref="DataContainer"/>'s persistent data is classified as changed
+    /// if it has a changed value for any property with the <see cref="PropertyDefinition.StorageClass"/> set to <see cref="StorageClass.Persistent"/>
+    /// or if the <see cref="DataContainer"/> has been explicitly marked as changed but is not associated with the <see cref="NonPersistentProviderDefinition"/>.
+    /// </remarks>
+    public bool IsPersistentDataChanged => (_flags & Flags.PersistentDataChanged) != 0;
+
+    /// <summary>
+    /// The <see cref="DataContainer"/>'s non-persistent data has been changed. The <see cref="DataContainer"/> itself can be new, changed, or deleted when this flag is set.
+    /// </summary>
+    /// <remarks>
+    /// A <see cref="DataContainer"/>'s non-persistent data is classified as changed
+    /// if it has a changed value for any property with the <see cref="PropertyDefinition.StorageClass"/> set to <see cref="StorageClass.Transaction"/>
+    /// or if the <see cref="DataContainer"/> associated with the <see cref="NonPersistentProviderDefinition"/> has been explicitly marked as changed.
+    /// </remarks>
+    public bool IsNonPersistentDataChanged => (_flags & Flags.NonPersistentDataChanged) != 0;
 
     public override string ToString () => nameof(DataContainerState) + " (" + _flags + ")";
   }
