@@ -281,9 +281,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       parentDataContainer.SetTimestamp(dataContainer.Timestamp);
       parentDataContainer.SetDataFromSubTransaction(dataContainer);
-
-      if (dataContainer.HasBeenMarkedChanged && (parentDataContainer.State.IsUnchanged || parentDataContainer.State.IsChanged))
-        parentDataContainer.MarkAsChanged();
     }
 
     private void PersistDeletedDataContainer (DataContainer dataContainer, IUnlockedParentTransactionContext unlockedParentTransactionContext)

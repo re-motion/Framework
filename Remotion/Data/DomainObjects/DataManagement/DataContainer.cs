@@ -299,6 +299,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
         kvp.Value.SetDataFromSubTransaction(sourcePropertyValue);
       }
 
+      if (sourceDataContainer.HasBeenMarkedChanged && _state == DataContainerStateType.Existing)
+        _hasBeenMarkedChanged = true;
+
       _hasBeenChangedForPersistentData = null;
       _hasBeenChangedForNonPersistentData = null;
       RaiseStateUpdatedNotification();

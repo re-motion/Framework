@@ -1584,7 +1584,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void SetDataFromSubTransaction_DoesntMarkAsChanged ()
+    public void SetDataFromSubTransaction_DoNotSetMarkAsChangedWhenSourceHasNotBeenMarkedChanged ()
+    {
+      var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
+      var targetDataContainer = sourceDataContainer.Clone(DomainObjectIDs.Order1);
+      Assert.That(sourceDataContainer.HasBeenMarkedChanged, Is.False);
+      Assert.That(targetDataContainer.HasBeenMarkedChanged, Is.False);
+
+      targetDataContainer.SetDataFromSubTransaction(sourceDataContainer);
+
+      Assert.That(targetDataContainer.HasBeenMarkedChanged, Is.False);
+    }
+
+    [Test]
+    public void SetDataFromSubTransaction_SetMarkAsChangedWhenSourceHasBeenMarkedChanged ()
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
       var targetDataContainer = sourceDataContainer.Clone(DomainObjectIDs.Order1);
@@ -1594,7 +1607,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       targetDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
-      Assert.That(targetDataContainer.HasBeenMarkedChanged, Is.False);
+      Assert.That(targetDataContainer.HasBeenMarkedChanged, Is.True);
     }
 
     [Test]
