@@ -19,7 +19,6 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
-using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -145,7 +144,7 @@ namespace Remotion.Web.UI.Controls
       HtmlGenericControl label = new HtmlGenericControl("label");
       label.EnableViewState = false;
 
-      label.Controls.Add(ToSpan(ValidationMessage.GetValue()));
+      label.Controls.Add(ToSpan());
       if (_validatedControl != null)
         label.Attributes["for"] = _validatedControl.ClientID;
 
@@ -166,7 +165,7 @@ namespace Remotion.Web.UI.Controls
       HyperLink hyperLink = new HyperLink();
       hyperLink.EnableViewState = false;
 
-      hyperLink.Controls.Add(ToSpan(ValidationMessage.GetValue()));
+      hyperLink.Controls.Add(ToSpan());
       if (_validatedControl != null)
         hyperLink.Attributes.Add("href", "#" + _validatedControl.ClientID);
 
@@ -181,7 +180,7 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     /// <param name="cssClass"> The name of the CSS-class used to format the <c>div</c>-tag. </param>
     /// <returns> A <see cref="HtmlGenericControl"/>. </returns>
-    public HtmlGenericControl ToDiv (string cssClass)
+    public HtmlGenericControl ToDiv (string? cssClass = null)
     {
       return ToGenericControl(cssClass, "div");
     }
@@ -191,7 +190,7 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     /// <param name="cssClass"> The name of the CSS-class used to format the <c>span</c>-tag. </param>
     /// <returns> A <see cref="HtmlGenericControl"/>. </returns>
-    public HtmlGenericControl ToSpan (string cssClass)
+    public HtmlGenericControl ToSpan (string? cssClass = null)
     {
       return ToGenericControl(cssClass, "span");
     }
@@ -203,7 +202,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="cssClass"> The name of the CSS-class used to format the HTML tag. </param>
     /// <param name="tag"> The HTML tag to be used. </param>
     /// <returns> A <see cref="HtmlGenericControl"/>. </returns>
-    private HtmlGenericControl ToGenericControl (string cssClass, string tag)
+    private HtmlGenericControl ToGenericControl (string? cssClass, string tag)
     {
       HtmlGenericControl genericControl = new HtmlGenericControl(tag);
       genericControl.EnableViewState = false;
@@ -214,5 +213,4 @@ namespace Remotion.Web.UI.Controls
       return genericControl;
     }
   }
-
 }
