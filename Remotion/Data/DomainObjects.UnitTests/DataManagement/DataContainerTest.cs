@@ -107,6 +107,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    public void CreateNew_WithLookupValue_IncludesStorageClassPersistentProperties ()
+    {
+      DataContainer dc = DataContainer.CreateNew(new ObjectID(typeof(ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()), delegate { return 2; });
+      var propertyDefinition = GetPropertyDefinition(typeof(ClassWithPropertiesHavingStorageClassAttribute), "Persistent");
+      Assert.That(dc.GetValue(propertyDefinition), Is.EqualTo(2));
+      Assert.That(dc.GetValue(propertyDefinition, ValueAccess.Original), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void CreateNew_WithLookupValue_IncludesStorageClassTransactionProperties ()
+    {
+      DataContainer dc = DataContainer.CreateNew(new ObjectID(typeof(ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()), delegate { return 2; });
+      var propertyDefinition = GetPropertyDefinition(typeof(ClassWithPropertiesHavingStorageClassAttribute), "Transaction");
+      Assert.That(dc.GetValue(propertyDefinition), Is.EqualTo(2));
+      Assert.That(dc.GetValue(propertyDefinition, ValueAccess.Original), Is.EqualTo(2));
+    }
+
+    [Test]
     public void CreateForExisting_IncludesStorageClassPersistentProperties_WithLookupValue ()
     {
       DataContainer dc = DataContainer.CreateForExisting(

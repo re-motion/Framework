@@ -60,9 +60,31 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull("id", id);
 
+      return CreateNew(id, pd => pd.DefaultValue);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="DataContainer"/> for a new <see cref="Remotion.Data.DomainObjects.DomainObject"/>. The <see cref="DataContainer"/>
+    /// contains an initialized <see cref="PropertyValue"/> object for every <see cref="PropertyDefinition"/> in the respective <see cref="ClassDefinition"/>.
+    /// The <see cref="DataContainer"/> has be to <see cref="DataManager.RegisterDataContainer">registered</see> with a
+    /// <see cref="ClientTransaction"/> and its <see cref="DomainObject"/> must <see cref="SetDomainObject">be set</see> before it can be used.
+    /// </summary>
+    /// <remarks>
+    /// The new <see cref="DataContainer"/> has the <see cref="DataContainerState.IsNew"/> flag set for <see cref="State"/>.
+    /// All <see cref="PropertyValue"/>s for the class specified by <see cref="ObjectID.ClassID"/> are created with the <see cref="PropertyValue.Value"/> and
+    /// <see cref="PropertyValue.OriginalValue"/> initialized via the <paramref name="valueLookup"/>.
+    /// </remarks>
+    /// <param name="id">The <see cref="ObjectID"/> of the new <see cref="DataContainer"/> to create. Must not be <see langword="null"/>.</param>
+    /// <param name="valueLookup">A function object returning the initial value of a given property for the new object.</param>
+    /// <returns>The new <see cref="DataContainer"/>.</returns>
+    /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
+    public static DataContainer CreateNew (ObjectID id, Func<PropertyDefinition, object?> valueLookup)
+    {
+      ArgumentUtility.CheckNotNull("id", id);
+
       var propertyDefinitions = GetPropertyDefinitions(id.ClassDefinition);
-      var persistentPropertyValues = propertyDefinitions.Persistent.ToDictionary(pd => pd, pd => new PropertyValue(pd, pd.DefaultValue));
-      var nonPersistentPropertyValues = propertyDefinitions.NonPersistent.ToDictionary(pd => pd, pd => new PropertyValue(pd, pd.DefaultValue));
+      var persistentPropertyValues = propertyDefinitions.Persistent.ToDictionary(pd => pd, pd => new PropertyValue(pd, valueLookup(pd)));
+      var nonPersistentPropertyValues = propertyDefinitions.NonPersistent.ToDictionary(pd => pd, pd => new PropertyValue(pd, valueLookup(pd)));
 
       return new DataContainer(
           id,
@@ -73,8 +95,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
     }
 
     /// <summary>
-    /// Creates an empty <see cref="DataContainer"/> for an existing <see cref="Remotion.Data.DomainObjects.DomainObject"/>. The <see cref="DataContainer"/>
-    /// contain all <see cref="PropertyValue"/> objects, just as if it had been created with <see cref="CreateNew"/>, but the values for its 
+    /// Creates a <see cref="DataContainer"/> for an existing <see cref="Remotion.Data.DomainObjects.DomainObject"/>. The <see cref="DataContainer"/>
+    /// contains all <see cref="PropertyValue"/> objects, just as if it had been created with <see cref="CreateNew(ObjectID)"/>, but the values for its
     /// properties are set as returned by a lookup method.
     /// The <see cref="DataContainer"/> has be to registered with a <see cref="ClientTransaction"/> via <see cref="DataManager.RegisterDataContainer"/> 
     /// and <see cref="SetDomainObject"/> must be called before it can be used.
