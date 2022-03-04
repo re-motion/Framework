@@ -565,6 +565,22 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _timestamp = timestamp;
     }
 
+    public void CommitPropertyValuesOnNewDataContainer ()
+    {
+      CheckNotDiscarded();
+
+      if (_state != DataContainerStateType.New)
+        throw new InvalidOperationException("Only new data containers can commit their property state as unchanged.");
+
+      var allPropertyValues = _persistentPropertyValues.Values.Concat(_nonPersistentPropertyValues.Values);
+      foreach (PropertyValue propertyValue in allPropertyValues)
+        propertyValue.CommitState();
+
+      _hasBeenChangedForPersistentData = false;
+      _hasBeenChangedForNonPersistentData = false;
+      RaiseStateUpdatedNotification();
+    }
+
     public void CommitState ()
     {
       CheckNotDiscarded();

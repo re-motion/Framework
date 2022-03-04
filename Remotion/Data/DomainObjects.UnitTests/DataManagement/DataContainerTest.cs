@@ -1220,6 +1220,134 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    public void CommitPropertyValuesOnNewDataContainer_LeavesStateUnchanged ()
+    {
+      _newDataContainer.CommitPropertyValuesOnNewDataContainer();
+
+      var state = _newDataContainer.State;
+      Assert.That(state.IsNew, Is.True);
+      Assert.That(GetNumberOfSetFlags(state), Is.EqualTo(1));
+      Assert.That(_newDataContainer.State.IsNew, Is.True);
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_RaisesStateUpdated ()
+    {
+      CheckStateNotification(_newDataContainer, dc => dc.CommitPropertyValuesOnNewDataContainer(), new DataContainerState.Builder().SetNew().Value);
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_CommitsPropertyValues_WithPersistentProperty ()
+    {
+      _newDataContainer.SetValue(_orderNumberProperty, 10);
+
+      Assert.That(_newDataContainer.HasValueChanged(_orderNumberProperty), Is.True);
+      Assert.That(_newDataContainer.GetValue(_orderNumberProperty, ValueAccess.Original), Is.EqualTo(0));
+      Assert.That(_newDataContainer.GetValue(_orderNumberProperty), Is.EqualTo(10));
+
+      _newDataContainer.CommitPropertyValuesOnNewDataContainer();
+
+      Assert.That(_newDataContainer.HasValueChanged(_orderNumberProperty), Is.False);
+      Assert.That(_newDataContainer.GetValue(_orderNumberProperty, ValueAccess.Original), Is.EqualTo(10));
+      Assert.That(_newDataContainer.GetValue(_orderNumberProperty), Is.EqualTo(10));
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_CommitsPropertyValues_WithNonPersistentProperty ()
+    {
+      _newNonPersistentDataContainer.SetValue(_propertyOnNonPersistentDataContainer, 10);
+
+      Assert.That(_newNonPersistentDataContainer.HasValueChanged(_propertyOnNonPersistentDataContainer), Is.True);
+      Assert.That(_newNonPersistentDataContainer.GetValue(_propertyOnNonPersistentDataContainer, ValueAccess.Original), Is.EqualTo(0));
+      Assert.That(_newNonPersistentDataContainer.GetValue(_propertyOnNonPersistentDataContainer), Is.EqualTo(10));
+
+      _newNonPersistentDataContainer.CommitPropertyValuesOnNewDataContainer();
+
+      Assert.That(_newNonPersistentDataContainer.HasValueChanged(_propertyOnNonPersistentDataContainer), Is.False);
+      Assert.That(_newNonPersistentDataContainer.GetValue(_propertyOnNonPersistentDataContainer, ValueAccess.Original), Is.EqualTo(10));
+      Assert.That(_newNonPersistentDataContainer.GetValue(_propertyOnNonPersistentDataContainer), Is.EqualTo(10));
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_ResetsChangedFlag_WithPersistentProperty ()
+    {
+      _newDataContainer.SetValue(_orderNumberProperty, 10);
+
+      var stateBeforeChange = _newDataContainer.State;
+      Assert.That(stateBeforeChange.IsNew, Is.True);
+      Assert.That(stateBeforeChange.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(2));
+      Assert.That(_newDataContainer.State.IsNew, Is.True);
+      Assert.That(_newDataContainer.State.IsPersistentDataChanged, Is.True);
+
+      _newDataContainer.CommitPropertyValuesOnNewDataContainer();
+
+      var stateAfterChange = _newDataContainer.State;
+      Assert.That(stateAfterChange.IsNew, Is.True);
+      Assert.That(stateAfterChange.IsPersistentDataChanged, Is.False);
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(1));
+      Assert.That(_newDataContainer.State.IsNew, Is.True);
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_ResetsChangedFlag_WithNonPersistentProperty ()
+    {
+      _newNonPersistentDataContainer.SetValue(_propertyOnNonPersistentDataContainer, 10);
+
+      var stateBeforeChange = _newNonPersistentDataContainer.State;
+      Assert.That(stateBeforeChange.IsNew, Is.True);
+      Assert.That(stateBeforeChange.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(2));
+      Assert.That(_newNonPersistentDataContainer.State.IsNew, Is.True);
+      Assert.That(_newNonPersistentDataContainer.State.IsNonPersistentDataChanged, Is.True);
+
+      _newNonPersistentDataContainer.CommitPropertyValuesOnNewDataContainer();
+
+      var stateAfterChange = _newNonPersistentDataContainer.State;
+      Assert.That(stateAfterChange.IsNew, Is.True);
+      Assert.That(stateAfterChange.IsNonPersistentDataChanged, Is.False);
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(1));
+      Assert.That(_newNonPersistentDataContainer.State.IsNew, Is.True);
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_DiscardedDataContainer_Throws ()
+    {
+      Assert.That(
+          () => _discardedDataContainer.CommitPropertyValuesOnNewDataContainer(),
+          Throws.InstanceOf<ObjectInvalidException>());
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_UnchangedDataContainer_Throws ()
+    {
+      Assert.That(
+          () => _existingDataContainer.CommitPropertyValuesOnNewDataContainer(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Only new data containers can commit their property state as unchanged."));
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_ChangedDataContainer_Throws ()
+    {
+      _existingDataContainer.SetValue(_orderNumberProperty, 10);
+
+      Assert.That(
+          () => _existingDataContainer.CommitPropertyValuesOnNewDataContainer(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Only new data containers can commit their property state as unchanged."));
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_DeletedDataContainer_Throws ()
+    {
+      Assert.That(
+          () => _deletedDataContainer.CommitPropertyValuesOnNewDataContainer(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Only new data containers can commit their property state as unchanged."));
+    }
+
+    [Test]
     public void RollbackState_SetsStateToExisting ()
     {
       _deletedDataContainer.RollbackState();
