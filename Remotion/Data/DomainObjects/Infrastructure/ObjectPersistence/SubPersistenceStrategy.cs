@@ -257,7 +257,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
           "a new data container cannot be known to the parent");
       Assertion.IsFalse(dataContainer.State.IsDiscarded);
 
-      var parentDataContainer = DataContainer.CreateNew(dataContainer.ID);
+      var parentDataContainer = DataContainer.CreateNew(dataContainer.ID, pd=> dataContainer.GetValueWithoutEvents(pd, ValueAccess.Original));
       parentDataContainer.SetDomainObject(dataContainer.DomainObject);
 
       parentDataContainer.SetDataFromSubTransaction(dataContainer);
