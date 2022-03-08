@@ -123,8 +123,8 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       ArgumentUtility.CheckNotNull("types", types);
 
-      var classDefinitionCollectionFactory = new ClassDefinitionCollectionFactory(this);
-      return classDefinitionCollectionFactory.CreateClassDefinitionCollection(types);
+      var typeDefinitionCollectionFactory = new TypeDefinitionFactory(this);
+      return typeDefinitionCollectionFactory.CreateTypeDefinitions(types);
     }
 
     public PropertyDefinitionCollection CreatePropertyDefinitionCollection (
