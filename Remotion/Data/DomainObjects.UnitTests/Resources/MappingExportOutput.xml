@@ -1,6 +1,6 @@
 ﻿<mapping xmlns="http://www.re-motion.org/Data/DomainObjects/Rdbms/Mapping/1.0">
   <storageProvider name="SchemaGenerationFirstStorageProvider">
-    <class id="Company" isAbstract="true" />
+    <class id="AbstractClass" isAbstract="true" />
     <class id="AbstractWithoutConcreteClass" baseClass="Company" isAbstract="true" />
     <class id="Address" isAbstract="false">
       <table name="Address">
@@ -171,12 +171,20 @@
     <class id="ClassWithoutProperties" isAbstract="false">
       <table name="TableWithoutProperties" />
     </class>
-    <class id="ClassWithRelationsBase" isAbstract="true" />
     <class id="ClassWithRelations" baseClass="ClassWithRelationsBase" isAbstract="false">
       <table name="TableWithRelations">
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ClassWithRelations.DerivedClass" displayName="DerivedClass" type="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedClass, Remotion.Data.DomainObjects.UnitTests" isNullable="true">
           <column name="DerivedClassID" dbType="Guid" />
           <column name="DerivedClassIDClassID" dbType="AnsiString" />
+        </property>
+      </table>
+    </class>
+    <class id="ClassWithRelationsBase" isAbstract="true" />
+    <class id="Company" isAbstract="true" />
+    <class id="ConcreteClass" isAbstract="false">
+      <table name="ConcreteClass">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ConcreteClass.PropertyInConcreteClass" displayName="PropertyInConcreteClass" type="System.String" isNullable="false" maxLength="100">
+          <column name="PropertyInConcreteClass" dbType="String" />
         </property>
       </table>
     </class>
@@ -205,28 +213,7 @@
         </property>
       </table>
     </class>
-    <class id="AbstractClass" isAbstract="true" />
     <class id="DerivedAbstractClass" baseClass="AbstractClass" isAbstract="true" />
-    <class id="DerivedDerivedConcreteClass" baseClass="DerivedAbstractClass" isAbstract="false">
-      <table name="AbstractClass">
-        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedDerivedConcreteClass.PropertyInDerivedConcreteClass" displayName="PropertyInDerivedConcreteClass" type="System.String" isNullable="true">
-          <column name="PropertyInDerivedConcreteClass" dbType="String" />
-        </property>
-        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedAbstractClass.PropertyInAbstractDerivedClass" displayName="PropertyInAbstractDerivedClass" type="System.String" isNullable="true">
-          <column name="PropertyInAbstractDerivedClass" dbType="String" />
-        </property>
-        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.AbstractClass.PropertyInAbstractClass" displayName="PropertyInAbstractClass" type="System.String" isNullable="true">
-          <column name="PropertyInAbstractClass" dbType="String" />
-        </property>
-      </table>
-    </class>
-    <class id="ConcreteClass" isAbstract="false">
-      <table name="ConcreteClass">
-        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ConcreteClass.PropertyInConcreteClass" displayName="PropertyInConcreteClass" type="System.String" isNullable="false" maxLength="100">
-          <column name="PropertyInConcreteClass" dbType="String" />
-        </property>
-      </table>
-    </class>
     <class id="DerivedClass" baseClass="ConcreteClass" isAbstract="false">
       <table name="ConcreteClass">
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedClass.PropertyInDerivedClass" displayName="PropertyInDerivedClass" type="System.String" isNullable="false" maxLength="100">
@@ -237,6 +224,19 @@
         </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ConcreteClass.PropertyInConcreteClass" displayName="PropertyInConcreteClass" type="System.String" isNullable="false" maxLength="100">
           <column name="PropertyInConcreteClass" dbType="String" />
+        </property>
+      </table>
+    </class>
+    <class id="DerivedDerivedConcreteClass" baseClass="DerivedAbstractClass" isAbstract="false">
+      <table name="AbstractClass">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedDerivedConcreteClass.PropertyInDerivedConcreteClass" displayName="PropertyInDerivedConcreteClass" type="System.String" isNullable="true">
+          <column name="PropertyInDerivedConcreteClass" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DerivedAbstractClass.PropertyInAbstractDerivedClass" displayName="PropertyInAbstractDerivedClass" type="System.String" isNullable="true">
+          <column name="PropertyInAbstractDerivedClass" dbType="String" />
+        </property>
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.AbstractClass.PropertyInAbstractClass" displayName="PropertyInAbstractClass" type="System.String" isNullable="true">
+          <column name="PropertyInAbstractClass" dbType="String" />
         </property>
       </table>
     </class>
@@ -260,7 +260,6 @@
         </property>
       </table>
     </class>
-    <class id="Partner" baseClass="Company" isAbstract="true" />
     <class id="DevelopmentPartner" baseClass="Partner" isAbstract="false">
       <table name="DevelopmentPartner">
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.DevelopmentPartner.Competences" displayName="Competences" type="System.String" isNullable="false" maxLength="255">
@@ -306,10 +305,10 @@
         </property>
       </table>
     </class>
-    <class id="MixinAddedTwiceWithDifferentNullability_LayerSupertype" isAbstract="true" />
     <class id="MixinAddedTwiceWithDifferentNullability_BaseClassWithDBTable" baseClass="MixinAddedTwiceWithDifferentNullability_LayerSupertype" isAbstract="false">
       <table name="MixinAddedTwiceWithDifferentNullability_BaseClassWithDBTable" />
     </class>
+    <class id="MixinAddedTwiceWithDifferentNullability_LayerSupertype" isAbstract="true" />
     <class id="MixinAddedTwiceWithDifferentNullability_TargetClassBelowDBTable" baseClass="MixinAddedTwiceWithDifferentNullability_BaseClassWithDBTable" isAbstract="false">
       <table name="MixinAddedTwiceWithDifferentNullability_BaseClassWithDBTable">
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.MixinAddedTwiceWithDifferentNullability.PersistentMixinAddedTwice.Property" displayName="Property" type="System.Int32" isNullable="false">
@@ -354,6 +353,7 @@
         </property>
       </table>
     </class>
+    <class id="Partner" baseClass="Company" isAbstract="true" />
     <class id="SecondClass" isAbstract="false">
       <table name="SecondClass" />
     </class>
@@ -387,8 +387,11 @@
   </storageProvider>
   <storageProvider name="SchemaGenerationThirdStorageProvider">
     <class id="AboveInheritanceRoot" isAbstract="true" />
-    <class id="InheritanceRoot" baseClass="AboveInheritanceRoot" isAbstract="false">
+    <class id="BelowInheritanceRoot" baseClass="InheritanceRoot" isAbstract="false">
       <table name="InheritanceRoot">
+        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ExtendedFileBuilder.BelowInheritanceRoot.PropertyBelowInheritanceRoot" displayName="PropertyBelowInheritanceRoot" type="System.String" isNullable="true">
+          <column name="PropertyBelowInheritanceRoot" dbType="String" />
+        </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ExtendedFileBuilder.InheritanceRoot.PropertyInheritanceRoot" displayName="PropertyInheritanceRoot" type="System.String" isNullable="true">
           <column name="PropertyInheritanceRoot" dbType="String" />
         </property>
@@ -397,11 +400,8 @@
         </property>
       </table>
     </class>
-    <class id="BelowInheritanceRoot" baseClass="InheritanceRoot" isAbstract="false">
+    <class id="InheritanceRoot" baseClass="AboveInheritanceRoot" isAbstract="false">
       <table name="InheritanceRoot">
-        <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ExtendedFileBuilder.BelowInheritanceRoot.PropertyBelowInheritanceRoot" displayName="PropertyBelowInheritanceRoot" type="System.String" isNullable="true">
-          <column name="PropertyBelowInheritanceRoot" dbType="String" />
-        </property>
         <property name="Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.ExtendedFileBuilder.InheritanceRoot.PropertyInheritanceRoot" displayName="PropertyInheritanceRoot" type="System.String" isNullable="true">
           <column name="PropertyInheritanceRoot" dbType="String" />
         </property>
