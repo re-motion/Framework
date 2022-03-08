@@ -27,12 +27,10 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ConcreteIn
   DROP VIEW [dbo].[ConcreteInheritanceObjectWithRelationsView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ConcreteInheritanceSecondDerivedClassView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ConcreteInheritanceSecondDerivedClassView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'TargetClassForPersistentMixinView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[TargetClassForPersistentMixinView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DerivedTargetClassForPersistentMixinView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[DerivedTargetClassForPersistentMixinView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DerivedDerivedTargetClassForPersistentMixinView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[DerivedDerivedTargetClassForPersistentMixinView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DerivedTargetClassForPersistentMixinView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[DerivedTargetClassForPersistentMixinView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DerivedTargetClassWithDerivedMixinWithInterfaceView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[DerivedTargetClassWithDerivedMixinWithInterfaceView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'HookedTargetClassView' AND TABLE_SCHEMA = 'dbo')
@@ -53,6 +51,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'TargetClas
   DROP VIEW [dbo].[TargetClassForBehavioralMixinView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'TargetClassForMixinWithStateView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[TargetClassForMixinWithStateView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'TargetClassForPersistentMixinView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[TargetClassForPersistentMixinView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'TargetClassWithSameInterfaceAsPersistentMixinView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[TargetClassWithSameInterfaceAsPersistentMixinView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'TargetClassWithTwoUnidirectionalMixinsView' AND TABLE_SCHEMA = 'dbo')
@@ -85,20 +85,20 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithV
   DROP VIEW [dbo].[ClassWithValidRelationsView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClientView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ClientView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ComputerView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[ComputerView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CompanyView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[CompanyView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'PartnerView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[PartnerView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ComputerView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[ComputerView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CustomerView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[CustomerView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DistributorView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[DistributorView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'EmployeeView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[EmployeeView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'FileSystemItemView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[FileSystemItemView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'FileView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[FileView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'FileSystemItemView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[FileSystemItemView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'FolderView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[FolderView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'IndustrialSectorView' AND TABLE_SCHEMA = 'dbo')
@@ -113,12 +113,16 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'OrderItemV
   DROP VIEW [dbo].[OrderItemView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'OrderTicketView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[OrderTicketView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'PartnerView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[PartnerView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'PersonView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[PersonView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ProductView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ProductView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ProductReviewView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ProductReviewView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'BaseClassWithoutStorageSpecificIdentifierAttributeView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[BaseClassWithoutStorageSpecificIdentifierAttributeView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassIDForClassHavingClassIDAttributeView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ClassIDForClassHavingClassIDAttributeView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassIDForClassHavingClassIDAttributeAndStorageSpecificIdentifierAttributeView' AND TABLE_SCHEMA = 'dbo')
@@ -129,6 +133,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithB
   DROP VIEW [dbo].[ClassWithBinaryPropertiesView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithBothEndPointsOnSameClassView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ClassWithBothEndPointsOnSameClassView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithDifferentPropertiesView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[ClassWithDifferentPropertiesView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithExtensibleEnumPropertiesView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ClassWithExtensibleEnumPropertiesView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithManySideRelationPropertiesView' AND TABLE_SCHEMA = 'dbo')
@@ -141,16 +147,10 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClosedGene
   DROP VIEW [dbo].[ClosedGenericClassWithManySideRelationPropertiesView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClosedGenericClassWithOneSideRelationPropertiesView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ClosedGenericClassWithOneSideRelationPropertiesView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithDifferentPropertiesView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[ClassWithDifferentPropertiesView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DerivedClassWithDifferentPropertiesView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[DerivedClassWithDifferentPropertiesView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'BaseClassWithoutStorageSpecificIdentifierAttributeView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[BaseClassWithoutStorageSpecificIdentifierAttributeView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DerivedClassWithStorageSpecificIdentifierAttributeView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[DerivedClassWithStorageSpecificIdentifierAttributeView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CustomerView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[CustomerView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SpecialCustomerView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[SpecialCustomerView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SupplierView' AND TABLE_SCHEMA = 'dbo')
@@ -168,14 +168,6 @@ IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_ob
   ALTER TABLE [dbo].[ConcreteInheritanceFirstDerivedClass] DROP CONSTRAINT FK_ConcreteInheritanceFirstDerivedClass_VectorOpposingPropertyID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_ConcreteInheritanceSecondDerivedClass_VectorOpposingPropertyID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'ConcreteInheritanceSecondDerivedClass')
   ALTER TABLE [dbo].[ConcreteInheritanceSecondDerivedClass] DROP CONSTRAINT FK_ConcreteInheritanceSecondDerivedClass_VectorOpposingPropertyID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_MixedDomains_Target_UnidirectionalRelationPropertyID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'MixedDomains_Target')
-  ALTER TABLE [dbo].[MixedDomains_Target] DROP CONSTRAINT FK_MixedDomains_Target_UnidirectionalRelationPropertyID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_MixedDomains_Target_RelationPropertyID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'MixedDomains_Target')
-  ALTER TABLE [dbo].[MixedDomains_Target] DROP CONSTRAINT FK_MixedDomains_Target_RelationPropertyID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_MixedDomains_Target_CollectionPropertyNSideID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'MixedDomains_Target')
-  ALTER TABLE [dbo].[MixedDomains_Target] DROP CONSTRAINT FK_MixedDomains_Target_CollectionPropertyNSideID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_MixedDomains_Target_PrivateBaseRelationPropertyID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'MixedDomains_Target')
-  ALTER TABLE [dbo].[MixedDomains_Target] DROP CONSTRAINT FK_MixedDomains_Target_PrivateBaseRelationPropertyID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_HookedTargetClass_TargetID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'HookedTargetClass')
   ALTER TABLE [dbo].[HookedTargetClass] DROP CONSTRAINT FK_HookedTargetClass_TargetID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_MixedDomains_RelationTarget_RelationProperty2ID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'MixedDomains_RelationTarget')
@@ -186,6 +178,14 @@ IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_ob
   ALTER TABLE [dbo].[SingleInheritanceBaseClass] DROP CONSTRAINT FK_SingleInheritanceBaseClass_VectorOpposingPropertyID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_SingleInheritanceObjectWithRelations_ScalarPropertyID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'SingleInheritanceObjectWithRelations')
   ALTER TABLE [dbo].[SingleInheritanceObjectWithRelations] DROP CONSTRAINT FK_SingleInheritanceObjectWithRelations_ScalarPropertyID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_MixedDomains_Target_UnidirectionalRelationPropertyID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'MixedDomains_Target')
+  ALTER TABLE [dbo].[MixedDomains_Target] DROP CONSTRAINT FK_MixedDomains_Target_UnidirectionalRelationPropertyID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_MixedDomains_Target_RelationPropertyID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'MixedDomains_Target')
+  ALTER TABLE [dbo].[MixedDomains_Target] DROP CONSTRAINT FK_MixedDomains_Target_RelationPropertyID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_MixedDomains_Target_CollectionPropertyNSideID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'MixedDomains_Target')
+  ALTER TABLE [dbo].[MixedDomains_Target] DROP CONSTRAINT FK_MixedDomains_Target_CollectionPropertyNSideID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_MixedDomains_Target_PrivateBaseRelationPropertyID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'MixedDomains_Target')
+  ALTER TABLE [dbo].[MixedDomains_Target] DROP CONSTRAINT FK_MixedDomains_Target_PrivateBaseRelationPropertyID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_MixedDomains_TargetWithTwoUnidirectionalMixins_ComputerID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'MixedDomains_TargetWithTwoUnidirectionalMixins')
   ALTER TABLE [dbo].[MixedDomains_TargetWithTwoUnidirectionalMixins] DROP CONSTRAINT FK_MixedDomains_TargetWithTwoUnidirectionalMixins_ComputerID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_MixedDomains_TargetWithTwoUnidirectionalMixins_Computer2ID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'MixedDomains_TargetWithTwoUnidirectionalMixins')
@@ -206,12 +206,12 @@ IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_ob
   ALTER TABLE [dbo].[TableWithValidRelations] DROP CONSTRAINT FK_TableWithValidRelations_TableWithGuidKeyNonOptionalID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Client_ParentClientID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Client')
   ALTER TABLE [dbo].[Client] DROP CONSTRAINT FK_Client_ParentClientID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Computer_EmployeeID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Computer')
-  ALTER TABLE [dbo].[Computer] DROP CONSTRAINT FK_Computer_EmployeeID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Company_IndustrialSectorID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Company')
   ALTER TABLE [dbo].[Company] DROP CONSTRAINT FK_Company_IndustrialSectorID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Company_ContactPersonID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Company')
   ALTER TABLE [dbo].[Company] DROP CONSTRAINT FK_Company_ContactPersonID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Computer_EmployeeID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Computer')
+  ALTER TABLE [dbo].[Computer] DROP CONSTRAINT FK_Computer_EmployeeID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Employee_SupervisorID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Employee')
   ALTER TABLE [dbo].[Employee] DROP CONSTRAINT FK_Employee_SupervisorID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_FileSystemItem_ParentFolderID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'FileSystemItem')
@@ -234,6 +234,12 @@ IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_ob
   ALTER TABLE [dbo].[ProductReview] DROP CONSTRAINT FK_ProductReview_ReviewerID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_ClassWithBothEndPointsOnSameClass_ParentID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'ClassWithBothEndPointsOnSameClass')
   ALTER TABLE [dbo].[ClassWithBothEndPointsOnSameClass] DROP CONSTRAINT FK_ClassWithBothEndPointsOnSameClass_ParentID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_ClassWithDifferentProperties_BaseUnidirectionalOneToOneID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'ClassWithDifferentProperties')
+  ALTER TABLE [dbo].[ClassWithDifferentProperties] DROP CONSTRAINT FK_ClassWithDifferentProperties_BaseUnidirectionalOneToOneID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_ClassWithDifferentProperties_BasePrivateUnidirectionalOneToOneID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'ClassWithDifferentProperties')
+  ALTER TABLE [dbo].[ClassWithDifferentProperties] DROP CONSTRAINT FK_ClassWithDifferentProperties_BasePrivateUnidirectionalOneToOneID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_ClassWithDifferentProperties_UnidirectionalOneToOneID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'ClassWithDifferentProperties')
+  ALTER TABLE [dbo].[ClassWithDifferentProperties] DROP CONSTRAINT FK_ClassWithDifferentProperties_UnidirectionalOneToOneID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_ClassWithManySideRelationProperties_BaseUnidirectionalID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'ClassWithManySideRelationProperties')
   ALTER TABLE [dbo].[ClassWithManySideRelationProperties] DROP CONSTRAINT FK_ClassWithManySideRelationProperties_BaseUnidirectionalID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_ClassWithManySideRelationProperties_BaseBidirectionalOneToOneID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'ClassWithManySideRelationProperties')
@@ -262,12 +268,6 @@ IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_ob
   ALTER TABLE [dbo].[ClosedGenericClassWithManySideRelationProperties] DROP CONSTRAINT FK_ClosedGenericClassWithManySideRelationProperties_BaseBidirectionalOneToOneID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_ClosedGenericClassWithManySideRelationProperties_BaseBidirectionalOneToManyID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'ClosedGenericClassWithManySideRelationProperties')
   ALTER TABLE [dbo].[ClosedGenericClassWithManySideRelationProperties] DROP CONSTRAINT FK_ClosedGenericClassWithManySideRelationProperties_BaseBidirectionalOneToManyID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_ClassWithDifferentProperties_BaseUnidirectionalOneToOneID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'ClassWithDifferentProperties')
-  ALTER TABLE [dbo].[ClassWithDifferentProperties] DROP CONSTRAINT FK_ClassWithDifferentProperties_BaseUnidirectionalOneToOneID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_ClassWithDifferentProperties_BasePrivateUnidirectionalOneToOneID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'ClassWithDifferentProperties')
-  ALTER TABLE [dbo].[ClassWithDifferentProperties] DROP CONSTRAINT FK_ClassWithDifferentProperties_BasePrivateUnidirectionalOneToOneID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_ClassWithDifferentProperties_UnidirectionalOneToOneID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'ClassWithDifferentProperties')
-  ALTER TABLE [dbo].[ClassWithDifferentProperties] DROP CONSTRAINT FK_ClassWithDifferentProperties_UnidirectionalOneToOneID
 -- Drop all tables
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWithPropertiesHavingStorageClassAttribute' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[ClassWithPropertiesHavingStorageClassAttribute]
@@ -283,8 +283,6 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ConcreteI
   DROP TABLE [dbo].[ConcreteInheritanceObjectWithRelations]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ConcreteInheritanceSecondDerivedClass' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[ConcreteInheritanceSecondDerivedClass]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'MixedDomains_Target' AND TABLE_SCHEMA = 'dbo')
-  DROP TABLE [dbo].[MixedDomains_Target]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'HookedTargetClass' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[HookedTargetClass]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'InheritanceRootInheritingPersistentMixin' AND TABLE_SCHEMA = 'dbo')
@@ -299,6 +297,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TargetCla
   DROP TABLE [dbo].[TargetClassForBehavioralMixin]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TargetClassForMixinWithState' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[TargetClassForMixinWithState]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'MixedDomains_Target' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[MixedDomains_Target]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'MixedDomains_TargetClassWithSameInterfaceAsPersistentMixin' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[MixedDomains_TargetClassWithSameInterfaceAsPersistentMixin]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'MixedDomains_TargetWithTwoUnidirectionalMixins' AND TABLE_SCHEMA = 'dbo')
@@ -331,10 +331,10 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWith
   DROP TABLE [dbo].[TableWithValidRelations]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Client' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[Client]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Computer' AND TABLE_SCHEMA = 'dbo')
-  DROP TABLE [dbo].[Computer]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Company' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[Company]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Computer' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[Computer]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Employee' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[Employee]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'FileSystemItem' AND TABLE_SCHEMA = 'dbo')
@@ -367,6 +367,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWith
   DROP TABLE [dbo].[ClassWithBinaryProperties]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWithBothEndPointsOnSameClass' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[ClassWithBothEndPointsOnSameClass]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWithDifferentProperties' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[ClassWithDifferentProperties]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWithExtensibleEnumProperties' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[ClassWithExtensibleEnumProperties]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWithManySideRelationProperties' AND TABLE_SCHEMA = 'dbo')
@@ -379,7 +381,5 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClosedGen
   DROP TABLE [dbo].[ClosedGenericClassWithManySideRelationProperties]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClosedGenericClassWithOneSideRelationProperties' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[ClosedGenericClassWithOneSideRelationProperties]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWithDifferentProperties' AND TABLE_SCHEMA = 'dbo')
-  DROP TABLE [dbo].[ClassWithDifferentProperties]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'DerivedClassWithStorageSpecificIdentifierAttribute' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[DerivedClassWithStorageSpecificIdentifierAttribute]

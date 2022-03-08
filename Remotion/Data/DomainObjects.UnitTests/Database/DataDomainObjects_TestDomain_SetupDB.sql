@@ -71,19 +71,6 @@ CREATE TABLE [dbo].[ConcreteInheritanceSecondDerivedClass]
   [PersistentProperty] nvarchar (max) NULL,
   CONSTRAINT [PK_ConcreteInheritanceSecondDerivedClass] PRIMARY KEY CLUSTERED ([ID])
 )
-CREATE TABLE [dbo].[MixedDomains_Target]
-(
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Timestamp] rowversion NOT NULL,
-  [PersistentProperty] int NOT NULL,
-  [ExtraPersistentProperty] int NOT NULL,
-  [UnidirectionalRelationPropertyID] uniqueidentifier NULL,
-  [RelationPropertyID] uniqueidentifier NULL,
-  [CollectionPropertyNSideID] uniqueidentifier NULL,
-  [PrivateBaseRelationPropertyID] uniqueidentifier NULL,
-  CONSTRAINT [PK_MixedDomains_Target] PRIMARY KEY CLUSTERED ([ID])
-)
 CREATE TABLE [dbo].[HookedTargetClass]
 (
   [ID] uniqueidentifier NOT NULL,
@@ -148,6 +135,19 @@ CREATE TABLE [dbo].[TargetClassForMixinWithState]
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
   CONSTRAINT [PK_TargetClassForMixinWithState] PRIMARY KEY CLUSTERED ([ID])
+)
+CREATE TABLE [dbo].[MixedDomains_Target]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [PersistentProperty] int NOT NULL,
+  [ExtraPersistentProperty] int NOT NULL,
+  [UnidirectionalRelationPropertyID] uniqueidentifier NULL,
+  [RelationPropertyID] uniqueidentifier NULL,
+  [CollectionPropertyNSideID] uniqueidentifier NULL,
+  [PrivateBaseRelationPropertyID] uniqueidentifier NULL,
+  CONSTRAINT [PK_MixedDomains_Target] PRIMARY KEY CLUSTERED ([ID])
 )
 CREATE TABLE [dbo].[MixedDomains_TargetClassWithSameInterfaceAsPersistentMixin]
 (
@@ -326,6 +326,20 @@ CREATE TABLE [dbo].[Client]
   [ParentClientID] uniqueidentifier NULL,
   CONSTRAINT [PK_Client] PRIMARY KEY CLUSTERED ([ID])
 )
+CREATE TABLE [dbo].[Company]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [IndustrialSectorID] uniqueidentifier NULL,
+  [CustomerSince] datetime NULL,
+  [CustomerType] int NULL,
+  [ContactPersonID] uniqueidentifier NULL,
+  [NumberOfShops] int NULL,
+  [SupplierQuality] int NULL,
+  CONSTRAINT [PK_Company] PRIMARY KEY CLUSTERED ([ID])
+)
 CREATE TABLE [dbo].[Computer]
 (
   [ID] uniqueidentifier NOT NULL,
@@ -334,20 +348,6 @@ CREATE TABLE [dbo].[Computer]
   [SerialNumber] nvarchar (20) NOT NULL,
   [EmployeeID] uniqueidentifier NULL,
   CONSTRAINT [PK_Computer] PRIMARY KEY CLUSTERED ([ID])
-)
-CREATE TABLE [dbo].[Company]
-(
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Timestamp] rowversion NOT NULL,
-  [Name] nvarchar (100) NOT NULL,
-  [IndustrialSectorID] uniqueidentifier NULL,
-  [ContactPersonID] uniqueidentifier NULL,
-  [NumberOfShops] int NULL,
-  [SupplierQuality] int NULL,
-  [CustomerSince] datetime NULL,
-  [CustomerType] int NULL,
-  CONSTRAINT [PK_Company] PRIMARY KEY CLUSTERED ([ID])
 )
 CREATE TABLE [dbo].[Employee]
 (
@@ -498,6 +498,23 @@ CREATE TABLE [dbo].[ClassWithBothEndPointsOnSameClass]
   [ParentID] uniqueidentifier NULL,
   CONSTRAINT [PK_ClassWithBothEndPointsOnSameClass] PRIMARY KEY CLUSTERED ([ID])
 )
+CREATE TABLE [dbo].[ClassWithDifferentProperties]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [BaseString] nvarchar (max) NULL,
+  [BaseUnidirectionalOneToOneID] uniqueidentifier NULL,
+  [BasePrivateUnidirectionalOneToOneID] uniqueidentifier NULL,
+  [Int32] int NOT NULL,
+  [String] nvarchar (max) NULL,
+  [UnidirectionalOneToOneID] uniqueidentifier NULL,
+  [PrivateString] nvarchar (max) NULL,
+  [OtherString] nvarchar (max) NULL,
+  [NewString] nvarchar (max) NULL,
+  [DerivedPrivateString] nvarchar (max) NULL,
+  CONSTRAINT [PK_ClassWithDifferentProperties] PRIMARY KEY CLUSTERED ([ID])
+)
 CREATE TABLE [dbo].[ClassWithExtensibleEnumProperties]
 (
   [ID] uniqueidentifier NOT NULL,
@@ -557,23 +574,6 @@ CREATE TABLE [dbo].[ClosedGenericClassWithOneSideRelationProperties]
   [Timestamp] rowversion NOT NULL,
   CONSTRAINT [PK_ClosedGenericClassWithOneSideRelationProperties] PRIMARY KEY CLUSTERED ([ID])
 )
-CREATE TABLE [dbo].[ClassWithDifferentProperties]
-(
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Timestamp] rowversion NOT NULL,
-  [BaseString] nvarchar (max) NULL,
-  [BaseUnidirectionalOneToOneID] uniqueidentifier NULL,
-  [BasePrivateUnidirectionalOneToOneID] uniqueidentifier NULL,
-  [Int32] int NOT NULL,
-  [String] nvarchar (max) NULL,
-  [UnidirectionalOneToOneID] uniqueidentifier NULL,
-  [PrivateString] nvarchar (max) NULL,
-  [OtherString] nvarchar (max) NULL,
-  [NewString] nvarchar (max) NULL,
-  [DerivedPrivateString] nvarchar (max) NULL,
-  CONSTRAINT [PK_ClassWithDifferentProperties] PRIMARY KEY CLUSTERED ([ID])
-)
 CREATE TABLE [dbo].[DerivedClassWithStorageSpecificIdentifierAttribute]
 (
   [ID] uniqueidentifier NOT NULL,
@@ -594,14 +594,6 @@ ALTER TABLE [dbo].[ConcreteInheritanceFirstDerivedClass] ADD
   CONSTRAINT [FK_ConcreteInheritanceFirstDerivedClass_VectorOpposingPropertyID] FOREIGN KEY ([VectorOpposingPropertyID]) REFERENCES [dbo].[ConcreteInheritanceObjectWithRelations] ([ID])
 ALTER TABLE [dbo].[ConcreteInheritanceSecondDerivedClass] ADD
   CONSTRAINT [FK_ConcreteInheritanceSecondDerivedClass_VectorOpposingPropertyID] FOREIGN KEY ([VectorOpposingPropertyID]) REFERENCES [dbo].[ConcreteInheritanceObjectWithRelations] ([ID])
-ALTER TABLE [dbo].[MixedDomains_Target] ADD
-  CONSTRAINT [FK_MixedDomains_Target_UnidirectionalRelationPropertyID] FOREIGN KEY ([UnidirectionalRelationPropertyID]) REFERENCES [dbo].[MixedDomains_RelationTarget] ([ID])
-ALTER TABLE [dbo].[MixedDomains_Target] ADD
-  CONSTRAINT [FK_MixedDomains_Target_RelationPropertyID] FOREIGN KEY ([RelationPropertyID]) REFERENCES [dbo].[MixedDomains_RelationTarget] ([ID])
-ALTER TABLE [dbo].[MixedDomains_Target] ADD
-  CONSTRAINT [FK_MixedDomains_Target_CollectionPropertyNSideID] FOREIGN KEY ([CollectionPropertyNSideID]) REFERENCES [dbo].[MixedDomains_RelationTarget] ([ID])
-ALTER TABLE [dbo].[MixedDomains_Target] ADD
-  CONSTRAINT [FK_MixedDomains_Target_PrivateBaseRelationPropertyID] FOREIGN KEY ([PrivateBaseRelationPropertyID]) REFERENCES [dbo].[MixedDomains_RelationTarget] ([ID])
 ALTER TABLE [dbo].[HookedTargetClass] ADD
   CONSTRAINT [FK_HookedTargetClass_TargetID] FOREIGN KEY ([TargetID]) REFERENCES [dbo].[HookedTargetClass] ([ID])
 ALTER TABLE [dbo].[MixedDomains_RelationTarget] ADD
@@ -612,6 +604,14 @@ ALTER TABLE [dbo].[SingleInheritanceBaseClass] ADD
   CONSTRAINT [FK_SingleInheritanceBaseClass_VectorOpposingPropertyID] FOREIGN KEY ([VectorOpposingPropertyID]) REFERENCES [dbo].[SingleInheritanceObjectWithRelations] ([ID])
 ALTER TABLE [dbo].[SingleInheritanceObjectWithRelations] ADD
   CONSTRAINT [FK_SingleInheritanceObjectWithRelations_ScalarPropertyID] FOREIGN KEY ([ScalarPropertyID]) REFERENCES [dbo].[SingleInheritanceBaseClass] ([ID])
+ALTER TABLE [dbo].[MixedDomains_Target] ADD
+  CONSTRAINT [FK_MixedDomains_Target_UnidirectionalRelationPropertyID] FOREIGN KEY ([UnidirectionalRelationPropertyID]) REFERENCES [dbo].[MixedDomains_RelationTarget] ([ID])
+ALTER TABLE [dbo].[MixedDomains_Target] ADD
+  CONSTRAINT [FK_MixedDomains_Target_RelationPropertyID] FOREIGN KEY ([RelationPropertyID]) REFERENCES [dbo].[MixedDomains_RelationTarget] ([ID])
+ALTER TABLE [dbo].[MixedDomains_Target] ADD
+  CONSTRAINT [FK_MixedDomains_Target_CollectionPropertyNSideID] FOREIGN KEY ([CollectionPropertyNSideID]) REFERENCES [dbo].[MixedDomains_RelationTarget] ([ID])
+ALTER TABLE [dbo].[MixedDomains_Target] ADD
+  CONSTRAINT [FK_MixedDomains_Target_PrivateBaseRelationPropertyID] FOREIGN KEY ([PrivateBaseRelationPropertyID]) REFERENCES [dbo].[MixedDomains_RelationTarget] ([ID])
 ALTER TABLE [dbo].[MixedDomains_TargetWithTwoUnidirectionalMixins] ADD
   CONSTRAINT [FK_MixedDomains_TargetWithTwoUnidirectionalMixins_ComputerID] FOREIGN KEY ([ComputerID]) REFERENCES [dbo].[Computer] ([ID])
 ALTER TABLE [dbo].[MixedDomains_TargetWithTwoUnidirectionalMixins] ADD
@@ -632,12 +632,12 @@ ALTER TABLE [dbo].[TableWithValidRelations] ADD
   CONSTRAINT [FK_TableWithValidRelations_TableWithGuidKeyNonOptionalID] FOREIGN KEY ([TableWithGuidKeyNonOptionalID]) REFERENCES [dbo].[TableWithGuidKey] ([ID])
 ALTER TABLE [dbo].[Client] ADD
   CONSTRAINT [FK_Client_ParentClientID] FOREIGN KEY ([ParentClientID]) REFERENCES [dbo].[Client] ([ID])
-ALTER TABLE [dbo].[Computer] ADD
-  CONSTRAINT [FK_Computer_EmployeeID] FOREIGN KEY ([EmployeeID]) REFERENCES [dbo].[Employee] ([ID])
 ALTER TABLE [dbo].[Company] ADD
   CONSTRAINT [FK_Company_IndustrialSectorID] FOREIGN KEY ([IndustrialSectorID]) REFERENCES [dbo].[IndustrialSector] ([ID])
 ALTER TABLE [dbo].[Company] ADD
   CONSTRAINT [FK_Company_ContactPersonID] FOREIGN KEY ([ContactPersonID]) REFERENCES [dbo].[Person] ([ID])
+ALTER TABLE [dbo].[Computer] ADD
+  CONSTRAINT [FK_Computer_EmployeeID] FOREIGN KEY ([EmployeeID]) REFERENCES [dbo].[Employee] ([ID])
 ALTER TABLE [dbo].[Employee] ADD
   CONSTRAINT [FK_Employee_SupervisorID] FOREIGN KEY ([SupervisorID]) REFERENCES [dbo].[Employee] ([ID])
 ALTER TABLE [dbo].[FileSystemItem] ADD
@@ -660,6 +660,12 @@ ALTER TABLE [dbo].[ProductReview] ADD
   CONSTRAINT [FK_ProductReview_ReviewerID] FOREIGN KEY ([ReviewerID]) REFERENCES [dbo].[Person] ([ID])
 ALTER TABLE [dbo].[ClassWithBothEndPointsOnSameClass] ADD
   CONSTRAINT [FK_ClassWithBothEndPointsOnSameClass_ParentID] FOREIGN KEY ([ParentID]) REFERENCES [dbo].[ClassWithBothEndPointsOnSameClass] ([ID])
+ALTER TABLE [dbo].[ClassWithDifferentProperties] ADD
+  CONSTRAINT [FK_ClassWithDifferentProperties_BaseUnidirectionalOneToOneID] FOREIGN KEY ([BaseUnidirectionalOneToOneID]) REFERENCES [dbo].[ClassWithOneSideRelationProperties] ([ID])
+ALTER TABLE [dbo].[ClassWithDifferentProperties] ADD
+  CONSTRAINT [FK_ClassWithDifferentProperties_BasePrivateUnidirectionalOneToOneID] FOREIGN KEY ([BasePrivateUnidirectionalOneToOneID]) REFERENCES [dbo].[ClassWithOneSideRelationProperties] ([ID])
+ALTER TABLE [dbo].[ClassWithDifferentProperties] ADD
+  CONSTRAINT [FK_ClassWithDifferentProperties_UnidirectionalOneToOneID] FOREIGN KEY ([UnidirectionalOneToOneID]) REFERENCES [dbo].[ClassWithOneSideRelationProperties] ([ID])
 ALTER TABLE [dbo].[ClassWithManySideRelationProperties] ADD
   CONSTRAINT [FK_ClassWithManySideRelationProperties_BaseUnidirectionalID] FOREIGN KEY ([BaseUnidirectionalID]) REFERENCES [dbo].[ClassWithOneSideRelationProperties] ([ID])
 ALTER TABLE [dbo].[ClassWithManySideRelationProperties] ADD
@@ -688,12 +694,6 @@ ALTER TABLE [dbo].[ClosedGenericClassWithManySideRelationProperties] ADD
   CONSTRAINT [FK_ClosedGenericClassWithManySideRelationProperties_BaseBidirectionalOneToOneID] FOREIGN KEY ([BaseBidirectionalOneToOneID]) REFERENCES [dbo].[ClosedGenericClassWithOneSideRelationProperties] ([ID])
 ALTER TABLE [dbo].[ClosedGenericClassWithManySideRelationProperties] ADD
   CONSTRAINT [FK_ClosedGenericClassWithManySideRelationProperties_BaseBidirectionalOneToManyID] FOREIGN KEY ([BaseBidirectionalOneToManyID]) REFERENCES [dbo].[ClosedGenericClassWithOneSideRelationProperties] ([ID])
-ALTER TABLE [dbo].[ClassWithDifferentProperties] ADD
-  CONSTRAINT [FK_ClassWithDifferentProperties_BaseUnidirectionalOneToOneID] FOREIGN KEY ([BaseUnidirectionalOneToOneID]) REFERENCES [dbo].[ClassWithOneSideRelationProperties] ([ID])
-ALTER TABLE [dbo].[ClassWithDifferentProperties] ADD
-  CONSTRAINT [FK_ClassWithDifferentProperties_BasePrivateUnidirectionalOneToOneID] FOREIGN KEY ([BasePrivateUnidirectionalOneToOneID]) REFERENCES [dbo].[ClassWithOneSideRelationProperties] ([ID])
-ALTER TABLE [dbo].[ClassWithDifferentProperties] ADD
-  CONSTRAINT [FK_ClassWithDifferentProperties_UnidirectionalOneToOneID] FOREIGN KEY ([UnidirectionalOneToOneID]) REFERENCES [dbo].[ClassWithOneSideRelationProperties] ([ID])
 -- Create a view for every class
 GO
 CREATE VIEW [dbo].[ClassWithPropertiesHavingStorageClassAttributeView] ([ID], [ClassID], [Timestamp], [Persistent])
@@ -760,10 +760,11 @@ CREATE VIEW [dbo].[ConcreteInheritanceSecondDerivedClassView] ([ID], [ClassID], 
     FROM [dbo].[ConcreteInheritanceSecondDerivedClass]
   WITH CHECK OPTION
 GO
-CREATE VIEW [dbo].[TargetClassForPersistentMixinView] ([ID], [ClassID], [Timestamp], [PersistentProperty], [ExtraPersistentProperty], [UnidirectionalRelationPropertyID], [RelationPropertyID], [CollectionPropertyNSideID], [PrivateBaseRelationPropertyID])
+CREATE VIEW [dbo].[DerivedDerivedTargetClassForPersistentMixinView] ([ID], [ClassID], [Timestamp], [PersistentProperty], [ExtraPersistentProperty], [UnidirectionalRelationPropertyID], [RelationPropertyID], [CollectionPropertyNSideID], [PrivateBaseRelationPropertyID])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [PersistentProperty], [ExtraPersistentProperty], [UnidirectionalRelationPropertyID], [RelationPropertyID], [CollectionPropertyNSideID], [PrivateBaseRelationPropertyID]
     FROM [dbo].[MixedDomains_Target]
+    WHERE [ClassID] IN ('DerivedDerivedTargetClassForPersistentMixin')
   WITH CHECK OPTION
 GO
 CREATE VIEW [dbo].[DerivedTargetClassForPersistentMixinView] ([ID], [ClassID], [Timestamp], [PersistentProperty], [ExtraPersistentProperty], [UnidirectionalRelationPropertyID], [RelationPropertyID], [CollectionPropertyNSideID], [PrivateBaseRelationPropertyID])
@@ -771,13 +772,6 @@ CREATE VIEW [dbo].[DerivedTargetClassForPersistentMixinView] ([ID], [ClassID], [
   SELECT [ID], [ClassID], [Timestamp], [PersistentProperty], [ExtraPersistentProperty], [UnidirectionalRelationPropertyID], [RelationPropertyID], [CollectionPropertyNSideID], [PrivateBaseRelationPropertyID]
     FROM [dbo].[MixedDomains_Target]
     WHERE [ClassID] IN ('DerivedTargetClassForPersistentMixin', 'DerivedDerivedTargetClassForPersistentMixin')
-  WITH CHECK OPTION
-GO
-CREATE VIEW [dbo].[DerivedDerivedTargetClassForPersistentMixinView] ([ID], [ClassID], [Timestamp], [PersistentProperty], [ExtraPersistentProperty], [UnidirectionalRelationPropertyID], [RelationPropertyID], [CollectionPropertyNSideID], [PrivateBaseRelationPropertyID])
-  WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [PersistentProperty], [ExtraPersistentProperty], [UnidirectionalRelationPropertyID], [RelationPropertyID], [CollectionPropertyNSideID], [PrivateBaseRelationPropertyID]
-    FROM [dbo].[MixedDomains_Target]
-    WHERE [ClassID] IN ('DerivedDerivedTargetClassForPersistentMixin')
   WITH CHECK OPTION
 GO
 CREATE VIEW [dbo].[DerivedTargetClassWithDerivedMixinWithInterfaceView] ([ID], [ClassID], [Timestamp], [PersistentProperty], [ExtraPersistentProperty], [UnidirectionalRelationPropertyID], [RelationPropertyID], [CollectionPropertyNSideID], [PrivateBaseRelationPropertyID])
@@ -841,6 +835,12 @@ CREATE VIEW [dbo].[TargetClassForMixinWithStateView] ([ID], [ClassID], [Timestam
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp]
     FROM [dbo].[TargetClassForMixinWithState]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[TargetClassForPersistentMixinView] ([ID], [ClassID], [Timestamp], [PersistentProperty], [ExtraPersistentProperty], [UnidirectionalRelationPropertyID], [RelationPropertyID], [CollectionPropertyNSideID], [PrivateBaseRelationPropertyID])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [PersistentProperty], [ExtraPersistentProperty], [UnidirectionalRelationPropertyID], [RelationPropertyID], [CollectionPropertyNSideID], [PrivateBaseRelationPropertyID]
+    FROM [dbo].[MixedDomains_Target]
   WITH CHECK OPTION
 GO
 CREATE VIEW [dbo].[TargetClassWithSameInterfaceAsPersistentMixinView] ([ID], [ClassID], [Timestamp], [PersistentPropertyRedirectedToMixin])
@@ -939,23 +939,23 @@ CREATE VIEW [dbo].[ClientView] ([ID], [ClassID], [Timestamp], [ParentClientID])
     FROM [dbo].[Client]
   WITH CHECK OPTION
 GO
+CREATE VIEW [dbo].[CompanyView] ([ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [CustomerSince], [CustomerType], [ContactPersonID], [NumberOfShops], [SupplierQuality])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [CustomerSince], [CustomerType], [ContactPersonID], [NumberOfShops], [SupplierQuality]
+    FROM [dbo].[Company]
+  WITH CHECK OPTION
+GO
 CREATE VIEW [dbo].[ComputerView] ([ID], [ClassID], [Timestamp], [SerialNumber], [EmployeeID])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [SerialNumber], [EmployeeID]
     FROM [dbo].[Computer]
   WITH CHECK OPTION
 GO
-CREATE VIEW [dbo].[CompanyView] ([ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [ContactPersonID], [NumberOfShops], [SupplierQuality], [CustomerSince], [CustomerType])
+CREATE VIEW [dbo].[CustomerView] ([ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [CustomerSince], [CustomerType])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [ContactPersonID], [NumberOfShops], [SupplierQuality], [CustomerSince], [CustomerType]
+  SELECT [ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [CustomerSince], [CustomerType]
     FROM [dbo].[Company]
-  WITH CHECK OPTION
-GO
-CREATE VIEW [dbo].[PartnerView] ([ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [ContactPersonID], [NumberOfShops], [SupplierQuality])
-  WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [ContactPersonID], [NumberOfShops], [SupplierQuality]
-    FROM [dbo].[Company]
-    WHERE [ClassID] IN ('Partner', 'Distributor', 'Supplier')
+    WHERE [ClassID] IN ('Customer', 'SpecialCustomer')
   WITH CHECK OPTION
 GO
 CREATE VIEW [dbo].[DistributorView] ([ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [ContactPersonID], [NumberOfShops])
@@ -971,17 +971,17 @@ CREATE VIEW [dbo].[EmployeeView] ([ID], [ClassID], [Timestamp], [Name], [Supervi
     FROM [dbo].[Employee]
   WITH CHECK OPTION
 GO
-CREATE VIEW [dbo].[FileSystemItemView] ([ID], [ClassID], [Timestamp], [ParentFolderID], [ParentFolderIDClassID], [ParentFolderRelation], [ParentFolderRelationClassID])
-  WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [ParentFolderID], [ParentFolderIDClassID], [ParentFolderRelation], [ParentFolderRelationClassID]
-    FROM [dbo].[FileSystemItem]
-  WITH CHECK OPTION
-GO
 CREATE VIEW [dbo].[FileView] ([ID], [ClassID], [Timestamp], [ParentFolderID], [ParentFolderIDClassID], [ParentFolderRelation], [ParentFolderRelationClassID])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [ParentFolderID], [ParentFolderIDClassID], [ParentFolderRelation], [ParentFolderRelationClassID]
     FROM [dbo].[FileSystemItem]
     WHERE [ClassID] IN ('File')
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[FileSystemItemView] ([ID], [ClassID], [Timestamp], [ParentFolderID], [ParentFolderIDClassID], [ParentFolderRelation], [ParentFolderRelationClassID])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [ParentFolderID], [ParentFolderIDClassID], [ParentFolderRelation], [ParentFolderRelationClassID]
+    FROM [dbo].[FileSystemItem]
   WITH CHECK OPTION
 GO
 CREATE VIEW [dbo].[FolderView] ([ID], [ClassID], [Timestamp], [ParentFolderID], [ParentFolderIDClassID], [ParentFolderRelation], [ParentFolderRelationClassID])
@@ -1027,6 +1027,13 @@ CREATE VIEW [dbo].[OrderTicketView] ([ID], [ClassID], [Timestamp], [FileName], [
     FROM [dbo].[OrderTicket]
   WITH CHECK OPTION
 GO
+CREATE VIEW [dbo].[PartnerView] ([ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [ContactPersonID], [NumberOfShops], [SupplierQuality])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [ContactPersonID], [NumberOfShops], [SupplierQuality]
+    FROM [dbo].[Company]
+    WHERE [ClassID] IN ('Partner', 'Distributor', 'Supplier')
+  WITH CHECK OPTION
+GO
 CREATE VIEW [dbo].[PersonView] ([ID], [ClassID], [Timestamp], [Name], [AssociatedCustomerCompanyID], [AssociatedCustomerCompanyIDClassID])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [Name], [AssociatedCustomerCompanyID], [AssociatedCustomerCompanyIDClassID]
@@ -1043,6 +1050,12 @@ CREATE VIEW [dbo].[ProductReviewView] ([ID], [ClassID], [Timestamp], [ProductID]
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [ProductID], [ReviewerID], [CreatedAt], [Comment]
     FROM [dbo].[ProductReview]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[BaseClassWithoutStorageSpecificIdentifierAttributeView] ([ID], [ClassID], [Timestamp])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp]
+    FROM [dbo].[DerivedClassWithStorageSpecificIdentifierAttribute]
   WITH CHECK OPTION
 GO
 CREATE VIEW [dbo].[ClassIDForClassHavingClassIDAttributeView] ([ID], [ClassID], [Timestamp])
@@ -1073,6 +1086,12 @@ CREATE VIEW [dbo].[ClassWithBothEndPointsOnSameClassView] ([ID], [ClassID], [Tim
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [ParentID]
     FROM [dbo].[ClassWithBothEndPointsOnSameClass]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[ClassWithDifferentPropertiesView] ([ID], [ClassID], [Timestamp], [BaseString], [BaseUnidirectionalOneToOneID], [BasePrivateUnidirectionalOneToOneID], [Int32], [String], [UnidirectionalOneToOneID], [PrivateString], [OtherString], [NewString], [DerivedPrivateString])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [BaseString], [BaseUnidirectionalOneToOneID], [BasePrivateUnidirectionalOneToOneID], [Int32], [String], [UnidirectionalOneToOneID], [PrivateString], [OtherString], [NewString], [DerivedPrivateString]
+    FROM [dbo].[ClassWithDifferentProperties]
   WITH CHECK OPTION
 GO
 CREATE VIEW [dbo].[ClassWithExtensibleEnumPropertiesView] ([ID], [ClassID], [Timestamp], [NoAttribute], [NullableFromAttribute], [NotNullable])
@@ -1111,12 +1130,6 @@ CREATE VIEW [dbo].[ClosedGenericClassWithOneSideRelationPropertiesView] ([ID], [
     FROM [dbo].[ClosedGenericClassWithOneSideRelationProperties]
   WITH CHECK OPTION
 GO
-CREATE VIEW [dbo].[ClassWithDifferentPropertiesView] ([ID], [ClassID], [Timestamp], [BaseString], [BaseUnidirectionalOneToOneID], [BasePrivateUnidirectionalOneToOneID], [Int32], [String], [UnidirectionalOneToOneID], [PrivateString], [OtherString], [NewString], [DerivedPrivateString])
-  WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [BaseString], [BaseUnidirectionalOneToOneID], [BasePrivateUnidirectionalOneToOneID], [Int32], [String], [UnidirectionalOneToOneID], [PrivateString], [OtherString], [NewString], [DerivedPrivateString]
-    FROM [dbo].[ClassWithDifferentProperties]
-  WITH CHECK OPTION
-GO
 CREATE VIEW [dbo].[DerivedClassWithDifferentPropertiesView] ([ID], [ClassID], [Timestamp], [BaseString], [BaseUnidirectionalOneToOneID], [BasePrivateUnidirectionalOneToOneID], [Int32], [String], [UnidirectionalOneToOneID], [PrivateString], [OtherString], [NewString], [DerivedPrivateString])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [BaseString], [BaseUnidirectionalOneToOneID], [BasePrivateUnidirectionalOneToOneID], [Int32], [String], [UnidirectionalOneToOneID], [PrivateString], [OtherString], [NewString], [DerivedPrivateString]
@@ -1124,23 +1137,10 @@ CREATE VIEW [dbo].[DerivedClassWithDifferentPropertiesView] ([ID], [ClassID], [T
     WHERE [ClassID] IN ('DerivedClassWithDifferentProperties')
   WITH CHECK OPTION
 GO
-CREATE VIEW [dbo].[BaseClassWithoutStorageSpecificIdentifierAttributeView] ([ID], [ClassID], [Timestamp])
-  WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp]
-    FROM [dbo].[DerivedClassWithStorageSpecificIdentifierAttribute]
-  WITH CHECK OPTION
-GO
 CREATE VIEW [dbo].[DerivedClassWithStorageSpecificIdentifierAttributeView] ([ID], [ClassID], [Timestamp])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp]
     FROM [dbo].[DerivedClassWithStorageSpecificIdentifierAttribute]
-  WITH CHECK OPTION
-GO
-CREATE VIEW [dbo].[CustomerView] ([ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [CustomerSince], [CustomerType])
-  WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [CustomerSince], [CustomerType]
-    FROM [dbo].[Company]
-    WHERE [ClassID] IN ('Customer', 'SpecialCustomer')
   WITH CHECK OPTION
 GO
 CREATE VIEW [dbo].[SpecialCustomerView] ([ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [CustomerSince], [CustomerType])

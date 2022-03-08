@@ -2,8 +2,8 @@ USE DBPrefix_SchemaGenerationTestDomain1
 -- Drop all synonyms
 -- Drop all indexes
 -- Drop all views
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CompanyView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[CompanyView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'AbstractClassView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[AbstractClassView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'AbstractWithoutConcreteClassView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[AbstractWithoutConcreteClassView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'AddressView' AND TABLE_SCHEMA = 'dbo')
@@ -14,36 +14,34 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithA
   DROP VIEW [dbo].[ClassWithAllDataTypesView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithoutPropertiesView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ClassWithoutPropertiesView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithRelationsBaseView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[ClassWithRelationsBaseView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithRelationsView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ClassWithRelationsView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CustomerView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[CustomerView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'AbstractClassView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[AbstractClassView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DerivedAbstractClassView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[DerivedAbstractClassView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DerivedDerivedConcreteClassView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[DerivedDerivedConcreteClassView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithRelationsBaseView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[ClassWithRelationsBaseView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CompanyView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[CompanyView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ConcreteClassView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ConcreteClassView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CustomerView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[CustomerView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DerivedAbstractClassView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[DerivedAbstractClassView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DerivedClassView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[DerivedClassView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DerivedDerivedConcreteClassView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[DerivedDerivedConcreteClassView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DerivedOfDerivedClassView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[DerivedOfDerivedClassView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'PartnerView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[PartnerView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'DevelopmentPartnerView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[DevelopmentPartnerView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'EmployeeView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[EmployeeView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'FirstClassView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[FirstClassView]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'MixinAddedTwiceWithDifferentNullability_LayerSupertypeView' AND TABLE_SCHEMA = 'dbo')
-  DROP VIEW [dbo].[MixinAddedTwiceWithDifferentNullability_LayerSupertypeView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'MixinAddedTwiceWithDifferentNullability_BaseClassWithDBTableView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[MixinAddedTwiceWithDifferentNullability_BaseClassWithDBTableView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'MixinAddedTwiceWithDifferentNullability_LayerSupertypeView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[MixinAddedTwiceWithDifferentNullability_LayerSupertypeView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'MixinAddedTwiceWithDifferentNullability_TargetClassBelowDBTableView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[MixinAddedTwiceWithDifferentNullability_TargetClassBelowDBTableView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'MixinAddedTwiceWithDifferentNullability_TargetClassWithDBTableView' AND TABLE_SCHEMA = 'dbo')
@@ -52,6 +50,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'OrderView'
   DROP VIEW [dbo].[OrderView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'OrderItemView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[OrderItemView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'PartnerView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[PartnerView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SecondClassView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[SecondClassView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SecondDerivedClassView' AND TABLE_SCHEMA = 'dbo')
@@ -63,12 +63,12 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ThirdClass
 -- Drop foreign keys of all tables
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_TableWithRelations_DerivedClassID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'TableWithRelations')
   ALTER TABLE [dbo].[TableWithRelations] DROP CONSTRAINT FK_TableWithRelations_DerivedClassID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Customer_AddressID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Customer')
-  ALTER TABLE [dbo].[Customer] DROP CONSTRAINT FK_Customer_AddressID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_ConcreteClass_ClassWithRelationsInDerivedOfDerivedClassID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'ConcreteClass')
   ALTER TABLE [dbo].[ConcreteClass] DROP CONSTRAINT FK_ConcreteClass_ClassWithRelationsInDerivedOfDerivedClassID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_ConcreteClass_ClassWithRelationsInSecondDerivedClassID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'ConcreteClass')
   ALTER TABLE [dbo].[ConcreteClass] DROP CONSTRAINT FK_ConcreteClass_ClassWithRelationsInSecondDerivedClassID
+IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Customer_AddressID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Customer')
+  ALTER TABLE [dbo].[Customer] DROP CONSTRAINT FK_Customer_AddressID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_DevelopmentPartner_AddressID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'DevelopmentPartner')
   ALTER TABLE [dbo].[DevelopmentPartner] DROP CONSTRAINT FK_DevelopmentPartner_AddressID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Employee_SupervisorID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Employee')
@@ -82,6 +82,8 @@ IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_ob
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_OrderItem_OrderID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'OrderItem')
   ALTER TABLE [dbo].[OrderItem] DROP CONSTRAINT FK_OrderItem_OrderID
 -- Drop all tables
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'AbstractClass' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[AbstractClass]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Address' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[Address]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Ceo' AND TABLE_SCHEMA = 'dbo')
@@ -92,12 +94,10 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWith
   DROP TABLE [dbo].[TableWithoutProperties]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithRelations' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[TableWithRelations]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer' AND TABLE_SCHEMA = 'dbo')
-  DROP TABLE [dbo].[Customer]
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'AbstractClass' AND TABLE_SCHEMA = 'dbo')
-  DROP TABLE [dbo].[AbstractClass]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ConcreteClass' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[ConcreteClass]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Customer' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[Customer]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'DevelopmentPartner' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[DevelopmentPartner]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Employee' AND TABLE_SCHEMA = 'dbo')
