@@ -677,6 +677,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     }
 
     [Test]
+    public void PersistData_NewDataContainer_CopiesOriginalValue ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<Order>();
+      var persistedDataContainer = DataContainerObjectMother.CreateNew(domainObject);
+      SetPropertyValue(persistedDataContainer, typeof(Order), "OrderNumber", 12);
+      persistedDataContainer.CommitValue(GetPropertyDefinition(typeof(Order), "OrderNumber"));
+      SetPropertyValue(persistedDataContainer, typeof(Order), "OrderNumber", 13);
+      var persistableData = new PersistableData(
+          domainObject,
+          new DomainObjectState.Builder().SetNew().Value,
+          persistedDataContainer,
+          Array.Empty<IRelationEndPoint>());
+
+      _parentTransactionContextMock.Setup(mock => mock.UnlockParentTransaction()).Returns(_unlockedParentTransactionContextMock.Object).Verifiable();
+      _parentTransactionContextMock.Setup(stub => stub.IsInvalid(domainObject.ID)).Returns(true);
+      _parentTransactionContextMock.Setup(stub => stub.GetDataContainerWithoutLoading(domainObject.ID)).Returns((DataContainer)null);
+
+      _unlockedParentTransactionContextMock.Setup(mock => mock.MarkNotInvalid(domainObject.ID));
+      _unlockedParentTransactionContextMock.Setup(mock => mock.RegisterDataContainer(It.IsAny<DataContainer>()))
+          .Callback(
+              (DataContainer dataContainer) =>
+                  CheckDataContainer(
+                      dataContainer,
+                      domainObject,
+                      null,
+                      state => state.IsNew,
+                      _orderNumberPropertyDefinition,
+                      expectedCurrentPropertyValue: 13,
+                      expectedOriginalPropertyValue: 12,
+                      expectedHasPropertyValueBeenTouched: true)
+              )
+          .Verifiable();
+      _unlockedParentTransactionContextMock.Setup(mock => mock.Dispose());
+
+      _persistenceStrategy.PersistData(new[] { persistableData }.AsOneTime());
+
+      _unlockedParentTransactionContextMock.Verify();
+    }
+
+    [Test]
     public void PersistData_DeletedDataContainer_WithEndPoint_NewInParent ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Order>();

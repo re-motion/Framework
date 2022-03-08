@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// <summary>
   /// Represents a <see cref="NullObjectEndPoint"/> for a virtual relation property.
   /// </summary>
-  public class NullVirtualObjectEndPoint : NullObjectEndPoint, IVirtualEndPoint
+  public class NullVirtualObjectEndPoint : NullObjectEndPoint, IVirtualObjectEndPoint
   {
     public NullVirtualObjectEndPoint (ClientTransaction clientTransaction, IRelationEndPointDefinition definition)
         : base(clientTransaction, definition)
@@ -65,6 +65,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     }
 
     public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
+    {
+      // Ignore
+    }
+
+    public DomainObject? GetData ()
+    {
+      return null;
+    }
+
+    public DomainObject? GetOriginalData ()
+    {
+      throw new InvalidOperationException("It is not possible to call GetOriginalData on a NullVirtualObjectEndPoint.");
+    }
+
+    public void MarkDataComplete (DomainObject? item)
     {
       // Ignore
     }

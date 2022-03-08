@@ -257,10 +257,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
           "a new data container cannot be known to the parent");
       Assertion.IsFalse(dataContainer.State.IsDiscarded);
 
-      var parentDataContainer = DataContainer.CreateNew(dataContainer.ID);
+      var parentDataContainer = DataContainer.CreateNew(dataContainer.ID, pd=> dataContainer.GetValueWithoutEvents(pd, ValueAccess.Original));
       parentDataContainer.SetDomainObject(dataContainer.DomainObject);
 
-      parentDataContainer.SetPropertyDataFromSubTransaction(dataContainer);
+      parentDataContainer.SetDataFromSubTransaction(dataContainer);
 
       Assertion.IsFalse(dataContainer.HasBeenMarkedChanged);
       Assertion.IsNull(dataContainer.Timestamp);
@@ -280,10 +280,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       Assertion.IsTrue(parentDataContainer.DomainObject == dataContainer.DomainObject, "invariant");
 
       parentDataContainer.SetTimestamp(dataContainer.Timestamp);
-      parentDataContainer.SetPropertyDataFromSubTransaction(dataContainer);
-
-      if (dataContainer.HasBeenMarkedChanged && (parentDataContainer.State.IsUnchanged || parentDataContainer.State.IsChanged))
-        parentDataContainer.MarkAsChanged();
+      parentDataContainer.SetDataFromSubTransaction(dataContainer);
     }
 
     private void PersistDeletedDataContainer (DataContainer dataContainer, IUnlockedParentTransactionContext unlockedParentTransactionContext)
