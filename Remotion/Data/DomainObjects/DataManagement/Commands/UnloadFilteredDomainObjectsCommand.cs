@@ -91,11 +91,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
       foreach (var relationEndPoint in _realObjectEndPointsForUnloading)
       {
+        RelationEndPointMap.RemoveEndPoint(relationEndPoint.ID);
         RelationEndPointRegistrationAgent.UnregisterEndPoint(relationEndPoint, RelationEndPointMap);
       }
 
       foreach (var relationEndPoint in _virtualEndPointsForUnloading)
       {
+        RelationEndPointMap.RemoveEndPoint(relationEndPoint.ID);
         relationEndPoint.MarkDataIncomplete();
         Assertion.IsTrue(relationEndPoint.CanBeCollected, "VirtualEndPoint '{0}' cannot be collected.", relationEndPoint.ID);
         RelationEndPointRegistrationAgent.UnregisterEndPoint(relationEndPoint, RelationEndPointMap);
@@ -124,11 +126,33 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
     }
 
     private (IReadOnlyCollection<IRealObjectEndPoint> RealObjectEndPoints, IReadOnlyCollection<IVirtualEndPoint> VirtualEndPoints) GetRelationEndPointsForUnloading (
-        IReadOnlyCollection<DataContainer> dataContainersForUnloading)
+        IReadOnlyCollection<DataContainer> dataContainers)
     {
+      var realObjectEndPoints = new HashSet<IRealObjectEndPoint>();
+      var virtualObjectEndPoints = new HashSet<IVirtualEndPoint>();
+
+      var endPoints = dataContainers
+          .SelectMany(dc => dc.AssociatedRelationEndPointIDs.Select(endPointID => RelationEndPointManager.GetRelationEndPointWithoutLoading(endPointID)))
+          .Where(ep => ep != null)
+          .Select(ep => ep!)
+          .Where(ep => !ep.IsNull);
+
+      foreach (var endPoint in endPoints)
+      {
+        if (endPoint is IRealObjectEndPoint realObjectEndPoint)
+        {
+          realObjectEndPoints.Add(realObjectEndPoint);
+        }
+        else
+        {
+          var virtualEndPoint = (IVirtualEndPoint)endPoint;
+          virtualObjectEndPoints.Add(virtualEndPoint);
+        }
+      }
+
       //          if (virtualEndPoint.CanBeCollected)
 
-      throw new NotImplementedException();
+      return (RealObjectEndPoints: realObjectEndPoints, VirtualEndPoints: virtualObjectEndPoints);
     }
   }
 }
