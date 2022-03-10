@@ -24,6 +24,7 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocAu
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -89,6 +90,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static bool IsVisible (
           [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
+      // TODO RM-8402: IsVisible() should be enhanced to wait until the popup is really visible
+
       ArgumentUtility.CheckNotNull("fluentInformationPopup", fluentInformationPopup);
 
       return JavaScriptExecutor.ExecuteStatement<bool>(
@@ -113,7 +116,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
       do
       {
         if (fluentInformationPopup.IsVisible())
+        {
+          // TODO RM-8402: .IsVisible() should be enhanced to wait until the popup is really visible
+          if (fluentInformationPopup.Target.AutoComplete.Scope.Browser.IsFirefox())
+            Thread.Sleep(250);
+
           return;
+        }
 
         if (watch.ElapsedMilliseconds >= timeout)
           throw new TimeoutException("Could not wait for the timeout in the specified amount of time.");
