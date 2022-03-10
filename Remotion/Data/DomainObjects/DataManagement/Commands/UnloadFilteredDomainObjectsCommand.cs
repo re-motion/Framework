@@ -16,12 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
+using Remotion.Data.DomainObjects.Mapping;
+using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands
@@ -38,6 +38,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
     private IReadOnlyCollection<DataContainer> _dataContainersForUnloading = Array.Empty<DataContainer>();
     private IReadOnlyCollection<IVirtualEndPoint> _virtualEndPointsForUnloading = Array.Empty<IVirtualEndPoint>();
     private IReadOnlyCollection<IRealObjectEndPoint> _realObjectEndPointsForUnloading = Array.Empty<IRealObjectEndPoint>();
+    private List<Exception> _exceptions = new List<Exception>();
 
     public UnloadFilteredDomainObjectsCommand (
         IRelationEndPointManager relationEndPointManager,
@@ -67,7 +68,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public IEnumerable<Exception> GetAllExceptions ()
     {
-      return Enumerable.Empty<Exception>();
+      return _exceptions.AsReadOnly();
     }
 
     public void Begin ()
@@ -78,14 +79,25 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
           .AsReadOnly();
 
       var relationEndPoints = GetRelationEndPointsForUnloading(_dataContainersForUnloading);
-      _realObjectEndPointsForUnloading = relationEndPoints.RealObjectEndPoints;
-      _virtualEndPointsForUnloading = relationEndPoints.VirtualEndPoints;
-      if (_dataContainersForUnloading.Count > 0)
-        TransactionEventSink.RaiseObjectsUnloadingEvent(_dataContainersForUnloading.Select(dc => dc.DomainObject).ToList());
+      if (relationEndPoints.RealObjectEndPointsNotPartOfUnloadSet.Any() || relationEndPoints.VirtualEndPointsNotPartOfUnloadSet.Any())
+      {
+        _exceptions.Add(new InvalidOperationException("Transitive closure violated"));
+        throw _exceptions.First();
+      }
+      else
+      {
+        _realObjectEndPointsForUnloading = relationEndPoints.RealObjectEndPoints;
+        _virtualEndPointsForUnloading = relationEndPoints.VirtualEndPoints;
+        if (_dataContainersForUnloading.Count > 0)
+          TransactionEventSink.RaiseObjectsUnloadingEvent(_dataContainersForUnloading.Select(dc => dc.DomainObject).ToList());
+      }
     }
 
     public void Perform ()
     {
+      if (_exceptions.Count > 0)
+        throw _exceptions.First();
+
       // Unregistering a real-object-endpoint also unregisters the associated virtual endpoint.
       // If is therefor best to first handle all real-object-endpoints in case both sides belong to the same object.
 
@@ -116,8 +128,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public void End ()
     {
+      if (_exceptions.Count > 0)
+        throw _exceptions.First();
+
       if (_dataContainersForUnloading.Count > 0)
-        TransactionEventSink.RaiseObjectsUnloadingEvent(_dataContainersForUnloading.Select(dc=>dc.DomainObject).ToList());
+        TransactionEventSink.RaiseObjectsUnloadingEvent(_dataContainersForUnloading.Select(dc => dc.DomainObject).ToList());
     }
 
     public ExpandedCommand ExpandToAllRelatedObjects ()
@@ -125,34 +140,119 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       return new ExpandedCommand(this);
     }
 
-    private (IReadOnlyCollection<IRealObjectEndPoint> RealObjectEndPoints, IReadOnlyCollection<IVirtualEndPoint> VirtualEndPoints) GetRelationEndPointsForUnloading (
-        IReadOnlyCollection<DataContainer> dataContainers)
+    private
+        (HashSet<IRealObjectEndPoint> RealObjectEndPoints,
+        HashSet<IVirtualEndPoint> VirtualEndPoints,
+        HashSet<IRealObjectEndPoint> RealObjectEndPointsNotPartOfUnloadSet,
+        HashSet<IVirtualEndPoint> VirtualEndPointsNotPartOfUnloadSet)
+        GetRelationEndPointsForUnloading (IReadOnlyCollection<DataContainer> dataContainers)
     {
       var realObjectEndPoints = new HashSet<IRealObjectEndPoint>();
       var virtualObjectEndPoints = new HashSet<IVirtualEndPoint>();
+      var realObjectEndPointsNotPartOfUnloadSet = new HashSet<IRealObjectEndPoint>();
+      var virtualEndPointsNotPartOfUnloadSet = new HashSet<IVirtualEndPoint>();
+      var objectIDs = dataContainers.ToDictionary(dc => dc.ID);
 
-      var endPoints = dataContainers
-          .SelectMany(dc => dc.AssociatedRelationEndPointIDs.Select(endPointID => RelationEndPointManager.GetRelationEndPointWithoutLoading(endPointID)))
-          .Where(ep => ep != null)
-          .Select(ep => ep!)
-          .Where(ep => !ep.IsNull);
+      var endPoints = RelationEndPointManager.RelationEndPoints
+          .ApplySideEffect(ep => Assertion.IsFalse(ep.IsNull, "RelationEndPoint '{0}' is a null end-point.", ep.ID))
+          .Where(ep => ep.ObjectID != null);
 
       foreach (var endPoint in endPoints)
       {
+        Assertion.DebugAssert(endPoint.Definition.IsAnonymous == false, "endPoint.Definition.IsAnonymous == false");
+        Assertion.DebugIsNotNull(endPoint.ObjectID, "endPoint.ObjectID != null");
+        var isPartOfUnloadedSet = objectIDs.ContainsKey(endPoint.ObjectID);
+
         if (endPoint is IRealObjectEndPoint realObjectEndPoint)
         {
-          realObjectEndPoints.Add(realObjectEndPoint);
+          if (isPartOfUnloadedSet)
+          {
+            if (realObjectEndPoint.IsNull)
+            {
+              realObjectEndPoints.Add(realObjectEndPoint);
+            }
+            else if ((realObjectEndPoint.OppositeObjectID == null || objectIDs.ContainsKey(realObjectEndPoint.OppositeObjectID))
+                     && (realObjectEndPoint.OriginalOppositeObjectID == null || objectIDs.ContainsKey(realObjectEndPoint.OriginalOppositeObjectID)))
+            {
+              realObjectEndPoints.Add(realObjectEndPoint);
+            }
+            else
+            {
+              realObjectEndPointsNotPartOfUnloadSet.Add(realObjectEndPoint);
+              var virtualEndPointID = realObjectEndPoint.GetOppositeRelationEndPointID();
+              if (virtualEndPointID != null)
+              {
+                var virtualEndPoint = (IVirtualEndPoint?)RelationEndPointManager.GetRelationEndPointWithoutLoading(virtualEndPointID);
+                if (virtualEndPoint != null)
+                  virtualEndPointsNotPartOfUnloadSet.Add(virtualEndPoint);
+              }
+            }
+          }
         }
         else
         {
           var virtualEndPoint = (IVirtualEndPoint)endPoint;
-          virtualObjectEndPoints.Add(virtualEndPoint);
+          if (isPartOfUnloadedSet)
+          {
+            if (virtualEndPoint.IsNull)
+            {
+              virtualObjectEndPoints.Add(virtualEndPoint);
+            }
+
+            if (virtualEndPoint.CanBeCollected)
+            {
+              virtualObjectEndPoints.Add(virtualEndPoint);
+            }
+            else if (virtualEndPoint.Definition.Cardinality == CardinalityType.One)
+            {
+              var virtualObjectEndPoint = (IVirtualObjectEndPoint)virtualEndPoint;
+              if ((virtualObjectEndPoint.OppositeObjectID == null || objectIDs.ContainsKey(virtualObjectEndPoint.OppositeObjectID))
+                  && (virtualObjectEndPoint.OriginalOppositeObjectID == null || objectIDs.ContainsKey(virtualObjectEndPoint.OriginalOppositeObjectID)))
+              {
+                virtualObjectEndPoints.Add(virtualEndPoint);
+              }
+              else
+              {
+                virtualEndPointsNotPartOfUnloadSet.Add(virtualEndPoint);
+                var realObjectEndPointID = virtualObjectEndPoint.GetOppositeRelationEndPointID();
+                if (realObjectEndPointID != null)
+                {
+                  var oppositeRealObjectEndPoint = (IRealObjectEndPoint?)RelationEndPointManager.GetRelationEndPointWithoutLoading(realObjectEndPointID);
+                  if (oppositeRealObjectEndPoint != null)
+                    realObjectEndPointsNotPartOfUnloadSet.Add(oppositeRealObjectEndPoint);
+                }
+              }
+            }
+            else
+            {
+              var collectionEndPoint = (ICollectionEndPoint<ICollectionEndPointData>)virtualEndPoint;
+              if (collectionEndPoint.GetData().All(obj => objectIDs.ContainsKey(obj.ID))
+                  && collectionEndPoint.GetOriginalData().All(obj => objectIDs.ContainsKey(obj.ID)))
+              {
+                virtualObjectEndPoints.Add(virtualEndPoint);
+              }
+              else
+              {
+                virtualEndPointsNotPartOfUnloadSet.Add(virtualEndPoint);
+                var realObjectEndPointIDs = collectionEndPoint.GetOppositeRelationEndPointIDs().Where(epID => epID.ObjectID != null && !objectIDs.ContainsKey(epID.ObjectID));
+                foreach (var realObjectEndPointID in realObjectEndPointIDs)
+                {
+                  var oppositeRealObjectEndPoint = (IRealObjectEndPoint?)RelationEndPointManager.GetRelationEndPointWithoutLoading(realObjectEndPointID);
+                  if (oppositeRealObjectEndPoint != null)
+                    realObjectEndPointsNotPartOfUnloadSet.Add(oppositeRealObjectEndPoint);
+                }
+              }
+            }
+          }
         }
       }
 
-      //          if (virtualEndPoint.CanBeCollected)
-
-      return (RealObjectEndPoints: realObjectEndPoints, VirtualEndPoints: virtualObjectEndPoints);
+      return (
+          RealObjectEndPoints: realObjectEndPoints,
+          VirtualEndPoints: virtualObjectEndPoints,
+          RealObjectEndPointsNotPartOfUnloadSet: realObjectEndPointsNotPartOfUnloadSet,
+          VirtualEndPointsNotPartOfUnloadSet: virtualEndPointsNotPartOfUnloadSet
+          );
     }
   }
 }
