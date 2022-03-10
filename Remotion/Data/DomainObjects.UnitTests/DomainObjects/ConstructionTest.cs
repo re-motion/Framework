@@ -25,6 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
   public class ConstructionTest : ClientTransactionBaseTest
   {
     [DBTable]
+    [IncludeInMappingTestDomain]
     public class DomainObjectWithSpecialConstructor : DomainObject
     {
       public string S;

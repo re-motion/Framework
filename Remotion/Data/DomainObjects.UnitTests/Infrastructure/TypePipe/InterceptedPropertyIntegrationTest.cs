@@ -434,6 +434,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
     [DBTable]
     [Instantiable]
+    [IncludeInMappingTestDomain]
     public abstract class ClassWithAbstractRelatedCollectionSetter : DomainObject
     {
       public static ClassWithAbstractRelatedCollectionSetter NewObject ()
@@ -453,6 +454,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     }
 
     [DBTable]
+    [IncludeInMappingTestDomain]
     public class ClassWithExplicitInterfaceProperty : DomainObject, IPropertyInterface
     {
       public static ClassWithExplicitInterfaceProperty NewObject ()
@@ -472,6 +474,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     }
 
     [DBTable]
+    [IncludeInMappingTestDomain]
     public class ClassWithWrongConstructor : DomainObject
     {
       public static ClassWithWrongConstructor NewObject ()
@@ -498,6 +501,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
     [DBTable]
     [Instantiable]
+    [IncludeInMappingTestDomain]
     public abstract class NonInstantiableAbstractClass : DomainObject
     {
       public static NonInstantiableAbstractClass NewObject ()
@@ -514,6 +518,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
     [Instantiable]
     [DBTable]
+    [IncludeInMappingTestDomain]
     public abstract class NonInstantiableAbstractClassWithProps : DomainObject
     {
       public static NonInstantiableAbstractClassWithProps NewObject ()
@@ -531,6 +536,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
     [DBTable]
     [Uses(typeof(MixinWithAutoProperties))]
+    [IncludeInMappingTestDomain]
     public class NonInstantiableClassWithMixinWithPersistentAutoProperties : DomainObject
     {
       public static NonInstantiableClassWithMixinWithPersistentAutoProperties NewObject ()
@@ -545,6 +551,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     }
 
     [DBTable]
+    [IncludeInMappingTestDomain]
     public sealed class NonInstantiableSealedClass : DomainObject
     {
       public static NonInstantiableSealedClass NewObject ()
@@ -558,6 +565,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     }
 
     [DBTable]
+    [IncludeInMappingTestDomain]
     public class Throws : DomainObject
     {
       public static Throws NewObject ()
