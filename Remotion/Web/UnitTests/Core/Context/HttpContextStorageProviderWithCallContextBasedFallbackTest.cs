@@ -24,10 +24,11 @@ using Remotion.Web.Context;
 
 namespace Remotion.Web.UnitTests.Core.Context
 {
+#if NETFRAMEWORK
   [TestFixture]
-  public class HttpContextStorageProviderTest
+  public class HttpContextStorageProviderWithCallContextBasedFallbackTest
   {
-    private HttpContextStorageProvider _provider;
+    private HttpContextStorageProviderWithCallContextBasedFallback _provider;
     private HttpContext _testContext;
 
     [SetUp]
@@ -35,7 +36,13 @@ namespace Remotion.Web.UnitTests.Core.Context
     {
       _testContext = HttpContextHelper.CreateHttpContext("x", "y", "z");
       HttpContext.Current = _testContext;
-      _provider = new HttpContextStorageProvider();
+      _provider = new HttpContextStorageProviderWithCallContextBasedFallback();
+    }
+
+    [TearDown]
+    public void TearDown ()
+    {
+      HttpContext.Current = null;
     }
 
     [Test]
@@ -79,18 +86,11 @@ namespace Remotion.Web.UnitTests.Core.Context
     }
 
     [Test]
-    public void FallbackToAsyncLocal_IfNoCurrentHttpContext ()
+    public void FallbackToCallContext_IfNoCurrentHttpContext ()
     {
       HttpContext.Current = null;
 
-#if NETFRAMEWORK
       var fallbackProvider = (CallContextStorageProvider)PrivateInvoke.GetNonPublicField(_provider, "_fallbackProvider");
-#else
-// Ignore the obsolete warnings for AsyncLocalStorageProvider
-#pragma warning disable 618
-      var fallbackProvider = (AsyncLocalStorageProvider)PrivateInvoke.GetNonPublicField(_provider, "_fallbackProvider");
-#pragma warning restore 618
-#endif
 
       _provider.SetData("Foo", 123);
       Assert.That(_provider.GetData("Foo"), Is.EqualTo(123));
@@ -100,4 +100,5 @@ namespace Remotion.Web.UnitTests.Core.Context
       Assert.That(fallbackProvider.GetData("Foo"), Is.Null);
     }
   }
+#endif
 }
