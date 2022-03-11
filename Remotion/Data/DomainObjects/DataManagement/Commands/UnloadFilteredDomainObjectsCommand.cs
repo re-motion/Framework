@@ -198,8 +198,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
             {
               virtualObjectEndPoints.Add(virtualEndPoint);
             }
-
-            if (virtualEndPoint.CanBeCollected)
+            else if (virtualEndPoint.CanBeCollected)
             {
               virtualObjectEndPoints.Add(virtualEndPoint);
             }
