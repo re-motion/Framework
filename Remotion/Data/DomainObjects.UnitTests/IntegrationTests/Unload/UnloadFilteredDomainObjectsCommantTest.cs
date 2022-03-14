@@ -17,15 +17,9 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Data.DomainObjects.DataManagement.Commands;
-using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DomainImplementation;
-using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 {
@@ -87,8 +81,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
 
       Assert.That(order.State.IsNotLoadedYet, Is.True);
+      Assert.That(order.State.IsRelationChanged, Is.False);
       Assert.That(orderTicket1.State.IsNotLoadedYet, Is.True);
       Assert.That(orderTicket2.State.IsInvalid, Is.True);
+      Assert.That(orderTicket1.State.IsRelationChanged, Is.False);
+      Assert.That(orderTicket2.State.IsRelationChanged, Is.False);
     }
 
     [Test]
@@ -131,7 +128,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       Assert.That(order.State.IsNotLoadedYet, Is.True);
       Assert.That(order.OrderItems.IsDataComplete, Is.False);
+      Assert.That(order.State.IsRelationChanged, Is.False);
       Assert.That(orderItem.State.IsNotLoadedYet, Is.True);
+      Assert.That(orderItem.State.IsRelationChanged, Is.False);
     }
 
     [Test]
@@ -174,7 +173,53 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       Assert.That(product.State.IsNotLoadedYet, Is.True);
       Assert.That(product.Reviews.IsDataComplete, Is.False);
+      Assert.That(product.State.IsRelationChanged, Is.False);
       Assert.That(productReview.State.IsNotLoadedYet, Is.True);
+      Assert.That(productReview.State.IsRelationChanged, Is.False);
+    }
+
+    [Test]
+    public void UnloadFiltered_WithAllObjects_WithAnonymousRelation_WithoutChanges ()
+    {
+      var location = (Location)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Location1, false);
+
+      var client = location.Client;
+      client.EnsureDataAvailable();
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
+
+      UnloadFiltered(obj => true);
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+
+      Assert.That(location.State.IsNotLoadedYet, Is.True);
+      Assert.That(client.State.IsNotLoadedYet, Is.True);
+    }
+
+    [Test]
+    public void UnloadFiltered_WithAllObjects_WithAnonymousRelation_WithChanges ()
+    {
+      var location = (Location)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Location1, false);
+
+      var client = location.Client;
+      client.EnsureDataAvailable();
+      location.Client = null;
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
+
+      UnloadFiltered(obj => true);
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+
+      Assert.That(location.State.IsNotLoadedYet, Is.True);
+      Assert.That(location.State.IsRelationChanged, Is.False);
+      Assert.That(client.State.IsNotLoadedYet, Is.True);
+      Assert.That(client.State.IsRelationChanged, Is.False);
+
     }
 
 
