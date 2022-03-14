@@ -219,7 +219,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Assert.That(location.State.IsRelationChanged, Is.False);
       Assert.That(client.State.IsNotLoadedYet, Is.True);
       Assert.That(client.State.IsRelationChanged, Is.False);
+    }
 
+    [Test]
+    public void UnloadFiltered_WithSomeObjects_WithAnonymousRelation_WithChanges_IncludeOnlyForeignKeySide ()
+    {
+      var location = (Location)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Location1, false);
+
+      var client = location.Client;
+      client.EnsureDataAvailable();
+      location.Client = null;
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
+      var locationEndPoints = TestableClientTransaction.DataManager.RelationEndPoints.Where(ep => ep.Definition.ClassDefinition.ClassType == typeof(Location)).ToArray();
+
+      UnloadFiltered(obj => obj == location);
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers.Select(dc => dc.DomainObject), Has.No.AnyOf(location));
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints.Select(ep => ep.Definition), Has.No.AnyOf(locationEndPoints));
+
+      Assert.That(location.State.IsNotLoadedYet, Is.True);
+      Assert.That(location.State.IsRelationChanged, Is.False);
+      Assert.That(client.State.IsUnchanged, Is.True);
+      Assert.That(client.State.IsRelationChanged, Is.False);
     }
 
 

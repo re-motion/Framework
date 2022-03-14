@@ -73,7 +73,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       var relationEndPoints = GetRelationEndPointsForUnloading(_dataContainersForUnloading);
       if (relationEndPoints.RealObjectEndPointsNotPartOfUnloadSet.Any() || relationEndPoints.VirtualEndPointsNotPartOfUnloadSet.Any())
       {
-        _exceptions.Add(new InvalidOperationException("Transitive closure violated"));
+        var problematicEndPoints = relationEndPoints.RealObjectEndPointsNotPartOfUnloadSet.Select(ep => ep.ID)
+            .Concat(relationEndPoints.VirtualEndPointsNotPartOfUnloadSet.Select(ep => ep.ID));
+        _exceptions.Add(new InvalidOperationException("Transitive closure violated:\r\n" + string.Join(",\r\n", problematicEndPoints)));
         throw _exceptions.First();
       }
       else
@@ -161,16 +163,29 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
         {
           if (isPartOfUnloadedSet)
           {
+            var virtualEndPointDefinition = realObjectEndPoint.ID.Definition.RelationDefinition.GetOppositeEndPointDefinition(realObjectEndPoint.ID.Definition);
+            Assertion.IsNotNull(virtualEndPointDefinition, "Inconsistent relation definition for endpoint '{0}'.", realObjectEndPoint.ID.Definition);
+
             if (realObjectEndPoint.IsNull)
             {
               realObjectEndPoints.Add(realObjectEndPoint);
             }
-            else if (IsPartOfUnloadedSet(realObjectEndPoint.OppositeObjectID) && IsPartOfUnloadedSet(realObjectEndPoint.OriginalOppositeObjectID))
+            else if (virtualEndPointDefinition.IsAnonymous)
             {
               realObjectEndPoints.Add(realObjectEndPoint);
+            }
+            else
+            {
               var virtualEndPointID = realObjectEndPoint.GetOppositeRelationEndPointID();
-              if (virtualEndPointID != null)
+              Assertion.IsNotNull(
+                  virtualEndPointID,
+                  "GetOppositeRelationEndPointID() for real endpoint '{0}' evaluated and returned null but virtual endpoint is not anonymous.",
+                  realObjectEndPoint.ID);
+
+              if (IsPartOfUnloadedSet(realObjectEndPoint.OppositeObjectID) && IsPartOfUnloadedSet(realObjectEndPoint.OriginalOppositeObjectID))
               {
+                realObjectEndPoints.Add(realObjectEndPoint);
+
                 var virtualEndPoint = (IVirtualEndPoint?)RelationEndPointMap[virtualEndPointID];
                 if (virtualEndPoint != null)
                 {
@@ -180,13 +195,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
                     virtualObjectEndPoints.Add(virtualEndPoint);
                 }
               }
-            }
-            else
-            {
-              realObjectEndPointsNotPartOfUnloadSet.Add(realObjectEndPoint);
-              var virtualEndPointID = realObjectEndPoint.GetOppositeRelationEndPointID();
-              if (virtualEndPointID != null)
+              else
               {
+                realObjectEndPointsNotPartOfUnloadSet.Add(realObjectEndPoint);
                 var virtualEndPoint = (IVirtualEndPoint?)RelationEndPointMap[virtualEndPointID];
                 if (virtualEndPoint != null)
                 {
@@ -244,7 +255,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
               else
               {
                 virtualEndPointsNotPartOfUnloadSet.Add(virtualEndPoint);
-                var realObjectEndPointIDs = collectionEndPoint.GetOppositeRelationEndPointIDs().Where(epID =>!IsPartOfUnloadedSet(epID.ObjectID));
+                var realObjectEndPointIDs = collectionEndPoint.GetOppositeRelationEndPointIDs().Where(epID => !IsPartOfUnloadedSet(epID.ObjectID));
                 foreach (var realObjectEndPointID in realObjectEndPointIDs)
                 {
                   var oppositeRealObjectEndPoint = (IRealObjectEndPoint?)RelationEndPointMap[realObjectEndPointID];
