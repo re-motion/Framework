@@ -65,12 +65,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     [Test]
     public void UnloadFiltered_WithAllObjects_WithOneToOneRelation_WithChanges ()
     {
-      var order = (Order)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Order1, false);
-      order.OrderTicket.EnsureDataAvailable();
+      var order1 = (Order)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Order1, false);
+      var order2 = (Order)LifetimeService.NewObject(TestableClientTransaction,typeof(Order), ParamList.Empty);
+      order1.OrderTicket.EnsureDataAvailable();
 
-      var orderTicket1 = order.OrderTicket;
-      var orderTicket2 = (OrderTicket)LifetimeService.NewObject(TestableClientTransaction, typeof(OrderTicket), ParamList.Empty);
-      orderTicket2.Order = order;
+      var orderTicket = order1.OrderTicket;
+      orderTicket.Order = order2;
 
       Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
       Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
@@ -80,12 +80,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
       Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
 
-      Assert.That(order.State.IsNotLoadedYet, Is.True);
-      Assert.That(order.State.IsRelationChanged, Is.False);
-      Assert.That(orderTicket1.State.IsNotLoadedYet, Is.True);
-      Assert.That(orderTicket2.State.IsInvalid, Is.True);
-      Assert.That(orderTicket1.State.IsRelationChanged, Is.False);
-      Assert.That(orderTicket2.State.IsRelationChanged, Is.False);
+      Assert.That(order1.State.IsNotLoadedYet, Is.True);
+      Assert.That(order1.State.IsRelationChanged, Is.False);
+      Assert.That(order2.State.IsInvalid, Is.True);
+      Assert.That(order2.State.IsRelationChanged, Is.False);
+      Assert.That(orderTicket.State.IsNotLoadedYet, Is.True);
+      Assert.That(orderTicket.State.IsRelationChanged, Is.False);
     }
 
     [Test]
