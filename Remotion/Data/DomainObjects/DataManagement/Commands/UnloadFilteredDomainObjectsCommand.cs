@@ -75,7 +75,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       {
         var problematicEndPoints = relationEndPoints.RealObjectEndPointsNotPartOfUnloadSet.Select(ep => ep.ID)
             .Concat(relationEndPoints.VirtualEndPointsNotPartOfUnloadSet.Select(ep => ep.ID));
-        _exceptions.Add(new InvalidOperationException("Transitive closure violated:\r\n" + string.Join(",\r\n", problematicEndPoints)));
+        _exceptions.Add(
+            new InvalidOperationException(
+                "Cannot unload the following relation endpoints because the associated domain objects have not been included in the data set.\r\n"
+                + string.Join(",\r\n", problematicEndPoints)));
         throw _exceptions.First();
       }
       else
