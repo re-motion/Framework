@@ -230,6 +230,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       client.EnsureDataAvailable();
       location.Client = null;
 
+      Assert.That(location.State.IsChanged, Is.True);
+      Assert.That(location.State.IsRelationChanged, Is.True);
+      Assert.That(client.State.IsUnchanged, Is.True);
+      Assert.That(client.State.IsRelationChanged, Is.False);
+
       Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
       Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
       var locationEndPoints = TestableClientTransaction.DataManager.RelationEndPoints.Where(ep => ep.Definition.ClassDefinition.ClassType == typeof(Location)).ToArray();
@@ -245,6 +250,47 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Assert.That(location.State.IsRelationChanged, Is.False);
       Assert.That(client.State.IsUnchanged, Is.True);
       Assert.That(client.State.IsRelationChanged, Is.False);
+
+      location.EnsureDataAvailable();
+      Assert.That(location.Client, Is.SameAs(client));
+    }
+
+    [Test]
+    public void UnloadFiltered_WithSomeObjects_WithAnonymousRelation_WithChanges_IncludeOnlyAnonymousSide ()
+    {
+      var location = (Location)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Location1, false);
+
+      var client = location.Client;
+      client.EnsureDataAvailable();
+      location.Client = null;
+
+      Assert.That(location.State.IsChanged, Is.True);
+      Assert.That(location.State.IsDataChanged, Is.True);
+      Assert.That(location.State.IsRelationChanged, Is.True);
+      Assert.That(client.State.IsUnchanged, Is.True);
+      Assert.That(client.State.IsRelationChanged, Is.False);
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
+      var clientEndPoints = TestableClientTransaction.DataManager.RelationEndPoints.Where(ep => ep.Definition.ClassDefinition.ClassType == typeof(Client)).ToArray();
+
+      UnloadFiltered(obj => obj == client);
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers.Select(dc => dc.DomainObject), Has.No.AnyOf(client));
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints.Select(ep => ep.Definition), Has.No.AnyOf(clientEndPoints));
+
+      Assert.That(location.State.IsChanged, Is.True);
+      Assert.That(location.State.IsDataChanged, Is.True);
+      Assert.That(location.State.IsRelationChanged, Is.True);
+      Assert.That(client.State.IsNotLoadedYet, Is.True);
+      Assert.That(client.State.IsRelationChanged, Is.False);
+
+      var client2 = (Client)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Client2, false);
+      Assert.That(client2.ID, Is.Not.EqualTo(client.ID));
+      location.Client = client2;
+      Assert.That(location.Client, Is.EqualTo(client2));
     }
 
 
