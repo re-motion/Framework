@@ -745,6 +745,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Ignore("TODO RM-8240: enable after hard cast has been removed")]
+    public void CreateUnloadFilteredDomainObjectsCommand ()
+    {
+      Predicate<DomainObject> domainObjectFilter = obj => true;
+      var command = _dataManagerWithMocks.CreateUnloadFilteredDomainObjectsCommand(domainObjectFilter);
+
+      Assert.That(command, Is.TypeOf<UnloadFilteredDomainObjectsCommand>());
+      var unloadFilteredDomainObjectsCommand = (UnloadFilteredDomainObjectsCommand)command;
+      Assert.That(unloadFilteredDomainObjectsCommand.DataContainerMap, Is.SameAs(DataManagerTestHelper.GetDataContainerMap(_dataManagerWithMocks)));
+      Assert.That(unloadFilteredDomainObjectsCommand.RelationEndPointMap, Is.SameAs(DataManagerTestHelper.GetRelationEndPointManager(_dataManagerWithMocks)));
+      Assert.That(unloadFilteredDomainObjectsCommand.InvalidDomainObjectManager, Is.SameAs(DataManagerTestHelper.GetInvalidDomainObjectManager(_dataManagerWithMocks)));
+      Assert.That(unloadFilteredDomainObjectsCommand.TransactionEventSink, Is.SameAs(_transactionEventSinkStub.Object));
+      Assert.That(unloadFilteredDomainObjectsCommand.DomainObjectFilter, Is.SameAs(domainObjectFilter));
+    }
+
+    [Test]
     public void GetDataContainerWithoutLoading_NotLoaded ()
     {
       var result = _dataManagerWithMocks.GetDataContainerWithoutLoading(DomainObjectIDs.Order1);

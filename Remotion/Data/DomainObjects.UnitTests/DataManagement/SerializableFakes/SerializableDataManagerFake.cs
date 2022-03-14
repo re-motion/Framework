@@ -139,5 +139,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
     {
       throw new NotImplementedException();
     }
+
+    public IDataManagementCommand CreateUnloadFilteredDomainObjectsCommand (Predicate<DomainObject> domainObjectFilter)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

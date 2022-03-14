@@ -180,24 +180,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     private void UnloadFiltered (Predicate<DomainObject> domainObjectFilter)
     {
-      var unloadCommand = CreateUnloadCommand(domainObjectFilter);
-      unloadCommand.Begin();
-      unloadCommand.Perform();
-      unloadCommand.End();
+      UnloadService.UnloadFiltered(TestableClientTransaction, domainObjectFilter);
     }
-
-    private UnloadFilteredDomainObjectsCommand CreateUnloadCommand (Predicate<DomainObject> domainObjectFilter)
-    {
-      var invalidDomainObjectManager = (IInvalidDomainObjectManager)PrivateInvoke.GetNonPublicField(TestableClientTransaction.DataManager, "_invalidDomainObjectManager");
-      Assertion.IsNotNull(invalidDomainObjectManager, "DataManager._invalidDomainObjectManager not found or null");
-
-      return new UnloadFilteredDomainObjectsCommand(
-          (DataContainerMap)TestableClientTransaction.DataManager.DataContainers,
-          invalidDomainObjectManager,
-          (RelationEndPointMap)TestableClientTransaction.DataManager.RelationEndPoints,
-          TestableClientTransaction.DataManager.TransactionEventSink,
-          domainObjectFilter);
-    }
-
   }
 }
