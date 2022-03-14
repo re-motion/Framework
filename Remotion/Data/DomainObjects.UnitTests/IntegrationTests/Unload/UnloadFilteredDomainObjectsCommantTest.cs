@@ -89,6 +89,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
+    public void UnloadFiltered_WithAllObjects_WithOneToOneRelation_WithChanges_IncludeOnlyForeignKeySide_ThrowsInvalidOperationException ()
+    {
+      var order1 = (Order)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Order1, false);
+      var order2 = (Order)LifetimeService.NewObject(TestableClientTransaction,typeof(Order), ParamList.Empty);
+      order1.OrderTicket.EnsureDataAvailable();
+
+      var orderTicket = order1.OrderTicket;
+      orderTicket.Order = order2;
+
+      Assert.That(order1.State.IsChanged, Is.True);
+      Assert.That(order1.State.IsRelationChanged, Is.True);
+      Assert.That(order2.State.IsNew, Is.True);
+      Assert.That(order2.State.IsRelationChanged, Is.True);
+      Assert.That(orderTicket.State.IsChanged, Is.True);
+      Assert.That(orderTicket.State.IsDataChanged, Is.True);
+      Assert.That(orderTicket.State.IsRelationChanged, Is.True);
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
+
+      Assert.That(
+          () => UnloadFiltered(obj => obj == orderTicket),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "Cannot unload the following relation endpoints because the associated domain objects have not been included in the data set.\r\n"
+                  + orderTicket.ID + "/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order,\r\n"
+                  + order2.ID + "/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"));
+    }
+
+    [Test]
     public void UnloadFiltered_WithAllObjects_WithDomainObjectCollectionRelation_WithoutChanges ()
     {
       var order = (Order)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Order1, false);
