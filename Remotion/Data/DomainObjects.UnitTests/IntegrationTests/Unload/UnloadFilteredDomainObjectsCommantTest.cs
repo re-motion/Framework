@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.TypePipe;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
@@ -32,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
   public class UnloadFilteredTest: ClientTransactionBaseTest
   {
     [Test]
-    public void UnloadAllObjects_SingleDomainObject ()
+    public void UnloadFiltered_WithAllObjects_SingleDomainObject_WithoutChanges ()
     {
       var order = (Order)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Order1, false);
 
@@ -48,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
-    public void UnloadAllObjects_WithOneToOneRelation ()
+    public void UnloadFiltered_WithAllObjects_WithOneToOneRelation_WithoutChanges ()
     {
       var order = (Order)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Order1, false);
       order.OrderTicket.EnsureDataAvailable();
@@ -68,7 +69,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
-    public void UnloadAllObjects_WithDomainObjectCollectionRelation ()
+    public void UnloadFiltered_WithAllObjects_WithOneToOneRelation_WithChanges ()
+    {
+      var order = (Order)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Order1, false);
+      order.OrderTicket.EnsureDataAvailable();
+
+      var orderTicket1 = order.OrderTicket;
+      var orderTicket2 = (OrderTicket)LifetimeService.NewObject(TestableClientTransaction, typeof(OrderTicket), ParamList.Empty);
+      orderTicket2.Order = order;
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
+
+      UnloadFiltered(obj => true);
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+
+      Assert.That(order.State.IsNotLoadedYet, Is.True);
+      Assert.That(orderTicket1.State.IsNotLoadedYet, Is.True);
+      Assert.That(orderTicket2.State.IsInvalid, Is.True);
+    }
+
+    [Test]
+    public void UnloadFiltered_WithAllObjects_WithDomainObjectCollectionRelation_WithoutChanges ()
     {
       var order = (Order)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Order1, false);
       order.OrderItems.EnsureDataComplete();
@@ -89,12 +113,56 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
-    public void UnloadAllObjects_WithVirtualCollectionRelation ()
+    public void UnloadFiltered_WithAllObjects_WithDomainObjectCollectionRelation_WithChanges ()
+    {
+      var order = (Order)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Order1, false);
+      order.OrderItems.EnsureDataComplete();
+
+      var orderItem = order.OrderItems.First();
+      orderItem.Order = null;
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
+
+      UnloadFiltered(obj => true);
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+
+      Assert.That(order.State.IsNotLoadedYet, Is.True);
+      Assert.That(order.OrderItems.IsDataComplete, Is.False);
+      Assert.That(orderItem.State.IsNotLoadedYet, Is.True);
+    }
+
+    [Test]
+    public void UnloadFiltered_WithAllObjects_WithVirtualCollectionRelation_WithoutChanges ()
     {
       var product = (Product)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Product1, false);
       product.Reviews.EnsureDataComplete();
 
       var productReview = product.Reviews.First();
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
+
+      UnloadFiltered(obj => true);
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+
+      Assert.That(product.State.IsNotLoadedYet, Is.True);
+      Assert.That(product.Reviews.IsDataComplete, Is.False);
+      Assert.That(productReview.State.IsNotLoadedYet, Is.True);
+    }
+
+    [Test]
+    public void UnloadFiltered_WithAllObjects_WithVirtualCollectionRelation_WithChanges ()
+    {
+      var product = (Product)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Product1, false);
+      product.Reviews.EnsureDataComplete();
+
+      var productReview = product.Reviews.First();
+      productReview.Product = null;
 
       Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
       Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
