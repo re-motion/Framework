@@ -88,6 +88,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       Assert.That(orderItem.State.IsNotLoadedYet, Is.True);
     }
 
+    [Test]
+    public void UnloadAllObjects_WithVirtualCollectionRelation ()
+    {
+      var product = (Product)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Product1, false);
+      product.Reviews.EnsureDataComplete();
+
+      var productReview = product.Reviews.First();
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
+
+      UnloadFiltered(obj => true);
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Empty);
+
+      Assert.That(product.State.IsNotLoadedYet, Is.True);
+      Assert.That(product.Reviews.IsDataComplete, Is.False);
+      Assert.That(productReview.State.IsNotLoadedYet, Is.True);
+    }
+
 
     private void UnloadFiltered (Predicate<DomainObject> domainObjectFilter)
     {
