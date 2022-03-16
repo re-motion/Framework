@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,12 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using NUnit.Framework;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegrationTests.RelationsAboveInheritanceRoot.BidirectionalRelationInGenericBaseClass
+namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegrationTests.RelationsToInterfaces.TypeHierarchy
 {
-  [DBStorageGroup]
-  [DBTable]
-  public class InheritanceRoot : GenericClassAboveInheritanceRoot<RelationTarget>
+  public class NonIDomainObjectInterfaceIsNotPartOfMappingTest : ReferenceMappingTestBase
   {
+    // ReSharper disable once UnusedType.Local
+    private interface INonDomainObject
+    {
+    }
+
+    [Test]
+    public void Verify ()
+    {
+      RunVerificationAgainstReferenceTypeDefinitions();
+    }
+
+    /// <inheritdoc />
+    protected override void CreateReferenceTypeDefinitions (ReferenceTypeDefinitionCollectionBuilder builder)
+    {
+    }
   }
 }
