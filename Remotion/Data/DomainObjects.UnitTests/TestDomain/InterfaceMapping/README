@@ -1,0 +1,6 @@
+﻿# README Interface Mapping Test Domain
+
+The interface mapping tests are located in Mapping/MappingReflectionIntegrationTests/InterfaceMapping instead of here in the test domain.
+
+Instead of a big test domain the tests are split up into smaller tests, focusing on certain features.
+Each test defines its own test domain and expected reference type definitions.
