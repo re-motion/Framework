@@ -22,6 +22,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
   [DBTable]
   public class InheritanceRoot : ClassAboveInheritanceRoot
   {
-
   }
 }
