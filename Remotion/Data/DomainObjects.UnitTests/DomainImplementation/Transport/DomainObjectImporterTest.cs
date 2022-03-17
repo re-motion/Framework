@@ -415,6 +415,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     }
 
     [DBTable]
+    [IncludeInMappingTestDomain]
     public class DomainObjectWithImportCallback : DomainObject, IDomainObjectImporterCallback
     {
       [StorageClassNone]

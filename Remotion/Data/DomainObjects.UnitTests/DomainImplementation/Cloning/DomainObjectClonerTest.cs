@@ -405,6 +405,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     }
 
     [DBTable]
+    [IncludeInMappingTestDomain]
     public class ClassWithClonerCallback : DomainObject, IClonerCallback
     {
       public virtual int Property { get; set; }

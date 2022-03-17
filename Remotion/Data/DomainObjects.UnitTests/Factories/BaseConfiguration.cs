@@ -44,17 +44,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
       ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
 
-      return FilteringTypeDiscoveryService.CreateFromNamespaceBlacklist(
+      var whitelistedNamespaces = new[]
+                                  {
+                                      "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.ReflectionBasedPropertyResolver",
+                                      "Remotion.Data.DomainObjects.UnitTests.TestDomain",
+                                      "Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain",
+                                      "Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain",
+                                      "Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain"
+                                  };
+      return new FilteringTypeDiscoveryService(
           typeDiscoveryService,
-          "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors",
-          "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration",
-          "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.RelationReflector",
-          "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation",
-          "Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegrationTests",
-          "Remotion.Data.DomainObjects.UnitTests.Security.TestDomain",
-          "Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain",
-          "Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests"
-          );
+          type =>
+          {
+            var @namespace = type.Namespace ?? string.Empty;
+            if (whitelistedNamespaces.Any(t => @namespace.StartsWith(t)))
+              return true;
+
+            return Attribute.IsDefined(type, typeof(IncludeInMappingTestDomainAttribute));
+          });
     }
 
     private readonly StorageConfiguration _storageConfiguration;
