@@ -119,6 +119,47 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
     }
 
     [Test]
+    public void UnloadFiltered_WithAllObjects_WithOneToOneRelation_WithChanges_IncludeVirtualSide ()
+    {
+      var order1 = (Order)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Order1, false);
+      var order2 = (Order)LifetimeService.NewObject(TestableClientTransaction,typeof(Order), ParamList.Empty);
+      order1.OrderTicket.EnsureDataAvailable();
+
+      var orderTicket = order1.OrderTicket;
+      orderTicket.Order = order2;
+
+      Assert.That(order1.State.IsChanged, Is.True);
+      Assert.That(order1.State.IsRelationChanged, Is.True);
+      Assert.That(order2.State.IsNew, Is.True);
+      Assert.That(order2.State.IsRelationChanged, Is.True);
+      Assert.That(orderTicket.State.IsChanged, Is.True);
+      Assert.That(orderTicket.State.IsDataChanged, Is.True);
+      Assert.That(orderTicket.State.IsRelationChanged, Is.True);
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
+      var orderTicketEndPoints = TestableClientTransaction.DataManager.RelationEndPoints.Where(ep => ep.Definition.ClassDefinition.ClassType == typeof(OrderTicket)).ToArray();
+
+      UnloadFiltered(obj => obj == order1 || obj == order2);
+
+      Assert.That(TestableClientTransaction.DataManager.DataContainers, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers.Select(dc => dc.DomainObject), Has.No.AnyOf(orderTicket));
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints, Is.Not.Empty);
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints.Select(ep => ep.Definition), Has.No.AnyOf(orderTicketEndPoints));
+
+      Assert.That(order1.State.IsUnchanged, Is.True);
+      Assert.That(order1.State.IsRelationChanged, Is.False);
+      Assert.That(order2.State.IsNew, Is.True);
+      Assert.That(order2.State.IsRelationChanged, Is.False);
+      Assert.That(orderTicket.State.IsNotLoadedYet, Is.True);
+      Assert.That(orderTicket.State.IsRelationChanged, Is.False);
+
+      orderTicket.EnsureDataAvailable();
+      Assert.That(orderTicket.Order, Is.SameAs(order1));
+      Assert.That(order2.OrderTicket, Is.Null);
+    }
+
+    [Test]
     public void UnloadFiltered_WithAllObjects_WithDomainObjectCollectionRelation_WithoutChanges ()
     {
       var order = (Order)LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Order1, false);
