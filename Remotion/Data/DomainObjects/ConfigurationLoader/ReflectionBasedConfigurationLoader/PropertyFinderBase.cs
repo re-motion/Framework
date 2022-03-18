@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     /// the use of <see cref="HashSet{T}.Contains"/> on a non-modified <see cref="HashSet{T}"/>. By checking the source code (.NET Framework 4.7.2),
     /// it was verified that this operation is not modifying the <see cref="HashSet{T}"/>. This is deemed sufficient in for the relevant circumstances.
     /// </remarks>
-    private static readonly ConcurrentDictionary<Type, HashSet<IMethodInformation>> s_explicitInterfaceImplementations =
+    private static readonly ConcurrentDictionary<Type, HashSet<IMethodInformation>> s_interfaceMethodImplementations =
         new ConcurrentDictionary<Type, HashSet<IMethodInformation>>();
 
     private readonly Type _type;
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     private readonly IMemberInformationNameResolver _nameResolver;
     private readonly IPersistentMixinFinder _persistentMixinFinder;
     private readonly IPropertyMetadataProvider _propertyMetadataProvider;
-    private readonly Lazy<HashSet<IMethodInformation>> _explicitInterfaceImplementations;
+    private readonly Lazy<HashSet<IMethodInformation>> _interfaceMethodImplementations;
 
     protected PropertyFinderBase (
         Type type,
@@ -67,8 +67,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       _persistentMixinFinder = persistentMixinFinder;
       _propertyMetadataProvider = propertyMetadataProvider;
       // C# compiler 7.2 does not provide caching for delegate but calls are only during application start so no caching is needed.
-      _explicitInterfaceImplementations = new Lazy<HashSet<IMethodInformation>>(
-          () => s_explicitInterfaceImplementations.GetOrAdd(_type, GetExplicitInterfaceImplementations));
+      _interfaceMethodImplementations = new Lazy<HashSet<IMethodInformation>>(
+          () => s_interfaceMethodImplementations.GetOrAdd(_type, GetInterfaceMethodImplementations));
     }
 
     public Type Type
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       if (IsUnmanagedProperty(propertyInfo))
         return false;
 
-      if (IsUnmanagedExplictInterfaceImplementation(propertyInfo))
+      if (IsInterfaceMethodImplementation(propertyInfo))
         return false;
 
       return true;
@@ -164,13 +164,13 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       return storageClass == StorageClass.None;
     }
 
-    protected bool IsUnmanagedExplictInterfaceImplementation (IPropertyInformation propertyInfo)
+    protected bool IsInterfaceMethodImplementation (IPropertyInformation propertyInfo)
     {
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
       bool isExplicitInterfaceImplementation = Array.Exists(
           propertyInfo.GetAccessors(true),
-          accessor => _explicitInterfaceImplementations.Value.Contains(accessor));
+          accessor => _interfaceMethodImplementations.Value.Contains(accessor));
       if (!isExplicitInterfaceImplementation)
         return false;
 
@@ -199,20 +199,31 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       return FindPropertiesFilter(PropertyInfoAdapter.Create((PropertyInfo)member));
     }
 
-    private static HashSet<IMethodInformation> GetExplicitInterfaceImplementations (Type type)
+    private static HashSet<IMethodInformation> GetInterfaceMethodImplementations (Type type)
     {
-      var explicitInterfaceImplementationSet = new HashSet<MethodInfo>();
+      if (type.IsInterface)
+        return new HashSet<IMethodInformation>();
 
-      foreach (Type interfaceType in type.GetInterfaces())
+      var interfaceMethods = new HashSet<MethodInfo>();
+
+      foreach (var interfaceType in type.GetInterfaces())
       {
-        InterfaceMapping interfaceMapping = type.GetInterfaceMap(interfaceType);
-        MethodInfo[] explicitInterfaceImplementations = Array.FindAll(
-            interfaceMapping.TargetMethods,
-            targetMethod => targetMethod.IsSpecialName && !targetMethod.IsPublic);
-        explicitInterfaceImplementationSet.UnionWith(explicitInterfaceImplementations);
+        var interfaceMapping = type.GetInterfaceMap(interfaceType);
+        if (ReflectionUtility.IsDomainObject(interfaceType))
+        {
+          interfaceMethods.UnionWith(interfaceMapping.TargetMethods);
+        }
+        else
+        {
+          var explicitInterfaceImplementations = Array.FindAll(
+              interfaceMapping.TargetMethods,
+              targetMethod => targetMethod.IsSpecialName && !targetMethod.IsPublic);
+          interfaceMethods.UnionWith(explicitInterfaceImplementations);
+
+        }
       }
 
-      return new HashSet<IMethodInformation>(explicitInterfaceImplementationSet.Select(MethodInfoAdapter.Create));
+      return new HashSet<IMethodInformation>(interfaceMethods.Select(MethodInfoAdapter.Create));
     }
   }
 }

@@ -74,7 +74,13 @@ namespace Remotion.Data.DomainObjects.Mapping
       }
       else
       {
-        throw new NotSupportedException("Only class definitions are supported."); // TODO R2I Mapping: property finder support for interfaces
+        relationPropertyFinder = new RelationPropertyFinder(
+            typeDefinition.Type,
+            false,
+            false,
+            _nameResolver,
+            new PersistentMixinFinder(typeDefinition.Type, false),
+            _propertyMetadataProvider);
       }
 
       return relationPropertyFinder.FindPropertyInfos();
