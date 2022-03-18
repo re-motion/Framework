@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -25,12 +26,33 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   public class InterfaceReflector
   {
     private readonly Type _type;
+    private readonly IMappingObjectFactory _mappingObjectFactory;
+    private readonly IMemberInformationNameResolver _nameResolver;
+    private readonly IPropertyMetadataProvider _propertyMetadataProvider;
+    private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
+    private readonly ISortExpressionDefinitionProvider _sortExpressionDefinitionProvider;
 
-    public InterfaceReflector (Type type)
+    public InterfaceReflector (
+        Type type,
+        IMappingObjectFactory mappingObjectFactory,
+        IMemberInformationNameResolver nameResolver,
+        IPropertyMetadataProvider propertyMetadataProvider,
+        IDomainModelConstraintProvider domainModelConstraintProvider,
+        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
     {
       ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("mappingObjectFactory", mappingObjectFactory);
+      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
+      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
 
       _type = type;
+      _mappingObjectFactory = mappingObjectFactory;
+      _nameResolver = nameResolver;
+      _propertyMetadataProvider = propertyMetadataProvider;
+      _domainModelConstraintProvider = domainModelConstraintProvider;
+      _sortExpressionDefinitionProvider = sortExpressionDefinitionProvider;
     }
 
     public InterfaceDefinition GetMetadata (IEnumerable<InterfaceDefinition> extendedInterfaces)
@@ -46,13 +68,28 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
           storageGroupType,
           defaultStorageClass);
 
-      // todo R2I Mapping: Add properties to interface definition
-      interfaceDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
+      var properties = _mappingObjectFactory.CreatePropertyDefinitionCollection(interfaceDefinition, GetPropertyInfos(interfaceDefinition));
+      interfaceDefinition.SetPropertyDefinitions(properties);
 
-      // todo R2I Mapping: Add relation end points to interface definition
-      interfaceDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+      var endPoints = _mappingObjectFactory.CreateRelationEndPointDefinitionCollection(interfaceDefinition);
+      interfaceDefinition.SetRelationEndPointDefinitions(endPoints);
 
       return interfaceDefinition;
+    }
+
+    private IEnumerable<IPropertyInformation> GetPropertyInfos (InterfaceDefinition interfaceDefinition)
+    {
+      var propertyFinder = new PropertyFinder(
+          interfaceDefinition.Type,
+          interfaceDefinition,
+          false,
+          false,
+          _nameResolver,
+          new PersistentMixinFinder(_type, false),
+          _propertyMetadataProvider,
+          _domainModelConstraintProvider,
+          _sortExpressionDefinitionProvider);
+      return propertyFinder.FindPropertyInfos();
     }
 
     private StorageGroupAttribute? GetStorageGroupAttribute ()

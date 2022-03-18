@@ -107,10 +107,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void CreateInterfaceDefinition_WithExtendedInterfaces ()
     {
       var extendedInterface = InterfaceDefinitionObjectMother.CreateInterfaceDefinition();
-      var result = _factory.CreateInterfaceDefinition(typeof(Order), EnumerableUtility.Singleton(extendedInterface));
+      var result = _factory.CreateInterfaceDefinition(typeof(IOrder), EnumerableUtility.Singleton(extendedInterface));
 
       Assert.That(result, Is.Not.Null);
-      Assert.That(result.Type, Is.SameAs(typeof(Order)));
+      Assert.That(result.Type, Is.SameAs(typeof(IOrder)));
       Assert.That(result.ExtendedInterfaces, Is.EqualTo(new[] { extendedInterface }));
     }
 
