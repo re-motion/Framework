@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
@@ -22,7 +23,7 @@ using Remotion.Data.DomainObjects.Mapping;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
   [TestFixture]
-  public class InterfaceReflectorTest
+  public class InterfaceReflectorTest : MappingReflectionTestBase
   {
     private interface IInterfaceWithNoStorageGroupAttribute
     {
@@ -45,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void GetMetadata ()
     {
       var implementedInterface = InterfaceDefinitionObjectMother.CreateInterfaceDefinition();
-      var interfaceReflector = new InterfaceReflector(typeof(IInterfaceWithNoStorageGroupAttribute));
+      var interfaceReflector = CreateInterfaceReflector(typeof(IInterfaceWithNoStorageGroupAttribute));
 
       var interfaceDefinition = interfaceReflector.GetMetadata(new[] { implementedInterface });
       Assert.That(interfaceDefinition.Type, Is.EqualTo(typeof(IInterfaceWithNoStorageGroupAttribute)));
@@ -59,13 +60,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void GetMetadata_WithStorageGroupAttribute_SetsStorageGroupTypeAndDefaultStorageClass ()
     {
-      var interfaceReflector = new InterfaceReflector(typeof(IInterfaceWithStorageGroupAttribute));
+      var interfaceReflector = CreateInterfaceReflector(typeof(IInterfaceWithStorageGroupAttribute));
 
       var interfaceDefinition = interfaceReflector.GetMetadata(Enumerable.Empty<InterfaceDefinition>());
       Assert.That(interfaceDefinition.Type, Is.EqualTo(typeof(IInterfaceWithStorageGroupAttribute)));
       Assert.That(interfaceDefinition.ExtendedInterfaces, Is.Empty);
       Assert.That(interfaceDefinition.StorageGroupType, Is.EqualTo(typeof(CustomStorageGroupAttribute)));
       Assert.That(interfaceDefinition.DefaultStorageClass, Is.EqualTo(DefaultStorageClass.Transaction));
+    }
+
+    private InterfaceReflector CreateInterfaceReflector (Type type)
+    {
+      return new InterfaceReflector(
+          type,
+          MappingObjectFactory,
+          Configuration.NameResolver,
+          PropertyMetadataProvider,
+          DomainModelConstraintProviderStub.Object,
+          SortExpressionDefinitionProviderStub.Object);
     }
   }
 }

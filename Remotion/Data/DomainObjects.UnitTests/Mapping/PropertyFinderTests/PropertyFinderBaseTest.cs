@@ -105,14 +105,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
     }
 
     [Test]
-    public void FindPropertyInfos_ForDomainObjectType ()
-    {
-      var propertyFinder = new StubPropertyFinderBase(typeof(DomainObject), true, false, _persistentMixinFinderStub.Object);
-
-      Assert.That(propertyFinder.FindPropertyInfos(), Is.Not.Empty.And.Member(PropertyInfoAdapter.Create(typeof(DomainObject).GetProperty("ID"))));
-    }
-
-    [Test]
     public void FindPropertyInfos_ForObjectType ()
     {
       var propertyFinder = new StubPropertyFinderBase(typeof(object), true, false, _persistentMixinFinderStub.Object);

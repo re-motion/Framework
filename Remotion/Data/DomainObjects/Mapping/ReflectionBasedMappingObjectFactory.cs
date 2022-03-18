@@ -84,7 +84,13 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull("type", type);
       ArgumentUtility.CheckNotNull("extendedInterfaces", extendedInterfaces);
 
-      var interfaceReflector = new InterfaceReflector(type);
+      var interfaceReflector = new InterfaceReflector(
+          type,
+          this,
+          _nameResolver,
+          _propertyMetadataProvider,
+          _domainModelConstraintProvider,
+          _sortExpressionDefinitionProvider);
       return interfaceReflector.GetMetadata(extendedInterfaces);
     }
 
