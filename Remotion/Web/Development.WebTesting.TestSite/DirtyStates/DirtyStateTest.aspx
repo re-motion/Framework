@@ -24,6 +24,7 @@
       <h3>Control Flow</h3>
       <remotion:WebButton ID="ExecuteSubFunctionButton" Text="ExecuteSubFunctionButton" runat="server" OnClick="ExecuteSubFunctionButton_OnClick" RequiresSynchronousPostBack="True" />
       <remotion:WebButton ID="ExecuteNextStepButton" Text="ExecuteNextStepButton" runat="server" OnClick="ExecuteNextStepButton_OnClick" RequiresSynchronousPostBack="True" />
+      <remotion:WebButton ID="CancelExecutingFunctionButton" Text="CancelExecutingFunctionButton" runat="server" OnClick="CancelExecutingFunctionButton_OnClick" RequiresSynchronousPostBack="True" />
     </ContentTemplate>
   </asp:UpdatePanel>
 
