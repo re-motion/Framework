@@ -285,7 +285,8 @@ namespace Remotion.Web.ExecutionEngine
       _returningFunction = returningFunction;
       _isReturningPostBack = isReturningPostBack;
       _postBackCollection = previousPostBackCollection;
-      _isDirtyFromReturnState = _isDirtyFromReturnState || returningFunction.EvaluateDirtyState();
+      _isDirtyFromReturnState = _isDirtyFromReturnState
+                                || (returningFunction.ExceptionHandler.Exception == null && returningFunction.EvaluateDirtyState());
     }
 
     private void ClearReturnState ()

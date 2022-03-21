@@ -378,6 +378,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
+    public void SetReturnState_IgnoresDirtyStateFromReturningFunctionWhenReturningFunctionHasAnException ()
+    {
+      var returningFunction = new TestFunction2();
+      returningFunction.ExceptionHandler.SetCatchExceptionTypes(typeof(Exception));
+      returningFunction.ExceptionHandler.Catch(new Exception("Test Exception"));
+      Assert.That(returningFunction.ExceptionHandler.Exception, Is.Not.Null);
+      returningFunction.IsDirty = true;
+      _pageStep.Object.SetReturnState(returningFunction, true, new NameValueCollection());
+
+      Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.False);
+    }
+
+    [Test]
     public void SetReturnState_AggregatesDirtyStateFromReturningFunctionWhenPreviousReturningFunctionWasAlreadyDirty ()
     {
       var returningFunction1 = new TestFunction2();

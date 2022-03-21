@@ -25,6 +25,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.DirtyStates
     public DirtyStateSubFunction ()
         : base(new NoneTransactionMode())
     {
+      ExceptionHandler.SetCatchExceptionTypes(typeof(WxeUserCancelException));
     }
 
     private WxeStep Step1 = new WxePageStep("DirtyStates/DirtyStateTest.aspx");
