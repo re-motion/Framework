@@ -152,6 +152,19 @@ namespace Remotion.Web.IntegrationTests.ExecutionEngine
       Assert.That(ExecuteSmartPageIsDirty(new[] { "RootFunction" }), Is.True);
     }
 
+    [Test]
+    public void SetSubFunctionDirty_AndCancelSubFunction_RootFunctionConditionEvaluatesAsNotDirty ()
+    {
+      var home = Start();
+      home.WebButtons().GetByLocalID("ExecuteSubFunctionButton").Click();
+      home.WebButtons().GetByLocalID("SetCurrentFunctionDirtyButton").Click();
+      Assert.That(ExecuteSmartPageIsDirty(new[] { "CurrentFunction" }), Is.True);
+
+      home.WebButtons().GetByLocalID("CancelExecutingFunctionButton").Click();
+
+      Assert.That(ExecuteSmartPageIsDirty(new[] { "RootFunction" }), Is.False);
+    }
+
     private bool ExecuteSmartPageIsDirty ()
     {
       // SmartPage_IsDirty is defined on test page due to Firefox not supporting instance members
