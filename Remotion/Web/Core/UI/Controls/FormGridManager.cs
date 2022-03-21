@@ -1653,8 +1653,7 @@ namespace Remotion.Web.UI.Controls
     }
 
     /// <summary>
-    ///   Creates the appropriate validation marker and <see cref="ValidationError"/> objects and adds them to the 
-    ///   <paramref name="dataRow"/>.
+    ///   Creates the appropriate <see cref="ValidationError"/> objects and adds them to the <paramref name="dataRow"/>.
     /// </summary>
     /// <param name="dataRow"> The <see cref="FormGridRow"/> for which the validation errors will analyzed and registered. </param>
     private void RegisterValidationErrors (FormGridRow dataRow)
@@ -1664,19 +1663,11 @@ namespace Remotion.Web.UI.Controls
 
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
 
-      dataRow.ValidationMarker = null;
-      ArrayList validationErrorList = new ArrayList();
-
-      if (!dataRow.Visible)
-        return;
-
-      //  Check for validators and then their validation state
-      //  Create a ValidationError object for each error
-      //  Create the validationIcon
+      var validationErrorList = new List<ValidationError>();
 
       for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
       {
-        Control control = (Control)dataRow.ControlsCell.Controls[i];
+        Control control = dataRow.ControlsCell.Controls[i];
         IValidator? validator = control as IValidator;
         if (validator == null || validator.IsValid)
           continue;
@@ -1699,15 +1690,27 @@ namespace Remotion.Web.UI.Controls
           validationErrorList.Add(new ValidationError(controlToValidate, validator, dataRow.LabelsCell.Controls));
         }
       }
+      dataRow.ValidationErrors = validationErrorList.ToArray();
+    }
 
-      bool hasValidationErrors = validationErrorList.Count > 0;
+    /// <summary>
+    ///   Creates the appropriate validation marker for each <see cref="ValidationError"/> and adds them to the <paramref name="dataRow"/>.
+    /// </summary>
+    /// <param name="dataRow"> The <see cref="FormGridRow"/> for which the validation markers will created. </param>
+    private void CreateValidationMarkers (FormGridRow dataRow)
+    {
+      dataRow.ValidationMarker = null;
+      if (!dataRow.Visible)
+        return;
+
+      bool hasValidationErrors = dataRow.ValidationErrors.Length > 0;
 
       if (hasValidationErrors)
       {
-        var toolTip = new StringBuilder(validationErrorList.Count * 50);
-        for (int i = 0; i < validationErrorList.Count; i++)
+        var toolTip = new StringBuilder(dataRow.ValidationErrors.Length * 50);
+        for (int i = 0; i < dataRow.ValidationErrors.Length; i++)
         {
-          ValidationError validationError = (ValidationError)validationErrorList[i]!;
+          ValidationError validationError = dataRow.ValidationErrors[i];
           //  Get validation message
           PlainTextString validationMessage = validationError.ValidationMessage;
           //  Get tool tip, tool tip is validation message
@@ -1720,8 +1723,6 @@ namespace Remotion.Web.UI.Controls
         }
         dataRow.ValidationMarker = CreateValidationMarker(PlainTextString.CreateFromText(toolTip.ToString()));
       }
-
-      dataRow.ValidationErrors = (ValidationError[])validationErrorList.ToArray(typeof(ValidationError));
     }
 
     protected void EnsureTransformationStep (TransformationStep stepToBeCompleted)
@@ -1799,6 +1800,9 @@ namespace Remotion.Web.UI.Controls
         FormGridRow formGridRow = (FormGridRow)formGrid.Rows[i];
         if (formGridRow.IsGenerated)
           UpdateGeneratedRowsVisibility(formGridRow);
+
+        if (formGridRow.Type == FormGridRowType.DataRow)
+          RegisterValidationErrors(formGridRow);
       }
 
       FormatFormGrid(formGrid);
@@ -2235,8 +2239,7 @@ namespace Remotion.Web.UI.Controls
       {
         CreateRequiredMarker(dataRow);
         CreateHelpProvider(dataRow);
-
-        RegisterValidationErrors(dataRow);
+        CreateValidationMarkers(dataRow);
 
         LoadMarkersIntoCell(dataRow);
 

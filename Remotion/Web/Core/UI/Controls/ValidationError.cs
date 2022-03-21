@@ -36,15 +36,15 @@ namespace Remotion.Web.UI.Controls
     // member fields
 
     /// <summary> The control with an invalid state. </summary>
-    private Control? _validatedControl;
+    private readonly Control? _validatedControl;
 
-    private ControlCollection? _labels;
+    private readonly ControlCollection? _labels;
 
     /// <summary> The message to be displayed to the user. </summary>
-    private PlainTextString _validationMessage;
+    private readonly PlainTextString _validationMessage;
 
     /// <summary> The validator used to validate the <see cref="_validatedControl"/>. </summary>
-    private IValidator? _validator;
+    private readonly IValidator? _validator;
 
     // construction and disposing
 
