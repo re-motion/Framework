@@ -45,5 +45,10 @@ namespace Remotion.Web.Development.WebTesting.TestSite.DirtyStates
     {
       ExecuteNextStep();
     }
+
+    protected void CancelExecutingFunctionButton_OnClick (object sender, EventArgs e)
+    {
+      throw new WxeUserCancelException();
+    }
   }
 }
