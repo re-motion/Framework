@@ -109,7 +109,7 @@ ul.treeViewRoot span.treeViewNodeHeadSelected > a
   align-items: center;
   padding-top: var(--treeview-node-padding-vertical);
   padding-bottom: var(--treeview-node-padding-vertical);
-  cursor: default;
+  cursor: pointer;
 }
 
 ul.treeViewRoot span.treeViewNode > a
