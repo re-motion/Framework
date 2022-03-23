@@ -22,12 +22,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SecurityManager.Tenant.Web.Test")]
+[assembly: AssemblyTitle("")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("rubicon")]
-[assembly: AssemblyProduct("SecurityManager.Tenant.Web.Test")]
-[assembly: AssemblyCopyright("Copyright © rubicon 2006")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

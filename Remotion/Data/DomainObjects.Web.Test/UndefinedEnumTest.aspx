@@ -56,16 +56,16 @@
 <P>Visuelle Checks des gerenderten BocEnumValue 
 Controls:</P>
 <UL>
-  <LI>"Value1" muss überall auszuwählen sein. 
+  <LI>"Value1" muss Ã¼berall auszuwÃ¤hlen sein.
   <LI>"Undefined" darf nirgends zur Auswahl stehen.
   <LI>Bei (1) muss ein Stern zu sehen und initial eine 
-  leere Zeile ausgewält sein. <BR>Es muss ein Validator anspringen, 
-  solange&nbsp;nicht "Value1"&nbsp;ausgewählt ist. 
+  leere Zeile ausgewÃ¤hlt sein. <BR>Es muss ein Validator anspringen,
+  solange&nbsp;nicht "Value1"&nbsp;ausgewÃ¤hlt ist.
   <LI>Bei (2) muss ein Stern zu sehen sein und&nbsp;es darf keine leere Zeile 
-  auswählbar sein.&nbsp; 
+  auswÃ¤hlbar sein.&nbsp;
   <LI>Bei (3)&nbsp;darf kein Stern zu sehen sein&nbsp;und 
   eine leere Zeile muss zur Auswahl stehen.</LI></UL>
-<P>Für den&nbsp;Abschluss des Tests muss "Value1" bei (1) ausgewählt werden und 
+<P>FÃ¼r den&nbsp;Abschluss des Tests muss "Value1" bei (1) ausgewÃ¤hlt werden und
 beim Klicken auf "Test fortsetzen" darf keine Exception kommen.</P>
 <P>
       <asp:button id="TestButton" runat="server" Text="Test fortsetzten"></asp:button><remotion:formgridmanager id="FormGridManager" runat="server"></remotion:formgridmanager><remotion:BindableObjectDataSourceControl id="ExistingObjectWithUndefinedEnumDataSource" runat="server" Type="Remotion.Data.DomainObjects.Web.Test.Domain.ClassWithUndefinedEnum, Remotion.Data.DomainObjects.Web.Test"></remotion:BindableObjectDataSourceControl><remotion:BindableObjectDataSourceControl id="NewObjectWithUndefinedEnumDataSource" runat="server" Type="Remotion.Data.DomainObjects.Web.Test.Domain.ClassWithUndefinedEnum, Remotion.Data.DomainObjects.Web.Test"></remotion:BindableObjectDataSourceControl>
