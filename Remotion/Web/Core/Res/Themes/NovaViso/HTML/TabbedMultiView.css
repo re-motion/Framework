@@ -92,7 +92,7 @@ div.tabbedMultiViewBottomControls
 
 div.tabbedMultiViewBottomControls.empty
 {
-  box-shadow: none;
+  display: none;
 }
 
 /* Applied to the tab strip section of the multi view. */
