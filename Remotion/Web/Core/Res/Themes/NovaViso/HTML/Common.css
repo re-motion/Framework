@@ -136,17 +136,27 @@ span.remotion-themed,
   min-height: var(--remotion-themed-singleline-min-height);
 }
 
-button.remotion-themed,
-input.remotion-themed,
+input.remotion-themed:not([type=submit], [type=button]),
 textarea.remotion-themed,
 select.remotion-themed,
-.remotion-themed button,
-.remotion-themed input,
+.remotion-themed input:not([type=submit], [type=button]),
 .remotion-themed textarea,
 .remotion-themed select
 {
   background-color: var(--remotion-themed-background-color-control);
   border: var(--remotion-themed-border);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+button.remotion-themed,
+input[type=submit].remotion-themed,
+input[type=button].remotion-themed,
+.remotion-themed button,
+.remotion-themed input[type=submit],
+.remotion-themed input[type=button]
+{
+  background-color: var(--remotion-themed-background-color-control);
+  border: var(--remotion-themed-border-width) solid var(--color-primary);
   border-radius: var(--remotion-themed-border-radius);
 }
 
