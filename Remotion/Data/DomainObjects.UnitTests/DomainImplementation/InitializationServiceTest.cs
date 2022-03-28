@@ -205,6 +205,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     }
 
     [Test]
+    public void TryApplyingCurrentStateAsInitialValue_WithOneToOneRelationChanged_CanDeleteForeignKeySide ()
+    {
+      var order = (Order)LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
+      order.OrderNumber = 14;
+      var orderTicket = (OrderTicket)LifetimeService.NewObject(_clientTransaction, typeof(OrderTicket), ParamList.Empty);
+      orderTicket.Order = order;
+
+      var domainObjects = new DomainObject[] { order, orderTicket };
+      var result = InitializationService.TryToApplyCurrentStateAsInitialValue(_clientTransaction, domainObjects.Select(obj => obj.ID));
+
+      Assert.That(result, Is.EquivalentTo(domainObjects));
+
+      orderTicket.Delete();
+
+      // var orderTicketOrderPropertyAccessor = new PropertyIndexer(orderTicket)[typeof(OrderTicket), nameof(OrderTicket.Order)];
+      // Assert.That(orderTicketOrderPropertyAccessor.HasChanged, Is.False);
+      // Assert.That(orderTicketOrderPropertyAccessor.GetValue<Order>(), Is.EqualTo(order));
+      // Assert.That(orderTicketOrderPropertyAccessor.GetOriginalValue<Order>(), Is.EqualTo(order));
+      // Assert.That(orderTicketOrderPropertyAccessor.GetRelatedObjectID(), Is.EqualTo(order.ID));
+      // Assert.That(orderTicketOrderPropertyAccessor.GetOriginalRelatedObjectID(), Is.EqualTo(order.ID));
+      //
+      // Assert.That(order.State.IsNew, Is.True);
+      // Assert.That(order.State.IsDataChanged, Is.False);
+      // Assert.That(order.State.IsRelationChanged, Is.False);
+      // var orderOrderTicketPropertyAccessor = new PropertyIndexer(order)[typeof(Order), nameof(Order.OrderTicket)];
+      // Assert.That(orderOrderTicketPropertyAccessor.HasChanged, Is.False);
+      // Assert.That(orderOrderTicketPropertyAccessor.GetValue<OrderTicket>(), Is.EqualTo(orderTicket));
+      // Assert.That(orderOrderTicketPropertyAccessor.GetOriginalValue<OrderTicket>(), Is.EqualTo(orderTicket));
+    }
+
+    [Test]
     public void TryApplyingCurrentStateAsInitialValue_WithDomainObjectCollectionRelationChanged_SetsOriginalValue_ReturnsObjects ()
     {
       var order = (Order)LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
