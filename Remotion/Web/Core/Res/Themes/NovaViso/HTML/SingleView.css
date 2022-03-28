@@ -85,5 +85,5 @@ div.singleViewBottomControls
 
 div.singleViewBottomControls.empty
 {
-  box-shadow: none;
+  display: none;
 }
