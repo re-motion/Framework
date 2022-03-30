@@ -1,35 +1,35 @@
-Vorgehensweise f¸r das Hinzuf¸gen eines neuen Datentyps f¸r Eigenschaftenswerte:
+Vorgehensweise f√ºr das Hinzuf√ºgen eines neuen Datentyps f√ºr Eigenschaftenswerte:
 --------------------------------------------------------------------------------
 
 1. Folgende Tests in Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping.TypeInfoTest erweitern:
     - MappingTypes
     - Types
 
-2. Die beiden UnitTests laufen lassen. Die Tests m¸ssen an der erwarteten Stelle scheitern.    
+2. Die beiden UnitTests laufen lassen. Die Tests m√ºssen an der erwarteten Stelle scheitern.    
 
-3. Neue type mappings in Remotion.Data.DomainObjects.Mapping.TypeInfo (Methode GetAllKnownTypeInfos) erg‰nzen.
+3. Neue type mappings in Remotion.Data.DomainObjects.Mapping.TypeInfo (Methode GetAllKnownTypeInfos) erg√§nzen.
 
-4. Alle UnitTests m¸ssen gr¸n sein.
+4. Alle UnitTests m√ºssen gr√ºn sein.
 
 5. Definition von ClassWithAllDataTypes in Remotion.Data.DomainObjects.UnitTests.Factories.TestMappingConfiguration 
-   (Methode CreateClassWithAllDataTypesDefinition) um neue Datentypen erg‰nzen.
+   (Methode CreateClassWithAllDataTypesDefinition) um neue Datentypen erg√§nzen.
 
-6. Tests im Namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping laufen lassen => M¸ssen an der erwarteten Stelle scheitern.
+6. Tests im Namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping laufen lassen => m√ºssen an der erwarteten Stelle scheitern.
 
 7. Enumeration in Definition von "simpleType" in Mapping.xsd erweitern.
  
-8. Mapping.xml um neue Datentypen in ClassWithAllDataTypes erg‰nzen und gegen Mapping.xsd pr¸fen.
+8. Mapping.xml um neue Datentypen in ClassWithAllDataTypes erg√§nzen und gegen Mapping.xsd pr√ºfen.
 
-9. Tests im Namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping m¸ssen wieder gr¸n sein.
+9. Tests im Namespace Remotion.Data.DomainObjects.UnitTests.Configuration.Mapping m√ºssen wieder gr√ºn sein.
 
-10. ClassWithAllDataTypes erg‰nzen:
-    - Remotion.Data.DomainObjects.DataContainer: Typed property accessors (GetNaBoolean, GetNaDateTime, ...) erg‰nzen.
-    - Properties in ClassWithAllDataTypes anlegen (Typed propery accessors f¸r neue Datentypen verwenden).
-    - SetUpDB.sql erweitern und ausf¸hren
-    - CreateTestData.sql erweitern und ausf¸hren
+10. ClassWithAllDataTypes erg√§nzen:
+    - Remotion.Data.DomainObjects.DataContainer: Typed property accessors (GetNaBoolean, GetNaDateTime, ...) erg√§nzen.
+    - Properties in ClassWithAllDataTypes anlegen (Typed propery accessors f√ºr neue Datentypen verwenden).
+    - SetUpDB.sql erweitern und ausf√ºhren
+    - CreateTestData.sql erweitern und ausf√ºhren
 
 11. Integrationstests: In Remotion.Data.DomainObjects.UnitTests nach "ClassWithAllDataTypes" und "TableWithAllDataTypes" (wird in queries.xml referenziert) 
-    suchen und alle Tests um neue Datentypen erg‰nzen. In jedem Fall zumindest folgende Klassen und Tests erweitern:
+    suchen und alle Tests um neue Datentypen erg√§nzen. In jedem Fall zumindest folgende Klassen und Tests erweitern:
     - Remotion.Data.DomainObjects.UnitTests.Factories.TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer
     - Remotion.Data.DomainObjects.UnitTests.DomainObjects.DomainObjectTest.LoadingOfSimpleObject
     - Remotion.Data.DomainObjects.UnitTests.Persistence.SqlProviderCreateNewDataContainerTest.CreateClassWithAllDataTypes
@@ -39,19 +39,19 @@ Vorgehensweise f¸r das Hinzuf¸gen eines neuen Datentyps f¸r Eigenschaftenswerte:
     - Remotion.Data.DomainObjects.UnitTests.Persistence.SqlProviderSaveExistingTest.SaveAllNullableTypesWithNull
     - Remotion.Data.DomainObjects.UnitTests.Persistence.SqlProviderSaveNewTest.AllDataTypes
     
-12. Alle UnitTests laufen lassen. Diese m¸ssen an der erwarteten Stelle scheitern, wenn ƒnderungen in einer der folgenden Klassen/Methoden notwendig sind:
+12. Alle UnitTests laufen lassen. Diese m√ºssen an der erwarteten Stelle scheitern, wenn √Ñnderungen in einer der folgenden Klassen/Methoden notwendig sind:
     - Remotion.Data.DomainObjects.Persistence.ValueConverterBase (Alle Methoden)
     - Remotion.Data.DomainObjects.Persistence.Rdbms.ValueConverter (Alle Methoden)
     - Remotion.Data.DomainObjects.DataContainer (Methoden IsNull und IsNullOrEmpty)
-      => Mˆglicherweise neue Tests f¸r IsNull oder IsNullOrEmpty erg‰nzen
+      => m√ºglicherweise neue Tests f√ºr IsNull oder IsNullOrEmpty erg√§nzen
     
 13. Neue Datentypen in 
     Remotion.Data.DomainObjects.Persistence.Rdbms.ValueConverter.GetValue bzw.
-    Remotion.Data.DomainObjects.Persistence.ValueConverterBase.GetValue erg‰nzen.
-    Evtl. muss auch Methode Remotion.Data.DomainObjects.Persistence.Rdbms.ValueConverter.GetDBValue erg‰nzt werden.
+    Remotion.Data.DomainObjects.Persistence.ValueConverterBase.GetValue erg√§nzen.
+    Evtl. muss auch Methode Remotion.Data.DomainObjects.Persistence.Rdbms.ValueConverter.GetDBValue erg√§nzt werden.
 
 
-Neue Datentypen in RPA erg‰nzen:
+Neue Datentypen in RPA erg√§nzen:
 --------------------------------
 
 14. Evtl. neue Property im Namespace Remotion.Data.DomainObjects.ObjectBinding.PropertyTypes anlegen.
@@ -60,12 +60,12 @@ Neue Datentypen in RPA erg‰nzen:
     - FromInternalType
     - ToInternalType
     
-16. Neue Datentypen in Remotion.Data.DomainObjects.ObjectBinding.DomainObjectProperty.Create erg‰nzen.
+16. Neue Datentypen in Remotion.Data.DomainObjects.ObjectBinding.DomainObjectProperty.Create erg√§nzen.
 
-17. Remotion.Data.DomainObjects.ObjectBinding.Web.Test erg‰nzen:
+17. Remotion.Data.DomainObjects.ObjectBinding.Web.Test erg√§nzen:
     - Mapping.xsd von Remotion.Data.DomainObjects nach "C:\development\libraries\Commons\trunk\Data\DomainObjects.Web.Test\bin" kopieren
-    - SetupDB.sql erweitern und ausf¸hren
-    - CreateTestData.sql erweitern und ausf¸hren
+    - SetupDB.sql erweitern und ausf√ºhren
+    - CreateTestData.sql erweitern und ausf√ºhren
     - Mapping.xml erweitern
     - ClassWithAllDataTypes erweitern
     - default.aspx erweitern und testen
