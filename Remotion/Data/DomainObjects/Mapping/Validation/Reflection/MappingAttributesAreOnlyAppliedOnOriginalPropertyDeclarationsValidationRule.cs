@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -61,31 +62,50 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
             classDefinition.PersistentMixinFinder,
             _propertyMetadataProvider);
       }
+      else if (typeDefinition is InterfaceDefinition)
+      {
+        // In interfaces all properties are always original declarations
+        return EnumerableUtility.Singleton(MappingValidationResult.CreateValidResult());
+      }
       else
       {
-        throw new NotSupportedException("Only class definitions are supported."); // TODO R2I Mapping: property finder support for interfaces
+        throw new NotSupportedException("Only class definitions are supported.");
       }
+
       var propertyInfos = propertyFinder.FindPropertyInfos();
 
       return from IPropertyInformation propertyInfo in propertyInfos
-             select Validate(propertyInfo);
+          select Validate(propertyInfo);
     }
 
     private MappingValidationResult Validate (IPropertyInformation propertyInfo)
     {
       ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      if (! propertyInfo.IsOriginalDeclaration())
+      var mappingAttributes = propertyInfo.GetCustomAttributes<IMappingAttribute>(false);
+      if (mappingAttributes.Length == 0)
+        return MappingValidationResult.CreateValidResult();
+
+      if (!propertyInfo.IsOriginalDeclaration())
       {
-        var mappingAttributes = propertyInfo.GetCustomAttributes<IMappingAttribute>(false);
-        if (mappingAttributes.Any())
-        {
-          return MappingValidationResult.CreateInvalidResultForProperty(
-              propertyInfo,
-              "The '{0}' is a mapping attribute and may only be applied at the property's base definition.",
-              mappingAttributes[0].GetType().Name);
-        }
+        return MappingValidationResult.CreateInvalidResultForProperty(
+            propertyInfo,
+            "The '{0}' is a mapping attribute and may only be applied at the property's base definition.",
+            mappingAttributes[0].GetType().Name);
       }
+
+      var isDeclaredOnInterface = propertyInfo
+          .FindInterfaceDeclarations()
+          .Select(e => e.DeclaringType)
+          .ToArray();
+      if (isDeclaredOnInterface.Any(e => e != null && ReflectionUtility.IsDomainObject(e.ConvertToRuntimeType())))
+      {
+        return MappingValidationResult.CreateInvalidResultForProperty(
+            propertyInfo,
+            "The '{0}' is a mapping attribute and may only be applied at the property's base definition.",
+            mappingAttributes[0].GetType().Name);
+      }
+
       return MappingValidationResult.CreateValidResult();
     }
   }

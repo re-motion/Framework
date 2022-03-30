@@ -87,6 +87,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
     }
 
     [Test]
+    public void NonOriginalPropertiesDeclarationWithMappingAttribute_ImplementedClass ()
+    {
+      var type = typeof(ClassImplementingInterfaceWithMappingAttribute);
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(classType: type);
+
+      var validationResult = _validationRule.Validate(typeDefinition).Where(r=>!r.IsValid).ToArray();
+
+      var expectedMessage1 =
+        "The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n\r\n"
+        + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.ClassImplementingInterfaceWithMappingAttribute\r\n"
+        + "Property: Property1";
+      var expectedMessage2 =
+        "The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n\r\n"
+        + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.ClassImplementingInterfaceWithMappingAttribute\r\n"
+        + "Property: Property3";
+      Assert.That(validationResult.Length, Is.EqualTo(2));
+      AssertMappingValidationResult(validationResult[0], false, expectedMessage1);
+      AssertMappingValidationResult(validationResult[1], false, expectedMessage2);
+    }
+
+    [Test]
     public void NonOriginalPropertiesDeclarationWithMappingAttribute_InheritanceRoot ()
     {
       var type = typeof(InheritanceRootDerivedMappingAttributesClass);
