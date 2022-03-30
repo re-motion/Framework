@@ -18,7 +18,6 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation.Logical;
-using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration;
 using Remotion.Reflection;
 
@@ -27,6 +26,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
   [TestFixture]
   public class StorageGroupTypesAreSameWithinInheritanceTreeRuleTest : ValidationRuleTestBase
   {
+    private interface IDomainBase
+    {
+    }
+
+    private interface IOrder : IDomainBase
+    {
+    }
+
+    private class Order : IOrder
+    {
+    }
+
+    private class SpecialOrder : Order
+    {
+    }
+
     private StorageGroupTypesAreSameWithinInheritanceTreeRule _validationRule;
 
     [SetUp]
@@ -36,11 +51,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     }
 
     [Test]
-    public void ClassWithoutBaseClass ()
+    public void ClassWithoutBaseClassOrInterfaces ()
     {
-      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition(
-          classType: typeof(BaseOfBaseValidationDomainObjectClass),
-          storageGroupType: typeof(DBStorageGroupAttribute));
+      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition();
       var validationResult = _validationRule.Validate(typeDefinition);
 
       AssertMappingValidationResult(validationResult, true, null);
@@ -49,9 +62,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void ClassWithBaseClass_ClassesWithoutStorageGroupAttribute ()
     {
-      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass), storageGroupType: null);
+      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(storageGroupType: null);
       var derivedClassDefinition = TypeDefinitionObjectMother.CreateClassDefinition(
-          classType: typeof(BaseOfBaseValidationDomainObjectClass),
           baseClass: baseClassDefinition,
           storageGroupType: null);
 
@@ -64,10 +76,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void ClassWithBaseClass_ClassesWithSameStorageGroupAttribute ()
     {
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(
-          classType: typeof(BaseOfBaseValidationDomainObjectClass),
+          classType: typeof(Order),
           storageGroupType: typeof(DBStorageGroupAttribute));
       var derivedClassDefinition = TypeDefinitionObjectMother.CreateClassDefinition(
-          classType: typeof(BaseOfBaseValidationDomainObjectClass),
+          classType: typeof(SpecialOrder),
           baseClass: baseClassDefinition,
           storageGroupType: typeof(DBStorageGroupAttribute));
 
@@ -80,18 +92,108 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     public void ClassWithBaseClass_ClassesWithDifferentStorageGroupAttribute ()
     {
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(
-          classType: typeof(BaseOfBaseValidationDomainObjectClass),
+          classType: typeof(Order),
           storageGroupType: typeof(DBStorageGroupAttribute));
       var derivedClassDefinition = TypeDefinitionObjectMother.CreateClassDefinition(
-          classType: typeof(BaseValidationDomainObjectClass),
+          classType: typeof(SpecialOrder),
           baseClass: baseClassDefinition,
           storageGroupType: typeof(StubStorageGroup1Attribute));
 
       var validationResult = _validationRule.Validate(derivedClassDefinition);
 
       var expectedMessage =
-          "Class 'BaseValidationDomainObjectClass' must have the same storage group type as its base class 'BaseOfBaseValidationDomainObjectClass'.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.BaseValidationDomainObjectClass";
+          "Class 'SpecialOrder' must have the same storage group type as its base class 'Order'.\r\n\r\n"
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical.StorageGroupTypesAreSameWithinInheritanceTreeRuleTest+SpecialOrder";
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
+    }
+
+    [Test]
+    public void ClassWithImplementedInterface_TypesWithoutStorageGroupAttribute ()
+    {
+      var implementedInterface = InterfaceDefinitionObjectMother.CreateInterfaceDefinition(storageGroupType: null);
+      var derivedClassDefinition = TypeDefinitionObjectMother.CreateClassDefinition(
+          implementedInterfaces: new[] { implementedInterface },
+          storageGroupType: null);
+
+      var validationResult = _validationRule.Validate(derivedClassDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
+    }
+
+    [Test]
+    public void ClassWithImplementedInterface_TypesWithSameStorageGroupAttribute ()
+    {
+      var implementedInterface = InterfaceDefinitionObjectMother.CreateInterfaceDefinition(storageGroupType: typeof(DBStorageGroupAttribute));
+      var derivedClassDefinition = TypeDefinitionObjectMother.CreateClassDefinition(
+          implementedInterfaces: new[] { implementedInterface },
+          storageGroupType: typeof(DBStorageGroupAttribute));
+
+      var validationResult = _validationRule.Validate(derivedClassDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
+    }
+
+    [Test]
+    public void ClassWithImplementedInterface_TypesWithDifferentStorageGroupAttribute ()
+    {
+      var implementedInterface = InterfaceDefinitionObjectMother.CreateInterfaceDefinition(
+          type: typeof(IOrder),
+          storageGroupType: typeof(DBStorageGroupAttribute));
+      var derivedClassDefinition = TypeDefinitionObjectMother.CreateClassDefinition(
+          classType: typeof(Order),
+          implementedInterfaces: new[] { implementedInterface },
+          storageGroupType: typeof(StubStorageGroup1Attribute));
+
+      var validationResult = _validationRule.Validate(derivedClassDefinition);
+
+      var expectedMessage =
+          "Class 'Order' must have the same storage group type as its implemented interface 'IOrder'.\r\n\r\n"
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical.StorageGroupTypesAreSameWithinInheritanceTreeRuleTest+Order";
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
+    }
+
+    [Test]
+    public void InterfaceWithExtendedInterface_TypesWithoutStorageGroupAttribute ()
+    {
+      var extendedInterfaceDefinition = InterfaceDefinitionObjectMother.CreateInterfaceDefinition(storageGroupType: null);
+      var interfaceDefinition = TypeDefinitionObjectMother.CreateInterfaceDefinition(
+          extendedInterfaces: new[] { extendedInterfaceDefinition },
+          storageGroupType: null);
+
+      var validationResult = _validationRule.Validate(interfaceDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
+    }
+
+    [Test]
+    public void InterfaceWithExtendedInterface_TypesWithSameStorageGroupAttribute ()
+    {
+      var extendedInterfaceDefinition = InterfaceDefinitionObjectMother.CreateInterfaceDefinition(storageGroupType: null);
+      var interfaceDefinition = TypeDefinitionObjectMother.CreateInterfaceDefinition(
+          extendedInterfaces: new[] { extendedInterfaceDefinition },
+          storageGroupType: null);
+
+      var validationResult = _validationRule.Validate(interfaceDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
+    }
+
+    [Test]
+    public void InterfaceWithExtendedInterface_TypesWithDifferentStorageGroupAttribute ()
+    {
+      var extendedInterfaceDefinition = InterfaceDefinitionObjectMother.CreateInterfaceDefinition(
+          type: typeof(IDomainBase),
+          storageGroupType: typeof(DBStorageGroupAttribute));
+      var interfaceDefinition = TypeDefinitionObjectMother.CreateInterfaceDefinition(
+          type: typeof(IOrder),
+          extendedInterfaces: new[] { extendedInterfaceDefinition },
+          storageGroupType: typeof(StubStorageGroup1Attribute));
+
+      var validationResult = _validationRule.Validate(interfaceDefinition);
+
+      var expectedMessage =
+          "Interface 'IOrder' must have the same storage group type as its extended interface 'IDomainBase'.\r\n\r\n"
+          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical.StorageGroupTypesAreSameWithinInheritanceTreeRuleTest+IOrder";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
 
@@ -100,7 +202,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     {
       var typeDefinitionForUnresolvedRelationPropertyType = new TypeDefinitionForUnresolvedRelationPropertyType(typeof(string), new NullPropertyInformation());
 
-      Assert.That(() => _validationRule.Validate(typeDefinitionForUnresolvedRelationPropertyType),
+      Assert.That(
+          () => _validationRule.Validate(typeDefinitionForUnresolvedRelationPropertyType),
           Throws.InvalidOperationException.With
               .Message.EqualTo("Only class definitions are supported"));
     }
