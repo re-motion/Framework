@@ -19,8 +19,8 @@
 <remotion:formgridmanager id="FormGridManager" runat="server" visible="true"></remotion:formgridmanager>
 <remotion:BindableObjectDataSourceControl id="CurrentObject" runat="server" Type="Remotion.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes, Remotion.Data.DomainObjects.Web.Test"></remotion:BindableObjectDataSourceControl>
 <P><STRONG><FONT color="#ff3333">Achtung: Auf dieser Seite befinden sich Controls, 
-die mehrfach auf die gleiche Porperty gebunden sind. Dadurch �berschreiben sich 
-diese gegenseitig beim Zur�ckspeichern der Werte. Dies bitte bei Tests 
+die mehrfach auf die gleiche Porperty gebunden sind. Dadurch überschreiben sich
+diese gegenseitig beim Zurückspeichern der Werte. Dies bitte bei Tests
 beachten!</FONT></STRONG></P>
 <TABLE id="FormGrid" cellSpacing="0" cellPadding="0" border="0" runat="server">
   <tr>
