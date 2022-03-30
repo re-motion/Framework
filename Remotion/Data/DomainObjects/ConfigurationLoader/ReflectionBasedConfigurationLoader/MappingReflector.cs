@@ -165,9 +165,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       return new TypeDefinitionValidator(
           new DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule(),
           new DomainObjectTypeIsNotGenericValidationRule(),
-          new InheritanceHierarchyFollowsClassHierarchyValidationRule(),
+          new InheritanceHierarchyFollowsTypeHierarchyValidationRule(),
           new StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule(),
-          new ClassDefinitionTypeIsSubclassOfDomainObjectValidationRule(),
+          new TypeDefinitionTypeIsSubtypeOfDomainObjectValidationRule(),
           new StorageGroupTypesAreSameWithinInheritanceTreeRule(),
           new CheckForClassIDIsValidValidationRule());
     }

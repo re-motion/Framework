@@ -25,20 +25,58 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
   {
     public MappingValidationResult Validate (TypeDefinition typeDefinition)
     {
-      if (typeDefinition is not ClassDefinition classDefinition)
-        throw new InvalidOperationException("Only class definitions are supported"); // TODO R2I Validation: Support interfaces as well
-
-      if (classDefinition.BaseClass == null)
-        return MappingValidationResult.CreateValidResult();
-
-      if (classDefinition.StorageGroupType != classDefinition.BaseClass.StorageGroupType)
+      if (typeDefinition is ClassDefinition classDefinition)
       {
-        var message = "Class '{0}' must have the same storage group type as its base class '{1}'.";
+        return ValidateClassDefinition(classDefinition);
+      }
+      else if (typeDefinition is InterfaceDefinition interfaceDefinition)
+      {
+        return ValidateInterfaceDefinition(interfaceDefinition);
+      }
+      else
+      {
+        throw new InvalidOperationException("Only class definitions are supported");
+      }
+    }
+
+    private static MappingValidationResult ValidateClassDefinition (ClassDefinition classDefinition)
+    {
+      if (classDefinition.BaseClass != null && classDefinition.StorageGroupType != classDefinition.BaseClass.StorageGroupType)
+      {
         return MappingValidationResult.CreateInvalidResultForType(
             classDefinition.Type,
-            message,
+            "Class '{0}' must have the same storage group type as its base class '{1}'.",
             classDefinition.Type.Name,
             classDefinition.BaseClass.Type.Name);
+      }
+
+      foreach (var implementedInterface in classDefinition.ImplementedInterfaces)
+      {
+        if (classDefinition.StorageGroupType != implementedInterface.StorageGroupType)
+        {
+          return MappingValidationResult.CreateInvalidResultForType(
+              classDefinition.Type,
+              "Class '{0}' must have the same storage group type as its implemented interface '{1}'.",
+              classDefinition.Type.Name,
+              implementedInterface.Type.Name);
+        }
+      }
+
+      return MappingValidationResult.CreateValidResult();
+    }
+
+    private static MappingValidationResult ValidateInterfaceDefinition (InterfaceDefinition interfaceDefinition)
+    {
+      foreach (var extendedInterfaces in interfaceDefinition.ExtendedInterfaces)
+      {
+        if (interfaceDefinition.StorageGroupType != extendedInterfaces.StorageGroupType)
+        {
+          return MappingValidationResult.CreateInvalidResultForType(
+              interfaceDefinition.Type,
+              "Interface '{0}' must have the same storage group type as its extended interface '{1}'.",
+              interfaceDefinition.Type.Name,
+              extendedInterfaces.Type.Name);
+        }
       }
 
       return MappingValidationResult.CreateValidResult();
