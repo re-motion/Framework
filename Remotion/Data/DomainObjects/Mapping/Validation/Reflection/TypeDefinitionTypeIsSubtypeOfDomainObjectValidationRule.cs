@@ -20,25 +20,21 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 {
   /// <summary>
-  /// Validates that a class definition type is a sub-class of domain object. 
+  /// Validates that a type definition type is a sub-type of domain object. 
   /// </summary>
-  public class ClassDefinitionTypeIsSubclassOfDomainObjectValidationRule : ITypeDefinitionValidationRule
+  public class TypeDefinitionTypeIsSubtypeOfDomainObjectValidationRule : ITypeDefinitionValidationRule
   {
     public MappingValidationResult Validate (TypeDefinition typeDefinition)
     {
       ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      if (typeDefinition is not ClassDefinition classDefinition) // TODO R2I Validation: for interface support
-        throw new InvalidOperationException("Only class definitions are supported.");
-
-      if (!ReflectionUtility.IsDomainObject(classDefinition.Type))
+      if (!ReflectionUtility.IsDomainObject(typeDefinition.Type))
       {
         return MappingValidationResult.CreateInvalidResultForType(
-            classDefinition.Type,
-            "Type '{0}' of class '{1}' is not assignable to '{2}'.",
-            classDefinition.Type.Name,
-            classDefinition.ID,
-            typeof(DomainObject).Name);
+            typeDefinition.Type,
+            "Type '{0}' is not assignable to '{1}'.",
+            typeDefinition.Type.Name,
+            nameof(IDomainObject));
       }
       return MappingValidationResult.CreateValidResult();
     }

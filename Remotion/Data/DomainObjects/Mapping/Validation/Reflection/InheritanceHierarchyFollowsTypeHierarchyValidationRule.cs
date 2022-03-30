@@ -20,20 +20,32 @@ using Remotion.Reflection;
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 {
   /// <summary>
-  /// Validates that the type of a class defintion is derived from base type.
+  /// Validates that a type definition follows the type hierarchy specified by its type.
   /// </summary>
-  public class InheritanceHierarchyFollowsClassHierarchyValidationRule : ITypeDefinitionValidationRule
+  public class InheritanceHierarchyFollowsTypeHierarchyValidationRule : ITypeDefinitionValidationRule
   {
-    public InheritanceHierarchyFollowsClassHierarchyValidationRule ()
+    public InheritanceHierarchyFollowsTypeHierarchyValidationRule ()
     {
-
     }
 
     public MappingValidationResult Validate (TypeDefinition typeDefinition)
     {
-      if (typeDefinition is not ClassDefinition classDefinition) // TODO R2I Valdiation: Support for interface support
-        throw new InvalidOperationException("Only class definitions are supported.");
+      if (typeDefinition is ClassDefinition classDefinition)
+      {
+        return ValidateClassDefinition(classDefinition);
+      }
+      else if (typeDefinition is InterfaceDefinition interfaceDefinition)
+      {
+        return ValidateInterfaceDefinition(interfaceDefinition);
+      }
+      else
+      {
+        throw new InvalidOperationException("Only class definitions are supported");
+      }
+    }
 
+    private static MappingValidationResult ValidateClassDefinition (ClassDefinition classDefinition)
+    {
       if (classDefinition.BaseClass == null)
         return MappingValidationResult.CreateValidResult();
 
@@ -47,6 +59,24 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
             classDefinition.BaseClass.Type.GetAssemblyQualifiedNameSafe(),
             classDefinition.BaseClass.ID);
       }
+
+      return MappingValidationResult.CreateValidResult();
+    }
+
+    private static MappingValidationResult ValidateInterfaceDefinition (InterfaceDefinition interfaceDefinition)
+    {
+      foreach (var extendedInterface in interfaceDefinition.ExtendedInterfaces)
+      {
+        if (!extendedInterface.Type.IsAssignableFrom(interfaceDefinition.Type))
+        {
+          return MappingValidationResult.CreateInvalidResultForType(
+              extendedInterface.Type,
+              "Type '{0}' does not extend interface '{1}'.",
+              interfaceDefinition.Type.GetAssemblyQualifiedNameSafe(),
+              extendedInterface.Type.GetAssemblyQualifiedNameSafe());
+        }
+      }
+
       return MappingValidationResult.CreateValidResult();
     }
   }
