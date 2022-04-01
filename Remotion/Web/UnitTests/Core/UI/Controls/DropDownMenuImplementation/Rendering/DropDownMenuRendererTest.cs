@@ -124,9 +124,35 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     }
 
     [Test]
-    public void RenderMenuWithHiddenTitle ()
+    public void RenderMenuWithHiddenTitleAndOnlyText ()
     {
       _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.ShowTitle).Returns(false);
+
+      PopulateMenu();
+
+      XmlNode containerDiv = GetAssertedContainerSpan();
+      AssertTitleSpanWithHiddenTitle(containerDiv, true, false);
+    }
+
+    [Test]
+    public void RenderMenuWithHiddenTitleAndOnlyIcon ()
+    {
+      _control.Setup(stub => stub.TitleText).Returns(WebString.Empty);
+      _control.Setup(stub => stub.TitleIcon).Returns(s_titleIcon);
+      _control.Setup(stub => stub.ShowTitle).Returns(false);
+
+      PopulateMenu();
+
+      XmlNode containerDiv = GetAssertedContainerSpan();
+      AssertTitleSpanWithHiddenTitle(containerDiv, false, true);
+    }
+
+    [Test]
+    public void RenderMenuWithHiddenTitleAndTextAndIcon ()
+    {
+      _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.TitleIcon).Returns(s_titleIcon);
       _control.Setup(stub => stub.ShowTitle).Returns(false);
 
       PopulateMenu();

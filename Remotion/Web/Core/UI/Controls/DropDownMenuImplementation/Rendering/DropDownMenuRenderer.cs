@@ -163,7 +163,8 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       }
       else if (HasTitleIcon(renderingContext))
       {
-        renderingContext.Writer.Write(renderingContext.Control.TitleIcon!.AlternateText);
+        var titleIconDescription = WebString.CreateFromText(renderingContext.Control.TitleIcon!.AlternateText);
+        titleIconDescription.WriteTo(renderingContext.Writer);
       }
 
       renderingContext.Writer.RenderEndTag();
