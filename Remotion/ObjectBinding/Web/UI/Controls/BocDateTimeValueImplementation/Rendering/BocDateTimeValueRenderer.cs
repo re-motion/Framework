@@ -437,7 +437,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
       var descriptionLabelID = label.AssociatedControlID;
       label.AssociatedControlID = null;
-      var descriptionLabelText = label.ToolTip;
+      var descriptionLabelText = WebString.CreateFromText(label.ToolTip);
       label.ToolTip = null;
 
       var controlLabelIDs = renderingContext.Control.GetLabelIDs().ToArray();
@@ -458,7 +458,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, descriptionLabelID);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
-        renderingContext.Writer.Write(descriptionLabelText);
+        descriptionLabelText.WriteTo(renderingContext.Writer);
         renderingContext.Writer.RenderEndTag();
       }
 
