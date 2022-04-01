@@ -219,20 +219,19 @@ public class ValidationStateViewer : WebControl, IControl
           for (int idxErrorLabels = 0; idxErrorLabels < validationError.Labels.Count; idxErrorLabels++)
           {
             Control control = (Control)validationError.Labels[idxErrorLabels];
-            string text = string.Empty;
+            WebString text;
             if (control is SmartLabel)
-              text = ((SmartLabel)control).GetText().ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
+              text = ((SmartLabel)control).GetText();
             else if (control is FormGridLabel)
-              text = ((FormGridLabel)control).Text.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
+              text = ((FormGridLabel)control).Text;
             else if (control is Label)
-              text = ((Label)control).Text;
+              text = WebString.CreateFromHtml(((Label)control).Text);
             else if (control is LiteralControl)
-              text = ((LiteralControl)control).Text;
+              text = WebString.CreateFromHtml(((LiteralControl)control).Text);
+            else
+              text = WebString.Empty;
 
-            text = text ?? string.Empty;
-            // Do not HTML enocde.
-            writer.Write(text);
-
+            text.WriteTo(writer);
           }
           writer.RenderEndTag();
         }
