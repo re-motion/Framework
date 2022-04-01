@@ -38,9 +38,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
   [TestFixture]
   public class DropDownMenuRendererTest : RendererTestBase
   {
-    private const string c_MenuTitle = "MenuTitle";
+    private const string c_MenuTitle = "Menu&Title";
     private const string c_Icon_Url = "/Image/icon.gif";
-    private const string c_IconAlternateText = "Icon_AlternateText";
+    private const string c_IconAlternateText = "Icon_&AlternateText";
     private const string c_Icon_ToolTip = "Icon_ToolTip";
 
     private static readonly Unit s_iconWidth = Unit.Pixel(16);
@@ -224,8 +224,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       }
       else
       {
-        titleBody.AssertTextNode(c_MenuTitle, 0);
-        titleBody.AssertTextNode("c_IconAlternateText", 0);
+        titleBody.AssertTextNode(c_IconAlternateText, 0);
       }
     }
 
