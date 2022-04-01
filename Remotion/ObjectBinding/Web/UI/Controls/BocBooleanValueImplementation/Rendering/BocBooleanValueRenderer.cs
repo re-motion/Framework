@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
@@ -326,7 +327,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       labelControl.Text = description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
       if (!renderingContext.Control.ShowDescription)
       {
-        linkControl.ToolTip = description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
+        linkControl.ToolTip = description.Type == WebStringType.PlainText ? description.GetValue() : HttpUtility.HtmlDecode(description.GetValue());
         labelControl.Attributes.Add(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
       }
 

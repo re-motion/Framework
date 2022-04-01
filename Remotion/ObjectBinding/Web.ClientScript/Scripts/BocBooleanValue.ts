@@ -104,7 +104,7 @@ class BocBooleanValue_Resource
     icon.src = iconSrc!;
     if (label == null)
     {
-      link.title = description!;
+      link.title = StringUtility.GetPlainTextFromHtml(description!);
     }
     else
     {
