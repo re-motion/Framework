@@ -18,6 +18,7 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -84,6 +85,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
+    public void RenderEditTextWebString ()
+    {
+      Column.EditText = WebString.CreateFromText("Multiline\nEdit");
+      IBocColumnRenderer renderer = new BocRowEditModeColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.Default,
+          _bocListCssClassDefinition);
+
+      EventArgs = new BocListDataRowRenderEventArgs(EventArgs.ListIndex, EventArgs.BusinessObject, true, EventArgs.IsOddRow);
+
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+
+      var document = Html.GetResultDocument();
+      var editTest = document.GetAssertedElementByID(List.Object.ClientID + "_Column_0_RowEditCommand_Edit_Row_10");
+      Assert.That(editTest.InnerXml, Is.EqualTo("Multiline<br />Edit"));
+    }
+
+    [Test]
     public void RenderEditing ()
     {
       Mock.Get(List.Object.EditModeController).Setup(mock => mock.GetEditableRow(10)).Returns(new Mock<IEditableRow>().Object);
@@ -110,6 +129,27 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(cancel, "href", "#");
       Html.AssertAttribute(cancel, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
       Html.AssertTextNode(cancel, "Abbrechen", 0);
+    }
+
+    [Test]
+    public void RenderSaveTextAndCancelTextWebString ()
+    {
+      Column.SaveText = WebString.CreateFromText("Multiline\nSave");
+      Column.CancelText = WebString.CreateFromText("Multiline\nCancel");
+      Mock.Get(List.Object.EditModeController).Setup(mock => mock.GetEditableRow(10)).Returns(new Mock<IEditableRow>().Object);
+
+      IBocColumnRenderer renderer = new BocRowEditModeColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.Default,
+          _bocListCssClassDefinition);
+      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+
+      var document = Html.GetResultDocument();
+      var id = List.Object.ClientID;
+      var saveText = document.GetAssertedElementByID(List.Object.ClientID + "_Column_0_RowEditCommand_Save_Row_10");
+      Assert.That(saveText.InnerXml, Is.EqualTo("Multiline<br />Save"));
+      var cancelText = document.GetAssertedElementByID(List.Object.ClientID + "_Column_0_RowEditCommand_Cancel_Row_10");
+      Assert.That(cancelText.InnerXml, Is.EqualTo("Multiline<br />Cancel"));
     }
 
     [Test]

@@ -94,6 +94,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(th, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, 1.ToString());
     }
 
+    [Test]
+    public void RenderIndexColumnTitleWebString ()
+    {
+      List.Setup(mock => mock.IndexColumnTitle).Returns(WebString.CreateFromText("Multiline\nTitle"));
+
+      IBocIndexColumnRenderer renderer = new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
+      renderer.RenderTitleCell(CreateRenderingContext());
+
+      var document = Html.GetResultDocument();
+
+      var title = document.SelectSingleNode("/th/span");
+      Assert.That(title.InnerXml, Is.EqualTo("Multiline<br />Title"));
+    }
+
     private void RenderIndexDataCell (int indexOffset)
     {
       IBocIndexColumnRenderer renderer = new BocIndexColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);

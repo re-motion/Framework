@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls
@@ -52,6 +53,18 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var documentText = _htmlHelper.GetDocumentText();
       Assert.That(documentText, Does.Contain("My &lt;Title&gt;"));
+    }
+
+    [Test]
+    [Ignore("RM-8435")]
+    public void Render_ReplacesNewlines ()
+    {
+      var titleTag = new TitleTag(WebString.CreateFromText("My\nTitle"));
+
+      titleTag.Render(_htmlHelper.Writer);
+
+      var document = _htmlHelper.GetResultDocument();
+      document.FirstChild.AssertTextNode("My Title", 0);
     }
   }
 }

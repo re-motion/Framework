@@ -23,6 +23,7 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -191,6 +192,23 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(tr, "role", "row");
 
       Html.GetAssertedChildElement(tr, "td", 0);
+    }
+
+    [Test]
+    public void RenderEmptyDataRowEmptyListMessageWebString ()
+    {
+      List.Setup(mock => mock.EmptyListMessage).Returns(WebString.CreateFromText("Multiline\nEmptyListMessage"));
+
+      IBocRowRenderer renderer = new BocRowRenderer(
+          _bocListCssClassDefinition,
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          RenderingFeatures.Default);
+      renderer.RenderEmptyListDataRow(CreateRenderingContext());
+
+      var document = Html.GetResultDocument();
+      var messageElement = document.SelectSingleNode("/tr/td");
+      Assert.That(messageElement.InnerXml, Is.EqualTo("Multiline<br />EmptyListMessage"));
     }
 
     [Test]
