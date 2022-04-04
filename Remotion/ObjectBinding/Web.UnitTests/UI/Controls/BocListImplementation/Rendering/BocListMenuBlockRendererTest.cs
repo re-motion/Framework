@@ -19,6 +19,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web;
@@ -64,6 +65,25 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertTextNode(span, "Views List Title", 0);
 
       Html.AssertTextNode(div, HtmlHelper.WhiteSpace + "mocked dropdown list", 1);
+    }
+
+    [Test]
+    public void RenderAvailableViewsListTitleWebString ()
+    {
+      var dropDownList = new Mock<DropDownList>();
+      List.Setup(mock => mock.GetAvailableViewsList()).Returns(dropDownList.Object);
+      List.Setup(mock => mock.HasAvailableViewsList).Returns(true);
+      List.Setup(mock => mock.AvailableViewsListTitle).Returns(WebString.CreateFromText("Multiline\nTitle"));
+
+      dropDownList.Setup(mock => mock.ClientID).Returns("MockedDropDownListClientID");
+      dropDownList.Setup(mock => mock.RenderControl(Html.Writer)).Callback((HtmlTextWriter writer) => writer.Write("mocked dropdown list"));
+
+      var renderer = new BocListMenuBlockRenderer(_bocListCssClassDefinition);
+      renderer.Render(CreateRenderingContext());
+
+      var document = Html.GetResultDocument();
+      var title = document.GetAssertedElementByClass(_bocListCssClassDefinition.AvailableViewsListLabel);
+      Assert.That(title.InnerXml, Is.EqualTo("Multiline<br />Title"));
     }
 
     [Test]

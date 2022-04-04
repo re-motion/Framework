@@ -31,6 +31,11 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
                                       "    </InnerElement1>" +
                                       "    MidLevelTextContent" +
                                       "    <InnerElement2>InnerElement2TextContent</InnerElement2>" +
+                                      "    <InnerElement3 id='SomeID'></InnerElement3>" +
+                                      "    <InnerElement4 class='foo SomeClass'></InnerElement4>" +
+                                      "    <InnerElement5 class='SomeClass'></InnerElement5>" +
+                                      "    <InnerElement6 id='foo'></InnerElement6>" +
+                                      "    <InnerElement7 id='foo'></InnerElement7>" +
                                       "  </MidLevelElement>" +
                                       "</TopLevelElement>";
 
@@ -181,7 +186,7 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
       _htmlHelper.AssertChildElementCount(topLevelElement, 1);
 
       var midLevelElement = topLevelElement.ChildNodes[0];
-      _htmlHelper.AssertChildElementCount(midLevelElement, 2);
+      _htmlHelper.AssertChildElementCount(midLevelElement, 7);
 
       var innerElement1 = midLevelElement.ChildNodes[0];
       _htmlHelper.AssertChildElementCount(innerElement1, 0);
@@ -197,7 +202,7 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
           () => _htmlHelper.AssertChildElementCount(midLevelElement, 3),
           Throws.Exception
               .With.Message.EqualTo(
-                  "Element 'MidLevelElement' has 2 child elements instead of the expected 3."));
+                  "Element 'MidLevelElement' has 7 child elements instead of the expected 3."));
     }
 
     [Test]
@@ -362,6 +367,56 @@ namespace Remotion.Development.UnitTests.Web.UnitTesting.UI.Controls.Rendering
           () => _htmlHelper.AssertTextNode(midLevelElement, "OtherTextContent", 1),
           Throws.Exception
               .With.Message.EqualTo("Unexpected text node content."));
+    }
+
+    [Test]
+    public void Succeed_GetAssertedElementByID ()
+    {
+      var document = _htmlHelper.GetResultDocument();
+
+      var element = _htmlHelper.GetAssertedElementByID(document, "SomeID");
+
+      Assert.That(element.Name, Is.EqualTo("InnerElement3"));
+    }
+
+    [Test]
+    public void Succeed_GetAssertedElementByClass ()
+    {
+      var document = _htmlHelper.GetResultDocument();
+
+      var element = _htmlHelper.GetAssertedElementByClass(document, "SomeClass", 0);
+
+      Assert.That(element.Name, Is.EqualTo("InnerElement4"));
+    }
+
+    [Test]
+    public void Succeed_GetAssertedElementByClass_WithIndex ()
+    {
+      var document = _htmlHelper.GetResultDocument();
+
+      var element = _htmlHelper.GetAssertedElementByClass(document, "SomeClass", 1);
+
+      Assert.That(element.Name, Is.EqualTo("InnerElement5"));
+    }
+
+    [Test]
+    public void Fail_GetAssertedElementByID_DuplicateID ()
+    {
+      var document = _htmlHelper.GetResultDocument();
+
+      Assert.That(
+          () => _htmlHelper.GetAssertedElementByID(document, "foo"),
+          Throws.Exception.With.Message.EqualTo("2 elements were found for the ID 'foo', but exactly one element was expected."));
+    }
+
+    [Test]
+    public void Fail_GetAssertedElementByClass_IndexExceedsCount ()
+    {
+      var document = _htmlHelper.GetResultDocument();
+
+      Assert.That(
+          () => _htmlHelper.GetAssertedElementByClass(document, "SomeClass", 2),
+          Throws.Exception.With.Message.EqualTo("Node #document has only 2 nested elements with a class matching 'SomeClass' - index 2 out of range."));
     }
   }
 }

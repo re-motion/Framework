@@ -300,12 +300,60 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     }
 
     [Test]
+    public void RenderTrueDescriptionWebString ()
+    {
+      _booleanValue.Setup(mock => mock.Enabled).Returns(true);
+      _booleanValue.Object.Value = true;
+      _booleanValue.Setup(mock => mock.TrueDescription).Returns(WebString.CreateFromText("Multiline\nTrue"));
+
+      var document = RenderBocBooleanValue();
+
+      var label = document.GetAssertedElementByID(c_clientID + "_Description");
+      Assert.That(label.InnerXml, Is.EqualTo("Multiline<br />True"));
+    }
+
+    [Test]
+    public void RenderFalseDescriptionWebString ()
+    {
+      _booleanValue.Setup(mock => mock.Enabled).Returns(true);
+      _booleanValue.Object.Value = false;
+      _booleanValue.Setup(mock => mock.FalseDescription).Returns(WebString.CreateFromText("Multiline\nFalse"));
+
+      var document = RenderBocBooleanValue();
+
+      var label = document.GetAssertedElementByID(c_clientID + "_Description");
+      Assert.That(label.InnerXml, Is.EqualTo("Multiline<br />False"));
+    }
+
+    [Test]
+    public void RenderNullDescriptionWebString ()
+    {
+      _booleanValue.Setup(mock => mock.Enabled).Returns(true);
+      _booleanValue.Object.Value = null;
+      _booleanValue.Setup(mock => mock.NullDescription).Returns(WebString.CreateFromText("Multiline\nNull"));
+
+      var document = RenderBocBooleanValue();
+
+      var label = document.GetAssertedElementByID(c_clientID + "_Description");
+      Assert.That(label.InnerXml, Is.EqualTo("Multiline<br />Null"));
+    }
+
+    [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
       _booleanValue.Setup(mock => mock.IsRequired).Returns(false);
       _booleanValue.Setup(mock => mock.IsAutoPostBackEnabled).Returns(true);
       _booleanValue.Object.Value = true;
 
+      var document = RenderBocBooleanValue();
+      var outerSpan = Html.GetAssertedChildElement(document, "span", 0);
+      Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributes.ControlType, "BocBooleanValue");
+      Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributes.TriggersPostBack, "true");
+      Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributesForObjectBinding.BocBooleanValueIsTriState, "true");
+    }
+
+    private XmlDocument RenderBocBooleanValue ()
+    {
       var resourceUrlFactory = new FakeResourceUrlFactory();
       _renderer = new BocBooleanValueRenderer(
           resourceUrlFactory,
@@ -316,11 +364,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           new StubValidationErrorRenderer());
       _renderer.Render(new BocBooleanValueRenderingContext(HttpContext, Html.Writer, _booleanValue.Object));
 
-      var document = Html.GetResultDocument();
-      var outerSpan = Html.GetAssertedChildElement(document, "span", 0);
-      Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributes.ControlType, "BocBooleanValue");
-      Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributes.TriggersPostBack, "true");
-      Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributesForObjectBinding.BocBooleanValueIsTriState, "true");
+      return Html.GetResultDocument();
     }
 
     private void CheckRendering (string checkedState, string value, string iconUrl, WebString description)

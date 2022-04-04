@@ -236,6 +236,32 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     }
 
     [Test]
+    public void RenderDefaultTrueDescriptionWebString ()
+    {
+      _checkbox.Object.Value = true;
+      _checkbox.Setup(_ => _.DefaultTrueDescription).Returns(WebString.CreateFromText("Multiline\nDefaultTrue"));
+      _checkbox.Setup(_ => _.TrueDescription).Returns(WebString.Empty);
+
+      var document = Render();
+
+      var description = document.GetAssertedElementByID(c_clientID  + "_Description");
+      Assert.That(description.InnerXml, Is.EqualTo("Multiline<br />DefaultTrue"));
+    }
+
+    [Test]
+    public void RenderDefaultFalseDescriptionWebString ()
+    {
+      _checkbox.Object.Value = false;
+      _checkbox.Setup(_ => _.DefaultFalseDescription).Returns(WebString.CreateFromText("Multiline\nDefaultFalse"));
+      _checkbox.Setup(_ => _.FalseDescription).Returns(WebString.Empty);
+
+      var document = Render();
+
+      var description = document.GetAssertedElementByID(c_clientID  + "_Description");
+      Assert.That(description.InnerXml, Is.EqualTo("Multiline<br />DefaultFalse"));
+    }
+
+    [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
       _checkbox.Setup(mock => mock.IsAutoPostBackEnabled).Returns(true);
@@ -260,15 +286,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _checkbox.Object.Value = value;
 
-      _renderer = new BocCheckBoxRenderer(
-          new FakeResourceUrlFactory(),
-          GlobalizationService,
-          RenderingFeatures.Default,
-          new StubLabelReferenceRenderer(),
-          new StubValidationErrorRenderer());
-      _renderer.Render(new BocCheckBoxRenderingContext(HttpContext, Html.Writer, _checkbox.Object));
-
-      var document = Html.GetResultDocument();
+      var document = Render();
 
       var outerSpan = Html.GetAssertedChildElement(document, "span", 0);
       CheckCssClass(outerSpan);
@@ -310,6 +328,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       {
         Html.AssertChildElementCount(outerSpan, 2);
       }
+    }
+
+    private XmlDocument Render ()
+    {
+      _renderer = new BocCheckBoxRenderer(
+          new FakeResourceUrlFactory(),
+          GlobalizationService,
+          RenderingFeatures.Default,
+          new StubLabelReferenceRenderer(),
+          new StubValidationErrorRenderer());
+      _renderer.Render(new BocCheckBoxRenderingContext(HttpContext, Html.Writer, _checkbox.Object));
+
+      return Html.GetResultDocument();
     }
 
     private void AssertValidationErrors (XmlNode node)

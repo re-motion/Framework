@@ -119,6 +119,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
+    public void RenderColumnTitleWebString ()
+    {
+      Column.ColumnTitle = WebString.CreateFromText("Multiline\nColumnTitle");
+
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      var renderingContext = CreateRenderingContext();
+      renderer.RenderTitleCell(renderingContext, SortingDirection.None, -1);
+
+      var document = Html.GetResultDocument();
+      var title = document.GetAssertedElementByID(List.Object.ClientID + "_0_Title");
+      Assert.That(title.InnerXml, Is.EqualTo("Multiline<br />ColumnTitle"));
+    }
+
+    [Test]
     public void RenderSortableTitleCellWithHiddenTitleText ()
     {
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);

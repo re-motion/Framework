@@ -194,6 +194,19 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       GetAssertedContainerSpan(ButtonType.Supplemental);
     }
 
+    [Test]
+    public void RenderWebStrings ()
+    {
+      _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText("Multiline\nTitle"));
+
+      var node = GetAssertedContainerSpan();
+
+      var titleNode = node.GetAssertedElementByID("DropDownMenu1_DropDownMenuLabel");
+      Assert.That(titleNode.InnerXml, Is.EqualTo("Multiline<br />Title"));
+      var select = node.GetAssertedElementByClass("DropDownMenuSelect");
+      select.AssertAttributeValueEquals("title", "Multiline\nTitle");
+    }
+
     private void AssertTitleSpan (XmlNode containerDiv, bool withTitle, bool withIcon)
     {
       var hasTitle = withTitle || withIcon;
