@@ -38,9 +38,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
   [TestFixture]
   public class DropDownMenuRendererTest : RendererTestBase
   {
-    private const string c_MenuTitle = "MenuTitle";
+    private const string c_MenuTitle = "Menu&Title";
     private const string c_Icon_Url = "/Image/icon.gif";
-    private const string c_IconAlternateText = "Icon_AlternateText";
+    private const string c_IconAlternateText = "Icon_&AlternateText";
     private const string c_Icon_ToolTip = "Icon_ToolTip";
 
     private static readonly Unit s_iconWidth = Unit.Pixel(16);
@@ -124,9 +124,35 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     }
 
     [Test]
-    public void RenderMenuWithHiddenTitle ()
+    public void RenderMenuWithHiddenTitleAndOnlyText ()
     {
       _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.ShowTitle).Returns(false);
+
+      PopulateMenu();
+
+      XmlNode containerDiv = GetAssertedContainerSpan();
+      AssertTitleSpanWithHiddenTitle(containerDiv, true, false);
+    }
+
+    [Test]
+    public void RenderMenuWithHiddenTitleAndOnlyIcon ()
+    {
+      _control.Setup(stub => stub.TitleText).Returns(WebString.Empty);
+      _control.Setup(stub => stub.TitleIcon).Returns(s_titleIcon);
+      _control.Setup(stub => stub.ShowTitle).Returns(false);
+
+      PopulateMenu();
+
+      XmlNode containerDiv = GetAssertedContainerSpan();
+      AssertTitleSpanWithHiddenTitle(containerDiv, false, true);
+    }
+
+    [Test]
+    public void RenderMenuWithHiddenTitleAndTextAndIcon ()
+    {
+      _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.TitleIcon).Returns(s_titleIcon);
       _control.Setup(stub => stub.ShowTitle).Returns(false);
 
       PopulateMenu();
@@ -224,8 +250,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       }
       else
       {
-        titleBody.AssertTextNode(c_MenuTitle, 0);
-        titleBody.AssertTextNode("c_IconAlternateText", 0);
+        titleBody.AssertTextNode(c_IconAlternateText, 0);
       }
     }
 
