@@ -346,7 +346,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
           smartFocusFieldID = "'" + c_smartFocusID + "'";
       }
 
-      string isDirtyStateTrackingEnabled = "false";
+      string isAbortConfirmationRequiredIndependentOfDirtyState = "true";
 
       StringBuilder initScript = new StringBuilder(500);
       StringBuilder startupScript = new StringBuilder(500);
@@ -367,7 +367,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       if (_page.IsDirtyStateTrackingEnabled)
       {
-        isDirtyStateTrackingEnabled = "true";
+        isAbortConfirmationRequiredIndependentOfDirtyState = "false";
         bool isDirtyOnServerSide = false;
         foreach (var dirtyState in _page.GetDirtyStates())
         {
@@ -392,7 +392,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       initScript.AppendLine("    SmartPage_Context.Instance = new SmartPage_Context (");
       initScript.Append("        '").Append(htmlForm.ClientID).AppendLine("',");
-      initScript.Append("        ").Append(isDirtyStateTrackingEnabled).AppendLine(",");
+      initScript.Append("        ").Append(isAbortConfirmationRequiredIndependentOfDirtyState).AppendLine(",");
       initScript.Append("        ").Append(abortMessage).AppendLine(",");
       initScript.Append("        ").Append(statusIsSubmittingMessage).AppendLine(",");
       initScript.Append("        ").Append(smartScrollingFieldID).AppendLine(",");
