@@ -218,21 +218,17 @@ public class ValidationStateViewer : WebControl, IControl
           writer.RenderBeginTag(HtmlTextWriterTag.Td);
           for (int idxErrorLabels = 0; idxErrorLabels < validationError.Labels.Count; idxErrorLabels++)
           {
-            Control control = (Control)validationError.Labels[idxErrorLabels];
-            string text = string.Empty;
-            if (control is SmartLabel)
-              text = ((SmartLabel)control).GetText().ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
-            else if (control is FormGridLabel)
-              text = ((FormGridLabel)control).Text.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
-            else if (control is Label)
-              text = ((Label)control).Text;
-            else if (control is LiteralControl)
-              text = ((LiteralControl)control).Text;
+            var control = validationError.Labels[idxErrorLabels];
+            var text = control switch
+            {
+                SmartLabel label => label.GetText(),
+                FormGridLabel label => label.Text,
+                Label label => WebString.CreateFromHtml(label.Text),
+                LiteralControl literalControl => WebString.CreateFromHtml(literalControl.Text),
+                _ => WebString.Empty
+            };
 
-            text = text ?? string.Empty;
-            // Do not HTML enocde.
-            writer.Write(text);
-
+            text.WriteTo(writer);
           }
           writer.RenderEndTag();
         }
