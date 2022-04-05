@@ -20,6 +20,7 @@ declare class TypeUtility {
 }
 declare class StringUtility {
     static IsNullOrEmpty(value: Nullable<string>): value is null | "";
+    static GetPlainTextFromHtml(value: string): string;
 }
 declare class ArgumentUtility {
     static CheckNotNull(name: string, value: unknown): asserts value is NotNull;

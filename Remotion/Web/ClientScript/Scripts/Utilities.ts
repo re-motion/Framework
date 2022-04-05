@@ -88,6 +88,12 @@ class StringUtility
       ArgumentUtility.CheckTypeIsString('value', value);
       return TypeUtility.IsNull(value) || value.length == 0;
   };
+
+  public static GetPlainTextFromHtml (value: string): string
+  {
+    let domParser = new DOMParser();
+    return domParser.parseFromString(value, "text/html").documentElement.innerText;
+  };
 }
 
 
