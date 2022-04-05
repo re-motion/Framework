@@ -39,7 +39,7 @@ namespace Web.Development.Analyzers
         IReadOnlyCollection<IMethodSymbol> StringFormatMethodSymbols,
         IReadOnlyCollection<IMethodSymbol> StringConcatMethodSymbols);
 
-    public static readonly DiagnosticDescriptor DiagnosticDescriptor = new(
+    public static readonly DiagnosticDescriptor DiagnosticDescriptor = new DiagnosticDescriptor(
         "RMWEB0001",
         "Wrong WebString or PlainTextString usage",
         "'{0}' should not be used with a '{1}' argument. {2}",
