@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       string[] actual = _control.GetTrackedClientIDs();
       Assert.That(actual, Is.Not.Null);
       Assert.That(actual.Length, Is.EqualTo(1));
-      Assert.That(actual[0], Is.EqualTo(((IBocAutoCompleteReferenceValue)_control).GetTextValueName()));
+      Assert.That(actual[0], Is.EqualTo(((IBocAutoCompleteReferenceValue)_control).GetKeyValueName()));
     }
 
     [Test]
