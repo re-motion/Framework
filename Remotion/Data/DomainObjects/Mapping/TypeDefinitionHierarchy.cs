@@ -63,6 +63,20 @@ namespace Remotion.Data.DomainObjects.Mapping
     }
 
     /// <summary>
+    /// Returns the hierarchy roots of the specified <paramref name="typeDefinitions"/>, using a depth-first approach.
+    /// </summary>
+    public static IReadOnlyList<ClassDefinition> GetClassHierarchyRoots (IEnumerable<TypeDefinition> typeDefinitions)
+    {
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
+
+      var classInheritanceRootsCollector = new ClassInheritanceRootsCollector();
+      foreach (var typeDefinition in typeDefinitions)
+        typeDefinition.Accept(classInheritanceRootsCollector);
+
+      return classInheritanceRootsCollector.ToArray();
+    }
+
+    /// <summary>
     /// Returns the hierarchy (self and descendants) of the specified <paramref name="typeDefinition"/>, using a depth-first approach.
     /// </summary>
     /// <remarks>
@@ -112,6 +126,37 @@ namespace Remotion.Data.DomainObjects.Mapping
           _collectedTypeDefinitions.Add(interfaceDefinition);
 
         base.VisitInterfaceDefinition(interfaceDefinition);
+      }
+    }
+
+    private class ClassInheritanceRootsCollector : TypeDefinitionWalker
+    {
+      private readonly HashSet<TypeDefinition> _visitedTypeDefinitions = new();
+      private readonly List<ClassDefinition> _collectedClassDefinitions = new();
+
+      public IReadOnlyList<ClassDefinition> ToArray () => _collectedClassDefinitions.ToArray();
+
+      public ClassInheritanceRootsCollector ()
+          : base(TypeDefinitionWalkerDirection.Ascendants)
+      {
+      }
+
+      /// <inheritdoc />
+      public override void VisitClassDefinition (ClassDefinition classDefinition)
+      {
+        if (!_visitedTypeDefinitions.Add(classDefinition))
+          return;
+
+        if (classDefinition.BaseClass == null)
+          _collectedClassDefinitions.Add(classDefinition);
+
+        base.VisitClassDefinition(classDefinition);
+      }
+
+      /// <inheritdoc />
+      public override void VisitInterfaceDefinition (InterfaceDefinition interfaceDefinition)
+      {
+        // We ignore interfaces as they are always above classes and thus irrelevant for finding class inheritance roots
       }
     }
 
