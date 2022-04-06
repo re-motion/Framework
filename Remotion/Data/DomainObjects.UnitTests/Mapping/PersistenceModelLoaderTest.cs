@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           .Setup(stub => stub.GetStorageProviderDefinition(_classDefinition, null))
           .Returns(new UnitTestStorageProviderStubDefinition("DefaultStorageProvider"));
 
-      _persistenceModelLoader.ApplyPersistenceModelToHierarchy(_classDefinition);
+      _persistenceModelLoader.ApplyPersistenceModel(new[] { _classDefinition });
 
       Assert.That(_classDefinition.HasStorageEntityDefinitionBeenSet, Is.True);
       Assert.That(_classDefinition.StorageEntityDefinition, Is.Not.Null);

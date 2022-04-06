@@ -86,19 +86,28 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
           new RelationPropertyStorageClassMatchesReferencedTypeDefinitionStorageClassValidationRule());
     }
 
-    public void ApplyPersistenceModelToHierarchy (TypeDefinition typeDefinition)
+    public void ApplyPersistenceModel (IEnumerable<TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
+      var classHierarchyRoots = TypeDefinitionHierarchy.GetClassHierarchyRoots(typeDefinitions);
+      foreach (var classHierarchyRoot in classHierarchyRoots)
+        ApplyPersistenceModelToHierarchy(classHierarchyRoot);
+
+      // TODO R2I Persistence: Add support for interfaces
+    }
+
+    private void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
+    {
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       InlineTypeDefinitionWalker.WalkDescendants(
-          typeDefinition,
+          classDefinition,
           EnsureStoragePropertiesCreated,
-          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported.")); // TODO R2I Linq: Add support for interfaces
+          interfaceDefinition => throw new InvalidOperationException("Interfaces are not expected.")); // TODO R2I Linq: Add support for interfaces
 
       InlineTypeDefinitionWalker.WalkDescendants(
-          typeDefinition,
+          classDefinition,
           EnsureStorageEntitiesCreated,
-          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported.")); // TODO R2I Linq: Add support for interfaces
+          interfaceDefinition => throw new InvalidOperationException("Interfaces are not expected.")); // TODO R2I Linq: Add support for interfaces
     }
 
     private void EnsureStorageEntitiesCreated (TypeDefinition typeDefinition)

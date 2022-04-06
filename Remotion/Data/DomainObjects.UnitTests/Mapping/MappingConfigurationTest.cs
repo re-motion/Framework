@@ -249,8 +249,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var persistenceModelLoaderMock = new Mock<IPersistenceModelLoader>(MockBehavior.Strict);
       persistenceModelLoaderMock
-          .Setup(mock => mock.ApplyPersistenceModelToHierarchy(classDefinition))
-          .Callback((TypeDefinition classDefinition) => classDefinition.SetStorageEntity(TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition)))
+          .Setup(mock => mock.ApplyPersistenceModel(new[] { classDefinition }))
+          .Callback(CreateSetStorageDefinitionCallback(TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition)))
           .Verifiable();
       persistenceModelLoaderMock
           .Setup(mock => mock.CreatePersistenceMappingValidator(classDefinition))
@@ -285,22 +285,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public void PersistenceModelIsLoaded_NoStoragePropertyIsAppliedToTheRootClassProperty ()
     {
       var fakeStorageEntityDefinition = _fakeStorageEntityDefinition;
-      var typeDefinition = TypeDefinitionObjectMother.CreateClassDefinition("Order", typeof(Order));
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(typeDefinition, "Fake");
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Order", typeof(Order));
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "Fake");
       PrivateInvoke.SetNonPublicField(propertyDefinition, "_storagePropertyDefinition", null);
 
-      typeDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
 
-      Assert.That(typeDefinition.HasStorageEntityDefinitionBeenSet, Is.False);
+      Assert.That(classDefinition.HasStorageEntityDefinitionBeenSet, Is.False);
       Assert.That(propertyDefinition.HasStoragePropertyDefinitionBeenSet, Is.False);
 
       var persistenceModelStub = new Mock<IPersistenceModelLoader>();
 
-      StubMockMappingLoader(new[] { typeDefinition }, new RelationDefinition[0]);
+      StubMockMappingLoader(new[] { classDefinition }, new RelationDefinition[0]);
 
       persistenceModelStub
-          .Setup(stub => stub.ApplyPersistenceModelToHierarchy(typeDefinition))
-          .Callback((TypeDefinition classDefinition) => classDefinition.SetStorageEntity(fakeStorageEntityDefinition));
+          .Setup(stub => stub.ApplyPersistenceModel(new[] { classDefinition }))
+          .Callback(CreateSetStorageDefinitionCallback(fakeStorageEntityDefinition));
       Assert.That(
           () => new MappingConfiguration(_mockMappingLoader.Object, persistenceModelStub.Object),
           Throws.InvalidOperationException
@@ -326,11 +326,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var persistenceModelStub = new Mock<IPersistenceModelLoader>();
 
-      StubMockMappingLoader(new[] { companyClass }, new RelationDefinition[0]);
+      StubMockMappingLoader(new[] { companyClass, partnerClass }, new RelationDefinition[0]);
 
       persistenceModelStub
-          .Setup(stub => stub.ApplyPersistenceModelToHierarchy(companyClass))
-          .Callback((TypeDefinition classDefinition) => companyClass.SetStorageEntity(fakeStorageEntityDefinition));
+          .Setup(stub => stub.ApplyPersistenceModel(new[] { companyClass, partnerClass }))
+          .Callback((IEnumerable<TypeDefinition> _) => companyClass.SetStorageEntity(fakeStorageEntityDefinition));
       Assert.That(
           () => new MappingConfiguration(_mockMappingLoader.Object, persistenceModelStub.Object),
           Throws.InvalidOperationException
@@ -412,7 +412,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var persistenceModelLoaderStub = new Mock<IPersistenceModelLoader>();
       persistenceModelLoaderStub
-          .Setup(stub => stub.ApplyPersistenceModelToHierarchy(It.IsAny<ClassDefinition>()));
+          .Setup(stub => stub.ApplyPersistenceModel(It.IsAny<IEnumerable<ClassDefinition>>()));
       persistenceModelLoaderStub
           .Setup(stub => stub.CreatePersistenceMappingValidator(It.IsAny<ClassDefinition>()))
           .Returns(new PersistenceMappingValidator(new ClassAboveTableIsAbstractValidationRule()));
@@ -433,27 +433,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var validatorMock1 = new Mock<IPersistenceMappingValidator>(MockBehavior.Strict);
       var validatorMock2 = new Mock<IPersistenceMappingValidator>(MockBehavior.Strict);
 
-      var rootClass1 = TypeDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("Order", typeof(Order));
-      var rootClass2 = TypeDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("OrderTicket", typeof(OrderTicket));
+      var rootClass1 = ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("Order", typeof(Order));
+      var rootClass2 = ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("OrderTicket", typeof(OrderTicket));
 
       persistenceModelLoaderMock
-          .Setup(mock => mock.ApplyPersistenceModelToHierarchy(rootClass1))
-          .Callback((TypeDefinition classDefinition) => rootClass1.SetStorageEntity(_fakeStorageEntityDefinition))
-          .Verifiable();
-      persistenceModelLoaderMock
-          .Setup(mock => mock.ApplyPersistenceModelToHierarchy(rootClass2))
-          .Callback((TypeDefinition classDefinition) => rootClass2.SetStorageEntity(_fakeStorageEntityDefinition))
+          .Setup(mock => mock.ApplyPersistenceModel(new[] { rootClass1, rootClass2 }))
+          .Callback(CreateSetStorageDefinitionCallback(_fakeStorageEntityDefinition))
           .Verifiable();
 
       persistenceModelLoaderMock.Setup(mock => mock.CreatePersistenceMappingValidator(rootClass1)).Returns(validatorMock1.Object).Verifiable();
       persistenceModelLoaderMock.Setup(mock => mock.CreatePersistenceMappingValidator(rootClass2)).Returns(validatorMock2.Object).Verifiable();
 
       validatorMock1
-          .Setup(mock => mock.Validate(new[] { rootClass1 }))
+          .Setup(mock => mock.Validate(rootClass1))
           .Returns(new MappingValidationResult[0])
           .Verifiable();
       validatorMock2
-          .Setup(mock => mock.Validate(new[] { rootClass2 }))
+          .Setup(mock => mock.Validate(rootClass2))
           .Returns(new MappingValidationResult[0])
           .Verifiable();
 
@@ -477,19 +473,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var derivedClass2 = rootClass.DerivedClasses[1];
 
       persistenceModelLoaderMock
-          .Setup(mock => mock.ApplyPersistenceModelToHierarchy(rootClass))
-          .Callback(
-              (TypeDefinition classDefinition) =>
-              {
-                rootClass.SetStorageEntity(_fakeStorageEntityDefinition);
-                derivedClass1.SetStorageEntity(_fakeStorageEntityDefinition);
-                derivedClass2.SetStorageEntity(_fakeStorageEntityDefinition);
-              })
+          .Setup(mock => mock.ApplyPersistenceModel(new [] { rootClass, derivedClass1, derivedClass2 }))
+          .Callback(CreateSetStorageDefinitionCallback(_fakeStorageEntityDefinition))
           .Verifiable();
-      persistenceModelLoaderMock.Setup(mock => mock.CreatePersistenceMappingValidator(rootClass)).Returns(validatorMock.Object).Verifiable();
+      persistenceModelLoaderMock
+          .Setup(mock => mock.CreatePersistenceMappingValidator(It.IsIn(rootClass, derivedClass1, derivedClass2)))
+          .Returns(validatorMock.Object)
+          .Verifiable();
 
       validatorMock
-          .Setup(mock => mock.Validate(new[] { rootClass, derivedClass1, derivedClass2 }))
+          .Setup(mock => mock.Validate(It.IsIn(rootClass, derivedClass1, derivedClass2)))
           .Returns(new MappingValidationResult[0])
           .Verifiable();
 
@@ -572,8 +565,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var persistenceModelLoaderStub = new Mock<IPersistenceModelLoader>();
       persistenceModelLoaderStub
-          .Setup(stub => stub.ApplyPersistenceModelToHierarchy(It.IsAny<ClassDefinition>()))
-          .Callback((TypeDefinition classDefinition) => classDefinition.SetStorageEntity(TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition)));
+          .Setup(stub => stub.ApplyPersistenceModel(It.IsAny<IEnumerable<TypeDefinition>>()))
+          .Callback(CreateSetStorageDefinitionCallback(TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition)));
       persistenceModelLoaderStub
           .Setup(stub => stub.CreatePersistenceMappingValidator(It.IsAny<ClassDefinition>()))
           .Returns(new PersistenceMappingValidator());
@@ -591,6 +584,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       fileSystemItemClassDefinition.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
 
       return fileSystemItemClassDefinition;
+    }
+
+    private Action<IEnumerable<TypeDefinition>> CreateSetStorageDefinitionCallback (IStorageEntityDefinition storageEntityDefinition)
+    {
+      return typeDefinitions =>
+      {
+        foreach (var typeDefinition in typeDefinitions)
+          typeDefinition.SetStorageEntity(storageEntityDefinition);
+      };
     }
   }
 }

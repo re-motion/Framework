@@ -51,19 +51,13 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
           new RelationPropertyStorageClassMatchesReferencedTypeDefinitionStorageClassValidationRule());
     }
 
-    public void ApplyPersistenceModelToHierarchy (TypeDefinition typeDefinition)
+    public void ApplyPersistenceModel (IEnumerable<TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
-
-      InlineTypeDefinitionWalker.WalkDescendants(
-          typeDefinition,
-          EnsureStoragePropertiesCreated,
-          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported.")); // TODO R2I Linq: Add support for interfaces
-
-      InlineTypeDefinitionWalker.WalkDescendants(
-          typeDefinition,
-          EnsureStorageEntitiesCreated,
-          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported.")); // TODO R2I Linq: Add support for interfaces
+      foreach (var typeDefinition in typeDefinitions) // TODO R2I Persistence: Add tests for interfaces
+      {
+        EnsureStoragePropertiesCreated(typeDefinition);
+        EnsureStorageEntitiesCreated(typeDefinition);
+      }
     }
 
     private void EnsureStorageEntitiesCreated (TypeDefinition typeDefinition)

@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
 
       _validationRuleMock1.Setup(mock => mock.Validate(_typeDefinition1)).Returns(new[] { _fakeValidMappingValidationResult}).Verifiable();
 
-      var mappingValidationResults = validator.Validate(new[] { _typeDefinition1 }).ToArray();
+      var mappingValidationResults = validator.Validate(_typeDefinition1).ToArray();
 
       _validationRuleMock1.Verify();
       Assert.That(validator.ValidationRules.Count, Is.EqualTo(1));
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
 
       _validationRuleMock1.Setup(mock => mock.Validate(_typeDefinition1)).Returns(new[]{ _fakeInvalidMappingValidationResult}).Verifiable();
 
-      var mappingValidationResults = validator.Validate(new[] { _typeDefinition1 }).ToArray();
+      var mappingValidationResults = validator.Validate(_typeDefinition1).ToArray();
 
       _validationRuleMock1.Verify();
       Assert.That(validator.ValidationRules.Count, Is.EqualTo(1));
@@ -96,7 +96,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
       _validationRuleMock3.Setup(mock => mock.Validate(_typeDefinition2)).Returns(new[]{ _fakeValidMappingValidationResult}).Verifiable();
       _validationRuleMock3.Setup(mock => mock.Validate(_typeDefinition3)).Returns(new[]{ _fakeValidMappingValidationResult}).Verifiable();
 
-      var mappingValidationResults = validator.Validate(new[] { _typeDefinition1, _typeDefinition2, _typeDefinition3 }).ToArray();
+      var mappingValidationResults = validator.Validate(_typeDefinition1)
+          .Concat(validator.Validate(_typeDefinition2))
+          .Concat(validator.Validate(_typeDefinition3))
+          .ToArray();
 
       _validationRuleMock1.Verify();
       Assert.That(validator.ValidationRules.Count, Is.EqualTo(3));
@@ -118,7 +121,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
       _validationRuleMock3.Setup(mock => mock.Validate(_typeDefinition2)).Returns(new[]{_fakeInvalidMappingValidationResult}).Verifiable();
       _validationRuleMock3.Setup(mock => mock.Validate(_typeDefinition3)).Returns(new[]{_fakeInvalidMappingValidationResult}).Verifiable();
 
-      var mappingValidationResults = validator.Validate(new[] { _typeDefinition1, _typeDefinition2, _typeDefinition3 }).ToArray();
+      var mappingValidationResults = validator.Validate(_typeDefinition1)
+          .Concat(validator.Validate(_typeDefinition2))
+          .Concat(validator.Validate(_typeDefinition3))
+          .ToArray();
 
       _validationRuleMock1.Verify();
       Assert.That(validator.ValidationRules.Count, Is.EqualTo(3));
