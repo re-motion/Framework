@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       baseClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { persistentProperty, transactionProperty }, true));
       derivedClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new PropertyDefinition[0], true));
 
-      _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass);
+      _persistenceModelLoader.ApplyPersistenceModel(new [] { baseClass, derivedClass });
 
       Assert.That(baseClass.StorageEntityDefinition, Is.TypeOf<NonPersistentStorageEntity>());
       Assert.That(derivedClass.StorageEntityDefinition, Is.TypeOf<NonPersistentStorageEntity>());
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       baseClass.SetStorageEntity(fakeEntityDefinition);
       persistentProperty.SetStorageProperty(fakeStoragePropertyDefinition);
 
-      _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass);
+      _persistenceModelLoader.ApplyPersistenceModel(new [] { baseClass });
 
       Assert.That(baseClass.StorageEntityDefinition, Is.SameAs(fakeEntityDefinition));
       Assert.That(persistentProperty.StoragePropertyDefinition, Is.SameAs(fakeStoragePropertyDefinition));
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       baseClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new PropertyDefinition[0], true));
 
       Assert.That(
-          () => _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass),
+          () => _persistenceModelLoader.ApplyPersistenceModel(new[] { baseClass }),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "The storage entity definition of type "
               + "'Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.NonPersistentPersistenceModelLoaderTestDomain.BaseClass' is not of type 'NonPersistentStorageEntity'."));
@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       persistentProperty.SetStorageProperty(new FakeStoragePropertyDefinition("Fake"));
 
       Assert.That(
-          () => _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass),
+          () => _persistenceModelLoader.ApplyPersistenceModel(new[] { baseClass }),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "The property definition 'PersistentProperty' of type "
               + "'Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.NonPersistentPersistenceModelLoaderTestDomain.BaseClass' has a storage property type of "

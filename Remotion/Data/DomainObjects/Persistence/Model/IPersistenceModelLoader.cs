@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.Persistence.Model
@@ -24,6 +25,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Model
   /// </summary>
   public interface IPersistenceModelLoader : IPersistenceModelValidatorFactory
   {
-    void ApplyPersistenceModelToHierarchy (TypeDefinition typeDefinition);
+    void ApplyPersistenceModel (IEnumerable<TypeDefinition> typeDefinitions);
   }
 }

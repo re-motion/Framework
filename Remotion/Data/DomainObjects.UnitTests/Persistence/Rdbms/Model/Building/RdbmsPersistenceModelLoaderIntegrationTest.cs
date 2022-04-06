@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_BaseBaseClassDefinition ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.BaseBaseClassDefinition);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModel(new[] { _testModel.BaseBaseClassDefinition });
 
       AssertUnionViewDefinition(
           _testModel.BaseBaseClassDefinition,
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_BaseClassDefinition ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.BaseClassDefinition);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModel(new[] { _testModel.BaseClassDefinition });
 
       AssertUnionViewDefinition(
           _testModel.BaseClassDefinition,
@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_TableClassDefinition1 ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.TableClassDefinition1);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModel(new[] { _testModel.TableClassDefinition1 });
 
       AssertTableDefinition(
           _testModel.TableClassDefinition1,
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_TableClassDefinition2 ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.TableClassDefinition2);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModel(new[] { _testModel.TableClassDefinition2 });
 
       AssertTableDefinition(
           _testModel.TableClassDefinition2,
@@ -185,7 +185,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_DerivedClassDefinition1 ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedClassDefinition1);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModel(new[] { _testModel.DerivedClassDefinition1 });
 
       AssertFilterViewDefinition(
           _testModel.DerivedClassDefinition1,
@@ -207,7 +207,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_DerivedClassDefinition2 ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedClassDefinition2);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModel(new[] { _testModel.DerivedClassDefinition2 });
 
       AssertFilterViewDefinition(
           _testModel.DerivedClassDefinition2,
@@ -230,7 +230,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_DerivedDerivedClassDefinition ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedDerivedClassDefinition);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModel(new[] { _testModel.DerivedDerivedClassDefinition });
 
       AssertFilterViewDefinition(
           _testModel.DerivedDerivedClassDefinition,
