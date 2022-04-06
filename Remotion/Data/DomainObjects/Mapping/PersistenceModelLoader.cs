@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Model;
@@ -36,12 +38,16 @@ namespace Remotion.Data.DomainObjects.Mapping
       _storageProviderDefinitionFinder = storageProviderDefinitionFinder;
     }
 
-    public void ApplyPersistenceModelToHierarchy (TypeDefinition typeDefinition)
+    public void ApplyPersistenceModel (IEnumerable<TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
+      var typeDefinitionsGroupedByStorageProviders = typeDefinitions
+          .GroupBy(e => _storageProviderDefinitionFinder.GetStorageProviderDefinition(e, null));
 
-      var persistenceModelLoader = GetProviderSpecificPersistenceModelLoader(typeDefinition);
-      persistenceModelLoader.ApplyPersistenceModelToHierarchy(typeDefinition);
+      foreach (var typeDefinitionGroup in typeDefinitionsGroupedByStorageProviders)
+      {
+        var persistenceModelLoader = typeDefinitionGroup.Key.Factory.CreatePersistenceModelLoader(typeDefinitionGroup.Key, _storageProviderDefinitionFinder);
+        persistenceModelLoader.ApplyPersistenceModel(typeDefinitionGroup);
+      }
     }
 
     public IPersistenceMappingValidator CreatePersistenceMappingValidator (TypeDefinition typeDefinition)

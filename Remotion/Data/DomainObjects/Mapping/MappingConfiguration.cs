@@ -96,20 +96,18 @@ namespace Remotion.Data.DomainObjects.Mapping
         mappingConfigurationValidationHelper.ValidateDuplicateClassIDs(typeDefinitions);
         _classDefinitions = new ReadOnlyDictionary<string, ClassDefinition>(typeDefinitions.OfType<ClassDefinition>().ToDictionary(cd => cd.ID));
 
-        mappingConfigurationValidationHelper.ValidateTypeDefinitions(_typeDefinitions.Values);
-        mappingConfigurationValidationHelper.ValidatePropertyDefinitions(_typeDefinitions.Values);
+        mappingConfigurationValidationHelper.ValidateTypeDefinitions(typeDefinitions);
+        mappingConfigurationValidationHelper.ValidatePropertyDefinitions(typeDefinitions);
 
         var relationDefinitions = mappingLoader.GetRelationDefinitions(_typeDefinitions);
         _relationDefinitions = new ReadOnlyDictionary<string, RelationDefinition>(relationDefinitions.ToDictionary(rd => rd.ID));
 
-        mappingConfigurationValidationHelper.ValidateRelationDefinitions(_relationDefinitions.Values);
+        mappingConfigurationValidationHelper.ValidateRelationDefinitions(relationDefinitions);
 
-        foreach (var inheritanceRoot in TypeDefinitionHierarchy.GetHierarchyRoots(typeDefinitions))
-        {
-          persistenceModelLoader.ApplyPersistenceModelToHierarchy(inheritanceRoot);
-          mappingConfigurationValidationHelper.VerifyPersistenceModelApplied(inheritanceRoot);
-          mappingConfigurationValidationHelper.ValidatePersistenceMapping(inheritanceRoot);
-        }
+        persistenceModelLoader.ApplyPersistenceModel(typeDefinitions);
+
+        mappingConfigurationValidationHelper.VerifyPersistenceModelApplied(typeDefinitions);
+        mappingConfigurationValidationHelper.ValidatePersistenceMapping(typeDefinitions);
 
         _resolveTypes = mappingLoader.ResolveTypes;
         _nameResolver = mappingLoader.NameResolver;

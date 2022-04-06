@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -38,8 +39,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
       mappingReflector.GetRelationDefinitions(actualTypeDefinitions);
       Assert.That(actualTypeDefinitions, Is.Not.Null);
 
-      var inheritanceRoots = TypeDefinitionHierarchy.GetHierarchyRoots(actualTypeDefinitions.Values);
-
       // Pretend that all classes have the storage provider definition used by FakeMappingConfiguration
       var defaultStorageProviderDefinition = FakeMappingConfiguration.Current.DefaultStorageProviderDefinition;
       var defaultStorageProviderDefinitionFinderStub = new Mock<IStorageProviderDefinitionFinder>();
@@ -53,23 +52,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
           .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<TypeDefinition>(), It.IsAny<string>()))
           .Returns(nonPersistentStorageProviderDefinition);
 
-      foreach (var inheritanceRoot in inheritanceRoots)
+      var defaultStorageProviderTypeDefinitions = new List<TypeDefinition>();
+      var nonPersistentStorageProviderTypeDefinitions = new List<TypeDefinition>();
+      foreach (var typeDefinition in actualTypeDefinitions.Values)
       {
-        if (typeof(OrderViewModel).IsAssignableFrom(inheritanceRoot.Type))
-        {
-          var persistenceModelLoader = nonPersistentStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
-              nonPersistentStorageProviderDefinition,
-              nonPersistentStorageProviderDefinitionFinderStub.Object);
-          persistenceModelLoader.ApplyPersistenceModelToHierarchy(inheritanceRoot);
-        }
+        if (typeof(OrderViewModel).IsAssignableFrom(typeDefinition.Type))
+          nonPersistentStorageProviderTypeDefinitions.Add(typeDefinition);
         else
-        {
-          var persistenceModelLoader = defaultStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
-              defaultStorageProviderDefinition,
-              defaultStorageProviderDefinitionFinderStub.Object);
-          persistenceModelLoader.ApplyPersistenceModelToHierarchy(inheritanceRoot);
-        }
+          defaultStorageProviderTypeDefinitions.Add(typeDefinition);
       }
+
+      var nonPersistentPersistenceModelLoader = nonPersistentStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
+          nonPersistentStorageProviderDefinition,
+          nonPersistentStorageProviderDefinitionFinderStub.Object);
+      nonPersistentPersistenceModelLoader.ApplyPersistenceModel(nonPersistentStorageProviderTypeDefinitions);
+
+      var defaultPersistenceModelLoader = defaultStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
+          defaultStorageProviderDefinition,
+          defaultStorageProviderDefinitionFinderStub.Object);
+      defaultPersistenceModelLoader.ApplyPersistenceModel(defaultStorageProviderTypeDefinitions);
 
       var typeDefinitionChecker = new TypeDefinitionChecker();
       typeDefinitionChecker.Check(FakeMappingConfiguration.Current.TypeDefinitions.Values.Cast<ClassDefinition>(), actualTypeDefinitions, false, true);

@@ -58,8 +58,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
       mappingReflector.GetRelationDefinitions(actualTypeDefinitions);
       Assert.That(actualTypeDefinitions, Is.Not.Null);
 
-      var inheritanceRoots = TypeDefinitionHierarchy.GetHierarchyRoots(actualTypeDefinitions.Values);
-
       // Pretend that all classes have the storage provider definition used by FakeMappingConfiguration
       var defaultStorageProviderDefinition = FakeMappingConfiguration.Current.DefaultStorageProviderDefinition;
       var defaultStorageProviderDefinitionFinderStub = new Mock<IStorageProviderDefinitionFinder>();
@@ -73,13 +71,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
           .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<TypeDefinition>(), It.IsAny<string>()))
           .Returns(nonPersistentStorageProviderDefinition);
 
-      foreach (var typeDefinition in inheritanceRoots)
-      {
-        var persistenceModelLoader = defaultStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
-            defaultStorageProviderDefinition,
-            defaultStorageProviderDefinitionFinderStub.Object);
-        persistenceModelLoader.ApplyPersistenceModelToHierarchy(typeDefinition);
-      }
+      var persistenceModelLoader = defaultStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
+          defaultStorageProviderDefinition,
+          defaultStorageProviderDefinitionFinderStub.Object);
+      persistenceModelLoader.ApplyPersistenceModel(actualTypeDefinitions.Values);
 
       TypeDefinitions = actualTypeDefinitions.Values.ToArray();
       TypeDefinitionLookup = actualTypeDefinitions.Values.ToDictionary(e => e.Type, e => e);

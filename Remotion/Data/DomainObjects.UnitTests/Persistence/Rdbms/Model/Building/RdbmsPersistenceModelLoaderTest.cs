@@ -185,7 +185,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           .Returns(_fakeEntityDefinitionDerivedDerivedDerived.Object)
           .Verifiable();
 
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.BaseBaseClassDefinition);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModel(new[] { _testModel.BaseBaseClassDefinition });
 
       _dataStoragePropertyDefinitionFactoryMock.Verify();
       _entityDefinitionFactoryMock.Verify();
@@ -211,16 +211,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_LeavesExistingEntities_AndProperties ()
     {
-      _testModel.TableClassDefinition1.SetStorageEntity(_fakeEntityDefinitionTable1.Object);
-      _testModel.TablePropertyDefinition1.SetStorageProperty(_fakeColumnDefinition1);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithDefaultProperties();
 
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.TableClassDefinition1);
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo(classDefinition, "Test");
+      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
+
+      classDefinition.SetStorageEntity(_fakeEntityDefinitionTable1.Object);
+      propertyDefinition.SetStorageProperty(_fakeColumnDefinition1);
+
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModel(new[] { classDefinition });
 
       _dataStoragePropertyDefinitionFactoryMock.Verify();
       _entityDefinitionFactoryMock.Verify();
 
-      Assert.That(_testModel.TableClassDefinition1.StorageEntityDefinition, Is.SameAs(_fakeEntityDefinitionTable1.Object));
-      Assert.That(_testModel.TablePropertyDefinition1.StoragePropertyDefinition, Is.SameAs(_fakeColumnDefinition1));
+      Assert.That(classDefinition.StorageEntityDefinition, Is.SameAs(_fakeEntityDefinitionTable1.Object));
+      Assert.That(propertyDefinition.StoragePropertyDefinition, Is.SameAs(_fakeColumnDefinition1));
     }
 
     [Test]
@@ -240,7 +245,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           .Returns(_fakeEntityDefinitionTable1.Object)
           .Verifiable();
 
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModel(new[] { classDefinition });
 
       _entityDefinitionFactoryMock.Verify();
       Assert.That(classDefinition.StorageEntityDefinition, Is.SameAs(_fakeEntityDefinitionTable1.Object));
@@ -249,11 +254,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_Throws_WhenExistingEntityDefinitionDoesNotImplementIEntityDefinition ()
     {
+      _dataStoragePropertyDefinitionFactoryMock
+          .Setup(mock => mock.CreateStoragePropertyDefinition(It.IsAny<PropertyDefinition>()))
+          .Returns(_fakeColumnDefinition1)
+          .Verifiable();
+      _entityDefinitionFactoryMock
+          .Setup(mock => mock.CreateTableDefinition(It.IsAny<ClassDefinition>()))
+          .Returns(_fakeEntityDefinitionBaseBase.Object)
+          .Verifiable();
+      _entityDefinitionFactoryMock
+          .Setup(mock => mock.CreateUnionViewDefinition(It.IsAny<ClassDefinition>(), It.IsAny<IEnumerable<IRdbmsStorageEntityDefinition>>()))
+          .Returns(_fakeEntityDefinitionBaseBase.Object)
+          .Verifiable();
+      _entityDefinitionFactoryMock
+          .Setup(mock => mock.CreateFilterViewDefinition(It.IsAny<ClassDefinition>(), It.IsAny<IRdbmsStorageEntityDefinition>()))
+          .Returns(_fakeEntityDefinitionBaseBase.Object)
+          .Verifiable();
+
       var invalidStorageEntityDefinition = new Mock<IStorageEntityDefinition>();
       _testModel.DerivedClassDefinition2.SetStorageEntity(invalidStorageEntityDefinition.Object);
       _testModel.DerivedDerivedPropertyDefinition.SetStorageProperty(_fakeColumnDefinition7);
       Assert.That(
-          () => _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedDerivedClassDefinition),
+          () => _rdbmsPersistenceModelLoader.ApplyPersistenceModel(new[] { _testModel.DerivedDerivedClassDefinition }),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The storage entity definition of type 'Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.RdbmsPersistenceModelLoaderTestDomain.Derived2Class' "
@@ -263,10 +285,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_Throws_WhenExistingPropertyDefinitionDoesNotImplementIColumnDefinition ()
     {
+      _dataStoragePropertyDefinitionFactoryMock
+          .Setup(mock => mock.CreateStoragePropertyDefinition(It.IsAny<PropertyDefinition>()))
+          .Returns(_fakeColumnDefinition1)
+          .Verifiable();
+      _entityDefinitionFactoryMock
+          .Setup(mock => mock.CreateTableDefinition(It.IsAny<ClassDefinition>()))
+          .Returns(_fakeEntityDefinitionBaseBase.Object)
+          .Verifiable();
+      _entityDefinitionFactoryMock
+          .Setup(mock => mock.CreateUnionViewDefinition(It.IsAny<ClassDefinition>(), It.IsAny<IEnumerable<IRdbmsStorageEntityDefinition>>()))
+          .Returns(_fakeEntityDefinitionBaseBase.Object)
+          .Verifiable();
+      _entityDefinitionFactoryMock
+          .Setup(mock => mock.CreateFilterViewDefinition(It.IsAny<ClassDefinition>(), It.IsAny<IRdbmsStorageEntityDefinition>()))
+          .Returns(_fakeEntityDefinitionBaseBase.Object)
+          .Verifiable();
+
       _testModel.DerivedClassDefinition2.SetStorageEntity(_fakeEntityDefinitionDerived2.Object);
       _testModel.DerivedDerivedPropertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("Fake"));
       Assert.That(
-          () => _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedDerivedClassDefinition),
+          () => _rdbmsPersistenceModelLoader.ApplyPersistenceModel(new[] { _testModel.DerivedDerivedClassDefinition }),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The property definition 'DerivedDerivedProperty' of type "

@@ -45,36 +45,29 @@ namespace Remotion.Data.DomainObjects.Mapping
       _persistenceModelValidatorFactory = persistenceModelValidatorFactory;
     }
 
-    public void VerifyPersistenceModelApplied (TypeDefinition typeDefinition)
+    public void VerifyPersistenceModelApplied (IEnumerable<TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
-      if (!typeDefinition.HasStorageEntityDefinitionBeenSet)
+      foreach (var typeDefinition in typeDefinitions)
       {
-        var message = String.Format("The persistence model loader did not assign a storage entity to type '{0}'.", typeDefinition.Type.GetFullNameSafe());
-        throw new InvalidOperationException(message);
-      }
-
-      foreach (PropertyDefinition propDef in typeDefinition.MyPropertyDefinitions)
-      {
-        if (propDef.StorageClass == StorageClass.Persistent && propDef.StoragePropertyDefinition == null)
+        if (!typeDefinition.HasStorageEntityDefinitionBeenSet)
         {
-          var message = String.Format(
-              "The persistence model loader did not assign a storage property to property '{0}' of type '{1}'.",
-              propDef.PropertyName,
-              typeDefinition.Type.GetFullNameSafe());
+          var message = String.Format("The persistence model loader did not assign a storage entity to type '{0}'.", typeDefinition.Type.GetFullNameSafe());
           throw new InvalidOperationException(message);
         }
-      }
 
-      if (typeDefinition is ClassDefinition classDefinition)
-      {
-        foreach (var derivedClass in classDefinition.DerivedClasses)
-          VerifyPersistenceModelApplied(derivedClass);
-      }
-      else
-      {
-        throw new NotSupportedException("Only class definitions are supported"); // TODO R2I Mapping: Add support for interfaces
+        foreach (PropertyDefinition propDef in typeDefinition.MyPropertyDefinitions)
+        {
+          if (propDef.StorageClass == StorageClass.Persistent && propDef.StoragePropertyDefinition == null)
+          {
+            var message = String.Format(
+                "The persistence model loader did not assign a storage property to property '{0}' of type '{1}'.",
+                propDef.PropertyName,
+                typeDefinition.Type.GetFullNameSafe());
+            throw new InvalidOperationException(message);
+          }
+        }
       }
     }
 
@@ -110,13 +103,13 @@ namespace Remotion.Data.DomainObjects.Mapping
       AnalyzeMappingValidationResults(sortExpressionValidator.Validate(relationDefinitions));
     }
 
-    public void ValidatePersistenceMapping (TypeDefinition rootType)
+    public void ValidatePersistenceMapping (IEnumerable<TypeDefinition> typeDefinitions)
     {
-      ArgumentUtility.CheckNotNull("rootType", rootType);
+      ArgumentUtility.CheckNotNull("typeDefinitions", typeDefinitions);
 
-      var validator = _persistenceModelValidatorFactory.CreatePersistenceMappingValidator(rootType);
-      var typeDefinitionsToValidate = TypeDefinitionHierarchy.GetDescendantsAndSelf(rootType);
-      AnalyzeMappingValidationResults(validator.Validate(typeDefinitionsToValidate));
+      var mappingValidationResults = typeDefinitions
+          .SelectMany(e => _persistenceModelValidatorFactory.CreatePersistenceMappingValidator(e).Validate(e));
+      AnalyzeMappingValidationResults(mappingValidationResults);
     }
 
     public void AnalyzeMappingValidationResults (IEnumerable<MappingValidationResult> mappingValidationResults)
