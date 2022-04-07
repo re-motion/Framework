@@ -22,12 +22,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 {
   /// <summary>
   /// <see cref="IStoragePropertyDefinitionResolver"/> defines the API for classes that calculate the <see cref="IRdbmsStoragePropertyDefinition"/> 
-  /// objects for a <see cref="ClassDefinition"/>.
+  /// objects for a <see cref="TypeDefinition"/>.
   /// The <see cref="IStoragePropertyDefinitionResolver"/> only returns the <see cref="IRdbmsStoragePropertyDefinition"/> instances, it doesn't create
   /// any.
   /// </summary>
   public interface IStoragePropertyDefinitionResolver
   {
-    IEnumerable<IRdbmsStoragePropertyDefinition> GetStoragePropertiesForHierarchy (ClassDefinition classDefinition);
+    IEnumerable<IRdbmsStoragePropertyDefinition> GetStoragePropertiesForHierarchy (TypeDefinition typeDefinition);
   }
 }

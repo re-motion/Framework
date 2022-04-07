@@ -30,6 +30,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     {
     }
 
+    [DBTable]
+    private class Person : DomainObject, IPerson
+    {
+      public IAddress Address { get; }
+    }
+
     [Test]
     public void Verify ()
     {
@@ -43,6 +49,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
           .PersistentProperty(e => e.Address, c => c.SetIsNullable());
 
       builder.InterfaceDefinitionFor<IAddress>();
+
+      builder.ClassDefinitionFor<Person>()
+          .Implements<IPerson>();
 
       builder.UnidirectionalRelationBetween<IPerson, IAddress>(e => e.Address);
     }

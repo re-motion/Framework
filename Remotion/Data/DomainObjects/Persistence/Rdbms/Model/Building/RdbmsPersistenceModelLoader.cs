@@ -88,26 +88,30 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public void ApplyPersistenceModel (IEnumerable<TypeDefinition> typeDefinitions)
     {
-      var classHierarchyRoots = TypeDefinitionHierarchy.GetClassHierarchyRoots(typeDefinitions);
+      var typeDefinitionsArray = typeDefinitions.ToArray();
+
+      // Apply the storage properties first
+      var classHierarchyRoots = TypeDefinitionHierarchy.GetClassHierarchyRoots(typeDefinitionsArray);
       foreach (var classHierarchyRoot in classHierarchyRoots)
-        ApplyPersistenceModelToHierarchy(classHierarchyRoot);
+      {
+        InlineTypeDefinitionWalker.WalkDescendants(
+            classHierarchyRoot,
+            EnsureStoragePropertiesCreated,
+            interfaceDefinition => throw new InvalidOperationException("Interfaces are not expected.")); // TODO R2I Linq: Add support for interfaces
+      }
+      foreach (var typeDefinition in typeDefinitionsArray)
+        EnsureStoragePropertiesCreated(typeDefinition);
 
-      // TODO R2I Persistence: Add support for interfaces
-    }
-
-    private void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
-    {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-
-      InlineTypeDefinitionWalker.WalkDescendants(
-          classDefinition,
-          EnsureStoragePropertiesCreated,
-          interfaceDefinition => throw new InvalidOperationException("Interfaces are not expected.")); // TODO R2I Linq: Add support for interfaces
-
-      InlineTypeDefinitionWalker.WalkDescendants(
-          classDefinition,
-          EnsureStorageEntitiesCreated,
-          interfaceDefinition => throw new InvalidOperationException("Interfaces are not expected.")); // TODO R2I Linq: Add support for interfaces
+      // Apply the storage entities
+      foreach (var classHierarchyRoot in classHierarchyRoots)
+      {
+        InlineTypeDefinitionWalker.WalkDescendants(
+            classHierarchyRoot,
+            EnsureStorageEntitiesCreated,
+            interfaceDefinition => throw new InvalidOperationException("Interfaces are not expected.")); // TODO R2I Linq: Add support for interfaces
+      }
+      foreach (var typeDefinition in typeDefinitionsArray)
+        EnsureStorageEntitiesCreated(typeDefinition);
     }
 
     private void EnsureStorageEntitiesCreated (TypeDefinition typeDefinition)
@@ -154,9 +158,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     private IStorageEntityDefinition CreateEntityDefinition (TypeDefinition typeDefinition)
     {
-      if (typeDefinition is not ClassDefinition classDefinition)
-        throw new NotSupportedException("Only class definitions are supported."); // TODO R2I Mapping: property finder support for interfaces
+      return typeDefinition switch
+      {
+          ClassDefinition classDefinition => CreateEntityDefinition(classDefinition),
+          InterfaceDefinition interfaceDefinition => CreateEntityDefinition(interfaceDefinition),
+          _ => throw new InvalidOperationException("Only class and interface definitions are supported.")
+      };
+    }
 
+    private IStorageEntityDefinition CreateEntityDefinition (ClassDefinition classDefinition)
+    {
       if (_storageNameProvider.GetTableName(classDefinition) != null)
         return _entityDefinitionFactory.CreateTableDefinition(classDefinition);
 
@@ -165,6 +176,20 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         return CreateEntityDefinitionForClassBelowTable(classDefinition);
       else
         return CreateEntityDefinitionForClassAboveTable(classDefinition);
+    }
+
+    private IStorageEntityDefinition CreateEntityDefinition (InterfaceDefinition interfaceDefinition)
+    {
+      var derivedStorageEntityDefinitions =
+          (from ClassDefinition implementingClass in interfaceDefinition.ImplementingClasses
+           let entityDefinition = GetEntityDefinition(implementingClass)
+           where !(entityDefinition is EmptyViewDefinition)
+           select entityDefinition).ToList();
+
+      if (!derivedStorageEntityDefinitions.Any())
+        return _entityDefinitionFactory.CreateEmptyViewDefinition(interfaceDefinition);
+      else
+        return _entityDefinitionFactory.CreateUnionViewDefinition(interfaceDefinition, derivedStorageEntityDefinitions);
     }
 
     private IStorageEntityDefinition CreateEntityDefinitionForClassBelowTable (ClassDefinition classDefinition)
@@ -190,8 +215,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       if (!derivedStorageEntityDefinitions.Any())
         return _entityDefinitionFactory.CreateEmptyViewDefinition(classDefinition);
       else
-
-      return _entityDefinitionFactory.CreateUnionViewDefinition(classDefinition, derivedStorageEntityDefinitions);
+        return _entityDefinitionFactory.CreateUnionViewDefinition(classDefinition, derivedStorageEntityDefinitions);
     }
 
     private IRdbmsStorageEntityDefinition GetEntityDefinition (ClassDefinition classDefinition)
