@@ -83,27 +83,25 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
       var relationColumnName = _storageNameProvider.GetRelationColumnName(relationEndPointDefinition);
       var relationClassIDColumnName = _storageNameProvider.GetRelationClassIDColumnName(relationEndPointDefinition);
-      if (oppositeEndPointDefinition.TypeDefinition is not ClassDefinition oppositeEndPointClassDefinition)
-        throw new InvalidOperationException("Only class definitions are supported"); // TODO R2I Persistence: Support TypeDefinition
 
-      return CreateStoragePropertyDefinition(oppositeEndPointClassDefinition, relationColumnName, relationClassIDColumnName);
+      return CreateStoragePropertyDefinition(oppositeEndPointDefinition.TypeDefinition, relationColumnName, relationClassIDColumnName); // TODO R2I Persistence: Tests
     }
 
     public virtual IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (
-        ClassDefinition relatedClassDefinition,
+        TypeDefinition relatedTypeDefinition,
         string relationColumnName,
         string relationClassIDColumnName)
     {
-      ArgumentUtility.CheckNotNull("relatedClassDefinition", relatedClassDefinition);
+      ArgumentUtility.CheckNotNull("relatedTypeDefinition", relatedTypeDefinition);
       ArgumentUtility.CheckNotNullOrEmpty("relationColumnName", relationColumnName);
       ArgumentUtility.CheckNotNullOrEmpty("relationClassIDColumnName", relationClassIDColumnName);
 
-      var relatedStorageProviderDefinition = _providerDefinitionFinder.GetStorageProviderDefinition(relatedClassDefinition, null);
+      var relatedStorageProviderDefinition = _providerDefinitionFinder.GetStorageProviderDefinition(relatedTypeDefinition, null);
 
       if (_storageProviderDefinition != relatedStorageProviderDefinition)
         return CreateCrossProviderRelationStoragePropertyDefinition(relationColumnName);
       else
-        return CreateSameProviderRelationStoragePropertyDefinition(relatedClassDefinition, relationColumnName, relationClassIDColumnName);
+        return CreateSameProviderRelationStoragePropertyDefinition(relatedTypeDefinition, relationColumnName, relationClassIDColumnName);
     }
 
     private IRdbmsStoragePropertyDefinition CreateCrossProviderRelationStoragePropertyDefinition (string relationColumnName)
@@ -114,7 +112,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     }
 
     private IRdbmsStoragePropertyDefinition CreateSameProviderRelationStoragePropertyDefinition (
-        ClassDefinition relatedClassDefinition,
+        TypeDefinition relatedTypeDefinition,
         string relationColumnName,
         string relationClassIDColumnName)
     {
@@ -122,7 +120,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       var storageTypeInfo = _storageTypeInformationProvider.GetStorageTypeForID(true);
       var valueColumnDefinition = new ColumnDefinition(relationColumnName, storageTypeInfo, false);
 
-      if (relatedClassDefinition.IsPartOfInheritanceHierarchy || _forceClassIDColumnInForeignKeyProperties)
+      // TODO R2I Persistence: Tests
+      if (relatedTypeDefinition.IsPartOfInheritanceHierarchy || _forceClassIDColumnInForeignKeyProperties || relatedTypeDefinition is InterfaceDefinition)
       {
         var storageTypeForClassID = _storageTypeInformationProvider.GetStorageTypeForClassID(true);
         var classIDColumnDefinition = new ColumnDefinition(relationClassIDColumnName, storageTypeForClassID, false);
@@ -134,7 +133,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       {
         return new ObjectIDWithoutClassIDStoragePropertyDefinition(
             new SimpleStoragePropertyDefinition(typeof(object), valueColumnDefinition),
-            relatedClassDefinition);
+            (ClassDefinition)relatedTypeDefinition);
       }
     }
   }

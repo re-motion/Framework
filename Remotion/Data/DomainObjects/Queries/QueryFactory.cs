@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </code>
     /// </example>
     public static IQueryable<T> CreateLinqQuery<T> ()
-        where T: DomainObject
+        where T: IDomainObject
     {
       var startingTypeDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(T));
       var providerDefinition = startingTypeDefinition.StorageEntityDefinition.StorageProviderDefinition;
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Queries
     ///   <see cref="DomainObjectQueryExecutor"/> for default behavior.</param>
     /// <returns>A <see cref="DomainObjectQueryable{T}"/> object as an entry point to a LINQ query.</returns>
     public static IQueryable<T> CreateLinqQuery<T> (IQueryParser queryParser, IQueryExecutor executor)
-        where T: DomainObject
+        where T: IDomainObject
     {
       ArgumentUtility.CheckNotNull("executor", executor);
       ArgumentUtility.CheckNotNull("queryParser", queryParser);

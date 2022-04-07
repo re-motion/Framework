@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Linq
       var resolvedMember = InlineTypeDefinitionWalker.WalkDescendants(
           entityTypeDefinition,
           classDefinition => ResolveMemberInTypeDefinition(originatingEntity, property, classDefinition),
-          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported"),
+          interfaceDefinition => ResolveMemberInTypeDefinition(originatingEntity, property, interfaceDefinition),
           match: expression => expression != null); // TODO R2I Mapping: Add support for interfaces
 
       if (resolvedMember == null)
@@ -256,7 +256,7 @@ namespace Remotion.Data.DomainObjects.Linq
       var leftEndPointDefinition = InlineTypeDefinitionWalker.WalkDescendants(
           entityTypeDefinition,
           classDefinition => classDefinition.ResolveRelationEndPoint(property),
-          interfaceDefinition => throw new NotImplementedException("Interfaces are not supported"),
+          interfaceDefinition => interfaceDefinition.ResolveRelationEndPoint(property),
           match: relationEndPoint => relationEndPoint != null); // TODO R2I Mapping: Add support for interfaces
 
       if (leftEndPointDefinition == null)
