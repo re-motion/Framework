@@ -36,18 +36,15 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull("definitionGetter", definitionGetter);
       ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      if (typeDefinition is not ClassDefinition classDefinition) // TODO R2I Mapping: Interface support in reflection loader
-        throw new InvalidOperationException("TODO Relations to Interfaces: Only class definitions are supported at this time.");
-
-      var matchingImplementations = GetMatchingDefinitions(propertyInformation, classDefinition, definitionGetter);
+      var matchingImplementations = GetMatchingDefinitions(propertyInformation, typeDefinition, definitionGetter);
 
       if (matchingImplementations.Count > 1)
       {
         var implementingTypeNames = matchingImplementations.Select(tuple => "'" + tuple.Item1.DeclaringType + "'").OrderBy(name => name);
         var message = string.Format(
-            "The property '{0}' is ambiguous, it is implemented by the following types valid in the context of class '{1}': {2}.",
+            "The property '{0}' is ambiguous, it is implemented by the following types valid in the context of type '{1}': {2}.",
             propertyInformation.Name,
-            classDefinition.Type.Name,
+            typeDefinition.Type.Name,
             string.Join(", ", implementingTypeNames));
         throw new InvalidOperationException(message);
       }
@@ -57,11 +54,11 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     private static List<(IPropertyInformation, T)> GetMatchingDefinitions<T> (
         IPropertyInformation propertyInformation,
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         Func<string, T?> definitionGetter) where T: class
     {
       IEnumerable<IPropertyInformation> propertyImplementationCandidates;
-      if (propertyInformation.DeclaringType!.IsInterface)
+      if (propertyInformation.DeclaringType!.IsInterface && typeDefinition is ClassDefinition classDefinition)
       {
         var implementingTypes = GetImplementingTypes(classDefinition, propertyInformation);
         propertyImplementationCandidates = implementingTypes

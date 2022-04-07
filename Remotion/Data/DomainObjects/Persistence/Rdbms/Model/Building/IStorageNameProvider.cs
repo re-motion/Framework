@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     string GetClassIDColumnName ();
     string GetTimestampColumnName ();
 
-    EntityNameDefinition? GetTableName (ClassDefinition classDefinition); // TODO R2I Persistence: check usages for required changes
-    EntityNameDefinition GetViewName (ClassDefinition classDefinition);
+    EntityNameDefinition? GetTableName (ClassDefinition classDefinition);
+    EntityNameDefinition GetViewName (TypeDefinition typeDefinition);
     string GetColumnName (PropertyDefinition propertyDefinition);
     string GetRelationColumnName (RelationEndPointDefinition relationEndPointDefinition);
     string GetRelationClassIDColumnName (RelationEndPointDefinition relationEndPointDefinition);

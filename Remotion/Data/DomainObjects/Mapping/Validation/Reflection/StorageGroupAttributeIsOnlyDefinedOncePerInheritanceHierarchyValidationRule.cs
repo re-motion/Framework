@@ -32,6 +32,9 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
     {
       ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
+      if (typeDefinition is InterfaceDefinition)
+        return MappingValidationResult.CreateValidResult();
+
       return Validate(typeDefinition.Type); // TODO R2I Validation: Support for interfaces
     }
 

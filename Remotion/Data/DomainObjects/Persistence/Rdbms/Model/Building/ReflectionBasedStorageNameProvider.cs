@@ -56,11 +56,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       return new EntityNameDefinition(null, String.IsNullOrEmpty(tableAttribute.Name) ? classDefinition.ID : tableAttribute.Name);
     }
 
-    public EntityNameDefinition GetViewName (ClassDefinition classDefinition)
+    public EntityNameDefinition GetViewName (TypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      return new EntityNameDefinition(null, classDefinition.ID + "View");
+      if (typeDefinition is ClassDefinition classDefinition)
+        return new EntityNameDefinition(null, classDefinition.ID + "View");
+
+      return new EntityNameDefinition(null, typeDefinition.Type.Name + "View"); // TODO R2I Persistence: Tests
     }
 
     public string GetColumnName (PropertyDefinition propertyDefinition)

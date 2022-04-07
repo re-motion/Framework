@@ -154,10 +154,10 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
           string.Format(
               "The '{0}' may be only applied to properties assignable to types '{1}', '{2}', or '{3}'.",
               typeof(TAttribute).Name,
-              typeof(DomainObject).Name,
+              typeof(IDomainObject).Name,
               typeof(ObjectList<>).Name,
               typeof(IObjectList<>).Name),
-          typeof(DomainObject),
+          typeof(IDomainObject),
           typeof(ObjectList<>),
           typeof(IObjectList<>));
     }
