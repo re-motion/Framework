@@ -267,7 +267,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(() => ReflectionBasedPropertyResolver.ResolveDefinition(
           property, classDefinition, classDefinition.GetPropertyDefinition),
           Throws.TypeOf<InvalidOperationException>().With.Message.EqualTo(
-              "The property 'Property' is ambiguous, it is implemented by the following types valid in the context of class "
+              "The property 'Property' is ambiguous, it is implemented by the following types valid in the context of type "
               + "'ClassWithSameInterfaceAsMixinWithStorageClassPersistent': "
               + "'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.ReflectionBasedPropertyResolver.ClassWithSameInterfaceAsMixinWithStorageClassPersistent', "
               + "'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.ReflectionBasedPropertyResolver.MixinWithPersistentProperty'."));

@@ -132,36 +132,36 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     }
 
     public virtual IRdbmsStorageEntityDefinition CreateUnionViewDefinition (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         IEnumerable<IRdbmsStorageEntityDefinition> unionedEntities)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("unionedEntities", unionedEntities);
 
       var objectIDProperty = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition();
       var timestampProperty = _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition();
-      var dataProperties = _storagePropertyDefinitionResolver.GetStoragePropertiesForHierarchy(classDefinition).ToList();
+      var dataProperties = _storagePropertyDefinitionResolver.GetStoragePropertiesForHierarchy(typeDefinition).ToList();
       var allProperties = new[] { objectIDProperty, timestampProperty }.Concat(dataProperties).ToList().AsReadOnly();
 
       var unionedEntitiesList = unionedEntities.ToList().AsReadOnly();
 
       return new UnionViewDefinition(
           _storageProviderDefinition,
-          _storageNameProvider.GetViewName(classDefinition),
+          _storageNameProvider.GetViewName(typeDefinition),
           unionedEntitiesList,
           objectIDProperty,
           timestampProperty,
           dataProperties,
-          CreateIndexesForUnionViewDefinition(classDefinition, unionedEntitiesList, allProperties),
-          CreateSynonymsForUnionViewDefinition(classDefinition, unionedEntitiesList));
+          CreateIndexesForUnionViewDefinition(typeDefinition, unionedEntitiesList, allProperties),
+          CreateSynonymsForUnionViewDefinition(typeDefinition, unionedEntitiesList));
     }
 
-    public IRdbmsStorageEntityDefinition CreateEmptyViewDefinition (ClassDefinition classDefinition)
+    public IRdbmsStorageEntityDefinition CreateEmptyViewDefinition (TypeDefinition typeDefinition)
     {
-      var dataProperties = _storagePropertyDefinitionResolver.GetStoragePropertiesForHierarchy(classDefinition);
+      var dataProperties = _storagePropertyDefinitionResolver.GetStoragePropertiesForHierarchy(typeDefinition);
       return new EmptyViewDefinition(
           _storageProviderDefinition,
-          _storageNameProvider.GetViewName(classDefinition),
+          _storageNameProvider.GetViewName(typeDefinition),
           _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition(),
           _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition(),
           dataProperties,
@@ -236,11 +236,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     }
 
     protected virtual IEnumerable<IIndexDefinition> CreateIndexesForUnionViewDefinition (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         IReadOnlyList<IRdbmsStorageEntityDefinition> unionedEntitiesList,
         IReadOnlyList<IRdbmsStoragePropertyDefinition> allProperties)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("unionedEntitiesList", unionedEntitiesList);
       ArgumentUtility.CheckNotNull("allProperties", allProperties);
 
@@ -266,10 +266,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     }
 
     private IEnumerable<EntityNameDefinition> CreateSynonymsForUnionViewDefinition (
-        ClassDefinition classDefinition,
+        TypeDefinition typeDefinition,
         IReadOnlyList<IRdbmsStorageEntityDefinition> unionedEntitiesList)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
       ArgumentUtility.CheckNotNull("unionedEntitiesList", unionedEntitiesList);
 
       return Enumerable.Empty<EntityNameDefinition>();

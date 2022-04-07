@@ -99,8 +99,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     {
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
-      if (propertyDefinition.TypeDefinition is not ClassDefinition classDefinition) // TODO R2I Persistence: Support TypeDefinition
-        throw new NotSupportedException("Only class definitions are supported");
+      // TODO R2I Persistence: Comment about property unification and why we currently have all interface properties nullable + task
+      if (propertyDefinition.TypeDefinition is not ClassDefinition classDefinition) // TODO R2I Persistence: Tests
+        return true;
 
       // CreateSequence can deal with null source objects
       var baseClasses = classDefinition.BaseClass.CreateSequence(cd => cd.BaseClass);

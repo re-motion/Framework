@@ -25,7 +25,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
   public interface IRelationStoragePropertyDefinitionFactory
   {
     IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (RelationEndPointDefinition relationEndPointDefinition);
-    IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (
-        ClassDefinition relatedClassDefinition, string relationColumnName, string relationClassIDColumnName);
+    IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (TypeDefinition relatedTypeDefinition, string relationColumnName, string relationClassIDColumnName);
   }
 }

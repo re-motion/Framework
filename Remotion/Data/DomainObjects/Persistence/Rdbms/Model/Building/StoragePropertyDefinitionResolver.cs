@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -43,20 +42,32 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       get { return _persistenceModelProvider; }
     }
 
-    public IEnumerable<IRdbmsStoragePropertyDefinition> GetStoragePropertiesForHierarchy (ClassDefinition classDefinition)
+    public IEnumerable<IRdbmsStoragePropertyDefinition> GetStoragePropertiesForHierarchy (TypeDefinition typeDefinition) // TODO R2I Persistence: Tests
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("typeDefinition", typeDefinition);
 
-      var allClassesInHierarchy = classDefinition
-          .CreateSequence(cd => cd.BaseClass)
-          .Reverse()
-          .Concat(classDefinition.GetAllDerivedClasses());
+      var addedTypes = new HashSet<TypeDefinition>();
+      var allTypesInHierarchy = new List<TypeDefinition>();
+
+      Action<TypeDefinition> visitTypeDefinition = visitedTypeDefinition =>
+      {
+        if (addedTypes.Add(visitedTypeDefinition))
+          allTypesInHierarchy.Add(visitedTypeDefinition);
+      };
+
+      InlineTypeDefinitionWalker.WalkAncestors(typeDefinition, visitTypeDefinition, visitTypeDefinition);
+
+      // Reverse the order to get a top down view
+      allTypesInHierarchy.Reverse();
+
+      InlineTypeDefinitionWalker.WalkDescendants(typeDefinition, visitTypeDefinition, visitTypeDefinition);
 
       var storageProperties =
-          from cd in allClassesInHierarchy
+          from cd in allTypesInHierarchy
           from PropertyDefinition pd in cd.MyPropertyDefinitions
           where pd.StorageClass == StorageClass.Persistent
-          group _persistenceModelProvider.GetStoragePropertyDefinition(pd) by pd.PropertyInfo into storagePropertyGroup
+          group _persistenceModelProvider.GetStoragePropertyDefinition(pd) by pd.PropertyInfo
+          into storagePropertyGroup
           select Unify(storagePropertyGroup);
 
       return storageProperties;
