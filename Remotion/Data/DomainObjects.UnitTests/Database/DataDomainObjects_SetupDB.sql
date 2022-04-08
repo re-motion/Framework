@@ -771,7 +771,7 @@ CREATE TABLE [TableWithAllDataTypes] (
   [NaInt32WithNullValue] int NULL,
   [NaInt64WithNullValue] bigint NULL,
   [NaSingleWithNullValue] real NULL,
-  [NullableBinary] varbinary(max) NULL,
+  [NullableBinary] varbinary(1000) NULL,
       
   CONSTRAINT [PK_TableWithAllDataTypes] PRIMARY KEY CLUSTERED ([ID])
 ) 

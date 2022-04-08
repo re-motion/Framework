@@ -207,7 +207,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     [DBColumn("NaSingleWithNullValue")]
     public abstract float? NaSingleWithNullValueProperty { get; set; }
 
-    [BinaryProperty(MaximumLength = 1000000)]
+    [BinaryProperty(MaximumLength = 1000)]
     [DBColumn("NullableBinary")]
     public abstract byte[] NullableBinaryProperty { get; set; }
 
