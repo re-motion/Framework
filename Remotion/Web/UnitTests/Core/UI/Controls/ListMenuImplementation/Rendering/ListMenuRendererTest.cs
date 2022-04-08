@@ -200,21 +200,30 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
     {
       SetUpGetPostBackLinkExpectations(true);
 
-      var table = GetAssertedTable();
-      table.AssertAttributeValueEquals(DiagnosticMetadataAttributes.ControlType, "ListMenu");
-      table.AssertAttributeValueEquals(DiagnosticMetadataAttributes.IsDisabled, (!_control.Object.Enabled).ToString().ToLower());
+      var wrapper = GetAssertedWrapper();
+      wrapper.AssertAttributeValueEquals(DiagnosticMetadataAttributes.ControlType, "ListMenu");
+      wrapper.AssertAttributeValueEquals(DiagnosticMetadataAttributes.IsDisabled, (!_control.Object.Enabled).ToString().ToLower());
     }
 
-    private XmlNode GetAssertedTable ()
+    private XmlNode GetAssertedWrapper ()
     {
       var renderer = new ListMenuRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
       renderer.Render(new ListMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
 
       var document = _htmlHelper.GetResultDocument();
 
-      var table = _htmlHelper.GetAssertedChildElement(document, "table", 0);
-      table.AssertAttributeValueEquals("id", _control.Object.ClientID);
-      table.AssertAttributeValueEquals("class", _control.Object.CssClass);
+      var wrapper = _htmlHelper.GetAssertedChildElement(document, "div", 0);
+      wrapper.AssertAttributeValueEquals("id", _control.Object.ClientID);
+      wrapper.AssertAttributeValueEquals("class", _control.Object.CssClass);
+      wrapper.AssertAttributeValueEquals("role", "region");
+      return wrapper;
+    }
+
+    private XmlNode GetAssertedTable ()
+    {
+      var wrapper = GetAssertedWrapper();
+
+      var table = _htmlHelper.GetAssertedChildElement(wrapper, "table", 0);
       table.AssertAttributeValueEquals("role", "menu");
       return table;
     }

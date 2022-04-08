@@ -38,6 +38,7 @@ namespace Remotion.Web.UI
     public const string Presentation = "presentation";
     public const string Radio = "radio";
     public const string RadioGroup = "radiogroup";
+    public const string Region = "region";
     public const string Row = "row";
     public const string RowGroup = "rowgroup";
     public const string RowHeader = "rowheader";

@@ -24,6 +24,16 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation
   /// </summary>
   public interface IListMenu : IStyledControl, IControlWithDiagnosticMetadata
   {
+    /// <summary>
+    /// Gets the heading used to label the list menu.
+    /// </summary>
+    WebString Heading { get; }
+
+    /// <summary>
+    /// Gets the heading level used to render the list menu heading. <see langword="null"/> renders a <c>span</c>.
+    /// </summary>
+    HeadingLevel? HeadingLevel { get; }
+
     ListMenuLineBreaks LineBreaks { get; }
     WebMenuItemCollection MenuItems { get; }
     bool Enabled { get; }

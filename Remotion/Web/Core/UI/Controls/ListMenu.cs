@@ -44,6 +44,12 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
+    /// <inheritdoc />
+    public WebString Heading { get; set; }
+
+    /// <inheritdoc />
+    public HeadingLevel? HeadingLevel { get; set; }
+
     public ListMenuLineBreaks LineBreaks
     {
       get { return _lineBreaks; }

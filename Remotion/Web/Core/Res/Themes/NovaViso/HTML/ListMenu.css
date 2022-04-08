@@ -1,6 +1,6 @@
 ﻿/* Style applied to the ListMenu. */
 
-table.listMenu
+div.listMenu table
 {
   border-spacing: 0;
   border-collapse: collapse;

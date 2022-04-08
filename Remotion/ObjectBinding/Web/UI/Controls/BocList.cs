@@ -152,6 +152,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       EmptyListMessage,
       OptionsTitle,
+      ListMenuHeading,
       AvailableViewsListTitle,
       /// <summary>The tool tip text for the required icon.</summary>
       RequiredFieldTitle,
@@ -257,6 +258,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private RowMenuDisplay _rowMenuDisplay = RowMenuDisplay.Undefined;
     private WebString _optionsTitle;
+    private WebString _listMenuHeading;
     private string[]? _hiddenMenuItems;
     private Unit _menuBlockOffset = Unit.Empty;
     private Unit _menuBlockItemOffset = Unit.Empty;
@@ -3722,9 +3724,37 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
+    /// <inheritdoc />
+    [Category("Menu")]
+    [Description("The text that is rendered as a label for the menu.")]
+    [DefaultValue(typeof(WebString), "")]
+    public WebString ListMenuHeading
+    {
+      get => _listMenuHeading;
+      set => _listMenuHeading = value;
+    }
+
+    /// <inheritdoc />
+    [Category("Menu")]
+    [Description("The heading level applied to the ListMenuHeading. Leave empty to use a SPAN instead of a Heading-element.")]
+    [DefaultValue(typeof(HeadingLevel?), "")]
+    public HeadingLevel? ListMenuHeadingLevel
+    {
+      get => _listMenu.HeadingLevel;
+      set => _listMenu.HeadingLevel = value;
+    }
+
     IListMenu IBocList.ListMenu
     {
-      get { return _listMenu; }
+      get
+      {
+        if (ListMenuHeading.IsEmpty)
+          _listMenu.Heading = GetResourceManager().GetText(ResourceIdentifier.ListMenuHeading);
+        else
+          _listMenu.Heading = ListMenuHeading;
+
+        return _listMenu;
+      }
     }
 
     IEditModeController IBocList.EditModeController
