@@ -106,6 +106,18 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMenuImplementation.Rende
       table.AssertAttributeValueEquals(DiagnosticMetadataAttributes.ControlType, "TabbedMenu");
     }
 
+    [Test]
+    public void RenderWebStrings ()
+    {
+      _control.Setup(_ => _.StatusText).Returns(WebString.CreateFromText("Multiline\nStatusText"));
+
+      _renderer.Render(new TabbedMenuRenderingContext(_httpContext.Object, _htmlHelper.Writer, _control.Object));
+
+      var document = _htmlHelper.GetResultDocument();
+      var node = document.GetAssertedElementByClass("tabbedMenuStatusCell");
+      Assert.That(node.InnerXml, Is.EqualTo("Multiline<br />StatusText"));
+    }
+
     private XmlNode AssertControl (bool isDesignMode, bool hasStatusText, bool hasCssClass)
     {
       _renderer.Render(new TabbedMenuRenderingContext(_httpContext.Object, _htmlHelper.Writer, _control.Object));

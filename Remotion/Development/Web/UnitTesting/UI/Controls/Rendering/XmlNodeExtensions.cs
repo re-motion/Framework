@@ -75,5 +75,15 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     {
       return Helper.GetAssertedChildElement(element, tagName, index);
     }
+
+    public static XmlNode GetAssertedElementByID (this XmlNode element, string id)
+    {
+      return Helper.GetAssertedElementByID(element, id);
+    }
+
+    public static XmlNode GetAssertedElementByClass (this XmlNode element, string className, int index = 0)
+    {
+      return Helper.GetAssertedElementByClass(element, className, index);
+    }
   }
 }
