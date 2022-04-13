@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes>(DomainObjectIDs.ClassWithAllDataTypes1);
 
       var dataContainer = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
-      dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "NullableBinaryProperty"), new byte[1000000]);
+      dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "NullableBinaryProperty"), new byte[1000]);
 
       Assert.That(() => _validator.Validate(dataContainer), Throws.Nothing);
     }
@@ -96,13 +96,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       var domainObject = DomainObjectMother.CreateFakeObject<ClassWithAllDataTypes>(DomainObjectIDs.ClassWithAllDataTypes1);
 
       var dataContainer = CreatePersistableData(new DomainObjectState.Builder().SetNew().Value, domainObject).DataContainer;
-      dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "NullableBinaryProperty"), new byte [1000001]);
+      dataContainer.SetValue(GetPropertyDefinition(typeof(ClassWithAllDataTypes), "NullableBinaryProperty"), new byte [1001]);
 
       Assert.That(
           () => _validator.Validate(dataContainer),
           Throws.TypeOf<PropertyValueTooLongException>().With.Message.Matches(
               @"Value for property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.ClassWithAllDataTypes\.NullableBinaryProperty' "
-              + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' is too long. Maximum size: 1000001."));
+              + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' is too long. Maximum size: 1001."));
     }
     [Test]
     public void ValidateDataContainer_PropertyHasMaxLength_AndPropertyValueIsTooLong_AndPropertyIsTransactionProperty_DoesNotThrow ()
@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       {
         var person = ClassWithAllDataTypes.NewObject();
         person.BinaryProperty = new byte[10];
-        person.NullableBinaryProperty = new byte[1000000];
+        person.NullableBinaryProperty = new byte[1000];
         person.StringProperty = "value";
         person.StringPropertyWithoutMaxLength = "value";
 
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       {
         var person = ClassWithAllDataTypes.NewObject();
         person.BinaryProperty = new byte[10];
-        person.NullableBinaryProperty = new byte[1000001];
+        person.NullableBinaryProperty = new byte[1001];
         person.StringProperty = "value";
         person.StringPropertyWithoutMaxLength = "value";
 
@@ -173,7 +173,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
             () => _validator.Validate(dataContainer),
             Throws.TypeOf<PropertyValueTooLongException>().With.Message.Matches(
                 @"Value for property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.ClassWithAllDataTypes\.NullableBinaryProperty' "
-                + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' is too long. Maximum size: 1000001."));
+                + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' is too long. Maximum size: 1001."));
       }
     }
 
@@ -184,7 +184,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       {
         var person = ClassWithAllDataTypes.NewObject();
         person.BinaryProperty = new byte[10];
-        person.NullableBinaryProperty = new byte[1000000];
+        person.NullableBinaryProperty = new byte[1000];
         person.StringProperty = "value";
         person.StringPropertyWithoutMaxLength = "value";
 
@@ -200,7 +200,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
       {
         var person = ClassWithAllDataTypes.NewObject();
         person.BinaryProperty = new byte[10];
-        person.NullableBinaryProperty = new byte[1000001];
+        person.NullableBinaryProperty = new byte[1001];
         person.StringProperty = "value";
         person.StringPropertyWithoutMaxLength = "value";
 
@@ -209,7 +209,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
             () => _validator.Validate(ClientTransaction.Current, persistableData),
             Throws.TypeOf<PropertyValueTooLongException>().With.Message.Matches(
                 @"Value for property 'Remotion\.Data\.DomainObjects\.UnitTests\.TestDomain\.ClassWithAllDataTypes\.NullableBinaryProperty' "
-                + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' is too long. Maximum size: 1000001."));
+                + @"of domain object ''ClassWithAllDataTypes|.*|System\.Guid'' is too long. Maximum size: 1001."));
       }
     }
 
