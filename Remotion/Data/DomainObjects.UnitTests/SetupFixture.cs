@@ -53,7 +53,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
         var masterAgent = new DatabaseAgent(DatabaseTest.MasterConnectionString);
         masterAgent.ExecuteBatchFile("Database\\DataDomainObjects_CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
         var testDomainAgent = new DatabaseAgent(DatabaseTest.TestDomainConnectionString);
-        testDomainAgent.ExecuteBatchFile("Database\\DataDomainObjects_SetupDB.sql", true, DatabaseConfiguration.GetReplacementDictionary());
+        testDomainAgent.ExecuteBatchFile("Database\\DataDomainObjects_TestDomain_TearDownDB.sql", true, DatabaseConfiguration.GetReplacementDictionary());
+        testDomainAgent.ExecuteBatchFile("Database\\DataDomainObjects_TableInheritanceTestDomain_TearDownDB.sql", true, DatabaseConfiguration.GetReplacementDictionary());
+        testDomainAgent.ExecuteBatchFile("Database\\DataDomainObjects_TestDomain_SetupDB.sql", true, DatabaseConfiguration.GetReplacementDictionary());
+        testDomainAgent.ExecuteBatchFile("Database\\DataDomainObjects_TableInheritanceTestDomain_SetupDB.sql", true, DatabaseConfiguration.GetReplacementDictionary());
+        testDomainAgent.ExecuteBatchFile("Database\\DataDomainObjects_Patches.sql", true, DatabaseConfiguration.GetReplacementDictionary());
 
         _standardMappingDatabaseAgent = new StandardMappingDatabaseAgent(DatabaseTest.TestDomainConnectionString);
         string sqlFileName = StandardMappingTest.CreateTestDataFileName;

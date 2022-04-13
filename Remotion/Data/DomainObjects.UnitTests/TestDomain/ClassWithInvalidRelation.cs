@@ -21,6 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   [DBTable("TableWithInvalidRelation")]
   [TestDomain]
   [Instantiable]
+  [ExcludeFromTestDomainDB]
   public abstract class ClassWithInvalidRelation : TestDomainBase
   {
     protected ClassWithInvalidRelation ()

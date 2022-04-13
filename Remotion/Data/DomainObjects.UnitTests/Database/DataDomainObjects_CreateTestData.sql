@@ -7,8 +7,8 @@ delete from [MixedDomains_TargetWithUnidirectionalMixin2]
 -- update required to avoid foreign key violations
 update [MixedDomains_Target] set [UnidirectionalRelationPropertyID]=NULL,[RelationPropertyID]=NULL,[PrivateBaseRelationPropertyID]=NULL,[CollectionPropertyNSideID]=NULL
 update [MixedDomains_RelationTarget] set [RelationProperty2ID]=NULL,[RelationProperty2IDClassID]=NULL,[RelationProperty3ID]=NULL,[RelationProperty3IDClassID]=NULL
-update [EagerFetching_BaseClass] set [ScalarProperty2RealSideID]=NULL, [ScalarProperty2RealSideIDClassID]=NULL, [UnidirectionalPropertyID]=NULL, [UnidirectionalPropertyIDClassID]=NULL
-update [EagerFetching_RelationTarget] set [CollectionPropertyOneSideID]=NULL, [CollectionPropertyOneSideIDClassID]=NULL,[ScalarProperty1RealSideID]=NULL, [ScalarProperty1RealSideIDClassID]=NULL
+update [EagerFetching_BaseClass] set [ScalarProperty2RealSideID]=NULL, [UnidirectionalPropertyID]=NULL
+update [EagerFetching_RelationTarget] set [CollectionPropertyOneSideID]=NULL, [CollectionPropertyOneSideIDClassID]=NULL
 delete from [MixedDomains_Target]
 delete from [MixedDomains_RelationTarget]
 delete from [EagerFetching_BaseClass]
@@ -26,8 +26,6 @@ delete from [Ceo]
 delete from [OrderTicket]
 delete from [OrderItem]
 delete from [Order]
-delete from [OrderItemWithNewPropertyAccess]
-delete from [OrderWithNewPropertyAccess]
 delete from [Company]
 delete from [IndustrialSector]
 delete from [ProductReview]
@@ -36,7 +34,6 @@ delete from [Person]
 delete from [TableWithAllDataTypes]
 delete from [TableWithValidRelations]
 delete from [TableWithInvalidRelation]
-delete from [TableWithRelatedClassIDColumnAndNoInheritance]
 delete from [TableWithGuidKey]
 delete from [TableWithKeyOfInvalidType]
 delete from [TableWithoutIDColumn]
@@ -295,20 +292,6 @@ insert into [OrderItem] (ID, ClassID, OrderID, [Position], [Product])
     values ('{386D99F9-B0BA-4C55-8F22-BF194A3D745A}', 'OrderItem', 
     NULL, 1, 'Rubik''s Cube')
 
--- OrderWithNewPropertyAccess
-insert into [OrderWithNewPropertyAccess] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID) 
-    values ('{5682F032-2F0B-494b-A31C-C97F02B89C36}', 'OrderWithNewPropertyAccess', 1, '2005/01/01', 
-    '{55B52E75-514B-4e82-A91B-8F0BB59B80AD}', 'Customer')
-
--- OrderItemWithNewPropertyAccess
-insert into [OrderItemWithNewPropertyAccess] (ID, ClassID, OrderID, [Position], [Product]) 
-    values ('{2F4D42C7-7FFA-490d-BFCD-A9101BBF4E1A}', 'OrderItemWithNewPropertyAccess', 
-    '{5682F032-2F0B-494b-A31C-C97F02B89C36}', 1, 'Mainboard')
-
-insert into [OrderItemWithNewPropertyAccess] (ID, ClassID, OrderID, [Position], [Product]) 
-    values ('{AD620A11-4BC4-4791-BCF4-A0770A08C5B0}', 'OrderItemWithNewPropertyAccess', 
-    '{5682F032-2F0B-494b-A31C-C97F02B89C36}', 2, 'CPU Fan')
-
 -- OrderTicket
 insert into [OrderTicket] (ID, ClassID, FileName, OrderID) 
     values ('{058EF259-F9CD-4cb1-85E5-5C05119AB596}', 'OrderTicket', 'C:\order1.png', '{5682F032-2F0B-494b-A31C-C97F02B89C36}')
@@ -498,10 +481,6 @@ insert into [TableWithInvalidRelation] (ID, ClassID, TableWithGuidKeyID)
     values ('{AFA9CF46-8E77-4da8-9793-53CAA86A277C}', 'ClassWithInvalidRelation', 
     '{A53F679D-0E91-4504-AEE8-59250DE249B3}')
 
--- TableWithRelatedClassIDColumnAndNoInheritance
-insert into [TableWithRelatedClassIDColumnAndNoInheritance] (ID, ClassID, TableWithGuidKeyID, TableWithGuidKeyIDClassID)
-    values ('{CB72715D-F419-4ab9-8D49-ABCBA4E9EDB4}', 'ClassWithRelatedClassIDColumnAndNoInheritance', null, null)
-
 
 -- StorageGroupClass
 insert into [StorageGroupClass] (ID, ClassID, AboveInheritanceIdentifier, StorageGroupClassIdentifier)
@@ -586,11 +565,11 @@ insert into [EagerFetching_BaseClass] ([ID], [ClassID])
 insert into [EagerFetching_BaseClass] ([ID], [ClassID]) 
     values ('{80B729A2-1FC6-46D0-A69B-39B881346588}', 'EagerFetching_DerivedClass1')
 
-insert into [EagerFetching_BaseClass] ([ID], [ClassID], [ScalarProperty2RealSideID], [ScalarProperty2RealSideIDClassID], [UnidirectionalPropertyID], [UnidirectionalPropertyIDClassID]) 
-    values ('{10742FC3-AB58-49BC-AF04-CBDE1B160CBF}', 'EagerFetching_DerivedClass2', '{5DD64E95-5449-4345-8DE8-1D766BB23B17}', 'EagerFetching_RelationTarget', NULL, NULL)
+insert into [EagerFetching_BaseClass] ([ID], [ClassID], [ScalarProperty2RealSideID], [UnidirectionalPropertyID]) 
+    values ('{10742FC3-AB58-49BC-AF04-CBDE1B160CBF}', 'EagerFetching_DerivedClass2', NULL, NULL)
 
-insert into [EagerFetching_BaseClass] ([ID], [ClassID], [ScalarProperty2RealSideID], [ScalarProperty2RealSideIDClassID], [UnidirectionalPropertyID], [UnidirectionalPropertyIDClassID]) 
-    values ('{F6090162-7B12-4689-951B-B52EFD72C34F}', 'EagerFetching_DerivedClass2', NULL, NULL, '{03CDC3BF-DA09-442D-A2C0-96567B48BC5D}', 'EagerFetching_RelationTarget')
+insert into [EagerFetching_BaseClass] ([ID], [ClassID], [ScalarProperty2RealSideID], [UnidirectionalPropertyID]) 
+    values ('{F6090162-7B12-4689-951B-B52EFD72C34F}', 'EagerFetching_DerivedClass2', NULL, NULL)
 
 insert into [EagerFetching_RelationTarget] ([ID], [ClassID], [CollectionPropertyOneSideID], [CollectionPropertyOneSideIDClassID], [ScalarProperty1RealSideID], [ScalarProperty1RealSideIDClassID]) 
     values ('{3DD744D2-91C7-463B-A5AF-01AD064B3821}', 'EagerFetching_RelationTarget', '{BD4403A5-E96D-426E-A7B0-4A5DB2363D3A}', 'EagerFetching_DerivedClass1', NULL, NULL)
@@ -606,3 +585,11 @@ insert into [EagerFetching_RelationTarget] ([ID], [ClassID], [CollectionProperty
 
 insert into [EagerFetching_RelationTarget] ([ID], [ClassID], [CollectionPropertyOneSideID], [CollectionPropertyOneSideIDClassID], [ScalarProperty1RealSideID], [ScalarProperty1RealSideIDClassID]) 
     values ('{03CDC3BF-DA09-442D-A2C0-96567B48BC5D}', 'EagerFetching_RelationTarget', NULL, NULL, NULL, NULL)
+
+update [EagerFetching_BaseClass] 
+    set [ScalarProperty2RealSideID] = '{5DD64E95-5449-4345-8DE8-1D766BB23B17}'
+    where [ID] = '10742FC3-AB58-49BC-AF04-CBDE1B160CBF'
+
+update [EagerFetching_BaseClass] 
+    set [UnidirectionalPropertyID] = '{03CDC3BF-DA09-442D-A2C0-96567B48BC5D}'
+    where [ID] = 'F6090162-7B12-4689-951B-B52EFD72C34F'

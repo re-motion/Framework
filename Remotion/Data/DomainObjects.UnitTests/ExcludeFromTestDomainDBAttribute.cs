@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,20 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
-namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.SingleInheritance
+namespace Remotion.Data.DomainObjects.UnitTests
 {
-  [TestDomain]
-  [DBTable]
-  public abstract class SingleInheritanceBaseClass : DomainObject
+  /// <summary>
+  /// Indicates that no SQL DDL for the test domain database should be generated.
+  /// Manual SQL DDL can be added in DataDomainObjects_Patches.sql.
+  /// </summary>
+  [AttributeUsage(AttributeTargets.Class)]
+  public class ExcludeFromTestDomainDBAttribute : Attribute
   {
-    public virtual string BaseProperty { get; set; }
-
-    [DBBidirectionalRelation("ScalarProperty")]
-    public virtual SingleInheritanceObjectWithRelations ScalarOpposingProperty { get; set; }
-
-    [DBBidirectionalRelation("VectorProperty")]
-    public virtual SingleInheritanceObjectWithRelations VectorOpposingProperty { get; set; }
+    public ExcludeFromTestDomainDBAttribute ()
+    {
+    }
   }
 }
