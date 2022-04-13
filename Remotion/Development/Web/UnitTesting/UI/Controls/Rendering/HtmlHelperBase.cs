@@ -295,6 +295,37 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     }
 
     /// <summary>
+    /// Asserts that <paramref name="element"/> has a single descending element with the specified <paramref name="id"/> and returns the node.
+    /// </summary>
+    public XmlNode GetAssertedElementByID (XmlNode element, string id)
+    {
+      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+
+      var nodes = element.SelectNodes($"//*[@id=\"{id}\"]")!;
+
+      AssertAreEqual(nodes.Count, 1, "{0} elements were found for the ID '{1}', but exactly one element was expected.", nodes.Count, id);
+
+      return nodes[0]!;
+    }
+
+    /// <summary>
+    /// Asserts that <paramref name="element"/> has a descending elements with the specified <paramref name="className"/> and returns the element
+    /// at the specified index.
+    /// </summary>
+    public XmlNode GetAssertedElementByClass (XmlNode element, string className, int index)
+    {
+      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentUtility.CheckNotNullOrEmpty("className", className);
+
+      var nodes = element.SelectNodes($"//*[contains(concat(' ',normalize-space(@class),' '),' {className} ')]")!;
+
+      AssertGreaterThan(nodes.Count, index, "Node {0} has only {1} nested elements with a class matching '{2}' - index {3} out of range.", element.Name, nodes.Count, className, index);
+
+      return nodes[index]!;
+    }
+
+    /// <summary>
     /// Disposes of the <see cref="Writer"/> and its underlying streams.
     /// </summary>
     public void Dispose ()

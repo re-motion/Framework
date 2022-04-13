@@ -19,6 +19,7 @@ using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
@@ -79,6 +80,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
 
       Html.AssertTextNode(a, "TestCommand", 0);
+    }
+
+    [Test]
+    public void RenderTextWebString ()
+    {
+      Column.Text = WebString.CreateFromText("Multiline\nText");
+      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      renderer.RenderDataCell(_renderingContext, 5, false, EventArgs);
+
+      var document = Html.GetResultDocument();
+      var title = document.GetAssertedElementByID(List.Object.ClientID + "_Column_0_Command_Row_10");
+      Assert.That(title.InnerXml, Is.EqualTo("Multiline<br />Text"));
     }
 
     [Test]
