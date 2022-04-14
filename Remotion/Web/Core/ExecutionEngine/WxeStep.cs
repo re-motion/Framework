@@ -215,6 +215,22 @@ public abstract class WxeStep
   {
     return false;
   }
+
+  /// <summary> Gets the flag that determines whether to include this <see cref="WxeStep"/>'s dirty state during a call to <see cref="EvaluateDirtyState"/>. </summary>
+  /// <value>
+  /// The value returned by this <see cref="WxeStep"/>'s <see cref="ParentFunction"/> or <see langword="true" /> if this <see cref="WxeStep"/> does not have a <see cref="ParentFunction"/>.
+  /// </value>
+  public virtual bool IsDirtyStateEnabled
+  {
+    get
+    {
+      var parentFunction = ParentFunction;
+      if (parentFunction == null)
+        return true;
+
+      return parentFunction.IsDirtyStateEnabled;
+    }
+  }
 }
 
 }

@@ -142,6 +142,9 @@ public class WxeMethodStep: WxeStep
       _method();
     }
   }
+
+  /// <ineritdoc />
+  public sealed override bool IsDirtyStateEnabled => base.IsDirtyStateEnabled;
 }
 
 }

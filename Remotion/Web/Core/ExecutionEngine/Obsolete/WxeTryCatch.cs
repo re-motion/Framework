@@ -267,6 +267,8 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
 
       return base.EvaluateDirtyState();
     }
+
+    public sealed override bool IsDirtyStateEnabled => base.IsDirtyStateEnabled;
   }
 
   [Serializable]
@@ -291,5 +293,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
           return exceptionAttribute.ExceptionType;
       }
     }
+
+    public sealed override bool IsDirtyStateEnabled => base.IsDirtyStateEnabled;
   }
 }
