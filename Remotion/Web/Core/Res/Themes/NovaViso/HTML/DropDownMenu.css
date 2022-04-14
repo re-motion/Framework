@@ -225,6 +225,8 @@ ul.DropDownMenuOptions li a > span:last-of-type
   grid-area: span;
   align-self: center;
   padding-left: var(--remotion-themed-spacing);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 ul.DropDownMenuOptions li.selected a:hover:not(li.DropDownMenuItemDisabled a),
