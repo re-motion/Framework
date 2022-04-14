@@ -567,5 +567,24 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       Assert.That(_pageStep.Object.EvaluateDirtyState(), Is.True);
       dirtyStepStub.Verify(_ => _.EvaluateDirtyState(), Times.Never());
     }
+
+    [Test]
+    public void IsDirtyStateEnabled_PassesCallToBaseImplementation_WithParentFunctionHasDirtyStateEnabled_ReturnsTrue ()
+    {
+      _pageStep.Object.SetParentStep(_rootFunction);
+      Assert.That(_rootFunction.IsDirtyStateEnabled, Is.True);
+
+      Assert.That(_pageStep.Object.IsDirtyStateEnabled, Is.True);
+    }
+
+    [Test]
+    public void IsDirtyStateEnabled_PassesCallToBaseImplementation_WithParentFunctionHasDirtyStateDisabled_ReturnsFalse ()
+    {
+      _rootFunction.DisableDirtyState();
+      _pageStep.Object.SetParentStep(_rootFunction);
+      Assert.That(_rootFunction.IsDirtyStateEnabled, Is.False);
+
+      Assert.That(_pageStep.Object.IsDirtyStateEnabled, Is.False);
+    }
   }
 }
