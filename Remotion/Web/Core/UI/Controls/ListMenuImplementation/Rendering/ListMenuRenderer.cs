@@ -75,9 +75,31 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassListMenu);
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Menu);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Region);
+
       if (IsDiagnosticMetadataRenderingEnabled)
         AddDiagnosticMetadataAttributes(renderingContext);
+
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+      var headingID = renderingContext.Control.ClientID + "_Heading";
+      var hasHeading = !renderingContext.Control.Heading.IsEmpty;
+
+      if (hasHeading)
+      {
+        var heading = renderingContext.Control.Heading;
+        var tag = GetTagFromHeadingLevel(renderingContext.Control.HeadingLevel);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, headingID);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "screenReaderText");
+        renderingContext.Writer.RenderBeginTag(tag);
+        heading.WriteTo(renderingContext.Writer);
+        renderingContext.Writer.RenderEndTag();
+      }
+
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Menu);
+      if(hasHeading)
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaLabelledBy, headingID);
+
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Table);
 
       var isFirst = true;
@@ -129,6 +151,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       //    isFirstItem = false;
       //}
       renderingContext.Writer.RenderEndTag();
+      renderingContext.Writer.RenderEndTag();
     }
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<IListMenu> renderingContext)
@@ -137,6 +160,17 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsDisabled, (!renderingContext.Control.Enabled).ToString().ToLower());
     }
+
+    private HtmlTextWriterTag GetTagFromHeadingLevel (HeadingLevel? headingLevel) =>
+        headingLevel switch
+        {
+            HeadingLevel.H1 => HtmlTextWriterTag.H1,
+            HeadingLevel.H2 => HtmlTextWriterTag.H2,
+            HeadingLevel.H3 => HtmlTextWriterTag.H3,
+            HeadingLevel.H4 => HtmlTextWriterTag.H4,
+            HeadingLevel.H5 => HtmlTextWriterTag.H5,
+            _ => HtmlTextWriterTag.Span,
+        };
 
     private IEnumerable<IEnumerable<WebMenuItem>> GetVisibleMenuItemsInGroups (ListMenuRenderingContext renderingContext)
     {

@@ -165,4 +165,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
     <value>Input non valido nella riga appena modificata</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListMenuHeading" xml:space="preserve">
+    <value>Opzioni</value>
+  </data>
 </root>
