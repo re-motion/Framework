@@ -379,6 +379,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 case KEY.TAB:
                 case KEY.ESC:
                     // re-motion: block event bubbling
+                    event.preventDefault();
                     event.stopPropagation();
                     const wasVisible = select.visible();
                     state.mouseDownOnSelect = false;
