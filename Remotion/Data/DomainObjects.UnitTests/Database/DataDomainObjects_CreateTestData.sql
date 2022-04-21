@@ -593,3 +593,31 @@ update [EagerFetching_BaseClass]
 update [EagerFetching_BaseClass] 
     set [UnidirectionalPropertyID] = '{03CDC3BF-DA09-442D-A2C0-96567B48BC5D}'
     where [ID] = 'F6090162-7B12-4689-951B-B52EFD72C34F'
+
+--
+insert into [OnlyImplementor] ([ID], [ClassID], [InterfaceProperty], [OnlyImplementorProperty]) 
+    values ('{D20AD209-61CC-4E01-B570-EE4554038DB0}', 'OnlyImplementor', 3, 1337);
+
+insert into [OnlyImplementor] ([ID], [ClassID], [InterfaceProperty], [OnlyImplementorProperty]) 
+    values ('{CDA944EF-4ABC-48DA-AFCB-CEFD1F826597}', 'OnlyImplementor', 5, 1338);
+
+insert into [SimpleOrder] ([ID], [ClassID], [OrderNumber], [SimpleOrderName]) 
+    values ('{DFFF4E9C-1EE1-4D36-977C-037909173CE0}', 'SimpleOrder', 1, 'Coffee');
+
+insert into [SimpleOrder] ([ID], [ClassID], [OrderNumber], [SimpleOrderName]) 
+    values ('{6B71C813-86A6-44D0-B0E7-846C37F41D47}', 'SimpleOrder', 2, 'Coffee and Milk');
+
+insert into [SimpleOrderItem] ([ID], [ClassID], [Position], [Product],
+        [OrderID], [OrderIDClassID], [SimpleOrderItemName]) 
+    values ('{1D39C517-0B47-4232-8683-87109B277AFC}', 'SimpleOrderItem', 1, 'Coffee',
+        '{DFFF4E9C-1EE1-4D36-977C-037909173CE0}', 'SimpleOrder', 'black arabian coffee');
+
+insert into [SimpleOrderItem] ([ID], [ClassID], [Position], [Product],
+        [OrderID], [OrderIDClassID], [SimpleOrderItemName]) 
+    values ('{FD01262F-FAD2-48BC-B91E-65B7A74F3AA3}', 'SimpleOrderItem', 1, 'Coffee (Milk)',
+        '{6B71C813-86A6-44D0-B0E7-846C37F41D47}', 'SimpleOrder', 'black arabian coffee with milk');
+
+insert into [SimpleOrderItem] ([ID], [ClassID], [Position], [Product],
+        [OrderID], [OrderIDClassID], [SimpleOrderItemName]) 
+    values ('{003A1474-66E7-4998-A1EF-F29690B41955}', 'SimpleOrderItem', 2, 'Glass of water',
+        '{6B71C813-86A6-44D0-B0E7-846C37F41D47}', 'SimpleOrder', 'tap water');
