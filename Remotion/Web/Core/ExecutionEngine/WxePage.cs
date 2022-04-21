@@ -396,16 +396,5 @@ namespace Remotion.Web.ExecutionEngine
     {
       get { return IsAbortEnabled && base.IsAbortConfirmationEnabled; }
     }
-
-    /// <summary> 
-    ///   Gets the value of the base class's <see cref="SmartPage.IsDirtyStateTrackingEnabled"/> property ANDed with <see cref="IsAbortEnabled"/>.
-    /// </summary>
-    /// <value> 
-    ///   <see langword="true"/> if <see cref="SmartPage.IsDirtyStateTrackingEnabled"/> and <see cref="IsAbortEnabled"/> evaluate <see langword="true"/>. 
-    /// </value>
-    protected override bool IsDirtyStateTrackingEnabled
-    {
-      get { return IsAbortEnabled && base.IsDirtyStateTrackingEnabled; }
-    }
   }
 }

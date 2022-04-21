@@ -78,6 +78,11 @@ namespace Remotion.Web.UI
     void RegisterControlForClientSideDirtyStateTracking (string clientID);
 
     /// <summary>
+    ///   Gets the flag that determines whether to include this page's dirty state when evaluating <see cref="GetDirtyStates"/>.
+    /// </summary>
+    bool IsDirtyStateEnabled { get; }
+
+    /// <summary>
     ///   Gets a flag that determines whether the dirty state will be taken into account when displaying the abort 
     ///   confirmation dialog.
     /// </summary>

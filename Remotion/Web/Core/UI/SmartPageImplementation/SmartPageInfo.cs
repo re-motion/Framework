@@ -67,6 +67,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     private static readonly string s_styleFileKey = typeof(SmartPageInfo).GetFullNameChecked() + "_Style";
     private static readonly string s_smartNavigationScriptKey = typeof(SmartPageInfo).GetFullNameChecked() + "_SmartNavigation";
     private static IEnumerable<string> s_dirtyStateForCurrentPage = EnumerableUtility.Singleton(SmartPageDirtyStates.CurrentPage);
+    private static IEnumerable<string> s_dirtyStateForCurrentPageOnServerOrClient = new[] { SmartPageDirtyStates.CurrentPage, SmartPageDirtyStates.ClientSide };
 
     private readonly ISmartPage _page;
 
@@ -176,7 +177,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
           requestedStates == null
           || s_dirtyStateForCurrentPage.Intersect(requestedStates, StringComparer.InvariantCultureIgnoreCase).Any();
 
-      if (isDirtyStateForCurrentPageRequested)
+      if (_page.IsDirtyStateEnabled && isDirtyStateForCurrentPageRequested)
       {
         if (_page.IsDirty)
           return s_dirtyStateForCurrentPage;
@@ -346,7 +347,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
           smartFocusFieldID = "'" + c_smartFocusID + "'";
       }
 
-      string isAbortConfirmationRequiredIndependentOfDirtyState = "true";
+      var isAbortConfirmationRequiredIndependentOfDirtyState = _page.IsDirtyStateEnabled ? "false" :  "true";
 
       StringBuilder initScript = new StringBuilder(500);
       StringBuilder startupScript = new StringBuilder(500);
@@ -362,22 +363,21 @@ namespace Remotion.Web.UI.SmartPageImplementation
       const string trackedControlsArray = "trackedControls";
       initScript.Append("  var ").Append(trackedControlsArray).AppendLine(" = new Array();");
 
+      var dirtyStates = _page.GetDirtyStates();
       const string dirtyStatesSet = "dirtyStates";
       startupScript.Append("  var ").Append(dirtyStatesSet).AppendLine(" = new Set();");
-
-      if (_page.IsDirtyStateTrackingEnabled)
+      if (!_page.IsDirtyStateEnabled)
       {
-        isAbortConfirmationRequiredIndependentOfDirtyState = "false";
-        bool isDirtyOnServerSide = false;
-        foreach (var dirtyState in _page.GetDirtyStates())
-        {
-          isDirtyOnServerSide = true;
-          startupScript.Append(dirtyStatesSet).Append(".add('").Append(dirtyState).AppendLine("');");
-        }
-
-        if (!isDirtyOnServerSide)
-          FormatPopulateTrackedControlsArrayClientScript(initScript, trackedControlsArray);
+        // Filter is only applied to ensure consistency.
+        // SmartPageInfo.GetDirtyStates() will already remove page-level dirty state values when IsDirtyStateEnabled is false.
+        dirtyStates = dirtyStates.Except(s_dirtyStateForCurrentPageOnServerOrClient);
       }
+      foreach (var dirtyState in dirtyStates)
+        startupScript.Append(dirtyStatesSet).Append(".add('").Append(dirtyState).AppendLine("');");
+
+      if (_page.IsDirtyStateEnabled)
+        FormatPopulateTrackedControlsArrayClientScript(initScript, trackedControlsArray);
+
       initScript.AppendLine();
 
       const string synchronousPostBackCommandsArray = "synchronousPostBackCommands";

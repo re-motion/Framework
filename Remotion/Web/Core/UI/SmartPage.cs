@@ -235,6 +235,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   private readonly ValidatableControlInitializer _validatableControlInitializer;
   private readonly PostLoadInvoker _postLoadInvoker;
   private bool _isDirty;
+  private bool? _enableDirtyState;
   private ShowAbortConfirmation _showAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;
   private bool? _enableStatusMessages;
   private bool? _abortQueuedSubmit;
@@ -305,10 +306,16 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// The set of dirty states. Note that the result may contain values that have not been requested by the caller.
   /// </returns>
   /// <remarks>
-  ///  Evaluates if either <see cref="IsDirty"/> is <see langword="true" />
-  ///  or if any control registered using <see cref="RegisterControlForDirtyStateTracking"/> has values that must be persisted before the user leaves the page.
+  /// <para>
+  ///   Evaluates if either <see cref="IsDirty"/> is <see langword="true" />
+  ///   or if any control registered using <see cref="RegisterControlForDirtyStateTracking"/> has values that must be persisted before the user leaves the page.
+  /// </para>
+  /// <para>
+  ///   When page-local dirty state tracking has been disabled by setting <see cref="EnableDirtyState"/> to <see langword="false" />,
+  ///   <see cref="GetDirtyStates"/> will exclude the <see cref="SmartPageDirtyStates.CurrentPage"/> entry from the result.
+  /// </para>
   ///  <note type="inheritinfo">
-  ///    Override to introduce additional flags for specific dirty scenarios (e.g. unpersistent changes in the session).
+  ///    Override to introduce additional flags for specific dirty scenarios (e.g. non-persistent changes in the session).
   ///   </note>
   /// </remarks>
   public virtual IEnumerable<string> GetDirtyStates (IReadOnlyCollection<string>? requestedStates)
@@ -318,10 +325,44 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   /// <summary> Gets or sets a flag describing whether the page is dirty. </summary>
   /// <value> <see langword="true"/> if the page requires saving. Defaults to <see langword="false"/>.  </value>
+  /// <remarks>
+  ///   If <see cref="EnableDirtyState"/> is <see langword="false" />, the current value of <see cref="IsDirty"/> is ignored by the infrastructure.
+  /// </remarks>
   public bool IsDirty
   {
     get { return _isDirty; }
     set { _isDirty = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets the flag that determines whether to include this page's dirty state when evaluating <see cref="GetDirtyStates"/>.
+  /// </summary>
+  /// <value>
+  ///   <see langword="true"/> to include this page's dirty state when evaluating <see cref="GetDirtyStates"/>.
+  ///   Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
+  /// </value>
+  /// <remarks>
+  ///   Use <see cref="IsDirtyStateEnabled"/> to evaluate this property.
+  /// </remarks>
+  [Description("The flag that determines whether to include this page's dirty state when evaluating GetDirtyStates().")]
+  [Category("Behavior")]
+  [DefaultValue(null)]
+  public bool? EnableDirtyState
+  {
+    get { return _enableDirtyState; }
+    set { _enableDirtyState = value; }
+  }
+
+  /// <summary>  Gets the flag that determines whether to include this page's dirty state when evaluating <see cref="GetDirtyStates"/>. </summary>
+  protected virtual bool IsDirtyStateEnabled
+  {
+    get { return _enableDirtyState != false; }
+  }
+
+  /// <summary> Gets the value returned by <see cref="IsDirtyStateEnabled"/>. </summary>
+  bool ISmartPage.IsDirtyStateEnabled
+  {
+    get { return IsDirtyStateEnabled; }
   }
 
   /// <summary> Gets a flag whether to only show the abort confirmation if the page is dirty. </summary>
