@@ -352,7 +352,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   [Description("Determines whether to display a confirmation dialog before leaving the page.")]
   [Category("Behavior")]
   [DefaultValue(ShowAbortConfirmation.OnlyIfDirty)]
-  public virtual ShowAbortConfirmation ShowAbortConfirmation
+  public ShowAbortConfirmation ShowAbortConfirmation
   {
     get { return _showAbortConfirmation; }
     set { _showAbortConfirmation = value; }
@@ -397,7 +397,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
              + "second request. Undefined is interpreted as true.")]
   [Category("Behavior")]
   [DefaultValue(null)]
-  public virtual bool? EnableStatusIsSubmittingMessage
+  public bool? EnableStatusIsSubmittingMessage
   {
     get { return _enableStatusIsSubmittingMessage; }
     set { _enableStatusIsSubmittingMessage = value; }
@@ -462,7 +462,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   [Description("The flag that determines whether to use smart scrolling. Undefined is interpreted as true.")]
   [Category("Behavior")]
   [DefaultValue(null)]
-  public virtual bool? EnableSmartScrolling
+  public bool? EnableSmartScrolling
   {
     get { return _enableSmartScrolling; }
     set { _enableSmartScrolling = value; }
@@ -502,7 +502,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   [Description("The flag that determines whether to use smart navigation. Undefined is interpreted as true.")]
   [Category("Behavior")]
   [DefaultValue(null)]
-  public virtual bool? EnableSmartFocusing
+  public bool? EnableSmartFocusing
   {
     get { return _enableSmartFocusing; }
     set { _enableSmartFocusing = value; }
