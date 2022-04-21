@@ -386,6 +386,54 @@ CREATE TABLE [dbo].[StorageGroupClass]
   [StorageGroupClassIdentifier] nvarchar (100) NOT NULL,
   CONSTRAINT [PK_StorageGroupClass] PRIMARY KEY CLUSTERED ([ID])
 )
+CREATE TABLE [dbo].[Implementor1]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [InterfaceProperty] int NOT NULL,
+  [OnlyImplementor1Property] int NOT NULL,
+  CONSTRAINT [PK_Implementor1] PRIMARY KEY CLUSTERED ([ID])
+)
+CREATE TABLE [dbo].[Implementor2]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [InterfaceProperty] int NOT NULL,
+  [OnlyImplementor2Property] int NOT NULL,
+  CONSTRAINT [PK_Implementor2] PRIMARY KEY CLUSTERED ([ID])
+)
+CREATE TABLE [dbo].[OnlyImplementor]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [InterfaceProperty] int NULL,
+  [OnlyImplementorProperty] int NOT NULL,
+  CONSTRAINT [PK_OnlyImplementor] PRIMARY KEY CLUSTERED ([ID])
+)
+CREATE TABLE [dbo].[SimpleOrder]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [OrderNumber] int NULL,
+  [SimpleOrderName] nvarchar (max) NULL,
+  CONSTRAINT [PK_SimpleOrder] PRIMARY KEY CLUSTERED ([ID])
+)
+CREATE TABLE [dbo].[SimpleOrderItem]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [Position] int NULL,
+  [Product] nvarchar (100) NULL,
+  [OrderID] uniqueidentifier NULL,
+  [OrderIDClassID] varchar (100) NULL,
+  [SimpleOrderItemName] nvarchar (max) NULL,
+  CONSTRAINT [PK_SimpleOrderItem] PRIMARY KEY CLUSTERED ([ID])
+)
 CREATE TABLE [dbo].[Location]
 (
   [ID] uniqueidentifier NOT NULL,
@@ -1001,6 +1049,59 @@ CREATE VIEW [dbo].[StorageGroupClassView] ([ID], [ClassID], [Timestamp], [AboveI
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [AboveInheritanceIdentifier], [StorageGroupClassIdentifier]
     FROM [dbo].[StorageGroupClass]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[IInterfaceWithOneImplementorView] ([ID], [ClassID], [Timestamp], [InterfaceProperty], [OnlyImplementorProperty])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [InterfaceProperty], [OnlyImplementorProperty]
+    FROM [dbo].[OnlyImplementor]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[IInterfaceWithoutImplementorsView] ([ID], [ClassID], [Timestamp], [InterfaceProperty])
+  AS
+  SELECT CONVERT(uniqueidentifier,NULL) AS [ID], CONVERT(varchar (100),NULL) AS [ClassID], CONVERT(rowversion,NULL) AS [Timestamp], CONVERT(int,NULL) AS [InterfaceProperty]
+    WHERE 1 = 0
+GO
+CREATE VIEW [dbo].[Implementor1View] ([ID], [ClassID], [Timestamp], [InterfaceProperty], [OnlyImplementor1Property])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [InterfaceProperty], [OnlyImplementor1Property]
+    FROM [dbo].[Implementor1]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[Implementor2View] ([ID], [ClassID], [Timestamp], [InterfaceProperty], [OnlyImplementor2Property])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [InterfaceProperty], [OnlyImplementor2Property]
+    FROM [dbo].[Implementor2]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[IOrderView] ([ID], [ClassID], [Timestamp], [OrderNumber], [SimpleOrderName])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], [SimpleOrderName]
+    FROM [dbo].[SimpleOrder]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[IOrderItemView] ([ID], [ClassID], [Timestamp], [Position], [Product], [OrderID], [OrderIDClassID], [SimpleOrderItemName])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Position], [Product], [OrderID], [OrderIDClassID], [SimpleOrderItemName]
+    FROM [dbo].[SimpleOrderItem]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[OnlyImplementorView] ([ID], [ClassID], [Timestamp], [InterfaceProperty], [OnlyImplementorProperty])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [InterfaceProperty], [OnlyImplementorProperty]
+    FROM [dbo].[OnlyImplementor]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[SimpleOrderView] ([ID], [ClassID], [Timestamp], [OrderNumber], [SimpleOrderName])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], [SimpleOrderName]
+    FROM [dbo].[SimpleOrder]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[SimpleOrderItemView] ([ID], [ClassID], [Timestamp], [Position], [Product], [OrderID], [OrderIDClassID], [SimpleOrderItemName])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Position], [Product], [OrderID], [OrderIDClassID], [SimpleOrderItemName]
+    FROM [dbo].[SimpleOrderItem]
   WITH CHECK OPTION
 GO
 CREATE VIEW [dbo].[LocationView] ([ID], [ClassID], [Timestamp], [ClientID])
