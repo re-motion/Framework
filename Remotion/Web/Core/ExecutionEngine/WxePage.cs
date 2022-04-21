@@ -445,22 +445,6 @@ namespace Remotion.Web.ExecutionEngine
       get { return AreStatusMessagesEnabled; }
     }
 
-    /// <exclude/>
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    [Browsable(false)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public override bool? EnableStatusIsSubmittingMessage
-    {
-      get
-      {
-        return base.EnableStatusIsSubmittingMessage;
-      }
-      set
-      {
-        base.EnableStatusIsSubmittingMessage = value;
-      }
-    }
-
     /// <summary> Overridden to return the value of <see cref="AreStatusMessagesEnabled"/>. </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected override bool IsStatusIsSubmittingMessageEnabled
