@@ -23,8 +23,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite.DirtyStates
   {
     protected override bool IsAbortConfirmationEnabled => false;
 
-    protected override bool IsDirtyStateTrackingEnabled => true;
-
     protected void SetPageDirtyButton_OnClick (object sender, EventArgs e)
     {
       IsDirty = true;
