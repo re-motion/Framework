@@ -18,10 +18,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Web.UI;
 using Remotion.Reflection;
 using Remotion.Utilities;
-using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -148,23 +148,14 @@ namespace Remotion.Web.UI.Controls
 
       if (_tabStrip != null && tab.IsSelected)
       {
-        bool isLastTab = index + 1 == InnerList.Count;
-        if (isLastTab)
-        {
-          if (InnerList.Count > 1)
-          {
-            WebTab penultimateTab = (WebTab)InnerList[index - 1]!;
-            _tabStrip.SetSelectedTabInternal(penultimateTab);
-          }
-          else
-            _tabStrip.SetSelectedTabInternal(null);
-        }
-        else
-        {
-          WebTab nextTab = (WebTab)InnerList[index + 1]!;
-          _tabStrip.SetSelectedTabInternal(nextTab);
-        }
+        var tabsBeforeSelectedTab = InnerList.Cast<WebTab>().Take(index);
+        var tabsAfterSelectedTab = InnerList.Cast<WebTab>().Skip(index + 1);
+        var nextTab = tabsAfterSelectedTab.FirstOrDefault(IsSelectable) ?? tabsBeforeSelectedTab.LastOrDefault(IsSelectable);
+
+        _tabStrip.SetSelectedTabInternal(nextTab);
       }
+
+      bool IsSelectable (WebTab t) => t.IsVisible && !t.IsDisabled && !t.IsSelected;
     }
 
     public void AddRange (WebTabCollection values)
