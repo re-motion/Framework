@@ -46,7 +46,11 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull("writer", writer);
 
       writer.RenderBeginTag(HtmlTextWriterTag.Title);
-      _title.WriteTo(writer);
+
+      // title-tag does not support HTML-tags, including line breaks.
+      // By using a PlainTextString and manually encoding the  value, we can ensure that no linebreaks are rendered.
+      writer.WriteEncodedText(_title.GetValue());
+
       writer.RenderEndTag();
       writer.WriteLine();
     }
