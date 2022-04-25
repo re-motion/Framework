@@ -108,11 +108,10 @@ namespace Remotion.Web.UI
     /// </remarks>
     WebString StatusIsSubmittingMessage { get; }
 
-    /// <summary> 
-    ///   Gets a flag whether the is submitting status messages will be displayed when the user tries to postback while 
-    ///   a request is being processed.
+    /// <summary>
+    ///   Gets a flag whether the status messages (i.e. is-submitting) will be displayed when the user tries to e.g. postback while a request is being processed.
     /// </summary>
-    bool IsStatusIsSubmittingMessageEnabled { get; }
+    bool AreStatusMessagesEnabled { get; }
 
     /// <summary>
     ///   Gets a flag whether a queued submit should be executed or aborted upon completion of the postback.

@@ -236,7 +236,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   private readonly PostLoadInvoker _postLoadInvoker;
   private bool _isDirty;
   private ShowAbortConfirmation _showAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;
-  private bool? _enableStatusIsSubmittingMessage;
+  private bool? _enableStatusMessages;
   private bool? _abortQueuedSubmit;
   private bool? _enableSmartScrolling;
   private bool? _enableSmartFocusing;
@@ -383,39 +383,39 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   }
 
 
-  /// <summary> 
+  /// <summary>
   ///   Gets or sets the flag that determines whether to display a message when the user tries to start a second
-  ///   request.
+  ///   request or returns to a page that has already been submitted (i.e. a cached page).
   /// </summary>
-  /// <value> 
+  /// <value>
   ///   <see langword="true"/> to enable the status messages. Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
   /// </value>
   /// <remarks>
-  ///   Use <see cref="IsStatusIsSubmittingMessageEnabled"/> to evaluate this property.
+  ///   Use <see cref="AreStatusMessagesEnabled"/> to evaluate this property.
   /// </remarks>
-  [Description("The flag that determines whether to display a status message when the user attempts to start a "
-             + "second request. Undefined is interpreted as true.")]
+  [Description("The flag that determines whether to display a status message when the user attempts to start a second request "
+               + "or returns to a page that has already been submitted (i.e. a cached page). Undefined is interpreted as true.")]
   [Category("Behavior")]
   [DefaultValue(null)]
-  public bool? EnableStatusIsSubmittingMessage
+  public bool? EnableStatusMessages
   {
-    get { return _enableStatusIsSubmittingMessage; }
-    set { _enableStatusIsSubmittingMessage = value; }
+    get { return _enableStatusMessages; }
+    set { _enableStatusMessages = value; }
   }
 
-  /// <summary> 
-  ///   Gets a flag whether a status message  will be displayed when the user tries to postback while a request is 
-  ///   being processed.
+  /// <summary>
+  ///   Gets a flag whether the status messages (i.e. is submitting, is aborting) will be displayed when the user
+  ///   tries to e.g. postback while a request is being processed.
   /// </summary>
-  protected virtual bool IsStatusIsSubmittingMessageEnabled
+  protected virtual bool AreStatusMessagesEnabled
   {
-    get { return _enableStatusIsSubmittingMessage != false; }
+    get { return _enableStatusMessages != false; }
   }
 
-  /// <summary> Gets the value returned by <see cref="IsStatusIsSubmittingMessageEnabled"/>. </summary>
-  bool ISmartPage.IsStatusIsSubmittingMessageEnabled
+  /// <summary> Gets the value returned by <see cref="AreStatusMessagesEnabled"/>. </summary>
+  bool ISmartPage.AreStatusMessagesEnabled
   {
-    get { return IsStatusIsSubmittingMessageEnabled; }
+    get { return AreStatusMessagesEnabled; }
   }
 
   /// <summary> 
