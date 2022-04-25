@@ -34,13 +34,13 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
-      var webButton = new TestWebButton { ID = "WebButton", Text = WebString.CreateFromText("My Button") };
+      var webButton = new TestWebButton { ID = "WebButton", Text = WebString.CreateFromText("My\nButton") };
 
       var renderedText = RenderControl(webButton);
 
       Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.ControlType + "=\"WebButton\""));
       Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.ItemID + "=\"" + webButton.ID + "\""));
-      Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.Content + "=\"" + webButton.Text + "\""));
+      Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.Content + "=\"My\nButton\""));
       Assert.That(renderedText, Does.Not.Contains(DiagnosticMetadataAttributes.CommandName));
       Assert.That(renderedText, Does.Contain(DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
     }
