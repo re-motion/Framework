@@ -518,42 +518,105 @@ class DropDownMenu
 
     // position drop-down list
     var top = Math.max (0, space_top + referenceElement.offsetHeight + details.offsetY);
-    var left = details.align === 'left' ? Math.max (0, LayoutUtility.GetOffset (referenceElement).left + details.offsetX) + 'px' : 'auto';
-    var right = details.align === 'right' ? Math.max (0, document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - referenceElement.offsetWidth - details.offsetX) + 'px' : 'auto';
+    var left = Math.max (0, LayoutUtility.GetOffset (referenceElement).left + details.offsetX) + 'px';
+    var right = Math.max (0, document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - referenceElement.offsetWidth - details.offsetX) + 'px';
 
-    const verticalSpacing = parseInt(getComputedStyle(popUpDiv).fontSize) * 2;
+    const popUpMargin = parseInt(getComputedStyle(popUpDiv).fontSize) * 2;
 
     // Save and restore the scrollTop value to retain the scrolling after resizing
     var scrollTop = popUpDiv.scrollTop;
 
     popUpDiv.style.top = top + 'px';
     popUpDiv.style.bottom = 'auto';
-    popUpDiv.style.right = right;
-    popUpDiv.style.left = left;
     popUpDiv.style.position = 'fixed';
 
-    // move dropdown if there is not enough space to fit it on the page
-    if ((LayoutUtility.GetWidth (popUpDiv) > space_left) && (space_left < space_right))
+    // Set to values that allow the popup to expand properly - this way the result of GetWidth is actually correct
+    popUpDiv.style.left = '0';
+    popUpDiv.style.right = 'auto';
+
+    const isContextMenu = details.align === 'left';
+
+    // In case of a context menu being open, the space calculation needs to be adapted to match the actual click location in the context of
+    // the reference element.
+    if (isContextMenu)
     {
-      if (LayoutUtility.GetOffset (popUpDiv).left < 0)
-      {
-        left = Math.max (0, LayoutUtility.GetOffset (referenceElement).left) + 'px';
-        popUpDiv.style.left = left;
-        popUpDiv.style.right = 'auto';
-      }
+      const currentOffset = referenceElement.getBoundingClientRect().left + details.offsetX;
+      space_right = document.documentElement.clientWidth - currentOffset;
+      space_left = Math.min(document.documentElement.clientWidth, currentOffset);
+    }
+
+    const requiredPopUpWidth = LayoutUtility.GetWidth(popUpDiv);
+    const dropDownMenuButtonWidth = isContextMenu ? 0 : LayoutUtility.GetWidth(referenceElement);
+    const maxLeftAlignedPopupWidth = (space_right - popUpMargin) + dropDownMenuButtonWidth;
+    const maxRightAlignedPopupWidth = (space_left - popUpMargin) + dropDownMenuButtonWidth;
+    const isPopUpSmallerThanViewPort = requiredPopUpWidth <= (document.documentElement.clientWidth - 2 * popUpMargin);
+
+    const alignToLeftOfReferenceElement = () =>
+    {
+      popUpDiv.style.left = left;
+      popUpDiv.style.right = 'auto';
+    };
+    const alignToRightOfReferenceElement = () =>
+    {
+      popUpDiv.style.left = 'auto';
+      popUpDiv.style.right = right;
+    };
+    const alignToLeftViewPortBorder = () =>
+    {
+      popUpDiv.style.left = popUpMargin + 'px';
+      popUpDiv.style.right = 'auto';
+    };
+    const alignToRightViewPortBorder = () =>
+    {
+      popUpDiv.style.left = 'auto';
+      popUpDiv.style.right = popUpMargin + 'px';
+    };
+    const clampToViewPort = () =>
+    {
+      popUpDiv.style.left = popUpMargin + 'px';
+      popUpDiv.style.right = popUpMargin + 'px';
+    };
+
+    if (isContextMenu && (requiredPopUpWidth <= maxLeftAlignedPopupWidth))
+    {
+      alignToLeftOfReferenceElement();
+    }
+    else if (isContextMenu && (requiredPopUpWidth <= maxRightAlignedPopupWidth))
+    {
+      alignToRightViewPortBorder();
+    }
+    else if (requiredPopUpWidth <= maxRightAlignedPopupWidth)
+    {
+      alignToRightOfReferenceElement();
+    }
+    else if (requiredPopUpWidth <= maxLeftAlignedPopupWidth)
+    {
+      alignToLeftOfReferenceElement();
+    }
+    else if (isContextMenu && isPopUpSmallerThanViewPort)
+    {
+      alignToRightViewPortBorder();
+    }
+    else if (isPopUpSmallerThanViewPort)
+    {
+      alignToLeftViewPortBorder();
+    }
+    else
+    {
+      clampToViewPort();
     }
 
     const documentHeight = document.documentElement.clientHeight;
     const popUpHeight = LayoutUtility.GetHeight (popUpDiv);
-    const maximumPopUpHeightConsideringSpacing = documentHeight - verticalSpacing * 2;
+    const maximumPopUpHeightConsideringSpacing = documentHeight - popUpMargin * 2;
     if (popUpHeight > maximumPopUpHeightConsideringSpacing)
     {
       // If we do not have enough space to display the element we keep space above and below and enable scrolling
       // If the window gets very small we reduce the spacing above and below until we reach the window borders
       // This effect is in effect when the remaining size gets smaller than the minimum popup height
-      const minimumPopUpHeight = verticalSpacing * 6;
+      const minimumPopUpHeight = popUpMargin * 6;
       const targetPopUpHeight = Math.max(minimumPopUpHeight, maximumPopUpHeightConsideringSpacing);
-      let verticalSpaceAround = Math.floor(documentHeight - targetPopUpHeight - verticalSpacing);
+      let verticalSpaceAround = Math.floor(documentHeight - targetPopUpHeight - popUpMargin);
       let suggestedVerticalSpacing = Math.max(0, verticalSpaceAround);
 
       // If the popup is small enough we might make it bigger by removing spacing - so we center the element instead
@@ -575,13 +638,13 @@ class DropDownMenu
       popUpDiv.style.top = suggestedVerticalSpacing + 'px';
       popUpDiv.style.bottom = suggestedVerticalSpacing + 'px';
     }
-    else if (popUpHeight > space_bottom - verticalSpacing)
+    else if (popUpHeight > space_bottom - popUpMargin)
     {
-      if (space_top > popUpHeight + verticalSpacing)
+      if (space_top > popUpHeight + popUpMargin)
       {
         popUpDiv.classList.remove(CssClassDefinition.Scrollable);
 
-        const bottom = Math.max (verticalSpacing, documentHeight - LayoutUtility.GetOffset (referenceElement).top - (referenceElement.offsetHeight - LayoutUtility.GetHeight (referenceElement)));
+        const bottom = Math.max (popUpMargin, documentHeight - LayoutUtility.GetOffset (referenceElement).top - (referenceElement.offsetHeight - LayoutUtility.GetHeight (referenceElement)));
 
         popUpDiv.style.top = 'auto';
         popUpDiv.style.bottom = bottom + 'px';
@@ -591,7 +654,7 @@ class DropDownMenu
         popUpDiv.classList.remove(CssClassDefinition.Scrollable);
 
         popUpDiv.style.top = 'auto';
-        popUpDiv.style.bottom = verticalSpacing + 'px';
+        popUpDiv.style.bottom = popUpMargin + 'px';
       }
     }
 
