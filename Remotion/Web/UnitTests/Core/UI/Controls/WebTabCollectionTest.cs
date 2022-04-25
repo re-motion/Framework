@@ -402,6 +402,49 @@ public class WebTabCollectionTest: WebControlTest
   }
 
   [Test]
+  public void HideTabFollowedByInvisibleTab_WithFirstTabAsLastSelectable ()
+  {
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tab1.IsSelected = true;
+    _tab2.IsVisible = false;
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab1));
+    _tab1.IsVisible = false;
+
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab0));
+  }
+
+  [Test]
+  public void HideTabPrecededByInvisibleTab_WithFirstTabAsLastSelectable ()
+  {
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tab1.IsVisible = false;
+    _tab2.IsSelected = true;
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2));
+    _tab2.IsVisible = false;
+
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab0));
+  }
+
+  [Test]
+  public void HideTabFollowedByInvisibleTab_WithLastTabAsLastSelectable ()
+  {
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
+    _tab1.IsSelected = true;
+    _tab2.IsVisible = false;
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab1));
+    _tab1.IsVisible = false;
+
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab3));
+  }
+
+  [Test]
   public void HideFirstTabWithTabBeingSelected ()
   {
     _tabStrip.Tabs.Add(_tab0);
