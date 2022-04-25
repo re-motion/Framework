@@ -70,12 +70,6 @@ namespace Remotion.Web.ExecutionEngine
     /// <value> <see langword="true"/> if the page has been re-submitted. </value>
     bool IsOutOfSequencePostBack { get; }
 
-    /// <summary> 
-    ///   Gets a flag whether the status messages (i.e. is submitting, is aborting) will be displayed when the user
-    ///   tries to e.g. postback while a request is being processed.
-    /// </summary>
-    bool AreStatusMessagesEnabled { get; }
-
     /// <summary> Gets the message displayed when the user attempts to submit while the page is already aborting. </summary>
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 

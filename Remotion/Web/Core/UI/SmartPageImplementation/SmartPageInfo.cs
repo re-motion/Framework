@@ -456,7 +456,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       string statusIsSubmittingMessage = "null";
       IResourceManager resourceManager = GetResourceManager();
 
-      if (_page.IsStatusIsSubmittingMessageEnabled)
+      if (_page.AreStatusMessagesEnabled)
       {
         WebString temp;
         if (_page.StatusIsSubmittingMessage.IsEmpty)
