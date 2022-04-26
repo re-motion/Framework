@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Serialization;
 using Remotion.Collections;
+using Remotion.Globalization;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Sample
@@ -298,6 +299,7 @@ namespace Remotion.ObjectBinding.Sample
 
   public enum MarriageStatus
   {
+    [MultiLingualName("Vermählt", "")]
     Married,
     Single,
     Divorced,

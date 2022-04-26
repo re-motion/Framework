@@ -196,6 +196,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That(webButton.GetText(), Is.EqualTo("LegacyButton"));
     }
 
+    [Test]
+    public void TestGetButtonWithUmlaut ()
+    {
+      var home = Start();
+
+      Assert.That(home.WebButtons().GetByTextContent("UmlautÖ"), Is.Not.Null);
+    }
+
     private WxePageObject Start ()
     {
       return Start<WxePageObject>("WebButtonTest.wxe");

@@ -125,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.ItemID, columnItemID);
 
         var columnTitle = renderingContext.ColumnDefinition.ColumnTitleDisplayValue;
-        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(columnTitle));
+        HtmlUtility.ExtractPlainText(columnTitle).AddAttributeTo(renderingContext.Writer, DiagnosticMetadataAttributes.Content);
 
         var oneBasedCellIndex = renderingContext.VisibleColumnIndex + 1;
         renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedCellIndex.ToString());

@@ -265,6 +265,8 @@
       </remotion:DropDownMenu>
       <h3>DropDownMenu (many menu items)</h3>
       <remotion:DropDownMenu ID="MyDropDownMenu_ManyMenuItems" Mode="DropDownMenu" TitleText="Many menu items" runat="server" />
+      <h3>DropDownMenu (umlauts)</h3>
+      <remotion:DropDownMenu ID="MyDropDownMenu_Umlaut" TitleText="(html)UmlautÖ" runat="server" />
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

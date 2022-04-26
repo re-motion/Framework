@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Obsolete;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Utilities
 {
@@ -52,18 +52,33 @@ namespace Remotion.Web.Utilities
 
     private static readonly Regex s_stripHtmlTagsRegex = new Regex("<.*?>", RegexOptions.Compiled);
 
+    [Obsolete("Use HtmlUtility.ExtractPlainText instead. (Version 3.0.0)", true)]
     public static string StripHtmlTags ([NotNull] string text)
     {
-      ArgumentUtility.CheckNotNull("text", text);
-
-      return s_stripHtmlTagsRegex.Replace(text, string.Empty);
+      throw new NotSupportedException("Use HtmlUtility.ExtractPlainText instead. (Version 3.0.0)");
     }
 
+    [Obsolete("Use HtmlUtility.ExtractPlainText instead. (Version 3.0.0)", true)]
     public static string StripHtmlTags (WebString text)
     {
-      return text.Type == WebStringType.Encoded
-          ? StripHtmlTags(text.GetValue())
-          : text.GetValue();
+      throw new NotSupportedException("Use HtmlUtility.ExtractPlainText instead. (Version 3.0.0)");
+    }
+
+    /// <summary>
+    /// Creates an approximation of <c>innerText</c> for an HTML element. Use this method when creating diagnostic metadata from a <see cref="WebString"/>.
+    /// </summary>
+    public static PlainTextString ExtractPlainText (WebString webString)
+    {
+      if (webString.Type == WebStringType.Encoded)
+      {
+        var valueWithoutHtmlTags = s_stripHtmlTagsRegex.Replace(webString.GetValue(), string.Empty);
+        var htmlDecodedValue = HttpUtility.HtmlDecode(valueWithoutHtmlTags);
+        return PlainTextString.CreateFromText(htmlDecodedValue);
+      }
+      else
+      {
+        return webString.ToPlainTextString();
+      }
     }
 
     private HtmlUtility ()
