@@ -89,14 +89,14 @@ namespace Remotion.Web.UI
     /// <value> 
     ///   <see langword="true"/> to invoke <see cref="GetDirtyStates"/> and track changes on the client.
     /// </value>
-    bool IsDirtyStateTrackingEnabled { get; }
+    bool HasUnconditionalAbortConfirmation { get; }
 
     /// <summary>
     ///   Gets or sets a flag that determines whether to display a confirmation dialog before leaving the page. 
     ///  </summary>
     /// <value> <see langword="true"/> to display the confirmation dialog. </value>
     /// <remarks> 
-    ///   If <see cref="IsDirtyStateTrackingEnabled"/> evaluates <see langword="true"/>, a confirmation will only be 
+    ///   If <see cref="HasUnconditionalAbortConfirmation"/> evaluates <see langword="false"/>, a confirmation will only be
     ///   displayed if the page is dirty.
     /// </remarks>
     bool IsAbortConfirmationEnabled { get; }

@@ -69,7 +69,7 @@
         application by setting <see cref="AbortMessage"/>.        
       </para><para>
         <see cref="IsAbortConfirmationEnabled"/> is designed to determine whether to show the abort confirmation 
-        dialog in general and <see cref="IsDirtyStateTrackingEnabled"/> determines whether to limit the dialog
+        dialog in general and <see cref="HasUnconditionalAbortConfirmation"/> determines whether to limit the dialog
         to dirty pages. The <see cref="SmartPage"/> uses the <see cref="ShowAbortConfirmation"/> property to define
         the value of these flags.
       </para>

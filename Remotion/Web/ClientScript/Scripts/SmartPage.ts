@@ -69,7 +69,7 @@ class SmartPage_Context
 {
   private _theForm: HTMLFormElement;
 
-  private _isAbortConfirmationRequiredIndependentOfDirtyState: boolean;
+  private _hasUnconditionalAbortConfirmation: boolean;
   private _dirtyStates: Set<string> = new Set<string>();
 
   // The message displayed when the user attempts to leave the page.
@@ -141,7 +141,7 @@ class SmartPage_Context
   private _mouseUpHandler = function (evt: MouseEvent) { SmartPage_Context.Instance!.OnMouseUp(evt); };
 
   // theFormID: The ID of the HTML Form on the page.
-  // isAbortConfirmationRequiredIndependentOfDirtyState: true if the page should always display the abort configuration regardless of the dirty state.
+  // hasUnconditionalAbortConfirmation: true if the page should always display the abort configuration regardless of the dirty state.
   // abortMessage: The message displayed when the user attempts to leave the page. null to disable the message.
   // statusIsSubmittingMessage: The message displayed when the user attempts to submit while a submit is already in 
   //    progress. null to disable the message.
@@ -152,13 +152,13 @@ class SmartPage_Context
   // eventHandlers: The hashtable of eventhandlers: Hashtable < event-key, Array < event-handler > >
   constructor (
       theFormID: string,
-      isAbortConfirmationRequiredIndependentOfDirtyState: boolean,
+      hasUnconditionalAbortConfirmation: boolean,
       abortMessage: Nullable<string>, statusIsSubmittingMessage: Nullable<string>,
       smartScrollingFieldID: Nullable<string>, smartFocusFieldID: Nullable<string>,
       smartPageTokenFieldID: string, checkFormStateFunctionName: Nullable<string>)
   {
     ArgumentUtility.CheckNotNullAndTypeIsString('theFormID', theFormID);
-    ArgumentUtility.CheckNotNullAndTypeIsBoolean('isAbortConfirmationRequiredIndependentOfDirtyState', isAbortConfirmationRequiredIndependentOfDirtyState);
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean('hasUnconditionalAbortConfirmation', hasUnconditionalAbortConfirmation);
     ArgumentUtility.CheckTypeIsString('abortMessage', abortMessage);
     ArgumentUtility.CheckTypeIsString('statusIsSubmittingMessage', statusIsSubmittingMessage);
     ArgumentUtility.CheckTypeIsString('smartScrollingFieldID', smartScrollingFieldID);
@@ -166,7 +166,7 @@ class SmartPage_Context
     ArgumentUtility.CheckNotNullAndTypeIsString('smartPageTokenFieldID', smartPageTokenFieldID);
     ArgumentUtility.CheckTypeIsString('checkFormStateFunctionName', checkFormStateFunctionName);
 
-    this._isAbortConfirmationRequiredIndependentOfDirtyState = isAbortConfirmationRequiredIndependentOfDirtyState;
+    this._hasUnconditionalAbortConfirmation = hasUnconditionalAbortConfirmation;
 
     this._abortMessage = abortMessage;
     this._isAbortConfirmationEnabled = abortMessage != null;
@@ -595,7 +595,7 @@ class SmartPage_Context
         var submitterElement = this.GetSubmitterOrActiveElement();
         var isJavaScriptAnchor = this.IsJavaScriptAnchor(submitterElement);
         var isAbortConfirmationRequired = !isJavaScriptAnchor
-          && (this._isAbortConfirmationRequiredIndependentOfDirtyState || this.IsDirty(undefined));
+          && (this._hasUnconditionalAbortConfirmation || this.IsDirty(undefined));
 
         if (isAbortConfirmationRequired)
         {
@@ -1304,7 +1304,7 @@ class SmartPage_Context
 
   public ShowAbortConfirmation(conditions: Optional<string[]>): boolean
   {
-    if (this._isAbortConfirmationEnabled && (this._isAbortConfirmationRequiredIndependentOfDirtyState || this.IsDirty(conditions)))
+    if (this._isAbortConfirmationEnabled && (this._hasUnconditionalAbortConfirmation || this.IsDirty(conditions)))
       return window.confirm(this._abortMessage!);
     else
       return true;
