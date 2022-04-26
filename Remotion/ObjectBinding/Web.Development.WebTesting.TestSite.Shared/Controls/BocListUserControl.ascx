@@ -392,4 +392,25 @@
     </td>
     <td>&nbsp; (empty with variable columns)</td>
   </tr>
+  <tr>
+    <td></td>
+    <td>
+      <testsite:TestBocListWithRowMenuItems
+        ID="JobList_Empty_Umlauts"
+        ReadOnly="False"
+        DataSourceControl="EmptyObject"
+        PropertyIdentifier="Jobs"
+        Index="SortedOrder"
+        IndexColumnTitle="(html)Indexübersicht"
+
+        ShowAllProperties="True"
+        ShowEmptyListMessage="True"
+
+        Width="100%"
+        Height="10em"
+        runat="server">
+      </testsite:TestBocListWithRowMenuItems>
+    </td>
+    <td>&nbsp; (empty with umlauts)</td>
+  </tr>
 </table>

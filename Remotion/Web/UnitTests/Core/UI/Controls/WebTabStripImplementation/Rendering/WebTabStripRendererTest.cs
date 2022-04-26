@@ -280,7 +280,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       var tab = wrapper.GetAssertedChildElement("span", 1);
       tab.AssertAttributeValueEquals(DiagnosticMetadataAttributes.ItemID, _tab4.Object.ItemID);
       if (_tab4.Object.Text.Type == WebStringType.Encoded)
-        tab.AssertAttributeValueEquals(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(_tab4.Object.Text.GetValue()));
+        tab.AssertAttributeValueEquals(DiagnosticMetadataAttributes.Content, HtmlUtility.ExtractPlainText(_tab4.Object.Text));
       else
         tab.AssertAttributeValueEquals(DiagnosticMetadataAttributes.Content, _tab4.Object.Text.GetValue());
       tab.AssertAttributeValueEquals(DiagnosticMetadataAttributes.IsDisabled, (!_tab4.Object.EvaluateEnabled()).ToString().ToLower());

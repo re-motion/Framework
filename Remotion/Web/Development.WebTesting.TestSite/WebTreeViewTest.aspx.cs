@@ -58,6 +58,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       MyUnorderedWebTreeView.Nodes.AddRange(treeViewNodes);
       MyWebTreeViewWithCategories.Nodes.Add(new WebTreeNode("Node1", WebString.CreateFromText("1")) { Category = "a category" });
       MyWebTreeViewWithoutCategories.Nodes.Add(new WebTreeNode("Node1", WebString.CreateFromText("1")));
+      MyWebTreeViewWithUmlauts.Nodes.Add(new WebTreeNode("Node1", WebString.CreateFromHtml("UmlautÖ")));
     }
   }
 }

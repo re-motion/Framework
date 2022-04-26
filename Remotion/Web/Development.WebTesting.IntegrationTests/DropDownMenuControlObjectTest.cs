@@ -123,6 +123,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestUmlaut_GetByTextContent ()
+    {
+      var home = Start();
+
+      Assert.That(home.DropDownMenus().GetByTextContent("UmlautÖ"), Is.Not.Null);
+    }
+
+    [Test]
     public void TestGetItemDefinitions ()
     {
       var home = Start();
