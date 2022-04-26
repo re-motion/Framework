@@ -44,6 +44,8 @@
       <h3>WebButton with Access Keys</h3>
       <remotion:WebButton ID="MyWebButtonWithAccessKey" Text="Button with access key" AccessKey="A" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
       <remotion:WebButton ID="MyWebButtonWithImplicitAccessKey" Text="Button with implicit access &key" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
+      <h3>WebButton with Umlauts</h3>
+      <remotion:WebButton ID="MyWebButtonWithUmlauts" Text="(html)UmlautÖ" runat="server" />
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

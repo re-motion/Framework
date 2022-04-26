@@ -196,7 +196,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         {
           nullItem.Attributes[DiagnosticMetadataAttributes.ItemID] = nullItem.Value;
           nullItem.Attributes[DiagnosticMetadataAttributes.IndexInCollection] = oneBasedIndex.ToString();
-          nullItem.Attributes[DiagnosticMetadataAttributes.Content] = HtmlUtility.StripHtmlTags(nullItemText);
+          nullItem.Attributes[DiagnosticMetadataAttributes.Content] = HtmlUtility.ExtractPlainText(PlainTextString.CreateFromText(nullItemText)).GetValue();
         }
 
         listControl.Items.Add(nullItem);
@@ -216,7 +216,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         {
           item.Attributes[DiagnosticMetadataAttributes.ItemID] = item.Value;
           item.Attributes[DiagnosticMetadataAttributes.IndexInCollection] = oneBasedIndex.ToString();
-          item.Attributes[DiagnosticMetadataAttributes.Content] = HtmlUtility.StripHtmlTags(item.Text);
+          item.Attributes[DiagnosticMetadataAttributes.Content] = HtmlUtility.ExtractPlainText(PlainTextString.CreateFromText(item.Text)).GetValue();
         }
 
         listControl.Items.Add(item);

@@ -166,6 +166,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("MyTabStrip2/Tab1"));
     }
 
+    [Test]
+    public void Test_TabWithUmlaut ()
+    {
+      var home = Start();
+
+      var tabStrip = home.WebTabStrips().GetByLocalID("MyTabStripWithUmlaut");
+
+      Assert.That(tabStrip.GetTabDefinitions().Single(t => t.Title == "UmlautÖ"), Is.Not.Null);
+    }
+
     private WxePageObject Start ()
     {
       return Start<WxePageObject>("WebTabStripTest.wxe");

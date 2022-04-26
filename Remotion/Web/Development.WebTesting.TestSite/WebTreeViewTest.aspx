@@ -32,4 +32,6 @@
   <remotion:WebTreeView ID="MyWebTreeViewWithCategories" runat="server"/>
   <h3>MyWebTreeViewWithoutCategories</h3>
   <remotion:WebTreeView ID="MyWebTreeViewWithoutCategories" runat="server"/>
+  <h3>MyWebTreeViewWithUmlauts</h3>
+  <remotion:WebTreeView ID="MyWebTreeViewWithUmlauts" runat="server"/>
 </asp:Content>

@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       {
         var columnTitle = renderingContext.Control.IndexColumnTitle;
         if (!columnTitle.IsEmpty)
-          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(columnTitle));
+          HtmlUtility.ExtractPlainText(columnTitle).AddAttributeTo(renderingContext.Writer, DiagnosticMetadataAttributes.Content);
 
         AddDiagnosticMetadataListCellIndex(renderingContext);
       }
