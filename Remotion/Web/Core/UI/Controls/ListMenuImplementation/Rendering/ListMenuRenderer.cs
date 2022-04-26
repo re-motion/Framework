@@ -326,7 +326,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
           diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
 
         if (!menuItem.Text.IsEmpty)
-          diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(menuItem.Text));
+          diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.Content, HtmlUtility.ExtractPlainText(menuItem.Text).GetValue());
 
         stringBuilder.WriteDictionaryAsJson(diagnosticMetadataDictionary);
 

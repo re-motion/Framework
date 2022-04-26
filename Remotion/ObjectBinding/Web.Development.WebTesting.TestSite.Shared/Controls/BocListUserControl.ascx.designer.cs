@@ -155,5 +155,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
         /// To modify, move the field declaration from the designer file to a code-behind file.
         /// </remarks>
         protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_Empty_VariableColumns;
+        
+        /// <summary>
+        /// JobList_Empty_Umlauts control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify, move the field declaration from the designer file to a code-behind file.
+        /// </remarks>
+        protected global::Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Controls.TestBocListWithRowMenuItems JobList_Empty_Umlauts;
     }
 }
