@@ -21,6 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
   [ClassID("TI_BaseClassWithInvalidRelationClassIDColumns")]
   [DBTable("TableInheritance_BaseClassWithInvalidRelationClassIDColumns")]
   [TableInheritanceTestDomain]
+  [ExcludeFromTestDomainDB]
   public abstract class BaseClassWithInvalidRelationClassIDColumns : DomainObject
   {
     protected BaseClassWithInvalidRelationClassIDColumns ()

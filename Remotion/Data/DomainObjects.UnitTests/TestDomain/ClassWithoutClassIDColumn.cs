@@ -21,6 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   [DBTable("TableWithoutClassIDColumn")]
   [TestDomain]
   [Instantiable]
+  [ExcludeFromTestDomainDB]
   public abstract class ClassWithoutClassIDColumn : TestDomainBase
   {
     protected ClassWithoutClassIDColumn ()

@@ -21,6 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   [DBTable("TableWithoutTimestampColumn")]
   [TestDomain]
   [Instantiable]
+  [ExcludeFromTestDomainDB]
   public abstract class ClassWithoutTimestampColumn: TestDomainBase
   {
     protected ClassWithoutTimestampColumn ()

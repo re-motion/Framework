@@ -15,9 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain.Success.EagerFetching
 {
+  [TestDomain]
   [DBTable("EagerFetching_BaseClass")]
   [ClassID("EagerFetching_BaseClass")]
   public class BaseClass : DomainObject
