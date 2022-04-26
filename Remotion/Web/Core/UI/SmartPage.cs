@@ -367,18 +367,18 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 
   /// <summary> Gets a flag whether to only show the abort confirmation if the page is dirty. </summary>
   /// <value> 
-  ///   <see langword="true"/> if <see cref="ShowAbortConfirmation"/> is set to 
-  ///   <see cref="F:ShowAbortConfirmation.OnlyIfDirty"/>. 
+  ///   <see langword="true"/> if <see cref="ShowAbortConfirmation"/> is set to
+  ///   <see cref="F:ShowAbortConfirmation.Always"/>.
   /// </value>
-  protected virtual bool IsDirtyStateTrackingEnabled
+  protected virtual bool HasUnconditionalAbortConfirmation
   {
-    get { return ShowAbortConfirmation == ShowAbortConfirmation.OnlyIfDirty; }
+    get { return ShowAbortConfirmation == ShowAbortConfirmation.Always; }
   }
 
-  /// <summary> Gets the value returned by <see cref="IsDirtyStateTrackingEnabled"/>. </summary>
-  bool ISmartPage.IsDirtyStateTrackingEnabled
+  /// <summary> Gets the value returned by <see cref="HasUnconditionalAbortConfirmation"/>. </summary>
+  bool ISmartPage.HasUnconditionalAbortConfirmation
   {
-    get { return IsDirtyStateTrackingEnabled; }
+    get { return HasUnconditionalAbortConfirmation; }
   }
 
   /// <summary> 
@@ -405,7 +405,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   ///   <see cref="F:ShowAbortConfirmation.Always"/> or <see cref="F:ShowAbortConfirmation.OnlyIfDirty"/>. 
   /// </value>
   /// <remarks> 
-  ///   If <see cref="IsDirtyStateTrackingEnabled"/> evaluates <see langword="true"/>, a confirmation will only be 
+  ///   If <see cref="HasUnconditionalAbortConfirmation"/> evaluates <see langword="false"/>, a confirmation will only be
   ///   displayed if the page is dirty.
   /// </remarks>
   protected virtual bool IsAbortConfirmationEnabled

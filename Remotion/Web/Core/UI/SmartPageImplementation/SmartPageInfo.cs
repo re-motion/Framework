@@ -328,6 +328,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
         throw new InvalidOperationException("SmartPage requires an HtmlForm control on the page.");
 
       string abortMessage = GetAbortMessage();
+      string hasUnconditionalAbortConfirmation = _page.HasUnconditionalAbortConfirmation ? "true" : "false";
       string statusIsSubmittingMessage = GetStatusIsSubmittingMessage();
       string abortQueuedSubmit = _page.IsQueuedSubmitToBeAborted ? "true" : "false";
 
@@ -346,8 +347,6 @@ namespace Remotion.Web.UI.SmartPageImplementation
         if (smartNavigablePage.IsSmartFocusingEnabled)
           smartFocusFieldID = "'" + c_smartFocusID + "'";
       }
-
-      var isAbortConfirmationRequiredIndependentOfDirtyState = _page.IsDirtyStateEnabled ? "false" :  "true";
 
       StringBuilder initScript = new StringBuilder(500);
       StringBuilder startupScript = new StringBuilder(500);
@@ -392,7 +391,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       initScript.AppendLine("    SmartPage_Context.Instance = new SmartPage_Context (");
       initScript.Append("        '").Append(htmlForm.ClientID).AppendLine("',");
-      initScript.Append("        ").Append(isAbortConfirmationRequiredIndependentOfDirtyState).AppendLine(",");
+      initScript.Append("        ").Append(hasUnconditionalAbortConfirmation).AppendLine(",");
       initScript.Append("        ").Append(abortMessage).AppendLine(",");
       initScript.Append("        ").Append(statusIsSubmittingMessage).AppendLine(",");
       initScript.Append("        ").Append(smartScrollingFieldID).AppendLine(",");
