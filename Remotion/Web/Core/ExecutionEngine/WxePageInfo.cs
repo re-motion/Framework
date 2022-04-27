@@ -595,6 +595,11 @@ namespace Remotion.Web.ExecutionEngine
       return Enumerable.Empty<string>();
     }
 
+    public bool IsDirtyStateEnabled
+    {
+      get { return CurrentPageStep.IsDirtyStateEnabled; }
+    }
+
     private NameObjectCollection WindowState
     {
       get
