@@ -272,7 +272,8 @@ namespace Remotion.Web.ExecutionEngine
     /// Disables dirty state handling for this <see cref="WxeFunction"/>
     /// </summary>
     /// <remarks>
-    /// <see cref="DisableDirtyState"/> will disable the dirty state handling for this <see cref="WxeFunction"/>, all instances of <see cref="WxeStep"/> that belong to this <see cref="WxeFunction"/>.
+    /// <see cref="DisableDirtyState"/> will disable the dirty state handling for this <see cref="WxeFunction"/>, all instances of <see cref="WxeStep"/> that belong to this
+    /// <see cref="WxeFunction"/> as well as the dirty state handling for any <see cref="WxePage"/> that is executed by this <see cref="WxeFunction"/>'s <see cref="WxePageStep"/>.
     /// The dirty state handling of a <see cref="WxeFunction"/> executed as a sub-function within a <see cref="WxePage"/> or as a nested step of the this <see cref="WxeFunction"/>
     /// will not be affected, making the <see cref="WxeFunction"/> a boundary for the configuration of dirty state handling.
     /// <note type="warning">
