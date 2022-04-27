@@ -67,6 +67,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     private static readonly string s_styleFileKey = typeof(SmartPageInfo).GetFullNameChecked() + "_Style";
     private static readonly string s_smartNavigationScriptKey = typeof(SmartPageInfo).GetFullNameChecked() + "_SmartNavigation";
     private static IEnumerable<string> s_dirtyStateForCurrentPage = EnumerableUtility.Singleton(SmartPageDirtyStates.CurrentPage);
+    private static IEnumerable<string> s_dirtyStateForCurrentPageOnServerOrClient = new[] { SmartPageDirtyStates.CurrentPage, SmartPageDirtyStates.ClientSide };
 
     private readonly ISmartPage _page;
 
@@ -176,7 +177,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
           requestedStates == null
           || s_dirtyStateForCurrentPage.Intersect(requestedStates, StringComparer.InvariantCultureIgnoreCase).Any();
 
-      if (isDirtyStateForCurrentPageRequested)
+      if (_page.IsDirtyStateEnabled && isDirtyStateForCurrentPageRequested)
       {
         if (_page.IsDirty)
           return s_dirtyStateForCurrentPage;
@@ -327,6 +328,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
         throw new InvalidOperationException("SmartPage requires an HtmlForm control on the page.");
 
       string abortMessage = GetAbortMessage();
+      string hasUnconditionalAbortConfirmation = _page.HasUnconditionalAbortConfirmation ? "true" : "false";
       string statusIsSubmittingMessage = GetStatusIsSubmittingMessage();
       string abortQueuedSubmit = _page.IsQueuedSubmitToBeAborted ? "true" : "false";
 
@@ -346,8 +348,6 @@ namespace Remotion.Web.UI.SmartPageImplementation
           smartFocusFieldID = "'" + c_smartFocusID + "'";
       }
 
-      string isAbortConfirmationRequiredIndependentOfDirtyState = "true";
-
       StringBuilder initScript = new StringBuilder(500);
       StringBuilder startupScript = new StringBuilder(500);
 
@@ -362,22 +362,21 @@ namespace Remotion.Web.UI.SmartPageImplementation
       const string trackedControlsArray = "trackedControls";
       initScript.Append("  var ").Append(trackedControlsArray).AppendLine(" = new Array();");
 
+      var dirtyStates = _page.GetDirtyStates();
       const string dirtyStatesSet = "dirtyStates";
       startupScript.Append("  var ").Append(dirtyStatesSet).AppendLine(" = new Set();");
-
-      if (_page.IsDirtyStateTrackingEnabled)
+      if (!_page.IsDirtyStateEnabled)
       {
-        isAbortConfirmationRequiredIndependentOfDirtyState = "false";
-        bool isDirtyOnServerSide = false;
-        foreach (var dirtyState in _page.GetDirtyStates())
-        {
-          isDirtyOnServerSide = true;
-          startupScript.Append(dirtyStatesSet).Append(".add('").Append(dirtyState).AppendLine("');");
-        }
-
-        if (!isDirtyOnServerSide)
-          FormatPopulateTrackedControlsArrayClientScript(initScript, trackedControlsArray);
+        // Filter is only applied to ensure consistency.
+        // SmartPageInfo.GetDirtyStates() will already remove page-level dirty state values when IsDirtyStateEnabled is false.
+        dirtyStates = dirtyStates.Except(s_dirtyStateForCurrentPageOnServerOrClient);
       }
+      foreach (var dirtyState in dirtyStates)
+        startupScript.Append(dirtyStatesSet).Append(".add('").Append(dirtyState).AppendLine("');");
+
+      if (_page.IsDirtyStateEnabled)
+        FormatPopulateTrackedControlsArrayClientScript(initScript, trackedControlsArray);
+
       initScript.AppendLine();
 
       const string synchronousPostBackCommandsArray = "synchronousPostBackCommands";
@@ -392,7 +391,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       initScript.AppendLine("    SmartPage_Context.Instance = new SmartPage_Context (");
       initScript.Append("        '").Append(htmlForm.ClientID).AppendLine("',");
-      initScript.Append("        ").Append(isAbortConfirmationRequiredIndependentOfDirtyState).AppendLine(",");
+      initScript.Append("        ").Append(hasUnconditionalAbortConfirmation).AppendLine(",");
       initScript.Append("        ").Append(abortMessage).AppendLine(",");
       initScript.Append("        ").Append(statusIsSubmittingMessage).AppendLine(",");
       initScript.Append("        ").Append(smartScrollingFieldID).AppendLine(",");
@@ -456,7 +455,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       string statusIsSubmittingMessage = "null";
       IResourceManager resourceManager = GetResourceManager();
 
-      if (_page.IsStatusIsSubmittingMessageEnabled)
+      if (_page.AreStatusMessagesEnabled)
       {
         WebString temp;
         if (_page.StatusIsSubmittingMessage.IsEmpty)
