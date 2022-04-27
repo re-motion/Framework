@@ -308,14 +308,14 @@ namespace Remotion.Web.ExecutionEngine
       return base.GetDirtyStates(requestedStates).Concat(_wxePageInfo.GetDirtyStates(requestedStates));
     }
 
-    /// <summary> Gets or sets the flag that determines whether to abort the session upon closing the window. </summary>
+    /// <summary> Gets or sets the flag that determines whether to abort the root <see cref="WxeFunction"/> of this page upon closing the window. </summary>
     /// <value> 
-    ///   <see langword="true"/> to abort the session. Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
+    ///   <see langword="true"/> to abort the root <see cref="WxeFunction"/>. Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
     /// </value>
     /// <remarks>
     ///   Use <see cref="IsAbortEnabled"/> to evaluate this property.
     /// </remarks>
-    [Description("The flag that determines whether to abort the session when the window is closed. Undefined is interpreted as true.")]
+    [Description("The flag that determines whether to abort the root WxeFunction of this page when the window is closed. Undefined is interpreted as true.")]
     [Category("Behavior")]
     [DefaultValue(null)]
     public bool? EnableAbort
