@@ -318,7 +318,7 @@ namespace Remotion.Web.ExecutionEngine
     [Description("The flag that determines whether to abort the session when the window is closed. Undefined is interpreted as true.")]
     [Category("Behavior")]
     [DefaultValue(null)]
-    public virtual bool? EnableAbort
+    public bool? EnableAbort
     {
       get { return _enableAbort; }
       set { _enableAbort = value; }
@@ -357,7 +357,7 @@ namespace Remotion.Web.ExecutionEngine
                   + "submitted page because of the cache). Undefined is interpreted as false.")]
     [Category("Behavior")]
     [DefaultValue(null)]
-    public virtual bool? EnableOutOfSequencePostBacks
+    public bool? EnableOutOfSequencePostBacks
     {
       get { return _enableOutOfSequencePostBacks; }
       set { _enableOutOfSequencePostBacks = value; }
