@@ -81,14 +81,23 @@ td.formGridControlsCell
 
 .formGridControlsCell > div
 {
-  display: flex;
-  flex-direction: column;
+  display: table;
+  width: 100%;
   height: 100%;
 }
 
 .formGridControlsCell > div > div:first-child
 {
+  display: table-cell;
+  width: 100%;
   height: 100%;
+  vertical-align: middle;
+}
+
+.formGridControlsCell > div > div:first-child + div
+{
+  display: table-row;
+  width: 100%;
 }
 
 /*  Style applied to the cells containing the validation messages, 
