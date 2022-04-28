@@ -155,7 +155,6 @@ namespace Remotion.Web.ExecutionEngine
     private bool _disposed;
     private bool? _enableOutOfSequencePostBacks;
     private bool? _enableAbort;
-    private bool? _enableStatusMessages;
 
     public WxePage ()
     {
@@ -309,17 +308,17 @@ namespace Remotion.Web.ExecutionEngine
       return base.GetDirtyStates(requestedStates).Concat(_wxePageInfo.GetDirtyStates(requestedStates));
     }
 
-    /// <summary> Gets or sets the flag that determines whether to abort the session upon closing the window. </summary>
+    /// <summary> Gets or sets the flag that determines whether to abort the root <see cref="WxeFunction"/> of this page upon closing the window. </summary>
     /// <value> 
-    ///   <see langword="true"/> to abort the session. Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
+    ///   <see langword="true"/> to abort the root <see cref="WxeFunction"/>. Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
     /// </value>
     /// <remarks>
     ///   Use <see cref="IsAbortEnabled"/> to evaluate this property.
     /// </remarks>
-    [Description("The flag that determines whether to abort the session when the window is closed. Undefined is interpreted as true.")]
+    [Description("The flag that determines whether to abort the root WxeFunction of this page when the window is closed. Undefined is interpreted as true.")]
     [Category("Behavior")]
     [DefaultValue(null)]
-    public virtual bool? EnableAbort
+    public bool? EnableAbort
     {
       get { return _enableAbort; }
       set { _enableAbort = value; }
@@ -358,7 +357,7 @@ namespace Remotion.Web.ExecutionEngine
                   + "submitted page because of the cache). Undefined is interpreted as false.")]
     [Category("Behavior")]
     [DefaultValue(null)]
-    public virtual bool? EnableOutOfSequencePostBacks
+    public bool? EnableOutOfSequencePostBacks
     {
       get { return _enableOutOfSequencePostBacks; }
       set { _enableOutOfSequencePostBacks = value; }
@@ -396,76 +395,6 @@ namespace Remotion.Web.ExecutionEngine
     protected override bool IsAbortConfirmationEnabled
     {
       get { return IsAbortEnabled && base.IsAbortConfirmationEnabled; }
-    }
-
-    /// <summary> 
-    ///   Gets the value of the base class's <see cref="SmartPage.IsDirtyStateTrackingEnabled"/> property ANDed with <see cref="IsAbortEnabled"/>.
-    /// </summary>
-    /// <value> 
-    ///   <see langword="true"/> if <see cref="SmartPage.IsDirtyStateTrackingEnabled"/> and <see cref="IsAbortEnabled"/> evaluate <see langword="true"/>. 
-    /// </value>
-    protected override bool IsDirtyStateTrackingEnabled
-    {
-      get { return IsAbortEnabled && base.IsDirtyStateTrackingEnabled; }
-    }
-
-    /// <summary> 
-    ///   Gets or sets the flag that determines whether to display a message when the user tries to start a second
-    ///   request or returns to a page that has already been submittet (i.e. a cached page).
-    /// </summary>
-    /// <value> 
-    ///   <see langword="true"/> to enable the status messages. Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
-    /// </value>
-    /// <remarks>
-    ///   Use <see cref="AreStatusMessagesEnabled"/> to evaluate this property.
-    /// </remarks>
-    [Description("The flag that determines whether to display a status message when the user attempts to start a "
-                  + "second request or returns to a page that has already been submitted (i.e. a cached page). "
-                  + "Undefined is interpreted as true.")]
-    [Category("Behavior")]
-    [DefaultValue(null)]
-    public virtual bool? EnableStatusMessages
-    {
-      get { return _enableStatusMessages; }
-      set { _enableStatusMessages = value; }
-    }
-
-    /// <summary> 
-    ///   Gets a flag whether the status messages (i.e. is submitting, is aborting) will be displayed when the user
-    ///   tries to e.g. postback while a request is being processed.
-    /// </summary>
-    protected virtual bool AreStatusMessagesEnabled
-    {
-      get { return _enableStatusMessages != false; }
-    }
-
-    /// <summary> Gets the value returned by <see cref="AreStatusMessagesEnabled"/>. </summary>
-    bool IWxePage.AreStatusMessagesEnabled
-    {
-      get { return AreStatusMessagesEnabled; }
-    }
-
-    /// <exclude/>
-    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-    [Browsable(false)]
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    public override bool? EnableStatusIsSubmittingMessage
-    {
-      get
-      {
-        return base.EnableStatusIsSubmittingMessage;
-      }
-      set
-      {
-        base.EnableStatusIsSubmittingMessage = value;
-      }
-    }
-
-    /// <summary> Overridden to return the value of <see cref="AreStatusMessagesEnabled"/>. </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    protected override bool IsStatusIsSubmittingMessageEnabled
-    {
-      get { return AreStatusMessagesEnabled; }
     }
   }
 }

@@ -78,20 +78,25 @@ namespace Remotion.Web.UI
     void RegisterControlForClientSideDirtyStateTracking (string clientID);
 
     /// <summary>
+    ///   Gets the flag that determines whether to include this page's dirty state when evaluating <see cref="GetDirtyStates"/>.
+    /// </summary>
+    bool IsDirtyStateEnabled { get; }
+
+    /// <summary>
     ///   Gets a flag that determines whether the dirty state will be taken into account when displaying the abort 
     ///   confirmation dialog.
     /// </summary>
     /// <value> 
     ///   <see langword="true"/> to invoke <see cref="GetDirtyStates"/> and track changes on the client.
     /// </value>
-    bool IsDirtyStateTrackingEnabled { get; }
+    bool HasUnconditionalAbortConfirmation { get; }
 
     /// <summary>
     ///   Gets or sets a flag that determines whether to display a confirmation dialog before leaving the page. 
     ///  </summary>
     /// <value> <see langword="true"/> to display the confirmation dialog. </value>
     /// <remarks> 
-    ///   If <see cref="IsDirtyStateTrackingEnabled"/> evaluates <see langword="true"/>, a confirmation will only be 
+    ///   If <see cref="HasUnconditionalAbortConfirmation"/> evaluates <see langword="false"/>, a confirmation will only be
     ///   displayed if the page is dirty.
     /// </remarks>
     bool IsAbortConfirmationEnabled { get; }
@@ -108,11 +113,10 @@ namespace Remotion.Web.UI
     /// </remarks>
     WebString StatusIsSubmittingMessage { get; }
 
-    /// <summary> 
-    ///   Gets a flag whether the is submitting status messages will be displayed when the user tries to postback while 
-    ///   a request is being processed.
+    /// <summary>
+    ///   Gets a flag whether the status messages (i.e. is-submitting) will be displayed when the user tries to e.g. postback while a request is being processed.
     /// </summary>
-    bool IsStatusIsSubmittingMessageEnabled { get; }
+    bool AreStatusMessagesEnabled { get; }
 
     /// <summary>
     ///   Gets a flag whether a queued submit should be executed or aborted upon completion of the postback.
