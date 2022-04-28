@@ -53,6 +53,7 @@ namespace Remotion.Web.ExecutionEngine
     private string? _functionToken;
     private string? _returnUrl;
     private string? _executionCompletedScript;
+    private bool _isDirtyStateEnabled = true;
     private bool _isDirty;
 
     protected WxeFunction (ITransactionMode transactionMode, params object?[] actualParameters)
@@ -246,13 +247,47 @@ namespace Remotion.Web.ExecutionEngine
     /// <returns><see langword="true" /> if the <see cref="WxeFunction"/> represents unsaved changes.</returns>
     public override bool EvaluateDirtyState ()
     {
-      if (_isDirty)
-        return true;
+      if (IsDirtyStateEnabled)
+      {
+        if (_isDirty)
+          return true;
 
-      if (TransactionStrategy.EvaluateDirtyState())
-        return true;
+        if (TransactionStrategy.EvaluateDirtyState())
+          return true;
+      }
 
       return base.EvaluateDirtyState();
+    }
+
+    /// <summary> Gets the flag that determines whether to include this <see cref="WxeFunction"/>'s dirty state during a call to <see cref="EvaluateDirtyState"/>. </summary>
+    /// <value>
+    /// <see langword="true" /> unless <see cref="DisableDirtyState"/> has been invoked on this <see cref="WxeFunction"/>.
+    /// </value>
+    public sealed override bool IsDirtyStateEnabled
+    {
+      get { return _isDirtyStateEnabled; }
+    }
+
+    /// <summary>
+    /// Disables dirty state handling for this <see cref="WxeFunction"/>
+    /// </summary>
+    /// <remarks>
+    /// <see cref="DisableDirtyState"/> will disable the dirty state handling for this <see cref="WxeFunction"/>, all instances of <see cref="WxeStep"/> that belong to this
+    /// <see cref="WxeFunction"/> as well as the dirty state handling for any <see cref="WxePage"/> that is executed by this <see cref="WxeFunction"/>'s <see cref="WxePageStep"/>.
+    /// The dirty state handling of a <see cref="WxeFunction"/> executed as a sub-function within a <see cref="WxePage"/> or as a nested step of the this <see cref="WxeFunction"/>
+    /// will not be affected, making the <see cref="WxeFunction"/> a boundary for the configuration of dirty state handling.
+    /// <note type="warning">
+    /// Because <see cref="DisableDirtyState"/> disables dirty state handling for this <see cref="WxeFunction"/>, the dirty state of any returning sub-function will also be
+    /// discarded. This means a <see cref="WxeFunction"/> stack can only remain dirty, while a sub-function with enabled dirty state handling is executing.
+    /// </note>
+    /// </remarks>
+    /// <exception cref="InvalidOperationException">Thrown when <see cref="DisableDirtyState"/> is invoked after the execution of this <see cref="WxeFunction"/> has been started.</exception>
+    public void DisableDirtyState ()
+    {
+      if (IsExecutionStarted)
+        throw new InvalidOperationException("Cannot configure dirty state handling after the execution has started.");
+
+      _isDirtyStateEnabled = false;
     }
 
     public override NameObjectCollection Variables

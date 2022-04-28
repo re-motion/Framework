@@ -211,6 +211,49 @@ public class WxeStepTest: WxeTest
   {
     Assert.That(_standAloneStep.EvaluateDirtyState(), Is.False);
   }
+
+  [Test]
+  public void IsDirtyStateEnabled_WithoutParentFunction_ReturnsTrue ()
+  {
+    Assert.That(_standAloneStep.IsDirtyStateEnabled, Is.True);
+  }
+
+  [Test]
+  public void IsDirtyStateEnabled_WithParentFunctionHasDirtyStateDisabled_ReturnsFalse ()
+  {
+    _rootFunction.DisableDirtyState();
+    Assert.That(_rootFunction.IsDirtyStateEnabled, Is.False);
+
+    Assert.That(_rootFunctionStep.IsDirtyStateEnabled, Is.False);
+  }
+
+  [Test]
+  public void IsDirtyStateEnabled_WithParentFunctionHasDirtyStateEnabled_ReturnsTrue ()
+  {
+    Assert.That(_rootFunction.IsDirtyStateEnabled, Is.True);
+
+    Assert.That(_rootFunctionStep.IsDirtyStateEnabled, Is.True);
+  }
+
+  [Test]
+  public void IsDirtyStateEnabled_WithParentFunctionHasDirtyStateDisabled_AndGrandParentFunctionHasDirtyStateEnabled_ReturnsFalseFromParentFunction ()
+  {
+    _nestedLevel1Function.DisableDirtyState();
+    Assert.That(_rootFunction.IsDirtyStateEnabled, Is.True);
+    Assert.That(_nestedLevel1Function.IsDirtyStateEnabled, Is.False);
+
+    Assert.That(_nestedLevel1FunctionStep.IsDirtyStateEnabled, Is.False);
+  }
+
+  [Test]
+  public void IsDirtyStateEnabled_WithParentFunctionHasDirtyStateEnabled_AndGrandParentFunctionHasDirtyStateDisabled_ReturnsTrueFromParentFunction ()
+  {
+    _rootFunction.DisableDirtyState();
+    Assert.That(_rootFunction.IsDirtyStateEnabled, Is.False);
+    Assert.That(_nestedLevel1Function.IsDirtyStateEnabled, Is.True);
+
+    Assert.That(_nestedLevel1FunctionStep.IsDirtyStateEnabled, Is.True);
+  }
 }
 
 }

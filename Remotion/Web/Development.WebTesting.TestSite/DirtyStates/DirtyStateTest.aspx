@@ -21,10 +21,14 @@
       <h3>Set Dirty State</h3>
       <remotion:WebButton ID="SetPageDirtyButton" Text="SetPageDirtyButton" runat="server" OnClick="SetPageDirtyButton_OnClick" />
       <remotion:WebButton ID="SetCurrentFunctionDirtyButton" Text="SetCurrentFunctionDirtyButton" runat="server" OnClick="SetCurrentFunctionDirtyButton_OnClick" />
+      <remotion:WebButton ID="DisableDirtyStateOnCurrentPageButton" Text="DisableDirtyStateOnCurrentPageButton" runat="server" OnClick="DisableDirtyStateOnCurrentPageButton_OnClick" />
       <h3>Control Flow</h3>
       <remotion:WebButton ID="ExecuteSubFunctionButton" Text="ExecuteSubFunctionButton" runat="server" OnClick="ExecuteSubFunctionButton_OnClick" RequiresSynchronousPostBack="True" />
+      <remotion:WebButton ID="ExecuteSubFunctionWithDisabledDirtyStateButton" Text="ExecuteSubFunctionWithDisabledDirtyStateButton" runat="server" OnClick="ExecuteSubFunctionWithDisabledDirtyStateButton_OnClick" RequiresSynchronousPostBack="True" />
       <remotion:WebButton ID="ExecuteNextStepButton" Text="ExecuteNextStepButton" runat="server" OnClick="ExecuteNextStepButton_OnClick" RequiresSynchronousPostBack="True" />
       <remotion:WebButton ID="CancelExecutingFunctionButton" Text="CancelExecutingFunctionButton" runat="server" OnClick="CancelExecutingFunctionButton_OnClick" RequiresSynchronousPostBack="True" />
+      <h3>Support Elements</h3>
+      <asp:TextBox runat="server" ID="TextField" />
     </ContentTemplate>
   </asp:UpdatePanel>
 
@@ -32,6 +36,12 @@
   function SmartPage_IsDirty(conditions)
   {
     return SmartPage_Context.Instance.IsDirty(conditions);
+  }
+
+  function SetPageDirtyOnClientSide()
+  {
+    var textField = document.getElementById("<%=TextField.ClientID%>");
+    textField.dispatchEvent(new Event("change"));
   }
   </script>
 </asp:Content>

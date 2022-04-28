@@ -308,6 +308,11 @@ namespace Remotion.Web.ExecutionEngine
       return base.GetDirtyStates(requestedStates).Concat(_wxePageInfo.GetDirtyStates(requestedStates));
     }
 
+    protected override bool IsDirtyStateEnabled
+    {
+      get { return base.IsDirtyStateEnabled && _wxePageInfo.IsDirtyStateEnabled; }
+    }
+
     /// <summary> Gets or sets the flag that determines whether to abort the root <see cref="WxeFunction"/> of this page upon closing the window. </summary>
     /// <value> 
     ///   <see langword="true"/> to abort the root <see cref="WxeFunction"/>. Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
