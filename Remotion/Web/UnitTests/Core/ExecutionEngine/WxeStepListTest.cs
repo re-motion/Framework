@@ -18,6 +18,7 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 {
@@ -119,6 +120,43 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
     }
 
     [Test]
+    public void EvaluateDirtyState_WithIsDirtyStateEnabled_AndDirtyFromExecutedStep_ReturnsTrue ()
+    {
+      var stepList = new WxeStepList();
+      var function = new TestFunction();
+      stepList.SetParentStep(function);
+
+      var dirtyStepStub = new Mock<WxeStep>();
+      dirtyStepStub.Setup(_ => _.EvaluateDirtyState()).Returns(true);
+
+      stepList.Add(dirtyStepStub.Object);
+      stepList.Execute(CurrentWxeContext);
+
+      Assert.That(stepList.LastExecutedStep, Is.Null);
+
+      Assert.That(stepList.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void EvaluateDirtyState_WithIsDirtyStateDisabled_AndDirtyFromExecutedStep_ReturnsFalse ()
+    {
+      var stepList = new WxeStepList();
+      var function = new TestFunction();
+      stepList.SetParentStep(function);
+      function.DisableDirtyState();
+
+      var dirtyStepStub = new Mock<WxeStep>();
+      dirtyStepStub.Setup(_ => _.EvaluateDirtyState()).Returns(true);
+
+      stepList.Add(dirtyStepStub.Object);
+      stepList.Execute(CurrentWxeContext);
+
+      Assert.That(stepList.LastExecutedStep, Is.Null);
+
+      Assert.That(stepList.EvaluateDirtyState(), Is.False);
+    }
+
+    [Test]
     public void ResetDirtyStateForExecutedSteps_ClearsDirtyStateRecursively_AndStopsAfterLastExecutedStep ()
     {
       var stepList = new WxeStepList();
@@ -144,6 +182,31 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
       Assert.That(stepList.EvaluateDirtyState(), Is.False);
       dirtyStepStub.Verify(_=>_.ResetDirtyStateForExecutedSteps(), Times.Once());
       notCompletedStepStub.Verify(_=>_.ResetDirtyStateForExecutedSteps(), Times.Never());
+    }
+
+    [Test]
+    public void IsDirtyStateEnabled_PassesCallToBaseImplementation_WithParentFunctionHasDirtyStateEnabled_ReturnsTrue ()
+    {
+      var stepList = new WxeStepList();
+      var function = new TestFunction();
+      stepList.SetParentStep(function);
+
+      Assert.That(function.IsDirtyStateEnabled, Is.True);
+
+      Assert.That(stepList.IsDirtyStateEnabled, Is.True);
+    }
+
+    [Test]
+    public void IsDirtyStateEnabled_PassesCallToBaseImplementation_WithParentFunctionHasDirtyStateDisabled_ReturnsFalse ()
+    {
+      var stepList = new WxeStepList();
+      var function = new TestFunction();
+      stepList.SetParentStep(function);
+
+      function.DisableDirtyState();
+      Assert.That(function.IsDirtyStateEnabled, Is.False);
+
+      Assert.That(stepList.IsDirtyStateEnabled, Is.False);
     }
   }
 }

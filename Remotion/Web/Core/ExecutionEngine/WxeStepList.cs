@@ -20,6 +20,7 @@ using System.Reflection;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
+using static Remotion.Utilities.Assertion;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -218,12 +219,19 @@ namespace Remotion.Web.ExecutionEngine
     /// <returns><see langword="true" /> if the <see cref="WxePageStep"/> represents unsaved changes.</returns>
     public override bool EvaluateDirtyState ()
     {
-      if (_isDirtyFromExecutedSteps)
-        return true;
+      if (IsDirtyStateEnabled)
+      {
+        if (_isDirtyFromExecutedSteps)
+          return true;
+      }
 
       // Using WxeStepList.ExecutingStep instead of LastExecutedStep would return the most-nested executing step,
       // thus skipping the recursive evaluation of the dirty state.
       var currentStepInThisStepList = LastExecutedStep;
+
+      // Evaluating the steps for the current dirty state is relevant even when IsDirtyStateEnabled is false
+      // to include information on sub-function dirty state in the result given that dirty state handling is disabled for each WxeFunction individually,
+      // instead of disabling dirty state handling across the entire stack.
       if (currentStepInThisStepList?.EvaluateDirtyState() == true)
         return true;
 

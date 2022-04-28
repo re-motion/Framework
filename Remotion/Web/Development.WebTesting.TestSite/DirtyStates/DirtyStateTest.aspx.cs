@@ -21,11 +21,25 @@ namespace Remotion.Web.Development.WebTesting.TestSite.DirtyStates
 {
   public partial class DirtyStateTest : WxePage
   {
+    private bool IsDirtyFromPageState
+    {
+      get { return (bool?)ViewState[nameof(IsDirtyFromPageState)] == true;}
+      set { ViewState[nameof(IsDirtyFromPageState)] = value; }
+    }
+
+    protected override void OnPreRender (EventArgs e)
+    {
+      IsDirty = IsDirtyFromPageState;
+      RegisterControlForClientSideDirtyStateTracking(TextField.ClientID);
+
+      base.OnPreRender(e);
+    }
+
     protected override bool IsAbortConfirmationEnabled => false;
 
     protected void SetPageDirtyButton_OnClick (object sender, EventArgs e)
     {
-      IsDirty = true;
+      IsDirtyFromPageState = true;
     }
 
     protected void SetCurrentFunctionDirtyButton_OnClick (object sender, EventArgs e)
@@ -47,6 +61,22 @@ namespace Remotion.Web.Development.WebTesting.TestSite.DirtyStates
     protected void CancelExecutingFunctionButton_OnClick (object sender, EventArgs e)
     {
       throw new WxeUserCancelException();
+    }
+
+
+    protected void DisableDirtyStateOnCurrentPageButton_OnClick (object sender, EventArgs e)
+    {
+      EnableDirtyState = false;
+    }
+
+    protected void ExecuteSubFunctionWithDisabledDirtyStateButton_OnClick (object sender, EventArgs e)
+    {
+      if (!IsReturningPostBack)
+      {
+        var dirtyStateSubFunction = new DirtyStateSubFunction();
+        dirtyStateSubFunction.DisableDirtyState();
+        ExecuteFunction(dirtyStateSubFunction, WxeCallArguments.Default);
+      }
     }
   }
 }

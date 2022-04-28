@@ -438,11 +438,14 @@ namespace Remotion.Web.ExecutionEngine
     /// <returns><see langword="true" /> if the <see cref="WxePageStep"/> represents unsaved changes.</returns>
     public override bool EvaluateDirtyState ()
     {
-      if (_isPageDirty)
-        return true;
+      if (IsDirtyStateEnabled)
+      {
+        if (_isPageDirty)
+          return true;
 
-      if (_isDirtyFromReturnState)
-        return true;
+        if (_isDirtyFromReturnState)
+          return true;
+      }
 
       if (_executionState.IsExecuting && _executionState.Parameters.SubFunction.EvaluateDirtyState())
         return true;
@@ -452,5 +455,8 @@ namespace Remotion.Web.ExecutionEngine
 
       return base.EvaluateDirtyState();
     }
+
+    /// <inheritdoc />
+    public sealed override bool IsDirtyStateEnabled => base.IsDirtyStateEnabled;
   }
 }

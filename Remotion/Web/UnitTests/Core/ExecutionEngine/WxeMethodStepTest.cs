@@ -179,6 +179,29 @@ public class WxeMethodStepTest: WxeTest
     Assert.That(_function.WxeContextStep2, Is.SameAs(CurrentWxeContext));
   }
 
+  [Test]
+  public void IsDirtyStateEnabled_PassesCallToBaseImplementation_WithParentFunctionHasDirtyStateEnabled_ReturnsTrue ()
+  {
+    var methodStep = new WxeMethodStep(_function.PublicStepMethod);
+    methodStep.SetParentStep(_function);
+
+    Assert.That(_function.IsDirtyStateEnabled, Is.True);
+
+    Assert.That(methodStep.IsDirtyStateEnabled, Is.True);
+  }
+
+  [Test]
+  public void IsDirtyStateEnabled_PassesCallToBaseImplementation_WithParentFunctionHasDirtyStateDisabled_ReturnsFalse ()
+  {
+    var methodStep = new WxeMethodStep(_function.PublicStepMethod);
+    methodStep.SetParentStep(_function);
+
+    _function.DisableDirtyState();
+    Assert.That(_function.IsDirtyStateEnabled, Is.False);
+
+    Assert.That(methodStep.IsDirtyStateEnabled, Is.False);
+  }
+
   private void InstanceMethodNotDeclaredOnWxeFunction ()
   {
   }

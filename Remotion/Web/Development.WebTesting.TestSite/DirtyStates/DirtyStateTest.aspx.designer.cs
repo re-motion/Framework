@@ -42,6 +42,15 @@ namespace Remotion.Web.Development.WebTesting.TestSite.DirtyStates
         protected global::Remotion.Web.UI.Controls.WebButton SetCurrentFunctionDirtyButton;
 
         /// <summary>
+        /// DisableDirtyStateOnCurrentPageButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton DisableDirtyStateOnCurrentPageButton;
+
+        /// <summary>
         /// ExecuteSubFunctionButton control.
         /// </summary>
         /// <remarks>
@@ -49,6 +58,15 @@ namespace Remotion.Web.Development.WebTesting.TestSite.DirtyStates
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton ExecuteSubFunctionButton;
+
+        /// <summary>
+        /// ExecuteSubFunctionWithDisabledDirtyStateButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton ExecuteSubFunctionWithDisabledDirtyStateButton;
 
         /// <summary>
         /// ExecuteNextStepButton control.
@@ -67,6 +85,15 @@ namespace Remotion.Web.Development.WebTesting.TestSite.DirtyStates
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton CancelExecutingFunctionButton;
+
+        /// <summary>
+        /// TextField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextField;
 
         /// <summary>
         /// Master property.

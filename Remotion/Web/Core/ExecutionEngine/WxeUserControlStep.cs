@@ -146,5 +146,7 @@ namespace Remotion.Web.ExecutionEngine
         return _pageStep;
       }
     }
+
+    public sealed override bool IsDirtyStateEnabled => base.IsDirtyStateEnabled;
   }
 }

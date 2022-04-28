@@ -249,13 +249,24 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
     }
 
     [Test]
-    public void EvaluateDiEvaluateDirtyState_WithExecutionHasNotStarted_AndIsDirtySetTrue_ReturnsTrue ()
+    public void EvaluateDirtyState_WithExecutionHasNotStarted_AndIsDirtySetTrue_ReturnsTrue ()
     {
       TestFunction2 function = new TestFunction2();
       function.IsDirty = true;
 
       Assert.That(function.IsDirty, Is.True);
       Assert.That(function.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void EvaluateDirtyState_WithDirtyStateTrackingIsDisabled_AndIsDirtySetTrue_ReturnsFalse ()
+    {
+      TestFunction2 function = new TestFunction2();
+      function.DisableDirtyState();
+      function.IsDirty = true;
+
+      Assert.That(function.IsDirty, Is.True);
+      Assert.That(function.EvaluateDirtyState(), Is.False);
     }
 
     [Test]
@@ -271,6 +282,22 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       transaction.HasUncommittedChanges = true;
 
       Assert.That(function.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void EvaluateDirtyState_WithDirtyStateTrackingIsDisabled_AndIsDirtyFromTransactionStrategy_ReturnsFalse ()
+    {
+      TestFunction2 function = new TestFunction2(WxeTransactionMode<TestTransactionFactory>.CreateRoot);
+      function.DisableDirtyState();
+
+      function.Execute(CurrentWxeContext);
+
+      Assert.That(function.EvaluateDirtyState(), Is.False);
+
+      var transaction = function.TransactionStrategy.GetNativeTransaction<TestTransaction>();
+      transaction.HasUncommittedChanges = true;
+
+      Assert.That(function.EvaluateDirtyState(), Is.False);
     }
 
     [Test]
@@ -311,6 +338,21 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 
       Assert.That(function.IsDirty, Is.False);
       Assert.That(function.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void EvaluateDirtyState_WithIsDirtyStateTrackingDisabled_AndDirtyFromExecutedStep_ReturnsFalse ()
+    {
+      var function = new TestFunction2();
+      function.DisableDirtyState();
+
+      var dirtyStepStub = new Mock<WxeStep>();
+      dirtyStepStub.Setup(_ => _.EvaluateDirtyState()).Returns(true);
+
+      function.Add(dirtyStepStub.Object);
+      function.Execute(CurrentWxeContext);
+
+      Assert.That(function.EvaluateDirtyState(), Is.False);
     }
 
     [Test]
@@ -359,6 +401,75 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 
       dirtyStepStub.Setup(_ => _.EvaluateDirtyState()).Returns(false);
       Assert.That(function.EvaluateDirtyState(), Is.True);
+    }
+
+    [Test]
+    public void IsDirtyStateTrackingEnabled_WithDirtyStateTrackingEnabled_ReturnsTrue ()
+    {
+      var function = new TestFunction();
+
+      Assert.That(function.IsDirtyStateEnabled, Is.True);
+    }
+
+    [Test]
+    public void IsDirtyStateTrackingEnabled_WithDirtyStateTrackingDisabled_ReturnsFalse ()
+    {
+      var function = new TestFunction();
+      function.DisableDirtyState();
+
+      Assert.That(function.IsDirtyStateEnabled, Is.False);
+    }
+
+    [Test]
+    public void IsDirtyStateTrackingEnabled_WithDirtyStateTrackingEnabled_IgnoresParentFunction_ReturnsTrue ()
+    {
+      var rootFunction = new TestFunction();
+      var subFunction = new TestFunction();
+      subFunction.SetParentStep(rootFunction);
+
+      rootFunction.DisableDirtyState();
+      Assert.That(rootFunction.IsDirtyStateEnabled, Is.False);
+
+
+      Assert.That(subFunction.IsDirtyStateEnabled, Is.True);
+    }
+
+    [Test]
+    public void IsDirtyStateTrackingEnabled_WithDirtyStateTrackingDisabled_IgnoresParentFunction_ReturnsFalse ()
+    {
+      var rootFunction = new TestFunction();
+      var subFunction = new TestFunction();
+      subFunction.SetParentStep(rootFunction);
+
+      subFunction.DisableDirtyState();
+      Assert.That(rootFunction.IsDirtyStateEnabled, Is.True);
+
+      Assert.That(subFunction.IsDirtyStateEnabled, Is.False);
+    }
+
+    [Test]
+    public void DisableDirtyStateTracking ()
+    {
+      var function = new TestFunction();
+      Assert.That(function.IsDirtyStateEnabled, Is.True);
+
+      function.DisableDirtyState();
+
+      Assert.That(function.IsDirtyStateEnabled, Is.False);
+    }
+
+    [Test]
+    public void DisableDirtyStateTracking_AfterExecutionHasStarted_ThrowsInvalidOperationException ()
+    {
+      var function = new TestFunction();
+
+      function.Execute(CurrentWxeContext);
+
+      Assert.That(
+          () => function.DisableDirtyState(),
+          Throws.InvalidOperationException.With.Message.EqualTo("Cannot configure dirty state handling after the execution has started."));
+
+      Assert.That(function.IsDirtyStateEnabled, Is.True);
     }
   }
 }
