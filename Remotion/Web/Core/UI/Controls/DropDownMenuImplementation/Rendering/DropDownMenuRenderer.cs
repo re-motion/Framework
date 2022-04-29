@@ -117,7 +117,6 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       if (!renderingContext.Control.Enabled)
         cssClass += " " + CssClassDisabled;
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
-      renderingContext.Control.TitleText.AddAttributeTo(renderingContext.Writer, HtmlTextWriterAttribute.Title);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       if (HasVisibleTitle(renderingContext))
