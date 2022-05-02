@@ -399,7 +399,14 @@ namespace Remotion.BocAutoCompleteReferenceValue
                     }
 
                     if (event.keyCode == KEY.RETURN) {
-                        if (wasVisible) {
+                        if (options.isAutoPostBackEnabled) {
+                            // stop default on auto-postback since the change-event already takes care of this.
+                            event.preventDefault();
+                            return false;
+                        } else if (wasVisible) {
+                            // stop default for visible dropdown options since RETURN should simply select the current option without triggering a postback.
+                            event.preventDefault();
+
                             // stop default to prevent a form submit, Opera needs special handling
                             blockSubmit = true;
                             return false;
