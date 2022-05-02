@@ -41,7 +41,7 @@ using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 
-namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012
+namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014
 {
   /// <summary>
   /// The <see cref="SqlStorageObjectFactory"/> is responsible to create SQL Server-specific storage provider instances.
