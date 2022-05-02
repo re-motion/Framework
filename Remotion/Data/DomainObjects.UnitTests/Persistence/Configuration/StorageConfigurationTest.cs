@@ -20,7 +20,7 @@ using NUnit.Framework;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Configuration;
 
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
             <providerDefinitions>
               <add type=""Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
                   name=""Rdbms"" 
-                  factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2012.SqlStorageObjectFactory""
+                  factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2014.SqlStorageObjectFactory""
                   connectionString=""Rdbms""/>
             </providerDefinitions>
           </storage>";
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
             <providerDefinitions>
               <add type=""Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
                   name=""Rdbms"" 
-                  factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2012.SqlStorageObjectFactory""
+                  factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2014.SqlStorageObjectFactory""
                   connectionString=""Rdbms""/>
             </providerDefinitions>
           </storage>";
@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
             <providerDefinitions>
               <add type=""Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
                   name=""Rdbms"" 
-                  factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2012.SqlStorageObjectFactory""
+                  factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2014.SqlStorageObjectFactory""
                   connectionString=""Rdbms""/>
             </providerDefinitions>
           </storage>";
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
             <providerDefinitions>
               <add type=""Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
                   name=""Rdbms"" 
-                  factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2012.SqlStorageObjectFactory""
+                  factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2014.SqlStorageObjectFactory""
                   connectionString=""Rdbms""/>
             </providerDefinitions>
           </storage>";
@@ -185,7 +185,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
             <providerDefinitions>
               <add type=""Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" 
                   name=""Rdbms"" 
-                  factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2012.SqlStorageObjectFactory""
+                  factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2014.SqlStorageObjectFactory""
                   connectionString=""Rdbms""/>
             </providerDefinitions>
           </storage>";
