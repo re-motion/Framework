@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <SupportedDatabaseSystems Remove="@(SupportedDatabaseSystems)"/>
-    <SupportedDatabaseSystems Include="SqlServerDefault;SqlServer2012;SqlServer2014;SqlServer2016;SqlServer2017;SqlServer2019"/>
+    <SupportedDatabaseSystems Include="SqlServerDefault;SqlServer2014;SqlServer2016;SqlServer2017;SqlServer2019"/>
 
     <SupportedBrowsers Remove="@(SupportedBrowsers)"/>
     <SupportedBrowsers Include="Chrome;Firefox;Edge"/>
