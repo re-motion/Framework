@@ -311,7 +311,6 @@ namespace Remotion.BocAutoCompleteReferenceValue
         select.init();
 
         const informationPopUp = new InformationPopUp(options, input);
-        let blockSubmit: Optional<boolean>;
 
         const keyDownHandler = function(event: KeyboardEvent) {
             // track last key pressed
@@ -406,9 +405,6 @@ namespace Remotion.BocAutoCompleteReferenceValue
                         } else if (wasVisible) {
                             // stop default for visible dropdown options since RETURN should simply select the current option without triggering a postback.
                             event.preventDefault();
-
-                            // stop default to prevent a form submit, Opera needs special handling
-                            blockSubmit = true;
                             return false;
                         } else {
                             return true;
