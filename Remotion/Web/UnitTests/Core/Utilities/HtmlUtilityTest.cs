@@ -82,8 +82,32 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     public void ExtractPlainText_SelfClosingTagRemoval ()
     {
       Assert.That(
-          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Simple<br/>Stri<img src=\"WithAttributes.html\"/>ng")),
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Simple<div/>Stri<img src=\"WithAttributes.html\"/>ng")),
           Is.EqualTo(PlainTextString.CreateFromText("SimpleString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_ReplacesLineBreaks ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Simple<br/>Stri<b>n</b>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("Simple\nString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_ReplacesLineBreaks2 ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Simple<br />Stri<b>n</b>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("Simple\nString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_ReplacesMultipleLineBreaks ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Simple<br/><br/>Stri<b>n</b>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("Simple\n\nString")));
     }
 
     [Test]
@@ -95,7 +119,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     }
 
     [Test]
-    public void ExtractPlainText_WithPlainTextWebString_DoesNotStripsHtmlTags ()
+    public void ExtractPlainText_WithPlainTextWebString_DoesNotStripHtmlTags ()
     {
       Assert.That(
           HtmlUtility.ExtractPlainText(WebString.CreateFromText("<span>SimpleS<i>tr<b>i</b>n</i></span>g")),

@@ -50,6 +50,7 @@ namespace Remotion.Web.Utilities
       WebString.CreateFromText(nonHtmlString).WriteTo(writer);
     }
 
+    private static readonly Regex s_replaceLineBreaks = new Regex("<br\\s*/>", RegexOptions.Compiled);
     private static readonly Regex s_stripHtmlTagsRegex = new Regex("<.*?>", RegexOptions.Compiled);
 
     [Obsolete("Use HtmlUtility.ExtractPlainText instead. (Version 3.0.0)", true)]
@@ -71,7 +72,8 @@ namespace Remotion.Web.Utilities
     {
       if (webString.Type == WebStringType.Encoded)
       {
-        var valueWithoutHtmlTags = s_stripHtmlTagsRegex.Replace(webString.GetValue(), string.Empty);
+        var valueWithoutHtmlLineBreaks = s_replaceLineBreaks.Replace(webString.GetValue(), "\n");
+        var valueWithoutHtmlTags = s_stripHtmlTagsRegex.Replace(valueWithoutHtmlLineBreaks, string.Empty);
         var htmlDecodedValue = HttpUtility.HtmlDecode(valueWithoutHtmlTags);
         return PlainTextString.CreateFromText(htmlDecodedValue);
       }
