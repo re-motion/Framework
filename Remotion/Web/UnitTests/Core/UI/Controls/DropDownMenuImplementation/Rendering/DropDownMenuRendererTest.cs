@@ -203,8 +203,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
 
       var titleNode = node.GetAssertedElementByID("DropDownMenu1_DropDownMenuLabel");
       Assert.That(titleNode.InnerXml, Is.EqualTo("Multiline<br />Title"));
-      var select = node.GetAssertedElementByClass("DropDownMenuSelect");
-      select.AssertAttributeValueEquals("title", "Multiline\nTitle");
     }
 
     private void AssertTitleSpan (XmlNode containerDiv, bool withTitle, bool withIcon)
