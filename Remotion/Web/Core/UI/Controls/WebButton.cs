@@ -262,10 +262,8 @@ namespace Remotion.Web.UI.Controls
 
       if (!Text.IsEmpty)
       {
-        if (Text.Type == WebStringType.Encoded)
-          writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(Text));
-        else
-          s_noneHotkeyFormatter.GetFormattedText(Text).AddAttributeTo(writer, DiagnosticMetadataAttributes.Content);
+        var contentAttributeText = Text.Type == WebStringType.Encoded ? Text : s_noneHotkeyFormatter.GetFormattedText(Text);
+        HtmlUtility.ExtractPlainText(contentAttributeText).AddAttributeTo(writer, DiagnosticMetadataAttributes.Content);
       }
 
       if (!string.IsNullOrEmpty(CommandName))

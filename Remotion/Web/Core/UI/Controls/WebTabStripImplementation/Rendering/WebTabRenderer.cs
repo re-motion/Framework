@@ -108,10 +108,8 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
         if (!tab.Text.IsEmpty)
         {
-          if (tab.Text.Type == WebStringType.Encoded)
-            renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(tab.Text));
-          else
-            s_noneHotkeyFormatter.GetFormattedText(tab.Text).AddAttributeTo(renderingContext.Writer, DiagnosticMetadataAttributes.Content);
+          var contentAttributeText = tab.Text.Type == WebStringType.Encoded ? tab.Text : s_noneHotkeyFormatter.GetFormattedText(tab.Text);
+          HtmlUtility.ExtractPlainText(contentAttributeText).AddAttributeTo(renderingContext.Writer, DiagnosticMetadataAttributes.Content);
         }
 
         renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsDisabled, (isDisabled).ToString().ToLower());
