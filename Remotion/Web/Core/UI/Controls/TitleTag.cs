@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics;
 using System.Web.UI;
 using Remotion.Utilities;
+using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -25,16 +27,16 @@ namespace Remotion.Web.UI.Controls
   /// </summary>
   public class TitleTag : HtmlHeadElement
   {
-    private readonly WebString _title;
+    private readonly PlainTextString _title;
 
-    public TitleTag (WebString title)
+    public TitleTag (PlainTextString title)
     {
       ArgumentUtility.CheckNotNull("title", title);
 
       _title = title;
     }
 
-    public WebString Title
+    public PlainTextString Title
     {
       get { return _title; }
     }

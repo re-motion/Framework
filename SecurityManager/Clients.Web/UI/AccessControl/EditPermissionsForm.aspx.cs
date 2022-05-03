@@ -53,7 +53,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected override void OnPreRenderComplete (EventArgs e)
     {
-      var title = WebString.CreateFromText(
+      var title = PlainTextString.CreateFromText(
           string.Format(
               GlobalizationService.GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.Title),
               CurrentSecurableClassDefinition.DisplayName));

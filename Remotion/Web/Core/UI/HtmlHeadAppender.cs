@@ -142,8 +142,8 @@ namespace Remotion.Web.UI
     ///     Registers the title with a default priority of Page.
     ///   </para>
     /// </remarks>
-    /// <param name="title"> The <see cref="WebString"/> to be inserted as the title. </param>
-    public void SetTitle (WebString title)
+    /// <param name="title"> The <see cref="PlainTextString"/> to be inserted as the title. </param>
+    public void SetTitle (PlainTextString title)
     {
       _title = new TitleTag(title);
     }
