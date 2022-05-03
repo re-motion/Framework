@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects
   /// If no storage group is defined for a persistence hierarchy, the domain object classes are assigned to the default storage provider.
   /// </para> 
   /// </remarks>
-  [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
   public abstract class StorageGroupAttribute: Attribute
   {
     /// <summary>

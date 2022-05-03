@@ -17,9 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
@@ -35,6 +37,23 @@ namespace Remotion.Data.DomainObjects.UnitTests
   [TestFixture]
   public class ReflectionUtilityTest : StandardMappingTest
   {
+    private interface ITestDomainObject : IDomainObject
+    {
+    }
+
+    private interface IBaseInterfaceWithoutStorageGroupAttribute : IDomainObject
+    {
+    }
+
+    [DBStorageGroup]
+    private interface IInterfaceWithStorageGroupAttributeAndExtendedInterface : IBaseInterfaceWithoutStorageGroupAttribute
+    {
+    }
+
+    public class DerivedDomainObject : AbstractClass, ITestDomainObject
+    {
+    }
+
     private TypeDefinition _typeDefinitionWithMixedProperty;
 
     [SetUp]
@@ -129,7 +148,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void IsInheritanceRoot_BaseTypeIsDomainObject ()
+    public void IsInheritanceRoot_WithClassAndBaseTypeIsDomainObject_ReturnsTrue ()
     {
       var type = typeof(AbstractClass);
       Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
@@ -139,7 +158,27 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void IsInheritanceRoot_TypeHasStorageGroupAttributeApplied_ReturnsTrue ()
+    public void IsInheritanceRoot_WithClassDerivedFromInheritanceRootAndImplementedInterface_ReturnsTrue ()
+    {
+      var type = typeof(AbstractClass);
+      Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
+      Assertion.IsTrue(type.BaseType == typeof(DomainObject));
+
+      Assert.That(ReflectionUtility.IsInheritanceRoot(type), Is.True);
+    }
+
+    [Test]
+    public void IsInheritanceRoot_WithInterfaceAndExtendedInterfaceIsIDomainObject_ReturnsTrue ()
+    {
+      var type = typeof(ITestDomainObject);
+      Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
+      Assertion.IsTrue(type.GetInterfaces().Contains(typeof(IDomainObject)));
+
+      Assert.That(ReflectionUtility.IsInheritanceRoot(type), Is.True);
+    }
+
+    [Test]
+    public void IsInheritanceRoot_WithClassAndTypeHasStorageGroupAttributeApplied_ReturnsTrue ()
     {
       var type = typeof(ClassWithStorageGroupAttributeAndBaseClass);
       Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
@@ -150,7 +189,18 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void IsInheritanceRoot_TypeHasStorageGroupAttributeAppliedAndIsIgnoredForMappingConfiguration_ReturnsTrue ()
+    public void IsInheritanceRoot_WithInterfaceAndTypeHasStorageGroupAttributeApplied_ReturnsTrue ()
+    {
+      var type = typeof(IInterfaceWithStorageGroupAttributeAndExtendedInterface);
+      Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
+      Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(GetDirectlyExtendedInterfaces(type).Single()));
+      Assertion.IsTrue(GetDirectlyExtendedInterfaces(GetDirectlyExtendedInterfaces(type).Single()).Contains(typeof(IDomainObject)));
+
+      Assert.That(ReflectionUtility.IsInheritanceRoot(type), Is.True);
+    }
+
+    [Test]
+    public void IsInheritanceRoot_WithClassThatHasStorageGroupAttributeAppliedAndIsIgnoredForMappingConfiguration_ReturnsFalse ()
     {
       var type = typeof(ClassWithStorageGroupAttributeAndIgnoredForMappingConfigurationAttributeAndBaseClass);
       Assertion.IsTrue(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
@@ -161,13 +211,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void IsInheritanceRoot_TypeIsDomainObject_ReturnsFalse ()
+    public void IsInheritanceRoot_WithClassThatIsDomainObject_ReturnsFalse ()
     {
       Assert.That(ReflectionUtility.IsInheritanceRoot(typeof(DomainObject)), Is.False);
     }
 
     [Test]
-    public void IsInheritanceRoot_OnlyImmediateBaseTypeIsIgnoredForMappingConfiguration_ReturnsFalse ()
+    public void IsInheritanceRoot_WithClassAndOnlyImmediateBaseTypeIsIgnoredForMappingConfiguration_ReturnsFalse ()
     {
       var type = typeof(DerivedClassInMappingDerivedFromClassNotInMapping);
       Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
@@ -179,7 +229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void IsInheritanceRoot_TypeIsIgnoredForMappingConfiguration_ReturnsFalse ()
+    public void IsInheritanceRoot_WithClassThatIsIgnoredForMappingConfiguration_ReturnsFalse ()
     {
       var type = typeof(ClassWithIgnoreForMappingConfigurationAttribute);
       Assertion.IsTrue(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
@@ -189,7 +239,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void IsInheritanceRoot_AllBaseTypesAreIgnoredForMappingConfiguration_ReturnsTrue ()
+    public void IsInheritanceRoot_WithClassAndAllBaseTypesAreIgnoredForMappingConfiguration_ReturnsTrue ()
     {
       var type = typeof(ClassWithAllBaseTypesWithIgnoreForMappingConfigurationAttribute);
       Assertion.IsFalse(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type));
@@ -198,6 +248,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assertion.IsTrue(type.BaseType.BaseType.BaseType == typeof(DomainObject));
 
       Assert.That(ReflectionUtility.IsInheritanceRoot(typeof(ClassWithAllBaseTypesWithIgnoreForMappingConfigurationAttribute)), Is.True);
+    }
+
+    [Test]
+    public void IsTypeIgnroedOfrMappingConfiguration_SupportsIDomainObjectInterfaces ()
+    {
+      var type = typeof(ITestDomainObject);
+
+      Assert.That(ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type), Is.False);
     }
 
     [Test]
@@ -355,9 +413,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void IsDomainObject_IDomainObject_ReturnsFalse ()
+    public void IsDomainObject_IDomainObject_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsDomainObject(typeof(IDomainObject)), Is.False);
+      Assert.That(ReflectionUtility.IsDomainObject(typeof(IDomainObject)), Is.True);
     }
 
     [Test]
@@ -370,6 +428,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void IsDomainObject_Object_ReturnsFalse ()
     {
       Assert.That(ReflectionUtility.IsDomainObject(typeof(object)), Is.False);
+    }
+
+    [Test]
+    public void IsDomainObject_NonIDomainObjectInterface_ReturnsFalse ()
+    {
+      Assert.That(ReflectionUtility.IsDomainObject(typeof(IDisposable)), Is.False);
     }
 
     [Test]
@@ -567,6 +631,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
           () => ReflectionUtility.GetIObjectListTypeParameter(typeof(IList<DomainObject>)),
           Throws.ArgumentException.With.Message.StartWith(
               "Parameter 'type' has type 'System.Collections.Generic.IList`1[Remotion.Data.DomainObjects.DomainObject]' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
+    }
+
+    private static IEnumerable<Type> GetDirectlyExtendedInterfaces (Type type)
+    {
+      var interfaces = type.GetInterfaces();
+      return interfaces.Except(interfaces.SelectMany(e => e.GetInterfaces()));
     }
 
     /// <remarks>

@@ -14,60 +14,113 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Builder;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
-using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Enumerables;
 using Remotion.Development.UnitTesting.NUnit;
+using Remotion.FunctionalProgramming;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Builder
 {
   [TestFixture]
   public class ClassDefinitionBuilderNodeTest
   {
-    private abstract class Base : DomainObject
+    private interface ITop : IDomainObject
     {
     }
 
-    private abstract class Sub : Base
+    private interface IBase : IDomainObject
+    {
+    }
+
+    private interface ISub : IBase
+    {
+    }
+
+    private class Base : DomainObject
+    {
+    }
+
+    private class Sub : Base
     {
     }
 
     [TestDomain]
-    private abstract class SubWithStorageGroup : Base
+    private class SubWithStorageGroup : Base
     {
     }
 
     [Test]
     public void Initialize ()
     {
-      var classDefinitionBuilderNode = new ClassDefinitionBuilderNode(typeof(string), null);
+      var classDefinitionBuilderNode = new ClassDefinitionBuilderNode(typeof(Base), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
 
-      Assert.That(classDefinitionBuilderNode.Type, Is.EqualTo(typeof(string)));
-      Assert.That(classDefinitionBuilderNode.BaseClass, Is.Null);
-      Assert.That(classDefinitionBuilderNode.DerivedClasses, Is.Empty);
+      Assert.That(classDefinitionBuilderNode.Type, Is.EqualTo(typeof(Base)));
+      Assert.That(classDefinitionBuilderNode.BaseClassNode, Is.Null);
+      Assert.That(classDefinitionBuilderNode.ImplementedInterfaceNodes, Is.Empty);
+      Assert.That(classDefinitionBuilderNode.DerivedClassNodes, Is.Empty);
       Assert.That(classDefinitionBuilderNode.ClassDefinition, Is.Null);
       Assert.That(classDefinitionBuilderNode.IsLeafNode, Is.True);
+      Assert.That(classDefinitionBuilderNode.IsInheritanceRoot, Is.True);
     }
 
     [Test]
     public void Initialize_WithBaseClass_AddsInstanceToBaseClass ()
     {
-      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null);
-      var subNode = new ClassDefinitionBuilderNode(typeof(Sub), baseNode);
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
+      var subNode = new ClassDefinitionBuilderNode(typeof(Sub), baseNode, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
 
-      Assert.That(subNode.BaseClass, Is.SameAs(baseNode));
+      Assert.That(subNode.BaseClassNode, Is.SameAs(baseNode));
+      Assert.That(subNode.IsInheritanceRoot, Is.False);
       Assert.That(baseNode.IsLeafNode, Is.False);
-      Assert.That(baseNode.DerivedClasses, Is.EqualTo(new[] { subNode }));
+      Assert.That(baseNode.DerivedClassNodes, Is.EqualTo(new[] { subNode }));
+      Assert.That(baseNode.IsInheritanceRoot, Is.True);
+    }
+
+    [Test]
+    public void Initialize_WithImplementedInterfaces_AddsInstanceToImplementedInterfaces ()
+    {
+      var baseInterfaceNode = new InterfaceDefinitionBuilderNode(typeof(IBase), Enumerable.Empty<InterfaceDefinitionBuilderNode>());
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Sub), null, EnumerableUtility.Singleton(baseInterfaceNode));
+
+      Assert.That(baseNode.ImplementedInterfaceNodes, Is.EqualTo(new[] { baseInterfaceNode }));
+      Assert.That(baseInterfaceNode.IsLeafNode, Is.False);
+      Assert.That(baseInterfaceNode.ImplementingClassNodes, Is.EqualTo(new[] { baseNode }));
+    }
+
+    [Test]
+    public void Initialize_WithAlreadyImplementedInterfaces_IsNotAddedToImplementedInterfaces ()
+    {
+      var baseInterfaceNode = new InterfaceDefinitionBuilderNode(typeof(IBase), Enumerable.Empty<InterfaceDefinitionBuilderNode>());
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, EnumerableUtility.Singleton(baseInterfaceNode));
+      var subNode = new ClassDefinitionBuilderNode(typeof(Sub), baseNode, EnumerableUtility.Singleton(baseInterfaceNode));
+
+      Assert.That(baseNode.ImplementedInterfaceNodes, Is.EqualTo(new[] { baseInterfaceNode }));
+      Assert.That(subNode.ImplementedInterfaceNodes, Is.Empty);
+    }
+
+    [Test]
+    public void Initialize_WithAlreadyImplementedInterfacesButInheritanceRoot_IsAddedToImplementedInterfaces ()
+    {
+      var baseInterfaceNode = new InterfaceDefinitionBuilderNode(typeof(IBase), Enumerable.Empty<InterfaceDefinitionBuilderNode>());
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, EnumerableUtility.Singleton(baseInterfaceNode));
+      var subNode = new ClassDefinitionBuilderNode(typeof(SubWithStorageGroup), baseNode, EnumerableUtility.Singleton(baseInterfaceNode));
+
+      Assert.That(baseNode.ImplementedInterfaceNodes, Is.EqualTo(new[] { baseInterfaceNode }));
+      Assert.That(subNode.ImplementedInterfaceNodes, Is.EqualTo(new[] { baseInterfaceNode }));
     }
 
     [Test]
     public void Initialize_WithNullType_Throws ()
     {
       Assert.That(
-          () => new ClassDefinitionBuilderNode(null, null),
+          () => new ClassDefinitionBuilderNode(null, null, Enumerable.Empty<InterfaceDefinitionBuilderNode>()),
           Throws.ArgumentNullException.With.ArgumentExceptionMessageWithParameterNameEqualTo("type"));
     }
 
@@ -75,9 +128,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Builder
     public void Initialize_WithNonClass_Throws ()
     {
       Assert.That(
-          () => new ClassDefinitionBuilderNode(typeof(int), null),
+          () => new ClassDefinitionBuilderNode(typeof(int), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>()),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("The specified type must be a class.", "type"));
+    }
+
+    [Test]
+    public void Initialize_WithDomainObject_Throws ()
+    {
+      Assert.That(
+          () => new ClassDefinitionBuilderNode(typeof(DomainObject), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>()),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("The specified type must not be the 'DomainObject' class.", "type"));
+    }
+
+    [Test]
+    public void Initialize_WithNonDomainObject_Throws ()
+    {
+      Assert.That(
+          () => new ClassDefinitionBuilderNode(typeof(string), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>()),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("The specified type must be derived from 'DomainObject'.", "type"));
     }
 
     [Test]
@@ -87,13 +158,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Builder
       var subClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(baseClass: baseClassDefinition);
       var mappingObjectFactoryMock = new Mock<IMappingObjectFactory>(MockBehavior.Strict);
 
-      mappingObjectFactoryMock.Setup(_ => _.CreateClassDefinition(typeof(Base), null)).Returns(baseClassDefinition);
-      mappingObjectFactoryMock.Setup(_ => _.CreateClassDefinition(typeof(Sub), baseClassDefinition)).Returns(subClassDefinition);
+      mappingObjectFactoryMock
+          .Setup(_ => _.CreateClassDefinition(typeof(Base), null, It.Is<IEnumerable<InterfaceDefinition>>(e => e.IsEmpty())))
+          .Returns(baseClassDefinition);
+      mappingObjectFactoryMock
+          .Setup(_ => _.CreateClassDefinition(typeof(Sub), baseClassDefinition, It.Is<IEnumerable<InterfaceDefinition>>(e => e.IsEmpty())))
+          .Returns(subClassDefinition);
 
-      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null);
-      var subNode = new ClassDefinitionBuilderNode(typeof(Sub), baseNode);
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
+      var subNode = new ClassDefinitionBuilderNode(typeof(Sub), baseNode, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
       // The constructor registers the parent -> child relationship
-      _ = new ClassDefinitionBuilderNode(typeof(Sub), baseNode);
+      _ = new ClassDefinitionBuilderNode(typeof(Sub), baseNode, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
       subNode.BeginBuildTypeDefinition(mappingObjectFactoryMock.Object);
       subNode.EndBuildTypeDefinition();
 
@@ -107,8 +182,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Builder
     [Test]
     public void EndBuildTypeDefinition_OnParentNode_AlsoCallEndsBuildTypeDefinitionOnChildNode ()
     {
-      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null);
-      var subNode = new ClassDefinitionBuilderNode(typeof(Sub), baseNode);
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
+      var subNode = new ClassDefinitionBuilderNode(typeof(Sub), baseNode, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
 
       baseNode.EndBuildTypeDefinition();
 
@@ -119,8 +194,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Builder
     [Test]
     public void EndBuildTypeDefinition_OnChildNode_AlsoCallsEndBuildTypeDefinitionOnParentNode ()
     {
-      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null);
-      var subNode = new ClassDefinitionBuilderNode(typeof(Sub), baseNode);
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
+      var subNode = new ClassDefinitionBuilderNode(typeof(Sub), baseNode, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
 
       subNode.EndBuildTypeDefinition();
 
@@ -136,14 +211,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Builder
       var mappingObjectFactoryMock = new Mock<IMappingObjectFactory>(MockBehavior.Strict);
 
       mappingObjectFactoryMock
-          .Setup(_ => _.CreateClassDefinition(typeof(Base), null))
+          .Setup(_ => _.CreateClassDefinition(typeof(Base), null, It.Is<IEnumerable<InterfaceDefinition>>(e => e.IsEmpty())))
           .Returns(baseClassDefinition);
       mappingObjectFactoryMock
-          .Setup(_ => _.CreateClassDefinition(typeof(Sub), baseClassDefinition))
+          .Setup(_ => _.CreateClassDefinition(typeof(Sub), baseClassDefinition, It.Is<IEnumerable<InterfaceDefinition>>(e => e.IsEmpty())))
           .Returns(subClassDefinition);
 
-      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null);
-      var subNode = new ClassDefinitionBuilderNode(typeof(Sub), baseNode);
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
+      var subNode = new ClassDefinitionBuilderNode(typeof(Sub), baseNode, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
       subNode.BeginBuildTypeDefinition(mappingObjectFactoryMock.Object);
 
       Assert.That(baseNode.ClassDefinition, Is.SameAs(baseClassDefinition));
@@ -156,23 +231,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Builder
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       var mappingObjectFactoryMock = new Mock<IMappingObjectFactory>(MockBehavior.Strict);
 
-      mappingObjectFactoryMock.Setup(_ => _.CreateClassDefinition(typeof(Base), null)).Returns(baseClassDefinition);
+      mappingObjectFactoryMock
+          .Setup(_ => _.CreateClassDefinition(typeof(Base), null, It.Is<IEnumerable<InterfaceDefinition>>(e => e.IsEmpty())))
+          .Returns(baseClassDefinition);
 
-      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null);
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
       baseNode.BeginBuildTypeDefinition(mappingObjectFactoryMock.Object);
       baseNode.BeginBuildTypeDefinition(mappingObjectFactoryMock.Object);
 
       Assert.That(baseNode.ClassDefinition, Is.SameAs(baseClassDefinition));
 
-      mappingObjectFactoryMock.Verify(_ => _.CreateClassDefinition(typeof(Base), null), Times.Once);
+      mappingObjectFactoryMock.Verify(_ => _.CreateClassDefinition(typeof(Base), null, It.Is<IEnumerable<InterfaceDefinition>>(e => e.IsEmpty())), Times.Once);
     }
 
     [Test]
-    public void BeginBuildTypeDefinition_ReadOnly_Throws ()
+    public void BeginBuildTypeDefinition_AlreadyConstructedNode_Throws ()
     {
       var mappingObjectFactoryMock = new Mock<IMappingObjectFactory>(MockBehavior.Strict);
 
-      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null);
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
       baseNode.EndBuildTypeDefinition();
 
       Assert.That(
@@ -188,12 +265,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Builder
       var mappingObjectFactoryMock = new Mock<IMappingObjectFactory>(MockBehavior.Strict);
 
       mappingObjectFactoryMock
-          .Setup(_ => _.CreateClassDefinition(typeof(SubWithStorageGroup), null))
+          .Setup(_ => _.CreateClassDefinition(typeof(SubWithStorageGroup), null, It.Is<IEnumerable<InterfaceDefinition>>(e => e.IsEmpty())))
           .Returns(subClassDefinition)
           .Verifiable();
 
-      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null);
-      var subNode = new ClassDefinitionBuilderNode(typeof(SubWithStorageGroup), baseNode);
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
+      var subNode = new ClassDefinitionBuilderNode(typeof(SubWithStorageGroup), baseNode, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
       subNode.BeginBuildTypeDefinition(mappingObjectFactoryMock.Object);
 
       Assert.That(baseNode.ClassDefinition, Is.Null);
@@ -203,12 +280,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Builder
     }
 
     [Test]
+    public void BeginBuildTypeDefinition_WithImplementedInterfaces_BuildsAndLinksInterfaces ()
+    {
+      var implementedInterfaceDefinition = InterfaceDefinitionObjectMother.CreateInterfaceDefinition(typeof(IBase));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Base), implementedInterfaces: new[] { implementedInterfaceDefinition });
+      var mappingObjectFactoryMock = new Mock<IMappingObjectFactory>(MockBehavior.Strict);
+
+      mappingObjectFactoryMock
+          .Setup(_ => _.CreateInterfaceDefinition(typeof(IBase), It.Is<IEnumerable<InterfaceDefinition>>(e => e.IsEmpty())))
+          .Returns(implementedInterfaceDefinition);
+      mappingObjectFactoryMock
+          .Setup(_ => _.CreateClassDefinition(typeof(Base), null, It.Is<IEnumerable<InterfaceDefinition>>(e => e.SequenceEqual(new[] { implementedInterfaceDefinition }))))
+          .Returns(classDefinition);
+
+      var implementedInterfaceNode = new InterfaceDefinitionBuilderNode(typeof(IBase), Enumerable.Empty<InterfaceDefinitionBuilderNode>());
+      var classNode = new ClassDefinitionBuilderNode(typeof(Base), null, new[] { implementedInterfaceNode });
+      classNode.BeginBuildTypeDefinition(mappingObjectFactoryMock.Object);
+
+      Assert.That(classNode.ClassDefinition, Is.EqualTo(classDefinition));
+    }
+
+    [Test]
     public void BeginBuildTypeDefinition_WithNonLeafNode_DoesNothing ()
     {
       var mappingObjectFactoryMock = new Mock<IMappingObjectFactory>();
 
-      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null);
-      var subNode = new ClassDefinitionBuilderNode(typeof(SubWithStorageGroup), baseNode);
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
+      var subNode = new ClassDefinitionBuilderNode(typeof(SubWithStorageGroup), baseNode, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
 
       baseNode.BeginBuildTypeDefinition(mappingObjectFactoryMock.Object);
 
@@ -222,9 +320,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Builder
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       var mappingObjectFactoryMock = new Mock<IMappingObjectFactory>(MockBehavior.Strict);
 
-      mappingObjectFactoryMock.Setup(_ => _.CreateClassDefinition(typeof(Base), null)).Returns(baseClassDefinition);
+      mappingObjectFactoryMock
+          .Setup(_ => _.CreateClassDefinition(typeof(Base), null, It.Is<IEnumerable<InterfaceDefinition>>(e => e.IsEmpty())))
+          .Returns(baseClassDefinition);
 
-      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null);
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
       baseNode.BeginBuildTypeDefinition(mappingObjectFactoryMock.Object);
       baseNode.EndBuildTypeDefinition();
 
@@ -232,14 +332,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Builder
     }
 
     [Test]
-    public void GetBuiltTypeDefinition_NonReadOnly_Throws ()
+    public void GetBuiltTypeDefinition_UnconstructedNode_Throws ()
     {
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
       var mappingObjectFactoryMock = new Mock<IMappingObjectFactory>(MockBehavior.Strict);
 
-      mappingObjectFactoryMock.Setup(_ => _.CreateClassDefinition(typeof(Base), null)).Returns(baseClassDefinition);
+      mappingObjectFactoryMock
+          .Setup(_ => _.CreateClassDefinition(typeof(Base), null, It.Is<IEnumerable<InterfaceDefinition>>(e => e.IsEmpty())))
+          .Returns(baseClassDefinition);
 
-      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null);
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
       baseNode.BeginBuildTypeDefinition(mappingObjectFactoryMock.Object);
 
       Assert.That(
@@ -249,15 +351,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Builder
     }
 
     [Test]
-    public void AddDerivedClass_ReadOnlyBaseClass_Throws ()
+    public void AddDerivedClass_ConstructedBaseClass_Throws ()
     {
-      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null);
+      var baseNode = new ClassDefinitionBuilderNode(typeof(Base), null, Enumerable.Empty<InterfaceDefinitionBuilderNode>());
       baseNode.EndBuildTypeDefinition();
 
       Assert.That(
-          () => new ClassDefinitionBuilderNode(typeof(Sub), baseNode),
+          () => new ClassDefinitionBuilderNode(typeof(Sub), baseNode, Enumerable.Empty<InterfaceDefinitionBuilderNode>()),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("The specified base class must not be a constructed node.", "baseClass"));
+              .With.ArgumentExceptionMessageEqualTo("The specified base class node must not be a constructed.", "baseClassNode"));
     }
   }
 }

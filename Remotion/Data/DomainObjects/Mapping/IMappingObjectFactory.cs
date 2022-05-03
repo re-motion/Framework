@@ -25,7 +25,9 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// </summary>
   public interface IMappingObjectFactory
   {
-    ClassDefinition CreateClassDefinition (Type type, ClassDefinition? baseClass);
+    ClassDefinition CreateClassDefinition (Type type, ClassDefinition? baseClass, IEnumerable<InterfaceDefinition> implementedInterfaces);
+
+    InterfaceDefinition CreateInterfaceDefinition (Type type, IEnumerable<InterfaceDefinition> extendedInterfaces);
 
     PropertyDefinition CreatePropertyDefinition (TypeDefinition typeDefinition, IPropertyInformation propertyInfo);
 
