@@ -135,7 +135,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     private IEnumerable<Type> GetDomainObjectTypes ()
     {
-      return (from type in _typeDiscoveryService.GetTypes(typeof(DomainObject), excludeGlobalTypes: false).Cast<Type>()
+      return (from type in _typeDiscoveryService.GetTypes(typeof(IDomainObject), excludeGlobalTypes: false).Cast<Type>()
               where !ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type)
               select type).Distinct();
     }

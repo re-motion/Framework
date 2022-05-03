@@ -25,6 +25,18 @@ namespace Remotion.Data.DomainObjects.Mapping.Builder
   /// </summary>
   public abstract class TypeDefinitionBuilderNode
   {
+    /// <summary>
+    /// Use this method to call <see cref="BuildTypeDefinition(Remotion.Data.DomainObjects.Mapping.IMappingObjectFactory)"/>
+    /// from another type, which would otherwise be inaccessible.
+    /// </summary>
+    protected static void BuildTypeDefinition (TypeDefinitionBuilderNode node, IMappingObjectFactory mappingObjectFactory)
+    {
+      ArgumentUtility.CheckNotNull("node", node);
+      ArgumentUtility.CheckNotNull("mappingObjectFactory", mappingObjectFactory);
+
+      node.BuildTypeDefinition(mappingObjectFactory);
+    }
+
     public Type Type { get; }
 
     protected TypeDefinitionBuilderNode (Type type)
@@ -45,6 +57,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Builder
     /// </summary>
     public void BeginBuildTypeDefinition (IMappingObjectFactory mappingObjectFactory)
     {
+      ArgumentUtility.CheckNotNull("mappingObjectFactory", mappingObjectFactory);
       if (!IsLeafNode)
         return;
 

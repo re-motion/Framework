@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
+using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
@@ -54,12 +55,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void CreateClassDefinition ()
     {
-      var result = _factory.CreateClassDefinition(typeof(Order), null);
+      var result = _factory.CreateClassDefinition(typeof(Order), null, Enumerable.Empty<InterfaceDefinition>());
 
       Assert.That(result, Is.Not.Null);
       Assert.That(result.Type, Is.SameAs(typeof(Order)));
       Assert.That(result.InstanceCreator, Is.SameAs(_domainObjectCreator));
       Assert.That(result.BaseClass, Is.Null);
+      Assert.That(result.ImplementedInterfaces, Is.Empty);
     }
 
     [Test]
@@ -68,12 +70,49 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var companyClass = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Company));
       companyClass.SetPropertyDefinitions(new PropertyDefinitionCollection());
       companyClass.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
-      var result = _factory.CreateClassDefinition(typeof(Customer), companyClass);
+      var result = _factory.CreateClassDefinition(typeof(Customer), companyClass, Enumerable.Empty<InterfaceDefinition>());
 
       Assert.That(result, Is.Not.Null);
       Assert.That(result.Type, Is.SameAs(typeof(Customer)));
       Assert.That(result.InstanceCreator, Is.SameAs(_domainObjectCreator));
       Assert.That(result.BaseClass, Is.SameAs(companyClass));
+      Assert.That(result.ImplementedInterfaces, Is.Empty);
+    }
+
+    [Test]
+    public void CreateClassDefinition_WithImplementedInterface ()
+    {
+      var implementedInterface = InterfaceDefinitionObjectMother.CreateInterfaceDefinition();
+      implementedInterface.SetPropertyDefinitions(new PropertyDefinitionCollection());
+      implementedInterface.SetRelationEndPointDefinitions(new RelationEndPointDefinitionCollection());
+      var result = _factory.CreateClassDefinition(typeof(Customer), null, new[] { implementedInterface });
+
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.Type, Is.SameAs(typeof(Customer)));
+      Assert.That(result.InstanceCreator, Is.SameAs(_domainObjectCreator));
+      Assert.That(result.BaseClass, Is.Null);
+      Assert.That(result.ImplementedInterfaces, Is.EqualTo(new[] { implementedInterface }));
+    }
+
+    [Test]
+    public void CreateInterfaceDefinition ()
+    {
+      var result = _factory.CreateInterfaceDefinition(typeof(Order), Enumerable.Empty<InterfaceDefinition>());
+
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.Type, Is.SameAs(typeof(Order)));
+      Assert.That(result.ExtendedInterfaces, Is.Empty);
+    }
+
+    [Test]
+    public void CreateInterfaceDefinition_WithExtendedInterfaces ()
+    {
+      var extendedInterface = InterfaceDefinitionObjectMother.CreateInterfaceDefinition();
+      var result = _factory.CreateInterfaceDefinition(typeof(Order), EnumerableUtility.Singleton(extendedInterface));
+
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.Type, Is.SameAs(typeof(Order)));
+      Assert.That(result.ExtendedInterfaces, Is.EqualTo(new[] { extendedInterface }));
     }
 
     [Test]
