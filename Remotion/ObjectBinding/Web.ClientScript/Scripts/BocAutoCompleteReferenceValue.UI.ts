@@ -401,21 +401,25 @@ namespace Remotion.BocAutoCompleteReferenceValue
                         if (options.isAutoPostBackEnabled) {
                             // stop default on auto-postback since the change-event already takes care of this.
                             event.preventDefault();
-                            return false;
+                            return;
                         } else if (wasVisible) {
                             // stop default for visible dropdown options since RETURN should simply select the current option without triggering a postback.
                             event.preventDefault();
-                            return false;
+                            return;
                         } else {
-                            return true;
+                            // allow default, i.e. regular textbox-behavior when no dropdown options where displayed.
+                            return;
                         }
                     } else if (event.keyCode == KEY.TAB) {
-                        return true;
+                        // allow default, i.e. support TAB-based navigation.
+                        return;
                     } else /* ESC */ {
-                        return false;
+                        event.preventDefault();
+                        return;
                     }
 
                 default:
+                    // allow default for remaining keys.
                     return;
             }
         };
