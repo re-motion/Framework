@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Mapping
           .ToArray();
     }
 
-    private TypeDefinitionBuilderNode AddOrCreateBuilderNode (
+    private TypeDefinitionBuilderNode? AddOrCreateBuilderNode (
         Dictionary<Type, TypeDefinitionBuilderNode> builderNodesLookup,
         Type type)
     {
@@ -70,35 +70,59 @@ namespace Remotion.Data.DomainObjects.Mapping
         return existingBuilderNode;
 
       var newBuilderNode = CreateBuilderNode(builderNodesLookup, type);
-      builderNodesLookup.Add(type, newBuilderNode);
+      if (newBuilderNode != null)
+        builderNodesLookup.Add(type, newBuilderNode);
 
       return newBuilderNode;
     }
 
-    private TypeDefinitionBuilderNode CreateBuilderNode (
+    private TypeDefinitionBuilderNode? CreateBuilderNode (
         Dictionary<Type, TypeDefinitionBuilderNode> builderNodesLookup,
         Type type)
     {
       ArgumentUtility.CheckNotNull("type", type);
 
+      if (type == typeof(DomainObject))
+        return null;
+
+      if (type == typeof(IDomainObject))
+        return null;
+
+      if (!ReflectionUtility.IsDomainObject(type))
+        return null;
+
       if (type.IsClass)
       {
-        TypeDefinitionBuilderNode? baseClass = null;
+        ClassDefinitionBuilderNode? baseClass = null;
         if (type.BaseType != null)
         {
           var baseType = type.BaseType.IsGenericType
               ? type.BaseType.GetGenericTypeDefinition()
               : type.BaseType;
 
-          baseClass = AddOrCreateBuilderNode(builderNodesLookup, baseType);
+          baseClass = (ClassDefinitionBuilderNode?)AddOrCreateBuilderNode(builderNodesLookup, baseType);
         }
 
-        return new ClassDefinitionBuilderNode(type, (ClassDefinitionBuilderNode?)baseClass);
+        var implementedInterfaces = GetBuilderNodesForImplementedInterfaces(builderNodesLookup, type);
+        return new ClassDefinitionBuilderNode(type, baseClass, implementedInterfaces);
+      }
+      else if (type.IsInterface)
+      {
+        var implementedInterfaces = GetBuilderNodesForImplementedInterfaces(builderNodesLookup, type);
+        return new InterfaceDefinitionBuilderNode(type, implementedInterfaces);
       }
       else
       {
         throw new InvalidOperationException($"Cannot create a builder node for type '{type}' because it is not a class-type.");
       }
+    }
+
+    private IEnumerable<InterfaceDefinitionBuilderNode> GetBuilderNodesForImplementedInterfaces (Dictionary<Type, TypeDefinitionBuilderNode> builderNodesLookup, Type type)
+    {
+      return type.GetInterfaces()
+          .Select(e => AddOrCreateBuilderNode(builderNodesLookup, e))
+          .Where(e => e != null)
+          .Cast<InterfaceDefinitionBuilderNode>();
     }
   }
 }

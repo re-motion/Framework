@@ -54,5 +54,15 @@ namespace Remotion.Development.UnitTesting.Enumerables
 
       return source.ToArray();
     }
+
+    /// <summary>
+    /// Returns <see langword="true"/> if the specified <paramref name="source"/> is empty, or <see langword="false"/> if it is not empty.
+    /// </summary>
+    public static bool IsEmpty<T> (this IEnumerable<T> source)
+    {
+      ArgumentUtility.CheckNotNull("source", source);
+
+      return !source.Any();
+    }
   }
 }

@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       CheckEndPointDefinitions(expectedDefinition, actualDefinition);
     }
 
-    private void CheckEndPointDefinitions (RelationDefinition expectedRelationDefinition, RelationDefinition actualRelationDefinition) // TODO R2I this needs to be rewritten for TypeDefinition
+    private void CheckEndPointDefinitions (RelationDefinition expectedRelationDefinition, RelationDefinition actualRelationDefinition)
     {
       foreach (IRelationEndPointDefinition expectedEndPointDefinition in expectedRelationDefinition.EndPointDefinitions)
       {
