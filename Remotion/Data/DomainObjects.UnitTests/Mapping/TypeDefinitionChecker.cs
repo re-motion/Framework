@@ -41,6 +41,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
         CheckClassDefinition(expectedClassDefinition, actualClassDefinition);
       }
+      else if (expectedDefinition is InterfaceDefinition expectedInterfaceDefinition)
+      {
+        if (actualDefinition is not InterfaceDefinition actualInterfaceDefinition)
+          throw new InvalidOperationException("The two type definitions must have a matching type.");
+
+        CheckInterfaceDefinition(expectedInterfaceDefinition, actualInterfaceDefinition);
+      }
       else
       {
         Assert.Fail("Unsupported type definition cannot be checked.");
@@ -49,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public void Check (
         IEnumerable<TypeDefinition> expectedDefinitions,
-        IDictionary<Type, TypeDefinition> actualDefinitions,
+        IReadOnlyDictionary<Type, TypeDefinition> actualDefinitions,
         bool checkRelations,
         bool ignoreUnknown)
     {
@@ -61,29 +68,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       foreach (var expectedDefinition in expectedDefinitions)
       {
-        var actualDefinition = actualDefinitions[expectedDefinition.Type];
-        if (expectedDefinition is ClassDefinition expectedClassDefinition)
+        if (!actualDefinitions.TryGetValue(expectedDefinition.Type, out var actualDefinition))
         {
-          if (actualDefinition is not ClassDefinition actualClassDefinition)
-          {
-            Assert.Fail("The two type definitions must have a matching type.");
-            return;
-          }
+          Assert.Fail("The two type definitions must have a matching type.");
+          return;
+        }
 
-          CheckClassDefinition(expectedClassDefinition, actualClassDefinition);
-          CheckDerivedClasses(expectedClassDefinition, actualClassDefinition);
-        }
-        else
-        {
-          Assert.Fail("Unsupported type definition cannot be checked.");
-        }
+        Check(expectedDefinition, actualDefinition);
       }
 
       if (checkRelations)
         CheckRelationEndPoints(expectedDefinitions, actualDefinitions);
     }
 
-    public void CheckRelationEndPoints (IEnumerable<TypeDefinition> expectedDefinitions, IDictionary<Type, TypeDefinition> actualDefinitions)
+    public void CheckRelationEndPoints (IEnumerable<TypeDefinition> expectedDefinitions, IReadOnlyDictionary<Type, TypeDefinition> actualDefinitions)
     {
       ArgumentUtility.CheckNotNull("expectedDefinitions", expectedDefinitions);
       ArgumentUtility.CheckNotNull("actualDefinitions", actualDefinitions);
@@ -200,7 +198,100 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
             expectedDefinition.ID);
       }
 
+      Assert.AreEqual(
+          expectedDefinition.ImplementedInterfaces.Count,
+          actualDefinition.ImplementedInterfaces.Count,
+          "Number of implemented interfaces of class definition '{0}' does not match",
+          expectedDefinition.ID);
+
+      CheckDerivedClasses(expectedDefinition, actualDefinition);
+      CheckImplementedInterfaces(expectedDefinition, actualDefinition);
+
       CheckPropertyDefinitions(expectedDefinition.MyPropertyDefinitions, actualDefinition.MyPropertyDefinitions, expectedDefinition);
+    }
+
+    private void CheckInterfaceDefinition (InterfaceDefinition expectedDefinition, InterfaceDefinition actualDefinition)
+    {
+      ArgumentUtility.CheckNotNull("expectedDefinition", expectedDefinition);
+      ArgumentUtility.CheckNotNull("actualDefinition", actualDefinition);
+
+      Assert.AreEqual(
+          expectedDefinition.Type,
+          actualDefinition.Type,
+          "Type of interface definition '{0}' does not match.",
+          expectedDefinition.Type.GetFullNameSafe());
+
+      Assert.AreEqual(
+          expectedDefinition.IsTypeResolved,
+          actualDefinition.IsTypeResolved,
+          "IsResolved of interface definition '{0}' does not match.",
+          expectedDefinition.Type.GetFullNameSafe());
+
+      CheckExtendedInterfaces(expectedDefinition, actualDefinition);
+      CheckImplementingClasses(expectedDefinition, actualDefinition);
+      CheckExtendingInterfaces(expectedDefinition, actualDefinition);
+
+
+      CheckPropertyDefinitions(expectedDefinition.MyPropertyDefinitions, actualDefinition.MyPropertyDefinitions, expectedDefinition);
+    }
+
+    private void CheckExtendedInterfaces (InterfaceDefinition expectedDefinition, InterfaceDefinition actualDefinition)
+    {
+      CheckInterfaceDefinitionCollection(
+          expectedDefinition.ExtendedInterfaces,
+          actualDefinition.ExtendedInterfaces,
+          expectedDefinition,
+          "extended interface");
+    }
+
+    private void CheckExtendingInterfaces (InterfaceDefinition expectedDefinition, InterfaceDefinition actualDefinition)
+    {
+      CheckInterfaceDefinitionCollection(
+          expectedDefinition.ExtendingInterfaces,
+          actualDefinition.ExtendingInterfaces,
+          expectedDefinition,
+          "extending interface");
+    }
+
+    private void CheckImplementedInterfaces (ClassDefinition expectedDefinition, ClassDefinition actualDefinition)
+    {
+      CheckInterfaceDefinitionCollection(
+          expectedDefinition.ImplementedInterfaces,
+          actualDefinition.ImplementedInterfaces,
+          expectedDefinition,
+          "implemented interface");
+    }
+
+    private void CheckInterfaceDefinitionCollection (
+        IReadOnlyList<InterfaceDefinition> expectedCollection,
+        IReadOnlyList<InterfaceDefinition> actualCollection,
+        TypeDefinition containingTypeDefinition,
+        string itemDescription)
+    {
+      if (expectedCollection.Select(e => e.Type).Distinct().Count() != expectedCollection.Count)
+        throw new InvalidOperationException("The specified expected collection contains interface definitions with the same type.");
+      if (actualCollection.Select(e => e.Type).Distinct().Count() != actualCollection.Count)
+        throw new InvalidOperationException("The specified actual collection contains interface definitions with the same type.");
+
+      Assert.AreEqual(
+          expectedCollection.Count,
+          actualCollection.Count,
+          "Number of {0}s of {1} definition '{2}' does not match",
+          itemDescription,
+          containingTypeDefinition is ClassDefinition ? "class" : "interface",
+          containingTypeDefinition.Type.GetFullNameSafe());
+
+      var actualTypes = actualCollection.Select(e => e.Type).ToHashSet();
+      foreach (var expectedInterface in expectedCollection)
+      {
+        Assert.IsTrue(
+            actualTypes.Contains(expectedInterface.Type),
+            "Containing {0} definition '{1}' does not contain expected {2} '{3}'.",
+            containingTypeDefinition is ClassDefinition ? "class" : "interface",
+            containingTypeDefinition.Type.GetFullNameSafe(),
+            itemDescription,
+            expectedInterface.Type.GetFullNameSafe());
+      }
     }
 
     public void CheckDerivedClasses (ClassDefinition expectedDefinition, ClassDefinition actualDefinition)
@@ -208,28 +299,54 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       ArgumentUtility.CheckNotNull("expectedDefinition", expectedDefinition);
       ArgumentUtility.CheckNotNull("actualDefinition", actualDefinition);
 
-      CheckDerivedClasses(expectedDefinition.DerivedClasses, actualDefinition.DerivedClasses, expectedDefinition);
+      CheckClassDefinitionCollection(
+          expectedDefinition.DerivedClasses,
+          actualDefinition.DerivedClasses,
+          expectedDefinition,
+          "derived class");
     }
 
-    private void CheckDerivedClasses (
-        IEnumerable<ClassDefinition> expectedDerivedClasses,
-        IEnumerable<ClassDefinition> actualDerivedClasses,
-        ClassDefinition expectedClassDefinition)
+    public void CheckImplementingClasses (InterfaceDefinition expectedDefinition, InterfaceDefinition actualDefinition)
     {
-      Assert.AreEqual(
-          expectedDerivedClasses.Count(),
-          actualDerivedClasses.Count(),
-          "Number of derived classes of class definition '{0}' does not match.",
-          expectedClassDefinition.ID);
+      ArgumentUtility.CheckNotNull("expectedDefinition", expectedDefinition);
+      ArgumentUtility.CheckNotNull("actualDefinition", actualDefinition);
 
-      var actualDerivedClassesDictionary = actualDerivedClasses.ToDictionary(cd => cd.ID);
-      foreach (ClassDefinition expectedDerivedClass in expectedDerivedClasses)
+      CheckClassDefinitionCollection(
+          expectedDefinition.ImplementingClasses,
+          actualDefinition.ImplementingClasses,
+          expectedDefinition,
+          "implementing class");
+    }
+
+    private void CheckClassDefinitionCollection (
+        IReadOnlyCollection<ClassDefinition> expectedCollection,
+        IReadOnlyCollection<ClassDefinition> actualCollection,
+        TypeDefinition containingTypeDefinition,
+        string itemDescription)
+    {
+      if (expectedCollection.Select(e => e.ID).Distinct().Count() != expectedCollection.Count)
+        throw new InvalidOperationException("The specified expected collection contains interface definitions with the same type.");
+      if (actualCollection.Select(e => e.ID).Distinct().Count() != actualCollection.Count)
+        throw new InvalidOperationException("The specified actual collection contains interface definitions with the same type.");
+
+      Assert.AreEqual(
+          expectedCollection.Count,
+          actualCollection.Count,
+          "Number of {0}es of {1} definition '{2}' does not match",
+          itemDescription,
+          containingTypeDefinition is ClassDefinition ? "class" : "interface",
+          containingTypeDefinition.Type.GetFullNameSafe());
+
+      var actualTypes = actualCollection.Select(e => e.ID).ToHashSet();
+      foreach (var expectedInterface in expectedCollection)
       {
-        Assert.IsNotNull(
-            actualDerivedClassesDictionary[expectedDerivedClass.ID],
-            "Actual class definition '{0}' does not contain expected derived class '{1}'.",
-            expectedClassDefinition.ID,
-            expectedDerivedClass.ID);
+        Assert.IsTrue(
+            actualTypes.Contains(expectedInterface.ID),
+            "Containing {0} definition '{1}' does not contain expected {2} '{3}'.",
+            containingTypeDefinition is ClassDefinition ? "class" : "interface",
+            containingTypeDefinition.Type.GetFullNameSafe(),
+            itemDescription,
+            expectedInterface.Type.GetFullNameSafe());
       }
     }
 

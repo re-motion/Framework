@@ -16,7 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.Builder
@@ -25,9 +27,14 @@ namespace Remotion.Data.DomainObjects.Mapping.Builder
   /// Represents <see cref="Mapping.ClassDefinition"/> node in a tree constructed by <see cref="TypeDefinitionFactory"/>.
   /// Supports child navigation and correctly setting up child relationships in a resulting <see cref="Mapping.ClassDefinition"/>.
   /// </summary>
+  [DebuggerDisplay("Builder node for class '{Type}'")]
   public class ClassDefinitionBuilderNode : TypeDefinitionBuilderNode
   {
     public ClassDefinitionBuilderNode? BaseClass { get; }
+
+    public IReadOnlyList<InterfaceDefinitionBuilderNode> ImplementedInterfaces { get; }
+
+    public bool IsInheritanceRoot { get; }
 
     public ClassDefinition? ClassDefinition { get; private set; }
 
@@ -35,16 +42,33 @@ namespace Remotion.Data.DomainObjects.Mapping.Builder
 
     private readonly List<ClassDefinitionBuilderNode> _derivedClasses = new();
 
-    public ClassDefinitionBuilderNode (Type type, ClassDefinitionBuilderNode? baseClass)
+    public ClassDefinitionBuilderNode (Type type, ClassDefinitionBuilderNode? baseClass, IEnumerable<InterfaceDefinitionBuilderNode> implementedInterfaces)
         : base(type)
     {
+      ArgumentUtility.CheckNotNull("implementedInterfaces", implementedInterfaces);
       if (!type.IsClass)
         throw new ArgumentException("The specified type must be a class.", "type");
+      if (type == typeof(DomainObject))
+        throw new ArgumentException("Cannot create a builder node for the DomainObject type.", "type");
+      if (!ReflectionUtility.IsDomainObject(type))
+        throw new ArgumentException("Cannot create a builder node for a type that is not a domain object.", "type");
       if (baseClass?.IsConstructed == true)
         throw new ArgumentException("The specified base class must not be a constructed node.", "baseClass");
 
+      var implementedInterfacesArray = implementedInterfaces.ToArray();
+      if (implementedInterfacesArray.Any(e => e.IsConstructed))
+        throw new ArgumentException("The specified implemented interfaces must not be constructed.", "implementedInterfaces");
+
+      IsInheritanceRoot = ReflectionUtility.IsInheritanceRoot(type);
+
       BaseClass = baseClass;
+      ImplementedInterfaces = IsInheritanceRoot || baseClass == null
+          ? implementedInterfacesArray
+          : implementedInterfacesArray.Where(e => !baseClass.ImplementsInterface(e)).ToArray();
+
       BaseClass?.AddDerivedClass(this);
+      foreach (var implementedInterface in ImplementedInterfaces)
+        implementedInterface.AddImplementingClass(this);
     }
 
     public IReadOnlyList<ClassDefinitionBuilderNode> DerivedClasses => _derivedClasses;
@@ -53,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Builder
     public override bool IsLeafNode => DerivedClasses.Count == 0;
 
     /// <inheritdoc />
-    protected override void BuildTypeDefinition (IMappingObjectFactory mappingObjectFactory)
+    internal override void BuildTypeDefinition (IMappingObjectFactory mappingObjectFactory)
     {
       ArgumentUtility.CheckNotNull("mappingObjectFactory", mappingObjectFactory);
 
@@ -64,13 +88,21 @@ namespace Remotion.Data.DomainObjects.Mapping.Builder
         return;
 
       ClassDefinition? baseClass = null;
-      if (BaseClass != null && !ReflectionUtility.IsInheritanceRoot(Type))
+      if (BaseClass != null && !IsInheritanceRoot)
       {
         BaseClass.BuildTypeDefinition(mappingObjectFactory);
         baseClass = BaseClass.ClassDefinition;
       }
 
-      ClassDefinition = mappingObjectFactory.CreateClassDefinition(Type, baseClass);
+      var implementedInterfaces = new List<InterfaceDefinition>();
+      foreach (var implementedInterface in ImplementedInterfaces)
+      {
+        implementedInterface.BuildTypeDefinition(mappingObjectFactory);
+        if (implementedInterface.InterfaceDefinition != null)
+          implementedInterfaces.Add(implementedInterface.InterfaceDefinition);
+      }
+
+      ClassDefinition = mappingObjectFactory.CreateClassDefinition(Type, baseClass, implementedInterfaces);
     }
 
     /// <inheritdoc />
@@ -84,6 +116,8 @@ namespace Remotion.Data.DomainObjects.Mapping.Builder
       BaseClass?.EndBuildTypeDefinition();
       foreach (var derivedClass in DerivedClasses)
         derivedClass.EndBuildTypeDefinition();
+      foreach (var implementedInterface in ImplementedInterfaces)
+        implementedInterface.EndBuildTypeDefinition();
 
       if (ClassDefinition != null)
         ClassDefinition.SetDerivedClasses(DerivedClasses.Select(e => e.ClassDefinition).Where(e => e?.BaseClass != null)!);
@@ -104,6 +138,20 @@ namespace Remotion.Data.DomainObjects.Mapping.Builder
       Assertion.DebugAssert(!_derivedClasses.Contains(derivedClass), "!_derivedClasses.Contains(derivedClass)");
 
       _derivedClasses.Add(derivedClass);
+    }
+
+    private bool ImplementsInterface (InterfaceDefinitionBuilderNode interfaceDefinitionBuilderNode)
+    {
+      if (ImplementedInterfaces.Contains(interfaceDefinitionBuilderNode))
+        return true;
+
+      if (IsInheritanceRoot)
+        return false;
+
+      if (BaseClass != null)
+        return BaseClass.ImplementsInterface(interfaceDefinitionBuilderNode);
+
+      return false;
     }
   }
 }

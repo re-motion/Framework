@@ -83,8 +83,10 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       get { return _nameResolver; }
     }
 
-    public ClassDefinition GetMetadata (ClassDefinition? baseClassDefinition)
+    public ClassDefinition GetMetadata (ClassDefinition? baseClassDefinition, IEnumerable<InterfaceDefinition> implementedInterfaces)
     {
+      ArgumentUtility.CheckNotNull("implementedInterfaces", implementedInterfaces);
+
       var persistentMixinFinder = new PersistentMixinFinder(Type, baseClassDefinition == null);
       var storageGroupAttribute = GetStorageGroupAttribute();
       var storageGroupType = storageGroupAttribute?.GetType();
@@ -94,7 +96,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
               Type,
               IsAbstract(),
               baseClassDefinition,
-              Enumerable.Empty<InterfaceDefinition>(), // TODO R2I Mapping: Support interfaces
+              implementedInterfaces,
               storageGroupType,
               defaultStorageClass,
               persistentMixinFinder,

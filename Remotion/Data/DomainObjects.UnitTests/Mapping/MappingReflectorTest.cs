@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void Initialization_MappingObjectFactory_InstanceCreator ()
     {
-      var defaultCreator = new MappingReflector().MappingObjectFactory.CreateClassDefinition(typeof(Order), null).InstanceCreator;
+      var defaultCreator = new MappingReflector().MappingObjectFactory.CreateClassDefinition(typeof(Order), null, Enumerable.Empty<InterfaceDefinition>()).InstanceCreator;
       Assert.That(defaultCreator, Is.TypeOf<DomainObjectCreator>());
    }
 

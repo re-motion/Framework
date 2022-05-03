@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Builder
     /// <summary>
     /// Creates a <see cref="TypeDefinition"/> for this node and links it to its parents.
     /// </summary>
-    protected abstract void BuildTypeDefinition (IMappingObjectFactory mappingObjectFactory);
+    internal abstract void BuildTypeDefinition (IMappingObjectFactory mappingObjectFactory);
 
     /// <summary>
     /// Completes the building of a <see cref="TypeDefinition"/> by linking it to its children.

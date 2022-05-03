@@ -16,11 +16,13 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.Builder;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions;
@@ -70,9 +72,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classReflector = CreateClassReflector(typeof(ClassWithDifferentProperties));
       var expected = CreateClassWithDifferentPropertiesClassDefinition();
 
-      var actual = classReflector.GetMetadata(null);
+      var actual = classReflector.GetMetadata(null, Enumerable.Empty<InterfaceDefinition>());
 
       Assert.That(actual, Is.Not.Null);
+      Assert.That(() => actual.DerivedClasses, Throws.TypeOf<InvalidOperationException>());
+      actual.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
       _typeDefinitionChecker.Check(expected, actual);
       _endPointDefinitionChecker.Check(expected.MyRelationEndPointDefinitions, actual.MyRelationEndPointDefinitions, false);
     }
@@ -96,9 +100,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var expected = CreateDerivedClassWithDifferentPropertiesClassDefinition();
 
       var baseClassDefinition = CreateClassWithDifferentPropertiesClassDefinition();
-      var actual = classReflector.GetMetadata(baseClassDefinition);
+      var actual = classReflector.GetMetadata(baseClassDefinition, Enumerable.Empty<InterfaceDefinition>());
 
       Assert.That(actual, Is.Not.Null);
+      Assert.That(() => actual.DerivedClasses, Throws.TypeOf<InvalidOperationException>());
+      actual.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
       _typeDefinitionChecker.Check(expected, actual);
       _endPointDefinitionChecker.Check(expected.MyRelationEndPointDefinitions, actual.MyRelationEndPointDefinitions, false);
     }
@@ -109,7 +115,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       ClassIDProviderStub.Setup(stub => stub.GetClassID(typeof(TargetClassA))).Returns("ClassID");
 
       var classReflector = CreateClassReflector(typeof(TargetClassA));
-      var actual = classReflector.GetMetadata(null);
+      var actual = classReflector.GetMetadata(null, Enumerable.Empty<InterfaceDefinition>());
       Assert.That(actual.PersistentMixins, Is.EquivalentTo(new[] { typeof(MixinA), typeof(MixinC), typeof(MixinD) }));
     }
 
@@ -120,10 +126,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       ClassIDProviderStub.Setup(stub => stub.GetClassID(typeof(TargetClassB))).Returns("ClassID");
 
       var classReflectorForBaseClass = CreateClassReflector(typeof(TargetClassA));
-      var baseClass = classReflectorForBaseClass.GetMetadata(null);
+      var baseClass = classReflectorForBaseClass.GetMetadata(null, Enumerable.Empty<InterfaceDefinition>());
 
       var classReflector = CreateClassReflector(typeof(TargetClassB));
-      var actual = classReflector.GetMetadata(baseClass);
+      var actual = classReflector.GetMetadata(baseClass, Enumerable.Empty<InterfaceDefinition>());
       Assert.That(actual.PersistentMixins, Is.EquivalentTo(new[] { typeof(MixinB), typeof(MixinE) }));
     }
 
@@ -195,7 +201,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       expected.SetPropertyDefinitions(new PropertyDefinitionCollection());
       CreateEndPointDefinitionsForClassWithVirtualRelationEndPoints(expected);
 
-      var actual = classReflector.GetMetadata(null);
+      var actual = classReflector.GetMetadata(null, Enumerable.Empty<InterfaceDefinition>());
       foreach (var actualEndPoint in actual.MyRelationEndPointDefinitions)
       {
         var endPointStub = new Mock<IRelationEndPointDefinition>();
@@ -205,6 +211,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       }
 
       Assert.That(actual, Is.Not.Null);
+      Assert.That(() => actual.DerivedClasses, Throws.TypeOf<InvalidOperationException>());
+      actual.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
       _typeDefinitionChecker.Check(expected, actual);
       _endPointDefinitionChecker.Check(expected.MyRelationEndPointDefinitions, actual.MyRelationEndPointDefinitions, false);
     }
@@ -216,7 +224,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var classReflector = CreateClassReflector(typeof(ClassHavingClassIDAttribute));
 
-      var actual = classReflector.GetMetadata(null);
+      var actual = classReflector.GetMetadata(null, Enumerable.Empty<InterfaceDefinition>());
 
       Assert.That(actual, Is.Not.Null);
       Assert.That(actual.ID, Is.EqualTo("ClassIDForClassHavingClassIDAttribute"));
@@ -229,7 +237,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var classReflector = CreateClassReflector(typeof(ClosedGenericClass));
 
-      Assert.That(classReflector.GetMetadata(null), Is.Not.Null);
+      Assert.That(classReflector.GetMetadata(null, Enumerable.Empty<InterfaceDefinition>()), Is.Not.Null);
     }
 
     [Test]
@@ -241,7 +249,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var classReflector = CreateClassReflector(type);
 
-      var actual = classReflector.GetMetadata(null);
+      var actual = classReflector.GetMetadata(null, Enumerable.Empty<InterfaceDefinition>());
 
       Assert.That(actual, Is.Not.Null);
       Assert.That(actual.StorageGroupType, Is.Null);
@@ -257,7 +265,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var classReflector = CreateClassReflector(type);
 
-      var actual = classReflector.GetMetadata(null);
+      var actual = classReflector.GetMetadata(null, Enumerable.Empty<InterfaceDefinition>());
 
       Assert.That(actual, Is.Not.Null);
       Assert.That(actual.StorageGroupType, Is.SameAs(typeof(DBStorageGroupAttribute)));
@@ -272,7 +280,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var classReflector = CreateClassReflector(type);
 
-      var actual = classReflector.GetMetadata(null);
+      var actual = classReflector.GetMetadata(null, Enumerable.Empty<InterfaceDefinition>());
 
       Assert.That(actual, Is.Not.Null);
       Assert.That(actual.StorageGroupType, Is.SameAs(typeof(NonDefaultStorageClassStorageGroupAttribute)));
@@ -287,7 +295,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var classReflector = CreateClassReflector(typeof(ClassWithDifferentProperties));
 
-      var actual = classReflector.GetMetadata(null);
+      var actual = classReflector.GetMetadata(null, Enumerable.Empty<InterfaceDefinition>());
 
       Assert.That(actual.PersistentMixinFinder.IncludeInherited, Is.True);
     }
@@ -300,7 +308,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classReflector = CreateClassReflector(typeof(DerivedClassWithDifferentProperties));
       var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses();
 
-      var actual = classReflector.GetMetadata(baseClassDefinition);
+      var actual = classReflector.GetMetadata(baseClassDefinition, Enumerable.Empty<InterfaceDefinition>());
 
       Assert.That(actual.PersistentMixinFinder.IncludeInherited, Is.False);
     }
@@ -312,7 +320,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var classReflector = CreateClassReflector(typeof(ClassWithDifferentProperties));
 
-      var actual = classReflector.GetMetadata(null);
+      var actual = classReflector.GetMetadata(null, Enumerable.Empty<InterfaceDefinition>());
 
       Assert.That(actual.InstanceCreator, Is.SameAs(DomainObjectCreatorStub.Object));
     }
@@ -604,7 +612,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private ClassDefinition CreateClassDefinition (string id, Type classType, bool isAbstract, ClassDefinition baseClass = null, params InterfaceDefinition[] implementedInterfaces)
     {
-        return new ClassDefinition(
+        var classDefinition = new ClassDefinition(
                 id,
                 classType,
                 isAbstract,
@@ -614,6 +622,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
                 DefaultStorageClass.Persistent,
                 new PersistentMixinFinderStub(classType),
                 DomainObjectCreatorStub.Object);
+
+        classDefinition.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
+        return classDefinition;
     }
 
     private PropertyDefinition CreatePersistentPropertyDefinition (

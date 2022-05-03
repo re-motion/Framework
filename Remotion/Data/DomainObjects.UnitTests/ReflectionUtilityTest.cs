@@ -355,9 +355,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void IsDomainObject_IDomainObject_ReturnsFalse ()
+    public void IsDomainObject_IDomainObject_ReturnsTrue ()
     {
-      Assert.That(ReflectionUtility.IsDomainObject(typeof(IDomainObject)), Is.False);
+      Assert.That(ReflectionUtility.IsDomainObject(typeof(IDomainObject)), Is.True);
     }
 
     [Test]
