@@ -28,7 +28,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
       var sutFormUrl = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>().CreateResourceUrl(typeof(SutForm), TestResourceType.Root, "MultiplePostbackCatching/SutForm.aspx").GetUrl();
       TestExpectationsGenerator.GenerateExpectations(this, TestTable.Rows, sutFormUrl);
-      HtmlHeadAppender.Current.SetTitle(WebString.CreateFromText(TestExpectationsGenerator.GetTestCaseUrlParameter(this) ?? "All Multiple Postback Catcher Tests"));
+      HtmlHeadAppender.Current.SetTitle(PlainTextString.CreateFromText(TestExpectationsGenerator.GetTestCaseUrlParameter(this) ?? "All Multiple Postback Catcher Tests"));
     }
   }
 }
