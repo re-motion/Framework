@@ -311,7 +311,6 @@ namespace Remotion.BocAutoCompleteReferenceValue
         select.init();
 
         const informationPopUp = new InformationPopUp(options, input);
-        let blockSubmit: Optional<boolean>;
 
         const keyDownHandler = function(event: KeyboardEvent) {
             // track last key pressed
@@ -379,7 +378,6 @@ namespace Remotion.BocAutoCompleteReferenceValue
                 case KEY.TAB:
                 case KEY.ESC:
                     // re-motion: block event bubbling
-                    event.preventDefault();
                     event.stopPropagation();
                     const wasVisible = select.visible();
                     state.mouseDownOnSelect = false;
@@ -400,20 +398,28 @@ namespace Remotion.BocAutoCompleteReferenceValue
                     }
 
                     if (event.keyCode == KEY.RETURN) {
-                        if (wasVisible) {
-                            // stop default to prevent a form submit, Opera needs special handling
-                            blockSubmit = true;
-                            return false;
+                        if (options.isAutoPostBackEnabled) {
+                            // stop default on auto-postback since the change-event already takes care of this.
+                            event.preventDefault();
+                            return;
+                        } else if (wasVisible) {
+                            // stop default for visible dropdown options since RETURN should simply select the current option without triggering a postback.
+                            event.preventDefault();
+                            return;
                         } else {
-                            return true;
+                            // allow default, i.e. regular textbox-behavior when no dropdown options where displayed.
+                            return;
                         }
                     } else if (event.keyCode == KEY.TAB) {
-                        return true;
+                        // allow default, i.e. support TAB-based navigation.
+                        return;
                     } else /* ESC */ {
-                        return false;
+                        event.preventDefault();
+                        return;
                     }
 
                 default:
+                    // allow default for remaining keys.
                     return;
             }
         };
