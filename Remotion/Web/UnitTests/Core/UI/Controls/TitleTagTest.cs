@@ -35,7 +35,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     [Test]
     public void Render ()
     {
-      var titleTag = new TitleTag(WebString.CreateFromText("My Title"));
+      var titleTag = new TitleTag(PlainTextString.CreateFromText("My Title"));
 
       titleTag.Render(_htmlHelper.Writer);
 
@@ -47,7 +47,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     [Test]
     public void Render_UsesHtmlEncoding ()
     {
-      var titleTag = new TitleTag(WebString.CreateFromText("My <Title>"));
+      var titleTag = new TitleTag(PlainTextString.CreateFromText("My <Title>"));
 
       titleTag.Render(_htmlHelper.Writer);
 
@@ -59,7 +59,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     [Ignore("RM-8435")]
     public void Render_ReplacesNewlines ()
     {
-      var titleTag = new TitleTag(WebString.CreateFromText("My\nTitle"));
+      var titleTag = new TitleTag(PlainTextString.CreateFromText("My\nTitle"));
 
       titleTag.Render(_htmlHelper.Writer);
 
