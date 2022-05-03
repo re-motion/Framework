@@ -110,7 +110,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var listMenu = home.ListMenus().GetByLocalID("MyListMenu");
 
       var items = listMenu.GetItemDefinitions();
-      Assert.That(items.Count, Is.EqualTo(6));
+      Assert.That(items.Count, Is.EqualTo(9));
 
       Assert.That(items[0].ItemID, Is.EqualTo("ItemID1"));
       Assert.That(items[0].Index, Is.EqualTo(1));
@@ -123,6 +123,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That(items[4].Index, Is.EqualTo(5));
       Assert.That(items[4].Text, Is.EqualTo(""));
       Assert.That(items[4].IsDisabled, Is.False);
+    }
+
+    [Test]
+    public void TestDisplayTextSelection_WithEncoded ()
+    {
+      var home = Start();
+
+      var listMenu = home.ListMenus().GetByLocalID("MyListMenu");
+
+      Assert.That(listMenu.SelectItem().WithDisplayText("Text-Umlaut ö"), Is.Not.Null);
+      Assert.That(listMenu.SelectItem().WithDisplayText("Html-Umlaut ö"), Is.Not.Null);
+      Assert.That(listMenu.SelectItem().WithDisplayText("Html-Encoded-Umlaut ö"), Is.Not.Null);
     }
 
     [Test]

@@ -145,5 +145,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       Assert.That(treeViewNode.GetCategory(), Is.Empty);
     }
+
+    [Test]
+    public void TreeView_WithUmlaut ()
+    {
+      var home = Start();
+
+      var treeView = home.WebTreeViews().GetByLocalID("MyWebTreeViewWithUmlauts");
+
+      Assert.That(treeView.GetNode().WithDisplayText("UmlautÖ"), Is.Not.Null);
+    }
   }
 }

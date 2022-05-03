@@ -55,43 +55,99 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     }
 
     [Test]
-    public void StripHtmlTags ()
-    {
-      Assert.That(HtmlUtility.StripHtmlTags("SimpleString"), Is.EqualTo("SimpleString"));
-    }
-
-    [Test]
-    public void StripHtmlTags_Empty ()
-    {
-      Assert.That(HtmlUtility.StripHtmlTags(""), Is.EqualTo(""));
-    }
-
-    [Test]
-    public void StripHtmlTags_OpenedAndClosedTagRemoval ()
-    {
-      Assert.That(HtmlUtility.StripHtmlTags("<span>SimpleS<i>tr<b>i</b>n</i></span>g"), Is.EqualTo("SimpleString"));
-    }
-
-    [Test]
-    public void StripHtmlTags_SelfClosingTagRemoval ()
-    {
-      Assert.That(HtmlUtility.StripHtmlTags("Simple<br/>Stri<img src=\"WithAttributes.html\"/>ng"), Is.EqualTo("SimpleString"));
-    }
-
-    [Test]
-    public void StripHtmlTags_WithEncodedWebString_StripsHtmlTags ()
+    public void ExtractPlainText ()
     {
       Assert.That(
-          HtmlUtility.StripHtmlTags(WebString.CreateFromHtml("<span>SimpleS<i>tr<b>i</b>n</i></span>g")),
-          Is.EqualTo("SimpleString"));
+          HtmlUtility.ExtractPlainText(WebString.CreateFromText("SimpleString")),
+          Is.EqualTo(PlainTextString.CreateFromText("SimpleString")));
     }
 
     [Test]
-    public void StripHtmlTags_WithPlainTextWebString_DoesNotStripsHtmlTags ()
+    public void ExtractPlainText_Empty ()
     {
       Assert.That(
-          HtmlUtility.StripHtmlTags(WebString.CreateFromText("<span>SimpleS<i>tr<b>i</b>n</i></span>g")),
-          Is.EqualTo("<span>SimpleS<i>tr<b>i</b>n</i></span>g"));
+          HtmlUtility.ExtractPlainText(WebString.CreateFromText("")),
+          Is.EqualTo(PlainTextString.CreateFromText("")));
+    }
+
+    [Test]
+    public void ExtractPlainText_OpenedAndClosedTagRemoval ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("<span>SimpleS<i>tr<b>i</b>n</i></span>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("SimpleString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_SelfClosingTagRemoval ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Simple<div/>Stri<img src=\"WithAttributes.html\"/>ng")),
+          Is.EqualTo(PlainTextString.CreateFromText("SimpleString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_ReplacesLineBreaks ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Simple<br/>Stri<b>n</b>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("Simple\nString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_ReplacesLineBreaks2 ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Simple<br />Stri<b>n</b>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("Simple\nString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_ReplacesMultipleLineBreaks ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Simple<br/><br/>Stri<b>n</b>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("Simple\n\nString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_WithEncodedWebString_StripsHtmlTags ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("<span>SimpleS<i>tr<b>i</b>n</i></span>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("SimpleString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_WithPlainTextWebString_DoesNotStripHtmlTags ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromText("<span>SimpleS<i>tr<b>i</b>n</i></span>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("<span>SimpleS<i>tr<b>i</b>n</i></span>g")));
+    }
+
+    [Test]
+    public void ExtractPlainText_WithUmlautInPlainTextWebString ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromText("Text-Umlaut ö")),
+          Is.EqualTo(PlainTextString.CreateFromText("Text-Umlaut ö")));
+    }
+
+    [Test]
+    public void ExtractPlainText_WithUmlautInEncodedWebString ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Html-Umlaut ö")),
+          Is.EqualTo(PlainTextString.CreateFromText("Html-Umlaut ö")));
+    }
+
+    [Test]
+    public void ExtractPlainText_WithEncodedUmlautInEncodedWebString ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Html-Encoded-Umlaut &#246;")),
+          Is.EqualTo(PlainTextString.CreateFromText("Html-Encoded-Umlaut ö")));
     }
   }
 }

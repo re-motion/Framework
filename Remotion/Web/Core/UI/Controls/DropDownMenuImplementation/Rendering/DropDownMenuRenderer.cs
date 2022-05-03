@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Web.UI;
 using Remotion.Globalization;
@@ -258,7 +259,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
     {
       base.AddDiagnosticMetadataAttributes(renderingContext);
 
-      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(renderingContext.Control.TitleText));
+      HtmlUtility.ExtractPlainText(renderingContext.Control.TitleText).AddAttributeTo(renderingContext.Writer, DiagnosticMetadataAttributes.Content);
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsDisabled, (!renderingContext.Control.Enabled).ToString().ToLower());
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.ButtonType, renderingContext.Control.ButtonType.ToString());
     }
@@ -422,7 +423,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         var diagnosticMetadataDictionary = new Dictionary<string, string?>();
         diagnosticMetadataDictionary.Add(HtmlTextWriterAttribute.Id.ToString(), htmlID);
         diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
-        diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(diagnosticMetadataText));
+        diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.Content, HtmlUtility.ExtractPlainText(diagnosticMetadataText).GetValue());
 
         stringBuilder.WriteDictionaryAsJson(diagnosticMetadataDictionary);
 

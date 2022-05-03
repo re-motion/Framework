@@ -640,7 +640,7 @@ namespace Remotion.Web.UI.Controls
           if (!string.IsNullOrEmpty(node.ItemID))
             writer.AddAttribute(DiagnosticMetadataAttributes.ItemID, node.ItemID);
           if (!node.Text.IsEmpty)
-            writer.AddAttribute(DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags(node.Text));
+            HtmlUtility.ExtractPlainText(node.Text).AddAttributeTo(writer, DiagnosticMetadataAttributes.Content);
           if (node.IsSelected)
             writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewIsSelectedNode, "true");
           if (node.IsEvaluated)
@@ -651,9 +651,9 @@ namespace Remotion.Web.UI.Controls
           writer.AddAttribute(DiagnosticMetadataAttributes.IndexInCollection, (i + 1).ToString());
           if (node.Badge is { Value: { IsEmpty: false } })
           {
-            writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewBadgeValue, HtmlUtility.StripHtmlTags(node.Badge.Value));
+            node.Badge.Value.AddAttributeTo(writer, DiagnosticMetadataAttributes.WebTreeViewBadgeValue);
             if (!node.Badge.Description.IsEmpty)
-              writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewBadgeDescription, HtmlUtility.StripHtmlTags(node.Badge.Description));
+              node.Badge.Description.AddAttributeTo(writer, DiagnosticMetadataAttributes.WebTreeViewBadgeDescription);
           }
           if (!string.IsNullOrEmpty(node.Category))
             writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewNodeCategory, node.Category);
