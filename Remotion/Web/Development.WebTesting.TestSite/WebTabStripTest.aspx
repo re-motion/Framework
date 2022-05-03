@@ -43,4 +43,10 @@
       <remotion:WebTab ItemID="TabDisabledWithAccessKey" Text="Tab disabled with access key" IsDisabled="True" AccessKey="D"/>
     </Tabs>
   </remotion:WebTabStrip>
+  <h3>WebTabStrip1</h3>
+  <remotion:WebTabStrip ID="MyTabStripWithUmlaut" style="width: 300px" runat="server">
+    <Tabs>
+      <remotion:WebTab ItemID="Tab1" Text="(html)UmlautÖ"/>
+    </Tabs>
+  </remotion:WebTabStrip>
 </asp:Content>

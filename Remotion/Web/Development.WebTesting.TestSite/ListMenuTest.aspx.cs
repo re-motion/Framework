@@ -28,6 +28,10 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
       MyListMenu.EventCommandClick += MyListMenuOnCommandClick;
       MyListMenu.WxeFunctionCommandClick += MyListMenuOnCommandClick;
+
+      MyListMenu.MenuItems.Add(new WebMenuItem { ItemID = "Encoded1", Text = WebString.CreateFromText("Text-Umlaut ö") });
+      MyListMenu.MenuItems.Add(new WebMenuItem { ItemID = "Encoded2", Text = WebString.CreateFromHtml("Html-Umlaut ö") });
+      MyListMenu.MenuItems.Add(new WebMenuItem { ItemID = "Encoded3", Text = WebString.CreateFromHtml("Html-Encoded-Umlaut &#246;") });
     }
 
     private void MyListMenuOnCommandClick (object sender, WebMenuItemClickEventArgs webMenuItemClickEventArgs)
