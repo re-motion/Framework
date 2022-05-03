@@ -15,11 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel.Design;
 using System.Linq;
+using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
@@ -28,6 +31,7 @@ using Remotion.Data.DomainObjects.Mapping.Validation.Reflection;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
@@ -37,6 +41,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   [TestFixture]
   public class MappingReflectorTest : MappingReflectionTestBase
   {
+    private interface ITest
+    {
+    }
+
+    private interface ITestDomainObject : IDomainObject
+    {
+    }
+
     private IMappingLoader _mappingReflector;
 
     [SetUp]
@@ -71,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [Test]
     public void Initialization_MappingObjectFactory_InstanceCreator ()
     {
-      var defaultCreator = new MappingReflector().MappingObjectFactory.CreateClassDefinition(typeof(Order), null).InstanceCreator;
+      var defaultCreator = new MappingReflector().MappingObjectFactory.CreateClassDefinition(typeof(Order), null, Enumerable.Empty<InterfaceDefinition>()).InstanceCreator;
       Assert.That(defaultCreator, Is.TypeOf<DomainObjectCreator>());
    }
 
@@ -111,13 +123,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    public void GetClassDefinitions ()
+    public void GetTypeDefinitions ()
     {
       var assembly = GetType().Assembly;
       var mappingReflector = MappingReflectorObjectMother.CreateMappingReflector(BaseConfiguration.GetTypeDiscoveryService(assembly, assembly));
-      var classDefinitions = mappingReflector.GetTypeDefinitions();
+      var typeDefinitions = mappingReflector.GetTypeDefinitions();
 
-      Assert.That(classDefinitions, Is.Not.Empty);
+      Assert.That(typeDefinitions, Is.Not.Empty);
+    }
+
+    [Test]
+    public void GetTypeDefinitions_DiscoversInterfacesTypes ()
+    {
+      var fixedTypeDiscoveryService = new FixedTypeDiscoveryService(typeof(ITest), typeof(ITestDomainObject));
+      var mappingReflector = MappingReflectorObjectMother.CreateMappingReflector(fixedTypeDiscoveryService);
+      var typeDefinitions = mappingReflector.GetTypeDefinitions();
+
+      Assert.That(typeDefinitions.Length, Is.EqualTo(1));
+      Assert.That(typeDefinitions[0].Type, Is.EqualTo(typeof(ITestDomainObject)));
     }
 
     [Test]
@@ -175,6 +198,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(validator.ValidationRules.Count, Is.EqualTo(1));
       Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof(SortExpressionIsValidValidationRule)));
     }
-
   }
 }

@@ -58,9 +58,10 @@ namespace Remotion.Data.DomainObjects.Mapping
       _instanceCreator = instanceCreator;
     }
 
-    public ClassDefinition CreateClassDefinition (Type type, ClassDefinition? baseClass)
+    public ClassDefinition CreateClassDefinition (Type type, ClassDefinition? baseClass, IEnumerable<InterfaceDefinition> implementedInterfaces)
     {
       ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("implementedInterfaces", implementedInterfaces);
 
       var classReflector = new ClassReflector(
           type,
@@ -71,7 +72,16 @@ namespace Remotion.Data.DomainObjects.Mapping
           _domainModelConstraintProvider,
           _sortExpressionDefinitionProvider,
           _instanceCreator);
-      return classReflector.GetMetadata(baseClass);
+      return classReflector.GetMetadata(baseClass, implementedInterfaces);
+    }
+
+    public InterfaceDefinition CreateInterfaceDefinition (Type type, IEnumerable<InterfaceDefinition> extendedInterfaces)
+    {
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("extendedInterfaces", extendedInterfaces);
+
+      var interfaceReflector = new InterfaceReflector(type);
+      return interfaceReflector.GetMetadata(extendedInterfaces);
     }
 
     public PropertyDefinition CreatePropertyDefinition (TypeDefinition typeDefinition, IPropertyInformation propertyInfo)
