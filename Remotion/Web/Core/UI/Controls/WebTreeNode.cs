@@ -34,7 +34,7 @@ namespace Remotion.Web.UI.Controls
 
     private string _itemID = string.Empty;
     private WebString _text;
-    private WebString _toolTip;
+    private PlainTextString _toolTip;
     private IconInfo _icon;
     private Badge? _badge;
     private string _menuID = string.Empty;
@@ -49,7 +49,7 @@ namespace Remotion.Web.UI.Controls
     private int _selectDesired;
 
     /// <summary> Initalizes a new instance. </summary>
-    public WebTreeNode (string itemID, WebString text, WebString toolTip, IconInfo icon)
+    public WebTreeNode (string itemID, WebString text, PlainTextString toolTip, IconInfo icon)
     {
       ValidateItemId(itemID);
       _itemID = itemID;
@@ -62,7 +62,7 @@ namespace Remotion.Web.UI.Controls
 
     /// <summary> Initalizes a new instance. </summary>
     public WebTreeNode (string itemID, WebString text, IconInfo icon)
-        : this(itemID, text, WebString.Empty, icon)
+        : this(itemID, text, PlainTextString.Empty, icon)
     {
     }
 
@@ -236,8 +236,8 @@ namespace Remotion.Web.UI.Controls
     [Category("Appearance")]
     [Description("The tool-tip displayed in this node.")]
     [NotifyParentProperty(true)]
-    [DefaultValue(typeof(WebString), "")]
-    public WebString ToolTip
+    [DefaultValue(typeof(PlainTextString), "")]
+    public PlainTextString ToolTip
     {
       get { return _toolTip; }
       set
