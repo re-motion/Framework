@@ -177,14 +177,6 @@ namespace Remotion.Web.UnitTests.Core
     }
 
     [Test]
-    public void ToString_WithAttributeEncoding_EncodesOutput ()
-    {
-      Assert.That(
-          PlainTextString.CreateFromText("aoe   \" & ' < > é \r \n \r\n").ToString(WebStringEncoding.Attribute),
-          Is.EqualTo("aoe   &quot; &amp; &#39; &lt; > é \r \n \r\n"));
-    }
-
-    [Test]
     public void ToString_WithEncodedLineBreaksEncoding_EncodesOutputIncludingLineBreaks ()
     {
       Assert.That(

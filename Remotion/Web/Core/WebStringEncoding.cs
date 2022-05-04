@@ -29,11 +29,6 @@ namespace Remotion.Web
     /// <summary>
     /// An unencoded <see cref="WebString"/> will be HTML encoded and line break characters will be replaced by &lt;br /&gt; tags.
     /// </summary>
-    HtmlWithTransformedLineBreaks,
-
-    /// <summary>
-    /// An unencoded <see cref="WebString"/> will be HTML attribute encoded.
-    /// </summary>
-    Attribute
+    HtmlWithTransformedLineBreaks
   }
 }

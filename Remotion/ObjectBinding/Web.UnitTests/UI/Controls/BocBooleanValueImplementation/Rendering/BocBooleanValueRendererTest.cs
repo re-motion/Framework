@@ -71,9 +71,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           "TrueIconUrl",
           "FalseIconUrl",
           "NullIconUrl",
-          WebString.CreateFromText("DefaultTrueDescription"),
-          WebString.CreateFromText("DefaultFalseDescription"),
-          WebString.CreateFromText("DefaultNullDescription"));
+          PlainTextString.CreateFromText("DefaultTrueDescription"),
+          PlainTextString.CreateFromText("DefaultFalseDescription"),
+          PlainTextString.CreateFromText("DefaultNullDescription"));
 
       _booleanValue = new Mock<IBocBooleanValue>();
 
@@ -112,9 +112,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.ShowDescription).Returns(true);
 
       _booleanValue.Setup(mock => mock.Page).Returns(pageStub.Object);
-      _booleanValue.Setup(mock => mock.TrueDescription).Returns(WebString.CreateFromText(c_trueDescription));
-      _booleanValue.Setup(mock => mock.FalseDescription).Returns(WebString.CreateFromText(c_falseDescription));
-      _booleanValue.Setup(mock => mock.NullDescription).Returns(WebString.CreateFromText(c_nullDescription));
+      _booleanValue.Setup(mock => mock.TrueDescription).Returns(PlainTextString.CreateFromText(c_trueDescription));
+      _booleanValue.Setup(mock => mock.FalseDescription).Returns(PlainTextString.CreateFromText(c_falseDescription));
+      _booleanValue.Setup(mock => mock.NullDescription).Returns(PlainTextString.CreateFromText(c_nullDescription));
 
       _booleanValue.SetupProperty(_ => _.CssClass);
 
@@ -304,7 +304,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = true;
-      _booleanValue.Setup(mock => mock.TrueDescription).Returns(WebString.CreateFromText("Multiline\nTrue"));
+      _booleanValue.Setup(mock => mock.TrueDescription).Returns(PlainTextString.CreateFromText("Multiline\nTrue"));
 
       var document = RenderBocBooleanValue();
 
@@ -317,7 +317,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = false;
-      _booleanValue.Setup(mock => mock.FalseDescription).Returns(WebString.CreateFromText("Multiline\nFalse"));
+      _booleanValue.Setup(mock => mock.FalseDescription).Returns(PlainTextString.CreateFromText("Multiline\nFalse"));
 
       var document = RenderBocBooleanValue();
 
@@ -330,7 +330,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = null;
-      _booleanValue.Setup(mock => mock.NullDescription).Returns(WebString.CreateFromText("Multiline\nNull"));
+      _booleanValue.Setup(mock => mock.NullDescription).Returns(PlainTextString.CreateFromText("Multiline\nNull"));
 
       var document = RenderBocBooleanValue();
 

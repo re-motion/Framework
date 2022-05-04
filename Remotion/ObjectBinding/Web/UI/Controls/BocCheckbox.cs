@@ -226,11 +226,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       string? key;
       key = ResourceManagerUtility.GetGlobalResourceKey(TrueDescription.GetValue());
       if (! string.IsNullOrEmpty(key))
-        TrueDescription = resourceManager.GetWebString(key, TrueDescription.Type);
+        TrueDescription = resourceManager.GetText(key);
 
       key = ResourceManagerUtility.GetGlobalResourceKey(FalseDescription.GetValue());
       if (! string.IsNullOrEmpty(key))
-        FalseDescription = resourceManager.GetWebString(key, FalseDescription.Type);
+        FalseDescription = resourceManager.GetText(key);
     }
 
     /// <summary> 

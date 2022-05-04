@@ -26,24 +26,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
   {
     /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="true"/>. </summary>
     /// <value> 
-    ///   The text displayed for <see langword="true"/>. The default value is an empty <see cref="WebString"/>.
+    ///   The text displayed for <see langword="true"/>. The default value is an empty <see cref="PlainTextString"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    WebString TrueDescription { get; set; }
+    PlainTextString TrueDescription { get; set; }
 
     /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="false"/>. </summary>
     /// <value> 
-    ///   The text displayed for <see langword="false"/>. The default value is an empty <see cref="WebString"/>.
+    ///   The text displayed for <see langword="false"/>. The default value is an empty <see cref="PlainTextString"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    WebString FalseDescription { get; set; }
+    PlainTextString FalseDescription { get; set; }
 
     /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="null"/>. </summary>
     /// <value> 
-    ///   The text displayed for <see langword="null"/>. The default value is an empty <see cref="WebString"/>.
+    ///   The text displayed for <see langword="null"/>. The default value is an empty <see cref="PlainTextString"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    WebString NullDescription { get; set; }
+    PlainTextString NullDescription { get; set; }
 
     /// <summary> Gets or sets the current value. </summary>
     new bool? Value { get; set; }

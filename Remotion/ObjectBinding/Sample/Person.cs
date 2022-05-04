@@ -252,6 +252,10 @@ namespace Remotion.ObjectBinding.Sample
       set { _cv = value; }
     }
 
+    [XmlIgnore]
+    [MultiLingualName("IstVolljährig", "")]
+    public bool IsOfLegalAge => (DateTime.Now - DateOfBirth).Days > 365 * 18;
+
     public string CVStringLiteral
     {
       get

@@ -19,6 +19,7 @@ using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
@@ -201,6 +202,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       bocBooleanValue.SetTo(false);
       Assert.That(home.Scope.FindIdEndingWith("NormalAndUnitializedCurrentValueLabel").Text, Is.EqualTo("False"));
+    }
+
+    [Test]
+    public void TestSelectOptionWithUmlaut ()
+    {
+      var home = Start();
+
+      Assert.That(home.BooleanValues().GetByDisplayName("IstVolljährig"), Is.Not.Null);
     }
 
     private WxePageObject Start ()
