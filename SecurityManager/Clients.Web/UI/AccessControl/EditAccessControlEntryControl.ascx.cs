@@ -218,9 +218,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
         var permission = tuple.Item1;
         var control = tuple.Item2;
         string accessTypeName = permission.AccessType.DisplayName;
-        control.TrueDescription = WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.PermissionGrantedText), accessTypeName));
-        control.FalseDescription = WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.PermissionDeniedText), accessTypeName));
-        control.NullDescription = WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.PermissionUndefinedText), accessTypeName));
+        control.TrueDescription = PlainTextString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.PermissionGrantedText), accessTypeName));
+        control.FalseDescription = PlainTextString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.PermissionDeniedText), accessTypeName));
+        control.NullDescription = PlainTextString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.PermissionUndefinedText), accessTypeName));
       }
 
       container.SetRenderMethodDelegate(null);
