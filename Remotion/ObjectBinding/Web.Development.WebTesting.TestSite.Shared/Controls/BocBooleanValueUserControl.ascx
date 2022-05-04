@@ -154,4 +154,23 @@
       </td>
       <td>(normal, required)</td>
     </tr>
+  <tr>
+    <td></td>
+    <td>
+      <remotion:BocBooleanValue ID="DeceasedField_WithUmlaut"
+                                DataSourceControl="CurrentObject"
+                                FalseDescription="Is_So_False"
+                                NullDescription="Is_So_Null"
+                                PropertyIdentifier="IsOfLegalAge"
+                                TrueDescription="Is_So_True"
+
+                                AutoPostBack="true"
+                                Enabled="true"
+                                ReadOnly="false"
+                                Required="true"
+        
+                                runat="server"/>
+    </td>
+    <td>(normal, with umlauts)</td>
+  </tr>
 </table>

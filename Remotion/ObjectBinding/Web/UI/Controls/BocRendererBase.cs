@@ -28,6 +28,7 @@ using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
+using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -94,7 +95,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       var control = renderingContext.Control;
       if (!control.DisplayName.IsEmpty)
-        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.DisplayName, control.DisplayName.ToString(WebStringEncoding.Attribute));
+        HtmlUtility.ExtractPlainText(control.DisplayName).AddAttributeTo(renderingContext.Writer, DiagnosticMetadataAttributesForObjectBinding.DisplayName);
 
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsDisabled, (!control.Enabled).ToString().ToLower());
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsReadOnly, IsReadOnly(control).ToString().ToLower());
