@@ -287,10 +287,10 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
     }
 
     [Test]
-    [Ignore("RM-8430")]
     public void RenderWebStrings ()
     {
       _tab0 = new Mock<IMenuTab>();
+      _tab0.Setup(_ => _.ItemID).Returns("MyWebTab");
       _tab0.Setup(_ => _.Text).Returns(WebString.CreateFromText("Test\nTest"));
       _webTabStrip.Object.GetVisibleTabs().Add(_tab0.Object);
       _renderer = new WebTabStripRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
@@ -304,8 +304,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
           });
       _renderer.Render(renderingContext);
 
-      var document = _htmlHelper.GetDocumentText();
-      // TODO RM-8430: Due to the attribute encoding error, the XMLDocument cannot be parsed to prepare any assertions.
+      var document = _htmlHelper.GetResultDocument();
+      var webTab = document.GetAssertedElementByID(_webTabStrip.Object.ClientID + "_MyWebTab");
+      webTab.AssertAttributeValueEquals("data-content", "Test\nTest");
     }
 
     private void PopulateTabStrip ()
