@@ -653,7 +653,7 @@ namespace Remotion.Web.UI.Controls
           {
             HtmlUtility.ExtractPlainText(node.Badge.Value).AddAttributeTo(writer, DiagnosticMetadataAttributes.WebTreeViewBadgeValue);
             if (!node.Badge.Description.IsEmpty)
-              HtmlUtility.ExtractPlainText(node.Badge.Description).AddAttributeTo(writer, DiagnosticMetadataAttributes.WebTreeViewBadgeDescription);
+              node.Badge.Description.AddAttributeTo(writer, DiagnosticMetadataAttributes.WebTreeViewBadgeDescription);
           }
           if (!string.IsNullOrEmpty(node.Category))
             writer.AddAttribute(DiagnosticMetadataAttributes.WebTreeViewNodeCategory, node.Category);

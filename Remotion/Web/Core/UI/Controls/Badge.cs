@@ -39,14 +39,14 @@ namespace Remotion.Web.UI.Controls
     }
 
     private WebString _value;
-    private WebString _description;
+    private PlainTextString _description;
 
     public Badge ()
-        : this(WebString.Empty, WebString.Empty)
+        : this(WebString.Empty, PlainTextString.Empty)
     {
     }
 
-    public Badge (WebString value, WebString description)
+    public Badge (WebString value, PlainTextString description)
     {
       Value = value;
       Description = description;
@@ -69,9 +69,9 @@ namespace Remotion.Web.UI.Controls
     /// Gets or sets a screen reader friendly description of <see cref="Value"/>.
     /// </summary>
     [PersistenceMode(PersistenceMode.Attribute)]
-    [DefaultValue(typeof(WebString), "")]
+    [DefaultValue(typeof(PlainTextString), "")]
     [NotifyParentProperty(true)]
-    public WebString Description
+    public PlainTextString Description
     {
       get { return _description; }
       [MemberNotNull(nameof(_description))]
