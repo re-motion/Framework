@@ -38,6 +38,7 @@ using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
 using Remotion.Web.UI.Controls.Rendering;
+using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImplementation.Rendering
 {
@@ -267,7 +268,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         Assert.That(_timeTextBox.Attributes[StubValidationErrorRenderer.ValidationErrorsIDAttribute], Is.EqualTo(c_dateValueID + "_TimeValueValidationErrors"));
         Assert.That(
             _timeTextBox.Attributes[StubValidationErrorRenderer.ValidationErrorsAttribute],
-            Is.EqualTo(s_timeValidationErrors.ToString(WebStringEncoding.Attribute)));
+            Is.EqualTo(s_timeValidationErrors.ToString()));
 
         var validationErrors = container.GetAssertedChildElement("span", 2).GetAssertedChildElement("fake", 2);
         validationErrors.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_dateValueID + "_TimeValueValidationErrors");
@@ -320,7 +321,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocDateTimeValueImple
         Assert.That(_dateTextBox.MaxLength, Is.EqualTo(10));
         Assert.That(_dateTextBox.Attributes[StubLabelReferenceRenderer.LabelReferenceAttribute], Is.EqualTo(c_labelID));
         Assert.That(_dateTextBox.Attributes[StubValidationErrorRenderer.ValidationErrorsIDAttribute], Is.EqualTo(c_dateValueID + "_DateValueValidationErrors"));
-        Assert.That(_dateTextBox.Attributes[StubValidationErrorRenderer.ValidationErrorsAttribute], Is.EqualTo(s_dateValidationErrors.ToString(WebStringEncoding.Attribute)));
+        Assert.That(_dateTextBox.Attributes[StubValidationErrorRenderer.ValidationErrorsAttribute], Is.EqualTo(s_dateValidationErrors.ToString()));
 
         if (isDateOnly)
         {

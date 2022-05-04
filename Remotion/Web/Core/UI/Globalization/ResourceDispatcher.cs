@@ -161,7 +161,7 @@ public sealed class ResourceDispatcher
         //  Test for HtmlControl, they can take anything
         HtmlControl? genericHtmlControl = control as HtmlControl;
         if (genericHtmlControl != null)
-          genericHtmlControl.Attributes[propertyName] = propertyValue.ToString(WebStringEncoding.Attribute);
+          genericHtmlControl.Attributes[propertyName] = propertyValue.ToPlainTextString().GetValue();
         else //  Non-HtmlControls require valid property
           s_log.Warn("Control '" + control.ID + "' of type '" + control.GetType().GetFullNameSafe() + "' does not contain a public property '" + propertyName + "'.");
       }
